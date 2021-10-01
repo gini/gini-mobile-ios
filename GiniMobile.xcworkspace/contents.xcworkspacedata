@@ -9,6 +9,12 @@
       location = "container:"
       name = "GiniHealthAPILibrary">
       <FileRef
+         location = "group:HealthAPILibrary/HealthAPILibrary">
+      </FileRef>
+      <FileRef
+         location = "group:HealthAPILibrary/HealthAPILibraryPinning">
+      </FileRef>
+      <FileRef
          location = "group:HealthAPILibrary/HealthAPILibraryExample/HealthAPILibraryExample.xcodeproj">
       </FileRef>
    </Group>

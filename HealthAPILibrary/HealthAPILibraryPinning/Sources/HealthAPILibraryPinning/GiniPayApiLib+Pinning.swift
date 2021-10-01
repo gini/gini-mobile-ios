@@ -6,15 +6,14 @@
 //
 
 import TrustKit
+import GiniHealthAPILibrary
 
-extension GiniApiLib.Builder {
-    public init(client: Client,
+public extension GiniApiLib.Builder {
+    init(client: Client,
                 api: APIDomain = .default,
                 pinningConfig: [String: Any],
                 logLevel: LogLevel = .none) {
-        self.client = client
-        self.api = api
-        self.logLevel = logLevel
+        self.init(client: client, api: api, logLevel: logLevel)
         
         TrustKit.initSharedInstance(withConfiguration: pinningConfig)
     }
