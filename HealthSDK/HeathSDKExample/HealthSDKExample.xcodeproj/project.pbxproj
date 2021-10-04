@@ -42,7 +42,6 @@
 		F463E75E262C5639003B4311 /* ComponentAPIDocumentServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComponentAPIDocumentServiceProtocol.swift; path = CaptureSDK/ComponentAPIDocumentServiceProtocol.swift; sourceTree = "<group>"; };
 		F47C2D3E262F3A14004AF0BE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F47C2D45262F3B3D004AF0BE /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		F4C36A7E270B5A7000CCC69C /* HealthSDKPinning */ = {isa = PBXFileReference; lastKnownFileType = folder; name = HealthSDKPinning; path = ../HealthSDKPinning/HealthSDKPinning; sourceTree = "<group>"; };
 		F4EF0EF5260E5BF1003BDDC7 /* HealthSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HealthSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4EF0EF7260E5BF1003BDDC7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4EF0EFE260E5BF1003BDDC7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -82,7 +81,6 @@
 		F43B0B68260E4D1900B89DF6 = {
 			isa = PBXGroup;
 			children = (
-				F4C36A7E270B5A7000CCC69C /* HealthSDKPinning */,
 				F4072EC7270B0EB70044E52D /* Packages */,
 				F4EF0EF6260E5BF1003BDDC7 /* HealthSDKExample */,
 				F43B0B73260E4D1900B89DF6 /* Products */,
