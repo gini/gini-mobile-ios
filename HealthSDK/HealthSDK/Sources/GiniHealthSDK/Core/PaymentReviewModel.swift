@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import GiniPayApiLib
+//import GiniPayApiLib
 
 /**
  View model class for review screen
