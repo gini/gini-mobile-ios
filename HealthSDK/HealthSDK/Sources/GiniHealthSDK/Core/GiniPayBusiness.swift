@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import GiniPayApiLib
+//import GiniHealthAPILibrary
 
 /**
  Delegate to inform about the current status of the Gini Pay Business SDK.
