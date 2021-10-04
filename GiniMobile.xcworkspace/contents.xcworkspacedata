@@ -4,6 +4,9 @@
    <Group
       location = "container:"
       name = "GiniHealthSDK">
+      <FileRef
+         location = "group:HealthSDK/HealthSDK">
+      </FileRef>
    </Group>
    <Group
       location = "container:"
