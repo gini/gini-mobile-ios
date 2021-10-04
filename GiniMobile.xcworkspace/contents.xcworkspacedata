@@ -5,6 +5,9 @@
       location = "container:"
       name = "GiniHealthSDK">
       <FileRef
+         location = "group:HealthSDK/HeathSDKExample/HealthSDKExample.xcodeproj">
+      </FileRef>
+      <FileRef
          location = "group:HealthSDK/HealthSDK">
       </FileRef>
    </Group>

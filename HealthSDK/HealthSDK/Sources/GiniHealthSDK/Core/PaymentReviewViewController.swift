@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import GiniPayApiLib
+import GiniHealthAPILibrary
 
 public final class PaymentReviewViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet var pageControl: UIPageControl!
