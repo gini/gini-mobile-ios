@@ -5,7 +5,7 @@
 //  Created by Nadya Karaban on 15.04.21.
 //
 
-import Foundation
+import UIKit
 /**
   Returns the GiniPayBusiness bundle.
  

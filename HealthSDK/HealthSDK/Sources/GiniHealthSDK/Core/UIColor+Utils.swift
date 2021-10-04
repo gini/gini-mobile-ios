@@ -5,7 +5,7 @@
 //  Created by Nadya Karaban on 07.04.21.
 //
 
-import Foundation
+import UIKit
 public extension UIColor {
     static func from(giniColor: GiniColor) -> UIColor {
         if #available(iOS 13, *) {

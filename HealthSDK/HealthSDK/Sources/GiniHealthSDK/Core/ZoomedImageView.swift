@@ -5,7 +5,6 @@
 //  Created by Nadya Karaban on 08.04.21.
 //
 
-import Foundation
 import UIKit
 
 @objc public protocol ImageScrollViewDelegate: UIScrollViewDelegate {

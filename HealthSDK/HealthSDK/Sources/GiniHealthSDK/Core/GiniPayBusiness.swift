@@ -5,8 +5,8 @@
 //  Created by Nadya Karaban on 18.02.21.
 //
 
-import Foundation
-//import GiniHealthAPILibrary
+import UIKit
+import GiniHealthAPILibrary
 
 /**
  Delegate to inform about the current status of the Gini Pay Business SDK.
