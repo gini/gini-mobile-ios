@@ -5,7 +5,7 @@
 //  Created by Nadya Karaban on 30.03.21.
 //
 
-import Foundation
+import UIKit
 
 // MARK: - Adds round corners to any UIView, configurable with UIRectCorner, radius
 

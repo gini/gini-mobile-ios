@@ -5,7 +5,7 @@
 //  Created by Nadya Karaban on 30.03.21.
 //
 
-import Foundation
+import UIKit
 /**
  Provides a way to set all possible font weights used in the GiniPayBusiness SDK.
  

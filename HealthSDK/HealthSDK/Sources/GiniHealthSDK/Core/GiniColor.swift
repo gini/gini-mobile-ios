@@ -5,7 +5,8 @@
 //  Created by Nadya Karaban on 30.03.21.
 //
 
-import Foundation
+import UIKit
+
 /**
  The `GiniColor` class allows to customize color for the light and the dark modes.
  */

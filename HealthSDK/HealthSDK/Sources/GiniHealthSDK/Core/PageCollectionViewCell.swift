@@ -5,7 +5,7 @@
 //  Created by Nadya Karaban on 07.04.21.
 //
 
-import Foundation
+import UIKit
 
 class PageCollectionViewCell: UICollectionViewCell {
 
