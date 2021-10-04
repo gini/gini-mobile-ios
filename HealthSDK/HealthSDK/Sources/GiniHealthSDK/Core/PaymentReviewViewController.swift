@@ -5,7 +5,7 @@
 //  Created by Nadya Karaban on 30.03.21.
 //
 
-import Foundation
+import UIKit
 import GiniHealthAPILibrary
 
 public final class PaymentReviewViewController: UIViewController, UIGestureRecognizerDelegate {

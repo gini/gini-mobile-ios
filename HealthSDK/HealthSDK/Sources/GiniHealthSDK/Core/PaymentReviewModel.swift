@@ -5,9 +5,8 @@
 //  Created by Nadya Karaban on 18.04.21.
 //
 
-import Foundation
-//import GiniPayApiLib
-
+import GiniHealthAPILibrary
+import UIKit
 /**
  View model class for review screen
   */

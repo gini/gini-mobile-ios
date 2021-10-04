@@ -5,7 +5,8 @@
 //  Created by Nadya Karaban on 30.03.21.
 //
 
-import Foundation
+import UIKit
+
 /**
  The `GiniPayBusinessConfiguration` class allows customizations to the look of the Gini Pay Business SDK.
  If there are limitations regarding which API can be used, this is clearly stated for the specific attribute.
