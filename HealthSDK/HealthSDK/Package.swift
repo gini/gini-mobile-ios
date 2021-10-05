@@ -23,8 +23,9 @@ let package = Package(
         
         .target(
             name: "GiniHealthSDK",
-            dependencies: [.product(name: "GiniHealthAPILibrary", package: "HealthAPILibrary")]
-        ),
+            dependencies: [.product(name: "GiniHealthAPILibrary",
+                                    package: "HealthAPILibrary")],
+            resources: [.copy("Resources")]),
         .testTarget(
             name: "HealthSDKTests",
             dependencies: ["GiniHealthSDK"]),
