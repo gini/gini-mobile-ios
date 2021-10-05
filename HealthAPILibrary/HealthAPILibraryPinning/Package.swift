@@ -17,7 +17,6 @@ let package = Package(
         // .package(url: /* package url */, from: "1.0.0"),
         
         .package(name: "TrustKit", url: "git@github.com:datatheorem/TrustKit.git" , from: "2.0.0"),
-        
         .package(name: "HealthAPILibrary", path: "../HealthAPILibrary")
         
     ],
