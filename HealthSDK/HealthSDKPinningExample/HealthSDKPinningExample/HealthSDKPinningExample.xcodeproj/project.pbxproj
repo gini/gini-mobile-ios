@@ -13,7 +13,7 @@
 		F4C36A93270C6EBF00CCC69C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4C36A91270C6EBF00CCC69C /* Main.storyboard */; };
 		F4C36A95270C6EC200CCC69C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4C36A94270C6EC200CCC69C /* Assets.xcassets */; };
 		F4C36A98270C6EC200CCC69C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4C36A96270C6EC200CCC69C /* LaunchScreen.storyboard */; };
-		F4C36AA3270C6F9C00CCC69C /* GiniHealthSDKPinning in Frameworks */ = {isa = PBXBuildFile; productRef = F4C36AA2270C6F9C00CCC69C /* GiniHealthSDKPinning */; };
+		F4CEC7ED270CB06D004A862F /* GiniHealthSDKPinning in Frameworks */ = {isa = PBXBuildFile; productRef = F4CEC7EC270CB06D004A862F /* GiniHealthSDKPinning */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +26,7 @@
 		F4C36A97270C6EC200CCC69C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F4C36A99270C6EC200CCC69C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4C36AA0270C6F6B00CCC69C /* HealthSDKPinning */ = {isa = PBXFileReference; lastKnownFileType = folder; name = HealthSDKPinning; path = ../../HealthSDKPinning/HealthSDKPinning; sourceTree = "<group>"; };
+		F4CEC7EB270CB05F004A862F /* HealthSDKPinning */ = {isa = PBXFileReference; lastKnownFileType = folder; name = HealthSDKPinning; path = ../../HealthSDKPinning/HealthSDKPinning; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,7 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4C36AA3270C6F9C00CCC69C /* GiniHealthSDKPinning in Frameworks */,
+				F4CEC7ED270CB06D004A862F /* GiniHealthSDKPinning in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				F4C36AA0270C6F6B00CCC69C /* HealthSDKPinning */,
+				F4CEC7EB270CB05F004A862F /* HealthSDKPinning */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -104,7 +106,7 @@
 			);
 			name = HealthSDKPinningExample;
 			packageProductDependencies = (
-				F4C36AA2270C6F9C00CCC69C /* GiniHealthSDKPinning */,
+				F4CEC7EC270CB06D004A862F /* GiniHealthSDKPinning */,
 			);
 			productName = HealthSDKPinningExample;
 			productReference = F4C36A88270C6EBF00CCC69C /* HealthSDKPinningExample.app */;
@@ -240,7 +242,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -295,7 +297,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -385,7 +387,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		F4C36AA2270C6F9C00CCC69C /* GiniHealthSDKPinning */ = {
+		F4CEC7EC270CB06D004A862F /* GiniHealthSDKPinning */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GiniHealthSDKPinning;
 		};
