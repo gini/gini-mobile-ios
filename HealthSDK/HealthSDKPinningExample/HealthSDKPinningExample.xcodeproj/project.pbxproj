@@ -25,8 +25,7 @@
 		F4C36A94270C6EC200CCC69C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F4C36A97270C6EC200CCC69C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F4C36A99270C6EC200CCC69C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F4C36AA0270C6F6B00CCC69C /* HealthSDKPinning */ = {isa = PBXFileReference; lastKnownFileType = folder; name = HealthSDKPinning; path = ../../HealthSDKPinning/HealthSDKPinning; sourceTree = "<group>"; };
-		F4CEC7EB270CB05F004A862F /* HealthSDKPinning */ = {isa = PBXFileReference; lastKnownFileType = folder; name = HealthSDKPinning; path = ../../HealthSDKPinning/HealthSDKPinning; sourceTree = "<group>"; };
+		F4F9E5C5270E003600C6FBA3 /* GiniHealthSDKPinning */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniHealthSDKPinning; path = ../GiniHealthSDKPinning; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,8 +75,7 @@
 		F4C36A9F270C6F6B00CCC69C /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				F4C36AA0270C6F6B00CCC69C /* HealthSDKPinning */,
-				F4CEC7EB270CB05F004A862F /* HealthSDKPinning */,
+				F4F9E5C5270E003600C6FBA3 /* GiniHealthSDKPinning */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -226,6 +224,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = BQY9KX4V88;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -287,6 +286,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = BQY9KX4V88;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
