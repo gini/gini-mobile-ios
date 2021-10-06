@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "HealthAPILibraryPinning",
+    name: "GiniHealthAPILibraryPinning",
     platforms: [.iOS(.v12)],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
@@ -17,7 +17,7 @@ let package = Package(
         // .package(url: /* package url */, from: "1.0.0"),
         
         .package(name: "TrustKit", url: "git@github.com:datatheorem/TrustKit.git" , from: "2.0.0"),
-        .package(name: "HealthAPILibrary", path: "../HealthAPILibrary")
+        .package(name: "GiniHealthAPILibrary", path: "../GiniHealthAPILibrary")
         
     ],
     targets: [
@@ -25,12 +25,11 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "GiniHealthAPILibraryPinning",
-            dependencies: [.product(name: "GiniHealthAPILibrary", package: "HealthAPILibrary"),
-                           "TrustKit"],
-            path: "Sources"),
+            dependencies: [.product(name: "GiniHealthAPILibrary", package: "GiniHealthAPILibrary"),
+                           "TrustKit"]),
         
         .testTarget(
-            name: "HealthAPILibraryPinningTests",
+            name: "GiniHealthAPILibraryPinningTests",
             dependencies: ["GiniHealthAPILibraryPinning"]),
     ]
 )
