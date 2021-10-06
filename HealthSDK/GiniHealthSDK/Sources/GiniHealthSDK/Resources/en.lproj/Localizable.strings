@@ -1,0 +1,22 @@
+/* 
+  File.strings
+  Pods
+
+  Created by Nadya Karaban on 08.04.21.
+  
+*/
+"ginipaybusiness.reviewscreen.recipient.placeholder" = "Recipient";
+"ginipaybusiness.reviewscreen.iban.placeholder" = "IBAN";
+"ginipaybusiness.reviewscreen.amount.placeholder" = "0,00 €";
+"ginipaybusiness.reviewscreen.usage.placeholder" = "Purpose";
+"ginipaybusiness.errors.no.banking.app.installed" = "Your banking app does not support this service. Have you tried ING app yet?";
+"ginipaybusiness.errors.default" = "Oops something went wrong. Please try again.";
+"ginipaybusiness.errors.failed.payment.request.creation" = "Oops something went wrong. Please try again.";
+"ginipaybusiness.errors.failed.recipient.non.empty.check" = "Recipient is required.";
+"ginipaybusiness.errors.failed.iban.non.empty.check" = "IBAN is required.";
+"ginipaybusiness.errors.failed.iban.validation.check" = "IBAN is not valid";
+"ginipaybusiness.errors.failed.amount.non.empty.check" = "Amount can't be 0";
+"ginipaybusiness.errors.failed.purpose.non.empty.check" = "Purpose is required.";
+"ginipaybusiness.errors.failed.default.textfield.validation.check" = "The field is not valid";
+
+"ginipaybusiness.alert.ok.title" = "OK";
