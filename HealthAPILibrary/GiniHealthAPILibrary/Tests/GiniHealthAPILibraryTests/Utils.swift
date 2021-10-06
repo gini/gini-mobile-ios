@@ -7,7 +7,7 @@
 //
 
 import Foundation
-@testable import GiniPayApiLib
+@testable import GiniHealthAPILibrary
 
 func loadFile(withName name: String, ofType type: String) -> Data {
     let fileURLPath: String? = Bundle(for: GiniDocumentTests.self)

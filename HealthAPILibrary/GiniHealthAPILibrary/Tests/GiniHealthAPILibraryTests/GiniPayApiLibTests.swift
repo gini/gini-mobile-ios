@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import GiniPayApiLib
+@testable import GiniHealthAPILibrary
 
 // swiftlint:disable force_cast
 

@@ -5,7 +5,7 @@
 //  Created by Enrique del Pozo Gómez on 3/26/19.
 //
 
-@testable import GiniPayApiLib
+@testable import GiniHealthAPILibrary
 import XCTest
 
 final class DocumentServicesTests: XCTestCase {
@@ -219,7 +219,8 @@ final class DocumentServicesTests: XCTestCase {
                                     osName: UIDevice.current.systemName,
                                     osVersion: UIDevice.current.systemVersion,
                                     captureSdkVersion: "Not available",
-                                    apiLibVersion: String(GiniPayApiLibVersionNumber),
+                                    apiLibVersion:"",
+                                        //String(GiniPayApiLibVersionNumber),
                                     description: "Error logging test",
                                     documentId: "1234",
                                     originalRequestId: "5678")
