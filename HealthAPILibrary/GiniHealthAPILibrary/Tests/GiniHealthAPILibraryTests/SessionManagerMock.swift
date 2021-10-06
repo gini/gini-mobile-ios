@@ -7,7 +7,7 @@
 
 import Foundation
 import XCTest
-@testable import GiniPayApiLib
+@testable import GiniHealthAPILibrary
 
 final class SessionManagerMock: SessionManagerProtocol {
     

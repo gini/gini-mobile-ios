@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import GiniPayApiLib
+@testable import GiniHealthAPILibrary
 
 class UserTests: XCTestCase {
     

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-@testable import GiniPayApiLib
+@testable import GiniHealthAPILibrary
 
 final class KeychainStoreMock: KeyStore {
     var fakeItems: [KeychainManagerItem] = []
