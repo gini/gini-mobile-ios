@@ -13,10 +13,10 @@
 		F46DE0532705FC21002F7420 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F46DE0512705FC21002F7420 /* Main.storyboard */; };
 		F46DE0552705FC22002F7420 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F46DE0542705FC22002F7420 /* Assets.xcassets */; };
 		F46DE0582705FC22002F7420 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F46DE0562705FC22002F7420 /* LaunchScreen.storyboard */; };
-		F46DE06E270739D4002F7420 /* GiniHealthAPILibraryPinning in Frameworks */ = {isa = PBXBuildFile; productRef = F46DE06D270739D4002F7420 /* GiniHealthAPILibraryPinning */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F43A5BCE270DF064001AF3FC /* GiniHealthAPILibraryPinning */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniHealthAPILibraryPinning; path = ../GiniHealthAPILibraryPinning; sourceTree = "<group>"; };
 		F46DE0482705FC21002F7420 /* HealthAPILibraryExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HealthAPILibraryExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F46DE04B2705FC21002F7420 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F46DE04D2705FC21002F7420 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -25,7 +25,6 @@
 		F46DE0542705FC22002F7420 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F46DE0572705FC22002F7420 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F46DE0592705FC22002F7420 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F46DE06C2707351A002F7420 /* HealthAPILibraryPinning */ = {isa = PBXFileReference; lastKnownFileType = folder; name = HealthAPILibraryPinning; path = ../HealthAPILibraryPinning; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,7 +32,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F46DE06E270739D4002F7420 /* GiniHealthAPILibraryPinning in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,7 +73,7 @@
 		F46DE05F2705FCAC002F7420 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				F46DE06C2707351A002F7420 /* HealthAPILibraryPinning */,
+				F43A5BCE270DF064001AF3FC /* GiniHealthAPILibraryPinning */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -104,7 +102,6 @@
 			);
 			name = HealthAPILibraryExample;
 			packageProductDependencies = (
-				F46DE06D270739D4002F7420 /* GiniHealthAPILibraryPinning */,
 			);
 			productName = HealthAPILibraryExample;
 			productReference = F46DE0482705FC21002F7420 /* HealthAPILibraryExample.app */;
@@ -383,13 +380,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		F46DE06D270739D4002F7420 /* GiniHealthAPILibraryPinning */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = GiniHealthAPILibraryPinning;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F46DE0402705FC21002F7420 /* Project object */;
 }
