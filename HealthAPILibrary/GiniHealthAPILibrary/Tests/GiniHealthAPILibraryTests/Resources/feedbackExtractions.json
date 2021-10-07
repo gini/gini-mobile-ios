@@ -1,0 +1,385 @@
+{
+  "extractions": {
+    "other-charges-addon": {
+      "entity": "amount",
+      "value": "15.00:EUR"
+    },
+    "paymentRecipient": {
+      "entity": "companyname",
+      "value": "KLARNA",
+      "candidates": "paymentRecipients"
+    },
+    "amountsAreConsistent": {
+      "entity": "text",
+      "value": "true"
+    },
+    "paymentPurpose": {
+      "entity": "reference",
+      "value": "39 63 75 79 1 04 34",
+      "box": {
+        "top": 715.2,
+        "left": 190.32,
+        "width": 173.03999999999996,
+        "height": 8.399999999999977,
+        "page": 1
+      }
+    },
+    "bic": {
+      "entity": "bic",
+      "value": "DEUTDEMM760",
+      "box": {
+        "top": 648.72,
+        "left": 191.04,
+        "width": 145.20000000000002,
+        "height": 8.159999999999968,
+        "page": 1
+      },
+      "candidates": "bics"
+    },
+    "amountToPay": {
+      "entity": "amount",
+      "value": "30.27:EUR",
+      "box": {
+        "top": 421.92,
+        "left": 528.24,
+        "width": 21.840000000000032,
+        "height": 7.680000000000007,
+        "page": 1
+      },
+      "candidates": "amounts"
+    },
+    "iban": {
+      "entity": "iban",
+      "value": "DE13760700120500154000",
+      "box": {
+        "top": 624.72,
+        "left": 190.32,
+        "width": 237.36,
+        "height": 8.639999999999986,
+        "page": 1
+      },
+      "candidates": "ibans"
+    },
+    "docType": {
+      "entity": "doctype",
+      "value": "RemittanceSlip"
+    }
+  },
+  "compoundExtractions": {
+    "lineItems": [
+      {
+        "quantity": {
+          "entity": "numeric",
+          "value": "1",
+          "box": {
+            "top": 290.64,
+            "left": 344.16,
+            "width": 5.519999999999982,
+            "height": 8.399999999999977,
+            "page": 1
+          }
+        },
+        "artNumber": {
+          "entity": "text",
+          "value": "5c61 4a2f5d38b73cb5a2 4341",
+          "box": {
+            "top": 292.32,
+            "left": 31.68,
+            "width": 86.16,
+            "height": 13.920000000000016,
+            "page": 1
+          }
+        },
+        "description": {
+          "entity": "text",
+          "value": "ness Sport bequeme Hose mit Tasche Damen Yoga Leggings Fitness Hose Gym Fit",
+          "box": {
+            "top": 292.56,
+            "left": 130.08,
+            "width": 162.72,
+            "height": 15.840000000000032,
+            "page": 1
+          }
+        },
+        "baseGross": {
+          "entity": "amount",
+          "value": "4.73:EUR",
+          "box": {
+            "top": 293.52,
+            "left": 386.64,
+            "width": 15.120000000000005,
+            "height": 6.720000000000027,
+            "page": 1
+          }
+        }
+      },
+      {
+        "quantity": {
+          "entity": "numeric",
+          "value": "1",
+          "box": {
+            "top": 312.72,
+            "left": 344.64,
+            "width": 2.160000000000025,
+            "height": 5.759999999999991,
+            "page": 1
+          }
+        },
+        "artNumber": {
+          "entity": "text",
+          "value": "5dcbb681 78638702870c 27e4",
+          "box": {
+            "top": 311.76,
+            "left": 31.68,
+            "width": 88.32,
+            "height": 13.920000000000016,
+            "page": 1
+          }
+        },
+        "description": {
+          "entity": "text",
+          "value": "Lässige Leggings mit Totenkopf- und Blu- men-Print für Damen Yoga Hose Leggings",
+          "box": {
+            "top": 312,
+            "left": 129.84,
+            "width": 150.48,
+            "height": 15.840000000000032,
+            "page": 1
+          }
+        },
+        "baseGross": {
+          "entity": "amount",
+          "value": "5.00:EUR",
+          "box": {
+            "top": 312.96,
+            "left": 386.4,
+            "width": 15.120000000000005,
+            "height": 6.720000000000027,
+            "page": 1
+          }
+        }
+      },
+      {
+        "quantity": {
+          "entity": "numeric",
+          "value": "1",
+          "box": {
+            "top": 331.92,
+            "left": 344.4,
+            "width": 2.160000000000025,
+            "height": 5.519999999999982,
+            "page": 1
+          }
+        },
+        "artNumber": {
+          "entity": "text",
+          "value": "5dd8de427ad86808ef3d 81 2f",
+          "box": {
+            "top": 330.72,
+            "left": 31.92,
+            "width": 86.4,
+            "height": 14.399999999999977,
+            "page": 1
+          }
+        },
+        "description": {
+          "entity": "text",
+          "value": "Eng anliegende Anti-Cellulite Kompression Slim Yogahose für Damen Sport schnell trocknende Hose mit hohem Bund",
+          "box": {
+            "top": 330.96,
+            "left": 129.84,
+            "width": 168.48,
+            "height": 22.560000000000002,
+            "page": 1
+          }
+        },
+        "baseGross": {
+          "entity": "amount",
+          "value": "5.54:EUR",
+          "box": {
+            "top": 332.16,
+            "left": 386.16,
+            "width": 15.120000000000005,
+            "height": 6.720000000000027,
+            "page": 1
+          }
+        }
+      }
+    ]
+  },
+  "returnReasons": [
+    {
+      "de": "Anders als im Bild",
+      "en": "Looks different from site image",
+      "id": "r1"
+    },
+    {
+      "de": "Schlechte Qualität",
+      "en": "Poor quality",
+      "id": "r2"
+    },
+    {
+      "de": "Defekt",
+      "en": "Defect",
+      "id": "r3"
+    },
+    {
+      "de": "Passt nicht richtig",
+      "en": "Doesn't suit me",
+      "id": "r4"
+    },
+    {
+      "de": "Falsches Produkt empfangen",
+      "en": "Received wrong item",
+      "id": "r5"
+    },
+    {
+      "de": "Paket wurde beschädigt",
+      "en": "Parcel was damaged",
+      "id": "r6"
+    },
+    {
+      "de": "Lieferung zu spät angekommen",
+      "en": "Arrived too late",
+      "id": "r7"
+    }
+  ],
+  "candidates": {
+    "paymentRecipients": [
+      {
+        "entity": "companyname",
+        "value": "KLARNA"
+      },
+      {
+        "entity": "companyname",
+        "value": "K L A R N A"
+      },
+      {
+        "entity": "companyname",
+        "value": "Klarna"
+      },
+      {
+        "entity": "companyname",
+        "value": "Deutsche Bank AG"
+      },
+      {
+        "entity": "companyname",
+        "value": "klarna"
+      },
+      {
+        "entity": "companyname",
+        "value": "Klama"
+      },
+      {
+        "entity": "companyname",
+        "value": "Klarna AB"
+      },
+      {
+        "entity": "companyname",
+        "value": "KLARNA AB"
+      },
+      {
+        "entity": "companyname",
+        "value": "baby-walz GmbH"
+      },
+      {
+        "entity": "companyname",
+        "value": "KLAR N A"
+      }
+    ],
+    "bics": [
+      {
+        "entity": "bic",
+        "value": "DEUTDEMM760",
+        "box": {
+          "top": 648.72,
+          "left": 191.04,
+          "width": 145.20000000000002,
+          "height": 8.159999999999968,
+          "page": 1
+        }
+      },
+      {
+        "entity": "bic",
+        "value": "DEUTDEMM760",
+        "box": {
+          "top": 522.72,
+          "left": 454.56,
+          "width": 56.639999999999986,
+          "height": 4.32000000000005,
+          "page": 1
+        }
+      }
+    ],
+    "amounts": [
+      {
+        "entity": "amount",
+        "value": "30.27:EUR",
+        "box": {
+          "top": 421.92,
+          "left": 528.24,
+          "width": 21.840000000000032,
+          "height": 7.680000000000007,
+          "page": 1
+        }
+      },
+      {
+        "entity": "amount",
+        "value": "30.27:EUR",
+        "box": {
+          "top": 421.92,
+          "left": 528.24,
+          "width": 21.840000000000032,
+          "height": 7.680000000000007,
+          "page": 1
+        }
+      },
+      {
+        "entity": "amount",
+        "value": "30.27:EUR",
+        "box": {
+          "top": 191.28,
+          "left": 514.8,
+          "width": 38.40000000000009,
+          "height": 6.719999999999999,
+          "page": 1
+        }
+      }
+    ],
+    "ibans": [
+      {
+        "entity": "iban",
+        "value": "DE13760700120500154000",
+        "box": {
+          "top": 624.72,
+          "left": 190.32,
+          "width": 237.36,
+          "height": 8.639999999999986,
+          "page": 1
+        }
+      },
+      {
+        "entity": "iban",
+        "value": "DE13760700120500154000",
+        "box": {
+          "top": 516.72,
+          "left": 471.6,
+          "width": 74.39999999999998,
+          "height": 4.560000000000059,
+          "page": 1
+        }
+      },
+      {
+        "entity": "iban",
+        "value": "DE13760700120500154000",
+        "box": {
+          "top": 168.96,
+          "left": 454.08,
+          "width": 99.60000000000008,
+          "height": 6.47999999999999,
+          "page": 1
+        }
+      }
+    ]
+  }
+}

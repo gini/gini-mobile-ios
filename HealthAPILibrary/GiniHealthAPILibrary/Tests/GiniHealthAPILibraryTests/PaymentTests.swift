@@ -112,15 +112,4 @@ final class PaymentTests: XCTestCase {
             }
         }
     }
-    
-    func testBuildPaymentService() {
-        let giniPayApiLib = GiniApiLib.Builder(client: Client(id: "", secret: "", domain: ""),
-                                      api: .default,
-                                      logLevel: .none)
-            .build()
-        
-        let paymentService = giniPayApiLib.paymentService()
-        XCTAssertEqual(paymentService.apiDomain.domainString, "pay-api.gini.net")
-    }
-    
 }

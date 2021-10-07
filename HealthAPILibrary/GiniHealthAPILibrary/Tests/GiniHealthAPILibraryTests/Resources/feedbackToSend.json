@@ -1,0 +1,31 @@
+{
+   "extractions": {
+       "amountToPay": {
+           "value": "15.00:EUR"
+       },
+       "iban": {
+           "value": "DE13760700120500154000"
+       },
+       "paymentRecipient": {
+           "value": "KLARNA"
+       }
+   },
+ "compoundExtractions": {
+        "lineItems": [
+            {
+              "artNumber": {
+                "value": "5c61 4a2f5d38b73cb5a2 4341"
+              },
+              "quantity": {
+                "value": "1"
+              },
+              "description": {
+                "value": "ness Sport bequeme Hose mit Tasche Damen Yoga Leggings Fitness Hose Gym Fit"
+              },
+              "baseGross": {
+                "value": "4.73:EUR"
+              }
+            }
+        ]
+    }
+}
