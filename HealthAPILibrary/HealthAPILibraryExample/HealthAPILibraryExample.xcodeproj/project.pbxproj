@@ -7,15 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F466A5D9270F26C300FB1364 /* GiniHealthAPILibraryPinning in Frameworks */ = {isa = PBXBuildFile; productRef = F466A5D8270F26C300FB1364 /* GiniHealthAPILibraryPinning */; };
+		F466A5DC270F27B300FB1364 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F466A5DB270F27B300FB1364 /* AuthenticationServices.framework */; };
 		F46DE04C2705FC21002F7420 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46DE04B2705FC21002F7420 /* AppDelegate.swift */; };
 		F46DE04E2705FC21002F7420 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46DE04D2705FC21002F7420 /* SceneDelegate.swift */; };
 		F46DE0502705FC21002F7420 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46DE04F2705FC21002F7420 /* ViewController.swift */; };
 		F46DE0532705FC21002F7420 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F46DE0512705FC21002F7420 /* Main.storyboard */; };
 		F46DE0552705FC22002F7420 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F46DE0542705FC22002F7420 /* Assets.xcassets */; };
 		F46DE0582705FC22002F7420 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F46DE0562705FC22002F7420 /* LaunchScreen.storyboard */; };
-		F4FD4871270F1F7D007F1EFA /* HealthAPILibraryExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FD4870270F1F7D007F1EFA /* HealthAPILibraryExampleTests.swift */; };
 		F4FD4878270F204A007F1EFA /* IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FD4877270F204A007F1EFA /* IntegrationTests.swift */; };
-		F4FD487A270F20E4007F1EFA /* GiniPayApiLibTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FD4879270F20E4007F1EFA /* GiniPayApiLibTests.swift */; };
+		F4FD487A270F20E4007F1EFA /* GiniHealthAPILibraryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FD4879270F20E4007F1EFA /* GiniHealthAPILibraryTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,7 +30,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F43A5BCE270DF064001AF3FC /* GiniHealthAPILibraryPinning */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniHealthAPILibraryPinning; path = ../GiniHealthAPILibraryPinning; sourceTree = "<group>"; };
+		F466A5D7270F26B200FB1364 /* GiniHealthAPILibraryPinning */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniHealthAPILibraryPinning; path = ../GiniHealthAPILibraryPinning; sourceTree = "<group>"; };
+		F466A5DA270F27B300FB1364 /* HealthAPILibraryExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HealthAPILibraryExample.entitlements; sourceTree = "<group>"; };
+		F466A5DB270F27B300FB1364 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		F46DE0482705FC21002F7420 /* HealthAPILibraryExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HealthAPILibraryExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F46DE04B2705FC21002F7420 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F46DE04D2705FC21002F7420 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -39,9 +42,8 @@
 		F46DE0572705FC22002F7420 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F46DE0592705FC22002F7420 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4FD486E270F1F7D007F1EFA /* HealthAPILibraryExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HealthAPILibraryExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F4FD4870270F1F7D007F1EFA /* HealthAPILibraryExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthAPILibraryExampleTests.swift; sourceTree = "<group>"; };
 		F4FD4877270F204A007F1EFA /* IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationTests.swift; sourceTree = "<group>"; };
-		F4FD4879270F20E4007F1EFA /* GiniPayApiLibTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniPayApiLibTests.swift; sourceTree = "<group>"; };
+		F4FD4879270F20E4007F1EFA /* GiniHealthAPILibraryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniHealthAPILibraryTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +51,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F466A5DC270F27B300FB1364 /* AuthenticationServices.framework in Frameworks */,
+				F466A5D9270F26C300FB1364 /* GiniHealthAPILibraryPinning in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +89,7 @@
 		F46DE04A2705FC21002F7420 /* HealthAPILibraryExample */ = {
 			isa = PBXGroup;
 			children = (
+				F466A5DA270F27B300FB1364 /* HealthAPILibraryExample.entitlements */,
 				F46DE04B2705FC21002F7420 /* AppDelegate.swift */,
 				F46DE04D2705FC21002F7420 /* SceneDelegate.swift */,
 				F46DE04F2705FC21002F7420 /* ViewController.swift */,
@@ -99,7 +104,7 @@
 		F46DE05F2705FCAC002F7420 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				F43A5BCE270DF064001AF3FC /* GiniHealthAPILibraryPinning */,
+				F466A5D7270F26B200FB1364 /* GiniHealthAPILibraryPinning */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -107,6 +112,7 @@
 		F46DE0622705FEF4002F7420 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F466A5DB270F27B300FB1364 /* AuthenticationServices.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -114,8 +120,7 @@
 		F4FD486F270F1F7D007F1EFA /* HealthAPILibraryExampleTests */ = {
 			isa = PBXGroup;
 			children = (
-				F4FD4879270F20E4007F1EFA /* GiniPayApiLibTests.swift */,
-				F4FD4870270F1F7D007F1EFA /* HealthAPILibraryExampleTests.swift */,
+				F4FD4879270F20E4007F1EFA /* GiniHealthAPILibraryTests.swift */,
 				F4FD4877270F204A007F1EFA /* IntegrationTests.swift */,
 			);
 			path = HealthAPILibraryExampleTests;
@@ -138,6 +143,7 @@
 			);
 			name = HealthAPILibraryExample;
 			packageProductDependencies = (
+				F466A5D8270F26C300FB1364 /* GiniHealthAPILibraryPinning */,
 			);
 			productName = HealthAPILibraryExample;
 			productReference = F46DE0482705FC21002F7420 /* HealthAPILibraryExample.app */;
@@ -234,9 +240,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4FD487A270F20E4007F1EFA /* GiniPayApiLibTests.swift in Sources */,
+				F4FD487A270F20E4007F1EFA /* GiniHealthAPILibraryTests.swift in Sources */,
 				F4FD4878270F204A007F1EFA /* IntegrationTests.swift in Sources */,
-				F4FD4871270F1F7D007F1EFA /* HealthAPILibraryExampleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,6 +396,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HealthAPILibraryExample/HealthAPILibraryExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BQY9KX4V88;
@@ -406,7 +412,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.gini.HealthAPILibraryExample;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.ios.healthhapi.HealthAPILibraryExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -419,6 +425,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HealthAPILibraryExample/HealthAPILibraryExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BQY9KX4V88;
@@ -434,7 +441,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.gini.HealthAPILibraryExample;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.ios.healthhapi.HealthAPILibraryExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -519,6 +526,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F466A5D8270F26C300FB1364 /* GiniHealthAPILibraryPinning */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GiniHealthAPILibraryPinning;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F46DE0402705FC21002F7420 /* Project object */;
 }
