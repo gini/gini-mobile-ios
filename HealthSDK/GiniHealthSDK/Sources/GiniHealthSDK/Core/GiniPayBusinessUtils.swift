@@ -11,7 +11,7 @@ import UIKit
  
  */
 public func giniPayBusinessBundle() -> Bundle {
-    Bundle(for: GiniPayBusiness.self)
+    Bundle.module
 }
 
 /**
