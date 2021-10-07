@@ -1,0 +1,70 @@
+{
+  "pages": [
+    {
+      "number": 1,
+      "sizeX": 595.3,
+      "sizeY": 841.9,
+      "textZones": [
+        {
+          "paragraphs": [
+            {
+              "l": 54.0,
+              "t": 158.76,
+              "w": 190.1,
+              "h": 36.55000000000001,
+              "lines": [
+                {
+                  "l": 54.0,
+                  "t": 158.76,
+                  "w": 190.1,
+                  "h": 10.810000000000002,
+                  "wds": [
+                    {
+                      "l": 54.0,
+                      "t": 158.76,
+                      "w": 18.129999999999995,
+                      "h": 9.900000000000006,
+                      "fontSize": 9.9,
+                      "fontFamily": "Arial-BoldMT",
+                      "bold":false,
+                      "text": "Ihre"
+                    },
+                    {
+                      "l": 74.86,
+                      "t": 158.76,
+                      "w": 83.91000000000001,
+                      "h": 9.900000000000006,
+                      "fontSize": 9.9,
+                      "fontFamily": "Arial-BoldMT",
+                      "bold":false,
+                      "text": "Vorgangsnummer"
+                    },
+                    {
+                      "l": 158.76,
+                      "t": 158.76,
+                      "w": 3.3000000000000114,
+                      "h": 9.900000000000006,
+                      "fontSize": 9.9,
+                      "fontFamily": "Arial-BoldMT",
+                      "bold":false,
+                      "text": ":"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "regions": [
+        {
+          "l": 20.0,
+          "t": 240.1,
+          "w": 190.0,
+          "h": 150.3,
+          "type": "RemittanceSlip"
+        }
+      ]
+    }
+  ]
+}

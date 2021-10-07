@@ -24,6 +24,9 @@ let package = Package(
             dependencies: []),
         .testTarget(
             name: "GiniHealthAPILibraryTests",
-            dependencies: ["GiniHealthAPILibrary"]),
+            dependencies: ["GiniHealthAPILibrary"],
+            resources: [
+                    .process("Resources")
+                ]),
     ]
 )
