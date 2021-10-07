@@ -10,7 +10,7 @@ import Foundation
 @testable import GiniHealthAPILibrary
 
 func loadFile(withName name: String, ofType type: String) -> Data {
-    let fileURLPath: String? = Bundle(for: GiniDocumentTests.self)
+    let fileURLPath: String? = Bundle.module
         .path(forResource: name, ofType: type)
     let data = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
     
@@ -24,7 +24,7 @@ func load<T: Decodable>(fromFile named: String, type: String) -> T {
 }
 
 func loadProviders() -> PaymentProviders {
-    let fileURLPath: String? = Bundle(for: GiniApiLibTests.self)
+    let fileURLPath: String? = Bundle.module
         .path(forResource: "providers", ofType: "json")
     let jsonData = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
     
@@ -32,7 +32,7 @@ func loadProviders() -> PaymentProviders {
 }
 
 func loadPaymentRequests() -> PaymentRequests {
-    let fileURLPath: String? = Bundle(for: GiniApiLibTests.self)
+    let fileURLPath: String? = Bundle.module
         .path(forResource: "paymentRequests", ofType: "json")
     let jsonData = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
     
@@ -40,29 +40,28 @@ func loadPaymentRequests() -> PaymentRequests {
 }
 
 func loadProvider() -> PaymentProvider {
-    let fileURLPath: String? = Bundle(for: GiniApiLibTests.self)
+    let fileURLPath: String? = Bundle.module
         .path(forResource: "provider", ofType: "json")
     let jsonData = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
-    
     return try! JSONDecoder().decode(PaymentProvider.self, from: jsonData!)
 }
 
 func loadPaymentRequest() -> PaymentRequest {
-    let fileURLPath: String? = Bundle(for: GiniApiLibTests.self)
+    let fileURLPath: String? = Bundle.module
         .path(forResource: "paymentRequest", ofType: "json")
     let jsonData = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
         return try! JSONDecoder().decode(PaymentRequest.self, from: jsonData!)
 }
 
 func loadResolvedPaymentRequest() -> ResolvedPaymentRequest {
-    let fileURLPath: String? = Bundle(for: GiniApiLibTests.self)
+    let fileURLPath: String? = Bundle.module
         .path(forResource: "resolvedPaymentRequest", ofType: "json")
     let jsonData = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
         return try! JSONDecoder().decode(ResolvedPaymentRequest.self, from: jsonData!)
 }
 
 func loadPayment() -> Payment {
-    let fileURLPath: String? = Bundle(for: GiniApiLibTests.self)
+    let fileURLPath: String? = Bundle.module
         .path(forResource: "payment", ofType: "json")
     let jsonData = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
         return try! JSONDecoder().decode(Payment.self, from: jsonData!)

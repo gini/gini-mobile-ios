@@ -14,23 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "GiniHealthAPILibrary"
-               BuildableName = "GiniHealthAPILibrary"
-               BlueprintName = "GiniHealthAPILibrary"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "GiniHealthAPILibrary_GiniHealthAPILibraryTests"
-               BuildableName = "GiniHealthAPILibrary_GiniHealthAPILibraryTests"
-               BlueprintName = "GiniHealthAPILibrary_GiniHealthAPILibraryTests"
+               BlueprintIdentifier = "GiniHealthAPILibraryPinning"
+               BuildableName = "GiniHealthAPILibraryPinning"
+               BlueprintName = "GiniHealthAPILibraryPinning"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -42,16 +28,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "GiniHealthAPILibraryTests"
-               BuildableName = "GiniHealthAPILibraryTests"
-               BlueprintName = "GiniHealthAPILibraryTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -74,9 +50,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "GiniHealthAPILibrary"
-            BuildableName = "GiniHealthAPILibrary"
-            BlueprintName = "GiniHealthAPILibrary"
+            BlueprintIdentifier = "GiniHealthAPILibraryPinning"
+            BuildableName = "GiniHealthAPILibraryPinning"
+            BlueprintName = "GiniHealthAPILibraryPinning"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>
