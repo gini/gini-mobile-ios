@@ -1,6 +1,6 @@
 //
 //  PaymentReviewModer.swift
-//  GiniPayBusiness
+//  GiniHealth
 //
 //  Created by Nadya Karaban on 18.04.21.
 //
@@ -21,9 +21,9 @@ public class PaymentReviewModel: NSObject {
     var updateLoadingStatus: () -> Void = {}
     var updateImagesLoadingStatus: () -> Void = {}
     
-    var onErrorHandling: (_ error: GiniPayBusinessError) -> Void = { _ in }
+    var onErrorHandling: (_ error: GiniHealthError) -> Void = { _ in }
 
-    var onNoAppsErrorHandling: (_ error: GiniPayBusinessError) -> Void = { _ in }
+    var onNoAppsErrorHandling: (_ error: GiniHealthError) -> Void = { _ in }
     
     var onCreatePaymentRequestErrorHandling: () -> Void = {}
 
@@ -42,7 +42,7 @@ public class PaymentReviewModel: NSObject {
     }
 
     public var documentId: String
-    private var businessSDK: GiniPayBusiness
+    private var businessSDK: GiniHealth
 
     private var cellViewModels: [PageCollectionCellViewModel] = [PageCollectionCellViewModel]() {
         didSet {
@@ -66,8 +66,8 @@ public class PaymentReviewModel: NSObject {
         }
     }
 
-    public init(with giniPayBusiness: GiniPayBusiness, document: Document, extractions: [Extraction]) {
-        self.businessSDK = giniPayBusiness
+    public init(with giniHealth: GiniHealth, document: Document, extractions: [Extraction]) {
+        self.businessSDK = giniHealth
         self.documentId = document.id
         self.document = document
         self.extractions = extractions

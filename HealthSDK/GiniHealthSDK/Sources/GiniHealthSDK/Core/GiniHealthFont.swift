@@ -1,13 +1,13 @@
 //
-//  GiniPayFont.swift
-//  GiniPayBusiness
+//  GiniHealthFont.swift
+//  GiniHealth
 //
 //  Created by Nadya Karaban on 30.03.21.
 //
 
 import UIKit
 /**
- Provides a way to set all possible font weights used in the GiniPayBusiness SDK.
+ Provides a way to set all possible font weights used in the GiniHealth SDK.
  
  **Possible weights:**
  

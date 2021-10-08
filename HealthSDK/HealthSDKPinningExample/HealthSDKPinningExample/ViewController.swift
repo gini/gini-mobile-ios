@@ -34,14 +34,14 @@ class ViewController: UIViewController {
                 "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo="
             ]],
         ]] as [String: Any]
-        let giniApiLib = GiniApiLib
+        let giniApiLib = GiniHealthAPILib
             .Builder(client: Client(id: "your-id",
                                     secret: "your-secret",
                                     domain: "your-domain"),
                      api: .default,
                      pinningConfig: yourPublicPinningConfig)
             .build()
-        let sdk = GiniPayBusiness(with: giniApiLib)
+        let sdk = GiniHealth(with: giniApiLib)
         let documentService: DefaultDocumentService = sdk.documentService
     }
 }
