@@ -25,8 +25,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "GiniHealthAPILibraryPinning",
-            dependencies: [.product(name: "GiniHealthAPILibrary", package: "GiniHealthAPILibrary"),
-                           "TrustKit"]),
+            dependencies: ["GiniHealthAPILibrary", "TrustKit"]),
         
         .testTarget(
             name: "GiniHealthAPILibraryPinningTests",
