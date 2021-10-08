@@ -55,7 +55,7 @@ public struct DataForReview {
  */
 @objc public final class GiniHealth: NSObject {
     /// reponsible for interaction with Gini Health backend .
-    public var giniApiLib: GiniHealthAPILib
+    public var giniApiLib: GiniHealthAPI
     /// reponsible for the whole document processing.
     public var documentService: DefaultDocumentService
     /// reponsible for the payment processing.
@@ -68,7 +68,7 @@ public struct DataForReview {
      
      - parameter giniApiLib: GiniApiLib initialized with client's credentials
      */
-    public init(with giniApiLib: GiniHealthAPILib){
+    public init(with giniApiLib: GiniHealthAPI){
         self.giniApiLib = giniApiLib
         self.documentService = giniApiLib.documentService()
         self.paymentService = giniApiLib.paymentService()

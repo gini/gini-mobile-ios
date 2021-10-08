@@ -5,7 +5,7 @@
       location = "container:"
       name = "GiniHealthSDK">
       <FileRef
-         location = "group:HealthSDK/HealthSDKPinningExample/HealthSDKPinningExample.xcodeproj">
+         location = "group:/Users/home/Documents/ios projects/gini-mobile-ios/HealthSDK/HealthSDKPinningExample/GiniHealthSDKPinningExample.xcodeproj">
       </FileRef>
       <FileRef
          location = "group:HealthSDK/GiniHealthSDK">
@@ -24,7 +24,7 @@
          location = "group:HealthAPILibrary/GiniHealthAPILibrary">
       </FileRef>
       <FileRef
-         location = "group:HealthAPILibrary/HealthAPILibraryExample/HealthAPILibraryExample.xcodeproj">
+         location = "group:/Users/home/Documents/ios projects/gini-mobile-ios/HealthAPILibrary/HealthAPILibraryExample/GiniHealthAPILibraryExample.xcodeproj">
       </FileRef>
    </Group>
 </Workspace>

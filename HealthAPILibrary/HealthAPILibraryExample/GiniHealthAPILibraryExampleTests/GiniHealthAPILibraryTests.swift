@@ -1,6 +1,6 @@
 //
-//  GiniHealthAPILibTests.swift
-//  GiniHealthAPILib-Unit-Tests
+//  GiniHealthAPITests.swift
+//  GiniHealthAPI-Unit-Tests
 //
 //  Created by Alpár Szotyori on 03.04.20.
 //
@@ -12,7 +12,7 @@ import XCTest
 final class GiniApiLibTests: XCTestCase {
     
     func testBuildWithCustomApiDomain() {
-        let giniHealthAPILib = GiniHealthAPILib.Builder(client: Client(id: "", secret: "", domain: ""),
+        let giniHealthAPILib = GiniHealthAPI.Builder(client: Client(id: "", secret: "", domain: ""),
                                                api: .custom(domain: "custom-api.domain.com", tokenSource: nil),
                                       logLevel: .none)
             .build()
@@ -22,7 +22,7 @@ final class GiniApiLibTests: XCTestCase {
     }
     
     func testBuildWithCustomUserDomain() {
-        let giniHealthAPILib = GiniHealthAPILib.Builder(client: Client(id: "", secret: "", domain: ""),
+        let giniHealthAPILib = GiniHealthAPI.Builder(client: Client(id: "", secret: "", domain: ""),
                                       userApi: .custom(domain: "custom-user.domain.com"),
                                       logLevel: .none)
             .build()
@@ -33,7 +33,7 @@ final class GiniApiLibTests: XCTestCase {
     }
     
     func testBuildWithCustomApiAndUserDomain() {
-        let giniHealthAPILib = GiniHealthAPILib.Builder(client: Client(id: "", secret: "", domain: ""),
+        let giniHealthAPILib = GiniHealthAPI.Builder(client: Client(id: "", secret: "", domain: ""),
                                                api: .custom(domain: "custom-api.domain.com", tokenSource: nil),
                                       userApi: .custom(domain: "custom-user.domain.com"),
                                       logLevel: .none)
@@ -49,7 +49,7 @@ final class GiniApiLibTests: XCTestCase {
     
     func testWithCustomApiDomainAndAlternativeTokenSource() {
         let tokenSource = TokenSource()
-        let giniHealthAPILib = GiniHealthAPILib.Builder(customApiDomain: "custom-api.domain.com",
+        let giniHealthAPILib = GiniHealthAPI.Builder(customApiDomain: "custom-api.domain.com",
                                       alternativeTokenSource: tokenSource,
                                       logLevel: .none)
             .build()

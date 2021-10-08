@@ -20,7 +20,7 @@
 /* Begin PBXFileReference section */
 		F466A5E0270F2F9500FB1364 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F466A5E2270F2FB300FB1364 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		F4C36A88270C6EBF00CCC69C /* HealthSDKPinningExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HealthSDKPinningExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4C36A88270C6EBF00CCC69C /* GiniHealthSDKPinningExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniHealthSDKPinningExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4C36A8B270C6EBF00CCC69C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4C36A8D270C6EBF00CCC69C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		F4C36A8F270C6EBF00CCC69C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -47,7 +47,7 @@
 			isa = PBXGroup;
 			children = (
 				F4C36A9F270C6F6B00CCC69C /* Packages */,
-				F4C36A8A270C6EBF00CCC69C /* HealthSDKPinningExample */,
+				F4C36A8A270C6EBF00CCC69C /* GiniHealthSDKPinningExample */,
 				F4C36A89270C6EBF00CCC69C /* Products */,
 				F4C36AA1270C6F9C00CCC69C /* Frameworks */,
 			);
@@ -56,12 +56,12 @@
 		F4C36A89270C6EBF00CCC69C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F4C36A88270C6EBF00CCC69C /* HealthSDKPinningExample.app */,
+				F4C36A88270C6EBF00CCC69C /* GiniHealthSDKPinningExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F4C36A8A270C6EBF00CCC69C /* HealthSDKPinningExample */ = {
+		F4C36A8A270C6EBF00CCC69C /* GiniHealthSDKPinningExample */ = {
 			isa = PBXGroup;
 			children = (
 				F4C36A8B270C6EBF00CCC69C /* AppDelegate.swift */,
@@ -73,7 +73,7 @@
 				F4C36A96270C6EC200CCC69C /* LaunchScreen.storyboard */,
 				F4C36A99270C6EC200CCC69C /* Info.plist */,
 			);
-			path = HealthSDKPinningExample;
+			path = GiniHealthSDKPinningExample;
 			sourceTree = "<group>";
 		};
 		F4C36A9F270C6F6B00CCC69C /* Packages */ = {
@@ -94,9 +94,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F4C36A87270C6EBF00CCC69C /* HealthSDKPinningExample */ = {
+		F4C36A87270C6EBF00CCC69C /* GiniHealthSDKPinningExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F4C36A9C270C6EC200CCC69C /* Build configuration list for PBXNativeTarget "HealthSDKPinningExample" */;
+			buildConfigurationList = F4C36A9C270C6EC200CCC69C /* Build configuration list for PBXNativeTarget "GiniHealthSDKPinningExample" */;
 			buildPhases = (
 				F4C36A84270C6EBF00CCC69C /* Sources */,
 				F4C36A85270C6EBF00CCC69C /* Frameworks */,
@@ -106,12 +106,12 @@
 			);
 			dependencies = (
 			);
-			name = HealthSDKPinningExample;
+			name = GiniHealthSDKPinningExample;
 			packageProductDependencies = (
 				F4CEC7EC270CB06D004A862F /* GiniHealthSDKPinning */,
 			);
 			productName = HealthSDKPinningExample;
-			productReference = F4C36A88270C6EBF00CCC69C /* HealthSDKPinningExample.app */;
+			productReference = F4C36A88270C6EBF00CCC69C /* GiniHealthSDKPinningExample.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -129,7 +129,7 @@
 					};
 				};
 			};
-			buildConfigurationList = F4C36A83270C6EBF00CCC69C /* Build configuration list for PBXProject "HealthSDKPinningExample" */;
+			buildConfigurationList = F4C36A83270C6EBF00CCC69C /* Build configuration list for PBXProject "GiniHealthSDKPinningExample" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -143,7 +143,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F4C36A87270C6EBF00CCC69C /* HealthSDKPinningExample */,
+				F4C36A87270C6EBF00CCC69C /* GiniHealthSDKPinningExample */,
 			);
 		};
 /* End PBXProject section */
@@ -383,7 +383,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F4C36A83270C6EBF00CCC69C /* Build configuration list for PBXProject "HealthSDKPinningExample" */ = {
+		F4C36A83270C6EBF00CCC69C /* Build configuration list for PBXProject "GiniHealthSDKPinningExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F4C36A9A270C6EC200CCC69C /* Debug */,
@@ -392,7 +392,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F4C36A9C270C6EC200CCC69C /* Build configuration list for PBXNativeTarget "HealthSDKPinningExample" */ = {
+		F4C36A9C270C6EC200CCC69C /* Build configuration list for PBXNativeTarget "GiniHealthSDKPinningExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F4C36A9D270C6EC200CCC69C /* Debug */,
