@@ -1,6 +1,6 @@
 //
 //  UIView+Utils.swift
-//  GiniPayBusiness
+//  GiniHealth
 //
 //  Created by Nadya Karaban on 30.03.21.
 //

@@ -1,16 +1,16 @@
 //
-//  GiniPayBusinessUtils.swift
-//  GiniPayBusiness
+//  GiniHealthUtils.swift
+//  GiniHealth
 //
 //  Created by Nadya Karaban on 15.04.21.
 //
 
 import UIKit
 /**
-  Returns the GiniPayBusiness bundle.
+  Returns the GiniHealth bundle.
  
  */
-public func giniPayBusinessBundle() -> Bundle {
+public func giniHealthBundle() -> Bundle {
     Bundle.module
 }
 
@@ -25,7 +25,7 @@ func UIImageNamedPreferred(named name: String) -> UIImage? {
     if let clientImage = UIImage(named: name) {
         return clientImage
     }
-    return UIImage(named: name, in: giniPayBusinessBundle(), compatibleWith: nil)
+    return UIImage(named: name, in: giniHealthBundle(), compatibleWith: nil)
 }
 
 /**
@@ -47,7 +47,7 @@ func NSLocalizedStringPreferredFormat(_ key: String,
         && isCustomizable {
         format = clientString
     } else {
-        let bundle = giniPayBusinessBundle()
+        let bundle = giniHealthBundle()
 
         var defaultFormat = NSLocalizedString(key, bundle: bundle, comment: comment)
         
@@ -118,7 +118,7 @@ struct Price {
         self.currencyCode = currencyCode
     }
     
-    // Formatted string with currency code for sending to the Gini Pay Api
+    // Formatted string with currency code for sending to the Gini Health Api
     var extractionString: String {
         return "\(value):\(currencyCode.uppercased())"
     }

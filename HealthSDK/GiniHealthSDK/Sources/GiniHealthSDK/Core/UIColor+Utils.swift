@@ -1,6 +1,6 @@
 //
 //  UIColor+Utils.swift
-//  GiniPayBusiness
+//  GiniHealth
 //
 //  Created by Nadya Karaban on 07.04.21.
 //
