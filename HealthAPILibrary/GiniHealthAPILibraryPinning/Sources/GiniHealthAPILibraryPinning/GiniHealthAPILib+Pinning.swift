@@ -1,6 +1,6 @@
 //
-//  GiniPayApiLib.swift
-//  GiniPayApiLib
+//  GiniHealthAPILib.swift
+//  GiniHealthAPILib
 //
 //  Created by Enrique del Pozo Gómez on 1/21/18.
 //
@@ -8,7 +8,7 @@
 import TrustKit
 import GiniHealthAPILibrary
 
-public extension GiniApiLib.Builder {
+public extension GiniHealthAPILib.Builder {
     init(client: Client,
                 api: APIDomain = .default,
                 pinningConfig: [String: Any],

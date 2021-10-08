@@ -1,6 +1,6 @@
 //
 //  PaymentTests.swift
-//  GiniPayApiLib-Unit-Tests
+//  GiniHealthAPILib-Unit-Tests
 //
 //  Created by Nadya Karaban on 13.04.21.
 //

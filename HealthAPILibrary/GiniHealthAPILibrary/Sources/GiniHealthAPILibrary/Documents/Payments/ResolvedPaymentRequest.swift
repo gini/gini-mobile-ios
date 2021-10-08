@@ -1,6 +1,6 @@
 //
 //  ResolvedPaymentRequest.swift
-//  GiniPayApiLib
+//  GiniHealthAPILib
 //
 //  Created by Nadya Karaban on 05.05.21.
 //

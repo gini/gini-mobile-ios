@@ -1,6 +1,6 @@
 //
 //  IntegrationTests.swift
-//  GiniPayApiLib
+//  GiniHealthAPILib
 //
 //  Created by Alpár Szotyori on 18.09.21.
 //
@@ -17,16 +17,16 @@ class IntegrationTests: XCTestCase {
     let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!
     let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]!
     
-    var giniPayApiLib: GiniApiLib!
+    var giniHealthAPILib: GiniHealthAPILib!
     var documentService: DefaultDocumentService!
     
     override func setUp() {
-        giniPayApiLib = GiniApiLib
+        giniHealthAPILib = GiniHealthAPILib
                .Builder(client: Client(id: clientId,
                                        secret: clientSecret,
                                        domain: "pay-api-lib-example"))
                .build()
-        documentService = giniPayApiLib.documentService()
+        documentService = giniHealthAPILib.documentService()
     }
     
     func testErrorLogging() {
@@ -36,7 +36,7 @@ class IntegrationTests: XCTestCase {
                                     osName: UIDevice.current.systemName,
                                     osVersion: UIDevice.current.systemVersion,
                                     captureSdkVersion: "Not available",
-                                    apiLibVersion: Bundle(for: GiniApiLib.self).infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown",
+                                    apiLibVersion: Bundle(for: GiniHealthAPILib.self).infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown",
                                     description: "Error logging integration test",
                                     documentId: nil,
                                     originalRequestId: nil)
@@ -54,7 +54,7 @@ class IntegrationTests: XCTestCase {
     }
     
     func testBuildPaymentService() {
-        let paymentService = giniPayApiLib.paymentService()
+        let paymentService = giniHealthAPILib.paymentService()
         XCTAssertEqual(paymentService.apiDomain.domainString, "pay-api.gini.net")
     }
     
