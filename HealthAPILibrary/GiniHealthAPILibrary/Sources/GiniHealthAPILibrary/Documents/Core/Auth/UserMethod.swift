@@ -1,6 +1,6 @@
 //
 //  UserMethod.swift
-//  GiniPayApiLib
+//  GiniHealthAPILib
 //
 //  Created by Enrique del Pozo Gómez on 3/4/19.
 //

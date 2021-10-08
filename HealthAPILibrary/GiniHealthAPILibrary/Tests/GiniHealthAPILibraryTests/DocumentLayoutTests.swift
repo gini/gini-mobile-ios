@@ -1,6 +1,6 @@
 //
 //  DocumentLayoutTests.swift
-//  GiniPayApiLib-Unit-Tests
+//  GiniHealthAPILib-Unit-Tests
 //
 //  Created by Enrique del Pozo Gómez on 3/21/19.
 //

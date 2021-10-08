@@ -31,7 +31,7 @@ class ViewController: UIViewController {
             ]],
         ]] as [String: Any]
         
-        let lib = GiniApiLib.Builder(client: Client(id: "", secret: "", domain: "") , api: .default, pinningConfig: pinningConfig, logLevel: LogLevel.debug)
+        let lib = GiniHealthAPILib.Builder(client: Client(id: "", secret: "", domain: "") , api: .default, pinningConfig: pinningConfig, logLevel: LogLevel.debug)
         
     }
 }
