@@ -1,6 +1,6 @@
 //
 //  IntegrationTests.swift
-//  GiniHealthAPILib
+//  GiniHealthAPI
 //
 //  Created by Alpár Szotyori on 18.09.21.
 //
@@ -17,11 +17,11 @@ class IntegrationTests: XCTestCase {
     let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!
     let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]!
     
-    var giniHealthAPILib: GiniHealthAPILib!
+    var giniHealthAPILib: GiniHealthAPI!
     var documentService: DefaultDocumentService!
     
     override func setUp() {
-        giniHealthAPILib = GiniHealthAPILib
+        giniHealthAPILib = GiniHealthAPI
                .Builder(client: Client(id: clientId,
                                        secret: clientSecret,
                                        domain: "pay-api-lib-example"))
@@ -36,7 +36,7 @@ class IntegrationTests: XCTestCase {
                                     osName: UIDevice.current.systemName,
                                     osVersion: UIDevice.current.systemVersion,
                                     captureSdkVersion: "Not available",
-                                    apiLibVersion: Bundle(for: GiniHealthAPILib.self).infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown",
+                                    apiLibVersion: Bundle(for: GiniHealthAPI.self).infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown",
                                     description: "Error logging integration test",
                                     documentId: nil,
                                     originalRequestId: nil)

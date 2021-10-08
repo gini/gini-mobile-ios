@@ -1,6 +1,6 @@
 //
 //  CompoundExtractionsFeedback.swift
-//  GiniHealthAPILib
+//  GiniHealthAPI
 //
 //  Created by Alpár Szotyori on 27/08/20.
 //

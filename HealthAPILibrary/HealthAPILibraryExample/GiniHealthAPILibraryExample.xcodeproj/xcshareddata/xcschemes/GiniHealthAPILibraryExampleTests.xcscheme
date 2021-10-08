@@ -10,37 +10,16 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "NO">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F4FD486D270F1F7D007F1EFA"
-            BuildableName = "HealthAPILibraryExampleTests.xctest"
-            BlueprintName = "HealthAPILibraryExampleTests"
-            ReferencedContainer = "container:HealthAPILibraryExample.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "CLIENT_SECRET"
-            value = "wT4o4kXPAYtDknnOYwWf4w5s"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "CLIENT_ID"
-            value = "gini-mobile-test"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F4FD486D270F1F7D007F1EFA"
-               BuildableName = "HealthAPILibraryExampleTests.xctest"
-               BlueprintName = "HealthAPILibraryExampleTests"
-               ReferencedContainer = "container:HealthAPILibraryExample.xcodeproj">
+               BuildableName = "GiniHealthAPILibraryExampleTests.xctest"
+               BlueprintName = "GiniHealthAPILibraryExampleTests"
+               ReferencedContainer = "container:GiniHealthAPILibraryExample.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
