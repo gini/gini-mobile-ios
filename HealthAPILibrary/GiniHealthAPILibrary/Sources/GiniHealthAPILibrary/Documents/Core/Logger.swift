@@ -1,6 +1,6 @@
 //
 //  Logger.swift
-//  GiniPayApiLib
+//  GiniHealthAPILib
 //
 //  Created by Enrique del Pozo Gómez on 3/4/19.
 //
@@ -31,7 +31,7 @@ public enum LogLevel {
 
 func Log(_ message: String,
          event: LogEvent) {
-    guard case .debug = GiniApiLib.logLevel else { return }
+    guard case .debug = GiniHealthAPILib.logLevel else { return }
     
     let prefix = event.value
     

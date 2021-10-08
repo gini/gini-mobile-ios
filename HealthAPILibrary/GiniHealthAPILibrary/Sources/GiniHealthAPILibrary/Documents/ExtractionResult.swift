@@ -1,6 +1,6 @@
 //
 //  ExtractionResult.swift
-//  GiniPayApiLib
+//  GiniHealthAPILib
 //
 //  Created by Maciej Trybilo on 13.02.20.
 //

@@ -1,6 +1,6 @@
 //
 //  ReturnReason.swift
-//  GiniPayApiLib
+//  GiniHealthAPILib
 //
 //  Created by Alpár Szotyori on 15.09.20.
 //

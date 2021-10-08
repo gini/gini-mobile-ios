@@ -1,6 +1,6 @@
 //
 //  ErrorEvent.swift
-//  GiniPayApiLib
+//  GiniHealthAPILib
 //
 //  Created by Alpár Szotyori on 18.09.21.
 //
