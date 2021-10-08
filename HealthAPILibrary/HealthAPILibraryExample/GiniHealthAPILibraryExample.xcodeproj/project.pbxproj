@@ -33,7 +33,7 @@
 		F466A5D7270F26B200FB1364 /* GiniHealthAPILibraryPinning */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniHealthAPILibraryPinning; path = ../GiniHealthAPILibraryPinning; sourceTree = "<group>"; };
 		F466A5DA270F27B300FB1364 /* HealthAPILibraryExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HealthAPILibraryExample.entitlements; sourceTree = "<group>"; };
 		F466A5DB270F27B300FB1364 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
-		F46DE0482705FC21002F7420 /* HealthAPILibraryExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HealthAPILibraryExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F46DE0482705FC21002F7420 /* GiniHealthAPILibraryExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniHealthAPILibraryExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F46DE04B2705FC21002F7420 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F46DE04D2705FC21002F7420 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		F46DE04F2705FC21002F7420 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -41,7 +41,7 @@
 		F46DE0542705FC22002F7420 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F46DE0572705FC22002F7420 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F46DE0592705FC22002F7420 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F4FD486E270F1F7D007F1EFA /* HealthAPILibraryExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HealthAPILibraryExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4FD486E270F1F7D007F1EFA /* GiniHealthAPILibraryExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniHealthAPILibraryExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4FD4877270F204A007F1EFA /* IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationTests.swift; sourceTree = "<group>"; };
 		F4FD4879270F20E4007F1EFA /* GiniHealthAPILibraryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniHealthAPILibraryTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -70,8 +70,8 @@
 			isa = PBXGroup;
 			children = (
 				F46DE05F2705FCAC002F7420 /* Packages */,
-				F46DE04A2705FC21002F7420 /* HealthAPILibraryExample */,
-				F4FD486F270F1F7D007F1EFA /* HealthAPILibraryExampleTests */,
+				F46DE04A2705FC21002F7420 /* GiniHealthAPILibraryExample */,
+				F4FD486F270F1F7D007F1EFA /* GiniHealthAPILibraryExampleTests */,
 				F46DE0492705FC21002F7420 /* Products */,
 				F46DE0622705FEF4002F7420 /* Frameworks */,
 			);
@@ -80,13 +80,13 @@
 		F46DE0492705FC21002F7420 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F46DE0482705FC21002F7420 /* HealthAPILibraryExample.app */,
-				F4FD486E270F1F7D007F1EFA /* HealthAPILibraryExampleTests.xctest */,
+				F46DE0482705FC21002F7420 /* GiniHealthAPILibraryExample.app */,
+				F4FD486E270F1F7D007F1EFA /* GiniHealthAPILibraryExampleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F46DE04A2705FC21002F7420 /* HealthAPILibraryExample */ = {
+		F46DE04A2705FC21002F7420 /* GiniHealthAPILibraryExample */ = {
 			isa = PBXGroup;
 			children = (
 				F466A5DA270F27B300FB1364 /* HealthAPILibraryExample.entitlements */,
@@ -98,7 +98,7 @@
 				F46DE0562705FC22002F7420 /* LaunchScreen.storyboard */,
 				F46DE0592705FC22002F7420 /* Info.plist */,
 			);
-			path = HealthAPILibraryExample;
+			path = GiniHealthAPILibraryExample;
 			sourceTree = "<group>";
 		};
 		F46DE05F2705FCAC002F7420 /* Packages */ = {
@@ -117,21 +117,21 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		F4FD486F270F1F7D007F1EFA /* HealthAPILibraryExampleTests */ = {
+		F4FD486F270F1F7D007F1EFA /* GiniHealthAPILibraryExampleTests */ = {
 			isa = PBXGroup;
 			children = (
 				F4FD4879270F20E4007F1EFA /* GiniHealthAPILibraryTests.swift */,
 				F4FD4877270F204A007F1EFA /* IntegrationTests.swift */,
 			);
-			path = HealthAPILibraryExampleTests;
+			path = GiniHealthAPILibraryExampleTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F46DE0472705FC21002F7420 /* HealthAPILibraryExample */ = {
+		F46DE0472705FC21002F7420 /* GiniHealthAPILibraryExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F46DE05C2705FC22002F7420 /* Build configuration list for PBXNativeTarget "HealthAPILibraryExample" */;
+			buildConfigurationList = F46DE05C2705FC22002F7420 /* Build configuration list for PBXNativeTarget "GiniHealthAPILibraryExample" */;
 			buildPhases = (
 				F46DE0442705FC21002F7420 /* Sources */,
 				F46DE0452705FC21002F7420 /* Frameworks */,
@@ -141,17 +141,17 @@
 			);
 			dependencies = (
 			);
-			name = HealthAPILibraryExample;
+			name = GiniHealthAPILibraryExample;
 			packageProductDependencies = (
 				F466A5D8270F26C300FB1364 /* GiniHealthAPILibraryPinning */,
 			);
 			productName = HealthAPILibraryExample;
-			productReference = F46DE0482705FC21002F7420 /* HealthAPILibraryExample.app */;
+			productReference = F46DE0482705FC21002F7420 /* GiniHealthAPILibraryExample.app */;
 			productType = "com.apple.product-type.application";
 		};
-		F4FD486D270F1F7D007F1EFA /* HealthAPILibraryExampleTests */ = {
+		F4FD486D270F1F7D007F1EFA /* GiniHealthAPILibraryExampleTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F4FD4876270F1F7D007F1EFA /* Build configuration list for PBXNativeTarget "HealthAPILibraryExampleTests" */;
+			buildConfigurationList = F4FD4876270F1F7D007F1EFA /* Build configuration list for PBXNativeTarget "GiniHealthAPILibraryExampleTests" */;
 			buildPhases = (
 				F4FD486A270F1F7D007F1EFA /* Sources */,
 				F4FD486B270F1F7D007F1EFA /* Frameworks */,
@@ -162,9 +162,9 @@
 			dependencies = (
 				F4FD4873270F1F7D007F1EFA /* PBXTargetDependency */,
 			);
-			name = HealthAPILibraryExampleTests;
+			name = GiniHealthAPILibraryExampleTests;
 			productName = HealthAPILibraryExampleTests;
-			productReference = F4FD486E270F1F7D007F1EFA /* HealthAPILibraryExampleTests.xctest */;
+			productReference = F4FD486E270F1F7D007F1EFA /* GiniHealthAPILibraryExampleTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -186,7 +186,7 @@
 					};
 				};
 			};
-			buildConfigurationList = F46DE0432705FC21002F7420 /* Build configuration list for PBXProject "HealthAPILibraryExample" */;
+			buildConfigurationList = F46DE0432705FC21002F7420 /* Build configuration list for PBXProject "GiniHealthAPILibraryExample" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -199,8 +199,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F46DE0472705FC21002F7420 /* HealthAPILibraryExample */,
-				F4FD486D270F1F7D007F1EFA /* HealthAPILibraryExampleTests */,
+				F46DE0472705FC21002F7420 /* GiniHealthAPILibraryExample */,
+				F4FD486D270F1F7D007F1EFA /* GiniHealthAPILibraryExampleTests */,
 			);
 		};
 /* End PBXProject section */
@@ -250,7 +250,7 @@
 /* Begin PBXTargetDependency section */
 		F4FD4873270F1F7D007F1EFA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F46DE0472705FC21002F7420 /* HealthAPILibraryExample */;
+			target = F46DE0472705FC21002F7420 /* GiniHealthAPILibraryExample */;
 			targetProxy = F4FD4872270F1F7D007F1EFA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -468,7 +468,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HealthAPILibraryExample.app/HealthAPILibraryExample";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GiniHealthAPILibraryExample.app/GiniHealthAPILibraryExample";
 			};
 			name = Debug;
 		};
@@ -491,14 +491,14 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HealthAPILibraryExample.app/HealthAPILibraryExample";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GiniHealthAPILibraryExample.app/GiniHealthAPILibraryExample";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F46DE0432705FC21002F7420 /* Build configuration list for PBXProject "HealthAPILibraryExample" */ = {
+		F46DE0432705FC21002F7420 /* Build configuration list for PBXProject "GiniHealthAPILibraryExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F46DE05A2705FC22002F7420 /* Debug */,
@@ -507,7 +507,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F46DE05C2705FC22002F7420 /* Build configuration list for PBXNativeTarget "HealthAPILibraryExample" */ = {
+		F46DE05C2705FC22002F7420 /* Build configuration list for PBXNativeTarget "GiniHealthAPILibraryExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F46DE05D2705FC22002F7420 /* Debug */,
@@ -516,7 +516,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F4FD4876270F1F7D007F1EFA /* Build configuration list for PBXNativeTarget "HealthAPILibraryExampleTests" */ = {
+		F4FD4876270F1F7D007F1EFA /* Build configuration list for PBXNativeTarget "GiniHealthAPILibraryExampleTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F4FD4874270F1F7D007F1EFA /* Debug */,

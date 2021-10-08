@@ -1,6 +1,6 @@
 //
 //  DocumentServicesTests.swift
-//  GiniHealthAPILib-Unit-Tests
+//  GiniHealthAPI-Unit-Tests
 //
 //  Created by Enrique del Pozo Gómez on 3/26/19.
 //

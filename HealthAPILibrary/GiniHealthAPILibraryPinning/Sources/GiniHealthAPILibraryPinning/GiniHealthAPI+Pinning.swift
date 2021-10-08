@@ -1,6 +1,6 @@
 //
-//  GiniHealthAPILib.swift
-//  GiniHealthAPILib
+//  GiniHealthAPI+Pinning.swift
+//  GiniHealthAPI
 //
 //  Created by Enrique del Pozo Gómez on 1/21/18.
 //
@@ -8,7 +8,7 @@
 import TrustKit
 import GiniHealthAPILibrary
 
-public extension GiniHealthAPILib.Builder {
+public extension GiniHealthAPI.Builder {
     init(client: Client,
                 api: APIDomain = .default,
                 pinningConfig: [String: Any],

@@ -1,6 +1,6 @@
 //
 //  Resource.swift
-//  GiniHealthAPILib
+//  GiniHealthAPI
 //
 //  Created by Enrique del Pozo Gómez on 1/24/18.
 //
