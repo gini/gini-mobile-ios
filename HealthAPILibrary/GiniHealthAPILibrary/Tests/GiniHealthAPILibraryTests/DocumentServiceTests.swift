@@ -7,7 +7,7 @@
 
 @testable import GiniHealthAPILibrary
 import XCTest
-
+import UIKit
 final class DocumentServicesTests: XCTestCase {
     var sessionManagerMock: SessionManagerMock!
     var defaultDocumentService: DefaultDocumentService!
