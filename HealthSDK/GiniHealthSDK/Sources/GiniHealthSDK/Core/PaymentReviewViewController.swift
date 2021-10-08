@@ -1,6 +1,6 @@
 //
 //  PaymentReviewViewController.swift
-//  GiniPayBusiness
+//  GiniHealth
 //
 //  Created by Nadya Karaban on 30.03.21.
 //
@@ -42,23 +42,23 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         case usageFieldTag
     }
     
-    public static func instantiate(with giniPayBusiness: GiniPayBusiness, document: Document, extractions: [Extraction]) -> PaymentReviewViewController {
-        let vc = (UIStoryboard(name: "PaymentReview", bundle: giniPayBusinessBundle())
+    public static func instantiate(with giniHealth: GiniHealth, document: Document, extractions: [Extraction]) -> PaymentReviewViewController {
+        let vc = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
-        vc.model = PaymentReviewModel(with: giniPayBusiness, document: document, extractions: extractions )
+        vc.model = PaymentReviewModel(with: giniHealth, document: document, extractions: extractions )
         
         return vc
     }
     
-    public static func instantiate(with giniPayBusiness: GiniPayBusiness, data: DataForReview) -> PaymentReviewViewController {
-        let vc = (UIStoryboard(name: "PaymentReview", bundle: giniPayBusinessBundle())
+    public static func instantiate(with giniHealth: GiniHealth, data: DataForReview) -> PaymentReviewViewController {
+        let vc = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
-        vc.model = PaymentReviewModel(with: giniPayBusiness, document: data.document, extractions: data.extractions)
+        vc.model = PaymentReviewModel(with: giniHealth, document: data.document, extractions: data.extractions)
         
         return vc
     }
 
-    var giniPayBusinessConfiguration = GiniPayBusinessConfiguration.shared
+    var giniHealthConfiguration = GiniHealthConfiguration.shared
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -72,7 +72,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         
         model?.onNoAppsErrorHandling = {[weak self] error in
             DispatchQueue.main.async {
-                self?.showError(message: NSLocalizedStringPreferredFormat("ginipaybusiness.errors.no.banking.app.installed",
+                self?.showError(message: NSLocalizedStringPreferredFormat("ginihealth.errors.no.banking.app.installed",
                                                                          comment: "no bank apps installed") )
             }
         }
@@ -94,7 +94,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             DispatchQueue.main.async { [weak self] in
                 let isLoading = self?.model?.isImagesLoading ?? false
                 if isLoading {
-                    self?.collectionView.showLoading(style: self?.giniPayBusinessConfiguration.loadingIndicatorStyle, color: self?.giniPayBusinessConfiguration.loadingIndicatorColor, scale: self?.giniPayBusinessConfiguration.loadingIndicatorScale)
+                    self?.collectionView.showLoading(style: self?.giniHealthConfiguration.loadingIndicatorStyle, color: self?.giniHealthConfiguration.loadingIndicatorColor, scale: self?.giniHealthConfiguration.loadingIndicatorScale)
                 } else {
                     self?.collectionView.stopLoading()
                 }
@@ -105,7 +105,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             DispatchQueue.main.async { [weak self] in
                 let isLoading = self?.model?.isLoading ?? false
                 if isLoading {
-                    self?.view.showLoading(style: self?.giniPayBusinessConfiguration.loadingIndicatorStyle, color: self?.giniPayBusinessConfiguration.loadingIndicatorColor, scale: self?.giniPayBusinessConfiguration.loadingIndicatorScale)
+                    self?.view.showLoading(style: self?.giniHealthConfiguration.loadingIndicatorStyle, color: self?.giniHealthConfiguration.loadingIndicatorColor, scale: self?.giniHealthConfiguration.loadingIndicatorScale)
                 } else {
                     self?.view.stopLoading()
                 }
@@ -126,14 +126,14 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         
         model?.onErrorHandling = {[weak self] error in
             DispatchQueue.main.async {
-                self?.showError(message: NSLocalizedStringPreferredFormat("ginipaybusiness.errors.default",
+                self?.showError(message: NSLocalizedStringPreferredFormat("ginihealth.errors.default",
                                                                          comment: "default error message") )
             }
         }
         
         model?.onCreatePaymentRequestErrorHandling = {[weak self] () in
             DispatchQueue.main.async {
-                self?.showError(message: NSLocalizedStringPreferredFormat("ginipaybusiness.errors.failed.payment.request.creation",
+                self?.showError(message: NSLocalizedStringPreferredFormat("ginihealth.errors.failed.payment.request.creation",
                                                                       comment: "error for creating payment request"))
             }
         }
@@ -169,19 +169,19 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     fileprivate func configureBankProviderView() {
         bankProviderButtonView.backgroundColor = .white
-        bankProviderButtonView.layer.cornerRadius = self.giniPayBusinessConfiguration.paymentInputFieldCornerRadius
-        bankProviderButtonView.layer.borderWidth = self.giniPayBusinessConfiguration.paymentInputFieldBorderWidth
+        bankProviderButtonView.layer.cornerRadius = self.giniHealthConfiguration.paymentInputFieldCornerRadius
+        bankProviderButtonView.layer.borderWidth = self.giniHealthConfiguration.paymentInputFieldBorderWidth
         bankProviderButtonView.layer.borderColor = UIColor.from(hex: 0xE6E7ED).cgColor
-        bankProviderLabel.textColor = UIColor.from(giniColor:giniPayBusinessConfiguration.bankButtonTextColor)
-        bankProviderLabel.font = giniPayBusinessConfiguration.customFont.regular
+        bankProviderLabel.textColor = UIColor.from(giniColor:giniHealthConfiguration.bankButtonTextColor)
+        bankProviderLabel.font = giniHealthConfiguration.customFont.regular
     }
 
     fileprivate func configurePayButton() {
-        payButton.defaultBackgroundColor = UIColor.from(giniColor: giniPayBusinessConfiguration.payButtonBackgroundColor)
+        payButton.defaultBackgroundColor = UIColor.from(giniColor: giniHealthConfiguration.payButtonBackgroundColor)
         payButton.disabledBackgroundColor = .lightGray
-        payButton.layer.cornerRadius = giniPayBusinessConfiguration.payButtonCornerRadius
-        payButton.titleLabel?.font = giniPayBusinessConfiguration.customFont.regular
-        payButton.tintColor = UIColor.from(giniColor: giniPayBusinessConfiguration.payButtonTextColor)
+        payButton.layer.cornerRadius = giniHealthConfiguration.payButtonCornerRadius
+        payButton.titleLabel?.font = giniHealthConfiguration.customFont.regular
+        payButton.tintColor = UIColor.from(giniColor: giniHealthConfiguration.payButtonTextColor)
     }
     
     fileprivate func configurePaymentInputFields() {
@@ -197,8 +197,8 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     fileprivate func configurePageControl() {
         pageControl.layer.zPosition = 10
-        pageControl.pageIndicatorTintColor = UIColor.from(giniColor:giniPayBusinessConfiguration.pageIndicatorTintColor)
-        pageControl.currentPageIndicatorTintColor = UIColor.from(giniColor:giniPayBusinessConfiguration.currentPageIndicatorTintColor)
+        pageControl.pageIndicatorTintColor = UIColor.from(giniColor:giniHealthConfiguration.pageIndicatorTintColor)
+        pageControl.currentPageIndicatorTintColor = UIColor.from(giniColor:giniHealthConfiguration.currentPageIndicatorTintColor)
         pageControl.hidesForSinglePage = true
         pageControl.numberOfPages = model?.document.pageCount ?? 1
         if pageControl.numberOfPages == 1 {
@@ -209,16 +209,16 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     fileprivate func configureCloseButton() {
-        closeButton.isHidden = !giniPayBusinessConfiguration.showPaymentReviewCloseButton
+        closeButton.isHidden = !giniHealthConfiguration.showPaymentReviewCloseButton
         closeButton.setImage(UIImageNamedPreferred(named: "paymentReviewCloseButton"), for: .normal)
     }
     
     fileprivate func configureScreenBackgroundColor() {
-        let screenBackgroundColor = UIColor.from(giniColor:giniPayBusinessConfiguration.paymentScreenBackgroundColor)
+        let screenBackgroundColor = UIColor.from(giniColor:giniHealthConfiguration.paymentScreenBackgroundColor)
         mainView.backgroundColor = screenBackgroundColor
         collectionView.backgroundColor = screenBackgroundColor
         pageControl.backgroundColor = screenBackgroundColor
-        inputContainer.backgroundColor = UIColor.from(giniColor:giniPayBusinessConfiguration.inputFieldsContainerBackgroundColor)
+        inputContainer.backgroundColor = UIColor.from(giniColor:giniHealthConfiguration.inputFieldsContainerBackgroundColor)
     }
     
     // MARK: - Input fields configuration
@@ -233,32 +233,32 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             field.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: field.frame.height))
             field.rightViewMode = .always
         }
-        field.layer.cornerRadius = self.giniPayBusinessConfiguration.paymentInputFieldCornerRadius
-        field.layer.borderWidth = giniPayBusinessConfiguration.paymentInputFieldBorderWidth
-        field.backgroundColor = UIColor.from(giniColor: giniPayBusinessConfiguration.paymentInputFieldBackgroundColor)
-        field.font = giniPayBusinessConfiguration.customFont.regular
-        field.textColor = UIColor.from(giniColor: giniPayBusinessConfiguration.paymentInputFieldTextColor)
+        field.layer.cornerRadius = self.giniHealthConfiguration.paymentInputFieldCornerRadius
+        field.layer.borderWidth = giniHealthConfiguration.paymentInputFieldBorderWidth
+        field.backgroundColor = UIColor.from(giniColor: giniHealthConfiguration.paymentInputFieldBackgroundColor)
+        field.font = giniHealthConfiguration.customFont.regular
+        field.textColor = UIColor.from(giniColor: giniHealthConfiguration.paymentInputFieldTextColor)
         let placeholderText = inputFieldPlaceholderText(field)
-        field.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: [NSAttributedString.Key.foregroundColor: UIColor.from(giniColor: giniPayBusinessConfiguration.paymentInputFieldPlaceholderTextColor), NSAttributedString.Key.font: giniPayBusinessConfiguration.customFont.regular])
+        field.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: [NSAttributedString.Key.foregroundColor: UIColor.from(giniColor: giniHealthConfiguration.paymentInputFieldPlaceholderTextColor), NSAttributedString.Key.font: giniHealthConfiguration.customFont.regular])
         field.layer.masksToBounds = true
     }
 
     fileprivate func applyErrorStyle(_ textField: UITextField) {
         UIView.animate(withDuration: 0.3) {
-            textField.layer.cornerRadius = self.giniPayBusinessConfiguration.paymentInputFieldCornerRadius
-            textField.backgroundColor = UIColor.from(giniColor: self.giniPayBusinessConfiguration.paymentInputFieldBackgroundColor)
-            textField.layer.borderWidth = self.giniPayBusinessConfiguration.paymentInputFieldErrorStyleBorderWidth
-            textField.layer.borderColor = self.giniPayBusinessConfiguration.paymentInputFieldErrorStyleColor.cgColor
+            textField.layer.cornerRadius = self.giniHealthConfiguration.paymentInputFieldCornerRadius
+            textField.backgroundColor = UIColor.from(giniColor: self.giniHealthConfiguration.paymentInputFieldBackgroundColor)
+            textField.layer.borderWidth = self.giniHealthConfiguration.paymentInputFieldErrorStyleBorderWidth
+            textField.layer.borderColor = self.giniHealthConfiguration.paymentInputFieldErrorStyleColor.cgColor
             textField.layer.masksToBounds = true
         }
     }
 
     fileprivate func applySelectionStyle(_ textField: UITextField) {
         UIView.animate(withDuration: 0.3) {
-            textField.layer.cornerRadius = self.giniPayBusinessConfiguration.paymentInputFieldCornerRadius
-            textField.backgroundColor = self.giniPayBusinessConfiguration.paymentInputFieldSelectionBackgroundColor
-            textField.layer.borderWidth = self.giniPayBusinessConfiguration.paymentInputFieldSelectionStyleBorderWidth
-            textField.layer.borderColor = self.giniPayBusinessConfiguration.paymentInputFieldSelectionStyleColor.cgColor
+            textField.layer.cornerRadius = self.giniHealthConfiguration.paymentInputFieldCornerRadius
+            textField.backgroundColor = self.giniHealthConfiguration.paymentInputFieldSelectionBackgroundColor
+            textField.layer.borderWidth = self.giniHealthConfiguration.paymentInputFieldSelectionStyleBorderWidth
+            textField.layer.borderColor = self.giniHealthConfiguration.paymentInputFieldSelectionStyleColor.cgColor
             textField.layer.masksToBounds = true
         }
     }
@@ -287,16 +287,16 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         if let fieldIdentifier = TextFieldType(rawValue: textField.tag) {
             switch fieldIdentifier {
             case .recipientFieldTag:
-                return NSLocalizedStringPreferredFormat("ginipaybusiness.reviewscreen.recipient.placeholder",
+                return NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.recipient.placeholder",
                                                         comment: "placeholder text for recipient input field")
             case .ibanFieldTag:
-                return NSLocalizedStringPreferredFormat("ginipaybusiness.reviewscreen.iban.placeholder",
+                return NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.iban.placeholder",
                                                         comment: "placeholder text for iban input field")
             case .amountFieldTag:
-                return NSLocalizedStringPreferredFormat("ginipaybusiness.reviewscreen.amount.placeholder",
+                return NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.amount.placeholder",
                                                         comment: "placeholder text for amount input field")
             case .usageFieldTag:
-                return NSLocalizedStringPreferredFormat("ginipaybusiness.reviewscreen.usage.placeholder",
+                return NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.usage.placeholder",
                                                         comment: "placeholder text for usage input field")
             }
         }
@@ -386,38 +386,38 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         switch textFieldTag {
         case .recipientFieldTag:
             errorLabel = recipientErrorLabel
-            errorMessage = NSLocalizedStringPreferredFormat("ginipaybusiness.errors.failed.recipient.non.empty.check",
+            errorMessage = NSLocalizedStringPreferredFormat("ginihealth.errors.failed.recipient.non.empty.check",
                                                             comment: " recipient failed non empty check")
         case .ibanFieldTag:
             errorLabel = ibanErrorLabel
-            errorMessage = NSLocalizedStringPreferredFormat("ginipaybusiness.errors.failed.iban.non.empty.check",
+            errorMessage = NSLocalizedStringPreferredFormat("ginihealth.errors.failed.iban.non.empty.check",
                                                             comment: "iban failed non empty check")
         case .amountFieldTag:
             errorLabel = amountErrorLabel
-            errorMessage = NSLocalizedStringPreferredFormat("ginipaybusiness.errors.failed.amount.non.empty.check",
+            errorMessage = NSLocalizedStringPreferredFormat("ginihealth.errors.failed.amount.non.empty.check",
                                                             comment: "amount failed non empty check")
         case .usageFieldTag:
             errorLabel = usageErrorLabel
-            errorMessage = NSLocalizedStringPreferredFormat("ginipaybusiness.errors.failed.purpose.non.empty.check",
+            errorMessage = NSLocalizedStringPreferredFormat("ginihealth.errors.failed.purpose.non.empty.check",
                                                             comment: "purpose failed non empty check")
         }
         if errorLabel.isHidden {
             errorLabel.isHidden = false
-            errorLabel.textColor = giniPayBusinessConfiguration.paymentInputFieldErrorStyleColor
+            errorLabel.textColor = giniHealthConfiguration.paymentInputFieldErrorStyleColor
             errorLabel.text = errorMessage
         }
     }
     
     fileprivate func showValidationErrorLabel(textFieldTag: TextFieldType) {
         var errorLabel = UILabel()
-        var errorMessage = NSLocalizedStringPreferredFormat("ginipaybusiness.errors.failed.default.textfield.validation.check",
+        var errorMessage = NSLocalizedStringPreferredFormat("ginihealth.errors.failed.default.textfield.validation.check",
                                                             comment: "the field failed non empty check")
         switch textFieldTag {
         case .recipientFieldTag:
             errorLabel = recipientErrorLabel
         case .ibanFieldTag:
             errorLabel = ibanErrorLabel
-            errorMessage = NSLocalizedStringPreferredFormat("ginipaybusiness.errors.failed.iban.validation.check",
+            errorMessage = NSLocalizedStringPreferredFormat("ginihealth.errors.failed.iban.validation.check",
                                                             comment: "iban failed validation check")
         case .amountFieldTag:
             errorLabel = amountErrorLabel
@@ -426,7 +426,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
         if errorLabel.isHidden {
             errorLabel.isHidden = false
-            errorLabel.textColor = giniPayBusinessConfiguration.paymentInputFieldErrorStyleColor
+            errorLabel.textColor = giniHealthConfiguration.paymentInputFieldErrorStyleColor
             errorLabel.text = errorMessage
         }
     }
@@ -675,7 +675,7 @@ extension PaymentReviewViewController {
         let alertController = UIAlertController(title: title,
                                                 message: message,
                                                 preferredStyle: .alert)
-        let OKAction = UIAlertAction(title: NSLocalizedStringPreferredFormat("ginipaybusiness.alert.ok.title",
+        let OKAction = UIAlertAction(title: NSLocalizedStringPreferredFormat("ginihealth.alert.ok.title",
                                                                              comment: "ok title for action"), style: .default, handler: nil)
         alertController.addAction(OKAction)
         present(alertController, animated: true, completion: nil)

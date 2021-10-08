@@ -1,6 +1,6 @@
 //
-//  GiniPayBusiness.swift
-//  GiniPayBusiness
+//  GiniHealth.swift
+//  GiniHealth
 //
 //  Created by Nadya Karaban on 18.02.21.
 //
@@ -9,11 +9,11 @@ import UIKit
 import GiniHealthAPILibrary
 
 /**
- Delegate to inform about the current status of the Gini Pay Business SDK.
+ Delegate to inform about the current status of the Gini Health SDK.
  Makes use of callback for handling payment request creation.
  
  */
-public protocol GiniPayBusinessDelegate: AnyObject {
+public protocol GiniHealthDelegate: AnyObject {
     
     /**
      Called when the payment request was successfully created
@@ -28,13 +28,13 @@ public protocol GiniPayBusinessDelegate: AnyObject {
      
      - parameter error: error which will be handled.
      */
-    func shouldHandleErrorInternally(error: GiniPayBusinessError) -> Bool
+    func shouldHandleErrorInternally(error: GiniHealthError) -> Bool
 }
 /**
- Errors thrown with GiniPayBusiness SDK.
+ Errors thrown with GiniHealth SDK.
  */
-public enum GiniPayBusinessError: Error {
-     /// Error thrown when there are no apps which supports Gini Pay installed.
+public enum GiniHealthError: Error {
+     /// Error thrown when there are no apps which supports Gini Pay Connect installed.
     case noInstalledApps
      /// Error thrown when api return failure.
     case apiError(GiniError)
@@ -51,31 +51,31 @@ public struct DataForReview {
     }
 }
 /**
- Core class for GiniPayBusiness SDK.
+ Core class for GiniHealth SDK.
  */
-@objc public final class GiniPayBusiness: NSObject {
-    /// reponsible for interaction with Gini Pay backend .
-    public var giniApiLib: GiniApiLib
+@objc public final class GiniHealth: NSObject {
+    /// reponsible for interaction with Gini Health backend .
+    public var giniApiLib: GiniHealthAPILib
     /// reponsible for the whole document processing.
     public var documentService: DefaultDocumentService
     /// reponsible for the payment processing.
     public var paymentService: PaymentService
     private var bankProviders: [PaymentProvider] = []
-    public weak var delegate: GiniPayBusinessDelegate?
+    public weak var delegate: GiniHealthDelegate?
     
     /**
-     Returns a GiniPayBusiness instance
+     Returns a GiniHealth instance
      
      - parameter giniApiLib: GiniApiLib initialized with client's credentials
      */
-    public init(with giniApiLib: GiniApiLib){
+    public init(with giniApiLib: GiniHealthAPILib){
         self.giniApiLib = giniApiLib
         self.documentService = giniApiLib.documentService()
         self.paymentService = giniApiLib.paymentService()
     }
 
     /**
-     Getting a list of the installed banking apps which support Gini Pay functionality.
+     Getting a list of the installed banking apps which support Gini Pay Connect functionality.
      
      - Parameters:
         - completion: An action for processing asynchronous data received from the service with Result type as a paramater.
@@ -85,7 +85,7 @@ public struct DataForReview {
      In case of failure error that there are no supported banking apps installed.
      
      */
-    private func getInstalledBankingApps(completion: @escaping (Result<PaymentProviders, GiniPayBusinessError>) -> Void){
+    private func getInstalledBankingApps(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void){
         paymentService.paymentProviders { result in
             switch result {
             case let .success(providers):
@@ -113,19 +113,19 @@ public struct DataForReview {
     }
 
     /**
-     Checks if there are any banking app which support Gini Pay functionality installed.
+     Checks if there are any banking app which support Gini Pay Connect functionality installed.
      
      - Parameters:
         - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case. Completion block called on main thread.
         In success case it includes array of payment providers.
         In case of failure error that there are no supported banking apps installed.
      */
-    public func checkIfAnyPaymentProviderAvailiable(completion: @escaping (Result<PaymentProviders, GiniPayBusinessError>) -> Void){
+    public func checkIfAnyPaymentProviderAvailiable(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void){
         self.getInstalledBankingApps(completion: completion)
     }
     
     /**
-     Checks if there is any banking app which can support Gini Pay functionality installed.
+     Checks if there is any banking app which can support Gini Pay Connect functionality installed.
      - Parameters:
         -  appSchemes: A list of [LSApplicationQueriesSchemes] added in Info.plist. Scheme format: ginipay-bank://
      - Returns: a boolean value.
@@ -142,15 +142,15 @@ public struct DataForReview {
     }
     
     /**
-     Sets a configuration which is used to customize the look of the Gini Pay Business SDK,
+     Sets a configuration which is used to customize the look of the Gini Health SDK,
      for example to change texts and colors displayed to the user.
      
      - Parameters:
         - configuration: The configuration to set.
      
      */
-    public func setConfiguration(_ configuration: GiniPayBusinessConfiguration) {
-        GiniPayBusinessConfiguration.shared = configuration
+    public func setConfiguration(_ configuration: GiniHealthConfiguration) {
+        GiniHealthConfiguration.shared = configuration
     }
     
     /**
@@ -163,7 +163,7 @@ public struct DataForReview {
         In case of failure in case of failure error from the server side.
 
      */
-    public func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniPayBusinessError>) -> Void) {
+    public func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
         documentService.fetchDocument(with: docId) { result in
             switch result {
             case let .success(createdDocument):
@@ -200,7 +200,7 @@ public struct DataForReview {
         In case of failure error from the server side.
 
      */
-    public func pollDocument(docId: String, completion: @escaping (Result<Document, GiniPayBusinessError>) -> Void){
+    public func pollDocument(docId: String, completion: @escaping (Result<Document, GiniHealthError>) -> Void){
         documentService.fetchDocument(with: docId) { result in
             DispatchQueue.main.async {
                 switch result {
@@ -223,7 +223,7 @@ public struct DataForReview {
      In case of failure in case of failure error from the server side.
      
      */
-    public func getExtractions(docId: String, completion: @escaping (Result<[Extraction], GiniPayBusinessError>) -> Void){
+    public func getExtractions(docId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void){
             documentService.fetchDocument(with: docId) { result in
                 switch result {
                 case let .success(createdDocument):
@@ -258,7 +258,7 @@ public struct DataForReview {
         In case of failure error from the server side.
      
      */
-    public func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniPayBusinessError>) -> Void) {
+    public func createPaymentRequest(paymentInfo: PaymentInfo, completion: @escaping (Result<String, GiniHealthError>) -> Void) {
         paymentService.createPaymentRequest(sourceDocumentLocation: "", paymentProvider: paymentInfo.paymentProviderId, recipient: paymentInfo.recipient, iban: paymentInfo.iban, bic: "", amount: paymentInfo.amount, purpose: paymentInfo.purpose) { result in
             DispatchQueue.main.async {
                 switch result {
@@ -304,7 +304,7 @@ public struct DataForReview {
         In case of failure error from the server side.
      
      */
-    public func setDocumentForReview(documentId: String, completion: @escaping (Result<[Extraction], GiniPayBusinessError>) -> Void) {
+    public func setDocumentForReview(documentId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void) {
         documentService.fetchDocument(with: documentId) { result in
             switch result {
             case .success(let document):
@@ -336,7 +336,7 @@ public struct DataForReview {
         In case of failure error from the server side and nil instead of document .
 
      */
-    public func fetchDataForReview(documentId: String, completion: @escaping (Result<DataForReview, GiniPayBusinessError>) -> Void) {
+    public func fetchDataForReview(documentId: String, completion: @escaping (Result<DataForReview, GiniHealthError>) -> Void) {
         documentService.fetchDocument(with: documentId) { result in
             switch result {
             case let .success(document):

@@ -1,6 +1,6 @@
 //
-//  GiniPayBusinessConfiguration.swift
-//  GiniPayBusiness
+//  GiniHealthConfiguration.swift
+//  GiniHealth
 //
 //  Created by Nadya Karaban on 30.03.21.
 //
@@ -8,28 +8,28 @@
 import UIKit
 
 /**
- The `GiniPayBusinessConfiguration` class allows customizations to the look of the Gini Pay Business SDK.
+ The `GiniHealthConfiguration` class allows customizations to the look of the Gini Health SDK.
  If there are limitations regarding which API can be used, this is clearly stated for the specific attribute.
  
  - note: Text can also be set by using the appropriate keys in a `Localizable.strings` file in the projects bundle.
          The library will prefer whatever value is set in the following order: attribute in configuration,
-         key in strings file in project bundle, key in strings file in `GiniPayBusiness` bundle.
+         key in strings file in project bundle, key in strings file in `GiniHealth` bundle.
  - note: Images can only be set by providing images with the same filename in an assets file or as individual files
          in the projects bundle. The library will prefer whatever value is set in the following order: asset file
-         in project bundle, asset file in `GiniPayBusiness` bundle. See the avalible images for overriding in `GiniImages.xcassets`.
+         in project bundle, asset file in `GiniHealth` bundle. See the avalible images for overriding in `GiniImages.xcassets`.
  */
-public final class GiniPayBusinessConfiguration: NSObject {
+public final class GiniHealthConfiguration: NSObject {
     
     /**
-     Singleton to make configuration internally accessible in all classes of the Gini Pay Business SDK.
+     Singleton to make configuration internally accessible in all classes of the Gini Health SDK.
      */
-    static var shared = GiniPayBusinessConfiguration()
+    static var shared = GiniHealthConfiguration()
     
     /**
-     Returns a `GiniPayBusinessConfiguration` instance which allows to set individual configurations
-     to change the look and feel of the Gini Pay Business SDK.
+     Returns a `GiniHealthConfiguration` instance which allows to set individual configurations
+     to change the look and feel of the Gini Health SDK.
      
-     - returns: Instance of `GiniPayBusinessConfiguration`.
+     - returns: Instance of `GiniHealthConfiguration`.
      */
     public override init() {}
     

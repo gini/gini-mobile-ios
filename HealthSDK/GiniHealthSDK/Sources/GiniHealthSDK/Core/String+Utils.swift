@@ -1,6 +1,6 @@
 //
 //  String+Utils.swift
-//  GiniPayBusiness
+//  GiniHealth
 //
 //  Created by Nadya Karaban on 19.05.21.
 //

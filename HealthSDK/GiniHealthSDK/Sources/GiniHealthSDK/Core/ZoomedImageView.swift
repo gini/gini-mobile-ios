@@ -1,6 +1,6 @@
 //
 //  ZoomedImageView.swift
-//  GiniPayBusiness
+//  GiniHealth
 //
 //  Created by Nadya Karaban on 08.04.21.
 //
