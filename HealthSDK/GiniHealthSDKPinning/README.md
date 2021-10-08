@@ -40,6 +40,6 @@ Gini GmbH, hello@gini.net
 
 ## License
 
-The Gini Health SDK for iOS is licensed under a Private License. See [the license](http://developer.gini.net/gini-health-sdk-ios/docs/license.html) for more info.
+The Gini Health SDK Pinning for iOS is licensed under a Private License. See [the license](http://developer.gini.net/gini-health-sdk-pinning-ios/docs/license.html) for more info.
 
 **Important:** Always make sure to ship all license notices and permissions with your application.
