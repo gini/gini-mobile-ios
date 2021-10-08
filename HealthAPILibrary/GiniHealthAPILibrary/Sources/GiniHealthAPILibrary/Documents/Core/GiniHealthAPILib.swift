@@ -30,7 +30,7 @@ public final class GiniHealthAPILib {
     public func documentService<T: DocumentService>() -> T {
         guard docService is T else {
             preconditionFailure("In order to use a \(T.self), you have to specify its corresponding api " +
-                "domain when building the GiniPayApiLib")
+                "domain when building the GiniHealthAPILib")
         }
         //swiftlint:disable force_cast
         return docService as! T
@@ -99,7 +99,7 @@ extension GiniHealthAPILib {
             // Initialize logger
             GiniHealthAPILib.logLevel = logLevel
 
-            // Initialize GiniPayApiLib
+            // Initialize GiniHealthAPILib
             switch api {
             case .accounting:
                 let sessionManager = SessionManager(userDomain: userApi)
