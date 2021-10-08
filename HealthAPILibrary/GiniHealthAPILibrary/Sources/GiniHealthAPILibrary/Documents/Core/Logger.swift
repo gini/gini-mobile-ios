@@ -39,5 +39,9 @@ func Log(_ message: String,
     if ProcessInfo.processInfo.environment["OS_ACTIVITY_MODE"] == "disable" {
         print(prefix, message)
     }
-    os_log("%@ %@", prefix, message)
+    if #available(macOS 10.12, *) {
+        os_log("%@ %@", prefix, message)
+    } else {
+        // Fallback on earlier versions
+    }
 }
