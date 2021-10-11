@@ -1,0 +1,414 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F466A5DF270F2F9500FB1364 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F466A5E1270F2F9500FB1364 /* Localizable.strings */; };
+		F4C36A8C270C6EBF00CCC69C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C36A8B270C6EBF00CCC69C /* AppDelegate.swift */; };
+		F4C36A8E270C6EBF00CCC69C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C36A8D270C6EBF00CCC69C /* SceneDelegate.swift */; };
+		F4C36A90270C6EBF00CCC69C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C36A8F270C6EBF00CCC69C /* ViewController.swift */; };
+		F4C36A93270C6EBF00CCC69C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4C36A91270C6EBF00CCC69C /* Main.storyboard */; };
+		F4C36A95270C6EC200CCC69C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4C36A94270C6EC200CCC69C /* Assets.xcassets */; };
+		F4C36A98270C6EC200CCC69C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4C36A96270C6EC200CCC69C /* LaunchScreen.storyboard */; };
+		F4CEC7ED270CB06D004A862F /* GiniHealthSDKPinning in Frameworks */ = {isa = PBXBuildFile; productRef = F4CEC7EC270CB06D004A862F /* GiniHealthSDKPinning */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		F466A5E0270F2F9500FB1364 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F466A5E2270F2FB300FB1364 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F4C36A88270C6EBF00CCC69C /* GiniHealthSDKPinningExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniHealthSDKPinningExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4C36A8B270C6EBF00CCC69C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F4C36A8D270C6EBF00CCC69C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		F4C36A8F270C6EBF00CCC69C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F4C36A92270C6EBF00CCC69C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F4C36A94270C6EC200CCC69C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F4C36A97270C6EC200CCC69C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		F4C36A99270C6EC200CCC69C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F4F9E5C5270E003600C6FBA3 /* GiniHealthSDKPinning */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniHealthSDKPinning; path = ../GiniHealthSDKPinning; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F4C36A85270C6EBF00CCC69C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4CEC7ED270CB06D004A862F /* GiniHealthSDKPinning in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F4C36A7F270C6EBF00CCC69C = {
+			isa = PBXGroup;
+			children = (
+				F4C36A9F270C6F6B00CCC69C /* Packages */,
+				F4C36A8A270C6EBF00CCC69C /* GiniHealthSDKPinningExample */,
+				F4C36A89270C6EBF00CCC69C /* Products */,
+				F4C36AA1270C6F9C00CCC69C /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		F4C36A89270C6EBF00CCC69C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F4C36A88270C6EBF00CCC69C /* GiniHealthSDKPinningExample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F4C36A8A270C6EBF00CCC69C /* GiniHealthSDKPinningExample */ = {
+			isa = PBXGroup;
+			children = (
+				F4C36A8B270C6EBF00CCC69C /* AppDelegate.swift */,
+				F4C36A8D270C6EBF00CCC69C /* SceneDelegate.swift */,
+				F466A5E1270F2F9500FB1364 /* Localizable.strings */,
+				F4C36A8F270C6EBF00CCC69C /* ViewController.swift */,
+				F4C36A91270C6EBF00CCC69C /* Main.storyboard */,
+				F4C36A94270C6EC200CCC69C /* Assets.xcassets */,
+				F4C36A96270C6EC200CCC69C /* LaunchScreen.storyboard */,
+				F4C36A99270C6EC200CCC69C /* Info.plist */,
+			);
+			path = GiniHealthSDKPinningExample;
+			sourceTree = "<group>";
+		};
+		F4C36A9F270C6F6B00CCC69C /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				F4F9E5C5270E003600C6FBA3 /* GiniHealthSDKPinning */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		F4C36AA1270C6F9C00CCC69C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F4C36A87270C6EBF00CCC69C /* GiniHealthSDKPinningExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F4C36A9C270C6EC200CCC69C /* Build configuration list for PBXNativeTarget "GiniHealthSDKPinningExample" */;
+			buildPhases = (
+				F4C36A84270C6EBF00CCC69C /* Sources */,
+				F4C36A85270C6EBF00CCC69C /* Frameworks */,
+				F4C36A86270C6EBF00CCC69C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GiniHealthSDKPinningExample;
+			packageProductDependencies = (
+				F4CEC7EC270CB06D004A862F /* GiniHealthSDKPinning */,
+			);
+			productName = HealthSDKPinningExample;
+			productReference = F4C36A88270C6EBF00CCC69C /* GiniHealthSDKPinningExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F4C36A80270C6EBF00CCC69C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1300;
+				LastUpgradeCheck = 1300;
+				TargetAttributes = {
+					F4C36A87270C6EBF00CCC69C = {
+						CreatedOnToolsVersion = 13.0;
+					};
+				};
+			};
+			buildConfigurationList = F4C36A83270C6EBF00CCC69C /* Build configuration list for PBXProject "GiniHealthSDKPinningExample" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				de,
+			);
+			mainGroup = F4C36A7F270C6EBF00CCC69C;
+			productRefGroup = F4C36A89270C6EBF00CCC69C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F4C36A87270C6EBF00CCC69C /* GiniHealthSDKPinningExample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F4C36A86270C6EBF00CCC69C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4C36A98270C6EC200CCC69C /* LaunchScreen.storyboard in Resources */,
+				F466A5DF270F2F9500FB1364 /* Localizable.strings in Resources */,
+				F4C36A95270C6EC200CCC69C /* Assets.xcassets in Resources */,
+				F4C36A93270C6EBF00CCC69C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F4C36A84270C6EBF00CCC69C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4C36A90270C6EBF00CCC69C /* ViewController.swift in Sources */,
+				F4C36A8C270C6EBF00CCC69C /* AppDelegate.swift in Sources */,
+				F4C36A8E270C6EBF00CCC69C /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		F466A5E1270F2F9500FB1364 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F466A5E0270F2F9500FB1364 /* en */,
+				F466A5E2270F2FB300FB1364 /* de */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		F4C36A91270C6EBF00CCC69C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F4C36A92270C6EBF00CCC69C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		F4C36A96270C6EC200CCC69C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F4C36A97270C6EC200CCC69C /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F4C36A9A270C6EC200CCC69C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = BQY9KX4V88;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F4C36A9B270C6EC200CCC69C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = BQY9KX4V88;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F4C36A9D270C6EC200CCC69C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = BQY9KX4V88;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HealthSDKPinningExample/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.HealthSDKPinningExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F4C36A9E270C6EC200CCC69C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = BQY9KX4V88;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HealthSDKPinningExample/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.HealthSDKPinningExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F4C36A83270C6EBF00CCC69C /* Build configuration list for PBXProject "GiniHealthSDKPinningExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F4C36A9A270C6EC200CCC69C /* Debug */,
+				F4C36A9B270C6EC200CCC69C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F4C36A9C270C6EC200CCC69C /* Build configuration list for PBXNativeTarget "GiniHealthSDKPinningExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F4C36A9D270C6EC200CCC69C /* Debug */,
+				F4C36A9E270C6EC200CCC69C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F4CEC7EC270CB06D004A862F /* GiniHealthSDKPinning */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GiniHealthSDKPinning;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = F4C36A80270C6EBF00CCC69C /* Project object */;
+}
