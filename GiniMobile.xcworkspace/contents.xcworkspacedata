@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "container:"
+      name = "GiniHealthSDK">
+      <FileRef
+         location = "group:HealthSDK/GiniHealthSDKPinningExample/GiniHealthSDKPinningExample.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:HealthSDK/GiniHealthSDK">
+      </FileRef>
+      <FileRef
+         location = "group:HealthSDK/GiniHealthSDKPinning">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
+      name = "GiniHealthAPILibrary">
+      <FileRef
+         location = "group:HealthAPILibrary/GiniHealthAPILibraryExample/GiniHealthAPILibraryExample.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:HealthAPILibrary/GiniHealthAPILibraryPinning">
+      </FileRef>
+      <FileRef
+         location = "group:HealthAPILibrary/GiniHealthAPILibrary">
+      </FileRef>
+   </Group>
+</Workspace>
