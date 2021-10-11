@@ -5,11 +5,15 @@ on: [push]
 #      - 'HealthAPILibrary/**'
 jobs:
   spm-dep-check:
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     steps:
     - name: checkout
       uses: actions/checkout@v2
     - name: check-package
       run: |
            cd HealthAPILibrary/GiniHealthAPILibrary
-           swift package update
+           swift package update       
+    - name: build
+      run: swift build
+    - name: tests
+      run: swift test        
