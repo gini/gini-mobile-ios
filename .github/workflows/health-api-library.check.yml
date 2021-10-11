@@ -10,6 +10,6 @@ jobs:
     - name: checkout
       uses: actions/checkout@v2
     - name: switch-dir
-      run: cd /HealthAPILibrary/GiniHealthAPILibrary
+      run: cd ../../HealthAPILibrary/GiniHealthAPILibrary
     - name: check-package
       run: swift package update
