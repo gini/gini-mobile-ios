@@ -5,13 +5,10 @@ on: [push]
 #      - 'HealthAPILibrary/**'
 
 jobs:
-  build:
-
+  check dependencies:
+  
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Build
-      run: swift build -v
-    - name: Run tests
-      run: swift test -v
+    - name: swiftpackage-dependencies-check
+      uses: MarcoEidinger/swift-package-dependencies-check@1.1.0
