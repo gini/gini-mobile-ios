@@ -1,0 +1,43 @@
+{
+    "feedback":{
+        "docType":{
+            "value":"Invoice"
+        },
+        "amountToPay":{
+            "value":"0.10:EUR"
+        },
+        "paymentState":{
+            "value":"Paid"
+        },
+        "invoiceId":{
+            "value":"Resumee-123"
+        },
+        "iban":{
+            "value":"DE68120300000016840340"
+        },
+        "senderCity":{
+            "value":"Nirgendwo"
+        },
+        "paymentRecipient":{
+            "value":"Michael Schönheißer"
+        },
+        "senderPostalCode":{
+            "value":"12345"
+        },
+        "documentDate":{
+            "value":"2016-02-16"
+        },
+        "senderStreet":{
+            "value":"Sonnenstraße:6"
+        },
+        "bic":{
+            "value":"BYLADEM1001"
+        },
+        "paymentRecipient":{
+            "value":"Michael Schönheißer"
+        },
+        "paymentPurpose":{
+            "value":"ReNr Resumee-123"
+        }
+    }
+}

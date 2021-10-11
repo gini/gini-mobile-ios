@@ -1,0 +1,22 @@
+/* 
+  File.strings
+  Pods
+
+  Created by Nadya Karaban on 08.04.21.
+  
+*/
+"ginihealth.reviewscreen.recipient.placeholder" = "Empfänger";
+"ginihealth.reviewscreen.iban.placeholder" = "IBAN";
+"ginihealth.reviewscreen.amount.placeholder" = "0,00 €";
+"ginihealth.reviewscreen.usage.placeholder" = "Verwendungszweck";
+"ginihealth.errors.no.banking.app.installed" = "Leider unterstützt deine Banking App diese Funktion noch nicht. Probier doch mal die ING App.";
+"ginihealth.errors.default" = "Oh da ist was schief gelaufen. Probiere es noch einmal.";
+"ginihealth.errors.failed.payment.request.creation" = "Oh da ist was schief gelaufen. Probiere es noch einmal.";
+"ginihealth.errors.failed.recipient.non.empty.check" = "Empfänger ist notwendig.";
+"ginihealth.errors.failed.iban.non.empty.check" = "IBAN ist notwendig.";
+"ginihealth.errors.failed.iban.validation.check" = "IBAN ist ungültig";
+"ginihealth.errors.failed.amount.non.empty.check" = "Summe kann nicht 0 sein";
+"ginihealth.errors.failed.purpose.non.empty.check" = "Verwendungszweck ist notwendig.";
+"ginihealth.errors.failed.default.textfield.validation.check" = "Das Feld ist ungültig";
+
+"ginihealth.alert.ok.title" = "OK";
