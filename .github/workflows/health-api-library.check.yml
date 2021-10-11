@@ -11,5 +11,5 @@ jobs:
       uses: actions/checkout@v2
     - name: check-package
       run: |
-           cd /HealthAPILibrary/GiniHealthAPILibrary
+           cd HealthAPILibrary/GiniHealthAPILibrary
            swift package update
