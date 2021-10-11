@@ -19,4 +19,4 @@ jobs:
     - name: check-package
       run: |
            cd HealthAPILibrary/GiniHealthAPILibrary
-           swift package update       
+           swift package update     
