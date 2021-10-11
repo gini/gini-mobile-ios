@@ -7,7 +7,7 @@ on: [push]
 jobs:
   check-dependencies:
   
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
     - name: swiftpackage-dependencies-check
