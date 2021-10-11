@@ -5,7 +5,7 @@ on: [push]
 #      - 'HealthAPILibrary/**'
 
 jobs:
-  check dependencies:
+  check-dependencies:
   
     runs-on: macos-latest
 
