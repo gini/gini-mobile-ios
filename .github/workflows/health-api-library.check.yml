@@ -3,12 +3,13 @@ on: [push]
 #  push:
 #    paths:
 #      - 'HealthAPILibrary/**'
-defaults:
-  run:
-    working-directory: ./HealthAPILibrary/GiniHealthAPILibrary
 jobs:
-  check-dependencies:
+  spm-dep-check:
     runs-on: ubuntu-latest
-        steps:
-           - name: swiftpackage-dependencies-check
-             uses: MarcoEidinger/swift-package-dependencies-check@1.1.0
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+    - name: switch-dir
+      run: cd /HealthAPILibrary/GiniHealthAPILibrary
+    - name: check-package
+      run: swift package update
