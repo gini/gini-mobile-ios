@@ -12,11 +12,11 @@ jobs:
         xcode-version: '13.0'
 
   spm-dep-check:
-    runs-on: macOS-latest
+    runs-on: macOS-11
     steps:
     - name: checkout
       uses: actions/checkout@v2
     - name: check-package
       run: |
            cd HealthAPILibrary/GiniHealthAPILibrary
-           swift package update     
+           swift package update       
