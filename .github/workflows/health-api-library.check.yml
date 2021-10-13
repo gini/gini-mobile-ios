@@ -26,17 +26,17 @@ jobs:
     - name: checkout
       uses: actions/checkout@v2
 
-    - name: check-package GiniHealthAPILibrary
+    - name: check package GiniHealthAPILibrary
       run: |
            cd HealthAPILibrary/GiniHealthAPILibrary
            swift package update
 
-    - name: check-package GiniHealthAPILibraryPinning
+    - name: check package GiniHealthAPILibraryPinning
       run: |
            cd ../GiniHealthAPILibraryPinning
            swift package update       
 
-    - name: Build SDK targets
+    - name: build sdk targets
       run: |
         cd ../../
         xcodebuild -workspace GiniMobile.xcworkspace -scheme "${target}" -destination "${destination}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
@@ -45,18 +45,19 @@ jobs:
         target: ${{ matrix.target }}  
         destination: ${{ matrix.destination }}
 
-    - name: Run unit tests
+    - name: run unit tests
       run: |
         xcodebuild clean test -workspace GiniMobile.xcworkspace -scheme "${target}" -destination "${destination}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
         bash <(curl -s https://codecov.io/bash)
       env: 
         target: ${{ matrix.testtarget }}  
-        destination: ${{ matrix.destination }}       
-           
-     - name: Build example and run integration test
-        run: |
+        destination: ${{ matrix.destination }}
+        
+    - name: build example app and run integration tests
+      run: |
           cd HealthAPILibrary/GiniHealthAPILibrary/GiniHealthAPILibraryExample
           xcodebuild clean test -project GiniHealthAPILibraryExample.xcodeproj -scheme GiniHealthAPILibraryExampleTests -destination "${destination}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
           bash <(curl -s https://codecov.io/bash)
-        env: 
+      env: 
          destination: ${{ matrix.destination }}
+        
