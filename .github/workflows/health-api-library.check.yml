@@ -26,12 +26,11 @@ jobs:
 
     - name: check package GiniHealthAPILibraryPinning
       run: |
-           cd ../GiniHealthAPILibraryPinning
+           cd HealthAPILibrary/GiniHealthAPILibraryPinning
            swift package update       
 
     - name: build sdk targets
       run: |
-        cd ../../
         xcodebuild -workspace GiniMobile.xcworkspace -scheme "${target}" -destination "${destination}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
       env: 
         target: ${{ matrix.target }}  
