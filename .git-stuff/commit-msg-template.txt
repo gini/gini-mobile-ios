@@ -1,0 +1,50 @@
+<type>(<project>): <subject>
+
+<body>
+
+<ticket-id>
+
+# Please fill out the template above according to these conventions:
+# * <type>: the type of the commit is one of the following:
+#   * feat: new features.
+#   * fix: bug fixes.
+#   * refactor: code changes without introducing new features.
+#   * chore: any changes like dependency updates, fixing warnings, 
+#     linter errors, etc.
+#   * docs: documentation changes.
+#   * ci: changes to build scripts or any other automation scripts or 
+#     configs (e.g., jazzy config, sphinx config).
+# * <project>: project that the commit makes changes to. If it makes 
+#   changes to many sections, or if no section in particular is 
+#   modified, leave blank without the parentheses. 
+#   Examples:
+#   * Commit that changes the bank-sdk project:
+#     feat(bank-sdk): Add error logging interface
+#   * Commit that updates the health-sdk documentation:
+#     doc(health-sdk): Update extraction feedback guide
+#   * Commit that changes the build script:
+#     ci: Send slack message with build result
+#   * Commit that changes many projects:
+#     chore: Update the android gradle plugin
+# * <subject>: short description in imperative mood summarising 
+#   the changes. For example: Add photo selection button.
+#   You can find more subject related advice here:
+#   https://chris.beams.io/posts/git-commit/#capitalize
+# * <body>: additional details about the committed changes 
+#   detailing the what and why (not the how):
+#   https://chris.beams.io/posts/git-commit/#why-not-how
+#   
+# The template is based on the conventional commits spec: 
+# https://www.conventionalcommits.org/en/v1.0.0/
+# It was inspired by the ZSH project:
+# https://github.com/ohmyzsh/ohmyzsh/blob/master/CONTRIBUTING.md#commit-guidelines
+#
+# To use this template add it to your local git configuration:
+# $ git config --local commit.template .git-stuff/commit-msg-template.txt
+#
+# If you use Sourcetree and this template is not recognized, then you 
+# can copy and paste the non-comment lines to 
+# Repository Settings (⇧⌘,) > Commit Template.
+# IMPORTANT: Don't add the lines starting with # to the template.
+# Sourcetree doesn't treat those lines as comments and will add 
+# them to the commit message.
