@@ -1,8 +1,8 @@
 name: Check Health SDK
-on: [push]
-#  push:
-#    paths:
-#      - 'HealthSDK/**'
+on:
+  push:
+    paths:
+      - 'HealthSDK/**'
 jobs:
   check:
     runs-on: macOS-11
