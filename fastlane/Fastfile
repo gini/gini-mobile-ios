@@ -1,0 +1,75 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+load "util/lanes.rb"
+load "util/versions.rb" 
+load "util/swift_package_releases.rb"
+
+platform :ios do
+  desc <<~DOC
+    Publish a swift package to our release repository.
+    
+    Parameters:
+      project_folder        - the folder of the project to be released (e.g., HealthAPILibrary, HealthSDK)"
+      package_folder        - the folder to the swift package to be released (e.g., GiniHealthAPILibrary, GiniHealthAPILibraryPinning)"
+      version_file_path     - the path to the file containing the package version
+      git_tag               - the git tag name used to release the project
+      repo_url              - the url of the release repository
+      repo_user             - the username to use for authentication
+      repo_password         - the password to use for authentication
+  DOC
+  lane :publish_swift_package do |options|
+    (project_folder, package_folder, version_file_path, git_tag, repo_url, repo_user, repo_password) = 
+      check_and_get_options(options, [:project_folder, :package_folder, :version_file_path, :git_tag, :repo_url, :repo_user, :repo_password], UI)
+
+      tag_version = get_project_version_from_tag(package_folder, git_tag, UI)
+      package_version = get_project_version_from_version_file(version_file_path, UI)
+
+      if tag_version != package_version
+        UI.abort_with_message!  <<~MESSAGE
+          Version in the tag is different from the package version:
+            * tag       : #{tag_version}
+            * project   : #{package_version}
+          
+          Change the version in the tag or update the packages's version in "#{version_file_path}".
+        MESSAGE
+      end
+
+      UI.message <<~MESSAGE
+        Will release to the release repository:
+          * repository url  : #{repo_url}
+          * project:        : #{project_folder}
+          * swift package   : #{package_folder}
+          * version         : #{package_version}
+      MESSAGE
+
+      release_repo_path = checkout_release_repo(repo_url, repo_user, repo_password)
+
+      copy_swift_package_to_release_repo(release_repo_path, project_folder, package_folder)
+
+      update_release_repo(release_repo_path, package_version)
+      
+      UI.success <<~MESSAGE
+        Successfully released to the release repository:
+          * repository url  : #{repo_url}
+          * project:        : #{project_folder}
+          * swift package   : #{package_folder}
+          * version         : #{package_version}
+      MESSAGE
+
+  end
+end
