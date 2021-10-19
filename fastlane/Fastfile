@@ -16,7 +16,8 @@
 default_platform(:ios)
 
 load "util/lanes.rb"
-load "util/versions.rb" 
+load "util/versions.rb"
+load "util/git.rb" 
 load "util/swift_package_releases.rb"
 
 platform :ios do
