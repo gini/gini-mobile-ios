@@ -9,7 +9,7 @@ jobs:
     uses: gini/gini-mobile-ios/.github/workflows/health-api-library.check.yml@PIA-1849-release-packages
 
   release:
-    needs: Check package
+    needs: check
     runs-on: macOS-11    
     steps:
     - uses: maxim-lobanov/setup-xcode@v1
@@ -18,6 +18,12 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@v2
+
+    - name: setup ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        bundler-cache: true
 
     - name: Publish package to the release repo
       uses: maierj/fastlane-action@v2.0.1
