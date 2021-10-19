@@ -32,10 +32,12 @@ platform :ios do
       repo_url              - the url of the release repository
       repo_user             - the username to use for authentication
       repo_password         - the password to use for authentication
+      ci                    - set to "true" if running on a CI machine
+
   DOC
   lane :publish_swift_package do |options|
-    (project_folder, package_folder, version_file_path, git_tag, repo_url, repo_user, repo_password) = 
-      check_and_get_options(options, [:project_folder, :package_folder, :version_file_path, :git_tag, :repo_url, :repo_user, :repo_password], UI)
+    (project_folder, package_folder, version_file_path, git_tag, repo_url, repo_user, repo_password, ci) = 
+      check_and_get_options(options, [:project_folder, :package_folder, :version_file_path, :git_tag, :repo_url, :repo_user, :repo_password, :ci], UI)
 
       tag_version = get_project_version_from_tag(package_folder, git_tag, UI)
       package_version = get_project_version_from_version_file(version_file_path, UI)
@@ -57,6 +59,10 @@ platform :ios do
           * swift package   : #{package_folder}
           * version         : #{package_version}
       MESSAGE
+
+      if ci
+        configure_git_on_ci_machines("Team Mobile Schorsch", "team-mobile@gini.net")
+      end
 
       release_repo_path = checkout_release_repo(repo_url, repo_user, repo_password)
 

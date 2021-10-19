@@ -21,20 +21,16 @@ jobs:
 
     - name: Publish package to the release repo
       uses: maierj/fastlane-action@v2.0.1
-      env:
-          repo_url: https://github.com/gini/health-api-library-ios.git
-          project_folder: HealthAPILibrary
-          package_folder: GiniHealthAPILibrary
-          version_file_path: HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/GiniHealthAPILibraryVersion.swift
       with:
         lane: 'publish_swift_package'
         options: >
           { 
-                "project_folder": "${{ project_folder }}",
-                "package_folder": "${{ package_folder }}",
-                "version_file_path": "${{ version_file_path }}",
-                "git_tag": "${{ github.ref }}", 
-                "repo_url": "${{ repo_url }}", 
-                "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
-                "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}"
+            "project_folder": "HealthAPILibrary",
+            "package_folder": "GiniHealthAPILibrary",
+            "version_file_path": "HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/GiniHealthAPILibraryVersion.swift",
+            "git_tag": "${{ github.ref }}", 
+            "repo_url": "https://github.com/gini/health-api-library-ios.git", 
+            "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
+            "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
+            "ci": "true"
           }
