@@ -1,8 +1,8 @@
 name: Release Health API Library
 on:
   push:
-    #tags:
-    #  - 'GiniHealthAPILibrary;[0-9]+.[0-9]+.[0-9]+'
+    tags:
+      - 'GiniHealthAPILibrary;[0-9]+.[0-9]+.[0-9]+'
   
 jobs:
   #check:
