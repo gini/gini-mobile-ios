@@ -1,4 +1,4 @@
-name: Release Health API Library
+name: Release Health SDK
 on:
   push:
     tags:
