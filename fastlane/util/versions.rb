@@ -9,7 +9,7 @@ def get_project_version_from_tag(project_id, tag, ui)
   tag = normalize_tag(tag)
   components = tag.split(';')
 
-  if components[0] != project_id
+  if !project_id.start_with?(components[0])
     ui.user_error! "The project id '#{project_id}' is not in the tag: #{tag}"
   end
 
