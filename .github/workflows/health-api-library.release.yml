@@ -25,7 +25,7 @@ jobs:
         ruby-version: 2.7
         bundler-cache: true
 
-    - name: Publish package to the release repo
+    - name: Publish GiniHealthAPILibrary package to the release repo
       uses: maierj/fastlane-action@v2.0.1
       with:
         lane: 'publish_swift_package'
@@ -40,3 +40,19 @@ jobs:
             "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
             "ci": "true"
           }
+
+    - name: Publish GiniHealthAPILibraryPinning package to the release repo
+      uses: maierj/fastlane-action@v2.0.1
+      with:
+        lane: 'publish_swift_package'
+        options: >
+          { 
+            "project_folder": "HealthAPILibrary",
+            "package_folder": "GiniHealthAPILibraryPinning",
+            "version_file_path": "HealthAPILibrary/GiniHealthAPILibraryPinning/Sources/GiniHealthAPILibraryPinning/GiniHealthAPILibraryPinningVersion.swift",
+            "git_tag": "${{ github.ref }}", 
+            "repo_url": "https://github.com/gini/health-api-library-pinning-ios.git", 
+            "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
+            "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
+            "ci": "true"
+          }      
