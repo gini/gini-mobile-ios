@@ -5,11 +5,11 @@ on:
     #  - 'GiniHealthAPILibrary;[0-9]+.[0-9]+.[0-9]+'
   
 jobs:
-  check:
-    uses: gini/gini-mobile-ios/.github/workflows/health-api-library.check.yml@PIA-1849-release-packages
+  #check:
+  #  uses: gini/gini-mobile-ios/.github/workflows/health-api-library.check.yml@PIA-1849-release-packages
 
   release:
-    needs: check
+  #  needs: check
     runs-on: macOS-11    
     steps:
     - uses: maxim-lobanov/setup-xcode@v1
