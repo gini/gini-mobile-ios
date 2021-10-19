@@ -1,8 +1,8 @@
 name: Check Health API Library
 on:
   push:
-   paths:
-      - 'HealthAPILibrary/**'
+   #paths:
+   #   - 'HealthAPILibrary/**'
    tags-ignore:
       - '**'
   pull_request:
