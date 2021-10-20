@@ -20,11 +20,11 @@ def release_documentation(release_repo_url, project_folder, package_folder, repo
    sh('touch .nojekyll')
   end
    # Stage changes
-   sh("git add .")
+   sh("git add --all")
    # Commit
-   sh("git commit -a -m 'Updated documentation' --author='Team Mobile Schorsch <team-mobile@gini.net>'")
-   # Push
-   sh("git push")
+   sh("git diff --quiet --exit-code --cached || git commit -m 'Release #{project_id} documentation' --author='Team Mobile <team-mobile@gini.net>'")
+   sh("git remote show origin")
+   sh("git push origin gh-pages")
    #Delete gh-pages directory
    Dir.chdir("..") do
     sh("rm -rf gh-pages/")
