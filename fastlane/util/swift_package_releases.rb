@@ -1,7 +1,7 @@
 ##
 # Checkout release repo for the project.
 # 
-# Returns the relative ath to the release repo.
+# Returns the relative path to the release repo.
 #
 def checkout_release_repo(release_repo_url, repo_user, repo_password)
   sh("rm -rf release-repo")
