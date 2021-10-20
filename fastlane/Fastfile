@@ -117,14 +117,12 @@ platform :ios do
       UI.success <<~MESSAGE
       Successfully build the documentation:
         * config  : #{project_folder}/#{package_folder}/.jazzy.yaml
-        * release_repo_path: #{repo_url}
       MESSAGE
 
       release_documentation(repo_url, project_folder, package_folder,repo_user, repo_password)
 
       UI.success <<~MESSAGE
-      Successfully release the documentation to the release repository:
-      * repository url  : #{repo_url}
+      Successfully release the documentation to the release repository
       MESSAGE
 
   end
