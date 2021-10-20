@@ -84,4 +84,46 @@ platform :ios do
       release_documentation(release_repo_path)
 
   end
+
+  desc <<~DOC
+    Publish a documentation to our release repository.
+    
+    Parameters:
+      project_folder        - the folder of the project to be released (e.g., HealthAPILibrary, HealthSDK)"
+      package_folder        - the folder to the swift package to be released (e.g., GiniHealthAPILibrary, GiniHealthAPILibraryPinning)"
+      repo_url              - the url of the release repository
+      repo_user             - the username to use for authentication
+      repo_password         - the password to use for authentication
+      ci                    - set to "true" if running on a CI machine
+
+  DOC
+  lane :publish_docs do |options|
+    (project_folder, package_folder, repo_url, repo_user, repo_password, ci) = 
+      check_and_get_options(options, [:project_folder, :package_folder, :repo_url, :repo_user, :repo_password, :ci], UI)
+
+      UI.message <<~MESSAGE
+        Will release a documentation to the release repository:
+          * repository url  : #{repo_url}
+          * project:        : #{project_folder}
+          * swift package   : #{package_folder}
+      MESSAGE
+
+      if ci
+        configure_git_on_ci_machines("Team Mobile Schorsch", "team-mobile@gini.net")
+      end
+
+      release_repo_path = checkout_release_repo(repo_url, repo_user, repo_password)
+
+      jazzy config: "#{project_folder}/#{package_folder}/jazzy.yaml"
+      UI.success <<~MESSAGE
+      Successfully build the documentation:
+        * config  : #{project_folder}/#{package_folder}/jazzy.yaml
+    MESSAGE
+
+      release_documentation(release_repo_path)
+      UI.success <<~MESSAGE
+      Successfully release the documentation to the release repository:
+      * repository url  : #{repo_url}:
+
+  end
 end
