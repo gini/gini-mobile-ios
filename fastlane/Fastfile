@@ -112,18 +112,20 @@ platform :ios do
         configure_git_on_ci_machines("Team Mobile Schorsch", "team-mobile@gini.net")
       end
 
-      release_repo_path = checkout_release_repo(repo_url, repo_user, repo_password)
+      jazzy config: "#{project_folder}/#{package_folder}/.jazzy.yaml"
 
-      jazzy config: "#{project_folder}/#{package_folder}/jazzy.yaml"
       UI.success <<~MESSAGE
       Successfully build the documentation:
-        * config  : #{project_folder}/#{package_folder}/jazzy.yaml
-    MESSAGE
+        * config  : #{project_folder}/#{package_folder}/.jazzy.yaml
+        * release_repo_path: #{repo_url}
+      MESSAGE
 
-      release_documentation(release_repo_path)
+      release_documentation(repo_url, project_folder, package_folder,repo_user, repo_password)
+
       UI.success <<~MESSAGE
       Successfully release the documentation to the release repository:
-      * repository url  : #{repo_url}:
+      * repository url  : #{repo_url}
+      MESSAGE
 
   end
 end

@@ -5,52 +5,37 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000423">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000372">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: rm -rf release-repo" time="0.013231">
+      <testcase classname="fastlane.lanes" name="1: jazzy" time="17.802101">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: git clone https://admin:3ca90bba130e21160bd63a26c178feb0628b4074@github.com/gini/health-api-library-pinning-ios.git release-repo" time="2.420306">
+      <testcase classname="fastlane.lanes" name="2: rm -rf gh-pages" time="0.026562">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: git rm -rf . &amp;&amp; git clean -fd" time="0.036613">
+      <testcase classname="fastlane.lanes" name="3: git clone -b gh-pages https://admin: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@github.com/gini/health-api-library-ios.git gh-pages" time="0.669545">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="4: cp -R ../../HealthAPILibrary/GiniHealthAPILibraryPinning/ ." time="0.020673">
+      <testcase classname="fastlane.lanes" name="4: rm -rf gh-pages/*" time="0.00704">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="5: mv -f Package-release.swift Package.swift || true" time="0.009801">
+      <testcase classname="fastlane.lanes" name="5: mkdir gh-pages/docs" time="0.004148">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="6: git add --all" time="0.025906">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="7: git commit -m 'Release version 0.0.1' --author='Team Mobile Schorsch &lt;team-mobile@gini.net&gt;'" time="0.036534">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="8: git tag -a -m 'Release version 0.0.1' 0.0.1" time="0.019695">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="9: git push --tags &amp;&amp; git push" time="2.454897">
+      <testcase classname="fastlane.lanes" name="6: cp -R api/. gh-pages/docs/" time="0.053786">
         
       </testcase>
     

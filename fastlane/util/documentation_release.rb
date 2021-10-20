@@ -2,10 +2,12 @@
 # Release the documentation to the release repo for the project.
 # 
 
-def release_documentation(release_repo_url)
-  Dir.chdir(Documents) do
+def release_documentation(release_repo_url, project_folder, package_folder, repo_user, repo_password)
+  Dir.chdir("../#{project_folder}/#{package_folder}/Documentation") do
    # Clear gh-pages directory 
    sh("rm -rf gh-pages")
+
+   release_repo_url["://"] = "://#{repo_user}:#{repo_password}@"
    # Clone
    sh("git clone -b gh-pages #{release_repo_url} gh-pages")
 
@@ -14,7 +16,7 @@ def release_documentation(release_repo_url)
    sh("cp -R api/. gh-pages/docs/")
   end 
 
-  Dir.chdir(gh-pages) do
+  Dir.chdir("../#{project_folder}/#{package_folder}/Documentation/gh-pages") do
    sh('touch .nojekyll')
   end
    # Stage changes
@@ -24,6 +26,7 @@ def release_documentation(release_repo_url)
    # Push
    sh("git push")
    #Delete gh-pages directory
-   sh("cd ..")
-   sh("rm -rf gh-pages/")
+   Dir.chdir("..") do
+    sh("rm -rf gh-pages/")
+   end
 end

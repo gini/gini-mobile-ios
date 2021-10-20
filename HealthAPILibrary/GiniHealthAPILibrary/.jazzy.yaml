@@ -1,7 +1,7 @@
 {
    "xcodebuild_arguments":[
       "-workspace",
-      "../../GiniMobile.xcworkspace",
+      "GiniMobile.xcworkspace",
       "-scheme",
       "GiniHealthAPILibrary"
    ],

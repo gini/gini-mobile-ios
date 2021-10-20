@@ -33,6 +33,21 @@ Parameters:
   ci                    - set to "true" if running on a CI machine
 
 
+### ios publish_docs
+```
+fastlane ios publish_docs
+```
+Publish a documentation to our release repository.
+
+Parameters:
+  project_folder        - the folder of the project to be released (e.g., HealthAPILibrary, HealthSDK)"
+  package_folder        - the folder to the swift package to be released (e.g., GiniHealthAPILibrary, GiniHealthAPILibraryPinning)"
+  repo_url              - the url of the release repository
+  repo_user             - the username to use for authentication
+  repo_password         - the password to use for authentication
+  ci                    - set to "true" if running on a CI machine
+
+
 
 ----
 
