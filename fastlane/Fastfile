@@ -19,6 +19,7 @@ load "util/lanes.rb"
 load "util/versions.rb"
 load "util/git.rb" 
 load "util/swift_package_releases.rb"
+load "util/documentation_release.rb"
 
 platform :ios do
   desc <<~DOC
@@ -77,6 +78,10 @@ platform :ios do
           * swift package   : #{package_folder}
           * version         : #{package_version}
       MESSAGE
+
+      jazzy config: "#{project_folder}/#{package_folder}/jazzy.yaml"
+
+      release_documentation(release_repo_path)
 
   end
 end
