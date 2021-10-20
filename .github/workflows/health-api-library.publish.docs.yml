@@ -2,14 +2,10 @@ name: Publish docs for Health API Library
 on:
   push:
     tags:
-      - 'GiniHealthAPILibrary;[0-9]+.[0-9]+.[0-9]+.doc[0-9]'
+      - 'GiniHealthAPILibrary;[0-9]+.[0-9]+.[0-9]+;doc[0-9]'
   
 jobs:
-  check:
-   # uses: gini/gini-mobile-ios/.github/workflows/health-api-library.check.yml@main
-
-  release:
-   # needs: check
+  documentation:
     runs-on: macOS-11    
     steps:
     - uses: maxim-lobanov/setup-xcode@v1
