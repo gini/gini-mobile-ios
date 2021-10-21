@@ -30,7 +30,7 @@ jobs:
           { 
             "project_folder": "HealthAPILibrary",
             "package_folder": "GiniHealthAPILibrary",
-            "version_file_path": "HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/GiniHealthAPILibraryVersion.swift" 
+            "version_file_path": "HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/GiniHealthAPILibraryVersion.swift", 
             "git_tag": "${{ github.ref }}",
             "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
             "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
