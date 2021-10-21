@@ -129,6 +129,7 @@ platform :ios do
             * project   : #{package_version}
           
           Change the version in the tag or update the project's version in "#{version_file_path}"
+        MESSAGE
       end
 
       UI.message <<~MESSAGE
@@ -177,4 +178,5 @@ platform :ios do
         * url                 : https://developer.gini.net/gini-mobile-ios/#{package_folder}/index.html
       MESSAGE
   end
+  
 end
