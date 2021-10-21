@@ -3,19 +3,19 @@
       "-workspace",
       "GiniMobile.xcworkspace",
       "-scheme",
-      "GiniHealthAPILibrary"
+      "GiniHealthAPILibraryPinning"
    ],
    "author":"Gini GmbH",
    "author_url":"https://gini.net",
-   "module":"GiniHealthAPILibrary",
-   "readme":"Documentation/Sections/Documentation.md",
+   "module":"GiniHealthAPILibraryPinning",
+   "readme":"README.md",
    "theme": "Documentation/jazzy-theme/",
    "output":"Documentation/Api",
    "github_url":"https://github.com/gini/gini-mobile-ios.git",
    "hide_documentation_coverage":"true",
 
    "documentation":"Documentation/source/*.md",
-   "abstract":"Documentation/Sections/*.md",
+   "abstract":"Documentation/sections/*.md",
 
    "custom_categories":[
       {
