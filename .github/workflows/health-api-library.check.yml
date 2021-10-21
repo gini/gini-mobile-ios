@@ -7,6 +7,9 @@ on:
       - '**'
   pull_request:
   workflow_call:
+    secrets:
+      GINI_MOBILE_TEST_CLIENT_SECRET:
+        required: true
   
 jobs:
   check:
@@ -50,6 +53,13 @@ jobs:
         xcodebuild clean test -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}Tests" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
    
     - name: Build example app and run integration tests
-      run: |
-        cd HealthAPILibrary/GiniHealthAPILibraryExample
-        xcodebuild clean test -project GiniHealthAPILibraryExample.xcodeproj -scheme "GiniHealthAPILibraryExampleTests" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO    
+      run: >
+        xcodebuild clean test
+        -project HealthAPILibrary/GiniHealthAPILibraryExample/GiniHealthAPILibraryExample.xcodeproj
+        -scheme "GiniHealthAPILibraryExampleTests"
+        -destination "${{ matrix.destination }}"
+        CODE_SIGN_IDENTITY=""
+        CODE_SIGNING_REQUIRED=NO
+        ONLY_ACTIVE_ARCH=NO
+        CLIENT_ID="gini-mobile-test"
+        CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
