@@ -3,7 +3,7 @@
     "pins": [
       {
         "package": "TrustKit",
-        "repositoryURL": "git@github.com:datatheorem/TrustKit.git",
+        "repositoryURL": "https://github.com/datatheorem/TrustKit.git",
         "state": {
           "branch": null,
           "revision": "3e98aeb36aff65067cdae55bca7be7f1157deffb",
