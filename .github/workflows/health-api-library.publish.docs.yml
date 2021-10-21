@@ -2,10 +2,11 @@ name: Publish docs for Health API Library
 on:
   push:
     tags:
-      - 'GiniHealthAPILibrary;[0-9]+.[0-9]+.[0-9]+;doc[0-9]'
+      - 'GiniHealthAPILibrary;[0-9]+.[0-9]+.[0-9]+;doc**'
+  workflow_call:    
   
 jobs:
-  documentation:
+  release-documentation:
     runs-on: macOS-11    
     steps:
     - uses: maxim-lobanov/setup-xcode@v1
@@ -29,8 +30,15 @@ jobs:
           { 
             "project_folder": "HealthAPILibrary",
             "package_folder": "GiniHealthAPILibrary",
-            "repo_url": "https://github.com/gini/health-api-library-ios.git", 
+            "version_file_path": "HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/GiniHealthAPILibraryVersion.swift" 
+            "git_tag": "${{ github.ref }}",
             "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
             "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
             "ci": "true"
-          }     
+          }
+
+    - name: archive documentation
+      uses: actions/upload-artifact@v2
+      with:
+      name: GiniHealthAPILibraryDocumentation
+      path: HealthAPILibrary/GiniHealthAPILibrary/Documentation/Api              

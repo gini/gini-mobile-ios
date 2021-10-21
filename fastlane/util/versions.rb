@@ -13,7 +13,7 @@ def get_project_version_from_tag(project_id, tag, ui)
     ui.user_error! "The project id '#{project_id}' is not in the tag: #{tag}"
   end
 
-  if components.size != 2
+  if components.size < 2
     ui.user_error! "Missing project version from the tag: #{tag}"
   end
 

@@ -11,7 +11,7 @@
    "readme":"Documentation/Sections/Documentation.md",
    "theme": "Documentation/jazzy-theme/",
    "output":"Documentation/Api",
-   "github_url":"https://github.com/gini/health-api-library-ios.git",
+   "github_url":"https://github.com/gini/gini-mobile-ios.git",
    "hide_documentation_coverage":"true",
 
    "documentation":"Documentation/source/*.md",
