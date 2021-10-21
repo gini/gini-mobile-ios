@@ -38,5 +38,5 @@ jobs:
     - name: archive documentation
       uses: actions/upload-artifact@v2
       with:
-      name: GiniHealthAPILibraryDocumentation
-      path: HealthAPILibrary/GiniHealthAPILibrary/Documentation/Api        
+        name: GiniHealthAPILibraryDocumentation
+        path: HealthAPILibrary/GiniHealthAPILibrary/Documentation/Api        
