@@ -36,12 +36,12 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "CLIENT_ID"
-            value = "gini-mobile-test"
+            value = "$(CLIENT_ID)"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "CLIENT_SECRET"
-            value = "H8-PWJYheG6pnTidhZIiCMsGjJg"
+            value = "$(CLIENT_SECRET)"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
