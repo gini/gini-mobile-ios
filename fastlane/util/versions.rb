@@ -63,7 +63,7 @@ def get_project_version_from_version_file(version_file_path, ui)
         ui.user_error! "Wrong version line formatting: #{line}"
       end 
 
-      version = line.split(" = ")[1]
+      version = components[1]
       break version.strip.delete('"')
     end
   end
