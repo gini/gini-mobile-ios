@@ -3,6 +3,11 @@ on:
   push:
    paths:
       - 'HealthAPILibrary/**'
+   tags-ignore:
+      - '**'
+  pull_request:
+  workflow_call:
+  
 jobs:
   check:
     runs-on: macOS-11
