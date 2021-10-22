@@ -1,6 +1,6 @@
-![Gini Health SDK for iOS](img/GiniHealth_Logo.png?raw=true)
+![Gini Health API Library for iOS](img/GiniHealth_Logo.png?raw=true)
 
-# Gini Health SDK for iOS
+# Gini Health API Library for iOS
 
 [![Platform](https://img.shields.io/badge/platform-iOS-lightgrey.svg)]()
 [![Devices](https://img.shields.io/badge/devices-iPhone%20%7C%20iPad-blue.svg)]()

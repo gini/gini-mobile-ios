@@ -3,11 +3,11 @@
       "-workspace",
       "GiniMobile.xcworkspace",
       "-scheme",
-      "GiniHealthAPILibraryPinning"
+      "GiniHealthAPILibrary"
    ],
    "author":"Gini GmbH",
    "author_url":"https://gini.net",
-   "module":"GiniHealthAPILibraryPinning",
+   "module":"GiniHealthAPILibrary",
    "readme":"README.md",
    "theme": "Documentation/jazzy-theme/",
    "output":"Documentation/Api",
