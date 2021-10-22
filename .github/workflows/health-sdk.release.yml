@@ -1,0 +1,58 @@
+name: Release Health SDK
+on:
+  push:
+    tags:
+      - 'GiniHealthSDK;[0-9]+.[0-9]+.[0-9]+'
+  
+jobs:
+  check:
+    uses: gini/gini-mobile-ios/.github/workflows/health-sdk.check.yml@main
+
+  release:
+    needs: check
+    runs-on: macOS-11    
+    steps:
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '13.0'
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: setup ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        bundler-cache: true
+
+    - name: Publish GiniHealthSDK package to the release repo
+      uses: maierj/fastlane-action@v2.0.1
+      with:
+        lane: 'publish_swift_package'
+        options: >
+          { 
+            "project_folder": "HealthSDK",
+            "package_folder": "GiniHealthSDK",
+            "version_file_path": "HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/GiniHealthSDKVersion.swift",
+            "git_tag": "${{ github.ref }}", 
+            "repo_url": "https://github.com/gini/health-sdk-ios.git", 
+            "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
+            "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
+            "ci": "true"
+          }
+
+    - name: Publish GiniHealthSDKPinning package to the release repo
+      uses: maierj/fastlane-action@v2.0.1
+      with:
+        lane: 'publish_swift_package'
+        options: >
+          { 
+            "project_folder": "HealthSDK",
+            "package_folder": "GiniHealthSDKPinning",
+            "version_file_path": "HealthSDK/GiniHealthSDKPinning/Sources/GiniHealthSDKPinning/GiniHealthSDKPinningVersion.swift",
+            "git_tag": "${{ github.ref }}", 
+            "repo_url": "https://github.com/gini/health-sdk-pinning-ios.git", 
+            "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
+            "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
+            "ci": "true"
+          }      
