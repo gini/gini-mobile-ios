@@ -44,20 +44,20 @@ Some background and text colors use the `GiniColor` type with which you can set 
 - Focus selection style background color &#8594; `GiniHealthConfiguration.paymentInputFieldSelectionBackgroundColor` using `UIColor`
 - Placeholder text color &#8594; `GiniHealthConfiguration.paymentInputFieldPlaceholderTextColor` using `GiniColor` with dark mode and light mode colors
 - Placeholder font &#8594; `GiniHealthConfiguration.paymentInputFieldPlaceholderFont`
-- Recipient placeholder text &#8594; <span style="color:#009EDF">*ginipaybusiness.reviewscreen.recipient.placeholder*</span> localized string
-- IBAN placeholder text &#8594; <span style="color:#009EDF">*ginipaybusiness.reviewscreen.iban.placeholder*</span> localized string
-- Amount placeholder text &#8594; <span style="color:#009EDF">*ginipaybusiness.reviewscreen.amount.placeholder*</span> localized string
-- Purpose placeholder text &#8594; <span style="color:#009EDF">*ginipaybusiness.reviewscreen.usage.placeholder*</span> localized string
+- Recipient placeholder text &#8594; <span style="color:#009EDF">*ginihealth.reviewscreen.recipient.placeholder*</span> localized string
+- IBAN placeholder text &#8594; <span style="color:#009EDF">*ginihealth.reviewscreen.iban.placeholder*</span> localized string
+- Amount placeholder text &#8594; <span style="color:#009EDF">*ginihealth.reviewscreen.amount.placeholder*</span> localized string
+- Purpose placeholder text &#8594; <span style="color:#009EDF">*ginihealth.reviewscreen.usage.placeholder*</span> localized string
 
-- Recipient error label text &#8594; <span style="color:#009EDF">*ginipaybusiness.errors.failed.recipient.non.empty.check*</span> localized string
-- IBAN error label text &#8594; <span style="color:#009EDF">*ginipaybusiness.errors.failed.iban.non.empty.check*</span> localized string
-- IBAN validation error label text &#8594; <span style="color:#009EDF">*ginipaybusiness.errors.failed.iban.validation.check*</span> localized string
-- Amount error label text &#8594; <span style="color:#009EDF">*ginipaybusiness.errors.failed.amount.non.empty.check*</span> localized string
-- Purpose error label text &#8594; <span style="color:#009EDF">*ginipaybusiness.errors.failed.purpose.non.empty.check*</span> localized string
-- Default validation error label text &#8594; <span style="color:#009EDF">*ginipaybusiness.errors.failed.default.textfield.validation.check*</span> localized string
+- Recipient error label text &#8594; <span style="color:#009EDF">*ginihealth.errors.failed.recipient.non.empty.check*</span> localized string
+- IBAN error label text &#8594; <span style="color:#009EDF">*ginihealth.errors.failed.iban.non.empty.check*</span> localized string
+- IBAN validation error label text &#8594; <span style="color:#009EDF">*ginihealth.errors.failed.iban.validation.check*</span> localized string
+- Amount error label text &#8594; <span style="color:#009EDF">*ginihealth.errors.failed.amount.non.empty.check*</span> localized string
+- Purpose error label text &#8594; <span style="color:#009EDF">*ginihealth.errors.failed.purpose.non.empty.check*</span> localized string
+- Default validation error label text &#8594; <span style="color:#009EDF">*ginihealth.errors.failed.default.textfield.validation.check*</span> localized string
 
-- Amount placeholder text &#8594; <span style="color:#009EDF">*ginipaybusiness.reviewscreen.amount.placeholder*</span> localized string
-- Purpose placeholder text &#8594; <span style="color:#009EDF">*ginipaybusiness.reviewscreen.usage.placeholder*</span> localized string
+- Amount placeholder text &#8594; <span style="color:#009EDF">*ginihealth.reviewscreen.amount.placeholder*</span> localized string
+- Purpose placeholder text &#8594; <span style="color:#009EDF">*ginihealth.reviewscreen.usage.placeholder*</span> localized string
 
 ##### 4. Pay button
 - Background color &#8594; `GiniHealthConfiguration.payButtonBackgroundColor` using `GiniColor` with dark mode and light mode colors

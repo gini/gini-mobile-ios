@@ -66,7 +66,7 @@ public struct DataForReview {
     /**
      Returns a GiniHealth instance
      
-     - parameter giniApiLib: GiniApiLib initialized with client's credentials
+     - parameter giniApiLib: GiniHealthAPI initialized with client's credentials
      */
     public init(with giniApiLib: GiniHealthAPI){
         self.giniApiLib = giniApiLib
