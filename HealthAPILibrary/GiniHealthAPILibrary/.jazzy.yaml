@@ -22,8 +22,7 @@
          "name":"Documentation",
          "children":[
            "Installation",
-           "Integration",
-           "Customization guide",
+           "Getting started",
            "License"
          ]
       },

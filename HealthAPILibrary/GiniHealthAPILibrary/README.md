@@ -6,6 +6,7 @@
 
 [![Platform](https://img.shields.io/badge/platform-iOS-lightgrey.svg)]()
 [![Swift version](https://img.shields.io/badge/swift-5.0-orange.svg)]()
+[![Swift package manager](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat-square)]()
 
 
 The Gini Health API Library for iOS encapsulates the Gini Health API to allow you to easily integrate it into your app.
