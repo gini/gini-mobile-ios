@@ -3,7 +3,9 @@
       "-workspace",
       "GiniMobile.xcworkspace",
       "-scheme",
-      "GiniHealthSDK"
+      "GiniHealthSDK",
+      "-destination",
+      "platform=iOS Simulator,OS=15.0,name=iPhone 13"
    ],
    "author":"Gini GmbH",
    "author_url":"https://gini.net",
