@@ -8,9 +8,9 @@
 [![Swift package manager](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat-square)]()
 
 
-The Gini Health SDK provides components for uploading, reviewing and analyzing photos of invoices and remittance slips.
+The Gini Health API Library provides components for uploading, reviewing and analyzing photos of invoices and remittance slips.
 
-By integrating this SDK into your application you can allow your users to easily upload a picture of a document, review it and get analysis results from the Gini backend, create a payment and send it to the prefferable payment provider.
+By integrating this library into your application you can allow your users to easily upload a picture of a document, review it and get analysis results from the Gini backend, create a payment and send it to the prefferable payment provider.
 
 * [Installation](installation.html)
 * [Getting started](getting-started.html)
