@@ -1,4 +1,4 @@
-![Gini Health API Librarry for iOS](./GiniHealth_Logo.png?raw=true)
+![Gini Health API Library for iOS](./GiniHealth_Logo.png?raw=true)
 
 # Gini Health API Library for iOS
 
