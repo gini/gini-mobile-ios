@@ -14,8 +14,8 @@ theme: Documentation/jazzy-theme/
 output: Documentation/Api
 github_url: https://github.com/gini/gini-mobile-ios.git
 hide_documentation_coverage: 'true'
-documentation: Documentation/source/*.md
-abstract: Documentation/Sections/*.md
+documentation: HealthSDK/GiniHealthSDK/Documentation/source/*.md
+abstract: HealthSDK/GiniHealthSDK/Documentation/Sections/*.md
 custom_categories:
 - name: Documentation
   children:
@@ -28,10 +28,6 @@ custom_categories:
   children: []
 - name: Enums
   children: []
-- name: Extensions
-  children:
-  - Array
-  - Collection
 - name: Protocols
   children: []
 - name: Structs
