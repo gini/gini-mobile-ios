@@ -1,60 +1,37 @@
-{
-   "xcodebuild_arguments":[
-      "-workspace",
-      "GiniMobile.xcworkspace",
-      "-scheme",
-      "GiniHealthSDK",
-      "-destination",
-      "platform=iOS Simulator,OS=15.0,name=iPhone 13"
-   ],
-   "author":"Gini GmbH",
-   "author_url":"https://gini.net",
-   "module":"GiniHealthSDK",
-   "readme":"Documentation/Sections/Documentation.md",
-   "theme": "Documentation/jazzy-theme/",
-   "output":"Documentation/Api",
-   "github_url":"https://github.com/gini/gini-mobile-ios.git",
-   "hide_documentation_coverage":"true",
+---
+xcodebuild_arguments:
+- "-workspace"
+- GiniMobile.xcworkspace
+- "-scheme"
+- GiniHealthSDK
+- "-destination"
+- platform=iOS Simulator,OS=15.0,name=iPhone 13
+author: Gini GmbH
+author_url: https://gini.net
+module: GiniHealthSDK
+readme: Documentation/Sections/Documentation.md
+theme: Documentation/jazzy-theme/
+output: Documentation/Api
+github_url: https://github.com/gini/gini-mobile-ios.git
+hide_documentation_coverage: 'true'
+documentation: HealthSDK/GiniHealthSDK/Documentation/source/*.md
+abstract: HealthSDK/GiniHealthSDK/Documentation/Sections/*.md
+custom_categories:
+- name: Documentation
+  children:
+  - Installation
+  - Integration
+  - Customization guide
+  - Testing
+  - License
+- name: Classes
+  children: []
+- name: Enums
+  children: []
+- name: Protocols
+  children: []
+- name: Structs
+  children: []
+- name: Typealiases
+  children: []
 
-   "documentation":"Documentation/source/*.md",
-   "abstract":"Documentation/Sections/*.md",
-
-   "custom_categories":[
-      {
-         "name":"Documentation",
-         "children":[
-           "Installation",
-           "Integration",
-           "Customization guide",
-           "License"
-         ]
-      },
-      {
-         "name":"Classes",
-         "children":[]
-      },
-      {
-         "name":"Enums",
-         "children":[]
-      },
-      {
-         "name":"Extensions",
-         "children":[
-            "Array",
-            "Collection"
-         ]
-      },
-      {
-         "name":"Protocols",
-         "children":[]
-      },
-      {
-	       "name":"Structs",
-	       "children":[]
-      },
-      {
-         "name":"Typealiases",
-         "children":[]
-      }
-   ]
-}
