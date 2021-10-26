@@ -6,7 +6,7 @@ on:
   
 jobs:
   check:
-    uses: gini/gini-mobile-ios/.github/workflows/health-api-library.check.yml@pass-credentials-to-integration-tests
+    uses: gini/gini-mobile-ios/.github/workflows/health-api-library.check.yml@main
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
 
