@@ -33,6 +33,32 @@ Parameters:
   ci                    - set to "true" if running on a CI machine
 
 
+### ios build_docs
+```
+fastlane ios build_docs
+```
+Build a documentation.
+ 
+Parameters:
+  project_folder        - the folder of the project to be released (e.g., HealthAPILibrary, HealthSDK)
+  package_folder        - the folder to the swift package to be released (e.g., GiniHealthAPILibrary, GiniHealthAPILibraryPinning)
+
+### ios publish_docs
+```
+fastlane ios publish_docs
+```
+Publish a documentation to gh-pages.
+
+Parameters:
+  project_folder        - the folder of the project to be released (e.g., HealthAPILibrary, HealthSDK)
+  package_folder        - the folder to the swift package to be released (e.g., GiniHealthAPILibrary, GiniHealthAPILibraryPinning)
+  version_file_path     - the path to the file containing the package version
+  git_tag               - the git tag name used to release the project
+  repo_user             - the username to use for authentication
+  repo_password         - the password to use for authentication
+  ci                    - set to "true" if running on a CI machine
+
+
 
 ----
 

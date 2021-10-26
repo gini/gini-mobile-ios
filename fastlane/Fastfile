@@ -79,4 +79,104 @@ platform :ios do
       MESSAGE
 
   end
+
+  desc <<~DOC
+  Build a documentation.
+   
+  Parameters:
+    project_folder        - the folder of the project to be released (e.g., HealthAPILibrary, HealthSDK)
+    package_folder        - the folder to the swift package to be released (e.g., GiniHealthAPILibrary, GiniHealthAPILibraryPinning)
+  DOC
+  lane :build_docs do |options|
+    (project_folder, package_folder) = 
+      check_and_get_options(options, [:project_folder, :package_folder], UI)
+      
+    jazzy config: "#{project_folder}/#{package_folder}/.jazzy.yaml"
+
+    UI.success <<~MESSAGE
+      Documentation successfully built:
+        * available at    : #{project_folder}/#{package_folder}/Documentation/Api
+    MESSAGE
+
+  end
+
+  desc <<~DOC
+    Publish a documentation to gh-pages.
+    
+    Parameters:
+      project_folder        - the folder of the project to be released (e.g., HealthAPILibrary, HealthSDK)
+      package_folder        - the folder to the swift package to be released (e.g., GiniHealthAPILibrary, GiniHealthAPILibraryPinning)
+      version_file_path     - the path to the file containing the package version
+      git_tag               - the git tag name used to release the project
+      repo_user             - the username to use for authentication
+      repo_password         - the password to use for authentication
+      ci                    - set to "true" if running on a CI machine
+
+  DOC
+  lane :publish_docs do |options|
+    (project_folder, package_folder, version_file_path, git_tag, repo_user, repo_password, ci) = 
+      check_and_get_options(options, [:project_folder, :package_folder, :version_file_path, :git_tag, :repo_user, :repo_password, :ci], UI)
+
+      build_docs(project_folder: project_folder, package_folder: package_folder)
+
+      tag_version = get_project_version_from_tag(package_folder, git_tag, UI)
+      package_version = get_project_version_from_version_file(version_file_path, UI)
+
+      if tag_version != package_version
+        UI.abort_with_message!  <<~MESSAGE
+          Version in the tag is different from the project version:
+            * tag       : #{tag_version}
+            * project   : #{package_version}
+          
+          Change the version in the tag or update the project's version in "#{version_file_path}"
+        MESSAGE
+      end
+
+      UI.message <<~MESSAGE
+      Start docs release:
+        * project_folder      : #{project_folder}
+        * package_folder      : #{package_folder}
+        * git tag             : #{git_tag}
+        * destination branch  : gh-pages
+        * destination folder  : #{package_folder}/
+        * url                 : "https://developer.gini.net/gini-mobile-ios/#{package_folder}/index.html"
+     MESSAGE
+
+      if ci
+        configure_git_on_ci_machines("Team Mobile Schorsch", "team-mobile@gini.net")
+      end
+
+      # Clear gh-pages directory 
+      sh("rm -rf gh-pages")
+
+      # Clone
+      sh("git clone -b gh-pages https://#{repo_user}:#{repo_password}@github.com/gini/gini-mobile-ios.git gh-pages")
+
+      Dir.chdir("gh-pages") do
+        UI.message "Clear out the existing documentation"
+        sh("git rm -rf #{package_folder} --ignore-unmatch && git clean -fd")
+
+        UI.message "Copy over the current documentation"
+        sh("cp -R ../../#{project_folder}/#{package_folder}/Documentation/Api/ #{package_folder}")
+
+        UI.message "Disable jekyll"
+        sh("touch .nojekyll")
+
+        UI.message "Commit and push the new documentation"
+        sh("git add --all")
+        sh("git diff --quiet --exit-code --cached || git commit -m 'Release #{package_folder} documentation for tag #{git_tag}' --author='Team Mobile <team-mobile@gini.net>'")
+        sh("git push origin gh-pages")
+      end
+
+      UI.success <<~MESSAGE
+      Documentation released:
+        * project_folder      : #{project_folder}
+        * package_folder      : #{package_folder}
+        * git_tag             : #{git_tag}
+        * destination branch  : gh-pages
+        * destination folder  : #{package_folder}/
+        * url                 : https://developer.gini.net/gini-mobile-ios/#{package_folder}/index.html
+      MESSAGE
+  end
+  
 end
