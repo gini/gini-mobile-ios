@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>GiniHealthConfiguration Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/GiniHealthConfiguration" class="dashAnchor"></a>
+
+    <a title="GiniHealthConfiguration Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+        <img class="logo-icon" src="../img/logo.png"/>
+    
+        </a>
+        
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/gini/gini-mobile-ios.git">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">GiniHealthSDK Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      GiniHealthConfiguration Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Documentation.html">Documentation</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../installation.html">Installation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../integration.html">Integration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../customization-guide.html">Customization guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../testing.html">Testing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../license.html">License</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniColor.html">GiniColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniFont.html">GiniFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniHealth.html">GiniHealth</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniHealthConfiguration.html">GiniHealthConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/PaymentReviewModel.html">PaymentReviewModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/PaymentReviewViewController.html">PaymentReviewViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ZoomedImageView.html">ZoomedImageView</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ZoomedImageView/ScaleMode.html">– ScaleMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ZoomedImageView/Offset.html">– Offset</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Global Variables.html">Other Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Global%20Variables.html#/s:13GiniHealthSDK0aB10SDKVersionSSvp">GiniHealthSDKVersion</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Enumerations.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniHealthError.html">GiniHealthError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UIColor.html">UIColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UITextField.html">UITextField</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UIView.html">UIView</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Functions.html">Other Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Functions.html#/s:13GiniHealthSDK04giniB6BundleSo8NSBundleCyF">giniHealthBundle()</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniHealthDelegate.html">GiniHealthDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ImageScrollViewDelegate.html">ImageScrollViewDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Structures.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/DataForReview.html">DataForReview</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Structs.html#/s:13GiniHealthSDK27PageCollectionCellViewModelV">PageCollectionCellViewModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentInfo.html">PaymentInfo</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>GiniHealthConfiguration</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">GiniHealthConfiguration</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                </div>
+              </div>
+            <p>The <code>GiniHealthConfiguration</code> class allows customizations to the look of the Gini Health SDK.
+If there are limitations regarding which API can be used, this is clearly stated for the specific attribute.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    Text can also be set by using the appropriate keys in a <code>Localizable.strings</code> file in the projects bundle.
+    The library will prefer whatever value is set in the following order: attribute in configuration,
+    key in strings file in project bundle, key in strings file in <code><a href="../Classes/GiniHealth.html">GiniHealth</a></code> bundle.
+
+</div><div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    Images can only be set by providing images with the same filename in an assets file or as individual files
+    in the projects bundle. The library will prefer whatever value is set in the following order: asset file
+    in project bundle, asset file in <code><a href="../Classes/GiniHealth.html">GiniHealth</a></code> bundle. See the avalible images for overriding in <code>GiniImages.xcassets</code>.
+
+</div>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(im)init"></a>
+                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(im)init">init()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns a <code>GiniHealthConfiguration</code> instance which allows to set individual configurations
+to change the look and feel of the Gini Health SDK.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">override</span> <span class="nf">init</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Instance of <code>GiniHealthConfiguration</code>.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentScreenBackgroundColor"></a>
+                    <a name="//apple_ref/swift/Property/paymentScreenBackgroundColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentScreenBackgroundColor">paymentScreenBackgroundColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the backgroundColor on the payment review screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">paymentScreenBackgroundColor</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniColor.html">GiniColor</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)inputFieldsContainerBackgroundColor"></a>
+                    <a name="//apple_ref/swift/Property/inputFieldsContainerBackgroundColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)inputFieldsContainerBackgroundColor">inputFieldsContainerBackgroundColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the backgroundColor on the payment review screen for input fields container</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">inputFieldsContainerBackgroundColor</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniColor.html">GiniColor</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)payButtonBackgroundColor"></a>
+                    <a name="//apple_ref/swift/Property/payButtonBackgroundColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)payButtonBackgroundColor">payButtonBackgroundColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the backgroundColor  on the payment review screen for pay button</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">payButtonBackgroundColor</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniColor.html">GiniColor</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)payButtonTextColor"></a>
+                    <a name="//apple_ref/swift/Property/payButtonTextColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)payButtonTextColor">payButtonTextColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the text color of the pay button on the payment review screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">payButtonTextColor</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniColor.html">GiniColor</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)payButtonCornerRadius"></a>
+                    <a name="//apple_ref/swift/Property/payButtonCornerRadius" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)payButtonCornerRadius">payButtonCornerRadius</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the corner radius of the pay button on the payment review screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">payButtonCornerRadius</span><span class="p">:</span> <span class="kt">CGFloat</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentInputFieldCornerRadius"></a>
+                    <a name="//apple_ref/swift/Property/paymentInputFieldCornerRadius" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentInputFieldCornerRadius">paymentInputFieldCornerRadius</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the corner radius of the payment input fields on the payment review screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">paymentInputFieldCornerRadius</span><span class="p">:</span> <span class="kt">CGFloat</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentInputFieldBorderWidth"></a>
+                    <a name="//apple_ref/swift/Property/paymentInputFieldBorderWidth" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentInputFieldBorderWidth">paymentInputFieldBorderWidth</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the border width of the payment input fields on the payment review screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">paymentInputFieldBorderWidth</span><span class="p">:</span> <span class="kt">CGFloat</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentInputFieldSelectionStyleBorderWidth"></a>
+                    <a name="//apple_ref/swift/Property/paymentInputFieldSelectionStyleBorderWidth" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentInputFieldSelectionStyleBorderWidth">paymentInputFieldSelectionStyleBorderWidth</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the border width of the payment input field with selection style on the payment review screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">paymentInputFieldSelectionStyleBorderWidth</span><span class="p">:</span> <span class="kt">CGFloat</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentInputFieldErrorStyleBorderWidth"></a>
+                    <a name="//apple_ref/swift/Property/paymentInputFieldErrorStyleBorderWidth" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentInputFieldErrorStyleBorderWidth">paymentInputFieldErrorStyleBorderWidth</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the border width of the payment input field with error style on the payment review screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">paymentInputFieldErrorStyleBorderWidth</span><span class="p">:</span> <span class="kt">CGFloat</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentInputFieldErrorStyleColor"></a>
+                    <a name="//apple_ref/swift/Property/paymentInputFieldErrorStyleColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentInputFieldErrorStyleColor">paymentInputFieldErrorStyleColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the error style color and error text color for the payment input fields on the payment review screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">paymentInputFieldErrorStyleColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentInputFieldSelectionStyleColor"></a>
+                    <a name="//apple_ref/swift/Property/paymentInputFieldSelectionStyleColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentInputFieldSelectionStyleColor">paymentInputFieldSelectionStyleColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the selection style color for the payment input fields on the payment review screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">paymentInputFieldSelectionStyleColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentInputFieldSelectionBackgroundColor"></a>
+                    <a name="//apple_ref/swift/Property/paymentInputFieldSelectionBackgroundColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentInputFieldSelectionBackgroundColor">paymentInputFieldSelectionBackgroundColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the selection background color for the payment input fields on the payment review screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">paymentInputFieldSelectionBackgroundColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentInputFieldBackgroundColor"></a>
+                    <a name="//apple_ref/swift/Property/paymentInputFieldBackgroundColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentInputFieldBackgroundColor">paymentInputFieldBackgroundColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the background color of the payment input fields on the payment review screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">paymentInputFieldBackgroundColor</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniColor.html">GiniColor</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentInputFieldTextColor"></a>
+                    <a name="//apple_ref/swift/Property/paymentInputFieldTextColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentInputFieldTextColor">paymentInputFieldTextColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the text color of the payment input fields on the payment review screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">paymentInputFieldTextColor</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniColor.html">GiniColor</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentInputFieldPlaceholderTextColor"></a>
+                    <a name="//apple_ref/swift/Property/paymentInputFieldPlaceholderTextColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)paymentInputFieldPlaceholderTextColor">paymentInputFieldPlaceholderTextColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the placeholder text color of the payment input fields on the payment review screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">paymentInputFieldPlaceholderTextColor</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniColor.html">GiniColor</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)bankButtonTextColor"></a>
+                    <a name="//apple_ref/swift/Property/bankButtonTextColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)bankButtonTextColor">bankButtonTextColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the text color of the bank button on the payment review screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">bankButtonTextColor</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniColor.html">GiniColor</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)customFont"></a>
+                    <a name="//apple_ref/swift/Property/customFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)customFont">customFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font used in the screens by default.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">customFont</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniFont.html">GiniFont</a></span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)loadingIndicatorColor"></a>
+                    <a name="//apple_ref/swift/Property/loadingIndicatorColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)loadingIndicatorColor">loadingIndicatorColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the color of the loading indicator on the review  screen to the specified color.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">loadingIndicatorColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)loadingIndicatorStyle"></a>
+                    <a name="//apple_ref/swift/Property/loadingIndicatorStyle" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)loadingIndicatorStyle">loadingIndicatorStyle</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the style of the loading indicator on the review screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">loadingIndicatorStyle</span><span class="p">:</span> <span class="kt">UIActivityIndicatorView</span><span class="o">.</span><span class="kt">Style</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)loadingIndicatorScale"></a>
+                    <a name="//apple_ref/swift/Property/loadingIndicatorScale" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)loadingIndicatorScale">loadingIndicatorScale</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the scale of the loading indicator on the review screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">loadingIndicatorScale</span><span class="p">:</span> <span class="kt">CGFloat</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)currentPageIndicatorTintColor"></a>
+                    <a name="//apple_ref/swift/Property/currentPageIndicatorTintColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)currentPageIndicatorTintColor">currentPageIndicatorTintColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the current page indicator on the review screen to the specified color.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">currentPageIndicatorTintColor</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniColor.html">GiniColor</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)pageIndicatorTintColor"></a>
+                    <a name="//apple_ref/swift/Property/pageIndicatorTintColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)pageIndicatorTintColor">pageIndicatorTintColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the page indicator on the review screen to the specified color.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">pageIndicatorTintColor</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniColor.html">GiniColor</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)showPaymentReviewCloseButton"></a>
+                    <a name="//apple_ref/swift/Property/showPaymentReviewCloseButton" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(cs)GiniHealthConfiguration(py)showPaymentReviewCloseButton">showPaymentReviewCloseButton</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Set to <code>true</code> to show a close button on the payment review screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">showPaymentReviewCloseButton</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2021 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2021-10-26)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
