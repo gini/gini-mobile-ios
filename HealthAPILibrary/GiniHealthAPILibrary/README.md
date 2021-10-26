@@ -1,6 +1,4 @@
-<p align="center">
-<img src="./GiniHealth_Logo.png" width="250">
-</p>
+![Gini Health API Librarry for iOS](./GiniHealth_Logo.png?raw=true)
 
 # Gini Health API Library for iOS
 
@@ -15,7 +13,7 @@ The Gini Health API provides an information extraction service for analyzing hea
 
 ## Documentation
 
-Further documentation with information about how install and integrate it can be found in our [website](https://developer.gini.net/gini-mobile-ios/GiniHealthAPILibrary/).
+Further documentation with information about how install and integrate it can be found in our [website](https://developer.gini.net/gini-mobile-ios/GiniHealthAPILibrary/index.html).
 
 ## Requirements
 
