@@ -27,4 +27,14 @@
          location = "group:HealthAPILibrary/GiniHealthAPILibrary">
       </FileRef>
    </Group>
+   <Group
+      location = "container:"
+      name = "GiniBankAPILibrary">
+      <FileRef
+         location = "group:BankAPILibrary/GiniBankAPILibraryPinning">
+      </FileRef>
+      <FileRef
+         location = "group:BankAPILibrary/GiniBankAPILibrary">
+      </FileRef>
+   </Group>
 </Workspace>

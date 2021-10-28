@@ -1,0 +1,13 @@
+{
+    "box": {
+        "height": 9.0,
+        "left": 516.0,
+        "page": 1,
+        "top": 588.0,
+        "width": 42.0
+    },
+    "entity": "amount",
+    "value": "24.99:EUR",
+    "candidates": "amounts",
+    "name": "amountToPay"
+}

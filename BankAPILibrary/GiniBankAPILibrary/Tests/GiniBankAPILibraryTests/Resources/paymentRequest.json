@@ -1,0 +1,15 @@
+{
+    "paymentProvider": "b09ef70a-490f-11eb-952e-9bc6f4646c57",
+    "requesterUri": "ginipay-test://paymentRequester",
+    "iban": "DE78370501980020008850",
+    "bic": "COLSDE33",
+    "amount": "1.00:EUR",
+    "purpose": "ReNr 12345",
+    "recipient": "Uno Flüchtlingshilfe",
+    "createdAt": "2021-03-23T08:40:01.830403",
+    "status": "open",
+    "_links": {
+        "self": "https://pay-api.gini.net/paymentRequests/118edf41-102a-4b40-8753-df2f0634cb86",
+        "paymentProvider": "https://pay-api.gini.net/paymentProviders/b09ef70a-490f-11eb-952e-9bc6f4646c57"
+    }
+}
