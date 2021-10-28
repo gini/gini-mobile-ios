@@ -6,7 +6,7 @@ on:
   
 jobs:
   check:
-    uses: gini/gini-mobile-ios/.github/workflows/Bank-api-library.check.yml@main
+    uses: gini/gini-mobile-ios/.github/workflows/bank-api-library.check.yml@PIA-1949_bank_api_library
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
 
