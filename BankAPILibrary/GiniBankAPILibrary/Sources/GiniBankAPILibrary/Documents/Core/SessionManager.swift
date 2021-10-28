@@ -6,7 +6,7 @@
 //
 
 import Foundation
-#if PINNING_AVAILABLE
+#if canImport(TrustKit)
 import TrustKit
 #endif
 
@@ -73,7 +73,7 @@ final class SessionManager: NSObject {
         self.keyStore = keyStore
         self.alternativeTokenSource = alternativeTokenSource
         self.session = urlSession
-        #if PINNING_AVAILABLE
+        #if canImport(TrustKit)
         self.session.delegate = self
         #endif
         self.userDomain = userDomain
@@ -354,7 +354,7 @@ private extension SessionManager {
 
 // MARK: - URLSessionDelegate
 
-#if PINNING_AVAILABLE
+#if canImport(TrustKit)
 
 extension SessionManager: URLSessionDelegate {
     func urlSession(_ session: URLSession,
