@@ -1,0 +1,33 @@
+---
+xcodebuild_arguments:
+- "-workspace"
+- GiniMobile.xcworkspace
+- "-scheme"
+- GiniBankAPILibrary
+author: Gini GmbH
+author_url: https://gini.net
+module: GiniBankAPILibrary
+readme: README.md
+theme: Documentation/jazzy-theme/
+output: Documentation/Api
+github_url: https://github.com/gini/gini-mobile-ios.git
+hide_documentation_coverage: 'true'
+documentation: BankAPILibrary/GiniBankAPILibrary/Documentation/source/*.md
+abstract: BankAPILibrary/GiniBankAPILibrary/Documentation/sections/*.md
+custom_categories:
+- name: Documentation
+  children:
+  - Installation
+  - Getting started
+  - License
+- name: Classes
+  children: []
+- name: Enums
+  children: []
+- name: Protocols
+  children: []
+- name: Structs
+  children: []
+- name: Typealiases
+  children: []
+
