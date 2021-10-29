@@ -1,0 +1,22 @@
+{
+  "images" : [
+    {
+      "idiom" : "universal",
+      "filename" : "mobile_onboarding_screen_4_illustration.pdf"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "mobile_onboarding_screen_4_illustration-dark.pdf",
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ]
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  }
+}

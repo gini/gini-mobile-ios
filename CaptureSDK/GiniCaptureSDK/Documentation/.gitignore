@@ -1,0 +1,10 @@
+build/
+src/
+virtualenv/
+
+.DS_Store
+
+.idea/
+ENV/
+
+.project
