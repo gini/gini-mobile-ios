@@ -1,0 +1,65 @@
+{
+    "candidates": {
+    },
+    "extractions": {
+        "amountToPay": {
+            "box": {
+                "height": 8.0,
+                "left": 545.0,
+                "page": 1,
+                "top": 586.0,
+                "width": 17.0
+            },
+            "candidates": "amounts",
+            "entity": "amount",
+            "value": "5.60:EUR"
+        },
+        "iban": {
+            "box": {
+                "height": 7.0,
+                "left": 447.0,
+                "page": 1,
+                "top": 746.0,
+                "width": 100.0
+            },
+            "candidates": "ibans",
+            "entity": "iban",
+            "value": "DE68130300000017850360"
+        },
+        "reference": {
+            "entity": "reference",
+            "value": "ReNr 123, KdNr 32"
+        }
+    },
+    "compoundExtractions": {
+        "lineItems": [
+            {
+              "artNumber": {
+                "value": "10101",
+                "entity": "text" ,
+                "box": {
+                    "height": 7.0,
+                    "left": 55.0,
+                    "page": 1,
+                    "top": 546.0,
+                    "width": 100.0
+                }
+              },
+              "quantity": {
+                "value": "12",
+                "entity": "numeric"
+              }
+            },
+            {
+              "artNumber": {
+                "value": "10103",
+                "entity": "text"
+              },
+              "quantity": {
+                "value": "3",
+                "entity": "numeric"
+              }
+            }
+        ]
+    }
+}
