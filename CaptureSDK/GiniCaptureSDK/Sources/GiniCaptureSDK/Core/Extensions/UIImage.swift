@@ -7,6 +7,10 @@
 
 import UIKit
 
+    public func giniCaptureBundle() -> Bundle {
+        Bundle.module
+    }
+
 extension UIImage {
     convenience init?(qrData data: Data) {
         let filter = CIFilter(name: "CIQRCodeGenerator")
@@ -29,9 +33,16 @@ extension UIImage {
         }
     }
     
-    convenience init(bundleName: StaticString) {
-        self.init(named: "\(bundleName)", in: Bundle(for: GiniCapture.self), compatibleWith: nil)!
-    }
+   /**
+    Returns an optional `UIImage` instance with the given `name` preferably from the Capture SDK's bundle.
+    
+    - parameter name: The name of the image file without file extension.
+    
+    - returns: Image if found with name.
+    */
+   func UIImageNamedPreferredSDK(named name: String) -> UIImage? {
+       return UIImage(named: name, in: giniCaptureBundle(), compatibleWith: nil)
+   }
     
     func rotated90Degrees() -> UIImage? {
         guard let cgImage = self.cgImage else { return nil }

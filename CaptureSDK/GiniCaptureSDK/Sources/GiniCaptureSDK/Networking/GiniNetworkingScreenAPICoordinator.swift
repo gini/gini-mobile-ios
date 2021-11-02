@@ -40,7 +40,7 @@ import GiniBankAPILibrary
     public weak var resultsDelegate: GiniCaptureResultsDelegate?
     public let documentService: DocumentServiceProtocol
     
-    init(client: Client,
+    public init(client: Client,
          resultsDelegate: GiniCaptureResultsDelegate,
          giniConfiguration: GiniConfiguration,
          documentMetadata: Document.Metadata?,
