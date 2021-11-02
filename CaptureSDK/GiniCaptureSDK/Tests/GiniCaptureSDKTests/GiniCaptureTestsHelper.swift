@@ -12,7 +12,9 @@ import UIKit
 final class GiniCaptureTestsHelper {
     
     class func fileData(named name: String, fileExtension: String) -> Data? {
-        return try? Data(contentsOf: urlFromFile(named: name, fileExtension: fileExtension)!)
+        let fileURLPath: String? = Bundle.module
+                .path(forResource: name, ofType: fileExtension)
+        return try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
     }
     
     class func loadImage(named name: String, fileExtension: String = "jpg") -> UIImage {
@@ -41,6 +43,7 @@ final class GiniCaptureTestsHelper {
     
     class private func loadPage(named name: String,
                                 fileExtension: String) -> GiniCapturePage {
+
         let data = fileData(named: name, fileExtension: fileExtension)!
         let builder = GiniCaptureDocumentBuilder(documentSource: .external)
         return GiniCapturePage(document: builder.build(with: data)!)

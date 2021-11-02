@@ -5,8 +5,11 @@
 //  Created by Enrique del Pozo Gómez on 2/16/18.
 //
 
-import Foundation
+import UIKit
 import GiniBankAPILibrary
+import GiniBankAPILibraryPinning
+import GiniCaptureSDK
+import TrustKit
 
 extension GiniCapture {
     /**

@@ -6,9 +6,12 @@
 //
 
 import Foundation
+import GiniBankAPILibraryPinning
 import GiniBankAPILibrary
+import TrustKit
+import GiniCaptureSDK
 
-extension GiniNetworkingScreenAPICoordinator {
+public extension GiniNetworkingScreenAPICoordinator {
     convenience init(client: Client,
                      resultsDelegate: GiniCaptureResultsDelegate,
                      giniConfiguration: GiniConfiguration,
