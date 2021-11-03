@@ -43,8 +43,8 @@
 		F42F027D26D65FC0003A3695 /* GalleryManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42F027C26D65FC0003A3695 /* GalleryManagerTests.swift */; };
 		F42F027F26D66029003A3695 /* GalleryCoordinatorDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42F027E26D66029003A3695 /* GalleryCoordinatorDelegateTests.swift */; };
 		F42F028126D660B3003A3695 /* AlbumsPickerViewControllerDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42F028026D660B3003A3695 /* AlbumsPickerViewControllerDelegateTests.swift */; };
-		F4B62C2227314B4C00C607D4 /* GiniBankAPILibrary in Frameworks */ = {isa = PBXBuildFile; productRef = F4B62C2127314B4C00C607D4 /* GiniBankAPILibrary */; };
-		F4B62C2427314B4C00C607D4 /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F4B62C2327314B4C00C607D4 /* GiniCaptureSDK */; };
+		F47A84172733093000DDBF9C /* GiniBankAPILibrary in Frameworks */ = {isa = PBXBuildFile; productRef = F47A84162733093000DDBF9C /* GiniBankAPILibrary */; };
+		F47A84192733093800DDBF9C /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F47A84182733093800DDBF9C /* GiniCaptureSDK */; };
 		F4BB7CEE2695D66C003FD77E /* CustomMenuItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BB7CED2695D66C003FD77E /* CustomMenuItemViewController.swift */; };
 		F4BB7CF02695D96B003FD77E /* CustomMenuItems.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4BB7CEF2695D96B003FD77E /* CustomMenuItems.storyboard */; };
 		F4E561552686315100415EE8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4E561572686315100415EE8 /* Localizable.strings */; };
@@ -113,8 +113,8 @@
 		F42F027C26D65FC0003A3695 /* GalleryManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryManagerTests.swift; sourceTree = "<group>"; };
 		F42F027E26D66029003A3695 /* GalleryCoordinatorDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryCoordinatorDelegateTests.swift; sourceTree = "<group>"; };
 		F42F028026D660B3003A3695 /* AlbumsPickerViewControllerDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsPickerViewControllerDelegateTests.swift; sourceTree = "<group>"; };
-		F4B62C1E27314B2800C607D4 /* GiniBankAPILibrary */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniBankAPILibrary; path = ../../../BankAPILibrary/GiniBankAPILibrary; sourceTree = "<group>"; };
-		F4B62C1F27314B3700C607D4 /* GiniCaptureSDK */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniCaptureSDK; path = ../../GiniCaptureSDK; sourceTree = "<group>"; };
+		F47A8414273308EB00DDBF9C /* GiniBankAPILibrary */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniBankAPILibrary; path = ../../BankAPILibrary/GiniBankAPILibrary; sourceTree = "<group>"; };
+		F47A84152733091000DDBF9C /* GiniCaptureSDK */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniCaptureSDK; path = ../GiniCaptureSDK; sourceTree = "<group>"; };
 		F4BB7CED2695D66C003FD77E /* CustomMenuItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMenuItemViewController.swift; sourceTree = "<group>"; };
 		F4BB7CEF2695D96B003FD77E /* CustomMenuItems.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CustomMenuItems.storyboard; sourceTree = "<group>"; };
 		F4E561562686315100415EE8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -133,8 +133,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4B62C2227314B4C00C607D4 /* GiniBankAPILibrary in Frameworks */,
-				F4B62C2427314B4C00C607D4 /* GiniCaptureSDK in Frameworks */,
+				F47A84172733093000DDBF9C /* GiniBankAPILibrary in Frameworks */,
+				F47A84192733093800DDBF9C /* GiniCaptureSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,8 +285,8 @@
 		F4B62C1D27314B2800C607D4 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				F4B62C1E27314B2800C607D4 /* GiniBankAPILibrary */,
-				F4B62C1F27314B3700C607D4 /* GiniCaptureSDK */,
+				F47A8414273308EB00DDBF9C /* GiniBankAPILibrary */,
+				F47A84152733091000DDBF9C /* GiniCaptureSDK */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -334,8 +334,8 @@
 			);
 			name = GiniCaptureSDKExample;
 			packageProductDependencies = (
-				F4B62C2127314B4C00C607D4 /* GiniBankAPILibrary */,
-				F4B62C2327314B4C00C607D4 /* GiniCaptureSDK */,
+				F47A84162733093000DDBF9C /* GiniBankAPILibrary */,
+				F47A84182733093800DDBF9C /* GiniCaptureSDK */,
 			);
 			productName = GiniVision;
 			productReference = 1FA970372149409600B776B8 /* GiniCaptureSDKExample.app */;
@@ -966,11 +966,11 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		F4B62C2127314B4C00C607D4 /* GiniBankAPILibrary */ = {
+		F47A84162733093000DDBF9C /* GiniBankAPILibrary */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GiniBankAPILibrary;
 		};
-		F4B62C2327314B4C00C607D4 /* GiniCaptureSDK */ = {
+		F47A84182733093800DDBF9C /* GiniCaptureSDK */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GiniCaptureSDK;
 		};
