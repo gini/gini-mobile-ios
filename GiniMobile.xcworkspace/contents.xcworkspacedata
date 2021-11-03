@@ -44,10 +44,10 @@
       location = "container:"
       name = "GiniCaptureSDK">
       <FileRef
-         location = "group:CaptureSDK/GiniCaptureSDKPinning">
+         location = "group:CaptureSDK/GiniCaptureSDKExample/GiniCaptureSDKExample.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:CaptureSDK/GiniCaptureSDKExample/GiniCapture.xcodeproj">
+         location = "group:CaptureSDK/GiniCaptureSDKPinning">
       </FileRef>
       <FileRef
          location = "group:CaptureSDK/GiniCaptureSDK">

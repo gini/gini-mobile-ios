@@ -6,9 +6,9 @@
 //  Copyright © 2017 Gini GmbH. All rights reserved.
 //
 
-import UIKit
-import GiniCaptureSDK
 import AVFoundation
+import GiniCaptureSDK
+import UIKit
 
 protocol SettingsViewControllerDelegate: AnyObject {
     func settings(settingViewController: SettingsViewController,
@@ -16,15 +16,14 @@ protocol SettingsViewControllerDelegate: AnyObject {
 }
 
 final class SettingsViewController: UIViewController {
-    
     weak var delegate: SettingsViewControllerDelegate?
     var giniConfiguration: GiniConfiguration!
 
-    @IBOutlet weak var fileImportControl: UISegmentedControl!
-    @IBOutlet weak var openWithSwitch: UISwitch!
-    @IBOutlet weak var qrCodeScanningSwitch: UISwitch!
-    @IBOutlet weak var multipageSwitch: UISwitch!
-    @IBOutlet weak var flashToggleSwitch: UISwitch!
+    @IBOutlet var fileImportControl: UISegmentedControl!
+    @IBOutlet var openWithSwitch: UISwitch!
+    @IBOutlet var qrCodeScanningSwitch: UISwitch!
+    @IBOutlet var multipageSwitch: UISwitch!
+    @IBOutlet var flashToggleSwitch: UISwitch!
     @IBAction func fileImportOptions(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
         case 0:
@@ -35,39 +34,38 @@ final class SettingsViewController: UIViewController {
             giniConfiguration.fileImportSupportedTypes = .pdf_and_images
         default: return
         }
-        
+
         delegate?.settings(settingViewController: self, didChangeConfiguration: giniConfiguration)
     }
-    
+
     @IBAction func closeButton(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
-    
+
     @IBAction func openWithSwitch(_ sender: UISwitch) {
         giniConfiguration.openWithEnabled = sender.isOn
         delegate?.settings(settingViewController: self, didChangeConfiguration: giniConfiguration)
     }
-    
+
     @IBAction func qrCodeScanningSwitch(_ sender: UISwitch) {
         giniConfiguration.qrCodeScanningEnabled = sender.isOn
         delegate?.settings(settingViewController: self, didChangeConfiguration: giniConfiguration)
     }
-    
+
     @IBAction func multipageSwitch(_ sender: UISwitch) {
         giniConfiguration.multipageEnabled = sender.isOn
         delegate?.settings(settingViewController: self, didChangeConfiguration: giniConfiguration)
-
     }
-    
+
     @IBAction func flashToggleSwitch(_ sender: UISwitch) {
         giniConfiguration.flashToggleEnabled = sender.isOn
         delegate?.settings(settingViewController: self, didChangeConfiguration: giniConfiguration)
     }
-    
+
     @IBAction func resetUserDefaults(_ sender: Any) {
         UserDefaults().removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         openWithSwitch.setOn(giniConfiguration.openWithEnabled, animated: false)
@@ -77,7 +75,7 @@ final class SettingsViewController: UIViewController {
         flashToggleSwitch.isEnabled = AVCaptureDevice.default(.builtInWideAngleCamera,
                                                               for: .video,
                                                               position: .back)?.hasFlash ?? false
-        
+
         switch giniConfiguration.fileImportSupportedTypes {
         case .none:
             fileImportControl.selectedSegmentIndex = 0

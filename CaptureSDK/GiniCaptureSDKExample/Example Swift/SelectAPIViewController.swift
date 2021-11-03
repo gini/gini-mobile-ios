@@ -6,8 +6,8 @@
 //  Copyright © 2016 Gini. All rights reserved.
 //
 
-import UIKit
 import GiniCaptureSDK
+import UIKit
 
 protocol SelectAPIViewControllerDelegate: AnyObject {
     func selectAPI(viewController: SelectAPIViewController, didSelectApi api: GiniCaptureAPIType)
@@ -27,22 +27,23 @@ enum GiniCaptureAPIType {
  and how to process it using the Gini SDK for iOS.
  */
 final class SelectAPIViewController: UIViewController {
-    
-    @IBOutlet weak var metaInformationButton: UIButton!
-    
+    @IBOutlet var metaInformationButton: UIButton!
+
     weak var delegate: SelectAPIViewControllerDelegate?
-        
+
     var clientId: String?
-    
+
     // MARK: View life cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-                
-        let metaTitle = "Gini Capture SDK: (\(GiniCapture.versionString)) / Client id: \(self.clientId ?? "")"
+
+        let metaTitle = "Gini Capture SDK: (\(GiniCapture.versionString)) / Client id: \(clientId ?? "")"
         metaInformationButton.setTitle(metaTitle, for: .normal)
     }
-    
+
     // MARK: User interaction
+
     @IBAction func launchScreenAPI(_ sender: Any) {
         delegate?.selectAPI(viewController: self, didSelectApi: .screen)
     }
@@ -50,9 +51,8 @@ final class SelectAPIViewController: UIViewController {
     @IBAction func launchComponentAPI(_ sender: Any) {
         delegate?.selectAPI(viewController: self, didSelectApi: .component)
     }
-    
+
     @IBAction func launchSettings(_ sender: Any) {
         delegate?.selectAPI(viewController: self, didTapSettings: ())
     }
-    
 }

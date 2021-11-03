@@ -93,9 +93,9 @@
 		1F9411871FB9F4AE0019DECD /* ComponentAPICoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentAPICoordinatorTests.swift; sourceTree = "<group>"; };
 		1F94118A1FBAEB7D0019DECD /* ScreenAPICoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinatorTests.swift; sourceTree = "<group>"; };
 		1F9466C4203702E600F52B40 /* CredentialsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
-		1FA970372149409600B776B8 /* Example Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Example Swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1FA970392149409600B776B8 /* Example_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Example_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		1FA9703A2149409600B776B8 /* GiniCapture_UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniCapture_UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1FA970372149409600B776B8 /* GiniCaptureSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniCaptureSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1FA970392149409600B776B8 /* GiniCaptureSDKExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniCaptureSDKExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1FA9703A2149409600B776B8 /* GiniCaptureSDKExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniCaptureSDKExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FEEADA81F793F84005BA159 /* ComponentAPICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentAPICoordinator.swift; sourceTree = "<group>"; };
 		1FEED2931F6AC0440068E8AB /* testPDF.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = testPDF.pdf; sourceTree = "<group>"; };
 		1FF3A41C20C6C8E700081A32 /* DocumentServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentServiceMock.swift; sourceTree = "<group>"; };
@@ -214,9 +214,9 @@
 				607FACD21AFB9204008FA782 /* Example Swift */,
 				607FACE81AFB9204008FA782 /* Tests */,
 				0A3B96531D478BF700BFEF05 /* UITests */,
-				1FA970372149409600B776B8 /* Example Swift.app */,
-				1FA970392149409600B776B8 /* Example_Tests.xctest */,
-				1FA9703A2149409600B776B8 /* GiniCapture_UITests.xctest */,
+				1FA970372149409600B776B8 /* GiniCaptureSDKExample.app */,
+				1FA970392149409600B776B8 /* GiniCaptureSDKExampleTests.xctest */,
+				1FA9703A2149409600B776B8 /* GiniCaptureSDKExampleUITests.xctest */,
 				F4B62C2027314B4C00C607D4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -301,9 +301,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		0A3B96511D478BF700BFEF05 /* GiniCapture_UITests */ = {
+		0A3B96511D478BF700BFEF05 /* GiniCaptureSDKExampleUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0A3B965B1D478BF700BFEF05 /* Build configuration list for PBXNativeTarget "GiniCapture_UITests" */;
+			buildConfigurationList = 0A3B965B1D478BF700BFEF05 /* Build configuration list for PBXNativeTarget "GiniCaptureSDKExampleUITests" */;
 			buildPhases = (
 				0A3B964E1D478BF700BFEF05 /* Sources */,
 				0A3B964F1D478BF700BFEF05 /* Frameworks */,
@@ -314,14 +314,14 @@
 			dependencies = (
 				0A3B96581D478BF700BFEF05 /* PBXTargetDependency */,
 			);
-			name = GiniCapture_UITests;
+			name = GiniCaptureSDKExampleUITests;
 			productName = GiniVision_UITests;
-			productReference = 1FA9703A2149409600B776B8 /* GiniCapture_UITests.xctest */;
+			productReference = 1FA9703A2149409600B776B8 /* GiniCaptureSDKExampleUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		607FACCF1AFB9204008FA782 /* Example Swift */ = {
+		607FACCF1AFB9204008FA782 /* GiniCaptureSDKExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "Example Swift" */;
+			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "GiniCaptureSDKExample" */;
 			buildPhases = (
 				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
@@ -332,18 +332,18 @@
 			);
 			dependencies = (
 			);
-			name = "Example Swift";
+			name = GiniCaptureSDKExample;
 			packageProductDependencies = (
 				F4B62C2127314B4C00C607D4 /* GiniBankAPILibrary */,
 				F4B62C2327314B4C00C607D4 /* GiniCaptureSDK */,
 			);
 			productName = GiniVision;
-			productReference = 1FA970372149409600B776B8 /* Example Swift.app */;
+			productReference = 1FA970372149409600B776B8 /* GiniCaptureSDKExample.app */;
 			productType = "com.apple.product-type.application";
 		};
-		607FACE41AFB9204008FA782 /* Example_Tests */ = {
+		607FACE41AFB9204008FA782 /* GiniCaptureSDKExampleTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "Example_Tests" */;
+			buildConfigurationList = 607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "GiniCaptureSDKExampleTests" */;
 			buildPhases = (
 				607FACE11AFB9204008FA782 /* Sources */,
 				607FACE21AFB9204008FA782 /* Frameworks */,
@@ -354,9 +354,9 @@
 			dependencies = (
 				607FACE71AFB9204008FA782 /* PBXTargetDependency */,
 			);
-			name = Example_Tests;
+			name = GiniCaptureSDKExampleTests;
 			productName = Tests;
-			productReference = 1FA970392149409600B776B8 /* Example_Tests.xctest */;
+			productReference = 1FA970392149409600B776B8 /* GiniCaptureSDKExampleTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -395,7 +395,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "GiniCapture" */;
+			buildConfigurationList = 607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "GiniCaptureSDKExample" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -409,9 +409,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				607FACCF1AFB9204008FA782 /* Example Swift */,
-				607FACE41AFB9204008FA782 /* Example_Tests */,
-				0A3B96511D478BF700BFEF05 /* GiniCapture_UITests */,
+				607FACCF1AFB9204008FA782 /* GiniCaptureSDKExample */,
+				607FACE41AFB9204008FA782 /* GiniCaptureSDKExampleTests */,
+				0A3B96511D478BF700BFEF05 /* GiniCaptureSDKExampleUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -523,12 +523,12 @@
 /* Begin PBXTargetDependency section */
 		0A3B96581D478BF700BFEF05 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 607FACCF1AFB9204008FA782 /* Example Swift */;
+			target = 607FACCF1AFB9204008FA782 /* GiniCaptureSDKExample */;
 			targetProxy = 0A3B96571D478BF700BFEF05 /* PBXContainerItemProxy */;
 		};
 		607FACE71AFB9204008FA782 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 607FACCF1AFB9204008FA782 /* Example Swift */;
+			target = 607FACCF1AFB9204008FA782 /* GiniCaptureSDKExample */;
 			targetProxy = 607FACE61AFB9204008FA782 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -657,7 +657,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example Swift.app/Example Swift";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GiniCaptureSDKExample.app/GiniCaptureSDKExample";
 			};
 			name = Release;
 		};
@@ -900,7 +900,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example Swift.app/Example Swift";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GiniCaptureSDKExample.app/GiniCaptureSDKExample";
 			};
 			name = Debug;
 		};
@@ -916,14 +916,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example Swift.app/Example Swift";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GiniCaptureSDKExample.app/GiniCaptureSDKExample";
 			};
 			name = "In House";
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0A3B965B1D478BF700BFEF05 /* Build configuration list for PBXNativeTarget "GiniCapture_UITests" */ = {
+		0A3B965B1D478BF700BFEF05 /* Build configuration list for PBXNativeTarget "GiniCaptureSDKExampleUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0A3B96591D478BF700BFEF05 /* Debug */,
@@ -933,7 +933,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "GiniCapture" */ = {
+		607FACCB1AFB9204008FA782 /* Build configuration list for PBXProject "GiniCaptureSDKExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				607FACED1AFB9204008FA782 /* Debug */,
@@ -943,7 +943,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "Example Swift" */ = {
+		607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "GiniCaptureSDKExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				607FACF01AFB9204008FA782 /* Debug */,
@@ -953,7 +953,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "Example_Tests" */ = {
+		607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "GiniCaptureSDKExampleTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				607FACF31AFB9204008FA782 /* Debug */,

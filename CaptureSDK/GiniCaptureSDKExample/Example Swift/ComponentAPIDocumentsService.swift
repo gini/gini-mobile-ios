@@ -75,8 +75,8 @@ final class ComponentAPIDocumentsService: ComponentAPIDocumentServiceProtocol {
 
     func sortDocuments(withSameOrderAs documents: [GiniCaptureDocument]) {
         for index in 0 ..< documents.count {
-            let id = documents[index].id
-            partialDocuments[id]?.order = index
+            let docId = documents[index].id
+            partialDocuments[docId]?.order = index
         }
     }
 

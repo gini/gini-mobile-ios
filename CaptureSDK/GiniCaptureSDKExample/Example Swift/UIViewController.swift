@@ -6,8 +6,8 @@
 //  Copyright © 2018 Gini GmbH. All rights reserved.
 //
 
-import UIKit
 import GiniCaptureSDK
+import UIKit
 
 extension UIViewController {
     func showErrorDialog(for error: Error, positiveAction: (() -> Void)?) {
@@ -18,7 +18,7 @@ extension UIViewController {
         var confirmActionTitle: String? = NSLocalizedString("ginicapture.camera.errorPopup.pickanotherfileButton",
                                                             bundle: Bundle(for: GiniCapture.self),
                                                             comment: "pick another file button title")
-        
+
         switch error {
         case let validationError as DocumentValidationError:
             message = validationError.message
@@ -52,42 +52,41 @@ extension UIViewController {
             message = visionError.message
             confirmActionTitle = nil
             cancelActionTitle = NSLocalizedString("ginicapture.analysis.error.actionTitle",
-                                                   bundle: Bundle(for: GiniCapture.self),
-                                                   comment: "Retry analysis")
+                                                  bundle: Bundle(for: GiniCapture.self),
+                                                  comment: "Retry analysis")
         default:
             message = DocumentValidationError.unknown.message
         }
-        
+
         let dialog = errorDialog(withMessage: message,
                                  cancelActionTitle: cancelActionTitle,
                                  confirmActionTitle: confirmActionTitle,
                                  confirmAction: positiveAction)
-        
+
         present(dialog, animated: true, completion: nil)
     }
-    
+
     fileprivate func errorDialog(withMessage message: String,
                                  title: String? = nil,
                                  cancelActionTitle: String,
                                  confirmActionTitle: String? = nil,
                                  confirmAction: (() -> Void)? = nil) -> UIAlertController {
-        
         let alertViewController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        
+
         alertViewController.addAction(UIAlertAction(title: cancelActionTitle,
                                                     style: .cancel,
                                                     handler: { _ in
                                                         alertViewController.dismiss(animated: true, completion: nil)
-        }))
-        
+                                                    }))
+
         if let confirmActionTitle = confirmActionTitle, let confirmAction = confirmAction {
             alertViewController.addAction(UIAlertAction(title: confirmActionTitle,
                                                         style: .default,
                                                         handler: { _ in
                                                             confirmAction()
-            }))
+                                                        }))
         }
-        
+
         return alertViewController
     }
 }
