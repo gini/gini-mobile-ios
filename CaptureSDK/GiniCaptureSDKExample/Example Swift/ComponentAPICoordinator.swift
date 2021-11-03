@@ -52,9 +52,11 @@ final class ComponentAPICoordinator: NSObject, Coordinator {
             appearance.backgroundColor = self.giniColor
 
             appearance.stackedLayoutAppearance.normal.iconColor = UIColor.white.withAlphaComponent(0.6)
-            appearance.stackedLayoutAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.6)]
+            appearance.stackedLayoutAppearance.normal.titleTextAttributes =
+            [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.6)]
             appearance.stackedLayoutAppearance.selected.iconColor = .white
-            appearance.stackedLayoutAppearance.selected.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+            appearance.stackedLayoutAppearance.selected.titleTextAttributes =
+            [NSAttributedString.Key.foregroundColor: UIColor.white]
 
             tabBarViewController.tabBar.standardAppearance = appearance
             tabBarViewController.tabBar.scrollEdgeAppearance = tabBarViewController.tabBar.standardAppearance
@@ -213,20 +215,20 @@ extension ComponentAPICoordinator {
     }
 
     fileprivate func showNoResultsScreen() {
-        let vc: UIViewController
+        let noResultsViewController: UIViewController
         if pages.type == .image {
             let imageAnalysisNoResultsViewController = ImageAnalysisNoResultsViewController()
             imageAnalysisNoResultsViewController.didTapBottomButton = { [unowned self] in
                 self.didTapRetry()
             }
-            vc = imageAnalysisNoResultsViewController
+            noResultsViewController = imageAnalysisNoResultsViewController
         } else {
             let genericNoResults = storyboard
                 .instantiateViewController(withIdentifier: "noResultScreen") as? NoResultViewController
             genericNoResults!.delegate = self
-            vc = genericNoResults!
+            noResultsViewController = genericNoResults!
         }
-        push(viewController: vc, removing: [reviewScreen, analysisScreen])
+        push(viewController: noResultsViewController, removing: [reviewScreen, analysisScreen])
     }
 
     fileprivate func showNextScreenAfterPicking() {

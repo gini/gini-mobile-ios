@@ -10,19 +10,16 @@ import Foundation
 import UIKit
 
 protocol Coordinator: AnyObject {
-    
     var rootViewController: UIViewController { get }
     var childCoordinators: [Coordinator] { get set }
 }
 
 extension Coordinator {
-    
     func add(childCoordinator: Coordinator) {
-        self.childCoordinators.append(childCoordinator)
+        childCoordinators.append(childCoordinator)
     }
-    
+
     func remove(childCoordinator: Coordinator) {
-        self.childCoordinators = self.childCoordinators.filter { $0 !== childCoordinator }
+        childCoordinators = childCoordinators.filter { $0 !== childCoordinator }
     }
-    
 }

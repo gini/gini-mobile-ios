@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import GiniCaptureSDK
 import GiniBankAPILibrary
+import GiniCaptureSDK
 
 enum CustomAnalysisError: GiniCaptureError {
     case analysisFailed
@@ -23,10 +23,9 @@ typealias ComponentAPIUploadDocumentCompletion = (Result<Document, GiniError>) -
 typealias ComponentAPIAnalysisCompletion = (Result<[Extraction], GiniError>) -> Void
 
 protocol ComponentAPIDocumentServiceProtocol: AnyObject {
-    
     var document: Document? { get set }
     var analysisCancellationToken: CancellationToken? { get set }
-    
+
     func cancelAnalysis()
     func remove(document: GiniCaptureDocument)
     func resetToInitialState()
