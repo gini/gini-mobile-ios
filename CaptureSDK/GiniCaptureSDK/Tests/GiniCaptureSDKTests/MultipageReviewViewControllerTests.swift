@@ -152,8 +152,12 @@ final class MultipageReviewViewControllerTests: XCTestCase {
         _ = vc.view
         vc.view.setNeedsLayout()
         vc.view.layoutIfNeeded()
+        if let button = (vc.deleteButton.customView as? UIButton){
+            button.simulateEvent(.touchUpInside)
+        }
+
         
-        (vc.deleteButton.customView as? UIButton)?.sendActions(for: .touchUpInside)
+        //(vc.deleteButton.customView as? UIButton)?.sendActions(for: .touchUpInside)
         
         XCTAssertEqual(vc.mainCollection.numberOfItems(inSection: 0), 2,
                        "main collection items count should be 2")
