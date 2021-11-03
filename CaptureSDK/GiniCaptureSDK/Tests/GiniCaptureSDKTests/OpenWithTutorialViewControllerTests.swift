@@ -63,13 +63,13 @@ final class OpenWithTutorialViewControllerTests: XCTestCase {
                             cellForItemAt: indexPath) as? OpenWithTutorialCollectionCell
         
         XCTAssertEqual(cell!.stepIndicator.text, String(describing: indexPath.row + 1),
-                       "step indicator for first step should be the same as the one declared on initialiation")
+                       "step indicator for first step should be the same as the one declared on initialisation")
         XCTAssertEqual(cell!.stepTitle.text, item.title,
-                       "step title for first step should be the same as the one declared on initialiation")
+                       "step title for first step should be the same as the one declared on initialisation")
         XCTAssertEqual(cell!.stepSubTitle.text, item.subtitle,
-                       "step subtitle for first step should be the same as the one declared on initialiation")
+                       "step subtitle for first step should be the same as the one declared on initialisation")
         XCTAssertEqual(cell!.stepImage.image, item.image,
-                       "step image for first step should be the same as the one declared on initialiation")
+                       "step image for first step should be the same as the one declared on initialisation")
     }
     
     func testSecondStepProperties() {
@@ -81,13 +81,13 @@ final class OpenWithTutorialViewControllerTests: XCTestCase {
                             cellForItemAt: indexPath) as? OpenWithTutorialCollectionCell
         
         XCTAssertEqual(cell!.stepIndicator.text, String(describing: indexPath.row + 1),
-                       "step indicator for second step should be the same as the one declared on initialiation")
+                       "step indicator for second step should be the same as the one declared on initialisation")
         XCTAssertEqual(cell!.stepTitle.text, item.title,
-                       "step title for second step should be the same as the one declared on initialiation")
+                       "step title for second step should be the same as the one declared on initialisation")
         XCTAssertEqual(cell!.stepSubTitle.text, item.subtitle,
-                       "step subtitle for second step should be the same as the one declared on initialiation")
+                       "step subtitle for second step should be the same as the one declared on initialisation")
         XCTAssertEqual(cell!.stepImage.image, item.image,
-                       "step image for second step should be the same as the one declared on initialiation")
+                       "step image for second step should be the same as the one declared on initialisation")
     }
     
     func testThirdStepProperties() {
@@ -99,13 +99,13 @@ final class OpenWithTutorialViewControllerTests: XCTestCase {
                             cellForItemAt: indexPath) as? OpenWithTutorialCollectionCell
         
         XCTAssertEqual(cell!.stepIndicator.text, String(describing: indexPath.row + 1),
-                       "step indicator for third step should be the same as the one declared on initialiation")
+                       "step indicator for third step should be the same as the one declared on initialisation")
         XCTAssertEqual(cell!.stepTitle.text, item.title,
-                       "step title for third step should be the same as the one declared on initialiation")
+                       "step title for third step should be the same as the one declared on initialisation")
         XCTAssertEqual(cell!.stepSubTitle.text, item.subtitle,
-                       "step for third step subtitle should be the same as the one declared on initialiation")
+                       "step for third step subtitle should be the same as the one declared on initialisation")
         XCTAssertEqual(cell!.stepImage.image, item.image,
-                       "step image for third step should be the same as the one declared on initialiation")
+                       "step image for third step should be the same as the one declared on initialisation")
     }
 
     func testHeaderDissapearInLandscape() {
@@ -126,9 +126,7 @@ final class OpenWithTutorialViewControllerTests: XCTestCase {
         giniConfiguration.shouldShowDragAndDropTutorial = false
         
         let openWithTutorialViewController = OpenWithTutorialViewController(giniConfiguration: giniConfiguration)
-        let dragAndDropStepImage = UIImage(named: "openWithTutorialStep3",
-                                         in: Bundle(for: GiniCapture.self),
-                                         compatibleWith: nil)
+        let dragAndDropStepImage =  UIImage(named: "openWithTutorialStep3", in: Bundle.module, compatibleWith: nil)
         
         XCTAssertFalse(openWithTutorialViewController.items.map { $0.image }.contains(dragAndDropStepImage),
                       "open with items should not contain drag and drop image")

@@ -51,8 +51,8 @@ final class CameraButtonsViewController: UIViewController {
     lazy var flashToggleButton: UIButton = {
         let flashToggle = UIButton(type: .custom)
         flashToggle.translatesAutoresizingMaskIntoConstraints = false
-        flashToggle.setImage(UIImageNamedPreferredSDK(named: "flashOn"), for: .selected)
-        flashToggle.setImage(UIImageNamedPreferredSDK(named: "flashOff"), for: .normal)
+        flashToggle.setImage(UIImageNamedPreferred(named: "flashOn"), for: .selected)
+        flashToggle.setImage(UIImageNamedPreferred(named: "flashOff"), for: .normal)
         flashToggle.isSelected = giniConfiguration.flashOnByDefault
         flashToggle.imageView?.contentMode = .scaleAspectFit
         flashToggle.addTarget(self, action: #selector(tapOnFlashToggle), for: .touchUpInside)

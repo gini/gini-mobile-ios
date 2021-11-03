@@ -8,6 +8,10 @@
 
 import UIKit
 
+public func giniCaptureBundle() -> Bundle {
+    Bundle.module
+}
+
 /**
  Returns an optional `UIImage` instance with the given `name` preferably from the client's bundle.
  
@@ -19,8 +23,7 @@ public func UIImageNamedPreferred(named name: String) -> UIImage? {
     if let clientImage = UIImage(named: name) {
         return clientImage
     }
-    let bundle = Bundle(for: GiniCapture.self)
-    return UIImage(named: name, in: bundle, compatibleWith: nil)
+    return UIImage(named: name, in: giniCaptureBundle(), compatibleWith: nil)
 }
 
 /**
@@ -31,19 +34,19 @@ public func UIImageNamedPreferred(named name: String) -> UIImage? {
  
  - returns: String resource for the given key.
  */
-public func NSLocalizedStringPreferredFormat(_ key: String,
+func NSLocalizedStringPreferredFormat(_ key: String,
                                       fallbackKey: String = "",
                                       comment: String,
                                       isCustomizable: Bool = true) -> String {
     let clientString = NSLocalizedString(key, comment: comment)
     let fallbackClientString = NSLocalizedString(fallbackKey, comment: comment)
     let format: String
-    
     if (clientString.lowercased() != key.lowercased() || fallbackClientString.lowercased() != fallbackKey.lowercased())
         && isCustomizable {
         format = clientString
     } else {
-        let bundle = Bundle(for: GiniCapture.self)
+        let bundle = giniCaptureBundle()
+
         var defaultFormat = NSLocalizedString(key, bundle: bundle, comment: comment)
         
         if defaultFormat.lowercased() == key.lowercased() {

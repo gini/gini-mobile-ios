@@ -67,7 +67,7 @@ final class CameraPreviewViewControllerTests: XCTestCase {
         cameraPreviewViewController = CameraPreviewViewController(giniConfiguration: giniConfiguration)
         _ = cameraPreviewViewController.view
         cameraPreviewViewController.setupCamera()
-        
+
         cameraPreviewViewController.captureImage { imageData, _ in
             XCTAssertNotNil(imageData, "image captured data should not be nil")
             expect.fulfill()

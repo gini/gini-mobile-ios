@@ -19,14 +19,14 @@ final class GiniCaptureTestsHelper {
     
     class func loadImage(named name: String, fileExtension: String = "jpg") -> UIImage {
         return UIImage(named: name,
-                       in: Bundle(for: GiniCaptureTestsHelper.self),
+                       in: Bundle.module,
                        compatibleWith: nil) ?? loadImageFromResources(named: name, fileExtension: fileExtension)!
     }
     
     fileprivate class func loadImageFromResources(named name: String, fileExtension: String = "jpg") -> UIImage? {
-        guard let path = urlFromFile(named: name, fileExtension: fileExtension)?.path else { return nil}
-        
-        return UIImage(contentsOfFile: path)
+        guard let fileURLPath = Bundle.module
+            .path(forResource: name, ofType: fileExtension) else { return nil }
+        return UIImage(contentsOfFile: fileURLPath)
     }
     
     class func loadPDFDocument(named name: String) -> GiniPDFDocument {
@@ -58,6 +58,8 @@ final class GiniCaptureTestsHelper {
     }
     
     fileprivate class func urlFromFile(named name: String, fileExtension: String) -> URL? {
-        return Bundle(for: GiniCaptureTestsHelper.self).url(forResource: name, withExtension: fileExtension)
+        let fileURLPath: String? = Bundle.module
+                .path(forResource: name, ofType: fileExtension)
+        return URL(fileURLWithPath: fileURLPath!)
     }
 }
