@@ -53,7 +53,7 @@ jobs:
       run: >
         xcodebuild clean test
         -project CaptureSDK/GiniCaptureSDKExample/GiniCaptureSDKExample.xcodeproj
-        -scheme "GiniBankAPILibraryExampleTests"
+        -scheme "GiniCaptureSDKExampleTests"
         -destination "${{ matrix.destination }}"
         CODE_SIGN_IDENTITY=""
         CODE_SIGNING_REQUIRED=NO
