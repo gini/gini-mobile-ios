@@ -30,7 +30,7 @@ jobs:
           { 
             "project_folder": "CaptureSDK",
             "package_folder": "GiniCaptureSDK",
-            "version_file_path": "CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/GiniCaptureSDKVersion.swift", 
+            "version_file_path": "CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDKVersion.swift", 
             "git_tag": "${{ github.ref }}",
             "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
             "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
