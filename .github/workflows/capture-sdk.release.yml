@@ -6,7 +6,7 @@ on:
   
 jobs:
   check:
-    uses: gini/gini-mobile-ios/.github/workflows/capture-sdk.check.yml@PIA-1947_capture_sdk
+    uses: gini/gini-mobile-ios/.github/workflows/capture-sdk.check.yml@main
 
   release:
     needs: check
