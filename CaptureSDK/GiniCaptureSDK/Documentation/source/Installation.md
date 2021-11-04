@@ -1,7 +1,7 @@
 Installation
 =============================
 
-Gini Capture SDK can either be installed by using CocoaPods or by manually dragging the required files to your project.
+Gini Capture SDK can either be installed by using Swift Package Manager or by manually dragging the required files to your project.
 
 ## Swift Package Manager
 
@@ -17,7 +17,7 @@ dependencies: [
 In case that you want to use the certificate pinning in the library, add `GiniCaptureSDKPinning`:
 ```swif
 dependencies: [
-    .package(url: "https://github.com/gini/gini-capture-sdk-pinning-ios.git", .exact("1.0.0"))
+    .package(url: "https://github.com/gini/capture-sdk-pinning-ios.git", .exact("1.0.0"))
 ]
 ```
 
