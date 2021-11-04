@@ -1,6 +1,6 @@
 //
 //  DigitalInvoiceFooterCell.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by Maciej Trybilo on 11.12.19.
 //

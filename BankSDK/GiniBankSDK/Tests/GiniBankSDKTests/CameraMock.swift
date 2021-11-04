@@ -7,7 +7,7 @@
 
 import Foundation
 import AVFoundation
-@testable import GiniCapture
+@testable import GiniCaptureSDK
 
 final class CameraMock: CameraProtocol {
     

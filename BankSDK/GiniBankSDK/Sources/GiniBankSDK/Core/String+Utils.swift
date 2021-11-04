@@ -1,12 +1,12 @@
 //
 //  String+Utils.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by Nadya Karaban on 04.03.21.
 //
 
 import Foundation
-import GiniCapture
+import GiniCaptureSDK
 
 extension String {
     public static func ginipayLocalized<T: LocalizableStringResource>(resource: T, args: CVarArg...) -> String {

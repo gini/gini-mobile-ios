@@ -1,12 +1,12 @@
 //
 //  LineItemDetailsViewController.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by Maciej Trybilo on 18.12.19.
 //
 
 import UIKit
-import GiniPayApiLib
+import GiniBankAPILibrary
 
 protocol LineItemDetailsViewControllerDelegate: AnyObject {
     

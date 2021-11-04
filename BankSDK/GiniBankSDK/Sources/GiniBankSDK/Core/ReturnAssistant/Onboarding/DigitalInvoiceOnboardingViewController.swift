@@ -1,12 +1,12 @@
 //
 //  OnboardingDigitalInvoiceViewController.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by Nadya Karaban on 21.10.20.
 //
 
-import Foundation
-import GiniCapture
+import UIKit
+import GiniCaptureSDK
 
 protocol DigitalInvoiceOnboardingViewControllerDelegate: AnyObject {
     func didDismissViewController()
@@ -27,19 +27,19 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     
     fileprivate var firstLabelText: String {
         return
-            NSLocalizedStringPreferredGiniPayFormat("ginipaybank.digitalinvoice.onboarding.text1", comment: "title for the first label on the digital invoice onboarding screen")
+            NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.text1", comment: "title for the first label on the digital invoice onboarding screen")
     }
     
     fileprivate var secondLabelText: String {
-        return NSLocalizedStringPreferredGiniPayFormat("ginipaybank.digitalinvoice.onboarding.text2", comment: "title for the second label on the digital invoice onboarding screen")
+        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.text2", comment: "title for the second label on the digital invoice onboarding screen")
     }
     
     fileprivate var doneButtonTitle: String {
-        return NSLocalizedStringPreferredGiniPayFormat("ginipaybank.digitalinvoice.onboarding.donebutton", comment: "title for the done button on the digital invoice onboarding screen")
+        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.donebutton", comment: "title for the done button on the digital invoice onboarding screen")
     }
     
     fileprivate var hideButtonTitle: String {
-        return NSLocalizedStringPreferredGiniPayFormat("ginipaybank.digitalinvoice.onboarding.hidebutton", comment: "title for the hide button on the digital invoice onboarding screen")
+        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.hidebutton", comment: "title for the hide button on the digital invoice onboarding screen")
     }
     
     override public func viewDidLoad() {
@@ -79,7 +79,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     }
     
     @objc func hideAction(_ sender: UIButton!) {
-        UserDefaults.standard.set(true, forKey: "ginipaybank.defaults.digitalInvoiceOnboardingShowed")
+        UserDefaults.standard.set(true, forKey: "ginibank.defaults.digitalInvoiceOnboardingShowed")
         dismissViewController()
     }
     

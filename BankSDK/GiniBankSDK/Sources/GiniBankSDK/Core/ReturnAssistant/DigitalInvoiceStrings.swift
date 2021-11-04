@@ -1,12 +1,12 @@
 //
 //  DigitalInvoiceStrings.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by Alpár Szotyori on 03.09.20.
 //
 
 import Foundation
-import GiniCapture
+import GiniCaptureSDK
 
 enum DigitalInvoiceStrings: LocalizableStringResource {
     

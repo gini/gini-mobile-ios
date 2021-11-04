@@ -1,6 +1,6 @@
 //
 //  InfoView.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by David Kyslenko on 09.04.2021.
 //
@@ -28,9 +28,9 @@ class InfoView: UIView {
     private var okButton = UIButton()
     private var skipButton = UIButton()
     
-    private var illustrationImageView = UIImageView(image: UIImage(named: "ra-warning-illustration", in: giniPayBankBundle(), compatibleWith: nil))
+    private var illustrationImageView = UIImageView(image: UIImage(named: "ra-warning-illustration", in: giniBankBundle(), compatibleWith: nil))
     private lazy var actionButtonsStackView = UIStackView(arrangedSubviews: [okButton, skipButton])
-    private var chevronImageView = UIImageView(image: UIImage(named: "chevron-up-icon", in: giniPayBankBundle(), compatibleWith: nil))
+    private var chevronImageView = UIImageView(image: UIImage(named: "chevron-up-icon", in: giniBankBundle(), compatibleWith: nil))
     
     weak var delegate: InfoViewDelegate?
     private var isExpanded = false

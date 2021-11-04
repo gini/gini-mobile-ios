@@ -1,6 +1,6 @@
 //
 //  CheckboxButton.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by Maciej Trybilo on 19.12.19.
 //
@@ -70,7 +70,7 @@ class CheckboxButton: UIButton {
             backgroundView.backgroundColor = tintColor
             backgroundView.layer.borderColor = UIColor.clear.cgColor
             
-            setImage(UIImage(named: "checkmark", in: giniPayBankBundle(), compatibleWith: nil),
+            setImage(UIImage(named: "checkmark", in: giniBankBundle(), compatibleWith: nil),
                      for: .normal)
             
             accessibilityLabel = .ginipayLocalized(resource: DigitalInvoiceStrings.checkmarkButtonDeselectAccessibilityLabel)

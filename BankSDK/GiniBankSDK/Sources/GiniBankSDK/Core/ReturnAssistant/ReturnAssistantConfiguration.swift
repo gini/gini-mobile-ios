@@ -1,12 +1,12 @@
 //
 //  ReturnAssistantConfiguration.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by Nadya Karaban on 25.02.21.
 //
 
-import Foundation
-import GiniCapture
+import UIKit
+import GiniCaptureSDK
 
 public final class ReturnAssistantConfiguration: NSObject {
     

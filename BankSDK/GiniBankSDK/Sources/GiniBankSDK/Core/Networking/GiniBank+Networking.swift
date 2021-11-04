@@ -1,17 +1,18 @@
 //
-//  GiniPayBank.swift
-//  GiniPayBank
+//  GiniBank.swift
+//  GiniBank
 //
 //  Created by Nadya Karaban on 18.02.21.
 //
 
 import Foundation
-import GiniCapture
-import GiniPayApiLib
-extension GiniPayBank {
+import UIKit
+import GiniCaptureSDK
+import GiniBankAPILibrary
+extension GiniBank {
     /**
      Returns a view controller which will handle the analysis process.
-     It's the easiest way to get started with the Gini Pay Bank SDK as it comes pre-configured and handles
+     It's the easiest way to get started with the Gini Bank SDK as it comes pre-configured and handles
      all screens and transitions out of the box, including the networking.
 
      - parameter client: `GiniClient` with the information needed to enable document analysis
@@ -28,13 +29,13 @@ extension GiniPayBank {
      */
     public class func viewController(withClient client: Client,
                                      importedDocuments: [GiniCaptureDocument]? = nil,
-                                     configuration: GiniPayBankConfiguration,
+                                     configuration: GiniBankConfiguration,
                                      resultsDelegate: GiniCaptureResultsDelegate,
                                      documentMetadata: Document.Metadata? = nil,
                                      api: APIDomain = .default,
                                      userApi: UserDomain = .default,
                                      trackingDelegate: GiniCaptureTrackingDelegate? = nil) -> UIViewController {
-        let screenCoordinator = GiniPayBankNetworkingScreenApiCoordinator(client: client,
+        let screenCoordinator = GiniBankNetworkingScreenApiCoordinator(client: client,
                                                                           resultsDelegate: resultsDelegate,
                                                                           configuration: configuration,
                                                                           documentMetadata: documentMetadata,
@@ -45,7 +46,7 @@ extension GiniPayBank {
     }
 
     public class func removeStoredCredentials(for client: Client) throws {
-        let lib = GiniApiLib.Builder(client: client).build()
+        let lib = GiniBankAPI.Builder(client: client).build()
 
         try lib.removeStoredCredentials()
     }

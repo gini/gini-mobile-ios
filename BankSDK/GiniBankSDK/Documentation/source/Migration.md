@@ -9,7 +9,7 @@ The Gini Capture SDK used by the Gini Pay Bank SDK and therefore will be mention
 
 ## Gini Pay API Library
 
-The [Gini Pay Api Library](https://github.com/gini/gini-pay-api-lib-ios) (`GiniApiLib`) provides ways to interact with the Gini Pay API and therefore, adds the possiblity to scan documents and extract information from them and support the payment functionality.
+The [Gini Pay Api Library](https://github.com/gini/gini-pay-api-lib-ios) (`GiniBankAPI`) provides ways to interact with the Gini Pay API and therefore, adds the possiblity to scan documents and extract information from them and support the payment functionality.
 The Gini Pay Api Library will be used instead of the Gini iOS SDK.
 
 ## Configuration

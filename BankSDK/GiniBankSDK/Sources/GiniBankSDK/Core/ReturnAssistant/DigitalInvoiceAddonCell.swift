@@ -1,12 +1,13 @@
 //
 //  DigitalInvoiceAddonCell.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by Alpár Szotyori on 02.09.20.
 //
 
 import Foundation
-import GiniCapture
+import UIKit
+import GiniCaptureSDK
 class DigitalInvoiceAddonCell: UITableViewCell {
     
     var returnAssistantConfiguration : ReturnAssistantConfiguration? {

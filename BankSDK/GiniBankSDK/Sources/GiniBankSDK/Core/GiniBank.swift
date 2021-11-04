@@ -1,29 +1,29 @@
 //
-//  GiniPayBank.swift
-//  GiniPayBank
+// GiniBank.swift
+// GiniBank
 //
 //  Created by Nadya Karaban on 18.02.21.
 //
 
-import Foundation
-import GiniPayApiLib
-import GiniCapture
+import UIKit
+import GiniBankAPILibrary
+import GiniCaptureSDK
 
 /**
  Core class for GiniPayBank SDK.
  */
-@objc public final class GiniPayBank: NSObject {
+@objc public final class GiniBank: NSObject {
     /// reponsible for interaction with Gini Pay backend .
-    public var giniApiLib: GiniApiLib
+    public var giniApiLib: GiniBankAPI
     /// reponsible for the payment processing.
     public var paymentService: PaymentService
 
     /**
-     Returns a GiniPayBank instance
+     Returns a GiniBank instance
 
-     - parameter giniApiLib: GiniApiLib initialized with client's credentials
+     - parameter giniApiLib: GiniBankAPI initialized with client's credentials
      */
-    public init(with giniApiLib: GiniApiLib) {
+    public init(with giniApiLib: GiniBankAPI) {
         self.giniApiLib = giniApiLib
         paymentService = giniApiLib.paymentService()
     }
@@ -38,7 +38,7 @@ import GiniCapture
      In case of failure error from the server side.
 
      */
-    public func receivePaymentRequest(paymentRequestId: String, completion: @escaping (Result<PaymentRequest, GiniPayBankError>) -> Void) {
+    public func receivePaymentRequest(paymentRequestId: String, completion: @escaping (Result<PaymentRequest, GiniBankError>) -> Void) {
         paymentService.paymentRequest(id: paymentRequestId) { result in
             DispatchQueue.main.async {
                 switch result {
@@ -61,7 +61,7 @@ import GiniCapture
      In case of failure error from the server side.
 
      */
-    public func resolvePaymentRequest(paymentRequesId: String, paymentInfo: PaymentInfo, completion: @escaping (Result<ResolvedPaymentRequest, GiniPayBankError>) -> Void) {
+    public func resolvePaymentRequest(paymentRequesId: String, paymentInfo: PaymentInfo, completion: @escaping (Result<ResolvedPaymentRequest, GiniBankError>) -> Void) {
 
         paymentService.resolvePaymentRequest(id: paymentRequesId, recipient: paymentInfo.recipient, iban: paymentInfo.iban, amount: paymentInfo.amount, purpose: paymentInfo.purpose, completion: { result in
             DispatchQueue.main.async {
@@ -107,7 +107,7 @@ import GiniCapture
                                            importedDocuments: [GiniCaptureDocument]? = nil) -> UIViewController {
                 
         let screenCoordinator = GiniScreenAPICoordinator(withDelegate: delegate,
-                                                         giniConfiguration: GiniPayBankConfiguration.shared.captureConfiguration())
+                                                         giniConfiguration: GiniBankConfiguration.shared.captureConfiguration())
         
         return screenCoordinator.start(withDocuments: importedDocuments)
     }
@@ -128,7 +128,7 @@ import GiniCapture
                                            importedDocuments: [GiniCaptureDocument]? = nil,
                                            trackingDelegate: GiniCaptureTrackingDelegate? = nil) -> UIViewController {
         let screenCoordinator = GiniScreenAPICoordinator(withDelegate: delegate,
-                                                         giniConfiguration: GiniPayBankConfiguration.shared.captureConfiguration())
+                                                         giniConfiguration: GiniBankConfiguration.shared.captureConfiguration())
         screenCoordinator.trackingDelegate = trackingDelegate
         
         return screenCoordinator.start(withDocuments: importedDocuments)
@@ -192,9 +192,9 @@ import GiniCapture
      - returns: A presentable view controller.
      */
     @objc public class func viewController(withDelegate delegate: GiniCaptureDelegate,
-                                           withConfiguration configuration: GiniPayBankConfiguration,
+                                           withConfiguration configuration: GiniBankConfiguration,
                                            importedDocument: GiniCaptureDocument? = nil) -> UIViewController {
-        let captureConfig = GiniPayBankConfiguration.shared.captureConfiguration()
+        let captureConfig = GiniBankConfiguration.shared.captureConfiguration()
         GiniCapture.setConfiguration(captureConfig)
         return viewController(withDelegate: delegate, importedDocument: importedDocument)
     }
@@ -214,10 +214,10 @@ import GiniCapture
      - returns: A presentable view controller.
      */
     public class func viewController(withDelegate delegate: GiniCaptureDelegate,
-                                           withConfiguration configuration: GiniPayBankConfiguration,
+                                           withConfiguration configuration: GiniBankConfiguration,
                                            importedDocument: GiniCaptureDocument? = nil,
                                            trackingDelegate: GiniCaptureTrackingDelegate? = nil) -> UIViewController {
-        let captureConfig = GiniPayBankConfiguration.shared.captureConfiguration()
+        let captureConfig = GiniBankConfiguration.shared.captureConfiguration()
         GiniCapture.setConfiguration(captureConfig)
         return viewController(withDelegate: delegate, importedDocument: importedDocument, trackingDelegate: trackingDelegate)
     }

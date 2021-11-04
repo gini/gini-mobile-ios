@@ -1,9 +1,9 @@
 Integration
 =============================
 
-Gini Pay provides an information extraction system for analyzing business invoices and transfers them to the iOS banking app, where the payment process will be completed.
+Gini Bank provides an information extraction system for analyzing health invoices and transfers them to the iOS banking app, where the payment process will be completed.
 
-The Gini Pay Bank SDK for iOS provides functionality to upload the multipage documents with mobile phones, accurate line item extraction enables the user to to pay the invoice with prefferable payment provider. 
+The Gini Bank SDK for iOS provides functionality to upload the multipage documents with mobile phones, accurate line item extraction enables the user to to pay the invoice with prefferable payment provider. 
 
 Payment functionality
 =======================
@@ -14,12 +14,12 @@ Payment functionality
 <center><img src="img/definingCustomUrl.png" height="200"/></center>
 </br>
 
-#### GiniApiLib initialization
+#### GiniBankAPI initialization
 
 If you want to use a transparent proxy with your own authentication you can specify your own domain and add `AlternativeTokenSource` protocol implementation:
 
 ```swift
- let apiLib =  GiniApiLib.Builder(customApiDomain: "api.custom.net",
+ let apiLib =  GiniBankAPI.Builder(customApiDomain: "api.custom.net",
                                  alternativeTokenSource: MyAlternativeTokenSource)
                                  .build()
 ```
@@ -27,7 +27,7 @@ The token your provide will be added as a bearer token to all api.custom.net req
 
 Optionally if you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information)
 ```swift
-    let giniApiLib = GiniApiLib
+    let giniApiLib = GiniBankAPI
         .Builder(client: Client(id: "your-id",
                                 secret: "your-secret",
                                 domain: "your-domain"),
@@ -38,12 +38,12 @@ Optionally if you want to use _Certificate pinning_, provide metadata for the up
 > ⚠️  **Important**
 > - The document metadata for the upload process is intended to be used for reporting.
 
-##  GiniPayBank initialization
+##  GiniBank initialization
 
-Now that the `GiniApiLib` has been initialized, you can initialize `GiniPayBank`
+Now that the `GiniBankAPI` has been initialized, you can initialize `GiniBank`
 
 ```swift
- let bankSDK = GiniPayBank(with: giniApiLib)
+ let bankSDK = GiniBank(with: giniApiLib)
 ```
 and receive the payment requestID in `AppDelegate`. For handling incoming URL, please use the code snippet below.
 
@@ -90,9 +90,9 @@ If the payment request was successfully resolved you can allow the user redirect
 ```swift
 bankSDK.returnBackToBusinessAppHandler(resolvedPaymentRequest: resolvedPayment)
 ```
-## Gini Pay Scheme For Your App
+## Gini Bank Scheme For Your App
 
-In order for your banking app to be available as a payment provider and support the Gini Pay Connect functionality, you need to register a URL scheme for your app known by the Gini Pay API.
+In order for your banking app to be available as a payment provider and support the Gini Pay Connect functionality, you need to register a URL scheme for your app known by the Gini Bank API.
 
 You should already have a scheme and host from us. Please contact us in case you don't have them.
 
@@ -103,38 +103,38 @@ The following is an example for the scheme ginipay-bank://
 
 ## Testing
 
-An example business app is available in the [Gini Pay Business SDK's](https://github.com/gini/gini-pay-business-sdk-ios) repository.
+An example health app is available under the [link](https://github.com/gini/gini-mobile-ios/tree/main/HealthSDK/GiniHeathSDKExample).
 
-In order to test using our example business app, you need to use development client credentials. This will make sure that the Gini Pay Business SDK uses a payment provider which will open your development banking app.
+In order to test using our example health app, you need to use development client credentials. This will make sure that the Gini Health SDK uses a payment provider which will open your development banking app.
 
-To inject your Gini Pay API credentials into the business example app you need to fill in your credentials in `Example/Example Swift/Credentials.plist`.
+To inject your Gini Bank API credentials into the health example app you need to fill in your [credentials](https://github.com/gini/gini-mobile-ios/blob/main/HealthSDK/GiniHeathSDKExample/HealthSDKExample/Credentials.plist)
 
-You also need to replace the `ginipay-bank` URL scheme in the example business app's `LSApplicationQueriesSchemes` in the `Info.plist` with the Gini Pay URL scheme we provided for your banking app.
+You also need to replace the `ginipay-bank` URL scheme in the example health app's `LSApplicationQueriesSchemes` in the `Info.plist` with the Gini Pay URL scheme we provided for your banking app.
 
 #### End to end testing
 
-After you've set the client credentials in the example business app and installed it on your device you can start the payment flow with a document import or by taking a photo.
+After you've set the client credentials in the example health app and installed it on your device you can start the payment flow with a document import or by taking a photo.
 
-After following the integration steps above your banking app will be launched and you'll be able to fetch the payment request, show the payment information and resolve the payment after the transaction has been confirmed. At this point, you may redirect back to the business app.
+After following the integration steps above your banking app will be launched and you'll be able to fetch the payment request, show the payment information and resolve the payment after the transaction has been confirmed. At this point, you may redirect back to the health app.
 
-With these steps completed you have verified that your app, the Gini Pay API, the Gini Pay Business SDK and the Gini Pay
+With these steps completed you have verified that your app, the Gini Bank API, the Gini Health SDK and the Gini
 Bank SDK work together correctly.
 
 #### Testing in production
 
-The steps are the same but instead of the development client credentials, you will need to use production client credentials. This will make sure the Gini Pay Business SDK receives real payment providers including the one which opens your production banking app.
+The steps are the same but instead of the development client credentials, you will need to use production client credentials. This will make sure the Gini Health SDK receives real payment providers including the one which opens your production banking app.
 
-For testing the flow using the example business app you will need to add your banking app's production Gini Pay URL scheme to `LSApplicationQueriesSchemes` in the example business app's `Info.plist`. Also please make sure that production client credentials are used before installing it.
+For testing the flow using the example health app you will need to add your banking app's production Gini Pay URL scheme to `LSApplicationQueriesSchemes` in the example health app's `Info.plist`. Also please make sure that production client credentials are used before installing it.
 
-You can also test with a real business app. Please contact us in case you don't know which business app(s) to install for starting the payment flow.
+You can also test with a real health app. Please contact us in case you don't know which health app(s) to install for starting the payment flow.
 
 Photo payment functionality
 ============================
 
-The Gini Pay Bank SDK provides two integration options. A [Screen API](#screen-api) that is easy to implement and a more complex, but also more flexible [Component API](#component-api). Both APIs can access the complete functionality of the SDK.
+The Gini Bank SDK provides two integration options. A [Screen API](#screen-api) that is easy to implement and a more complex, but also more flexible [Component API](#component-api). Both APIs can access the complete functionality of the SDK.
 
-**Note**: Irrespective of the option you choose if you want to support **iOS 10** you need to specify the `NSCameraUsageDescription` key in your `Info.plist` file. This key is mandatory for all apps since iOS 10 when using the `Camera` framework.
-Also if you're using the [Gini Pay Api Library](https://github.com/gini/gini-pay-api-lib-ios) you need to add support for "Keychain Sharing" in your entitlements by adding a `keychain-access-groups` value to your entitlements file. For more information see the [Integration Guide](https://developer.gini.net/gini-pay-api-lib-ios/docs/getting-started.html) of the Gini Pay Api Library.
+**Note**: You need to specify the `NSCameraUsageDescription` key in your `Info.plist` file. This key is mandatory for all apps since iOS 10 when using the `Camera` framework.
+Also if you're using the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios) you need to add support for "Keychain Sharing" in your entitlements by adding a `keychain-access-groups` value to your entitlements file. For more information see the [Integration Guide](https://developer.gini.net/gini-mobile-ios/GiniBankAPILibrary/getting-started.html) of the Gini Bank API Library.
 
 ## Screen API
 
@@ -142,16 +142,16 @@ The Screen API provides a custom `UIViewController` object, which can be present
 The Screen API, in turn, offers two different ways of implementation:
 
 #### UI with Networking (Recommended)
-Using this method you don't need to care about handling the analysis process with the [Gini Pay Api Library]](https://github.com/gini/gini-pay-api-lib-ios), you only need to provide your API credentials and a delegate to get the analysis results.
+Using this method you don't need to care about handling the analysis process with the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios), you only need to provide your API credentials and a delegate to get the analysis results.
 
 ```swift
-let viewController = GiniPayBank.viewController(withClient: client,
-                                               configuration: giniPayBankConfiguration,
+let viewController = GiniBank.viewController(withClient: client,
+                                               configuration: giniBankConfiguration,
                                                resultsDelegate: giniCaptureResultsDelegate)
 
 present(viewController, animated: true, completion: nil)
 ```
-
+##TODO change links on bank api
 Optionally if you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information), the metadata information and the _API type_ (the [Gini Pay API](https://pay-api.gini.net/documentation/#gini-pay-api-documentation-v1-0) is used by default) as follows:
 
 ```swift
@@ -175,8 +175,8 @@ let yourPublicPinningConfig = [
     ]],
 ]] as [String: Any]
 
-let viewController = GiniPayBank.viewController(withClient: client,
-                                               configuration: giniPayBankConfiguration,
+let viewController = GiniBank.viewController(withClient: client,
+                                               configuration: giniBankConfiguration,
                                                resultsDelegate: giniCaptureResultsDelegate,
                                                publicKeyPinningConfig: yourPublicPinningConfig,
                                                documentMetadata: documentMetadata,
@@ -188,15 +188,15 @@ present(viewController, animated: true, completion:nil)
 
 > ⚠️  **Important**
 > - The document metadata for the upload process is intended to be used for reporting.
-> - Starting from Gini Pay Bank SDK 1.0.3 certification pinning requires iOS 12.
+> - Certification pinning requires iOS 12.
 
 #### Only UI
 
-In case that you decide to use only the UI and to handle all the analysis process (either using the [Gini Pay Api Library](https://github.com/gini/gini-pay-api-lib-ios) or with your own implementation of the API), just get the `UIViewController` as follows:
+In case that you decide to use only the UI and to handle all the analysis process (either using the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios) or with your own implementation of the API), just get the `UIViewController` as follows:
 
 ```swift
-let viewController = GiniPayBank.viewController(withDelegate: self,
-                                               withConfiguration: giniPayBankConfiguration)
+let viewController = GiniBank.viewController(withDelegate: self,
+                                               withConfiguration: giniBankConfiguration)
 
 present(viewController, animated: true, completion: nil)
 ```
@@ -205,14 +205,14 @@ present(viewController, animated: true, completion: nil)
 
 The Component API provides a custom `UIViewController` for each screen. This allows a maximum of flexibility, as the screens can be presented modally, used in a container view or pushed to a navigation view controller. Make sure to add your own navigational elements around the provided views.
 
-For using the `GiniPayBankConfiguration` with the Component API:
+For using the `GiniBankConfiguration` with the Component API:
 
 ```swift
-let giniPayBankConfiguration = GiniPayBankConfiguration()
+let giniBankConfiguration = GiniBankConfiguration()
 .
 .
 .
-GiniCapture.setConfiguration(giniPayBankConfiguration.captureConfiguration())
+GiniCapture.setConfiguration(giniBankConfiguration.captureConfiguration())
 ```
 
 The components that can be found in the library are:
@@ -225,9 +225,10 @@ The components that can be found in the library are:
 
 ## Sending Feedback
 
-Your app should send feedback for the extractions the Gini Pay API delivered. Feedback should be sent only for the extractions the user has seen and accepted (or corrected).
+Your app should send feedback for the extractions the Gini Bank API delivered. Feedback should be sent only for the extractions the user has seen and accepted (or corrected).
+##TODO change links on bank api
 
-For additional information about feedback see the [Gini Pay API documentation](https://pay-api.gini.net/documentation/#send-feedback-and-get-even-better-extractions-next-time).
+For additional information about feedback see the [Gini Bank API documentation](https://pay-api.gini.net/documentation/#send-feedback-and-get-even-better-extractions-next-time).
 
 ### Default Implementation
 
@@ -256,7 +257,8 @@ sendFeedbackBlock(updatedExtractions)
 
 ```
 ### Custom Implementation
+##TODO change links on bank api
 
-If you use your own networking implementation and directly communicate with the Gini Pay API then see [this section](https://pay-api.gini.net/documentation/#submitting-feedback-on-extractions) in its documentation on how to send feedback.
+If you use your own networking implementation and directly communicate with the Gini Bank API then see [this section](https://pay-api.gini.net/documentation/#submitting-feedback-on-extractions) in its documentation on how to send feedback.
 
-In case you use the [Gini Pay API Library](https://developer.gini.net/gini-pay-api-lib-ios/docs/) then see [this section](https://developer.gini.net/gini-pay-api-lib-ios/docs/getting-started.html) in its documentation for details.
+In case you use the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios) then see [this section](https://developer.gini.net/gini-mobile-ios/GiniBankAPILibrary/getting-started.html) in its documentation for details.

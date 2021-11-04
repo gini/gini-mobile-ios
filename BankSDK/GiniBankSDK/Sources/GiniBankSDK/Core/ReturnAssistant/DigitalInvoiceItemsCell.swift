@@ -1,11 +1,11 @@
 //
 //  DigitalInvoiceItemsCell.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by Maciej Trybilo on 11.12.19.
 //
 
-import Foundation
+import UIKit
 class ButtonWithImage: UIButton {
     
     override func layoutSubviews() {

@@ -1,13 +1,13 @@
 //
 //  DocumentServiceProtocol + RA.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by Nadya Karaban on 28.02.21.
 //
 
 import Foundation
-import GiniPayApiLib
-import GiniCapture
+import GiniBankAPILibrary
+import GiniCaptureSDK
 
 extension DocumentServiceProtocol {
     func sendFeedback(with updatedExtractions: [Extraction], and updatedCompoundExtractions: [String: [[Extraction]]]){}

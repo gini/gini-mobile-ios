@@ -1,12 +1,12 @@
 //
 //  DigitalInvoiceAddon.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by Alpár Szotyori on 03.09.20.
 //
 
 import Foundation
-import GiniPayApiLib
+import GiniBankAPILibrary
 
 struct DigitalInvoiceAddon {
     let price: Price

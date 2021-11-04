@@ -1,12 +1,12 @@
 //
 //  DigitalLineItemTableViewCell.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by Maciej Trybilo on 22.11.19.
 //
 
-import Foundation
-import GiniCapture
+import UIKit
+import GiniCaptureSDK
 
 struct DigitalLineItemViewModel {
     

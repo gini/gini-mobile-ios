@@ -1,12 +1,14 @@
 //
-//  GiniPayBankUtils.swift
-//  GiniPayBank
+//  GiniBankUtils.swift
+//  GiniBank
 //
 //  Created by Nadya Karaban on 24.02.21.
 //
 
-import GiniCapture
-public protocol GiniPayBankAnalysisDelegate : AnalysisDelegate {}
+import GiniCaptureSDK
+import Foundation
+import UIKit
+public protocol GiniBankAnalysisDelegate : AnalysisDelegate {}
 
 /**
  Returns a localized string resource preferably from the client's bundle. Used in Return Assistant Screens.
@@ -16,7 +18,7 @@ public protocol GiniPayBankAnalysisDelegate : AnalysisDelegate {}
  
  - returns: String resource for the given key.
  */
-func NSLocalizedStringPreferredGiniPayFormat(_ key: String,
+func NSLocalizedStringPreferredGiniBankFormat(_ key: String,
                                       fallbackKey: String = "",
                                       comment: String,
                                       isCustomizable: Bool = true) -> String {
@@ -28,7 +30,7 @@ func NSLocalizedStringPreferredGiniPayFormat(_ key: String,
         && isCustomizable {
         format = clientString
     } else {
-        let bundle = giniPayBankBundle()
+        let bundle = giniBankBundle()
         var defaultFormat = NSLocalizedString(key, bundle: bundle, comment: comment)
         
         if defaultFormat.lowercased() == key.lowercased() {
@@ -41,8 +43,8 @@ func NSLocalizedStringPreferredGiniPayFormat(_ key: String,
     return format
 }
 
-func giniPayBankBundle() -> Bundle {
-    Bundle(for: GiniPayBank.self)
+func giniBankBundle() -> Bundle {
+    Bundle.module
 }
 
 /**
@@ -56,7 +58,7 @@ func prefferedImage(named name: String) -> UIImage? {
     if let clientImage = UIImage(named: name) {
         return clientImage
     }
-    let bundle = giniPayBankBundle()
+    let bundle = giniBankBundle()
     return UIImage(named: name, in: bundle, compatibleWith: nil)
 }
 
@@ -73,7 +75,7 @@ func prefferedImage(named name: String) -> UIImage? {
  In case of failure error that there is no requestId in incoming url from the business app.
  
  */
-public func receivePaymentRequestId(url: URL, completion: @escaping (Result<String, GiniPayBankError>) -> Void) {
+public func receivePaymentRequestId(url: URL, completion: @escaping (Result<String, GiniBankError>) -> Void) {
     // Process the URL.
     guard let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true),
         let params = components.queryItems else {
@@ -90,11 +92,3 @@ public func receivePaymentRequestId(url: URL, completion: @escaping (Result<Stri
     }
 
 }
-
-    /**
-     Returns the current version of the Gini Pay Bank SDK.
-     If there is an error retrieving the version the returned value will be an empty string.
-     */
-public var versionString: String {
-        return GiniPayBankVersion
-    }
