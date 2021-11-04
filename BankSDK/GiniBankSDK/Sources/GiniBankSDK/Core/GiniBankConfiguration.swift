@@ -1,19 +1,19 @@
 //
-//  GiniPayBankConfiguration.swift
-//  GiniPayBank
+// GiniBankConfiguration.swift
+// GiniBank
 //
 //  Created by Nadya Karaban on 11.03.21.
 //
 
-import Foundation
-import GiniCapture
+import UIKit
+import GiniCaptureSDK
 
-public final class GiniPayBankConfiguration: NSObject {
+public final class GiniBankConfiguration: NSObject {
     
     /**
      Singleton to make configuration internally accessible in all classes of the Gini Pay Bank SDK.
      */
-    public static var shared = GiniPayBankConfiguration()
+    public static var shared = GiniBankConfiguration()
     
     /**
      Indicates whether the Return Assistant feature is enabled or not. In case of `true`,
@@ -1280,7 +1280,7 @@ public final class GiniPayBankConfiguration: NSObject {
     }
     
     public func updateConfiguration(withCaptureConfiguration configuration: GiniConfiguration) {
-        let giniPayBankConfiguration = GiniPayBankConfiguration.shared
+        let giniPayBankConfiguration = GiniBankConfiguration.shared
         giniPayBankConfiguration.customDocumentValidations = configuration.customDocumentValidations
         
         giniPayBankConfiguration.customFont = configuration.customFont

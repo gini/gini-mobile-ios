@@ -1,12 +1,12 @@
 //
 //  LineItem.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by Maciej Trybilo on 19.02.20.
 //
 
 import Foundation
-import GiniPayApiLib
+import GiniBankAPILibrary
 
 extension DigitalInvoice {
     

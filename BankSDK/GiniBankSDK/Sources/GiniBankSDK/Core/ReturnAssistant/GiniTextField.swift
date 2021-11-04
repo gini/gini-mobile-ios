@@ -1,6 +1,6 @@
 //
 //  GiniTextField.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by Maciej Trybilo on 18.12.19.
 //

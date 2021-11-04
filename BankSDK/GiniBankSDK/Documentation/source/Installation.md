@@ -1,7 +1,7 @@
 Installation
 =============================
 
-Gini Pay SDK can either be installed by using Swift Package Manager or by manually dragging the required files to your project.
+Gini Bank SDK can either be installed by using Swift Package Manager or by manually dragging the required files to your project.
 
 ## Swift Package Manager
 

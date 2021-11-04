@@ -1,11 +1,12 @@
 //
 //  DigitalInvoiceTotalPriceCell.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by Maciej Trybilo on 11.12.19.
 //
 
 import Foundation
+import UIKit
 
 protocol DigitalInvoiceTotalPriceCellDelegate: AnyObject {
     func didTapAddArticleButton()
@@ -68,7 +69,7 @@ class DigitalInvoiceTotalPriceCell: UITableViewCell {
         contentView.addSubview(addArticleButton)
         addArticleButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
         addArticleButton.setTitle(.ginipayLocalized(resource: DigitalInvoiceStrings.addArticleButton), for: .normal)
-        addArticleButton.setImage(UIImage(named: "plus-icon", in: giniPayBankBundle(), compatibleWith: nil), for: .normal)
+        addArticleButton.setImage(UIImage(named: "plus-icon", in: giniBankBundle(), compatibleWith: nil), for: .normal)
         addArticleButton.setTitleColor(returnAssistantConfiguration?.digitalInvoiceFooterAddArticleButtonTintColor ?? ReturnAssistantConfiguration.shared.digitalInvoiceFooterAddArticleButtonTintColor, for: .normal)
         addArticleButton.tintColor = returnAssistantConfiguration?.digitalInvoiceFooterAddArticleButtonTintColor ?? ReturnAssistantConfiguration.shared.digitalInvoiceFooterAddArticleButtonTintColor
         addArticleButton.semanticContentAttribute = .forceRightToLeft

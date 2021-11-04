@@ -1,6 +1,6 @@
 //
 //  URL+Utils.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by Nadya Karaban on 28.02.21.
 //

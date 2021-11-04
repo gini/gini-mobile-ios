@@ -1,13 +1,13 @@
 //
 //  DigitalInvoiceViewController.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by Maciej Trybilo on 20.11.19.
 //
 
 import UIKit
-import GiniPayApiLib
-import GiniCapture
+import GiniBankAPILibrary
+import GiniCaptureSDK
 /**
  Delegate protocol for `DigitalInvoiceViewController`.
  */
@@ -84,7 +84,7 @@ public class DigitalInvoiceViewController: UIViewController {
                            forCellReuseIdentifier: "TextFieldTableViewCell")
         
         tableView.register(UINib(nibName: "DigitalLineItemTableViewCell",
-                                 bundle: giniPayBankBundle()),
+                                 bundle: giniBankBundle()),
                            forCellReuseIdentifier: "DigitalLineItemTableViewCell")
         
         tableView.register(DigitalInvoiceAddonCell.self,
@@ -188,12 +188,12 @@ public class DigitalInvoiceViewController: UIViewController {
     }
     
     fileprivate var onboardingWillBeShown: Bool {
-        let key = "ginipaybank.defaults.digitalInvoiceOnboardingShowed"
+        let key = "ginibank.defaults.digitalInvoiceOnboardingShowed"
         return UserDefaults.standard.object(forKey: key) == nil ? true : false
     }
     
     fileprivate var footerDemoWillBeShown: Bool {
-        let key = "ginipaybank.defaults.digitalInvoiceFooterDemoShowed"
+        let key = "ginibank.defaults.digitalInvoiceFooterDemoShowed"
         return UserDefaults.standard.object(forKey: key) == nil ? true : false
     }
     
@@ -226,7 +226,7 @@ public class DigitalInvoiceViewController: UIViewController {
                     }
                 }
             }
-            UserDefaults.standard.set(true, forKey: "ginipaybank.defaults.digitalInvoiceFooterDemoShowed")
+            UserDefaults.standard.set(true, forKey: "ginibank.defaults.digitalInvoiceFooterDemoShowed")
         }
     }
     

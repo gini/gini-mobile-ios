@@ -1,6 +1,6 @@
 //
 //  TextFieldTableViewCell.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by Maciej Trybilo on 20.11.19.
 //

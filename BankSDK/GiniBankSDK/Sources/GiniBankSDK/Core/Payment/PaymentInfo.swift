@@ -1,6 +1,6 @@
 //
 //  PaymentInfo.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by Nadya Karaban on 29.04.21.
 //

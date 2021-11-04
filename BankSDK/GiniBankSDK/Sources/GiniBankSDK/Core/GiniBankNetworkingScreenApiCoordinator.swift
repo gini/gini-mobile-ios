@@ -1,31 +1,32 @@
 //
 //  GiniPayBankNetworkingScreenApiCoordinator.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by Nadya Karaban on 03.03.21.
 //
 
 import Foundation
-import GiniCapture
-import GiniPayApiLib
+import UIKit
+import GiniCaptureSDK
+import GiniBankAPILibrary
 
 protocol Coordinator: AnyObject {
     var rootViewController: UIViewController { get }
 }
 
-open class GiniPayBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator {
+open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator {
     weak var resultsDelegate: GiniCaptureResultsDelegate?
     let documentService: DocumentServiceProtocol
-    var giniPayBankConfiguration: GiniPayBankConfiguration = GiniPayBankConfiguration()
+    var giniPayBankConfiguration: GiniBankConfiguration = GiniBankConfiguration()
     
     init(client: Client,
          resultsDelegate: GiniCaptureResultsDelegate,
-         configuration: GiniPayBankConfiguration,
+         configuration: GiniBankConfiguration,
          documentMetadata: Document.Metadata?,
          api: APIDomain,
          trackingDelegate: GiniCaptureTrackingDelegate?,
-         lib: GiniApiLib) {
-        documentService = GiniPayBankNetworkingScreenApiCoordinator.documentService(with: lib,
+         lib: GiniBankAPI){
+        documentService = GiniBankNetworkingScreenApiCoordinator.documentService(with: lib,
                                                                documentMetadata: documentMetadata,
                                                                configuration: configuration,
                                                                for: api)
@@ -40,12 +41,12 @@ open class GiniPayBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator {
 
     convenience init(client: Client,
                      resultsDelegate: GiniCaptureResultsDelegate,
-                     configuration: GiniPayBankConfiguration,
+                     configuration: GiniBankConfiguration,
                      documentMetadata: Document.Metadata?,
                      api: APIDomain,
                      userApi: UserDomain,
                      trackingDelegate: GiniCaptureTrackingDelegate?) {
-        let lib = GiniApiLib
+        let lib = GiniBankAPI
             .Builder(client: client, api: api, userApi: userApi)
             .build()
 
@@ -58,9 +59,9 @@ open class GiniPayBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator {
                   lib: lib)
     }
 
-    private static func documentService(with lib: GiniApiLib,
+    private static func documentService(with lib: GiniBankAPI,
                                         documentMetadata: Document.Metadata?,
-                                        configuration: GiniPayBankConfiguration,
+                                        configuration: GiniBankConfiguration,
                                         for api: APIDomain) -> DocumentServiceProtocol {
         let captureConfiguration = configuration.captureConfiguration()
         switch api {
@@ -109,7 +110,7 @@ open class GiniPayBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator {
     }
 }
 
-extension GiniPayBankNetworkingScreenApiCoordinator {
+extension GiniBankNetworkingScreenApiCoordinator {
     public func deliverWithReturnAssistant(result: ExtractionResult, analysisDelegate: AnalysisDelegate) {
         let hasExtractions = result.extractions.count > 0
 
@@ -161,7 +162,7 @@ extension GiniPayBankNetworkingScreenApiCoordinator {
             case let .success(extractionResult):
 
                 DispatchQueue.main.async {
-                    if GiniPayBankConfiguration.shared.returnAssistantEnabled {
+                    if GiniBankConfiguration.shared.returnAssistantEnabled {
                         do {
                             let digitalInvoice = try DigitalInvoice(extractionResult: extractionResult)
                             self.showDigitalInvoiceScreen(digitalInvoice: digitalInvoice, analysisDelegate: networkDelegate)
@@ -220,7 +221,7 @@ extension GiniPayBankNetworkingScreenApiCoordinator {
 
 // MARK: - GiniCaptureDelegate
 
-extension GiniPayBankNetworkingScreenApiCoordinator: GiniCaptureDelegate {
+extension GiniBankNetworkingScreenApiCoordinator: GiniCaptureDelegate {
     public func didCancelCapturing() {
         resultsDelegate?.giniCaptureDidCancelAnalysis()
     }

@@ -1,12 +1,12 @@
 //
 //  DeselectLineItemActionSheet.swift
-//  GiniPayBank
+// GiniBank
 //
 //  Created by Maciej Trybilo on 02.01.20.
 //
 
-import Foundation
-import GiniPayApiLib
+import UIKit
+import GiniBankAPILibrary
 
 class DeselectLineItemActionSheet {
     
@@ -16,8 +16,8 @@ class DeselectLineItemActionSheet {
                  completion: @escaping (DigitalInvoice.LineItem.SelectedState) -> Void) {
         
         let actionSheet = UIAlertController(title: nil,
-                                            message: NSLocalizedString("ginipaybank.digitalinvoice.deselectreasonactionsheet.message",
-                                                                       bundle: giniPayBankBundle(),
+                                            message: NSLocalizedString("ginibank.digitalinvoice.deselectreasonactionsheet.message",
+                                                                       bundle: giniBankBundle(),
                                                                        comment: ""),
                                             preferredStyle: .actionSheet)
         
@@ -31,8 +31,8 @@ class DeselectLineItemActionSheet {
             }))
         }
         
-        actionSheet.addAction(UIAlertAction(title: NSLocalizedString("ginipaybank.digitalinvoice.deselectreasonactionsheet.action.cancel",
-                                                                     bundle: giniPayBankBundle(),
+        actionSheet.addAction(UIAlertAction(title: NSLocalizedString("ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel",
+                                                                     bundle: giniBankBundle(),
                                                                      comment: ""),
                                             style: .cancel,
                                             handler: { _ in

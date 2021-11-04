@@ -17,30 +17,30 @@ The Gini Bank SDK components can be customized either through the `GiniBankConfi
 
 ## Supporting dark mode
 
-Some background and text colors use the `GiniColor` type with which you can set colors for dark and light modes. Please make sure to set contrasting images to the background colors in your `.xcassets` for the Gini Pay Bank SDK images you override (e.g. `onboardingPage1`). The text colors should also be set in contrast to the background colors.
+Some background and text colors use the `GiniColor` type with which you can set colors for dark and light modes. Please make sure to set contrasting images to the background colors in your `.xcassets` for the Gini Bank SDK images you override (e.g. `onboardingPage1`). The text colors should also be set in contrast to the background colors.
 
 ## Generic components
 
 ##### 1. Navigation bar
 <center><img src="img/Customization guide/Navigation bar.jpg" height="70"/></center>
-- Tint color &#8594;  `GiniPayBankConfiguration.navigationBarTintColor`
-- Item tint color &#8594;  `GiniPayBankConfiguration.navigationBarItemTintColor`
-- Title color &#8594;  `GiniPayBankConfiguration.navigationBarTitleColor`
-- Item font &#8594;  `GiniPayBankConfiguration.navigationBarItemFont`
-- Title font &#8594;  `GiniPayBankConfiguration.navigationBarTitleFont`
+- Tint color &#8594;  `GiniBankConfiguration.navigationBarTintColor`
+- Item tint color &#8594;  `GiniBankConfiguration.navigationBarItemTintColor`
+- Title color &#8594;  `GiniBankConfiguration.navigationBarTitleColor`
+- Item font &#8594;  `GiniBankConfiguration.navigationBarItemFont`
+- Title font &#8594;  `GiniBankConfiguration.navigationBarTitleFont`
 
 ##### 2. Notice
 <center><img src="img/Customization guide/Notice.jpg" height="70"/></center>
-- Information background color &#8594;  `GiniPayBankConfiguration.noticeInformationBackgroundColor`
-- Information text color &#8594;  `GiniPayBankConfiguration.noticeInformationTextColor`
-- Error background &#8594;  `GiniPayBankConfiguration.noticeErrorBackgroundColor`
-- Error text color `GiniPayBankConfiguration.noticeErrorTextColor`
+- Information background color &#8594;  `GiniBankConfiguration.noticeInformationBackgroundColor`
+- Information text color &#8594;  `GiniBankConfiguration.noticeInformationTextColor`
+- Error background &#8594;  `GiniBankConfiguration.noticeErrorBackgroundColor`
+- Error text color `GiniBankConfiguration.noticeErrorTextColor`
 
 ##### 3. Tooltip
 <center><img src="img/Customization guide/Tooltip.jpg" height="120"/></center>
-- Background color &#8594;  `GiniPayBankConfiguration.fileImportToolTipBackgroundColor`
-- Text color &#8594;  `GiniPayBankConfiguration.fileImportToolTipTextColor`
-- Close button color &#8594;  `GiniPayBankConfiguration.fileImportToolTipCloseButtonColor`
+- Background color &#8594;  `GiniBankConfiguration.fileImportToolTipBackgroundColor`
+- Text color &#8594;  `GiniBankConfiguration.fileImportToolTipTextColor`
+- Close button color &#8594;  `GiniBankConfiguration.fileImportToolTipCloseButtonColor`
 - Text &#8594; 
 	- <span style="color:#009EDF">*ginicapture.camera.fileImportTip*</span> localized string for file import tooltip
 	- <span style="color:#009EDF">*ginicapture.camera.qrCodeTip*</span> localized string for qr code tooltip
@@ -48,7 +48,7 @@ Some background and text colors use the `GiniColor` type with which you can set 
 
 ##### 4. GVL font
 
-- Font &#8594;  `GiniPayBankConfiguration.customFont`
+- Font &#8594;  `GiniBankConfiguration.customFont`
 
 ## Camera screen
 
@@ -63,24 +63,24 @@ Some background and text colors use the `GiniColor` type with which you can set 
 	  - Image &#8594; <span style="color:#009EDF">*navigationCameraClose*</span> image asset
 	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.camera.close*</span> localized string
   - With title only
-	  -  Title &#8594; `GiniPayBankConfiguration.navigationBarCameraTitleCloseButton`
+	  -  Title &#8594; `GiniBankConfiguration.navigationBarCameraTitleCloseButton`
 - Help button
 	- Image &#8594; <span style="color:#009EDF">*navigationCameraHelp*</span> image asset
 	- Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.camera.help*</span> localized string
 
 ##### 2. Camera preview
-- Guides color &#8594;  `GiniPayBankConfiguration.cameraPreviewCornerGuidesColor`
+- Guides color &#8594;  `GiniBankConfiguration.cameraPreviewCornerGuidesColor`
 - Focus large image &#8594; <span style="color:#009EDF">*cameraFocusLarge*</span> image asset
 - Focus large small &#8594; <span style="color:#009EDF">*cameraFocusSmall*</span> image asset
-- Opaque view style (when tool tip is shown)  &#8594;  `GiniPayBankConfiguration.toolTipOpaqueBackgroundStyle`
+- Opaque view style (when tool tip is shown)  &#8594;  `GiniBankConfiguration.toolTipOpaqueBackgroundStyle`
 
 ##### 3. Camera buttons container
 - Capture button
   - Image &#8594; <span style="color:#009EDF">*cameraCaptureButton*</span> image asset
 - Import button
 	- Image &#8594; <span style="color:#009EDF">*documentImportButton*</span> image asset
-- Captured images stack indicator color &#8594; `GiniPayBankConfiguration.imagesStackIndicatorLabelTextcolor`
-- Flash toggle can be enabled through &#8594; `GiniPayBankConfiguration.flashToggleEnabled`
+- Captured images stack indicator color &#8594; `GiniBankConfiguration.imagesStackIndicatorLabelTextcolor`
+- Flash toggle can be enabled through &#8594; `GiniBankConfiguration.flashToggleEnabled`
 - Flash button
     - Image &#8594; <span style="color:#009EDF">*flashOn*</span> image asset
     - Image &#8594; <span style="color:#009EDF">*flashOff*</span> image asset
@@ -89,9 +89,9 @@ Some background and text colors use the `GiniColor` type with which you can set 
 <br>
 <center><img src="img/Customization guide/QR code popup.jpg" height="70"/></center>
 </br>
-- Background color &#8594;  `GiniPayBankConfiguration.qrCodePopupBackgroundColor` using `GiniColor` with dark mode and light mode colors
-- Button color &#8594;  `GiniPayBankConfiguration.qrCodePopupButtonColor`
-- Text color &#8594;  `GiniPayBankConfiguration.qrCodePopupTextColor` using `GiniColor` with dark mode and light mode colors
+- Background color &#8594;  `GiniBankConfiguration.qrCodePopupBackgroundColor` using `GiniColor` with dark mode and light mode colors
+- Button color &#8594;  `GiniBankConfiguration.qrCodePopupButtonColor`
+- Text color &#8594;  `GiniBankConfiguration.qrCodePopupTextColor` using `GiniColor` with dark mode and light mode colors
 - Title &#8594; <span style="color:#009EDF">*ginicapture.camera.qrCodeDetectedPopup.buttonTitle*</span> localized string
 - Message &#8594; <span style="color:#009EDF">*ginicapture.camera.qrCodeDetectedPopup.message*</span> localized string
 
@@ -108,7 +108,7 @@ Some background and text colors use the `GiniColor` type with which you can set 
 	  - Image &#8594; <span style="color:#009EDF">*navigationReviewBack*</span> image asset
 	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.review.back*</span> localized string
   - With title only
-	  -  Title &#8594; `GiniPayBankConfiguration.navigationBarReviewTitleBackButton`
+	  -  Title &#8594; `GiniBankConfiguration.navigationBarReviewTitleBackButton`
 - Next button
 	- Image &#8594; <span style="color:#009EDF">*navigationReviewContinue*</span> image asset
 	- Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.review.continue*</span> localized string
@@ -117,11 +117,11 @@ Some background and text colors use the `GiniColor` type with which you can set 
 - Title &#8594; <span style="color:#009EDF">*ginicapture.review.top*</span> localized string
 
 ##### 3. Review bottom view
-- Background color &#8594; `GiniPayBankConfiguration.reviewBottomViewBackgroundColor`
+- Background color &#8594; `GiniBankConfiguration.reviewBottomViewBackgroundColor`
 - Rotation button image &#8594;  <span style="color:#009EDF">*reviewRotateButton*</span> image asset
 - Rotation message
 	- Text &#8594; <span style="color:#009EDF">*ginicapture.review.bottom*</span> localized string
-	- Text color &#8594; `GiniPayBankConfiguration.reviewTextBottomColor`
+	- Text color &#8594; `GiniBankConfiguration.reviewTextBottomColor`
 
 ## Multipage Review screen
 
@@ -135,23 +135,23 @@ Some background and text colors use the `GiniColor` type with which you can set 
 	  - Image &#8594; <span style="color:#009EDF">*navigationReviewBack*</span> image asset
 	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.review.back*</span> localized string
   - With title only
-	  -  Title &#8594; `GiniPayBankConfiguration.navigationBarReviewTitleBackButton`
+	  -  Title &#8594; `GiniBankConfiguration.navigationBarReviewTitleBackButton`
 - Next button
 	- Image &#8594; <span style="color:#009EDF">*navigationReviewContinue*</span> image asset
 	- Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.review.continue*</span> localized string
 
 ##### 2. Main collection
-- Opaque view style (when tool tip is shown)  &#8594;  `GiniPayBankConfiguration.multipageToolTipOpaqueBackgroundStyle`
+- Opaque view style (when tool tip is shown)  &#8594;  `GiniBankConfiguration.multipageToolTipOpaqueBackgroundStyle`
 
 ##### 3. Page item
-- Page circle indicator color &#8594; `GiniPayBankConfiguration.indicatorCircleColor` using `GiniColor` with dark mode and light mode colors
-- Page indicator color &#8594; `GiniPayBankConfiguration.multipagePageIndicatorColor` 
-- Page background color &#8594; `GiniPayBankConfiguration.multipagePageBackgroundColor` using `GiniColor` with dark mode and light mode colors
-- Page selected indicator color &#8594; `GiniPayBankConfiguration.multipagePageSelectedIndicatorColor`
-- Page draggable icon tint color &#8594; `GiniPayBankConfiguration.multipageDraggableIconColor`
+- Page circle indicator color &#8594; `GiniBankConfiguration.indicatorCircleColor` using `GiniColor` with dark mode and light mode colors
+- Page indicator color &#8594; `GiniBankConfiguration.multipagePageIndicatorColor` 
+- Page background color &#8594; `GiniBankConfiguration.multipagePageBackgroundColor` using `GiniColor` with dark mode and light mode colors
+- Page selected indicator color &#8594; `GiniBankConfiguration.multipagePageSelectedIndicatorColor`
+- Page draggable icon tint color &#8594; `GiniBankConfiguration.multipageDraggableIconColor`
 
 ##### 4. Bottom container
-- Background color &#8594; `GiniPayBankConfiguration.multipagePagesContainerAndToolBarColor` using `GiniColor` with dark mode and light mode colors
+- Background color &#8594; `GiniBankConfiguration.multipagePagesContainerAndToolBarColor` using `GiniColor` with dark mode and light mode colors
 - Rotation button image &#8594;  <span style="color:#009EDF">*rotateImageIcon*</span> image asset
 - Delete button image &#8594;  <span style="color:#009EDF">*trashIcon*</span> image asset
 
@@ -167,14 +167,14 @@ Some background and text colors use the `GiniColor` type with which you can set 
 	  - Image &#8594; <span style="color:#009EDF">*navigationAnalysisBack*</span> image asset
 	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.analysis.back*</span> localized string
   - With title only
-	  - Title &#8594; `GiniPayBankConfiguration.navigationBarAnalysisTitleBackButton`
+	  - Title &#8594; `GiniBankConfiguration.navigationBarAnalysisTitleBackButton`
 
 ##### 2. PDF Information view
-- Text color &#8594; `GiniPayBankConfiguration.analysisPDFInformationTextColor`
-- Background color &#8594; `GiniPayBankConfiguration.analysisPDFInformationBackgroundColor`
+- Text color &#8594; `GiniBankConfiguration.analysisPDFInformationTextColor`
+- Background color &#8594; `GiniBankConfiguration.analysisPDFInformationBackgroundColor`
 
 ##### 3. Loading view
-- Indicator color &#8594; `GiniPayBankConfiguration.analysisLoadingIndicatorColor` (Only with PDFs)
+- Indicator color &#8594; `GiniBankConfiguration.analysisLoadingIndicatorColor` (Only with PDFs)
 - Text &#8594; <span style="color:#009EDF">*ginicapture.analysis.loadingText*</span> localized string
 
 ## Supported formats screen
@@ -189,11 +189,11 @@ Some background and text colors use the `GiniColor` type with which you can set 
 	  - Image &#8594; <span style="color:#009EDF">*arrowBack*</span> image asset
 	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.help.backToMenu*</span> localized string
   - With title only
-	  - Title &#8594; `GiniPayBankConfiguration.navigationBarHelpScreenTitleBackToMenuButton`
+	  - Title &#8594; `GiniBankConfiguration.navigationBarHelpScreenTitleBackToMenuButton`
 
 ##### 1. Supported format cells
-- Supported formats icon color &#8594; `GiniPayBankConfiguration.supportedFormatsIconColor`
-- Non supported formats icon color &#8594; `GiniPayBankConfiguration.nonSupportedFormatsIconColor`
+- Supported formats icon color &#8594; `GiniBankConfiguration.supportedFormatsIconColor`
+- Non supported formats icon color &#8594; `GiniBankConfiguration.nonSupportedFormatsIconColor`
 
 ## Open with tutorial screen
 
@@ -207,14 +207,14 @@ Some background and text colors use the `GiniColor` type with which you can set 
 	  - Image &#8594; <span style="color:#009EDF">*arrowBack*</span> image asset
 	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.help.backToMenu*</span> localized string
   - With title only
-	  - Title &#8594; `GiniPayBankConfiguration.navigationBarHelpScreenTitleBackToMenuButton`
+	  - Title &#8594; `GiniBankConfiguration.navigationBarHelpScreenTitleBackToMenuButton`
 
 ##### 1. Header
 - Text &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.collectionHeader*</span> localized string
 
 ##### 2. Open with steps
-- App name &#8594; `GiniPayBankConfiguration.openWithAppNameForTexts`
-- Step indicator color &#8594; `GiniPayBankConfiguration.stepIndicatorColor`
+- App name &#8594; `GiniBankConfiguration.openWithAppNameForTexts`
+- Step indicator color &#8594; `GiniBankConfiguration.stepIndicatorColor`
 - Step 1
 	- Title &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.step1.title*</span> localized string
 	- Subtitle &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.step1.subtitle*</span> localized string
@@ -242,7 +242,7 @@ Some background and text colors use the `GiniColor` type with which you can set 
 - Tip 5 image &#8594; <span style="color:#009EDF">*captureSuggestion5*</span> image asset
 
 ##### 2. Go to camera button
-- Background color &#8594; `GiniPayBankConfiguration.noResultsBottomButtonColor`
+- Background color &#8594; `GiniBankConfiguration.noResultsBottomButtonColor`
 
 ## Gallery album screen
 
@@ -251,8 +251,8 @@ Some background and text colors use the `GiniColor` type with which you can set 
 </br>
 
 ##### 1. Selected image
-- Selected item check color &#8594; `GiniPayBankConfiguration.galleryPickerItemSelectedBackgroundCheckColor`
-- Background color &#8594; `GiniPayBankConfiguration.galleryScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
+- Selected item check color &#8594; `GiniBankConfiguration.galleryPickerItemSelectedBackgroundCheckColor`
+- Background color &#8594; `GiniBankConfiguration.galleryScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
 ## Onboarding screens
 
@@ -261,20 +261,20 @@ Some background and text colors use the `GiniColor` type with which you can set 
 </br>
 
 ##### 1. Background
-- Background Color &#8594; `GiniPayBankConfiguration.onboardingScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
+- Background Color &#8594; `GiniBankConfiguration.onboardingScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
 ##### 2. Image
 - Page image &#8594; <span style="color:#009EDF">*onboardingPage**</span> image asset
 
 ##### 3. Text
-- Color &#8594; `GiniPayBankConfiguration.onboardingTextColor` using `GiniColor` with dark mode and light mode colors
+- Color &#8594; `GiniBankConfiguration.onboardingTextColor` using `GiniColor` with dark mode and light mode colors
 
 ##### 4. Page indicator
-- Color &#8594; `GiniPayBankConfiguration.onboardingPageIndicatorColor` using `GiniColor` with dark mode and light mode colors
+- Color &#8594; `GiniBankConfiguration.onboardingPageIndicatorColor` using `GiniColor` with dark mode and light mode colors
 
 ##### 5. Current page indicator
-- Color &#8594; `GiniPayBankConfiguration.onboardingCurrentPageIndicatorColor` using `GiniColor` with dark mode and light mode colors
-- Alpha &#8594; `GiniPayBankConfiguration.onboardingCurrentPageIndicatorAlpha` sets alpha to the `GiniPayBankConfiguration.onboardingCurrentPageIndicatorColor`
+- Color &#8594; `GiniBankConfiguration.onboardingCurrentPageIndicatorColor` using `GiniColor` with dark mode and light mode colors
+- Alpha &#8594; `GiniBankConfiguration.onboardingCurrentPageIndicatorAlpha` sets alpha to the `GiniBankConfiguration.onboardingCurrentPageIndicatorColor`
 
 ## Help screen
 
@@ -289,16 +289,16 @@ Some background and text colors use the `GiniColor` type with which you can set 
 	  - Image &#8594; <span style="color:#009EDF">*navigationHelpBack*</span> image asset
 	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.help.backToCamera*</span> localized string
   - With title only
-	  - Title &#8594; `GiniPayBankConfiguration.navigationBarHelpMenuTitleBackToCameraButton`
+	  - Title &#8594; `GiniBankConfiguration.navigationBarHelpMenuTitleBackToCameraButton`
 
 ##### 2. Table View Cells
 
-- Background color &#8594; `GiniPayBankConfiguration.helpScreenCellsBackgroundColor` using `GiniColor` with dark mode and light mode colors
+- Background color &#8594; `GiniBankConfiguration.helpScreenCellsBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
 ##### 3. Background
 
-- Background color &#8594; `GiniPayBankConfiguration.helpScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
+- Background color &#8594; `GiniBankConfiguration.helpScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
 ##### 4. Additional help menu items
 
-- Custom help menu items &#8594; `GiniPayBankConfiguration.customMenuItems` an array of `HelpMenuViewController.Item` objects
+- Custom help menu items &#8594; `GiniBankConfiguration.customMenuItems` an array of `HelpMenuViewController.Item` objects
