@@ -1,0 +1,44 @@
+name: Publish docs for Capture SDK
+on:
+  push:
+    tags:
+      - 'GiniCaptureSDK;[0-9]+.[0-9]+.[0-9]+;doc**'
+  workflow_call:    
+  
+jobs:
+  release-documentation:
+    runs-on: macOS-11    
+    steps:
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '13.0'
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: setup ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        bundler-cache: true
+
+    - name: Publish GiniCaptureSDK documentation to the release repo
+      uses: maierj/fastlane-action@v2.0.1
+      with:
+        lane: 'publish_docs'
+        options: >
+          { 
+            "project_folder": "CaptureSDK",
+            "package_folder": "GiniCaptureSDK",
+            "version_file_path": "CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDKVersion.swift", 
+            "git_tag": "${{ github.ref }}",
+            "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
+            "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
+            "ci": "true"
+          }
+
+    - name: archive documentation
+      uses: actions/upload-artifact@v2
+      with:
+        name: GiniCaptureSDKDocumentation
+        path: CaptureSDK/GiniCaptureSDK/Documentation/Api              

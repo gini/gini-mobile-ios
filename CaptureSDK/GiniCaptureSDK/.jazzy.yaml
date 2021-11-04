@@ -1,0 +1,112 @@
+---
+xcodebuild_arguments:
+- "-workspace"
+- GiniMobile.xcworkspace
+- "-scheme"
+- GiniCaptureSDK
+- "-destination"
+- platform=iOS Simulator,OS=15.0,name=iPhone 13
+author: Gini GmbH
+author_url: https://gini.net
+module: GiniCaptureSDK
+readme: Documentation/Sections/Documentation.md
+theme: Documentation/jazzy-theme/
+output: Documentation/Api
+github_url: https://github.com/gini/gini-mobile-ios.git
+hide_documentation_coverage: 'true'
+documentation: CaptureSDK/GiniCaptureSDK/Documentation/source/*.md
+abstract: CaptureSDK/GiniCaptureSDK/Documentation/Sections/*.md
+custom_categories:
+- name: Documentation
+  children:
+  - Installation
+  - Integration
+  - Integration in a Xamarin Project
+  - License
+
+- name: Guides
+  children:
+  - Customization guide
+  - Open with guide
+  - Import PDFs and images guide
+  - QR Code scanning guide
+  - Event tracking guide
+  - Error logging guide
+
+- name: Classes
+  children:
+  - AnalysisViewController
+  - AnalysisResult
+  - CameraViewController
+  - CustomDocumentValidationError
+  - CustomDocumentValidationResult
+  - DocumentPickerCoordinator
+  - GiniConfiguration
+  - GiniImageDocument
+  - GiniPDFDocument
+  - GiniQRCodeDocument
+  - GiniCapture
+  - GiniCaptureDocumentBuilder
+  - GiniCaptureDocumentValidator
+  - HelpMenuViewController
+  - ImageAnalysisNoResultsViewController
+  - MultipageReviewViewController
+  - OnboardingPage
+  - OnboardingViewController
+  - ReviewViewController
+
+- name: Enums
+  children:
+  - AnalysisError
+  - CameraError
+  - DocumentImportMethod
+  - DocumentPickerType
+  - DocumentSource
+  - DocumentValidationError
+  - FilePickerError
+  - GiniCaptureDocumentType
+  - ImageAnalysisNoResultsStrings
+  - ImageAssetsStrings
+  - NoticeActionType
+  - OpaqueViewStyle
+  - ReviewError
+  - OnboardingScreenEventType
+  - CameraScreenEventType
+  - ReviewScreenEventType
+  - AnalysisScreenEventType
+
+  - name: Extensions
+  children:
+  - Array
+  - Collection
+
+  - name: Protocols
+  children:
+  - AnalysisDelegate
+  - CameraViewControllerDelegate
+  - Diffable
+  - DocumentPickerCoordinatorDelegate
+  - GiniLogger
+  - GiniCaptureDelegate
+  - GiniCaptureDocument
+  - GiniCaptureError
+  - GiniCaptureResultsDelegate
+  - HelpMenuViewControllerDelegate
+  - MultipageReviewViewControllerDelegate
+  - ReviewViewControllerDelegate
+  - UploadDelegate
+  - GiniCaptureTrackingDelegate
+  - OnboardingScreenTrackingDelegate
+  - CameraScreenTrackingDelegate
+  - ReviewScreenTrackingDelegate
+  - AnalysisScreenTrackingDelegate
+
+- name: Structs
+  children:
+  - GiniCaptureFont
+  - GiniCapturePage
+  - Event
+
+- name: Typealiases
+  children:
+  - GiniCaptureNetworkDelegate

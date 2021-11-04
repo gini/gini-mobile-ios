@@ -1,0 +1,128 @@
+/* 
+  Localizable.strings
+  GiniCapture
+
+  Created by Peter Pult on 08/06/16.
+  Copyright © 2016 Gini. All rights reserved.
+*/
+
+"ginicapture.navigationbar.camera.title"        = "Photograph document";
+"ginicapture.navigationbar.onboarding.title"    = "Instructions";
+"ginicapture.navigationbar.review.title"        = "Check photo quality";
+"ginicapture.navigationbar.analysis.title"      = "Be patient, analysing photo";
+"ginicapture.navigationbar.camera.close"        = "";
+"ginicapture.navigationbar.camera.help"         = "Help";
+"ginicapture.navigationbar.onboarding.continue" = "Next";
+"ginicapture.navigationbar.review.back"         = "";
+"ginicapture.navigationbar.review.close"        = "";
+"ginicapture.navigationbar.review.continue"     = "Next";
+"ginicapture.navigationbar.analysis.back"       = "Cancel";
+"ginicapture.navigationbar.help.backToCamera"   = "";
+"ginicapture.navigationbar.help.backToMenu"     = "";
+
+
+"ginicapture.camera.captureButton" = "Capture";
+"ginicapture.camera.notAuthorized" = "Permission to access the camera is required to analyse photos";
+"ginicapture.camera.notAuthorizedButton" = "Grant permission";
+"ginicapture.camera.captureFailed" = "Image capture failed";
+"ginicapture.camera.filepicker.photoLibraryAccessDenied" = "Permission to access your photos gallery is required to analyse saved photos";
+"ginicapture.camera.filepicker.mixedDocumentsUnsupported" = "It is only possible to select one file type at the same time.";
+"ginicapture.camera.filepicker.failedToOpenDocument" = "The file could not be opened. Please use a different file type.";
+"ginicapture.camera.filepicker.errorPopup.cancelButton" = "Cancel";
+"ginicapture.camera.filepicker.errorPopup.confirmButton" = "OK";
+"ginicapture.camera.filepicker.errorPopup.grantAccessButton" = "Grant permission";
+"ginicapture.camera.documentValidationError.general" = "Unfortunately, this file can not be edited";
+"ginicapture.camera.documentValidationError.excedeedFileSize" = "Unfortunately, this file is too big";
+"ginicapture.camera.documentValidationError.tooManyPages" = "The document can only have a maximum of 10 pages.";
+"ginicapture.camera.documentValidationError.wrongFormat" = "Only files of the formats jpg, png, gif or pdf can be analysed";
+"ginicapture.camera.fileImportTip" = "Now documents can be conveniently uploaded for analysis.";
+"ginicapture.camera.fileImportButtonLabel" = "Import";
+"ginicapture.camera.qrCodeTip" = "Have you checked out the QR code scan yet?";
+"ginicapture.camera.capturedImagesStackLabel" = "Captured documents";
+"ginicapture.camera.qrCodeDetectedPopup.message" = "Use QR code?";
+"ginicapture.camera.unsupportedQrCodeDetectedPopup.message" = "This QR Code does not contain any payment information.";
+"ginicapture.camera.qrCodeDetectedPopup.buttonTitle" = "Continue";
+"ginicapture.camera.mixedarrayspopup.cancel" = "Cancel";
+"ginicapture.camera.mixedarrayspopup.usePhotos" = "Use photos";
+"ginicapture.camera.errorPopup.cancelButton" = "Cancel";
+"ginicapture.camera.errorPopup.pickanotherfileButton" = "Pick another file";
+"ginicapture.camera.errorPopup.pickAnotherFileButton" = "Pick another file";
+"ginicapture.camera.errorPopup.reviewPages" = "Review pages";
+"ginicapture.camera.unknownError" = "An unknown error has occurred on the camera screen";
+"ginicapture.camera.popupTitleImportPDF" = "Import PDF";
+"ginicapture.camera.popupOptionPhotos" = "Gallery";
+"ginicapture.camera.popupOptionFiles" = "Documents";
+"ginicapture.camera.popupTitleImportPDForPhotos" = "Import Photos or PDF files";
+"ginicapture.camera.popupCancel" = "Cancel";
+
+"ginicapture.onboarding.firstPage"  = "Hold device parallel over the page";
+"ginicapture.onboarding.secondPage" = "Flatten the page";
+"ginicapture.onboarding.thirdPage"  = "Capture the entire page within the frame shown on the camera screen";
+"ginicapture.onboarding.fourthPage" = "Ensure good lighting when photographing the invoice or remittance slip";
+"ginicapture.onboarding.fifthPage"  = "It's now possible to analyse an invoice with multiple pages!";
+
+"ginicapture.review.top"                = "Is the document complete, in focus and in the correct orientation?";
+"ginicapture.review.bottom"             = "Double-tap to check the focus";
+"ginicapture.review.rotateButton"       = "Rotate document";
+"ginicapture.review.documentImageTitle" = "Document";
+"ginicapture.review.unknownError"       = "An unknown error has occurred on the review screen";
+
+"ginicapture.analysis.loadingText" = "Document is being analysed";
+"ginicapture.analysis.suggestion.header" = "For faster results, please:";
+"ginicapture.analysis.suggestion.1" = "Ensure good lighting";
+"ginicapture.analysis.suggestion.2" = "Flatten the page";
+"ginicapture.analysis.suggestion.3" = "Hold device parallel over the page";
+"ginicapture.analysis.suggestion.4" = "Capture the entire page within the frame shown on the camera screen";
+"ginicapture.analysis.suggestion.5" = "It's now possible to analyse an invoice with multiple pages";
+"ginicapture.analysis.error.actionTitle" = "Retry";
+"ginicapture.analysis.error.documentCreation" = "An error occurred while uploading the document.";
+"ginicapture.analysis.error.analysis" = "An error occurred while parsing the document.";
+"ginicapture.analysis.error.cancelled" = "The analysis was cancelled";
+"ginicapture.analysis.defaultPdfDokumentTitle" = "PDF Document";
+
+"ginicapture.help.openWithTutorial.title" = "Open documents from other apps";
+
+"ginicapture.help.openWithTutorial.collectionHeader" = "Paying digital invoices has now become even more convenient. Send a PDF invoice directly to %@. The document will automatically be analysed for payment transfer.";
+"ginicapture.help.openWithTutorial.step1.title" = "Please select an invoice";
+"ginicapture.help.openWithTutorial.step1.subTitle" = "To do so, please select a PDF invoice from within your email app, PDF viewer or other app on your smartphone.";
+"ginicapture.help.openWithTutorial.step2.title" = "Select the send function";
+"ginicapture.help.openWithTutorial.step2.subTitle" = "To redirect the file to %@, use the \"Share\" function, represented as a square with the arrow pointing up, and choose \"Open in ...\" or \"Share File\". Please select %@ from the list to start the analysis and transfer process.";
+"ginicapture.help.openWithTutorial.step3.title" = "On iPad you can also use \"Drag-and-drop\"";
+"ginicapture.help.openWithTutorial.step3.subTitle" = "If your iPad is running iOS 11 or newer, you can conveniently drag-and-drop PDFs from the iOS Files app to %@ to start a payment. To do this, open %@ and open the Files app as a second app on the screen. Select the desired invoice file in the Files app and drag this over to %@.";
+
+"ginicapture.noresults.warning" = "No information could be extracted. Please take a new photo.";
+"ginicapture.noresults.collection.header" = "Tips for best results:";
+"ginicapture.noresults.gotocamera" = "Back to the camera";
+"ginicapture.noresults.title" = "Tips for photos";
+"ginicapture.noresults.warningHelpMenu" = "For best extraction results, please apply the following tips for photos:";
+
+"ginicapture.help.supportedFormats.title" = "Supported formats";
+"ginicapture.help.supportedFormats.section.1.title" = "The following formats are supported:";
+"ginicapture.help.supportedFormats.section.1.item.1" = "Computer-generated invoices and remittance slips";
+"ginicapture.help.supportedFormats.section.1.item.2" = "1-sided photos of format jpeg, png or gif";
+"ginicapture.help.supportedFormats.section.1.item.3" = "PDF documents of up to 10 pages";
+"ginicapture.help.supportedFormats.section.1.item.4" = "QR Codes";
+"ginicapture.help.supportedFormats.section.2.title" = "What is not supported:";
+"ginicapture.help.supportedFormats.section.2.item.1" = "Handwriting";
+"ginicapture.help.supportedFormats.section.2.item.2" = "Photos of monitors or screens";
+
+"ginicapture.help.menu.title" = "Help";
+"ginicapture.help.menu.firstItem" = "Tips for best results from photos";
+"ginicapture.help.menu.secondItem" = "Open document from other apps";
+"ginicapture.help.menu.thirdItem" = "Supported formats";
+
+"ginicapture.albums.title" = "Albums";
+"ginicapture.imagepicker.openbutton" = "Open";
+
+"ginicapture.multipagereview.reorderContainerTooltipMessage" = "The pages must be in the right order. You can sort them here.";
+"ginicapture.multipagereview.addButtonLabel" = "Add a page";
+"ginicapture.multipagereview.dragAndDropTip" = "Drag & Drop to sort";
+"ginicapture.multipagereview.title" = "%d of %d";
+"ginicapture.multipagereview.error.retakeAction" = "Retake";
+"ginicapture.multipagereview.error.retryAction" = "Retry";
+
+"ginicapture.images.openWithTutorialStep1" = "openWithTutorialStep1_en";
+"ginicapture.images.openWithTutorialStep2" = "openWithTutorialStep2_en";
+"ginicapture.images.openWithTutorialStep3" = "openWithTutorialStep3_en";
+"ginicapture.albums.selectMorePhotosButton" = "Select more photos";
+"ginicapture.albums.footer" = "Use \"Select more photos\" button to select more photos or deselect to remove access.";
