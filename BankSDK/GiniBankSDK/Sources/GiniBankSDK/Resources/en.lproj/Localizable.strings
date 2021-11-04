@@ -1,0 +1,97 @@
+/* 
+  Localizable.strings
+  GiniVision
+
+  Created by Peter Pult on 08/06/16.
+  Copyright © 2016 Gini. All rights reserved.
+*/
+"ginipaybank.help.menu.title" = "Help";
+"ginipaybank.help.menu.firstItem" = "Tips for best results from photos";
+"ginipaybank.help.menu.secondItem" = "Open document from other apps";
+"ginipaybank.help.menu.thirdItem" = "Supported formats";
+"ginipaybank.help.menu.fourthItem" = "The new return assistant";
+
+"ginipaybank.help.menu.returnAssistant.title" = "Return Assistant";
+"ginipaybank.help.menu.returnAssistant.section1.title" = "The new Return Assistant";
+"ginipaybank.help.menu.returnAssistant.section1.body1" = "You can now deselect invoice items that you do not want. You only pay for the things you keep and can return the rest.";
+"ginipaybank.help.menu.returnAssistant.section1.body2" = "By clicking on the Edit button of any invoice item, you can change the quantity and correct the price.";
+
+"ginipaybank.help.menu.returnAssistant.section2.title" = "Change the quantity";
+"ginipaybank.help.menu.returnAssistant.section2.body" = "For example, if you want to keep a lower number than you ordered, just change the quantity. The total price will be updated automatically.";
+
+"ginipaybank.help.menu.returnAssistant.section3.title" = "Fix the price";
+"ginipaybank.help.menu.returnAssistant.section3.body" = "If the price has not been read out perfectly, you can simply correct it manually. The total price is updated automatically.";
+"ginipaybank.help.menu.returnAssistant.backButton.title" = "Back";
+
+"ginipaybank.albums.title" = "Albums";
+"ginipaybank.imagepicker.openbutton" = "Open";
+
+"ginipaybank.multipagereview.reorderContainerTooltipMessage" = "The pages must be in the right order. You can sort them here.";
+"ginipaybank.multipagereview.addButtonLabel" = "Add a page";
+"ginipaybank.multipagereview.dragAndDropTip" = "Drag & Drop to sort";
+"ginipaybank.multipagereview.title" = "%d of %d";
+"ginipaybank.multipagereview.error.retakeAction" = "Retake";
+"ginipaybank.multipagereview.error.retryAction" = "Retry";
+
+"ginipaybank.images.openWithTutorialStep1" = "openWithTutorialStep1_en";
+"ginipaybank.images.openWithTutorialStep2" = "openWithTutorialStep2_en";
+"ginipaybank.images.openWithTutorialStep3" = "openWithTutorialStep3_en";
+
+"ginipaybank.digitalinvoice.screentitle" = "Digital Invoice";
+"ginipaybank.digitalinvoice.paybuttontitle.noinvoice" = "Pay";
+"ginipaybank.digitalinvoice.paybuttontitle" = "Pay %d/%d";
+"ginipaybank.digitalinvoice.paybuttontitle.accessibilitylabel" = "Pay %d out of %d";
+
+"ginipaybank.digitalinvoice.warningleftbuttontitle" = "OK";
+"ginipaybank.digitalinvoice.warningrightbuttontitle" = "Skip";
+"ginipaybank.digitalinvoice.warningtoptitle" = "Info";
+"ginipaybank.digitalinvoice.warningmiddletext" = "This new feature may contain some bugs. Please double check the articles and the total amount. If necessay you can edit them.";
+"ginipaybank.digitalinvoice.warningbottomtext" = "If you don’t like to use this feature, you can simply skip it.";
+
+"ginipaybank.digitalinvoice.skipbuttontitle" = "Skip feature";
+
+"ginipaybank.digitalinvoice.items" = "Article %d/%d";
+"ginipaybank.digitalinvoice.items.accessibilitylabel" = "Items %d out of %d";
+
+"ginipaybank.digitalinvoice.whatisthisactionsheet.title" = "What is this?";
+"ginipaybank.digitalinvoice.whatisthisactionsheet.message" = "We extracted the detailed items from your invoice. If you would like to return some items or partially pay the invoice, you can deselect them and the amount to pay will be recalculated.";
+"ginipaybank.digitalinvoice.whatisthisactionsheet.action.helpful" = "Yes, that's helpful";
+"ginipaybank.digitalinvoice.whatisthisactionsheet.action.nothelpful" = "No, I don't want to see it again";
+"ginipaybank.digitalinvoice.whatisthisactionsheet.action.cancel" = "Cancel";
+
+"ginipaybank.digitalinvoice.lineitem.quantity" = "%dx";
+"ginipaybank.digitalinvoice.lineitem.editbutton" = "Edit";
+
+"ginipaybank.digitalinvoice.checkmarkbutton.deselect.accessibilitylabel" = "Deselect item";
+"ginipaybank.digitalinvoice.checkmarkbutton.select.accessibilitylabel" = "Select item";
+
+"ginipaybank.digitalinvoice.deselectreasonactionsheet.message" = "Your reasons to return this item";
+"ginipaybank.digitalinvoice.deselectreasonactionsheet.action.cancel" = "Cancel";
+
+"ginipaybank.digitalinvoice.headermessage.primary" = "Scan successful!";
+"ginipaybank.digitalinvoice.headermessage.secondary" = "You can now deselect items you would like to return.";
+
+"ginipaybank.digitalinvoice.total.addArticleButtonTitle" = "Add article";
+"ginipaybank.digitalinvoice.total.accessibilitylabel" = "Total: %@";
+
+"ginipaybank.digitalinvoice.footermessage" = "Please double check if the amount is correct and add further articles if necessary";
+"ginipaybank.digitalinvoice.totalcaptionlabeltext" = "Total";
+"ginipaybank.digitalinvoice.totalexplanationlabeltext" = "Incl. shipping, discount and so on.";
+
+"ginipaybank.digitalinvoice.lineitem.notitle" = "Additional";
+"ginipaybank.digitalinvoice.lineitem.savebutton" = "Save";
+"ginipaybank.digitalinvoice.lineitem.itemnametextfieldtitle" = "Item Name";
+"ginipaybank.digitalinvoice.lineitem.quantitytextfieldtitle" = "Quantity";
+"ginipaybank.digitalinvoice.lineitem.pricetextfieldtitle" = "Item Price";
+"ginipaybank.digitalinvoice.lineitem.multiplication.accessibilitylabel" = "times";
+"ginipaybank.digitalinvoice.lineitem.totalpricetitle" = "Total:";
+
+"ginipaybank.digitalinvoice.addonname.discount" = "Discount";
+"ginipaybank.digitalinvoice.addonname.giftcard" = "Giftcard";
+"ginipaybank.digitalinvoice.addonname.otherdiscounts" = "Other discounts";
+"ginipaybank.digitalinvoice.addonname.othercharges" = "Other charges";
+"ginipaybank.digitalinvoice.addonname.shipment" = "Shipment";
+"ginipaybank.digitalinvoice.onboarding.text1" = "Your new return assistant!";
+"ginipaybank.digitalinvoice.onboarding.text2" = "Deselect article that you want to return and pay only for what you keep!";
+"ginipaybank.digitalinvoice.onboarding.donebutton" = "Next";
+"ginipaybank.digitalinvoice.onboarding.hidebutton" = "Don’t show anymore";
