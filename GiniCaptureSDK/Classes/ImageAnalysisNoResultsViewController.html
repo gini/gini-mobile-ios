@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ImageAnalysisNoResultsViewController Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/ImageAnalysisNoResultsViewController" class="dashAnchor"></a>
+
+    <a title="ImageAnalysisNoResultsViewController Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+        <img class="logo-icon" src="../img/logo.png"/>
+    
+        </a>
+        
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/gini/gini-mobile-ios.git">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">GiniCaptureSDK Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      ImageAnalysisNoResultsViewController Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Documentation.html">Documentation</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../installation.html">Installation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../integration.html">Integration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../integration-in-a-xamarin-project.html">Integration in a Xamarin Project</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../license.html">License</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Guides.html">Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../customization-guide.html">Customization guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../open-with-guide.html">Open with guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../import-pdfs-and-images-guide.html">Import PDFs and images guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../qr-code-scanning-guide.html">QR Code scanning guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../event-tracking-guide.html">Event tracking guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../error-logging-guide.html">Error logging guide</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AnalysisViewController.html">AnalysisViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AnalysisResult.html">AnalysisResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CameraViewController.html">CameraViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CustomDocumentValidationError.html">CustomDocumentValidationError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CustomDocumentValidationResult.html">CustomDocumentValidationResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DocumentPickerCoordinator.html">DocumentPickerCoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniConfiguration.html">GiniConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniConfiguration/GiniCaptureImportFileTypes.html">– GiniCaptureImportFileTypes</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniImageDocument.html">GiniImageDocument</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniPDFDocument.html">GiniPDFDocument</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniQRCodeDocument.html">GiniQRCodeDocument</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniCapture.html">GiniCapture</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniCaptureDocumentBuilder.html">GiniCaptureDocumentBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniCaptureDocumentValidator.html">GiniCaptureDocumentValidator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/HelpMenuViewController.html">HelpMenuViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/HelpMenuViewController/Item.html">– Item</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ImageAnalysisNoResultsViewController.html">ImageAnalysisNoResultsViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/MultipageReviewViewController.html">MultipageReviewViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/OnboardingPage.html">OnboardingPage</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/OnboardingViewController.html">OnboardingViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ReviewViewController.html">ReviewViewController</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AnalysisDelegate.html">AnalysisDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/CameraViewControllerDelegate.html">CameraViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Diffable.html">Diffable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DocumentPickerCoordinatorDelegate.html">DocumentPickerCoordinatorDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniLogger.html">GiniLogger</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniCaptureDelegate.html">GiniCaptureDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniCaptureDocument.html">GiniCaptureDocument</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniCaptureError.html">GiniCaptureError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniCaptureResultsDelegate.html">GiniCaptureResultsDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HelpMenuViewControllerDelegate.html">HelpMenuViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/MultipageReviewViewControllerDelegate.html">MultipageReviewViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ReviewViewControllerDelegate.html">ReviewViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/UploadDelegate.html">UploadDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums.html#/s:14GiniCaptureSDK0aB16TrackingDelegateP">GiniCaptureTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/OnboardingScreenTrackingDelegate.html">OnboardingScreenTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/CameraScreenTrackingDelegate.html">CameraScreenTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ReviewScreenTrackingDelegate.html">ReviewScreenTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AnalysisScreenTrackingDelegate.html">AnalysisScreenTrackingDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Structs.html">Structs</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniCaptureFont.html">GiniCaptureFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/GiniCapturePage.html">GiniCapturePage</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Event.html">Event</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Typealiases.html">Typealiases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:14GiniCaptureSDK0aB15NetworkDelegatea">GiniCaptureNetworkDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AccountingDocumentService.html">AccountingDocumentService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Constraints.html">Constraints</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultLogger.html">DefaultLogger</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DocumentService.html">DocumentService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniCaptureErrorLogger.html">GiniCaptureErrorLogger</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniColor.html">GiniColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniNetworkingScreenAPICoordinator.html">GiniNetworkingScreenAPICoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniScreenAPICoordinator.html">GiniScreenAPICoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/QRCodesExtractor.html">QRCodesExtractor</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Enumerations.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/AnalysisError.html">AnalysisError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/AnalysisScreenEventType.html">AnalysisScreenEventType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/AnalysisStrings.html">AnalysisStrings</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/CameraError.html">CameraError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/CameraScreenEventType.html">CameraScreenEventType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DocumentImportMethod.html">DocumentImportMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DocumentPickerType.html">DocumentPickerType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DocumentSource.html">DocumentSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DocumentValidationError.html">DocumentValidationError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/FilePickerError.html">FilePickerError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniCaptureDocumentType.html">GiniCaptureDocumentType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ImageAnalysisNoResultsStrings.html">ImageAnalysisNoResultsStrings</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ImageAssetsStrings.html">ImageAssetsStrings</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/NoticeActionType.html">NoticeActionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/OnboardingScreenEventType.html">OnboardingScreenEventType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/OnboardingStrings.html">OnboardingStrings</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/OpaqueViewStyle.html">OpaqueViewStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/QRCodesFormat.html">QRCodesFormat</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ReviewError.html">ReviewError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ReviewScreenEventType.html">ReviewScreenEventType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Bundle.html">Bundle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Collection.html">Collection</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Optional.html">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UIColor.html">UIColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UIDevice.html">UIDevice</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UINavigationController.html">UINavigationController</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Functions.html">Other Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Functions.html#/s:14GiniCaptureSDK21UIImageNamedPreferred5namedSo0D0CSgSS_tF">UIImageNamedPreferred(named:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Functions.html#/s:14GiniCaptureSDK04giniB6BundleSo8NSBundleCyF">giniCaptureBundle()</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DocumentServiceProtocol.html">DocumentServiceProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniCaptureErrorLoggerDelegate.html">GiniCaptureErrorLoggerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/LocalizableStringResource.html">LocalizableStringResource</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/PreferredButtonResource.html">PreferredButtonResource</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Structures.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Colors.html">Colors</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Colors/Gini.html">– Gini</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ErrorLog.html">ErrorLog</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Type Aliases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Typealiases.html#/s:14GiniCaptureSDK18AnalysisCompletiona">AnalysisCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Typealiases.html#/s:14GiniCaptureSDK17LocalizationEntrya">LocalizationEntry</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Typealiases.html#/s:14GiniCaptureSDK24UploadDocumentCompletiona">UploadDocumentCompletion</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>ImageAnalysisNoResultsViewController</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">ImageAnalysisNoResultsViewController</span> <span class="p">:</span> <span class="kt">UIViewController</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">ImageAnalysisNoResultsViewController</span><span class="p">:</span> <span class="kt">UICollectionViewDataSource</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">ImageAnalysisNoResultsViewController</span><span class="p">:</span> <span class="kt">UICollectionViewDelegateFlowLayout</span></code></pre>
+
+                </div>
+              </div>
+            <p>The <code>ImageAnalysisNoResultsViewController</code> provides a custom no results screen which shows some capture
+suggestions when there is no results when analysing an image.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:14GiniCaptureSDK36ImageAnalysisNoResultsViewControllerC18didTapBottomButtonyycvp"></a>
+                    <a name="//apple_ref/swift/Property/didTapBottomButton" class="dashAnchor"></a>
+                    <a class="token" href="#/s:14GiniCaptureSDK36ImageAnalysisNoResultsViewControllerC18didTapBottomButtonyycvp">didTapBottomButton</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">didTapBottomButton</span><span class="p">:</span> <span class="p">(()</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:14GiniCaptureSDK36ImageAnalysisNoResultsViewControllerC5title13subHeaderText03tophM00nH4Icon012bottomButtonM00pqO0ACSSSg_AJSSSo7UIImageCSgAjMtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(title:subHeaderText:topViewText:topViewIcon:bottomButtonText:bottomButtonIcon:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:14GiniCaptureSDK36ImageAnalysisNoResultsViewControllerC5title13subHeaderText03tophM00nH4Icon012bottomButtonM00pqO0ACSSSg_AJSSSo7UIImageCSgAjMtcfc">init(title:subHeaderText:topViewText:topViewIcon:bottomButtonText:bottomButtonIcon:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="nv">title</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+                        <span class="nv">subHeaderText</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kt">NSLocalizedString</span><span class="p">(</span><span class="s">"ginicapture.noresults.collection.header"</span><span class="p">,</span>
+                                                                   <span class="nv">bundle</span><span class="p">:</span> <span class="kt">Bundle</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniCapture.html">GiniCapture</a></span><span class="o">.</span><span class="k">self</span><span class="p">),</span>
+                                                                   <span class="nv">comment</span><span class="p">:</span> <span class="s">"no results suggestions collection "</span> <span class="o">+</span>
+    <span class="s">"header title"</span><span class="p">),</span>
+                        <span class="nv">topViewText</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="kt">NSLocalizedString</span><span class="p">(</span><span class="s">"ginicapture.noresults.warning"</span><span class="p">,</span>
+                                                                <span class="nv">bundle</span><span class="p">:</span> <span class="kt">Bundle</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniCapture.html">GiniCapture</a></span><span class="o">.</span><span class="k">self</span><span class="p">),</span>
+                                                                <span class="nv">comment</span><span class="p">:</span> <span class="s">"Warning text that indicates that there "</span> <span class="o">+</span>
+    <span class="s">"was any result for this photo analysis"</span><span class="p">),</span>
+                        <span class="nv">topViewIcon</span><span class="p">:</span> <span class="kt">UIImage</span><span class="p">?</span> <span class="o">=</span> <span class="kt">UIImage</span><span class="p">(</span><span class="nv">named</span><span class="p">:</span> <span class="s">"warningNoResults"</span><span class="p">,</span>
+                                                        <span class="nv">in</span><span class="p">:</span> <span class="kt">Bundle</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniCapture.html">GiniCapture</a></span><span class="o">.</span><span class="k">self</span><span class="p">),</span>
+                                                        <span class="nv">compatibleWith</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)?</span><span class="o">.</span><span class="nf">withRenderingMode</span><span class="p">(</span><span class="o">.</span><span class="n">alwaysTemplate</span><span class="p">),</span>
+                        <span class="nv">bottomButtonText</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kt">NSLocalizedString</span><span class="p">(</span><span class="s">"ginicapture.noresults.gotocamera"</span><span class="p">,</span>
+                                                                      <span class="nv">bundle</span><span class="p">:</span> <span class="kt">Bundle</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniCapture.html">GiniCapture</a></span><span class="o">.</span><span class="k">self</span><span class="p">),</span>
+                                                                      <span class="nv">comment</span><span class="p">:</span> <span class="s">"bottom button title (go to camera"</span> <span class="o">+</span>
+    <span class="s">" button)"</span><span class="p">),</span>
+                        <span class="nv">bottomButtonIcon</span><span class="p">:</span> <span class="kt">UIImage</span><span class="p">?</span> <span class="o">=</span> <span class="kt">UIImage</span><span class="p">(</span><span class="nv">named</span><span class="p">:</span> <span class="s">"cameraIcon"</span><span class="p">,</span>
+                                                             <span class="nv">in</span><span class="p">:</span> <span class="kt">Bundle</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniCapture.html">GiniCapture</a></span><span class="o">.</span><span class="k">self</span><span class="p">),</span>
+                                                             <span class="nv">compatibleWith</span><span class="p">:</span> <span class="kc">nil</span><span class="p">))</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniCaptureSDK@objc(cs)ImageAnalysisNoResultsViewController(im)initWithCoder:"></a>
+                    <a name="//apple_ref/swift/Method/init(coder:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniCaptureSDK@objc(cs)ImageAnalysisNoResultsViewController(im)initWithCoder:">init(coder:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">required</span> <span class="kd">public</span> <span class="nf">init</span><span class="p">?(</span><span class="n">coder</span> <span class="nv">aDecoder</span><span class="p">:</span> <span class="kt">NSCoder</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniCaptureSDK@objc(cs)ImageAnalysisNoResultsViewController(im)loadView"></a>
+                    <a name="//apple_ref/swift/Method/loadView()" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniCaptureSDK@objc(cs)ImageAnalysisNoResultsViewController(im)loadView">loadView()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">override</span> <span class="kd">func</span> <span class="nf">loadView</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniCaptureSDK@objc(cs)ImageAnalysisNoResultsViewController(im)viewWillTransitionToSize:withTransitionCoordinator:"></a>
+                    <a name="//apple_ref/swift/Method/viewWillTransition(to:with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniCaptureSDK@objc(cs)ImageAnalysisNoResultsViewController(im)viewWillTransitionToSize:withTransitionCoordinator:">viewWillTransition(to:with:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">override</span> <span class="kd">func</span> <span class="nf">viewWillTransition</span><span class="p">(</span><span class="n">to</span> <span class="nv">size</span><span class="p">:</span> <span class="kt">CGSize</span><span class="p">,</span> <span class="n">with</span> <span class="nv">coordinator</span><span class="p">:</span> <span class="kt">UIViewControllerTransitionCoordinator</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/UICollectionViewDataSource"></a>
+                <a name="//apple_ref/swift/Section/UICollectionViewDataSource" class="dashAnchor"></a>
+                <a href="#/UICollectionViewDataSource">
+                  <h3 class="section-name">UICollectionViewDataSource</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@GiniCaptureSDK@objc(cs)ImageAnalysisNoResultsViewController(im)collectionView:numberOfItemsInSection:"></a>
+                    <a name="//apple_ref/swift/Method/collectionView(_:numberOfItemsInSection:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@GiniCaptureSDK@objc(cs)ImageAnalysisNoResultsViewController(im)collectionView:numberOfItemsInSection:">collectionView(_:numberOfItemsInSection:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">collectionView</span><span class="p">(</span><span class="n">_</span> <span class="nv">collectionView</span><span class="p">:</span> <span class="kt">UICollectionView</span><span class="p">,</span> <span class="n">numberOfItemsInSection</span> <span class="nv">section</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@GiniCaptureSDK@objc(cs)ImageAnalysisNoResultsViewController(im)collectionView:cellForItemAtIndexPath:"></a>
+                    <a name="//apple_ref/swift/Method/collectionView(_:cellForItemAt:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@GiniCaptureSDK@objc(cs)ImageAnalysisNoResultsViewController(im)collectionView:cellForItemAtIndexPath:">collectionView(_:cellForItemAt:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">collectionView</span><span class="p">(</span><span class="n">_</span> <span class="nv">collectionView</span><span class="p">:</span> <span class="kt">UICollectionView</span><span class="p">,</span>
+                           <span class="n">cellForItemAt</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UICollectionViewCell</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@GiniCaptureSDK@objc(cs)ImageAnalysisNoResultsViewController(im)numberOfSectionsInCollectionView:"></a>
+                    <a name="//apple_ref/swift/Method/numberOfSections(in:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@GiniCaptureSDK@objc(cs)ImageAnalysisNoResultsViewController(im)numberOfSectionsInCollectionView:">numberOfSections(in:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">numberOfSections</span><span class="p">(</span><span class="k">in</span> <span class="nv">collectionView</span><span class="p">:</span> <span class="kt">UICollectionView</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/UICollectionViewDelegateFlowLayout"></a>
+                <a name="//apple_ref/swift/Section/UICollectionViewDelegateFlowLayout" class="dashAnchor"></a>
+                <a href="#/UICollectionViewDelegateFlowLayout">
+                  <h3 class="section-name">UICollectionViewDelegateFlowLayout</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@GiniCaptureSDK@objc(cs)ImageAnalysisNoResultsViewController(im)collectionView:layout:sizeForItemAtIndexPath:"></a>
+                    <a name="//apple_ref/swift/Method/collectionView(_:layout:sizeForItemAt:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@GiniCaptureSDK@objc(cs)ImageAnalysisNoResultsViewController(im)collectionView:layout:sizeForItemAtIndexPath:">collectionView(_:layout:sizeForItemAt:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">collectionView</span><span class="p">(</span><span class="n">_</span> <span class="nv">collectionView</span><span class="p">:</span> <span class="kt">UICollectionView</span><span class="p">,</span>
+                           <span class="n">layout</span> <span class="nv">collectionViewLayout</span><span class="p">:</span> <span class="kt">UICollectionViewLayout</span><span class="p">,</span>
+                           <span class="n">sizeForItemAt</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">CGSize</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@GiniCaptureSDK@objc(cs)ImageAnalysisNoResultsViewController(im)collectionView:layout:referenceSizeForHeaderInSection:"></a>
+                    <a name="//apple_ref/swift/Method/collectionView(_:layout:referenceSizeForHeaderInSection:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@GiniCaptureSDK@objc(cs)ImageAnalysisNoResultsViewController(im)collectionView:layout:referenceSizeForHeaderInSection:">collectionView(_:layout:referenceSizeForHeaderInSection:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">collectionView</span><span class="p">(</span><span class="n">_</span> <span class="nv">collectionView</span><span class="p">:</span> <span class="kt">UICollectionView</span><span class="p">,</span>
+                           <span class="n">layout</span> <span class="nv">collectionViewLayout</span><span class="p">:</span> <span class="kt">UICollectionViewLayout</span><span class="p">,</span>
+                           <span class="n">referenceSizeForHeaderInSection</span> <span class="nv">section</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">CGSize</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@GiniCaptureSDK@objc(cs)ImageAnalysisNoResultsViewController(im)collectionView:viewForSupplementaryElementOfKind:atIndexPath:"></a>
+                    <a name="//apple_ref/swift/Method/collectionView(_:viewForSupplementaryElementOfKind:at:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@GiniCaptureSDK@objc(cs)ImageAnalysisNoResultsViewController(im)collectionView:viewForSupplementaryElementOfKind:atIndexPath:">collectionView(_:viewForSupplementaryElementOfKind:at:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">collectionView</span><span class="p">(</span><span class="n">_</span> <span class="nv">collectionView</span><span class="p">:</span> <span class="kt">UICollectionView</span><span class="p">,</span>
+                           <span class="n">viewForSupplementaryElementOfKind</span> <span class="nv">kind</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+                           <span class="n">at</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UICollectionReusableView</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2021 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2021-11-04)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
