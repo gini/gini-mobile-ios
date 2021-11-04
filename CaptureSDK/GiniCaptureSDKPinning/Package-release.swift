@@ -28,7 +28,6 @@ let package = Package(
             dependencies: ["GiniBankAPILibraryPinning", "GiniCaptureSDK"]),
         .testTarget(
             name: "GiniCaptureSDKPinningTests",
-            dependencies: ["GiniCaptureSDKPinning"],
-            resources: [.copy("Resources")]),
+            dependencies: ["GiniCaptureSDKPinning"]),
     ]
 )
