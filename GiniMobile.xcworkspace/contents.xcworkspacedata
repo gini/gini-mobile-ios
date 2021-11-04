@@ -3,19 +3,6 @@
    version = "1.0">
    <Group
       location = "container:"
-      name = "GiniHealthSDK">
-      <FileRef
-         location = "group:HealthSDK/GiniHealthSDKPinningExample/GiniHealthSDKPinningExample.xcodeproj">
-      </FileRef>
-      <FileRef
-         location = "group:HealthSDK/GiniHealthSDK">
-      </FileRef>
-      <FileRef
-         location = "group:HealthSDK/GiniHealthSDKPinning">
-      </FileRef>
-   </Group>
-   <Group
-      location = "container:"
       name = "GiniHealthAPILibrary">
       <FileRef
          location = "container:HealthAPILibrary/GiniHealthAPILibraryExample/GiniHealthAPILibraryExample.xcodeproj">
@@ -38,6 +25,32 @@
       </FileRef>
       <FileRef
          location = "group:BankAPILibrary/GiniBankAPILibrary">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
+      name = "GiniHealthSDK">
+      <FileRef
+         location = "group:HealthSDK/GiniHealthSDKPinningExample/GiniHealthSDKPinningExample.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:HealthSDK/GiniHealthSDK">
+      </FileRef>
+      <FileRef
+         location = "group:HealthSDK/GiniHealthSDKPinning">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
+      name = "GiniCaptureSDK">
+      <FileRef
+         location = "group:CaptureSDK/GiniCaptureSDKExample/GiniCaptureSDKExample.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:CaptureSDK/GiniCaptureSDKPinning">
+      </FileRef>
+      <FileRef
+         location = "group:CaptureSDK/GiniCaptureSDK">
       </FileRef>
    </Group>
 </Workspace>
