@@ -22,7 +22,7 @@ struct DigitalLineItemViewModel {
     }
     
     var quantityString: String {
-        return String.localizedStringWithFormat(DigitalInvoiceStrings.lineItemQuantity.localizedGiniPayFormat,
+        return String.localizedStringWithFormat(DigitalInvoiceStrings.lineItemQuantity.localizedGiniBankFormat,
                                                 lineItem.quantity)
     }
     
@@ -189,10 +189,10 @@ class DigitalLineItemTableViewCell: UITableViewCell {
                 
                 priceLabel.attributedText = attributedString
                 
-                let format = DigitalInvoiceStrings.totalAccessibilityLabel.localizedGiniPayFormat
+                let format = DigitalInvoiceStrings.totalAccessibilityLabel.localizedGiniBankFormat
                 priceLabel.accessibilityLabel = String.localizedStringWithFormat(format, priceString)
                 
-                countLabel.text = String.localizedStringWithFormat(DigitalInvoiceStrings.items.localizedGiniPayFormat,
+                countLabel.text = String.localizedStringWithFormat(DigitalInvoiceStrings.items.localizedGiniBankFormat,
                                                                    viewModel.index.advanced(by: 1),
                                                                    viewModel.invoiceLineItemsCount)
                 countLabel.font = viewModel.countLabelFont
@@ -209,7 +209,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
             editButton.titleLabel?.font = viewModel?.editButtonTitleFont
             editButton.tintColor = viewModel?.editButtonTintColor ?? .black
             
-            editButton.setTitle(.ginipayLocalized(resource: DigitalInvoiceStrings.lineItemEditButtonTitle), for: .normal)
+            editButton.setTitle(.ginibankLocalized(resource: DigitalInvoiceStrings.lineItemEditButtonTitle), for: .normal)
             
             nameLabel.textColor = viewModel?.primaryTextColor
 

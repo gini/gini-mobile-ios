@@ -48,7 +48,7 @@ class DigitalInvoiceTotalPriceCell: UITableViewCell {
         
         selectionStyle = .none
         
-        totalCaptionLabel.text = .ginipayLocalized(resource: DigitalInvoiceStrings.totalCaptionLabel)
+        totalCaptionLabel.text = .ginibankLocalized(resource: DigitalInvoiceStrings.totalCaptionLabel)
         totalCaptionLabel.font = returnAssistantConfiguration?.digitalInvoiceTotalCaptionLabelFont ?? ReturnAssistantConfiguration.shared.digitalInvoiceTotalCaptionLabelFont
         
         totalCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -68,7 +68,7 @@ class DigitalInvoiceTotalPriceCell: UITableViewCell {
         
         contentView.addSubview(addArticleButton)
         addArticleButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
-        addArticleButton.setTitle(.ginipayLocalized(resource: DigitalInvoiceStrings.addArticleButton), for: .normal)
+        addArticleButton.setTitle(.ginibankLocalized(resource: DigitalInvoiceStrings.addArticleButton), for: .normal)
         addArticleButton.setImage(UIImage(named: "plus-icon", in: giniBankBundle(), compatibleWith: nil), for: .normal)
         addArticleButton.setTitleColor(returnAssistantConfiguration?.digitalInvoiceFooterAddArticleButtonTintColor ?? ReturnAssistantConfiguration.shared.digitalInvoiceFooterAddArticleButtonTintColor, for: .normal)
         addArticleButton.tintColor = returnAssistantConfiguration?.digitalInvoiceFooterAddArticleButtonTintColor ?? ReturnAssistantConfiguration.shared.digitalInvoiceFooterAddArticleButtonTintColor
@@ -103,7 +103,7 @@ class DigitalInvoiceTotalPriceCell: UITableViewCell {
         
         totalPriceLabel.attributedText = attributedString
         
-        let format = DigitalInvoiceStrings.totalAccessibilityLabel.localizedGiniPayFormat
+        let format = DigitalInvoiceStrings.totalAccessibilityLabel.localizedGiniBankFormat
         totalPriceLabel.accessibilityLabel = String.localizedStringWithFormat(format,
                                                                               totalPriceString)
     }

@@ -48,7 +48,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     }
     
     fileprivate func configureUI() {
-        title = .ginipayLocalized(resource: DigitalInvoiceStrings.screenTitle)
+        title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
         view.backgroundColor = UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceOnboardingBackgroundColor)
         
         topImageView.image = topImage

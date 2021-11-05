@@ -180,7 +180,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
 
                 guard error != .requestCancelled else { return }
 
-                networkDelegate.displayError(withMessage: .ginipayLocalized(resource: AnalysisStrings.analysisErrorMessage),
+                networkDelegate.displayError(withMessage: .ginibankLocalized(resource: AnalysisStrings.analysisErrorMessage),
                                              andAction: {
                                                  self.startAnalysisWithReturnAssistant(networkDelegate: networkDelegate)
                                              })

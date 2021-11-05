@@ -65,7 +65,7 @@ public class DigitalInvoiceViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        title = .ginipayLocalized(resource: DigitalInvoiceStrings.screenTitle)
+        title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: prefferedImage(named: "infoIcon"), style: .plain, target: self, action: #selector(whatIsThisTapped(source:)))
         
@@ -123,10 +123,10 @@ public class DigitalInvoiceViewController: UIViewController {
     private func payButtonTitle() -> String {
         
         guard let invoice = invoice else {
-            return .ginipayLocalized(resource: DigitalInvoiceStrings.noInvoicePayButtonTitle)
+            return .ginibankLocalized(resource: DigitalInvoiceStrings.noInvoicePayButtonTitle)
         }
         
-        return String.localizedStringWithFormat(DigitalInvoiceStrings.payButtonTitle.localizedGiniPayFormat,
+        return String.localizedStringWithFormat(DigitalInvoiceStrings.payButtonTitle.localizedGiniBankFormat,
                                                 invoice.numSelected,
                                                 invoice.numTotal)
     }
@@ -134,10 +134,10 @@ public class DigitalInvoiceViewController: UIViewController {
     private func payButtonAccessibilityLabel() -> String {
         
         guard let invoice = invoice else {
-            return .ginipayLocalized(resource: DigitalInvoiceStrings.noInvoicePayButtonTitle)
+            return .ginibankLocalized(resource: DigitalInvoiceStrings.noInvoicePayButtonTitle)
         }
         
-        return String.localizedStringWithFormat(DigitalInvoiceStrings.payButtonTitleAccessibilityLabel.localizedGiniPayFormat,
+        return String.localizedStringWithFormat(DigitalInvoiceStrings.payButtonTitleAccessibilityLabel.localizedGiniBankFormat,
                                                 invoice.numSelected,
                                                 invoice.numTotal)
     }
@@ -157,28 +157,28 @@ public class DigitalInvoiceViewController: UIViewController {
     }
     
     private func skipButtonTitle() -> String {
-        return .ginipayLocalized(resource: DigitalInvoiceStrings.skipButtonTitle)
+        return .ginibankLocalized(resource: DigitalInvoiceStrings.skipButtonTitle)
     }
     
     @objc func whatIsThisTapped(source: UIButton) {
         
-        let actionSheet = UIAlertController(title: .ginipayLocalized(resource: DigitalInvoiceStrings.whatIsThisActionSheetTitle),
-                                            message: .ginipayLocalized(resource: DigitalInvoiceStrings.whatIsThisActionSheetMessage),
+        let actionSheet = UIAlertController(title: .ginibankLocalized(resource: DigitalInvoiceStrings.whatIsThisActionSheetTitle),
+                                            message: .ginibankLocalized(resource: DigitalInvoiceStrings.whatIsThisActionSheetMessage),
                                             preferredStyle: .actionSheet)
         
-        actionSheet.addAction(UIAlertAction(title: .ginipayLocalized(resource: DigitalInvoiceStrings.whatIsThisActionSheetActionHelpful),
+        actionSheet.addAction(UIAlertAction(title: .ginibankLocalized(resource: DigitalInvoiceStrings.whatIsThisActionSheetActionHelpful),
                                             style: .default,
                                             handler: { _ in
                                                 // TODO:
         }))
         
-        actionSheet.addAction(UIAlertAction(title: .ginipayLocalized(resource: DigitalInvoiceStrings.whatIsThisActionSheetActionNotHelpful),
+        actionSheet.addAction(UIAlertAction(title: .ginibankLocalized(resource: DigitalInvoiceStrings.whatIsThisActionSheetActionNotHelpful),
                                             style: .destructive,
                                             handler: { _ in
                                                 // TODO:
         }))
         
-        actionSheet.addAction(UIAlertAction(title: .ginipayLocalized(resource: DigitalInvoiceStrings.whatIsThisActionSheetActionCancel),
+        actionSheet.addAction(UIAlertAction(title: .ginibankLocalized(resource: DigitalInvoiceStrings.whatIsThisActionSheetActionCancel),
                                             style: .cancel,
                                             handler: nil))
         

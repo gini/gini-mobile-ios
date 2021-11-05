@@ -38,15 +38,15 @@ private enum AddonExtraction: String {
     var name: String {
         switch self {
         case .discount:
-            return .ginipayLocalized(resource: DigitalInvoiceStrings.addonNameDiscount)
+            return .ginibankLocalized(resource: DigitalInvoiceStrings.addonNameDiscount)
         case .giftcard:
-            return .ginipayLocalized(resource: DigitalInvoiceStrings.addonNameGiftCard)
+            return .ginibankLocalized(resource: DigitalInvoiceStrings.addonNameGiftCard)
         case .otherDiscounts:
-            return .ginipayLocalized(resource: DigitalInvoiceStrings.addonNameOtherDiscounts)
+            return .ginibankLocalized(resource: DigitalInvoiceStrings.addonNameOtherDiscounts)
         case .otherCharges:
-            return .ginipayLocalized(resource: DigitalInvoiceStrings.addonNameOtherCharges)
+            return .ginibankLocalized(resource: DigitalInvoiceStrings.addonNameOtherCharges)
         case .shipment:
-            return .ginipayLocalized(resource: DigitalInvoiceStrings.addonNameShipment)
+            return .ginibankLocalized(resource: DigitalInvoiceStrings.addonNameShipment)
         }
     }
 }

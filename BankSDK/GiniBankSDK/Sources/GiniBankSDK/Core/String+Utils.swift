@@ -9,11 +9,11 @@ import Foundation
 import GiniCaptureSDK
 
 extension String {
-    public static func ginipayLocalized<T: LocalizableStringResource>(resource: T, args: CVarArg...) -> String {
+    public static func ginibankLocalized<T: LocalizableStringResource>(resource: T, args: CVarArg...) -> String {
         if args.isEmpty {
-            return resource.localizedGiniPayFormat
+            return resource.localizedGiniBankFormat
         } else {
-            return String(format: resource.localizedGiniPayFormat, arguments: args)
+            return String(format: resource.localizedGiniBankFormat, arguments: args)
         }
     }
 }
