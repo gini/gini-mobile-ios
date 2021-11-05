@@ -24,10 +24,10 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var returnAssistantEnabled = true
     
     /**
-     Returns a `GiniPayBankConfiguration` instance which allows to set individual configurations
-     to change the look and feel of the Gini Pay Bank SDK.
+     Returns a `GiniBankConfiguration` instance which allows to set individual configurations
+     to change the look and feel of the Gini Bank SDK.
      
-     - returns: Instance of `GiniPayBankConfiguration`.
+     - returns: Instance of `GiniBankConfiguration`.
      */
     public override init() {}
     
@@ -1100,7 +1100,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.galleryScreenBackgroundColor = self.galleryScreenBackgroundColor
         
         configuration.flashToggleEnabled = self.flashToggleEnabled
-        configuration.flashOnByDefault = self.flashToggleEnabled
+        configuration.flashOnByDefault = self.flashOnByDefault
         
         configuration.imagesStackIndicatorLabelTextcolor = self.imagesStackIndicatorLabelTextcolor
         
@@ -1326,7 +1326,7 @@ public final class GiniBankConfiguration: NSObject {
         giniPayBankConfiguration.galleryScreenBackgroundColor = configuration.galleryScreenBackgroundColor
         
         giniPayBankConfiguration.flashToggleEnabled = configuration.flashToggleEnabled
-        giniPayBankConfiguration.flashOnByDefault = configuration.flashToggleEnabled
+        giniPayBankConfiguration.flashOnByDefault = configuration.flashOnByDefault
         
         giniPayBankConfiguration.imagesStackIndicatorLabelTextcolor = configuration.imagesStackIndicatorLabelTextcolor
         
