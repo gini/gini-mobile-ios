@@ -12,6 +12,7 @@
 		F407A41925E5805E00BC5F36 /* ComponentAPICoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407A41525E5805E00BC5F36 /* ComponentAPICoordinatorTests.swift */; };
 		F407A41A25E5805E00BC5F36 /* SettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407A41625E5805E00BC5F36 /* SettingsViewControllerTests.swift */; };
 		F407A41B25E5805E00BC5F36 /* DocumentServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407A41725E5805E00BC5F36 /* DocumentServiceMock.swift */; };
+		F4083ED72735B0CB004DDD3B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4083ED92735B0CB004DDD3B /* Localizable.strings */; };
 		F414A56325EBB87F00D04A80 /* DocumentAnalysisHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */; };
 		F439C21B27355C310010D77D /* GiniBankSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F439C21A27355C310010D77D /* GiniBankSDK */; };
 		F439C21D27355C3A0010D77D /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F439C21C27355C3A0010D77D /* GiniCaptureSDK */; };
@@ -52,7 +53,6 @@
 		F4AD00FF25DFDF4500C34E15 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00F525DFDF4400C34E15 /* UIViewController.swift */; };
 		F4AD010025DFDF4500C34E15 /* ComponentAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00F625DFDF4400C34E15 /* ComponentAPICoordinator.swift */; };
 		F4AD010125DFDF4500C34E15 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4AD00F725DFDF4400C34E15 /* Images.xcassets */; };
-		F4AD010425DFDF4500C34E15 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4AD00FA25DFDF4400C34E15 /* Localizable.strings */; };
 		F4B78A6025E6AB4B00CBE2E4 /* testPDF.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F407A42425E580F000BC5F36 /* testPDF.pdf */; };
 		F4B78A7225E6AB9500CBE2E4 /* testPDF.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F407A42425E580F000BC5F36 /* testPDF.pdf */; };
 		F4BB7CF226984E5D003FD77E /* CustomMenuItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BB7CF126984E5D003FD77E /* CustomMenuItemViewController.swift */; };
@@ -84,6 +84,8 @@
 		F407A41625E5805E00BC5F36 /* SettingsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewControllerTests.swift; sourceTree = "<group>"; };
 		F407A41725E5805E00BC5F36 /* DocumentServiceMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentServiceMock.swift; sourceTree = "<group>"; };
 		F407A42425E580F000BC5F36 /* testPDF.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = testPDF.pdf; sourceTree = "<group>"; };
+		F4083ED82735B0CB004DDD3B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F4083EDA2735B0CD004DDD3B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAnalysisHelper.swift; sourceTree = "<group>"; };
 		F439C21827355C0C0010D77D /* GiniBankSDK */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniBankSDK; path = ../GiniBankSDK; sourceTree = "<group>"; };
 		F441DC0525E51F7300AAB09A /* PartialDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PartialDocument.swift; path = "Example Swift/PartialDocument.swift"; sourceTree = SOURCE_ROOT; };
@@ -133,7 +135,6 @@
 		F4AD00F525DFDF4400C34E15 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		F4AD00F625DFDF4400C34E15 /* ComponentAPICoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentAPICoordinator.swift; sourceTree = "<group>"; };
 		F4AD00F725DFDF4400C34E15 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		F4AD00FA25DFDF4400C34E15 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		F4BB7CF126984E5D003FD77E /* CustomMenuItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMenuItemViewController.swift; sourceTree = "<group>"; };
 		F4DF824E25EFA8ED00A8D755 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -309,7 +310,7 @@
 				F441DC3825E5286400AAB09A /* Screen API */,
 				F441DC3725E5283300AAB09A /* Supporting Files */,
 				F441DCBC25E5694600AAB09A /* Settings.bundle */,
-				F4AD00FA25DFDF4400C34E15 /* Localizable.strings */,
+				F4083ED92735B0CB004DDD3B /* Localizable.strings */,
 				F441DCB425E568C400AAB09A /* Main.strings */,
 				F441DCB225E568C400AAB09A /* LaunchScreen.strings */,
 				F441DD1225E5706F00AAB09A /* Info.plist */,
@@ -488,7 +489,7 @@
 				F441DCA525E55D5800AAB09A /* Main.storyboard in Resources */,
 				4C84B5DD264ED55100853F33 /* Credentials.plist in Resources */,
 				F441DCB725E568C400AAB09A /* Main.strings in Resources */,
-				F4AD010425DFDF4500C34E15 /* Localizable.strings in Resources */,
+				F4083ED72735B0CB004DDD3B /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -579,6 +580,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		F4083ED92735B0CB004DDD3B /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F4083ED82735B0CB004DDD3B /* en */,
+				F4083EDA2735B0CD004DDD3B /* de */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		F441DCA725E55D5800AAB09A /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
