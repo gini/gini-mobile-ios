@@ -7,13 +7,13 @@ Some invoices have a QR code that allows the user to get the payment data just b
 Enable QR code scanning
 ------------------------
 
-The QR code scanning feature is disabled by default, so in case that you what to use it you just need to enable it in the `GiniPayBankConfiguration`, like so:
+The QR code scanning feature is disabled by default, so in case that you what to use it you just need to enable it in the `GiniBankConfiguration`, like so:
 ```swift
-let giniPayBankConfiguration = GiniPayBankConfiguration()
+let giniBankConfiguration = GiniBankConfiguration()
 ...
 ...
 ...		
-giniPayBankConfiguration.qrCodeScanningEnabled = true
+giniBankConfiguration.qrCodeScanningEnabled = true
 ```
 
 Handle and process the Payment Data
@@ -25,9 +25,9 @@ On the other hand if you are using the _Component API_, you will get the `GiniQR
 Customization
 ----------------------
 It is possible to customize the text label, button and background colors with these parameters:
-- `GiniPayBankConfiguration.qrCodePopupBackgroundColor`
-- `GiniPayBankConfiguration.qrCodePopupButtonColor`
-- `GiniPayBankConfiguration.qrCodePopupTextColor`
+- `GiniBankConfiguration.qrCodePopupBackgroundColor`
+- `GiniBankConfiguration.qrCodePopupButtonColor`
+- `GiniBankConfiguration.qrCodePopupTextColor`
 
 Additionally the text from both label and button can be customized through the following parameters in your `Localizable.strings` file:
 - _ginicapture.camera.qrCodeDetectedPopup.buttonTitle_

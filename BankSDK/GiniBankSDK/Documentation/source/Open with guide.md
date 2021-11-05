@@ -53,15 +53,15 @@ You can also add these by going to your target’s *Info* tab and enter the valu
 
 -   [Document types](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/DocumentInteraction_TopicsForIOS/Articles/RegisteringtheFileTypesYourAppSupports.html) from _Apple documentation_.
 
-2. Enable it inside GiniPayBank
+2. Enable it inside Gini Bank SDK
 ---------------------------------
-In order to allow the Gini Pay Bank SDK to handle files imported from other apps and to show the _Open With tutorial_ in the _Help_ menu, it is necessary to indicate it in the `GiniPayBankConfiguration`.
+In order to allow the Gini Bank SDK to handle files imported from other apps and to show the _Open With tutorial_ in the _Help_ menu, it is necessary to indicate it in the `GiniBankConfiguration`.
 
 ```swift
-        let giniPayBankConfiguration = GiniPayBankConfiguration()
+        let giniBankConfiguration = GiniBankConfiguration()
         ...
         ...
-        giniPayBankConfiguration.openWithEnabled = true
+        giniBankConfiguration.openWithEnabled = true
 ```
 
 3. Handle incoming PDFs and images
@@ -73,7 +73,7 @@ In some cases, in particular when the `LSSupportsOpeningDocumentsInPlace` flag i
 
 In order to determine that the file opened is valid (correct size, correct type and number of pages below the threshold on PDFs), it is necessary to validate it before using it.
 
-GiniPayBank
+Gini Bank
 ------------
 
 ```swift
@@ -93,7 +93,7 @@ func application(_ app: UIApplication,
             if let document = document {
                 do {
                     try GiniCapture.validate(document,
-                                             withConfig: giniPayBankConfiguration.captureConfiguration())
+                                             withConfig: giniBankConfiguration.captureConfiguration())
                     // Load the GiniCapture with the validated document
                 } catch {
                     // Show an error pointing out that the document is invalid
