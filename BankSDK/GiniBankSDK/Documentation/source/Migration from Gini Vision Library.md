@@ -1,4 +1,23 @@
-Migrate from Gini Vision Library to Gini Pay Bank SDK
+
+## Using Swift Package Manager instead of Cocoapods
+
+The [Swift Package Manager](https://swift.org/package-manager/)  is a tool for managing the distribution of Swift code.
+Once you have your Swift package set up, adding `GiniBankSDK` as a dependency is as easy as adding it to the dependencies value of your `Package.swift`
+
+```swif
+dependencies: [
+    .package(url: "https://github.com/gini/bank-sdk-ios.git", .exact("1.0.0"))
+]
+```
+**Note: Availible from iOS 12**
+In case that you want to use the certificate pinning in the library, add `GiniBankSDKPinning`:
+```swif
+dependencies: [
+    .package(url: "https://github.com/gini/bank-sdk-pinning-ios.git", .exact("1.0.0"))
+]
+```
+
+Migrate from Gini Vision Library to Gini Bank SDK
 =======================================================
 
 ## Gini Capture SDK
@@ -7,14 +26,14 @@ The [Gini Capture SDK](https://github.com/gini/gini-capture-sdk-ios) provides co
 The Gini Capture SDK (`GiniCapture`) will be used in place of the Gini Vision Library (`GiniVision`). 
 The Gini Capture SDK used by the Gini Pay Bank SDK and therefore will be mentioned in the migration guide in a couple of places.
 
-## Gini Pay API Library
+## Gini Bank API Library
 
-The [Gini Pay Api Library](https://github.com/gini/gini-pay-api-lib-ios) (`GiniBankAPI`) provides ways to interact with the Gini Pay API and therefore, adds the possiblity to scan documents and extract information from them and support the payment functionality.
-The Gini Pay Api Library will be used instead of the Gini iOS SDK.
+The [Gini Bank Api Library](https://github.com/gini/bank-api-library-ios) (`GiniBankAPI`) provides ways to interact with the Gini Bank API and therefore, adds the possiblity to scan documents and extract information from them and support the payment functionality.
+The Gini Bank API Library will be used instead of the Gini iOS SDK.
 
 ## Configuration
 
-For customization the Gini Pay Bank SDK uses `GiniPayBankConfiguration` class - extended version of `GiniConfiguration`. All settings from the `GiniConfiguration` are availible in `GiniPayBankConfiguration`.
+For customization the Gini Bank SDK uses `GiniBankConfiguration` class - extended version of `GiniConfiguration`. All settings from the `GiniConfiguration` are availible in `GiniBankConfiguration`.
 
 ## Screen API
 
@@ -29,10 +48,10 @@ let viewController = GiniVision.viewController(withClient: client,
 present(viewController, animated: true, completion:nil)
 ```
 
-Please use the snippet with `GiniPayBank` method below:
+Please use the snippet with `GiniBank` method below:
 ```swift
-let viewController = GiniPayBank.viewController(withClient: client,
-                                               configuration: giniPayBankConfiguration,
+let viewController = GiniBank.viewController(withClient: client,
+                                               configuration: giniBankConfiguration,
                                                resultsDelegate: giniCaptureResultsDelegate)
 
 present(viewController, animated: true, completion: nil)
@@ -53,8 +72,8 @@ present(viewController, animated: true, completion:nil)
 
 It should now become:
 ```swift
-let viewController = GiniPayBank.viewController(withClient: client,
-                                               configuration: giniPayBankConfiguration,
+let viewController = GiniBank.viewController(withClient: client,
+                                               configuration: giniBankConfiguration,
                                                resultsDelegate: giniCaptureResultsDelegate,
                                                publicKeyPinningConfig: yourPublicPinningConfig,
                                                documentMetadata: documentMetadata,
@@ -73,10 +92,10 @@ let viewController = GiniVision.viewController(withDelegate: self,
 present(viewController, animated: true, completion: nil)
 ```
 
-Now to handle all the analysis processes you should use the new [Gini Pay Api Library](https://github.com/gini/gini-pay-api-lib-ios) or your own implementation of the new [Gini Pay API](https://pay-api.gini.net/documentation/#gini-pay-api-documentation-v1-0) and just get the `UIViewController` as follows:
+Now to handle all the analysis processes you should use the new [Gini Bank API Library](https://github.com/gini/bank-api-library-ios) or your own implementation of the new [Gini Bank API](https://bank-api.gini.net/documentation/#gini-bank-api-documentation-v1-0) and just get the `UIViewController` as follows:
 ```swift
-let viewController = GiniPayBank.viewController(withDelegate: self,
-                                               withConfiguration: giniPayBankConfiguration)
+let viewController = GiniBank.viewController(withDelegate: self,
+                                               withConfiguration: giniBankConfiguration)
 
 present(viewController, animated: true, completion: nil)
 ```
@@ -95,15 +114,15 @@ cameraScreen?.delegate = self
 present(cameraScreen, animated: true, completion: nil)
 ```
 
-Now alternately of using `GiniConfiguration` in the Gini Pay Bank SDK was introduced `GiniPayBankConfiguration`.
+Now alternately of using `GiniConfiguration` in the Gini Bank SDK was introduced `GiniBankConfiguration`.
 The configuration for `GiniCapture` should be set explicitly as it's shown below:
 ```swift
-let giniPayBankConfiguration = GiniPayBankConfiguration()
+let giniBankConfiguration = GiniBankConfiguration()
 .
 .
 .
-let cameraScreen = CameraViewController(giniConfiguration: giniPayBankConfiguration.captureConfiguration())
-GiniCapture.setConfiguration(giniPayBankConfiguration.captureConfiguration())
+let cameraScreen = CameraViewController(giniConfiguration: giniBankConfiguration.captureConfiguration())
+GiniCapture.setConfiguration(giniBankConfiguration.captureConfiguration())
 ```
 
 ## Open With
@@ -137,7 +156,7 @@ func application(_ app: UIApplication,
         return true
 }
 ```
-Now, using the GiniPayBankSDK your code should be similar to:
+Now, using the Gini Bank SDK your code should be similar to:
 ```swift
 func application(_ app: UIApplication,
                  open url: URL,
@@ -155,7 +174,7 @@ func application(_ app: UIApplication,
             if let document = document {
                 do {
                     try GiniCapture.validate(document,
-                                             withConfig: giniPayBankConfiguration.captureConfiguration())
+                                             withConfig: giniBankConfiguration.captureConfiguration())
                     // Load the GiniCapture with the validated document
                 } catch {
                     // Show an error pointing out that the document is invalid
@@ -184,18 +203,18 @@ let viewController = GiniVision.viewController(withDelegate: self,
                                                trackingDelegate: trackingDelegate)
 ```
 
-For receiving the events with the Gini Pay Bank SDK, you need to import `GiniCapture` and implement the `GiniCaptureTrackingDelegate` protocol and supply the delegate when initializing `GiniPayBank` like it's shown below:
+For receiving the events with the Gini Bank SDK, you need to import `GiniCapture` and implement the `GiniCaptureTrackingDelegate` protocol and supply the delegate when initializing `GiniBank` like it's shown below:
 ```swift
-let viewController = GiniPayBank.viewController(withClient: client,
+let viewController = GiniBank.viewController(withClient: client,
                                                importedDocuments: captureDocuments,
-                                               configuration: giniPayBankConfiguration,
+                                               configuration: giniBankConfiguration,
                                                resultsDelegate: self,
                                                documentMetadata: documentMetadata,
                                                trackingDelegate: trackingDelegate)
 
 // Or when not using the default network:
-let viewController = GiniPayBank.viewController(withDelegate: self,
-                                               withConfiguration: giniPayBankConfiguration,
+let viewController = GiniBank.viewController(withDelegate: self,
+                                               withConfiguration: giniBankConfiguration,
                                                importedDocument: nil,
                                                trackingDelegate: trackingDelegate)
 ```
@@ -203,4 +222,4 @@ let viewController = GiniPayBank.viewController(withDelegate: self,
 ## Customization
 
 The Gini Vision Library components were customized either through the `GiniConfiguration`, the `Localizable.strings` file or through the assets.
-Тhe Gini Pay Bank SDK components are customizable either through the `GiniPayBankConfiguration`, the `Localizable.strings` file or through the assets. The main change for Localizable.strings is that instead of the `ginivision` prefix for keys now used `ginicapture`. The names for images in the assets have stayed the same as before.
+Тhe Gini Bank SDK components are customizable either through the `GiniBankConfiguration`, the `Localizable.strings` file or through the assets. The main change for Localizable.strings is that instead of the `ginivision` prefix for keys now used `ginicapture`. The names for images in the assets have stayed the same as before.
