@@ -1,0 +1,994 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 52;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4C84B5DD264ED55100853F33 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C84B5DC264ED55100853F33 /* Credentials.plist */; };
+		F407A41825E5805E00BC5F36 /* ScreenAPICoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407A41425E5805E00BC5F36 /* ScreenAPICoordinatorTests.swift */; };
+		F407A41925E5805E00BC5F36 /* ComponentAPICoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407A41525E5805E00BC5F36 /* ComponentAPICoordinatorTests.swift */; };
+		F407A41A25E5805E00BC5F36 /* SettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407A41625E5805E00BC5F36 /* SettingsViewControllerTests.swift */; };
+		F407A41B25E5805E00BC5F36 /* DocumentServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407A41725E5805E00BC5F36 /* DocumentServiceMock.swift */; };
+		F414A56325EBB87F00D04A80 /* DocumentAnalysisHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */; };
+		F439C21B27355C310010D77D /* GiniBankSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F439C21A27355C310010D77D /* GiniBankSDK */; };
+		F439C21D27355C3A0010D77D /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F439C21C27355C3A0010D77D /* GiniCaptureSDK */; };
+		F439C21F27355C430010D77D /* GiniBankAPILibrary in Frameworks */ = {isa = PBXBuildFile; productRef = F439C21E27355C430010D77D /* GiniBankAPILibrary */; };
+		F441DC0625E51F7300AAB09A /* PartialDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = F441DC0525E51F7300AAB09A /* PartialDocument.swift */; };
+		F441DCA525E55D5800AAB09A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F441DCA725E55D5800AAB09A /* Main.storyboard */; };
+		F441DCB625E568C400AAB09A /* LaunchScreen.strings in Resources */ = {isa = PBXBuildFile; fileRef = F441DCB225E568C400AAB09A /* LaunchScreen.strings */; };
+		F441DCB725E568C400AAB09A /* Main.strings in Resources */ = {isa = PBXBuildFile; fileRef = F441DCB425E568C400AAB09A /* Main.strings */; };
+		F441DCBD25E5694600AAB09A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F441DCBC25E5694600AAB09A /* Settings.bundle */; };
+		F441DCC325E56BF800AAB09A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F441DCC525E56BF800AAB09A /* LaunchScreen.xib */; };
+		F44AD25E25F2443200668B0C /* GiniButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44AD25D25F2443200668B0C /* GiniButton.swift */; };
+		F4807C37263C20BA00F30FF3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807C36263C20BA00F30FF3 /* AppDelegate.swift */; };
+		F4807C3B263C20BA00F30FF3 /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807C3A263C20BA00F30FF3 /* PaymentViewController.swift */; };
+		F4807C3E263C20BA00F30FF3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4807C3C263C20BA00F30FF3 /* Main.storyboard */; };
+		F4807C40263C20BB00F30FF3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4807C3F263C20BB00F30FF3 /* Assets.xcassets */; };
+		F4807C43263C20BB00F30FF3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4807C41263C20BB00F30FF3 /* LaunchScreen.storyboard */; };
+		F4807F342640177600F30FF3 /* PaymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807F332640177500F30FF3 /* PaymentViewModel.swift */; };
+		F4807F542641347F00F30FF3 /* UIView+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807F532641347F00F30FF3 /* UIView+Utils.swift */; };
+		F4807F7426416A5200F30FF3 /* IBANValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807F7326416A5200F30FF3 /* IBANValidator.swift */; };
+		F4807F9026416E2E00F30FF3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4807F9226416E2E00F30FF3 /* Localizable.strings */; };
+		F4807F9F2641709500F30FF3 /* UITextField+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807F9E2641709500F30FF3 /* UITextField+Utils.swift */; };
+		F4807FB52641713700F30FF3 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807FB42641713700F30FF3 /* Amount.swift */; };
+		F4807FC22641830D00F30FF3 /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807FC12641830D00F30FF3 /* CredentialsManager.swift */; };
+		F4807FC9264183C000F30FF3 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4807FC8264183C000F30FF3 /* Credentials.plist */; };
+		F490C7CF25DE72E400D8CA6F /* GiniPayBankSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F490C7CE25DE72E400D8CA6F /* GiniPayBankSDKTests.swift */; };
+		F490C7E525DE873900D8CA6F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F490C7E425DE873900D8CA6F /* AppDelegate.swift */; };
+		F490C7E925DE873900D8CA6F /* NoResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F490C7E825DE873900D8CA6F /* NoResultViewController.swift */; };
+		F4AD00B625DED1A000C34E15 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00B525DED1A000C34E15 /* AppCoordinator.swift */; };
+		F4AD00BC25DED33300C34E15 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00BB25DED33300C34E15 /* Coordinator.swift */; };
+		F4AD00C225DED43200C34E15 /* SelectAPIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00C125DED43200C34E15 /* SelectAPIViewController.swift */; };
+		F4AD00CC25DFDB4E00C34E15 /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00CB25DFDB4E00C34E15 /* CredentialsManager.swift */; };
+		F4AD00D625DFDC8100C34E15 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00D525DFDC8100C34E15 /* SettingsViewController.swift */; };
+		F4AD00DC25DFDCE400C34E15 /* ResultTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00DB25DFDCE400C34E15 /* ResultTableViewController.swift */; };
+		F4AD00EC25DFDE2000C34E15 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00EB25DFDE2000C34E15 /* RootNavigationController.swift */; };
+		F4AD00FB25DFDF4500C34E15 /* ComponentAPIDocumentServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00F125DFDF4400C34E15 /* ComponentAPIDocumentServiceProtocol.swift */; };
+		F4AD00FD25DFDF4500C34E15 /* ComponentAPIDocumentsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00F325DFDF4400C34E15 /* ComponentAPIDocumentsService.swift */; };
+		F4AD00FE25DFDF4500C34E15 /* ComponentAPIOnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00F425DFDF4400C34E15 /* ComponentAPIOnboardingViewController.swift */; };
+		F4AD00FF25DFDF4500C34E15 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00F525DFDF4400C34E15 /* UIViewController.swift */; };
+		F4AD010025DFDF4500C34E15 /* ComponentAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00F625DFDF4400C34E15 /* ComponentAPICoordinator.swift */; };
+		F4AD010125DFDF4500C34E15 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4AD00F725DFDF4400C34E15 /* Images.xcassets */; };
+		F4AD010425DFDF4500C34E15 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4AD00FA25DFDF4400C34E15 /* Localizable.strings */; };
+		F4B78A6025E6AB4B00CBE2E4 /* testPDF.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F407A42425E580F000BC5F36 /* testPDF.pdf */; };
+		F4B78A7225E6AB9500CBE2E4 /* testPDF.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F407A42425E580F000BC5F36 /* testPDF.pdf */; };
+		F4BB7CF226984E5D003FD77E /* CustomMenuItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BB7CF126984E5D003FD77E /* CustomMenuItemViewController.swift */; };
+		F4DF824F25EFA8ED00A8D755 /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DF824E25EFA8ED00A8D755 /* ScreenAPICoordinator.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F490C80C25DE87AF00D8CA6F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F490C7B725DE72E400D8CA6F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F490C7E125DE873900D8CA6F;
+			remoteInfo = "Example Swift";
+		};
+		F4F3FB6E25DE988A00ABB8A6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F490C7B725DE72E400D8CA6F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F490C7E125DE873900D8CA6F;
+			remoteInfo = "Example Swift";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		4C84B5DC264ED55100853F33 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
+		4C84B5DE2653FFF000853F33 /* Example Swift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Example Swift.entitlements"; sourceTree = "<group>"; };
+		F407A41425E5805E00BC5F36 /* ScreenAPICoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinatorTests.swift; sourceTree = "<group>"; };
+		F407A41525E5805E00BC5F36 /* ComponentAPICoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentAPICoordinatorTests.swift; sourceTree = "<group>"; };
+		F407A41625E5805E00BC5F36 /* SettingsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewControllerTests.swift; sourceTree = "<group>"; };
+		F407A41725E5805E00BC5F36 /* DocumentServiceMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentServiceMock.swift; sourceTree = "<group>"; };
+		F407A42425E580F000BC5F36 /* testPDF.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = testPDF.pdf; sourceTree = "<group>"; };
+		F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAnalysisHelper.swift; sourceTree = "<group>"; };
+		F439C21827355C0C0010D77D /* GiniBankSDK */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniBankSDK; path = ../GiniBankSDK; sourceTree = "<group>"; };
+		F441DC0525E51F7300AAB09A /* PartialDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PartialDocument.swift; path = "Example Swift/PartialDocument.swift"; sourceTree = SOURCE_ROOT; };
+		F441DCA625E55D5800AAB09A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F441DCB325E568C400AAB09A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		F441DCB525E568C400AAB09A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
+		F441DCBC25E5694600AAB09A /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		F441DCC225E56BC700AAB09A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
+		F441DCC425E56BF800AAB09A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		F441DCCA25E56C0100AAB09A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		F441DD1225E5706F00AAB09A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F44AD25D25F2443200668B0C /* GiniButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniButton.swift; sourceTree = "<group>"; };
+		F4807C34263C20BA00F30FF3 /* Bank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bank.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4807C36263C20BA00F30FF3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F4807C3A263C20BA00F30FF3 /* PaymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
+		F4807C3D263C20BA00F30FF3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F4807C3F263C20BB00F30FF3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F4807C42263C20BB00F30FF3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		F4807C44263C20BB00F30FF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F4807F332640177500F30FF3 /* PaymentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentViewModel.swift; sourceTree = "<group>"; };
+		F4807F532641347F00F30FF3 /* UIView+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Utils.swift"; sourceTree = "<group>"; };
+		F4807F7326416A5200F30FF3 /* IBANValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IBANValidator.swift; sourceTree = "<group>"; };
+		F4807F9126416E2E00F30FF3 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F4807F9826416E3300F30FF3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F4807F9E2641709500F30FF3 /* UITextField+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Utils.swift"; sourceTree = "<group>"; };
+		F4807FB42641713700F30FF3 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
+		F4807FC12641830D00F30FF3 /* CredentialsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
+		F4807FC8264183C000F30FF3 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
+		F490C7C925DE72E400D8CA6F /* GiniBankSDKExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniBankSDKExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F490C7CE25DE72E400D8CA6F /* GiniPayBankSDKTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniPayBankSDKTests.swift; sourceTree = "<group>"; };
+		F490C7D025DE72E400D8CA6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F490C7E225DE873900D8CA6F /* Example Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Example Swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F490C7E425DE873900D8CA6F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F490C7E825DE873900D8CA6F /* NoResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoResultViewController.swift; sourceTree = "<group>"; };
+		F490C7FD25DE87A900D8CA6F /* Example_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Example_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F490C80125DE87A900D8CA6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F4AD00B525DED1A000C34E15 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		F4AD00BB25DED33300C34E15 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		F4AD00C125DED43200C34E15 /* SelectAPIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAPIViewController.swift; sourceTree = "<group>"; };
+		F4AD00CB25DFDB4E00C34E15 /* CredentialsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
+		F4AD00D525DFDC8100C34E15 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		F4AD00DB25DFDCE400C34E15 /* ResultTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultTableViewController.swift; sourceTree = "<group>"; };
+		F4AD00EB25DFDE2000C34E15 /* RootNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
+		F4AD00F125DFDF4400C34E15 /* ComponentAPIDocumentServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentAPIDocumentServiceProtocol.swift; sourceTree = "<group>"; };
+		F4AD00F325DFDF4400C34E15 /* ComponentAPIDocumentsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentAPIDocumentsService.swift; sourceTree = "<group>"; };
+		F4AD00F425DFDF4400C34E15 /* ComponentAPIOnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentAPIOnboardingViewController.swift; sourceTree = "<group>"; };
+		F4AD00F525DFDF4400C34E15 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		F4AD00F625DFDF4400C34E15 /* ComponentAPICoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentAPICoordinator.swift; sourceTree = "<group>"; };
+		F4AD00F725DFDF4400C34E15 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		F4AD00FA25DFDF4400C34E15 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		F4BB7CF126984E5D003FD77E /* CustomMenuItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMenuItemViewController.swift; sourceTree = "<group>"; };
+		F4DF824E25EFA8ED00A8D755 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F4807C31263C20BA00F30FF3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F490C7C625DE72E400D8CA6F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F490C7DF25DE873900D8CA6F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F439C21B27355C310010D77D /* GiniBankSDK in Frameworks */,
+				F439C21D27355C3A0010D77D /* GiniCaptureSDK in Frameworks */,
+				F439C21F27355C430010D77D /* GiniBankAPILibrary in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F490C7FA25DE87A800D8CA6F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F439C210273555B60010D77D /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				F439C21827355C0C0010D77D /* GiniBankSDK */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		F439C21927355C310010D77D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F441DC0025E51F4B00AAB09A /* ComponentAPI */ = {
+			isa = PBXGroup;
+			children = (
+				F4AD00F625DFDF4400C34E15 /* ComponentAPICoordinator.swift */,
+				F4AD00F125DFDF4400C34E15 /* ComponentAPIDocumentServiceProtocol.swift */,
+				F4AD00F325DFDF4400C34E15 /* ComponentAPIDocumentsService.swift */,
+				F4AD00F425DFDF4400C34E15 /* ComponentAPIOnboardingViewController.swift */,
+				F441DC0525E51F7300AAB09A /* PartialDocument.swift */,
+			);
+			path = ComponentAPI;
+			sourceTree = "<group>";
+		};
+		F441DC3725E5283300AAB09A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F4AD00F725DFDF4400C34E15 /* Images.xcassets */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F441DC3825E5286400AAB09A /* Screen API */ = {
+			isa = PBXGroup;
+			children = (
+				F4DF824E25EFA8ED00A8D755 /* ScreenAPICoordinator.swift */,
+				F4AD00EB25DFDE2000C34E15 /* RootNavigationController.swift */,
+			);
+			path = "Screen API";
+			sourceTree = "<group>";
+		};
+		F441DC9325E53A6F00AAB09A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				F4AD00F525DFDF4400C34E15 /* UIViewController.swift */,
+				F44AD25D25F2443200668B0C /* GiniButton.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		F4807C35263C20BA00F30FF3 /* Bank */ = {
+			isa = PBXGroup;
+			children = (
+				F4807C36263C20BA00F30FF3 /* AppDelegate.swift */,
+				F4807F332640177500F30FF3 /* PaymentViewModel.swift */,
+				F4807C3A263C20BA00F30FF3 /* PaymentViewController.swift */,
+				F4807FC8264183C000F30FF3 /* Credentials.plist */,
+				F4807FBB264182BD00F30FF3 /* Helpers */,
+				F4807C3C263C20BA00F30FF3 /* Main.storyboard */,
+				F4807C3F263C20BB00F30FF3 /* Assets.xcassets */,
+				F4807C41263C20BB00F30FF3 /* LaunchScreen.storyboard */,
+				F4807C44263C20BB00F30FF3 /* Info.plist */,
+				F4807F9226416E2E00F30FF3 /* Localizable.strings */,
+			);
+			path = Bank;
+			sourceTree = "<group>";
+		};
+		F4807FBB264182BD00F30FF3 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				F4807F7326416A5200F30FF3 /* IBANValidator.swift */,
+				F4807FC12641830D00F30FF3 /* CredentialsManager.swift */,
+				F4807FB42641713700F30FF3 /* Amount.swift */,
+				F4807F532641347F00F30FF3 /* UIView+Utils.swift */,
+				F4807F9E2641709500F30FF3 /* UITextField+Utils.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		F490C7B625DE72E400D8CA6F = {
+			isa = PBXGroup;
+			children = (
+				F439C210273555B60010D77D /* Packages */,
+				F490C7CD25DE72E400D8CA6F /* GiniPayBankSDKTests */,
+				F490C7E325DE873900D8CA6F /* Example Swift */,
+				F490C7FE25DE87A900D8CA6F /* Example_Tests */,
+				F4807C35263C20BA00F30FF3 /* Bank */,
+				F490C7C125DE72E400D8CA6F /* Products */,
+				F439C21927355C310010D77D /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		F490C7C125DE72E400D8CA6F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F490C7C925DE72E400D8CA6F /* GiniBankSDKExampleTests.xctest */,
+				F490C7E225DE873900D8CA6F /* Example Swift.app */,
+				F490C7FD25DE87A900D8CA6F /* Example_Tests.xctest */,
+				F4807C34263C20BA00F30FF3 /* Bank.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F490C7CD25DE72E400D8CA6F /* GiniPayBankSDKTests */ = {
+			isa = PBXGroup;
+			children = (
+				F490C7CE25DE72E400D8CA6F /* GiniPayBankSDKTests.swift */,
+				F490C7D025DE72E400D8CA6F /* Info.plist */,
+			);
+			path = GiniPayBankSDKTests;
+			sourceTree = "<group>";
+		};
+		F490C7E325DE873900D8CA6F /* Example Swift */ = {
+			isa = PBXGroup;
+			children = (
+				4C84B5DE2653FFF000853F33 /* Example Swift.entitlements */,
+				F441DC0025E51F4B00AAB09A /* ComponentAPI */,
+				F441DC9325E53A6F00AAB09A /* Extensions */,
+				F490C7E425DE873900D8CA6F /* AppDelegate.swift */,
+				F4BB7CF126984E5D003FD77E /* CustomMenuItemViewController.swift */,
+				F441DCA725E55D5800AAB09A /* Main.storyboard */,
+				F4AD00B525DED1A000C34E15 /* AppCoordinator.swift */,
+				F441DCC525E56BF800AAB09A /* LaunchScreen.xib */,
+				F4AD00D525DFDC8100C34E15 /* SettingsViewController.swift */,
+				F4AD00CB25DFDB4E00C34E15 /* CredentialsManager.swift */,
+				F4AD00C125DED43200C34E15 /* SelectAPIViewController.swift */,
+				F4AD00BB25DED33300C34E15 /* Coordinator.swift */,
+				F490C7E825DE873900D8CA6F /* NoResultViewController.swift */,
+				F4AD00DB25DFDCE400C34E15 /* ResultTableViewController.swift */,
+				F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */,
+				F441DC3825E5286400AAB09A /* Screen API */,
+				F441DC3725E5283300AAB09A /* Supporting Files */,
+				F441DCBC25E5694600AAB09A /* Settings.bundle */,
+				F4AD00FA25DFDF4400C34E15 /* Localizable.strings */,
+				F441DCB425E568C400AAB09A /* Main.strings */,
+				F441DCB225E568C400AAB09A /* LaunchScreen.strings */,
+				F441DD1225E5706F00AAB09A /* Info.plist */,
+				4C84B5DC264ED55100853F33 /* Credentials.plist */,
+			);
+			path = "Example Swift";
+			sourceTree = "<group>";
+		};
+		F490C7FE25DE87A900D8CA6F /* Example_Tests */ = {
+			isa = PBXGroup;
+			children = (
+				F407A41525E5805E00BC5F36 /* ComponentAPICoordinatorTests.swift */,
+				F407A41725E5805E00BC5F36 /* DocumentServiceMock.swift */,
+				F407A41425E5805E00BC5F36 /* ScreenAPICoordinatorTests.swift */,
+				F407A41625E5805E00BC5F36 /* SettingsViewControllerTests.swift */,
+				F407A42425E580F000BC5F36 /* testPDF.pdf */,
+				F490C80125DE87A900D8CA6F /* Info.plist */,
+			);
+			path = Example_Tests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F4807C33263C20BA00F30FF3 /* Bank */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F4807C47263C20BB00F30FF3 /* Build configuration list for PBXNativeTarget "Bank" */;
+			buildPhases = (
+				F4807C30263C20BA00F30FF3 /* Sources */,
+				F4807C31263C20BA00F30FF3 /* Frameworks */,
+				F4807C32263C20BA00F30FF3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Bank;
+			productName = Bank;
+			productReference = F4807C34263C20BA00F30FF3 /* Bank.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F490C7C825DE72E400D8CA6F /* GiniBankSDKExampleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F490C7D725DE72E400D8CA6F /* Build configuration list for PBXNativeTarget "GiniBankSDKExampleTests" */;
+			buildPhases = (
+				F490C7C525DE72E400D8CA6F /* Sources */,
+				F490C7C625DE72E400D8CA6F /* Frameworks */,
+				F490C7C725DE72E400D8CA6F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F4F3FB6F25DE988A00ABB8A6 /* PBXTargetDependency */,
+			);
+			name = GiniBankSDKExampleTests;
+			productName = GiniPayBankSDKTests;
+			productReference = F490C7C925DE72E400D8CA6F /* GiniBankSDKExampleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		F490C7E125DE873900D8CA6F /* Example Swift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F490C7F525DE873B00D8CA6F /* Build configuration list for PBXNativeTarget "Example Swift" */;
+			buildPhases = (
+				F490C7DE25DE873900D8CA6F /* Sources */,
+				F490C7DF25DE873900D8CA6F /* Frameworks */,
+				F490C7E025DE873900D8CA6F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Example Swift";
+			packageProductDependencies = (
+				F439C21A27355C310010D77D /* GiniBankSDK */,
+				F439C21C27355C3A0010D77D /* GiniCaptureSDK */,
+				F439C21E27355C430010D77D /* GiniBankAPILibrary */,
+			);
+			productName = "Example Swift";
+			productReference = F490C7E225DE873900D8CA6F /* Example Swift.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F490C7FC25DE87A800D8CA6F /* Example_Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F490C80525DE87A900D8CA6F /* Build configuration list for PBXNativeTarget "Example_Tests" */;
+			buildPhases = (
+				F490C7F925DE87A800D8CA6F /* Sources */,
+				F490C7FA25DE87A800D8CA6F /* Frameworks */,
+				F490C7FB25DE87A800D8CA6F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F490C80D25DE87AF00D8CA6F /* PBXTargetDependency */,
+			);
+			name = Example_Tests;
+			productName = Example_Tests;
+			productReference = F490C7FD25DE87A900D8CA6F /* Example_Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F490C7B725DE72E400D8CA6F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1250;
+				LastUpgradeCheck = 1240;
+				TargetAttributes = {
+					F4807C33263C20BA00F30FF3 = {
+						CreatedOnToolsVersion = 12.4;
+					};
+					F490C7C825DE72E400D8CA6F = {
+						CreatedOnToolsVersion = 12.4;
+						TestTargetID = F490C7E125DE873900D8CA6F;
+					};
+					F490C7E125DE873900D8CA6F = {
+						CreatedOnToolsVersion = 12.4;
+					};
+					F490C7FC25DE87A800D8CA6F = {
+						CreatedOnToolsVersion = 12.4;
+						TestTargetID = F490C7E125DE873900D8CA6F;
+					};
+				};
+			};
+			buildConfigurationList = F490C7BA25DE72E400D8CA6F /* Build configuration list for PBXProject "GiniBankSDKExample" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				de,
+			);
+			mainGroup = F490C7B625DE72E400D8CA6F;
+			productRefGroup = F490C7C125DE72E400D8CA6F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F490C7C825DE72E400D8CA6F /* GiniBankSDKExampleTests */,
+				F490C7E125DE873900D8CA6F /* Example Swift */,
+				F490C7FC25DE87A800D8CA6F /* Example_Tests */,
+				F4807C33263C20BA00F30FF3 /* Bank */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F4807C32263C20BA00F30FF3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4807C43263C20BB00F30FF3 /* LaunchScreen.storyboard in Resources */,
+				F4807F9026416E2E00F30FF3 /* Localizable.strings in Resources */,
+				F4807FC9264183C000F30FF3 /* Credentials.plist in Resources */,
+				F4807C40263C20BB00F30FF3 /* Assets.xcassets in Resources */,
+				F4807C3E263C20BA00F30FF3 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F490C7C725DE72E400D8CA6F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F490C7E025DE873900D8CA6F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4B78A7225E6AB9500CBE2E4 /* testPDF.pdf in Resources */,
+				F441DCBD25E5694600AAB09A /* Settings.bundle in Resources */,
+				F4AD010125DFDF4500C34E15 /* Images.xcassets in Resources */,
+				F441DCB625E568C400AAB09A /* LaunchScreen.strings in Resources */,
+				F441DCC325E56BF800AAB09A /* LaunchScreen.xib in Resources */,
+				F441DCA525E55D5800AAB09A /* Main.storyboard in Resources */,
+				4C84B5DD264ED55100853F33 /* Credentials.plist in Resources */,
+				F441DCB725E568C400AAB09A /* Main.strings in Resources */,
+				F4AD010425DFDF4500C34E15 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F490C7FB25DE87A800D8CA6F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4B78A6025E6AB4B00CBE2E4 /* testPDF.pdf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F4807C30263C20BA00F30FF3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4807C3B263C20BA00F30FF3 /* PaymentViewController.swift in Sources */,
+				F4807F9F2641709500F30FF3 /* UITextField+Utils.swift in Sources */,
+				F4807F7426416A5200F30FF3 /* IBANValidator.swift in Sources */,
+				F4807FB52641713700F30FF3 /* Amount.swift in Sources */,
+				F4807FC22641830D00F30FF3 /* CredentialsManager.swift in Sources */,
+				F4807F342640177600F30FF3 /* PaymentViewModel.swift in Sources */,
+				F4807F542641347F00F30FF3 /* UIView+Utils.swift in Sources */,
+				F4807C37263C20BA00F30FF3 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F490C7C525DE72E400D8CA6F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F490C7CF25DE72E400D8CA6F /* GiniPayBankSDKTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F490C7DE25DE873900D8CA6F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4AD00FD25DFDF4500C34E15 /* ComponentAPIDocumentsService.swift in Sources */,
+				F4AD00B625DED1A000C34E15 /* AppCoordinator.swift in Sources */,
+				F490C7E925DE873900D8CA6F /* NoResultViewController.swift in Sources */,
+				F4AD00FB25DFDF4500C34E15 /* ComponentAPIDocumentServiceProtocol.swift in Sources */,
+				F4AD00EC25DFDE2000C34E15 /* RootNavigationController.swift in Sources */,
+				F4AD00BC25DED33300C34E15 /* Coordinator.swift in Sources */,
+				F490C7E525DE873900D8CA6F /* AppDelegate.swift in Sources */,
+				F4AD010025DFDF4500C34E15 /* ComponentAPICoordinator.swift in Sources */,
+				F4AD00DC25DFDCE400C34E15 /* ResultTableViewController.swift in Sources */,
+				F4DF824F25EFA8ED00A8D755 /* ScreenAPICoordinator.swift in Sources */,
+				F4AD00C225DED43200C34E15 /* SelectAPIViewController.swift in Sources */,
+				F4AD00CC25DFDB4E00C34E15 /* CredentialsManager.swift in Sources */,
+				F414A56325EBB87F00D04A80 /* DocumentAnalysisHelper.swift in Sources */,
+				F4BB7CF226984E5D003FD77E /* CustomMenuItemViewController.swift in Sources */,
+				F441DC0625E51F7300AAB09A /* PartialDocument.swift in Sources */,
+				F4AD00FE25DFDF4500C34E15 /* ComponentAPIOnboardingViewController.swift in Sources */,
+				F4AD00D625DFDC8100C34E15 /* SettingsViewController.swift in Sources */,
+				F44AD25E25F2443200668B0C /* GiniButton.swift in Sources */,
+				F4AD00FF25DFDF4500C34E15 /* UIViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F490C7F925DE87A800D8CA6F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F407A41B25E5805E00BC5F36 /* DocumentServiceMock.swift in Sources */,
+				F407A41925E5805E00BC5F36 /* ComponentAPICoordinatorTests.swift in Sources */,
+				F407A41A25E5805E00BC5F36 /* SettingsViewControllerTests.swift in Sources */,
+				F407A41825E5805E00BC5F36 /* ScreenAPICoordinatorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F490C80D25DE87AF00D8CA6F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F490C7E125DE873900D8CA6F /* Example Swift */;
+			targetProxy = F490C80C25DE87AF00D8CA6F /* PBXContainerItemProxy */;
+		};
+		F4F3FB6F25DE988A00ABB8A6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F490C7E125DE873900D8CA6F /* Example Swift */;
+			targetProxy = F4F3FB6E25DE988A00ABB8A6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		F441DCA725E55D5800AAB09A /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F441DCA625E55D5800AAB09A /* Base */,
+				F441DCC225E56BC700AAB09A /* de */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		F441DCB225E568C400AAB09A /* LaunchScreen.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F441DCB325E568C400AAB09A /* de */,
+			);
+			name = LaunchScreen.strings;
+			sourceTree = "<group>";
+		};
+		F441DCB425E568C400AAB09A /* Main.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F441DCB525E568C400AAB09A /* de */,
+			);
+			name = Main.strings;
+			sourceTree = "<group>";
+		};
+		F441DCC525E56BF800AAB09A /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F441DCC425E56BF800AAB09A /* Base */,
+				F441DCCA25E56C0100AAB09A /* de */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		F4807C3C263C20BA00F30FF3 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F4807C3D263C20BA00F30FF3 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		F4807C41263C20BB00F30FF3 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F4807C42263C20BB00F30FF3 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		F4807F9226416E2E00F30FF3 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F4807F9126416E2E00F30FF3 /* de */,
+				F4807F9826416E3300F30FF3 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F4807C45263C20BB00F30FF3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BQY9KX4V88;
+				INFOPLIST_FILE = Bank/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.ginipaybank.Bank.Bank;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F4807C46263C20BB00F30FF3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BQY9KX4V88;
+				INFOPLIST_FILE = Bank/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.ginipaybank.Bank.Bank;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F490C7D225DE72E400D8CA6F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		F490C7D325DE72E400D8CA6F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		F490C7D825DE72E400D8CA6F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BQY9KX4V88;
+				INFOPLIST_FILE = GiniPayBankSDKTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.ginipaybank.GiniPayBankSDKTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example Swift.app/Example Swift";
+			};
+			name = Debug;
+		};
+		F490C7D925DE72E400D8CA6F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BQY9KX4V88;
+				INFOPLIST_FILE = GiniPayBankSDKTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.ginipaybank.GiniPayBankSDKTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example Swift.app/Example Swift";
+			};
+			name = Release;
+		};
+		F490C7F325DE873B00D8CA6F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
+				CODE_SIGN_ENTITLEMENTS = "Example Swift/Example Swift.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BQY9KX4V88;
+				INFOPLIST_FILE = "Example Swift/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "net.gini.ginipaybank.Example-Swift";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F490C7F425DE873B00D8CA6F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
+				CODE_SIGN_ENTITLEMENTS = "Example Swift/Example Swift.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BQY9KX4V88;
+				INFOPLIST_FILE = "Example Swift/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "net.gini.ginipaybank.Example-Swift";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F490C80625DE87A900D8CA6F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BQY9KX4V88;
+				INFOPLIST_FILE = Example_Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "net.gini.ginipaybank.Example-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example Swift.app/Example Swift";
+			};
+			name = Debug;
+		};
+		F490C80725DE87A900D8CA6F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BQY9KX4V88;
+				INFOPLIST_FILE = Example_Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "net.gini.ginipaybank.Example-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example Swift.app/Example Swift";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F4807C47263C20BB00F30FF3 /* Build configuration list for PBXNativeTarget "Bank" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F4807C45263C20BB00F30FF3 /* Debug */,
+				F4807C46263C20BB00F30FF3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F490C7BA25DE72E400D8CA6F /* Build configuration list for PBXProject "GiniBankSDKExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F490C7D225DE72E400D8CA6F /* Debug */,
+				F490C7D325DE72E400D8CA6F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F490C7D725DE72E400D8CA6F /* Build configuration list for PBXNativeTarget "GiniBankSDKExampleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F490C7D825DE72E400D8CA6F /* Debug */,
+				F490C7D925DE72E400D8CA6F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F490C7F525DE873B00D8CA6F /* Build configuration list for PBXNativeTarget "Example Swift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F490C7F325DE873B00D8CA6F /* Debug */,
+				F490C7F425DE873B00D8CA6F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F490C80525DE87A900D8CA6F /* Build configuration list for PBXNativeTarget "Example_Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F490C80625DE87A900D8CA6F /* Debug */,
+				F490C80725DE87A900D8CA6F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F439C21A27355C310010D77D /* GiniBankSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GiniBankSDK;
+		};
+		F439C21C27355C3A0010D77D /* GiniCaptureSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GiniCaptureSDK;
+		};
+		F439C21E27355C430010D77D /* GiniBankAPILibrary */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GiniBankAPILibrary;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = F490C7B725DE72E400D8CA6F /* Project object */;
+}
