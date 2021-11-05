@@ -13,11 +13,11 @@ import Foundation
 
 final class DocumentServiceMock: ComponentAPIDocumentServiceProtocol {
 
-    var apiLib: GiniApiLib
+    var apiLib: GiniBankAPI
     var document: Document?
     var analysisCancellationToken: CancellationToken?
     
-    init(lib: GiniApiLib, documentMetadata: Document.Metadata?) {
+    init(lib: GiniBankAPI, documentMetadata: Document.Metadata?) {
         self.apiLib = lib
     }
     
@@ -57,7 +57,7 @@ final class DocumentServiceMock: ComponentAPIDocumentServiceProtocol {
 
 extension DocumentServiceMock {
     convenience init() {
-        self.init(lib: GiniApiLib.Builder(client: Client(id: "id", secret: "secret", domain: "domain")).build(),
+        self.init(lib: GiniBankAPI.Builder(client: Client(id: "id", secret: "secret", domain: "domain")).build(),
                   documentMetadata: nil)
     }
 }

@@ -12,8 +12,8 @@ import GiniBankSDK
  View model class for review screen
   */
 public class PaymentViewModel: NSObject {
-    private var apiLib: GiniApiLib
-    private var bankSDK: GiniPayBank
+    private var apiLib: GiniBankAPI
+    private var bankSDK: GiniBank
 
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
@@ -35,9 +35,9 @@ public class PaymentViewModel: NSObject {
 
     private var paymentRequest: ResolvedPaymentRequest?
 
-    public init(with giniApiLib: GiniApiLib) {
+    public init(with giniApiLib: GiniBankAPI) {
         apiLib = giniApiLib
-        bankSDK = GiniPayBank(with: apiLib)
+        bankSDK = GiniBank(with: apiLib)
     }
     
 
