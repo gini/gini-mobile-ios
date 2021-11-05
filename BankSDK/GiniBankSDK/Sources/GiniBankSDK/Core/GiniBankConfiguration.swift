@@ -1181,6 +1181,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.nextButtonResource = self.nextButtonResource
         configuration.cancelButtonResource = self.cancelButtonResource
         
+        GiniCapture.setConfiguration(configuration)
         return configuration
     }
     
