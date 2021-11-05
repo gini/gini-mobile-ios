@@ -19,7 +19,7 @@ final class ComponentAPICoordinatorTests: XCTestCase {
     
     func testInitialization() {
         componentAPICoordinator = ComponentAPICoordinator(pages: [],
-                                                          configuration: GiniPayBankConfiguration(),
+                                                          configuration: GiniBankConfiguration(),
                                                           documentService: documentService)
         componentAPICoordinator?.start()
         
@@ -30,7 +30,7 @@ final class ComponentAPICoordinatorTests: XCTestCase {
     
     func testInitializationWhenNoDocument() {
         componentAPICoordinator = ComponentAPICoordinator(pages: [],
-                                                          configuration: GiniPayBankConfiguration(),
+                                                          configuration: GiniBankConfiguration(),
                                                           documentService: documentService)
         componentAPICoordinator?.start()
         
@@ -49,7 +49,7 @@ final class ComponentAPICoordinatorTests: XCTestCase {
         let document = builder.build(with: image!.pngData()!)!
         
         componentAPICoordinator = ComponentAPICoordinator(pages: [GiniCapturePage(document: document)],
-                                                          configuration: GiniPayBankConfiguration(),
+                                                          configuration: GiniBankConfiguration(),
                                                           documentService: documentService)
         componentAPICoordinator?.start()
         
@@ -69,7 +69,7 @@ final class ComponentAPICoordinatorTests: XCTestCase {
         let pdfDocument = loadPDFDocument(withName: "testPDF")
         
         componentAPICoordinator = ComponentAPICoordinator(pages: [GiniCapturePage(document: pdfDocument)],
-                                                          configuration: GiniPayBankConfiguration(),
+                                                          configuration: GiniBankConfiguration(),
                                                           documentService: documentService)
         componentAPICoordinator?.start()
         

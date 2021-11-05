@@ -37,7 +37,7 @@ class PaymentViewController: UIViewController {
 
     var viewModel: PaymentViewModel?
     
-    public static func instantiate(with apiLib: GiniApiLib) -> PaymentViewController {
+    public static func instantiate(with apiLib: GiniBankAPI) -> PaymentViewController {
         let vc = (UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "paymentViewController") as? PaymentViewController)!
         vc.viewModel = PaymentViewModel(with: apiLib)
