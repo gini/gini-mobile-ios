@@ -57,7 +57,7 @@ class LineItemDetailsViewController: UIViewController {
         super.viewDidLoad()
         let configuration = returnAssistantConfiguration ?? ReturnAssistantConfiguration.shared
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: .ginipayLocalized(resource: DigitalInvoiceStrings.lineItemSaveButtonTitle),
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: .ginibankLocalized(resource: DigitalInvoiceStrings.lineItemSaveButtonTitle),
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(saveButtonTapped))
@@ -144,7 +144,7 @@ class LineItemDetailsViewController: UIViewController {
         
         itemNameTextField.titleFont = configuration.lineItemDetailsDescriptionLabelFont
         itemNameTextField.titleTextColor = configuration.lineItemDetailsDescriptionLabelColor
-        itemNameTextField.title = .ginipayLocalized(resource: DigitalInvoiceStrings.lineItemNameTextFieldTitle)
+        itemNameTextField.title = .ginibankLocalized(resource: DigitalInvoiceStrings.lineItemNameTextFieldTitle)
         itemNameTextField.textFont = configuration.lineItemDetailsContentLabelFont
         itemNameTextField.textColor = configuration.lineItemDetailsContentLabelColor
         itemNameTextField.prefixText = nil
@@ -154,7 +154,7 @@ class LineItemDetailsViewController: UIViewController {
         
         quantityTextField.titleFont = configuration.lineItemDetailsDescriptionLabelFont
         quantityTextField.titleTextColor = configuration.lineItemDetailsDescriptionLabelColor
-        quantityTextField.title = .ginipayLocalized(resource: DigitalInvoiceStrings.lineItemQuantityTextFieldTitle)
+        quantityTextField.title = .ginibankLocalized(resource: DigitalInvoiceStrings.lineItemQuantityTextFieldTitle)
         quantityTextField.textFont = configuration.lineItemDetailsContentLabelFont
         quantityTextField.textColor = configuration.lineItemDetailsContentLabelColor
         quantityTextField.prefixText = nil
@@ -169,7 +169,7 @@ class LineItemDetailsViewController: UIViewController {
         
         itemPriceTextField.titleFont = configuration.lineItemDetailsDescriptionLabelFont
         itemPriceTextField.titleTextColor = configuration.lineItemDetailsDescriptionLabelColor
-        itemPriceTextField.title = .ginipayLocalized(resource: DigitalInvoiceStrings.lineItemPriceTextFieldTitle)
+        itemPriceTextField.title = .ginibankLocalized(resource: DigitalInvoiceStrings.lineItemPriceTextFieldTitle)
         itemPriceTextField.textFont = configuration.lineItemDetailsContentLabelFont
         itemPriceTextField.textColor = configuration.lineItemDetailsContentLabelColor
         
@@ -191,7 +191,7 @@ class LineItemDetailsViewController: UIViewController {
                                                       constant: -margin).isActive = true
         multiplicationLabel.setContentHuggingPriority(.required, for: .horizontal)
         multiplicationLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-        multiplicationLabel.accessibilityLabel = .ginipayLocalized(resource: DigitalInvoiceStrings.lineItemMultiplicationAccessibilityLabel)
+        multiplicationLabel.accessibilityLabel = .ginibankLocalized(resource: DigitalInvoiceStrings.lineItemMultiplicationAccessibilityLabel)
         
         itemPriceTextField.topAnchor.constraint(equalTo: quantityAndItemPriceContainer.topAnchor).isActive = true
         itemPriceTextField.trailingAnchor.constraint(equalTo: quantityAndItemPriceContainer.trailingAnchor)
@@ -211,7 +211,7 @@ class LineItemDetailsViewController: UIViewController {
         totalPriceTitleLabel.setContentHuggingPriority(.required, for: .horizontal)
         totalPriceTitleLabel.font = configuration.lineItemDetailsDescriptionLabelFont
         totalPriceTitleLabel.textColor = configuration.lineItemDetailsDescriptionLabelColor
-        totalPriceTitleLabel.text = .ginipayLocalized(resource: DigitalInvoiceStrings.lineItemTotalPriceTitle)
+        totalPriceTitleLabel.text = .ginibankLocalized(resource: DigitalInvoiceStrings.lineItemTotalPriceTitle)
         totalPriceTitleLabel.font = UIFont.systemFont(ofSize: 12)
         
         totalPriceStackView.addArrangedSubview(totalPriceTitleLabel)
@@ -303,7 +303,7 @@ extension LineItemDetailsViewController {
         
         guard let lineItem = lineItem else { return }
         
-        checkboxButtonTextLabel.text = String.localizedStringWithFormat(DigitalInvoiceStrings.lineItemCheckmarkLabel.localizedGiniPayFormat,
+        checkboxButtonTextLabel.text = String.localizedStringWithFormat(DigitalInvoiceStrings.lineItemCheckmarkLabel.localizedGiniBankFormat,
                                                                         lineItem.quantity)
         
         itemNameTextField.text = lineItem.name
@@ -352,7 +352,7 @@ extension LineItemDetailsViewController {
             itemPriceValue = lineItemMaximumAllowedValue
         }
         if let itemName = itemNameTextField.text {
-            let emptyNameCaption: String = .ginipayLocalized(resource: DigitalInvoiceStrings.noTitleArticle)
+            let emptyNameCaption: String = .ginibankLocalized(resource: DigitalInvoiceStrings.noTitleArticle)
             
             lineItem.name = itemName.isEmpty ? emptyNameCaption : itemName
         }

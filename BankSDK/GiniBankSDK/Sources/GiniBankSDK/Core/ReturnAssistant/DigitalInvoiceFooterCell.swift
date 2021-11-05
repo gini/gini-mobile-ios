@@ -36,7 +36,7 @@ class DigitalInvoiceFooterCell: UITableViewCell {
         let contentHeight = UIScreen.main.bounds.height * multiplier
         contentView.heightAnchor.constraint(equalToConstant: contentHeight).isActive = true
         
-        totalCaptionExplanationLabel.text = .ginipayLocalized(resource: DigitalInvoiceStrings.totalExplanationLabel)
+        totalCaptionExplanationLabel.text = .ginibankLocalized(resource: DigitalInvoiceStrings.totalExplanationLabel)
         totalCaptionExplanationLabel.font = configuration.digitalInvoiceTotalExplanationLabelFont
         totalCaptionExplanationLabel.textColor = UIColor.from(giniColor: configuration.digitalInvoiceTotalExplanationLabelTextColor)
 
@@ -48,7 +48,7 @@ class DigitalInvoiceFooterCell: UITableViewCell {
         
         let messageLabel = UILabel()
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
-        messageLabel.text = .ginipayLocalized(resource: DigitalInvoiceStrings.footerMessage)
+        messageLabel.text = .ginibankLocalized(resource: DigitalInvoiceStrings.footerMessage)
         messageLabel.numberOfLines = 0
         messageLabel.font = configuration.digitalInvoiceFooterMessageTextFont
         messageLabel.textColor = UIColor.from(giniColor:configuration.digitalInvoiceFooterMessageTextColor)

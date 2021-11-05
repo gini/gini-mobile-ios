@@ -69,7 +69,7 @@ class InfoView: UIView {
         chevronImageView.widthAnchor.constraint(equalToConstant: 24).isActive = true
         
         contentView.addSubview(infoLabel)
-        infoLabel.text = .ginipayLocalized(resource: DigitalInvoiceStrings.warningViewTopTitle)
+        infoLabel.text = .ginibankLocalized(resource: DigitalInvoiceStrings.warningViewTopTitle)
         infoLabel.textAlignment = .center
         infoLabel.font = configuration.digitalInvoiceInfoViewTopLabelFont
         infoLabel.textColor = configuration.digitalInvoiceInfoViewWarningLabelsTextColor
@@ -98,7 +98,7 @@ class InfoView: UIView {
         warningLabel.textColor = configuration.digitalInvoiceInfoViewWarningLabelsTextColor
         warningLabel.textAlignment = .center
         warningLabel.numberOfLines = 0
-        warningLabel.text = .ginipayLocalized(resource: DigitalInvoiceStrings.warningViewMiddleTitle)
+        warningLabel.text = .ginibankLocalized(resource: DigitalInvoiceStrings.warningViewMiddleTitle)
         
         warningLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -124,7 +124,7 @@ class InfoView: UIView {
         skipLabel.textColor = configuration.digitalInvoiceInfoViewWarningLabelsTextColor
         skipLabel.textAlignment = .center
         skipLabel.numberOfLines = 0
-        skipLabel.text = .ginipayLocalized(resource: DigitalInvoiceStrings.warningViewBottomTitle)
+        skipLabel.text = .ginibankLocalized(resource: DigitalInvoiceStrings.warningViewBottomTitle)
         
         skipLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -147,7 +147,7 @@ class InfoView: UIView {
             actionButtonsStackView.heightAnchor.constraint(equalToConstant: 50)
         ])
 
-        okButton.setTitle(.ginipayLocalized(resource: DigitalInvoiceStrings.warningViewLeftButtonTitle), for: .normal)
+        okButton.setTitle(.ginibankLocalized(resource: DigitalInvoiceStrings.warningViewLeftButtonTitle), for: .normal)
         okButton.backgroundColor = configuration.digitalInvoiceInfoViewLeftButtonBackgroundColor
         okButton.layer.cornerRadius = 13
         okButton.layer.borderWidth = 2
@@ -156,7 +156,7 @@ class InfoView: UIView {
         okButton.titleLabel?.font = configuration.digitalInvoiceInfoViewButtonsFont
         okButton.addTarget(self, action: #selector(didTapOkButton), for: .touchUpInside)
         
-        skipButton.setTitle(.ginipayLocalized(resource: DigitalInvoiceStrings.warningViewRightButtonTitle), for: .normal)
+        skipButton.setTitle(.ginibankLocalized(resource: DigitalInvoiceStrings.warningViewRightButtonTitle), for: .normal)
         skipButton.backgroundColor = configuration.digitalInvoiceInfoViewRightButtonBackgroundColor
         skipButton.layer.cornerRadius = 13
         skipButton.layer.borderWidth = 2

@@ -11,7 +11,7 @@ import GiniCaptureSDK
 
 extension LocalizableStringResource {
 
-    var localizedGiniPayFormat: String {
+    var localizedGiniBankFormat: String {
         let keyPrefix = "ginibank.\(tableName)"
         let key = "\(keyPrefix).\(tableEntry.value)"
         let fallbackKey = "\(keyPrefix).\(fallbackTableEntry)"

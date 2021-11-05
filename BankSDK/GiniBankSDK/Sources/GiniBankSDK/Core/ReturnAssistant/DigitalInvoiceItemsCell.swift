@@ -25,11 +25,11 @@ struct DigitalInvoiceItemsCellViewModel {
     
     init(invoice: DigitalInvoice) {
         
-        itemsLabelText = String.localizedStringWithFormat(DigitalInvoiceStrings.items.localizedGiniPayFormat,
+        itemsLabelText = String.localizedStringWithFormat(DigitalInvoiceStrings.items.localizedGiniBankFormat,
                                                           invoice.numSelected,
                                                           invoice.numTotal)
         
-        itemsLabelAccessibilityLabelText = String.localizedStringWithFormat(DigitalInvoiceStrings.itemsAccessibilityLabel.localizedGiniPayFormat,
+        itemsLabelAccessibilityLabelText = String.localizedStringWithFormat(DigitalInvoiceStrings.itemsAccessibilityLabel.localizedGiniBankFormat,
                                                                             invoice.numSelected,
                                                                             invoice.numTotal)
     }
