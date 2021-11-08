@@ -151,7 +151,7 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
         
         // Button
         if bottomButtonText != nil {
-            Constraints.active(item: self.bottomLayoutGuide, attr: .top, relatedBy: .equal, to: bottomButton,
+            Constraints.active(item: view.safeAreaLayoutGuide, attr: .bottom, relatedBy: .equal, to: bottomButton,
                                attr: .bottom, constant: 20)
             Constraints.active(item: self.view, attr: .leading, relatedBy: .equal, to: bottomButton, attr: .leading,
                                constant: -20, priority: 999)

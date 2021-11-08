@@ -71,8 +71,7 @@ final class OpenWithTutorialViewController: UICollectionViewController {
         }
         
         self.collectionView!.backgroundColor = nil
-        self.edgesForExtendedLayout = []
-        self.automaticallyAdjustsScrollViewInsets = false
+        self.collectionView.contentInsetAdjustmentBehavior = .never
 
         self.collectionView!.register(OpenWithTutorialCollectionCell.self,
                                       forCellWithReuseIdentifier: openWithTutorialCollectionCellIdentifier)
@@ -83,6 +82,7 @@ final class OpenWithTutorialViewController: UICollectionViewController {
         stepsCollectionLayout.minimumLineSpacing = 1
         stepsCollectionLayout.minimumInteritemSpacing = 1
         stepsCollectionLayout.estimatedItemSize = estimatedCellSize(widthParentSize: view.frame.size)
+        self.edgesForExtendedLayout = []
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
