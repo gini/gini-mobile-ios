@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'CaptureSDK/**'
+      - 'BankAPILibrary/**'
     tags-ignore:
       - '**'
   pull_request:

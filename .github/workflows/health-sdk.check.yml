@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'HealthSDK/**'
+      - 'HealthAPILibrary/**'
     tags-ignore:
       - '**'
   pull_request:
