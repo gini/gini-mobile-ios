@@ -3,14 +3,14 @@ on:
   push:
     paths:
       - 'BankSDK/**'
-      - 'CapturesDK/**'
+      - 'CaptureSDK/**'
       - 'BankAPILibrary/**'
     tags-ignore:
       - '**'
   pull_request:
     paths:
       - 'BankSDK/**'
-      - 'CapturesDK/**'
+      - 'CaptureSDK/**'
       - 'BankAPILibrary/**'
   workflow_call:
   
