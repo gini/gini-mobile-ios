@@ -7,6 +7,9 @@ on:
     tags-ignore:
       - '**'
   pull_request:
+    paths:
+      - 'HealthSDK/**'
+      - 'HealthAPILibrary/**'
   workflow_call:
   
 jobs:
