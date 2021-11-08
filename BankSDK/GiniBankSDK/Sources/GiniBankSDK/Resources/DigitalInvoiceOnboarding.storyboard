@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Digital Invoice Onboarding View Controller-->
+        <scene sceneID="jcM-d7-3Dk">
+            <objects>
+                <viewController storyboardIdentifier="digitalInvoiceOnboardingViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="bsW-Wu-97S" customClass="DigitalInvoiceOnboardingViewController" customModule="GiniPayBank" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="sZ4-c8-lTq">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ySK-ra-mer">
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your new return assistant!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wrk-c0-ekq">
+                                        <rect key="frame" x="29" y="30" width="352" height="76.5"/>
+                                        <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="32"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="digital_invoice_onboarding_icon" translatesAutoresizingMaskIntoConstraints="NO" id="vN8-eg-TBS">
+                                        <rect key="frame" x="69" y="167" width="276" height="313.5"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ydb-dv-dAn">
+                                        <rect key="frame" x="16" y="715" width="382" height="48"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="48" id="C36-9G-Njd">
+                                                <variation key="heightClass=regular-widthClass=compact" constant="48"/>
+                                            </constraint>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sVR-qv-0Gz">
+                                        <rect key="frame" x="184" y="768" width="46" height="30"/>
+                                        <state key="normal" title="Button"/>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Deselect article that you want to return and pay only for what you keep!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b5g-YZ-Ffz">
+                                        <rect key="frame" x="40" y="546.5" width="334" height="38.5"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.61960784313725492" blue="0.86274509803921573" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="sVR-qv-0Gz" firstAttribute="top" secondItem="Ydb-dv-dAn" secondAttribute="bottom" constant="5" id="2fR-Ne-TzZ"/>
+                                    <constraint firstItem="b5g-YZ-Ffz" firstAttribute="leading" secondItem="ySK-ra-mer" secondAttribute="leading" constant="40" id="6GP-iX-1VD"/>
+                                    <constraint firstAttribute="trailing" secondItem="b5g-YZ-Ffz" secondAttribute="trailing" constant="40" id="8g0-DW-fbi"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="Wrk-c0-ekq" secondAttribute="trailing" constant="25" id="BAS-u8-o2S"/>
+                                    <constraint firstItem="vN8-eg-TBS" firstAttribute="centerX" secondItem="ySK-ra-mer" secondAttribute="centerX" id="HRp-HJ-8Ro"/>
+                                    <constraint firstItem="vN8-eg-TBS" firstAttribute="centerY" secondItem="ySK-ra-mer" secondAttribute="centerY" multiplier="0.76" id="RhS-AE-95n"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ydb-dv-dAn" secondAttribute="trailing" constant="16" id="TaD-II-KDq"/>
+                                    <constraint firstItem="Wrk-c0-ekq" firstAttribute="top" secondItem="ySK-ra-mer" secondAttribute="top" constant="30" id="Wwu-Iz-7F9"/>
+                                    <constraint firstItem="sVR-qv-0Gz" firstAttribute="centerX" secondItem="ySK-ra-mer" secondAttribute="centerX" id="bZd-eE-sMt"/>
+                                    <constraint firstItem="Ydb-dv-dAn" firstAttribute="leading" secondItem="ySK-ra-mer" secondAttribute="leading" constant="16" id="cTf-iM-2Nl"/>
+                                    <constraint firstItem="Wrk-c0-ekq" firstAttribute="leading" secondItem="ySK-ra-mer" secondAttribute="leadingMargin" constant="21" id="g6E-J0-wSL"/>
+                                    <constraint firstItem="Ydb-dv-dAn" firstAttribute="centerX" secondItem="ySK-ra-mer" secondAttribute="centerX" id="rPi-Au-hbT"/>
+                                    <constraint firstItem="b5g-YZ-Ffz" firstAttribute="top" secondItem="vN8-eg-TBS" secondAttribute="bottom" constant="66" id="vdg-WZ-Ejz"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="3IY-Df-aw6"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="vN8-eg-TBS" firstAttribute="height" secondItem="sZ4-c8-lTq" secondAttribute="height" multiplier="0.35" id="EYe-cg-qss"/>
+                            <constraint firstItem="vN8-eg-TBS" firstAttribute="width" secondItem="sZ4-c8-lTq" secondAttribute="width" multiplier="0.666667" id="UBh-fG-7Bd"/>
+                            <constraint firstItem="ySK-ra-mer" firstAttribute="top" secondItem="3IY-Df-aw6" secondAttribute="top" id="Uib-fh-nQ5"/>
+                            <constraint firstItem="3IY-Df-aw6" firstAttribute="trailing" secondItem="ySK-ra-mer" secondAttribute="trailing" id="V7X-1Q-pcj"/>
+                            <constraint firstAttribute="bottom" secondItem="ySK-ra-mer" secondAttribute="bottom" id="a1m-GS-s53"/>
+                            <constraint firstItem="ySK-ra-mer" firstAttribute="leading" secondItem="3IY-Df-aw6" secondAttribute="leading" id="ro5-DT-5Yn"/>
+                            <constraint firstItem="3IY-Df-aw6" firstAttribute="bottom" secondItem="Ydb-dv-dAn" secondAttribute="bottom" constant="55" id="tCq-I2-uAa"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="doneButton" destination="Ydb-dv-dAn" id="2QP-AC-Kes"/>
+                        <outlet property="firstLabel" destination="Wrk-c0-ekq" id="byp-IX-SJ7"/>
+                        <outlet property="hideButton" destination="sVR-qv-0Gz" id="ng7-kx-C82"/>
+                        <outlet property="secondLabel" destination="b5g-YZ-Ffz" id="5UH-xp-kbc"/>
+                        <outlet property="topImageView" destination="vN8-eg-TBS" id="YRJ-Sj-XKm"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zgz-pf-2vQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="106" y="79"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="digital_invoice_onboarding_icon" width="237" height="259"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

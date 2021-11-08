@@ -28,6 +28,6 @@ let package = Package(
         .testTarget(
             name: "GiniCaptureSDKTests",
             dependencies: ["GiniCaptureSDK"],
-            resources: [.copy("Resources")]),
+            resources: [.process("Resources")])
     ]
 )
