@@ -24,13 +24,13 @@ final class SupportedFormatsViewController: UITableViewController {
             (.localized(resource: HelpStrings.supportedFormatsSection1Title),
              [.localized(resource: HelpStrings.supportedFormatsSection1Item1Text)],
              UIImage(named: "supportedFormatsIcon",
-                     in: Bundle(for: GiniCapture.self),
+                     in: Bundle.module,
                      compatibleWith: nil),
              GiniConfiguration.shared.supportedFormatsIconColor),
             (.localized(resource: HelpStrings.supportedFormatsSection2Title),
              [.localized(resource: HelpStrings.supportedFormatsSection2Item1Text),
               .localized(resource: HelpStrings.supportedFormatsSection2Item2Text)],
-             UIImage(named: "nonSupportedFormatsIcon", in: Bundle(for: GiniCapture.self), compatibleWith: nil),
+             UIImage(named: "nonSupportedFormatsIcon", in: Bundle.module, compatibleWith: nil),
              GiniConfiguration.shared.nonSupportedFormatsIconColor)
         ]
         
