@@ -55,9 +55,7 @@ final class SupportedFormatsViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = .localized(resource: HelpStrings.supportedFormatsTitle)
+    fileprivate func configureTableView() {
         tableView.register(SupportedFormatsTableViewCell.self, forCellReuseIdentifier: supportedFormatsCellIdentifier)
         tableView.rowHeight = rowHeight
         tableView.tableFooterView = UIView()
@@ -71,11 +69,14 @@ final class SupportedFormatsViewController: UITableViewController {
         }
         
         tableView.alwaysBounceVertical = false
-        
-        // On iOS is .automatic by default and it the transition to this view controller looks weird.
-        if #available(iOS 11.0, *) {
-            tableView.contentInsetAdjustmentBehavior = .never
-        }
+        tableView.contentInsetAdjustmentBehavior = .never
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = .localized(resource: HelpStrings.supportedFormatsTitle)
+        configureTableView()
+        edgesForExtendedLayout = []
     }
     
     // MARK: - Table view data source
