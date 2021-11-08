@@ -3,10 +3,12 @@ name: Builds docs for Bank API Library
 on:
   push:
     paths:
-      - 'GiniBankAPILibrary/**'
+      - 'BankAPILibrary/**'
     tags-ignore:
       - '**'
   pull_request:
+    paths:
+      - 'BankAPILibrary/**'
   
 jobs:
   documentation:

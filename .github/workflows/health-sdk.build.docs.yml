@@ -3,10 +3,12 @@ name: Builds docs for Health SDK
 on:
   push:
     paths:
-      - 'GiniHealthSDK/**'
+      - 'HealthSDK/**'
     tags-ignore:
       - '**'
   pull_request:
+    paths:
+      - 'HealthSDK/**'
   
 jobs:
   documentation:

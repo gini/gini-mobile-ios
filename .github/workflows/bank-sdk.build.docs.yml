@@ -3,10 +3,12 @@ name: Builds docs for Bank SDK
 on:
   push:
     paths:
-      - 'GiniBankSDK/**'
+      - 'BankSDK/**'
     tags-ignore:
       - '**'
   pull_request:
+    paths:
+      - 'BankSDK/**'
   
 jobs:
   documentation:
