@@ -1,0 +1,26 @@
+---
+xcodebuild_arguments:
+- "-workspace"
+- GiniMobile.xcworkspace
+- "-scheme"
+- GiniBankSDK
+- "-destination"
+- platform=iOS Simulator,OS=15.0,name=iPhone 13
+author: Gini GmbH
+author_url: https://gini.net
+module: GiniBankSDK
+readme: Documentation/Sections/Documentation.md
+theme: Documentation/jazzy-theme/
+output: Documentation/Api
+github_url: https://github.com/gini/gini-mobile-ios.git
+hide_documentation_coverage: 'true'
+documentation: BankSDK/GiniBankSDK/Documentation/source/*.md
+abstract: BankSDK/GiniBankSDK/Documentation/Sections/*.md
+custom_categories:
+- name: Documentation
+  children:
+  - Installation
+  - Integration
+  - Migration
+  - License
+  
