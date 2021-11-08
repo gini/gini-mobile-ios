@@ -11,7 +11,6 @@ import GiniBankAPILibraryPinning
 import GiniCaptureSDK
 import TrustKit
 import GiniBankSDK
-import GiniBankAPILibraryExample
 
 extension GiniBank {
     /**
