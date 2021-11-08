@@ -28,7 +28,7 @@ final class PageStateViewTests: XCTestCase {
         XCTAssertEqual(statusView.backgroundColor, Colors.Gini.springGreen, "background color should be green")
         XCTAssertEqual(statusView.icon.image,
                        UIImage(named: "successfullUploadIcon",
-                               in: Bundle(for: GiniCapture.self),
+                               in: giniCaptureBundle(),
                                compatibleWith: nil),
                        "icon image should match successfullUploadIcon asset")
         XCTAssertFalse(statusView.loadingIndicator.isAnimating,
@@ -40,9 +40,9 @@ final class PageStateViewTests: XCTestCase {
         XCTAssertEqual(statusView.backgroundColor, Colors.Gini.crimson, "background color should be red")
         XCTAssertEqual(statusView.icon.image,
                        UIImage(named: "failureUploadIcon",
-                               in: Bundle(for: GiniCapture.self),
+                               in: giniCaptureBundle(),
                                compatibleWith: nil),
-                       "icon image should match failureUploadIcon asset")
+                      "icon image should match failureUploadIcon asset")
         XCTAssertFalse(statusView.loadingIndicator.isAnimating,
                        "loading indicator should not be animating when loading")
     }

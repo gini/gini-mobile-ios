@@ -65,22 +65,22 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
     
     public convenience init(title: String? = nil,
                             subHeaderText: String? = NSLocalizedString("ginicapture.noresults.collection.header",
-                                                                       bundle: Bundle(for: GiniCapture.self),
+                                                                       bundle: giniCaptureBundle(),
                                                                        comment: "no results suggestions collection " +
         "header title"),
                             topViewText: String = NSLocalizedString("ginicapture.noresults.warning",
-                                                                    bundle: Bundle(for: GiniCapture.self),
+                                                                    bundle: giniCaptureBundle(),
                                                                     comment: "Warning text that indicates that there " +
         "was any result for this photo analysis"),
                             topViewIcon: UIImage? = UIImage(named: "warningNoResults",
-                                                            in: Bundle(for: GiniCapture.self),
+                                                            in: giniCaptureBundle(),
                                                             compatibleWith: nil)?.withRenderingMode(.alwaysTemplate),
                             bottomButtonText: String? = NSLocalizedString("ginicapture.noresults.gotocamera",
-                                                                          bundle: Bundle(for: GiniCapture.self),
+                                                                          bundle: giniCaptureBundle(),
                                                                           comment: "bottom button title (go to camera" +
         " button)"),
                             bottomButtonIcon: UIImage? = UIImage(named: "cameraIcon",
-                                                                 in: Bundle(for: GiniCapture.self),
+                                                                 in: giniCaptureBundle(),
                                                                  compatibleWith: nil)) {
         self.init(title: title,
                   subHeaderText: subHeaderText,
@@ -151,7 +151,7 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
         
         // Button
         if bottomButtonText != nil {
-            Constraints.active(item: self.bottomLayoutGuide, attr: .top, relatedBy: .equal, to: bottomButton,
+            Constraints.active(item: view.safeAreaLayoutGuide, attr: .bottom, relatedBy: .equal, to: bottomButton,
                                attr: .bottom, constant: 20)
             Constraints.active(item: self.view, attr: .leading, relatedBy: .equal, to: bottomButton, attr: .leading,
                                constant: -20, priority: 999)

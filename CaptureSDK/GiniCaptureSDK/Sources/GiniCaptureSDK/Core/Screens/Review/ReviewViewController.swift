@@ -223,9 +223,9 @@ import UIKit
     // MARK: Constraints
     fileprivate func addConstraints() {
         // Scroll view
-        Constraints.active(item: scrollView, attr: .top, relatedBy: .equal, to: topLayoutGuide, attr: .bottom)
+        Constraints.active(item: scrollView, attr: .top, relatedBy: .equal, to: view.safeAreaLayoutGuide, attr: .top)
         Constraints.active(item: scrollView, attr: .trailing, relatedBy: .equal, to: view, attr: .trailing)
-        Constraints.active(item: scrollView, attr: .bottom, relatedBy: .equal, to: bottomLayoutGuide, attr: .top)
+        Constraints.active(item: scrollView, attr: .bottom, relatedBy: .equal, to: view.safeAreaLayoutGuide, attr: .bottom)
         Constraints.active(item: scrollView, attr: .leading, relatedBy: .equal, to: view, attr: .leading)
         
         // Image view
@@ -252,7 +252,7 @@ import UIKit
         Constraints.active(item: bottomView, attr: .top, relatedBy: .equal, to: scrollView, attr: .bottom,
                            priority: 750)
         Constraints.active(item: bottomView, attr: .trailing, relatedBy: .equal, to: view, attr: .trailing)
-        Constraints.active(item: bottomView, attr: .bottom, relatedBy: .equal, to: self.bottomLayoutGuide, attr: .top)
+        Constraints.active(item: bottomView, attr: .bottom, relatedBy: .equal, to: view.safeAreaLayoutGuide, attr: .bottom)
         Constraints.active(item: bottomView, attr: .leading, relatedBy: .equal, to: view, attr: .leading)
         
         // Rotate button

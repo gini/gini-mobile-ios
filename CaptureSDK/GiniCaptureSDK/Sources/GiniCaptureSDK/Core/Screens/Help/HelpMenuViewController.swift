@@ -108,21 +108,23 @@ final public class HelpMenuViewController: UITableViewController {
         tableView.backgroundColor = UIColor.from(giniColor: giniConfiguration.helpScreenBackgroundColor)
         
         // In iOS it is .automatic by default, having an initial animation when the view is loaded.
-        if #available(iOS 11.0, *) {
-            tableView.contentInsetAdjustmentBehavior = .never
-        }
+        tableView.contentInsetAdjustmentBehavior = .never
     }
     
     fileprivate func configureMainView() {
         title = .localized(resource: HelpStrings.menuTitle)
     }
     
-    override public func viewDidLoad() {
-        super.viewDidLoad()
-        
+    fileprivate func configureLayout() {
         configureMainView()
         configureTableView()
         configureMenuItems()
+        edgesForExtendedLayout = []
+    }
+    
+    override public func viewDidLoad() {
+        super.viewDidLoad()
+        configureLayout()
     }
     
     @objc func back() {
