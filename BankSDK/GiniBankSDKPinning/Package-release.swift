@@ -16,7 +16,7 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(name: "GiniCaptureSDKPinning", url: "https://github.com/gini/capture-sdk-pinning-ios.git", .exact("0.0.1")),
+        .package(name: "GiniCaptureSDKPinning", url: "https://github.com/gini/capture-sdk-pinning-ios.git", .exact("0.0.2")),
         .package(name: "GiniBankSDK", url: "https://github.com/gini/bank-sdk-ios.git", .exact("0.0.2")),
     ],
     targets: [
