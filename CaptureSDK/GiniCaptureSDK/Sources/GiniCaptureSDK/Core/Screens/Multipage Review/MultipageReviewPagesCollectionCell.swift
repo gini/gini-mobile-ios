@@ -68,7 +68,7 @@ final class MultipageReviewPagesCollectionCell: UICollectionViewCell {
     }()
     
     lazy var draggableIcon: UIImageView = {
-        let image = UIImage(named: "draggablePageIcon", in: Bundle(for: GiniCapture.self), compatibleWith: nil)
+        let image = UIImage(named: "draggablePageIcon", in: Bundle.module, compatibleWith: nil)
         let imageView = UIImageView(image: image?.withRenderingMode(.alwaysTemplate))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit

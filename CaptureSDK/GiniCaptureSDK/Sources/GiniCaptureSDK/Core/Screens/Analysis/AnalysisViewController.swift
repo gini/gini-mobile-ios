@@ -206,9 +206,9 @@ import UIKit
         self.view.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
-        Constraints.active(item: imageView, attr: .top, relatedBy: .equal, to: self.topLayoutGuide, attr: .bottom,
+        Constraints.active(item: imageView, attr: .top, relatedBy: .equal, to: view.safeAreaLayoutGuide, attr: .top,
                           priority: 999)
-        Constraints.active(item: imageView, attr: .bottom, relatedBy: .equal, to: self.bottomLayoutGuide, attr: .top,
+        Constraints.active(item: imageView, attr: .bottom, relatedBy: .equal, to: view.safeAreaLayoutGuide, attr: .bottom,
                           priority: 999)
         Constraints.active(item: imageView, attr: .trailing, relatedBy: .equal, to: self.view, attr: .trailing)
         Constraints.active(item: imageView, attr: .leading, relatedBy: .equal, to: self.view, attr: .leading)
@@ -288,7 +288,7 @@ import UIKit
     
     fileprivate func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {
         let captureSuggestions = CaptureSuggestionsView(superView: self.view,
-                                                        bottomLayout: bottomLayoutGuide,
+                                                        bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor,
                                                         font: giniConfiguration.customFont.with(weight: .regular,
                                                                                                 size: 16,
                                                                                                 style: .body))

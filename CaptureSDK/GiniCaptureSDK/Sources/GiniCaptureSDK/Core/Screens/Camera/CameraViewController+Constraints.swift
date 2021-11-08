@@ -60,8 +60,8 @@ extension CameraViewController {
                                to: cameraPreviewViewController.view,
                                attr: .bottom)
             Constraints.active(item: cameraButtonsViewController.view, attr: .bottom, relatedBy: .equal,
-                               to: self.bottomLayoutGuide,
-                               attr: .top)
+                               to: view.safeAreaLayoutGuide,
+                               attr: .bottom)
             Constraints.active(item: cameraButtonsViewController.view, attr: .trailing, relatedBy: .equal,
                                to: self.view, attr: .trailing)
             Constraints.active(item: cameraButtonsViewController.view, attr: .leading, relatedBy: .equal,

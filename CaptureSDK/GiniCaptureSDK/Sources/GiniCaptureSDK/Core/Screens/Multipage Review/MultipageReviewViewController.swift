@@ -188,7 +188,7 @@ public final class MultipageReviewViewController: UIViewController {
                              action: #selector(rotateImageButtonAction))
         
         button.accessibilityLabel = NSLocalizedString("ginicapture.review.rotateButton",
-                                                      bundle: Bundle(for: GiniCapture.self),
+                                                      bundle: Bundle.module,
                                                       comment: "Rotate button")
         return button
     }()
@@ -244,7 +244,7 @@ extension MultipageReviewViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = mainCollection.backgroundColor
-        automaticallyAdjustsScrollViewInsets = false
+        mainCollection.contentInsetAdjustmentBehavior = .never
         edgesForExtendedLayout = []
         
         longPressGesture.delaysTouchesBegan = true
@@ -458,14 +458,14 @@ extension MultipageReviewViewController {
         // mainCollection
         Constraints.active(item: mainCollection, attr: .bottom, relatedBy: .equal, to: pagesCollectionContainer,
                            attr: .top)
-        Constraints.active(item: mainCollection, attr: .top, relatedBy: .equal, to: topLayoutGuide,
-                           attr: .bottom)
+        Constraints.active(item: mainCollection, attr: .top, relatedBy: .equal, to: view.safeAreaLayoutGuide,
+                           attr: .top)
         Constraints.active(item: mainCollection, attr: .trailing, relatedBy: .equal, to: view, attr: .trailing)
         Constraints.active(item: mainCollection, attr: .leading, relatedBy: .equal, to: view, attr: .leading)
         
         // toolBar
-        Constraints.active(item: toolBar, attr: .bottom, relatedBy: .equal, to: bottomLayoutGuide,
-                           attr: .top)
+        Constraints.active(item: toolBar, attr: .bottom, relatedBy: .equal, to: view.safeAreaLayoutGuide,
+                           attr: .bottom)
         Constraints.active(item: toolBar, attr: .trailing, relatedBy: .equal, to: view, attr: .trailing)
         Constraints.active(item: toolBar, attr: .leading, relatedBy: .equal, to: view, attr: .leading)
         

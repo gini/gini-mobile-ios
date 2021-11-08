@@ -247,7 +247,6 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
         }
     }
     
-    @available(iOS 11.0, *)
     fileprivate func addDropInteraction(forView view: UIView, with delegate: UIDropInteractionDelegate) {
         let dropInteraction = UIDropInteraction(delegate: delegate)
         view.addInteraction(dropInteraction)

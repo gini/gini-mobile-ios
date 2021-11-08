@@ -24,10 +24,9 @@ final class CaptureSuggestionsView: UIView {
     fileprivate var itemSeparationConstraint: NSLayoutConstraint = NSLayoutConstraint()
     fileprivate var bottomConstraint: NSLayoutConstraint = NSLayoutConstraint()
     fileprivate let repeatInterval: TimeInterval = 5
-    fileprivate let superViewBottomLayout: UILayoutSupport
+    fileprivate let superViewBottomAnchor: NSLayoutYAxisAnchor
     fileprivate let suggestionIconImage = UIImage(named: "analysisSuggestionsIcon",
-                                                  in: Bundle(for: GiniCapture.self),
-                                                  compatibleWith: nil)
+                                                  in: Bundle.module, compatibleWith: nil)
     fileprivate var suggestionTexts: [String] = [
         .localized(resource: AnalysisStrings.suggestion1Text),
         .localized(resource: AnalysisStrings.suggestion2Text),
@@ -35,11 +34,11 @@ final class CaptureSuggestionsView: UIView {
         .localized(resource: AnalysisStrings.suggestion4Text)
     ]
     
-    init(superView: UIView, bottomLayout: UILayoutSupport, font: UIFont) {
+    init(superView: UIView, bottomAnchor: NSLayoutYAxisAnchor, font: UIFont) {
         suggestionContainer = UIView()
         suggestionTitle = UILabel()
         suggestionText = UILabel()
-        superViewBottomLayout = bottomLayout
+        superViewBottomAnchor = bottomAnchor
 
         suggestionIcon = UIImageView(image: suggestionIconImage)
         suggestionIcon.contentMode = .scaleAspectFit
@@ -85,9 +84,7 @@ final class CaptureSuggestionsView: UIView {
         guard let superview = superview else { return }
         
         // self
-        bottomConstraint = NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal,
-                                              toItem: superViewBottomLayout, attribute: .top, multiplier: 1,
-                                              constant: containerHeight)
+        bottomConstraint = self.bottomAnchor.constraint(equalTo: superViewBottomAnchor, constant: containerHeight)
         Constraints.active(item: self, attr: .leading, relatedBy: .equal, to: superview, attr: .leading)
         Constraints.active(item: self, attr: .trailing, relatedBy: .equal, to: superview, attr: .trailing)
         Constraints.active(item: self, attr: .height, relatedBy: .equal, to: nil, attr: .notAnAttribute,
