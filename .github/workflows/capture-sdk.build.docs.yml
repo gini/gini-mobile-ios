@@ -3,7 +3,7 @@ name: Builds docs for Capture SDK
 on:
   push:
     paths:
-      - 'GiniCaptureSDK/**'
+      - 'CaptureSDK/**'
     tags-ignore:
       - '**'
   pull_request:
