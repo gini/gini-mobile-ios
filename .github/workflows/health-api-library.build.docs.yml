@@ -3,10 +3,12 @@ name: Builds docs for Health API Library
 on:
   push:
     paths:
-      - 'GiniHealthAPILibrary/**'
+      - 'HealthAPILibrary/**'
     tags-ignore:
       - '**'
   pull_request:
+    paths:
+      - 'HealthAPILibrary/**'
   
 jobs:
   documentation:
