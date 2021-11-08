@@ -322,7 +322,6 @@ extension Camera: AVCapturePhotoCaptureDelegate {
         didCaptureImageHandler?(imageData, nil)
     }
     
-    @available(iOS 11.0, *)
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?){
         if error != nil {
             didCaptureImageHandler?(nil, .captureFailed)
