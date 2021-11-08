@@ -19,7 +19,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator {
     let documentService: DocumentServiceProtocol
     var giniPayBankConfiguration: GiniBankConfiguration = GiniBankConfiguration()
     
-    init(client: Client,
+    public init(client: Client,
          resultsDelegate: GiniCaptureResultsDelegate,
          configuration: GiniBankConfiguration,
          documentMetadata: Document.Metadata?,
