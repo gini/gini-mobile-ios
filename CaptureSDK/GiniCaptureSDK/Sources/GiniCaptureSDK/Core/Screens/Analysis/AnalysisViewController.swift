@@ -288,7 +288,7 @@ import UIKit
     
     fileprivate func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {
         let captureSuggestions = CaptureSuggestionsView(superView: self.view,
-                                                        bottomLayout: view.safeAreaLayoutGuide.bottomAnchor as! UILayoutSupport,
+                                                        bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor,
                                                         font: giniConfiguration.customFont.with(weight: .regular,
                                                                                                 size: 16,
                                                                                                 style: .body))
