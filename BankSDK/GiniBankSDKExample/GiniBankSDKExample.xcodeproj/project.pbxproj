@@ -213,7 +213,7 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		F4807C35263C20BA00F30FF3 /* Bank */ = {
+		F4807C35263C20BA00F30FF3 /* GiniBankSDKExampleBank */ = {
 			isa = PBXGroup;
 			children = (
 				F4807C36263C20BA00F30FF3 /* AppDelegate.swift */,
@@ -227,7 +227,7 @@
 				F4807C44263C20BB00F30FF3 /* Info.plist */,
 				F4807F9226416E2E00F30FF3 /* Localizable.strings */,
 			);
-			path = Bank;
+			path = GiniBankSDKExampleBank;
 			sourceTree = "<group>";
 		};
 		F4807FBB264182BD00F30FF3 /* Helpers */ = {
@@ -248,7 +248,7 @@
 				F439C210273555B60010D77D /* Packages */,
 				F490C7E325DE873900D8CA6F /* GiniBankSDKExample */,
 				F490C7FE25DE87A900D8CA6F /* GiniBankSDKExampleTests */,
-				F4807C35263C20BA00F30FF3 /* Bank */,
+				F4807C35263C20BA00F30FF3 /* GiniBankSDKExampleBank */,
 				F490C7C125DE72E400D8CA6F /* Products */,
 				F439C21927355C310010D77D /* Frameworks */,
 			);
@@ -593,7 +593,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BQY9KX4V88;
-				INFOPLIST_FILE = Bank/Info.plist;
+				INFOPLIST_FILE = GiniBankSDKExampleBank/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -613,7 +613,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BQY9KX4V88;
-				INFOPLIST_FILE = Bank/Info.plist;
+				INFOPLIST_FILE = GiniBankSDKExampleBank/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
