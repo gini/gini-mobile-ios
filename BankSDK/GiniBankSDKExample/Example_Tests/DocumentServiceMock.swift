@@ -9,7 +9,7 @@
 import Foundation
 @testable import GiniBankAPILibrary
 @testable import GiniCaptureSDK
-@testable import Example_Swift
+@testable import GiniBankSDKExample
 
 final class DocumentServiceMock: ComponentAPIDocumentServiceProtocol {
 

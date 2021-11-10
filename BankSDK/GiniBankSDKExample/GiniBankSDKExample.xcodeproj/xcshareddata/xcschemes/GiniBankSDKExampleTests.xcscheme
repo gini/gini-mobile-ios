@@ -30,7 +30,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F490C7E125DE873900D8CA6F"
                BuildableName = "Example Swift.app"
-               BlueprintName = "Example Swift"
+               BlueprintName = "GiniBankSDKExample"
                ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
