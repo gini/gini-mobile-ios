@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Example_Swift
+@testable import GiniBankSDKExample
 @testable import GiniBankAPILibrary
 @testable import GiniBankSDK
 

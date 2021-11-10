@@ -8,6 +8,7 @@
 import Foundation
 import GiniBankAPILibrary
 import GiniBankSDK
+import UIKit
 /**
  View model class for review screen
   */
@@ -21,7 +22,7 @@ public class PaymentViewModel: NSObject {
 
     var updateLoadingStatus: () -> Void = {}
 
-    var onErrorHandling: (_ error: GiniPayBankError) -> Void = { _ in }
+    var onErrorHandling: (_ error: GiniBankError) -> Void = { _ in }
 
     var onResolvePaymentRequest: () -> Void = {}
 

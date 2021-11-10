@@ -12,7 +12,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var paymentRequestId: String = ""
-    let apiLib = GiniApiLib.Builder(client: CredentialsManager.fetchClientFromBundle()).build()
+    let apiLib = GiniBankAPI.Builder(client: CredentialsManager.fetchClientFromBundle()).build()
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
