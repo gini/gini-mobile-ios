@@ -14,7 +14,7 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F490C7C825DE72E400D8CA6F"
+               BlueprintIdentifier = "F490C7FC25DE87A800D8CA6F"
                BuildableName = "GiniBankSDKExampleTests.xctest"
                BlueprintName = "GiniBankSDKExampleTests"
                ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
@@ -29,7 +29,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F490C7E125DE873900D8CA6F"
-               BuildableName = "Example Swift.app"
+               BuildableName = "GiniBankSDKExample.app"
                BlueprintName = "GiniBankSDKExample"
                ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F490C7C825DE72E400D8CA6F"
+               BlueprintIdentifier = "F490C7FC25DE87A800D8CA6F"
                BuildableName = "GiniBankSDKExampleTests.xctest"
                BlueprintName = "GiniBankSDKExampleTests"
                ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">

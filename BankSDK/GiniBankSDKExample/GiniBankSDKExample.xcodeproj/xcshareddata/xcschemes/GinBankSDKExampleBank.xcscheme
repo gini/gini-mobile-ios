@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F4807C33263C20BA00F30FF3"
-               BuildableName = "Bank.app"
+               BuildableName = "GinBankSDKExampleBank.app"
                BlueprintName = "GinBankSDKExampleBank"
                ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F4807C33263C20BA00F30FF3"
-            BuildableName = "Bank.app"
+            BuildableName = "GinBankSDKExampleBank.app"
             BlueprintName = "GinBankSDKExampleBank"
             ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F4807C33263C20BA00F30FF3"
-            BuildableName = "Bank.app"
+            BuildableName = "GinBankSDKExampleBank.app"
             BlueprintName = "GinBankSDKExampleBank"
             ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
          </BuildableReference>
