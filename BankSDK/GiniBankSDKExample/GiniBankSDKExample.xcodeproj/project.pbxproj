@@ -108,8 +108,6 @@
 		F4807FB42641713700F30FF3 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
 		F4807FC12641830D00F30FF3 /* CredentialsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
 		F4807FC8264183C000F30FF3 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
-		F490C7CE25DE72E400D8CA6F /* GiniPayBankSDKTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniPayBankSDKTests.swift; sourceTree = "<group>"; };
-		F490C7D025DE72E400D8CA6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F490C7E225DE873900D8CA6F /* GiniBankSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniBankSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F490C7E425DE873900D8CA6F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F490C7E825DE873900D8CA6F /* NoResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoResultViewController.swift; sourceTree = "<group>"; };
@@ -248,9 +246,8 @@
 			isa = PBXGroup;
 			children = (
 				F439C210273555B60010D77D /* Packages */,
-				F490C7CD25DE72E400D8CA6F /* GiniPayBankSDKTests */,
 				F490C7E325DE873900D8CA6F /* GiniBankSDKExample */,
-				F490C7FE25DE87A900D8CA6F /* Example_Tests */,
+				F490C7FE25DE87A900D8CA6F /* GiniBankSDKExampleTests */,
 				F4807C35263C20BA00F30FF3 /* Bank */,
 				F490C7C125DE72E400D8CA6F /* Products */,
 				F439C21927355C310010D77D /* Frameworks */,
@@ -265,15 +262,6 @@
 				F4807C34263C20BA00F30FF3 /* GinBankSDKExampleBank.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		F490C7CD25DE72E400D8CA6F /* GiniPayBankSDKTests */ = {
-			isa = PBXGroup;
-			children = (
-				F490C7CE25DE72E400D8CA6F /* GiniPayBankSDKTests.swift */,
-				F490C7D025DE72E400D8CA6F /* Info.plist */,
-			);
-			path = GiniPayBankSDKTests;
 			sourceTree = "<group>";
 		};
 		F490C7E325DE873900D8CA6F /* GiniBankSDKExample */ = {
@@ -306,7 +294,7 @@
 			path = GiniBankSDKExample;
 			sourceTree = "<group>";
 		};
-		F490C7FE25DE87A900D8CA6F /* Example_Tests */ = {
+		F490C7FE25DE87A900D8CA6F /* GiniBankSDKExampleTests */ = {
 			isa = PBXGroup;
 			children = (
 				F407A41525E5805E00BC5F36 /* ComponentAPICoordinatorTests.swift */,
@@ -316,7 +304,7 @@
 				F407A42425E580F000BC5F36 /* testPDF.pdf */,
 				F490C80125DE87A900D8CA6F /* Info.plist */,
 			);
-			path = Example_Tests;
+			path = GiniBankSDKExampleTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -810,7 +798,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BQY9KX4V88;
-				INFOPLIST_FILE = Example_Tests/Info.plist;
+				INFOPLIST_FILE = GiniBankSDKExampleTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -830,7 +818,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BQY9KX4V88;
-				INFOPLIST_FILE = Example_Tests/Info.plist;
+				INFOPLIST_FILE = GiniBankSDKExampleTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
