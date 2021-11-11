@@ -44,7 +44,7 @@
       location = "container:"
       name = "GiniHealthSDK">
       <FileRef
-         location = "group:HealthSDK/GiniHealthSDKPinningExample/GiniHealthSDKPinningExample.xcodeproj">
+         location = "group:HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj">
       </FileRef>
       <FileRef
          location = "group:HealthSDK/GiniHealthSDK">
