@@ -55,5 +55,5 @@ jobs:
    
     - name: Build example app
       run: |
-        cd HealthSDK/GiniHealthSDKPinningExample
-        xcodebuild -project GiniHealthSDKPinningExample.xcodeproj -scheme "GiniHealthSDKPinningExample" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO    
+        cd HealthSDK/GiniHealthSDKExample
+        xcodebuild -project GiniHealthSDKExample.xcodeproj -scheme "GiniHealthSDKPinningExample" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO    
