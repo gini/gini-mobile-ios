@@ -179,7 +179,7 @@ final class AppCoordinator: Coordinator {
                                                             metadata: nil) { result in
                         switch result {
                         case .success(let compositeDocument):
-                            self.health.setDocumentForReview(documentId: createdDocument.id) { result in
+                            self.health.setDocumentForReview(documentId: compositeDocument.id) { result in
                                 switch result {
                                 case .success(let extractions):
                                     self.testDocument = compositeDocument
