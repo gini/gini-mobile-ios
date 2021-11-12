@@ -31,7 +31,7 @@ public protocol GiniHealthDelegate: AnyObject {
     func shouldHandleErrorInternally(error: GiniHealthError) -> Bool
 }
 /**
- Errors thrown with GiniHealth SDK.
+ Errors thrown with Gini Health SDK.
  */
 public enum GiniHealthError: Error {
      /// Error thrown when there are no apps which supports Gini Pay Connect installed.
@@ -51,7 +51,7 @@ public struct DataForReview {
     }
 }
 /**
- Core class for GiniHealth SDK.
+ Core class for Gini Health SDK.
  */
 @objc public final class GiniHealth: NSObject {
     /// reponsible for interaction with Gini Health backend .
@@ -194,7 +194,7 @@ public struct DataForReview {
      
      - Parameters:
         - docId: Id of uploaded document.
-        -  completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
+        - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
         Completion block called on main thread.
         In success returns the polled document.
         In case of failure error from the server side.
