@@ -14,3 +14,8 @@ Replace `GiniPayBusinessError` with `GiniHealthError`.
 Localizable strings
 
 Replace `ginipaybusiness.*` with `ginihealth.*`.
+
+Migrate from Pay API Library to Health API Library
+===================================================
+
+See the Health API Library's [migration guide](https://developer.gini.net/gini-mobile-ios/GiniHealthAPILibrary/migration-guide.html).
