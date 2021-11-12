@@ -32,6 +32,7 @@ custom_categories:
   - QR Code scanning guide
   - Event tracking guide
   - Error logging guide
+  - Migration guide
 
 - name: Classes
   children:
