@@ -25,7 +25,7 @@ public final class GiniHealthAPI {
     
     /**
      * The instance of a `DocumentService` that is used by the Gini Health API Library. The `DocumentService` allows the interaction with
-     * the Gini API.
+     * the Gini Health API.
      */
     public func documentService<T: DocumentService>() -> T {
         guard docService is T else {
@@ -37,7 +37,7 @@ public final class GiniHealthAPI {
     }
     
     /**
-     * The instance of a `PaymentService` that is used by the Gini Health API Library. The `PaymentService` allows the interaction with payment functionality ofthe Gini API.
+     * The instance of a `PaymentService` that is used by the Gini Health API Library. The `PaymentService` allows the interaction with payment functionality ofthe Gini Health API
      *
      */
     public func paymentService() -> PaymentService {
