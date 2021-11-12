@@ -19,6 +19,7 @@ custom_categories:
   children:
   - Installation
   - Getting started
+  - Migration guide
   - License
 - name: Classes
   children: []
