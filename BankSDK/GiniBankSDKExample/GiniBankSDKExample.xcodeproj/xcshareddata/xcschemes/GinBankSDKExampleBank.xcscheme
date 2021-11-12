@@ -9,28 +9,14 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F490C7FC25DE87A800D8CA6F"
-               BuildableName = "GiniBankSDKExampleTests.xctest"
-               BlueprintName = "GiniBankSDKExampleTests"
-               ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F490C7E125DE873900D8CA6F"
-               BuildableName = "GiniBankSDKExample.app"
-               BlueprintName = "GiniBankSDKExample"
+               BlueprintIdentifier = "F4807C33263C20BA00F30FF3"
+               BuildableName = "GinBankSDKExampleBank.app"
+               BlueprintName = "GinBankSDKExampleBank"
                ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -42,16 +28,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F490C7FC25DE87A800D8CA6F"
-               BuildableName = "GiniBankSDKExampleTests.xctest"
-               BlueprintName = "GiniBankSDKExampleTests"
-               ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -64,6 +40,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "F4807C33263C20BA00F30FF3"
+            BuildableName = "GinBankSDKExampleBank.app"
+            BlueprintName = "GinBankSDKExampleBank"
+            ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -71,6 +57,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "F4807C33263C20BA00F30FF3"
+            BuildableName = "GinBankSDKExampleBank.app"
+            BlueprintName = "GinBankSDKExampleBank"
+            ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

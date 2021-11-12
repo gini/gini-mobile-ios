@@ -6,7 +6,7 @@
 //
 
 import Foundation
-#if PINNING_AVAILABLE
+#if canImport(TrustKit)
 import TrustKit
 #endif
 

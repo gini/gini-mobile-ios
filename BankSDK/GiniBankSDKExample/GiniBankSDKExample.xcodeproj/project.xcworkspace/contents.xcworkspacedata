@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:/Users/home/Documents/ios projects/gini-mobile-ios/BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj">
+      location = "self:">
    </FileRef>
 </Workspace>
