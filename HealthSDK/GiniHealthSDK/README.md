@@ -17,21 +17,21 @@ Further documentation with installation, integration or customization guides can
 
 ## Example apps
 
-We are providing example app for Swift. This app demonstrates how to integrate the Gini Health SDK with the Component API of Gini Capture library. To run the example project, clone the repo and run `pod install` from the Example directory first.
+We are providing example app for Swift. This app demonstrates how to integrate the Gini Health SDK with the Component API of [Gini Capture SDK](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/index.html).
 
-An example banking app is available in the [Gini Pay Bank SDK's](https://github.com/gini/gini-pay-bank-sdk-ios) repository.
-To check the redirection to the Banking app please run Bank example before Example Swift. You can use the same Gini Pay API client credentials in the example banking app as in your app, if not otherwise specified.
-To inject your API credentials into the Health and Bank example apps you need to fill in your credentials in `Example/Example Swift/Credentials.plist` and `Example/Bank/Credentials.plist`, respectively.
+An example banking app is available in the [Gini Mobile iOS monorepo](https://github.com/gini/gini-mobile-ios/tree/main/BankSDK/GiniBankSDKExample) repository.
+To check the redirection to the Banking app please run Bank example before the Health example. You can use the same Gini Health API client credentials in the example banking app as in your app, if not otherwise specified.
+To inject your API credentials into the Health and Bank example apps you need to fill in your credentials in [Credentials.plist](https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/GiniBankSDKExampleBank/Credentials.plist) and [Credentials.plist](https://github.com/gini/gini-mobile-ios/blob/main/HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/Credentials.plist), respectively.
 
 ## Requirements
 
-- iOS 10.2+
-- Xcode 10.2+
+- iOS 11+
+- Xcode 12+
 
 **Note:**
 In order to have better analysis results it is highly recommended to enable only devices with 8MP camera and flash. These devices would be:
 
-* iPhones with iOS 10.2 or higher.
+* iPhones with iOS 11 or higher.
 * iPad Pro devices (iPad Air 2 and iPad Mini 4 have 8MP camera but no flash).
 
 ## Author
