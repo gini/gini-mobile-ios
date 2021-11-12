@@ -57,17 +57,21 @@ final class SelectAPIViewController: UIViewController {
     }
     
     func showActivityIndicator() {
-        activityIndicator.startAnimating()
-        startWithGiniCaptureButton.isEnabled = false
-        startWithTestDocumentButton.isEnabled = false
-        metaInformationButton.isEnabled = false
+        DispatchQueue.main.async {
+            self.activityIndicator.startAnimating()
+            self.startWithGiniCaptureButton.isEnabled = false
+            self.startWithTestDocumentButton.isEnabled = false
+            self.metaInformationButton.isEnabled = false
+        }
     }
     
     func hideActivityIndicator() {
-        activityIndicator.stopAnimating()
-        startWithGiniCaptureButton.isEnabled = true
-        startWithTestDocumentButton.isEnabled = true
-        metaInformationButton.isEnabled = true
+        DispatchQueue.main.async {
+            self.activityIndicator.stopAnimating()
+            self.startWithGiniCaptureButton.isEnabled = true
+            self.startWithTestDocumentButton.isEnabled = true
+            self.metaInformationButton.isEnabled = true
+        }
     }
     
 }
