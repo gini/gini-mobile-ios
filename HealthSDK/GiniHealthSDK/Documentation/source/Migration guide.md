@@ -1,7 +1,7 @@
 Migrate from the Gini Pay Business SDK
 =======================================
 
-We've migrated from Cocoa Pods to Swift Package Manager. Please, find more details in [Installation](https://developer.gini.net/gini-mobile-ios/GiniHealthSDK/installation.html).
+We've migrated from CocoaPods to Swift Package Manager. Please, find more details in [Installation](https://developer.gini.net/gini-mobile-ios/GiniHealthSDK/installation.html).
 
 Update classes
 
