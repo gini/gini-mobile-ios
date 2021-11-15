@@ -18,11 +18,9 @@ The Gini Capture SDK components can be customized either through the `GiniConfig
 
 ## Supporting dark mode
 
-Some background and text colors use the `GiniColor` type with which you can set colors for dark and light modes. Please make sure to set contrasting images to the background colors in your `.xcassets` for the Gini Vision Library images you override (e.g. `onboardingPage1`). The text colors should also be set in contrast to the background colors.
+Some background and text colors use the `GiniColor` type with which you can set colors for dark and light modes. Please make sure to set contrasting images to the background colors in your `.xcassets` for the Gini Capture SDK images you override (e.g. `onboardingPage1`). The text colors should also be set in contrast to the background colors.
 
 ## Generic components
- 
-`GiniConfiguration.backgroundColor` is deprecated in version 5.5.0. Use the screen specific background color instead e.g. `GiniConfiguration.onboardingScreenBackgroundColor`.
 
 ##### 1. Navigation bar
 <center><img src="img/Customization guide/Navigation bar.jpg" height="70"/></center>
