@@ -12,7 +12,7 @@ All requests to the Gini Bank API are made on behalf of a user. This means parti
 To initialize the library, you just need to provide the API credentials:
 
 ```swift
-    let giniAPILib = GiniBankAPI
+    let giniBankAPI = GiniBankAPI
         .Builder(client: Client(id: "your-id",
                                 secret: "your-secret",
                                 domain: "your-domain"))
@@ -41,7 +41,7 @@ If you want to use _Certificate pinning_, provide metadata for the upload proces
                 "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo="
             ]],
         ]] as [String: Any]
-    let giniAPILib = GiniBankAPI
+    let giniBankAPI = GiniBankAPI
         .Builder(client: Client(id: "your-id",
                                 secret: "your-secret",
                                 domain: "your-domain"),
