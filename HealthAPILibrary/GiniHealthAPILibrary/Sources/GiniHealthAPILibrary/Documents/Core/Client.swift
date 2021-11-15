@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// Client information needed to access the Gini API
+/// Client information needed to access the Gini Health API
 public struct Client {
     /// Client email domain. i.e: gini.net
     public var domain: String

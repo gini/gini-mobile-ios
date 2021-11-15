@@ -10,7 +10,7 @@ Replace `GiniApiLib` with `GiniHealthAPI`.
 To initialize the library, you will need to use the snippet below:
 
 ```swift
-    let giniHealthAPI= GiniHealthAPI
+    let giniHealthAPI = GiniHealthAPI
         .Builder(client: Client(id: "your-id",
                                 secret: "your-secret",
                                 domain: "your-domain"))

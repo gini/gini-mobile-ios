@@ -66,8 +66,8 @@ extension GiniHealthAPI {
         /**
          *  Creates a Gini Health API Library
          *
-         * - Parameter client:            The Gini API client credentials
-         * - Parameter api:               The Gini API that the library interacts with. `APIDomain.default` by default
+         * - Parameter client:            The Gini Health API client credentials
+         * - Parameter api:               The Gini Health API that the library interacts with. `APIDomain.default` by default
          * - Parameter userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
          * - Parameter logLevel:          The log level. `LogLevel.none` by default.
          */
