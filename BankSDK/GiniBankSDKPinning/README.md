@@ -9,7 +9,7 @@
 [![Swift version](https://img.shields.io/badge/swift-5.0-orange.svg)]()
 [![Swift package manager](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat-square)]()
 
-The Gini Bank SDK Pinning provides components for capturing, reviewing and analyzing photos of invoices and remittance slips.
+The Gini Bank SDK Pinning provides components for capturing, reviewing and analyzing photos of invoices and remittance slips. The SDK supports certificate pinning.
 
 By integrating this SDK into your application you can allow your users to easily take a picture of a document, review it and get analysis results from the Gini backend.
 
