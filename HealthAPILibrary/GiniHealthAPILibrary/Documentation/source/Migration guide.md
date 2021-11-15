@@ -7,8 +7,6 @@ Update classes
 
 Replace `GiniApiLib` with `GiniHealthAPI`.
 
-We are publishing to Maven Central and you can remove our maven repo ("https://repo.gini.net/nexus/content/repositories/open") from your repositories.
-
 To initialize the library, you will need to use the snippet below:
 
 ```swift
