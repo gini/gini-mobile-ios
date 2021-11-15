@@ -18,6 +18,14 @@ To initialize the library, you just need to provide the API credentials:
                                 domain: "your-domain"))
         .build()
 ```
+If you want to use a transparent proxy with your own authentication you can specify your own domain and add `AlternativeTokenSource` protocol implementation:
+
+```swift
+ let apiLib =  GiniBankAPI.Builder(customApiDomain: "api.custom.net",
+                                 alternativeTokenSource: MyAlternativeTokenSource)
+                                 .build()
+```
+The token your provide will be added as a bearer token to all api.custom.net requests.
 
 ## Public Key Pinning
 
@@ -41,6 +49,7 @@ If you want to use _Certificate pinning_, provide metadata for the upload proces
                 "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo="
             ]],
         ]] as [String: Any]
+
     let giniBankAPI = GiniBankAPI
         .Builder(client: Client(id: "your-id",
                                 secret: "your-secret",
@@ -76,7 +85,7 @@ Now that the `GiniBankAPI` has been initialized, you can start using it. To do s
 On one hand, if you choose to continue with the `default` _Document service_, you should use the `DefaultDocumentService`:
 
 ```swift
-let documentService: DefaultDocumentService = giniAPILib.documentService()
+let documentService: DefaultDocumentService = giniBankAPI.documentService()
 ```
 
 You are all set 🚀! You can start using the Gini Bank API through the `documentService`.
@@ -189,3 +198,11 @@ documentService.submitFeedback(for: document, with: updatedExtractions) { result
 ### Handling errors
 
 All errors that occur during request execution are handed over transparently. You can react on those errors in the `failure` case of the completion result. We recommend checking the network status when a request failed and retrying it.
+
+#### Payment service
+
+```swift
+let paymentService: PaymentService = giniBankAPI.paymentService()
+```
+
+You can start using the Gini Pay Connect through the `paymentService`.
