@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// The payment service. Interacts with the `GiniBank` API to support Gini Pay Connect functionality.
+/// The payment service. Interacts with the `Gini Bank API` to support Gini Pay Connect functionality.
 
 public final class PaymentService: PaymentServiceProtocol {
     
