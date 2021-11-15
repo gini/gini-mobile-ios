@@ -29,13 +29,13 @@ You need to specify the NSCameraUsageDescription key in your Info.plist file. Th
 **Note: iOS 14**
 Starting in iOS 14, PhotoKit further enhances user privacy controls with the addition of the limited Photos library, which lets users select specific assets and resources to share with an app. Add an entry to your Info.plist file with the appropriate key. If your app only adds to the library, use the NSPhotoLibraryAddUsageDescription key. For all other cases, use NSPhotoLibraryUsageDescription.
 
-In order to run [the example app](https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/BankSDKExample), clone the repo ,open the project file and Resolve Package Versions in Xcode `File->Packages->Resolve Package Versions`.
+In order to run [the example app](https://github.com/gini/gini-mobile-ios/tree/main/BankSDK/GiniBankSDKExample/GiniBankSDKExample), clone the repo ,open the project file and Resolve Package Versions in Xcode `File->Packages->Resolve Package Versions`.
 
 ### Payment feature
 
 The banking example app demonstrates how to integrate the Gini Bank SDK. 
 To run the apps, clone the repo, open the project file and Resolve Package Versions in Xcode `File->Packages->Resolve Package Versions`.
-To inject your API credentials into the Health and Bank example apps you need to fill in your credentials in [`HealthSDK/GiniHealthSDKExample/HealthSDKExample/Credentials.plist`](https://github.com/gini/gini-mobile-ios/blob/main/HealthSDK/GiniHeathSDKExample/HealthSDKExample/Credentials.plist) and [`BankSDK/GiniBankSDKExample/BankSDKExample/Credentials.plist`](https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/BankSDKExample/Credentials.plist), respectively.
+To inject your API credentials into the Health and Bank example apps you need to fill in your credentials in [`HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/Credentials.plist`](https://github.com/gini/gini-mobile-ios/blob/main/HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/Credentials.plist) and [`BankSDK/GiniBankSDKExample/GiniBankSDKExampleBank/Credentials.plist`](https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/GiniBankSDKExampleBank/Credentials.plist/), respectively.
 
 An example health app is available under the link [Gini Health SDK's example](https://github.com/gini/gini-mobile-ios/blob/main/HealthSDK/GiniHeathSDKExample).
 You can use the same Gini Bank API client credentials in the health example app as in your app, if not otherwise specified.
