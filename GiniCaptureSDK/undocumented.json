@@ -1535,56 +1535,56 @@
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Document picker/DocumentPickerCoordinator.swift",
-      "line": 329,
+      "line": 317,
       "symbol": "DocumentPickerCoordinator",
       "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Document picker/DocumentPickerCoordinator.swift",
-      "line": 330,
+      "line": 318,
       "symbol": "DocumentPickerCoordinator.documentPicker(_:didPickDocumentsAt:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Document picker/DocumentPickerCoordinator.swift",
-      "line": 347,
+      "line": 335,
       "symbol": "DocumentPickerCoordinator.documentPicker(_:didPickDocumentAt:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Document picker/DocumentPickerCoordinator.swift",
-      "line": 351,
+      "line": 339,
       "symbol": "DocumentPickerCoordinator.documentPickerWasCancelled(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Document picker/DocumentPickerCoordinator.swift",
-      "line": 363,
+      "line": 350,
       "symbol": "DocumentPickerCoordinator",
       "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Document picker/DocumentPickerCoordinator.swift",
-      "line": 364,
+      "line": 351,
       "symbol": "DocumentPickerCoordinator.dropInteraction(_:canHandle:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Document picker/DocumentPickerCoordinator.swift",
-      "line": 381,
+      "line": 368,
       "symbol": "DocumentPickerCoordinator.dropInteraction(_:sessionDidUpdate:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Document picker/DocumentPickerCoordinator.swift",
-      "line": 386,
+      "line": 373,
       "symbol": "DocumentPickerCoordinator.dropInteraction(_:performDrop:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -1654,35 +1654,35 @@
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Help/HelpMenuViewController.swift",
-      "line": 120,
+      "line": 125,
       "symbol": "HelpMenuViewController.viewDidLoad()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Help/HelpMenuViewController.swift",
-      "line": 137,
+      "line": 139,
       "symbol": "HelpMenuViewController.numberOfSections(in:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Help/HelpMenuViewController.swift",
-      "line": 141,
+      "line": 143,
       "symbol": "HelpMenuViewController.tableView(_:numberOfRowsInSection:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Help/HelpMenuViewController.swift",
-      "line": 145,
+      "line": 147,
       "symbol": "HelpMenuViewController.tableView(_:cellForRowAt:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Help/HelpMenuViewController.swift",
-      "line": 155,
+      "line": 157,
       "symbol": "HelpMenuViewController.tableView(_:didSelectRowAt:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -1962,14 +1962,14 @@
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator+Camera.swift",
-      "line": 310,
+      "line": 309,
       "symbol": "GiniScreenAPICoordinator.uploadDidComplete(for:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator+Camera.swift",
-      "line": 317,
+      "line": 316,
       "symbol": "GiniScreenAPICoordinator.uploadDidFail(for:with:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -2088,7 +2088,7 @@
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator/GiniScreenAPICoordinator.swift",
-      "line": 309,
+      "line": 308,
       "symbol": "GiniScreenAPICoordinator",
       "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
