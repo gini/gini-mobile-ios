@@ -23,22 +23,7 @@ Further documentation with installation, integration or customization guides can
 
 ## Example
 
-In order to run [the example app](https://github.com/gini/gini-mobile-ios/tree/main/BankSDK/GiniBankSDKExample/GiniBankSDKExample), clone the repo ,open the project file and Resolve Package Versions in Xcode `File->Packages->Resolve Package Versions` and inject your API credentials in 
-[`BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist`](https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist)
-
-### Payment feature
-
-The other [example app](https://github.com/gini/gini-mobile-ios/tree/main/BankSDK/GiniBankSDKExample/GiniBankSDKExampleBank) demonstrates how to integrate the payment feature of Gini Bank SDK.
-
-To run the apps, clone the repo, open the project file and Resolve Package Versions in Xcode `File->Packages->Resolve Package Versions`.
-
-To inject your API credentials into the Bank example app you need to fill in your credentials in
-[`BankSDK/GiniBankSDKExample/GiniBankSDKExampleBank/Credentials.plist`](https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/GiniBankSDKExampleBank/Credentials.plist/).
-
-An example health app is available under the link [Gini Health SDK's example](https://github.com/gini/gini-mobile-ios/blob/main/HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample).
-You can use the same Gini Bank API client credentials in the health example app as in your app, if not otherwise specified and inject them into 
-[`HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/Credentials.plist`](https://github.com/gini/gini-mobile-ios/blob/main/HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/Credentials.plist).
-The example business app initiates the payment flow.
+Please, find more details [`here`](https://github.com/gini/gini-mobile-ios/tree/main/BankSDK/GiniBankSDK#example)
 
 ## Requirements
 
