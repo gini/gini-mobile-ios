@@ -125,7 +125,7 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
  The Gini Capture SDK provides views for capturing, reviewing and analysing documents.
  
  By integrating this library in your application you can allow your users to easily take a picture of
- a document, review it and - by implementing the necessary callbacks - upload the document for analysis to the Gini API.
+ a document, review it and - by implementing the necessary callbacks - upload the document for analysis to the Gini Bank API.
  
  The Gini Capture SDK can be integrated in two ways, either by using the **Screen API** or
  the **Component API**. The Screen API provides a fully pre-configured navigation controller for

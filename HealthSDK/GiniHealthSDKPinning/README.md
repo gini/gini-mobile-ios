@@ -5,6 +5,7 @@
 [![Platform](https://img.shields.io/badge/platform-iOS-lightgrey.svg)]()
 [![Devices](https://img.shields.io/badge/devices-iPhone%20%7C%20iPad-blue.svg)]()
 [![Swift version](https://img.shields.io/badge/swift-5.0-orange.svg)]()
+[![Swift package manager](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat-square)]()
 
 
 The Gini Health SDK Pinning provides components for uploading, reviewing and analyzing photos of invoices and remittance slips and supports certificate pinning.
@@ -13,15 +14,12 @@ By integrating this SDK into your application you can allow your users to easily
 
 ## Documentation
 
-Further documentation with installation, integration or customization guides can be found in our [website](https://developer.gini.net/gini-health-sdk-pinning-ios/docs/).
+Further documentation with installation, integration or customization guides can be found in our [`website`](https://developer.gini.net/gini-mobile-ios/GiniHealthSDK/index.html).
 
 ## Example apps
 
-We are providing example app for Swift. This app demonstrates how to integrate the Gini Health SDK with the Component API of Gini Capture library. To run the example project, clone the repo and run `pod install` from the Example directory first.
-
-An example banking app is available in the [Gini Pay Bank SDK's](https://github.com/gini/gini-pay-bank-sdk-ios) repository.
-To check the redirection to the Banking app please run Bank example before Example Swift. You can use the same Gini Pay API client credentials in the example banking app as in your app, if not otherwise specified.
-To inject your API credentials into the Health and Bank example apps you need to fill in your credentials in `Example/Example Swift/Credentials.plist` and `Example/Bank/Credentials.plist`, respectively.
+We are providing example app for Swift. This app demonstrates how to integrate the Gini Health SDK with the Component API of Gini Capture library.
+Please, find more details [`here`](https://github.com/gini/gini-mobile-ios/tree/main/HealthSDK/GiniHealthSDK#example-apps)
 
 ## Requirements
 
@@ -40,6 +38,6 @@ Gini GmbH, hello@gini.net
 
 ## License
 
-The Gini Health SDK Pinning for iOS is licensed under a Private License. See [the license](http://developer.gini.net/gini-health-sdk-pinning-ios/docs/license.html) for more info.
+The Gini Health SDK Pinning for iOS is licensed under a Private License. See [the license](http://developer.gini.net/gini-mobile-ios/GiniHealthSDK/license.html) for more info.
 
 **Important:** Always make sure to ship all license notices and permissions with your application.

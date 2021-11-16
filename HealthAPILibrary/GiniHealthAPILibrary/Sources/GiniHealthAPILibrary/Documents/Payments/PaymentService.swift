@@ -7,11 +7,12 @@
 
 import Foundation
 
+/// The payment service. Interacts with the `Gini Health API`  to support Gini Pay Connect functionality.
 
 public final class PaymentService: PaymentServiceProtocol {
     
     /**
-     *  Returns  a list of payment providers
+     *  Returns a list of payment providers.
      *
      * - Parameter completion:    A completion callback, returning the payment list on success
      */
@@ -21,7 +22,7 @@ public final class PaymentService: PaymentServiceProtocol {
     }
 
     /**
-     *  Returns  a  payment provider
+     *  Returns a payment provider.
      *
      * - Parameter id:            The the payment provider's unique identifier
      * - Parameter completion:    A completion callback, returning the payment provider on success
@@ -34,7 +35,7 @@ public final class PaymentService: PaymentServiceProtocol {
     
     
     /**
-     *  Creates a payment request
+     *  Creates a payment request.
      *
      * - Parameter sourceDocumentLocation:  The URI of the source document whenever the payment details were                                                                                                  extracted by the Gini system beforehand (optional)
      * - Parameter paymentProvider:         The id of the target payment provider - see payment providers
@@ -59,7 +60,7 @@ public final class PaymentService: PaymentServiceProtocol {
     }
     
     /**
-     *  Returns  a  payment request
+     *  Returns a payment request.
      *
      * - Parameter id:            The the payment request's unique identifier
      * - Parameter completion:    A completion callback, returning the payment request on success
@@ -71,7 +72,7 @@ public final class PaymentService: PaymentServiceProtocol {
     }
     
     /**
-     *  Returns a list of payment requests
+     *  Returns a list of payment requests.
      *
      * - Parameter limit:          The maximum number of payment requests to return (default 20), (optional)
      * - Parameter offset:         A starting offset (default 0), (optional)
@@ -85,7 +86,7 @@ public final class PaymentService: PaymentServiceProtocol {
     }
     
     /**
-     *  Resolves a payment request
+     *  Resolves a payment request.
      *  A payment is sent by a payment provider in order to resolve a payment request after it was paid.
      *
      * - Parameter recipient:               The recipient of the payment
@@ -108,7 +109,7 @@ public final class PaymentService: PaymentServiceProtocol {
     }
     
     /**
-     *  Returns  a  payment
+     *  Returns a payment.
      *
      * - Parameter id:            The the payment request's unique identifier
      * - Parameter completion:    A completion callback, returning the payment on success
@@ -132,7 +133,7 @@ public final class PaymentService: PaymentServiceProtocol {
 public protocol PaymentServiceProtocol: AnyObject {
 
     /**
-     *  Returns  a list of payment providers
+     *  Returns a list of payment providers.
      *
      * - Parameter completion:    A completion callback, returning the payment list on success
      */
@@ -140,7 +141,7 @@ public protocol PaymentServiceProtocol: AnyObject {
     func paymentProviders(completion: @escaping CompletionResult<PaymentProviders>)
     
     /**
-     *  Returns  a  payment providers
+     *  Returns a payment providers.
      *
      * - Parameter id:            The id of the payment provider
      * - Parameter completion:    A completion callback, returning the payment provider on success
@@ -150,7 +151,7 @@ public protocol PaymentServiceProtocol: AnyObject {
     
     
     /**
-     *  Creates a payment request
+     *  Creates a payment request.
      *
      * - Parameter sourceDocumentLocation:  The URI of the source document whenever the payment details were                                                                                                  extracted by the Gini system beforehand (optional)
      * - Parameter paymentProvider:         The id of the target payment provider - see payment providers
@@ -172,7 +173,7 @@ public protocol PaymentServiceProtocol: AnyObject {
                               completion: @escaping CompletionResult<String>)
     
     /**
-     *  Returns  a payment request
+     *  Returns a payment request.
      *
      * - Parameter id:            The id of the payment request
      * - Parameter completion:    A completion callback, returning the payment request on success
@@ -182,7 +183,7 @@ public protocol PaymentServiceProtocol: AnyObject {
                         completion: @escaping CompletionResult<PaymentRequest>)
     
     /**
-     *  Returns a list of payment requests
+     *  Returns a list of payment requests.
      *
      * - Parameter limit:          The maximum number of payment requests to return (default 20), (optional)
      * - Parameter offset:         A starting offset (default 0), (optional)
@@ -213,7 +214,7 @@ public protocol PaymentServiceProtocol: AnyObject {
                                completion: @escaping CompletionResult<ResolvedPaymentRequest>)
     
     /**
-     *  Returns  a  payment
+     *  Returns a payment.
      *
      * - Parameter id:            The the payment request's unique identifier
      * - Parameter completion:    A completion callback, returning the payment on success

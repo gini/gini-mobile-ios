@@ -42,7 +42,7 @@ public class PaymentReviewModel: NSObject {
     }
 
     public var documentId: String
-    private var businessSDK: GiniHealth
+    private var healthSDK: GiniHealth
 
     private var cellViewModels: [PageCollectionCellViewModel] = [PageCollectionCellViewModel]() {
         didSet {
@@ -67,7 +67,7 @@ public class PaymentReviewModel: NSObject {
     }
 
     public init(with giniHealth: GiniHealth, document: Document, extractions: [Extraction]) {
-        self.businessSDK = giniHealth
+        self.healthSDK = giniHealth
         self.documentId = document.id
         self.document = document
         self.extractions = extractions
@@ -82,12 +82,12 @@ public class PaymentReviewModel: NSObject {
     }
 
     func checkIfAnyPaymentProviderAvailiable() {
-        businessSDK.checkIfAnyPaymentProviderAvailiable {[weak self] result in
+        healthSDK.checkIfAnyPaymentProviderAvailiable {[weak self] result in
             switch result {
             case let .success(providers):
                 self?.onPaymentProvidersFetched(providers)
             case let .failure(error):
-                if let delegate = self?.businessSDK.delegate, delegate.shouldHandleErrorInternally(error: error) {
+                if let delegate = self?.healthSDK.delegate, delegate.shouldHandleErrorInternally(error: error) {
                     self?.onNoAppsErrorHandling(error)
                 }
             }
@@ -95,7 +95,7 @@ public class PaymentReviewModel: NSObject {
     }
 
     func sendFeedback(updatedExtractions: [Extraction]) {
-        businessSDK.documentService.submitFeedback(for: document, with: updatedExtractions) { result in
+        healthSDK.documentService.submitFeedback(for: document, with: updatedExtractions) { result in
             switch result {
             case .success: break
             case .failure: break
@@ -105,14 +105,14 @@ public class PaymentReviewModel: NSObject {
     
     func createPaymentRequest(paymentInfo: PaymentInfo) {
         isLoading = true
-        businessSDK.createPaymentRequest(paymentInfo: paymentInfo) {[weak self] result in
+        healthSDK.createPaymentRequest(paymentInfo: paymentInfo) {[weak self] result in
             switch result {
             case let .success(requestId):
                     self?.isLoading = false
                     self?.openPaymentProviderApp(requestId: requestId, appScheme: paymentInfo.paymentProviderScheme)
             case let .failure(error):
                     self?.isLoading = false
-                if let delegate = self?.businessSDK.delegate, delegate.shouldHandleErrorInternally(error: error) {
+                if let delegate = self?.healthSDK.delegate, delegate.shouldHandleErrorInternally(error: error) {
                     self?.onCreatePaymentRequestErrorHandling()
                 }
             }
@@ -120,7 +120,7 @@ public class PaymentReviewModel: NSObject {
     }
 
     func openPaymentProviderApp(requestId: String, appScheme: String) {
-        businessSDK.openPaymentProviderApp(requestID: requestId, appScheme: appScheme)
+        healthSDK.openPaymentProviderApp(requestID: requestId, appScheme: appScheme)
     }
     
     func fetchImages() {
@@ -133,14 +133,14 @@ public class PaymentReviewModel: NSObject {
             for page in 1 ... self.document.pageCount {
                 dispatchGroup.enter()
 
-                self.businessSDK.documentService.preview(for: self.documentId, pageNumber: page) {[weak self] result in
+                self.healthSDK.documentService.preview(for: self.documentId, pageNumber: page) {[weak self] result in
                     switch result {
                     case let .success(dataImage):
                         if let image = UIImage(data: dataImage), let cellModel = self?.createCellViewModel(previewImage: image) {
                             vms.append(cellModel)
                         }
                     case let .failure(error):
-                        if let delegate = self?.businessSDK.delegate, delegate.shouldHandleErrorInternally(error: .apiError(error)) {
+                        if let delegate = self?.healthSDK.delegate, delegate.shouldHandleErrorInternally(error: .apiError(error)) {
                             self?.onErrorHandling(.apiError(error))
                         }
                     }

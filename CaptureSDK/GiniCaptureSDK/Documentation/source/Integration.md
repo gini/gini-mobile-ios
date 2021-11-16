@@ -53,7 +53,7 @@ let viewController = GiniCapture.viewController(withClient: client,
 
 present(viewController, animated: true, completion:nil)
 ```
-**Note**: Starting from Gini Capture SDK version 1.0.6 the pinning certification we suppo**iOS 12**
+**Note**: Starting from Gini Capture SDK version 1.0.6 certificate pinning requires **iOS 12**.
 
 > ⚠️  **Important**
 > - The document metadata for the upload process is intended to be used for reporting.
@@ -95,9 +95,9 @@ The components that can be found in the SDK are:
 
 ## Sending Feedback
 
-Your app should send feedback for the extractions the Gini Pay API delivered. Feedback should be sent only for the extractions the user has seen and accepted (or corrected).
+Your app should send feedback for the extractions the Gini Bank API delivered. Feedback should be sent only for the extractions the user has seen and accepted (or corrected).
 
-For additional information about feedback see the [Gini Pay API documentation](https://pay-api.gini.net/documentation/#send-feedback-and-get-even-better-extractions-next-time).
+For additional information about feedback see the [Gini Bank API documentation](https://pay-api.gini.net/documentation/#send-feedback-and-get-even-better-extractions-next-time).
 
 ### Default Implementation
 
@@ -127,6 +127,6 @@ sendFeedbackBlock(updatedExtractions)
 ```
 ### Custom Implementation
 
-If you use your own networking implementation and directly communicate with the Gini Pay API then see [this section](https://pay-api.gini.net/documentation/#submitting-feedback-on-extractions) in its documentation on how to send feedback.
+If you use your own networking implementation and directly communicate with the Gini Bank API then see [this section](https://pay-api.gini.net/documentation/#submitting-feedback-on-extractions) in its documentation on how to send feedback.
 
 In case you use the [Gini Bank API Library](https://developer.gini.net/gini-mobile-ios/GiniBankAPILibrary/) then see [this section](https://developer.gini.net/gini-mobile-ios/GiniBankAPILibrary/getting-started.html) in its documentation for details.
