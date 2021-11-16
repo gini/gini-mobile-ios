@@ -40,7 +40,7 @@ You should be redirected to the example banking app where the final extractions 
 <center><img src="img/Integration guide/ReviewScreenBeforeResolvingPayment.PNG" height="500"/></center>
 </br>
 
-After you press the `Pay` button the GiniH Bank SDK resolves the payment and allows you to return to your app:
+After you press the `Pay` button the Gini Bank SDK resolves the payment and allows you to return to your app:
 
 <br>
 <center><img src="img/Integration guide/ReviewScreenAfterResolvingPayment.PNG" height="500"/></center>

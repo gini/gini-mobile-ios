@@ -53,7 +53,7 @@ let viewController = GiniCapture.viewController(withClient: client,
 
 present(viewController, animated: true, completion:nil)
 ```
-**Note**: Starting from Gini Capture SDK version 1.0.6 the pinning certification we support **iOS 12**
+**Note**: Starting from Gini Capture SDK version 1.0.6 certificate pinning requires **iOS 12**.
 
 > ⚠️  **Important**
 > - The document metadata for the upload process is intended to be used for reporting.
