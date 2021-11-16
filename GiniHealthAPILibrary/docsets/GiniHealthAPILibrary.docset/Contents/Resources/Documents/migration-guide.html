@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Other Extensions  Reference</title>
+    <title>Migration guide  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,8 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Section/Other Extensions" class="dashAnchor"></a>
 
-    <a title="Other Extensions  Reference"></a>
+    <a title="Migration guide  Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -45,7 +44,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html">GiniHealthAPILibrary Reference</a>
       <img class="carat" src="img/carat.png" />
-      Other Extensions  Reference
+      Migration guide  Reference
     </p>
 
     <div class="content-wrapper">
@@ -247,45 +246,26 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>Other Extensions</h1>
-            <p>The following extensions are available globally.</p>
+            
+            <h1 id='migrate-from-the-gini-pay-api-library' class='heading'>Migrate from the Gini Pay API Library</h1>
+
+<p>We&rsquo;ve migrated from CocoaPods to Swift Package Manager. Please, find more details in <a href="https://developer.gini.net/gini-mobile-ios/GiniHealthAPILibrary/installation.html">Installation</a>.</p>
+
+<p>Update classes</p>
+
+<p>Replace <code>GiniApiLib</code> with <code><a href="Classes/GiniHealthAPI.html">GiniHealthAPI</a></code>.</p>
+
+<p>To initialize the library, you will need to use the snippet below:</p>
+<pre class="highlight swift"><code>    <span class="k">let</span> <span class="nv">giniHealthAPI</span> <span class="o">=</span> <span class="kt">GiniHealthAPI</span>
+        <span class="o">.</span><span class="kt">Builder</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="kt">Client</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="s">"your-id"</span><span class="p">,</span>
+                                <span class="nv">secret</span><span class="p">:</span> <span class="s">"your-secret"</span><span class="p">,</span>
+                                <span class="nv">domain</span><span class="p">:</span> <span class="s">"your-domain"</span><span class="p">))</span>
+        <span class="o">.</span><span class="nf">build</span><span class="p">()</span>
+</code></pre>
 
           </div>
         </section>
 
-        <section class="section">
-          <div class="section-content">
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/URLSessionDelegate"></a>
-                <a name="//apple_ref/swift/Section/URLSessionDelegate" class="dashAnchor"></a>
-                <a href="#/URLSessionDelegate">
-                  <h3 class="section-name">URLSessionDelegate</h3>
-                </a>
-              </div>
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/"></a>
-                    <a name="//apple_ref/swift/Extension/SessionManager" class="dashAnchor"></a>
-                    <a class="token" href="#/">SessionManager</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
 
       </article>
     </div>
