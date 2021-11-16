@@ -12,7 +12,7 @@ All requests to the Gini Health API are made on behalf of a user. This means par
 To initialize the library, you just need to provide the API credentials:
 
 ```swift
-    let giniAPILib = GiniHealthAPI
+    let giniHealthAPI = GiniHealthAPI
         .Builder(client: Client(id: "your-id",
                                 secret: "your-secret",
                                 domain: "your-domain"))
@@ -41,7 +41,7 @@ If you want to use _Certificate pinning_, provide metadata for the upload proces
                 "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo="
             ]],
         ]] as [String: Any]
-    let giniAPILib = GiniHealthAPI
+    let giniHealthAPI = GiniHealthAPI
         .Builder(client: Client(id: "your-id",
                                 secret: "your-secret",
                                 domain: "your-domain"),
@@ -76,7 +76,7 @@ Now that the `GiniHealthAPI` has been initialized, you can start using it. To do
 On one hand, if you choose to continue with the `default` _Document service_, you should use the `DefaultDocumentService`:
 
 ```swift
-let documentService: DefaultDocumentService = giniAPILib.documentService()
+let documentService: DefaultDocumentService = giniHealthAPI.documentService()
 ```
 
 You are all set 🚀! You can start using the Gini Health API through the `documentService`.

@@ -25,7 +25,7 @@ public final class GiniBankAPI {
     
     /**
      * The instance of a `DocumentService` that is used by the Gini Bank API Library. The `DocumentService` allows the interaction with
-     * the Gini API.
+     * the Gini Bank API.
      */
     public func documentService<T: DocumentService>() -> T {
         guard docService is T else {
@@ -37,7 +37,7 @@ public final class GiniBankAPI {
     }
     
     /**
-     * The instance of a `PaymentService` that is used by the Gini Bank API Library. The `PaymentService` allows the interaction with payment functionality ofthe Gini API.
+     * The instance of a `PaymentService` that is used by the Gini Bank API Library. The `PaymentService` allows the interaction with payment functionality of the Gini Bank API.
      *
      */
     public func paymentService() -> PaymentService {
@@ -66,8 +66,8 @@ extension GiniBankAPI {
         /**
          *  Creates a Gini Bank API Library
          *
-         * - Parameter client:            The Gini API client credentials
-         * - Parameter api:               The Gini API that the library interacts with. `APIDomain.default` by default
+         * - Parameter client:            The Gini Bank API client credentials
+         * - Parameter api:               The Gini Bank API that the library interacts with. `APIDomain.default` by default
          * - Parameter userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
          * - Parameter logLevel:          The log level. `LogLevel.none` by default.
          */
@@ -99,7 +99,7 @@ extension GiniBankAPI {
             // Initialize logger
             GiniBankAPI.logLevel = logLevel
 
-            // Initialize GiniBankAPILib
+            // Initialize GiniBankAPI
             switch api {
             case .accounting:
                 let sessionManager = SessionManager(userDomain: userApi)

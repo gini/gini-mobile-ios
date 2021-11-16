@@ -6,11 +6,12 @@
 [![Platform](https://img.shields.io/badge/platform-iOS-lightgrey.svg)]()
 [![Devices](https://img.shields.io/badge/devices-iPhone%20%7C%20iPad-blue.svg)]()
 [![Swift version](https://img.shields.io/badge/swift-5.0-orange.svg)]()
+[![Swift package manager](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat-square)]()
 
 
-The Gini Capture SDK Pinning provides components for capturing, reviewing and analyzing photos of invoices and remittance slips.
+The Gini Capture SDK Pinning provides components for capturing, reviewing and analyzing photos of invoices and remittance slips. The sdk supports certificate pinning.
 
-By integrating this library into your application you can allow your users to easily take a picture of a document, review it and get analysis results from the Gini backend.
+By integrating this sdk into your application you can allow your users to easily take a picture of a document, review it and get analysis results from the Gini backend.
 
 The Gini Capture SDK Pinning can be integrated in two ways, either by using the *Screen API* or the *Component API*. In the Screen API we provide pre-defined screens that can be customized in a limited way. The screen and configuration design is based on our long-lasting experience with integration in customer apps. In the Component API, we provide independent views so you can design your own application as you wish. We strongly recommend keeping in mind our UI/UX guidelines, however.
 

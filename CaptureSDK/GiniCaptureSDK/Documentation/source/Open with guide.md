@@ -108,4 +108,4 @@ func application(_ app: UIApplication,
 ### Documentation
 
 -   [AppDelegate resource handling](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623112-application) from _Apple Documentation_
--   [Supported file formats](http://developer.gini.net/gini-api/html/documents.html#supported-file-formats) from _Gini API_
+-   [Supported file formats](https://pay-api.gini.net/documentation/#supported-file-formats) from _Gini Bank API_
