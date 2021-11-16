@@ -475,10 +475,10 @@ extension CameraViewController: CameraButtonsViewControllerDelegate {
             if let tooltip = fileImportToolTipView, tooltip.isHidden == false {
                 showImportFileSheet()
             } else {
-                if ToolTipView.shouldShowFileImportToolTip {
+                if let fileImportToolTipView = self.fileImportToolTipView, ToolTipView.shouldShowFileImportToolTip {
                     shouldShowQRCodeNext = true
-                    fileImportToolTipView?.dismiss(withCompletion: nil)
-                    fileImportToolTipView = nil
+                    fileImportToolTipView.dismiss(withCompletion: nil)
+                    self.fileImportToolTipView = nil
                 } else {
                     showImportFileSheet()
                 }
