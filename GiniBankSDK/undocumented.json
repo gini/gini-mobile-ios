@@ -86,6 +86,13 @@
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankNetworkingScreenApiCoordinator.swift",
+      "line": 22,
+      "symbol": "GiniBankNetworkingScreenApiCoordinator.init(client:resultsDelegate:configuration:documentMetadata:api:trackingDelegate:lib:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankNetworkingScreenApiCoordinator.swift",
       "line": 113,
       "symbol": "GiniBankNetworkingScreenApiCoordinator",
       "symbol_kind": "source.lang.swift.decl.extension",
