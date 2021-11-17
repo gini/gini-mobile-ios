@@ -632,21 +632,14 @@
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/PaymentService.swift",
-      "line": 11,
-      "symbol": "PaymentService",
-      "symbol_kind": "source.lang.swift.decl.class",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/PaymentService.swift",
-      "line": 124,
+      "line": 125,
       "symbol": "PaymentService.apiDomain",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/PaymentService.swift",
-      "line": 132,
+      "line": 133,
       "symbol": "PaymentServiceProtocol",
       "symbol_kind": "source.lang.swift.decl.protocol",
       "warning": "undocumented"

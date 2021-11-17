@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>License  Reference</title>
+    <title>Migration guide  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset="utf-8">
@@ -15,7 +15,7 @@
   <body>
 
 
-    <a title="License  Reference"></a>
+    <a title="Migration guide  Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -44,7 +44,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html">GiniBankAPILibrary Reference</a>
       <img class="carat" src="img/carat.png" />
-      License  Reference
+      Migration guide  Reference
     </p>
 
     <div class="content-wrapper">
@@ -247,59 +247,20 @@
         <section class="section">
           <div class="section-content">
             
-            <h1 id='license' class='heading'>License</h1>
+            <h1 id='migrate-from-the-gini-pay-api-library' class='heading'>Migrate from the Gini Pay API Library</h1>
 
-<p>Always make sure to ship all license notices and permissions with your application.</p>
-<h2 id='the-gini-bank-api-library-for-ios-is-licensed-under-a-private-license' class='heading'>The Gini Bank API Library for iOS is licensed under a Private License.</h2>
-<pre class="highlight plaintext"><code>Copyright (c) 2014-2021, Gini GmbH
-All rights reserved.
+<p>We&rsquo;ve migrated from CocoaPods to Swift Package Manager. Please, find more details in <a href="https://developer.gini.net/gini-mobile-ios/GiniBankAPILibrary/installation.html">Installation</a>.</p>
 
-The Gini Bank API Library is licensed through Gini GmbH ("Gini") and may not be
-used, altered or copied in any way without explicit permission by Gini. The
-terms of usage are defined in a separate usage agreement between Gini and the
-licensee, where the licensee can gain access to a non-exclusive,
-non-transferable usage right which is restricted for the time of a contractual
-relationship between Gini and the licensee.
+<p>Update classes</p>
 
-For license related inquiries contact Gini via the email address
-technical-support@gini.net.
-</code></pre>
-<h2 id='the-gini-bank-api-library-pinning-for-ios-is-licensed-under-a-private-license' class='heading'>The Gini Bank API Library Pinning for iOS is licensed under a Private License.</h2>
-<pre class="highlight plaintext"><code>Copyright (c) 2014-2021, Gini GmbH
-All rights reserved.
+<p>Replace <code>GiniApiLib</code> with <code><a href="Classes/GiniBankAPI.html">GiniBankAPI</a></code>.</p>
 
-The Gini Bank API Library Pinning is licensed through Gini GmbH ("Gini") and may not be
-used, altered or copied in any way without explicit permission by Gini. The
-terms of usage are defined in a separate usage agreement between Gini and the
-licensee, where the licensee can gain access to a non-exclusive,
-non-transferable usage right which is restricted for the time of a contractual
-relationship between Gini and the licensee.
-
-For license related inquiries contact Gini via the email address
-technical-support@gini.net.
-</code></pre>
-<h2 id='a-href-https-github-com-datatheorem-trustkit-trustkit-a' class='heading'><a href="https://github.com/datatheorem/TrustKit">TrustKit</a></h2>
-<pre class="highlight plaintext"><code>The MIT License (MIT)
-
-Copyright (c) 2015 Data Theorem, Inc.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+<p>To initialize the library, you will need to use the snippet below:</p>
+<pre class="highlight swift"><code>    <span class="k">let</span> <span class="nv">giniBankAPI</span> <span class="o">=</span> <span class="kt">GiniBankAPI</span>
+        <span class="o">.</span><span class="kt">Builder</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="kt">Client</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="s">"your-id"</span><span class="p">,</span>
+                                <span class="nv">secret</span><span class="p">:</span> <span class="s">"your-secret"</span><span class="p">,</span>
+                                <span class="nv">domain</span><span class="p">:</span> <span class="s">"your-domain"</span><span class="p">))</span>
+        <span class="o">.</span><span class="nf">build</span><span class="p">()</span>
 </code></pre>
 
           </div>
