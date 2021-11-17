@@ -583,21 +583,21 @@
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/ZoomedImageView.swift",
-      "line": 340,
+      "line": 339,
       "symbol": "ZoomedImageView.scrollViewDidChangeAdjustedContentInset(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/ZoomedImageView.swift",
-      "line": 344,
+      "line": 343,
       "symbol": "ZoomedImageView.viewForZooming(in:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/ZoomedImageView.swift",
-      "line": 348,
+      "line": 347,
       "symbol": "ZoomedImageView.scrollViewDidZoom(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"

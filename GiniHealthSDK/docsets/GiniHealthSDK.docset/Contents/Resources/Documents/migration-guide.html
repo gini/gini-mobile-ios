@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Other Protocols  Reference</title>
+    <title>Migration guide  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,8 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Section/Other Protocols" class="dashAnchor"></a>
 
-    <a title="Other Protocols  Reference"></a>
+    <a title="Migration guide  Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -45,7 +44,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html">GiniHealthSDK Reference</a>
       <img class="carat" src="img/carat.png" />
-      Other Protocols  Reference
+      Migration guide  Reference
     </p>
 
     <div class="content-wrapper">
@@ -178,78 +177,29 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>Other Protocols</h1>
-            <p>The following protocols are available globally.</p>
+            
+            <h1 id='migrate-from-the-gini-pay-business-sdk' class='heading'>Migrate from the Gini Pay Business SDK</h1>
+
+<p>We&rsquo;ve migrated from CocoaPods to Swift Package Manager. Please, find more details in <a href="https://developer.gini.net/gini-mobile-ios/GiniHealthSDK/installation.html">Installation</a>.</p>
+
+<p>Update classes</p>
+
+<p>Replace <code>GiniApiLib</code> with <code>GiniHealthAPI</code>.
+Replace <code>GiniPayBusiness</code> with <code><a href="Classes/GiniHealth.html">GiniHealth</a></code>.
+Replace <code>GiniPayBusinessConfiguration</code> with <code><a href="Classes/GiniHealthConfiguration.html">GiniHealthConfiguration</a></code>.
+Replace <code>GiniPayBusinessDelegate</code> with <code><a href="Protocols/GiniHealthDelegate.html">GiniHealthDelegate</a></code>.
+Replace <code>GiniPayBusinessError</code> with <code><a href="Enums/GiniHealthError.html">GiniHealthError</a></code>.</p>
+
+<p>Localizable strings</p>
+
+<p>Replace <code>ginipaybusiness.*</code> with <code>ginihealth.*</code>.</p>
+<h1 id='migrate-from-pay-api-library-to-health-api-library' class='heading'>Migrate from Pay API Library to Health API Library</h1>
+
+<p>See the Health API Library&rsquo;s <a href="https://developer.gini.net/gini-mobile-ios/GiniHealthAPILibrary/migration-guide.html">migration guide</a>.</p>
 
           </div>
         </section>
 
-        <section class="section">
-          <div class="section-content">
-            <div class="task-group">
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:13GiniHealthSDK0aB8DelegateP"></a>
-                    <a name="//apple_ref/swift/Protocol/GiniHealthDelegate" class="dashAnchor"></a>
-                    <a class="token" href="#/s:13GiniHealthSDK0aB8DelegateP">GiniHealthDelegate</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Delegate to inform about the current status of the Gini Health SDK.
-Makes use of callback for handling payment request creation.</p>
-
-                        <a href="Protocols/GiniHealthDelegate.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">GiniHealthDelegate</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:@M@GiniHealthSDK@objc(pl)ImageScrollViewDelegate"></a>
-                    <a name="//apple_ref/swift/Protocol/ImageScrollViewDelegate" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@M@GiniHealthSDK@objc(pl)ImageScrollViewDelegate">ImageScrollViewDelegate</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                        <a href="Protocols/ImageScrollViewDelegate.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@objc</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ImageScrollViewDelegate</span> <span class="p">:</span> <span class="kt">UIScrollViewDelegate</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
 
       </article>
     </div>

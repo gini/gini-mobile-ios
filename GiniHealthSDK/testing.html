@@ -63,6 +63,9 @@
                 <a class="nav-group-task-link" href="customization-guide.html">Customization guide</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="migration-guide.html">Migration guide</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="testing.html">Testing</a>
               </li>
               <li class="nav-group-task">
@@ -178,26 +181,26 @@
             <h1 id='testing' class='heading'>Testing</h1>
 <h2 id='gini-pay-deep-link-for-your-app' class='heading'>Gini Pay Deep Link For Your App</h2>
 
-<p>In order for banking apps to be able to return the user to your app after the payment has been resolved you need register a scheme for your app to respond to a deep link scheme known by the Gini Pay API.</p>
+<p>In order for banking apps to be able to return the user to your app after the payment has been resolved you need register a scheme for your app to respond to a deep link scheme known by the Gini Bank API.</p>
 
 <p>You should already have a scheme and host from us. Please contact us in case you don&rsquo;t have them.</p>
 
-<p>The following is an example for the deep link gini-health://payment-requester:
+<p>The following is an example for the deep link gini-pay://payment-requester:
 <br>
 <center><img src="img/Integration guide/SchemeExample.png" width="600"/></center>
 </br></p>
 <h2 id='testing' class='heading'>Testing</h2>
 
-<p>An example banking app is available in the <a href="https://github.com/gini/bank-sdk-ios">Gini Pay Bank SDK&rsquo;s</a> repository.</p>
+<p>An example banking app is available in the <a href="https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/GiniBankSDKExampleBank">Gini Mobile Monorepo iOS</a> repository.</p>
 
 <p>In order to test using our example banking app you need to use development client credentials. This will make sure
-the Gini Health SDK uses a test payment provider which will open our example banking app. To inject your API credentials into the Bank example app you need to fill in your credentials in <code>Example/Bank/Credentials.plist</code>.</p>
+the Gini Health SDK uses a test payment provider which will open our example banking app. To inject your API credentials into the Bank example app you need to fill in your credentials in <a href="https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/GiniBankSDKExampleBank/Credentials.plist">Credentials.plist</a>.</p>
 <h4 id='end-to-end-testing' class='heading'>End to end testing</h4>
 
 <p>The app scheme in our banking example app: <code>ginipay-bank://</code>. Please, specify this scheme <code>LSApplicationQueriesSchemes</code> in your app in <code>Info.plist</code> file.</p>
 
 <p>After you&rsquo;ve set the client credentials in the example banking app and installed it on your device you can run your app
-and verify that <code>healthtSDK.isAnyBankingAppInstalled(appSchemes: [String])</code> returns true and check other preconditions.</p>
+and verify that <code>healthSDK.isAnyBankingAppInstalled(appSchemes: [String])</code> returns true and check other preconditions.</p>
 
 <p>After following the integration steps above you&rsquo;ll arrive at the payment review screen.</p>
 
@@ -213,14 +216,14 @@ and verify that <code>healthtSDK.isAnyBankingAppInstalled(appSchemes: [String])<
 <center><img src="img/Integration guide/ReviewScreenBeforeResolvingPayment.PNG" height="500"/></center>
 </br></p>
 
-<p>After you press the <code>Pay</code> button the Gini Pay Bank SDK resolves the payment and allows you to return to your app:</p>
+<p>After you press the <code>Pay</code> button the Gini Bank SDK resolves the payment and allows you to return to your app:</p>
 
 <p><br>
 <center><img src="img/Integration guide/ReviewScreenAfterResolvingPayment.PNG" height="500"/></center>
 </br></p>
 
 <p>For handling incoming url in your app after redirecting back from the banking app you need to implement to handle the incoming url:
-The following is an example for the url <code>gini-health://payment-requester</code>:</p>
+The following is an example for the url <code>gini-pay://payment-requester</code>:</p>
 <pre class="highlight swift"><code>    <span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="n">_</span> <span class="nv">app</span><span class="p">:</span> <span class="kt">UIApplication</span><span class="p">,</span>
                      <span class="kd">open</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span>
                      <span class="nv">options</span><span class="p">:</span> <span class="p">[</span><span class="kt">UIApplication</span><span class="o">.</span><span class="kt">OpenURLOptionsKey</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[:])</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="p">{</span>
@@ -231,18 +234,18 @@ The following is an example for the url <code>gini-health://payment-requester</c
     <span class="p">}</span>
 </code></pre>
 
-<p>With these steps completed you have verified that your app, the Gini Pay API, the Gini Health SDK and the Gini Pay
+<p>With these steps completed you have verified that your app, the Gini Health API, the Gini Health SDK and the Gini
 Bank SDK work together correctly.</p>
 <h4 id='testing-in-production' class='heading'>Testing in production</h4>
 
 <p>The steps are the same but instead of the development client credentials you will need to use production client
-credentials. This will make sure the Gini Healthh SDK receives real payment providers which open real banking apps.</p>
+credentials. This will make sure the Gini Health SDK receives real payment providers which open real banking apps.</p>
 
-<p>You will also need to install a banking app which uses the Gini Pay Bank SDK. Please contact us in case you don&rsquo;t know
+<p>You will also need to install a banking app which uses the Gini Bank SDK. Please contact us in case you don&rsquo;t know
 which banking app(s) to install.</p>
 
 <p>Lastly make sure that for production you register the scheme we provided you for deep linking and you are not using 
-<code>gini-health://payment-requester</code>.</p>
+<code>gini-pay://payment-requester</code>.</p>
 
           </div>
         </section>
@@ -251,7 +254,7 @@ which banking app(s) to install.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2021 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2021-10-26)</p>
+      <p>&copy; 2021 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2021-11-17)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
