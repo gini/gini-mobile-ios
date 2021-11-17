@@ -185,15 +185,15 @@
 
 <p>The <a href="https://swift.org/package-manager/">Swift Package Manager</a>  is a tool for managing the distribution of Swift code.
 Once you have your Swift package set up, adding <code>GiniHealthSDK</code> as a dependency is as easy as adding it to the dependencies value of your <code>Package.swift</code></p>
-<pre class="highlight plaintext"><code>dependencies: [
-    .package(url: "https://github.com/gini/health-sdk-ios.git", .exact("1.0.0"))
-]
+<pre class="highlight swift"><code><span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+    <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/gini/health-sdk-ios.git"</span><span class="p">,</span> <span class="o">.</span><span class="nf">exact</span><span class="p">(</span><span class="s">"1.0.0"</span><span class="p">))</span>
+<span class="p">]</span>
 </code></pre>
 
 <p>In case that you want to use the certificate pinning in the library, add <code>GiniHealthAPILibraryPinning</code>:</p>
-<pre class="highlight plaintext"><code>dependencies: [
-    .package(url: "https://github.com/gini/health-sdk-pinning-ios.git", .exact("1.0.0"))
-]
+<pre class="highlight swift"><code><span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+    <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/gini/health-sdk-pinning-ios.git"</span><span class="p">,</span> <span class="o">.</span><span class="nf">exact</span><span class="p">(</span><span class="s">"1.0.0"</span><span class="p">))</span>
+<span class="p">]</span>
 </code></pre>
 <h2 id='manually' class='heading'>Manually</h2>
 
