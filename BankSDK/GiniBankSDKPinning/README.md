@@ -1,6 +1,6 @@
 
 <p align="center">
-<img src="./GiniPayBank_Logo.png" width="250">
+<img src="./GiniBank_Logo.png" width="250">
 </p>
 
 # Gini Bank SDK for iOS
