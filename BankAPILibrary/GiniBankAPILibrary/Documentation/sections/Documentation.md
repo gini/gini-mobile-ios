@@ -1,5 +1,5 @@
 <p align="center">
-<img src="img/repo-logo.png" width="250">
+<img src="img/logo.png" width="250">
 </p>
 
 # Gini Bank API Library for iOS
