@@ -8,16 +8,16 @@ Gini Bank SDK can either be installed by using Swift Package Manager or by manua
 The [Swift Package Manager](https://swift.org/package-manager/)  is a tool for managing the distribution of Swift code.
 Once you have your Swift package set up, adding `GiniBankSDK` as a dependency is as easy as adding it to the dependencies value of your `Package.swift`
 
-```swif
+```swift
 dependencies: [
-    .package(url: "https://github.com/gini/bank-sdk-ios.git", .exact("1.0.0"))
+    .package(url: "https://github.com/gini/bank-sdk-ios.git", .exact("1.1.0"))
 ]
 ```
 **Note: Availible from iOS 12**
 In case that you want to use the certificate pinning in the library, add `GiniBankSDKPinning`:
-```swif
+```swift
 dependencies: [
-    .package(url: "https://github.com/gini/bank-sdk-pinning-ios.git", .exact("1.0.0"))
+    .package(url: "https://github.com/gini/bank-sdk-pinning-ios.git", .exact("1.1.0"))
 ]
 ```
 

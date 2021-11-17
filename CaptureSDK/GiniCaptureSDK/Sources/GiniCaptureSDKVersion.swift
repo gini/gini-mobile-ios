@@ -5,4 +5,4 @@
 //  Created by Nadya Karaban on 29.10.21.
 //
 
-public let GiniCaptureSDKVersion = "0.0.2"
+public let GiniCaptureSDKVersion = "1.1.0"
