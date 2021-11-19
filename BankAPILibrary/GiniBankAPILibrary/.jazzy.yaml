@@ -7,7 +7,7 @@ xcodebuild_arguments:
 author: Gini GmbH
 author_url: https://gini.net
 module: GiniBankAPILibrary
-readme: README.md
+readme: Documentation/Sections/Documentation.md
 theme: Documentation/jazzy-theme/
 output: Documentation/Api
 github_url: https://github.com/gini/gini-mobile-ios.git
