@@ -1,5 +1,5 @@
 <p align="center">
-<img src="img/GiniHealth_Logo.png" width="250">
+<img src="img/repo-logo.png" width="250">
 </p>
 
 # Gini Health API Library for iOS
