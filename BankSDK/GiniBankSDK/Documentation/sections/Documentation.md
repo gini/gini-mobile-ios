@@ -1,9 +1,9 @@
-
-
 <p align="center">
 <img src="img/repo-logo.png" width="250">
 </p>
+
 # Gini Bank SDK for iOS
+
 [![Platform](https://img.shields.io/badge/platform-iOS-lightgrey.svg)]()
 [![Devices](https://img.shields.io/badge/devices-iPhone%20%7C%20iPad-blue.svg)]()
 [![Swift version](https://img.shields.io/badge/swift-5.0-orange.svg)]()

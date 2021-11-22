@@ -1,6 +1,7 @@
 <p align="center">
-<img src="./Documentation/jazzy-theme/assets/img/logo.png" width="250">
+<img src="./GiniCapture_Logo.png" width="250">
 </p>
+
 # Gini Capture SDK Pinning for iOS
 
 [![Platform](https://img.shields.io/badge/platform-iOS-lightgrey.svg)]()
@@ -24,9 +25,7 @@ Further documentation with installation, integration or customization guides can
 ## Example
 
 We are providing example apps for Swift. These apps demonstrate how to integrate the Gini Capture SDK Pinning with the Screen API and Component API. To run the example project, clone the repo and run `pod install` from the Example directory first.
-To inject your API credentials into the Example app, just add to the Example directory the `Credentials.plist` file with the following format:
-
-<img border=1 src=credentials_plist_format.png/>
+To inject your API credentials into the Example app, just add to the Example directory the `Credentials.plist` file.
 
 ## Requirements
 
