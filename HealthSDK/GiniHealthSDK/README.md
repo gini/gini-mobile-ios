@@ -1,4 +1,6 @@
-![Gini Health SDK for iOS](./GiniHealth_Logo.png?raw=true)
+<p align="center">
+<img src="./GiniHealth_Logo.png" width="250">
+</p>
 
 # Gini Health SDK for iOS
 

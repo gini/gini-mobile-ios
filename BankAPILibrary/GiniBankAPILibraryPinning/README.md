@@ -1,6 +1,7 @@
 <p align="center">
-<img src="./Documentation/jazzy-theme/assets/img/logo.png" width="250">
+<img src="./GiniBank_Logo" width="250">
 </p>
+
 # Gini Bank API Library Pinning for iOS
 
 [![Platform](https://img.shields.io/badge/platform-iOS-lightgrey.svg)]()
