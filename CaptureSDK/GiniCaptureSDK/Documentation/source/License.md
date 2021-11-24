@@ -1,9 +1,7 @@
 License
 =======
 
-The [Gini Capture SDK for iOS](https://github.com/gini/capture-sdk-ios) is licensed under a Private License.
-
-Always make sure to ship all license notices and permissions with your application.
+## Gini Capture SDK for iOS is licensed under a Private License.
 
     Copyright (c) 2014-2021, Gini GmbH
     All rights reserved.
@@ -21,7 +19,7 @@ Always make sure to ship all license notices and permissions with your applicati
 
 The Gini Capture SDK uses code from the following libraries:
 
-## [Gini Bank API Library for iOS](https://github.com/gini/bank-api-library-ios)
+### Gini Bank API Library for iOS
 
     The MIT License (MIT)
 
@@ -45,9 +43,7 @@ The Gini Capture SDK uses code from the following libraries:
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 
-The [Gini Capture SDK Pinning for iOS](https://github.com/gini/capture-sdk-pinning-ios) is licensed under a Private License.
-
-Always make sure to ship all license notices and permissions with your application.
+## Gini Capture SDK Pinning for iOS is licensed under a Private License.
 
     Copyright (c) 2014-2021, Gini GmbH
     All rights reserved.
@@ -65,7 +61,7 @@ Always make sure to ship all license notices and permissions with your applicati
 
 The Gini Capture SDK Pinning uses code from the following libraries:
 
-## [Gini Bank API Library Pinning for iOS](https://github.com/gini/bank-api-library-pinning-ios)
+### Gini Bank API Library Pinning for iOS
 
     The MIT License (MIT)
 
@@ -89,7 +85,7 @@ The Gini Capture SDK Pinning uses code from the following libraries:
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.    
 
-## [TrustKit](https://github.com/datatheorem/TrustKit)
+### [TrustKit](https://github.com/datatheorem/TrustKit)
 
     The MIT License (MIT)
 
