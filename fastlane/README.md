@@ -59,6 +59,18 @@ Parameters:
   ci                    - set to "true" if running on a CI machine
 
 
+### ios create_release_tags
+```
+fastlane ios create_release_tags
+```
+Create release tags for all packages that have different versions than their latest release tag.
+
+### ios create_documentation_release_tags
+```
+fastlane ios create_documentation_release_tags
+```
+Create documentation release tags for all packages that have documentation that changed since their latest release.
+
 
 ----
 
