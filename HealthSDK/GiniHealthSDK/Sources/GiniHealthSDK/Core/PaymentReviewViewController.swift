@@ -174,17 +174,20 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         bankProviderButtonView.layer.borderWidth = giniHealthConfiguration.bankButtonBorderWidth
         bankProviderButtonView.layer.borderColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonBorderColor).cgColor
         bankProviderLabel.textColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonTextColor)
-        if #available(iOS 13.0, *) {
-            if let templateImage = bankProviderEditIcon.image?.withTintColor(UIColor.from(giniColor: giniHealthConfiguration.bankButtonEditIconColor)) {
-                bankProviderEditIcon.image = templateImage
-            }
-        } else {
-            if let templateImage = bankProviderEditIcon.image?.withRenderingMode(.alwaysTemplate) {
-                bankProviderEditIcon.image = templateImage
-                bankProviderEditIcon.tintColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonEditIconColor)
-            }
-            bankProviderLabel.font = giniHealthConfiguration.customFont.regular
+
+        if let templateImage = UIImageNamedPreferred(named: "editIcon") {
+            bankProviderEditIcon.image = templateImage.withRenderingMode(.alwaysTemplate)
+            bankProviderEditIcon.tintColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonEditIconColor)
         }
+        bankProviderLabel.font = giniHealthConfiguration.customFont.regular
+
+        let selectProviderTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(selectBankProviderTapped))
+        bankProviderButtonView.addGestureRecognizer(selectProviderTapRecognizer)
+    }
+
+    @objc func selectBankProviderTapped() {
+        //TODO implement open bank selection view
+        print("Select bank provider")
     }
 
     fileprivate func configurePayButton() {
