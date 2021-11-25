@@ -186,8 +186,11 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
 
     @objc func selectBankProviderTapped() {
-        //TODO implement open bank selection view
-        print("Select bank provider")
+        // TODO: implement open bank selection view
+        bankProviderButtonView.alpha = 0.5
+        UIView.animate(withDuration: 0.5) {
+            self.bankProviderButtonView.alpha = 1.0
+        }
     }
 
     fileprivate func configurePayButton() {
