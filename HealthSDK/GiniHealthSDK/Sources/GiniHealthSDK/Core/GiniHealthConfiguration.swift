@@ -109,9 +109,34 @@ public final class GiniHealthConfiguration: NSObject {
     @objc public var paymentInputFieldPlaceholderTextColor = GiniColor(lightModeColor: UIColor.from(hex: 0x999FB7), darkModeColor: UIColor.from(hex: 0x999FB7))
     
     /**
-     Sets the text color of the bank button on the payment review screen
+     Sets the text color of the bank selection button on the payment review screen
      */
     @objc public var bankButtonTextColor = GiniColor(lightModeColor: UIColor.from(hex: 0x33406F), darkModeColor: UIColor.from(hex: 0x33406F))
+    
+    /**
+     Sets the background color of the bank selection button on the payment review screen
+     */
+    @objc public var bankButtonBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
+    
+    /**
+     Sets the border width of the the bank button on the payment review screen
+     */
+    @objc public var bankButtonBorderWidth: CGFloat = 1.0
+    
+    /**
+     Sets the border color of the bank selection button on the payment review screen
+     */
+    @objc public var bankButtonBorderColor = GiniColor(lightModeColor: UIColor.from(hex: 0xE6E7ED), darkModeColor: UIColor.from(hex: 0xE6E7ED))
+    
+    /**
+     Sets the corner radius of the bank selection button on the payment review screen
+     */
+    @objc public var bankButtonCornerRadius: CGFloat = 6.0
+    
+    /**
+     Sets the edit icon color  of the bank selection button on the payment review screen
+     */
+    @objc public var bankButtonEditIconColor = GiniColor(lightModeColor: UIColor.from(hex: 0x222222), darkModeColor: UIColor.from(hex: 0x222222))
     
     /**
      Sets the font used in the screens by default.
