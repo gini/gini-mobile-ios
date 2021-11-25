@@ -32,6 +32,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet weak var closeButton: UIButton!
     
+    @IBOutlet weak var bankProviderEditIcon: UIImageView!
     var model: PaymentReviewModel?
     var paymentProviders: [PaymentProvider] = []
     private var amountToPay = Price(extractionString: "")
@@ -168,12 +169,22 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     // MARK: - TODO ConfigureBankProviderView Dynamically configured
     
     fileprivate func configureBankProviderView() {
-        bankProviderButtonView.backgroundColor = .white
-        bankProviderButtonView.layer.cornerRadius = self.giniHealthConfiguration.paymentInputFieldCornerRadius
-        bankProviderButtonView.layer.borderWidth = self.giniHealthConfiguration.paymentInputFieldBorderWidth
-        bankProviderButtonView.layer.borderColor = UIColor.from(hex: 0xE6E7ED).cgColor
-        bankProviderLabel.textColor = UIColor.from(giniColor:giniHealthConfiguration.bankButtonTextColor)
-        bankProviderLabel.font = giniHealthConfiguration.customFont.regular
+        bankProviderButtonView.backgroundColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonBackgroundColor)
+        bankProviderButtonView.layer.cornerRadius = giniHealthConfiguration.bankButtonCornerRadius
+        bankProviderButtonView.layer.borderWidth = giniHealthConfiguration.bankButtonBorderWidth
+        bankProviderButtonView.layer.borderColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonBorderColor).cgColor
+        bankProviderLabel.textColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonTextColor)
+        if #available(iOS 13.0, *) {
+            if let templateImage = bankProviderEditIcon.image?.withTintColor(UIColor.from(giniColor: giniHealthConfiguration.bankButtonEditIconColor)) {
+                bankProviderEditIcon.image = templateImage
+            }
+        } else {
+            if let templateImage = bankProviderEditIcon.image?.withRenderingMode(.alwaysTemplate) {
+                bankProviderEditIcon.image = templateImage
+                bankProviderEditIcon.tintColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonEditIconColor)
+            }
+            bankProviderLabel.font = giniHealthConfiguration.customFont.regular
+        }
     }
 
     fileprivate func configurePayButton() {
