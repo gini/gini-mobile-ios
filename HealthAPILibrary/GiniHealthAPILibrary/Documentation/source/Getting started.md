@@ -52,6 +52,18 @@ If you want to use _Certificate pinning_, provide metadata for the upload proces
 > ⚠️  **Important**
 > - The document metadata for the upload process is intended to be used for reporting.
 
+For customizing an API domain please, use the following snippet:
+
+```swift
+    let giniHealthAPI = GiniHealthAPI
+        .Builder(client: Client(id: "your-id",
+                                secret: "your-secret",
+                                domain: "your-domain"),
+                 api: .custom(domain: "custom-api.net"),
+                 pinningConfig: yourPublicPinningConfig)
+        .build()
+```
+
 ## Extract Hash From gini.net
 
 The current Gini Health API public key SHA256 hash digest in Base64 encoding can be extracted with the following openssl commands:
