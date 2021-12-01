@@ -178,5 +178,113 @@ platform :ios do
         * url                 : https://developer.gini.net/gini-mobile-ios/#{package_folder}/index.html
       MESSAGE
   end
+
+  desc <<~DOC
+    Create release tags for all packages that have different versions than their latest release tag.
+  DOC
+  lane :create_release_tags do |options|
+
+    # Not all packages require own release tags (some are released automatically with other packages)
+    ignored_packages = [/\/.+Pinning\//]
+
+    Dir.chdir("..") do
+      # Gather all packages which have a (...)Version.swift file
+      packages = Dir["./**/*Version.swift"]
+        .map { |version_file|
+          if ignored_packages.find { |ignored| version_file =~ ignored }
+            next nil
+          end
+
+          contents = File.open(version_file).read
+
+          if match = contents.match(/=.*?"(.+)"/)
+            components = version_file.split("/")
+            { :package_folder => components[2], :version => match.captures[0] }
+          end
+        }
+        .compact
+
+      up_to_date = []
+      to_be_released = []
+
+      # Create release tags for packages which have different versions than their latest release tag
+      packages.each do |package|
+        if package[:version] == get_latest_version_from_release_tags(package[:package_folder], UI)
+          up_to_date.push package
+        else
+          to_be_released.push package
+          git_create_release_tag(package[:package_folder], package[:version])
+
+          if UI.confirm("Push release tag?")
+            git_push_release_tag(package[:package_folder], package[:version])
+          end
+        end
+      end
+
+      if to_be_released.empty?
+        UI.success "All packages are up-to-date. No release tags needed."
+      else
+        UI.message <<~MESSAGE
+            Following packages are up-to-date:
+              #{up_to_date.map{ |package| "- #{package[:package_folder]} #{package[:version]}" }.join("\n  ") }
+          MESSAGE
+
+        UI.success <<~MESSAGE
+            Created release tags for:
+              #{to_be_released.map{ |package| "- #{package[:package_folder]} #{package[:version]}" }.join("\n  ") }
+          MESSAGE
+      end
+    end
+  end
+  
+  desc <<~DOC
+    Create documentation release tags for all packages that have documentation that changed since their latest release.
+  DOC
+  lane :create_documentation_release_tags do
+    Dir.chdir("..") do
+      new_doc_release_tags = Dir["./**/Documentation"]
+        .filter { |doc_dir|
+          # Gather all projects which have documentation that changed since the last release
+          components = doc_dir.split("/")
+          puts components
+          package_folder = components[2]
+          puts package_folder
+          did_folder_change_since_last_release(package_folder, doc_dir, UI)
+        }
+        .map { |doc_dir|
+          # Create documentation release tags
+          components = doc_dir.split("/")
+          package_folder = components[2]
+          latest_release_tag = get_latest_release_tag(package_folder)
+
+          if match = latest_release_tag.match(/(^.*?;)doc.*?([0-9]+)/)
+            next_doc_release_nr = match.captures[1].to_i + 1
+            "#{match.captures[0]}doc-#{next_doc_release_nr}"
+          else
+            "#{latest_release_tag};doc-1"
+          end
+        }
+
+      puts new_doc_release_tags
+      
+      if new_doc_release_tags.empty?
+        UI.success "Every documentation is up-to-date. No documentation release tags needed."
+      else
+        # Create and push tags
+        new_doc_release_tags.each do |new_doc_release_tag|
+          git_create_tag(new_doc_release_tag)
+
+          if UI.confirm("Push documentation release tag?")
+            git_push_tag(new_doc_release_tag)
+          end
+        end
+        
+        UI.success <<~MESSAGE
+            Created documentation release tags for:
+              #{new_doc_release_tags.map{ |tag| "- #{tag}" }.join("\n  ") }
+          MESSAGE
+      end
+    end
+  end
   
 end

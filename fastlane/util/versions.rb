@@ -1,3 +1,5 @@
+load 'util/git.rb'
+
 ##
 # Extract the project version from the tag.
 #
@@ -67,4 +69,13 @@ def get_project_version_from_version_file(version_file_path, ui)
       break version.strip.delete('"')
     end
   end
+end
+
+
+##
+# Retrieve the project's version from its latest release tag.
+#
+def get_latest_version_from_release_tags(project_id, ui)
+  latest_version_tag = get_latest_release_tag(project_id)
+  get_project_version_from_tag(project_id, latest_version_tag, ui)
 end
