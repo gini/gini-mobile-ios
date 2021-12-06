@@ -126,7 +126,7 @@ final class OpenWithTutorialViewControllerTests: XCTestCase {
         giniConfiguration.shouldShowDragAndDropTutorial = false
         
         let openWithTutorialViewController = OpenWithTutorialViewController(giniConfiguration: giniConfiguration)
-        let dragAndDropStepImage =  UIImage(named: "openWithTutorialStep3", in: Bundle.module, compatibleWith: nil)
+        let dragAndDropStepImage =  UIImage(named: "openWithTutorialStep3", in: giniCaptureBundle(), compatibleWith: nil)
         
         XCTAssertFalse(openWithTutorialViewController.items.map { $0.image }.contains(dragAndDropStepImage),
                       "open with items should not contain drag and drop image")
