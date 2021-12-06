@@ -26,7 +26,7 @@ final class CaptureSuggestionsView: UIView {
     fileprivate let repeatInterval: TimeInterval = 5
     fileprivate let superViewBottomAnchor: NSLayoutYAxisAnchor
     fileprivate let suggestionIconImage = UIImage(named: "analysisSuggestionsIcon",
-                                                  in: Bundle.module, compatibleWith: nil)
+                                                  in: giniCaptureBundle(), compatibleWith: nil)
     fileprivate var suggestionTexts: [String] = [
         .localized(resource: AnalysisStrings.suggestion1Text),
         .localized(resource: AnalysisStrings.suggestion2Text),
