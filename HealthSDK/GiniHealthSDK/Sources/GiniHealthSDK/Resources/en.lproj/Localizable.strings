@@ -20,3 +20,5 @@
 "ginihealth.errors.failed.default.textfield.validation.check" = "The field is not valid";
 
 "ginihealth.alert.ok.title" = "OK";
+
+"ginihealth.bankprovidersscreen.title" = "Select Banking-App";

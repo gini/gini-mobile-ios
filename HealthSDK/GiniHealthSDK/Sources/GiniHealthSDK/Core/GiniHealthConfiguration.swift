@@ -180,4 +180,29 @@ public final class GiniHealthConfiguration: NSObject {
      Set to `true` to show a close button on the payment review screen.
      */
     @objc public var showPaymentReviewCloseButton = false
+    
+    /**
+     Sets the backgroundColor on the bank selection screen.
+     */
+    @objc public var bankSelectionScreenBackgroundColor = GiniColor(lightModeColor: UIColor.white, darkModeColor: UIColor.white)
+    
+    /**
+     Sets the backgroundColor of the dimmend overlay on the bank selection screen.
+     */
+    @objc public var bankSelectionDimmedOverlayBackgroundColor = GiniColor(lightModeColor: UIColor.from(hex: 0x00104B66).withAlphaComponent(0.4), darkModeColor: UIColor.from(hex: 0x00104B66).withAlphaComponent(0.4))
+    
+    /**
+     Sets the color of the scroll down view on the bank selection screen.
+     */
+    @objc public var bankSelectionScrollDownIndicatorViewColor = GiniColor(lightModeColor: UIColor.from(hex: 0xCCCFDB), darkModeColor: UIColor.from(hex: 0xCCCFDB))
+    
+    /**
+     Sets the text color of the title on the bank selection screen.
+     */
+    @objc public var bankSelectionTitleTextColor = GiniColor(lightModeColor: UIColor.from(hex: 0x00104B), darkModeColor: UIColor.from(hex: 0x00104B))
+    
+    /**
+     Sets the color of the cells separator view on the bank selection screen.
+     */
+    @objc public var bankSelectionCellSeparatorColor = GiniColor(lightModeColor: UIColor.from(hex: 0xE6E7ED), darkModeColor: UIColor.from(hex: 0xE6E7ED))
 }
