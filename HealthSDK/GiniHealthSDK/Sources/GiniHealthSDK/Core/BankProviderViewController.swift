@@ -17,6 +17,8 @@ class BankProviderViewController: UIViewController, UITableViewDelegate, UITable
 
     @IBOutlet var providersTableView: UITableView!
     private var viewTranslation = CGPoint(x: 0, y: 0)
+    
+    var giniHealthConfiguration = GiniHealthConfiguration.shared
 
     var model = BankProviderViewModel()
 
@@ -26,9 +28,18 @@ class BankProviderViewController: UIViewController, UITableViewDelegate, UITable
     }
 
     func configureUI() {
-        backgroundView.backgroundColor = .black.withAlphaComponent(0.4)
+        backgroundView.backgroundColor = UIColor.from(giniColor: giniHealthConfiguration.bankSelectionDimmedOverlayBackgroundColor)
         containerView.roundCorners(corners: [.topLeft, .topRight], radius: 12)
-
+        containerView.backgroundColor = UIColor.from(giniColor: giniHealthConfiguration.bankSelectionScreenBackgroundColor)
+        scrollDownIndicatorView.backgroundColor = UIColor.from(giniColor: giniHealthConfiguration.bankSelectionScrollDownIndicatorViewColor)
+        
+        titleLabel.font = giniHealthConfiguration.customFont.with(weight: .bold, size: 17, style: .caption1)
+        titleLabel.textColor = UIColor.from(giniColor: giniHealthConfiguration.bankSelectionTitleTextColor)
+        titleLabel.text = NSLocalizedStringPreferredFormat("ginihealth.bankprovidersscreen.title",
+                                                           comment: "title for bank providers view")
+        providersTableView.backgroundView?.backgroundColor = UIColor.from(giniColor: giniHealthConfiguration.bankSelectionScreenBackgroundColor)
+        providersTableView.separatorColor = UIColor.from(giniColor: giniHealthConfiguration.bankSelectionCellSeparatorColor)
+        
         providersTableView.reloadData()
         providersTableView.layoutIfNeeded()
 
@@ -41,7 +52,6 @@ class BankProviderViewController: UIViewController, UITableViewDelegate, UITable
             case .changed:
                 viewTranslation = sender.translation(in: view)
                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-                    self.backgroundView.backgroundColor = .clear
                     self.view.transform = CGAffineTransform(translationX: 0, y: self.viewTranslation.y)
                 })
             case .ended:
@@ -54,7 +64,9 @@ class BankProviderViewController: UIViewController, UITableViewDelegate, UITable
                 }
             default:
                 break
-            }        }
+            }
+        self.backgroundView.backgroundColor = .clear
+    }
 
     public static func instantiate(with providers: PaymentProviders) -> BankProviderViewController {
         let vc = (UIStoryboard(name: "BankSelection", bundle: giniHealthBundle())
@@ -66,7 +78,6 @@ class BankProviderViewController: UIViewController, UITableViewDelegate, UITable
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         model.providers.count
-        // 2
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -104,6 +115,8 @@ class BankTableViewCell: UITableViewCell {
         didSet {
             bankName?.text = viewModel?.name
             bankName?.textColor = UIColor.black
+            bankName?.font = GiniHealthConfiguration.shared.customFont.regular
+
             bankIcon?.image = UIImageNamedPreferred(named: "bank")
             bankIcon.layer.cornerRadius = 6
         }

@@ -84,6 +84,7 @@
                                                                             </constraints>
                                                                         </stackView>
                                                                     </subviews>
+                                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <constraints>
                                                                         <constraint firstItem="t9Q-Ab-VBL" firstAttribute="leading" secondItem="jf8-ne-fDC" secondAttribute="leading" id="2eB-Dl-kyg"/>
                                                                         <constraint firstItem="t9Q-Ab-VBL" firstAttribute="top" secondItem="jf8-ne-fDC" secondAttribute="top" id="7Pq-GO-g2t"/>
