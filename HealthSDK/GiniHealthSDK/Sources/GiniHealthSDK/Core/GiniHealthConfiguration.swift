@@ -33,6 +33,8 @@ public final class GiniHealthConfiguration: NSObject {
      */
     public override init() {}
     
+    // MARK: - Payment review screen
+    
     /**
      Sets the backgroundColor on the payment review screen
      */
@@ -137,35 +139,7 @@ public final class GiniHealthConfiguration: NSObject {
      Sets the edit icon color  of the bank selection button on the payment review screen
      */
     @objc public var bankButtonEditIconColor = GiniColor(lightModeColor: UIColor.from(hex: 0x222222), darkModeColor: UIColor.from(hex: 0x222222))
-    
-    /**
-     Sets the font used in the screens by default.
-     */
-    
-    @objc public lazy var customFont = GiniFont(regular: UIFont.systemFont(ofSize: 14,
-                                                                                                 weight: .regular),
-                                                                      bold: UIFont.systemFont(ofSize: 14,
-                                                                                              weight: .bold),
-                                                                      light: UIFont.systemFont(ofSize: 14,
-                                                                                               weight: .light),
-                                                                      thin: UIFont.systemFont(ofSize: 14,
-                                                                                              weight: .thin),
-                                                                      isEnabled: false)
-    /**
-     Sets the color of the loading indicator on the review  screen to the specified color.
-     */
-    @objc public var loadingIndicatorColor = UIColor.orange
-    
-    /**
-     Sets the style of the loading indicator on the review screen.
-     */
-    @objc public var loadingIndicatorStyle: UIActivityIndicatorView.Style = .whiteLarge
-    
-    /**
-     Sets the scale of the loading indicator on the review screen.
-     */
-    @objc public var loadingIndicatorScale: CGFloat = 1.0
-    
+        
     /**
      Sets the current page indicator on the review screen to the specified color.
      */
@@ -181,10 +155,18 @@ public final class GiniHealthConfiguration: NSObject {
      */
     @objc public var showPaymentReviewCloseButton = false
     
+    // MARK: - Bank selection screen
+    
     /**
      Sets the backgroundColor on the bank selection screen.
      */
     @objc public var bankSelectionScreenBackgroundColor = GiniColor(lightModeColor: UIColor.white, darkModeColor: UIColor.white)
+    
+    /**
+     Sets the corner radius of the bank selection button on the payment review screen
+     */
+    @objc public var bankButtonCornerRadius: CGFloat = 6.0
+    
     
     /**
      Sets the backgroundColor of the dimmend overlay on the bank selection screen.
@@ -205,4 +187,36 @@ public final class GiniHealthConfiguration: NSObject {
      Sets the color of the cells separator view on the bank selection screen.
      */
     @objc public var bankSelectionCellSeparatorColor = GiniColor(lightModeColor: UIColor.from(hex: 0xE6E7ED), darkModeColor: UIColor.from(hex: 0xE6E7ED))
+    
+    
+    // MARK: - Shared properties
+    
+    /**
+     Sets the font used in the screens by default.
+     */
+    
+    @objc public lazy var customFont = GiniFont(regular: UIFont.systemFont(ofSize: 14,
+                                                                                                 weight: .regular),
+                                                                      bold: UIFont.systemFont(ofSize: 14,
+                                                                                              weight: .bold),
+                                                                      light: UIFont.systemFont(ofSize: 14,
+                                                                                               weight: .light),
+                                                                      thin: UIFont.systemFont(ofSize: 14,
+                                                                                              weight: .thin),
+                                                                      isEnabled: false)
+    /**
+     Sets the color of the loading indicator to the specified color.
+     */
+    @objc public var loadingIndicatorColor = UIColor.orange
+    
+    /**
+     Sets the style of the loading indicator.
+     */
+    @objc public var loadingIndicatorStyle: UIActivityIndicatorView.Style = .whiteLarge
+    
+    /**
+     Sets the scale of the loading indicator.
+     */
+    @objc public var loadingIndicatorScale: CGFloat = 1.0
+    
 }
