@@ -15,7 +15,7 @@ public struct PaymentProvider: Codable {
     public var appSchemeIOS: String
     public var colors: ProviderColors
     var minAppVersion: MinAppVersions?
-    var iconData: Data
+    public var iconData: Data
 
     public init(id: String, name: String, appSchemeIOS: String, minAppVersion: MinAppVersions?, colors: ProviderColors, iconData: Data) {
         self.id = id
