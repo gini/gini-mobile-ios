@@ -6,32 +6,24 @@
 //
 
 import Foundation
-
 /**
- Struct for MinAppVersions in payment provider response
- */
-public struct MinAppVersions: Codable {
-    var ios: String?
-    var android: String?
-    public init(ios: String?, android: String?) {
-        self.ios = ios
-        self.android = android
-    }
-}
-/**
- Struct for payment provider response
+ Struct for payment provider
  */
 public struct PaymentProvider: Codable {
     public var id: String
     public var name: String
     public var appSchemeIOS: String
+    public var colors: ProviderColors
     var minAppVersion: MinAppVersions?
+    var iconData: Data
 
-    public init(id: String, name: String, appSchemeIOS: String, minAppVersion: MinAppVersions?) {
+    public init(id: String, name: String, appSchemeIOS: String, minAppVersion: MinAppVersions?, colors: ProviderColors, iconData: Data) {
         self.id = id
         self.name = name
         self.appSchemeIOS = appSchemeIOS
         self.minAppVersion = minAppVersion
+        self.colors = colors
+        self.iconData = iconData
     }
 }
 public typealias PaymentProviders = [PaymentProvider]

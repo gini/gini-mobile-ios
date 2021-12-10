@@ -225,14 +225,27 @@ public protocol PaymentServiceProtocol: AnyObject {
 }
 
 extension PaymentService {
-    func paymentProviders(resourceHandler: ResourceDataHandler<APIResource<PaymentProviders>>,
+    func paymentProviders(resourceHandler: ResourceDataHandler<APIResource<[PaymentProviderResponse]>>,
                           completion: @escaping CompletionResult<PaymentProviders>) {
-        let resource = APIResource<PaymentProviders>(method: .paymentProviders, apiDomain: .default, httpMethod: .get)
-
+        let resource = APIResource<[PaymentProviderResponse]>(method: .paymentProviders, apiDomain: .default, httpMethod: .get)
+        var providers = [PaymentProvider]()
         resourceHandler(resource, { result in
             switch result {
-            case let .success(providers):
-                completion(.success(providers))
+            case let .success(providersResponse):
+                let dispatchGroup = DispatchGroup()
+                for providerResponse in providersResponse {
+                    dispatchGroup.enter()
+                    if let dataImage = Data.init(url: URL(string: providerResponse.iconLocation)){
+                        let provider = PaymentProvider(id: providerResponse.id, name: providerResponse.name, appSchemeIOS: providerResponse.appSchemeIOS, minAppVersion: providerResponse.minAppVersion, colors: providerResponse.colors, iconData: dataImage)
+                    providers.append(provider)
+                }
+                    dispatchGroup.leave()
+
+                    dispatchGroup.notify(queue: DispatchQueue.global()) {
+                        completion(.success(providers))
+                    }
+                }
+
             case let .failure(error):
                 completion(.failure(error))
             }
