@@ -240,10 +240,9 @@ extension PaymentService {
                     providers.append(provider)
                 }
                     dispatchGroup.leave()
-
-                    dispatchGroup.notify(queue: DispatchQueue.global()) {
-                        completion(.success(providers))
-                    }
+                }
+                dispatchGroup.notify(queue: DispatchQueue.global()) {
+                    completion(.success(providers))
                 }
 
             case let .failure(error):
