@@ -22,7 +22,8 @@ public enum UserDomain {
     }
 }
 
-struct UserResource<T: Decodable>: Resource {    
+struct UserResource<T: Decodable>: Resource {
+    var fullUrlString: String?
     typealias ResourceMethodType = UserMethod
     typealias ResponseType = T
     
