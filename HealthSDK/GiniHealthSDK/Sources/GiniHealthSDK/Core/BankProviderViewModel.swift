@@ -42,8 +42,8 @@ struct BankTableViewCellViewModel {
     
     init(paymentProvider: PaymentProvider){
         name = paymentProvider.name
-        let imageData =  paymentProvider.iconData.base64EncodedString()
-        if let data = imageData.data(using: .utf8), let image = UIImage(data:data){
+        let imageData =  paymentProvider.iconData
+        if let image = UIImage(data: imageData){
             icon = image
         } else{
             icon = UIImage()
