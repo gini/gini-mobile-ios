@@ -28,18 +28,6 @@ public class BankProviderViewModel: NSObject {
         return cellViewModels.count
     }
 
-    var isLoading: Bool = false {
-        didSet {
-           // self.updateLoadingStatus()
-        }
-    }
-    
-    var isImagesLoading: Bool = false {
-        didSet {
-           // self.updateImagesLoadingStatus()
-        }
-    }
-
     func getCellViewModel(at indexPath: IndexPath) -> BankTableViewCellViewModel {
         return cellViewModels[indexPath.section]
     }
@@ -54,7 +42,26 @@ struct BankTableViewCellViewModel {
     
     init(paymentProvider: PaymentProvider){
         name = paymentProvider.name
-        icon = UIImage.init(named: "bank", in: Bundle.module, compatibleWith: nil) ?? UIImage()
-        mainColor = GiniColor(lightModeColor: .black, darkModeColor: .darkGray)
+        let imageData =  paymentProvider.iconData.base64EncodedString()
+        if let data = imageData.data(using: .utf8), let image = UIImage(data:data){
+            icon = image
+        } else{
+            icon = UIImage()
+        }
+//        let mainColorString = String.hexFrom(string: paymentProvider.colors.background)
+//        if let backgroundHexColor = UIColor(hex: mainColorString){
+//            mainColor = GiniColor(lightModeColor: backgroundHexColor, darkModeColor: backgroundHexColor)
+//        } else {
+//            mainColor = GiniColor(lightModeColor: .black, darkModeColor: .black)
+//        }
+        
+        let textColorString = String.hexFrom(string: paymentProvider.colors.text)
+        if let textHexColor = UIColor(hex: textColorString){
+            mainColor = GiniColor(lightModeColor: textHexColor, darkModeColor: textHexColor)
+        } else {
+            mainColor = GiniColor(lightModeColor: .black, darkModeColor: .black)
+        }
+       
     }
 }
+

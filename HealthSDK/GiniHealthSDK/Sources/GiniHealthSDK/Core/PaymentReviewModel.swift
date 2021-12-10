@@ -93,19 +93,6 @@ public class PaymentReviewModel: NSObject {
             }
         }
     }
-    
-    func getAvailablePaymentProviders() -> [PaymentProvider] {
-        var availablePaymentProviders: [PaymentProvider] = []
-        healthSDK.checkIfAnyPaymentProviderAvailiable {result in
-            switch result {
-            case let .success(providers):
-                availablePaymentProviders.append(contentsOf: providers)
-            case let .failure(_): break
-            }
-        }
-        return availablePaymentProviders
-    }
-
 
     func sendFeedback(updatedExtractions: [Extraction]) {
         healthSDK.documentService.submitFeedback(for: document, with: updatedExtractions) { result in

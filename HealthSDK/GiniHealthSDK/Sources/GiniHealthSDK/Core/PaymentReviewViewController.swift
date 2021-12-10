@@ -187,17 +187,10 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
 
     fileprivate func presentBankSelectionViewController() {
         //TODO change availableProviders.count > 1
-        let testProvider = PaymentProvider(id: "testProviderID", name: "testProvider Name", appSchemeIOS: "ginipay-bank://", minAppVersion: MinAppVersions(ios: "12", android: "12"))
-        let testProvider2 = PaymentProvider(id: "testProviderID2", name: "testProvider Name 2", appSchemeIOS: "ginipay-bank://", minAppVersion: MinAppVersions(ios: "12", android: "12"))
-        let testProvider3 = PaymentProvider(id: "testProviderID3", name: "testProvider Name 3", appSchemeIOS: "ginipay-bank://", minAppVersion: MinAppVersions(ios: "12", android: "12"))
-        let testProvider4 = PaymentProvider(id: "testProviderID4", name: "testProvider Name 4", appSchemeIOS: "ginipay-bank://", minAppVersion: MinAppVersions(ios: "12", android: "12"))
-        let testProvider5 = PaymentProvider(id: "testProviderID5", name: "testProvider Name 5", appSchemeIOS: "ginipay-bank://", minAppVersion: MinAppVersions(ios: "12", android: "12"))
-        let testProvider6 = PaymentProvider(id: "testProviderID6", name: "testProvider Name 6", appSchemeIOS: "ginipay-bank://", minAppVersion: MinAppVersions(ios: "12", android: "12"))
-         let availableProviders = [testProvider, testProvider2, testProvider3, testProvider4, testProvider5, testProvider6]
-         if availableProviders.count > 1 {
-            //if  let availableProviders = model?.getAvailablePaymentProviders(), availableProviders.count > 0 {
+       
+       let availableProviders = self.paymentProviders
+        if availableProviders.count > 0 {
             let bankSelectionViewController = BankProviderViewController.instantiate(with: availableProviders)
-            print(availableProviders)
 
             bankSelectionViewController.modalPresentationStyle = .overCurrentContext
             bankSelectionViewController.modalTransitionStyle = .crossDissolve

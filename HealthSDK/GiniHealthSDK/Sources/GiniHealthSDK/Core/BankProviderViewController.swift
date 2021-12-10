@@ -97,6 +97,10 @@ class BankProviderViewController: UIViewController, UITableViewDelegate, UITable
             header.backgroundView?.backgroundColor = nil
         }
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath.row)
+    }
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -114,33 +118,30 @@ class BankTableViewCell: UITableViewCell {
     var viewModel: BankTableViewCellViewModel? {
         didSet {
             bankName?.text = viewModel?.name
-            bankName?.textColor = UIColor.black
+            bankName?.textColor = UIColor.from(giniColor: viewModel?.mainColor ?? GiniColor(lightModeColor: .black, darkModeColor: .black))
             bankName?.font = GiniHealthConfiguration.shared.customFont.regular
-
-            bankIcon?.image = UIImageNamedPreferred(named: "bank")
-            bankIcon.layer.cornerRadius = 6
+            bankIcon?.image = viewModel?.icon
         }
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        setup()
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-        setup()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-
-        setup()
     }
-
-    private func setup() {
-        // bankIcon.layer.cornerRadius = 6
-        // accessoryType = .disclosureIndicator
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        if(selected) {
+            selectionIndicator.image = UIImageNamedPreferred(named: "selectionIndicator")
+        } else {
+            selectionIndicator.image = nil
+        }
     }
 }
