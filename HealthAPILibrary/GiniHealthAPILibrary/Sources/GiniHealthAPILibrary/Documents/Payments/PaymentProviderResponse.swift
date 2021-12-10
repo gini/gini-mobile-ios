@@ -23,8 +23,8 @@ public struct MinAppVersions: Codable {
  Struct for MinAppVersions in payment provider response
  */
 public struct ProviderColors: Codable {
-    var background: String
-    var text: String
+    public var background: String
+    public var text: String
     public init(background: String, text: String) {
         self.background = background
         self.text = text
@@ -39,7 +39,7 @@ public struct PaymentProviderResponse: Codable {
     public var appSchemeIOS: String
     public var colors: ProviderColors
     var minAppVersion: MinAppVersions?
-    var iconLocation: String
+    public var iconLocation: String
 
     public init(id: String, name: String, appSchemeIOS: String, minAppVersion: MinAppVersions?, colors: ProviderColors, iconLocation: String) {
         self.id = id
