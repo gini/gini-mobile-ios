@@ -163,12 +163,6 @@ public final class GiniHealthConfiguration: NSObject {
     @objc public var bankSelectionScreenBackgroundColor = GiniColor(lightModeColor: UIColor.white, darkModeColor: UIColor.white)
     
     /**
-     Sets the corner radius of the bank selection button on the payment review screen
-     */
-    @objc public var bankButtonCornerRadius: CGFloat = 6.0
-    
-    
-    /**
      Sets the backgroundColor of the dimmend overlay on the bank selection screen.
      */
     @objc public var bankSelectionDimmedOverlayBackgroundColor = GiniColor(lightModeColor: UIColor.from(hex: 0x00104B66).withAlphaComponent(0.4), darkModeColor: UIColor.from(hex: 0x00104B66).withAlphaComponent(0.4))
