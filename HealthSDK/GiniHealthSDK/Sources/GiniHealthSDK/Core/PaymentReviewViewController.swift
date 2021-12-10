@@ -85,7 +85,9 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
         
         model?.onPaymentProvidersFetched = {[weak self] providers in
-            self?.paymentProviders.append(contentsOf: providers)
+            DispatchQueue.main.async { [weak self] in
+                self?.paymentProviders.append(contentsOf: providers)
+            }
         }
         
         model?.checkIfAnyPaymentProviderAvailiable()
