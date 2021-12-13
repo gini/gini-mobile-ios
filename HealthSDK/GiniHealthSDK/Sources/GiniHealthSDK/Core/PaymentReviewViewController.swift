@@ -33,6 +33,8 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     @IBOutlet weak var closeButton: UIButton!
     
     @IBOutlet weak var bankProviderEditIcon: UIImageView!
+    
+    @IBOutlet weak var bankProviderImage: UIImageView!
     var model: PaymentReviewModel?
     var paymentProviders: [PaymentProvider] = []
     private var amountToPay = Price(extractionString: "")
@@ -87,6 +89,11 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         model?.onPaymentProvidersFetched = {[weak self] providers in
             DispatchQueue.main.async { [weak self] in
                 self?.paymentProviders.append(contentsOf: providers)
+                if let paymentProviders = self?.paymentProviders, paymentProviders.count > 0 {
+                    let provider = paymentProviders[0]
+                    self?.configureBankProviderView(paymentProvider: provider)
+                    self?.configurePayButton(paymentProvider: provider)
+                }
             }
         }
         
@@ -134,6 +141,14 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             }
         }
         
+        model?.onBankSelection = {[weak self] provider in
+            
+            DispatchQueue.main.async {
+                self?.configureBankProviderView(paymentProvider: provider)
+                self?.configurePayButton(paymentProvider: provider)
+            }
+        }
+        
         model?.onCreatePaymentRequestErrorHandling = {[weak self] () in
             DispatchQueue.main.async {
                 self?.showError(message: NSLocalizedStringPreferredFormat("ginihealth.errors.failed.payment.request.creation",
@@ -158,9 +173,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     fileprivate func congifureUI() {
         configureScreenBackgroundColor()
         configureCollectionView()
-        configurePayButton()
         configurePaymentInputFields()
-        configureBankProviderView()
         configurePageControl()
         configureCloseButton()
         hideErrorLabels()
@@ -168,16 +181,23 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         addDoneButtonForNumPad(amountField)
     }
 
-    // MARK: - TODO ConfigureBankProviderView Dynamically configured
+    // MARK: - ConfigureBankProviderView
     
-    fileprivate func configureBankProviderView() {
+    fileprivate func configureBankProviderView(paymentProvider: PaymentProvider) {
         bankProviderButtonView.backgroundColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonBackgroundColor)
         bankProviderButtonView.layer.cornerRadius = giniHealthConfiguration.bankButtonCornerRadius
         bankProviderButtonView.layer.borderWidth = giniHealthConfiguration.bankButtonBorderWidth
         bankProviderButtonView.layer.borderColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonBorderColor).cgColor
-        bankProviderLabel.textColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonTextColor)
 
-        if let templateImage = UIImageNamedPreferred(named: "editIcon") {
+        bankProviderLabel.textColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonTextColor)
+        bankProviderLabel.text = paymentProvider.name
+
+        let imageData =  paymentProvider.iconData
+        if let image = UIImage(data: imageData){
+            bankProviderImage.image = image
+        }
+        
+        if let templateImage = UIImageNamedPreferred(named: "editIcon"), self.paymentProviders.count > 1 {
             bankProviderEditIcon.image = templateImage.withRenderingMode(.alwaysTemplate)
             bankProviderEditIcon.tintColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonEditIconColor)
         }
@@ -188,10 +208,9 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
 
     fileprivate func presentBankSelectionViewController() {
-        //TODO change availableProviders.count > 1
        
        let availableProviders = self.paymentProviders
-        if availableProviders.count > 0 {
+        if availableProviders.count > 1 {
             let bankSelectionViewController = BankProviderViewController.instantiate(with: availableProviders)
 
             bankSelectionViewController.modalPresentationStyle = .overCurrentContext
@@ -208,12 +227,18 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         presentBankSelectionViewController()
     }
 
-    fileprivate func configurePayButton() {
-        payButton.defaultBackgroundColor = UIColor.from(giniColor: giniHealthConfiguration.payButtonBackgroundColor)
+    fileprivate func configurePayButton(paymentProvider: PaymentProvider) {
+        let backgroundColorString = String.hexFrom(string: paymentProvider.colors.background)
+        if let backgroundHexColor = UIColor(hex: backgroundColorString) {
+            payButton.defaultBackgroundColor  = UIColor.from(giniColor: GiniColor(lightModeColor: backgroundHexColor, darkModeColor: backgroundHexColor))
+        }
         payButton.disabledBackgroundColor = .lightGray
         payButton.layer.cornerRadius = giniHealthConfiguration.payButtonCornerRadius
         payButton.titleLabel?.font = giniHealthConfiguration.customFont.regular
-        payButton.tintColor = UIColor.from(giniColor: giniHealthConfiguration.payButtonTextColor)
+        let textColorString = String.hexFrom(string: paymentProvider.colors.text)
+        if let textHexColor = UIColor(hex: textColorString) {
+            payButton.tintColor = UIColor.from(giniColor: GiniColor(lightModeColor: textHexColor, darkModeColor: textHexColor))
+        }
     }
     
     fileprivate func configurePaymentInputFields() {
