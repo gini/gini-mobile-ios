@@ -32,36 +32,20 @@ public class BankProviderViewModel: NSObject {
         return cellViewModels[indexPath.section]
     }
 
-
 }
 
 struct BankTableViewCellViewModel {
     let name: String?
     let icon: UIImage
-    let mainColor: GiniColor
     
     init(paymentProvider: PaymentProvider){
         name = paymentProvider.name
         let imageData =  paymentProvider.iconData
         if let image = UIImage(data: imageData){
             icon = image
-        } else{
+        } else {
             icon = UIImage()
         }
-//        let mainColorString = String.hexFrom(string: paymentProvider.colors.background)
-//        if let backgroundHexColor = UIColor(hex: mainColorString){
-//            mainColor = GiniColor(lightModeColor: backgroundHexColor, darkModeColor: backgroundHexColor)
-//        } else {
-//            mainColor = GiniColor(lightModeColor: .black, darkModeColor: .black)
-//        }
-        
-        let textColorString = String.hexFrom(string: paymentProvider.colors.text)
-        if let textHexColor = UIColor(hex: textColorString){
-            mainColor = GiniColor(lightModeColor: textHexColor, darkModeColor: textHexColor)
-        } else {
-            mainColor = GiniColor(lightModeColor: .black, darkModeColor: .black)
-        }
-       
     }
 }
 

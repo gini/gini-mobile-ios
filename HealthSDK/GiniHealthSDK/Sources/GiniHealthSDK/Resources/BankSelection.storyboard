@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="elb-2h-1FG">
-                                        <rect key="frame" x="0.0" y="347" width="414" height="505"/>
+                                        <rect key="frame" x="0.0" y="324" width="414" height="528"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ljp-LW-hIA">
                                                 <rect key="frame" x="186.5" y="4" width="41" height="4"/>
@@ -43,7 +43,7 @@
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" placeholderIntrinsicWidth="358" placeholderIntrinsicHeight="400" bounces="NO" dataMode="prototypes" style="plain" allowsSelection="NO" rowHeight="60" estimatedRowHeight="-1" sectionHeaderHeight="1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="1" estimatedSectionFooterHeight="-1" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GwO-dD-6nT">
+                                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" placeholderIntrinsicWidth="358" placeholderIntrinsicHeight="400" bounces="NO" dataMode="prototypes" style="plain" rowHeight="60" estimatedRowHeight="-1" sectionHeaderHeight="1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="1" estimatedSectionFooterHeight="-1" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GwO-dD-6nT">
                                                         <rect key="frame" x="0.0" y="61" width="382" height="400"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <prototypes>
@@ -125,7 +125,7 @@
                                             <constraint firstItem="xhe-7X-Cep" firstAttribute="top" secondItem="Ljp-LW-hIA" secondAttribute="bottom" constant="16" id="M9j-w9-jAc"/>
                                             <constraint firstItem="Ljp-LW-hIA" firstAttribute="top" secondItem="elb-2h-1FG" secondAttribute="top" constant="4" id="PTA-4m-i9M"/>
                                             <constraint firstItem="0ia-wt-5yO" firstAttribute="centerX" secondItem="elb-2h-1FG" secondAttribute="centerX" id="Tba-GZ-QOp"/>
-                                            <constraint firstAttribute="bottom" secondItem="0ia-wt-5yO" secondAttribute="bottom" constant="20" id="c8L-cG-vdI"/>
+                                            <constraint firstAttribute="bottom" secondItem="0ia-wt-5yO" secondAttribute="bottom" constant="43" id="c8L-cG-vdI"/>
                                             <constraint firstItem="Ljp-LW-hIA" firstAttribute="centerX" secondItem="elb-2h-1FG" secondAttribute="centerX" id="k4f-tS-WCx"/>
                                             <constraint firstItem="0ia-wt-5yO" firstAttribute="leading" secondItem="elb-2h-1FG" secondAttribute="leading" constant="16" id="yQj-JM-ENh"/>
                                         </constraints>
