@@ -182,6 +182,16 @@ public final class GiniHealthConfiguration: NSObject {
      */
     @objc public var bankSelectionCellSeparatorColor = GiniColor(lightModeColor: UIColor.from(hex: 0xE6E7ED), darkModeColor: UIColor.from(hex: 0xE6E7ED))
     
+    /**
+     Sets the text color of the cells on the bank selection screen.
+     */
+    @objc public var bankSelectionCellTextColor = GiniColor(lightModeColor: UIColor.from(hex: 0x00104B), darkModeColor: UIColor.from(hex: 0x00104B))
+    
+    /**
+     Sets the corner radius of the bank icons on the bank selection screen.
+     */
+    @objc public var bankSelectionCellIconCornerRadius: CGFloat = 0.0
+    
     
     // MARK: - Shared properties
     
