@@ -26,6 +26,8 @@ public class PaymentReviewModel: NSObject {
     var onNoAppsErrorHandling: (_ error: GiniHealthError) -> Void = { _ in }
     
     var onCreatePaymentRequestErrorHandling: () -> Void = {}
+    
+    var onBankSelection: (_ provider: PaymentProvider) -> Void = { _ in }
 
     public var document: Document {
         didSet {

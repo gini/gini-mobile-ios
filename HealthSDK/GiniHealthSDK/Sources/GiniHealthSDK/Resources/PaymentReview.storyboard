@@ -300,6 +300,7 @@
                         <outlet property="amountField" destination="geq-YB-UG4" id="EiD-o0-BCl"/>
                         <outlet property="bankProviderButtonView" destination="j0P-vj-5g4" id="BaI-j5-hFv"/>
                         <outlet property="bankProviderEditIcon" destination="UBV-zg-FCh" id="Ofp-0P-qQ5"/>
+                        <outlet property="bankProviderImage" destination="ROx-mF-STW" id="je5-Qo-Jgh"/>
                         <outlet property="bankProviderLabel" destination="gKK-IC-PHC" id="EIG-gW-PJG"/>
                         <outlet property="closeButton" destination="wxg-Qb-D9U" id="T8m-hf-wQa"/>
                         <outlet property="collectionView" destination="VtW-En-y6v" id="Ax4-fE-dDV"/>
