@@ -37,6 +37,17 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     var model: PaymentReviewModel?
     var paymentProviders: [PaymentProvider] = []
     private var amountToPay = Price(extractionString: "")
+    
+    private var selectedPaymentProvider: PaymentProvider? {
+        didSet {
+            if let provider = selectedPaymentProvider {
+                DispatchQueue.main.async {
+                    self.updateUIWithDefaultPaymentProvider(provider: provider)
+                }
+            }
+        }
+    }
+    
     enum TextFieldType: Int {
         case recipientFieldTag = 1
         case ibanFieldTag
@@ -89,7 +100,8 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             DispatchQueue.main.async { [weak self] in
                 self?.paymentProviders.append(contentsOf: providers)
                 if let paymentProviders = self?.paymentProviders, paymentProviders.count > 0 {
-                    let provider = paymentProviders[0]
+                    let providerId = UserDefaults.standard.string(forKey: "ginihealth.defaultPaymentProviderId")
+                    let provider = paymentProviders.first(where: { $0.id == providerId }) ?? paymentProviders[0]
                     self?.configureBankProviderView(paymentProvider: provider)
                     self?.configurePayButton(paymentProvider: provider)
                 }
@@ -143,8 +155,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         model?.onBankSelection = {[weak self] provider in
             
             DispatchQueue.main.async {
-                self?.configureBankProviderView(paymentProvider: provider)
-                self?.configurePayButton(paymentProvider: provider)
+                self?.updateUIWithDefaultPaymentProvider(provider: provider)
             }
         }
         
@@ -205,12 +216,20 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         let selectProviderTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(selectBankProviderTapped))
         bankProviderButtonView.addGestureRecognizer(selectProviderTapRecognizer)
     }
+    
+    fileprivate func updateUIWithDefaultPaymentProvider(provider: PaymentProvider){
+        self.configureBankProviderView(paymentProvider: provider)
+        self.configurePayButton(paymentProvider: provider)
+    }
 
     fileprivate func presentBankSelectionViewController() {
        
        let availableProviders = self.paymentProviders
         if availableProviders.count > 1 {
             let bankSelectionViewController = BankProviderViewController.instantiate(with: availableProviders)
+            bankSelectionViewController.onSelectedProviderDidChanged = { provider in
+                self.selectedPaymentProvider = provider
+            }
 
             bankSelectionViewController.modalPresentationStyle = .overCurrentContext
             bankSelectionViewController.modalTransitionStyle = .crossDissolve
