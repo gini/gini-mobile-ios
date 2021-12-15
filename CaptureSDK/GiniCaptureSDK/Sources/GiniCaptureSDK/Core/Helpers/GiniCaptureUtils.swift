@@ -38,8 +38,16 @@ public func NSLocalizedStringPreferredFormat(_ key: String,
                                       fallbackKey: String = "",
                                       comment: String,
                                       isCustomizable: Bool = true) -> String {
-    let clientString = NSLocalizedString(key, comment: comment)
-    let fallbackClientString = NSLocalizedString(fallbackKey, comment: comment)
+    var clientString: String
+    var fallbackClientString: String
+    if let localizedResourceName = GiniConfiguration.shared.localizedStringsTableName {
+        clientString = NSLocalizedString(key, tableName: localizedResourceName, comment: comment)
+        fallbackClientString = NSLocalizedString(fallbackKey,tableName: localizedResourceName, comment: comment)
+    } else {
+        clientString = NSLocalizedString(key, comment: comment)
+        fallbackClientString = NSLocalizedString(fallbackKey, comment: comment)
+    }
+        
     let format: String
     if (clientString.lowercased() != key.lowercased() || fallbackClientString.lowercased() != fallbackKey.lowercased())
         && isCustomizable {
