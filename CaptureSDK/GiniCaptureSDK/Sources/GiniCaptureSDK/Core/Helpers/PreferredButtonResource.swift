@@ -36,7 +36,7 @@ class GiniPreferredButtonResource: PreferredButtonResource {
     private let localizedTextComment: String?
     private let localizedConfigEntry: String?
     private let appBundle = Bundle.main
-    private let libBundle = Bundle.module
+    private let libBundle = giniCaptureBundle()
     private var imageSource: ResourceOrigin {
         if let name = imageName {
             if UIImage(named: name, in: appBundle, compatibleWith: nil) != nil {

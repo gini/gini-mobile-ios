@@ -56,14 +56,14 @@ final class PageStateView: UIView {
         case .succeeded:
             backgroundColor = Colors.Gini.springGreen
             icon.image = UIImage.init(named: "successfullUploadIcon",
-                                      in: Bundle.module,
+                                      in: giniCaptureBundle(),
                                       compatibleWith: nil)
             loadingIndicator.stopAnimating()
             
         case .failed:
             backgroundColor = Colors.Gini.crimson
             icon.image = UIImage.init(named: "failureUploadIcon",
-                                      in: Bundle.module,
+                                      in: giniCaptureBundle(),
                                       compatibleWith: nil)
             loadingIndicator.stopAnimating()
         case .loading:

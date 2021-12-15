@@ -15,21 +15,21 @@ final class HelpMenuViewControllerTests: XCTestCase {
     var items: [(text: String, id: Int)] {
         var items = [
             (NSLocalizedString("ginicapture.helpmenu.firstItem",
-                               bundle: Bundle.module,
+                               bundle: giniCaptureBundle(),
                                comment: "help menu first item text"),
              1)
         ]
         
         if GiniConfiguration.shared.shouldShowSupportedFormatsScreen {
             items.append((NSLocalizedString("ginicapture.helpmenu.thirdItem",
-                               bundle: Bundle.module,
+                               bundle: giniCaptureBundle(),
                                comment: "help menu third item text"), 3))
             
         }
         
         if GiniConfiguration.shared.openWithEnabled {
             items.append((NSLocalizedString("ginicapture.helpmenu.secondItem",
-                                            bundle: Bundle.module,
+                                            bundle: giniCaptureBundle(),
                                             comment: "help menu second item text"), 2))
         }
         
