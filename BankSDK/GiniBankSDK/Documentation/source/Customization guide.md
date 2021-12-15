@@ -3,6 +3,8 @@ Customization guide
 
 The Gini Bank SDK components can be customized either through the `GiniBankConfiguration`, the `Localizable.string` file or through the assets. Here you can find a complete guide with the reference to every customizable item.
 
+If you plan to use a custom name for localizable strings, you need to set it in `GiniBankConfiguration.localizedStringsTableName`.
+
 - [Generic components](#generic-components)
 - [Camera screen](#camera-screen)
 - [Review screen](#review-screen)
