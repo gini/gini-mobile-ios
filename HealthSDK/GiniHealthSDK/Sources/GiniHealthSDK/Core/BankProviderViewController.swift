@@ -95,42 +95,13 @@ class BankProviderViewController: UIViewController, UITableViewDelegate, UITable
         providersTableView.heightAnchor.constraint(equalToConstant:
                                                     providersTableView.contentSize.height).isActive = true
     }
-}
-
-class BankTableViewCell: UITableViewCell {
-    @IBOutlet var bankIcon: UIImageView!
-    @IBOutlet var bankName: UILabel!
-    @IBOutlet var selectionIndicator: UIImageView!
-
-    var viewModel: BankTableViewCellViewModel? {
-        didSet {
-            contentView.backgroundColor = UIColor.from(giniColor: GiniHealthConfiguration.shared.bankSelectionScreenBackgroundColor)
-            bankName?.text = viewModel?.name
-            bankName?.textColor = UIColor.from(giniColor: GiniHealthConfiguration.shared.bankSelectionCellTextColor)
-            bankName?.font = GiniHealthConfiguration.shared.customFont.regular
-            bankIcon?.image = viewModel?.icon
-            bankIcon.layer.cornerRadius = GiniHealthConfiguration.shared.bankSelectionCellIconCornerRadius
-        }
-    }
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
+    
+    func saveDefaultPaymentProvider(provider: PaymentProvider){
+        defaults.set(provider.id, forKey: "ginihealth.defaultPaymentProviderId")
     }
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        if(selected) {
-            selectionIndicator.image = UIImageNamedPreferred(named: "selectionIndicator")
-        } else {
-            selectionIndicator.image = nil
-        }
+    func fetchDefaultPaymentProvider() -> PaymentProvider {
+        let providerId = defaults.string(forKey: "ginihealth.defaultPaymentProviderId")
+        return model.providers.first(where: { $0.id == providerId }) ?? model.providers[0]
     }
 }
