@@ -422,8 +422,8 @@ extension ComponentAPICoordinator {
     fileprivate func addCloseButtonIfNeeded(onViewController viewController: UIViewController) {
         if navigationController.viewControllers.isEmpty {
             viewController.navigationItem.leftBarButtonItem =
-                UIBarButtonItem(title: NSLocalizedString("close",
-                                                         comment: "close button text"),
+                UIBarButtonItem(title:
+                                NSLocalizedString("close", tableName: "LocalizableCustomName", comment: "close button text"),
                                 style: .plain,
                                 target: self,
                                 action: #selector(closeComponentAPI))

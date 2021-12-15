@@ -1052,6 +1052,11 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var customGiniErrorLoggerDelegate : GiniCaptureErrorLoggerDelegate?
     
+    /**
+     Should be set if the default name "Localizable.strings" are not used
+     */
+    public var localizedStringsTableName: String?
+    
     public func captureConfiguration() -> GiniConfiguration {
      let configuration = GiniConfiguration()
         
@@ -1180,6 +1185,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.backToMenuButtonResource = self.backToMenuButtonResource
         configuration.nextButtonResource = self.nextButtonResource
         configuration.cancelButtonResource = self.cancelButtonResource
+        configuration.localizedStringsTableName = self.localizedStringsTableName
         
         GiniCapture.setConfiguration(configuration)
         return configuration
@@ -1281,131 +1287,132 @@ public final class GiniBankConfiguration: NSObject {
     }
     
     public func updateConfiguration(withCaptureConfiguration configuration: GiniConfiguration) {
-        let giniPayBankConfiguration = GiniBankConfiguration.shared
-        giniPayBankConfiguration.customDocumentValidations = configuration.customDocumentValidations
+        let giniBankConfiguration = GiniBankConfiguration.shared
+        giniBankConfiguration.customDocumentValidations = configuration.customDocumentValidations
         
-        giniPayBankConfiguration.customFont = configuration.customFont
+        giniBankConfiguration.customFont = configuration.customFont
         
-        giniPayBankConfiguration.debugModeOn = configuration.debugModeOn
+        giniBankConfiguration.debugModeOn = configuration.debugModeOn
         
-        giniPayBankConfiguration.logger = configuration.logger
+        giniBankConfiguration.logger = configuration.logger
         
-        giniPayBankConfiguration.multipageEnabled = configuration.multipageEnabled
+        giniBankConfiguration.multipageEnabled = configuration.multipageEnabled
 
-        giniPayBankConfiguration.navigationBarTintColor = configuration.navigationBarTintColor
-        giniPayBankConfiguration.navigationBarItemTintColor = configuration.navigationBarTintColor
-        giniPayBankConfiguration.navigationBarItemFont = configuration.navigationBarItemFont
-        giniPayBankConfiguration.navigationBarTitleColor = configuration.navigationBarTitleColor
-        giniPayBankConfiguration.navigationBarTitleFont = configuration.navigationBarTitleFont
+        giniBankConfiguration.navigationBarTintColor = configuration.navigationBarTintColor
+        giniBankConfiguration.navigationBarItemTintColor = configuration.navigationBarTintColor
+        giniBankConfiguration.navigationBarItemFont = configuration.navigationBarItemFont
+        giniBankConfiguration.navigationBarTitleColor = configuration.navigationBarTitleColor
+        giniBankConfiguration.navigationBarTitleFont = configuration.navigationBarTitleFont
         
-        giniPayBankConfiguration.documentPickerNavigationBarTintColor = configuration.documentPickerNavigationBarTintColor
+        giniBankConfiguration.documentPickerNavigationBarTintColor = configuration.documentPickerNavigationBarTintColor
 
-        giniPayBankConfiguration.noticeInformationBackgroundColor = configuration.noticeInformationBackgroundColor
+        giniBankConfiguration.noticeInformationBackgroundColor = configuration.noticeInformationBackgroundColor
         
-        giniPayBankConfiguration.noticeInformationTextColor = configuration.noticeInformationTextColor
-        giniPayBankConfiguration.noticeErrorBackgroundColor = configuration.noticeErrorBackgroundColor
-        giniPayBankConfiguration.noticeErrorTextColor = configuration.noticeErrorTextColor
+        giniBankConfiguration.noticeInformationTextColor = configuration.noticeInformationTextColor
+        giniBankConfiguration.noticeErrorBackgroundColor = configuration.noticeErrorBackgroundColor
+        giniBankConfiguration.noticeErrorTextColor = configuration.noticeErrorTextColor
         
-        giniPayBankConfiguration.openWithEnabled = configuration.openWithEnabled
+        giniBankConfiguration.openWithEnabled = configuration.openWithEnabled
         
-        giniPayBankConfiguration.qrCodeScanningEnabled = configuration.qrCodeScanningEnabled
+        giniBankConfiguration.qrCodeScanningEnabled = configuration.qrCodeScanningEnabled
         
-        giniPayBankConfiguration.statusBarStyle = configuration.statusBarStyle
+        giniBankConfiguration.statusBarStyle = configuration.statusBarStyle
         
-        giniPayBankConfiguration.cameraNotAuthorizedTextColor = configuration.cameraNotAuthorizedTextColor
-        giniPayBankConfiguration.cameraNotAuthorizedButtonTitleColor = configuration.cameraNotAuthorizedButtonTitleColor
-        giniPayBankConfiguration.cameraPreviewCornerGuidesColor = configuration.cameraPreviewCornerGuidesColor
+        giniBankConfiguration.cameraNotAuthorizedTextColor = configuration.cameraNotAuthorizedTextColor
+        giniBankConfiguration.cameraNotAuthorizedButtonTitleColor = configuration.cameraNotAuthorizedButtonTitleColor
+        giniBankConfiguration.cameraPreviewCornerGuidesColor = configuration.cameraPreviewCornerGuidesColor
         
-        giniPayBankConfiguration.fileImportSupportedTypes = configuration.fileImportSupportedTypes
-        giniPayBankConfiguration.fileImportToolTipBackgroundColor = configuration.fileImportToolTipBackgroundColor
-        giniPayBankConfiguration.fileImportToolTipTextColor = configuration.fileImportToolTipTextColor
-        giniPayBankConfiguration.fileImportToolTipCloseButtonColor = configuration.fileImportToolTipCloseButtonColor
+        giniBankConfiguration.fileImportSupportedTypes = configuration.fileImportSupportedTypes
+        giniBankConfiguration.fileImportToolTipBackgroundColor = configuration.fileImportToolTipBackgroundColor
+        giniBankConfiguration.fileImportToolTipTextColor = configuration.fileImportToolTipTextColor
+        giniBankConfiguration.fileImportToolTipCloseButtonColor = configuration.fileImportToolTipCloseButtonColor
         
-        giniPayBankConfiguration.toolTipOpaqueBackgroundStyle = configuration.toolTipOpaqueBackgroundStyle
+        giniBankConfiguration.toolTipOpaqueBackgroundStyle = configuration.toolTipOpaqueBackgroundStyle
 
-        giniPayBankConfiguration.galleryPickerItemSelectedBackgroundCheckColor = configuration.galleryPickerItemSelectedBackgroundCheckColor
-        giniPayBankConfiguration.galleryScreenBackgroundColor = configuration.galleryScreenBackgroundColor
+        giniBankConfiguration.galleryPickerItemSelectedBackgroundCheckColor = configuration.galleryPickerItemSelectedBackgroundCheckColor
+        giniBankConfiguration.galleryScreenBackgroundColor = configuration.galleryScreenBackgroundColor
         
-        giniPayBankConfiguration.flashToggleEnabled = configuration.flashToggleEnabled
-        giniPayBankConfiguration.flashOnByDefault = configuration.flashOnByDefault
+        giniBankConfiguration.flashToggleEnabled = configuration.flashToggleEnabled
+        giniBankConfiguration.flashOnByDefault = configuration.flashOnByDefault
         
-        giniPayBankConfiguration.imagesStackIndicatorLabelTextcolor = configuration.imagesStackIndicatorLabelTextcolor
+        giniBankConfiguration.imagesStackIndicatorLabelTextcolor = configuration.imagesStackIndicatorLabelTextcolor
         
-        giniPayBankConfiguration.navigationBarCameraTitleCloseButton = configuration.navigationBarCameraTitleCloseButton
-        giniPayBankConfiguration.navigationBarCameraTitleHelpButton = configuration.navigationBarCameraTitleHelpButton
+        giniBankConfiguration.navigationBarCameraTitleCloseButton = configuration.navigationBarCameraTitleCloseButton
+        giniBankConfiguration.navigationBarCameraTitleHelpButton = configuration.navigationBarCameraTitleHelpButton
         
-        giniPayBankConfiguration.qrCodePopupButtonColor = configuration.qrCodePopupButtonColor
-        giniPayBankConfiguration.qrCodePopupTextColor = configuration.qrCodePopupTextColor
-        giniPayBankConfiguration.qrCodePopupBackgroundColor = configuration.qrCodePopupBackgroundColor
+        giniBankConfiguration.qrCodePopupButtonColor = configuration.qrCodePopupButtonColor
+        giniBankConfiguration.qrCodePopupTextColor = configuration.qrCodePopupTextColor
+        giniBankConfiguration.qrCodePopupBackgroundColor = configuration.qrCodePopupBackgroundColor
         
-        giniPayBankConfiguration.navigationBarOnboardingTitleContinueButton = configuration.navigationBarOnboardingTitleContinueButton
+        giniBankConfiguration.navigationBarOnboardingTitleContinueButton = configuration.navigationBarOnboardingTitleContinueButton
         
-        giniPayBankConfiguration.onboardingPageIndicatorColor = configuration.onboardingPageIndicatorColor
-        giniPayBankConfiguration.onboardingCurrentPageIndicatorColor = configuration.onboardingCurrentPageIndicatorColor
-        giniPayBankConfiguration.onboardingCurrentPageIndicatorAlpha = configuration.onboardingCurrentPageIndicatorAlpha
-        giniPayBankConfiguration.onboardingShowAtLaunch = configuration.onboardingShowAtLaunch
-        giniPayBankConfiguration.onboardingShowAtFirstLaunch = configuration.onboardingShowAtFirstLaunch
-        giniPayBankConfiguration.onboardingTextColor = configuration.onboardingTextColor
-        giniPayBankConfiguration.onboardingScreenBackgroundColor = configuration.onboardingScreenBackgroundColor
-        giniPayBankConfiguration.onboardingPages = configuration.onboardingPages
+        giniBankConfiguration.onboardingPageIndicatorColor = configuration.onboardingPageIndicatorColor
+        giniBankConfiguration.onboardingCurrentPageIndicatorColor = configuration.onboardingCurrentPageIndicatorColor
+        giniBankConfiguration.onboardingCurrentPageIndicatorAlpha = configuration.onboardingCurrentPageIndicatorAlpha
+        giniBankConfiguration.onboardingShowAtLaunch = configuration.onboardingShowAtLaunch
+        giniBankConfiguration.onboardingShowAtFirstLaunch = configuration.onboardingShowAtFirstLaunch
+        giniBankConfiguration.onboardingTextColor = configuration.onboardingTextColor
+        giniBankConfiguration.onboardingScreenBackgroundColor = configuration.onboardingScreenBackgroundColor
+        giniBankConfiguration.onboardingPages = configuration.onboardingPages
         
-        giniPayBankConfiguration.navigationBarReviewTitleBackButton = configuration.navigationBarReviewTitleBackButton
-        giniPayBankConfiguration.navigationBarReviewTitleCloseButton = configuration.navigationBarReviewTitleCloseButton
-        giniPayBankConfiguration.navigationBarReviewTitleContinueButton = configuration.navigationBarReviewTitleContinueButton
+        giniBankConfiguration.navigationBarReviewTitleBackButton = configuration.navigationBarReviewTitleBackButton
+        giniBankConfiguration.navigationBarReviewTitleCloseButton = configuration.navigationBarReviewTitleCloseButton
+        giniBankConfiguration.navigationBarReviewTitleContinueButton = configuration.navigationBarReviewTitleContinueButton
         
-        giniPayBankConfiguration.reviewBottomViewBackgroundColor = configuration.reviewBottomViewBackgroundColor
-        giniPayBankConfiguration.reviewTextBottomFont = configuration.reviewTextBottomFont
-        giniPayBankConfiguration.reviewTextBottomColor = configuration.reviewTextBottomColor
+        giniBankConfiguration.reviewBottomViewBackgroundColor = configuration.reviewBottomViewBackgroundColor
+        giniBankConfiguration.reviewTextBottomFont = configuration.reviewTextBottomFont
+        giniBankConfiguration.reviewTextBottomColor = configuration.reviewTextBottomColor
         
-        giniPayBankConfiguration.indicatorCircleColor = configuration.indicatorCircleColor
+        giniBankConfiguration.indicatorCircleColor = configuration.indicatorCircleColor
         
-        giniPayBankConfiguration.multipagePagesContainerAndToolBarColor = configuration.multipagePagesContainerAndToolBarColor
-        giniPayBankConfiguration.multipageToolbarItemsColor = configuration.multipageToolbarItemsColor
-        giniPayBankConfiguration.multipagePageIndicatorColor = configuration.multipagePageIndicatorColor
-        giniPayBankConfiguration.multipagePageSelectedIndicatorColor = configuration.multipagePageSelectedIndicatorColor
-        giniPayBankConfiguration.multipagePageBackgroundColor = configuration.multipagePageBackgroundColor
-        giniPayBankConfiguration.multipageDraggableIconColor = configuration.multipageDraggableIconColor
-        giniPayBankConfiguration.multipageToolTipOpaqueBackgroundStyle = configuration.multipageToolTipOpaqueBackgroundStyle
+        giniBankConfiguration.multipagePagesContainerAndToolBarColor = configuration.multipagePagesContainerAndToolBarColor
+        giniBankConfiguration.multipageToolbarItemsColor = configuration.multipageToolbarItemsColor
+        giniBankConfiguration.multipagePageIndicatorColor = configuration.multipagePageIndicatorColor
+        giniBankConfiguration.multipagePageSelectedIndicatorColor = configuration.multipagePageSelectedIndicatorColor
+        giniBankConfiguration.multipagePageBackgroundColor = configuration.multipagePageBackgroundColor
+        giniBankConfiguration.multipageDraggableIconColor = configuration.multipageDraggableIconColor
+        giniBankConfiguration.multipageToolTipOpaqueBackgroundStyle = configuration.multipageToolTipOpaqueBackgroundStyle
         
-        giniPayBankConfiguration.analysisLoadingIndicatorColor = configuration.analysisLoadingIndicatorColor
-        giniPayBankConfiguration.analysisPDFInformationBackgroundColor = configuration.analysisPDFInformationBackgroundColor
-        giniPayBankConfiguration.analysisPDFInformationTextColor = configuration.analysisPDFInformationTextColor
+        giniBankConfiguration.analysisLoadingIndicatorColor = configuration.analysisLoadingIndicatorColor
+        giniBankConfiguration.analysisPDFInformationBackgroundColor = configuration.analysisPDFInformationBackgroundColor
+        giniBankConfiguration.analysisPDFInformationTextColor = configuration.analysisPDFInformationTextColor
         
-        giniPayBankConfiguration.navigationBarAnalysisTitleBackButton = configuration.navigationBarAnalysisTitleBackButton
+        giniBankConfiguration.navigationBarAnalysisTitleBackButton = configuration.navigationBarAnalysisTitleBackButton
         
-        giniPayBankConfiguration.helpScreenBackgroundColor = configuration.helpScreenBackgroundColor
-        giniPayBankConfiguration.helpScreenCellsBackgroundColor = configuration.helpScreenCellsBackgroundColor
+        giniBankConfiguration.helpScreenBackgroundColor = configuration.helpScreenBackgroundColor
+        giniBankConfiguration.helpScreenCellsBackgroundColor = configuration.helpScreenCellsBackgroundColor
         
-        giniPayBankConfiguration.navigationBarHelpMenuTitleBackToCameraButton = configuration.navigationBarHelpMenuTitleBackToCameraButton
-        giniPayBankConfiguration.navigationBarHelpScreenTitleBackToMenuButton = configuration.navigationBarHelpScreenTitleBackToMenuButton
+        giniBankConfiguration.navigationBarHelpMenuTitleBackToCameraButton = configuration.navigationBarHelpMenuTitleBackToCameraButton
+        giniBankConfiguration.navigationBarHelpScreenTitleBackToMenuButton = configuration.navigationBarHelpScreenTitleBackToMenuButton
         
-        giniPayBankConfiguration.shouldShowSupportedFormatsScreen = configuration.shouldShowSupportedFormatsScreen
+        giniBankConfiguration.shouldShowSupportedFormatsScreen = configuration.shouldShowSupportedFormatsScreen
         
-        giniPayBankConfiguration.nonSupportedFormatsIconColor = configuration.nonSupportedFormatsIconColor
+        giniBankConfiguration.nonSupportedFormatsIconColor = configuration.nonSupportedFormatsIconColor
         
-        giniPayBankConfiguration.supportedFormatsIconColor = configuration.supportedFormatsIconColor
+        giniBankConfiguration.supportedFormatsIconColor = configuration.supportedFormatsIconColor
         
-        giniPayBankConfiguration.openWithAppNameForTexts = configuration.openWithAppNameForTexts
+        giniBankConfiguration.openWithAppNameForTexts = configuration.openWithAppNameForTexts
         
-        giniPayBankConfiguration.stepIndicatorColor = configuration.stepIndicatorColor
+        giniBankConfiguration.stepIndicatorColor = configuration.stepIndicatorColor
         
-        giniPayBankConfiguration.noResultsBottomButtonColor = configuration.noResultsBottomButtonColor
+        giniBankConfiguration.noResultsBottomButtonColor = configuration.noResultsBottomButtonColor
         
-        giniPayBankConfiguration.noResultsWarningContainerIconColor = configuration.noResultsWarningContainerIconColor
+        giniBankConfiguration.noResultsWarningContainerIconColor = configuration.noResultsWarningContainerIconColor
         
-        giniPayBankConfiguration.shouldShowDragAndDropTutorial = configuration.shouldShowDragAndDropTutorial
+        giniBankConfiguration.shouldShowDragAndDropTutorial = configuration.shouldShowDragAndDropTutorial
         
-        giniPayBankConfiguration.customMenuItems = configuration.customMenuItems
+        giniBankConfiguration.customMenuItems = configuration.customMenuItems
         
-        giniPayBankConfiguration.giniErrorLoggerIsOn = configuration.giniErrorLoggerIsOn
-        giniPayBankConfiguration.customGiniErrorLoggerDelegate = configuration.customGiniErrorLoggerDelegate
+        giniBankConfiguration.giniErrorLoggerIsOn = configuration.giniErrorLoggerIsOn
+        giniBankConfiguration.customGiniErrorLoggerDelegate = configuration.customGiniErrorLoggerDelegate
+        giniBankConfiguration.localizedStringsTableName = configuration.localizedStringsTableName
         
         // Undocumented--Xamarin only
-        giniPayBankConfiguration.closeButtonResource = configuration.closeButtonResource
-        giniPayBankConfiguration.helpButtonResource = configuration.helpButtonResource
-        giniPayBankConfiguration.backToCameraButtonResource = configuration.helpButtonResource
-        giniPayBankConfiguration.backToMenuButtonResource = configuration.backToMenuButtonResource
-        giniPayBankConfiguration.nextButtonResource = configuration.nextButtonResource
-        giniPayBankConfiguration.cancelButtonResource = configuration.cancelButtonResource
+        giniBankConfiguration.closeButtonResource = configuration.closeButtonResource
+        giniBankConfiguration.helpButtonResource = configuration.helpButtonResource
+        giniBankConfiguration.backToCameraButtonResource = configuration.helpButtonResource
+        giniBankConfiguration.backToMenuButtonResource = configuration.backToMenuButtonResource
+        giniBankConfiguration.nextButtonResource = configuration.nextButtonResource
+        giniBankConfiguration.cancelButtonResource = configuration.cancelButtonResource
     }
 }
