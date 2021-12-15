@@ -10,17 +10,35 @@ import Foundation
 import GiniHealthAPILibrary
 import UIKit
 /**
- View model class for review screen
+ View model class for bank selection screen
   */
 public class BankProviderViewModel: NSObject {
 
-    var onBankSelection: () -> Void = {}
+    var onBankSelection: (_ provider: PaymentProvider) -> Void = { _ in }
+    var reloadTableViewClosure: () -> Void = {}
 
-    var providers: PaymentProviders = []
+    var providers: PaymentProviders = [] {
+        didSet {
+            var vms = [BankTableViewCellViewModel]()
+            for provider in providers {
+                let vm = BankTableViewCellViewModel(paymentProvider: provider)
+                vms.append(vm)
+            }
+            cellViewModels.append(contentsOf: vms)
+        }
+    }
+    
+    var selectedPaymentProvider: PaymentProvider? {
+        didSet {
+            if let provider = selectedPaymentProvider {
+                self.onBankSelection(provider)
+            }
+        }
+    }
 
     private var cellViewModels = [BankTableViewCellViewModel]() {
         didSet {
-            //self.reloadCollectionViewClosure()
+            self.reloadTableViewClosure()
         }
     }
 
@@ -29,7 +47,7 @@ public class BankProviderViewModel: NSObject {
     }
 
     func getCellViewModel(at indexPath: IndexPath) -> BankTableViewCellViewModel {
-        return cellViewModels[indexPath.section]
+        return cellViewModels[indexPath.row]
     }
 
 }
