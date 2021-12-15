@@ -14,7 +14,7 @@ Payment functionality
 <center><img src="img/definingCustomUrl.png" height="200"/></center>
 </br>
 
-#### GiniBankAPI initialization
+## GiniBankAPI initialization
 
 If you want to use a transparent proxy with your own authentication you can specify your own domain and add `AlternativeTokenSource` protocol implementation:
 
