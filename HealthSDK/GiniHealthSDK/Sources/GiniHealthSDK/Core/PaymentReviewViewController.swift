@@ -11,7 +11,6 @@ import GiniHealthAPILibrary
 public final class PaymentReviewViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet var pageControl: UIPageControl!
     @IBOutlet weak var pageControlHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var collectionViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet var recipientField: UITextField!
     @IBOutlet var ibanField: UITextField!
     @IBOutlet var amountField: UITextField!
@@ -217,14 +216,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             bankSelectionViewController.modalTransitionStyle = .crossDissolve
             present(bankSelectionViewController, animated: true)
         }
-    }
-    
-    @objc func selectBankProviderTapped() {
-        bankProviderButtonView.alpha = 0.5
-        UIView.animate(withDuration: 0.5) {
-            self.bankProviderButtonView.alpha = 1.0
-        }
-        presentBankSelectionViewController()
     }
 
     fileprivate func configurePayButton(paymentProvider: PaymentProvider) {
@@ -506,6 +497,14 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     // MARK: - IBAction
+    
+    @objc func selectBankProviderTapped() {
+        bankProviderButtonView.alpha = 0.5
+        UIView.animate(withDuration: 0.5) {
+            self.bankProviderButtonView.alpha = 1.0
+        }
+        presentBankSelectionViewController()
+    }
     
     @IBAction func payButtonClicked(_ sender: Any) {
         view.endEditing(true)
