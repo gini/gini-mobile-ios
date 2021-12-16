@@ -528,19 +528,23 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     @IBAction func payButtonClicked(_ sender: Any) {
         view.endEditing(true)
         validateAllInputFields()
-        
-        //check if no errors labels are shown
+
+        // check if no errors labels are shown
         if (paymentInputFieldsErrorLabels.allSatisfy { $0.isHidden }) {
             
-            if let selectedPaymentProvider = paymentProviders.first, !amountField.isReallyEmpty, let amountText = amountToPay?.extractionString
-             {
-                let paymentInfo = PaymentInfo(recipient: recipientField.text ?? "", iban: ibanField.text ?? "", bic: "", amount: amountText, purpose: usageField.text ?? "", paymentProviderScheme: selectedPaymentProvider.appSchemeIOS, paymentProviderId: selectedPaymentProvider.id)
+            // check for the 1st run where no provider where selected and saved yet
+            if self.selectedPaymentProvider == nil {
+                self.selectedPaymentProvider = paymentProviders.first
+            }
+            if let selectedProvider = selectedPaymentProvider, !amountField.isReallyEmpty, let amountText = amountToPay?.extractionString
+            {
+                let paymentInfo = PaymentInfo(recipient: recipientField.text ?? "", iban: ibanField.text ?? "", bic: "", amount: amountText, purpose: usageField.text ?? "", paymentProviderScheme: selectedProvider.appSchemeIOS, paymentProviderId: selectedProvider.id)
                 model?.createPaymentRequest(paymentInfo: paymentInfo)
                 let paymentRecipientExtraction = Extraction(box: nil, candidates: "", entity: "text", value: recipientField.text ?? "", name: "paymentRecipient")
                 let ibanExtraction = Extraction(box: nil, candidates: "", entity: "iban", value: paymentInfo.iban, name: "iban")
                 let referenceExtraction = Extraction(box: nil, candidates: "", entity: "reference", value: paymentInfo.purpose, name: "reference")
                 let amoutToPayExtraction = Extraction(box: nil, candidates: "", entity: "amount", value: paymentInfo.amount, name: "amountToPay")
-                let updatedExtractions = [paymentRecipientExtraction, ibanExtraction, referenceExtraction,amoutToPayExtraction ]
+                let updatedExtractions = [paymentRecipientExtraction, ibanExtraction, referenceExtraction, amoutToPayExtraction]
                 model?.sendFeedback(updatedExtractions: updatedExtractions)
             }
         }
