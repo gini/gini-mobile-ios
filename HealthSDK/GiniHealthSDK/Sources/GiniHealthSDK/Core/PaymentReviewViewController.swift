@@ -210,11 +210,11 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         if let templateImage = UIImageNamedPreferred(named: "editIcon"), self.paymentProviders.count > 1 {
             bankProviderEditIcon.image = templateImage.withRenderingMode(.alwaysTemplate)
             bankProviderEditIcon.tintColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonEditIconColor)
+            let selectProviderTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(selectBankProviderTapped))
+            bankProviderButtonView.addGestureRecognizer(selectProviderTapRecognizer)
         }
         bankProviderLabel.font = giniHealthConfiguration.customFont.regular
 
-        let selectProviderTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(selectBankProviderTapped))
-        bankProviderButtonView.addGestureRecognizer(selectProviderTapRecognizer)
     }
     
     fileprivate func updateUIWithDefaultPaymentProvider(provider: PaymentProvider){
