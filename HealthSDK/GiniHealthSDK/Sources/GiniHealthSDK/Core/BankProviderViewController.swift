@@ -16,7 +16,7 @@ class BankProviderViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var scrollDownIndicatorView: UIView!
 
-    @IBOutlet var providersTableView: UITableView!
+    @IBOutlet var providersTableView: SelfSizingTableView!
     private var viewTranslation = CGPoint(x: 0, y: 0)
     private let cellIdentifier = "bankTableViewCellIdentifier"
     private let defaultProviderIdKey = "ginihealth.defaultPaymentProviderId"
@@ -61,7 +61,6 @@ class BankProviderViewController: UIViewController, UITableViewDelegate, UITable
         providersTableView.separatorColor = UIColor.from(giniColor: giniHealthConfiguration.bankSelectionCellSeparatorColor)
         
         providersTableView.reloadData()
-        providersTableView.layoutIfNeeded()
 
         containerView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismiss)))
 
@@ -119,12 +118,6 @@ class BankProviderViewController: UIViewController, UITableViewDelegate, UITable
         self.onSelectedProviderDidChanged(newProvider)
         self.dismiss(animated: true)
     }
-
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        providersTableView.heightAnchor.constraint(equalToConstant:
-                                                    providersTableView.contentSize.height).isActive = true
-    }
     
     func saveDefaultPaymentProvider(provider: PaymentProvider){
         defaults.set(provider.id, forKey: defaultProviderIdKey)
@@ -133,5 +126,19 @@ class BankProviderViewController: UIViewController, UITableViewDelegate, UITable
     func fetchDefaultPaymentProvider() -> PaymentProvider {
         let providerId = defaults.string(forKey: defaultProviderIdKey)
         return model.providers.first(where: { $0.id == providerId }) ?? model.providers[0]
+    }
+}
+
+class SelfSizingTableView: UITableView {
+    override var contentSize: CGSize {
+        didSet {
+            invalidateIntrinsicContentSize()
+            setNeedsLayout()
+        }
+    }
+
+    override var intrinsicContentSize: CGSize {
+        let height = min(.infinity, contentSize.height)
+        return CGSize(width: contentSize.width, height: height)
     }
 }
