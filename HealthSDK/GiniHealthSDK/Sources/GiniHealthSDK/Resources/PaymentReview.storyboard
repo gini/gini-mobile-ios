@@ -215,7 +215,7 @@
                                                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
-                                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="editIcon" translatesAutoresizingMaskIntoConstraints="NO" id="UBV-zg-FCh">
+                                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UBV-zg-FCh">
                                                                                 <rect key="frame" x="167" y="4" width="12" height="12"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="width" constant="12" id="MCG-iw-BMk"/>
@@ -334,7 +334,6 @@
     </scenes>
     <resources>
         <image name="bank" width="20" height="20"/>
-        <image name="editIcon" width="12.5" height="12.5"/>
         <image name="paymentReviewCloseButton" width="48" height="48"/>
     </resources>
 </document>
