@@ -13,7 +13,7 @@ public extension String {
         return formatter.number(from: self)
     }
     
-    static func hexFrom(string: String) -> String {
-       return "#FF" + string
+    static func rgbaHexFrom(rgbHex: String) -> String {
+       return "#\(rgbHex)FF"
    }
 }
