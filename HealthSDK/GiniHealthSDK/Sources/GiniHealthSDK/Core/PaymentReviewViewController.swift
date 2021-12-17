@@ -238,14 +238,14 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
 
     fileprivate func configurePayButton(paymentProvider: PaymentProvider) {
-        let backgroundColorString = String.hexFrom(string: paymentProvider.colors.background)
+        let backgroundColorString = String.rgbaHexFrom(rgbHex: paymentProvider.colors.background)
         if let backgroundHexColor = UIColor(hex: backgroundColorString) {
             payButton.defaultBackgroundColor  = UIColor.from(giniColor: GiniColor(lightModeColor: backgroundHexColor, darkModeColor: backgroundHexColor))
         }
         payButton.disabledBackgroundColor = .lightGray
         payButton.layer.cornerRadius = giniHealthConfiguration.payButtonCornerRadius
         payButton.titleLabel?.font = giniHealthConfiguration.customFont.regular
-        let textColorString = String.hexFrom(string: paymentProvider.colors.text)
+        let textColorString = String.rgbaHexFrom(rgbHex: paymentProvider.colors.text)
         if let textHexColor = UIColor(hex: textColorString) {
             payButton.tintColor = UIColor.from(giniColor: GiniColor(lightModeColor: textHexColor, darkModeColor: textHexColor))
         }
