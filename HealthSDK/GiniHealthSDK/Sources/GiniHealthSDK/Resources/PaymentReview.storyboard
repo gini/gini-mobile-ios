@@ -203,14 +203,14 @@
                                                                         <rect key="frame" x="0.0" y="0.0" width="163.66666666666666" height="42"/>
                                                                         <subviews>
                                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bank" translatesAutoresizingMaskIntoConstraints="NO" id="ROx-mF-STW">
-                                                                                <rect key="frame" x="8" y="11" width="20" height="20"/>
+                                                                                <rect key="frame" x="12" y="11" width="20" height="20"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="width" constant="20" id="IVB-KM-Fwl"/>
                                                                                     <constraint firstAttribute="height" constant="20" id="dnT-5r-giw"/>
                                                                                 </constraints>
                                                                             </imageView>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="natural" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gKK-IC-PHC">
-                                                                                <rect key="frame" x="43" y="14" width="55.666666666666657" height="14.333333333333336"/>
+                                                                                <rect key="frame" x="44" y="14" width="55.666666666666657" height="14.333333333333336"/>
                                                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                 <nil key="highlightedColor"/>
@@ -225,8 +225,8 @@
                                                                         </subviews>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <constraints>
-                                                                            <constraint firstItem="ROx-mF-STW" firstAttribute="leading" secondItem="j0P-vj-5g4" secondAttribute="leading" constant="8" id="43y-qI-xRk"/>
-                                                                            <constraint firstItem="gKK-IC-PHC" firstAttribute="leading" secondItem="ROx-mF-STW" secondAttribute="trailing" constant="15" id="Flm-lZ-qh1"/>
+                                                                            <constraint firstItem="ROx-mF-STW" firstAttribute="leading" secondItem="j0P-vj-5g4" secondAttribute="leading" constant="12" id="43y-qI-xRk"/>
+                                                                            <constraint firstItem="gKK-IC-PHC" firstAttribute="leading" secondItem="ROx-mF-STW" secondAttribute="trailing" constant="12" id="Flm-lZ-qh1"/>
                                                                             <constraint firstItem="UBV-zg-FCh" firstAttribute="top" secondItem="j0P-vj-5g4" secondAttribute="top" constant="4" id="Jdk-CA-i2c"/>
                                                                             <constraint firstAttribute="trailing" secondItem="UBV-zg-FCh" secondAttribute="trailing" constant="4" id="QEx-jn-GZt"/>
                                                                             <constraint firstItem="gKK-IC-PHC" firstAttribute="centerY" secondItem="j0P-vj-5g4" secondAttribute="centerY" id="VgP-Pz-P0k"/>
