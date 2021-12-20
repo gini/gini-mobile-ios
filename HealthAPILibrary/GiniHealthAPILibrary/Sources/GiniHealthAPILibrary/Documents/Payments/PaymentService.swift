@@ -229,31 +229,6 @@ public protocol PaymentServiceProtocol: AnyObject {
 }
 
 extension PaymentService {
-    func paymentProviders2(resourceHandler: ResourceDataHandler<APIResource<[PaymentProviderResponse]>>,
-                          completion: @escaping CompletionResult<PaymentProviders>) {
-        let resource = APIResource<[PaymentProviderResponse]>(method: .paymentProviders, apiDomain: .default, httpMethod: .get)
-        var providers = [PaymentProvider]()
-        resourceHandler(resource, { result in
-            switch result {
-            case let .success(providersResponse):
-                let dispatchGroup = DispatchGroup()
-                for providerResponse in providersResponse {
-                    dispatchGroup.enter()
-                    if let dataImage = Data.init(url: URL(string: providerResponse.iconLocation)){
-                        let provider = PaymentProvider(id: providerResponse.id, name: providerResponse.name, appSchemeIOS: providerResponse.appSchemeIOS, minAppVersion: providerResponse.minAppVersion, colors: providerResponse.colors, iconData: dataImage)
-                    providers.append(provider)
-                }
-                    dispatchGroup.leave()
-                }
-                dispatchGroup.notify(queue: DispatchQueue.global()) {
-                    completion(.success(providers))
-                }
-
-            case let .failure(error):
-                completion(.failure(error))
-            }
-        })
-    }
     
     func paymentProviders(resourceHandler: ResourceDataHandler<APIResource<[PaymentProviderResponse]>>,
                           completion: @escaping CompletionResult<PaymentProviders>) {
@@ -265,7 +240,6 @@ extension PaymentService {
                 let dispatchGroup = DispatchGroup()
                 for providerResponse in providersResponse {
                     dispatchGroup.enter()
-                    
 
                     self.file(urlString: providerResponse.iconLocation) { result in
                         switch result {

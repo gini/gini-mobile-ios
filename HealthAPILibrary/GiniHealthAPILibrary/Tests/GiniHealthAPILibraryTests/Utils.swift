@@ -6,7 +6,7 @@
 //  Copyright © 2018 Gini. All rights reserved.
 //
 
-import Foundation
+import UIKit
 @testable import GiniHealthAPILibrary
 
 func loadFile(withName name: String, ofType type: String) -> Data {
@@ -23,12 +23,12 @@ func load<T: Decodable>(fromFile named: String, type: String) -> T {
     return (try? JSONDecoder().decode(T.self, from: jsonData))!
 }
 
-func loadProviders() -> PaymentProviders {
+func loadProvidersResponse() -> [PaymentProviderResponse] {
     let fileURLPath: String? = Bundle.module
         .path(forResource: "providers", ofType: "json")
     let jsonData = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
     
-    return (try? JSONDecoder().decode(PaymentProviders.self, from: jsonData!))!
+    return (try? JSONDecoder().decode([PaymentProviderResponse].self, from: jsonData!))!
 }
 
 func loadPaymentRequests() -> PaymentRequests {
@@ -44,6 +44,27 @@ func loadProvider() -> PaymentProvider {
         .path(forResource: "provider", ofType: "json")
     let jsonData = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
     return try! JSONDecoder().decode(PaymentProvider.self, from: jsonData!)
+}
+
+func loadProviderResponse() -> PaymentProviderResponse {
+    let fileURLPath: String? = Bundle.module
+        .path(forResource: "provider", ofType: "json")
+    let jsonData = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
+    return try! JSONDecoder().decode(PaymentProviderResponse.self, from: jsonData!)
+}
+
+func loadProviders() -> PaymentProviders {
+    var providers: PaymentProviders = []
+    let fileURLPath: String? = Bundle.module
+        .path(forResource: "providers", ofType: "json")
+    let jsonData = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
+    let providersResponse = try! JSONDecoder().decode([PaymentProviderResponse].self, from: jsonData!)
+    for providerResponse in providersResponse {
+       let imageData = UIImage(named: "Gini-Test-Payment-Provider", in: Bundle.module, compatibleWith: nil)?.pngData()
+        let provider = PaymentProvider(id: providerResponse.id, name: providerResponse.name, appSchemeIOS: providerResponse.appSchemeIOS, minAppVersion: providerResponse.minAppVersion, colors: providerResponse.colors, iconData: imageData ?? Data())
+            providers.append(provider)
+        }
+    return providers
 }
 
 func loadPaymentRequest() -> PaymentRequest {
