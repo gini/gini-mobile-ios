@@ -77,7 +77,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         super.viewDidLoad()
         subscribeOnNotifications()
         dismissKeyboardOnTap()
-        congifureUI()
+        configureUI()
         setupViewModel()
     }
     
@@ -180,7 +180,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     // MARK: - congifureUI
 
-    fileprivate func congifureUI() {
+    fileprivate func configureUI() {
         configureScreenBackgroundColor()
         configureCollectionView()
         configurePaymentInputFields()
