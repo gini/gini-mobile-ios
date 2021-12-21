@@ -32,6 +32,10 @@ class BankProviderViewController: UIViewController, UITableViewDelegate, UITable
         setupViewModel()
         configureUI()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        animatePopupView()
+    }
     
     func setupViewModel() {
         model.onBankSelection = { [weak self] provider in
@@ -69,13 +73,23 @@ class BankProviderViewController: UIViewController, UITableViewDelegate, UITable
         viewTranslation = sender.translation(in: view)
         let screenSize = UIScreen.main.bounds.size
         UIView.animate(withDuration: 0.5,
-                       delay: 0, usingSpringWithDamping: 0.7,
+                       delay: 0, usingSpringWithDamping: 1.0,
                        initialSpringVelocity: 1.0,
                        options: .curveEaseInOut, animations: {
                            self.backgroundView.alpha = 0
                            self.containerView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: self.containerView.frame.height)
                        }, completion: nil)
         dismiss(animated: true, completion: nil)
+    }
+        
+    func animatePopupView() {
+        let screenSize = UIScreen.main.bounds.size
+        UIView.animate(withDuration: 0.5,
+                         delay: 0, usingSpringWithDamping: 1.0,
+                         initialSpringVelocity: 1.0,
+                         options: .curveEaseInOut, animations: {
+            self.containerView.frame = CGRect(x: 0, y: screenSize.height - self.containerView.frame.height, width: screenSize.width, height: self.containerView.frame.height)
+          }, completion: nil)
     }
 
     public static func instantiate(with providers: PaymentProviders) -> BankProviderViewController {

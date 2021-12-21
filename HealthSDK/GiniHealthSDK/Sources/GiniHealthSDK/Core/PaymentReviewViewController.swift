@@ -186,6 +186,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         configurePaymentInputFields()
         configurePageControl()
         configureCloseButton()
+        configurePayButtonInitialState()
         hideErrorLabels()
         fillInInputFields()
         addDoneButtonForNumPad(amountField)
@@ -230,7 +231,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             bankSelectionViewController.onSelectedProviderDidChanged = { provider in
                 self.selectedPaymentProvider = provider
             }
-
             bankSelectionViewController.modalPresentationStyle = .overCurrentContext
             bankSelectionViewController.modalTransitionStyle = .crossDissolve
             present(bankSelectionViewController, animated: true)
@@ -238,17 +238,21 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
 
     fileprivate func configurePayButton(paymentProvider: PaymentProvider) {
+        payButton.isEnabled = true
         let backgroundColorString = String.rgbaHexFrom(rgbHex: paymentProvider.colors.background)
         if let backgroundHexColor = UIColor(hex: backgroundColorString) {
             payButton.defaultBackgroundColor  = UIColor.from(giniColor: GiniColor(lightModeColor: backgroundHexColor, darkModeColor: backgroundHexColor))
         }
-        payButton.disabledBackgroundColor = .lightGray
-        payButton.layer.cornerRadius = giniHealthConfiguration.payButtonCornerRadius
-        payButton.titleLabel?.font = giniHealthConfiguration.customFont.regular
         let textColorString = String.rgbaHexFrom(rgbHex: paymentProvider.colors.text)
         if let textHexColor = UIColor(hex: textColorString) {
             payButton.tintColor = UIColor.from(giniColor: GiniColor(lightModeColor: textHexColor, darkModeColor: textHexColor))
         }
+    }
+    fileprivate func configurePayButtonInitialState() {
+        //payButton.disabledBackgroundColor = .lightGray
+        payButton.isEnabled = false
+        payButton.layer.cornerRadius = giniHealthConfiguration.payButtonCornerRadius
+        payButton.titleLabel?.font = giniHealthConfiguration.customFont.regular
     }
     
     fileprivate func configurePaymentInputFields() {
@@ -443,7 +447,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     fileprivate func disablePayButtonIfNeeded() {
-        payButton.isEnabled = paymentInputFields.allSatisfy { !$0.isReallyEmpty }
+        payButton.isEnabled = paymentInputFields.allSatisfy { !$0.isReallyEmpty } && !paymentProviders.isEmpty
     }
 
 
