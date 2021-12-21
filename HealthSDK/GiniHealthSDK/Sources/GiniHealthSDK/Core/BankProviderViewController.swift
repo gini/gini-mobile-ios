@@ -63,15 +63,18 @@ class BankProviderViewController: UIViewController, UITableViewDelegate, UITable
         providersTableView.reloadData()
 
         containerView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismiss)))
-
     }
     
     @objc func handleDismiss(sender: UIPanGestureRecognizer) {
         viewTranslation = sender.translation(in: view)
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .transitionFlipFromBottom, animations: {
-            self.view.transform = CGAffineTransform(translationX: 0, y: self.viewTranslation.y)
-            self.backgroundView.backgroundColor = .clear
-        })
+        let screenSize = UIScreen.main.bounds.size
+        UIView.animate(withDuration: 0.5,
+                       delay: 0, usingSpringWithDamping: 0.7,
+                       initialSpringVelocity: 1.0,
+                       options: .curveEaseInOut, animations: {
+                           self.backgroundView.alpha = 0
+                           self.containerView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: self.containerView.frame.height)
+                       }, completion: nil)
         dismiss(animated: true, completion: nil)
     }
 
