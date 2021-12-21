@@ -46,9 +46,14 @@ public final class GiniHealthConfiguration: NSObject {
     @objc public var inputFieldsContainerBackgroundColor = GiniColor(lightModeColor: UIColor.white, darkModeColor: UIColor.white)
     
     /**
-     Sets the backgroundColor  on the payment review screen for pay button
+     Sets the backgroundColor on the payment review screen for pay button
      */
     @objc public var payButtonBackgroundColor = GiniColor(lightModeColor: UIColor.from(hex:0xFF6800), darkModeColor: UIColor.from(hex:0xFF6800))
+    
+    /**
+     Sets the backgroundColor on the payment review screen for pay button when it's disabled
+     */
+    @objc public var payButtonDisabledBackgroundColor = GiniColor(lightModeColor: UIColor.from(hex:0xCCCFDB), darkModeColor: UIColor.from(hex:0xCCCFDB))
     
     /**
      Sets the text color of the pay button on the payment review screen
@@ -83,17 +88,17 @@ public final class GiniHealthConfiguration: NSObject {
     /**
      Sets the error style color and error text color for the payment input fields on the payment review screen
      */
-    @objc public var paymentInputFieldErrorStyleColor = UIColor.red
+    @objc public var paymentInputFieldErrorStyleColor = GiniColor(lightModeColor: .red, darkModeColor: .red)
     
     /**
      Sets the selection style color for the payment input fields on the payment review screen
      */
-    @objc public var paymentInputFieldSelectionStyleColor = UIColor.blue
+    @objc public var paymentInputFieldSelectionStyleColor = GiniColor(lightModeColor: .blue, darkModeColor: .blue)
     
     /**
      Sets the selection background color for the payment input fields on the payment review screen
      */
-    @objc public var paymentInputFieldSelectionBackgroundColor = UIColor.white
+    @objc public var paymentInputFieldSelectionBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
     
     /**
      Sets the background color of the payment input fields on the payment review screen
