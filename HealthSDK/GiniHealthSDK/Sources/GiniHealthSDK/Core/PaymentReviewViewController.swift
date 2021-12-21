@@ -249,7 +249,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
     }
     fileprivate func configurePayButtonInitialState() {
-        //payButton.disabledBackgroundColor = .lightGray
+        payButton.disabledBackgroundColor = UIColor.from(giniColor: giniHealthConfiguration.payButtonDisabledBackgroundColor)
         payButton.isEnabled = false
         payButton.layer.cornerRadius = giniHealthConfiguration.payButtonCornerRadius
         payButton.titleLabel?.font = giniHealthConfiguration.customFont.regular
@@ -319,7 +319,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             textField.layer.cornerRadius = self.giniHealthConfiguration.paymentInputFieldCornerRadius
             textField.backgroundColor = UIColor.from(giniColor: self.giniHealthConfiguration.paymentInputFieldBackgroundColor)
             textField.layer.borderWidth = self.giniHealthConfiguration.paymentInputFieldErrorStyleBorderWidth
-            textField.layer.borderColor = self.giniHealthConfiguration.paymentInputFieldErrorStyleColor.cgColor
+            textField.layer.borderColor = UIColor.from(giniColor: self.giniHealthConfiguration.paymentInputFieldErrorStyleColor).cgColor
             textField.layer.masksToBounds = true
         }
     }
@@ -327,9 +327,9 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     fileprivate func applySelectionStyle(_ textField: UITextField) {
         UIView.animate(withDuration: 0.3) {
             textField.layer.cornerRadius = self.giniHealthConfiguration.paymentInputFieldCornerRadius
-            textField.backgroundColor = self.giniHealthConfiguration.paymentInputFieldSelectionBackgroundColor
+            textField.backgroundColor = UIColor.from(giniColor: self.giniHealthConfiguration.paymentInputFieldSelectionBackgroundColor)
             textField.layer.borderWidth = self.giniHealthConfiguration.paymentInputFieldSelectionStyleBorderWidth
-            textField.layer.borderColor = self.giniHealthConfiguration.paymentInputFieldSelectionStyleColor.cgColor
+            textField.layer.borderColor = UIColor.from(giniColor: self.giniHealthConfiguration.paymentInputFieldSelectionStyleColor).cgColor
             textField.layer.masksToBounds = true
         }
     }
@@ -474,7 +474,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
         if errorLabel.isHidden {
             errorLabel.isHidden = false
-            errorLabel.textColor = giniHealthConfiguration.paymentInputFieldErrorStyleColor
+            errorLabel.textColor = UIColor.from(giniColor: giniHealthConfiguration.paymentInputFieldErrorStyleColor)
             errorLabel.text = errorMessage
         }
     }
@@ -497,7 +497,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
         if errorLabel.isHidden {
             errorLabel.isHidden = false
-            errorLabel.textColor = giniHealthConfiguration.paymentInputFieldErrorStyleColor
+            errorLabel.textColor = UIColor.from(giniColor: giniHealthConfiguration.paymentInputFieldErrorStyleColor)
             errorLabel.text = errorMessage
         }
     }
