@@ -22,7 +22,7 @@ final class SessionManagerMock: SessionManagerProtocol {
     static let paymentID = "b4bd3e80-7bd1-11e4-95ab-000000000000"
     var documents: [Document] = []
     var providers: [PaymentProvider] = []
-    var provider: PaymentProvider =  loadProvider()
+    var providerResponse: PaymentProviderResponse =  loadProviderResponse()
     var paymentRequests: [PaymentRequest] = []
     var extractionFeedbackBody: Data?
     var logErrorEventBody: Data?
@@ -96,11 +96,13 @@ final class SessionManagerMock: SessionManagerProtocol {
             case .createPaymentRequest:
                 completion(.success(SessionManagerMock.paymentRequestId as! T.ResponseType))
             case .paymentProvider(_):
-                let paymentProvider: PaymentProvider = loadProvider()
-                completion(.success(paymentProvider as! T.ResponseType))
-            case .paymentProviders:
-                let paymentProviders: PaymentProviders = loadProviders()
-                completion(.success(paymentProviders as! T.ResponseType))
+                let providerResponse: PaymentProviderResponse = loadProviderResponse()
+                let imageData = UIImage(named: "Gini-Test-Payment-Provider", in: Bundle.module, compatibleWith: nil)?.pngData()
+                let provider = PaymentProvider(id: providerResponse.id, name: providerResponse.name, appSchemeIOS: providerResponse.appSchemeIOS, minAppVersion: providerResponse.minAppVersion, colors: providerResponse.colors, iconData: imageData ?? Data())
+                completion(.success(provider as! T.ResponseType))
+//            case .paymentProviders:
+//                let paymentProviders: PaymentProviders = loadProviders()
+//                completion(.success(paymentProviders as! T.ResponseType))
             case .paymentRequest(_):
                 let paymentRequest: PaymentRequest = loadPaymentRequest()
                 completion(.success(paymentRequest as! T.ResponseType))

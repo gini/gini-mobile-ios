@@ -128,6 +128,10 @@ public final class PaymentService: PaymentServiceProtocol {
         self.sessionManager = sessionManager
         self.apiDomain = apiDomain
     }
+    
+    public func file(urlString: String, completion: @escaping CompletionResult<Data>){
+        self.file(urlString: urlString, resourceHandler: sessionManager.download, completion: completion)
+    }
 }
 
 public protocol PaymentServiceProtocol: AnyObject {
@@ -225,14 +229,34 @@ public protocol PaymentServiceProtocol: AnyObject {
 }
 
 extension PaymentService {
-    func paymentProviders(resourceHandler: ResourceDataHandler<APIResource<PaymentProviders>>,
+    
+    func paymentProviders(resourceHandler: ResourceDataHandler<APIResource<[PaymentProviderResponse]>>,
                           completion: @escaping CompletionResult<PaymentProviders>) {
-        let resource = APIResource<PaymentProviders>(method: .paymentProviders, apiDomain: .default, httpMethod: .get)
-
+        let resource = APIResource<[PaymentProviderResponse]>(method: .paymentProviders, apiDomain: .default, httpMethod: .get)
+        var providers = [PaymentProvider]()
         resourceHandler(resource, { result in
             switch result {
-            case let .success(providers):
-                completion(.success(providers))
+            case let .success(providersResponse):
+                let dispatchGroup = DispatchGroup()
+                for providerResponse in providersResponse {
+                    dispatchGroup.enter()
+
+                    self.file(urlString: providerResponse.iconLocation) { result in
+                        switch result {
+                        case let .success(imageData):
+                            let provider = PaymentProvider(id: providerResponse.id, name: providerResponse.name, appSchemeIOS: providerResponse.appSchemeIOS, minAppVersion: providerResponse.minAppVersion, colors: providerResponse.colors, iconData: imageData)
+                             providers.append(provider)
+                        case let .failure(error):
+                            completion(.failure(error))
+                        }
+                        dispatchGroup.leave()
+                    }
+                    
+                }
+                dispatchGroup.notify(queue: DispatchQueue.global()) {
+                    completion(.success(providers))
+                }
+
             case let .failure(error):
                 completion(.failure(error))
             }
@@ -343,4 +367,22 @@ extension PaymentService {
             }
         })
     }
+    
+    func file(urlString: String,
+                 resourceHandler: ResourceDataHandler<APIResource<Data>>,
+                 completion: @escaping CompletionResult<Data>) {
+        var resource = APIResource<Data>(method: .file(urlString: urlString), apiDomain: .default, httpMethod: .get)
+        resource.fullUrlString = urlString
+        resourceHandler(resource) { result in
+            switch result {
+            case .success(let data):
+                completion(.success(data))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+            
+        }
+    }
 }
+
+

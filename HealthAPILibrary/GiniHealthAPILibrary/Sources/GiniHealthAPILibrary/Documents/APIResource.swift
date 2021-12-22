@@ -29,6 +29,7 @@ public enum APIDomain {
 }
 
 struct APIResource<T: Decodable>: Resource {
+    var fullUrlString: String?
     
     typealias ResourceMethodType = APIMethod
     typealias ResponseType = T
@@ -121,6 +122,8 @@ struct APIResource<T: Decodable>: Resource {
             return "/paymentRequests/\(id)/payment"
         case .logErrorEvent:
             return "/events/error"
+        case .file(urlString: let urlString):
+            return urlString
         }
     }
     
@@ -134,7 +137,7 @@ struct APIResource<T: Decodable>: Resource {
                                                         subtype: documentType?.name,
                                                         mimeSubtype: mimeSubType).value
             ]
-        case .page, .pagePreview(_, _):
+        case .page, .pagePreview(_, _), .file(_):
             return [:]
         case .paymentProviders, .paymentProvider(_), .paymentRequests(_, _) :
         return ["Accept": ContentType.content(version: apiVersion,

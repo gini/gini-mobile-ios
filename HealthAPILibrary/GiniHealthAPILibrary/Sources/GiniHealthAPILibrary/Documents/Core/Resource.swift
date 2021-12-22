@@ -18,6 +18,7 @@ protocol Resource: Equatable {
     var method: ResourceMethodType { get }
     var authServiceType: AuthServiceType? { get }
     var defaultHeaders: HTTPHeaders { get }
+    var fullUrlString: String? { get }
     
     func parsed(response: HTTPURLResponse, data: Data) throws -> ResponseType
 }
@@ -37,13 +38,16 @@ enum AuthType: String {
 extension Resource {
     
     var url: URL {
-        var urlComponents = URLComponents()
-        urlComponents.scheme = scheme.rawValue
-        urlComponents.host = host
-        urlComponents.path = path
-        urlComponents.queryItems = filteredQueryItems()
-        
-        return urlComponents.url!
+        if let strUrl = fullUrlString, let fullUrl = URL.init(string: strUrl){
+            return fullUrl
+        } else {
+            var urlComponents = URLComponents()
+            urlComponents.scheme = scheme.rawValue
+            urlComponents.host = host
+            urlComponents.path = path
+            urlComponents.queryItems = filteredQueryItems()
+            return urlComponents.url!
+        }
     }
     
     var request: URLRequest {

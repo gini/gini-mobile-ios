@@ -89,6 +89,7 @@ public struct DataForReview {
         paymentService.paymentProviders { result in
             switch result {
             case let .success(providers):
+                self.bankProviders = []
                 for provider in providers {
                     DispatchQueue.main.async {
                         if let url = URL(string:provider.appSchemeIOS) {
@@ -96,11 +97,13 @@ public struct DataForReview {
                                 self.bankProviders.append(provider)
                             }
                         }
-                        if self.bankProviders.count > 0 {
-                            completion(.success(self.bankProviders))
-                        } else {
-                            completion(.failure(.noInstalledApps))
-                        }
+                    }
+                }
+                DispatchQueue.main.async {
+                    if self.bankProviders.count > 0 {
+                        completion(.success(self.bankProviders))
+                    } else {
+                        completion(.failure(.noInstalledApps))
                     }
                 }
             case let .failure(error):
