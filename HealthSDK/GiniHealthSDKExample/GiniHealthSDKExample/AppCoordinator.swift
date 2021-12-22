@@ -109,31 +109,37 @@ final class AppCoordinator: Coordinator {
     
     
     fileprivate func showComponentAPI(with pages: [GiniCapturePage]? = nil) {
-        let componentAPICoordinator = ComponentAPICoordinator(pages: pages ?? [],
-                                                              configuration: giniConfiguration,
-                                                              documentService: componentAPIDocumentService(), giniHealth: self.health)
-        componentAPICoordinator.delegate = self
-        componentAPICoordinator.start()
-        add(childCoordinator: componentAPICoordinator)
+        checkIfAnyBankingAppsInstalled(from: self.rootViewController) {
+            let componentAPICoordinator = ComponentAPICoordinator(pages: pages ?? [],
+                                                                  configuration: self.giniConfiguration,
+                                                                  documentService: self.componentAPIDocumentService(),
+                                                                  giniHealth: self.health)
+            componentAPICoordinator.delegate = self
+            componentAPICoordinator.start()
+            self.add(childCoordinator: componentAPICoordinator)
 
-        rootViewController.present(componentAPICoordinator.rootViewController, animated: true, completion: nil)
-        checkIfAnyBankingAppsInstalled(from: componentAPICoordinator.rootViewController)
-
+            self.rootViewController.present(componentAPICoordinator.rootViewController, animated: true, completion: nil)
+        }
     }
     
     private var testDocument: Document?
     private var testDocumentExtractions: [Extraction]?
     
-    fileprivate func checkIfAnyBankingAppsInstalled(from viewController: UIViewController) {
-        if !health.isAnyBankingAppInstalled(appSchemes: ["ginipay-bank://"]){
-            let alertViewController = UIAlertController(title: "",
-                                                        message: "We didn't find any banking apps installed",
-                                                        preferredStyle: .alert)
-            
-            alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-                alertViewController.dismiss(animated: true, completion: nil)
-            })
-            viewController.present(alertViewController, animated: true, completion: nil)
+    fileprivate func checkIfAnyBankingAppsInstalled(from viewController: UIViewController, completion: @escaping () -> Void) {
+        health.checkIfAnyPaymentProviderAvailiable { result in
+            switch(result) {
+            case .success(_):
+                completion()
+            case .failure(_):
+                let alertViewController = UIAlertController(title: "",
+                                                            message: "We didn't find any banking apps installed",
+                                                            preferredStyle: .alert)
+                
+                alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                    alertViewController.dismiss(animated: true, completion: nil)
+                })
+                viewController.present(alertViewController, animated: true, completion: nil)
+            }
         }
     }
     
@@ -153,54 +159,55 @@ final class AppCoordinator: Coordinator {
         configuration.showPaymentReviewCloseButton = true
         health.delegate = self
         health.setConfiguration(configuration)
-        checkIfAnyBankingAppsInstalled(from: self.rootViewController)
         
-        if let document = testDocument, let extractions = testDocumentExtractions {
-            // Show the payment review screen
-            let vc = PaymentReviewViewController.instantiate(with: self.health, document: document, extractions: extractions)
-            self.rootViewController.present(vc, animated: true)
-        } else {
-            // Upload the test document image
-            let testDocumentImage = UIImage(named: "testDocument")!
-            let testDocumentData = testDocumentImage.jpegData(compressionQuality: 1)!
-            
-            selectAPIViewController.showActivityIndicator()
-            
-            health.documentService.createDocument(fileName: nil,
-                                                    docType: nil,
-                                                    type: .partial(testDocumentData),
-                                                    metadata: nil) { result in
-                switch result {
-                case .success(let createdDocument):
-                    let partialDocInfo = PartialDocumentInfo(document: createdDocument.links.document)
-                    self.health.documentService.createDocument(fileName: nil,
-                                                            docType: nil,
-                                                            type: .composite(CompositeDocumentInfo(partialDocuments: [partialDocInfo])),
-                                                            metadata: nil) { result in
-                        switch result {
-                        case .success(let compositeDocument):
-                            self.health.setDocumentForReview(documentId: compositeDocument.id) { result in
-                                switch result {
-                                case .success(let extractions):
-                                    self.testDocument = compositeDocument
-                                    self.testDocumentExtractions = extractions
-                                    
-                                    // Show the payment review screen
-                                    let vc = PaymentReviewViewController.instantiate(with: self.health, document: compositeDocument, extractions: extractions)
-                                    self.rootViewController.present(vc, animated: true)
-                                case .failure(let error):
-                                    print("❌ Setting document for review failed: \(String(describing: error))")
+        checkIfAnyBankingAppsInstalled(from: self.rootViewController) {
+            if let document = self.testDocument, let extractions = self.testDocumentExtractions {
+                // Show the payment review screen
+                let vc = PaymentReviewViewController.instantiate(with: self.health, document: document, extractions: extractions)
+                self.rootViewController.present(vc, animated: true)
+            } else {
+                // Upload the test document image
+                let testDocumentImage = UIImage(named: "testDocument")!
+                let testDocumentData = testDocumentImage.jpegData(compressionQuality: 1)!
+                
+                self.selectAPIViewController.showActivityIndicator()
+                
+                self.health.documentService.createDocument(fileName: nil,
+                                                        docType: nil,
+                                                        type: .partial(testDocumentData),
+                                                        metadata: nil) { result in
+                    switch result {
+                    case .success(let createdDocument):
+                        let partialDocInfo = PartialDocumentInfo(document: createdDocument.links.document)
+                        self.health.documentService.createDocument(fileName: nil,
+                                                                docType: nil,
+                                                                type: .composite(CompositeDocumentInfo(partialDocuments: [partialDocInfo])),
+                                                                metadata: nil) { result in
+                            switch result {
+                            case .success(let compositeDocument):
+                                self.health.setDocumentForReview(documentId: compositeDocument.id) { result in
+                                    switch result {
+                                    case .success(let extractions):
+                                        self.testDocument = compositeDocument
+                                        self.testDocumentExtractions = extractions
+                                        
+                                        // Show the payment review screen
+                                        let vc = PaymentReviewViewController.instantiate(with: self.health, document: compositeDocument, extractions: extractions)
+                                        self.rootViewController.present(vc, animated: true)
+                                    case .failure(let error):
+                                        print("❌ Setting document for review failed: \(String(describing: error))")
+                                    }
+                                    self.selectAPIViewController.hideActivityIndicator()
                                 }
+                            case .failure(let error):
+                                print("❌ Document creation failed: \(String(describing: error))")
                                 self.selectAPIViewController.hideActivityIndicator()
                             }
-                        case .failure(let error):
-                            print("❌ Document creation failed: \(String(describing: error))")
-                            self.selectAPIViewController.hideActivityIndicator()
                         }
+                    case .failure(let error):
+                        print("❌ Document creation failed: \(String(describing: error))")
+                        self.selectAPIViewController.hideActivityIndicator()
                     }
-                case .failure(let error):
-                    print("❌ Document creation failed: \(String(describing: error))")
-                    self.selectAPIViewController.hideActivityIndicator()
                 }
             }
         }
