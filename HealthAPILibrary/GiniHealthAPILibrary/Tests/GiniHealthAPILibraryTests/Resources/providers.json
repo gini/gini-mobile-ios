@@ -1,20 +1,62 @@
 [
-  {
-    "id": "7e72441c-32f8-11eb-b611-c3190574373c",
-    "name": "ING-DiBa",
-    "appSchemeIOS": "ingdiba://example/payments/",
-    "minAppVersion" : {
-      "ios": "4.3.2",
-      "android": "3.5.1"
+    {
+        "id": "b09ef70a-490f-11eb-952e-9bc6f4646c57",
+        "name": "Gini-Test-Payment-Provider",
+        "appSchemeIOS": "ginipay-bank://",
+        "packageNameAndroid": "net.gini.android.bank.sdk.screenapiexample",
+        "minAppVersion": {
+            "ios": "??.?",
+            "android": "??.?"
+        },
+        "colors": {
+            "background": "009EDC",
+            "text": "FFFFFF"
+        },
+        "iconLocation": "https://pay-api.gini.net/paymentProviders/b09ef70a-490f-11eb-952e-9bc6f4646c57/icon"
+    },
+    {
+        "id": "dbe3a2ca-c9df-11eb-a1d8-a7efff6e88b7",
+        "name": "ING-DiBa",
+        "appSchemeIOS": "ginipay-ingdiba://",
+        "packageNameAndroid": "de.ingdiba.bankingapp",
+        "minAppVersion": {
+            "ios": "??.?",
+            "android": "??.?"
+        },
+        "colors": {
+            "background": "daa520",
+            "text": "54f1db"
+        },
+        "iconLocation": "https://pay-api.gini.net/paymentProviders/dbe3a2ca-c9df-11eb-a1d8-a7efff6e88b7/icon"
+    },
+    {
+        "id": "f7d06ee0-51fd-11ec-8216-97f0937beb16",
+        "name": "GiniBank",
+        "appSchemeIOS": "ginipay-ginibank://",
+        "packageNameAndroid": "net.gini.android.bank.sdk.ginibank",
+        "minAppVersion": {
+            "ios": "1.2.3",
+            "android": "4.5.6"
+        },
+        "colors": {
+            "background": "FFFFFF",
+            "text": "009EDC"
+        },
+        "iconLocation": "https://pay-api.gini.net/paymentProviders/f7d06ee0-51fd-11ec-8216-97f0937beb16/icon"
+    },
+    {
+        "id": "a65b0646-51fe-11ec-8736-c338396b2f09",
+        "name": "Consorsbank",
+        "appSchemeIOS": "ginipay-consorsbank://",
+        "packageNameAndroid": "de.consorsbank.bankingapp",
+        "minAppVersion": {
+            "ios": "1.2.3",
+            "android": "4.5.6"
+        },
+        "colors": {
+            "background": "4DBED3",
+            "text": "FFFFFF"
+        },
+        "iconLocation": "https://pay-api.gini.net/paymentProviders/a65b0646-51fe-11ec-8736-c338396b2f09/icon"
     }
-  },
-  {
-    "id": "9a9b41f2-32f8-11eb-9fb5-e378350b0392",
-    "name": "Deutsche Bank",
-    "appSchemeIOS": "db://example/payments/",
-    "minAppVersion" : {
-      "ios": "7.7.2",
-      "android": "6.9.1"
-    }
-  }
 ]

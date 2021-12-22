@@ -33,6 +33,8 @@ public final class GiniHealthConfiguration: NSObject {
      */
     public override init() {}
     
+    // MARK: - Payment review screen
+    
     /**
      Sets the backgroundColor on the payment review screen
      */
@@ -44,9 +46,14 @@ public final class GiniHealthConfiguration: NSObject {
     @objc public var inputFieldsContainerBackgroundColor = GiniColor(lightModeColor: UIColor.white, darkModeColor: UIColor.white)
     
     /**
-     Sets the backgroundColor  on the payment review screen for pay button
+     Sets the backgroundColor on the payment review screen for pay button
      */
     @objc public var payButtonBackgroundColor = GiniColor(lightModeColor: UIColor.from(hex:0xFF6800), darkModeColor: UIColor.from(hex:0xFF6800))
+    
+    /**
+     Sets the backgroundColor on the payment review screen for pay button when it's disabled
+     */
+    @objc public var payButtonDisabledBackgroundColor = GiniColor(lightModeColor: UIColor.from(hex:0xCCCFDB), darkModeColor: UIColor.from(hex:0xCCCFDB))
     
     /**
      Sets the text color of the pay button on the payment review screen
@@ -81,17 +88,17 @@ public final class GiniHealthConfiguration: NSObject {
     /**
      Sets the error style color and error text color for the payment input fields on the payment review screen
      */
-    @objc public var paymentInputFieldErrorStyleColor = UIColor.red
+    @objc public var paymentInputFieldErrorStyleColor = GiniColor(lightModeColor: .red, darkModeColor: .red)
     
     /**
      Sets the selection style color for the payment input fields on the payment review screen
      */
-    @objc public var paymentInputFieldSelectionStyleColor = UIColor.blue
+    @objc public var paymentInputFieldSelectionStyleColor = GiniColor(lightModeColor: .blue, darkModeColor: .blue)
     
     /**
      Sets the selection background color for the payment input fields on the payment review screen
      */
-    @objc public var paymentInputFieldSelectionBackgroundColor = UIColor.white
+    @objc public var paymentInputFieldSelectionBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
     
     /**
      Sets the background color of the payment input fields on the payment review screen
@@ -137,6 +144,61 @@ public final class GiniHealthConfiguration: NSObject {
      Sets the edit icon color  of the bank selection button on the payment review screen
      */
     @objc public var bankButtonEditIconColor = GiniColor(lightModeColor: UIColor.from(hex: 0x222222), darkModeColor: UIColor.from(hex: 0x222222))
+        
+    /**
+     Sets the current page indicator on the review screen to the specified color.
+     */
+    @objc public var currentPageIndicatorTintColor = GiniColor(lightModeColor: UIColor.white, darkModeColor: UIColor.white)
+    
+    /**
+     Sets the page indicator on the review screen to the specified color.
+     */
+    @objc public var pageIndicatorTintColor = GiniColor(lightModeColor: UIColor.lightGray, darkModeColor: UIColor.lightGray)
+    
+    /**
+     Set to `true` to show a close button on the payment review screen.
+     */
+    @objc public var showPaymentReviewCloseButton = false
+    
+    // MARK: - Bank selection screen
+    
+    /**
+     Sets the backgroundColor on the bank selection screen.
+     */
+    @objc public var bankSelectionScreenBackgroundColor = GiniColor(lightModeColor: UIColor.white, darkModeColor: UIColor.white)
+    
+    /**
+     Sets the backgroundColor of the dimmend overlay on the bank selection screen.
+     */
+    @objc public var bankSelectionDimmedOverlayBackgroundColor = GiniColor(lightModeColor: UIColor.from(hex: 0x00104B66).withAlphaComponent(0.4), darkModeColor: UIColor.from(hex: 0x00104B66).withAlphaComponent(0.4))
+    
+    /**
+     Sets the color of the scroll down view on the bank selection screen.
+     */
+    @objc public var bankSelectionScrollDownIndicatorViewColor = GiniColor(lightModeColor: UIColor.from(hex: 0xCCCFDB), darkModeColor: UIColor.from(hex: 0xCCCFDB))
+    
+    /**
+     Sets the text color of the title on the bank selection screen.
+     */
+    @objc public var bankSelectionTitleTextColor = GiniColor(lightModeColor: UIColor.from(hex: 0x00104B), darkModeColor: UIColor.from(hex: 0x00104B))
+    
+    /**
+     Sets the color of the cells separator view on the bank selection screen.
+     */
+    @objc public var bankSelectionCellSeparatorColor = GiniColor(lightModeColor: UIColor.from(hex: 0xE6E7ED), darkModeColor: UIColor.from(hex: 0xE6E7ED))
+    
+    /**
+     Sets the text color of the cells on the bank selection screen.
+     */
+    @objc public var bankSelectionCellTextColor = GiniColor(lightModeColor: UIColor.from(hex: 0x00104B), darkModeColor: UIColor.from(hex: 0x00104B))
+    
+    /**
+     Sets the corner radius of the bank icons on the bank selection screen.
+     */
+    @objc public var bankSelectionCellIconCornerRadius: CGFloat = 0.0
+    
+    
+    // MARK: - Shared properties
     
     /**
      Sets the font used in the screens by default.
@@ -152,32 +214,18 @@ public final class GiniHealthConfiguration: NSObject {
                                                                                               weight: .thin),
                                                                       isEnabled: false)
     /**
-     Sets the color of the loading indicator on the review  screen to the specified color.
+     Sets the color of the loading indicator to the specified color.
      */
-    @objc public var loadingIndicatorColor = UIColor.orange
+    @objc public var loadingIndicatorColor = GiniColor(lightModeColor: .orange, darkModeColor: .orange)
     
     /**
-     Sets the style of the loading indicator on the review screen.
+     Sets the style of the loading indicator.
      */
     @objc public var loadingIndicatorStyle: UIActivityIndicatorView.Style = .whiteLarge
     
     /**
-     Sets the scale of the loading indicator on the review screen.
+     Sets the scale of the loading indicator.
      */
     @objc public var loadingIndicatorScale: CGFloat = 1.0
     
-    /**
-     Sets the current page indicator on the review screen to the specified color.
-     */
-    @objc public var currentPageIndicatorTintColor = GiniColor(lightModeColor: UIColor.white, darkModeColor: UIColor.white)
-    
-    /**
-     Sets the page indicator on the review screen to the specified color.
-     */
-    @objc public var pageIndicatorTintColor = GiniColor(lightModeColor: UIColor.lightGray, darkModeColor: UIColor.lightGray)
-    
-    /**
-     Set to `true` to show a close button on the payment review screen.
-     */
-    @objc public var showPaymentReviewCloseButton = false
 }

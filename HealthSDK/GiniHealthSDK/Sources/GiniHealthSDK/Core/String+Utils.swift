@@ -12,4 +12,8 @@ public extension String {
         formatter.numberStyle = .decimal
         return formatter.number(from: self)
     }
+    
+    static func rgbaHexFrom(rgbHex: String) -> String {
+       return "#\(rgbHex)FF"
+   }
 }
