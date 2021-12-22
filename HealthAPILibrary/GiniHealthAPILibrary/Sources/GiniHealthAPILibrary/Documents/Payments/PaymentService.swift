@@ -263,14 +263,22 @@ extension PaymentService {
         })
     }
 
-    func paymentProvider(id: String, resourceHandler: ResourceDataHandler<APIResource<PaymentProvider>>,
+    func paymentProvider(id: String, resourceHandler: ResourceDataHandler<APIResource<PaymentProviderResponse>>,
                          completion: @escaping CompletionResult<PaymentProvider>) {
-        let resource = APIResource<PaymentProvider>(method: .paymentProvider(id: id), apiDomain: .default, httpMethod: .get)
+        let resource = APIResource<PaymentProviderResponse>(method: .paymentProvider(id: id), apiDomain: .default, httpMethod: .get)
 
         resourceHandler(resource, { result in
             switch result {
-            case let .success(provider):
-                completion(.success(provider))
+            case let .success(providerResponse):
+                self.file(urlString: providerResponse.iconLocation) { result in
+                    switch result {
+                    case let .success(imageData):
+                        let provider = PaymentProvider(id: providerResponse.id, name: providerResponse.name, appSchemeIOS: providerResponse.appSchemeIOS, minAppVersion: providerResponse.minAppVersion, colors: providerResponse.colors, iconData: imageData)
+                        completion(.success(provider))
+                    case let .failure(error):
+                        completion(.failure(error))
+                    }
+                }
             case let .failure(error):
                 completion(.failure(error))
             }
