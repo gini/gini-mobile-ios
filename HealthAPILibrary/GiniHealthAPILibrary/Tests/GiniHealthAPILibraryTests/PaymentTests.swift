@@ -87,12 +87,12 @@ final class PaymentTests: XCTestCase {
     
     func testPaymentProviders() {
         let sessionManagerMock = SessionManagerMock()
-        sessionManagerMock.initializeWithPaymentProviders()
+        sessionManagerMock.initializeWithPaymentProvidersResponse()
         
         payService.paymentProviders { result in
             switch result {
             case .success:
-                XCTAssertEqual(sessionManagerMock.providers.count, 2, "providers should not be empty")
+                XCTAssertEqual(sessionManagerMock.providersResponse.count, 4, "providers should not be empty")
             case .failure:
                 break
             }
