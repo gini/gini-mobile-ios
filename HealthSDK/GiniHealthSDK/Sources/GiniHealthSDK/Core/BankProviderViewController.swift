@@ -69,17 +69,22 @@ class BankProviderViewController: UIViewController, UITableViewDelegate, UITable
         containerView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismiss)))
     }
     
-    @objc func handleDismiss(sender: UIPanGestureRecognizer) {
-        viewTranslation = sender.translation(in: view)
+    fileprivate func animateSlideDownViewAndDismiss() {
         let screenSize = UIScreen.main.bounds.size
         UIView.animate(withDuration: 0.5,
                        delay: 0, usingSpringWithDamping: 1.0,
                        initialSpringVelocity: 1.0,
-                       options: .curveEaseInOut, animations: {
+                       options: [], animations: {
                            self.backgroundView.alpha = 0
                            self.containerView.frame = CGRect(x: 0, y: screenSize.height, width: screenSize.width, height: self.containerView.frame.height)
-                       }, completion: nil)
-        dismiss(animated: true, completion: nil)
+                       }, completion: { _ in
+                           self.dismiss(animated: false, completion: nil)
+                       })
+    }
+    
+    @objc func handleDismiss(sender: UIPanGestureRecognizer) {
+        viewTranslation = sender.translation(in: view)
+        animateSlideDownViewAndDismiss()
     }
         
     func animatePopupView() {
@@ -87,9 +92,16 @@ class BankProviderViewController: UIViewController, UITableViewDelegate, UITable
         UIView.animate(withDuration: 0.5,
                          delay: 0, usingSpringWithDamping: 1.0,
                          initialSpringVelocity: 1.0,
-                         options: .curveEaseInOut, animations: {
+                         options: [], animations: {
             self.containerView.frame = CGRect(x: 0, y: screenSize.height - self.containerView.frame.height, width: screenSize.width, height: self.containerView.frame.height)
           }, completion: nil)
+    }
+    
+    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        if  let touchView = self.containerView, touch?.view != touchView  {
+            animateSlideDownViewAndDismiss()
+        }
     }
 
     public static func instantiate(with providers: PaymentProviders) -> BankProviderViewController {
@@ -133,7 +145,7 @@ class BankProviderViewController: UIViewController, UITableViewDelegate, UITable
         let newProvider = model.providers[indexPath.row]
         model.onBankSelection(newProvider)
         self.onSelectedProviderDidChanged(newProvider)
-        self.dismiss(animated: true)
+        self.animateSlideDownViewAndDismiss()
     }
     
     func saveDefaultPaymentProvider(provider: PaymentProvider){
