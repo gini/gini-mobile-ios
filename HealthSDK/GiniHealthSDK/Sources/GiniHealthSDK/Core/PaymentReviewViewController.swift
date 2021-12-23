@@ -108,7 +108,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             }
         }
         
-        model?.checkIfAnyPaymentProviderAvailiable()
+        model?.checkIfAnyPaymentProviderAvailable()
 
         
         model?.updateImagesLoadingStatus = { [weak self] () in
