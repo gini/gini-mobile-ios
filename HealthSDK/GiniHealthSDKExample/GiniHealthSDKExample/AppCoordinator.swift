@@ -126,7 +126,7 @@ final class AppCoordinator: Coordinator {
     private var testDocumentExtractions: [Extraction]?
     
     fileprivate func checkIfAnyBankingAppsInstalled(from viewController: UIViewController, completion: @escaping () -> Void) {
-        health.checkIfAnyPaymentProviderAvailiable { result in
+        health.checkIfAnyPaymentProviderAvailable { result in
             switch(result) {
             case .success(_):
                 completion()
