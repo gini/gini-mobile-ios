@@ -517,6 +517,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         if !errorLabel.isHidden {
             errorLabel.isHidden = true
         }
+        payButton.isEnabled = paymentInputFields.allSatisfy { !$0.isReallyEmpty } && !paymentProviders.isEmpty
     }
     
     // MARK: - IBAction
