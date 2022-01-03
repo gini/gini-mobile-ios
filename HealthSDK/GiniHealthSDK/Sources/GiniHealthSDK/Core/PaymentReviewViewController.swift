@@ -34,6 +34,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     @IBOutlet weak var bankProviderEditIcon: UIImageView!
     
     @IBOutlet weak var bankProviderImage: UIImageView!
+    @IBOutlet weak var infoBar: UIView!
     var model: PaymentReviewModel?
     var paymentProviders: [PaymentProvider] = []
     private var amountToPay = Price(extractionString: "")
@@ -153,7 +154,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
         
         model?.onBankSelection = {[weak self] provider in
-            
             DispatchQueue.main.async {
                 self?.updateUIWithDefaultPaymentProvider(provider: provider)
             }
@@ -190,6 +190,15 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         hideErrorLabels()
         fillInInputFields()
         addDoneButtonForNumPad(amountField)
+        showInfoBar()
+    }
+    
+    fileprivate func showInfoBar(){
+        infoBar.isHidden = false
+        infoBar.roundCorners(corners: [.topLeft, .topRight], radius: 12)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            self.infoBar.isHidden = true
+        }
     }
 
     // MARK: - ConfigureBankProviderView

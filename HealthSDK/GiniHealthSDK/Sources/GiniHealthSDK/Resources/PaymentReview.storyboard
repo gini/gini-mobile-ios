@@ -6,6 +6,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -24,6 +25,11 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="47Q-Qq-7ja">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="449"/>
                                         <subviews>
+                                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="336-lO-5Qn">
+                                                <rect key="frame" x="67" y="160" width="240" height="128"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            </view>
                                             <pageControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="iQ0-i0-82S">
                                                 <rect key="frame" x="0.0" y="429" width="375" height="20"/>
                                                 <constraints>
@@ -59,6 +65,13 @@
                                             <constraint firstItem="VtW-En-y6v" firstAttribute="topMargin" secondItem="47Q-Qq-7ja" secondAttribute="topMargin" id="aan-nw-0UF"/>
                                             <constraint firstItem="iQ0-i0-82S" firstAttribute="centerX" secondItem="47Q-Qq-7ja" secondAttribute="centerX" id="vwc-zA-1pw"/>
                                             <constraint firstItem="VtW-En-y6v" firstAttribute="centerX" secondItem="47Q-Qq-7ja" secondAttribute="centerX" id="xF5-Z0-zi2"/>
+                                        </constraints>
+                                    </view>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yz2-tA-K7L">
+                                        <rect key="frame" x="0.0" y="389" width="375" height="70"/>
+                                        <color key="backgroundColor" systemColor="systemIndigoColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="70" id="8i7-Yk-RKe"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="ekk-cJ-hxZ">
@@ -266,8 +279,12 @@
                                     <constraint firstItem="ekk-cJ-hxZ" firstAttribute="centerX" secondItem="X5k-EE-UQ6" secondAttribute="centerX" id="3Up-qV-3Sl"/>
                                     <constraint firstItem="ekk-cJ-hxZ" firstAttribute="leading" secondItem="X5k-EE-UQ6" secondAttribute="leading" id="3vD-Rk-Xvs"/>
                                     <constraint firstItem="47Q-Qq-7ja" firstAttribute="topMargin" secondItem="X5k-EE-UQ6" secondAttribute="topMargin" id="CHQ-Ph-a8J"/>
+                                    <constraint firstItem="yz2-tA-K7L" firstAttribute="leading" secondItem="X5k-EE-UQ6" secondAttribute="leading" id="U3K-kW-Vot"/>
                                     <constraint firstItem="ekk-cJ-hxZ" firstAttribute="top" secondItem="47Q-Qq-7ja" secondAttribute="bottom" id="Um0-7i-L3I"/>
                                     <constraint firstAttribute="trailing" secondItem="ekk-cJ-hxZ" secondAttribute="trailing" id="ZOM-nK-AJs"/>
+                                    <constraint firstAttribute="trailing" secondItem="yz2-tA-K7L" secondAttribute="trailing" id="iO7-KY-9Sx"/>
+                                    <constraint firstItem="yz2-tA-K7L" firstAttribute="centerX" secondItem="X5k-EE-UQ6" secondAttribute="centerX" id="kCz-LV-Mjo"/>
+                                    <constraint firstItem="ekk-cJ-hxZ" firstAttribute="top" secondItem="yz2-tA-K7L" secondAttribute="bottom" constant="-10" id="lMV-Pf-vy3"/>
                                     <constraint firstItem="47Q-Qq-7ja" firstAttribute="centerX" secondItem="X5k-EE-UQ6" secondAttribute="centerX" id="rFK-yg-iVc"/>
                                     <constraint firstAttribute="bottom" secondItem="ekk-cJ-hxZ" secondAttribute="bottom" id="yRU-DH-rpk"/>
                                 </constraints>
@@ -307,6 +324,7 @@
                         <outlet property="containerCollectionView" destination="47Q-Qq-7ja" id="wB1-BT-kZG"/>
                         <outlet property="ibanErrorLabel" destination="G08-A3-0LA" id="Hta-8O-0sR"/>
                         <outlet property="ibanField" destination="QXh-1z-x7c" id="h9e-5R-vDG"/>
+                        <outlet property="infoBar" destination="yz2-tA-K7L" id="zHh-NZ-H7V"/>
                         <outlet property="inputContainer" destination="ekk-cJ-hxZ" id="u67-4P-g7n"/>
                         <outlet property="mainView" destination="X5k-EE-UQ6" id="zmB-Eu-v9s"/>
                         <outlet property="pageControl" destination="iQ0-i0-82S" id="fMQ-TQ-oje"/>
@@ -335,5 +353,11 @@
     <resources>
         <image name="bank" width="20" height="20"/>
         <image name="paymentReviewCloseButton" width="48" height="48"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemIndigoColor">
+            <color red="0.34509803921568627" green="0.33725490196078434" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>
