@@ -8,7 +8,7 @@
 import Foundation
 
 public enum APIDomain {
-    /// The default one, which points to https://pay-api.gini.net
+    /// The default one, which points to https://health-api.gini.net
     case `default`
     /// The accounting API, which points to https://accounting-api.gini.net/
     case accounting
@@ -20,7 +20,7 @@ public enum APIDomain {
     var domainString: String {
         
         switch self {
-        case .default: return "pay-api.gini.net"
+        case .default: return "health-api.gini.net"
         case .accounting: return "accounting-api.gini.net"
         case .gym: return "gym.gini.net"
         case .custom(let domain, _): return domain
@@ -132,7 +132,7 @@ struct APIResource<T: Decodable>: Resource {
         case .createDocument(_, _, let mimeSubType, let documentType):
             return ["Accept": ContentType.content(version: apiVersion,
                                                   subtype: nil,
-                                                  mimeSubtype: "json").value,
+                                                  mimeSubtype: mimeSubType).value,
                     "Content-Type": ContentType.content(version: apiVersion,
                                                         subtype: documentType?.name,
                                                         mimeSubtype: mimeSubType).value
