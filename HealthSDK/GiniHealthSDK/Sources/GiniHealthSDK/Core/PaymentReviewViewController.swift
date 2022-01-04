@@ -35,6 +35,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     @IBOutlet weak var bankProviderImage: UIImageView!
     @IBOutlet weak var infoBar: UIView!
+    @IBOutlet weak var infoBarLabel: UILabel!
     var model: PaymentReviewModel?
     var paymentProviders: [PaymentProvider] = []
     private var amountToPay = Price(extractionString: "")
@@ -80,6 +81,11 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         dismissKeyboardOnTap()
         configureUI()
         setupViewModel()
+    }
+    
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        showInfoBar()
     }
     
     fileprivate func setupViewModel() {
@@ -190,15 +196,44 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         hideErrorLabels()
         fillInInputFields()
         addDoneButtonForNumPad(amountField)
-        showInfoBar()
     }
     
-    fileprivate func showInfoBar(){
+    // MARK: - Info bar
+
+    fileprivate func configureInfoBar() {
+        infoBar.roundCorners(corners: [.topLeft, .topRight], radius: giniHealthConfiguration.infoBarCornerRadius)
+        infoBar.backgroundColor = UIColor.from(giniColor: giniHealthConfiguration.infoBarBackgroundColor)
+        infoBarLabel.textColor = UIColor.from(giniColor: giniHealthConfiguration.infoBarTextColor)
+        infoBarLabel.font = giniHealthConfiguration.customFont.regular
+        infoBarLabel.text = NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.infobar.message",
+                                                             comment: "info bar message")
+    }
+    
+    fileprivate func showInfoBar() {
+        configureInfoBar()
         infoBar.isHidden = false
-        infoBar.roundCorners(corners: [.topLeft, .topRight], radius: 12)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            self.infoBar.isHidden = true
+        let screenSize = UIScreen.main.bounds.size
+        UIView.animate(withDuration: 0.5,
+                       delay: 0, usingSpringWithDamping: 1.0,
+                       initialSpringVelocity: 1.0,
+                       options: [], animations: {
+                           self.infoBar.frame = CGRect(x: 0, y: self.inputContainer.frame.minY + self.giniHealthConfiguration.infoBarCornerRadius - self.infoBar.frame.height, width: screenSize.width, height: self.infoBar.frame.height)
+                       }, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.animateSlideDownInfoBar()
         }
+    }
+    
+    fileprivate func animateSlideDownInfoBar() {
+        let screenSize = UIScreen.main.bounds.size
+        UIView.animate(withDuration: 0.5,
+                       delay: 0, usingSpringWithDamping: 1.0,
+                       initialSpringVelocity: 1.0,
+                       options: [], animations: {
+                           self.infoBar.frame = CGRect(x: 0, y: self.inputContainer.frame.minY, width: screenSize.width, height: self.infoBar.frame.height)
+                       }, completion: { _ in
+                           self.infoBar.isHidden = true
+                       })
     }
 
     // MARK: - ConfigureBankProviderView
