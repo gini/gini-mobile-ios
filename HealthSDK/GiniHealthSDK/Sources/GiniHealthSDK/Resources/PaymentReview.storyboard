@@ -68,10 +68,20 @@
                                         </constraints>
                                     </view>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yz2-tA-K7L">
-                                        <rect key="frame" x="0.0" y="389" width="375" height="70"/>
+                                        <rect key="frame" x="0.0" y="449" width="375" height="60"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="Bitte prüfe die vorausgefüllten Daten" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Xh-Jx-2wM">
+                                                <rect key="frame" x="48" y="15.666666666666627" width="279" height="20.333333333333329"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
                                         <color key="backgroundColor" systemColor="systemIndigoColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="70" id="8i7-Yk-RKe"/>
+                                            <constraint firstAttribute="height" constant="60" id="8i7-Yk-RKe"/>
+                                            <constraint firstAttribute="bottomMargin" secondItem="7Xh-Jx-2wM" secondAttribute="bottomMargin" constant="24" id="Kd7-fa-RuF"/>
+                                            <constraint firstItem="7Xh-Jx-2wM" firstAttribute="centerX" secondItem="yz2-tA-K7L" secondAttribute="centerX" id="cvH-ik-6iD"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="ekk-cJ-hxZ">
@@ -284,7 +294,7 @@
                                     <constraint firstAttribute="trailing" secondItem="ekk-cJ-hxZ" secondAttribute="trailing" id="ZOM-nK-AJs"/>
                                     <constraint firstAttribute="trailing" secondItem="yz2-tA-K7L" secondAttribute="trailing" id="iO7-KY-9Sx"/>
                                     <constraint firstItem="yz2-tA-K7L" firstAttribute="centerX" secondItem="X5k-EE-UQ6" secondAttribute="centerX" id="kCz-LV-Mjo"/>
-                                    <constraint firstItem="ekk-cJ-hxZ" firstAttribute="top" secondItem="yz2-tA-K7L" secondAttribute="bottom" constant="-10" id="lMV-Pf-vy3"/>
+                                    <constraint firstItem="ekk-cJ-hxZ" firstAttribute="top" secondItem="yz2-tA-K7L" secondAttribute="bottom" constant="-60" id="lMV-Pf-vy3"/>
                                     <constraint firstItem="47Q-Qq-7ja" firstAttribute="centerX" secondItem="X5k-EE-UQ6" secondAttribute="centerX" id="rFK-yg-iVc"/>
                                     <constraint firstAttribute="bottom" secondItem="ekk-cJ-hxZ" secondAttribute="bottom" id="yRU-DH-rpk"/>
                                 </constraints>
@@ -324,7 +334,8 @@
                         <outlet property="containerCollectionView" destination="47Q-Qq-7ja" id="wB1-BT-kZG"/>
                         <outlet property="ibanErrorLabel" destination="G08-A3-0LA" id="Hta-8O-0sR"/>
                         <outlet property="ibanField" destination="QXh-1z-x7c" id="h9e-5R-vDG"/>
-                        <outlet property="infoBar" destination="yz2-tA-K7L" id="zHh-NZ-H7V"/>
+                        <outlet property="infoBar" destination="yz2-tA-K7L" id="aac-Mr-aby"/>
+                        <outlet property="infoBarLabel" destination="7Xh-Jx-2wM" id="p7A-UT-op3"/>
                         <outlet property="inputContainer" destination="ekk-cJ-hxZ" id="u67-4P-g7n"/>
                         <outlet property="mainView" destination="X5k-EE-UQ6" id="zmB-Eu-v9s"/>
                         <outlet property="pageControl" destination="iQ0-i0-82S" id="fMQ-TQ-oje"/>
