@@ -60,7 +60,5 @@
 		<string>ginipay-bank</string>
 		<string>ginipay-ginibank</string>
 	</array>
-	<key>Main storyboard file base name </key>
-	<string>Main</string>
 </dict>
 </plist>

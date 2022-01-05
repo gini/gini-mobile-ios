@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F43198332784BD570000D39C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F43198322784BD570000D39C /* Main.storyboard */; };
 		F466A5DF270F2F9500FB1364 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F466A5E1270F2F9500FB1364 /* Localizable.strings */; };
 		F4C36A8C270C6EBF00CCC69C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C36A8B270C6EBF00CCC69C /* AppDelegate.swift */; };
 		F4C36A8E270C6EBF00CCC69C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C36A8D270C6EBF00CCC69C /* SceneDelegate.swift */; };
@@ -18,7 +19,6 @@
 		F4EC38C2273C21E4007045DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC38C1273C21E4007045DC /* AppDelegate.swift */; };
 		F4EC38C4273C21E4007045DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC38C3273C21E4007045DC /* SceneDelegate.swift */; };
 		F4EC38C6273C21E4007045DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC38C5273C21E4007045DC /* ViewController.swift */; };
-		F4EC38C9273C21E4007045DC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4EC38C7273C21E4007045DC /* Main.storyboard */; };
 		F4EC38CE273C21E5007045DC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4EC38CC273C21E5007045DC /* LaunchScreen.storyboard */; };
 		F4EC38D9273C21E6007045DC /* GiniHealthSDKExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC38D8273C21E6007045DC /* GiniHealthSDKExampleTests.swift */; };
 		F4EC38F5273C2311007045DC /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC38EF273C2310007045DC /* UIViewController+Utils.swift */; };
@@ -49,6 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F43198322784BD570000D39C /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		F4366E62273D183C0054923F /* GiniHealthSDKExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GiniHealthSDKExample.entitlements; sourceTree = "<group>"; };
 		F466A5E0270F2F9500FB1364 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F466A5E2270F2FB300FB1364 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -64,7 +65,6 @@
 		F4EC38C1273C21E4007045DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4EC38C3273C21E4007045DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		F4EC38C5273C21E4007045DC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		F4EC38C8273C21E4007045DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F4EC38CD273C21E5007045DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F4EC38CF273C21E5007045DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4EC38D4273C21E6007045DC /* GiniHealthSDKExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniHealthSDKExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -189,8 +189,8 @@
 				F4EC38EF273C2310007045DC /* UIViewController+Utils.swift */,
 				F4EC38C3273C21E4007045DC /* SceneDelegate.swift */,
 				F4EC38C5273C21E4007045DC /* ViewController.swift */,
-				F4EC38C7273C21E4007045DC /* Main.storyboard */,
 				F4EC38CC273C21E5007045DC /* LaunchScreen.storyboard */,
+				F43198322784BD570000D39C /* Main.storyboard */,
 				F4EC38CF273C21E5007045DC /* Info.plist */,
 			);
 			path = GiniHealthSDKExample;
@@ -328,7 +328,7 @@
 				F4EC38CE273C21E5007045DC /* LaunchScreen.storyboard in Resources */,
 				F4EC38FA273C2311007045DC /* Base.lproj in Resources */,
 				F4EC38F9273C2311007045DC /* Credentials.plist in Resources */,
-				F4EC38C9273C21E4007045DC /* Main.storyboard in Resources */,
+				F43198332784BD570000D39C /* Main.storyboard in Resources */,
 				F4EC3913273C2B41007045DC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -415,14 +415,6 @@
 				F4C36A97270C6EC200CCC69C /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		F4EC38C7273C21E4007045DC /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F4EC38C8273C21E4007045DC /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		F4EC38CC273C21E5007045DC /* LaunchScreen.storyboard */ = {
