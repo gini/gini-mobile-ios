@@ -641,6 +641,7 @@ extension ComponentAPICoordinator {
                     if isPayable {
                         let fetchedData = DataForReview(document: document, extractions: extractions)
                         let vc = PaymentReviewViewController.instantiate(with: giniHealth, data: fetchedData)
+                        vc.trackingDelegate = self
                         self.navigationController.pushViewController(vc , animated: true)
                     } else {
                         let alertViewController = UIAlertController(title: "",
@@ -697,5 +698,22 @@ extension ComponentAPICoordinator: GiniHealthDelegate {
     func didCreatePaymentRequest(paymentRequestID: String) {
         print("✅ Created payment request with id \(paymentRequestID)")
         
+    }
+}
+
+// MARK: GiniHealthTrackingDelegate
+
+extension ComponentAPICoordinator: GiniHealthTrackingDelegate {
+    func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {
+        switch event.type {
+        case .next:
+            print("📝 Next button was tapped")
+        case .close:
+            print("📝 Close screen was triggered")
+        case .closeKeyboard:
+            print("📝 Close keyboard was triggered")
+        case .bankSelection:
+            print("📝 Bank selection button was tapped")
+        }
     }
 }
