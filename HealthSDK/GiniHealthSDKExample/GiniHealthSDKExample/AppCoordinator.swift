@@ -164,6 +164,7 @@ final class AppCoordinator: Coordinator {
             if let document = self.testDocument, let extractions = self.testDocumentExtractions {
                 // Show the payment review screen
                 let vc = PaymentReviewViewController.instantiate(with: self.health, document: document, extractions: extractions)
+                vc.trackingDelegate = self
                 self.rootViewController.present(vc, animated: true)
             } else {
                 // Upload the test document image
@@ -193,6 +194,7 @@ final class AppCoordinator: Coordinator {
                                         
                                         // Show the payment review screen
                                         let vc = PaymentReviewViewController.instantiate(with: self.health, document: compositeDocument, extractions: extractions)
+                                        vc.trackingDelegate = self
                                         self.rootViewController.present(vc, animated: true)
                                     case .failure(let error):
                                         print("❌ Setting document for review failed: \(String(describing: error))")
@@ -301,5 +303,22 @@ extension AppCoordinator: GiniHealthDelegate {
     
     func didCreatePaymentRequest(paymentRequestID: String) {
         print("✅ Created payment request with id \(paymentRequestID)")
+    }
+}
+
+// MARK: GiniHealthTrackingDelegate
+
+extension AppCoordinator: GiniHealthTrackingDelegate {
+    func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {
+        switch event.type {
+        case .next:
+            print("📝 Next button was tapped")
+        case .close:
+            print("📝 Close screen was triggered")
+        case .closeKeyboard:
+            print("📝 Close keyboard was triggered")
+        case .bankSelection:
+            print("📝 Bank selection button was tapped")
+        }
     }
 }
