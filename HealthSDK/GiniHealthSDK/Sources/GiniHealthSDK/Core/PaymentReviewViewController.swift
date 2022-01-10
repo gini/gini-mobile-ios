@@ -108,7 +108,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             }
         }
         
-        model?.checkIfAnyPaymentProviderAvailiable()
+        model?.checkIfAnyPaymentProviderAvailable()
 
         
         model?.updateImagesLoadingStatus = { [weak self] () in
@@ -345,12 +345,12 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
 
      func addDoneButtonForNumPad(_ textField: UITextField) {
         let toolbarDone = UIToolbar(frame:CGRect(x:0, y:0, width:view.frame.width, height:40))
-        
         toolbarDone.sizeToFit()
+        let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let barBtnDone = UIBarButtonItem.init(barButtonSystemItem: UIBarButtonItem.SystemItem.done,
                                               target: self, action: #selector(PaymentReviewViewController.doneWithAmountInputButtonTapped))
         
-        toolbarDone.items = [barBtnDone]
+        toolbarDone.items = [flexBarButton, barBtnDone]
         textField.inputAccessoryView = toolbarDone
     }
     

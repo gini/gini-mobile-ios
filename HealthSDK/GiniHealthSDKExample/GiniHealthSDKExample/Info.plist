@@ -58,8 +58,9 @@
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>ginipay-bank</string>
+		<string>ginipay-ginibank</string>
 	</array>
-	<key>Suppot doc</key>
-	<string></string>
+	<key>Main storyboard file base name </key>
+	<string>Main</string>
 </dict>
 </plist>
