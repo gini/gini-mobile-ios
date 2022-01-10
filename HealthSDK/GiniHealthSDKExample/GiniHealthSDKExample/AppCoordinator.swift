@@ -163,8 +163,7 @@ final class AppCoordinator: Coordinator {
         checkIfAnyBankingAppsInstalled(from: self.rootViewController) {
             if let document = self.testDocument, let extractions = self.testDocumentExtractions {
                 // Show the payment review screen
-                let vc = PaymentReviewViewController.instantiate(with: self.health, document: document, extractions: extractions)
-                vc.trackingDelegate = self
+                let vc = PaymentReviewViewController.instantiate(with: self.health, document: document, extractions: extractions, trackingDelegate: self)
                 self.rootViewController.present(vc, animated: true)
             } else {
                 // Upload the test document image
@@ -193,8 +192,7 @@ final class AppCoordinator: Coordinator {
                                         self.testDocumentExtractions = extractions
                                         
                                         // Show the payment review screen
-                                        let vc = PaymentReviewViewController.instantiate(with: self.health, document: compositeDocument, extractions: extractions)
-                                        vc.trackingDelegate = self
+                                        let vc = PaymentReviewViewController.instantiate(with: self.health, document: compositeDocument, extractions: extractions, trackingDelegate: self)
                                         self.rootViewController.present(vc, animated: true)
                                     case .failure(let error):
                                         print("❌ Setting document for review failed: \(String(describing: error))")

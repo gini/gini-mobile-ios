@@ -640,8 +640,7 @@ extension ComponentAPICoordinator {
             case let .success(isPayable):
                     if isPayable {
                         let fetchedData = DataForReview(document: document, extractions: extractions)
-                        let vc = PaymentReviewViewController.instantiate(with: giniHealth, data: fetchedData)
-                        vc.trackingDelegate = self
+                        let vc = PaymentReviewViewController.instantiate(with: giniHealth, data: fetchedData, trackingDelegate: self)
                         self.navigationController.pushViewController(vc , animated: true)
                     } else {
                         let alertViewController = UIAlertController(title: "",
