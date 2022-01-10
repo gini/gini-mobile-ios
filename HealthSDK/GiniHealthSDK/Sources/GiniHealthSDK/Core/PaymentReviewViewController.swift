@@ -569,7 +569,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     // MARK: - IBAction
     
     @objc func selectBankProviderTapped() {
-        trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .bankSelection))
+        trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onBankSelectionButtonClicked))
         bankProviderButtonView.alpha = 0.5
         UIView.animate(withDuration: 0.5) {
             self.bankProviderButtonView.alpha = 1.0
@@ -578,6 +578,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     @IBAction func payButtonClicked(_ sender: Any) {
+        trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onNextButtonClicked))
         view.endEditing(true)
         validateAllInputFields()
 
@@ -590,7 +591,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             }
             if let selectedProvider = selectedPaymentProvider, !amountField.isReallyEmpty, let amountText = amountToPay?.extractionString
             {
-                trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .next))
                 let paymentInfo = PaymentInfo(recipient: recipientField.text ?? "", iban: ibanField.text ?? "", bic: "", amount: amountText, purpose: usageField.text ?? "", paymentProviderScheme: selectedProvider.appSchemeIOS, paymentProviderId: selectedProvider.id)
                 model?.createPaymentRequest(paymentInfo: paymentInfo)
                 let paymentRecipientExtraction = Extraction(box: nil, candidates: "", entity: "text", value: recipientField.text ?? "", name: "paymentRecipient")
@@ -605,10 +605,10 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     @IBAction func closeButtonClicked(_ sender: UIButton) {
         if (keyboardWillShowCalled) {
-            trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .closeKeyboard))
+            trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onCloseKeyboardButtonClicked))
             view.endEditing(true)
         } else {
-            trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .close))
+            trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onCloseButtonClicked))
             dismiss(animated: true, completion: nil)
         }
     }
