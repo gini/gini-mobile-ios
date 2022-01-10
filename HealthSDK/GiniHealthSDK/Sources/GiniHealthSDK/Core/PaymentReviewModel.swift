@@ -83,8 +83,8 @@ public class PaymentReviewModel: NSObject {
         return PageCollectionCellViewModel(preview: previewImage)
     }
 
-    func checkIfAnyPaymentProviderAvailiable() {
-        healthSDK.checkIfAnyPaymentProviderAvailiable {[weak self] result in
+    func checkIfAnyPaymentProviderAvailable() {
+        healthSDK.checkIfAnyPaymentProviderAvailable {[weak self] result in
             switch result {
             case let .success(providers):
                 self?.onPaymentProvidersFetched(providers)

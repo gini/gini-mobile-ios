@@ -123,7 +123,7 @@ public struct DataForReview {
         In success case it includes array of payment providers.
         In case of failure error that there are no supported banking apps installed.
      */
-    public func checkIfAnyPaymentProviderAvailiable(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void){
+    public func checkIfAnyPaymentProviderAvailable(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void){
         self.getInstalledBankingApps(completion: completion)
     }
     
