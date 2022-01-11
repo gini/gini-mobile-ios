@@ -50,6 +50,8 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
     }
     
+    public weak var trackingDelegate: GiniHealthTrackingDelegate?
+    
     enum TextFieldType: Int {
         case recipientFieldTag = 1
         case ibanFieldTag
@@ -57,19 +59,19 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         case usageFieldTag
     }
     
-    public static func instantiate(with giniHealth: GiniHealth, document: Document, extractions: [Extraction]) -> PaymentReviewViewController {
+    public static func instantiate(with giniHealth: GiniHealth, document: Document, extractions: [Extraction], trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
         let vc = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
         vc.model = PaymentReviewModel(with: giniHealth, document: document, extractions: extractions )
-        
+        vc.trackingDelegate = trackingDelegate
         return vc
     }
     
-    public static func instantiate(with giniHealth: GiniHealth, data: DataForReview) -> PaymentReviewViewController {
+    public static func instantiate(with giniHealth: GiniHealth, data: DataForReview, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
         let vc = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
         vc.model = PaymentReviewModel(with: giniHealth, document: data.document, extractions: data.extractions)
-        
+        vc.trackingDelegate = trackingDelegate
         return vc
     }
 
@@ -567,6 +569,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     // MARK: - IBAction
     
     @objc func selectBankProviderTapped() {
+        trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onBankSelectionButtonClicked))
         bankProviderButtonView.alpha = 0.5
         UIView.animate(withDuration: 0.5) {
             self.bankProviderButtonView.alpha = 1.0
@@ -575,6 +578,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     @IBAction func payButtonClicked(_ sender: Any) {
+        trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onNextButtonClicked))
         view.endEditing(true)
         validateAllInputFields()
 
@@ -601,8 +605,10 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     @IBAction func closeButtonClicked(_ sender: UIButton) {
         if (keyboardWillShowCalled) {
+            trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onCloseKeyboardButtonClicked))
             view.endEditing(true)
         } else {
+            trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onCloseButtonClicked))
             dismiss(animated: true, completion: nil)
         }
     }
