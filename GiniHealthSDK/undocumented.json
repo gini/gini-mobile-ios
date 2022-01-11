@@ -128,28 +128,28 @@
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewModel.swift",
-      "line": 30,
+      "line": 32,
       "symbol": "PaymentReviewModel.document",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewModel.swift",
-      "line": 38,
+      "line": 40,
       "symbol": "PaymentReviewModel.extractions",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewModel.swift",
-      "line": 44,
+      "line": 46,
       "symbol": "PaymentReviewModel.documentId",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewModel.swift",
-      "line": 69,
+      "line": 71,
       "symbol": "PaymentReviewModel.init(with:document:extractions:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -163,105 +163,119 @@
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 45,
-      "symbol": "PaymentReviewViewController.instantiate(with:document:extractions:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.static",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
       "line": 53,
-      "symbol": "PaymentReviewViewController.instantiate(with:data:)",
+      "symbol": "PaymentReviewViewController.trackingDelegate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
+      "line": 62,
+      "symbol": "PaymentReviewViewController.instantiate(with:document:extractions:trackingDelegate:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 63,
+      "line": 70,
+      "symbol": "PaymentReviewViewController.instantiate(with:data:trackingDelegate:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
+      "line": 80,
       "symbol": "PaymentReviewViewController.viewDidLoad()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 144,
+      "line": 88,
+      "symbol": "PaymentReviewViewController.viewDidAppear(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
+      "line": 180,
       "symbol": "PaymentReviewViewController.viewDidDisappear(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 148,
+      "line": 184,
       "symbol": "PaymentReviewViewController.viewWillLayoutSubviews()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 560,
+      "line": 694,
       "symbol": "PaymentReviewViewController",
       "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 580,
+      "line": 714,
       "symbol": "PaymentReviewViewController.textFieldDidEndEditing(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 589,
+      "line": 723,
       "symbol": "PaymentReviewViewController.textFieldDidBeginEditing(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 603,
+      "line": 737,
       "symbol": "PaymentReviewViewController.textField(_:shouldChangeCharactersIn:replacementString:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 642,
+      "line": 776,
       "symbol": "PaymentReviewViewController",
       "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 643,
+      "line": 777,
       "symbol": "PaymentReviewViewController.collectionView(_:numberOfItemsInSection:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 645,
+      "line": 779,
       "symbol": "PaymentReviewViewController.numberOfSections(in:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 649,
+      "line": 783,
       "symbol": "PaymentReviewViewController.collectionView(_:cellForItemAt:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 659,
+      "line": 793,
       "symbol": "PaymentReviewViewController.collectionView(_:layout:sizeForItemAt:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 667,
+      "line": 801,
       "symbol": "PaymentReviewViewController.scrollViewDidScroll(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -271,6 +285,20 @@
       "line": 10,
       "symbol": "String.numberValue",
       "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/String+Utils.swift",
+      "line": 16,
+      "symbol": "String.rgbaHexFrom(rgbHex:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/Tracking/GiniHealthTrackingDelegate.swift",
+      "line": 40,
+      "symbol": "PaymentReviewScreenTrackingDelegate.onPaymentReviewScreenEvent(event:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
@@ -285,6 +313,13 @@
       "line": 27,
       "symbol": "UIColor.from(hex:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/UIColor+Utils.swift",
+      "line": 36,
+      "symbol": "UIColor.init(hex:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
@@ -583,21 +618,21 @@
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/ZoomedImageView.swift",
-      "line": 340,
+      "line": 339,
       "symbol": "ZoomedImageView.scrollViewDidChangeAdjustedContentInset(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/ZoomedImageView.swift",
-      "line": 344,
+      "line": 343,
       "symbol": "ZoomedImageView.viewForZooming(in:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/ZoomedImageView.swift",
-      "line": 348,
+      "line": 347,
       "symbol": "ZoomedImageView.scrollViewDidZoom(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
