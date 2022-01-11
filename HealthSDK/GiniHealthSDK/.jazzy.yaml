@@ -23,6 +23,7 @@ custom_categories:
   - Integration
   - Customization guide
   - Migration guide
+  - Event tracking guide
   - Testing
   - License
 - name: Classes
