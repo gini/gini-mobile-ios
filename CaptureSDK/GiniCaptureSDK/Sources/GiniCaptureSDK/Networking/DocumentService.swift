@@ -16,9 +16,12 @@ public final class DocumentService: DocumentServiceProtocol {
     public var metadata: Document.Metadata?
     var documentService: DefaultDocumentService
     
+    var defaultCaptureNetworkService: DefaultCaptureNetworkService
+    
     public init(lib: GiniBankAPI, metadata: Document.Metadata?) {
         self.metadata = metadata
         self.documentService = lib.documentService()
+        self.defaultCaptureNetworkService = DefaultCaptureNetworkService(lib: lib)
     }
     
     public func startAnalysis(completion: @escaping AnalysisCompletion) {
@@ -95,9 +98,8 @@ public final class DocumentService: DocumentServiceProtocol {
             PartialDocument(info: (PartialDocumentInfo(document: nil, rotationDelta: 0)),
                             document: nil,
                             order: self.partialDocuments.count)
-        let fileName = "Partial-\(NSDate().timeIntervalSince1970)"
         
-        createDocument(from: document, fileName: fileName) { result in
+        defaultCaptureNetworkService.upload(document: document, metadata: metadata) { result in
             switch result {
             case .success(let createdDocument):
                 self.partialDocuments[document.id]?.document = createdDocument
@@ -128,30 +130,6 @@ public final class DocumentService: DocumentServiceProtocol {
 // MARK: - File private methods
 
 fileprivate extension DocumentService {
-    func createDocument(from document: GiniCaptureDocument,
-                        fileName: String,
-                        docType: Document.DocType? = nil,
-                        completion: @escaping UploadDocumentCompletion) {
-        Log(message: "Creating document...", event: "📝")
-        
-        documentService.createDocument(fileName: fileName,
-                                       docType: docType,
-                                       type: .partial(document.data),
-                                       metadata: metadata) { result in
-                                        switch result {
-                                        case .success(let createdDocument):
-                                            Log(message: "Created document with id: \(createdDocument.id) " +
-                                                "for vision document \(document.id)", event: "📄")
-                                            completion(.success(createdDocument))
-                                        case .failure(let error):
-                                            let message = "Document creation failed"
-                                            Log(message: message, event: .error)
-                                            let errorLog = ErrorLog(description: message, error: error)
-                                            GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
-                                            completion(.failure(error))
-                                        }
-        }
-    }
     
     func delete(_ document: Document) {
         documentService.delete(document) { result in
