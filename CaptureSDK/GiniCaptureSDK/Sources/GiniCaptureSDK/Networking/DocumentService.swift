@@ -24,6 +24,26 @@ public final class DocumentService: DocumentServiceProtocol {
         self.defaultCaptureNetworkService = DefaultCaptureNetworkService(lib: lib)
     }
     
+    public func upload(document: GiniCaptureDocument,
+                completion: UploadDocumentCompletion?) {
+        self.partialDocuments[document.id] =
+            PartialDocument(info: (PartialDocumentInfo(document: nil, rotationDelta: 0)),
+                            document: nil,
+                            order: self.partialDocuments.count)
+        
+        defaultCaptureNetworkService.upload(document: document, metadata: metadata) { result in
+            switch result {
+            case .success(let createdDocument):
+                self.partialDocuments[document.id]?.document = createdDocument
+                self.partialDocuments[document.id]?.info.document = createdDocument.links.document
+                
+                completion?(.success(createdDocument))
+            case .failure(let error):
+                completion?(.failure(error))
+            }
+        }
+    }
+    
     public func startAnalysis(completion: @escaping AnalysisCompletion) {
         let partialDocumentsInfoSorted = partialDocuments
             .lazy
@@ -31,7 +51,7 @@ public final class DocumentService: DocumentServiceProtocol {
             .sorted()
             .map { $0.info }
         
-        self.fetchExtractions(for: partialDocumentsInfoSorted, completion: completion)
+        defaultCaptureNetworkService.analyse(partialDocuments: partialDocumentsInfoSorted, metadata: metadata, completion: completion)
     }
     
     public func cancelAnalysis() {
@@ -92,26 +112,6 @@ public final class DocumentService: DocumentServiceProtocol {
         }
     }
     
-    public func upload(document: GiniCaptureDocument,
-                completion: UploadDocumentCompletion?) {
-        self.partialDocuments[document.id] =
-            PartialDocument(info: (PartialDocumentInfo(document: nil, rotationDelta: 0)),
-                            document: nil,
-                            order: self.partialDocuments.count)
-        
-        defaultCaptureNetworkService.upload(document: document, metadata: metadata) { result in
-            switch result {
-            case .success(let createdDocument):
-                self.partialDocuments[document.id]?.document = createdDocument
-                self.partialDocuments[document.id]?.info.document = createdDocument.links.document
-                
-                completion?(.success(createdDocument))
-            case .failure(let error):
-                completion?(.failure(error))
-            }
-        }
-    }
-    
     public func log(errorEvent: ErrorEvent) {
         documentService.log(errorEvent: errorEvent) { result in
             switch result {
@@ -145,37 +145,5 @@ fileprivate extension DocumentService {
                 GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
             }
         }
-    }
-    
-    func fetchExtractions(for documents: [PartialDocumentInfo],
-                          completion: @escaping AnalysisCompletion) {
-        Log(message: "Creating composite document...", event: "📑")
-        let fileName = "Composite-\(NSDate().timeIntervalSince1970)"
-        
-        documentService
-            .createDocument(fileName: fileName,
-                            docType: nil,
-                            type: .composite(CompositeDocumentInfo(partialDocuments: documents)),
-                            metadata: metadata) { [weak self] result in
-                                guard let self = self else { return }
-                                switch result {
-                                case .success(let createdDocument):
-                                    Log(message: "Starting analysis for composite document \(createdDocument.id)",
-                                        event: "🔎")
-                                    self.document = createdDocument
-                                    self.analysisCancellationToken = CancellationToken()
-                                    self.documentService
-                                        .extractions(for: createdDocument,
-                                                     cancellationToken: self.analysisCancellationToken!,
-                                                     completion: self.handleResults(completion: completion))
-                                case .failure(let error):
-                                    let message = "Composite document creation failed"
-                                    Log(message: message, event: .error)
-                                    let errorLog = ErrorLog(description: message, error: error)
-                                    GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
-                                    completion(.failure(error))
-                                }
-        }
-        
     }
 }
