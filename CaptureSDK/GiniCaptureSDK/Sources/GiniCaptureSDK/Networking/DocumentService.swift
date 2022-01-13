@@ -14,13 +14,11 @@ public final class DocumentService: DocumentServiceProtocol {
     public var document: Document?
     public var analysisCancellationToken: CancellationToken?
     public var metadata: Document.Metadata?
-    var documentService: DefaultDocumentService
     
     var defaultCaptureNetworkService: DefaultCaptureNetworkService
     
     public init(lib: GiniBankAPI, metadata: Document.Metadata?) {
         self.metadata = metadata
-        self.documentService = lib.documentService()
         self.defaultCaptureNetworkService = DefaultCaptureNetworkService(lib: lib)
     }
     
@@ -50,27 +48,49 @@ public final class DocumentService: DocumentServiceProtocol {
             .map { $0.value }
             .sorted()
             .map { $0.info }
-        
-        defaultCaptureNetworkService.analyse(partialDocuments: partialDocumentsInfoSorted, metadata: metadata, completion: completion)
+        self.analysisCancellationToken = CancellationToken()
+        defaultCaptureNetworkService.analyse(partialDocuments: partialDocumentsInfoSorted, metadata: metadata, cancellationToken: analysisCancellationToken!) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case let .success((createdDocument, extractionResult)):
+                self.document = createdDocument
+                completion(.success(extractionResult))
+            case let .failure(error):
+                if error != .requestCancelled {
+                    completion(.failure(error))
+                }
+            }
+        }
     }
     
     public func cancelAnalysis() {
         if let compositeDocument = document {
-            defaultCaptureNetworkService.delete(document: compositeDocument)
+            defaultCaptureNetworkService.delete(document: compositeDocument) {[weak self] result in
+                switch result {
+                case .success:
+                    self?.analysisCancellationToken?.cancel()
+                    self?.analysisCancellationToken = nil
+                    self?.document = nil
+                case .failure(_):
+                    break
+                }
+            }
         }
-        
-        analysisCancellationToken?.cancel()
-        analysisCancellationToken = nil
-        document = nil
     }
     
     public func remove(document: GiniCaptureDocument) {
         if let index = partialDocuments.index(forKey: document.id) {
             if let document = partialDocuments[document.id]?
                 .document {
-                defaultCaptureNetworkService.delete(document: document)
+                defaultCaptureNetworkService.delete(document: document) {[weak self] result in
+                    switch result {
+                    case .success:
+                        self?.partialDocuments.remove(at: index)
+                    case .failure(_):
+                        break
+                    }
+                }
             }
-            partialDocuments.remove(at: index)
         }
     }
     
@@ -78,6 +98,7 @@ public final class DocumentService: DocumentServiceProtocol {
         partialDocuments.removeAll()
         analysisCancellationToken = nil
         document = nil
+        defaultCaptureNetworkService.cleanup()
     }
     
     public func update(imageDocument: GiniImageDocument) {
@@ -90,7 +111,7 @@ public final class DocumentService: DocumentServiceProtocol {
             Log(message: "Cannot send feedback: no document", event: .error)
             return
         }
-        documentService.submitFeedback(for: document, with: updatedExtractions) { result in
+        defaultCaptureNetworkService.sendFeedback(document: document, updatedExtractions: updatedExtractions) { result in
             switch result {
             case .success:
                 Log(message: "Feedback sent with \(updatedExtractions.count) extractions",
@@ -101,7 +122,6 @@ public final class DocumentService: DocumentServiceProtocol {
                 let errorLog = ErrorLog(description: message, error: error)
                 GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
             }
-            
         }
     }
     
@@ -113,7 +133,7 @@ public final class DocumentService: DocumentServiceProtocol {
     }
     
     public func log(errorEvent: ErrorEvent) {
-        documentService.log(errorEvent: errorEvent) { result in
+        defaultCaptureNetworkService.log(errorEvent: errorEvent) { result in
             switch result {
             case .success:
                 Log(message: "Error event sent to Gini", event: .success)
