@@ -11,7 +11,7 @@ import GiniBankAPILibrary
 public protocol GiniCaptureNetworkService {
     func delete(document: GiniCaptureDocument)
     func cleanup()
-    func analyse(completion: @escaping AnalysisCompletion)
+    func analyse(partialDocuments: [PartialDocumentInfo], metadata: Document.Metadata?, completion: @escaping AnalysisCompletion)
     func upload(document: GiniCaptureDocument,
                 metadata: Document.Metadata?,
                 completion: @escaping UploadDocumentCompletion)
@@ -33,8 +33,40 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
         
     }
     
-    func analyse(completion: @escaping AnalysisCompletion) {
-        
+    func analyse(partialDocuments: [PartialDocumentInfo], metadata: Document.Metadata?, completion: @escaping AnalysisCompletion) {
+        Log(message: "Creating composite document...", event: "📑")
+        let fileName = "Composite-\(NSDate().timeIntervalSince1970)"
+
+        documentService
+            .createDocument(fileName: fileName,
+                            docType: nil,
+                            type: .composite(CompositeDocumentInfo(partialDocuments: partialDocuments)),
+                            metadata: metadata) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case let .success(createdDocument):
+                    Log(message: "Starting analysis for composite document \(createdDocument.id)",
+                        event: "🔎")
+                    let analysisCancellationToken = CancellationToken()
+                    self.documentService
+                        .extractions(for: createdDocument,
+                                     cancellationToken: analysisCancellationToken) { [weak self] result in
+                            guard self != nil else { return }
+                            switch result {
+                            case let .success(extractionResult):
+                                completion(.success(extractionResult))
+                            case let .failure(error):
+                                completion(.failure(error))
+                            }
+                        }
+                case let .failure(error):
+                    let message = "Composite document creation failed"
+                    Log(message: message, event: .error)
+                    let errorLog = ErrorLog(description: message, error: error)
+                    GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
+                    completion(.failure(error))
+                }
+            }
     }
     
     func upload(document: GiniCaptureDocument, metadata: Document.Metadata?, completion: @escaping UploadDocumentCompletion) {
