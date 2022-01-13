@@ -9,12 +9,21 @@ import Foundation
 import GiniBankAPILibrary
 
 public protocol GiniCaptureNetworkService {
-    func delete(document: Document)
+    func delete(document: Document,
+                completion: @escaping (Result<String, GiniError>) -> Void)
     func cleanup()
-    func analyse(partialDocuments: [PartialDocumentInfo], metadata: Document.Metadata?, completion: @escaping AnalysisCompletion)
+    func analyse(partialDocuments: [PartialDocumentInfo],
+                 metadata: Document.Metadata?,
+                 cancellationToken: CancellationToken,
+                 completion: @escaping (Result<(document: Document,extractionResult: ExtractionResult), GiniError>) -> Void)
     func upload(document: GiniCaptureDocument,
                 metadata: Document.Metadata?,
                 completion: @escaping UploadDocumentCompletion)
+    func sendFeedback(document: Document,
+                      updatedExtractions: [Extraction],
+                      completion: @escaping (Result<Void, GiniError>) -> Void)
+    func log(errorEvent: ErrorEvent,
+             completion: @escaping (Result<Void, GiniError>) -> Void)
 }
 
 class DefaultCaptureNetworkService: GiniCaptureNetworkService {
@@ -25,13 +34,15 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
         self.documentService = lib.documentService()
     }
     
-    func delete(document: Document) {
+    func delete(document: Document, completion: @escaping (Result<String, GiniError>) -> Void) {
         documentService.delete(document) { result in
             switch result {
-            case .success:
+            case .success(let result):
+                completion(.success(result))
                 Log(message: "Deleted \(document.sourceClassification.rawValue) document with id: \(document.id)",
                     event: "🗑")
             case .failure(let error):
+                completion(.failure(error))
                 let message = "Error deleting \(document.sourceClassification.rawValue) document with" +
                     " id: \(document.id)"
                 Log(message: message,event: .error)
@@ -41,11 +52,12 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
         }
     }
     
-    func cleanup() {
-        
-    }
+    func cleanup() {}
     
-    func analyse(partialDocuments: [PartialDocumentInfo], metadata: Document.Metadata?, completion: @escaping AnalysisCompletion) {
+    func analyse(partialDocuments: [PartialDocumentInfo],
+                 metadata: Document.Metadata?,
+                 cancellationToken: CancellationToken,
+                 completion: @escaping (Result<(document:Document,extractionResult: ExtractionResult), GiniError>) -> Void) {
         Log(message: "Creating composite document...", event: "📑")
         let fileName = "Composite-\(NSDate().timeIntervalSince1970)"
 
@@ -59,15 +71,21 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                 case let .success(createdDocument):
                     Log(message: "Starting analysis for composite document \(createdDocument.id)",
                         event: "🔎")
-                    let analysisCancellationToken = CancellationToken()
                     self.documentService
                         .extractions(for: createdDocument,
-                                     cancellationToken: analysisCancellationToken) { [weak self] result in
+                                     cancellationToken: cancellationToken) { [weak self] result in
                             guard self != nil else { return }
                             switch result {
                             case let .success(extractionResult):
-                                completion(.success(extractionResult))
+                                Log(message: "Finished analysis process with no errors", event: .success)
+                                completion(.success((createdDocument, extractionResult)))
                             case let .failure(error):
+                                switch error {
+                                case .requestCancelled:
+                                    Log(message: "Cancelled analysis process", event: .error)
+                                default:
+                                    Log(message: "Finished analysis process with error: \(error)", event: .error)
+                                }
                                 completion(.failure(error))
                             }
                         }
@@ -81,7 +99,9 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
             }
     }
     
-    func upload(document: GiniCaptureDocument, metadata: Document.Metadata?, completion: @escaping UploadDocumentCompletion) {
+    func upload(document: GiniCaptureDocument,
+                metadata: Document.Metadata?,
+                completion: @escaping UploadDocumentCompletion) {
         Log(message: "Creating document...", event: "📝")
 
         let fileName = "Partial-\(NSDate().timeIntervalSince1970)"
@@ -102,6 +122,21 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
                 GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
                 completion(.failure(error))
             }
+        }
+    }
+    
+    func log(errorEvent: ErrorEvent,
+             completion: @escaping (Result<Void, GiniError>) -> Void) {
+        documentService.log(errorEvent: errorEvent) { result in
+            completion(result)
+        }
+    }
+    
+    func sendFeedback(document: Document,
+                      updatedExtractions: [Extraction],
+                      completion: @escaping (Result<Void, GiniError>) -> Void) {
+        documentService.submitFeedback(for: document, with: updatedExtractions) { result in
+            completion(result)
         }
     }
 }
