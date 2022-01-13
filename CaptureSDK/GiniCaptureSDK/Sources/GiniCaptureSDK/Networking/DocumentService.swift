@@ -56,7 +56,7 @@ public final class DocumentService: DocumentServiceProtocol {
     
     public func cancelAnalysis() {
         if let compositeDocument = document {
-            delete(compositeDocument)
+            defaultCaptureNetworkService.delete(document: compositeDocument)
         }
         
         analysisCancellationToken?.cancel()
@@ -68,7 +68,7 @@ public final class DocumentService: DocumentServiceProtocol {
         if let index = partialDocuments.index(forKey: document.id) {
             if let document = partialDocuments[document.id]?
                 .document {
-                delete(document)
+                defaultCaptureNetworkService.delete(document: document)
             }
             partialDocuments.remove(at: index)
         }
@@ -125,25 +125,4 @@ public final class DocumentService: DocumentServiceProtocol {
         }
     }
     
-}
-
-// MARK: - File private methods
-
-fileprivate extension DocumentService {
-    
-    func delete(_ document: Document) {
-        documentService.delete(document) { result in
-            switch result {
-            case .success:
-                Log(message: "Deleted \(document.sourceClassification.rawValue) document with id: \(document.id)",
-                    event: "🗑")
-            case .failure(let error):
-                let message = "Error deleting \(document.sourceClassification.rawValue) document with" +
-                    " id: \(document.id)"
-                Log(message: message,event: .error)
-                let errorLog = ErrorLog(description: message, error: error)
-                GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
-            }
-        }
-    }
 }

@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  GiniCaptureNetworkService.swift
 //  
 //
 //  Created by Alpár Szotyori on 12.01.22.
@@ -9,7 +9,7 @@ import Foundation
 import GiniBankAPILibrary
 
 public protocol GiniCaptureNetworkService {
-    func delete(document: GiniCaptureDocument)
+    func delete(document: Document)
     func cleanup()
     func analyse(partialDocuments: [PartialDocumentInfo], metadata: Document.Metadata?, completion: @escaping AnalysisCompletion)
     func upload(document: GiniCaptureDocument,
@@ -25,8 +25,20 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
         self.documentService = lib.documentService()
     }
     
-    func delete(document: GiniCaptureDocument) {
-        
+    func delete(document: Document) {
+        documentService.delete(document) { result in
+            switch result {
+            case .success:
+                Log(message: "Deleted \(document.sourceClassification.rawValue) document with id: \(document.id)",
+                    event: "🗑")
+            case .failure(let error):
+                let message = "Error deleting \(document.sourceClassification.rawValue) document with" +
+                    " id: \(document.id)"
+                Log(message: message,event: .error)
+                let errorLog = ErrorLog(description: message, error: error)
+                GiniConfiguration.shared.errorLogger.handleErrorLog(error: errorLog)
+            }
+        }
     }
     
     func cleanup() {
