@@ -10,6 +10,7 @@ import GiniCaptureSDK
 import UIKit
 
 extension UIViewController {
+    // swiftlint:disable:next function_body_length
     func showErrorDialog(for error: Error, positiveAction: (() -> Void)?) {
         let message: String
         var cancelActionTitle: String = NSLocalizedString("ginicapture.camera.errorPopup.cancelButton",
@@ -18,7 +19,6 @@ extension UIViewController {
         var confirmActionTitle: String? = NSLocalizedString("ginicapture.camera.errorPopup.pickanotherfileButton",
                                                             bundle: Bundle(for: GiniCapture.self),
                                                             comment: "pick another file button title")
-
         switch error {
         case let validationError as DocumentValidationError:
             message = validationError.message
@@ -62,7 +62,6 @@ extension UIViewController {
                                  cancelActionTitle: cancelActionTitle,
                                  confirmActionTitle: confirmActionTitle,
                                  confirmAction: positiveAction)
-
         present(dialog, animated: true, completion: nil)
     }
 
