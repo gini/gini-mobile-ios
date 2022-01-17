@@ -4,7 +4,7 @@
 //
 //  Created by Enrique del Pozo Gómez on 1/14/19.
 //
-
+// MARK: - TODO DELETE
 import Foundation
 import GiniBankAPILibrary
 
@@ -145,8 +145,8 @@ fileprivate extension AccountingDocumentService {
             analysisCancellationToken = CancellationToken()
         }
         
-        documentService.extractions(for: document,
-                                    cancellationToken: analysisCancellationToken!,
-                                    completion: handleResults(completion: completion))
+//        documentService.extractions(for: document,
+//                                    cancellationToken: analysisCancellationToken!,
+//                                    completion: handleResults(completion: completion))
     }
 }

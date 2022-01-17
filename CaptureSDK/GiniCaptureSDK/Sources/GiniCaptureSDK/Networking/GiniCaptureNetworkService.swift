@@ -8,7 +8,7 @@
 import Foundation
 import GiniBankAPILibrary
 
-public protocol GiniCaptureNetworkService {
+public protocol GiniCaptureNetworkService: AnyObject  {
     func delete(document: Document,
                 completion: @escaping (Result<String, GiniError>) -> Void)
     func cleanup()
