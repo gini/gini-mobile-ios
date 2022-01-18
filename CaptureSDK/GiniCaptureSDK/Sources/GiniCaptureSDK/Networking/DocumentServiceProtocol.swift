@@ -18,13 +18,13 @@ public protocol DocumentServiceProtocol: AnyObject {
     var analysisCancellationToken: CancellationToken? { get set }
     
     func cancelAnalysis()
-    func remove(document: GiniCaptureDocument) // delete
-    func resetToInitialState() // cleanup
+    func remove(document: GiniCaptureDocument)
+    func resetToInitialState()
     func sendFeedback(with updatedExtractions: [Extraction])
-    func startAnalysis(completion: @escaping AnalysisCompletion) // analyze
+    func startAnalysis(completion: @escaping AnalysisCompletion)
     func sortDocuments(withSameOrderAs documents: [GiniCaptureDocument])
     func upload(document: GiniCaptureDocument,
-                completion: UploadDocumentCompletion?) // upload
-    func update(imageDocument: GiniImageDocument) // ??
+                completion: UploadDocumentCompletion?)
+    func update(imageDocument: GiniImageDocument)
     func log(errorEvent: ErrorEvent)
 }
