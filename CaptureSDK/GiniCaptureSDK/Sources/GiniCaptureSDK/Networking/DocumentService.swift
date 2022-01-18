@@ -69,32 +69,30 @@ public final class DocumentService: DocumentServiceProtocol {
     
     public func cancelAnalysis() {
         if let compositeDocument = document {
-            captureNetworkService.delete(document: compositeDocument) {[weak self] result in
+            captureNetworkService.delete(document: compositeDocument) { result in
                 switch result {
-                case .success:
-                    self?.analysisCancellationToken?.cancel()
-                    self?.analysisCancellationToken = nil
-                    self?.document = nil
-                case .failure(_):
+                case .success, .failure(_) :
                     break
                 }
             }
         }
+        analysisCancellationToken?.cancel()
+        analysisCancellationToken = nil
+        document = nil
     }
     
     public func remove(document: GiniCaptureDocument) {
         if let index = partialDocuments.index(forKey: document.id) {
             if let document = partialDocuments[document.id]?
                 .document {
-                captureNetworkService.delete(document: document) {[weak self] result in
+                captureNetworkService.delete(document: document) { result in
                     switch result {
-                    case .success:
-                        self?.partialDocuments.remove(at: index)
-                    case .failure(_):
+                    case .success, .failure(_):
                         break
                     }
                 }
             }
+            partialDocuments.remove(at: index)
         }
     }
     

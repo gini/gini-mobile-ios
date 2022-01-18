@@ -51,8 +51,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
                                                         api: .default,
                                                         userApi: .default,
                                                         trackingDelegate: self)
-// MARK: - Screen API with custom networking
-        
+// MARK: - Screen API with custom networking        
 //        let viewController = GiniCapture.viewController(importedDocuments: visionDocuments,
 //                                                        configuration: visionConfiguration,
 //                                                        resultsDelegate: self,
