@@ -10,7 +10,7 @@ The Gini Capture SDK provides two integration options. A [Screen API](#screen-ap
 The Screen API provides a custom `UIViewController` object, which can be presented modally. It handles the complete process from showing the onboarding until providing a UI for the analysis.
 The Screen API, in turn, offers two different ways of implementation:
 
-#### UI with Networking (Recommended)
+#### UI with Default Networking (Recommended)
 Using this method you don't need to care about handling the analysis process with the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios), you only need to provide your API credentials and a delegate to get the analysis results.
 
 ```swift
@@ -59,18 +59,21 @@ present(viewController, animated: true, completion:nil)
 > - The document metadata for the upload process is intended to be used for reporting.
 > - The multipage is supported only by the `.default` api.
 
-
-#### Only UI
-
-In case that you decide to use only the UI and to handle all the analysis process (either using the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios) or with your own implementation of the API), just get the `UIViewController` as follows:
+#### UI with Custom Networking
+You can also provide your own networking by implementing the `GiniCaptureNetworkService` and `GiniCaptureResultsDelegate` protocols. Pass your instances to the UIViewController initialiser of GiniCapture as shown below.
 
 ```swift
-let viewController = GiniCapture.viewController(withDelegate: self,
-                                               withConfiguration: giniConfiguration)
+let viewController = GiniCapture.viewController(importedDocuments: visionDocuments,
+                                                configuration: visionConfiguration,
+                                                resultsDelegate: resultsDelegate,
+                                                documentMetadata: documentMetadata,
+                                                trackingDelegate: trackingDelegate,
+                                                networkingService: networkingService)
+
 
 present(viewController, animated: true, completion: nil)
 ```
-
+You may also use the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios) or implement communication with the Gini Bank API yourself.
 ## Component API
 
 The Component API provides a custom `UIViewController` for each screen. This allows a maximum of flexibility, as the screens can be presented modally, used in a container view or pushed to a navigation view controller. Make sure to add your own navigational elements around the provided views.
