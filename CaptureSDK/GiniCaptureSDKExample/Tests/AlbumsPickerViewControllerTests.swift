@@ -39,7 +39,8 @@ class AlbumsPickerViewControllerTests: XCTestCase {
     }
 
     func testTableCellHeight() {
-        XCTAssertEqual(albumsViewController.tableView(albumsViewController.albumsTableView, heightForRowAt: IndexPath(row: 1, section: 0)),
+        XCTAssertEqual(albumsViewController.tableView(albumsViewController.albumsTableView,
+                                                      heightForRowAt: IndexPath(row: 1, section: 0)),
                        AlbumsPickerTableViewCell.height,
                        "table view cell heght should match AlbumsPickerTableViewCell height")
     }
@@ -57,7 +58,8 @@ class AlbumsPickerViewControllerTests: XCTestCase {
 
     func testFirstCellContent() {
         let firstIndex = IndexPath(row: 0, section: 0)
-        let firstCell = albumsViewController.tableView(albumsViewController.albumsTableView, cellForRowAt: firstIndex) as? AlbumsPickerTableViewCell
+        let firstCell = albumsViewController.tableView(albumsViewController.albumsTableView,
+                                                       cellForRowAt: firstIndex) as? AlbumsPickerTableViewCell
 
         XCTAssertEqual(firstCell?.albumTitleLabel.text, galleryManager.albums[firstIndex.row].title,
                        "album title label text should match the album title for the first cell")
@@ -67,7 +69,8 @@ class AlbumsPickerViewControllerTests: XCTestCase {
 
     func testSecondCellContent() {
         let secondIndex = IndexPath(row: 1, section: 0)
-        let secondCell = albumsViewController.tableView(albumsViewController.albumsTableView, cellForRowAt: secondIndex) as? AlbumsPickerTableViewCell
+        let secondCell = albumsViewController.tableView(albumsViewController.albumsTableView,
+                                                        cellForRowAt: secondIndex) as? AlbumsPickerTableViewCell
 
         XCTAssertEqual(secondCell?.albumTitleLabel.text, galleryManager.albums[secondIndex.row].title,
                        "album title label text should match the album title for the second cell")

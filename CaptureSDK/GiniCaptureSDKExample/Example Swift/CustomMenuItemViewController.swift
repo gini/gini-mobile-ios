@@ -6,12 +6,11 @@
 //  Copyright © 2021 Gini GmbH. All rights reserved.
 //
 
-import UIKit
 import GiniCaptureSDK
+import UIKit
 final class CustomMenuItemViewController: UIViewController {
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = Colors.Gini.blue
+        view.backgroundColor = Colors.Gini.blue
     }
 }

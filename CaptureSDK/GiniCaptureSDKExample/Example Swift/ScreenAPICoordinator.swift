@@ -15,24 +15,6 @@ protocol ScreenAPICoordinatorDelegate: AnyObject {
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ())
 }
 
-class TrackingDelegate: GiniCaptureTrackingDelegate {
-    func onAnalysisScreenEvent(event: Event<AnalysisScreenEventType>) {
-        print("✏️ Analysis: \(event.type.rawValue), info: \(event.info ?? [:])")
-    }
-
-    func onOnboardingScreenEvent(event: Event<OnboardingScreenEventType>) {
-        print("✏️ Onboarding: \(event.type.rawValue)")
-    }
-
-    func onCameraScreenEvent(event: Event<CameraScreenEventType>) {
-        print("✏️ Camera: \(event.type.rawValue)")
-    }
-
-    func onReviewScreenEvent(event: Event<ReviewScreenEventType>) {
-        print("✏️ Review: \(event.type.rawValue)")
-    }
-}
-
 final class ScreenAPICoordinator: NSObject, Coordinator {
     weak var delegate: ScreenAPICoordinatorDelegate?
     var childCoordinators: [Coordinator] = []
@@ -41,8 +23,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
     }
 
     var screenAPIViewController: UINavigationController!
-
-    private let trackingDelegate = TrackingDelegate()
 
     let client: Client
     let documentMetadata: Document.Metadata?
@@ -70,7 +50,14 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
                                                         documentMetadata: documentMetadata,
                                                         api: .default,
                                                         userApi: .default,
-                                                        trackingDelegate: trackingDelegate)
+                                                        trackingDelegate: self)
+// MARK: - Screen API with custom networking        
+//        let viewController = GiniCapture.viewController(importedDocuments: visionDocuments,
+//                                                        configuration: visionConfiguration,
+//                                                        resultsDelegate: self,
+//                                                        documentMetadata: documentMetadata,
+//                                                        trackingDelegate: trackingDelegate,
+//                                                        networkingService: self)
         screenAPIViewController = RootNavigationController(rootViewController: viewController)
         screenAPIViewController.navigationBar.barTintColor = visionConfiguration.navigationBarTintColor
         screenAPIViewController.navigationBar.tintColor = visionConfiguration.navigationBarTitleColor
@@ -134,9 +121,13 @@ extension ScreenAPICoordinator: NoResultsScreenDelegate {
 // MARK: - GiniCaptureResultsDelegate
 
 extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
-    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult, sendFeedbackBlock: @escaping ([String: Extraction]) -> Void) {
+    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult,
+                                          sendFeedbackBlock: @escaping ([String: Extraction]) -> Void) {
         showResultsScreen(results: result.extractions.map { $0.value })
         self.sendFeedbackBlock = sendFeedbackBlock
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            sendFeedbackBlock(result.extractions)
+        }
     }
 
     func giniCaptureDidCancelAnalysis() {
@@ -151,5 +142,61 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
             screenAPIViewController.setNavigationBarHidden(false, animated: false)
             screenAPIViewController.pushViewController(customNoResultsScreen, animated: true)
         }
+    }
+}
+
+// MARK: - GiniCaptureNetworkService
+
+extension ScreenAPICoordinator: GiniCaptureNetworkService {
+    func delete(document: Document, completion: @escaping (Result<String, GiniError>) -> Void) {
+        print("custom networking - delete called")
+    }
+
+    func cleanup() {
+        print("custom networking - cleanup called")
+    }
+
+    func analyse(partialDocuments: [PartialDocumentInfo],
+                 metadata: Document.Metadata?,
+                 cancellationToken: CancellationToken,
+                 completion: @escaping (Result<(document: Document,
+                                                extractionResult: ExtractionResult), GiniError>) -> Void) {
+        print("custom networking - analyse called")
+    }
+
+    func upload(document: GiniCaptureDocument,
+                metadata: Document.Metadata?,
+                completion: @escaping UploadDocumentCompletion) {
+        print("custom networking - upload called")
+    }
+
+    func sendFeedback(document: Document,
+                      updatedExtractions: [Extraction],
+                      completion: @escaping (Result<Void, GiniError>) -> Void) {
+        print("custom networking - sendFeedback called")
+    }
+
+    func log(errorEvent: ErrorEvent, completion: @escaping (Result<Void, GiniError>) -> Void) {
+        print("custom networking - log error event called")
+    }
+}
+
+// MARK: - GiniCaptureTrackingDelegate
+
+extension ScreenAPICoordinator: GiniCaptureTrackingDelegate {
+    func onAnalysisScreenEvent(event: Event<AnalysisScreenEventType>) {
+        print("✏️ Analysis: \(event.type.rawValue), info: \(event.info ?? [:])")
+    }
+
+    func onOnboardingScreenEvent(event: Event<OnboardingScreenEventType>) {
+        print("✏️ Onboarding: \(event.type.rawValue)")
+    }
+
+    func onCameraScreenEvent(event: Event<CameraScreenEventType>) {
+        print("✏️ Camera: \(event.type.rawValue)")
+    }
+
+    func onReviewScreenEvent(event: Event<ReviewScreenEventType>) {
+        print("✏️ Review: \(event.type.rawValue)")
     }
 }
