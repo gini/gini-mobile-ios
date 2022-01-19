@@ -14,7 +14,9 @@ class GINIReviewUITests: XCTestCase {
         XCTAssert(reviewScreen.waitForExistence(timeout: 5))
 
         let rotationButton = app.buttons["Dokument drehen"]
-        XCTAssert(rotationButton.exists, "rotation button should exist indicating that the library was started correctly and is presenting the review screen after taking an image")
+        XCTAssert(rotationButton.exists,
+                  "rotation button should exist indicating that the library was started correctly"
+                  + "and is presenting the review screen after taking an image")
     }
 
     func testDoubleTapToZoom() {

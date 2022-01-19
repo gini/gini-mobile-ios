@@ -59,6 +59,22 @@ import GiniBankAPILibrary
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
     }
+     
+     public init(resultsDelegate: GiniCaptureResultsDelegate,
+          giniConfiguration: GiniConfiguration,
+          documentMetadata: Document.Metadata?,
+          trackingDelegate: GiniCaptureTrackingDelegate?,
+          captureNetworkService: GiniCaptureNetworkService) {
+
+         self.documentService = DocumentService(giniCaptureNetworkService: captureNetworkService, metadata: documentMetadata)
+         
+         super.init(withDelegate: nil,
+                    giniConfiguration: giniConfiguration)
+         
+         self.visionDelegate = self
+         self.resultsDelegate = resultsDelegate
+         self.trackingDelegate = trackingDelegate
+     }
     
     convenience init(client: Client,
                      resultsDelegate: GiniCaptureResultsDelegate,
