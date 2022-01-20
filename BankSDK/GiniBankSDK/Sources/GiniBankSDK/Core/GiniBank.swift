@@ -221,4 +221,14 @@ import GiniCaptureSDK
         GiniCapture.setConfiguration(captureConfig)
         return viewController(withDelegate: delegate, importedDocument: importedDocument, trackingDelegate: trackingDelegate)
     }
+    
+    /**
+     Sets a configuration which is used to customize the look and feel of the Gini Bank SDK,
+     for example to change texts and colors displayed to the user.
+     
+     - parameter configuration: The configuration to set.
+     */
+    @objc public class func setConfiguration(_ configuration: GiniBankConfiguration) {
+        GiniBankConfiguration.shared = configuration
+    }
 }

@@ -63,7 +63,23 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     }
     
     func start() {
-        let viewController = GiniBank.viewController(withClient: client, importedDocuments: visionDocuments, configuration: configuration, resultsDelegate: self, documentMetadata: documentMetadata, api: .default, userApi: .default, trackingDelegate: trackingDelegate)
+        
+// MARK: - Screen API with default networking
+    let viewController = GiniBank.viewController(withClient: client,
+                                                 importedDocuments: visionDocuments,
+                                                 configuration: configuration,
+                                                 resultsDelegate: self,
+                                                 documentMetadata: documentMetadata,
+                                                 api: .default,
+                                                 userApi: .default,
+                                                 trackingDelegate: trackingDelegate)
+// MARK: - Screen API with custom networking
+//        let viewController = GiniBank.viewController(importedDocuments: visionDocuments,
+//                                                        configuration: configuration,
+//                                                        resultsDelegate: self,
+//                                                        documentMetadata: documentMetadata,
+//                                                        trackingDelegate: trackingDelegate,
+//                                                        networkingService: self)
 
         screenAPIViewController = RootNavigationController(rootViewController: viewController)
         screenAPIViewController.navigationBar.barTintColor = configuration.navigationBarTintColor
@@ -133,5 +149,32 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
             self.screenAPIViewController.setNavigationBarHidden(false, animated: false)
             self.screenAPIViewController.pushViewController(customNoResultsScreen, animated: true)
         }
+    }
+}
+
+extension ScreenAPICoordinator: GiniCaptureNetworkService {
+    func delete(document: Document, completion: @escaping (Result<String, GiniError>) -> Void) {
+        print("💻 custom networking - delete document event called")
+    }
+    
+    func cleanup() {
+        print("💻 custom networking - cleanup event called")
+
+    }
+    
+    func analyse(partialDocuments: [PartialDocumentInfo], metadata: Document.Metadata?, cancellationToken: CancellationToken, completion: @escaping (Result<(document: Document, extractionResult: ExtractionResult), GiniError>) -> Void) {
+        print("💻 custom networking - analyse documents event called")
+    }
+    
+    func upload(document: GiniCaptureDocument, metadata: Document.Metadata?, completion: @escaping UploadDocumentCompletion) {
+        print("💻 custom networking - upload document event called")
+    }
+    
+    func sendFeedback(document: Document, updatedExtractions: [Extraction], completion: @escaping (Result<Void, GiniError>) -> Void) {
+        print("💻 custom networking - send feedback event called")
+    }
+    
+    func log(errorEvent: ErrorEvent, completion: @escaping (Result<Void, GiniError>) -> Void) {
+        print("💻 custom networking - log error event called")
     }
 }
