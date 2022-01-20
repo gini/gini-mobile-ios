@@ -17,7 +17,7 @@ protocol Coordinator: AnyObject {
 open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator {
     weak var resultsDelegate: GiniCaptureResultsDelegate?
     let documentService: DocumentServiceProtocol
-    var giniPayBankConfiguration: GiniBankConfiguration = GiniBankConfiguration()
+    var giniPayBankConfiguration = GiniBankConfiguration.shared
     
     public init(client: Client,
          resultsDelegate: GiniCaptureResultsDelegate,
@@ -34,7 +34,28 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator {
         super.init(withDelegate: nil, giniConfiguration: captureConfiguration)
 
         visionDelegate = self
-        self.giniPayBankConfiguration = configuration
+        GiniBank.setConfiguration(configuration)
+        giniPayBankConfiguration = configuration
+        self.resultsDelegate = resultsDelegate
+        self.trackingDelegate = trackingDelegate
+    }
+    
+    public init(resultsDelegate: GiniCaptureResultsDelegate,
+         configuration: GiniBankConfiguration,
+         documentMetadata: Document.Metadata?,
+         trackingDelegate: GiniCaptureTrackingDelegate?,
+         captureNetworkService: GiniCaptureNetworkService) {
+
+        documentService = DocumentService(giniCaptureNetworkService: captureNetworkService,
+                                          metadata: documentMetadata)
+        let captureConfiguration = configuration.captureConfiguration()
+
+        super.init(withDelegate: nil,
+                   giniConfiguration: captureConfiguration)
+        giniPayBankConfiguration = configuration
+        GiniBank.setConfiguration(configuration)
+
+        visionDelegate = self
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
     }
