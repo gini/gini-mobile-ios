@@ -393,6 +393,9 @@
                 <a class="nav-group-task-link" href="../Protocols/GiniCaptureErrorLoggerDelegate.html">GiniCaptureErrorLoggerDelegate</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GiniCaptureNetworkService.html">GiniCaptureNetworkService</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/LocalizableStringResource.html">LocalizableStringResource</a>
               </li>
               <li class="nav-group-task">
@@ -1203,6 +1206,128 @@ all screens and transitions out of the box, including the networking.</p>
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:14GiniCaptureSDK0aB0C14viewController17importedDocuments13configuration15resultsDelegate16documentMetadata08trackingJ017networkingServiceSo06UIViewE0CSayAA0aB8Document_pGSg_AA0A13ConfigurationCAA0ab7ResultsJ0_p0A14BankAPILibrary0Q0V0L0VSgAA0ab8TrackingJ0_pSgAA0ab7NetworkO0_ptFZ"></a>
+                    <a name="//apple_ref/swift/Method/viewController(importedDocuments:configuration:resultsDelegate:documentMetadata:trackingDelegate:networkingService:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:14GiniCaptureSDK0aB0C14viewController17importedDocuments13configuration15resultsDelegate16documentMetadata08trackingJ017networkingServiceSo06UIViewE0CSayAA0aB8Document_pGSg_AA0A13ConfigurationCAA0ab7ResultsJ0_p0A14BankAPILibrary0Q0V0L0VSgAA0ab8TrackingJ0_pSgAA0ab7NetworkO0_ptFZ">viewController(importedDocuments:configuration:resultsDelegate:documentMetadata:trackingDelegate:networkingService:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns a view controller which will handle the analysis process.
+It&rsquo;s the easiest way to get started with the Gini Capture SDK as it comes pre-configured and handles
+all screens and transitions out of the box with the custom networking.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>Screen API with custom networking only.</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">viewController</span><span class="p">(</span><span class="nv">importedDocuments</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/GiniCaptureDocument.html">GiniCaptureDocument</a></span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+                                 <span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniConfiguration.html">GiniConfiguration</a></span><span class="p">,</span>
+                                 <span class="nv">resultsDelegate</span><span class="p">:</span> <span class="kt"><a href="../Protocols/GiniCaptureResultsDelegate.html">GiniCaptureResultsDelegate</a></span><span class="p">,</span>
+                                 <span class="nv">documentMetadata</span><span class="p">:</span> <span class="kt">Document</span><span class="o">.</span><span class="kt">Metadata</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+                                 <span class="nv">trackingDelegate</span><span class="p">:</span> <span class="kt"><a href="../Enums.html#/s:14GiniCaptureSDK0aB16TrackingDelegateP">GiniCaptureTrackingDelegate</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+                                 <span class="nv">networkingService</span><span class="p">:</span> <span class="kt"><a href="../Protocols/GiniCaptureNetworkService.html">GiniCaptureNetworkService</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UIViewController</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>importedDocuments</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>There should be either images or one PDF, and they should be validated before calling this     method.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>resultsDelegate</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Results delegate object where you can get the results of the analysis.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>configuration</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The configuration to set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>documentMetadata</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Additional HTTP headers to send when uploading documents.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>trackingDelegate</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A delegate object to receive user events.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>networkingService</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A delegate object which implement protocol for the document processing events.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A presentable view controller.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:14GiniCaptureSDK0aB0C23removeStoredCredentials3fory0A14BankAPILibrary6ClientV_tKFZ"></a>
                     <a name="//apple_ref/swift/Method/removeStoredCredentials(for:)" class="dashAnchor"></a>
                     <a class="token" href="#/s:14GiniCaptureSDK0aB0C23removeStoredCredentials3fory0A14BankAPILibrary6ClientV_tKFZ">removeStoredCredentials(for:)</a>
@@ -1235,7 +1360,7 @@ all screens and transitions out of the box, including the networking.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2021 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2021-11-17)</p>
+      <p>&copy; 2022 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2022-01-20)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

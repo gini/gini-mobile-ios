@@ -392,6 +392,9 @@
                 <a class="nav-group-task-link" href="Protocols/GiniCaptureErrorLoggerDelegate.html">GiniCaptureErrorLoggerDelegate</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/GiniCaptureNetworkService.html">GiniCaptureNetworkService</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/LocalizableStringResource.html">LocalizableStringResource</a>
               </li>
               <li class="nav-group-task">
@@ -443,7 +446,7 @@
 
 <p>The Screen API provides a custom <code>UIViewController</code> object, which can be presented modally. It handles the complete process from showing the onboarding until providing a UI for the analysis.
 The Screen API, in turn, offers two different ways of implementation:</p>
-<h4 id='ui-with-networking-recommended' class='heading'>UI with Networking (Recommended)</h4>
+<h4 id='ui-with-default-networking-recommended' class='heading'>UI with Default Networking (Recommended)</h4>
 
 <p>Using this method you don&rsquo;t need to care about handling the analysis process with the <a href="https://github.com/gini/bank-api-library-ios">Gini Bank API Library</a>, you only need to provide your API credentials and a delegate to get the analysis results.</p>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">GiniCapture</span><span class="o">.</span><span class="nf">viewController</span><span class="p">(</span><span class="nv">withClient</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span>
@@ -494,14 +497,21 @@ The Screen API, in turn, offers two different ways of implementation:</p>
 <li>The multipage is supported only by the <code>.default</code> api.</li>
 </ul>
 </blockquote>
-<h4 id='only-ui' class='heading'>Only UI</h4>
+<h4 id='ui-with-custom-networking' class='heading'>UI with Custom Networking</h4>
 
-<p>In case that you decide to use only the UI and to handle all the analysis process (either using the <a href="https://github.com/gini/bank-api-library-ios">Gini Bank API Library</a> or with your own implementation of the API), just get the <code>UIViewController</code> as follows:</p>
-<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">GiniCapture</span><span class="o">.</span><span class="nf">viewController</span><span class="p">(</span><span class="nv">withDelegate</span><span class="p">:</span> <span class="k">self</span><span class="p">,</span>
-                                               <span class="nv">withConfiguration</span><span class="p">:</span> <span class="n">giniConfiguration</span><span class="p">)</span>
+<p>You can also provide your own networking by implementing the <code><a href="Protocols/GiniCaptureNetworkService.html">GiniCaptureNetworkService</a></code> and <code><a href="Protocols/GiniCaptureResultsDelegate.html">GiniCaptureResultsDelegate</a></code> protocols. Pass your instances to the UIViewController initialiser of GiniCapture as shown below.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">GiniCapture</span><span class="o">.</span><span class="nf">viewController</span><span class="p">(</span><span class="nv">importedDocuments</span><span class="p">:</span> <span class="n">visionDocuments</span><span class="p">,</span>
+                                                <span class="nv">configuration</span><span class="p">:</span> <span class="n">visionConfiguration</span><span class="p">,</span>
+                                                <span class="nv">resultsDelegate</span><span class="p">:</span> <span class="n">resultsDelegate</span><span class="p">,</span>
+                                                <span class="nv">documentMetadata</span><span class="p">:</span> <span class="n">documentMetadata</span><span class="p">,</span>
+                                                <span class="nv">trackingDelegate</span><span class="p">:</span> <span class="n">trackingDelegate</span><span class="p">,</span>
+                                                <span class="nv">networkingService</span><span class="p">:</span> <span class="n">networkingService</span><span class="p">)</span>
+
 
 <span class="nf">present</span><span class="p">(</span><span class="n">viewController</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
 </code></pre>
+
+<p>You may also use the <a href="https://github.com/gini/bank-api-library-ios">Gini Bank API Library</a> or implement communication with the Gini Bank API yourself.</p>
 <h2 id='component-api' class='heading'>Component API</h2>
 
 <p>The Component API provides a custom <code>UIViewController</code> for each screen. This allows a maximum of flexibility, as the screens can be presented modally, used in a container view or pushed to a navigation view controller. Make sure to add your own navigational elements around the provided views.</p>
@@ -566,7 +576,7 @@ The Screen API, in turn, offers two different ways of implementation:</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2021 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2021-11-17)</p>
+      <p>&copy; 2022 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2022-01-20)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
