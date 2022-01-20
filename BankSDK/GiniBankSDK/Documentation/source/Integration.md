@@ -141,7 +141,7 @@ Also if you're using the [Gini Bank API Library](https://github.com/gini/bank-ap
 The Screen API provides a custom `UIViewController` object, which can be presented modally. It handles the complete process from showing the onboarding until providing a UI for the analysis.
 The Screen API, in turn, offers two different ways of implementation:
 
-#### UI with Networking (Recommended)
+#### UI with Default Networking (Recommended)
 Using this method you don't need to care about handling the analysis process with the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios), you only need to provide your API credentials and a delegate to get the analysis results.
 
 ```swift
@@ -190,16 +190,22 @@ present(viewController, animated: true, completion:nil)
 > - The document metadata for the upload process is intended to be used for reporting.
 > - Certification pinning requires iOS 12.
 
-#### Only UI
+#### UI with Custom Networking
 
-In case that you decide to use only the UI and to handle all the analysis process (either using the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios) or with your own implementation of the API), just get the `UIViewController` as follows:
+You can also provide your own networking by implementing the `GiniCaptureNetworkService` and `GiniCaptureResultsDelegate` protocols. Pass your instances to the `UIViewController` initialiser of GiniCapture as shown below:
 
 ```swift
-let viewController = GiniBank.viewController(withDelegate: self,
-                                               withConfiguration: giniBankConfiguration)
+let viewController = GiniBank.viewController(importedDocuments: visionDocuments,
+                                            configuration: configuration,
+                                            resultsDelegate: resultsDelegate,
+                                            documentMetadata: documentMetadata,
+                                            trackingDelegate: trackingDelegate,
+                                            networkingService: networkingService)
+
 
 present(viewController, animated: true, completion: nil)
 ```
+You may also use the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios) or implement communication with the Gini Bank API yourself.
 
 ## Component API
 
