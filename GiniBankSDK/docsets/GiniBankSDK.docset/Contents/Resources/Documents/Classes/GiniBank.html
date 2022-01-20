@@ -949,6 +949,54 @@ There should be either images or one PDF, and they should be validated before ca
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)GiniBank(cm)setConfiguration:"></a>
+                    <a name="//apple_ref/swift/Method/setConfiguration(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)GiniBank(cm)setConfiguration:">setConfiguration(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets a configuration which is used to customize the look and feel of the Gini Bank SDK,
+for example to change texts and colors displayed to the user.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">setConfiguration</span><span class="p">(</span><span class="n">_</span> <span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniBankConfiguration.html">GiniBankConfiguration</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>configuration</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The configuration to set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:11GiniBankSDK0aB0C14viewController10withClient17importedDocuments13configuration15resultsDelegate16documentMetadata3api7userApi08trackingL0So06UIViewE0C0aB10APILibrary0G0V_Say0a7CaptureC00aU8Document_pGSgAA0aB13ConfigurationCAR0au7ResultsL0_pAO0V0V0N0VSgAO9APIDomainOAO10UserDomainOAR0au8TrackingL0_pSgtFZ"></a>
                     <a name="//apple_ref/swift/Method/viewController(withClient:importedDocuments:configuration:resultsDelegate:documentMetadata:api:userApi:trackingDelegate:)" class="dashAnchor"></a>
                     <a class="token" href="#/s:11GiniBankSDK0aB0C14viewController10withClient17importedDocuments13configuration15resultsDelegate16documentMetadata3api7userApi08trackingL0So06UIViewE0C0aB10APILibrary0G0V_Say0a7CaptureC00aU8Document_pGSgAA0aB13ConfigurationCAR0au7ResultsL0_pAO0V0V0N0VSgAO9APIDomainOAO10UserDomainOAR0au8TrackingL0_pSgtFZ">viewController(withClient:importedDocuments:configuration:resultsDelegate:documentMetadata:api:userApi:trackingDelegate:)</a>
@@ -1085,6 +1133,128 @@ all screens and transitions out of the box, including the networking.</p>
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:11GiniBankSDK0aB0C14viewController17importedDocuments13configuration15resultsDelegate16documentMetadata08trackingJ017networkingServiceSo06UIViewE0CSay0a7CaptureC00aQ8Document_pGSg_AA0aB13ConfigurationCAM0aq7ResultsJ0_p0aB10APILibrary0R0V0L0VSgAM0aq8TrackingJ0_pSgAM0aq7NetworkO0_ptFZ"></a>
+                    <a name="//apple_ref/swift/Method/viewController(importedDocuments:configuration:resultsDelegate:documentMetadata:trackingDelegate:networkingService:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11GiniBankSDK0aB0C14viewController17importedDocuments13configuration15resultsDelegate16documentMetadata08trackingJ017networkingServiceSo06UIViewE0CSay0a7CaptureC00aQ8Document_pGSg_AA0aB13ConfigurationCAM0aq7ResultsJ0_p0aB10APILibrary0R0V0L0VSgAM0aq8TrackingJ0_pSgAM0aq7NetworkO0_ptFZ">viewController(importedDocuments:configuration:resultsDelegate:documentMetadata:trackingDelegate:networkingService:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns a view controller which will handle the analysis process.
+It&rsquo;s the easiest way to get started with the Gini Bank SDK as it comes pre-configured and handles
+all screens and transitions out of the box with the custom networking.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>Screen API with custom networking only.</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">viewController</span><span class="p">(</span><span class="nv">importedDocuments</span><span class="p">:</span> <span class="p">[</span><span class="kt">GiniCaptureDocument</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+                                 <span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniBankConfiguration.html">GiniBankConfiguration</a></span><span class="p">,</span>
+                                 <span class="nv">resultsDelegate</span><span class="p">:</span> <span class="kt">GiniCaptureResultsDelegate</span><span class="p">,</span>
+                                 <span class="nv">documentMetadata</span><span class="p">:</span> <span class="kt">Document</span><span class="o">.</span><span class="kt">Metadata</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+                                 <span class="nv">trackingDelegate</span><span class="p">:</span> <span class="kt">GiniCaptureTrackingDelegate</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+                                 <span class="nv">networkingService</span><span class="p">:</span> <span class="kt">GiniCaptureNetworkService</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UIViewController</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>importedDocuments</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>There should be either images or one PDF, and they should be validated before calling this method.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>resultsDelegate</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Results delegate object where you can get the results of the analysis.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>configuration</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The gini bank configuration to set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>documentMetadata</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Additional HTTP headers to send when uploading documents.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>trackingDelegate</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A delegate object to receive user events.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>networkingService</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A delegate object which implement protocol for the document processing events.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A presentable view controller.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:11GiniBankSDK0aB0C23removeStoredCredentials3fory0aB10APILibrary6ClientV_tKFZ"></a>
                     <a name="//apple_ref/swift/Method/removeStoredCredentials(for:)" class="dashAnchor"></a>
                     <a class="token" href="#/s:11GiniBankSDK0aB0C23removeStoredCredentials3fory0aB10APILibrary6ClientV_tKFZ">removeStoredCredentials(for:)</a>
@@ -1117,7 +1287,7 @@ all screens and transitions out of the box, including the networking.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2021 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2021-11-19)</p>
+      <p>&copy; 2022 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2022-01-20)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
