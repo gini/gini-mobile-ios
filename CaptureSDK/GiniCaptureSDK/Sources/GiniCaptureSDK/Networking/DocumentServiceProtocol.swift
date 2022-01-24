@@ -28,25 +28,3 @@ public protocol DocumentServiceProtocol: AnyObject {
     func update(imageDocument: GiniImageDocument)
     func log(errorEvent: ErrorEvent)
 }
-
-extension DocumentServiceProtocol {
-    
-    func handleResults(completion: @escaping AnalysisCompletion) -> (CompletionResult<ExtractionResult>) {
-        return { result in
-            switch result {
-            case .success(let extractionResult):
-                Log(message: "Finished analysis process with no errors", event: .success)
-                completion(.success(extractionResult))
-            case .failure(let error):
-                switch error {
-                case .requestCancelled:
-                    Log(message: "Cancelled analysis process", event: .error)
-                default:
-                    Log(message: "Finished analysis process with error: \(error)", event: .error)
-                    completion(.failure(error))
-                }
-            }
-        }
-        
-    }
-}
