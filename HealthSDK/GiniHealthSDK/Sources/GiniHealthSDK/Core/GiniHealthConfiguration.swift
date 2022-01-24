@@ -197,6 +197,21 @@ public final class GiniHealthConfiguration: NSObject {
      */
     @objc public var bankSelectionCellIconCornerRadius: CGFloat = 0.0
     
+    /**
+     Sets the text color of the info bar on the payment review screen.
+     */
+    @objc public var infoBarTextColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
+    
+    /**
+     Sets the background color of the info bar on the payment review screen.
+     */
+    @objc public var infoBarBackgroundColor = GiniColor(lightModeColor: UIColor.from(hex: 0x7263D0), darkModeColor: UIColor.from(hex: 0x7263D0))
+    
+    /**
+     Sets the corner radius of the info bar on the payment review screen.
+     */
+    @objc public var infoBarCornerRadius: CGFloat = 12.0
+    
     
     // MARK: - Shared properties
     

@@ -11,7 +11,9 @@ class GINICameraUITests: XCTestCase {
         app.buttons["Screen API"].tap()
 
         let captureButton = app.buttons["Auslösen"]
-        XCTAssert(captureButton.exists, "capture button should exist indicating that the library was started correctly and is presenting the camera screen on start")
+        XCTAssert(captureButton.exists,
+                  "capture button should exist indicating that" +
+                  " the library was started correctly and is presenting the camera screen on start")
     }
 
     func testCapture() {
