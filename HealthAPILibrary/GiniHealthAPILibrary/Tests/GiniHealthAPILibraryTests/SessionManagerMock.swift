@@ -11,14 +11,14 @@ import XCTest
 
 final class SessionManagerMock: SessionManagerProtocol {
     
-    static let v1DocumentId = "626626a0-749f-11e2-bfd6-000000000000"
+    static let v3DocumentId = "626626a0-749f-11e2-bfd6-000000000000"
     static let partialDocumentId = "726626a0-749f-11e2-bfd6-000000000000"
     static let compositeDocumentId = "826626a0-749f-11e2-bfd6-000000000000"
     static let paymentProviderId = "b09ef70a-490f-11eb-952e-9bc6f4646c57"
     static let paymentRequestId = "118edf41-102a-4b40-8753-df2f0634cb86"
     static let paymentRequesterUri = "ginipay-test://paymentRequester"
 
-    static let paymentRequestURL = "https://pay-api.gini.net/paymentRequests/118edf41-102a-4b40-8753-df2f0634cb86/payment"
+    static let paymentRequestURL = "https://health-api.gini.net/paymentRequests/118edf41-102a-4b40-8753-df2f0634cb86/payment"
     static let paymentID = "b4bd3e80-7bd1-11e4-95ab-000000000000"
     var documents: [Document] = []
     var providersResponse: [PaymentProviderResponse] = []
@@ -33,7 +33,7 @@ final class SessionManagerMock: SessionManagerProtocol {
         
     }
     
-    func initializeWithV1MockedDocuments() {
+    func initializeWithV3MockedDocuments() {
         documents = [
             load(fromFile: "document", type: "json")
         ]
@@ -70,10 +70,10 @@ final class SessionManagerMock: SessionManagerProtocol {
             switch apiMethod {                
             case .document(let id):
                 switch (id, resource.params.method) {
-                case (SessionManagerMock.v1DocumentId, .get):
+                case (SessionManagerMock.v3DocumentId, .get):
                     let document: Document = load(fromFile: "document", type: "json")
                     completion(.success(document as! T.ResponseType))
-                case (SessionManagerMock.v1DocumentId, .delete):
+                case (SessionManagerMock.v3DocumentId, .delete):
                     documents.removeAll(where: { $0.id == id })
                     completion(.success("Deleted" as! T.ResponseType))
                 case (SessionManagerMock.partialDocumentId, .get):
@@ -146,7 +146,7 @@ final class SessionManagerMock: SessionManagerProtocol {
             case .createDocument(_, _, _, let documentType):
                 switch documentType {
                 case .none:
-                    completion(.success(SessionManagerMock.v1DocumentId as! T.ResponseType))
+                    completion(.success(SessionManagerMock.v3DocumentId as! T.ResponseType))
                 case .some:
                     completion(.success(SessionManagerMock.partialDocumentId as! T.ResponseType))
                 }

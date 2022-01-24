@@ -10,7 +10,7 @@ import XCTest
 
 final class PaymentTests: XCTestCase {
     
-    let baseAPIURLString = "https://pay-api.gini.net"
+    let baseAPIURLString = "https://health-api.gini.net"
     var payService = PaymentService(sessionManager: SessionManagerMock(), apiDomain: .default)
     
     
