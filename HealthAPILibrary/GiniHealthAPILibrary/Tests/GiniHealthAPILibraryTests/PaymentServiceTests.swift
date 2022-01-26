@@ -11,13 +11,11 @@ import XCTest
 class PaymentServiceTests: XCTestCase {
         var sessionManagerMock: SessionManagerMock!
         var defaultDocumentService: DefaultDocumentService!
-        var accountingDocumentService: AccountingDocumentService!
         var paymentService: PaymentService!
 
         override func setUp() {
             sessionManagerMock = SessionManagerMock()
             defaultDocumentService = DefaultDocumentService(sessionManager: sessionManagerMock)
-            accountingDocumentService = AccountingDocumentService(sessionManager: sessionManagerMock)
             paymentService = PaymentService(sessionManager: sessionManagerMock)
         }
     
