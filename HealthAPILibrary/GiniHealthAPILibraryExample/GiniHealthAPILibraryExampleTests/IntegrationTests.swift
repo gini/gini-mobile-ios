@@ -55,7 +55,7 @@ class IntegrationTests: XCTestCase {
     
     func testBuildPaymentService() {
         let paymentService = giniHealthAPILib.paymentService()
-        XCTAssertEqual(paymentService.apiDomain.domainString, "pay-api.gini.net")
+        XCTAssertEqual(paymentService.apiDomain.domainString, "health-api.gini.net")
     }
     
 }
