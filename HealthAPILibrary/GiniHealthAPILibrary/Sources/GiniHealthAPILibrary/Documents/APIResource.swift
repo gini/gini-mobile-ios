@@ -90,14 +90,6 @@ struct APIResource<T: Decodable>: Resource {
             return "/documents/\(id)/layout"
         case .pages(let id):
             return "/documents/\(id)/pages"
-        case .page(let id, let number, let size):
-            if let size = size {
-                return "/documents/\(id)/pages/\(number)/\(size.rawValue)"
-            } else {
-                return "/documents/\(id)/pages/\(number)"
-            }
-        case .pagePreview(let id, let number):
-            return "/documents/\(id)/pages/\(number)/large"
         case .partial:
             return "/documents/partial"
         case .processedDocument(let id):
@@ -133,7 +125,7 @@ struct APIResource<T: Decodable>: Resource {
                                                         subtype: documentType?.name,
                                                         mimeSubtype: mimeSubType).value
             ]
-        case .page, .pagePreview(_, _), .file(_):
+        case .file(_):
             return [:]
         case .paymentProviders, .paymentProvider(_), .paymentRequests(_, _) :
         return ["Accept": ContentType.content(version: apiVersion,
