@@ -129,8 +129,8 @@ public final class PaymentService: PaymentServiceProtocol {
         self.apiDomain = apiDomain
     }
     
-    public func file(urlString: String, completion: @escaping CompletionResult<Data>){
-        self.file(urlString: urlString, resourceHandler: sessionManager.download, completion: completion)
+    func file(urlString: String, completion: @escaping CompletionResult<Data>){
+        file(urlString: urlString, resourceHandler: sessionManager.download, completion: completion)
     }
 }
 
@@ -376,7 +376,7 @@ extension PaymentService {
         })
     }
     
-    func file(urlString: String,
+    private func file(urlString: String,
                  resourceHandler: ResourceDataHandler<APIResource<Data>>,
                  completion: @escaping CompletionResult<Data>) {
         var resource = APIResource<Data>(method: .file(urlString: urlString), apiDomain: .default, httpMethod: .get)
