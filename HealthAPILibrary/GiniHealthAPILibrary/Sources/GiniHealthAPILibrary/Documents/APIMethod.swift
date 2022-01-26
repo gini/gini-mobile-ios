@@ -24,8 +24,6 @@ enum APIMethod: ResourceMethod {
     case layout(forDocumentId: String)
     case partial
     case pages(forDocumentId: String)
-    case page(forDocumentId: String, number: Int, size: Document.Page.Size?)
-    case pagePreview(forDocumentId: String, number: Int)
     case processedDocument(withId: String)
     case paymentProvider(id: String)
     case paymentProviders
