@@ -11,13 +11,11 @@ struct ExtractionsContainer {
     let extractions: [Extraction]
     let compoundExtractions: [String : [[Extraction]]]?
     let candidates: [Extraction.Candidate]
-    let returnReasons: [ReturnReason]?
     
     enum CodingKeys: String, CodingKey {
         case extractions
         case compoundExtractions
         case candidates
-        case returnReasons
     }
 }
 
@@ -55,7 +53,5 @@ extension ExtractionsContainer: Decodable {
         }
         
         candidates = decodedCandidates.flatMap { $0.value }
-        
-        returnReasons = try container.decodeIfPresent([ReturnReason].self, forKey: .returnReasons)
     }
 }

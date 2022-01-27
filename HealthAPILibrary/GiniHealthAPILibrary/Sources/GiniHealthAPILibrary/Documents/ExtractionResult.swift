@@ -20,15 +20,11 @@ import Foundation
     
     /// The line item compound extractions.
     public var lineItems: [[Extraction]]?
-    
-    // Return reasons from which users can pick one when deselecting line items.
-    public var returnReasons: [ReturnReason]?
-    
-    public init(extractions: [Extraction], payment:  [[Extraction]]?,  lineItems: [[Extraction]]?, returnReasons: [ReturnReason]?) {
+        
+    public init(extractions: [Extraction], payment:  [[Extraction]]?,  lineItems: [[Extraction]]?) {
         self.extractions = extractions
         self.payment = payment
         self.lineItems = lineItems
-        self.returnReasons = returnReasons
         super.init()
     }
     
@@ -36,7 +32,6 @@ import Foundation
         
         self.init(extractions: extractionsContainer.extractions,
                   payment: extractionsContainer.compoundExtractions?["payment"],
-                  lineItems: extractionsContainer.compoundExtractions?["lineItems"],
-                  returnReasons: extractionsContainer.returnReasons)
+                  lineItems: extractionsContainer.compoundExtractions?["lineItems"])
     }
 }
