@@ -86,12 +86,11 @@ public protocol DocumentService: AnyObject {
                         completion: @escaping CompletionResult<Void>)
     
     /**
-     * Logs an error event.
+     * Returns the data from the downloaded file via url
      *
-     * - Parameter errorEvent:          The error event details
+     * - Parameter urlString:          The url of the file
+     * - Parameter completion:          A completion callback with data
      */
-    func log(errorEvent: ErrorEvent,
-             completion: @escaping CompletionResult<Void>)
     
     func file(urlString: String, completion: @escaping CompletionResult<Data>)
 }

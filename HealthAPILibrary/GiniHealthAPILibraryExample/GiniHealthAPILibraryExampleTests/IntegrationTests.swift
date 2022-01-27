@@ -29,29 +29,6 @@ class IntegrationTests: XCTestCase {
         documentService = giniHealthAPILib.documentService()
     }
     
-    func testErrorLogging() {
-        let expect = expectation(description: "it logs the error event")
-        
-        let errorEvent = ErrorEvent(deviceModel: UIDevice.current.model,
-                                    osName: UIDevice.current.systemName,
-                                    osVersion: UIDevice.current.systemVersion,
-                                    captureSdkVersion: "Not available",
-                                    apiLibVersion: Bundle(for: GiniHealthAPI.self).infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown",
-                                    description: "Error logging integration test",
-                                    documentId: nil,
-                                    originalRequestId: nil)
-        
-        documentService.log(errorEvent: errorEvent) { result in
-            switch result {
-            case .success:
-                expect.fulfill()
-            case .failure(let error):
-                XCTFail(String(describing: error))
-            }
-        }
-        
-        wait(for: [expect], timeout: 10)
-    }
     
     func testBuildPaymentService() {
         let paymentService = giniHealthAPILib.paymentService()

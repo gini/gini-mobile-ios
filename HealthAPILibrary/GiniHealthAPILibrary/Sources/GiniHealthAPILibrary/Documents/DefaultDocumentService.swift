@@ -217,19 +217,6 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                     completion: completion)
     }
     
-    /**
-     * Logs an error event.
-     *
-     * - Parameter errorEvent:          The error event details
-     * - Parameter completion:          A completion callback
-     */
-    public func log(errorEvent: ErrorEvent,
-                    completion: @escaping CompletionResult<Void>) {
-        log(resourceHandler: sessionManager.data,
-            errorEvent: errorEvent,
-            completion: completion)
-    }
-    
     public func file(urlString: String, completion: @escaping CompletionResult<Data>){
         file(urlString: urlString, resourceHandler: sessionManager.download, completion: completion)
     }
