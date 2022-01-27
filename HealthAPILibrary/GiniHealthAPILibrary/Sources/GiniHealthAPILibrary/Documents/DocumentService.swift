@@ -249,9 +249,9 @@ extension DocumentService {
     }
     
     func preview(resourceHandler: @escaping ResourceDataHandler<APIResource<[Document.Page]>>,
-                  with documentId: String,
-                  pageNumber: Int,
-                  completion: @escaping CompletionResult<Data>) {
+                 with documentId: String,
+                 pageNumber: Int,
+                 completion: @escaping CompletionResult<Data>) {
         let resource = APIResource<[Document.Page]>(method: .pages(forDocumentId: documentId),
                                                     apiDomain: self.apiDomain,
                                                     httpMethod: .get)
@@ -261,19 +261,10 @@ extension DocumentService {
                 let page = pages.first {
                     $0.number == pageNumber
                 }
-                var imageWithHighestResolution = page?.images[0]
-                var maxSize = self.sizeFromString(sizeString: page?.images[0].size.rawValue ?? "")
-
-                for i in 1 ..< (page?.images.count)! {
-                        let imageSize = self.sizeFromString(sizeString: page?.images[i].size.rawValue ?? "")
-                        if imageSize > maxSize {
-                            maxSize = imageSize
-                            imageWithHighestResolution = page?.images[i]
-                        }
-                    }
-                if let urlString = imageWithHighestResolution?.url.absoluteString {
+                if let page = page {
+                    let urlString = self.urlStringForHighestResolutionPreview(page: page)
                     let url = "https://" + self.apiDomain.domainString + urlString
-                    self.file(urlString: url){ result  in
+                    self.file(urlString: url) { result in
                         switch result {
                         case let .success(imageData):
                             completion(.success(imageData))
@@ -282,13 +273,47 @@ extension DocumentService {
                         }
                     }
                 }
-                
             case let .failure(error):
-                completion(.failure(error))
+                if case .notFound = error {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        self.preview(resourceHandler: resourceHandler,
+                                     with: documentId,
+                                     pageNumber: pageNumber,
+                                     completion: completion)
+                    }
+                }
             }
         }
     }
+    
+    private func urlStringForHighestResolutionPreview(page: Document.Page) -> String {
+        let topBoundaryResolutionArea = 4000000
+        var imageWithHighestResolution = page.images[0]
+        var maxResolutionArea = 0
+        var counter = 0
 
+        for i in 0 ..< (page.images.count) {
+            let imageResolutionArea = self.sizeFromString(sizeString: page.images[i].size.rawValue)
+
+            if imageResolutionArea < topBoundaryResolutionArea {
+                imageWithHighestResolution = page.images[i]
+                maxResolutionArea = self.sizeFromString(sizeString: page.images[i].size.rawValue)
+                counter = i
+                break
+            }
+        }
+
+        while counter < page.images.count {
+            let imageResolutionArea = self.sizeFromString(sizeString: page.images[counter].size.rawValue )
+            if imageResolutionArea > maxResolutionArea && imageResolutionArea < topBoundaryResolutionArea {
+                maxResolutionArea = imageResolutionArea
+                imageWithHighestResolution = page.images[counter]
+            }
+            counter = counter + 1
+        }
+        return imageWithHighestResolution.url.absoluteString
+    }
+    
     func file(urlString: String,
                           resourceHandler: ResourceDataHandler<APIResource<Data>>,
                           completion: @escaping CompletionResult<Data>) {
