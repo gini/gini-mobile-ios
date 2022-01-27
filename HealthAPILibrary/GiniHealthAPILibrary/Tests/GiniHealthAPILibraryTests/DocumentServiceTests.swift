@@ -171,35 +171,5 @@ final class DocumentServicesTests: XCTestCase {
             }
         }
     }
-    
-    func testLogErrorEvent() {
-        let expect = expectation(description: "it logs the error event")
-        
-        let errorEvent = ErrorEvent(deviceModel: UIDevice.current.model,
-                                    osName: UIDevice.current.systemName,
-                                    osVersion: UIDevice.current.systemVersion,
-                                    captureSdkVersion: "Not available",
-                                    apiLibVersion: "1.0.0",
-                                    description: "Error logging test",
-                                    documentId: "1234",
-                                    originalRequestId: "5678")
-
-        defaultDocumentService.log(errorEvent: errorEvent) { result in
-            switch result {
-            case .success:
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                if let body = self.sessionManagerMock.logErrorEventBody,
-                   let decoded = try? decoder.decode(ErrorEvent.self, from: body) {
-                    XCTAssertEqual(errorEvent, decoded)
-                    expect.fulfill()
-                }
-            case .failure:
-                break
-            }
-        }
-
-        wait(for: [expect], timeout: 1)
-    }
 
 }
