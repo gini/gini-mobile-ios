@@ -85,7 +85,7 @@ struct APIResource<T: Decodable>: Resource {
         case .extraction(let label, let documentId):
             return "/documents/\(documentId)/extractions/\(label)"
         case .feedback(let id):
-            return "/documents/\(id)/extractions/feedback"
+            return "/documents/\(id)/extractions"
         case .layout(let id):
             return "/documents/\(id)/layout"
         case .pages(let id):
