@@ -288,7 +288,7 @@ extension DocumentService {
         }
     }
     
-    private func urlStringForHighestResolutionPreview(page: Document.Page) -> String {
+    func urlStringForHighestResolutionPreview(page: Document.Page) -> String {
         let topBoundaryResolutionArea = 4000000
         var imageWithHighestResolution = page.images[0]
         var maxResolutionArea = 0
