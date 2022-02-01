@@ -240,8 +240,8 @@ extension DocumentService {
         
         resourceHandler(resource, { result in
             switch result {
-            case .success(let document):
-                completion(.success(document))
+            case .success(let pages):
+                completion(.success(pages))
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -261,7 +261,7 @@ extension DocumentService {
                 let page = pages.first {
                     $0.number == pageNumber
                 }
-                if let page = page {
+                if let page = page, page.images.count > 0 {
                     let urlString = self.urlStringForHighestResolutionPreview(page: page)
                     let url = "https://" + self.apiDomain.domainString + urlString
                     self.file(urlString: url) { result in
@@ -272,6 +272,8 @@ extension DocumentService {
                             completion(.failure(error))
                         }
                     }
+                } else {
+                    completion(.failure(.notFound()))
                 }
             case let .failure(error):
                 if case .notFound = error {
