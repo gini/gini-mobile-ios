@@ -199,7 +199,7 @@ public class DigitalInvoiceViewController: UIViewController {
     
     fileprivate func showDigitalInvoiceOnboarding() {
         if onboardingWillBeShown && !didShowOnboardInCurrentSession {
-            let bundle = Bundle(for: type(of: self))
+            let bundle = giniBankBundle()
             let storyboard = UIStoryboard(name: "DigitalInvoiceOnboarding", bundle: bundle)
             let digitalInvoiceOnboardingViewController = storyboard.instantiateViewController(withIdentifier: "digitalInvoiceOnboardingViewController") as! DigitalInvoiceOnboardingViewController
             digitalInvoiceOnboardingViewController.delegate = self
