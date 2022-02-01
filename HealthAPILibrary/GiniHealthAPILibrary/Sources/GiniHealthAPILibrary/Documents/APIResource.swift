@@ -120,7 +120,7 @@ struct APIResource<T: Decodable>: Resource {
         case .createDocument(_, _, let mimeSubType, let documentType):
             return ["Accept": ContentType.content(version: apiVersion,
                                                   subtype: nil,
-                                                  mimeSubtype: mimeSubType).value,
+                                                  mimeSubtype: "json").value,
                     "Content-Type": ContentType.content(version: apiVersion,
                                                         subtype: documentType?.name,
                                                         mimeSubtype: mimeSubType).value
