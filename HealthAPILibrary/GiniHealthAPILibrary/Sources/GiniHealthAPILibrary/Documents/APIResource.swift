@@ -104,12 +104,6 @@ struct APIResource<T: Decodable>: Resource {
             return "/paymentRequests/\(id)"
         case .paymentRequests(_, _):
             return "/paymentRequests"
-        case .resolvePaymentRequest(let id):
-            return "/paymentRequests/\(id)/payment"
-        case .payment(let id):
-            return "/paymentRequests/\(id)/payment"
-        case .logErrorEvent:
-            return "/events/error"
         case .file(urlString: let urlString):
             return urlString
         }

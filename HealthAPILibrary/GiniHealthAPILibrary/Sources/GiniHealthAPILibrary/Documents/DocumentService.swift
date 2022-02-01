@@ -391,30 +391,6 @@ extension DocumentService {
         })
     }
     
-    func log(resourceHandler: ResourceDataHandler<APIResource<String>>,
-             errorEvent: ErrorEvent,
-             completion: @escaping CompletionResult<Void>) {
-        let encoder = JSONEncoder()
-        encoder.keyEncodingStrategy = .convertToSnakeCase
-        guard let json = try? encoder.encode(errorEvent) else {
-            assertionFailure("The error event provided cannot be encoded")
-            return
-        }
-        
-        let resource = APIResource<String>(method: .logErrorEvent,
-                                           apiDomain: apiDomain,
-                                           httpMethod: .post,
-                                           body: json)
-        
-        resourceHandler(resource) { result in
-            switch result {
-            case .success:
-                completion(.success(()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
 }
 
 // MARK: - Fileprivate

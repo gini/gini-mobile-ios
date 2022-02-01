@@ -25,7 +25,6 @@ final class SessionManagerMock: SessionManagerProtocol {
     var providerResponse: PaymentProviderResponse =  loadProviderResponse()
     var paymentRequests: [PaymentRequest] = []
     var extractionFeedbackBody: Data?
-    var logErrorEventBody: Data?
 
 
     init(keyStore: KeyStore = KeychainStore(),
@@ -104,18 +103,9 @@ final class SessionManagerMock: SessionManagerProtocol {
             case .paymentRequest(_):
                 let paymentRequest: PaymentRequest = loadPaymentRequest()
                 completion(.success(paymentRequest as! T.ResponseType))
-            case .resolvePaymentRequest(_):
-                let paymentRequest: ResolvedPaymentRequest = loadResolvedPaymentRequest()
-                completion(.success(paymentRequest as! T.ResponseType))
-            case .payment(_):
-                let payment: Payment = loadPayment()
-                completion(.success(payment as! T.ResponseType))
             case .feedback(_):
                 extractionFeedbackBody = resource.request.httpBody ?? nil
                 completion(.success("Feedback was sent" as! T.ResponseType))
-            case .logErrorEvent:
-                logErrorEventBody = resource.request.httpBody ?? nil
-                completion(.success("Logged" as! T.ResponseType))
             default:
                 let error = GiniError.unknown(response: nil, data: nil)
                 completion(.failure(error))
