@@ -1,25 +1,26 @@
 fastlane documentation
-================
+----
+
 # Installation
 
 Make sure you have the latest version of the Xcode command line tools installed:
 
-```
+```sh
 xcode-select --install
 ```
 
-Install _fastlane_ using
-```
-[sudo] gem install fastlane -NV
-```
-or alternatively using `brew install fastlane`
+For _fastlane_ installation instructions, see [Installing _fastlane_](https://docs.fastlane.tools/#installing-fastlane)
 
 # Available Actions
+
 ## iOS
+
 ### ios publish_swift_package
+
+```sh
+[bundle exec] fastlane ios publish_swift_package
 ```
-fastlane ios publish_swift_package
-```
+
 Publish a swift package to our release repository.
 
 Parameters:
@@ -33,20 +34,26 @@ Parameters:
   ci                    - set to "true" if running on a CI machine
 
 
+
 ### ios build_docs
+
+```sh
+[bundle exec] fastlane ios build_docs
 ```
-fastlane ios build_docs
-```
+
 Build a documentation.
  
 Parameters:
   project_folder        - the folder of the project to be released (e.g., HealthAPILibrary, HealthSDK)
   package_folder        - the folder to the swift package to be released (e.g., GiniHealthAPILibrary, GiniHealthAPILibraryPinning)
 
+
 ### ios publish_docs
+
+```sh
+[bundle exec] fastlane ios publish_docs
 ```
-fastlane ios publish_docs
-```
+
 Publish a documentation to gh-pages.
 
 Parameters:
@@ -59,21 +66,29 @@ Parameters:
   ci                    - set to "true" if running on a CI machine
 
 
+
 ### ios create_release_tags
+
+```sh
+[bundle exec] fastlane ios create_release_tags
 ```
-fastlane ios create_release_tags
-```
+
 Create release tags for all packages that have different versions than their latest release tag.
 
+
 ### ios create_documentation_release_tags
+
+```sh
+[bundle exec] fastlane ios create_documentation_release_tags
 ```
-fastlane ios create_documentation_release_tags
-```
+
 Create documentation release tags for all packages that have documentation that changed since their latest release.
 
 
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
-More information about fastlane can be found on [fastlane.tools](https://fastlane.tools).
-The documentation of fastlane can be found on [docs.fastlane.tools](https://docs.fastlane.tools).
+
+More information about _fastlane_ can be found on [fastlane.tools](https://fastlane.tools).
+
+The documentation of _fastlane_ can be found on [docs.fastlane.tools](https://docs.fastlane.tools).
