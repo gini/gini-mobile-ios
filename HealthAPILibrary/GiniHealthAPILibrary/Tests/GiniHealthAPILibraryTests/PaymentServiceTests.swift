@@ -11,13 +11,11 @@ import XCTest
 class PaymentServiceTests: XCTestCase {
         var sessionManagerMock: SessionManagerMock!
         var defaultDocumentService: DefaultDocumentService!
-        var accountingDocumentService: AccountingDocumentService!
         var paymentService: PaymentService!
 
         override func setUp() {
             sessionManagerMock = SessionManagerMock()
             defaultDocumentService = DefaultDocumentService(sessionManager: sessionManagerMock)
-            accountingDocumentService = AccountingDocumentService(sessionManager: sessionManagerMock)
             paymentService = PaymentService(sessionManager: sessionManagerMock)
         }
     
@@ -89,41 +87,4 @@ class PaymentServiceTests: XCTestCase {
       }
         wait(for: [expect], timeout: 1)
     }
-    
-    func testResolvePaymentRequest() {
-        let expect = expectation(description: "returns resolved payment request id")
-
-        paymentService.resolvePaymentRequest(id: "118edf41-102a-4b40-8753-df2f0634cb86", recipient: "Uno Flüchtlingshilfe", iban: "DE78370501980020008850", amount: "1.00:EUR", purpose: "ReNr 12345") { result in
-            switch result {
-            case .success(let paymentRequest):
-                XCTAssertEqual(paymentRequest.requesterUri,
-                                   SessionManagerMock.paymentRequesterUri,
-                                   "payment request urls should match")
-                    expect.fulfill()
-                
-            case .failure:
-                break
-            }
-        }
-        wait(for: [expect], timeout: 1)
-    }
-    
-    func testPayment() {
-        let expect = expectation(description: "returns an array of payment requests")
-        paymentService.payment(id: "118edf41-102a-4b40-8753-df2f0634cb86"){ result in
-            switch result {
-            case .success(let payment):
-                let requestID = String(payment.links?.paymentRequest?.split(separator: "/").last ?? "")
-                XCTAssertEqual(requestID,
-                               SessionManagerMock.paymentID,
-                               "payment request ids should match")
-                expect.fulfill()
-            case .failure:
-                break
-            }
-      }
-        wait(for: [expect], timeout: 1)
-    }
 }
-
-

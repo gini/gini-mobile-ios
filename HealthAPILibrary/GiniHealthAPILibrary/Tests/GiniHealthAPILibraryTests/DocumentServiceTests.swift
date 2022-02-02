@@ -11,33 +11,10 @@ import UIKit
 final class DocumentServicesTests: XCTestCase {
     var sessionManagerMock: SessionManagerMock!
     var defaultDocumentService: DefaultDocumentService!
-    var accountingDocumentService: AccountingDocumentService!
 
     override func setUp() {
         sessionManagerMock = SessionManagerMock()
         defaultDocumentService = DefaultDocumentService(sessionManager: sessionManagerMock)
-        accountingDocumentService = AccountingDocumentService(sessionManager: sessionManagerMock)
-    }
-
-    func testV1DocumentCreation() {
-        let expect = expectation(description: "it returns a document")
-
-        accountingDocumentService.createDocument(with: Data(count: 1),
-                                                 fileName: "",
-                                                 docType: nil,
-                                                 metadata: nil) { result in
-            switch result {
-            case let .success(document):
-                XCTAssertEqual(document.id,
-                               SessionManagerMock.v1DocumentId,
-                               "document ids should match")
-                expect.fulfill()
-            case .failure:
-                break
-            }
-        }
-
-        wait(for: [expect], timeout: 1)
     }
 
     func testPartialDocumentCreation() {
@@ -73,23 +50,6 @@ final class DocumentServicesTests: XCTestCase {
                 XCTAssertEqual(document.id,
                                SessionManagerMock.compositeDocumentId,
                                "document ids should match")
-                expect.fulfill()
-            case .failure:
-                break
-            }
-        }
-
-        wait(for: [expect], timeout: 1)
-    }
-
-    func testV1DocumentDeletion() {
-        let expect = expectation(description: "it deletes a document")
-        sessionManagerMock.initializeWithV1MockedDocuments()
-        let document: Document = loadDocument(fileName: "document", type: "json")
-        accountingDocumentService.delete(document) { result in
-            switch result {
-            case .success:
-                XCTAssertTrue(self.sessionManagerMock.documents.isEmpty, "documents should be empty")
                 expect.fulfill()
             case .failure:
                 break
@@ -146,6 +106,12 @@ final class DocumentServicesTests: XCTestCase {
         let jsonData = loadFile(withName: fileName, ofType: type)
 
         return (try? JSONDecoder().decode(ExtractionsContainer.self, from: jsonData))!
+    }
+    
+    func loadPages(fileName: String, type: String) -> [Document.Page] {
+        let jsonData = loadFile(withName: fileName, ofType: type)
+
+        return (try? JSONDecoder().decode([Document.Page].self, from: jsonData))!
     }
 
     func testSubmitFeedback() {
@@ -212,33 +178,18 @@ final class DocumentServicesTests: XCTestCase {
         }
     }
     
-    func testLogErrorEvent() {
-        let expect = expectation(description: "it logs the error event")
-        
-        let errorEvent = ErrorEvent(deviceModel: UIDevice.current.model,
-                                    osName: UIDevice.current.systemName,
-                                    osVersion: UIDevice.current.systemVersion,
-                                    captureSdkVersion: "Not available",
-                                    apiLibVersion: "1.0.0",
-                                    description: "Error logging test",
-                                    documentId: "1234",
-                                    originalRequestId: "5678")
-
-        defaultDocumentService.log(errorEvent: errorEvent) { result in
-            switch result {
-            case .success:
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                if let body = self.sessionManagerMock.logErrorEventBody,
-                   let decoded = try? decoder.decode(ErrorEvent.self, from: body) {
-                    XCTAssertEqual(errorEvent, decoded)
-                    expect.fulfill()
-                }
-            case .failure:
-                break
-            }
+    func testUrlStringForHighestResolutionPreview() {
+        let expect = expectation(description: "it returns the preview image with the biggest resolution area less than 4000000 pixels")
+        sessionManagerMock.initializeWithV2MockedDocuments()
+        let pages: [Document.Page] = loadPages(fileName: "pages", type: "json")
+        if let page = pages.first {
+            let urlStringForHighestResolutionPreview = defaultDocumentService.urlStringForHighestResolutionPreview(page: page)
+            print(urlStringForHighestResolutionPreview)
+            XCTAssertEqual(urlStringForHighestResolutionPreview, "/documents/dcd0c7a0-8382-11ec-9fb5-a5611818595c/pages/1/1280x1810",
+                           "there url strings should be equal")
+            expect.fulfill()
         }
-
+        
         wait(for: [expect], timeout: 1)
     }
 

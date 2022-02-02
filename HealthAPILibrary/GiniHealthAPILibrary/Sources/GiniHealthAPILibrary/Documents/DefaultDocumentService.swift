@@ -173,25 +173,6 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
     }
     
     /**
-     *  Retrieves the page preview of a document for a given page and size
-     *
-     * - Parameter document:            Document to get the preview for
-     * - Parameter pageNumber:          The document's page number
-     * - Parameter size:                The document's page size
-     * - Parameter completion:          A completion callback, returning the requested page preview on success
-     */
-    public func pagePreview(for document: Document,
-                            pageNumber: Int,
-                            size: Document.Page.Size,
-                            completion: @escaping CompletionResult<Data>) {
-        pagePreview(resourceHandler: sessionManager.download,
-                    in: document,
-                    pageNumber: pageNumber,
-                    size: size,
-                    completion: completion)
-    }
-    
-    /**
      *  Submits the analysis feedback for a given document.
      *
      * - Parameter document:            The document for which feedback should be sent
@@ -236,16 +217,7 @@ public final class DefaultDocumentService: DefaultDocumentServiceProtocol {
                     completion: completion)
     }
     
-    /**
-     * Logs an error event.
-     *
-     * - Parameter errorEvent:          The error event details
-     * - Parameter completion:          A completion callback
-     */
-    public func log(errorEvent: ErrorEvent,
-                    completion: @escaping CompletionResult<Void>) {
-        log(resourceHandler: sessionManager.data,
-            errorEvent: errorEvent,
-            completion: completion)
+    public func file(urlString: String, completion: @escaping CompletionResult<Data>){
+        file(urlString: urlString, resourceHandler: sessionManager.download, completion: completion)
     }
 }

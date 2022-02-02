@@ -481,10 +481,10 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     fileprivate func fillInInputFields() {
-        recipientField.text = model?.extractions.first(where: {$0.name == "paymentRecipient"})?.value
+        recipientField.text = model?.extractions.first(where: {$0.name == "payment_recipient"})?.value
         ibanField.text = model?.extractions.first(where: {$0.name == "iban"})?.value
-        usageField.text = model?.extractions.first(where: {$0.name == "paymentPurpose"})?.value
-        if let amountString = model?.extractions.first(where: {$0.name == "amountToPay"})?.value {
+        usageField.text = model?.extractions.first(where: {$0.name == "payment_purpose"})?.value
+        if let amountString = model?.extractions.first(where: {$0.name == "amount_to_pay"})?.value {
             amountToPay = Price(extractionString: amountString)
             let amountToPayText = amountToPay?.string
             amountField.text = amountToPayText
@@ -593,10 +593,10 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             {
                 let paymentInfo = PaymentInfo(recipient: recipientField.text ?? "", iban: ibanField.text ?? "", bic: "", amount: amountText, purpose: usageField.text ?? "", paymentProviderScheme: selectedProvider.appSchemeIOS, paymentProviderId: selectedProvider.id)
                 model?.createPaymentRequest(paymentInfo: paymentInfo)
-                let paymentRecipientExtraction = Extraction(box: nil, candidates: "", entity: "text", value: recipientField.text ?? "", name: "paymentRecipient")
+                let paymentRecipientExtraction = Extraction(box: nil, candidates: "", entity: "text", value: recipientField.text ?? "", name: "payment_recipient")
                 let ibanExtraction = Extraction(box: nil, candidates: "", entity: "iban", value: paymentInfo.iban, name: "iban")
-                let referenceExtraction = Extraction(box: nil, candidates: "", entity: "reference", value: paymentInfo.purpose, name: "reference")
-                let amoutToPayExtraction = Extraction(box: nil, candidates: "", entity: "amount", value: paymentInfo.amount, name: "amountToPay")
+                let referenceExtraction = Extraction(box: nil, candidates: "", entity: "text", value: paymentInfo.purpose, name: "payment_purpose")
+                let amoutToPayExtraction = Extraction(box: nil, candidates: "", entity: "amount", value: paymentInfo.amount, name: "amount_to_pay")
                 let updatedExtractions = [paymentRecipientExtraction, ibanExtraction, referenceExtraction, amoutToPayExtraction]
                 model?.sendFeedback(updatedExtractions: updatedExtractions)
             }
