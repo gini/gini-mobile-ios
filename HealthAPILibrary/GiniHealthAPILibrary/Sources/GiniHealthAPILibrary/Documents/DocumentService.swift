@@ -240,8 +240,8 @@ extension DocumentService {
         
         resourceHandler(resource, { result in
             switch result {
-            case .success(let document):
-                completion(.success(document))
+            case .success(let pages):
+                completion(.success(pages))
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -261,7 +261,7 @@ extension DocumentService {
                 let page = pages.first {
                     $0.number == pageNumber
                 }
-                if let page = page {
+                if let page = page, page.images.count > 0 {
                     let urlString = self.urlStringForHighestResolutionPreview(page: page)
                     let url = "https://" + self.apiDomain.domainString + urlString
                     self.file(urlString: url) { result in
@@ -272,6 +272,8 @@ extension DocumentService {
                             completion(.failure(error))
                         }
                     }
+                } else {
+                    completion(.failure(.notFound()))
                 }
             case let .failure(error):
                 if case .notFound = error {
@@ -286,7 +288,7 @@ extension DocumentService {
         }
     }
     
-    private func urlStringForHighestResolutionPreview(page: Document.Page) -> String {
+    func urlStringForHighestResolutionPreview(page: Document.Page) -> String {
         let topBoundaryResolutionArea = 4000000
         var imageWithHighestResolution = page.images[0]
         var maxResolutionArea = 0
@@ -389,30 +391,6 @@ extension DocumentService {
         })
     }
     
-    func log(resourceHandler: ResourceDataHandler<APIResource<String>>,
-             errorEvent: ErrorEvent,
-             completion: @escaping CompletionResult<Void>) {
-        let encoder = JSONEncoder()
-        encoder.keyEncodingStrategy = .convertToSnakeCase
-        guard let json = try? encoder.encode(errorEvent) else {
-            assertionFailure("The error event provided cannot be encoded")
-            return
-        }
-        
-        let resource = APIResource<String>(method: .logErrorEvent,
-                                           apiDomain: apiDomain,
-                                           httpMethod: .post,
-                                           body: json)
-        
-        resourceHandler(resource) { result in
-            switch result {
-            case .success:
-                completion(.success(()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
 }
 
 // MARK: - Fileprivate

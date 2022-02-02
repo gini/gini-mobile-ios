@@ -84,41 +84,6 @@ public final class PaymentService: PaymentServiceProtocol {
                                 completion: @escaping CompletionResult<PaymentRequests>) {
         self.paymentRequests(limit: limit, offset: offset, resourceHandler: sessionManager.data, completion: completion)
     }
-    
-    /**
-     *  Resolves a payment request.
-     *  A payment is sent by a payment provider in order to resolve a payment request after it was paid.
-     *
-     * - Parameter recipient:               The recipient of the payment
-     * - Parameter iban:                    The iban (international bank account number) of the payment recipient
-     * - Parameter bic:                     The bic (bank identifier code) for the payment
-     * - Parameter amount:                  The amount of the paymentt
-     * - Parameter purpose:                 The purpose of the payment, eg. the invoice or the customer identifier
-     * - Parameter completion:              A completion callback, returning the resolved payment request structure on success
-     */
-    
-    public func resolvePaymentRequest(id: String,
-                                      recipient: String,
-                                      iban: String,
-                                      bic: String? = nil,
-                                      amount: String,
-                                      purpose: String,
-                                      completion: @escaping CompletionResult<ResolvedPaymentRequest>) {
-        let requestBody = ResolvingPaymentRequestBody(recipient: recipient, iban: iban, bic: bic, amount: amount, purpose: purpose)
-        self.resolvePaymentRequest(id: id, resolvingPaymentRequestBody: requestBody, resourceHandler: sessionManager.data, completion: completion)
-    }
-    
-    /**
-     *  Returns a payment.
-     *
-     * - Parameter id:            The the payment request's unique identifier
-     * - Parameter completion:    A completion callback, returning the payment on success
-     */
-    
-    public func payment(id: String,
-                        completion: @escaping CompletionResult<Payment>) {
-        self.payment(id: id, resourceHandler: sessionManager.data, completion: completion)
-    }
 
     let sessionManager: SessionManagerProtocol
 
@@ -197,35 +162,7 @@ public protocol PaymentServiceProtocol: AnyObject {
     func paymentRequests(limit: Int?,
                          offset: Int?,
                          completion: @escaping CompletionResult<PaymentRequests>)
-    /**
-     *  Resolves a payment request
-     *  A payment is sent by a payment provider in order to resolve a payment request after it was paid.
-     *
-     * - Parameter recipient:               The recipient of the payment
-     * - Parameter iban:                    The iban (international bank account number) of the payment recipient
-     * - Parameter bic:                     The bic (bank identifier code) for the payment
-     * - Parameter amount:                  The amount of the paymentt
-     * - Parameter purpose:                 The purpose of the payment, eg. the invoice or the customer identifier
-     * - Parameter completion:              A completion callback, returning the resolved payment request structure on success
-     */
-    
-    func resolvePaymentRequest(id: String,
-                               recipient: String,
-                               iban: String,
-                               bic: String?,
-                               amount: String,
-                               purpose: String,
-                               completion: @escaping CompletionResult<ResolvedPaymentRequest>)
-    
-    /**
-     *  Returns a payment.
-     *
-     * - Parameter id:            The the payment request's unique identifier
-     * - Parameter completion:    A completion callback, returning the payment on success
-     */
-    
-    func payment(id: String,
-                 completion: @escaping CompletionResult<Payment>)
+
 }
 
 extension PaymentService {
@@ -335,41 +272,6 @@ extension PaymentService {
             switch result {
             case let .success(paymentRequests):
                 completion(.success(paymentRequests))
-            case let .failure(error):
-                completion(.failure(error))
-            }
-        })
-    }
-
-    func resolvePaymentRequest(id: String,
-                               resolvingPaymentRequestBody: ResolvingPaymentRequestBody, resourceHandler: ResourceDataHandler<APIResource<ResolvedPaymentRequest>>,
-                               completion: @escaping CompletionResult<ResolvedPaymentRequest>) {
-        guard let json = try? JSONEncoder().encode(resolvingPaymentRequestBody)
-        else {
-            assertionFailure("The ResolvingPaymentRequestBody cannot be encoded")
-            return
-        }
-        let resource = APIResource<ResolvedPaymentRequest>(method: .resolvePaymentRequest(id: id), apiDomain: .default, httpMethod: .post, body: json)
-
-        resourceHandler(resource, { result in
-            switch result {
-            case let .success(resolvedPaymentRequest):
-                completion(.success(resolvedPaymentRequest))
-            case let .failure(error):
-                completion(.failure(error))
-            }
-        })
-    }
-
-    func payment(id: String,
-                 resourceHandler: ResourceDataHandler<APIResource<Payment>>,
-                 completion: @escaping CompletionResult<Payment>) {
-        let resource = APIResource<Payment>(method: .payment(id: id), apiDomain: .default, httpMethod: .get)
-
-        resourceHandler(resource, { result in
-            switch result {
-            case let .success(payment):
-                completion(.success(payment))
             case let .failure(error):
                 completion(.failure(error))
             }

@@ -104,12 +104,6 @@ struct APIResource<T: Decodable>: Resource {
             return "/paymentRequests/\(id)"
         case .paymentRequests(_, _):
             return "/paymentRequests"
-        case .resolvePaymentRequest(let id):
-            return "/paymentRequests/\(id)/payment"
-        case .payment(let id):
-            return "/paymentRequests/\(id)/payment"
-        case .logErrorEvent:
-            return "/events/error"
         case .file(urlString: let urlString):
             return urlString
         }
@@ -120,7 +114,7 @@ struct APIResource<T: Decodable>: Resource {
         case .createDocument(_, _, let mimeSubType, let documentType):
             return ["Accept": ContentType.content(version: apiVersion,
                                                   subtype: nil,
-                                                  mimeSubtype: mimeSubType).value,
+                                                  mimeSubtype: "json").value,
                     "Content-Type": ContentType.content(version: apiVersion,
                                                         subtype: documentType?.name,
                                                         mimeSubtype: mimeSubType).value
