@@ -38,6 +38,7 @@ public enum GiniHealthError: Error {
     case noInstalledApps
      /// Error thrown when api return failure.
     case apiError(GiniError)
+    case noPaymentDataExtracted
 }
 /**
  Data structure for Payment Review Screen initialization.
@@ -175,8 +176,8 @@ public struct DataForReview {
                     DispatchQueue.main.async {
                         switch result {
                         case let .success(extractionResult):
-                            if let iban = extractionResult.extractions.first(where: { $0.name == "iban" })?.value, !iban.isEmpty {
-                                completion(.success(true))
+                            if let paymentExtractions = extractionResult.payment?.first, let iban = paymentExtractions.first(where: { $0.name == "iban" })?.value, !iban.isEmpty {
+                            completion(.success(true))
                             } else {
                                 completion(.success(false))
                             }
@@ -236,7 +237,11 @@ public struct DataForReview {
                                 DispatchQueue.main.async {
                                     switch result {
                                     case let .success(extractionResult):
-                                        completion(.success(extractionResult.extractions))
+                                        if let paymentExtractionsContainer = extractionResult.payment, let paymentExtractions = paymentExtractionsContainer.first {
+                                            completion(.success(paymentExtractions))
+                                        } else {
+                                            completion(.failure(.noPaymentDataExtracted))
+                                        }
                                     case let .failure(error):
                                         completion(.failure(.apiError(error)))
                                     }

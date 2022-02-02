@@ -101,9 +101,6 @@ extension GiniHealthAPI {
 
             // Initialize GiniHealthAPILib
             switch api {
-            case .accounting:
-                let sessionManager = SessionManager(userDomain: userApi)
-                return GiniHealthAPI(documentService: AccountingDocumentService(sessionManager: SessionManager(userDomain: userApi)), paymentService: PaymentService(sessionManager: sessionManager, apiDomain: .default))
             case .default:
                 let sessionManager = SessionManager(userDomain: userApi)
                 return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager), paymentService: PaymentService(sessionManager: sessionManager, apiDomain: .default))

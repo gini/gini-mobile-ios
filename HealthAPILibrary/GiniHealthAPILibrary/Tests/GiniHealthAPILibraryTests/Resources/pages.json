@@ -1,0 +1,20 @@
+[
+    {
+        "pageNumber": 1,
+        "images": {
+            "7500x9000": "/documents/dcd0c7a0-8382-11ec-9fb5-a5611818595c/pages/1/7500x9000",
+            "750x900": "/documents/dcd0c7a0-8382-11ec-9fb5-a5611818595c/pages/1/750x900",
+            "2280x2810": "/documents/dcd0c7a0-8382-11ec-9fb5-a5611818595c/pages/1/2280x2810",
+            "1280x1810": "/documents/dcd0c7a0-8382-11ec-9fb5-a5611818595c/pages/1/1280x1810"
+        }
+    },
+    {
+        "pageNumber": 2,
+        "images": {
+            "7500x9000": "/documents/dcd0c7a0-8382-11ec-9fb5-a5611818595c/pages/2/7500x9000",
+            "750x900": "/documents/dcd0c7a0-8382-11ec-9fb5-a5611818595c/pages/2/750x900",
+            "2280x2810": "/documents/dcd0c7a0-8382-11ec-9fb5-a5611818595c/pages/2/2280x2810",
+            "1280x1810": "/documents/dcd0c7a0-8382-11ec-9fb5-a5611818595c/pages/2/1280x1810"
+        }
+    }
+]

@@ -15,24 +15,23 @@ import Foundation
     /// The specific extractions.
     public let extractions: [Extraction]
     
+    /// The payment compound extractions.
+    public var payment:  [[Extraction]]?
+    
     /// The line item compound extractions.
     public var lineItems: [[Extraction]]?
-    
-    // Return reasons from which users can pick one when deselecting line items.
-    public var returnReasons: [ReturnReason]?
-    
-    public init(extractions: [Extraction], lineItems: [[Extraction]]?, returnReasons: [ReturnReason]?) {
-        self.extractions = extractions
-        self.lineItems = lineItems
-        self.returnReasons = returnReasons
         
+    public init(extractions: [Extraction], payment:  [[Extraction]]?,  lineItems: [[Extraction]]?) {
+        self.extractions = extractions
+        self.payment = payment
+        self.lineItems = lineItems
         super.init()
     }
     
     convenience init(extractionsContainer: ExtractionsContainer) {
         
         self.init(extractions: extractionsContainer.extractions,
-                  lineItems: extractionsContainer.compoundExtractions?["lineItems"],
-                  returnReasons: extractionsContainer.returnReasons)
+                  payment: extractionsContainer.compoundExtractions?["payment"],
+                  lineItems: extractionsContainer.compoundExtractions?["lineItems"])
     }
 }

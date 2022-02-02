@@ -8,10 +8,8 @@
 import Foundation
 
 public enum APIDomain {
-    /// The default one, which points to https://pay-api.gini.net
+    /// The default one, which points to https://health-api.gini.net
     case `default`
-    /// The accounting API, which points to https://accounting-api.gini.net/
-    case accounting
     /// The GYM API, which points to https://gym.gini.net/
     case gym(tokenSource: AlternativeTokenSource)
     /// A custom domain with optional custom token source
@@ -20,8 +18,7 @@ public enum APIDomain {
     var domainString: String {
         
         switch self {
-        case .default: return "pay-api.gini.net"
-        case .accounting: return "accounting-api.gini.net"
+        case .default: return "health-api.gini.net"
         case .gym: return "gym.gini.net"
         case .custom(let domain, _): return domain
         }
@@ -50,7 +47,6 @@ struct APIResource<T: Decodable>: Resource {
     var apiVersion: Int {
         switch domain {
         case .default, .gym, .custom: return 2
-        case .accounting: return 1
         }
     }
     
@@ -89,19 +85,11 @@ struct APIResource<T: Decodable>: Resource {
         case .extraction(let label, let documentId):
             return "/documents/\(documentId)/extractions/\(label)"
         case .feedback(let id):
-            return "/documents/\(id)/extractions/feedback"
+            return "/documents/\(id)/extractions"
         case .layout(let id):
             return "/documents/\(id)/layout"
         case .pages(let id):
             return "/documents/\(id)/pages"
-        case .page(let id, let number, let size):
-            if let size = size {
-                return "/documents/\(id)/pages/\(number)/\(size.rawValue)"
-            } else {
-                return "/documents/\(id)/pages/\(number)"
-            }
-        case .pagePreview(let id, let number):
-            return "/documents/\(id)/pages/\(number)/large"
         case .partial:
             return "/documents/partial"
         case .processedDocument(let id):
@@ -116,12 +104,6 @@ struct APIResource<T: Decodable>: Resource {
             return "/paymentRequests/\(id)"
         case .paymentRequests(_, _):
             return "/paymentRequests"
-        case .resolvePaymentRequest(let id):
-            return "/paymentRequests/\(id)/payment"
-        case .payment(let id):
-            return "/paymentRequests/\(id)/payment"
-        case .logErrorEvent:
-            return "/events/error"
         case .file(urlString: let urlString):
             return urlString
         }
@@ -137,7 +119,7 @@ struct APIResource<T: Decodable>: Resource {
                                                         subtype: documentType?.name,
                                                         mimeSubtype: mimeSubType).value
             ]
-        case .page, .pagePreview(_, _), .file(_):
+        case .file(_):
             return [:]
         case .paymentProviders, .paymentProvider(_), .paymentRequests(_, _) :
         return ["Accept": ContentType.content(version: apiVersion,

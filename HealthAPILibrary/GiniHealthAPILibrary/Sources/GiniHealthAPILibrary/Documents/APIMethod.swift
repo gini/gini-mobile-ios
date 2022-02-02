@@ -24,16 +24,11 @@ enum APIMethod: ResourceMethod {
     case layout(forDocumentId: String)
     case partial
     case pages(forDocumentId: String)
-    case page(forDocumentId: String, number: Int, size: Document.Page.Size?)
-    case pagePreview(forDocumentId: String, number: Int)
     case processedDocument(withId: String)
     case paymentProvider(id: String)
     case paymentProviders
     case createPaymentRequest
     case paymentRequest(id: String)
     case paymentRequests(limit: Int?, offset: Int?)
-    case resolvePaymentRequest(id: String)
-    case payment(id: String)
-    case logErrorEvent
     case file(urlString: String)
 }
