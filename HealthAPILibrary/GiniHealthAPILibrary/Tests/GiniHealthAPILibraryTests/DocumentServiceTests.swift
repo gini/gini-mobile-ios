@@ -107,6 +107,12 @@ final class DocumentServicesTests: XCTestCase {
 
         return (try? JSONDecoder().decode(ExtractionsContainer.self, from: jsonData))!
     }
+    
+    func loadPages(fileName: String, type: String) -> [Document.Page] {
+        let jsonData = loadFile(withName: fileName, ofType: type)
+
+        return (try? JSONDecoder().decode([Document.Page].self, from: jsonData))!
+    }
 
     func testSubmitFeedback() {
         let expect = expectation(description: "feedback will be successfully sent")
@@ -170,6 +176,21 @@ final class DocumentServicesTests: XCTestCase {
                 }
             }
         }
+    }
+    
+    func testUrlStringForHighestResolutionPreview() {
+        let expect = expectation(description: "it returns the preview image with the biggest resolution area less than 4000000 pixels")
+        sessionManagerMock.initializeWithV2MockedDocuments()
+        let pages: [Document.Page] = loadPages(fileName: "pages", type: "json")
+        if let page = pages.first {
+            let urlStringForHighestResolutionPreview = defaultDocumentService.urlStringForHighestResolutionPreview(page: page)
+            print(urlStringForHighestResolutionPreview)
+            XCTAssertEqual(urlStringForHighestResolutionPreview, "/documents/dcd0c7a0-8382-11ec-9fb5-a5611818595c/pages/1/1280x1810",
+                           "there url strings should be equal")
+            expect.fulfill()
+        }
+        
+        wait(for: [expect], timeout: 1)
     }
 
 }
