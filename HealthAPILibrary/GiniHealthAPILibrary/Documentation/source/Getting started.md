@@ -21,7 +21,7 @@ To initialize the library, you just need to provide the API credentials:
 
 ## Public Key Pinning
 
-If you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information), the metadata information (the [Gini Health API](http://developer.gini.net/gini-api/html/index.html) is used by default) as follows:
+If you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information), the metadata information (the [Gini Health API](https://health-api.gini.net/documentation/v3/#gini-health-api-documentation-v3-0) is used by default) as follows:
 
 ```swift
     let yourPublicPinningConfig = [
@@ -129,7 +129,7 @@ Extractions are not available for partial documents. Creating a partial document
 
 #### Setting the document type hint
 
-To easily set the document type hint we introduced the `DocType` enum. It is safer and easier to use than a String. For more details about the document type hints see the Document Type Hints in the [Gini Health API documentation](https://pay-api.gini.net/documentation/#document-types)
+To easily set the document type hint we introduced the `DocType` enum. It is safer and easier to use than a String. For more details about the document type hints see the Document Type Hints in the [Gini Health API documentation](https://health-api.gini.net/documentation/v3/#document-types)
 
 ### Getting extractions
 
