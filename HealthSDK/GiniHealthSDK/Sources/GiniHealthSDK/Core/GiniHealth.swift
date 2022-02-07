@@ -36,8 +36,9 @@ public protocol GiniHealthDelegate: AnyObject {
 public enum GiniHealthError: Error {
      /// Error thrown when there are no apps which supports Gini Pay Connect installed.
     case noInstalledApps
-     /// Error thrown when api return failure.
+     /// Error thrown when api returns failure.
     case apiError(GiniError)
+    /// Error thrown when api didn't returns payment extractions.
     case noPaymentDataExtracted
 }
 /**
