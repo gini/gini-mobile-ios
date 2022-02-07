@@ -34,7 +34,7 @@ For manual installation [GiniBankSDKPinning](https://github.com/gini/gini-mobile
 - [GiniCaptureSDKPinning](https://github.com/gini/gini-mobile-ios/tree/main/CaptureSDK/GiniCaptureSDKPinning)
 - [GiniCaptureSDK](https://github.com/gini/gini-mobile-ios/tree/main/CaptureSDK/GiniCaptureSDK)
 - [GiniBankAPILibraryPinning](https://github.com/gini/gini-mobile-ios/tree/main/BankAPILibrary/GiniBankAPILibraryPinning) 
- - [GiniBankAPILibrary](https://github.com/gini/gini-mobile-ios/tree/main/BankAPILibrary/GiniBankAPILibrary)
+- [GiniBankAPILibrary](https://github.com/gini/gini-mobile-ios/tree/main/BankAPILibrary/GiniBankAPILibrary)
 
 You can find the list of dependencies [here](hhttps://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKPinning/Package.swift).
 
