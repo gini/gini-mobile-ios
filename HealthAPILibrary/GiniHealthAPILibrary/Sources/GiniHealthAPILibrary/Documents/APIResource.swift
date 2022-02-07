@@ -46,7 +46,9 @@ struct APIResource<T: Decodable>: Resource {
     
     var apiVersion: Int {
         switch domain {
-        case .default, .gym, .custom: return 2
+        case .default: return 3
+        case .gym: return 2
+        case .custom: return 3
         }
     }
     
