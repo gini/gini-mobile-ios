@@ -233,7 +233,6 @@ extension Foundation.Bundle {
                 return bundle
             }
         }
-        
-        fatalError("Unable to find bundle named \(bundleName)")
+        return Bundle(for: GiniCapture.self)
     }()
 }
