@@ -73,7 +73,7 @@ import AVFoundation
     var fileImportToolTipView: ToolTipView?
     var qrCodeToolTipView: ToolTipView?
     let giniConfiguration: GiniConfiguration
-    let currentDevice: UIDevice
+    var currentDevice: UIDevice
     fileprivate var detectedQRCodeDocument: GiniQRCodeDocument?
     fileprivate var currentQRCodePopup: QRCodeDetectedPopupView?
     var shouldShowQRCodeNext = false
@@ -99,9 +99,9 @@ import AVFoundation
      
      - returns: A view controller instance allowing the user to take a picture or pick a document.
      */
-    public init(giniConfiguration: GiniConfiguration, currentDevice: UIDevice = .current) {
+    public init(giniConfiguration: GiniConfiguration) {
         self.giniConfiguration = giniConfiguration
-        self.currentDevice = currentDevice
+        self.currentDevice = .current
         super.init(nibName: nil, bundle: nil)
     }
     
