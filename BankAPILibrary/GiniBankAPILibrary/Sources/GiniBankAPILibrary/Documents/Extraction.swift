@@ -10,7 +10,7 @@ import Foundation
 /**
  * Data model for a document extraction.
  */
-@objcMembers final public class Extraction: NSObject {
+@objcMembers final public class Extraction: NSObject, Decodable {
 
     /// The extraction's box. Only available for some extractions.
     public let box: Box?
@@ -24,7 +24,7 @@ import Foundation
     public var name: String?
     
     /// The extraction's box attributes.
-    @objcMembers final public class Box: NSObject {
+    @objcMembers final public class Box: NSObject, Decodable {
         public let height: Double
         public let left: Double
         public let page: Int
@@ -41,7 +41,7 @@ import Foundation
     }
     
     /// A extraction candidate, containing a box, an entity and a its value.
-    @objcMembers final public class Candidate: NSObject {
+    @objcMembers final public class Candidate: NSObject, Decodable {
         public let box: Box?
         public let entity: String
         public let value: String
@@ -65,9 +65,9 @@ import Foundation
 
 // MARK: - Decodable
 
-extension Extraction: Decodable {}
-extension Extraction.Box: Decodable {}
-extension Extraction.Candidate: Decodable {}
+//extension Extraction: Decodable {}
+//extension Extraction.Box: Decodable {}
+//extension Extraction.Candidate: Decodable {}
 
 // MARK: - isEqual
 
