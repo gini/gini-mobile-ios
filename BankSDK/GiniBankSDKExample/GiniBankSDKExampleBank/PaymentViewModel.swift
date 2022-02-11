@@ -24,7 +24,7 @@ public class PaymentViewModel: NSObject {
 
     var onErrorHandling: (_ error: GiniBankError) -> Void = { _ in }
 
-    var onResolvePaymentRequest: () -> Void = {}
+    var onResolvePaymentRequest: (_ resolved: ResolvedPaymentRequest) -> Void = { _ in }
 
     var onResolvePaymentRequestErrorHandling: () -> Void = {}
     
@@ -51,7 +51,7 @@ public class PaymentViewModel: NSObject {
             case .success(let resolvedPaymentRequest):
                 self?.paymentRequest = resolvedPaymentRequest
                 self?.isLoading = false
-                self?.onResolvePaymentRequest()
+                self?.onResolvePaymentRequest(resolvedPaymentRequest)
             case .failure:
                 self?.isLoading = false
                 self?.onResolvePaymentRequestErrorHandling()
