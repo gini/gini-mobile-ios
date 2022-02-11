@@ -27,6 +27,8 @@ public class PaymentViewModel: NSObject {
     var onResolvePaymentRequest: () -> Void = {}
 
     var onResolvePaymentRequestErrorHandling: () -> Void = {}
+    
+    var onGettingPayment: (_ payment: Payment) -> Void = {_ in }
 
     var isLoading: Bool = false {
         didSet {
@@ -77,6 +79,19 @@ public class PaymentViewModel: NSObject {
                     self?.onErrorHandling(error)
                 }
             }
-      }
+        }
+    }
+    
+    func fetchPayment(){
+        bankSDK.paymentService.payment(id: appDelegate.paymentRequestId) { [weak self] result in
+            switch result {
+            case let .success(payment):
+                self?.isLoading = false
+                self?.onGettingPayment(payment)
+            case let .failure(error):
+                self?.isLoading = false
+                self?.onErrorHandling(.apiError(error))
+            }
+        }
     }
 }
