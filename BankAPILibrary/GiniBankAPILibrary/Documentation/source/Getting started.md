@@ -29,7 +29,7 @@ The token your provide will be added as a bearer token to all api.custom.net req
 
 ## Public Key Pinning
 
-If you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information), the metadata information (the [Gini Bank API](http://developer.gini.net/gini-api/html/index.html) is used by default) as follows:
+If you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information), the metadata information (the [Gini Bank API](https://developer.gini.net/gini-api/html/index.html) is used by default) as follows:
 
 ```swift
     let yourPublicPinningConfig = [
