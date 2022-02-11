@@ -1,6 +1,5 @@
 [
 {
-  "paymentProvider": "9a9b41f2-32f8-11eb-9fb5-e378350b0392",
   "requesterUri": "ginipay-test://paymentRequester",
   "iban": "DE02300209000106531065",
   "bic": "CMCIDEDDXXX",
@@ -11,7 +10,6 @@
   "status": "paid",
   "_links": {
     "self": "https://pay-api.gini.net/paymentRequests/eacd0efa-e2b8-475b-8888-6264950d0cd5",
-    "paymentProvider": "https://pay-api.gini.net/paymentProviders/9a9b41f2-32f8-11eb-9fb5-e378350b0392",
     "payment": "https://pay-api.gini.net/paymentRequests/eacd0efa-e2b8-475b-8888-6264950d0cd5/payment"
   }
 },
