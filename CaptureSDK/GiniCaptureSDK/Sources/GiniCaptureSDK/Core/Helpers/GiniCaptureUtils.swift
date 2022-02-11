@@ -9,7 +9,7 @@
 import UIKit
 
 public func giniCaptureBundle() -> Bundle {
-    Bundle.module
+    Bundle.resource
 }
 
 /**
@@ -203,4 +203,36 @@ func measure(block: () -> Void) {
     block()
     let elaspsedTime = Date().timeIntervalSince(start)
     Log(message: "Elapsed time: \(elaspsedTime) seconds", event: "⏲️")
+}
+private class CaptureSDKBundleFinder {}
+
+extension Foundation.Bundle {
+    
+    /**
+     The resource bundle associated with the current module.
+     - important: When `GiniCaptureSDK` is distributed via Swift Package Manager, it will be synthesized automatically in the name of `Bundle.module`.
+     */
+    static var resource: Bundle = {
+        let moduleName = "GiniCaptureSDK"
+        let bundleName = "\(moduleName)_\(moduleName)"
+        
+        let candidates = [
+            // Bundle should be present here when the package is linked into an App.
+            Bundle.main.resourceURL,
+
+            // Bundle should be present here when the package is linked into a framework.
+            Bundle(for: CaptureSDKBundleFinder.self).resourceURL,
+
+            // For command-line tools.
+            Bundle.main.bundleURL,
+        ]
+
+        for candidate in candidates {
+            let bundlePath = candidate?.appendingPathComponent(bundleName + ".bundle")
+            if let bundle = bundlePath.flatMap(Bundle.init(url:)) {
+                return bundle
+            }
+        }
+        return Bundle(for: GiniCapture.self)
+    }()
 }
