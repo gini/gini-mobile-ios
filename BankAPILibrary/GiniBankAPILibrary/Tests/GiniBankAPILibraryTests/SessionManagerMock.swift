@@ -21,8 +21,6 @@ final class SessionManagerMock: SessionManagerProtocol {
     static let paymentRequestURL = "https://pay-api.gini.net/paymentRequests/118edf41-102a-4b40-8753-df2f0634cb86/payment"
     static let paymentID = "b4bd3e80-7bd1-11e4-95ab-000000000000"
     var documents: [Document] = []
-    var providers: [PaymentProvider] = []
-    var provider: PaymentProvider =  loadProvider()
     var paymentRequests: [PaymentRequest] = []
     var extractionFeedbackBody: Data?
     var logErrorEventBody: Data?
@@ -37,10 +35,6 @@ final class SessionManagerMock: SessionManagerProtocol {
         documents = [
             load(fromFile: "document", type: "json")
         ]
-    }
-    
-    func initializeWithPaymentProviders() {
-        providers = loadProviders()
     }
     
     func initializeWithPaymentRequests() {
@@ -93,14 +87,6 @@ final class SessionManagerMock: SessionManagerProtocol {
                 }
             case .createDocument(_, _, _, _):
                 completion(.success(SessionManagerMock.compositeDocumentId as! T.ResponseType))
-            case .createPaymentRequest:
-                completion(.success(SessionManagerMock.paymentRequestId as! T.ResponseType))
-            case .paymentProvider(_):
-                let paymentProvider: PaymentProvider = loadProvider()
-                completion(.success(paymentProvider as! T.ResponseType))
-            case .paymentProviders:
-                let paymentProviders: PaymentProviders = loadProviders()
-                completion(.success(paymentProviders as! T.ResponseType))
             case .paymentRequest(_):
                 let paymentRequest: PaymentRequest = loadPaymentRequest()
                 completion(.success(paymentRequest as! T.ResponseType))

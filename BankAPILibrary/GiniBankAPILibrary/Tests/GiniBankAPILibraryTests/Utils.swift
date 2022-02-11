@@ -23,14 +23,6 @@ func load<T: Decodable>(fromFile named: String, type: String) -> T {
     return (try? JSONDecoder().decode(T.self, from: jsonData))!
 }
 
-func loadProviders() -> PaymentProviders {
-    let fileURLPath: String? = Bundle.module
-        .path(forResource: "providers", ofType: "json")
-    let jsonData = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
-    
-    return (try? JSONDecoder().decode(PaymentProviders.self, from: jsonData!))!
-}
-
 func loadPaymentRequests() -> PaymentRequests {
     let fileURLPath: String? = Bundle.module
         .path(forResource: "paymentRequests", ofType: "json")
@@ -38,14 +30,6 @@ func loadPaymentRequests() -> PaymentRequests {
     
     return (try? JSONDecoder().decode(PaymentRequests.self, from: jsonData!))!
 }
-
-func loadProvider() -> PaymentProvider {
-    let fileURLPath: String? = Bundle.module
-        .path(forResource: "provider", ofType: "json")
-    let jsonData = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
-    return try! JSONDecoder().decode(PaymentProvider.self, from: jsonData!)
-}
-
 func loadPaymentRequest() -> PaymentRequest {
     let fileURLPath: String? = Bundle.module
         .path(forResource: "paymentRequest", ofType: "json")
