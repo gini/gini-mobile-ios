@@ -105,12 +105,6 @@ struct APIResource<T: Decodable>: Resource {
             return "/documents/partial"
         case .processedDocument(let id):
             return "/documents/\(id)/processed"
-        case .paymentProviders:
-            return "/paymentProviders"
-        case .paymentProvider(let id):
-            return "/paymentProviders/\(id)"
-        case .createPaymentRequest:
-            return "/paymentRequests"
         case .paymentRequest(let id):
             return "/paymentRequests/\(id)"
         case .paymentRequests(_, _):
@@ -136,7 +130,7 @@ struct APIResource<T: Decodable>: Resource {
             ]
         case .page, .pagePreview(_, _):
             return [:]
-        case .paymentProviders, .paymentProvider(_), .paymentRequests(_, _) :
+        case .paymentRequests(_, _) :
         return ["Accept": ContentType.content(version: apiVersion,
                                               subtype: nil,
                                               mimeSubtype: "json").value]
@@ -167,7 +161,7 @@ struct APIResource<T: Decodable>: Resource {
         guard ResponseType.self != String.self else {
             let string: String?
             switch method {
-            case .createDocument, .createPaymentRequest:
+            case .createDocument:
                 string = response.allHeaderFields["Location"] as? String
             default:
                 string = String(data: data, encoding: .utf8)
