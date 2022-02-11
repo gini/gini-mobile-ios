@@ -101,9 +101,6 @@ extension GiniBankAPI {
 
             // Initialize GiniBankAPI
             switch api {
-            case .accounting:
-                let sessionManager = SessionManager(userDomain: userApi)
-                return GiniBankAPI(documentService: AccountingDocumentService(sessionManager: SessionManager(userDomain: userApi)), paymentService: PaymentService(sessionManager: sessionManager, apiDomain: .default))
             case .default:
                 let sessionManager = SessionManager(userDomain: userApi)
                 return GiniBankAPI(documentService: DefaultDocumentService(sessionManager: sessionManager), paymentService: PaymentService(sessionManager: sessionManager, apiDomain: .default))
