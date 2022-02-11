@@ -151,7 +151,6 @@ let viewController = GiniBank.viewController(withClient: client,
 
 present(viewController, animated: true, completion: nil)
 ```
-##TODO change links on bank api
 Optionally if you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information), the metadata information and the _API type_ (the [Gini Pay API](https://pay-api.gini.net/documentation/#gini-pay-api-documentation-v1-0) is used by default) as follows:
 
 ```swift
@@ -232,7 +231,6 @@ The components that can be found in the library are:
 ## Sending Feedback
 
 Your app should send feedback for the extractions the Gini Bank API delivered. Feedback should be sent only for the extractions the user has seen and accepted (or corrected).
-##TODO change links on bank api
 
 For additional information about feedback see the [Gini Bank API documentation](https://pay-api.gini.net/documentation/#send-feedback-and-get-even-better-extractions-next-time).
 
@@ -263,7 +261,6 @@ sendFeedbackBlock(updatedExtractions)
 
 ```
 ### Custom Implementation
-##TODO change links on bank api
 
 If you use your own networking implementation and directly communicate with the Gini Bank API then see [this section](https://pay-api.gini.net/documentation/#submitting-feedback-on-extractions) in its documentation on how to send feedback.
 
