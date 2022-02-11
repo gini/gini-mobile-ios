@@ -52,7 +52,7 @@ func NSLocalizedStringPreferredGiniBankFormat(_ key: String,
 }
 
 func giniBankBundle() -> Bundle {
-    Bundle.module
+    Bundle.resource
 }
 
 /**
@@ -99,4 +99,37 @@ public func receivePaymentRequestId(url: URL, completion: @escaping (Result<Stri
         print("Request id is missing")
     }
 
+}
+
+private class BankSDKBundleFinder {}
+
+extension Foundation.Bundle {
+    
+    /**
+     The resource bundle associated with the current module.
+     - important: When `GiniBankSDK` is distributed via Swift Package Manager, it will be synthesized automatically in the name of `Bundle.module`.
+     */
+    static var resource: Bundle = {
+        let moduleName = "GiniBankSDK"
+        let bundleName = "\(moduleName)_\(moduleName)"
+        
+        let candidates = [
+            // Bundle should be present here when the package is linked into an App.
+            Bundle.main.resourceURL,
+
+            // Bundle should be present here when the package is linked into a framework.
+            Bundle(for: BankSDKBundleFinder.self).resourceURL,
+
+            // For command-line tools.
+            Bundle.main.bundleURL,
+        ]
+
+        for candidate in candidates {
+            let bundlePath = candidate?.appendingPathComponent(bundleName + ".bundle")
+            if let bundle = bundlePath.flatMap(Bundle.init(url:)) {
+                return bundle
+            }
+        }
+        return Bundle(for: GiniBank.self)
+    }()
 }
