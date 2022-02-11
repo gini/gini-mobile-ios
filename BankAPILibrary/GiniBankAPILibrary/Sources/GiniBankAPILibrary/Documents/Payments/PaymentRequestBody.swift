@@ -11,7 +11,7 @@ import Foundation
  */
 struct PaymentRequestBody: Codable {
     var sourceDocumentLocation: String?
-    var paymentProvider,recipient, iban: String
+    var recipient, iban: String
     var bic: String?
     var amount, purpose: String
     
@@ -20,7 +20,6 @@ struct PaymentRequestBody: Codable {
         if let sourceDocumentLocationString = sourceDocumentLocation {
             try container.encode(sourceDocumentLocationString, forKey: .sourceDocumentLocation)
         }
-        try container.encode(paymentProvider, forKey: .paymentProvider)
         try container.encode(recipient, forKey: .recipient)
         try container.encode(iban, forKey: .iban)
         if let bicString = bic {

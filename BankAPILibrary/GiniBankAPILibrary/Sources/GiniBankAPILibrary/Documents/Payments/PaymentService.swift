@@ -12,54 +12,6 @@ import Foundation
 public final class PaymentService: PaymentServiceProtocol {
     
     /**
-     *  Returns a list of payment providers.
-     *
-     * - Parameter completion:    A completion callback, returning the payment list on success
-     */
-    
-    public func paymentProviders(completion: @escaping CompletionResult<PaymentProviders>) {
-        self.paymentProviders(resourceHandler: sessionManager.data, completion: completion)
-    }
-
-    /**
-     *  Returns a payment provider.
-     *
-     * - Parameter id:            The the payment provider's unique identifier
-     * - Parameter completion:    A completion callback, returning the payment provider on success
-     */
-    
-    public func paymentProvider(id: String,
-                                completion: @escaping CompletionResult<PaymentProvider>) {
-        self.paymentProvider(id: id, resourceHandler: sessionManager.data, completion: completion)
-    }
-    
-    
-    /**
-     *  Creates a payment request.
-     *
-     * - Parameter sourceDocumentLocation:  The URI of the source document whenever the payment details were                                                                                                  extracted by the Gini system beforehand (optional)
-     * - Parameter paymentProvider:         The id of the target payment provider - see payment providers
-     * - Parameter recipient:               The recipient of the payment
-     * - Parameter iban:                    The iban (international bank account number) of the payment recipient
-     * - Parameter bic:                     The bic (bank identifier code) for the payment
-     * - Parameter amount:                  The amount of the paymentt
-     * - Parameter purpose:                 The purpose of the payment, eg. the invoice or the customer identifier
-     * - Parameter completion:              A completion callback, returning the payment request on success
-     */
-    
-    public func createPaymentRequest(sourceDocumentLocation: String?,
-                                     paymentProvider: String,
-                                     recipient: String,
-                                     iban: String,
-                                     bic: String?,
-                                     amount: String,
-                                     purpose: String,
-                                     completion: @escaping CompletionResult<String>) {
-        let requestBody = PaymentRequestBody(sourceDocumentLocation: sourceDocumentLocation, paymentProvider: paymentProvider, recipient: recipient, iban: iban, bic: bic, amount: amount, purpose: purpose)
-        self.createPaymentRequest(paymentRequestBody: requestBody, resourceHandler: sessionManager.data, completion: completion)
-    }
-    
-    /**
      *  Returns a payment request.
      *
      * - Parameter id:            The the payment request's unique identifier
@@ -131,46 +83,6 @@ public final class PaymentService: PaymentServiceProtocol {
 }
 
 public protocol PaymentServiceProtocol: AnyObject {
-
-    /**
-     *  Returns a list of payment providers.
-     *
-     * - Parameter completion:    A completion callback, returning the payment list on success
-     */
-    
-    func paymentProviders(completion: @escaping CompletionResult<PaymentProviders>)
-    
-    /**
-     *  Returns a payment providers.
-     *
-     * - Parameter id:            The id of the payment provider
-     * - Parameter completion:    A completion callback, returning the payment provider on success
-     */
-
-    func paymentProvider(id: String, completion: @escaping CompletionResult<PaymentProvider>)
-    
-    
-    /**
-     *  Creates a payment request.
-     *
-     * - Parameter sourceDocumentLocation:  The URI of the source document whenever the payment details were                                                                                                  extracted by the Gini system beforehand (optional)
-     * - Parameter paymentProvider:         The id of the target payment provider - see payment providers
-     * - Parameter recipient:               The recipient of the payment
-     * - Parameter iban:                    The iban (international bank account number) of the payment recipient
-     * - Parameter bic:                     The bic (bank identifier code) for the payment
-     * - Parameter amount:                  The amount of the paymentt
-     * - Parameter purpose:                 The purpose of the payment, eg. the invoice or the customer identifier
-     * - Parameter completion:              A completion callback, returning the payment request on success
-     */
-
-    func createPaymentRequest(sourceDocumentLocation: String?,
-                              paymentProvider: String,
-                              recipient: String,
-                              iban: String,
-                              bic: String?,
-                              amount: String,
-                              purpose: String,
-                              completion: @escaping CompletionResult<String>)
     
     /**
      *  Returns a payment request.
@@ -225,60 +137,6 @@ public protocol PaymentServiceProtocol: AnyObject {
 }
 
 extension PaymentService {
-    func paymentProviders(resourceHandler: ResourceDataHandler<APIResource<PaymentProviders>>,
-                          completion: @escaping CompletionResult<PaymentProviders>) {
-        let resource = APIResource<PaymentProviders>(method: .paymentProviders, apiDomain: .default, httpMethod: .get)
-
-        resourceHandler(resource, { result in
-            switch result {
-            case let .success(providers):
-                completion(.success(providers))
-            case let .failure(error):
-                completion(.failure(error))
-            }
-        })
-    }
-
-    func paymentProvider(id: String, resourceHandler: ResourceDataHandler<APIResource<PaymentProvider>>,
-                         completion: @escaping CompletionResult<PaymentProvider>) {
-        let resource = APIResource<PaymentProvider>(method: .paymentProvider(id: id), apiDomain: .default, httpMethod: .get)
-
-        resourceHandler(resource, { result in
-            switch result {
-            case let .success(provider):
-                completion(.success(provider))
-            case let .failure(error):
-                completion(.failure(error))
-            }
-        })
-    }
-
-    func createPaymentRequest(paymentRequestBody: PaymentRequestBody,
-                              resourceHandler: ResourceDataHandler<APIResource<String>>,
-                              completion: @escaping CompletionResult<String>) {
-        let encoder = JSONEncoder()
-        guard let jsonData = try? encoder.encode(paymentRequestBody)
-        else {
-            assertionFailure("The PaymentRequestBody cannot be encoded")
-            return
-        }
-        let resource = APIResource<String>(method: .createPaymentRequest,
-                                           apiDomain: apiDomain,
-                                           httpMethod: .post,
-                                           body: jsonData)
-        resourceHandler(resource, { result in
-            switch result {
-            case let .success(paymentRequestUrl):
-                guard let id = paymentRequestUrl.split(separator: "/").last else {
-                    completion(.failure(.parseError(message: "Invalid payment request url: \(paymentRequestUrl)")))
-                    return
-                }
-                completion(.success(String(id)))
-            case let .failure(error):
-                completion(.failure(error))
-            }
-        })
-    }
 
     func paymentRequest(id: String, resourceHandler: ResourceDataHandler<APIResource<PaymentRequest>>,
                         completion: @escaping CompletionResult<PaymentRequest>) {

@@ -27,11 +27,11 @@ public struct ResolvedPaymentRequest: Codable {
  Struct for links in payment request response
  */
 struct ResolvedPaymentRequestLinks: Codable {
-    var linksSelf, paymentProvider, sourceDocumentLocation: String?
+    var linksSelf, sourceDocumentLocation: String?
     var payment: String?
 
     enum CodingKeys: String, CodingKey {
         case linksSelf = "self"
-        case paymentProvider, payment,sourceDocumentLocation
+        case payment,sourceDocumentLocation
     }
 }
