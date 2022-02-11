@@ -33,7 +33,7 @@ jobs:
           { 
             "project_folder": "CaptureSDK",
             "package_folder": "GiniCaptureSDK",
-            "version_file_path": "CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDKVersion.swift",
+            "version_file_path": "CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/GiniCaptureSDKVersion.swift",
             "git_tag": "${{ github.ref }}", 
             "repo_url": "https://github.com/gini/capture-sdk-ios.git", 
             "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
@@ -49,7 +49,7 @@ jobs:
           { 
             "project_folder": "CaptureSDK",
             "package_folder": "GiniCaptureSDKPinning",
-            "version_file_path": "CaptureSDK/GiniCaptureSDKPinning/Sources/GiniCaptureSDKPinningVersion.swift",
+            "version_file_path": "CaptureSDK/GiniCaptureSDKPinning/Sources/GiniCaptureSDKPinning/GiniCaptureSDKPinningVersion.swift",
             "git_tag": "${{ github.ref }}", 
             "repo_url": "https://github.com/gini/capture-sdk-pinning-ios.git", 
             "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
