@@ -30,7 +30,7 @@ public struct PaymentLinks: Codable {
 
     enum CodingKeys: String, CodingKey {
         case paymentRequest, sourceDocumentLocation
-        case linksSelf
+        case linksSelf = "self"
     }
 }
 
