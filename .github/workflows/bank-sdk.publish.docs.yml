@@ -30,7 +30,7 @@ jobs:
           { 
             "project_folder": "BankSDK",
             "package_folder": "GiniBankSDK",
-            "version_file_path": "BankSDK/GiniBankSDK/Sources/GiniBankSDKVersion.swift", 
+            "version_file_path": "BankSDK/GiniBankSDK/Sources/GiniBankSDK/GiniBankSDKVersion.swift",
             "git_tag": "${{ github.ref }}",
             "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
             "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
