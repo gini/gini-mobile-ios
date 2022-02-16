@@ -68,7 +68,7 @@ import GiniCaptureSDK
         do {
             amountString = try String.parseAmountStringToBackendFormat(string: paymentInfo.amount)
         } catch {
-            completion(.failure(.amountParsingError))
+            completion(.failure(.amountParsingError(amountString: paymentInfo.amount)))
         }
         paymentService.resolvePaymentRequest(id: paymentRequesId, recipient: paymentInfo.recipient, iban: paymentInfo.iban, amount: amountString, purpose: paymentInfo.purpose, completion: { result in
             DispatchQueue.main.async {
