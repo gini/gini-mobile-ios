@@ -10,6 +10,44 @@ import XCTest
 @testable import GiniBankSDK
 
 final class GiniBankSDKTests: XCTestCase {
-    func testExample() throws {
+    
+    func testParseAmountStringToBackendFormat(){
+        let amountToPay = "28"
+        let parsedAmount = try! String.parseAmountStringToBackendFormat(string: "28.00")
+        XCTAssertEqual(parsedAmount, amountToPay + ":EUR")
+    }
+    
+    func testParseAmountStringToBackendFormat1(){
+        let amountToPay = "28"
+        let parsedAmount = try! String.parseAmountStringToBackendFormat(string: amountToPay)
+        XCTAssertEqual(parsedAmount, amountToPay + ":EUR")
+    }
+    
+    func testParseAmountStringToBackendFormat2(){
+        let amountToPay = "28.12"
+        let parsedAmount = try! String.parseAmountStringToBackendFormat(string: amountToPay)
+        XCTAssertEqual(parsedAmount, amountToPay + ":EUR")
+    }
+    
+    func testParseAmountStringToBackendFormat3(){
+        let amountToPay = "28.1"
+        let parsedAmount = try! String.parseAmountStringToBackendFormat(string: amountToPay)
+        XCTAssertEqual(parsedAmount, amountToPay + ":EUR")
+    }
+    
+    func testParseAmountStringToBackendFormat4(){
+        let amountToPay = "28.10"
+        let parsedAmount = try! String.parseAmountStringToBackendFormat(string: amountToPay)
+        XCTAssertEqual(parsedAmount, "28.1:EUR")
+    }
+    
+    func testParseAmountStringToBackendFormat5(){
+        let amountToPay = "28.10:EUR"
+        XCTAssertNotEqual(try? String.parseAmountStringToBackendFormat(string: amountToPay), "28.1:EUR")
+    }
+    
+    func testParseAmountStringToBackendFormat6(){
+        let amountToPay = "28,10"
+        XCTAssertNotEqual(try? String.parseAmountStringToBackendFormat(string: amountToPay), "28.1:EUR")
     }
 }
