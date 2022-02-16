@@ -16,4 +16,6 @@ public enum GiniBankError: Error {
     case noRequestId
      /// Error thrown when api return failure.
     case apiError(GiniError)
+    /// Error thrown amount value cannot be parsed to the api format.
+    case amountParsingError
 }
