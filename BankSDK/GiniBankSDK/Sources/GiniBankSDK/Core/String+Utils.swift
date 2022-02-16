@@ -18,10 +18,12 @@ extension String {
     }
     
     public static func parseAmountStringToBackendFormat(string: String) throws -> String {
-        if let doubleStringValue =  Double(string), doubleStringValue > 0 {
-            return String(doubleStringValue) + ":EUR"
+        if let doubleStringValue =  Double(string) {
+            // It's needed because String representation of Double adds `0`
+            let truncatedZeroString = String(format: "%g", doubleStringValue)
+            return String(truncatedZeroString) + ":EUR"
         } else {
-            throw GiniBankError.amountParsingError
+            throw GiniBankError.amountParsingError(amountString: string)
         }
     }
 }

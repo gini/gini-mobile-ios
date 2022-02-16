@@ -17,5 +17,5 @@ public enum GiniBankError: Error {
      /// Error thrown when api return failure.
     case apiError(GiniError)
     /// Error thrown amount value cannot be parsed to the api format.
-    case amountParsingError
+    case amountParsingError(amountString: String)
 }
