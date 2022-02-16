@@ -16,4 +16,12 @@ extension String {
             return String(format: resource.localizedGiniBankFormat, arguments: args)
         }
     }
+    
+    public static func parseAmountStringToBackendFormat(string: String) throws -> String {
+        if let doubleStringValue =  Double(string), doubleStringValue > 0 {
+            return String(doubleStringValue) + ":EUR"
+        } else {
+            throw GiniBankError.amountParsingError
+        }
+    }
 }
