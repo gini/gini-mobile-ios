@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import GinBankSDKExampleBank
+import GiniBankSDK
 
 public struct Amount {
         
