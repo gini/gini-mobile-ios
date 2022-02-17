@@ -1,22 +1,24 @@
 //
 //  Amount.swift
-//  Bank
+//  GiniBankSDKExample
 //
-//  Created by Nadya Karaban on 04.05.21.
+//  Created by Nadya Karaban on 16.02.22.
 //
 
 import Foundation
-struct Amount {
+import GiniBankSDK
+
+public struct Amount {
         
-    var value: Decimal
-    let currencyCode: String
+    public let value: Decimal
+    public let currencyCode: String
     
-    init(value: Decimal, currencyCode: String) {
+    public init(value: Decimal, currencyCode: String) {
         self.value = value
         self.currencyCode = currencyCode
     }
     
-    init?(extractionString: String) {
+public init?(extractionString: String) {
        
         let components = extractionString.components(separatedBy: ":")
         
@@ -32,7 +34,7 @@ struct Amount {
     }
     
     var extractionString: String {
-        return "\(value)"
+        return "\(value):\(currencyCode.uppercased())"
     }
     
     var currencySymbol: String? {
@@ -46,7 +48,7 @@ struct Amount {
             sign = "- "
         }
         
-        let result = (stringWithoutSymbol(from: abs(value)) ?? "") + sign + (currencySymbol ?? "")
+        let result = sign + (currencySymbol ?? "") + (stringWithoutSymbol(from: abs(value)) ?? "")
         
         if result.isEmpty { return nil }
         
@@ -69,21 +71,31 @@ extension Amount: Equatable {}
 
 extension Amount {
     
-    static func *(price: Amount, int: Int) -> Amount {
+    static func *(amount: Amount, int: Int) -> Amount {
         
-        return Amount(value: price.value * Decimal(int),
-                     currencyCode: price.currencyCode)
+        return Amount(value: amount.value * Decimal(int),
+                     currencyCode: amount.currencyCode)
     }
     
-    struct PriceCurrencyMismatchError: Error {}
+    struct AmountCurrencyMismatchError: Error {}
     
     static func +(lhs: Amount, rhs: Amount) throws -> Amount {
         
         if lhs.currencyCode != rhs.currencyCode {
-            throw PriceCurrencyMismatchError()
+            throw AmountCurrencyMismatchError()
         }
         
         return Amount(value: lhs.value + rhs.value,
+                     currencyCode: lhs.currencyCode)
+    }
+    
+    static func -(lhs: Amount, rhs: Amount) throws -> Amount {
+        
+        if lhs.currencyCode != rhs.currencyCode {
+            throw AmountCurrencyMismatchError()
+        }
+        
+        return Amount(value: lhs.value - rhs.value,
                      currencyCode: lhs.currencyCode)
     }
     
@@ -91,3 +103,5 @@ extension Amount {
         return lhs.value >= rhs.value ? lhs : rhs
     }
 }
+
+

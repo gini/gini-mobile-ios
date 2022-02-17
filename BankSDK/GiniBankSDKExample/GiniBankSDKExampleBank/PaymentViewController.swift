@@ -22,7 +22,7 @@ class PaymentViewController: UIViewController {
     @IBOutlet var ibanErrorLabel: UILabel!
     @IBOutlet var recipientErrorLabel: UILabel!
     @IBOutlet var paymentInputFields: [UITextField]!
-    
+    private var amountToPay = Amount(extractionString: "")
     
     @IBOutlet var payButton: UIButton!
     
@@ -124,13 +124,13 @@ class PaymentViewController: UIViewController {
     
     
     @IBAction func resolvePayment(_ sender: Any) {
-        
         validateAllInputFields()
-        
-        //check if no errors labels are shown
-        if (paymentInputFieldsErrorLabels.allSatisfy { $0.isHidden }) {
-            let paymentInfo = PaymentInfo(recipient: receipient.text ?? "", iban: iban.text ?? "", bic: "", amount: amount.text ?? "", purpose: purpose.text ?? "")
-            viewModel?.resolvePaymentRequest(paymentInfo: paymentInfo)
+        if let amountString = amountToPay?.extractionString {
+            // check if no errors labels are shown
+            if (paymentInputFieldsErrorLabels.allSatisfy { $0.isHidden }) {
+                let paymentInfo = PaymentInfo(recipient: receipient.text ?? "", iban: iban.text ?? "", bic: "", amount: amountString, purpose: purpose.text ?? "")
+                viewModel?.resolvePaymentRequest(paymentInfo: paymentInfo)
+            }
         }
     }
     
@@ -139,9 +139,11 @@ class PaymentViewController: UIViewController {
     }
     
     fileprivate func fillOutTheData(paymentInfo: PaymentInfo) {
+        let amountString = paymentInfo.amount
+        amountToPay = Amount(extractionString: amountString)
         receipient.text = paymentInfo.recipient
         iban.text = paymentInfo.iban
-        amount.text = paymentInfo.amount
+        amount.text = amountToPay?.string
         purpose.text = paymentInfo.purpose
         payButton.isEnabled = true
         self.showAlert("", message: "Payment data was successfully fetched")
@@ -161,19 +163,82 @@ extension PaymentViewController: UITextFieldDelegate {
     }
 
     public func textFieldDidEndEditing(_ textField: UITextField) {
-        validateTextField(textField)
+        
+        // add currency format when edit is finished
+        if TextFieldType(rawValue: textField.tag) == .amountFieldTag {
+            updateAmoutToPayWithCurrencyFormat()
+        }
     }
 
     public func textFieldDidBeginEditing(_ textField: UITextField) {
+        // remove currency symbol and whitespaces for edit mode
         if let fieldIdentifier = TextFieldType(rawValue: textField.tag) {
             hideErrorLabel(textFieldTag: fieldIdentifier)
+
+            if fieldIdentifier == .amountFieldTag, amount.hasText && !amount.isReallyEmpty {
+                let amountToPayText = amountToPay?.stringWithoutSymbol
+                let amountToPayTrimmedText = amountToPayText?.trimmingCharacters(in: .whitespaces)
+                amount.text = amountToPayTrimmedText
+            }
         }
+    }
+    
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if TextFieldType(rawValue: textField.tag) == .amountFieldTag,
+           let text = textField.text,
+           let textRange = Range(range, in: text) {
+            let updatedText = text.replacingCharacters(in: textRange, with: string)
+            
+            // Limit length to 7 digits
+            let onlyDigits = String(updatedText
+                                        .trimmingCharacters(in: .whitespaces)
+                                        .filter { c in c != "," && c != "."}
+                                        .prefix(7))
+            
+            if let decimal = Decimal(string: onlyDigits) {
+                let decimalWithFraction = decimal / 100
+                
+                if let newAmount = amountToPay?.stringWithoutSymbol(from: decimalWithFraction)?.trimmingCharacters(in: .whitespaces) {
+                    // Save the selected text range to restore the cursor position after replacing the text
+                    let selectedRange = textField.selectedTextRange
+                    
+                    textField.text = newAmount
+                    amountToPay?.value = decimalWithFraction
+                    
+                    // Move the cursor position after the inserted character
+                    if let selectedRange = selectedRange {
+                        let countDelta = newAmount.count - text.count
+                        let offset = countDelta == 0 ? 1 : countDelta
+                        textField.moveSelectedTextRange(from: selectedRange.start, to: offset)
+                    }
+                }
+            }
+            return false
+           }
+        return true
     }
 }
 
 // MARK: - Input fields validation
 
 extension PaymentViewController {
+    
+    fileprivate func updateAmoutToPayWithCurrencyFormat() {
+        if amount.hasText, let amountFieldText = amount.text {
+            if let amountValue = decimalValue(from: amountFieldText) {
+                amountToPay?.value = amountValue
+            }
+            let amountToPayText = amountToPay?.string
+            amount.text = amountToPayText
+        }
+    }
+    
+    fileprivate func decimalValue(from amountString: String) -> Decimal? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencySymbol = ""
+        return formatter.number(from: amountString)?.decimalValue
+    }
     
     fileprivate func validateTextField(_ textField: UITextField) {
         if let fieldIdentifier = TextFieldType(rawValue: textField.tag) {
@@ -189,11 +254,13 @@ extension PaymentViewController {
                     showErrorLabel(textFieldTag: fieldIdentifier)
                 }
             case .amountFieldTag:
-                
-                let price = Amount.init(value: Decimal(string:textField.text ?? "") ?? 0, currencyCode: "EUR")
-                amount.text = price.string
-                if (Decimal(string: price.stringWithoutSymbol ?? "") ?? 0 > 0) && textField.hasText {
-                    hideErrorLabel(textFieldTag: fieldIdentifier)
+                if let amountString = amount?.text, !amount.isReallyEmpty {
+                    if let decimalPart = amountToPay?.value, decimalPart > 0 {
+                        hideErrorLabel(textFieldTag: fieldIdentifier)
+                    } else {
+                        amount.text = ""
+                        showErrorLabel(textFieldTag: fieldIdentifier)
+                    }
                 } else {
                     showErrorLabel(textFieldTag: fieldIdentifier)
                 }
@@ -293,9 +360,12 @@ extension PaymentViewController {
 extension PaymentViewController{
     
     @objc fileprivate func doneWithAmountInputButtonTapped() {
-        let amountStruct = Amount.init(value: Decimal(string: amount.text ?? "") ?? 0, currencyCode: "EUR")
-        amount.text = amountStruct.string
-        view.endEditing(true)
+        amount.endEditing(true)
+        amount.resignFirstResponder()
+        
+        if amount.hasText && !amount.isReallyEmpty {
+            updateAmoutToPayWithCurrencyFormat()
+        }
     }
 
      func addDoneButtonForNumPad(_ textField: UITextField) {
@@ -341,5 +411,15 @@ extension PaymentViewController {
         let OKAction = UIAlertAction(title: "ok", style: .default, handler: nil)
         alertController.addAction(OKAction)
         present(alertController, animated: true, completion: nil)
+    }
+}
+
+public extension UITextField {
+    
+    func moveSelectedTextRange(from position: UITextPosition, to offset: Int) {
+        if let newSelectedRangeFromTo = self.position(from: position, offset: offset),
+           let newSelectedRange = self.textRange(from: newSelectedRangeFromTo, to: newSelectedRangeFromTo) {
+            self.selectedTextRange = newSelectedRange
+        }
     }
 }
