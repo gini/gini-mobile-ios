@@ -17,7 +17,7 @@ public struct TrackingEvent<T: RawRepresentable> where T.RawValue == String {
     public let type: T
     
     /// Additional information carried by the event.
-    public let info: [String : String]?
+    public var info: [String : String]?
     
     init(type: T, info: [String : String]? = nil) {
         self.type = type

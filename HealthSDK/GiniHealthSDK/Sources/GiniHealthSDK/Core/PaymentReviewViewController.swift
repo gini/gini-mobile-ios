@@ -569,7 +569,11 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     // MARK: - IBAction
     
     @objc func selectBankProviderTapped() {
-        trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onBankSelectionButtonClicked))
+        var event = TrackingEvent.init(type: PaymentReviewScreenEventType.onBankSelectionButtonClicked)
+        if let selectedPaymentProviderName = selectedPaymentProvider?.name {
+            event.info = ["paymentProvider" : selectedPaymentProviderName]
+        }
+        trackingDelegate?.onPaymentReviewScreenEvent(event: event)
         bankProviderButtonView.alpha = 0.5
         UIView.animate(withDuration: 0.5) {
             self.bankProviderButtonView.alpha = 1.0
