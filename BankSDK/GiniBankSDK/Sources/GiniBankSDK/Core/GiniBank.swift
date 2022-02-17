@@ -53,17 +53,29 @@ import GiniCaptureSDK
 
     /**
      Resolves the payment via payment request id.
-
+     **Important**: The amount string in the `PaymentInfo` must be convertible to a `Double`.
+           * For ex. "12.39" is valid, but "12.39 €" or "12,39" are not valid.
      - parameter paymentRequesId: Id of payment request.
      - parameter completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case.
      Completion block called on main thread.
      In success returns the resolved payment request structure.
      In case of failure error from the server side.
+     If the amount string could not be parsed throws `amountParsingError`
 
      */
     public func resolvePaymentRequest(paymentRequesId: String, paymentInfo: PaymentInfo, completion: @escaping (Result<ResolvedPaymentRequest, GiniBankError>) -> Void) {
-
-        paymentService.resolvePaymentRequest(id: paymentRequesId, recipient: paymentInfo.recipient, iban: paymentInfo.iban, amount: paymentInfo.amount, purpose: paymentInfo.purpose, completion: { result in
+        var amountString : String?
+        do {
+            amountString = try String.parseAmountStringToBackendFormat(string: paymentInfo.amount)
+        } catch let error as GiniBankError {
+            completion(.failure(error))
+        } catch {
+            assertionFailure("Unexpected error: \(error)")
+        }
+        guard let amountString = amountString else {
+            return
+        }
+        paymentService.resolvePaymentRequest(id: paymentRequesId, recipient: paymentInfo.recipient, iban: paymentInfo.iban, amount: amountString, purpose: paymentInfo.purpose, completion: { result in
             DispatchQueue.main.async {
                 switch result {
                 case let .success(resolvedPayment):
@@ -72,8 +84,7 @@ import GiniCaptureSDK
                     completion(.failure(.apiError(error)))
                 }
             }
-        }
-        )
+        })
     }
 
     /**
