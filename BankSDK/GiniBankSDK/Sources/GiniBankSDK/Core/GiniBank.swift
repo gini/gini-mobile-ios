@@ -64,11 +64,16 @@ import GiniCaptureSDK
 
      */
     public func resolvePaymentRequest(paymentRequesId: String, paymentInfo: PaymentInfo, completion: @escaping (Result<ResolvedPaymentRequest, GiniBankError>) -> Void) {
-        var amountString = ""
+        var amountString : String?
         do {
             amountString = try String.parseAmountStringToBackendFormat(string: paymentInfo.amount)
+        } catch let error as GiniBankError {
+            completion(.failure(error))
         } catch {
-            completion(.failure(.amountParsingError(amountString: paymentInfo.amount)))
+            assertionFailure("Unexpected error: \(error)")
+        }
+        guard let amountString = amountString else {
+            return
         }
         paymentService.resolvePaymentRequest(id: paymentRequesId, recipient: paymentInfo.recipient, iban: paymentInfo.iban, amount: amountString, purpose: paymentInfo.purpose, completion: { result in
             DispatchQueue.main.async {
