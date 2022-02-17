@@ -67,7 +67,6 @@ final class AppCoordinator: Coordinator {
     }
     
     func start() {
-        try! apiLib.removeStoredCredentials()
         self.showSelectAPIScreen()
     }
     
