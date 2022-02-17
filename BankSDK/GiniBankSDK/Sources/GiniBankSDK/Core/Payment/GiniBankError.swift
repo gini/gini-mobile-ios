@@ -11,7 +11,7 @@ import GiniBankAPILibrary
 /**
  Errors thrown with Gini Bank SDK.
  */
-public enum GiniBankError: Error {
+public enum GiniBankError: Error, Equatable {
      /// Error thrown when there is no requestId in Url from business partner's app.
     case noRequestId
      /// Error thrown when api return failure.
