@@ -70,7 +70,6 @@
 		OBJ_296 /* ExtractionsFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_237 /* ExtractionsFeedback.swift */; };
 		OBJ_297 /* PartialDocumentInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_238 /* PartialDocumentInfo.swift */; };
 		OBJ_298 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_240 /* Payment.swift */; };
-		OBJ_299 /* PaymentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_241 /* PaymentProvider.swift */; };
 		OBJ_300 /* PaymentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_242 /* PaymentRequest.swift */; };
 		OBJ_301 /* PaymentRequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_243 /* PaymentRequestBody.swift */; };
 		OBJ_302 /* PaymentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_244 /* PaymentService.swift */; };
@@ -437,7 +436,6 @@
 		OBJ_238 /* PartialDocumentInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialDocumentInfo.swift; sourceTree = "<group>"; };
 		OBJ_24 /* DeselectLineItemActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeselectLineItemActionSheet.swift; sourceTree = "<group>"; };
 		OBJ_240 /* Payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
-		OBJ_241 /* PaymentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentProvider.swift; sourceTree = "<group>"; };
 		OBJ_242 /* PaymentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentRequest.swift; sourceTree = "<group>"; };
 		OBJ_243 /* PaymentRequestBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentRequestBody.swift; sourceTree = "<group>"; };
 		OBJ_244 /* PaymentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentService.swift; sourceTree = "<group>"; };
@@ -921,7 +919,6 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_240 /* Payment.swift */,
-				OBJ_241 /* PaymentProvider.swift */,
 				OBJ_242 /* PaymentRequest.swift */,
 				OBJ_243 /* PaymentRequestBody.swift */,
 				OBJ_244 /* PaymentService.swift */,
@@ -1300,7 +1297,6 @@
 				OBJ_296 /* ExtractionsFeedback.swift in Sources */,
 				OBJ_297 /* PartialDocumentInfo.swift in Sources */,
 				OBJ_298 /* Payment.swift in Sources */,
-				OBJ_299 /* PaymentProvider.swift in Sources */,
 				OBJ_300 /* PaymentRequest.swift in Sources */,
 				OBJ_301 /* PaymentRequestBody.swift in Sources */,
 				OBJ_302 /* PaymentService.swift in Sources */,
