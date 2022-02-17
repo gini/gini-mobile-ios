@@ -111,8 +111,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
                 if let paymentProviders = self?.paymentProviders, paymentProviders.count > 0 {
                     let providerId = UserDefaults.standard.string(forKey: "ginihealth.defaultPaymentProviderId")
                     let provider = paymentProviders.first(where: { $0.id == providerId }) ?? paymentProviders[0]
-                    self?.configureBankProviderView(paymentProvider: provider)
-                    self?.configurePayButton(paymentProvider: provider)
+                    self?.selectedPaymentProvider = provider
                 }
             }
         }
