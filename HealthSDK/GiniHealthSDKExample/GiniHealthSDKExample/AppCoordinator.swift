@@ -161,10 +161,19 @@ final class AppCoordinator: Coordinator {
         health.setConfiguration(configuration)
         
         checkIfAnyBankingAppsInstalled(from: self.rootViewController) {
-            if let document = self.testDocument, let extractions = self.testDocumentExtractions {
-                // Show the payment review screen
-                let vc = PaymentReviewViewController.instantiate(with: self.health, document: document, extractions: extractions, trackingDelegate: self)
-                self.rootViewController.present(vc, animated: true)
+            if let document = self.testDocument {
+                self.selectAPIViewController.showActivityIndicator()
+                
+                self.health.fetchDataForReview(documentId: document.id) { result in
+                    switch result {
+                    case .success(let data):
+                        let vc = PaymentReviewViewController.instantiate(with: self.health, data: data, trackingDelegate: self)
+                        self.rootViewController.present(vc, animated: true)
+                    case .failure(let error):
+                        print("❌ Document data fetching failed: \(String(describing: error))")
+                    }
+                    self.selectAPIViewController.hideActivityIndicator()
+                }
             } else {
                 // Upload the test document image
                 let testDocumentImage = UIImage(named: "testDocument")!

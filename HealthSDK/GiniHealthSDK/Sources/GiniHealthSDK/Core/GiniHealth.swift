@@ -355,8 +355,12 @@ public struct DataForReview {
                         DispatchQueue.main.async {
                             switch result {
                             case let .success(extractionResult):
-                                let fetchedData = DataForReview(document: document, extractions: extractionResult.extractions)
-                                completion(.success(fetchedData))
+                                if let paymentExtractionsContainer = extractionResult.payment, let paymentExtractions = paymentExtractionsContainer.first {
+                                    let fetchedData = DataForReview(document: document, extractions: paymentExtractions)
+                                    completion(.success(fetchedData))
+                                } else {
+                                    completion(.failure(.noPaymentDataExtracted))
+                                }
                             case let .failure(error):
                                 completion(.failure(.apiError(error)))
                             }
