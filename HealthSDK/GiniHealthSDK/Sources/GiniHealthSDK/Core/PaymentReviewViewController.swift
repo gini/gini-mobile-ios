@@ -704,7 +704,7 @@ extension PaymentReviewViewController: UITextFieldDelegate {
     }
 
     /**
-     Updates amoutToPay, formated string with a currency and removes "0.00" value and shows error label when user has removed the amount
+     Updates amoutToPay, formated string with a currency and removes "0.00" value
      */
     fileprivate func updateAmoutToPayWithCurrencyFormat() {
         if amountField.hasText, let amountFieldText = amountField.text {
@@ -715,8 +715,6 @@ extension PaymentReviewViewController: UITextFieldDelegate {
                     amountField.text = amountToPayText
                 } else {
                     amountField.text = ""
-                    applyErrorStyle(amountField)
-                    showErrorLabel(textFieldTag: .amountFieldTag)
                 }
             }
         }
