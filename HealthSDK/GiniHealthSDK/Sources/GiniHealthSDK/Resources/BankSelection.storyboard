@@ -47,7 +47,7 @@
                                                         <rect key="frame" x="0.0" y="61" width="396" height="400"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <prototypes>
-                                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="0.0" reuseIdentifier="bankTableViewCellIdentifier" id="pfH-rk-wwa" customClass="BankTableViewCell" customModule="GiniHealthSDK">
+                                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="0.0" reuseIdentifier="bankTableViewCellIdentifier" id="pfH-rk-wwa" customClass="BankTableViewCell" customModule="GiniHealthSDK">
                                                                 <rect key="frame" x="0.0" y="44.666666030883789" width="396" height="30.333333969116211"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pfH-rk-wwa" id="jf8-ne-fDC">
