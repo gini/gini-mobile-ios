@@ -316,7 +316,7 @@ extension AppCoordinator: GiniHealthTrackingDelegate {
         case .onCloseKeyboardButtonClicked:
             print("📝 Close keyboard was triggered")
         case .onBankSelectionButtonClicked:
-            print("📝 Bank selection button was tapped")
+            print("📝 Bank selection button was tapped,\(String(describing: event.info))")
         }
     }
 }

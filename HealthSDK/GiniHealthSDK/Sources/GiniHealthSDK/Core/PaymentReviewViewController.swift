@@ -111,8 +111,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
                 if let paymentProviders = self?.paymentProviders, paymentProviders.count > 0 {
                     let providerId = UserDefaults.standard.string(forKey: "ginihealth.defaultPaymentProviderId")
                     let provider = paymentProviders.first(where: { $0.id == providerId }) ?? paymentProviders[0]
-                    self?.configureBankProviderView(paymentProvider: provider)
-                    self?.configurePayButton(paymentProvider: provider)
+                    self?.selectedPaymentProvider = provider
                 }
             }
         }
@@ -569,7 +568,11 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     // MARK: - IBAction
     
     @objc func selectBankProviderTapped() {
-        trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onBankSelectionButtonClicked))
+        var event = TrackingEvent.init(type: PaymentReviewScreenEventType.onBankSelectionButtonClicked)
+        if let selectedPaymentProviderName = selectedPaymentProvider?.name {
+            event.info = ["paymentProvider" : selectedPaymentProviderName]
+        }
+        trackingDelegate?.onPaymentReviewScreenEvent(event: event)
         bankProviderButtonView.alpha = 0.5
         UIView.animate(withDuration: 0.5) {
             self.bankProviderButtonView.alpha = 1.0
