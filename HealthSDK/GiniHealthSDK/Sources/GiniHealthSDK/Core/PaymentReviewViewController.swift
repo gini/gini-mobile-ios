@@ -38,7 +38,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     @IBOutlet weak var infoBarLabel: UILabel!
     var model: PaymentReviewModel?
     var paymentProviders: [PaymentProvider] = []
-    private var amountToPay = Price(extractionString: "")
+    private var amountToPay = Price(value: 0, currencyCode: "EUR")
     
     private var selectedPaymentProvider: PaymentProvider? {
         didSet {
@@ -442,7 +442,8 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
                     showErrorLabel(textFieldTag: fieldIdentifier)
                 }
             case .amountFieldTag:
-                if amountField.hasText && !amountField.isReallyEmpty, let decimalPart = amountToPay?.value  {
+                if amountField.hasText && !amountField.isReallyEmpty  {
+                    let decimalPart = amountToPay.value
                     if decimalPart > 0 {
                         applyDefaultStyle(textField)
                         hideErrorLabel(textFieldTag: fieldIdentifier)
@@ -483,9 +484,9 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         recipientField.text = model?.extractions.first(where: {$0.name == "payment_recipient"})?.value
         ibanField.text = model?.extractions.first(where: {$0.name == "iban"})?.value
         usageField.text = model?.extractions.first(where: {$0.name == "payment_purpose"})?.value
-        if let amountString = model?.extractions.first(where: {$0.name == "amount_to_pay"})?.value {
-            amountToPay = Price(extractionString: amountString)
-            let amountToPayText = amountToPay?.string
+        if let amountString = model?.extractions.first(where: {$0.name == "amount_to_pay"})?.value, let amountToPay = Price(extractionString: amountString) {
+            self.amountToPay = amountToPay
+            let amountToPayText = amountToPay.string
             amountField.text = amountToPayText
         }
         disablePayButtonIfNeeded()
@@ -592,8 +593,9 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             if self.selectedPaymentProvider == nil {
                 self.selectedPaymentProvider = paymentProviders.first
             }
-            if let selectedProvider = selectedPaymentProvider, !amountField.isReallyEmpty, let amountText = amountToPay?.extractionString
+            if let selectedProvider = selectedPaymentProvider, !amountField.isReallyEmpty
             {
+                let amountText = amountToPay.extractionString
                 let paymentInfo = PaymentInfo(recipient: recipientField.text ?? "", iban: ibanField.text ?? "", bic: "", amount: amountText, purpose: usageField.text ?? "", paymentProviderScheme: selectedProvider.appSchemeIOS, paymentProviderId: selectedProvider.id)
                 model?.createPaymentRequest(paymentInfo: paymentInfo)
                 let paymentRecipientExtraction = Extraction(box: nil, candidates: "", entity: "text", value: recipientField.text ?? "", name: "payment_recipient")
@@ -704,13 +706,20 @@ extension PaymentReviewViewController: UITextFieldDelegate {
         return true
     }
 
+    /**
+     Updates amoutToPay, formated string with a currency and removes "0.00" value
+     */
     fileprivate func updateAmoutToPayWithCurrencyFormat() {
         if amountField.hasText, let amountFieldText = amountField.text {
             if let priceValue = decimal(from: amountFieldText ) {
-                amountToPay?.value = priceValue
+                amountToPay.value = priceValue
+                if priceValue > 0 {
+                    let amountToPayText = amountToPay.string
+                    amountField.text = amountToPayText
+                } else {
+                    amountField.text = ""
+                }
             }
-            let amountToPayText = amountToPay?.string
-            amountField.text = amountToPayText
         }
     }
     
@@ -721,6 +730,7 @@ extension PaymentReviewViewController: UITextFieldDelegate {
             updateAmoutToPayWithCurrencyFormat()
         }
         applyDefaultStyle(textField)
+        disablePayButtonIfNeeded()
     }
 
     public func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -731,7 +741,7 @@ extension PaymentReviewViewController: UITextFieldDelegate {
             hideErrorLabel(textFieldTag: fieldIdentifier)
             
             if fieldIdentifier == .amountFieldTag, amountField.hasText && !amountField.isReallyEmpty {
-                let amountToPayText = amountToPay?.stringWithoutSymbol
+                let amountToPayText = amountToPay.stringWithoutSymbol
                 amountField.text = amountToPayText
             }
         }
@@ -757,7 +767,7 @@ extension PaymentReviewViewController: UITextFieldDelegate {
                     let selectedRange = textField.selectedTextRange
                     
                     textField.text = newAmount
-                    amountToPay?.value = decimalWithFraction
+                    amountToPay.value = decimalWithFraction
                     
                     // Move the cursor position after the inserted character
                     if let selectedRange = selectedRange {
