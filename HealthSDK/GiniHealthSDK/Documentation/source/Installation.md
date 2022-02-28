@@ -10,14 +10,14 @@ Once you have your Swift package set up, adding `GiniHealthSDK` as a dependency 
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/gini/health-sdk-ios.git", .exact("1.3.0"))
+    .package(url: "https://github.com/gini/health-sdk-ios.git", .exact("1.3.1"))
 ]
 ```
 
 In case that you want to use the certificate pinning in the library, add `GiniHealthAPILibraryPinning`:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/gini/health-sdk-pinning-ios.git", .exact("1.3.0"))
+    .package(url: "https://github.com/gini/health-sdk-pinning-ios.git", .exact("1.3.1"))
 ]
 ```
 
