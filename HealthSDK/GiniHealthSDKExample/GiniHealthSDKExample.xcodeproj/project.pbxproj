@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		F42377262799ABB000FAC3D6 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42377252799ABB000FAC3D6 /* CloudKit.framework */; };
 		F43198332784BD570000D39C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F43198322784BD570000D39C /* Main.storyboard */; };
+		F464B17627CD2147001735B9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F464B17827CD2147001735B9 /* Localizable.strings */; };
 		F466A5DF270F2F9500FB1364 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F466A5E1270F2F9500FB1364 /* Localizable.strings */; };
 		F4C36A8C270C6EBF00CCC69C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C36A8B270C6EBF00CCC69C /* AppDelegate.swift */; };
 		F4C36A8E270C6EBF00CCC69C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C36A8D270C6EBF00CCC69C /* SceneDelegate.swift */; };
@@ -53,6 +54,8 @@
 		F42377252799ABB000FAC3D6 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		F43198322784BD570000D39C /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		F4366E62273D183C0054923F /* GiniHealthSDKExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GiniHealthSDKExample.entitlements; sourceTree = "<group>"; };
+		F464B17727CD2147001735B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F464B17927CD214A001735B9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F466A5E0270F2F9500FB1364 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F466A5E2270F2FB300FB1364 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F4C36A88270C6EBF00CCC69C /* GiniHealthSDKPinningExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniHealthSDKPinningExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -179,6 +182,7 @@
 				F4366E62273D183C0054923F /* GiniHealthSDKExample.entitlements */,
 				F4EC3912273C2B41007045DC /* Assets.xcassets */,
 				F4EC38C1273C21E4007045DC /* AppDelegate.swift */,
+				F464B17827CD2147001735B9 /* Localizable.strings */,
 				F4EC3903273C2621007045DC /* AppCoordinator.swift */,
 				F4EC3905273C2621007045DC /* ComponentAPICoordinator.swift */,
 				F4EC3909273C2622007045DC /* ComponentAPIDocumentServiceProtocol.swift */,
@@ -330,6 +334,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4EC38CE273C21E5007045DC /* LaunchScreen.storyboard in Resources */,
+				F464B17627CD2147001735B9 /* Localizable.strings in Resources */,
 				F4EC38FA273C2311007045DC /* Base.lproj in Resources */,
 				F4EC38F9273C2311007045DC /* Credentials.plist in Resources */,
 				F43198332784BD570000D39C /* Main.storyboard in Resources */,
@@ -396,6 +401,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		F464B17827CD2147001735B9 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F464B17727CD2147001735B9 /* en */,
+				F464B17927CD214A001735B9 /* de */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		F466A5E1270F2F9500FB1364 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
