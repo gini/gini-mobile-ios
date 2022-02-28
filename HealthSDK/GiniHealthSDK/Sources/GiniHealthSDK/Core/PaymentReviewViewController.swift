@@ -298,6 +298,8 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         payButton.isEnabled = false
         payButton.layer.cornerRadius = giniHealthConfiguration.payButtonCornerRadius
         payButton.titleLabel?.font = giniHealthConfiguration.customFont.regular
+        payButton.setTitle( NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.next.button.title",
+                                                             comment: "next button title"), for: .normal)
     }
     
     fileprivate func configurePaymentInputFields() {
@@ -582,7 +584,11 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     @IBAction func payButtonClicked(_ sender: Any) {
-        trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onNextButtonClicked))
+        var event = TrackingEvent.init(type: PaymentReviewScreenEventType.onNextButtonClicked)
+        if let selectedPaymentProviderName = selectedPaymentProvider?.name {
+            event.info = ["paymentProvider" : selectedPaymentProviderName]
+        }
+        trackingDelegate?.onPaymentReviewScreenEvent(event: event)
         view.endEditing(true)
         validateAllInputFields()
 
