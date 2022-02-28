@@ -584,7 +584,11 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     @IBAction func payButtonClicked(_ sender: Any) {
-        trackingDelegate?.onPaymentReviewScreenEvent(event: TrackingEvent.init(type: .onNextButtonClicked))
+        var event = TrackingEvent.init(type: PaymentReviewScreenEventType.onNextButtonClicked)
+        if let selectedPaymentProviderName = selectedPaymentProvider?.name {
+            event.info = ["paymentProvider" : selectedPaymentProviderName]
+        }
+        trackingDelegate?.onPaymentReviewScreenEvent(event: event)
         view.endEditing(true)
         validateAllInputFields()
 
