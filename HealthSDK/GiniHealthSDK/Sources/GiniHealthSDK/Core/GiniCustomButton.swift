@@ -16,7 +16,6 @@ class GiniCustomButton: UIButton {
     override public var isEnabled: Bool {
         didSet {
             self.backgroundColor = isEnabled ? defaultBackgroundColor : disabledBackgroundColor
-            self.tintColor = .white
         }
     }
     
