@@ -259,8 +259,6 @@
                                                                     </view>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8gp-kV-rnt" customClass="GiniCustomButton" customModule="GiniHealthSDK">
                                                                         <rect key="frame" x="179.66666666666663" y="0.0" width="163.33333333333337" height="42"/>
-                                                                        <color key="backgroundColor" red="1" green="0.40863117580000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                        <state key="normal" title="Weiter"/>
                                                                         <connections>
                                                                             <action selector="payButtonClicked:" destination="QI6-9C-Fdg" eventType="touchUpInside" id="Yxh-V6-oc5"/>
                                                                         </connections>

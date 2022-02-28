@@ -319,7 +319,7 @@ extension AppCoordinator: GiniHealthTrackingDelegate {
     func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {
         switch event.type {
         case .onNextButtonClicked:
-            print("📝 Next button was tapped")
+            print("📝 Next button was tapped,\(String(describing: event.info))")
         case .onCloseButtonClicked:
             print("📝 Close screen was triggered")
         case .onCloseKeyboardButtonClicked:
