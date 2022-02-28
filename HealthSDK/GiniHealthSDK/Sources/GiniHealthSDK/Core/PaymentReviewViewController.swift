@@ -298,6 +298,8 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         payButton.isEnabled = false
         payButton.layer.cornerRadius = giniHealthConfiguration.payButtonCornerRadius
         payButton.titleLabel?.font = giniHealthConfiguration.customFont.regular
+        payButton.setTitle( NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.next.button.title",
+                                                             comment: "next button title"), for: .normal)
     }
     
     fileprivate func configurePaymentInputFields() {
