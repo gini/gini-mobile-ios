@@ -114,6 +114,7 @@ import GiniCaptureSDK
      
      - returns: A presentable view controller.
      */
+    @available(macCatalyst 14.0, *)
     @objc public class func viewController(withDelegate delegate: GiniCaptureDelegate,
                                            importedDocuments: [GiniCaptureDocument]? = nil) -> UIViewController {
                 
@@ -135,6 +136,7 @@ import GiniCaptureSDK
      
      - returns: A presentable view controller.
      */
+    @available(macCatalyst 14.0, *)
     public class func viewController(withDelegate delegate: GiniCaptureDelegate,
                                            importedDocuments: [GiniCaptureDocument]? = nil,
                                            trackingDelegate: GiniCaptureTrackingDelegate? = nil) -> UIViewController {
@@ -156,6 +158,7 @@ import GiniCaptureSDK
 
      - returns: A presentable view controller.
      */
+    @available(macCatalyst 14.0, *)
     @objc public class func viewController(withDelegate delegate: GiniCaptureDelegate,
                                            importedDocument: GiniCaptureDocument? = nil) -> UIViewController {
         var documents: [GiniCaptureDocument]?
@@ -178,6 +181,7 @@ import GiniCaptureSDK
 
      - returns: A presentable view controller.
      */
+    @available(macCatalyst 14.0, *)
     public class func viewController(withDelegate delegate: GiniCaptureDelegate,
                                            importedDocument: GiniCaptureDocument? = nil,
                                            trackingDelegate: GiniCaptureTrackingDelegate? = nil) -> UIViewController {
@@ -202,6 +206,7 @@ import GiniCaptureSDK
 
      - returns: A presentable view controller.
      */
+    @available(macCatalyst 14.0, *)
     @objc public class func viewController(withDelegate delegate: GiniCaptureDelegate,
                                            withConfiguration configuration: GiniBankConfiguration,
                                            importedDocument: GiniCaptureDocument? = nil) -> UIViewController {
@@ -224,6 +229,7 @@ import GiniCaptureSDK
 
      - returns: A presentable view controller.
      */
+    @available(macCatalyst 14.0, *)
     public class func viewController(withDelegate delegate: GiniCaptureDelegate,
                                            withConfiguration configuration: GiniBankConfiguration,
                                            importedDocument: GiniCaptureDocument? = nil,

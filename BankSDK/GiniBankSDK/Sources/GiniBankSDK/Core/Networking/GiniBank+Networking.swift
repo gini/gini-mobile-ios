@@ -27,6 +27,7 @@ extension GiniBank {
 
      - returns: A presentable view controller.
      */
+    @available(macCatalyst 14.0, *)
     public class func viewController(withClient client: Client,
                                      importedDocuments: [GiniCaptureDocument]? = nil,
                                      configuration: GiniBankConfiguration,
@@ -61,6 +62,7 @@ extension GiniBank {
 
      - returns: A presentable view controller.
      */
+    @available(macCatalyst 14.0, *)
     public class func viewController(importedDocuments: [GiniCaptureDocument]? = nil,
                                      configuration: GiniBankConfiguration,
                                      resultsDelegate: GiniCaptureResultsDelegate,
