@@ -141,7 +141,7 @@ Also if you're using the [Gini Bank API Library](https://github.com/gini/bank-ap
 The Screen API provides a custom `UIViewController` object, which can be presented modally. It handles the complete process from showing the onboarding until providing a UI for the analysis.
 The Screen API, in turn, offers two different ways of implementation:
 
-#### UI with Default Networking (Recommended)
+### UI with Default Networking (Recommended)
 Using this method you don't need to care about handling the analysis process with the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios), you only need to provide your API credentials and a delegate to get the analysis results.
 
 ```swift
@@ -152,6 +152,8 @@ let viewController = GiniBank.viewController(withClient: client,
 present(viewController, animated: true, completion: nil)
 ```
 Optionally if you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information), the metadata information and the _API type_ (the [Gini Pay API](https://pay-api.gini.net/documentation/#gini-pay-api-documentation-v1-0) is used by default) as follows:
+
+#### Certificate Pinning
 
 ```swift
 import TrustKit
@@ -184,12 +186,19 @@ let viewController = GiniBank.viewController(withClient: client,
 present(viewController, animated: true, completion:nil)
 ```
 
-
 > ⚠️  **Important**
 > - The document metadata for the upload process is intended to be used for reporting.
 > - Certification pinning requires iOS 12.
 
-#### UI with Custom Networking
+#### Retrieve the Analyzed Document
+
+The `AnalysisResult` returned in `GiniCaptureResultsDelegate.giniCaptureAnalysisDidFinishWith(result:, sendFeedbackBlock:)` 
+will return the analyzed Gini Bank API document in its `document` property.
+
+When extractions were retrieved without using the Gini Bank API, then the `AnalysisResult.document` will be `nil`. For example when the
+extractions came from an EPS QR Code.
+
+### UI with Custom Networking
 
 You can also provide your own networking by implementing the `GiniCaptureNetworkService` and `GiniCaptureResultsDelegate` protocols. Pass your instances to the `UIViewController` initialiser of GiniCapture as shown below:
 
