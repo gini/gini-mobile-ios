@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 
+@available(macCatalyst 14.0, *)
 final class CameraPreviewView: UIView {
     
     let frameColor = UIColor(white: 0.0, alpha: 0.7)
@@ -47,6 +48,7 @@ final class CameraPreviewView: UIView {
     
 }
 
+@available(macCatalyst 14.0, *)
 extension CameraPreviewView {
     
     func drawGuides(withColor color: UIColor) {

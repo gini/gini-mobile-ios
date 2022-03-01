@@ -9,6 +9,7 @@ import Foundation
 
 // MARK: - Analysis Screen
 
+@available(macCatalyst 14.0, *)
 extension GiniScreenAPICoordinator {
     func createAnalysisScreen(withDocument document: GiniCaptureDocument) -> AnalysisViewController {
         let viewController = AnalysisViewController(document: document)
@@ -21,6 +22,7 @@ extension GiniScreenAPICoordinator {
 }
 
 // MARK: - ImageAnalysisNoResults screen
+@available(macCatalyst 14.0, *)
 
 extension GiniScreenAPICoordinator {
     func createImageAnalysisNoResultsScreen() -> ImageAnalysisNoResultsViewController {
@@ -57,6 +59,7 @@ extension GiniScreenAPICoordinator {
 
 // MARK: - AnalysisDelegate
 
+@available(macCatalyst 14.0, *)
 extension GiniScreenAPICoordinator: AnalysisDelegate {
     public func displayError(withMessage message: String?, andAction action: (() -> Void)?) {
         DispatchQueue.main.async { [weak self] in

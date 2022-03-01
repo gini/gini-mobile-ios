@@ -8,6 +8,7 @@
 import UIKit
 import AVFoundation
 
+@available(macCatalyst 14.0, *)
 protocol CameraPreviewViewControllerDelegate: AnyObject {
     func cameraPreview(_ viewController: CameraPreviewViewController,
                        didDetect qrCodeDocument: GiniQRCodeDocument)
@@ -15,6 +16,7 @@ protocol CameraPreviewViewControllerDelegate: AnyObject {
                         camera: CameraProtocol)
 }
 
+@available(macCatalyst 14.0, *)
 final class CameraPreviewViewController: UIViewController {
     
     weak var delegate: CameraPreviewViewControllerDelegate?
@@ -206,6 +208,7 @@ final class CameraPreviewViewController: UIViewController {
 
 // MARK: - Fileprivate
 
+@available(macCatalyst 14.0, *)
 fileprivate extension CameraPreviewViewController {
     
     func updatePreviewViewOrientation() {
@@ -223,6 +226,7 @@ fileprivate extension CameraPreviewViewController {
 
 // MARK: - Default and not authorized views
 
+@available(macCatalyst 14.0, *)
 extension CameraPreviewViewController {
     fileprivate func addNotAuthorizedView() {
         
@@ -258,6 +262,7 @@ extension CameraPreviewViewController {
 
 // MARK: - Focus handling
 
+@available(macCatalyst 14.0, *)
 extension CameraPreviewViewController {
     
     @objc fileprivate func focusAndExposeTap(_ sender: UITapGestureRecognizer) {

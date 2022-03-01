@@ -33,8 +33,9 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     var cameraViewController: CameraViewController?
     var imageAnalysisNoResultsViewController: ImageAnalysisNoResultsViewController?
     var reviewViewController: ReviewViewController?
+    @available(macCatalyst 14.0, *)
     lazy var multiPageReviewViewController: MultipageReviewViewController = {
-        return self.createMultipageReviewScreenContainer(with: [])
+            return self.createMultipageReviewScreenContainer(with: [])
     }()
     lazy var documentPickerCoordinator: DocumentPickerCoordinator = {
         return DocumentPickerCoordinator(giniConfiguration: giniConfiguration)
@@ -99,6 +100,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
         super.init()
     }
     
+    @available(macCatalyst 14.0, *)
     public func start(withDocuments documents: [GiniCaptureDocument]?) -> UIViewController {
         var viewControllers: [UIViewController] = []
 
@@ -113,7 +115,11 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
 
             if !documents.containsDifferentTypes {
                 let pages: [GiniCapturePage] = documents.map { GiniCapturePage(document: $0) }
-                self.addToDocuments(new: pages)
+                if #available(macCatalyst 14.0, *) {
+                    self.addToDocuments(new: pages)
+                } else {
+                    // Fallback on earlier versions
+                }
                 if !giniConfiguration.openWithEnabled {
                     errorMessage = "You are trying to import a file from other app when the Open With feature is not " +
                         "enabled. To enable it just set `openWithEnabled` to `true` in the `GiniConfiguration`"
@@ -141,6 +147,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
                                              parent: self)
     }
     
+    @available(macCatalyst 14.0, *)
     private func initialViewControllers(with pages: [GiniCapturePage]) -> [UIViewController] {
         if pages.type == .image {
             if giniConfiguration.multipageEnabled {
@@ -166,6 +173,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
 
 // MARK: - Session documents
 
+@available(macCatalyst 14.0, *)
 extension GiniScreenAPICoordinator {
     func addToDocuments(new pages: [GiniCapturePage]) {
         self.pages.append(contentsOf: pages)
@@ -213,6 +221,7 @@ extension GiniScreenAPICoordinator {
 
 // MARK: - Button actions
 
+@available(macCatalyst 14.0, *)
 extension GiniScreenAPICoordinator {
     
     @objc func back() {
@@ -290,6 +299,7 @@ extension GiniScreenAPICoordinator {
 
 // MARK: - Navigation delegate
 
+@available(macCatalyst 14.0, *)
 extension GiniScreenAPICoordinator: UINavigationControllerDelegate {
     public func navigationController(_ navigationController: UINavigationController,
                               animationControllerFor operation: UINavigationController.Operation,
@@ -329,6 +339,7 @@ extension GiniScreenAPICoordinator: UINavigationControllerDelegate {
 
 // MARK: - HelpMenuViewControllerDelegate
 
+@available(macCatalyst 14.0, *)
 extension GiniScreenAPICoordinator: HelpMenuViewControllerDelegate {
     public func help(_ menuViewController: HelpMenuViewController, didSelect item: HelpMenuViewController.Item) {
         screenAPINavigationController.pushViewController(helpItemViewController(for: item),

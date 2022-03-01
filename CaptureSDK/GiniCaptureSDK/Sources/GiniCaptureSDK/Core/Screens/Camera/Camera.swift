@@ -11,13 +11,16 @@ import AVFoundation
 import Photos
 
 protocol CameraProtocol: AnyObject {
+    @available(macCatalyst 14.0, *)
     var session: AVCaptureSession { get }
+    @available(macCatalyst 14.0, *)
     var videoDeviceInput: AVCaptureDeviceInput? { get }
     var didDetectQR: ((GiniQRCodeDocument) -> Void)? { get set }
     var isFlashSupported: Bool { get }
     var isFlashOn: Bool { get set }
 
     func captureStillImage(completion: @escaping (Data?, CameraError?) -> Void)
+    @available(macCatalyst 14.0, *)
     func focus(withMode mode: AVCaptureDevice.FocusMode,
                exposeWithMode exposureMode: AVCaptureDevice.ExposureMode,
                atDevicePoint point: CGPoint,
@@ -28,6 +31,7 @@ protocol CameraProtocol: AnyObject {
     func stop()
 }
 
+@available(macCatalyst 14.0, *)
 final class Camera: NSObject, CameraProtocol {
     
     // Callbacks
@@ -186,18 +190,12 @@ final class Camera: NSObject, CameraProtocol {
 
 // MARK: - Fileprivate
 
+@available(macCatalyst 14.0, *)
 fileprivate extension Camera {
     
     var captureSettings: AVCapturePhotoSettings {
         var captureSettings: AVCapturePhotoSettings
-        if #available(iOS 11.0, *) {
-            captureSettings = AVCapturePhotoSettings(rawPixelFormatType: 0,
-                                                         rawFileType: nil,
-                                                         processedFormat: nil,
-                                                         processedFileType: AVFileType.jpg)
-        } else {
-            captureSettings = AVCapturePhotoSettings()
-        }
+        captureSettings = AVCapturePhotoSettings()
         guard let device = self.videoDeviceInput?.device else { return captureSettings }
         
         #if !targetEnvironment(simulator)
@@ -275,6 +273,7 @@ fileprivate extension Camera {
 
 // MARK: - AVCaptureMetadataOutputObjectsDelegate
 
+@available(macCatalyst 14.0, *)
 extension Camera: AVCaptureMetadataOutputObjectsDelegate {
     func metadataOutput(_ output: AVCaptureMetadataOutput,
                         didOutput metadataObjects: [AVMetadataObject],
@@ -302,6 +301,7 @@ extension Camera: AVCaptureMetadataOutputObjectsDelegate {
 
 // MARK: - AVCapturePhotoCaptureDelegate
 
+@available(macCatalyst 14.0, *)
 extension Camera: AVCapturePhotoCaptureDelegate {
     //swiftlint:disable function_parameter_count
     func photoOutput(_ output: AVCapturePhotoOutput,

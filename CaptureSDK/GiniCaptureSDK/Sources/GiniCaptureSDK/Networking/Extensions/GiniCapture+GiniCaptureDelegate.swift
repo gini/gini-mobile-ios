@@ -26,6 +26,7 @@ extension GiniCapture {
 
      - returns: A presentable view controller.
      */
+    @available(macCatalyst 14.0, *)
     public class func viewController(withClient client: Client,
                                      importedDocuments: [GiniCaptureDocument]? = nil,
                                      configuration: GiniConfiguration,
@@ -62,6 +63,7 @@ extension GiniCapture {
 
      - returns: A presentable view controller.
      */
+    @available(macCatalyst 14.0, *)
     public class func viewController(importedDocuments: [GiniCaptureDocument]? = nil,
                                      configuration: GiniConfiguration,
                                      resultsDelegate: GiniCaptureResultsDelegate,

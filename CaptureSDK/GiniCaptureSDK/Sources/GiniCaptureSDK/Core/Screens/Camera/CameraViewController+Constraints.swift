@@ -7,6 +7,7 @@
 
 import UIKit
 
+@available(macCatalyst 14.0, *)
 extension CameraViewController {
     func addConstraints() {
         addPreviewViewConstraints()

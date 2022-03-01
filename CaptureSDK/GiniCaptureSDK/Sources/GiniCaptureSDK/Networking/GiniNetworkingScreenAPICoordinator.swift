@@ -35,7 +35,8 @@ import GiniBankAPILibrary
     func giniCaptureDidCancelAnalysis()
 }
 
- public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
+@available(macCatalyst 14.0, *)
+public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
     
     public weak var resultsDelegate: GiniCaptureResultsDelegate?
     public let documentService: DocumentServiceProtocol
@@ -145,6 +146,7 @@ import GiniBankAPILibrary
 
 // MARK: - Networking methods
 
+@available(macCatalyst 14.0, *)
 extension GiniNetworkingScreenAPICoordinator {
     fileprivate func startAnalysis(networkDelegate: GiniCaptureNetworkDelegate) {
         self.documentService.startAnalysis { result in
@@ -196,6 +198,7 @@ extension GiniNetworkingScreenAPICoordinator {
 
 // MARK: - GiniCaptureDelegate
 
+@available(macCatalyst 14.0, *)
 extension GiniNetworkingScreenAPICoordinator: GiniCaptureDelegate {
     public func didCancelCapturing() {
         resultsDelegate?.giniCaptureDidCancelAnalysis()

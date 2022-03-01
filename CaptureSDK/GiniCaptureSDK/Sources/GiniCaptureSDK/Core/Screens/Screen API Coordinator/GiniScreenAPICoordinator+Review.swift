@@ -9,7 +9,8 @@ import UIKit
 
 // MARK: - Review Screen
 
-extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
+@available(macCatalyst 14.0, *)
+ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
     
     public func review(_ viewController: ReviewViewController, didReview document: GiniCaptureDocument) {
         updateDocument(for: document)
@@ -38,6 +39,7 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
 
 // MARK: - Multipage Review screen
 
+@available(macCatalyst 14.0, *)
 extension GiniScreenAPICoordinator: MultipageReviewViewControllerDelegate {
     public func multipageReview(_ controller: MultipageReviewViewController,
                          didRotate page: GiniCapturePage) {

@@ -16,6 +16,7 @@ import UIKit
     func uploadDidComplete(for document: GiniCaptureDocument)
 }
 
+@available(macCatalyst 14.0, *)
 extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
     public func camera(_ viewController: CameraViewController, didCapture document: GiniCaptureDocument) {
         let loadingView = viewController.addValidationLoadingView()
@@ -188,6 +189,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
 
 // MARK: - DocumentPickerCoordinatorDelegate
 
+@available(macCatalyst 14.0, *)
 extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
     
     public func documentPicker(_ coordinator: DocumentPickerCoordinator,
@@ -255,6 +257,7 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
 
 // MARK: - Validation
 
+@available(macCatalyst 14.0, *)
 extension GiniScreenAPICoordinator {
     fileprivate func validate(_ documents: [GiniCaptureDocument],
                               completion: @escaping (Result<[GiniCapturePage], Error>) -> Void) {
@@ -305,6 +308,7 @@ extension GiniScreenAPICoordinator {
 
 // MARK: - UploadDelegate
 
+@available(macCatalyst 14.0, *)
 extension GiniScreenAPICoordinator: UploadDelegate {
     public func uploadDidComplete(for document: GiniCaptureDocument) {
         DispatchQueue.main.async { [weak self] in

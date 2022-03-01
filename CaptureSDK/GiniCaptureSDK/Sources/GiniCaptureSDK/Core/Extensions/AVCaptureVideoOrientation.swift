@@ -9,6 +9,7 @@
 import AVFoundation
 import UIKit
 
+@available(macCatalyst 14.0, *)
 extension AVCaptureVideoOrientation {
     
     init(_ interface: UIInterfaceOrientation) {

@@ -78,6 +78,7 @@ import AVFoundation
     fileprivate var currentQRCodePopup: QRCodeDetectedPopupView?
     var shouldShowQRCodeNext = false
     
+    @available(macCatalyst 14.0, *)
     lazy var cameraPreviewViewController: CameraPreviewViewController = {
         let cameraPreviewViewController = CameraPreviewViewController()
         cameraPreviewViewController.delegate = self
@@ -129,15 +130,20 @@ import AVFoundation
         view.backgroundColor = .black
         
         // `previewView` must be added at 0 because otherwise NotAuthorizedView button won't ever be touchable
-        addChild(cameraPreviewViewController)
-        view.addSubview(cameraPreviewViewController.view)
-        cameraPreviewViewController.didMove(toParent: self)
-        
-        addChild(cameraButtonsViewController)
-        view.insertSubview(cameraButtonsViewController.view, aboveSubview: cameraPreviewViewController.view)
-        cameraButtonsViewController.didMove(toParent: self)
+        if #available(macCatalyst 14.0, *) {
+            addChild(cameraPreviewViewController)
+            view.addSubview(cameraPreviewViewController.view)
+            cameraPreviewViewController.didMove(toParent: self)
+            
+            addChild(cameraButtonsViewController)
+            view.insertSubview(cameraButtonsViewController.view, aboveSubview: cameraPreviewViewController.view)
+            cameraButtonsViewController.didMove(toParent: self)
 
-        addConstraints()
+            addConstraints()
+        } else {
+            // Fallback on earlier versions
+        }
+
     }
     
     fileprivate func showTooltip() {
@@ -147,9 +153,17 @@ import AVFoundation
             // If FileImportToolTip was shown and QRCodeToolTip not yet
             if !OnboardingContainerViewController.willBeShown {
                 if ToolTipView.shouldShowFileImportToolTip {
-                    showFileImportTip()
+                    if #available(macCatalyst 14.0, *) {
+                        showFileImportTip()
+                    } else {
+                        // Fallback on earlier versions
+                    }
                 } else {
-                    showQrCodeTip()
+                    if #available(macCatalyst 14.0, *) {
+                        showQrCodeTip()
+                    } else {
+                        // Fallback on earlier versions
+                    }
                 }
             }
         }
@@ -178,7 +192,11 @@ import AVFoundation
         super.viewDidLayoutSubviews()
         self.fileImportToolTipView?.arrangeViews()
         self.qrCodeToolTipView?.arrangeViews()
-        self.opaqueView?.frame = cameraPreviewViewController.view.frame
+        if #available(macCatalyst 14.0, *) {
+            self.opaqueView?.frame = cameraPreviewViewController.view.frame
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -196,12 +214,17 @@ import AVFoundation
     }
     
     public func setupCamera() {
-        cameraPreviewViewController.setupCamera()
+        if #available(macCatalyst 14.0, *) {
+            cameraPreviewViewController.setupCamera()
+        } else {
+            // Fallback on earlier versions
+        }
     }
 }
 
 // MARK: - Toggle UI elements
 
+@available(macCatalyst 14.0, *)
 extension CameraViewController {
     
     /**
@@ -298,6 +321,7 @@ extension CameraViewController {
 
 // MARK: - Image capture
 
+@available(macCatalyst 14.0, *)
 extension CameraViewController {
     
     /**
@@ -437,6 +461,7 @@ extension CameraViewController {
 
 // MARK: - CameraPreviewViewControllerDelegate
 
+@available(macCatalyst 14.0, *)
 extension CameraViewController: CameraPreviewViewControllerDelegate {
     
     func cameraDidSetUp(_ viewController: CameraPreviewViewController, camera: CameraProtocol) {
@@ -465,6 +490,7 @@ extension CameraViewController: CameraPreviewViewControllerDelegate {
 
 // MARK: - CameraButtonsViewControllerDelegate
 
+@available(macCatalyst 14.0, *)
 extension CameraViewController: CameraButtonsViewControllerDelegate {
     func cameraButtons(_ viewController: CameraButtonsViewController,
                        didTapOn button: CameraButtonsViewController.Button) {
@@ -473,14 +499,22 @@ extension CameraViewController: CameraButtonsViewControllerDelegate {
             cameraPreviewViewController.isFlashOn = isOn
         case .fileImport:
             if let tooltip = fileImportToolTipView, tooltip.isHidden == false {
-                showImportFileSheet()
+                if #available(macCatalyst 14.0, *) {
+                    showImportFileSheet()
+                } else {
+                    // Fallback on earlier versions
+                }
             } else {
                 if let fileImportToolTipView = self.fileImportToolTipView, ToolTipView.shouldShowFileImportToolTip {
                     shouldShowQRCodeNext = true
                     fileImportToolTipView.dismiss(withCompletion: nil)
                     self.fileImportToolTipView = nil
                 } else {
-                    showImportFileSheet()
+                    if #available(macCatalyst 14.0, *) {
+                        showImportFileSheet()
+                    } else {
+                        // Fallback on earlier versions
+                    }
                 }
             }
         case .capture:
@@ -491,7 +525,11 @@ extension CameraViewController: CameraButtonsViewControllerDelegate {
             trackingDelegate?.onCameraScreenEvent(event: Event(type: .takePicture))
             cameraPreviewViewController.captureImage { [weak self] data, error in
                 guard let self = self else { return }
-                self.cameraDidCapture(imageData: data, error: error)
+                if #available(macCatalyst 14.0, *) {
+                    self.cameraDidCapture(imageData: data, error: error)
+                } else {
+                    // Fallback on earlier versions
+                }
                 viewController.toggleCaptureButtonActivation(state: true)
             }
 
@@ -503,6 +541,7 @@ extension CameraViewController: CameraButtonsViewControllerDelegate {
 
 // MARK: - Document import
 
+@available(macCatalyst 14.0, *)
 extension CameraViewController {
     func addValidationLoadingView() -> UIView {
         let loadingIndicator = UIActivityIndicatorView(style: .whiteLarge)
@@ -551,6 +590,7 @@ extension CameraViewController {
         self.present(alertViewController, animated: true, completion: nil)
     }
     
+    @available(macCatalyst 14.0, *)
     fileprivate func createFileImportTip(giniConfiguration: GiniConfiguration) {
         opaqueView = OpaqueViewFactory.create(with: giniConfiguration.toolTipOpaqueBackgroundStyle)
         opaqueView?.alpha = 0
@@ -621,6 +661,10 @@ extension CameraViewController {
         }
         
     }
+
+}
+
+extension CameraViewController {
     /**
      Handle tooltip dismiss on tap outside.
      */
@@ -629,7 +673,11 @@ extension CameraViewController {
         if  let fileImportTooltip = self.fileImportToolTipView, touch?.view != fileImportTooltip && !fileImportTooltip.isHidden  {
             fileImportToolTipView?.dismiss {
                 if !ToolTipView.shouldShowFileImportToolTip && ToolTipView.shouldShowQRCodeToolTip {
-                    self.showQrCodeTip()
+                    if #available(macCatalyst 14.0, *) {
+                        self.showQrCodeTip()
+                    } else {
+                        // Fallback on earlier versions
+                    }
                     self.fileImportToolTipView = nil
                 }
             }
