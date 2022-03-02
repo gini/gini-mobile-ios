@@ -145,19 +145,21 @@ extension GiniBankNetworkingScreenApiCoordinator {
                     return (name, $0)
                 })
                 
+                let documentService = self.documentService
+                
                 let result = AnalysisResult(extractions: extractions,
                                             lineItems: result.lineItems,
                                             images: images,
-                                            document: self.documentService.document)
+                                            document: documentService.document)
 
                 self.resultsDelegate?
                     .giniCaptureAnalysisDidFinishWith(result: result) { updatedExtractions in
                         if let lineItems = result.lineItems {
-                            self.documentService.sendFeedback(with: updatedExtractions.map { $0.value }, and: ["lineItems": lineItems])
+                            documentService.sendFeedback(with: updatedExtractions.map { $0.value }, and: ["lineItems": lineItems])
                         } else {
-                            self.documentService.sendFeedback(with: updatedExtractions.map { $0.value })
+                            documentService.sendFeedback(with: updatedExtractions.map { $0.value })
                         }
-                        self.documentService.resetToInitialState()
+                        documentService.resetToInitialState()
                     }
             } else {
                 self.resultsDelegate?
