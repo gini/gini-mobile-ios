@@ -144,10 +144,13 @@ extension GiniBankNetworkingScreenApiCoordinator {
 
                     return (name, $0)
                 })
-
-                let result = AnalysisResult(extractions: extractions, lineItems: result.lineItems, images: images)
-
+                
                 let documentService = self.documentService
+                
+                let result = AnalysisResult(extractions: extractions,
+                                            lineItems: result.lineItems,
+                                            images: images,
+                                            document: documentService.document)
 
                 self.resultsDelegate?
                     .giniCaptureAnalysisDidFinishWith(result: result) { updatedExtractions in

@@ -89,7 +89,13 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         screenAPIViewController.interactivePopGestureRecognizer?.delegate = nil
     }
     
-    fileprivate func showResultsScreen(results: [Extraction]) {
+    fileprivate func showResultsScreen(results: [Extraction], document: Document?) {
+        if let document = document {
+            print("🧾 Showing results for Gini Bank API document id: \(document.id)")
+        } else {
+            print("❓ Showing results for unknown Gini Bank API document")
+        }
+        
         let customResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "resultScreen") as? ResultTableViewController)!
         customResultsScreen.result = results
@@ -133,7 +139,7 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult,
                                          sendFeedbackBlock: @escaping ([String: Extraction]) -> Void) {
         
-        showResultsScreen(results: result.extractions.map { $0.value })
+        showResultsScreen(results: result.extractions.map { $0.value}, document: result.document)
         self.sendFeedbackBlock = sendFeedbackBlock
     }
     
