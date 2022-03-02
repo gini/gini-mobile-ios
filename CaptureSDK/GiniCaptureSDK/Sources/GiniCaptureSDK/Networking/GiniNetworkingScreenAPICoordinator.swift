@@ -112,7 +112,7 @@ import GiniBankAPILibrary
         }
     }
     
-    public func deliver(result: ExtractionResult, analysisDelegate: AnalysisDelegate) {
+    public func deliver(result: ExtractionResult, and document: Document? = nil, to analysisDelegate: AnalysisDelegate) {
         let hasExtactions = result.extractions.count > 0
         
         DispatchQueue.main.async { [weak self] in
@@ -126,13 +126,13 @@ import GiniBankAPILibrary
                 })
                 
                 
-                let result = AnalysisResult(extractions: extractions, lineItems: result.lineItems, images: images)
+                let result = AnalysisResult(extractions: extractions, lineItems: result.lineItems, images: images, document: document)
                 
                 let documentService = self.documentService
                 
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result) { updatedExtractions in
-                            documentService.sendFeedback(with: updatedExtractions.map { $0.value })
-                        documentService.resetToInitialState()
+                    documentService.sendFeedback(with: updatedExtractions.map { $0.value })
+                    documentService.resetToInitialState()
                 }
             } else {
                 self.resultsDelegate?
@@ -150,7 +150,7 @@ extension GiniNetworkingScreenAPICoordinator {
         self.documentService.startAnalysis { result in
             switch result {
             case .success(let extractions):
-                self.deliver(result: extractions, analysisDelegate: networkDelegate)
+                self.deliver(result: extractions, and: self.documentService.document, to: networkDelegate)
             case .failure(let error):
 
                 guard error != .requestCancelled else { return }
@@ -215,7 +215,7 @@ extension GiniNetworkingScreenAPICoordinator: GiniCaptureDelegate {
                 }
             let extractionResult = ExtractionResult(extractions: extractions, lineItems: [], returnReasons: [])
             
-            self.deliver(result: extractionResult, analysisDelegate: networkDelegate)
+            self.deliver(result: extractionResult, to: networkDelegate)
             return
         }
 
