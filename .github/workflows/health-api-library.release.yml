@@ -59,7 +59,7 @@ jobs:
             "ci": "true"
           }      
 
-     release-documentation:
+  release-documentation:
       needs: release
       uses: gini/gini-mobile-ios/.github/workflows/health-api-library.publish.docs.yml@main
       secrets:
