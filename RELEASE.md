@@ -1,7 +1,8 @@
 To publish releases follow these steps:
 1. Make sure you are on the `main` branch.
 2. Bump the version in each to-be-released package's (don't forget to update also extended package with Pinning!):
-    `{PackageName}Version.swift` file.
+    1. `{PackageName}Version.swift` file,
+    2. documentation file.
 3. Check `RELEASE-ORDER.md` to find out which projects contain the to-be-released packages in their release order.
    These will be the dependent packages.
 4. Bump the version in each dependent package's:
