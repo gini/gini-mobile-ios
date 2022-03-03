@@ -2136,6 +2136,13 @@
       "warning": "undocumented"
     },
     {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/GiniCaptureSDKVersion.swift",
+      "line": 8,
+      "symbol": "GiniCaptureSDKVersion",
+      "symbol_kind": "source.lang.swift.decl.var.global",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/AccountingDocumentService.swift",
       "line": 11,
       "symbol": "AccountingDocumentService",
@@ -2242,22 +2249,8 @@
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/AnalysisResult.swift",
-      "line": 20,
-      "symbol": "AnalysisResult.extractions",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/AnalysisResult.swift",
-      "line": 25,
-      "symbol": "AnalysisResult.lineItems",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/AnalysisResult.swift",
-      "line": 27,
-      "symbol": "AnalysisResult.init(extractions:lineItems:images:)",
+      "line": 39,
+      "symbol": "AnalysisResult.init(extractions:lineItems:images:document:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
@@ -2565,7 +2558,7 @@
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Networking/GiniNetworkingScreenAPICoordinator.swift",
       "line": 115,
-      "symbol": "GiniNetworkingScreenAPICoordinator.deliver(result:analysisDelegate:)",
+      "symbol": "GiniNetworkingScreenAPICoordinator.deliver(result:and:to:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },

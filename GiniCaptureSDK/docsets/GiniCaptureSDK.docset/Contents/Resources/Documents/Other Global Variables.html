@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Open with guide  Reference</title>
+    <title>Other Global Variables  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset="utf-8">
@@ -14,8 +14,9 @@
   </head>
   <body>
 
+    <a name="//apple_ref/swift/Section/Other Global Variables" class="dashAnchor"></a>
 
-    <a title="Open with guide  Reference"></a>
+    <a title="Other Global Variables  Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -44,7 +45,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html">GiniCaptureSDK Reference</a>
       <img class="carat" src="img/carat.png" />
-      Open with guide  Reference
+      Other Global Variables  Reference
     </p>
 
     <div class="content-wrapper">
@@ -444,107 +445,47 @@
 
         <section class="section">
           <div class="section-content">
-            
-            <h1 id='enable-your-app-to-open-pdfs-and-images' class='heading'>Enable your app to open PDFs and Images</h1>
-<h2 id='general-considerations' class='heading'>General considerations</h2>
-
-<p>Enabling your app to open PDFs and images allows your users to open any kind of files which are identified by the OS as PDFs or images. To do so, just follow these steps:</p>
-<h2 id='1-register-pdf-and-image-file-types' class='heading'>1. Register PDF and image file types</h2>
-
-<p>Add the following to your <code>Info.plist</code>:</p>
-<pre class="highlight swift"><code><span class="o">&lt;</span><span class="n">key</span><span class="o">&gt;</span><span class="kt">CFBundleDocumentTypes</span><span class="o">&lt;/</span><span class="n">key</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="n">array</span><span class="o">&gt;</span>
-        <span class="o">&lt;</span><span class="n">dict</span><span class="o">&gt;</span>
-            <span class="o">&lt;</span><span class="n">key</span><span class="o">&gt;</span><span class="kt">CFBundleTypeIconFiles</span><span class="o">&lt;/</span><span class="n">key</span><span class="o">&gt;</span>
-            <span class="o">&lt;</span><span class="n">array</span><span class="o">/&gt;</span>
-            <span class="o">&lt;</span><span class="n">key</span><span class="o">&gt;</span><span class="kt">CFBundleTypeName</span><span class="o">&lt;/</span><span class="n">key</span><span class="o">&gt;</span>
-            <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="kt">PDF</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
-            <span class="o">&lt;</span><span class="n">key</span><span class="o">&gt;</span><span class="kt">CFBundleTypeRole</span><span class="o">&lt;/</span><span class="n">key</span><span class="o">&gt;</span>
-            <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="kt">Viewer</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
-            <span class="o">&lt;</span><span class="n">key</span><span class="o">&gt;</span><span class="kt">LSHandlerRank</span><span class="o">&lt;/</span><span class="n">key</span><span class="o">&gt;</span>
-            <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="kt">Alternate</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
-            <span class="o">&lt;</span><span class="n">key</span><span class="o">&gt;</span><span class="kt">LSItemContentTypes</span><span class="o">&lt;/</span><span class="n">key</span><span class="o">&gt;</span>
-            <span class="o">&lt;</span><span class="n">array</span><span class="o">&gt;</span>
-                <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="n">com</span><span class="o">.</span><span class="n">adobe</span><span class="o">.</span><span class="n">pdf</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
-            <span class="o">&lt;/</span><span class="n">array</span><span class="o">&gt;</span>
-        <span class="o">&lt;/</span><span class="n">dict</span><span class="o">&gt;</span>
-        <span class="o">&lt;</span><span class="n">dict</span><span class="o">&gt;</span>
-            <span class="o">&lt;</span><span class="n">key</span><span class="o">&gt;</span><span class="kt">CFBundleTypeName</span><span class="o">&lt;/</span><span class="n">key</span><span class="o">&gt;</span>
-            <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="kt">Images</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
-            <span class="o">&lt;</span><span class="n">key</span><span class="o">&gt;</span><span class="kt">CFBundleTypeRole</span><span class="o">&lt;/</span><span class="n">key</span><span class="o">&gt;</span>
-            <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="kt">Viewer</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
-            <span class="o">&lt;</span><span class="n">key</span><span class="o">&gt;</span><span class="kt">LSHandlerRank</span><span class="o">&lt;/</span><span class="n">key</span><span class="o">&gt;</span>
-            <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="kt">Alternate</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
-            <span class="o">&lt;</span><span class="n">key</span><span class="o">&gt;</span><span class="kt">LSItemContentTypes</span><span class="o">&lt;/</span><span class="n">key</span><span class="o">&gt;</span>
-            <span class="o">&lt;</span><span class="n">array</span><span class="o">&gt;</span>
-                <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="kd">public</span><span class="o">.</span><span class="n">jpeg</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
-                <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="kd">public</span><span class="o">.</span><span class="n">png</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
-                <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="kd">public</span><span class="o">.</span><span class="n">tiff</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
-                <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="n">com</span><span class="o">.</span><span class="n">compuserve</span><span class="o">.</span><span class="n">gif</span><span class="o">&lt;/</span><span class="n">string</span><span class="o">&gt;</span>
-            <span class="o">&lt;/</span><span class="n">array</span><span class="o">&gt;</span>
-        <span class="o">&lt;/</span><span class="n">dict</span><span class="o">&gt;</span>
-<span class="o">&lt;/</span><span class="n">array</span><span class="o">&gt;</span>
-</code></pre>
-
-<p>You can also add these by going to your target’s <em>Info</em> tab and enter the values into the <em>Document Types</em> section.</p>
-<h3 id='documentation' class='heading'>Documentation</h3>
-
-<ul>
-<li><a href="https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/DocumentInteraction_TopicsForIOS/Articles/RegisteringtheFileTypesYourAppSupports.html">Document types</a> from <em>Apple documentation</em>.</li>
-</ul>
-<h2 id='2-enable-it-inside-ginicapture' class='heading'>2. Enable it inside GiniCapture</h2>
-
-<p>In order to allow GiniCapture library to handle files imported from other apps and to show the <em>Open With tutorial</em> in the <em>Help</em> menu, it is necessary to indicate it in the <code><a href="Classes/GiniConfiguration.html">GiniConfiguration</a></code>.</p>
-<pre class="highlight swift"><code>        <span class="k">let</span> <span class="nv">giniConfiguration</span> <span class="o">=</span> <span class="kt">GiniConfiguration</span><span class="p">()</span>
-        <span class="o">...</span>
-        <span class="o">...</span>
-        <span class="n">giniConfiguration</span><span class="o">.</span><span class="n">openWithEnabled</span> <span class="o">=</span> <span class="kc">true</span>
-</code></pre>
-<h2 id='3-handle-incoming-pdfs-and-images' class='heading'>3. Handle incoming PDFs and images</h2>
-
-<p>When your app is requested to handle a PDF or an image your <code>AppDelegate</code>’s <code>application(_:open:options:)</code> (<strong>Swift</strong>) method is called. You can then use the supplied url to create a document as shown below.</p>
-
-<p>In some cases, in particular when the <code>LSSupportsOpeningDocumentsInPlace</code> flag is enabled in your <code>Info.plist</code> file, reading data directly from the url may fail. For that reason, <code>Gini Capture SDK</code> uses the asynchronous <code>UIDocument</code> API internally which handles any of the potential security requirements.</p>
-
-<p>In order to determine that the file opened is valid (correct size, correct type and number of pages below the threshold on PDFs), it is necessary to validate it before using it.</p>
-<h2 id='gini-capture-sdk' class='heading'>Gini Capture SDK</h2>
-<pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="n">_</span> <span class="nv">app</span><span class="p">:</span> <span class="kt">UIApplication</span><span class="p">,</span>
-                 <span class="kd">open</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span>
-                 <span class="nv">options</span><span class="p">:</span> <span class="p">[</span><span class="kt">UIApplicationOpenURLOptionsKey</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[:])</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="p">{</span>
-
-        <span class="c1">// 1. Build the document</span>
-        <span class="k">let</span> <span class="nv">documentBuilder</span> <span class="o">=</span> <span class="kt">GiniCaptureDocumentBuilder</span><span class="p">(</span><span class="nv">documentSource</span><span class="p">:</span> <span class="o">.</span><span class="nf">appName</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="n">sourceApplication</span><span class="p">))</span>
-        <span class="n">documentBuilder</span><span class="o">.</span><span class="n">importMethod</span> <span class="o">=</span> <span class="o">.</span><span class="n">openWith</span>
-
-        <span class="n">documentBuilder</span><span class="o">.</span><span class="nf">build</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="n">document</span><span class="p">)</span> <span class="k">in</span>
-
-            <span class="k">guard</span> <span class="k">let</span> <span class="nv">self</span> <span class="o">=</span> <span class="k">self</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="p">}</span>
-
-            <span class="c1">// 2. Validate the document</span>
-            <span class="k">if</span> <span class="k">let</span> <span class="nv">document</span> <span class="o">=</span> <span class="n">document</span> <span class="p">{</span>
-                <span class="k">do</span> <span class="p">{</span>
-                    <span class="k">try</span> <span class="kt">GiniCapture</span><span class="o">.</span><span class="nf">validate</span><span class="p">(</span><span class="n">document</span><span class="p">,</span>
-                                            <span class="nv">withConfig</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">giniConfiguration</span><span class="p">)</span>
-                    <span class="c1">// Load the GiniCapture with the validated document</span>
-                <span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
-                    <span class="c1">// Show an error pointing out that the document is invalid</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-
-        <span class="k">return</span> <span class="kc">true</span>
-<span class="p">}</span>
-</code></pre>
-<h3 id='documentation' class='heading'>Documentation</h3>
-
-<ul>
-<li><a href="https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623112-application">AppDelegate resource handling</a> from <em>Apple Documentation</em></li>
-<li><a href="https://pay-api.gini.net/documentation/#supported-file-formats">Supported file formats</a> from <em>Gini Bank API</em></li>
-</ul>
+            <h1>Other Global Variables</h1>
+            <p>The following global variables are available globally.</p>
 
           </div>
         </section>
 
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:14GiniCaptureSDK0aB10SDKVersionSSvp"></a>
+                    <a name="//apple_ref/swift/Global/GiniCaptureSDKVersion" class="dashAnchor"></a>
+                    <a class="token" href="#/s:14GiniCaptureSDK0aB10SDKVersionSSvp">GiniCaptureSDKVersion</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">GiniCaptureSDKVersion</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
 
       </article>
     </div>
