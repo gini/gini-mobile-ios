@@ -114,6 +114,14 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Global Variables.html">Other Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Global%20Variables.html#/s:11GiniBankSDK0aB10SDKVersionSSvp">GiniBankSDKVersion</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a class="nav-group-name-link" href="Other Enumerations.html">Other Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
@@ -292,7 +300,7 @@ Also if you&rsquo;re using the <a href="https://github.com/gini/bank-api-library
 
 <p>The Screen API provides a custom <code>UIViewController</code> object, which can be presented modally. It handles the complete process from showing the onboarding until providing a UI for the analysis.
 The Screen API, in turn, offers two different ways of implementation:</p>
-<h4 id='ui-with-default-networking-recommended' class='heading'>UI with Default Networking (Recommended)</h4>
+<h3 id='ui-with-default-networking-recommended' class='heading'>UI with Default Networking (Recommended)</h3>
 
 <p>Using this method you don&rsquo;t need to care about handling the analysis process with the <a href="https://github.com/gini/bank-api-library-ios">Gini Bank API Library</a>, you only need to provide your API credentials and a delegate to get the analysis results.</p>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">GiniBank</span><span class="o">.</span><span class="nf">viewController</span><span class="p">(</span><span class="nv">withClient</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span>
@@ -301,9 +309,9 @@ The Screen API, in turn, offers two different ways of implementation:</p>
 
 <span class="nf">present</span><span class="p">(</span><span class="n">viewController</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
 </code></pre>
-<h2 id='todo-change-links-on-bank-api' class='heading'>TODO change links on bank api</h2>
 
 <p>Optionally if you want to use <em>Certificate pinning</em>, provide metadata for the upload process, you can pass both your public key pinning configuration (see <a href="https://github.com/datatheorem/TrustKit">TrustKit repo</a> for more information), the metadata information and the <em>API type</em> (the <a href="https://pay-api.gini.net/documentation/#gini-pay-api-documentation-v1-0">Gini Pay API</a> is used by default) as follows:</p>
+<h4 id='certificate-pinning' class='heading'>Certificate Pinning</h4>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">TrustKit</span>
 
 <span class="k">let</span> <span class="nv">yourPublicPinningConfig</span> <span class="o">=</span> <span class="p">[</span>
@@ -342,7 +350,14 @@ The Screen API, in turn, offers two different ways of implementation:</p>
 <li>Certification pinning requires iOS 12.</li>
 </ul>
 </blockquote>
-<h4 id='ui-with-custom-networking' class='heading'>UI with Custom Networking</h4>
+<h4 id='retrieve-the-analyzed-document' class='heading'>Retrieve the Analyzed Document</h4>
+
+<p>The <code>AnalysisResult</code> returned in <code>GiniCaptureResultsDelegate.giniCaptureAnalysisDidFinishWith(result:, sendFeedbackBlock:)</code> 
+will return the analyzed Gini Bank API document in its <code>document</code> property.</p>
+
+<p>When extractions were retrieved without using the Gini Bank API, then the <code>AnalysisResult.document</code> will be <code>nil</code>. For example when the
+extractions came from an EPS QR Code.</p>
+<h3 id='ui-with-custom-networking' class='heading'>UI with Custom Networking</h3>
 
 <p>You can also provide your own networking by implementing the <code>GiniCaptureNetworkService</code> and <code>GiniCaptureResultsDelegate</code> protocols. Pass your instances to the <code>UIViewController</code> initialiser of GiniCapture as shown below:</p>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">GiniBank</span><span class="o">.</span><span class="nf">viewController</span><span class="p">(</span><span class="nv">importedDocuments</span><span class="p">:</span> <span class="n">visionDocuments</span><span class="p">,</span>
@@ -382,7 +397,6 @@ The Screen API, in turn, offers two different ways of implementation:</p>
 <h2 id='sending-feedback' class='heading'>Sending Feedback</h2>
 
 <p>Your app should send feedback for the extractions the Gini Bank API delivered. Feedback should be sent only for the extractions the user has seen and accepted (or corrected).</p>
-<h2 id='todo-change-links-on-bank-api' class='heading'>TODO change links on bank api</h2>
 
 <p>For additional information about feedback see the <a href="https://pay-api.gini.net/documentation/#send-feedback-and-get-even-better-extractions-next-time">Gini Bank API documentation</a>.</p>
 <h3 id='default-implementation' class='heading'>Default Implementation</h3>
@@ -410,7 +424,6 @@ The Screen API, in turn, offers two different ways of implementation:</p>
 
 </code></pre>
 <h3 id='custom-implementation' class='heading'>Custom Implementation</h3>
-<h2 id='todo-change-links-on-bank-api' class='heading'>TODO change links on bank api</h2>
 
 <p>If you use your own networking implementation and directly communicate with the Gini Bank API then see <a href="https://pay-api.gini.net/documentation/#submitting-feedback-on-extractions">this section</a> in its documentation on how to send feedback.</p>
 
@@ -423,7 +436,7 @@ The Screen API, in turn, offers two different ways of implementation:</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2022 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2022-02-01)</p>
+      <p>&copy; 2022 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2022-03-03)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
