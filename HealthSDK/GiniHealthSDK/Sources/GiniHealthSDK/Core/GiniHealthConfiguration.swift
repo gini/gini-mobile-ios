@@ -56,6 +56,11 @@ public final class GiniHealthConfiguration: NSObject {
     @objc public var payButtonDisabledBackgroundColor = GiniColor(lightModeColor: UIColor.from(hex:0xCCCFDB), darkModeColor: UIColor.from(hex:0xCCCFDB))
     
     /**
+     Sets the textColor on the payment review screen for pay button when it's disabled
+     */
+    @objc public var payButtonDisabledTextColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
+    
+    /**
      Sets the text color of the pay button on the payment review screen
      */
     @objc public var payButtonTextColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
