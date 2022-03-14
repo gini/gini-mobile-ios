@@ -150,7 +150,9 @@ final class AppCoordinator: Coordinator {
         configuration.customFont = GiniFont(regular: regularFont, bold: regularFont, light: regularFont, thin: regularFont)
         // Pay button configuration
         configuration.payButtonTextColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
-        
+        // Uncomment to test disabled state
+        //configuration.payButtonDisabledTextColor = GiniColor(lightModeColor: .yellow, darkModeColor: .yellow)
+        //configuration.payButtonDisabledBackgroundColor =  GiniColor(lightModeColor: .red, darkModeColor: .red)
         // Page indicator color configuration
         configuration.currentPageIndicatorTintColor = GiniColor(lightModeColor: .systemBlue, darkModeColor: .systemBlue)
         configuration.pageIndicatorTintColor = GiniColor(lightModeColor: .darkGray, darkModeColor: .darkGray)
