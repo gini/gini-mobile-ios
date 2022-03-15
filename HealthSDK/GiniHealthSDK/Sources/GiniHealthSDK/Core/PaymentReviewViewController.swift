@@ -283,7 +283,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
 
     fileprivate func configurePayButton(paymentProvider: PaymentProvider) {
-        payButton.isEnabled = true
         let backgroundColorString = String.rgbaHexFrom(rgbHex: paymentProvider.colors.background)
         if let backgroundHexColor = UIColor(hex: backgroundColorString) {
             payButton.defaultBackgroundColor  = UIColor.from(giniColor: GiniColor(lightModeColor: backgroundHexColor, darkModeColor: backgroundHexColor))
@@ -292,7 +291,9 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         if let textHexColor = UIColor(hex: textColorString) {
             payButton.textColor = UIColor.from(giniColor: GiniColor(lightModeColor: textHexColor, darkModeColor: textHexColor))
         }
+        disablePayButtonIfNeeded()
     }
+    
     fileprivate func configurePayButtonInitialState() {
         payButton.disabledBackgroundColor = UIColor.from(giniColor: giniHealthConfiguration.payButtonDisabledBackgroundColor)
         payButton.isEnabled = false
@@ -736,7 +737,7 @@ extension PaymentReviewViewController: UITextFieldDelegate {
         if TextFieldType(rawValue: textField.tag) == .amountFieldTag {
             updateAmoutToPayWithCurrencyFormat()
         }
-        applyDefaultStyle(textField)
+        validateTextField(textField)
         disablePayButtonIfNeeded()
     }
 
