@@ -60,8 +60,8 @@ Some background and text colors use the `GiniColor` type with which you can set 
 - Purpose placeholder text &#8594; <span style="color:#009EDF">*ginihealth.reviewscreen.usage.placeholder*</span> localized string
 
 ##### 4. Pay button
-- Background color &#8594; `GiniHealthConfiguration.payButtonBackgroundColor` using `GiniColor` with dark mode and light mode colors
-- Text color &#8594; `GiniHealthConfiguration.payButtonTextColor` using `GiniColor` with dark mode and light mode colors
+- Text color for disabled state &#8594; `GiniHealthConfiguration.payButtonDisabledTextColor` using `GiniColor` with dark mode and light mode colors
+- Background color for disabled state &#8594; `GiniHealthConfiguration.payButtonDisabledTextColor` using `GiniColor` with dark mode and light mode colors
 - Font &#8594; `GiniHealthConfiguration.payButtonTextFont`
 - Corner radius &#8594; `GiniHealthConfiguration.payButtonCornerRadius`
 
