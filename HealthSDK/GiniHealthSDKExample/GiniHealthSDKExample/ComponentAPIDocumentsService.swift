@@ -26,7 +26,7 @@ final class ComponentAPIDocumentsService: ComponentAPIDocumentServiceProtocol {
         let regularFont = UIFont(name: "Avenir", size: 15) ?? UIFont.systemFont(ofSize: 15)
         configuration.customFont = GiniFont(regular: regularFont, bold: regularFont, light: regularFont, thin: regularFont)
         // Pay button configuration
-        configuration.payButtonTextColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
+        configuration.payButtonDisabledTextColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
         
         // Page indicator color configuration
         configuration.currentPageIndicatorTintColor = GiniColor(lightModeColor: .systemBlue, darkModeColor: .systemBlue)

@@ -149,7 +149,6 @@ final class AppCoordinator: Coordinator {
         let regularFont = UIFont(name: "Avenir", size: 15) ?? UIFont.systemFont(ofSize: 15)
         configuration.customFont = GiniFont(regular: regularFont, bold: regularFont, light: regularFont, thin: regularFont)
         // Pay button configuration
-        configuration.payButtonTextColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
         // Uncomment to test disabled state
         //configuration.payButtonDisabledTextColor = GiniColor(lightModeColor: .yellow, darkModeColor: .yellow)
         //configuration.payButtonDisabledBackgroundColor =  GiniColor(lightModeColor: .red, darkModeColor: .red)
