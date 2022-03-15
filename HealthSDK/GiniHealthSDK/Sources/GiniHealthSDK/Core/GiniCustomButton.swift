@@ -8,15 +8,24 @@
 import UIKit
 class GiniCustomButton: UIButton {
     var disabledBackgroundColor: UIColor? = .gray
+    var disabledTextColor: UIColor? = .white
     var defaultBackgroundColor: UIColor? {
         didSet {
             backgroundColor = defaultBackgroundColor
         }
     }
+    var textColor: UIColor? {
+        didSet {
+            self.setTitleColor(textColor, for: .normal)
+        }
+    }
+    
     override public var isEnabled: Bool {
         didSet {
             self.backgroundColor = isEnabled ? defaultBackgroundColor : disabledBackgroundColor
-            self.tintColor = .white
+            if !self.isEnabled {
+                self.setTitleColor(disabledTextColor, for: .disabled)
+            }
         }
     }
     
