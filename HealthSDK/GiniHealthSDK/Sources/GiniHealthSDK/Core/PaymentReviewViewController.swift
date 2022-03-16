@@ -39,6 +39,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     var model: PaymentReviewModel?
     var paymentProviders: [PaymentProvider] = []
     private var amountToPay = Price(value: 0, currencyCode: "EUR")
+    private var lastValidatedIBAN = ""
     
     private var selectedPaymentProvider: PaymentProvider? {
         didSet {
@@ -473,6 +474,16 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             showErrorLabel(textFieldTag: .ibanFieldTag)
         }
     }
+    
+    fileprivate func showIBANValidationErrorIfNeeded(){
+        if IBANValidator().isValid(iban: lastValidatedIBAN) {
+            applyDefaultStyle(ibanField)
+            hideErrorLabel(textFieldTag: .ibanFieldTag)
+        } else {
+            applyErrorStyle(ibanField)
+            showValidationErrorLabel(textFieldTag: .ibanFieldTag)
+        }
+    }
 
     fileprivate func validateAllInputFields() {
         for textField in paymentInputFields {
@@ -597,6 +608,9 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         view.endEditing(true)
         validateAllInputFields()
         validateIBANTextField()
+        if let iban = ibanField.text {
+            lastValidatedIBAN = iban
+        }
 
         // check if no errors labels are shown
         if (paymentInputFieldsErrorLabels.allSatisfy { $0.isHidden }) {
@@ -714,7 +728,6 @@ extension PaymentReviewViewController: UITextFieldDelegate {
      */
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        applyDefaultStyle(textField)
         return true
     }
 
@@ -742,6 +755,11 @@ extension PaymentReviewViewController: UITextFieldDelegate {
             updateAmoutToPayWithCurrencyFormat()
         }
         validateTextField(textField)
+        if TextFieldType(rawValue: textField.tag) == .ibanFieldTag {
+            if textField.text == lastValidatedIBAN {
+                showIBANValidationErrorIfNeeded()
+            }
+        }
         disablePayButtonIfNeeded()
     }
 
