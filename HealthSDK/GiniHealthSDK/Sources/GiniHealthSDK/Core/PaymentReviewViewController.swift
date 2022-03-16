@@ -432,19 +432,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     fileprivate func validateTextField(_ textField: UITextField) {
         if let fieldIdentifier = TextFieldType(rawValue: textField.tag) {
             switch fieldIdentifier {
-            case .ibanFieldTag:
-                if let ibanText = textField.text, textField.hasText {
-                    if IBANValidator().isValid(iban: ibanText) {
-                        applyDefaultStyle(textField)
-                        hideErrorLabel(textFieldTag: fieldIdentifier)
-                    } else {
-                        applyErrorStyle(textField)
-                        showValidationErrorLabel(textFieldTag: fieldIdentifier)
-                    }
-                } else {
-                    applyErrorStyle(textField)
-                    showErrorLabel(textFieldTag: fieldIdentifier)
-                }
             case .amountFieldTag:
                 if amountField.hasText && !amountField.isReallyEmpty  {
                     let decimalPart = amountToPay.value
@@ -460,7 +447,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
                     applyErrorStyle(textField)
                     showErrorLabel(textFieldTag: fieldIdentifier)
                 }
-            case .recipientFieldTag, .usageFieldTag:
+            case .ibanFieldTag, .recipientFieldTag, .usageFieldTag:
                 if textField.hasText && !textField.isReallyEmpty {
                     applyDefaultStyle(textField)
                     hideErrorLabel(textFieldTag: fieldIdentifier)
@@ -469,6 +456,21 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
                     showErrorLabel(textFieldTag: fieldIdentifier)
                 }
             }
+        }
+    }
+    
+    fileprivate func validateIBANTextField(){
+        if let ibanText = ibanField.text, ibanField.hasText {
+            if IBANValidator().isValid(iban: ibanText) {
+                applyDefaultStyle(ibanField)
+                hideErrorLabel(textFieldTag: .ibanFieldTag)
+            } else {
+                applyErrorStyle(ibanField)
+                showValidationErrorLabel(textFieldTag: .ibanFieldTag)
+            }
+        } else {
+            applyErrorStyle(ibanField)
+            showErrorLabel(textFieldTag: .ibanFieldTag)
         }
     }
 
@@ -480,7 +482,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     fileprivate func hideErrorLabels() {
         for errorLabel in paymentInputFieldsErrorLabels {
-                errorLabel.isHidden = true
+            errorLabel.isHidden = true
         }
     }
     
@@ -567,7 +569,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         if !errorLabel.isHidden {
             errorLabel.isHidden = true
         }
-        payButton.isEnabled = paymentInputFields.allSatisfy { !$0.isReallyEmpty } && !paymentProviders.isEmpty
+        disablePayButtonIfNeeded()
     }
     
     // MARK: - IBAction
@@ -593,6 +595,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         trackingDelegate?.onPaymentReviewScreenEvent(event: event)
         view.endEditing(true)
         validateAllInputFields()
+        validateIBANTextField()
 
         // check if no errors labels are shown
         if (paymentInputFieldsErrorLabels.allSatisfy { $0.isHidden }) {
