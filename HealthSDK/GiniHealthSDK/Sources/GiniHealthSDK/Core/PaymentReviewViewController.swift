@@ -751,7 +751,7 @@ extension PaymentReviewViewController: UITextFieldDelegate {
         if let fieldIdentifier = TextFieldType(rawValue: textField.tag) {
             hideErrorLabel(textFieldTag: fieldIdentifier)
             
-            if fieldIdentifier == .amountFieldTag, amountField.hasText && !amountField.isReallyEmpty {
+            if fieldIdentifier == .amountFieldTag {
                 let amountToPayText = amountToPay.stringWithoutSymbol
                 amountField.text = amountToPayText
             }
