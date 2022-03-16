@@ -497,7 +497,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     fileprivate func disablePayButtonIfNeeded() {
-        payButton.isEnabled = paymentInputFields.allSatisfy { !$0.isReallyEmpty } && !paymentProviders.isEmpty
+        payButton.isEnabled = paymentInputFields.allSatisfy { !$0.isReallyEmpty } && !paymentProviders.isEmpty && amountToPay.value > 0
     }
 
 
@@ -785,6 +785,7 @@ extension PaymentReviewViewController: UITextFieldDelegate {
                     }
                 }
             }
+            disablePayButtonIfNeeded()
             return false
            }
         return true
