@@ -790,9 +790,8 @@ extension PaymentReviewViewController: UITextFieldDelegate {
            }
         return true
     }
-
-    
 }
+
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 
 extension PaymentReviewViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
