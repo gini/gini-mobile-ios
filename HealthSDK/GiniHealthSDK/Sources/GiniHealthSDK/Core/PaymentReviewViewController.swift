@@ -495,6 +495,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             let amountToPayText = amountToPay.string
             amountField.text = amountToPayText
         }
+        validateAllInputFields()
         disablePayButtonIfNeeded()
     }
     
