@@ -61,6 +61,11 @@ public final class GiniHealthConfiguration: NSObject {
     @objc public var payButtonCornerRadius: CGFloat = 6.0
     
     /**
+     Sets the font of the pay button title on the payment review screen
+     */
+    @objc public var payButtonTitleFont: UIFont = UIFont.systemFont(ofSize: 14,
+                                                                    weight: .bold)
+    /**
      Sets the corner radius of the payment input fields on the payment review screen
      */
     @objc public var paymentInputFieldCornerRadius: CGFloat = 6.0

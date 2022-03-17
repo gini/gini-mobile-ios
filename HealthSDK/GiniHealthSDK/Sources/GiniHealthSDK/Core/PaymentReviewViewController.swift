@@ -300,7 +300,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         payButton.isEnabled = false
         payButton.disabledTextColor = UIColor.from(giniColor: giniHealthConfiguration.payButtonDisabledTextColor)
         payButton.layer.cornerRadius = giniHealthConfiguration.payButtonCornerRadius
-        payButton.titleLabel?.font = giniHealthConfiguration.customFont.regular
+        payButton.titleLabel?.font = giniHealthConfiguration.payButtonTitleFont
         payButton.setTitle( NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.next.button.title",
                                                              comment: "next button title"), for: .normal)
     }
