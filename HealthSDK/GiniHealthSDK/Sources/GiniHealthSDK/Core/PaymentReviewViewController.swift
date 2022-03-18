@@ -186,6 +186,10 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         inputContainer.roundCorners(corners: [.topLeft, .topRight], radius: 12)
     }
     
+    public override var preferredStatusBarStyle: UIStatusBarStyle {
+        return giniHealthConfiguration.paymentReviewStatusBarStyle
+    }
+    
     // MARK: - congifureUI
 
     fileprivate func configureUI() {
