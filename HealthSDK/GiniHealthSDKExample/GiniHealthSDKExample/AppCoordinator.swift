@@ -160,6 +160,8 @@ final class AppCoordinator: Coordinator {
         
         // Show the close button to dismiss the payment review screen
         configuration.showPaymentReviewCloseButton = true
+        configuration.paymentReviewStatusBarStyle = .lightContent
+        
         health.delegate = self
         health.setConfiguration(configuration)
         
