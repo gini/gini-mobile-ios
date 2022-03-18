@@ -52,6 +52,7 @@ public class GiniFont: NSObject {
             return thin
         default:
             assertionFailure("\(weight.rawValue) font weight is not supported")
+            return regular
         }
     }
 }
