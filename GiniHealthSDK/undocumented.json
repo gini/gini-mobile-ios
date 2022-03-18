@@ -212,70 +212,77 @@
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 725,
+      "line": 189,
+      "symbol": "PaymentReviewViewController.preferredStatusBarStyle",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
+      "line": 724,
       "symbol": "PaymentReviewViewController",
       "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 751,
+      "line": 750,
       "symbol": "PaymentReviewViewController.textFieldDidEndEditing(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 766,
+      "line": 765,
       "symbol": "PaymentReviewViewController.textFieldDidBeginEditing(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 780,
+      "line": 779,
       "symbol": "PaymentReviewViewController.textField(_:shouldChangeCharactersIn:replacementString:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 819,
+      "line": 818,
       "symbol": "PaymentReviewViewController",
       "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 820,
+      "line": 819,
       "symbol": "PaymentReviewViewController.collectionView(_:numberOfItemsInSection:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 822,
+      "line": 821,
       "symbol": "PaymentReviewViewController.numberOfSections(in:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 826,
+      "line": 825,
       "symbol": "PaymentReviewViewController.collectionView(_:cellForItemAt:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 836,
+      "line": 835,
       "symbol": "PaymentReviewViewController.collectionView(_:layout:sizeForItemAt:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/HealthSDK/GiniHealthSDK/Sources/GiniHealthSDK/Core/PaymentReviewViewController.swift",
-      "line": 844,
+      "line": 843,
       "symbol": "PaymentReviewViewController.scrollViewDidScroll(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
