@@ -10,14 +10,14 @@ Once you have your Swift package set up, adding `GiniHealthAPILibrary` as a depe
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/gini/health-api-library-ios.git", .exact("1.0.0"))
+    .package(url: "https://github.com/gini/health-api-library-ios.git", .exact("1.2.2"))
 ]
 ```
 
 In case that you want to use the certificate pinning in the library, add `GiniHealthAPILibraryPinning`:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/gini/health-api-library-pinning-ios.git", .exact("1.0.0"))
+    .package(url: "https://github.com/gini/health-api-library-pinning-ios.git", .exact("1.2.2"))
 ]
 ```
 
