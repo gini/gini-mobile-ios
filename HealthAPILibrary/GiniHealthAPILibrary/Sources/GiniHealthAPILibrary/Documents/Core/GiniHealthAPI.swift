@@ -29,7 +29,7 @@ public final class GiniHealthAPI {
      */
     public func documentService<T: DocumentService>() -> T {
         guard docService is T else {
-            assertionFailure("In order to use a \(T.self), you have to specify its corresponding api " +
+            preconditionFailure("In order to use a \(T.self), you have to specify its corresponding api " +
                 "domain when building the GiniHealthAPILib")
         }
         //swiftlint:disable force_cast

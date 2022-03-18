@@ -10,13 +10,14 @@ import Foundation
 extension SessionManager: SessionAuthenticationProtocol {
     
     var client: Client {
-        guard let id = self.keyStore.fetch(service: .auth, key: .clientId),
-            let secret = self.keyStore.fetch(service: .auth, key: .clientSecret),
-            let domain = self.keyStore.fetch(service: .auth, key: .clientDomain) else {
-                assertionFailure("There should always be a client stored")
+        if let id = self.keyStore.fetch(service: .auth, key: .clientId),
+           let secret = self.keyStore.fetch(service: .auth, key: .clientSecret),
+           let domain = self.keyStore.fetch(service: .auth, key: .clientDomain) {
+            return Client(id: id, secret: secret, domain: domain)
+        } else {
+            assertionFailure("There should always be a client stored")
+            return Client(id: "", secret: "", domain: "")
         }
-        
-        return Client(id: id, secret: secret, domain: domain)
     }
     
     var user: User? {
