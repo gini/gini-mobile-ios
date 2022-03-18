@@ -29,7 +29,7 @@ public final class GiniHealthAPI {
      */
     public func documentService<T: DocumentService>() -> T {
         guard docService is T else {
-            preconditionFailure("In order to use a \(T.self), you have to specify its corresponding api " +
+            assertionFailure("In order to use a \(T.self), you have to specify its corresponding api " +
                 "domain when building the GiniHealthAPILib")
         }
         //swiftlint:disable force_cast
@@ -131,7 +131,7 @@ extension GiniHealthAPI {
                                                                    value: client.domain,
                                                                    service: .auth))
             } catch {
-                preconditionFailure("There was an error using the Keychain. " +
+                assertionFailure("There was an error using the Keychain. " +
                     "Check that the Keychain capability is enabled in your project")
             }
         }
