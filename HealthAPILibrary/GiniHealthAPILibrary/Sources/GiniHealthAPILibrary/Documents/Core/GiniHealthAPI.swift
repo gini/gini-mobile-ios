@@ -131,7 +131,7 @@ extension GiniHealthAPI {
                                                                    value: client.domain,
                                                                    service: .auth))
             } catch {
-                preconditionFailure("There was an error using the Keychain. " +
+                assertionFailure("There was an error using the Keychain. " +
                     "Check that the Keychain capability is enabled in your project")
             }
         }
