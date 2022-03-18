@@ -10,13 +10,14 @@ import Foundation
 extension SessionManager: SessionAuthenticationProtocol {
     
     var client: Client {
-        guard let id = self.keyStore.fetch(service: .auth, key: .clientId),
-            let secret = self.keyStore.fetch(service: .auth, key: .clientSecret),
-            let domain = self.keyStore.fetch(service: .auth, key: .clientDomain) else {
-                preconditionFailure("There should always be a client stored")
+        if let id = self.keyStore.fetch(service: .auth, key: .clientId),
+           let secret = self.keyStore.fetch(service: .auth, key: .clientSecret),
+           let domain = self.keyStore.fetch(service: .auth, key: .clientDomain) {
+            return Client(id: id, secret: secret, domain: domain)
+        } else {
+            assertionFailure("There should always be a client stored")
+            return Client(id: "", secret: "", domain: "")
         }
-        
-        return Client(id: id, secret: secret, domain: domain)
     }
     
     var user: User? {
@@ -40,7 +41,7 @@ extension SessionManager: SessionAuthenticationProtocol {
                                                                      service: .auth))
                     
                 } catch {
-                    preconditionFailure("Gini couldn't safely save the user credentials in the Keychain. " +
+                    assertionFailure("Gini couldn't safely save the user credentials in the Keychain. " +
                         "Enable the 'Keychain Sharing' entitlement in your app")
                 }
             }
@@ -101,7 +102,7 @@ fileprivate extension SessionManager {
                                                                              service: .auth))
                             completion(.success((user)))
                         } catch {
-                            preconditionFailure("Gini couldn't safely save the user credentials in the Keychain. " +
+                            assertionFailure("Gini couldn't safely save the user credentials in the Keychain. " +
                                 "Enable the 'Keychain Sharing' entitlement in your app")
                         }
                     case .failure(let error):
@@ -142,7 +143,7 @@ fileprivate extension SessionManager {
                                                                      service: .auth))
                     completion(.success(()))
                 } catch {
-                    preconditionFailure("Gini couldn't safely save the user credentials in the Keychain. " +
+                    assertionFailure("Gini couldn't safely save the user credentials in the Keychain. " +
                         "Enable the 'Keychain Sharing' entitlement in your app")
                 }
             case .failure(let error):
