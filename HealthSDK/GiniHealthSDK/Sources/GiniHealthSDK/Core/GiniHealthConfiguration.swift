@@ -160,6 +160,11 @@ public final class GiniHealthConfiguration: NSObject {
      */
     @objc public var showPaymentReviewCloseButton = false
     
+    /**
+     Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in info.plist.
+     */
+    @objc public var paymentReviewStatusBarStyle: UIStatusBarStyle = .default
+    
     // MARK: - Bank selection screen
     
     /**
