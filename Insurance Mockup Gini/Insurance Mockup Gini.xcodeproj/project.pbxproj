@@ -7,18 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7667440627E8D00E00F92473 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7667440527E8D00E00F92473 /* AppCoordinator.swift */; };
+		7667440827E8D01800F92473 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7667440727E8D01800F92473 /* ViewController.swift */; };
+		7667440A27E8D02A00F92473 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7667440927E8D02A00F92473 /* Coordinator.swift */; };
 		76E4B49827E8A1E9004027BB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E4B49727E8A1E9004027BB /* AppDelegate.swift */; };
 		76E4B49A27E8A1E9004027BB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E4B49927E8A1E9004027BB /* SceneDelegate.swift */; };
-		76E4B49C27E8A1E9004027BB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E4B49B27E8A1E9004027BB /* ViewController.swift */; };
 		76E4B4A127E8A1EC004027BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76E4B4A027E8A1EC004027BB /* Assets.xcassets */; };
 		76E4B4A427E8A1EC004027BB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76E4B4A227E8A1EC004027BB /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7667440527E8D00E00F92473 /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		7667440727E8D01800F92473 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewController.swift; path = "../../../../gini-mobile-ios/Insurance Mockup Gini/Insurance Mockup Gini/ViewController.swift"; sourceTree = "<group>"; };
+		7667440927E8D02A00F92473 /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		76E4B49427E8A1E9004027BB /* Insurance Mockup Gini.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Insurance Mockup Gini.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		76E4B49727E8A1E9004027BB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		76E4B49927E8A1E9004027BB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		76E4B49B27E8A1E9004027BB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		76E4B4A027E8A1EC004027BB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		76E4B4A327E8A1EC004027BB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		76E4B4A527E8A1EC004027BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -54,9 +58,11 @@
 		76E4B49627E8A1E9004027BB /* Insurance Mockup Gini */ = {
 			isa = PBXGroup;
 			children = (
+				7667440527E8D00E00F92473 /* AppCoordinator.swift */,
+				7667440927E8D02A00F92473 /* Coordinator.swift */,
 				76E4B49727E8A1E9004027BB /* AppDelegate.swift */,
 				76E4B49927E8A1E9004027BB /* SceneDelegate.swift */,
-				76E4B49B27E8A1E9004027BB /* ViewController.swift */,
+				7667440727E8D01800F92473 /* ViewController.swift */,
 				76E4B4A027E8A1EC004027BB /* Assets.xcassets */,
 				76E4B4A227E8A1EC004027BB /* LaunchScreen.storyboard */,
 				76E4B4A527E8A1EC004027BB /* Info.plist */,
@@ -134,7 +140,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				76E4B49C27E8A1E9004027BB /* ViewController.swift in Sources */,
+				7667440827E8D01800F92473 /* ViewController.swift in Sources */,
+				7667440627E8D00E00F92473 /* AppCoordinator.swift in Sources */,
+				7667440A27E8D02A00F92473 /* Coordinator.swift in Sources */,
 				76E4B49827E8A1E9004027BB /* AppDelegate.swift in Sources */,
 				76E4B49A27E8A1E9004027BB /* SceneDelegate.swift in Sources */,
 			);
