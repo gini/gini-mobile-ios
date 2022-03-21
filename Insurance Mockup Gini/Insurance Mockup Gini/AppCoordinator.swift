@@ -13,7 +13,7 @@ final class AppCoordinator: Coordinator {
     fileprivate let window: UIWindow
 
     var rootViewController: UIViewController {
-        return ViewController()
+        return TabBarCoordinator()
     }
 
     init(window: UIWindow) {
