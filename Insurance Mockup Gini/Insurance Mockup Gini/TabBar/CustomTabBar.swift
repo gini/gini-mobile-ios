@@ -105,7 +105,6 @@ class CustomTabBar: UIView {
 
         let activeTab = self.subviews[tab]
         (activeTab.viewWithTag(12) as? UILabel)?.textColor = Style.TabBarColor.activeColor
-        (activeTab.viewWithTag(13) as? UIImageView)?.tintColor = Style.TabBarColor.activeColor
     }
 
     func deactivateTab(tab: Int) {
@@ -113,7 +112,6 @@ class CustomTabBar: UIView {
         let inactiveTab = self.subviews[tab]
 
         (inactiveTab.viewWithTag(12) as? UILabel)?.textColor = Style.TabBarColor.inactiveColor
-        (inactiveTab.viewWithTag(13) as? UIImageView)?.tintColor = Style.TabBarColor.inactiveColor
     }
 }
 
