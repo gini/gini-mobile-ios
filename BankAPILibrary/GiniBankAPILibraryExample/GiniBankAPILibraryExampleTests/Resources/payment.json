@@ -1,0 +1,13 @@
+{
+  "paidAt": "2020-12-07T15:53:26",
+  "recipient": "Dr. med. Hackler",
+  "iban": "DE02300209000106531065",
+  "bic": "CMCIDEDDXXX",
+  "amount": "335.50:EUR",
+  "purpose": "ReNr AZ356789Z",
+  "_links": {
+    "paymentRequest": "https://pay-api.gini.net/paymentRequests/b4bd3e80-7bd1-11e4-95ab-000000000000",
+    "sourceDocumentLoction": "https://pay-api.gini.net/documents/88090c5a-32ed-11eb-9e1a-9f2bc4656a7d",
+    "self": "https://pay-api.gini.net/payment/b4bd3e80-7bd1-11e4-95ab-000000000000/payment"
+  }
+}
