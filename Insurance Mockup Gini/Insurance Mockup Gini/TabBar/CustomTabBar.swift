@@ -28,9 +28,12 @@ class CustomTabBar: UIView {
 
         backgroundColor = .white
         isUserInteractionEnabled = true
-        
-        clipsToBounds = true
-        
+        clipsToBounds = false
+
+        layer.shadowOffset = CGSize(width: 0.5, height: 0.5)
+        layer.shadowOpacity = 0.3
+        layer.shadowPath = UIBezierPath(rect: bounds).cgPath
+
         for i in 0 ..< menuItems.count {
             let itemWidth = self.frame.width / CGFloat(menuItems.count)
             let leadingAnchor = itemWidth * CGFloat(i)
