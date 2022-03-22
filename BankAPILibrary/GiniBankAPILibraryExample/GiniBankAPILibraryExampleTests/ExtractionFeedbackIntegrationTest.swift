@@ -24,6 +24,7 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                .build()
         documentService = giniBankAPILib.documentService()
     }
+    
     func loadFile(withName name: String, ofType type: String) -> Data {
         let fileURLPath: String? = Bundle.main
             .path(forResource: name, ofType: type)
@@ -33,12 +34,10 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
     }
     
     func testSendExtractionFeedback() {
-
-        let expect = expectation(description: "it logs the error event")
+        let expect = expectation(description: "feedback was correctly sent and extractions were updated")
 
         // 1. Upload a test document
         let testDocumentData = loadFile(withName: "Gini_invoice_example", ofType: "pdf")
-        
         documentService.createDocument(fileName: "PartialDocument", docType: nil, type: .partial(testDocumentData), metadata: nil) { result in
             switch result {
             case let .success(createdDocument):
