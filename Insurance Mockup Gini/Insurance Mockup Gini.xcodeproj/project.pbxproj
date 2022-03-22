@@ -14,8 +14,15 @@
 		7667441E27E8DEB000F92473 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7667441B27E8DEB000F92473 /* CustomTabBar.swift */; };
 		7667442127E8EF5400F92473 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7667442027E8EF5400F92473 /* Style.swift */; };
 		7667442427E8F70700F92473 /* HomeScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7667442327E8F70700F92473 /* HomeScreenCoordinator.swift */; };
+		7687EC3927EA39610040F7BE /* NewInvoiceFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC3827EA39610040F7BE /* NewInvoiceFlowCoordinator.swift */; };
+		7687EC3B27EA3CD40040F7BE /* NewInvoiceFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC3A27EA3CD40040F7BE /* NewInvoiceFlowViewController.swift */; };
+		76C03E0A27EA07E700C7E350 /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 76C03E0927EA07E700C7E350 /* GiniCaptureSDK */; };
+		76C03E0E27EA088400C7E350 /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C03E0D27EA088400C7E350 /* CredentialsManager.swift */; };
+		76C03E1127EA089F00C7E350 /* GiniBankSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 76C03E1027EA089F00C7E350 /* GiniBankSDK */; };
+		76C03E1427EA0B8500C7E350 /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C03E1227EA0B8500C7E350 /* ScreenAPICoordinator.swift */; };
+		76C03E1527EA0B8500C7E350 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C03E1327EA0B8500C7E350 /* RootNavigationController.swift */; };
+		76C03E1827EA0CE900C7E350 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 76C03E1727EA0CE900C7E350 /* Credentials.plist */; };
 		76D98C3227E8FA0A004790C5 /* InvoiceFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C3127E8FA0A004790C5 /* InvoiceFlowCoordinator.swift */; };
-		76D98C3427E8FA26004790C5 /* NewInvoiceFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C3327E8FA26004790C5 /* NewInvoiceFlowCoordinator.swift */; };
 		76D98C3627E8FA5A004790C5 /* SessionsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C3527E8FA5A004790C5 /* SessionsCoordinator.swift */; };
 		76D98C3827E8FA75004790C5 /* MedicineFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C3727E8FA75004790C5 /* MedicineFlowCoordinator.swift */; };
 		76D98C3B27E9B4DB004790C5 /* HomeScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C3A27E9B4DB004790C5 /* HomeScreenViewController.swift */; };
@@ -44,8 +51,15 @@
 		7667441B27E8DEB000F92473 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		7667442027E8EF5400F92473 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		7667442327E8F70700F92473 /* HomeScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenCoordinator.swift; sourceTree = "<group>"; };
+		7687EC3827EA39610040F7BE /* NewInvoiceFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewInvoiceFlowCoordinator.swift; sourceTree = "<group>"; };
+		7687EC3A27EA3CD40040F7BE /* NewInvoiceFlowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewInvoiceFlowViewController.swift; sourceTree = "<group>"; };
+		76C03E0D27EA088400C7E350 /* CredentialsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
+		76C03E0F27EA089700C7E350 /* GiniBankSDK */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniBankSDK; path = ../BankSDK/GiniBankSDK; sourceTree = "<group>"; };
+		76C03E1227EA0B8500C7E350 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
+		76C03E1327EA0B8500C7E350 /* RootNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
+		76C03E1627EA0BCD00C7E350 /* GiniBankAPILibrary */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniBankAPILibrary; path = ../BankAPILibrary/GiniBankAPILibrary; sourceTree = "<group>"; };
+		76C03E1727EA0CE900C7E350 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
 		76D98C3127E8FA0A004790C5 /* InvoiceFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceFlowCoordinator.swift; sourceTree = "<group>"; };
-		76D98C3327E8FA26004790C5 /* NewInvoiceFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewInvoiceFlowCoordinator.swift; sourceTree = "<group>"; };
 		76D98C3527E8FA5A004790C5 /* SessionsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionsCoordinator.swift; sourceTree = "<group>"; };
 		76D98C3727E8FA75004790C5 /* MedicineFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicineFlowCoordinator.swift; sourceTree = "<group>"; };
 		76D98C3A27E9B4DB004790C5 /* HomeScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenViewController.swift; sourceTree = "<group>"; };
@@ -60,6 +74,7 @@
 		76D98C4C27E9E3B9004790C5 /* SF-Pro-Display-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Semibold.otf"; sourceTree = "<group>"; };
 		76D98C4D27E9E3B9004790C5 /* SF-Pro-Display-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Regular.otf"; sourceTree = "<group>"; };
 		76D98C5427E9EC8D004790C5 /* SF-Pro-Display-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Medium.otf"; sourceTree = "<group>"; };
+		76D98C5927EA068C004790C5 /* GiniCaptureSDK */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniCaptureSDK; path = ../CaptureSDK/GiniCaptureSDK; sourceTree = "<group>"; };
 		76E4B49427E8A1E9004027BB /* Insurance Mockup Gini.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Insurance Mockup Gini.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		76E4B49727E8A1E9004027BB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		76E4B49927E8A1E9004027BB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -73,6 +88,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76C03E1127EA089F00C7E350 /* GiniBankSDK in Frameworks */,
+				76C03E0A27EA07E700C7E350 /* GiniCaptureSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,13 +109,20 @@
 		7667442227E8F67700F92473 /* Flows */ = {
 			isa = PBXGroup;
 			children = (
+				76D98C5A27EA06A7004790C5 /* NewInvoiceFlow */,
 				76D98C3927E9B4C6004790C5 /* HomeScreenFlow */,
 				76D98C3127E8FA0A004790C5 /* InvoiceFlowCoordinator.swift */,
-				76D98C3327E8FA26004790C5 /* NewInvoiceFlowCoordinator.swift */,
 				76D98C3527E8FA5A004790C5 /* SessionsCoordinator.swift */,
 				76D98C3727E8FA75004790C5 /* MedicineFlowCoordinator.swift */,
 			);
 			path = Flows;
+			sourceTree = "<group>";
+		};
+		76C03E0827EA07E700C7E350 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		76D98C3927E9B4C6004790C5 /* HomeScreenFlow */ = {
@@ -137,11 +161,35 @@
 			path = Style;
 			sourceTree = "<group>";
 		};
+		76D98C5827EA068C004790C5 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				76D98C5927EA068C004790C5 /* GiniCaptureSDK */,
+				76C03E0F27EA089700C7E350 /* GiniBankSDK */,
+				76C03E1627EA0BCD00C7E350 /* GiniBankAPILibrary */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		76D98C5A27EA06A7004790C5 /* NewInvoiceFlow */ = {
+			isa = PBXGroup;
+			children = (
+				76C03E0D27EA088400C7E350 /* CredentialsManager.swift */,
+				76C03E1327EA0B8500C7E350 /* RootNavigationController.swift */,
+				76C03E1227EA0B8500C7E350 /* ScreenAPICoordinator.swift */,
+				7687EC3827EA39610040F7BE /* NewInvoiceFlowCoordinator.swift */,
+				7687EC3A27EA3CD40040F7BE /* NewInvoiceFlowViewController.swift */,
+			);
+			path = NewInvoiceFlow;
+			sourceTree = "<group>";
+		};
 		76E4B48B27E8A1E9004027BB = {
 			isa = PBXGroup;
 			children = (
+				76D98C5827EA068C004790C5 /* Packages */,
 				76E4B49627E8A1E9004027BB /* Insurance Mockup Gini */,
 				76E4B49527E8A1E9004027BB /* Products */,
+				76C03E0827EA07E700C7E350 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -166,6 +214,7 @@
 				76E4B4A027E8A1EC004027BB /* Assets.xcassets */,
 				76E4B4A227E8A1EC004027BB /* LaunchScreen.storyboard */,
 				76E4B4A527E8A1EC004027BB /* Info.plist */,
+				76C03E1727EA0CE900C7E350 /* Credentials.plist */,
 			);
 			path = "Insurance Mockup Gini";
 			sourceTree = "<group>";
@@ -186,6 +235,10 @@
 			dependencies = (
 			);
 			name = "Insurance Mockup Gini";
+			packageProductDependencies = (
+				76C03E0927EA07E700C7E350 /* GiniCaptureSDK */,
+				76C03E1027EA089F00C7E350 /* GiniBankSDK */,
+			);
 			productName = " Gini";
 			productReference = 76E4B49427E8A1E9004027BB /* Insurance Mockup Gini.app */;
 			productType = "com.apple.product-type.application";
@@ -229,6 +282,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				76E4B4A427E8A1EC004027BB /* LaunchScreen.storyboard in Resources */,
+				76C03E1827EA0CE900C7E350 /* Credentials.plist in Resources */,
 				76D98C4E27E9E3B9004790C5 /* SF-Pro-Display-Light.otf in Resources */,
 				76D98C5027E9E3B9004790C5 /* SF-Pro-Display-Semibold.otf in Resources */,
 				76D98C4F27E9E3B9004790C5 /* SF-Pro-Display-Bold.otf in Resources */,
@@ -248,10 +302,11 @@
 				7667441C27E8DEB000F92473 /* TabBarCoordinator.swift in Sources */,
 				76D98C4427E9DB71004790C5 /* HomeScreenViewModel.swift in Sources */,
 				7667440627E8D00E00F92473 /* AppCoordinator.swift in Sources */,
+				76C03E1527EA0B8500C7E350 /* RootNavigationController.swift in Sources */,
 				76D98C3827E8FA75004790C5 /* MedicineFlowCoordinator.swift in Sources */,
 				76D98C3227E8FA0A004790C5 /* InvoiceFlowCoordinator.swift in Sources */,
 				76D98C3627E8FA5A004790C5 /* SessionsCoordinator.swift in Sources */,
-				76D98C3427E8FA26004790C5 /* NewInvoiceFlowCoordinator.swift in Sources */,
+				7687EC3927EA39610040F7BE /* NewInvoiceFlowCoordinator.swift in Sources */,
 				7667441D27E8DEB000F92473 /* TabBarItem.swift in Sources */,
 				7667442427E8F70700F92473 /* HomeScreenCoordinator.swift in Sources */,
 				76D98C4227E9D320004790C5 /* ServiceView.swift in Sources */,
@@ -259,12 +314,15 @@
 				76E4B49827E8A1E9004027BB /* AppDelegate.swift in Sources */,
 				76D98C4027E9C3F1004790C5 /* AppointmentView.swift in Sources */,
 				7667441E27E8DEB000F92473 /* CustomTabBar.swift in Sources */,
+				7687EC3B27EA3CD40040F7BE /* NewInvoiceFlowViewController.swift in Sources */,
 				76E4B49A27E8A1E9004027BB /* SceneDelegate.swift in Sources */,
 				76D98C3D27E9B5C2004790C5 /* HomeScreenView.swift in Sources */,
 				76D98C4827E9DDC2004790C5 /* AppointmentViewModel.swift in Sources */,
 				76D98C4627E9DDB9004790C5 /* ServiceViewModel.swift in Sources */,
 				7667442127E8EF5400F92473 /* Style.swift in Sources */,
+				76C03E1427EA0B8500C7E350 /* ScreenAPICoordinator.swift in Sources */,
 				76D98C3B27E9B4DB004790C5 /* HomeScreenViewController.swift in Sources */,
+				76C03E0E27EA088400C7E350 /* CredentialsManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -480,6 +538,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		76C03E0927EA07E700C7E350 /* GiniCaptureSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GiniCaptureSDK;
+		};
+		76C03E1027EA089F00C7E350 /* GiniBankSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GiniBankSDK;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 76E4B48C27E8A1E9004027BB /* Project object */;
 }

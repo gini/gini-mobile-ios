@@ -13,6 +13,7 @@ import UIKit
 class TabBarCoordinator: UITabBarController {
     var customTabBar: CustomTabBar!
     var tabBarHeight: CGFloat = 107.0
+    var coordinators = [Coordinator]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,32 +25,39 @@ class TabBarCoordinator: UITabBarController {
         self.setupCustomTabBar(tabItems)
 
         var tabBarViewControllers = [UIViewController]()
+        var coordinators = [Coordinator]()
 
         tabItems.forEach { item in
             switch item {
             case .home:
                 let coordinator = HomeScreenCoordinator()
                 coordinator.start()
+                coordinators.append(coordinator)
                 tabBarViewControllers.append(coordinator.rootViewController)
             case .invoices:
                 let coordinator = InvoiceFlowCoordinator()
                 coordinator.start()
+                coordinators.append(coordinator)
                 tabBarViewControllers.append(coordinator.rootViewController)
             case .addInvoice:
                 let coordinator = NewInvoiceFlowCoordinator()
                 coordinator.start()
+                coordinators.append(coordinator)
                 tabBarViewControllers.append(coordinator.rootViewController)
             case .sessions:
                 let coordinator = SessionsCoordinator()
                 coordinator.start()
+                coordinators.append(coordinator)
                 tabBarViewControllers.append(coordinator.rootViewController)
             case .medicines:
                 let coordinator = MedicineFlowCoordinator()
                 coordinator.start()
+                coordinators.append(coordinator)
                 tabBarViewControllers.append(coordinator.rootViewController)
             }
         }
 
+        self.coordinators = coordinators
         self.viewControllers = tabBarViewControllers
         self.selectedIndex = 0 // default our selected index to the first item
     }
