@@ -20,6 +20,11 @@
 		76D98C3827E8FA75004790C5 /* MedicineFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C3727E8FA75004790C5 /* MedicineFlowCoordinator.swift */; };
 		76D98C3B27E9B4DB004790C5 /* HomeScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C3A27E9B4DB004790C5 /* HomeScreenViewController.swift */; };
 		76D98C3D27E9B5C2004790C5 /* HomeScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C3C27E9B5C2004790C5 /* HomeScreenView.swift */; };
+		76D98C4027E9C3F1004790C5 /* AppointmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C3F27E9C3F1004790C5 /* AppointmentView.swift */; };
+		76D98C4227E9D320004790C5 /* ServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C4127E9D320004790C5 /* ServiceView.swift */; };
+		76D98C4427E9DB71004790C5 /* HomeScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C4327E9DB71004790C5 /* HomeScreenViewModel.swift */; };
+		76D98C4627E9DDB9004790C5 /* ServiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C4527E9DDB9004790C5 /* ServiceViewModel.swift */; };
+		76D98C4827E9DDC2004790C5 /* AppointmentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C4727E9DDC2004790C5 /* AppointmentViewModel.swift */; };
 		76E4B49827E8A1E9004027BB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E4B49727E8A1E9004027BB /* AppDelegate.swift */; };
 		76E4B49A27E8A1E9004027BB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E4B49927E8A1E9004027BB /* SceneDelegate.swift */; };
 		76E4B4A127E8A1EC004027BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76E4B4A027E8A1EC004027BB /* Assets.xcassets */; };
@@ -40,6 +45,11 @@
 		76D98C3727E8FA75004790C5 /* MedicineFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicineFlowCoordinator.swift; sourceTree = "<group>"; };
 		76D98C3A27E9B4DB004790C5 /* HomeScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenViewController.swift; sourceTree = "<group>"; };
 		76D98C3C27E9B5C2004790C5 /* HomeScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenView.swift; sourceTree = "<group>"; };
+		76D98C3F27E9C3F1004790C5 /* AppointmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentView.swift; sourceTree = "<group>"; };
+		76D98C4127E9D320004790C5 /* ServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceView.swift; sourceTree = "<group>"; };
+		76D98C4327E9DB71004790C5 /* HomeScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenViewModel.swift; sourceTree = "<group>"; };
+		76D98C4527E9DDB9004790C5 /* ServiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceViewModel.swift; sourceTree = "<group>"; };
+		76D98C4727E9DDC2004790C5 /* AppointmentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentViewModel.swift; sourceTree = "<group>"; };
 		76E4B49427E8A1E9004027BB /* Insurance Mockup Gini.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Insurance Mockup Gini.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		76E4B49727E8A1E9004027BB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		76E4B49927E8A1E9004027BB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -84,11 +94,24 @@
 		76D98C3927E9B4C6004790C5 /* HomeScreenFlow */ = {
 			isa = PBXGroup;
 			children = (
+				76D98C3E27E9C3D9004790C5 /* Components */,
 				7667442327E8F70700F92473 /* HomeScreenCoordinator.swift */,
 				76D98C3A27E9B4DB004790C5 /* HomeScreenViewController.swift */,
 				76D98C3C27E9B5C2004790C5 /* HomeScreenView.swift */,
+				76D98C4327E9DB71004790C5 /* HomeScreenViewModel.swift */,
 			);
 			path = HomeScreenFlow;
+			sourceTree = "<group>";
+		};
+		76D98C3E27E9C3D9004790C5 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				76D98C3F27E9C3F1004790C5 /* AppointmentView.swift */,
+				76D98C4127E9D320004790C5 /* ServiceView.swift */,
+				76D98C4527E9DDB9004790C5 /* ServiceViewModel.swift */,
+				76D98C4727E9DDC2004790C5 /* AppointmentViewModel.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		76E4B48B27E8A1E9004027BB = {
@@ -195,6 +218,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7667441C27E8DEB000F92473 /* TabBarCoordinator.swift in Sources */,
+				76D98C4427E9DB71004790C5 /* HomeScreenViewModel.swift in Sources */,
 				7667440627E8D00E00F92473 /* AppCoordinator.swift in Sources */,
 				76D98C3827E8FA75004790C5 /* MedicineFlowCoordinator.swift in Sources */,
 				76D98C3227E8FA0A004790C5 /* InvoiceFlowCoordinator.swift in Sources */,
@@ -202,11 +226,15 @@
 				76D98C3427E8FA26004790C5 /* NewInvoiceFlowCoordinator.swift in Sources */,
 				7667441D27E8DEB000F92473 /* TabBarItem.swift in Sources */,
 				7667442427E8F70700F92473 /* HomeScreenCoordinator.swift in Sources */,
+				76D98C4227E9D320004790C5 /* ServiceView.swift in Sources */,
 				7667440A27E8D02A00F92473 /* Coordinator.swift in Sources */,
 				76E4B49827E8A1E9004027BB /* AppDelegate.swift in Sources */,
+				76D98C4027E9C3F1004790C5 /* AppointmentView.swift in Sources */,
 				7667441E27E8DEB000F92473 /* CustomTabBar.swift in Sources */,
 				76E4B49A27E8A1E9004027BB /* SceneDelegate.swift in Sources */,
 				76D98C3D27E9B5C2004790C5 /* HomeScreenView.swift in Sources */,
+				76D98C4827E9DDC2004790C5 /* AppointmentViewModel.swift in Sources */,
+				76D98C4627E9DDB9004790C5 /* ServiceViewModel.swift in Sources */,
 				7667442127E8EF5400F92473 /* Style.swift in Sources */,
 				76D98C3B27E9B4DB004790C5 /* HomeScreenViewController.swift in Sources */,
 			);

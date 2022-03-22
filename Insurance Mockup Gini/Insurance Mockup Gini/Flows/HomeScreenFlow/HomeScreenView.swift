@@ -8,37 +8,64 @@
 import SwiftUI
 
 struct HomeScreenView: View {
+    private let viewModel = HomeScreenViewModel()
     var body: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             HStack {
-                Text("Overview")
+                Text(viewModel.overviewSectionTitle)
                     .fontWeight(.bold)
                 Spacer()
-                Image(systemName: "bell")
-                Image(systemName: "info.circle")
-            }.padding([.leading, .trailing])
+                Image(systemName: viewModel.notificationIcon)
+                Image(systemName: viewModel.infoIcon)
+            }
 
             HStack {
                 VStack(alignment: .leading) {
-                    Text("You are close to the threshold!")
+                    Text(viewModel.tresholdTitle)
                         .font(.title)
                         .fontWeight(.semibold)
-                    Text("€8,970.26 / €11,500.00")
+                    Text(viewModel.ammount)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.gray)
+                    + Text(viewModel.tresholdAmmount)
                         .foregroundColor(.gray)
                 }
                 Spacer()
+                Image(viewModel.progressIcon)
             }
             .padding()
             .overlay(
                 RoundedRectangle(cornerRadius: 16)
                         .stroke(Color.gray, lineWidth: 1)
+                    .opacity(0.5)
                     )
 
             HStack {
-                Text("Upcoming appointments")
+                Text(viewModel.appointmentSectionTitle)
                 Spacer()
-                Text("See all")
+                Text(viewModel.allAppointmentsTitle)
+                    .foregroundColor(.gray)
             }.padding([.top, .bottom])
+
+            
+            ScrollView (.horizontal, showsIndicators: false) {
+                HStack(spacing: 16) {
+                    ForEach(viewModel.appointments, id: \.id) { appointmentViewModel in
+                                                AppointmentView(appointmentViewModel: appointmentViewModel)
+                    }
+                }
+            }.frame(height: 185)
+
+            HStack {
+                Text(viewModel.servicesSectionTitle)
+                Spacer()
+            }.padding([.top, .bottom])
+
+            ForEach(viewModel.serviceViewModels, id: \.id) { serviceViewModel in
+                                        ServiceView(serviceViewModel: serviceViewModel)
+                    .frame(height: 130)
+                    .padding(.bottom)
+            }
         }.padding()
 
     }
