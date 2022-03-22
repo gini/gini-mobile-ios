@@ -23,7 +23,6 @@ class TabBarCoordinator: UITabBarController {
         let tabItems: [TabBarItem] = [.home, .invoices, .addInvoice, .sessions, .medicines]
         self.setupCustomTabBar(tabItems)
 
-        self.viewControllers = []
         var tabBarViewControllers = [UIViewController]()
 
         tabItems.forEach { item in
@@ -64,7 +63,6 @@ class TabBarCoordinator: UITabBarController {
         
         customTabBar = CustomTabBar(menuItems: items, frame: frame)
         customTabBar.translatesAutoresizingMaskIntoConstraints = false
-        customTabBar.clipsToBounds = true
         customTabBar.itemTapped = changeTab
 
         view.addSubview(customTabBar)
@@ -83,6 +81,5 @@ class TabBarCoordinator: UITabBarController {
     
     func changeTab(tab: Int) {
         self.selectedIndex = tab
-//        print("X: \(viewControllers?[self.selectedIndex])")
     }
 }

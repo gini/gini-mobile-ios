@@ -16,8 +16,8 @@ final class HomeScreenCoordinator: Coordinator {
     var navigationController: UINavigationController!
 
     func start() {
-        let viewController = UIViewController()
-        viewController.view.backgroundColor = .red
+        let viewController = HomeScreenViewController()
         navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.navigationBar.isHidden = true
     }
 }
