@@ -25,6 +25,10 @@
 		76D98C4427E9DB71004790C5 /* HomeScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C4327E9DB71004790C5 /* HomeScreenViewModel.swift */; };
 		76D98C4627E9DDB9004790C5 /* ServiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C4527E9DDB9004790C5 /* ServiceViewModel.swift */; };
 		76D98C4827E9DDC2004790C5 /* AppointmentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C4727E9DDC2004790C5 /* AppointmentViewModel.swift */; };
+		76D98C4E27E9E3B9004790C5 /* SF-Pro-Display-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 76D98C4A27E9E3B9004790C5 /* SF-Pro-Display-Light.otf */; };
+		76D98C4F27E9E3B9004790C5 /* SF-Pro-Display-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 76D98C4B27E9E3B9004790C5 /* SF-Pro-Display-Bold.otf */; };
+		76D98C5027E9E3B9004790C5 /* SF-Pro-Display-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 76D98C4C27E9E3B9004790C5 /* SF-Pro-Display-Semibold.otf */; };
+		76D98C5127E9E3B9004790C5 /* SF-Pro-Display-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 76D98C4D27E9E3B9004790C5 /* SF-Pro-Display-Regular.otf */; };
 		76E4B49827E8A1E9004027BB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E4B49727E8A1E9004027BB /* AppDelegate.swift */; };
 		76E4B49A27E8A1E9004027BB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E4B49927E8A1E9004027BB /* SceneDelegate.swift */; };
 		76E4B4A127E8A1EC004027BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76E4B4A027E8A1EC004027BB /* Assets.xcassets */; };
@@ -50,6 +54,10 @@
 		76D98C4327E9DB71004790C5 /* HomeScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenViewModel.swift; sourceTree = "<group>"; };
 		76D98C4527E9DDB9004790C5 /* ServiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceViewModel.swift; sourceTree = "<group>"; };
 		76D98C4727E9DDC2004790C5 /* AppointmentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentViewModel.swift; sourceTree = "<group>"; };
+		76D98C4A27E9E3B9004790C5 /* SF-Pro-Display-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Light.otf"; sourceTree = "<group>"; };
+		76D98C4B27E9E3B9004790C5 /* SF-Pro-Display-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Bold.otf"; sourceTree = "<group>"; };
+		76D98C4C27E9E3B9004790C5 /* SF-Pro-Display-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Semibold.otf"; sourceTree = "<group>"; };
+		76D98C4D27E9E3B9004790C5 /* SF-Pro-Display-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Regular.otf"; sourceTree = "<group>"; };
 		76E4B49427E8A1E9004027BB /* Insurance Mockup Gini.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Insurance Mockup Gini.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		76E4B49727E8A1E9004027BB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		76E4B49927E8A1E9004027BB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -114,6 +122,18 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		76D98C4927E9E38E004790C5 /* Style */ = {
+			isa = PBXGroup;
+			children = (
+				76D98C4B27E9E3B9004790C5 /* SF-Pro-Display-Bold.otf */,
+				76D98C4A27E9E3B9004790C5 /* SF-Pro-Display-Light.otf */,
+				76D98C4D27E9E3B9004790C5 /* SF-Pro-Display-Regular.otf */,
+				76D98C4C27E9E3B9004790C5 /* SF-Pro-Display-Semibold.otf */,
+				7667442027E8EF5400F92473 /* Style.swift */,
+			);
+			path = Style;
+			sourceTree = "<group>";
+		};
 		76E4B48B27E8A1E9004027BB = {
 			isa = PBXGroup;
 			children = (
@@ -133,13 +153,13 @@
 		76E4B49627E8A1E9004027BB /* Insurance Mockup Gini */ = {
 			isa = PBXGroup;
 			children = (
+				76D98C4927E9E38E004790C5 /* Style */,
 				7667442227E8F67700F92473 /* Flows */,
 				7667441F27E8E6DF00F92473 /* TabBar */,
 				7667440527E8D00E00F92473 /* AppCoordinator.swift */,
 				7667440927E8D02A00F92473 /* Coordinator.swift */,
 				76E4B49727E8A1E9004027BB /* AppDelegate.swift */,
 				76E4B49927E8A1E9004027BB /* SceneDelegate.swift */,
-				7667442027E8EF5400F92473 /* Style.swift */,
 				76E4B4A027E8A1EC004027BB /* Assets.xcassets */,
 				76E4B4A227E8A1EC004027BB /* LaunchScreen.storyboard */,
 				76E4B4A527E8A1EC004027BB /* Info.plist */,
@@ -206,6 +226,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				76E4B4A427E8A1EC004027BB /* LaunchScreen.storyboard in Resources */,
+				76D98C4E27E9E3B9004790C5 /* SF-Pro-Display-Light.otf in Resources */,
+				76D98C5027E9E3B9004790C5 /* SF-Pro-Display-Semibold.otf in Resources */,
+				76D98C4F27E9E3B9004790C5 /* SF-Pro-Display-Bold.otf in Resources */,
+				76D98C5127E9E3B9004790C5 /* SF-Pro-Display-Regular.otf in Resources */,
 				76E4B4A127E8A1EC004027BB /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

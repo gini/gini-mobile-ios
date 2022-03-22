@@ -13,7 +13,7 @@ struct HomeScreenView: View {
         ScrollView(showsIndicators: false) {
             HStack {
                 Text(viewModel.overviewSectionTitle)
-                    .fontWeight(.bold)
+                    .font(Style.appFont(style: .bold, 20))
                 Spacer()
                 Image(systemName: viewModel.notificationIcon)
                 Image(systemName: viewModel.infoIcon)

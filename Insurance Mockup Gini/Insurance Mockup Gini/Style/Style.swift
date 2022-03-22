@@ -25,3 +25,15 @@ public enum Style {
         static let backgroundColor = Color(red: 0.906, green: 0.946, blue: 0.94)
     }
 }
+
+extension Style {
+    enum FontStyle: String {
+        case light = "Light"
+        case regular = "Regular"
+        case semiBold = "Semibold"
+        case bold = "Bold"
+    }
+    static func appFont(style: FontStyle = .regular, _ size: CGFloat = 16) -> Font {
+        return Font.custom("SFProDisplay-\(style.rawValue)", size: size)
+    }
+}
