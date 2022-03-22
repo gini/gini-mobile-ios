@@ -24,10 +24,9 @@ struct ServiceView: View {
                 Spacer()
                 VStack(alignment: .center, spacing: 8) {
                     Text(serviceViewModel.title)
-                        .font(.system(size: 16))
-                        .fontWeight(.semibold)
+                        .font(Style.appFont(style: .semiBold))
                     Text(serviceViewModel.description)
-                        .font(.system(size: 14))
+                        .font(Style.appFont(14))
                 }.padding([.leading, .trailing])
             }.overlay(
                 RoundedRectangle(cornerRadius: 16)

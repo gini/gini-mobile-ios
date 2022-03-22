@@ -30,6 +30,7 @@ extension Style {
     enum FontStyle: String {
         case light = "Light"
         case regular = "Regular"
+        case medium = "Medium"
         case semiBold = "Semibold"
         case bold = "Bold"
     }

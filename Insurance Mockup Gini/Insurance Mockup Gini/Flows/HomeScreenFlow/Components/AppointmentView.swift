@@ -19,20 +19,19 @@ struct AppointmentView: View {
                 .cornerRadius(16)
 
             Text(appointmentViewModel.title)
-                .fontWeight(.semibold)
-                .font(.system(size: 16))
+                .font(Style.appFont(style: .medium))
 
             Spacer()
 
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(appointmentViewModel.appointmentDay)
-                        .font(.system(size: 12))
+                        .font(Style.appFont(12))
                         .foregroundColor(
                             AppointmentType.treatment == appointmentViewModel.type ?  Style.AppointmentView.treatmentTextColor : Style.AppointmentView.consultationTextColor
                         )
                     Text(appointmentViewModel.appointmentHour)
-                        .font(.system(size: 16))
+                        .font(Style.appFont(style: .semiBold))
                 }
 
                 Spacer()
@@ -48,25 +47,6 @@ struct AppointmentView: View {
         .aspectRatio(0.9, contentMode: .fill)
     }
 }
-
-var appointments = [
-    AppointmentViewModel(type: .consultation,
-                         title: "Prophylaxis - Dr. Thomas Schuster",
-                         appointmentDay: "Today",
-                         appointmentHour: "16:45"),
-    AppointmentViewModel(type: .treatment,
-                         title: "Aromatic Pediatry - Saint Ludovic Hospital",
-                         appointmentDay: "Tomorrow",
-                         appointmentHour: "12:30"),
-    AppointmentViewModel(type: .consultation,
-                         title: "Prophylaxis - Dr. Thomas Schuster",
-                         appointmentDay: "Today",
-                         appointmentHour: "16:45"),
-    AppointmentViewModel(type: .treatment,
-                         title: "Aromatic Pediatry - Saint Ludovic Hospital",
-                         appointmentDay: "Tomorrow",
-                         appointmentHour: "12:30")
-]
 
 struct AppointmentView_Previews: PreviewProvider {
     static var previews: some View {

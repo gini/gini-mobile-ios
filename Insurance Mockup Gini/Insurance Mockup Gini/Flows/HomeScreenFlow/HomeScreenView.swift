@@ -11,23 +11,23 @@ struct HomeScreenView: View {
     private let viewModel = HomeScreenViewModel()
     var body: some View {
         ScrollView(showsIndicators: false) {
-            HStack {
+            HStack(spacing: 16) {
                 Text(viewModel.overviewSectionTitle)
                     .font(Style.appFont(style: .bold, 20))
                 Spacer()
-                Image(systemName: viewModel.notificationIcon)
-                Image(systemName: viewModel.infoIcon)
-            }
+                Image(viewModel.notificationIcon)
+                Image(viewModel.infoIcon)
+            }.padding([.top, .bottom])
 
             HStack {
                 VStack(alignment: .leading) {
                     Text(viewModel.tresholdTitle)
-                        .font(.title)
-                        .fontWeight(.semibold)
+                        .font(Style.appFont(style: .bold, 24))
                     Text(viewModel.ammount)
-                        .fontWeight(.semibold)
+                        .font(Style.appFont(style: .semiBold, 14))
                         .foregroundColor(.gray)
                     + Text(viewModel.tresholdAmmount)
+                        .font(Style.appFont(14))
                         .foregroundColor(.gray)
                 }
                 Spacer()
@@ -35,15 +35,17 @@ struct HomeScreenView: View {
             }
             .padding()
             .overlay(
-                RoundedRectangle(cornerRadius: 16)
+                RoundedRectangle(cornerRadius: 24)
                         .stroke(Color.gray, lineWidth: 1)
                     .opacity(0.5)
                     )
 
             HStack {
                 Text(viewModel.appointmentSectionTitle)
+                    .font(Style.appFont())
                 Spacer()
                 Text(viewModel.allAppointmentsTitle)
+                    .font(Style.appFont())
                     .foregroundColor(.gray)
             }.padding([.top, .bottom])
 
@@ -58,6 +60,7 @@ struct HomeScreenView: View {
 
             HStack {
                 Text(viewModel.servicesSectionTitle)
+                    .font(Style.appFont())
                 Spacer()
             }.padding([.top, .bottom])
 
