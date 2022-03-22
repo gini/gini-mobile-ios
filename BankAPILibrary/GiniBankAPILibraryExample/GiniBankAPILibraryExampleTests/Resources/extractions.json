@@ -1,0 +1,239 @@
+{
+  "extractions": {
+    "amountToPay": {
+      "box": {
+        "height": 9.0,
+        "left": 516.0,
+        "page": 1,
+        "top": 588.0,
+        "width": 42.0
+      },
+      "entity": "amount",
+      "value": "24.99:EUR",
+      "candidates": "amounts"
+    },
+    "recipient": {
+      "entity": "recipient",
+      "value": "Foo Bar Beispielstraße 23 80331 München",
+      "box": {
+        "page": 1,
+        "left": 60.0,
+        "top": 169.0,
+        "width": 67.0,
+        "height": 34.0
+      }
+    },
+    "paymentRecipient": {
+      "box": {
+        "height": 8.159999999999968,
+        "left": 480.96,
+        "page": 1,
+        "top": 583.92,
+        "width": 29.75999999999999
+      },
+      "entity": "companyname",
+      "value": "Charge"
+    },
+    "paymentReference": {
+      "entity": "reference",
+      "value": "ReNr INV07604869"
+    },
+    "senderName": {
+      "box": {
+        "height": 8.159999999999968,
+        "left": 480.96,
+        "page": 1,
+        "top": 583.92,
+        "width": 29.75999999999999
+      },
+      "entity": "companyname",
+      "value": "Charge"
+    }
+  },
+  "compoundExtractions": {
+    "lineItems": [
+      {
+        "artNumber": {
+          "box": {
+            "height": 9.0,
+            "left": 82.0,
+            "page": 1,
+            "top": 347.11,
+            "width": 103.72999999999999
+          },
+          "entity": "idnumber",
+          "value": "H0422S039-M11000L000"
+        },
+        "description": {
+          "box": {
+            "height": 21.97999999999996,
+            "left": 200.0,
+            "page": 1,
+            "top": 347.11,
+            "width": 110.5
+          },
+          "entity": "text",
+          "value": "CORE ICON - Sweatjacke - emerald"
+        },
+        "grossPrice": {
+          "box": {
+            "height": 9.0,
+            "left": 418.48,
+            "page": 1,
+            "top": 347.11,
+            "width": 22.519999999999982
+          },
+          "entity": "amount",
+          "value": "39.99:EUR"
+        },
+        "quantity": {
+          "box": {
+            "height": 9.0,
+            "left": 72.0,
+            "page": 1,
+            "top": 347.11,
+            "width": 5.0
+          },
+          "entity": "number",
+          "value": "1"
+        }
+      },
+      {
+        "artNumber": {
+          "box": {
+            "height": 9.0,
+            "left": 82.0,
+            "page": 1,
+            "top": 377.11,
+            "width": 103.57
+          },
+          "entity": "idnumber",
+          "value": "YO122Q047-E11000L000"
+        },
+        "description": {
+          "box": {
+            "height": 9.0,
+            "left": 200.0,
+            "page": 1,
+            "top": 377.11,
+            "width": 88.82
+          },
+          "entity": "text",
+          "value": "Strickpullover - yellow"
+        },
+        "grossPrice": {
+          "box": {
+            "height": 9.0,
+            "left": 418.48,
+            "page": 1,
+            "top": 377.11,
+            "width": 22.519999999999982
+          },
+          "entity": "amount",
+          "value": "34.99:EUR"
+        },
+        "quantity": {
+          "box": {
+            "height": 9.0,
+            "left": 72.0,
+            "page": 1,
+            "top": 377.11,
+            "width": 5.0
+          },
+          "entity": "number",
+          "value": "1"
+        }
+      },
+      {
+        "artNumber": {
+          "box": {
+            "height": 9.0,
+            "left": 82.0,
+            "page": 1,
+            "top": 394.11,
+            "width": 105.24000000000001
+          },
+          "entity": "idnumber",
+          "value": "JAM22Q01E-K11000L000"
+        },
+        "description": {
+          "box": {
+            "height": 21.97999999999996,
+            "left": 200.0,
+            "page": 1,
+            "top": 394.11,
+            "width": 119.83999999999997
+          },
+          "entity": "text",
+          "value": "JPRDEEP CREW NECK - Strickpullover - vintage indigo"
+        },
+        "grossPrice": {
+          "box": {
+            "height": 9.0,
+            "left": 418.48,
+            "page": 1,
+            "top": 394.11,
+            "width": 22.519999999999982
+          },
+          "entity": "amount",
+          "value": "49.99:EUR"
+        },
+        "quantity": {
+          "box": {
+            "height": 9.0,
+            "left": 72.0,
+            "page": 1,
+            "top": 394.11,
+            "width": 5.0
+          },
+          "entity": "number",
+          "value": "1"
+        }
+      }
+    ]
+  },
+  "candidates": {
+    "amounts": [
+      {
+        "box": {
+          "height": 9.0,
+          "left": 516.0,
+          "page": 1,
+          "top": 588.0,
+          "width": 42.0
+        },
+        "entity": "amount",
+        "value": "24.99:EUR"
+      },
+      {
+        "box": {
+          "height": 9.0,
+          "left": 241.0,
+          "page": 1,
+          "top": 588.0,
+          "width": 42.0
+        },
+        "entity": "amount",
+        "value": "21.0:EUR"
+      }
+    ]
+  },
+  "returnReasons": [
+    {
+      "id": "r1",
+      "de": "Anderes Aussehen als angeboten"
+    },
+    {
+      "id": "r2",
+      "de": "Schlechte Qualität"
+    },
+    {
+      "id": "r3",
+      "de": "Mangelhaft"
+    },
+    {
+      "id": "r4",
+      "de": "Passt nicht"
+    }
+  ]
+}
