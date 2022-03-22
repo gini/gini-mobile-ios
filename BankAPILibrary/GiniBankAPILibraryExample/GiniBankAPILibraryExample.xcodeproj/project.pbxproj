@@ -16,6 +16,29 @@
 		F44C6A5E272AF07300177319 /* IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44C6A5C272AF07300177319 /* IntegrationTests.swift */; };
 		F44C6A5F272AF07300177319 /* GiniBankAPILibraryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44C6A5D272AF07300177319 /* GiniBankAPILibraryTests.swift */; };
 		F44C6A62272AFB4F00177319 /* GiniBankAPILibraryPinning in Frameworks */ = {isa = PBXBuildFile; productRef = F44C6A61272AFB4F00177319 /* GiniBankAPILibraryPinning */; };
+		F4728C9327E9D8CF00DDEE66 /* result_Gini_invoice_example.json in Resources */ = {isa = PBXBuildFile; fileRef = F4728C8727E9D8CF00DDEE66 /* result_Gini_invoice_example.json */; };
+		F4728C9427E9D8CF00DDEE66 /* multi-page-p3.png in Resources */ = {isa = PBXBuildFile; fileRef = F4728C8827E9D8CF00DDEE66 /* multi-page-p3.png */; };
+		F4728C9527E9D8CF00DDEE66 /* Gini_invoice_example.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4728C8927E9D8CF00DDEE66 /* Gini_invoice_example.pdf */; };
+		F4728C9627E9D8CF00DDEE66 /* multi-page-p2.png in Resources */ = {isa = PBXBuildFile; fileRef = F4728C8A27E9D8CF00DDEE66 /* multi-page-p2.png */; };
+		F4728C9727E9D8CF00DDEE66 /* multi-page-p1.png in Resources */ = {isa = PBXBuildFile; fileRef = F4728C8B27E9D8CF00DDEE66 /* multi-page-p1.png */; };
+		F4728C9827E9D8CF00DDEE66 /* test.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F4728C8C27E9D8CF00DDEE66 /* test.jpg */; };
+		F4728C9927E9D8CF00DDEE66 /* result_Gini_invoice_example_after_feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = F4728C8D27E9D8CF00DDEE66 /* result_Gini_invoice_example_after_feedback.json */; };
+		F4728C9A27E9D8CF00DDEE66 /* payment.json in Resources */ = {isa = PBXBuildFile; fileRef = F4728C8E27E9D8CF00DDEE66 /* payment.json */; };
+		F4728C9B27E9D8CF00DDEE66 /* resolved-payment.json in Resources */ = {isa = PBXBuildFile; fileRef = F4728C8F27E9D8CF00DDEE66 /* resolved-payment.json */; };
+		F4728C9C27E9D8CF00DDEE66 /* line-items.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4728C9027E9D8CF00DDEE66 /* line-items.pdf */; };
+		F4728C9D27E9D8CF00DDEE66 /* extractions.json in Resources */ = {isa = PBXBuildFile; fileRef = F4728C9127E9D8CF00DDEE66 /* extractions.json */; };
+		F4728C9E27E9D8CF00DDEE66 /* ExtractionFeedbackIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4728C9227E9D8CF00DDEE66 /* ExtractionFeedbackIntegrationTest.swift */; };
+		F4728C9F27E9D93B00DDEE66 /* result_Gini_invoice_example.json in Resources */ = {isa = PBXBuildFile; fileRef = F4728C8727E9D8CF00DDEE66 /* result_Gini_invoice_example.json */; };
+		F4728CA027E9D94200DDEE66 /* multi-page-p3.png in Resources */ = {isa = PBXBuildFile; fileRef = F4728C8827E9D8CF00DDEE66 /* multi-page-p3.png */; };
+		F4728CA127E9D94500DDEE66 /* Gini_invoice_example.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4728C8927E9D8CF00DDEE66 /* Gini_invoice_example.pdf */; };
+		F4728CA227E9D94900DDEE66 /* multi-page-p2.png in Resources */ = {isa = PBXBuildFile; fileRef = F4728C8A27E9D8CF00DDEE66 /* multi-page-p2.png */; };
+		F4728CA327E9D94C00DDEE66 /* multi-page-p1.png in Resources */ = {isa = PBXBuildFile; fileRef = F4728C8B27E9D8CF00DDEE66 /* multi-page-p1.png */; };
+		F4728CA427E9D95000DDEE66 /* test.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F4728C8C27E9D8CF00DDEE66 /* test.jpg */; };
+		F4728CA527E9D95300DDEE66 /* result_Gini_invoice_example_after_feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = F4728C8D27E9D8CF00DDEE66 /* result_Gini_invoice_example_after_feedback.json */; };
+		F4728CA627E9D95600DDEE66 /* payment.json in Resources */ = {isa = PBXBuildFile; fileRef = F4728C8E27E9D8CF00DDEE66 /* payment.json */; };
+		F4728CA727E9D95900DDEE66 /* resolved-payment.json in Resources */ = {isa = PBXBuildFile; fileRef = F4728C8F27E9D8CF00DDEE66 /* resolved-payment.json */; };
+		F4728CA827E9D95C00DDEE66 /* line-items.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4728C9027E9D8CF00DDEE66 /* line-items.pdf */; };
+		F4728CA927E9D95F00DDEE66 /* extractions.json in Resources */ = {isa = PBXBuildFile; fileRef = F4728C9127E9D8CF00DDEE66 /* extractions.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +65,18 @@
 		F44C6A5C272AF07300177319 /* IntegrationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntegrationTests.swift; sourceTree = "<group>"; };
 		F44C6A5D272AF07300177319 /* GiniBankAPILibraryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniBankAPILibraryTests.swift; sourceTree = "<group>"; };
 		F44C6A60272AFB1F00177319 /* GiniBankAPILibraryPinning */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniBankAPILibraryPinning; path = ../GiniBankAPILibraryPinning; sourceTree = "<group>"; };
+		F4728C8727E9D8CF00DDEE66 /* result_Gini_invoice_example.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example.json; sourceTree = "<group>"; };
+		F4728C8827E9D8CF00DDEE66 /* multi-page-p3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "multi-page-p3.png"; sourceTree = "<group>"; };
+		F4728C8927E9D8CF00DDEE66 /* Gini_invoice_example.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example.pdf; sourceTree = "<group>"; };
+		F4728C8A27E9D8CF00DDEE66 /* multi-page-p2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "multi-page-p2.png"; sourceTree = "<group>"; };
+		F4728C8B27E9D8CF00DDEE66 /* multi-page-p1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "multi-page-p1.png"; sourceTree = "<group>"; };
+		F4728C8C27E9D8CF00DDEE66 /* test.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = test.jpg; sourceTree = "<group>"; };
+		F4728C8D27E9D8CF00DDEE66 /* result_Gini_invoice_example_after_feedback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_after_feedback.json; sourceTree = "<group>"; };
+		F4728C8E27E9D8CF00DDEE66 /* payment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = payment.json; sourceTree = "<group>"; };
+		F4728C8F27E9D8CF00DDEE66 /* resolved-payment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "resolved-payment.json"; sourceTree = "<group>"; };
+		F4728C9027E9D8CF00DDEE66 /* line-items.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "line-items.pdf"; sourceTree = "<group>"; };
+		F4728C9127E9D8CF00DDEE66 /* extractions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = extractions.json; sourceTree = "<group>"; };
+		F4728C9227E9D8CF00DDEE66 /* ExtractionFeedbackIntegrationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtractionFeedbackIntegrationTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +136,8 @@
 		F44C6A38272AD83000177319 /* GiniBankAPILibraryExampleTests */ = {
 			isa = PBXGroup;
 			children = (
+				F4728C9227E9D8CF00DDEE66 /* ExtractionFeedbackIntegrationTest.swift */,
+				F4728C8627E9D8CF00DDEE66 /* Resources */,
 				F44C6A5D272AF07300177319 /* GiniBankAPILibraryTests.swift */,
 				F44C6A5C272AF07300177319 /* IntegrationTests.swift */,
 			);
@@ -120,6 +157,24 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F4728C8627E9D8CF00DDEE66 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F4728C8727E9D8CF00DDEE66 /* result_Gini_invoice_example.json */,
+				F4728C8827E9D8CF00DDEE66 /* multi-page-p3.png */,
+				F4728C8927E9D8CF00DDEE66 /* Gini_invoice_example.pdf */,
+				F4728C8A27E9D8CF00DDEE66 /* multi-page-p2.png */,
+				F4728C8B27E9D8CF00DDEE66 /* multi-page-p1.png */,
+				F4728C8C27E9D8CF00DDEE66 /* test.jpg */,
+				F4728C8D27E9D8CF00DDEE66 /* result_Gini_invoice_example_after_feedback.json */,
+				F4728C8E27E9D8CF00DDEE66 /* payment.json */,
+				F4728C8F27E9D8CF00DDEE66 /* resolved-payment.json */,
+				F4728C9027E9D8CF00DDEE66 /* line-items.pdf */,
+				F4728C9127E9D8CF00DDEE66 /* extractions.json */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -207,9 +262,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4728CA227E9D94900DDEE66 /* multi-page-p2.png in Resources */,
+				F4728C9F27E9D93B00DDEE66 /* result_Gini_invoice_example.json in Resources */,
 				F44C6A2F272AD83000177319 /* LaunchScreen.storyboard in Resources */,
+				F4728CA827E9D95C00DDEE66 /* line-items.pdf in Resources */,
+				F4728CA127E9D94500DDEE66 /* Gini_invoice_example.pdf in Resources */,
+				F4728CA627E9D95600DDEE66 /* payment.json in Resources */,
+				F4728CA427E9D95000DDEE66 /* test.jpg in Resources */,
 				F44C6A2C272AD83000177319 /* Assets.xcassets in Resources */,
+				F4728CA927E9D95F00DDEE66 /* extractions.json in Resources */,
+				F4728CA027E9D94200DDEE66 /* multi-page-p3.png in Resources */,
+				F4728CA727E9D95900DDEE66 /* resolved-payment.json in Resources */,
 				F44C6A2A272AD82F00177319 /* Main.storyboard in Resources */,
+				F4728CA527E9D95300DDEE66 /* result_Gini_invoice_example_after_feedback.json in Resources */,
+				F4728CA327E9D94C00DDEE66 /* multi-page-p1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,6 +283,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4728C9627E9D8CF00DDEE66 /* multi-page-p2.png in Resources */,
+				F4728C9827E9D8CF00DDEE66 /* test.jpg in Resources */,
+				F4728C9A27E9D8CF00DDEE66 /* payment.json in Resources */,
+				F4728C9327E9D8CF00DDEE66 /* result_Gini_invoice_example.json in Resources */,
+				F4728C9727E9D8CF00DDEE66 /* multi-page-p1.png in Resources */,
+				F4728C9B27E9D8CF00DDEE66 /* resolved-payment.json in Resources */,
+				F4728C9927E9D8CF00DDEE66 /* result_Gini_invoice_example_after_feedback.json in Resources */,
+				F4728C9427E9D8CF00DDEE66 /* multi-page-p3.png in Resources */,
+				F4728C9527E9D8CF00DDEE66 /* Gini_invoice_example.pdf in Resources */,
+				F4728C9C27E9D8CF00DDEE66 /* line-items.pdf in Resources */,
+				F4728C9D27E9D8CF00DDEE66 /* extractions.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +316,7 @@
 			files = (
 				F44C6A5E272AF07300177319 /* IntegrationTests.swift in Sources */,
 				F44C6A5F272AF07300177319 /* GiniBankAPILibraryTests.swift in Sources */,
+				F4728C9E27E9D8CF00DDEE66 /* ExtractionFeedbackIntegrationTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
