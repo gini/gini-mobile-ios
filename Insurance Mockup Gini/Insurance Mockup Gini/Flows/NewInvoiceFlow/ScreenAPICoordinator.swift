@@ -80,10 +80,19 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
 
     private func showNewInvoiceDetailScreen(with results: [Extraction], document: Document?) {
         let viewModel = NewInvoiceDetailViewModel(results: results, document: document)
+        viewModel.delegate = self
         let vc = NewInvoiceDetailViewController(viewModel: viewModel)
         (rootViewController as? UINavigationController)?.pushViewController(vc, animated: true)
     }
 }
+
+extension ScreenAPICoordinator: NewInvoiceDetailViewModelDelegate {
+    func didTapCancel() {
+        rootViewController.dismiss(animated: true)
+        delegate?.screenAPI(coordinator: self, didFinish: (), withResults: nil)
+    }
+}
+
 
 // MARK: - GiniCaptureResultsDelegate
 

@@ -8,13 +8,16 @@
 import SwiftUI
 
 struct InvoiceDetailListView: View {
+
+    var viewModel: NewInvoiceDetailViewModel
+
     var body: some View {
         VStack {
             HStack {
                 Text("Invoice details")
                     .font(Style.appFont(style: .semiBold, 14))
                 Spacer()
-                Text("Due in 2 days")
+                Text("Due in \(viewModel.numberOfDaysUntilDue) days")
                     .font(Style.appFont(style: .medium, 14))
                     .foregroundColor(.gray)
                     .padding(4)
@@ -30,7 +33,7 @@ struct InvoiceDetailListView: View {
                     .font(Style.appFont(14))
                     .foregroundColor(.gray)
                 Spacer()
-                Text("March 11, 2022")
+                Text(viewModel.creationDate)
             }.padding([.top, .leading, .trailing])
 
             HStack {
@@ -38,7 +41,7 @@ struct InvoiceDetailListView: View {
                     .font(Style.appFont(14))
                     .foregroundColor(.gray)
                 Spacer()
-                Text("€334.59")
+                Text(viewModel.amount)
             }.padding([.top, .leading, .trailing])
 
             HStack {
@@ -46,7 +49,7 @@ struct InvoiceDetailListView: View {
                     .font(Style.appFont(14))
                     .foregroundColor(.gray)
                 Spacer()
-                Text("March 19, 2022")
+                Text(viewModel.dueDate)
             }.padding([.top, .leading, .trailing])
         }
     }

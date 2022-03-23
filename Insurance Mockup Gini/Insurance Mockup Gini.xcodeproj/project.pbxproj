@@ -21,6 +21,8 @@
 		7687EC4227EB44980040F7BE /* Triangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC4127EB44980040F7BE /* Triangle.swift */; };
 		7687EC4427EB44CE0040F7BE /* InvoiceDetailListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC4327EB44CE0040F7BE /* InvoiceDetailListView.swift */; };
 		7687EC4627EB45790040F7BE /* ButtonsSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC4527EB45790040F7BE /* ButtonsSheetView.swift */; };
+		7687EC4927EB6FFA0040F7BE /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC4827EB6FFA0040F7BE /* DateFormatter.swift */; };
+		7687EC4B27EB703D0040F7BE /* NewInvoiceDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC4A27EB703D0040F7BE /* NewInvoiceDetailViewModel.swift */; };
 		76C03E0A27EA07E700C7E350 /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 76C03E0927EA07E700C7E350 /* GiniCaptureSDK */; };
 		76C03E0E27EA088400C7E350 /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C03E0D27EA088400C7E350 /* CredentialsManager.swift */; };
 		76C03E1127EA089F00C7E350 /* GiniBankSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 76C03E1027EA089F00C7E350 /* GiniBankSDK */; };
@@ -63,6 +65,8 @@
 		7687EC4127EB44980040F7BE /* Triangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Triangle.swift; sourceTree = "<group>"; };
 		7687EC4327EB44CE0040F7BE /* InvoiceDetailListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceDetailListView.swift; sourceTree = "<group>"; };
 		7687EC4527EB45790040F7BE /* ButtonsSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsSheetView.swift; sourceTree = "<group>"; };
+		7687EC4827EB6FFA0040F7BE /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
+		7687EC4A27EB703D0040F7BE /* NewInvoiceDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewInvoiceDetailViewModel.swift; sourceTree = "<group>"; };
 		76C03E0D27EA088400C7E350 /* CredentialsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
 		76C03E0F27EA089700C7E350 /* GiniBankSDK */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniBankSDK; path = ../BankSDK/GiniBankSDK; sourceTree = "<group>"; };
 		76C03E1227EA0B8500C7E350 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
@@ -138,6 +142,15 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		7687EC4727EB6FED0040F7BE /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				76C03E0D27EA088400C7E350 /* CredentialsManager.swift */,
+				7687EC4827EB6FFA0040F7BE /* DateFormatter.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		76C03E0827EA07E700C7E350 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -195,13 +208,13 @@
 			isa = PBXGroup;
 			children = (
 				7687EC4027EB44810040F7BE /* Components */,
-				76C03E0D27EA088400C7E350 /* CredentialsManager.swift */,
 				76C03E1327EA0B8500C7E350 /* RootNavigationController.swift */,
 				76C03E1227EA0B8500C7E350 /* ScreenAPICoordinator.swift */,
 				7687EC3827EA39610040F7BE /* NewInvoiceFlowCoordinator.swift */,
 				7687EC3A27EA3CD40040F7BE /* NewInvoiceFlowViewController.swift */,
 				7687EC3C27EB14130040F7BE /* NewInvoiceDetailViewController.swift */,
 				7687EC3E27EB16BC0040F7BE /* NewInvoiceDetailView.swift */,
+				7687EC4A27EB703D0040F7BE /* NewInvoiceDetailViewModel.swift */,
 			);
 			path = NewInvoiceFlow;
 			sourceTree = "<group>";
@@ -227,6 +240,7 @@
 		76E4B49627E8A1E9004027BB /* Insurance Mockup Gini */ = {
 			isa = PBXGroup;
 			children = (
+				7687EC4727EB6FED0040F7BE /* Utils */,
 				76D98C4927E9E38E004790C5 /* Style */,
 				7667442227E8F67700F92473 /* Flows */,
 				7667441F27E8E6DF00F92473 /* TabBar */,
@@ -342,10 +356,12 @@
 				76D98C4027E9C3F1004790C5 /* AppointmentView.swift in Sources */,
 				7687EC4427EB44CE0040F7BE /* InvoiceDetailListView.swift in Sources */,
 				7667441E27E8DEB000F92473 /* CustomTabBar.swift in Sources */,
+				7687EC4B27EB703D0040F7BE /* NewInvoiceDetailViewModel.swift in Sources */,
 				7687EC3B27EA3CD40040F7BE /* NewInvoiceFlowViewController.swift in Sources */,
 				76E4B49A27E8A1E9004027BB /* SceneDelegate.swift in Sources */,
 				76D98C3D27E9B5C2004790C5 /* HomeScreenView.swift in Sources */,
 				76D98C4827E9DDC2004790C5 /* AppointmentViewModel.swift in Sources */,
+				7687EC4927EB6FFA0040F7BE /* DateFormatter.swift in Sources */,
 				76D98C4627E9DDB9004790C5 /* ServiceViewModel.swift in Sources */,
 				7667442127E8EF5400F92473 /* Style.swift in Sources */,
 				76C03E1427EA0B8500C7E350 /* ScreenAPICoordinator.swift in Sources */,

@@ -9,26 +9,15 @@ import UIKit
 import SwiftUI
 import GiniBankAPILibrary
 
-class NewInvoiceDetailViewModel {
-    var results: [Extraction]
-    var document: Document?
 
-    init(results: [Extraction], document: Document?) {
-        self.results = results
-        self.document = document
-    }
-}
-
-protocol NewInvoiceDetailViewControllerDelegate: AnyObject {
-
-}
 
 final class NewInvoiceDetailViewController: UIViewController {
-    private var hostingView = UIHostingController(rootView: NewInvoiceDetailView())
+    private var hostingView: UIHostingController<NewInvoiceDetailView>
     let viewModel: NewInvoiceDetailViewModel
 
     init(viewModel: NewInvoiceDetailViewModel) {
         self.viewModel = viewModel
+        hostingView = UIHostingController(rootView: NewInvoiceDetailView(viewModel: viewModel))
         super.init(nibName: nil, bundle: nil)
     }
 

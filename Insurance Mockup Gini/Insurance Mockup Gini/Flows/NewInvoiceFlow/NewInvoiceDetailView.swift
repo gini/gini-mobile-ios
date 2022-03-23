@@ -10,7 +10,8 @@ import SwiftUI
 
 struct NewInvoiceDetailView: View {
 
-    @State var isPresented: Bool = false
+    @State private var isPresented: Bool = false
+    var viewModel: NewInvoiceDetailViewModel
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -20,16 +21,16 @@ struct NewInvoiceDetailView: View {
                         .font(Style.appFont(style: .bold, 20))
                     Spacer()
                     Button {
-                        print("exit")
+                        viewModel.didTapCancel()
                     } label: {
-                        Image("bell_icon")
+                        Image("exit_icon")
                     }
                 }.padding()
 
                 ZStack(alignment: .top) {
                     VStack {
-                        Text("Dr. med. Reinhold Schuster")
-                            .font(Style.appFont(style: .semiBold))
+                        Text(viewModel.companyName)
+                            .font(Style.appFont(style: .semiBold, 16))
                             .padding(.top, 30)
 
                         Text("Prophylaxe")
@@ -37,7 +38,7 @@ struct NewInvoiceDetailView: View {
                             .foregroundColor(.gray)
                             .padding(4)
 
-                        Text("€334.59")
+                        Text(viewModel.amount)
                             .font(Style.appFont(style: .semiBold, 32))
                             .foregroundColor(Style.NewInvoice.accentBlue)
                             .padding(.top)
@@ -47,7 +48,7 @@ struct NewInvoiceDetailView: View {
                             .foregroundColor(.gray)
                             .padding(.top, 2)
 
-                        InvoiceDetailListView()
+                        InvoiceDetailListView(viewModel: viewModel)
 
                         Rectangle().fill(Color.gray).frame(height: 1, alignment: .center).padding([.top, .bottom], 26)
 
@@ -131,6 +132,6 @@ struct NewInvoiceDetailView: View {
 
 struct NewInvoiceDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        NewInvoiceDetailView()
+        NewInvoiceDetailView(viewModel: NewInvoiceDetailViewModel(results: [], document: nil))
     }
 }
