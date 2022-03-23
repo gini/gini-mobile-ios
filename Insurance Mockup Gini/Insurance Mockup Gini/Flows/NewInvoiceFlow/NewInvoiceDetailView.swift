@@ -7,10 +7,18 @@
 
 import Combine
 import SwiftUI
+import BottomSheet
+
+
+enum BottomSheetPosition: CGFloat, CaseIterable {
+    case middle = 300, hidden = -100
+}
 
 struct NewInvoiceDetailView: View {
 
     @State private var isPresented: Bool = false
+    @State var bottomSheetPosition: BottomSheetPosition = .hidden
+
     var viewModel: NewInvoiceDetailViewModel
 
     var body: some View {
@@ -21,6 +29,7 @@ struct NewInvoiceDetailView: View {
                         .font(Style.appFont(style: .bold, 20))
                     Spacer()
                     Button {
+                        print("exitttt")
                         viewModel.didTapCancel()
                     } label: {
                         Image("exit_icon")
@@ -31,7 +40,7 @@ struct NewInvoiceDetailView: View {
                     VStack {
                         Text(viewModel.companyName)
                             .font(Style.appFont(style: .semiBold, 16))
-                            .padding(.top, 30)
+                            .padding(.top, 60)
 
                         Text("Prophylaxe")
                             .font(Style.appFont(14))
@@ -56,14 +65,26 @@ struct NewInvoiceDetailView: View {
                             Text("Reimbursement")
                                 .font(Style.appFont(style: .semiBold, 14))
                             Spacer()
-                            Text("Not sent")
-                                .padding(2)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 4)
-                                            .stroke(Color.gray, lineWidth: 1)
-                                        .opacity(0.5)
-                                        )
+                            if viewModel.reimbursmentStatus {
+                                Text("Reimbursed")
+                                    .foregroundColor(Color.green)
+                                    .padding(2)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 4)
+                                                .stroke(Color.green, lineWidth: 1)
+                                            .opacity(0.5)
+                                            )
 
+                            } else {
+                                Text("Not sent")
+                                    .padding(2)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 4)
+                                                .stroke(Color.gray, lineWidth: 1)
+                                            .opacity(0.5)
+                                            )
+
+                            }
                         }.padding([.top, .leading, .trailing])
 
                         HStack {
@@ -100,30 +121,46 @@ struct NewInvoiceDetailView: View {
                     .background(Color.white)
                     .cornerRadius(20)
 
-                    Image("icon_dentist")
+                    Image(viewModel.iconTitle)
                         .frame(width: 58, height: 58)
                         .offset(x: 0, y: -29)
                 }.padding(.top, 40)
             }
+            .zIndex(BottomSheetPosition.middle == bottomSheetPosition ? 0 : 1)
             .padding(.top, 40)
 
-            Button(action: { self.isPresented.toggle() }) {
-                HStack {
-                    Spacer()
-                    Text("Continue")
-                        .foregroundColor(.white)
-                        .padding()
-                        .font(Style.appFont(style: .semiBold, 16))
-                    Spacer()
+            HStack {
+                Button(action: {
+                    bottomSheetPosition = .middle
+                }) {
+                    HStack {
+                        Spacer()
+                        Text("Continue")
+                            .foregroundColor(.white)
+                            .padding()
+                            .font(Style.appFont(style: .semiBold, 16))
+                        Spacer()
+                    }
+                    .background(Style.NewInvoice.accentBlue)
+                    .cornerRadius(16)
+                    .padding()
                 }
-                .background(Style.NewInvoice.accentBlue)
-                .cornerRadius(16)
-                .padding()
-            }.sheet(isPresented: $isPresented, content: {
-                ButtonsSheetView()
-            })
+            }
             .padding(.bottom, 40)
+            .zIndex(BottomSheetPosition.middle == bottomSheetPosition ? 1 : 2)
 
+            Spacer()
+                .bottomSheet(bottomSheetPosition: self.$bottomSheetPosition, options: [
+                    .swipeToDismiss,
+                    .absolutePositionValue,
+                    .background({AnyView(Color.white)}),
+                    .dragIndicatorColor(Color.gray),
+                    .shadow(color: Color.gray, radius: CGFloat(10), x: CGFloat(0), y:  CGFloat(0)),
+                    .backgroundBlur(effect: .systemMaterialDark)
+                ]) {
+                    ButtonsSheetView()
+                }
+            .zIndex(BottomSheetPosition.middle == bottomSheetPosition ? 2 : 0)
         }
         .background(Style.NewInvoice.backgroundColor)
         .ignoresSafeArea()

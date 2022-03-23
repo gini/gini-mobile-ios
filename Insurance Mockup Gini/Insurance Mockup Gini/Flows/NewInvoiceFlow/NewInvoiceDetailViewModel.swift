@@ -18,6 +18,8 @@ class NewInvoiceDetailViewModel {
     var creationDate: String
     var dueDate: String
     var numberOfDaysUntilDue: Int
+    var reimbursmentStatus = false
+    var iconTitle = "icon_dentist"
 
     weak var delegate: NewInvoiceDetailViewModelDelegate?
 

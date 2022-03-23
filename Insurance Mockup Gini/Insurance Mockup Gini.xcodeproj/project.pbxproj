@@ -23,6 +23,7 @@
 		7687EC4627EB45790040F7BE /* ButtonsSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC4527EB45790040F7BE /* ButtonsSheetView.swift */; };
 		7687EC4927EB6FFA0040F7BE /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC4827EB6FFA0040F7BE /* DateFormatter.swift */; };
 		7687EC4B27EB703D0040F7BE /* NewInvoiceDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC4A27EB703D0040F7BE /* NewInvoiceDetailViewModel.swift */; };
+		7687EC4E27EB73FA0040F7BE /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 7687EC4D27EB73FA0040F7BE /* BottomSheet */; };
 		76C03E0A27EA07E700C7E350 /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 76C03E0927EA07E700C7E350 /* GiniCaptureSDK */; };
 		76C03E0E27EA088400C7E350 /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C03E0D27EA088400C7E350 /* CredentialsManager.swift */; };
 		76C03E1127EA089F00C7E350 /* GiniBankSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 76C03E1027EA089F00C7E350 /* GiniBankSDK */; };
@@ -103,6 +104,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				76C03E1127EA089F00C7E350 /* GiniBankSDK in Frameworks */,
+				7687EC4E27EB73FA0040F7BE /* BottomSheet in Frameworks */,
 				76C03E0A27EA07E700C7E350 /* GiniCaptureSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -275,6 +277,7 @@
 			packageProductDependencies = (
 				76C03E0927EA07E700C7E350 /* GiniCaptureSDK */,
 				76C03E1027EA089F00C7E350 /* GiniBankSDK */,
+				7687EC4D27EB73FA0040F7BE /* BottomSheet */,
 			);
 			productName = " Gini";
 			productReference = 76E4B49427E8A1E9004027BB /* Insurance Mockup Gini.app */;
@@ -304,6 +307,9 @@
 				Base,
 			);
 			mainGroup = 76E4B48B27E8A1E9004027BB;
+			packageReferences = (
+				7687EC4C27EB73F90040F7BE /* XCRemoteSwiftPackageReference "BottomSheet" */,
+			);
 			productRefGroup = 76E4B49527E8A1E9004027BB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -583,7 +589,23 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		7687EC4C27EB73F90040F7BE /* XCRemoteSwiftPackageReference "BottomSheet" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lucaszischka/BottomSheet";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		7687EC4D27EB73FA0040F7BE /* BottomSheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7687EC4C27EB73F90040F7BE /* XCRemoteSwiftPackageReference "BottomSheet" */;
+			productName = BottomSheet;
+		};
 		76C03E0927EA07E700C7E350 /* GiniCaptureSDK */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GiniCaptureSDK;
