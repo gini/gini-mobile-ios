@@ -145,7 +145,7 @@ To easily set the document type hint we introduced the `DocType` enum. It is saf
 
 After you have successfully created the partial documents, you most likely want to get the extractions for the document. Composite documents consist of previously created partial documents. You can consider creating partial documents analogous to uploading pages of a document and creating a composite document analogous to processing those pages as a single document.
 
-Before retrieving extractions you need to create a composite document from your partial documents
+Before retrieving extractions you need to create a composite document from your partial documents.
 
 Gini needs to process the composite document first before you can fetch the extractions. Effectively this means that you won’t get any extractions before the composite document is fully processed. The processing time may vary, usually it is in the range of a couple of seconds, but blurred or slightly rotated images are known to drasticly increase the processing time.
 
@@ -184,6 +184,10 @@ documentService
 ### Sending feedback
 
 Depending on your use case your app probably presents the extractions to the user and gives them the opportunity to correct them. By sending us feedback for the extractions we are able to continuously improve the extraction quality.
+
+We provide a sample test case [here](https://github.com/gini/gini-mobile-ios/blob/main/BankAPILibrary/GiniBankAPILibraryExample/GiniBankAPILibraryExampleTests/ExtractionFeedbackIntegrationTest.swift) to verify that extraction feedback sending works. You may use it along with the example pdf and json files as a starting point to write your own test case.
+
+The sample test case is based on the Bank API documentation's [recommended steps](https://pay-api.gini.net/documentation/#test-example) for testing extraction feedback sending.
 
 Your app should send feedback only for the extractions the user has seen and accepted. Feedback should be sent for corrected extractions and for correct extractions. The code example below shows how to correct extractions and send feedback.
 
