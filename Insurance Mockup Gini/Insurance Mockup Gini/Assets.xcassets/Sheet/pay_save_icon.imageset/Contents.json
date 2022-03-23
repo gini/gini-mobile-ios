@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "pay_save_icon.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

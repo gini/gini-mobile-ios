@@ -24,6 +24,13 @@ public enum Style {
     enum ServiceView {
         static let backgroundColor = Color(red: 0.906, green: 0.946, blue: 0.94)
     }
+
+    enum NewInvoice {
+        static let backgroundColor = Color(red: 0.859, green: 0.89, blue: 0.945)
+        static let grayBackgroundColor = Color(red: 0.898, green: 0.898, blue: 0.898)
+        static let accentBlue = Color(red: 0, green: 0.248, blue: 0.887)
+
+    }
 }
 
 extension Style {

@@ -7,13 +7,44 @@
 //  Created by David Vizaknai on 21.03.2022.
 //
 
-
+import GiniBankAPILibrary
+import GiniCaptureSDK
 import UIKit
 
 class TabBarCoordinator: UITabBarController {
     var customTabBar: CustomTabBar!
     var tabBarHeight: CGFloat = 107.0
     var coordinators = [Coordinator]()
+
+    var newInvoiceFlowCoordinator: Coordinator?
+
+    private lazy var client = CredentialsManager.fetchClientFromBundle()
+    private var documentMetadata: Document.Metadata?
+    private let documentMetadataBranchId = "GVLExampleIOS"
+    private let documentMetadataAppFlowKey = "AppFlow"
+
+    lazy var giniConfiguration: GiniConfiguration = {
+        let giniConfiguration = GiniConfiguration()
+        giniConfiguration.debugModeOn = true
+        giniConfiguration.fileImportSupportedTypes = .pdf_and_images
+        giniConfiguration.openWithEnabled = true
+        giniConfiguration.qrCodeScanningEnabled = true
+        giniConfiguration.multipageEnabled = true
+        giniConfiguration.flashToggleEnabled = true
+        giniConfiguration.navigationBarItemTintColor = .white
+        giniConfiguration.customDocumentValidations = { document in
+            // As an example of custom document validation, we add a more strict check for file size
+            let maxFileSize = 5 * 1024 * 1024
+            if document.data.count > maxFileSize {
+                let error = CustomDocumentValidationError(message: "Diese Datei ist leider größer als 5MB")
+                return CustomDocumentValidationResult.failure(withError: error)
+            }
+            return CustomDocumentValidationResult.success()
+        }
+        let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
+        giniConfiguration.customMenuItems = [customMenuItem]
+        return giniConfiguration
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +55,6 @@ class TabBarCoordinator: UITabBarController {
         let tabItems: [TabBarItem] = [.home, .invoices, .addInvoice, .sessions, .medicines]
         self.setupCustomTabBar(tabItems)
 
-        var tabBarViewControllers = [UIViewController]()
         var coordinators = [Coordinator]()
 
         tabItems.forEach { item in
@@ -33,32 +63,27 @@ class TabBarCoordinator: UITabBarController {
                 let coordinator = HomeScreenCoordinator()
                 coordinator.start()
                 coordinators.append(coordinator)
-                tabBarViewControllers.append(coordinator.rootViewController)
             case .invoices:
                 let coordinator = InvoiceFlowCoordinator()
                 coordinator.start()
                 coordinators.append(coordinator)
-                tabBarViewControllers.append(coordinator.rootViewController)
             case .addInvoice:
                 let coordinator = NewInvoiceFlowCoordinator()
                 coordinator.start()
                 coordinators.append(coordinator)
-                tabBarViewControllers.append(coordinator.rootViewController)
             case .sessions:
                 let coordinator = SessionsCoordinator()
                 coordinator.start()
                 coordinators.append(coordinator)
-                tabBarViewControllers.append(coordinator.rootViewController)
             case .medicines:
                 let coordinator = MedicineFlowCoordinator()
                 coordinator.start()
                 coordinators.append(coordinator)
-                tabBarViewControllers.append(coordinator.rootViewController)
             }
         }
 
         self.coordinators = coordinators
-        self.viewControllers = tabBarViewControllers
+        self.viewControllers = coordinators.map({  $0.rootViewController })
         self.selectedIndex = 0 // default our selected index to the first item
     }
     
@@ -88,6 +113,33 @@ class TabBarCoordinator: UITabBarController {
     }
     
     func changeTab(tab: Int) {
+        if tab == 2 {
+            showScanningFlow()
+            return
+        }
         self.selectedIndex = tab
+    }
+
+    func showScanningFlow() {
+        documentMetadata = Document.Metadata(branchId: documentMetadataBranchId,
+                                                     additionalHeaders: [documentMetadataAppFlowKey: "ScreenAPI"])
+
+        let coordinator = ScreenAPICoordinator(configuration: giniConfiguration,
+                                               importedDocuments: nil,
+                                               client: client,
+                                               documentMetadata: documentMetadata)
+        coordinator.delegate = self
+        coordinator.start()
+
+        newInvoiceFlowCoordinator = coordinator
+        present(coordinator.rootViewController, animated: true, completion: nil)
+    }
+}
+
+
+extension TabBarCoordinator: ScreenAPICoordinatorDelegate {
+    func screenAPI(coordinator: ScreenAPICoordinator, didFinish: (), withResults results: [Extraction]?) {
+        coordinator.rootViewController.dismiss(animated: true, completion: nil)
+        newInvoiceFlowCoordinator = nil
     }
 }

@@ -63,8 +63,9 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
         screenAPIViewController.navigationBar.barTintColor = visionConfiguration.navigationBarTintColor
         screenAPIViewController.navigationBar.tintColor = visionConfiguration.navigationBarTitleColor
         screenAPIViewController.setNavigationBarHidden(true, animated: false)
-//        screenAPIViewController.delegate = self
         screenAPIViewController.interactivePopGestureRecognizer?.delegate = nil
+
+        rootViewController.modalPresentationStyle = .fullScreen
     }
 
     fileprivate func showResultsScreen(results: [Extraction], document: Document?) {
@@ -74,7 +75,13 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
             print("❓ Showing results for unknown Gini Bank API document")
         }
 
-        delegate?.screenAPI(coordinator: self, didFinish: (), withResults: results)
+        showNewInvoiceDetailScreen(with: results, document: document)
+    }
+
+    private func showNewInvoiceDetailScreen(with results: [Extraction], document: Document?) {
+        let viewModel = NewInvoiceDetailViewModel(results: results, document: document)
+        let vc = NewInvoiceDetailViewController(viewModel: viewModel)
+        (rootViewController as? UINavigationController)?.pushViewController(vc, animated: true)
     }
 }
 
