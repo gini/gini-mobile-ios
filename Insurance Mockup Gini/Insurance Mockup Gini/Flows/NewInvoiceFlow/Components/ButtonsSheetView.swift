@@ -7,36 +7,13 @@
 
 import SwiftUI
 
-struct ButtonSheetViewModel {
-    var id: String = UUID().uuidString
-    var title: String
-    var description: String
-    var iconName: String
-    var belowTreshold: Bool
-}
-
-var buttonList: [ButtonSheetViewModel] = [
-    ButtonSheetViewModel(title: "Pay and save",
-                         description: "Pay and save the invoice",
-                         iconName: "pay_save_icon",
-                         belowTreshold: false),
-    ButtonSheetViewModel(title: "Pay & submit for reimbursement",
-                         description: "You are below the threshold",
-                         iconName: "pay_submit_icon",
-                         belowTreshold: true),
-    ButtonSheetViewModel(title: "Submit for reimbursement",
-                         description: "You are below the threshold",
-                         iconName: "submit_icon",
-                         belowTreshold: true),
-    ButtonSheetViewModel(title: "Save for later",
-                         description: "You can always come back to it later",
-                         iconName: "save_icon",
-                         belowTreshold: false)]
-
 struct ButtonsSheetView: View {
+
+    var viewModel: ButtonSheetViewModel
+
     var body: some View {
         VStack(spacing: 20) {
-            ForEach(buttonList, id: \.id) { buttonViewModel in
+            ForEach(viewModel.buttonViewModels, id: \.id) { buttonViewModel in
                 HStack {
                     Image(buttonViewModel.iconName)
                     VStack(alignment: .leading, spacing: 2) {
@@ -57,6 +34,8 @@ struct ButtonsSheetView: View {
                         }
                     }
                     Spacer()
+                }.onTapGesture {
+                    viewModel.didTapAction(withIndex: viewModel.buttonViewModels.firstIndex(of: buttonViewModel))
                 }
             }
         }.padding()
@@ -65,6 +44,6 @@ struct ButtonsSheetView: View {
 
 struct ButtonsSheetView_Previews: PreviewProvider {
     static var previews: some View {
-        ButtonsSheetView()
+        ButtonsSheetView(viewModel: ButtonSheetViewModel())
     }
 }

@@ -29,7 +29,13 @@ public enum Style {
         static let backgroundColor = Color(red: 0.859, green: 0.89, blue: 0.945)
         static let grayBackgroundColor = Color(red: 0.898, green: 0.898, blue: 0.898)
         static let accentBlue = Color(red: 0, green: 0.248, blue: 0.887)
+        static let secondaryBlue = Color(red: 0.902, green: 0.925, blue: 0.992)
 
+    }
+
+    enum PaymentSheet {
+        static let grayTextColor = Color(red: 0.235, green: 0.235, blue: 0.263)
+        static let textFieldColor = Color(red: 0.953, green: 0.953, blue: 0.953)
     }
 }
 

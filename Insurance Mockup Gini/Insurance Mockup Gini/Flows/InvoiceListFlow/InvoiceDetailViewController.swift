@@ -1,20 +1,20 @@
 //
-//  NewInvoiceDetailViewController.swift
+//  InvoiceDetailViewController.swift
 //  Insurance Mockup Gini
 //
-//  Created by David Vizaknai on 23.03.2022.
+//  Created by David Vizaknai on 24.03.2022.
 //
 
 import UIKit
 import SwiftUI
 
-final class NewInvoiceDetailViewController: UIViewController {
-    private var hostingView: UIHostingController<NewInvoiceDetailView>
-    let viewModel: NewInvoiceDetailViewModel
+final class InvoiceDetailViewController: UIViewController {
+    private var hostingView: UIHostingController<InvoiceDetailView>
+    let viewModel: InvoiceDetailViewModel
 
-    init(viewModel: NewInvoiceDetailViewModel) {
+    init(viewModel: InvoiceDetailViewModel) {
         self.viewModel = viewModel
-        hostingView = UIHostingController(rootView: NewInvoiceDetailView(viewModel: viewModel))
+        hostingView = UIHostingController(rootView: InvoiceDetailView(viewModel: viewModel))
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -46,3 +46,4 @@ final class NewInvoiceDetailViewController: UIViewController {
         ])
     }
 }
+

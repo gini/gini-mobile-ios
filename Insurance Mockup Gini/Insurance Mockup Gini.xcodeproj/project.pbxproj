@@ -24,6 +24,12 @@
 		7687EC4927EB6FFA0040F7BE /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC4827EB6FFA0040F7BE /* DateFormatter.swift */; };
 		7687EC4B27EB703D0040F7BE /* NewInvoiceDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC4A27EB703D0040F7BE /* NewInvoiceDetailViewModel.swift */; };
 		7687EC4E27EB73FA0040F7BE /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 7687EC4D27EB73FA0040F7BE /* BottomSheet */; };
+		7687EC5027EC77700040F7BE /* ButtonSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC4F27EC77700040F7BE /* ButtonSheetViewModel.swift */; };
+		7687EC5227EC84420040F7BE /* InvoiceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC5127EC84420040F7BE /* InvoiceDetailViewController.swift */; };
+		7687EC5427EC84CF0040F7BE /* InvoiceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC5327EC84CF0040F7BE /* InvoiceDetailView.swift */; };
+		7687EC5727ECA5560040F7BE /* InvoiceDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC5627ECA5560040F7BE /* InvoiceDetailViewModel.swift */; };
+		7687EC5927ECAC030040F7BE /* PayInvoiceSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC5827ECAC030040F7BE /* PayInvoiceSheetView.swift */; };
+		7687EC5B27ECB5E80040F7BE /* KeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC5A27ECB5E80040F7BE /* KeyboardResponder.swift */; };
 		76C03E0A27EA07E700C7E350 /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 76C03E0927EA07E700C7E350 /* GiniCaptureSDK */; };
 		76C03E0E27EA088400C7E350 /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C03E0D27EA088400C7E350 /* CredentialsManager.swift */; };
 		76C03E1127EA089F00C7E350 /* GiniBankSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 76C03E1027EA089F00C7E350 /* GiniBankSDK */; };
@@ -68,6 +74,12 @@
 		7687EC4527EB45790040F7BE /* ButtonsSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsSheetView.swift; sourceTree = "<group>"; };
 		7687EC4827EB6FFA0040F7BE /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
 		7687EC4A27EB703D0040F7BE /* NewInvoiceDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewInvoiceDetailViewModel.swift; sourceTree = "<group>"; };
+		7687EC4F27EC77700040F7BE /* ButtonSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonSheetViewModel.swift; sourceTree = "<group>"; };
+		7687EC5127EC84420040F7BE /* InvoiceDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceDetailViewController.swift; sourceTree = "<group>"; };
+		7687EC5327EC84CF0040F7BE /* InvoiceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceDetailView.swift; sourceTree = "<group>"; };
+		7687EC5627ECA5560040F7BE /* InvoiceDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceDetailViewModel.swift; sourceTree = "<group>"; };
+		7687EC5827ECAC030040F7BE /* PayInvoiceSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayInvoiceSheetView.swift; sourceTree = "<group>"; };
+		7687EC5A27ECB5E80040F7BE /* KeyboardResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardResponder.swift; sourceTree = "<group>"; };
 		76C03E0D27EA088400C7E350 /* CredentialsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
 		76C03E0F27EA089700C7E350 /* GiniBankSDK */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniBankSDK; path = ../BankSDK/GiniBankSDK; sourceTree = "<group>"; };
 		76C03E1227EA0B8500C7E350 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
@@ -125,9 +137,9 @@
 		7667442227E8F67700F92473 /* Flows */ = {
 			isa = PBXGroup;
 			children = (
+				7687EC5527ECA5090040F7BE /* InvoiceListFlow */,
 				76D98C5A27EA06A7004790C5 /* NewInvoiceFlow */,
 				76D98C3927E9B4C6004790C5 /* HomeScreenFlow */,
-				76D98C3127E8FA0A004790C5 /* InvoiceFlowCoordinator.swift */,
 				76D98C3527E8FA5A004790C5 /* SessionsCoordinator.swift */,
 				76D98C3727E8FA75004790C5 /* MedicineFlowCoordinator.swift */,
 			);
@@ -140,6 +152,8 @@
 				7687EC4127EB44980040F7BE /* Triangle.swift */,
 				7687EC4327EB44CE0040F7BE /* InvoiceDetailListView.swift */,
 				7687EC4527EB45790040F7BE /* ButtonsSheetView.swift */,
+				7687EC4F27EC77700040F7BE /* ButtonSheetViewModel.swift */,
+				7687EC5827ECAC030040F7BE /* PayInvoiceSheetView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -149,8 +163,20 @@
 			children = (
 				76C03E0D27EA088400C7E350 /* CredentialsManager.swift */,
 				7687EC4827EB6FFA0040F7BE /* DateFormatter.swift */,
+				7687EC5A27ECB5E80040F7BE /* KeyboardResponder.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		7687EC5527ECA5090040F7BE /* InvoiceListFlow */ = {
+			isa = PBXGroup;
+			children = (
+				76D98C3127E8FA0A004790C5 /* InvoiceFlowCoordinator.swift */,
+				7687EC5127EC84420040F7BE /* InvoiceDetailViewController.swift */,
+				7687EC5327EC84CF0040F7BE /* InvoiceDetailView.swift */,
+				7687EC5627ECA5560040F7BE /* InvoiceDetailViewModel.swift */,
+			);
+			path = InvoiceListFlow;
 			sourceTree = "<group>";
 		};
 		76C03E0827EA07E700C7E350 /* Frameworks */ = {
@@ -349,21 +375,27 @@
 				76C03E1527EA0B8500C7E350 /* RootNavigationController.swift in Sources */,
 				76D98C3827E8FA75004790C5 /* MedicineFlowCoordinator.swift in Sources */,
 				76D98C3227E8FA0A004790C5 /* InvoiceFlowCoordinator.swift in Sources */,
+				7687EC5927ECAC030040F7BE /* PayInvoiceSheetView.swift in Sources */,
 				7687EC4627EB45790040F7BE /* ButtonsSheetView.swift in Sources */,
 				7687EC3D27EB14130040F7BE /* NewInvoiceDetailViewController.swift in Sources */,
+				7687EC5227EC84420040F7BE /* InvoiceDetailViewController.swift in Sources */,
 				76D98C3627E8FA5A004790C5 /* SessionsCoordinator.swift in Sources */,
 				7687EC3F27EB16BC0040F7BE /* NewInvoiceDetailView.swift in Sources */,
 				7687EC3927EA39610040F7BE /* NewInvoiceFlowCoordinator.swift in Sources */,
+				7687EC5727ECA5560040F7BE /* InvoiceDetailViewModel.swift in Sources */,
 				7667441D27E8DEB000F92473 /* TabBarItem.swift in Sources */,
 				7667442427E8F70700F92473 /* HomeScreenCoordinator.swift in Sources */,
+				7687EC5427EC84CF0040F7BE /* InvoiceDetailView.swift in Sources */,
 				76D98C4227E9D320004790C5 /* ServiceView.swift in Sources */,
 				7667440A27E8D02A00F92473 /* Coordinator.swift in Sources */,
 				76E4B49827E8A1E9004027BB /* AppDelegate.swift in Sources */,
 				76D98C4027E9C3F1004790C5 /* AppointmentView.swift in Sources */,
+				7687EC5B27ECB5E80040F7BE /* KeyboardResponder.swift in Sources */,
 				7687EC4427EB44CE0040F7BE /* InvoiceDetailListView.swift in Sources */,
 				7667441E27E8DEB000F92473 /* CustomTabBar.swift in Sources */,
 				7687EC4B27EB703D0040F7BE /* NewInvoiceDetailViewModel.swift in Sources */,
 				7687EC3B27EA3CD40040F7BE /* NewInvoiceFlowViewController.swift in Sources */,
+				7687EC5027EC77700040F7BE /* ButtonSheetViewModel.swift in Sources */,
 				76E4B49A27E8A1E9004027BB /* SceneDelegate.swift in Sources */,
 				76D98C3D27E9B5C2004790C5 /* HomeScreenView.swift in Sources */,
 				76D98C4827E9DDC2004790C5 /* AppointmentViewModel.swift in Sources */,

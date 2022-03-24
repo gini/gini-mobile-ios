@@ -138,8 +138,12 @@ class TabBarCoordinator: UITabBarController {
 
 
 extension TabBarCoordinator: ScreenAPICoordinatorDelegate {
-    func screenAPI(coordinator: ScreenAPICoordinator, didFinish: (), withResults results: [Extraction]?) {
+    func screenAPIDidFinish(coordinator: ScreenAPICoordinator, shouldSwitchToInvoiceTab: Bool) {
         coordinator.rootViewController.dismiss(animated: true, completion: nil)
         newInvoiceFlowCoordinator = nil
+
+        if shouldSwitchToInvoiceTab {
+            self.selectedIndex = 1
+        }
     }
 }

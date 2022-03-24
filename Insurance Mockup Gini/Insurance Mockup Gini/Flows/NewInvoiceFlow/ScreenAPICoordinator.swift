@@ -12,7 +12,7 @@ import GiniCaptureSDK
 import UIKit
 
 protocol ScreenAPICoordinatorDelegate: AnyObject {
-    func screenAPI(coordinator: ScreenAPICoordinator, didFinish: (), withResults results: [Extraction]?)
+    func screenAPIDidFinish(coordinator: ScreenAPICoordinator, shouldSwitchToInvoiceTab: Bool)
 }
 
 final class CustomMenuItemViewController: UIViewController {
@@ -30,6 +30,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
     }
 
     var screenAPIViewController: UINavigationController!
+    private var invoiceDetail: NewInvoiceDetailViewModel?
 
     let client: Client
     let documentMetadata: Document.Metadata?
@@ -81,15 +82,33 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
     private func showNewInvoiceDetailScreen(with results: [Extraction], document: Document?) {
         let viewModel = NewInvoiceDetailViewModel(results: results, document: document)
         viewModel.delegate = self
+        self.invoiceDetail = viewModel
         let vc = NewInvoiceDetailViewController(viewModel: viewModel)
         (rootViewController as? UINavigationController)?.pushViewController(vc, animated: true)
     }
 }
 
 extension ScreenAPICoordinator: NewInvoiceDetailViewModelDelegate {
+    func didTapPayAndSaveNewInvoice() {
+        print("werty")
+    }
+
+    func didTapPayAndSubmitNewInvoice() {
+        print("Pay and submit")
+    }
+
+    func didTapSubmitNewInvoice() {
+        print("Submit")
+    }
+
+    func didTapSaveNewInvoice() {
+        rootViewController.dismiss(animated: true)
+        delegate?.screenAPIDidFinish(coordinator: self, shouldSwitchToInvoiceTab: true)
+    }
+
     func didTapCancel() {
         rootViewController.dismiss(animated: true)
-        delegate?.screenAPI(coordinator: self, didFinish: (), withResults: nil)
+        delegate?.screenAPIDidFinish(coordinator: self, shouldSwitchToInvoiceTab: false)
     }
 }
 
@@ -107,7 +126,7 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     }
 
     func giniCaptureDidCancelAnalysis() {
-        delegate?.screenAPI(coordinator: self, didFinish: (), withResults: nil)
+        delegate?.screenAPIDidFinish(coordinator: self, shouldSwitchToInvoiceTab: false)
     }
 
     func giniCaptureAnalysisDidFinishWithoutResults(_ showingNoResultsScreen: Bool) {

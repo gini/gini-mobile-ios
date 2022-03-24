@@ -5,14 +5,28 @@
 //  Created by David Vizaknai on 23.03.2022.
 //
 
-import Foundation
+import UIKit
 import GiniBankAPILibrary
+import SwiftUI
+
+
+enum PaymentOptionSheetPosition: CGFloat, CaseIterable {
+    case middle = 300, hidden = -100
+}
+
+enum PaySheetPosition: CGFloat, CaseIterable {
+    case extended = 550, hidden = -100
+}
 
 protocol NewInvoiceDetailViewModelDelegate: AnyObject {
+    func didTapPayAndSaveNewInvoice()
+    func didTapPayAndSubmitNewInvoice()
+    func didTapSubmitNewInvoice()
+    func didTapSaveNewInvoice()
     func didTapCancel()
 }
 
-class NewInvoiceDetailViewModel {
+class NewInvoiceDetailViewModel: ObservableObject {
     var companyName: String
     var amount: String
     var creationDate: String
@@ -20,6 +34,10 @@ class NewInvoiceDetailViewModel {
     var numberOfDaysUntilDue: Int
     var reimbursmentStatus = false
     var iconTitle = "icon_dentist"
+    var sheetViewModel = ButtonSheetViewModel()
+
+    @Published var paymentOptionSheetPosition: PaymentOptionSheetPosition = .hidden
+    @Published var paySheetPosition: PaySheetPosition = .hidden
 
     weak var delegate: NewInvoiceDetailViewModelDelegate?
 
@@ -34,9 +52,29 @@ class NewInvoiceDetailViewModel {
         dueDate = dateOffset.getFormattedDate(format: "dd MMMM, yyyy")
 
         numberOfDaysUntilDue = Int((dateOffset - Date()) / (24*60*60))
+        sheetViewModel.delegate = self
     }
 
     func didTapCancel() {
         delegate?.didTapCancel()
+    }
+}
+
+extension NewInvoiceDetailViewModel: ButtonSheetViewModelDelegate {
+    func didTapPayAndSave() {
+        paymentOptionSheetPosition = .hidden
+        paySheetPosition = .extended
+    }
+
+    func didTapPayAndSubmit() {
+        paymentOptionSheetPosition = .hidden
+    }
+
+    func didTapSubmit() {
+        paymentOptionSheetPosition = .hidden
+    }
+
+    func didTapSave() {
+        paymentOptionSheetPosition = .hidden
     }
 }
