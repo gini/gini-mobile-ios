@@ -8,35 +8,29 @@
 import SwiftUI
 
 struct InvoiceFilterItemView: View {
-    @State var selected = false
     var text: String
+    var isSelected: Bool
 
     var body: some View {
         HStack {
-            Spacer()
             VStack(spacing: 4) {
                 Text(text)
                     .font(Style.appFont(style: .semiBold, 14))
-                    .foregroundColor(selected ? Color.black : Color.gray)
+                    .foregroundColor(isSelected ? Color.black : Color.gray)
                     .padding(.bottom, 3)
-                    .frame(maxWidth: .infinity)
 
-                if selected {
+                if isSelected {
                     Rectangle()
                         .fill(Color.blue)
                         .frame(height: 3)
-                        .frame(maxWidth: .infinity)
                 }
-            }.fixedSize(horizontal: true, vertical: false)
-            Spacer()
-        }.onTapGesture {
-            selected.toggle()
+            }
         }
     }
 }
 
 struct InvoiceFilterItemView_Previews: PreviewProvider {
     static var previews: some View {
-        InvoiceFilterItemView(text: "Unpaid")
+        InvoiceFilterItemView(text: "Unpaid", isSelected: false)
     }
 }

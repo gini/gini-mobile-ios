@@ -78,6 +78,7 @@ extension NewInvoiceDetailViewModel: ButtonSheetViewModelDelegate {
     }
 
     func didTapSave() {
+        delegate?.didTapSaveNewInvoice()
         paymentOptionSheetPosition = .hidden
     }
 }

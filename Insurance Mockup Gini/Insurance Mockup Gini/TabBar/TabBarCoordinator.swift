@@ -144,6 +144,9 @@ extension TabBarCoordinator: ScreenAPICoordinatorDelegate {
 
         if shouldSwitchToInvoiceTab {
             self.selectedIndex = 1
+
+//            let invoice = InvoiceItemCellViewModel(iconName: "icon_dentist", title: "New invoice", paid: true, reimbursed: .reimbursed, price: "2345 EUR")
+//            (coordinators[1] as? InvoiceFlowCoordinator)?.addNewInvoice(invoice: invoice)
         }
     }
 }

@@ -19,6 +19,8 @@
 		7667441E27E8DEB000F92473 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7667441B27E8DEB000F92473 /* CustomTabBar.swift */; };
 		7667442127E8EF5400F92473 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7667442027E8EF5400F92473 /* Style.swift */; };
 		7667442427E8F70700F92473 /* HomeScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7667442327E8F70700F92473 /* HomeScreenCoordinator.swift */; };
+		7672311F27EDF50D0071572E /* InvoiceItemCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7672311E27EDF50D0071572E /* InvoiceItemCellViewModel.swift */; };
+		7672312427EDFB7A0071572E /* InvoiceListDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7672312327EDFB7A0071572E /* InvoiceListDataModel.swift */; };
 		7687EC3927EA39610040F7BE /* NewInvoiceFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC3827EA39610040F7BE /* NewInvoiceFlowCoordinator.swift */; };
 		7687EC3D27EB14130040F7BE /* NewInvoiceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC3C27EB14130040F7BE /* NewInvoiceDetailViewController.swift */; };
 		7687EC3F27EB16BC0040F7BE /* NewInvoiceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC3E27EB16BC0040F7BE /* NewInvoiceDetailView.swift */; };
@@ -74,6 +76,8 @@
 		7667441B27E8DEB000F92473 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		7667442027E8EF5400F92473 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		7667442327E8F70700F92473 /* HomeScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenCoordinator.swift; sourceTree = "<group>"; };
+		7672311E27EDF50D0071572E /* InvoiceItemCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceItemCellViewModel.swift; sourceTree = "<group>"; };
+		7672312327EDFB7A0071572E /* InvoiceListDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceListDataModel.swift; sourceTree = "<group>"; };
 		7687EC3827EA39610040F7BE /* NewInvoiceFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewInvoiceFlowCoordinator.swift; sourceTree = "<group>"; };
 		7687EC3C27EB14130040F7BE /* NewInvoiceDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewInvoiceDetailViewController.swift; sourceTree = "<group>"; };
 		7687EC3E27EB16BC0040F7BE /* NewInvoiceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewInvoiceDetailView.swift; sourceTree = "<group>"; };
@@ -137,6 +141,7 @@
 			children = (
 				766012DF27EDC05E00F1F442 /* InvoiceFilterItemView.swift */,
 				766012E127EDC8A200F1F442 /* InvoiceItemCell.swift */,
+				7672311E27EDF50D0071572E /* InvoiceItemCellViewModel.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -161,6 +166,26 @@
 				76D98C3727E8FA75004790C5 /* MedicineFlowCoordinator.swift */,
 			);
 			path = Flows;
+			sourceTree = "<group>";
+		};
+		7672312127EDF5870071572E /* InvoiceDetailViewController */ = {
+			isa = PBXGroup;
+			children = (
+				7687EC5127EC84420040F7BE /* InvoiceDetailViewController.swift */,
+				7687EC5327EC84CF0040F7BE /* InvoiceDetailView.swift */,
+				7687EC5627ECA5560040F7BE /* InvoiceDetailViewModel.swift */,
+			);
+			path = InvoiceDetailViewController;
+			sourceTree = "<group>";
+		};
+		7672312227EDF5AD0071572E /* InvoiceListViewController */ = {
+			isa = PBXGroup;
+			children = (
+				766012D827EDB13C00F1F442 /* InvoiceListViewModel.swift */,
+				766012DC27EDB18D00F1F442 /* InvoiceListView.swift */,
+				766012D627EDB12C00F1F442 /* InvoiceListViewController.swift */,
+			);
+			path = InvoiceListViewController;
 			sourceTree = "<group>";
 		};
 		7687EC4027EB44810040F7BE /* Components */ = {
@@ -188,14 +213,11 @@
 		7687EC5527ECA5090040F7BE /* InvoiceListFlow */ = {
 			isa = PBXGroup;
 			children = (
-				766012DE27EDC04200F1F442 /* Components */,
 				76D98C3127E8FA0A004790C5 /* InvoiceFlowCoordinator.swift */,
-				7687EC5127EC84420040F7BE /* InvoiceDetailViewController.swift */,
-				7687EC5327EC84CF0040F7BE /* InvoiceDetailView.swift */,
-				7687EC5627ECA5560040F7BE /* InvoiceDetailViewModel.swift */,
-				766012D627EDB12C00F1F442 /* InvoiceListViewController.swift */,
-				766012DC27EDB18D00F1F442 /* InvoiceListView.swift */,
-				766012D827EDB13C00F1F442 /* InvoiceListViewModel.swift */,
+				766012DE27EDC04200F1F442 /* Components */,
+				7672312227EDF5AD0071572E /* InvoiceListViewController */,
+				7672312127EDF5870071572E /* InvoiceDetailViewController */,
+				7672312327EDFB7A0071572E /* InvoiceListDataModel.swift */,
 			);
 			path = InvoiceListFlow;
 			sourceTree = "<group>";
@@ -393,6 +415,7 @@
 				7667440627E8D00E00F92473 /* AppCoordinator.swift in Sources */,
 				766012E027EDC05E00F1F442 /* InvoiceFilterItemView.swift in Sources */,
 				7687EC4227EB44980040F7BE /* Triangle.swift in Sources */,
+				7672311F27EDF50D0071572E /* InvoiceItemCellViewModel.swift in Sources */,
 				76C03E1527EA0B8500C7E350 /* RootNavigationController.swift in Sources */,
 				76D98C3827E8FA75004790C5 /* MedicineFlowCoordinator.swift in Sources */,
 				76D98C3227E8FA0A004790C5 /* InvoiceFlowCoordinator.swift in Sources */,
@@ -411,6 +434,7 @@
 				76D98C4227E9D320004790C5 /* ServiceView.swift in Sources */,
 				7667440A27E8D02A00F92473 /* Coordinator.swift in Sources */,
 				76E4B49827E8A1E9004027BB /* AppDelegate.swift in Sources */,
+				7672312427EDFB7A0071572E /* InvoiceListDataModel.swift in Sources */,
 				76D98C4027E9C3F1004790C5 /* AppointmentView.swift in Sources */,
 				7687EC5B27ECB5E80040F7BE /* KeyboardResponder.swift in Sources */,
 				7687EC4427EB44CE0040F7BE /* InvoiceDetailListView.swift in Sources */,
