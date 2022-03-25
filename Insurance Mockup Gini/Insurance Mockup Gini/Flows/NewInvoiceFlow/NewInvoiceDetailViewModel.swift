@@ -27,14 +27,17 @@ protocol NewInvoiceDetailViewModelDelegate: AnyObject {
 }
 
 class NewInvoiceDetailViewModel: ObservableObject {
-    var companyName: String
-    var amount: String
+    @Published var companyName: String
+    @Published var amount: String
     var creationDate: String
     var dueDate: String
+    var iban: String
     var numberOfDaysUntilDue: Int
     var reimbursmentStatus = false
     var iconTitle = "icon_dentist"
     var sheetViewModel = ButtonSheetViewModel()
+    var adress = "Musterstrasse 11, 1234 Musterstadt"
+    var description = "Prophylaxe"
 
     @Published var paymentOptionSheetPosition: PaymentOptionSheetPosition = .hidden
     @Published var paySheetPosition: PaySheetPosition = .hidden
@@ -44,7 +47,7 @@ class NewInvoiceDetailViewModel: ObservableObject {
     init(results: [Extraction], document: Document?) {
         amount = results.first { $0.entity == "amount" }?.value ?? "00000"
         companyName = results.first { $0.entity == "companyname" }?.value ?? "Company name"
-
+        iban = results.first { $0.entity == "iban" }?.value ?? "123456789"
         creationDate = (document?.creationDate ?? Date()).getFormattedDate(format: "dd MMMM, yyyy")
 
         // Adding 7 days to the creation date in order to have mocked due date

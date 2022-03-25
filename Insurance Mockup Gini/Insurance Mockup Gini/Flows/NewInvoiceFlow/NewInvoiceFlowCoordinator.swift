@@ -9,6 +9,8 @@ import UIKit
 import GiniCaptureSDK
 import GiniBankAPILibrary
 
+// Dummy coordinator for placeholder on the tabbar coordinator 
+
 final class NewInvoiceFlowCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
     var rootViewController: UIViewController {
@@ -18,7 +20,7 @@ final class NewInvoiceFlowCoordinator: Coordinator {
     var navigationController: UINavigationController!
 
     func start() {
-        let viewController = NewInvoiceFlowViewController()
+        let viewController = UIViewController()
         navigationController = UINavigationController(rootViewController: viewController)
     }
 }

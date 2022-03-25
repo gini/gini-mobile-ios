@@ -97,7 +97,7 @@ struct NewInvoiceDetailView: View {
                         .shadow(color: Color.gray, radius: CGFloat(10), x: CGFloat(0), y:  CGFloat(0)),
                         .backgroundBlur(effect: .systemMaterialDark)
                     ]) {
-                        PayInvoiceSheetView()
+                        PayInvoiceSheetView(viewModel: viewModel)
                     }
                     .padding(.bottom, keyboard.currentHeight)
                     .edgesIgnoringSafeArea(.bottom)
@@ -119,14 +119,14 @@ struct NewInvoiceDetailView_Previews: PreviewProvider {
 }
 
 struct InvoiceDetailHeaderView: View {
-    var viewModel: NewInvoiceDetailViewModel
+    @ObservedObject var viewModel: NewInvoiceDetailViewModel
     var body: some View {
         VStack {
             Text(viewModel.companyName)
                 .font(Style.appFont(style: .semiBold, 16))
                 .padding(.top, 60)
 
-            Text("Prophylaxe")
+            Text(viewModel.description)
                 .font(Style.appFont(14))
                 .foregroundColor(.gray)
                 .padding(4)
@@ -136,7 +136,7 @@ struct InvoiceDetailHeaderView: View {
                 .foregroundColor(Style.NewInvoice.accentBlue)
                 .padding(.top)
 
-            Text("Musterstrasse 11, 1234 Musterstadt")
+            Text(viewModel.adress)
                 .font(Style.appFont(14))
                 .foregroundColor(.gray)
                 .padding(.top, 2)

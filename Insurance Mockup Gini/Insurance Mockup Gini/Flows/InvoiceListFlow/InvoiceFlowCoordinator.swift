@@ -16,8 +16,13 @@ final class InvoiceFlowCoordinator: Coordinator {
     var navigationController: UINavigationController!
 
     func start() {
-        let viewController = UIViewController()
-        viewController.view.backgroundColor = .green
+//        let viewModel = InvoiceDetailViewModel(invoiceDetail: NewInvoiceDetailViewModel(results: [], document: nil))
+//        let viewController = InvoiceDetailViewController(viewModel: viewModel)
+
+        let viewModel = InvoiceListViewModel()
+        let viewController = InvoiceListViewController(viewModel: viewModel)
         navigationController = UINavigationController(rootViewController: viewController)
+
+        navigationController.navigationBar.isHidden = true
     }
 }

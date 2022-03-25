@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct PayInvoiceSheetView: View {
+    @ObservedObject var viewModel: NewInvoiceDetailViewModel
+
     var body: some View {
         VStack {
             HStack {
@@ -15,7 +17,7 @@ struct PayInvoiceSheetView: View {
                     .font(Style.appFont(style: .medium))
                 Spacer()
                 Button {
-                    print("X")
+                    viewModel.paySheetPosition = .hidden
                 } label: {
                     Image("exit_icon")
                 }
@@ -27,7 +29,7 @@ struct PayInvoiceSheetView: View {
                     .foregroundColor(Style.PaymentSheet.grayTextColor)
                     .padding([.top,], 12)
                     .padding([.leading,], 8)
-                TextField("Recipient", text:  Binding.constant("Hello!"))
+                TextField("Recipient", text: $viewModel.companyName)
                     .padding(.top, -4)
                     .padding([.bottom, .leading], 8)
             }
@@ -42,7 +44,7 @@ struct PayInvoiceSheetView: View {
                     .foregroundColor(Style.PaymentSheet.grayTextColor)
                     .padding([.top,], 12)
                     .padding([.leading,], 8)
-                TextField("IBAN", text:  Binding.constant("1234567890"))
+                TextField("IBAN", text: $viewModel.iban)
                     .padding(.top, -4)
                     .padding([.bottom, .leading], 8)
             }
@@ -55,7 +57,7 @@ struct PayInvoiceSheetView: View {
                 Text("Amount")
                     .padding(8)
                 Spacer()
-                TextField("Amount", text:  Binding.constant("123 $"))
+                TextField("Amount", text: $viewModel.amount)
                     .multilineTextAlignment(.trailing)
                     .padding(8)
             }
@@ -70,7 +72,7 @@ struct PayInvoiceSheetView: View {
                     .foregroundColor(Style.PaymentSheet.grayTextColor)
                     .padding([.top,], 12)
                     .padding([.leading,], 8)
-                TextField("Reference", text:  Binding.constant("Invoice for treatment on March 16"))
+                TextField("Reference", text: $viewModel.adress)
                     .padding(.top, -4)
                     .padding([.bottom, .leading], 8)
             }
@@ -110,11 +112,5 @@ struct PayInvoiceSheetView: View {
                 }
             }
         }
-    }
-}
-
-struct PayInvoiceSheetView_Previews: PreviewProvider {
-    static var previews: some View {
-        PayInvoiceSheetView()
     }
 }
