@@ -42,7 +42,45 @@ class ScreenAPICoordinator___UI_Only: XCTestCase {
         XCTAssertEqual(bankConfiguration.navigationBarItemTintColor, captureConfiguration.navigationBarItemTintColor)
     }
     
-    class ScreenAPIUIOnlyCoordinator: GiniCaptureDelegate {
+    func testInitializationWithTrackingDelegate() {
+        _ = GiniBank.viewController(withDelegate: screenAPICoordinator, withConfiguration: configuration, importedDocument: nil, trackingDelegate: screenAPICoordinator)
+        let bankConfiguration = GiniBankConfiguration.shared
+        let captureConfiguration = GiniBankConfiguration.shared.captureConfiguration()
+        
+        XCTAssertEqual(bankConfiguration.fileImportSupportedTypes, captureConfiguration.fileImportSupportedTypes)
+        XCTAssertEqual(bankConfiguration.qrCodeScanningEnabled, captureConfiguration.qrCodeScanningEnabled)
+        XCTAssertEqual(bankConfiguration.multipageEnabled, captureConfiguration.multipageEnabled)
+        XCTAssertEqual(bankConfiguration.openWithEnabled, captureConfiguration.openWithEnabled)
+        XCTAssertEqual(bankConfiguration.flashToggleEnabled, captureConfiguration.flashToggleEnabled)
+        XCTAssertEqual(bankConfiguration.navigationBarItemTintColor, captureConfiguration.navigationBarItemTintColor)
+    }
+    
+    func testSetConfiguration() {
+        GiniBank.setConfiguration(configuration)
+        let bankConfiguration = GiniBankConfiguration.shared
+        let captureConfiguration = GiniBankConfiguration.shared.captureConfiguration()
+        
+        XCTAssertEqual(bankConfiguration.fileImportSupportedTypes, captureConfiguration.fileImportSupportedTypes)
+        XCTAssertEqual(bankConfiguration.qrCodeScanningEnabled, captureConfiguration.qrCodeScanningEnabled)
+        XCTAssertEqual(bankConfiguration.multipageEnabled, captureConfiguration.multipageEnabled)
+        XCTAssertEqual(bankConfiguration.openWithEnabled, captureConfiguration.openWithEnabled)
+        XCTAssertEqual(bankConfiguration.flashToggleEnabled, captureConfiguration.flashToggleEnabled)
+        XCTAssertEqual(bankConfiguration.navigationBarItemTintColor, captureConfiguration.navigationBarItemTintColor)
+    }
+    
+    class ScreenAPIUIOnlyCoordinator: GiniCaptureDelegate, GiniCaptureTrackingDelegate {
+        func onAnalysisScreenEvent(event: Event<AnalysisScreenEventType>) {
+        }
+        
+        func onCameraScreenEvent(event: Event<CameraScreenEventType>) {
+        }
+        
+        func onOnboardingScreenEvent(event: Event<OnboardingScreenEventType>) {
+        }
+        
+        func onReviewScreenEvent(event: Event<ReviewScreenEventType>) {
+        }
+        
         func didCapture(document: GiniCaptureDocument, networkDelegate: GiniCaptureNetworkDelegate) {
         }
         
