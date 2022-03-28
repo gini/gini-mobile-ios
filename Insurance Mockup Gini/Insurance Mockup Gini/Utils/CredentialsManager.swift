@@ -6,7 +6,7 @@
 //  Copyright © 2018 Gini GmbH. All rights reserved.
 //
 
-import GiniBankAPILibrary
+import GiniHealthAPILibrary
 import UIKit
 
 final class CredentialsManager {

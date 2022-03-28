@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7643883127F1AD830015E411 /* ComponentAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7643883027F1AD830015E411 /* ComponentAPICoordinator.swift */; };
 		766012D727EDB12C00F1F442 /* InvoiceListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766012D627EDB12C00F1F442 /* InvoiceListViewController.swift */; };
 		766012D927EDB13C00F1F442 /* InvoiceListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766012D827EDB13C00F1F442 /* InvoiceListViewModel.swift */; };
 		766012DD27EDB18D00F1F442 /* InvoiceListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766012DC27EDB18D00F1F442 /* InvoiceListView.swift */; };
@@ -36,10 +37,11 @@
 		7687EC5727ECA5560040F7BE /* InvoiceDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC5627ECA5560040F7BE /* InvoiceDetailViewModel.swift */; };
 		7687EC5927ECAC030040F7BE /* PayInvoiceSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC5827ECAC030040F7BE /* PayInvoiceSheetView.swift */; };
 		7687EC5B27ECB5E80040F7BE /* KeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7687EC5A27ECB5E80040F7BE /* KeyboardResponder.swift */; };
+		7694B2B027F1B01600E6940F /* GiniHealthAPILibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 7694B2AF27F1B01600E6940F /* GiniHealthAPILibrary */; };
+		7694B2B227F1B01600E6940F /* GiniHealthSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 7694B2B127F1B01600E6940F /* GiniHealthSDK */; };
+		7694B2B427F1B47700E6940F /* ComponentAPIDocumentServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7694B2B327F1B47700E6940F /* ComponentAPIDocumentServiceProtocol.swift */; };
 		76C03E0A27EA07E700C7E350 /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 76C03E0927EA07E700C7E350 /* GiniCaptureSDK */; };
 		76C03E0E27EA088400C7E350 /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C03E0D27EA088400C7E350 /* CredentialsManager.swift */; };
-		76C03E1127EA089F00C7E350 /* GiniBankSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 76C03E1027EA089F00C7E350 /* GiniBankSDK */; };
-		76C03E1427EA0B8500C7E350 /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C03E1227EA0B8500C7E350 /* ScreenAPICoordinator.swift */; };
 		76C03E1527EA0B8500C7E350 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C03E1327EA0B8500C7E350 /* RootNavigationController.swift */; };
 		76C03E1827EA0CE900C7E350 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 76C03E1727EA0CE900C7E350 /* Credentials.plist */; };
 		76D98C3227E8FA0A004790C5 /* InvoiceFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C3127E8FA0A004790C5 /* InvoiceFlowCoordinator.swift */; };
@@ -64,6 +66,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7643882D27F1AAE10015E411 /* GiniHealthAPILibrary */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniHealthAPILibrary; path = ../HealthAPILibrary/GiniHealthAPILibrary; sourceTree = "<group>"; };
+		7643883027F1AD830015E411 /* ComponentAPICoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentAPICoordinator.swift; sourceTree = "<group>"; };
+		764570A927F1AA3E0098BBF3 /* GiniHealthSDK */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniHealthSDK; path = ../HealthSDK/GiniHealthSDK; sourceTree = "<group>"; };
 		766012D627EDB12C00F1F442 /* InvoiceListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceListViewController.swift; sourceTree = "<group>"; };
 		766012D827EDB13C00F1F442 /* InvoiceListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceListViewModel.swift; sourceTree = "<group>"; };
 		766012DC27EDB18D00F1F442 /* InvoiceListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceListView.swift; sourceTree = "<group>"; };
@@ -92,9 +97,9 @@
 		7687EC5627ECA5560040F7BE /* InvoiceDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceDetailViewModel.swift; sourceTree = "<group>"; };
 		7687EC5827ECAC030040F7BE /* PayInvoiceSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayInvoiceSheetView.swift; sourceTree = "<group>"; };
 		7687EC5A27ECB5E80040F7BE /* KeyboardResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardResponder.swift; sourceTree = "<group>"; };
+		7694B2B327F1B47700E6940F /* ComponentAPIDocumentServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentAPIDocumentServiceProtocol.swift; sourceTree = "<group>"; };
 		76C03E0D27EA088400C7E350 /* CredentialsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
 		76C03E0F27EA089700C7E350 /* GiniBankSDK */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniBankSDK; path = ../BankSDK/GiniBankSDK; sourceTree = "<group>"; };
-		76C03E1227EA0B8500C7E350 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
 		76C03E1327EA0B8500C7E350 /* RootNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
 		76C03E1627EA0BCD00C7E350 /* GiniBankAPILibrary */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniBankAPILibrary; path = ../BankAPILibrary/GiniBankAPILibrary; sourceTree = "<group>"; };
 		76C03E1727EA0CE900C7E350 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
@@ -127,8 +132,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				76C03E1127EA089F00C7E350 /* GiniBankSDK in Frameworks */,
+				7694B2B027F1B01600E6940F /* GiniHealthAPILibrary in Frameworks */,
 				7687EC4E27EB73FA0040F7BE /* BottomSheet in Frameworks */,
+				7694B2B227F1B01600E6940F /* GiniHealthSDK in Frameworks */,
 				76C03E0A27EA07E700C7E350 /* GiniCaptureSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -271,6 +277,8 @@
 				76D98C5927EA068C004790C5 /* GiniCaptureSDK */,
 				76C03E0F27EA089700C7E350 /* GiniBankSDK */,
 				76C03E1627EA0BCD00C7E350 /* GiniBankAPILibrary */,
+				764570A927F1AA3E0098BBF3 /* GiniHealthSDK */,
+				7643882D27F1AAE10015E411 /* GiniHealthAPILibrary */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -278,9 +286,10 @@
 		76D98C5A27EA06A7004790C5 /* NewInvoiceFlow */ = {
 			isa = PBXGroup;
 			children = (
+				7694B2B327F1B47700E6940F /* ComponentAPIDocumentServiceProtocol.swift */,
 				7687EC4027EB44810040F7BE /* Components */,
 				76C03E1327EA0B8500C7E350 /* RootNavigationController.swift */,
-				76C03E1227EA0B8500C7E350 /* ScreenAPICoordinator.swift */,
+				7643883027F1AD830015E411 /* ComponentAPICoordinator.swift */,
 				7687EC3827EA39610040F7BE /* NewInvoiceFlowCoordinator.swift */,
 				7687EC3C27EB14130040F7BE /* NewInvoiceDetailViewController.swift */,
 				7687EC3E27EB16BC0040F7BE /* NewInvoiceDetailView.swift */,
@@ -344,8 +353,9 @@
 			name = "Insurance Mockup Gini";
 			packageProductDependencies = (
 				76C03E0927EA07E700C7E350 /* GiniCaptureSDK */,
-				76C03E1027EA089F00C7E350 /* GiniBankSDK */,
 				7687EC4D27EB73FA0040F7BE /* BottomSheet */,
+				7694B2AF27F1B01600E6940F /* GiniHealthAPILibrary */,
+				7694B2B127F1B01600E6940F /* GiniHealthSDK */,
 			);
 			productName = " Gini";
 			productReference = 76E4B49427E8A1E9004027BB /* Insurance Mockup Gini.app */;
@@ -447,10 +457,11 @@
 				7687EC4927EB6FFA0040F7BE /* DateFormatter.swift in Sources */,
 				76D98C4627E9DDB9004790C5 /* ServiceViewModel.swift in Sources */,
 				7667442127E8EF5400F92473 /* Style.swift in Sources */,
-				76C03E1427EA0B8500C7E350 /* ScreenAPICoordinator.swift in Sources */,
+				7643883127F1AD830015E411 /* ComponentAPICoordinator.swift in Sources */,
 				76D98C3B27E9B4DB004790C5 /* HomeScreenViewController.swift in Sources */,
 				766012DD27EDB18D00F1F442 /* InvoiceListView.swift in Sources */,
 				76C03E0E27EA088400C7E350 /* CredentialsManager.swift in Sources */,
+				7694B2B427F1B47700E6940F /* ComponentAPIDocumentServiceProtocol.swift in Sources */,
 				766012D927EDB13C00F1F442 /* InvoiceListViewModel.swift in Sources */,
 				766012D727EDB12C00F1F442 /* InvoiceListViewController.swift in Sources */,
 			);
@@ -597,6 +608,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Insurance Mockup Gini/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Insurance Mockup Gini";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Um Dokumente mit deinem Gerät zu scannen, erlaube den Zugriff auf deine Kamera.  📸 -> 📄 -> 🎉";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Um Dokumente auf deinem Gerät zu scannen, erlaube den Zugriff auf deine Fotos  🏞 -> 📄 -> 🎉";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -627,6 +640,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Insurance Mockup Gini/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Insurance Mockup Gini";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Um Dokumente mit deinem Gerät zu scannen, erlaube den Zugriff auf deine Kamera.  📸 -> 📄 -> 🎉";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Um Dokumente auf deinem Gerät zu scannen, erlaube den Zugriff auf deine Fotos  🏞 -> 📄 -> 🎉";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -686,13 +701,17 @@
 			package = 7687EC4C27EB73F90040F7BE /* XCRemoteSwiftPackageReference "BottomSheet" */;
 			productName = BottomSheet;
 		};
+		7694B2AF27F1B01600E6940F /* GiniHealthAPILibrary */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GiniHealthAPILibrary;
+		};
+		7694B2B127F1B01600E6940F /* GiniHealthSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GiniHealthSDK;
+		};
 		76C03E0927EA07E700C7E350 /* GiniCaptureSDK */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GiniCaptureSDK;
-		};
-		76C03E1027EA089F00C7E350 /* GiniBankSDK */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = GiniBankSDK;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

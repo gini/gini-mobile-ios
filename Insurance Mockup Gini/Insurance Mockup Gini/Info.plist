@@ -2,6 +2,45 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>None</string>
+			<key>CFBundleURLName</key>
+			<string>net.gini.ginipay-ottonova</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>ginipay-ottonova</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>net.gini.ginipay</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>ginipay-business</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>net.gini.ginipay-insurance-mock</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>ginipay-insurance-mock</string>
+			</array>
+		</dict>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>ginipay-bank</string>
+		<string>ginipay-ginibank</string>
+		<string>ginipay-insurance-bank-mock</string>
+	</array>
 	<key>UIAppFonts</key>
 	<array>
 		<string>SF-Pro-Display-Medium.otf</string>
@@ -27,9 +66,5 @@
 			</array>
 		</dict>
 	</dict>
-	<key>NSCameraUsageDescription</key>
-	<string>Um Dokumente mit deinem Gerät zu scannen, erlaube den Zugriff auf deine Kamera.  📸 -&gt; 📄 -&gt; 🎉</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Um Dokumente auf deinem Gerät zu scannen, erlaube den Zugriff auf deine Fotos  🏞 -&gt; 📄 -&gt; 🎉</string>
 </dict>
 </plist>
