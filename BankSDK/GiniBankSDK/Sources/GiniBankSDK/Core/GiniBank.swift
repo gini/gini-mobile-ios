@@ -191,12 +191,12 @@ import GiniCaptureSDK
     
     /**
      Returns a view controller which will handle the analysis process.
-     Allows to set a custom configuration to change the look and feel of the  Gini Pay Bank SDK.
+     Allows to set a custom configuration to change the look and feel of the  Gini Bank SDK.
      
      - note: Screen API only.
      
      - parameter delegate:      An instance conforming to the `GiniCaptureDelegate` protocol.
-     - parameter configuration: The configuration to set.
+     - parameter configuration: The bank configuration to set.
      - parameter importedDocument: Documents that come from a source different than CameraViewController.
      There should be either images or one PDF, and they should be validated before calling this method.
 
@@ -205,14 +205,13 @@ import GiniCaptureSDK
     @objc public class func viewController(withDelegate delegate: GiniCaptureDelegate,
                                            withConfiguration configuration: GiniBankConfiguration,
                                            importedDocument: GiniCaptureDocument? = nil) -> UIViewController {
-        let captureConfig = GiniBankConfiguration.shared.captureConfiguration()
-        GiniCapture.setConfiguration(captureConfig)
+        GiniBank.setConfiguration(configuration)
         return viewController(withDelegate: delegate, importedDocument: importedDocument)
     }
     
     /**
      Returns a view controller which will handle the analysis process.
-     Allows to set a custom configuration to change the look and feel of the Gini Pay Bank SDK.
+     Allows to set a custom configuration to change the look and feel of the Gini Bank SDK.
      
      - note: Screen API only.
      
@@ -228,8 +227,7 @@ import GiniCaptureSDK
                                            withConfiguration configuration: GiniBankConfiguration,
                                            importedDocument: GiniCaptureDocument? = nil,
                                            trackingDelegate: GiniCaptureTrackingDelegate? = nil) -> UIViewController {
-        let captureConfig = GiniBankConfiguration.shared.captureConfiguration()
-        GiniCapture.setConfiguration(captureConfig)
+        GiniBank.setConfiguration(configuration)
         return viewController(withDelegate: delegate, importedDocument: importedDocument, trackingDelegate: trackingDelegate)
     }
     
@@ -237,9 +235,11 @@ import GiniCaptureSDK
      Sets a configuration which is used to customize the look and feel of the Gini Bank SDK,
      for example to change texts and colors displayed to the user.
      
-     - parameter configuration: The configuration to set.
+     - parameter configuration: The bank configuration to set.
      */
     @objc public class func setConfiguration(_ configuration: GiniBankConfiguration) {
         GiniBankConfiguration.shared = configuration
+        let captureConfiguration = GiniBankConfiguration.shared.captureConfiguration()
+        GiniCapture.setConfiguration(captureConfiguration)
     }
 }
