@@ -55,6 +55,7 @@
 		F4AD010025DFDF4500C34E15 /* ComponentAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00F625DFDF4400C34E15 /* ComponentAPICoordinator.swift */; };
 		F4AD010125DFDF4500C34E15 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4AD00F725DFDF4400C34E15 /* Images.xcassets */; };
 		F4B78A6025E6AB4B00CBE2E4 /* testPDF.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F407A42425E580F000BC5F36 /* testPDF.pdf */; };
+		F4B7B0AC27F1FEF200B615B7 /* ScreenAPICoordinator+UI_Only.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B7B0AB27F1FEF200B615B7 /* ScreenAPICoordinator+UI_Only.swift */; };
 		F4BB7CF226984E5D003FD77E /* CustomMenuItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BB7CF126984E5D003FD77E /* CustomMenuItemViewController.swift */; };
 		F4DF824F25EFA8ED00A8D755 /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DF824E25EFA8ED00A8D755 /* ScreenAPICoordinator.swift */; };
 		F4E0218827BD349A0042D000 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E0218727BD349A0042D000 /* Amount.swift */; };
@@ -127,6 +128,7 @@
 		F4AD00F525DFDF4400C34E15 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		F4AD00F625DFDF4400C34E15 /* ComponentAPICoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentAPICoordinator.swift; sourceTree = "<group>"; };
 		F4AD00F725DFDF4400C34E15 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		F4B7B0AB27F1FEF200B615B7 /* ScreenAPICoordinator+UI_Only.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScreenAPICoordinator+UI_Only.swift"; sourceTree = "<group>"; };
 		F4BB7CF126984E5D003FD77E /* CustomMenuItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMenuItemViewController.swift; sourceTree = "<group>"; };
 		F4DF824E25EFA8ED00A8D755 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
 		F4E0218727BD349A0042D000 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
@@ -303,6 +305,7 @@
 				F407A41525E5805E00BC5F36 /* ComponentAPICoordinatorTests.swift */,
 				F407A41725E5805E00BC5F36 /* DocumentServiceMock.swift */,
 				F407A41425E5805E00BC5F36 /* ScreenAPICoordinatorTests.swift */,
+				F4B7B0AB27F1FEF200B615B7 /* ScreenAPICoordinator+UI_Only.swift */,
 				F407A41625E5805E00BC5F36 /* SettingsViewControllerTests.swift */,
 				F407A42425E580F000BC5F36 /* testPDF.pdf */,
 				F490C80125DE87A900D8CA6F /* Info.plist */,
@@ -501,6 +504,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4B7B0AC27F1FEF200B615B7 /* ScreenAPICoordinator+UI_Only.swift in Sources */,
 				F407A41B25E5805E00BC5F36 /* DocumentServiceMock.swift in Sources */,
 				F407A41925E5805E00BC5F36 /* ComponentAPICoordinatorTests.swift in Sources */,
 				F407A41A25E5805E00BC5F36 /* SettingsViewControllerTests.swift in Sources */,
