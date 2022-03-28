@@ -12,9 +12,9 @@ final class AppCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
     fileprivate let window: UIWindow
 
-    var rootViewController: UIViewController {
+    lazy var rootViewController: UIViewController = {
         return TabBarCoordinator()
-    }
+    }()
 
     init(window: UIWindow) {
         self.window = window
@@ -22,6 +22,10 @@ final class AppCoordinator: Coordinator {
 
     func start() {
         showRootViewController()
+    }
+
+    func openInvoiceDetail() {
+        (rootViewController as? TabBarCoordinator)?.showInvoiceDetail()
     }
 
     fileprivate func showRootViewController() {

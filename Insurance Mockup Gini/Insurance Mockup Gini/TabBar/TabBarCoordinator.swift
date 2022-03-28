@@ -13,13 +13,13 @@ import GiniHealthSDK
 import GiniHealthAPILibrary
 
 class TabBarCoordinator: UITabBarController {
-    var customTabBar: CustomTabBar!
-    var tabBarHeight: CGFloat = 107.0
-    var coordinators = [Coordinator]()
+    private var customTabBar: CustomTabBar!
+    private var tabBarHeight: CGFloat = 107.0
+    private var coordinators = [Coordinator]()
 
-    var newInvoiceFlowCoordinator: ComponentAPICoordinator?
+    private var newInvoiceFlowCoordinator: ComponentAPICoordinator?
 
-    lazy var giniConfiguration: GiniConfiguration = {
+    private lazy var giniConfiguration: GiniConfiguration = {
         let giniConfiguration = GiniConfiguration()
         giniConfiguration.debugModeOn = true
         giniConfiguration.fileImportSupportedTypes = .pdf_and_images
@@ -41,8 +41,8 @@ class TabBarCoordinator: UITabBarController {
     }()
 
     private lazy var client: Client = CredentialsManager.fetchClientFromBundle()
-    lazy var apiLib = GiniHealthAPI.Builder(client: client).build()
-    lazy var health = GiniHealth(with: apiLib)
+    private lazy var apiLib = GiniHealthAPI.Builder(client: client).build()
+    private lazy var health = GiniHealth(with: apiLib)
 
     private var documentMetadata: Document.Metadata?
     private let documentMetadataBranchId = "GiniHealthExampleIOS"
@@ -99,7 +99,9 @@ class TabBarCoordinator: UITabBarController {
         
         customTabBar = CustomTabBar(menuItems: items, frame: frame)
         customTabBar.translatesAutoresizingMaskIntoConstraints = false
-        customTabBar.itemTapped = changeTab
+        customTabBar.itemTapped = { [weak self] tab in
+            self?.changeTab(tab: tab)
+        }
 
         view.addSubview(customTabBar)
 
@@ -115,7 +117,7 @@ class TabBarCoordinator: UITabBarController {
         view.layoutIfNeeded()
     }
     
-    func changeTab(tab: Int) {
+    private func changeTab(tab: Int) {
         if tab == 2 {
             showScanningFlow()
             return
@@ -123,27 +125,28 @@ class TabBarCoordinator: UITabBarController {
         self.selectedIndex = tab
     }
 
-    func showScanningFlow() {
-        checkIfAnyBankingAppsInstalled() {
+    private func showScanningFlow() {
+        checkIfAnyBankingAppsInstalled() { [weak self] in
+            guard let self = self else { return }
             let componentAPICoordinator = ComponentAPICoordinator(pages: [],
                                                                   configuration: self.giniConfiguration,
                                                                   documentService: self.componentAPIDocumentService(),
                                                                   giniHealth: self.health)
             componentAPICoordinator.delegate = self
-            componentAPICoordinator.start()
             self.newInvoiceFlowCoordinator = componentAPICoordinator
+            componentAPICoordinator.start()
 
             self.present(componentAPICoordinator.rootViewController, animated: true, completion: nil)
         }
     }
 
-    fileprivate func componentAPIDocumentService() -> ComponentAPIDocumentServiceProtocol {
+    private func componentAPIDocumentService() -> ComponentAPIDocumentServiceProtocol {
         documentMetadata = Document.Metadata(branchId: documentMetadataBranchId,
                                              additionalHeaders: [documentMetadataAppFlowKey: "ComponentAPI"])
         return ComponentAPIDocumentsService(lib: apiLib, documentMetadata: documentMetadata)
     }
 
-    fileprivate func checkIfAnyBankingAppsInstalled(completion: @escaping () -> Void) {
+    private func checkIfAnyBankingAppsInstalled(completion: @escaping () -> Void) {
         health.checkIfAnyPaymentProviderAvailable { result in
             switch(result) {
             case .success(_):
@@ -160,22 +163,13 @@ class TabBarCoordinator: UITabBarController {
             }
         }
     }
+
+    func showInvoiceDetail() {
+        newInvoiceFlowCoordinator?.abortCoordinator()
+        self.selectedIndex = 1
+        (coordinators.first(where: { $0 is InvoiceFlowCoordinator }) as? InvoiceFlowCoordinator)?.showInvoiceDetail(with: "123445")
+    }
 }
-
-
-//extension TabBarCoordinator: ScreenAPICoordinatorDelegate {
-//    func screenAPIDidFinish(coordinator: ScreenAPICoordinator, shouldSwitchToInvoiceTab: Bool) {
-//        coordinator.rootViewController.dismiss(animated: true, completion: nil)
-//        newInvoiceFlowCoordinator = nil
-//
-//        if shouldSwitchToInvoiceTab {
-//            self.selectedIndex = 1
-//
-////            let invoice = InvoiceItemCellViewModel(iconName: "icon_dentist", title: "New invoice", paid: true, reimbursed: .reimbursed, price: "2345 EUR")
-////            (coordinators[1] as? InvoiceFlowCoordinator)?.addNewInvoice(invoice: invoice)
-//        }
-//    }
-//}
 
 // MARK: ComponentAPICoordinatorDelegate
 

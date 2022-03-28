@@ -29,6 +29,10 @@ final class InvoiceFlowCoordinator: Coordinator {
     func addNewInvoice(invoice: InvoiceItemCellViewModel) {
         dataModel.addNewInvoice(invoice: invoice)
     }
+
+    func showInvoiceDetail(with id: String) {
+        didSelectInvoice(with: id)
+    }
 }
 
 extension InvoiceFlowCoordinator: InvoiceListViewModelDelegate {

@@ -6,8 +6,8 @@
 //
 
 import UIKit
-import GiniCaptureSDK
-import GiniBankAPILibrary
+import GiniHealthAPILibrary
+import GiniHealthSDK
 
 // Dummy coordinator for placeholder on the tabbar coordinator 
 

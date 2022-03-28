@@ -42,8 +42,8 @@
 		7694B2B427F1B47700E6940F /* ComponentAPIDocumentServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7694B2B327F1B47700E6940F /* ComponentAPIDocumentServiceProtocol.swift */; };
 		76C03E0A27EA07E700C7E350 /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 76C03E0927EA07E700C7E350 /* GiniCaptureSDK */; };
 		76C03E0E27EA088400C7E350 /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C03E0D27EA088400C7E350 /* CredentialsManager.swift */; };
-		76C03E1527EA0B8500C7E350 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C03E1327EA0B8500C7E350 /* RootNavigationController.swift */; };
 		76C03E1827EA0CE900C7E350 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 76C03E1727EA0CE900C7E350 /* Credentials.plist */; };
+		76CC0D6927F1ECA400EBA356 /* InvoiceExtractionFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CC0D6827F1ECA400EBA356 /* InvoiceExtractionFlowCoordinator.swift */; };
 		76D98C3227E8FA0A004790C5 /* InvoiceFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C3127E8FA0A004790C5 /* InvoiceFlowCoordinator.swift */; };
 		76D98C3627E8FA5A004790C5 /* SessionsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C3527E8FA5A004790C5 /* SessionsCoordinator.swift */; };
 		76D98C3827E8FA75004790C5 /* MedicineFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C3727E8FA75004790C5 /* MedicineFlowCoordinator.swift */; };
@@ -100,9 +100,9 @@
 		7694B2B327F1B47700E6940F /* ComponentAPIDocumentServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentAPIDocumentServiceProtocol.swift; sourceTree = "<group>"; };
 		76C03E0D27EA088400C7E350 /* CredentialsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
 		76C03E0F27EA089700C7E350 /* GiniBankSDK */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniBankSDK; path = ../BankSDK/GiniBankSDK; sourceTree = "<group>"; };
-		76C03E1327EA0B8500C7E350 /* RootNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
 		76C03E1627EA0BCD00C7E350 /* GiniBankAPILibrary */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniBankAPILibrary; path = ../BankAPILibrary/GiniBankAPILibrary; sourceTree = "<group>"; };
 		76C03E1727EA0CE900C7E350 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
+		76CC0D6827F1ECA400EBA356 /* InvoiceExtractionFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceExtractionFlowCoordinator.swift; sourceTree = "<group>"; };
 		76D98C3127E8FA0A004790C5 /* InvoiceFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceFlowCoordinator.swift; sourceTree = "<group>"; };
 		76D98C3527E8FA5A004790C5 /* SessionsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionsCoordinator.swift; sourceTree = "<group>"; };
 		76D98C3727E8FA75004790C5 /* MedicineFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicineFlowCoordinator.swift; sourceTree = "<group>"; };
@@ -209,6 +209,7 @@
 		7687EC4727EB6FED0040F7BE /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				7694B2B327F1B47700E6940F /* ComponentAPIDocumentServiceProtocol.swift */,
 				76C03E0D27EA088400C7E350 /* CredentialsManager.swift */,
 				7687EC4827EB6FFA0040F7BE /* DateFormatter.swift */,
 				7687EC5A27ECB5E80040F7BE /* KeyboardResponder.swift */,
@@ -286,14 +287,13 @@
 		76D98C5A27EA06A7004790C5 /* NewInvoiceFlow */ = {
 			isa = PBXGroup;
 			children = (
-				7694B2B327F1B47700E6940F /* ComponentAPIDocumentServiceProtocol.swift */,
 				7687EC4027EB44810040F7BE /* Components */,
-				76C03E1327EA0B8500C7E350 /* RootNavigationController.swift */,
 				7643883027F1AD830015E411 /* ComponentAPICoordinator.swift */,
 				7687EC3827EA39610040F7BE /* NewInvoiceFlowCoordinator.swift */,
 				7687EC3C27EB14130040F7BE /* NewInvoiceDetailViewController.swift */,
 				7687EC3E27EB16BC0040F7BE /* NewInvoiceDetailView.swift */,
 				7687EC4A27EB703D0040F7BE /* NewInvoiceDetailViewModel.swift */,
+				76CC0D6827F1ECA400EBA356 /* InvoiceExtractionFlowCoordinator.swift */,
 			);
 			path = NewInvoiceFlow;
 			sourceTree = "<group>";
@@ -426,7 +426,6 @@
 				766012E027EDC05E00F1F442 /* InvoiceFilterItemView.swift in Sources */,
 				7687EC4227EB44980040F7BE /* Triangle.swift in Sources */,
 				7672311F27EDF50D0071572E /* InvoiceItemCellViewModel.swift in Sources */,
-				76C03E1527EA0B8500C7E350 /* RootNavigationController.swift in Sources */,
 				76D98C3827E8FA75004790C5 /* MedicineFlowCoordinator.swift in Sources */,
 				76D98C3227E8FA0A004790C5 /* InvoiceFlowCoordinator.swift in Sources */,
 				7687EC5927ECAC030040F7BE /* PayInvoiceSheetView.swift in Sources */,
@@ -436,6 +435,7 @@
 				76D98C3627E8FA5A004790C5 /* SessionsCoordinator.swift in Sources */,
 				7687EC3F27EB16BC0040F7BE /* NewInvoiceDetailView.swift in Sources */,
 				7687EC3927EA39610040F7BE /* NewInvoiceFlowCoordinator.swift in Sources */,
+				76CC0D6927F1ECA400EBA356 /* InvoiceExtractionFlowCoordinator.swift in Sources */,
 				7687EC5727ECA5560040F7BE /* InvoiceDetailViewModel.swift in Sources */,
 				7667441D27E8DEB000F92473 /* TabBarItem.swift in Sources */,
 				7667442427E8F70700F92473 /* HomeScreenCoordinator.swift in Sources */,

@@ -33,14 +33,13 @@ final class ComponentAPICoordinator: NSObject, Coordinator {
     fileprivate let giniColor = UIColor(red: 0, green: (157/255), blue: (220/255), alpha: 1)
     fileprivate let giniConfiguration: GiniConfiguration
     fileprivate var giniHealth: GiniHealth
-    
-    fileprivate lazy var storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+
     fileprivate lazy var navigationController: UINavigationController = {
         let navBarViewController = UINavigationController()
         navBarViewController.navigationBar.barTintColor = self.giniColor
         navBarViewController.navigationBar.tintColor = .white
         navBarViewController.view.backgroundColor = .black
-        
+
         return navBarViewController
     }()
     
@@ -640,9 +639,11 @@ extension ComponentAPICoordinator {
             switch result {
             case let .success(isPayable):
                     if isPayable {
-                        let fetchedData = DataForReview(document: document, extractions: extractions)
-                        let vc = PaymentReviewViewController.instantiate(with: giniHealth, data: fetchedData, trackingDelegate: self)
-                        self.navigationController.pushViewController(vc , animated: true)
+                        let coordinator = InvoiceExtractionFlowCoordinator(giniHealth: giniHealth)
+                        coordinator.start(withExtraction: extractions, document: document)
+                        coordinator.delegate = self
+                        add(childCoordinator: coordinator)
+                        navigationController.present(coordinator.rootViewController, animated: true)
                     } else {
                         let alertViewController = UIAlertController(title: "",
                                                                     message: "This document is unpayable",
@@ -668,7 +669,20 @@ extension ComponentAPICoordinator {
                 navigationController.present(alertViewController, animated: true, completion: nil)
             }
         }
-        
+    }
+
+    func abortCoordinator() {
+        navigationController.dismiss(animated: false)
+        childCoordinators.forEach { remove(childCoordinator: $0) }
+        delegate?.componentAPI(coordinator: self, didFinish: ())
+    }
+}
+
+extension ComponentAPICoordinator: InvoiceExtractionFlowCoordinatorDelegate {
+    func extractionFlowDidFinish(_ coordinator: InvoiceExtractionFlowCoordinator) {
+        navigationController.dismiss(animated: false)
+        remove(childCoordinator: coordinator)
+        delegate?.componentAPI(coordinator: self, didFinish: ())
     }
 }
 

@@ -22,4 +22,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         window = appWindow
     }
+
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        coordinator.openInvoiceDetail()
+    }
 }

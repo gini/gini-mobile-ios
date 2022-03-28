@@ -19,7 +19,7 @@ enum PaySheetPosition: CGFloat, CaseIterable {
 }
 
 protocol NewInvoiceDetailViewModelDelegate: AnyObject {
-    func didTapPayAndSaveNewInvoice()
+    func didTapPayAndSaveNewInvoice(withExtraction extraction: [Extraction], document: Document?)
     func didTapPayAndSubmitNewInvoice()
     func didTapSubmitNewInvoice()
     func didTapSaveNewInvoice()
@@ -38,6 +38,8 @@ class NewInvoiceDetailViewModel: ObservableObject {
     var sheetViewModel = ButtonSheetViewModel()
     var adress = "Musterstrasse 11, 1234 Musterstadt"
     var description = "Prophylaxe"
+    var result: [Extraction]
+    var document: Document?
 
     @Published var paymentOptionSheetPosition: PaymentOptionSheetPosition = .hidden
     @Published var paySheetPosition: PaySheetPosition = .hidden
@@ -45,6 +47,8 @@ class NewInvoiceDetailViewModel: ObservableObject {
     weak var delegate: NewInvoiceDetailViewModelDelegate?
 
     init(results: [Extraction], document: Document?) {
+        self.result = results
+        self.document = document
         amount = results.first { $0.entity == "amount" }?.value ?? "00000"
         companyName = results.first { $0.entity == "companyname" }?.value ?? "Company name"
         iban = results.first { $0.entity == "iban" }?.value ?? "123456789"
@@ -66,7 +70,7 @@ class NewInvoiceDetailViewModel: ObservableObject {
 extension NewInvoiceDetailViewModel: ButtonSheetViewModelDelegate {
     func didTapPayAndSave() {
         paymentOptionSheetPosition = .hidden
-        paySheetPosition = .extended
+        delegate?.didTapPayAndSaveNewInvoice(withExtraction: result, document: document)
     }
 
     func didTapPayAndSubmit() {
