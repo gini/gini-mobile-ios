@@ -80,6 +80,8 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
 //                                                        documentMetadata: documentMetadata,
 //                                                        trackingDelegate: trackingDelegate,
 //                                                        networkingService: self)
+// MARK: - Screen API - UI Only
+//        let viewController = GiniBank.viewController(withDelegate: self, withConfiguration: configuration)
 
         screenAPIViewController = RootNavigationController(rootViewController: viewController)
         screenAPIViewController.navigationBar.barTintColor = configuration.navigationBarTintColor
@@ -182,5 +184,29 @@ extension ScreenAPICoordinator: GiniCaptureNetworkService {
     
     func log(errorEvent: ErrorEvent, completion: @escaping (Result<Void, GiniError>) -> Void) {
         print("💻 custom networking - log error event called")
+    }
+}
+
+// MARK: Screen API - UI Only - GiniCaptureDelegate
+
+extension ScreenAPICoordinator: GiniCaptureDelegate {
+    func didCapture(document: GiniCaptureDocument, networkDelegate: GiniCaptureNetworkDelegate) {
+        // Add your  implementation
+    }
+    
+    func didReview(documents: [GiniCaptureDocument], networkDelegate: GiniCaptureNetworkDelegate) {
+        // Add your  implementation
+    }
+    
+    func didCancelCapturing() {
+        // Add your  implementation
+    }
+    
+    func didCancelReview(for document: GiniCaptureDocument) {
+        // Add your  implementation
+    }
+    
+    func didCancelAnalysis() {
+        // Add your  implementation
     }
 }
