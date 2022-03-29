@@ -48,7 +48,18 @@ class TabBarCoordinator: UITabBarController {
     private let documentMetadataBranchId = "GiniHealthExampleIOS"
     private let documentMetadataAppFlowKey = "AppFlow"
 
-    
+    private var dataModel: InvoiceListDataModel
+
+
+    init() {
+        self.dataModel = InvoiceListDataModel()
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.loadTabBar()
@@ -67,7 +78,7 @@ class TabBarCoordinator: UITabBarController {
                 coordinator.start()
                 coordinators.append(coordinator)
             case .invoices:
-                let coordinator = InvoiceFlowCoordinator()
+                let coordinator = InvoiceFlowCoordinator(dataModel: dataModel)
                 coordinator.start()
                 coordinators.append(coordinator)
             case .addInvoice:
@@ -174,6 +185,10 @@ class TabBarCoordinator: UITabBarController {
 // MARK: ComponentAPICoordinatorDelegate
 
 extension TabBarCoordinator: ComponentAPICoordinatorDelegate {
+    func componentAPIDidSelectSave(invoice: Invoice) {
+        dataModel.addNewInvoice(invoice: invoice)
+    }
+
     func componentAPI(coordinator: ComponentAPICoordinator, didFinish: ()) {
         coordinator.rootViewController.dismiss(animated: true, completion: nil)
         self.newInvoiceFlowCoordinator = nil

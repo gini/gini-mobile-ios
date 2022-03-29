@@ -14,12 +14,9 @@ enum PaymentOptionSheetPosition: CGFloat, CaseIterable {
     case middle = 300, hidden = -100
 }
 
-enum PaySheetPosition: CGFloat, CaseIterable {
-    case extended = 550, hidden = -100
-}
-
 protocol NewInvoiceDetailViewModelDelegate: AnyObject {
     func didTapPayAndSaveNewInvoice(withExtraction extraction: [Extraction], document: Document?)
+    func saveNewInvoice(invoice: Invoice)
     func didTapPayAndSubmitNewInvoice()
     func didTapSubmitNewInvoice()
     func didTapSaveNewInvoice()
@@ -27,8 +24,8 @@ protocol NewInvoiceDetailViewModelDelegate: AnyObject {
 }
 
 class NewInvoiceDetailViewModel: ObservableObject {
-    @Published var companyName: String
-    @Published var amount: String
+    var companyName: String
+    var amount: String
     var creationDate: String
     var dueDate: String
     var iban: String
@@ -41,24 +38,23 @@ class NewInvoiceDetailViewModel: ObservableObject {
     var result: [Extraction]
     var document: Document?
 
+    private var invoice: Invoice
+
     @Published var paymentOptionSheetPosition: PaymentOptionSheetPosition = .hidden
-    @Published var paySheetPosition: PaySheetPosition = .hidden
 
     weak var delegate: NewInvoiceDetailViewModelDelegate?
 
-    init(results: [Extraction], document: Document?) {
-        self.result = results
-        self.document = document
-        amount = results.first { $0.entity == "amount" }?.value ?? "00000"
-        companyName = results.first { $0.entity == "companyname" }?.value ?? "Company name"
-        iban = results.first { $0.entity == "iban" }?.value ?? "123456789"
-        creationDate = (document?.creationDate ?? Date()).getFormattedDate(format: "dd MMMM, yyyy")
+    init(invoice: Invoice) {
+        self.invoice = invoice
+        self.result = invoice.extractions
+        self.document = invoice.document
+        amount = invoice.priceString
+        companyName = invoice.invoiceTitle
+        iban = invoice.iban
+        creationDate = invoice.creationDate.getFormattedDate(format: "dd MMMM, yyyy")
+        dueDate = invoice.dueDate.getFormattedDate(format: "dd MMMM, yyyy")
 
-        // Adding 7 days to the creation date in order to have mocked due date
-        let dateOffset = document?.creationDate.addingTimeInterval(7*24*60*60) ?? Date().addingTimeInterval(7*24*60*60)
-        dueDate = dateOffset.getFormattedDate(format: "dd MMMM, yyyy")
-
-        numberOfDaysUntilDue = Int((dateOffset - Date()) / (24*60*60))
+        numberOfDaysUntilDue = Int((invoice.dueDate - Date()) / (24*60*60))
         sheetViewModel.delegate = self
     }
 
@@ -70,6 +66,7 @@ class NewInvoiceDetailViewModel: ObservableObject {
 extension NewInvoiceDetailViewModel: ButtonSheetViewModelDelegate {
     func didTapPayAndSave() {
         paymentOptionSheetPosition = .hidden
+        delegate?.saveNewInvoice(invoice: invoice)
         delegate?.didTapPayAndSaveNewInvoice(withExtraction: result, document: document)
     }
 
@@ -82,7 +79,7 @@ extension NewInvoiceDetailViewModel: ButtonSheetViewModelDelegate {
     }
 
     func didTapSave() {
-        delegate?.didTapSaveNewInvoice()
-        paymentOptionSheetPosition = .hidden
+        delegate?.saveNewInvoice(invoice: invoice)
+        delegate?.didTapCancel()
     }
 }

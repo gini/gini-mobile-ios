@@ -14,13 +14,16 @@ class InvoiceItemCellViewModel {
     var paid: Bool
     var reimbursed: ReimbursmentState
     var price: String
+    var creationDate: Date
 
-    init(iconName: String, title: String, paid: Bool, reimbursed: ReimbursmentState, price: String) {
-        self.iconName = iconName
-        self.title = title
-        self.paid = paid
-        self.reimbursed = reimbursed
-        self.price = price
+    init(invoice: Invoice) {
+        self.iconName = invoice.iconTitle
+        self.id = invoice.invoiceID
+        self.title = invoice.invoiceTitle
+        self.paid = invoice.paid
+        self.reimbursed = invoice.reimbursmentStatus
+        self.price = invoice.priceString
+        self.creationDate = invoice.creationDate
     }
 }
 

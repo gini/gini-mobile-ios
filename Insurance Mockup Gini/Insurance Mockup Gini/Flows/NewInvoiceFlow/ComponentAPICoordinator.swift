@@ -13,6 +13,7 @@ import GiniHealthAPILibrary
 import GiniHealthSDK
 
 protocol ComponentAPICoordinatorDelegate: AnyObject {
+    func componentAPIDidSelectSave(invoice: Invoice)
     func componentAPI(coordinator: ComponentAPICoordinator, didFinish:())
 }
 
@@ -639,8 +640,10 @@ extension ComponentAPICoordinator {
             switch result {
             case let .success(isPayable):
                     if isPayable {
+                        var invoice = Invoice(extractions: extractions, document: document)
+                        invoice.creationDate = Date() // WARNING - This date is overwritten only for filtering
                         let coordinator = InvoiceExtractionFlowCoordinator(giniHealth: giniHealth)
-                        coordinator.start(withExtraction: extractions, document: document)
+                        coordinator.start(withInvoice: invoice)
                         coordinator.delegate = self
                         add(childCoordinator: coordinator)
                         navigationController.present(coordinator.rootViewController, animated: true)
@@ -679,6 +682,10 @@ extension ComponentAPICoordinator {
 }
 
 extension ComponentAPICoordinator: InvoiceExtractionFlowCoordinatorDelegate {
+    func extractionFlowDidSelectSave(invoice: Invoice) {
+        delegate?.componentAPIDidSelectSave(invoice: invoice)
+    }
+
     func extractionFlowDidFinish(_ coordinator: InvoiceExtractionFlowCoordinator) {
         navigationController.dismiss(animated: false)
         remove(childCoordinator: coordinator)

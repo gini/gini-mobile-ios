@@ -13,9 +13,13 @@ final class InvoiceFlowCoordinator: Coordinator {
         return navigationController
     }
 
-    var dataModel: InvoiceListDataModel = InvoiceListDataModel()
+    private var dataModel: InvoiceListDataModel
 
     var navigationController: UINavigationController!
+
+    init(dataModel: InvoiceListDataModel) {
+        self.dataModel = dataModel
+    }
 
     func start() {
         let viewModel = InvoiceListViewModel(dataModel: dataModel)
@@ -26,7 +30,7 @@ final class InvoiceFlowCoordinator: Coordinator {
         navigationController.navigationBar.isHidden = true
     }
 
-    func addNewInvoice(invoice: InvoiceItemCellViewModel) {
+    func addNewInvoice(invoice: Invoice) {
         dataModel.addNewInvoice(invoice: invoice)
     }
 
@@ -37,8 +41,7 @@ final class InvoiceFlowCoordinator: Coordinator {
 
 extension InvoiceFlowCoordinator: InvoiceListViewModelDelegate {
     func didSelectInvoice(with id: String) {
-//        guard let invoice = dataModel.invoiceList.first(where: { $0.id == id }) else { return }
-        let viewModel = InvoiceDetailViewModel(invoiceDetail: NewInvoiceDetailViewModel(results: [], document: nil))
+        let viewModel = InvoiceDetailViewModel(invoiceDetail: NewInvoiceDetailViewModel(invoice: Invoice(extractions: [], document: nil)))
         viewModel.delegate = self
         let viewController = InvoiceDetailViewController(viewModel: viewModel)
         navigationController.pushViewController(viewController, animated: true)

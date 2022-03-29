@@ -6,21 +6,65 @@
 //
 
 import Foundation
+import GiniBankAPILibrary
 
 final class InvoiceListDataModel {
-    var invoiceList = [
-        InvoiceItemCellViewModel(iconName: "icon_dentist", title: "Dr. Theresa Müller", paid: false, reimbursed: .notSent, price: "450.11 EUR"),
-        InvoiceItemCellViewModel(iconName: "icon_book", title: "Dr. Mara Klinsmann", paid: true, reimbursed: .sent, price: "145.99 EUR"),
-        InvoiceItemCellViewModel(iconName: "icon_book", title: "Dr. Mara Klinsmann", paid: true, reimbursed: .reimbursed, price: "445.99 EUR")
+    private static var dayTimeInterval: Double = 60*60*24
+    var updateList: (() -> Void)?
+    var invoiceData: [Invoice] = [
+        {   var invoice = Invoice(extractions: [], document: nil)
+            invoice.invoiceTitle = "Dr. Theresa Müller"
+            invoice.priceString = "450.11 EUR"
+            invoice.creationDate = Date().addingTimeInterval(-1 * dayTimeInterval)
+            return invoice
+        }(),
+        {   var invoice = Invoice(extractions: [], document: nil)
+            invoice.invoiceTitle = "Dr. Mara Klinsmann"
+            invoice.iconTitle = "icon_book"
+            invoice.priceString = "145.99 EUR"
+            invoice.creationDate = Date().addingTimeInterval(-4 * dayTimeInterval)
+            return invoice
+        }(),
+        {   var invoice = Invoice(extractions: [], document: nil)
+            invoice.invoiceTitle = "Dr. Mara Klinsmann"
+            invoice.iconTitle = "icon_book"
+            invoice.priceString = "145.99 EUR"
+            invoice.paid = true
+            invoice.reimbursmentStatus = .sent
+            invoice.creationDate = Date().addingTimeInterval(-7 * dayTimeInterval)
+            return invoice
+        }(),
+        {   var invoice = Invoice(extractions: [], document: nil)
+            invoice.invoiceTitle = "Universitätsklinikum Berlin"
+            invoice.iconTitle = "icon_book"
+            invoice.priceString = "45.12 EUR"
+            invoice.creationDate = Date().addingTimeInterval(-40 * dayTimeInterval)
+            return invoice
+        }(),
+        {   var invoice = Invoice(extractions: [], document: nil)
+            invoice.invoiceTitle = "Bayer Klinikum"
+            invoice.iconTitle = "icon_dentist"
+            invoice.priceString = "15.89 EUR"
+            invoice.paid = true
+            invoice.reimbursmentStatus = .sent
+            invoice.creationDate = Date().addingTimeInterval(-45 * dayTimeInterval)
+            return invoice
+        }(),
+        {   var invoice = Invoice(extractions: [], document: nil)
+            invoice.invoiceTitle = "Universitätsklinikum Frankfurt"
+            invoice.iconTitle = "icon_book"
+            invoice.priceString = "15.89 EUR"
+            invoice.paid = true
+            invoice.reimbursmentStatus = .reimbursed
+            invoice.creationDate = Date().addingTimeInterval(-45 * dayTimeInterval)
+            return invoice
+        }()
     ]
 
-    var oldInvoiceList = [
-        InvoiceItemCellViewModel(iconName: "icon_dentist", title: "Universitätsklinikum Berlin", paid: false, reimbursed: .notSent, price: "45.12 EUR"),
-        InvoiceItemCellViewModel(iconName: "icon_book", title: "Bayer Klinikum", paid: true, reimbursed: .sent, price: "15.89 EUR"),
-        InvoiceItemCellViewModel(iconName: "icon_dentist", title: "Universitätsklinikum Frankfurt", paid: true, reimbursed: .reimbursed, price: "145.99 EUR"),
-    ]
+    lazy var invoiceList = invoiceData.map { InvoiceItemCellViewModel(invoice: $0) }
 
-    func addNewInvoice(invoice: InvoiceItemCellViewModel) {
-        invoiceList.insert(invoice, at: 0)
+    func addNewInvoice(invoice: Invoice) {
+        invoiceData.insert(invoice, at: 0)
+        updateList?()
     }
 }

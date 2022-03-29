@@ -87,7 +87,8 @@ struct InvoiceDetailView: View {
 
 struct InvoiceDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        let vm = InvoiceDetailViewModel(invoiceDetail: NewInvoiceDetailViewModel(results: [], document: nil))
+        let invoice = Invoice(extractions: [], document: nil)
+        let vm = InvoiceDetailViewModel(invoiceDetail: NewInvoiceDetailViewModel(invoice: invoice))
         InvoiceDetailView(viewModel: vm)
     }
 }

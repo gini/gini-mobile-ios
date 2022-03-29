@@ -24,6 +24,11 @@ final class InvoiceListViewModel: ObservableObject {
 
     init(dataModel: InvoiceListDataModel) {
         self.dataModel = dataModel
+
+        dataModel.updateList = { [weak self] in
+            guard let self = self else { return }
+            self.updateFilter(self.activeFilter)
+        }
     }
 
     func updateFilter(_ filter: FilterOptions) {
@@ -36,32 +41,38 @@ final class InvoiceListViewModel: ObservableObject {
         delegate?.didSelectInvoice(with: id)
     }
 
+
+
     // MARK: - Private
 
     private func updateThisMonthList() {
         switch activeFilter {
         case .all:
-            thisMonthList = dataModel.invoiceList
+            thisMonthList = dataModel.invoiceList.filter({ InvoiceListViewModel.isDateInThisMonth($0.creationDate) })
         case .open:
-            thisMonthList = dataModel.invoiceList.filter { $0.reimbursed == .notSent }
+            thisMonthList = dataModel.invoiceList.filter({ InvoiceListViewModel.isDateInThisMonth($0.creationDate) }).filter { $0.reimbursed == .notSent }
         case .unpaid:
-            thisMonthList = dataModel.invoiceList.filter { $0.paid == false }
+            thisMonthList = dataModel.invoiceList.filter({ InvoiceListViewModel.isDateInThisMonth($0.creationDate) }).filter { $0.paid == false }
         case .reimbursed:
-            thisMonthList = dataModel.invoiceList.filter { $0.reimbursed == .reimbursed }
+            thisMonthList = dataModel.invoiceList.filter({ InvoiceListViewModel.isDateInThisMonth($0.creationDate) }).filter { $0.reimbursed == .reimbursed }
         }
     }
 
     private func updateLastMonthList() {
         switch activeFilter {
         case .all:
-            lastMonthList = dataModel.oldInvoiceList
+            lastMonthList = dataModel.invoiceList.filter({ !InvoiceListViewModel.isDateInThisMonth($0.creationDate) })
         case .open:
-            lastMonthList = dataModel.oldInvoiceList.filter { $0.reimbursed == .notSent }
+            lastMonthList = dataModel.invoiceList.filter({ !InvoiceListViewModel.isDateInThisMonth($0.creationDate) }).filter { $0.reimbursed == .notSent }
         case .unpaid:
-            lastMonthList = dataModel.oldInvoiceList.filter { $0.paid == false }
+            lastMonthList = dataModel.invoiceList.filter({ !InvoiceListViewModel.isDateInThisMonth($0.creationDate) }).filter { $0.paid == false }
         case .reimbursed:
-            lastMonthList = dataModel.oldInvoiceList.filter { $0.reimbursed == .reimbursed }
+            lastMonthList = dataModel.invoiceList.filter({ !InvoiceListViewModel.isDateInThisMonth($0.creationDate) }).filter { $0.reimbursed == .reimbursed }
         }
+    }
+
+    static func isDateInThisMonth(_ date: Date) -> Bool {
+        return Calendar.current.isDate(date, equalTo: Date(), toGranularity: .month)
     }
 }
 

@@ -10,6 +10,7 @@ import GiniHealthSDK
 import GiniHealthAPILibrary
 
 protocol InvoiceExtractionFlowCoordinatorDelegate: AnyObject {
+    func extractionFlowDidSelectSave(invoice: Invoice)
     func extractionFlowDidFinish(_ coordinator: InvoiceExtractionFlowCoordinator)
 }
 
@@ -28,9 +29,8 @@ final class InvoiceExtractionFlowCoordinator: Coordinator {
         self.giniHealth = giniHealth
     }
 
-    func start(withExtraction extraction: [Extraction], document: Document?) {
-        guard let document = document else { return }
-        let viewModel = NewInvoiceDetailViewModel(results: extraction, document: document)
+    func start(withInvoice invoice: Invoice) {
+        let viewModel = NewInvoiceDetailViewModel(invoice: invoice)
         viewModel.delegate = self
         let vc = NewInvoiceDetailViewController(viewModel: viewModel)
         navigationController = UINavigationController(rootViewController: vc)
@@ -56,6 +56,10 @@ extension InvoiceExtractionFlowCoordinator: GiniHealthTrackingDelegate {
 
 
 extension InvoiceExtractionFlowCoordinator: NewInvoiceDetailViewModelDelegate {
+    func saveNewInvoice(invoice: Invoice) {
+        delegate?.extractionFlowDidSelectSave(invoice: invoice)
+    }
+
     func didTapPayAndSaveNewInvoice(withExtraction extraction: [Extraction], document: Document?) {
         guard let document = document else { return }
         let fetchedData = DataForReview(document: document, extractions: extraction)

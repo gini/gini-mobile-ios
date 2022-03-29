@@ -75,36 +75,18 @@ struct NewInvoiceDetailView: View {
             .padding(.bottom, 40)
             .zIndex(PaymentOptionSheetPosition.middle == viewModel.paymentOptionSheetPosition ? 1 : 2)
 
-            ZStack {
-                Spacer()
-                    .bottomSheet(bottomSheetPosition: $viewModel.paymentOptionSheetPosition, options: [
-                        .swipeToDismiss,
-                        .absolutePositionValue,
-                        .background({AnyView(Color.white)}),
-                        .dragIndicatorColor(Color.gray),
-                        .shadow(color: Color.gray, radius: CGFloat(10), x: CGFloat(0), y:  CGFloat(0)),
-                        .backgroundBlur(effect: .systemMaterialDark)
-                    ]) {
-                        ButtonsSheetView(viewModel: viewModel.sheetViewModel)
-                    }.zIndex(PaymentOptionSheetPosition.middle == viewModel.paymentOptionSheetPosition ? 1 : 0)
-
-                Spacer()
-                    .bottomSheet(bottomSheetPosition: $viewModel.paySheetPosition, options: [
-                        .swipeToDismiss,
-                        .absolutePositionValue,
-                        .background({AnyView(Color.white)}),
-                        .dragIndicatorColor(Color.gray),
-                        .shadow(color: Color.gray, radius: CGFloat(10), x: CGFloat(0), y:  CGFloat(0)),
-                        .backgroundBlur(effect: .systemMaterialDark)
-                    ]) {
-                        PayInvoiceSheetView(viewModel: viewModel)
-                    }
-                    .padding(.bottom, keyboard.currentHeight)
-                    .edgesIgnoringSafeArea(.bottom)
-                    .animation(.easeOut(duration: 0.16))
-                    .zIndex(PaySheetPosition.extended == viewModel.paySheetPosition ? 1 : 0)
-            }
-            .zIndex(PaymentOptionSheetPosition.middle == viewModel.paymentOptionSheetPosition || PaySheetPosition.extended == viewModel.paySheetPosition ? 2 : 0)
+            Spacer()
+                .bottomSheet(bottomSheetPosition: $viewModel.paymentOptionSheetPosition, options: [
+                    .swipeToDismiss,
+                    .absolutePositionValue,
+                    .background({AnyView(Color.white)}),
+                    .dragIndicatorColor(Color.gray),
+                    .shadow(color: Color.gray, radius: CGFloat(10), x: CGFloat(0), y:  CGFloat(0)),
+                    .backgroundBlur(effect: .systemMaterialDark)
+                ]) {
+                    ButtonsSheetView(viewModel: viewModel.sheetViewModel)
+                }
+            .zIndex(PaymentOptionSheetPosition.middle == viewModel.paymentOptionSheetPosition ? 2 : 0)
 
         }
         .background(Style.NewInvoice.backgroundColor)
@@ -114,7 +96,7 @@ struct NewInvoiceDetailView: View {
 
 struct NewInvoiceDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        NewInvoiceDetailView(viewModel: NewInvoiceDetailViewModel(results: [], document: nil))
+        NewInvoiceDetailView(viewModel: NewInvoiceDetailViewModel(invoice: Invoice(extractions: [], document: nil)))
     }
 }
 

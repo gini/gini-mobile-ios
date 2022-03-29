@@ -107,6 +107,7 @@ struct ReinbursmentInfoView: View {
 
 struct InvoiceItemCell_Previews: PreviewProvider {
     static var previews: some View {
-        InvoiceItemCell(viewModel: InvoiceItemCellViewModel(iconName: "icon_dentist", title: "Dr. Theresa Müller", paid: true, reimbursed: .sent, price: "45 EUR"))
+        let invoice = Invoice(extractions: [], document: nil)
+        InvoiceItemCell(viewModel: InvoiceItemCellViewModel(invoice: invoice))
     }
 }
