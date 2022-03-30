@@ -24,8 +24,8 @@ final class AppCoordinator: Coordinator {
         showRootViewController()
     }
 
-    func openInvoiceDetail() {
-        (rootViewController as? TabBarCoordinator)?.showInvoiceDetail()
+    func openInvoiceDetail(with paymentRequestId: String) {
+        (rootViewController as? TabBarCoordinator)?.showInvoiceDetail(with: paymentRequestId)
     }
 
     fileprivate func showRootViewController() {

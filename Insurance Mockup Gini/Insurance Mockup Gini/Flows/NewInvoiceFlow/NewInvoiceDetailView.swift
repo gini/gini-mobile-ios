@@ -33,16 +33,16 @@ struct NewInvoiceDetailView: View {
 
                 ZStack(alignment: .top) {
                     VStack {
-                        InvoiceDetailHeaderView(viewModel: viewModel)
+                        InvoiceDetailHeaderView(viewModel: viewModel.invoiceHeaderViewModel)
 
-                        InvoiceDetailListView(viewModel: viewModel)
+                        InvoiceDetailListView(viewModel: viewModel.invoiceDetailListViewModel)
 
                         // Separator
                         Rectangle().fill(Color.gray).frame(height: 1, alignment: .center).padding([.top, .bottom], 26)
 
-                        ReinbursmentStatusView(viewModel: viewModel)
+                        ReinbursmentStatusView(reimbursmentStatus: viewModel.reimbursmentStatus, price: viewModel.price)
 
-                        DocumentsView()
+                        DocumentsView(images: viewModel.images)
                     }
                     .background(Color.white)
                     .cornerRadius(20)
@@ -91,105 +91,5 @@ struct NewInvoiceDetailView: View {
         }
         .background(Style.NewInvoice.backgroundColor)
         .ignoresSafeArea()
-    }
-}
-
-struct NewInvoiceDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        NewInvoiceDetailView(viewModel: NewInvoiceDetailViewModel(invoice: Invoice(extractions: [], document: nil)))
-    }
-}
-
-struct InvoiceDetailHeaderView: View {
-    @ObservedObject var viewModel: NewInvoiceDetailViewModel
-    var body: some View {
-        VStack {
-            Text(viewModel.companyName)
-                .font(Style.appFont(style: .semiBold, 16))
-                .padding(.top, 60)
-
-            Text(viewModel.description)
-                .font(Style.appFont(14))
-                .foregroundColor(.gray)
-                .padding(4)
-
-            Text(viewModel.amount)
-                .font(Style.appFont(style: .semiBold, 32))
-                .foregroundColor(Style.NewInvoice.accentBlue)
-                .padding(.top)
-
-            Text(viewModel.adress)
-                .font(Style.appFont(14))
-                .foregroundColor(.gray)
-                .padding(.top, 2)
-        }
-    }
-}
-
-struct ReinbursmentStatusView: View {
-    var viewModel: NewInvoiceDetailViewModel
-    var body: some View {
-        VStack {
-            HStack {
-                Text("Reimbursement")
-                    .font(Style.appFont(style: .semiBold, 14))
-                Spacer()
-                if viewModel.reimbursmentStatus {
-                    Text("Reimbursed")
-                        .foregroundColor(Color.green)
-                        .padding(2)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 4)
-                                .stroke(Color.green, lineWidth: 1)
-                                .opacity(0.5)
-                        )
-
-                } else {
-                    Text("Not sent")
-                        .padding(2)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 4)
-                                .stroke(Color.gray, lineWidth: 1)
-                                .opacity(0.5)
-                        )
-
-                }
-            }.padding([.top, .leading, .trailing])
-
-            HStack {
-                Text("Date of reimbursement")
-                    .font(Style.appFont(14))
-                    .foregroundColor(.gray)
-                Spacer()
-                Text("-")
-                    .foregroundColor(.gray)
-            }.padding([.top, .leading, .trailing])
-        }
-    }
-}
-
-struct DocumentsView: View {
-    var body: some View {
-        ZStack(alignment: .top) {
-            VStack {
-                HStack{
-                    Text("Documents")
-                    Spacer()
-                }.padding()
-                Spacer()
-            }
-            .background(Style.NewInvoice.grayBackgroundColor)
-            .frame(height: 200)
-
-            HStack {
-                let max = UIScreen.main.bounds.width/18
-                ForEach(1..<Int(max+2)) { i in
-                    Triangle()
-                        .fill(.white)
-                        .frame(width: 18, height: 18)
-                        .padding([.leading, .trailing], -4)
-                }
-            }
-        }
     }
 }

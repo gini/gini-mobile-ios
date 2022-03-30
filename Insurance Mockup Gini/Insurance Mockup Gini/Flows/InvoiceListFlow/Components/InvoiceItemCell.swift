@@ -16,9 +16,9 @@ struct InvoiceItemCell: View {
             VStack(alignment: .leading) {
                 Text(viewModel.title)
                 HStack {
-                    PaymentInfoView(paid: viewModel.paid)
+                    PaymentInfoView(paid: viewModel.paid, dueDaysCont: viewModel.numberOfDaysUntilDue)
                     ReinbursmentInfoView(reimbursmentState: viewModel.reimbursed)
-                }
+                }.offset(x: 0, y: -6)
             }
 
             Spacer()
@@ -30,6 +30,7 @@ struct InvoiceItemCell: View {
 
 struct PaymentInfoView: View {
     var paid: Bool
+    var dueDaysCont: Int
     var body: some View {
         if paid {
             HStack {
@@ -46,8 +47,8 @@ struct PaymentInfoView: View {
                 RoundedRectangle(cornerRadius: 4)
                         .stroke(Color.green, lineWidth: 1)
                     )
-        } else {
-            Text("Due in 2 days")
+        } else if dueDaysCont > 0 {
+            Text("Due in \(dueDaysCont) days")
                 .font(Style.appFont(style: .medium, 14))
                 .foregroundColor(.gray)
                 .padding([.leading, .trailing], 4)
@@ -66,25 +67,30 @@ struct ReinbursmentInfoView: View {
     var body: some View {
         switch reimbursmentState {
         case .notSent:
-            Text(reimbursmentState.rawValue)
-                .font(Style.appFont(style: .medium, 14))
-                .foregroundColor(.gray)
-                .padding([.leading, .trailing], 4)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 4)
-                            .stroke(Color.gray, lineWidth: 1)
-                        .opacity(0.5)
-                        )
+            HStack {
+                Text(reimbursmentState.rawValue)
+                    .font(Style.appFont(style: .medium, 14))
+                    .foregroundColor(.gray)
+                    .padding([.leading, .trailing], 4)
+                    .frame(height: 14)
+            }
+            .overlay(
+                RoundedRectangle(cornerRadius: 4)
+                        .stroke(Color.gray, lineWidth: 1)
+                    .opacity(0.5)
+        )
         case .sent:
-            Text(reimbursmentState.rawValue)
-                .font(Style.appFont(style: .medium, 14))
-                .foregroundColor(.gray)
-                .padding([.leading, .trailing], 4)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 4)
-                            .stroke(Color.gray, lineWidth: 1)
-                        .opacity(0.5)
-                        )
+            HStack {
+                Text(reimbursmentState.rawValue)
+                    .font(Style.appFont(style: .medium, 14))
+                    .foregroundColor(.gray)
+                    .padding([.leading, .trailing], 4)
+                    .frame(height: 14)
+            }.overlay(
+                RoundedRectangle(cornerRadius: 4)
+                        .stroke(Color.gray, lineWidth: 1)
+                    .opacity(0.5)
+        )
         case .reimbursed:
             HStack {
                 Image("check_icon")

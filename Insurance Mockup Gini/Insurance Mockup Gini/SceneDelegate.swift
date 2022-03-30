@@ -24,6 +24,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        coordinator.openInvoiceDetail()
+        var paymentRequestID: String?
+        for context in URLContexts {
+            paymentRequestID = getPaymentRequestIdParameter(url: context.url.absoluteString)
+        }
+        guard let id = paymentRequestID else { return }
+        coordinator.openInvoiceDetail(with: id)
+    }
+
+    private func getPaymentRequestIdParameter(url: String) -> String? {
+      guard let url = URLComponents(string: url) else { return nil }
+      return url.queryItems?.first(where: { $0.name == "paymentRequestId" })?.value
     }
 }

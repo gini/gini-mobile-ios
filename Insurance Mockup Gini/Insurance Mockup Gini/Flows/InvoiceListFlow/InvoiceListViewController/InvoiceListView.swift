@@ -19,7 +19,7 @@ struct InvoiceListView: View {
     var filterItems: [FilterOptions] = [.all, .open, .unpaid, .reimbursed]
 
     var body: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             HStack(spacing: 16) {
                 Text("Invoices")
                     .font(Style.appFont(style: .bold, 20))

@@ -44,6 +44,16 @@
 		76C03E1827EA0CE900C7E350 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 76C03E1727EA0CE900C7E350 /* Credentials.plist */; };
 		76CC0D6927F1ECA400EBA356 /* InvoiceExtractionFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CC0D6827F1ECA400EBA356 /* InvoiceExtractionFlowCoordinator.swift */; };
 		76CC0D6C27F2277C00EBA356 /* Invoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CC0D6B27F2277C00EBA356 /* Invoice.swift */; };
+		76CC0D8E27F3286C00EBA356 /* ReimbursmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CC0D8D27F3286C00EBA356 /* ReimbursmentView.swift */; };
+		76CC0D9027F32B1300EBA356 /* InvoiceDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CC0D8F27F32B1300EBA356 /* InvoiceDetailHeaderView.swift */; };
+		76CC0D9227F32EEA00EBA356 /* DocumentImageFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CC0D9127F32EEA00EBA356 /* DocumentImageFetcher.swift */; };
+		76CC0D9427F335D800EBA356 /* DocumentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CC0D9327F335D800EBA356 /* DocumentsView.swift */; };
+		76CC0D9627F3425500EBA356 /* DocuementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CC0D9527F3425500EBA356 /* DocuementViewController.swift */; };
+		76CC0D9927F342AA00EBA356 /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CC0D9827F342AA00EBA356 /* DocumentView.swift */; };
+		76CC0D9B27F42C8100EBA356 /* DocumentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CC0D9A27F42C8100EBA356 /* DocumentViewModel.swift */; };
+		76CC0D9F27F42D2100EBA356 /* ConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CC0D9E27F42D2100EBA356 /* ConfirmationViewController.swift */; };
+		76CC0DA127F42D2E00EBA356 /* ConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CC0DA027F42D2E00EBA356 /* ConfirmationViewModel.swift */; };
+		76CC0DA327F42D3900EBA356 /* ConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CC0DA227F42D3900EBA356 /* ConfirmationView.swift */; };
 		76D98C3227E8FA0A004790C5 /* InvoiceFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C3127E8FA0A004790C5 /* InvoiceFlowCoordinator.swift */; };
 		76D98C3627E8FA5A004790C5 /* SessionsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C3527E8FA5A004790C5 /* SessionsCoordinator.swift */; };
 		76D98C3827E8FA75004790C5 /* MedicineFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C3727E8FA75004790C5 /* MedicineFlowCoordinator.swift */; };
@@ -103,6 +113,16 @@
 		76C03E1727EA0CE900C7E350 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
 		76CC0D6827F1ECA400EBA356 /* InvoiceExtractionFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceExtractionFlowCoordinator.swift; sourceTree = "<group>"; };
 		76CC0D6B27F2277C00EBA356 /* Invoice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invoice.swift; sourceTree = "<group>"; };
+		76CC0D8D27F3286C00EBA356 /* ReimbursmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReimbursmentView.swift; sourceTree = "<group>"; };
+		76CC0D8F27F32B1300EBA356 /* InvoiceDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceDetailHeaderView.swift; sourceTree = "<group>"; };
+		76CC0D9127F32EEA00EBA356 /* DocumentImageFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentImageFetcher.swift; sourceTree = "<group>"; };
+		76CC0D9327F335D800EBA356 /* DocumentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsView.swift; sourceTree = "<group>"; };
+		76CC0D9527F3425500EBA356 /* DocuementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocuementViewController.swift; sourceTree = "<group>"; };
+		76CC0D9827F342AA00EBA356 /* DocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
+		76CC0D9A27F42C8100EBA356 /* DocumentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentViewModel.swift; sourceTree = "<group>"; };
+		76CC0D9E27F42D2100EBA356 /* ConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationViewController.swift; sourceTree = "<group>"; };
+		76CC0DA027F42D2E00EBA356 /* ConfirmationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationViewModel.swift; sourceTree = "<group>"; };
+		76CC0DA227F42D3900EBA356 /* ConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationView.swift; sourceTree = "<group>"; };
 		76D98C3127E8FA0A004790C5 /* InvoiceFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceFlowCoordinator.swift; sourceTree = "<group>"; };
 		76D98C3527E8FA5A004790C5 /* SessionsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionsCoordinator.swift; sourceTree = "<group>"; };
 		76D98C3727E8FA75004790C5 /* MedicineFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicineFlowCoordinator.swift; sourceTree = "<group>"; };
@@ -165,6 +185,7 @@
 		7667442227E8F67700F92473 /* Flows */ = {
 			isa = PBXGroup;
 			children = (
+				76CC0D9C27F42CF700EBA356 /* Common */,
 				7687EC5527ECA5090040F7BE /* InvoiceListFlow */,
 				76D98C5A27EA06A7004790C5 /* NewInvoiceFlow */,
 				76D98C3927E9B4C6004790C5 /* HomeScreenFlow */,
@@ -201,6 +222,9 @@
 				7687EC4327EB44CE0040F7BE /* InvoiceDetailListView.swift */,
 				7687EC4527EB45790040F7BE /* ButtonsSheetView.swift */,
 				7687EC4F27EC77700040F7BE /* ButtonSheetViewModel.swift */,
+				76CC0D8D27F3286C00EBA356 /* ReimbursmentView.swift */,
+				76CC0D8F27F32B1300EBA356 /* InvoiceDetailHeaderView.swift */,
+				76CC0D9327F335D800EBA356 /* DocumentsView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -212,6 +236,7 @@
 				76C03E0D27EA088400C7E350 /* CredentialsManager.swift */,
 				7687EC4827EB6FFA0040F7BE /* DateFormatter.swift */,
 				7687EC5A27ECB5E80040F7BE /* KeyboardResponder.swift */,
+				76CC0D9127F32EEA00EBA356 /* DocumentImageFetcher.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -241,6 +266,35 @@
 				76CC0D6B27F2277C00EBA356 /* Invoice.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		76CC0D9727F3428800EBA356 /* DocumentViewController */ = {
+			isa = PBXGroup;
+			children = (
+				76CC0D9527F3425500EBA356 /* DocuementViewController.swift */,
+				76CC0D9827F342AA00EBA356 /* DocumentView.swift */,
+				76CC0D9A27F42C8100EBA356 /* DocumentViewModel.swift */,
+			);
+			path = DocumentViewController;
+			sourceTree = "<group>";
+		};
+		76CC0D9C27F42CF700EBA356 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				76CC0D9D27F42D0B00EBA356 /* ConfirmationViewController */,
+				76CC0D9727F3428800EBA356 /* DocumentViewController */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		76CC0D9D27F42D0B00EBA356 /* ConfirmationViewController */ = {
+			isa = PBXGroup;
+			children = (
+				76CC0D9E27F42D2100EBA356 /* ConfirmationViewController.swift */,
+				76CC0DA027F42D2E00EBA356 /* ConfirmationViewModel.swift */,
+				76CC0DA227F42D3900EBA356 /* ConfirmationView.swift */,
+			);
+			path = ConfirmationViewController;
 			sourceTree = "<group>";
 		};
 		76D98C3927E9B4C6004790C5 /* HomeScreenFlow */ = {
@@ -430,10 +484,12 @@
 			files = (
 				7667441C27E8DEB000F92473 /* TabBarCoordinator.swift in Sources */,
 				76D98C4427E9DB71004790C5 /* HomeScreenViewModel.swift in Sources */,
+				76CC0D9027F32B1300EBA356 /* InvoiceDetailHeaderView.swift in Sources */,
 				7667440627E8D00E00F92473 /* AppCoordinator.swift in Sources */,
 				766012E027EDC05E00F1F442 /* InvoiceFilterItemView.swift in Sources */,
 				7687EC4227EB44980040F7BE /* Triangle.swift in Sources */,
 				7672311F27EDF50D0071572E /* InvoiceItemCellViewModel.swift in Sources */,
+				76CC0DA327F42D3900EBA356 /* ConfirmationView.swift in Sources */,
 				76D98C3827E8FA75004790C5 /* MedicineFlowCoordinator.swift in Sources */,
 				76D98C3227E8FA0A004790C5 /* InvoiceFlowCoordinator.swift in Sources */,
 				7687EC4627EB45790040F7BE /* ButtonsSheetView.swift in Sources */,
@@ -442,7 +498,9 @@
 				76D98C3627E8FA5A004790C5 /* SessionsCoordinator.swift in Sources */,
 				7687EC3F27EB16BC0040F7BE /* NewInvoiceDetailView.swift in Sources */,
 				7687EC3927EA39610040F7BE /* NewInvoiceFlowCoordinator.swift in Sources */,
+				76CC0DA127F42D2E00EBA356 /* ConfirmationViewModel.swift in Sources */,
 				76CC0D6927F1ECA400EBA356 /* InvoiceExtractionFlowCoordinator.swift in Sources */,
+				76CC0D9927F342AA00EBA356 /* DocumentView.swift in Sources */,
 				7687EC5727ECA5560040F7BE /* InvoiceDetailViewModel.swift in Sources */,
 				7667441D27E8DEB000F92473 /* TabBarItem.swift in Sources */,
 				7667442427E8F70700F92473 /* HomeScreenCoordinator.swift in Sources */,
@@ -454,12 +512,14 @@
 				76E4B49827E8A1E9004027BB /* AppDelegate.swift in Sources */,
 				7672312427EDFB7A0071572E /* InvoiceListDataModel.swift in Sources */,
 				76D98C4027E9C3F1004790C5 /* AppointmentView.swift in Sources */,
+				76CC0D9427F335D800EBA356 /* DocumentsView.swift in Sources */,
 				7687EC5B27ECB5E80040F7BE /* KeyboardResponder.swift in Sources */,
 				7687EC4427EB44CE0040F7BE /* InvoiceDetailListView.swift in Sources */,
 				7667441E27E8DEB000F92473 /* CustomTabBar.swift in Sources */,
 				7687EC4B27EB703D0040F7BE /* NewInvoiceDetailViewModel.swift in Sources */,
 				7687EC5027EC77700040F7BE /* ButtonSheetViewModel.swift in Sources */,
 				76E4B49A27E8A1E9004027BB /* SceneDelegate.swift in Sources */,
+				76CC0D9227F32EEA00EBA356 /* DocumentImageFetcher.swift in Sources */,
 				76D98C3D27E9B5C2004790C5 /* HomeScreenView.swift in Sources */,
 				76D98C4827E9DDC2004790C5 /* AppointmentViewModel.swift in Sources */,
 				7687EC4927EB6FFA0040F7BE /* DateFormatter.swift in Sources */,
@@ -468,10 +528,14 @@
 				7643883127F1AD830015E411 /* ComponentAPICoordinator.swift in Sources */,
 				76D98C3B27E9B4DB004790C5 /* HomeScreenViewController.swift in Sources */,
 				766012DD27EDB18D00F1F442 /* InvoiceListView.swift in Sources */,
+				76CC0D9627F3425500EBA356 /* DocuementViewController.swift in Sources */,
 				76C03E0E27EA088400C7E350 /* CredentialsManager.swift in Sources */,
+				76CC0D8E27F3286C00EBA356 /* ReimbursmentView.swift in Sources */,
 				7694B2B427F1B47700E6940F /* ComponentAPIDocumentServiceProtocol.swift in Sources */,
 				766012D927EDB13C00F1F442 /* InvoiceListViewModel.swift in Sources */,
 				766012D727EDB12C00F1F442 /* InvoiceListViewController.swift in Sources */,
+				76CC0D9F27F42D2100EBA356 /* ConfirmationViewController.swift in Sources */,
+				76CC0D9B27F42C8100EBA356 /* DocumentViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

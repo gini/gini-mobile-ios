@@ -30,10 +30,24 @@ final class InvoiceExtractionFlowCoordinator: Coordinator {
     }
 
     func start(withInvoice invoice: Invoice) {
-        let viewModel = NewInvoiceDetailViewModel(invoice: invoice)
+        let viewModel = NewInvoiceDetailViewModel(invoice: invoice, healthSDK: giniHealth)
         viewModel.delegate = self
         let vc = NewInvoiceDetailViewController(viewModel: viewModel)
         navigationController = UINavigationController(rootViewController: vc)
+    }
+
+    func showConfirmationScreen(ofType type: ConfirmationType) {
+        let viewModel = ConfirmationViewModel(type: type)
+        let viewController = ConfirmationViewController(viewModel: viewModel)
+        viewModel.delegate = self
+        navigationController.present(viewController, animated: true)
+    }
+}
+
+extension InvoiceExtractionFlowCoordinator: ConfirmationViewModelDelegate {
+    func didTapContinue() {
+        self.navigationController.popToRootViewController(animated: true)
+        delegate?.extractionFlowDidFinish(self)
     }
 }
 
@@ -58,6 +72,7 @@ extension InvoiceExtractionFlowCoordinator: GiniHealthTrackingDelegate {
 extension InvoiceExtractionFlowCoordinator: NewInvoiceDetailViewModelDelegate {
     func saveNewInvoice(invoice: Invoice) {
         delegate?.extractionFlowDidSelectSave(invoice: invoice)
+        showConfirmationScreen(ofType: .save)
     }
 
     func didTapPayAndSaveNewInvoice(withExtraction extraction: [Extraction], document: Document?) {
@@ -67,16 +82,8 @@ extension InvoiceExtractionFlowCoordinator: NewInvoiceDetailViewModelDelegate {
         self.navigationController.pushViewController(vc , animated: true)
     }
 
-    func didTapPayAndSubmitNewInvoice() {
-
-    }
-
-    func didTapSubmitNewInvoice() {
-
-    }
-
-    func didTapSaveNewInvoice() {
-
+    func didTapSendInvoice() {
+        showConfirmationScreen(ofType: .reimbursment)
     }
 
     func didTapCancel() {

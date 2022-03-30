@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct InvoiceDetailView: View {
-    var viewModel: InvoiceDetailViewModel
+    @ObservedObject var viewModel: InvoiceDetailViewModel
 
     var body: some View {
         VStack {
@@ -24,56 +24,80 @@ struct InvoiceDetailView: View {
 
                 ZStack(alignment: .top) {
                     VStack {
-                        InvoiceDetailHeaderView(viewModel: viewModel.invoiceDetailViewModel)
+                        InvoiceDetailHeaderView(viewModel: viewModel.invoiceHeaderViewModel)
 
-                        InvoiceDetailListView(viewModel: viewModel.invoiceDetailViewModel)
+                        InvoiceDetailListView(viewModel: viewModel.invoiceDetailListViewModel)
 
-                        HStack {
-                            Button(action: {
-                                print("Pay")
-                            }) {
-                                HStack {
-                                    Spacer()
-                                    Text("Pay invoice")
-                                        .foregroundColor(.white)
-                                        .padding()
-                                        .font(Style.appFont(style: .semiBold, 16))
-                                    Spacer()
+                        if !viewModel.paid {
+                            HStack {
+                                Button(action: {
+                                    viewModel.didSelectPay()
+                                }) {
+                                    HStack {
+                                        Spacer()
+                                        Text("Pay invoice")
+                                            .foregroundColor(.white)
+                                            .padding()
+                                            .font(Style.appFont(style: .semiBold, 16))
+                                        Spacer()
+                                    }
+                                    .background(Style.NewInvoice.accentBlue)
+                                    .cornerRadius(16)
+                                    .padding()
                                 }
-                                .background(Style.NewInvoice.accentBlue)
-                                .cornerRadius(16)
-                                .padding()
                             }
                         }
 
                         Rectangle().fill(Color.gray).frame(height: 1, alignment: .center).padding([.top, .bottom], 26)
 
-                        ReinbursmentStatusView(viewModel: viewModel.invoiceDetailViewModel)
+                        ReinbursmentStatusView(reimbursmentStatus: viewModel.reimbursmentStatus, price: viewModel.price)
 
-                        HStack {
-                            Button(action: {
-                                print("Pay")
-                            }) {
-                                HStack {
-                                    Spacer()
-                                    Text("Submit for claim")
-                                        .foregroundColor(Style.NewInvoice.accentBlue)
+                        if viewModel.reimbursmentStatus != .sent {
+                            HStack {
+                                Button(action: {
+                                    if viewModel.reimbursmentStatus == .reimbursed {
+                                        viewModel.didSelectShowReimbursmentDoc()
+                                    }
+                                }) {
+                                    if viewModel.reimbursmentStatus == .notSent {
+                                        HStack {
+                                            Spacer()
+                                            Text("Submit for claim")
+                                                .foregroundColor(Style.NewInvoice.accentBlue)
+                                                .padding()
+                                                .font(Style.appFont(style: .semiBold, 16))
+                                            Spacer()
+                                        }
+                                        .background(Style.NewInvoice.secondaryBlue)
+                                        .cornerRadius(16)
                                         .padding()
-                                        .font(Style.appFont(style: .semiBold, 16))
-                                    Spacer()
+                                    } else if viewModel.reimbursmentStatus == .reimbursed {
+                                        HStack {
+                                            Spacer()
+                                            Text("Show reimbursement document")
+                                                .foregroundColor(Color.gray)
+                                                .padding()
+                                                .font(Style.appFont(style: .semiBold, 16))
+                                            Spacer()
+                                        }
+                                        .background(Color.clear)
+                                        .cornerRadius(16)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 16)
+                                                    .stroke(Color.gray, lineWidth: 1)
+                                                )
+                                        .padding()
+                                    }
                                 }
-                                .background(Style.NewInvoice.secondaryBlue)
-                                .cornerRadius(16)
-                                .padding()
                             }
                         }
 
-                        DocumentsView()
+                        DocumentsView(images: viewModel.images)
                     }
                     .background(Color.white)
                     .cornerRadius(20)
 
-                    Image(viewModel.invoiceDetailViewModel.iconTitle)
+                    Image(viewModel.iconTitle)
                         .frame(width: 58, height: 58)
                         .offset(x: 0, y: -29)
                 }.padding(.top, 40)
@@ -85,10 +109,10 @@ struct InvoiceDetailView: View {
     }
 }
 
-struct InvoiceDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        let invoice = Invoice(extractions: [], document: nil)
-        let vm = InvoiceDetailViewModel(invoiceDetail: NewInvoiceDetailViewModel(invoice: invoice))
-        InvoiceDetailView(viewModel: vm)
-    }
-}
+//struct InvoiceDetailView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        let invoice = Invoice(extractions: [], document: nil)
+//        let vm = InvoiceDetailViewModel(invoiceDetail: NewInvoiceDetailViewModel(invoice: invoice))
+//        InvoiceDetailView(viewModel: vm)
+//    }
+//}

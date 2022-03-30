@@ -8,13 +8,14 @@
 import Foundation
 
 class InvoiceItemCellViewModel {
-    var id: String = UUID().uuidString
+    var id: String
     var iconName: String
     var title: String
     var paid: Bool
     var reimbursed: ReimbursmentState
     var price: String
     var creationDate: Date
+    var numberOfDaysUntilDue: Int
 
     init(invoice: Invoice) {
         self.iconName = invoice.iconTitle
@@ -22,8 +23,9 @@ class InvoiceItemCellViewModel {
         self.title = invoice.invoiceTitle
         self.paid = invoice.paid
         self.reimbursed = invoice.reimbursmentStatus
-        self.price = invoice.priceString
+        self.price = "\(invoice.price) \(invoice.currency)"
         self.creationDate = invoice.creationDate
+        self.numberOfDaysUntilDue = Int((invoice.dueDate - Date()) / (24*60*60))
     }
 }
 

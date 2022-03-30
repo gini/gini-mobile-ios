@@ -14,21 +14,21 @@ final class InvoiceListDataModel {
     var invoiceData: [Invoice] = [
         {   var invoice = Invoice(extractions: [], document: nil)
             invoice.invoiceTitle = "Dr. Theresa Müller"
-            invoice.priceString = "450.11 EUR"
+            invoice.price = 450.11
             invoice.creationDate = Date().addingTimeInterval(-1 * dayTimeInterval)
             return invoice
         }(),
         {   var invoice = Invoice(extractions: [], document: nil)
             invoice.invoiceTitle = "Dr. Mara Klinsmann"
             invoice.iconTitle = "icon_book"
-            invoice.priceString = "145.99 EUR"
+            invoice.price = 145.99
             invoice.creationDate = Date().addingTimeInterval(-4 * dayTimeInterval)
             return invoice
         }(),
         {   var invoice = Invoice(extractions: [], document: nil)
             invoice.invoiceTitle = "Dr. Mara Klinsmann"
             invoice.iconTitle = "icon_book"
-            invoice.priceString = "145.99 EUR"
+            invoice.price = 145.99
             invoice.paid = true
             invoice.reimbursmentStatus = .sent
             invoice.creationDate = Date().addingTimeInterval(-7 * dayTimeInterval)
@@ -37,14 +37,14 @@ final class InvoiceListDataModel {
         {   var invoice = Invoice(extractions: [], document: nil)
             invoice.invoiceTitle = "Universitätsklinikum Berlin"
             invoice.iconTitle = "icon_book"
-            invoice.priceString = "45.12 EUR"
+            invoice.price = 45.12
             invoice.creationDate = Date().addingTimeInterval(-40 * dayTimeInterval)
             return invoice
         }(),
         {   var invoice = Invoice(extractions: [], document: nil)
             invoice.invoiceTitle = "Bayer Klinikum"
             invoice.iconTitle = "icon_dentist"
-            invoice.priceString = "15.89 EUR"
+            invoice.price = 15.89
             invoice.paid = true
             invoice.reimbursmentStatus = .sent
             invoice.creationDate = Date().addingTimeInterval(-45 * dayTimeInterval)
@@ -53,7 +53,7 @@ final class InvoiceListDataModel {
         {   var invoice = Invoice(extractions: [], document: nil)
             invoice.invoiceTitle = "Universitätsklinikum Frankfurt"
             invoice.iconTitle = "icon_book"
-            invoice.priceString = "15.89 EUR"
+            invoice.price = 15.89
             invoice.paid = true
             invoice.reimbursmentStatus = .reimbursed
             invoice.creationDate = Date().addingTimeInterval(-45 * dayTimeInterval)
@@ -61,10 +61,30 @@ final class InvoiceListDataModel {
         }()
     ]
 
-    lazy var invoiceList = invoiceData.map { InvoiceItemCellViewModel(invoice: $0) }
+    lazy var invoiceList = invoiceData.sorted(by: { $0.creationDate > $1.creationDate }).map { InvoiceItemCellViewModel(invoice: $0) }
+
+    func updateInvoice(paymentId: String, forInvoiceWith id: String) {
+        guard let index = invoiceData.firstIndex(where: { $0.invoiceID == id }) else { return }
+        var invoice = invoiceData[index]
+        invoice.paymentRequestID = paymentId
+        invoiceData[index] = invoice
+    }
+
+    func markInvoicePayed(forInvoiceWith id: String) {
+        guard let index = invoiceData.firstIndex(where: { $0.invoiceID == id }) else { return }
+        var invoice = invoiceData[index]
+        invoice.paid = true
+        invoiceData[index] = invoice
+        updateInvoiceList()
+    }
+
+    func updateInvoiceList() {
+        invoiceList = invoiceData.sorted(by: { $0.creationDate > $1.creationDate }).map { InvoiceItemCellViewModel(invoice: $0) }
+        updateList?()
+    }
 
     func addNewInvoice(invoice: Invoice) {
-        invoiceData.insert(invoice, at: 0)
-        updateList?()
+        invoiceData.append(invoice)
+        updateInvoiceList()
     }
 }

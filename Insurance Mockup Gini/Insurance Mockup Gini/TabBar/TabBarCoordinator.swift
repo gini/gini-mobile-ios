@@ -78,7 +78,8 @@ class TabBarCoordinator: UITabBarController {
                 coordinator.start()
                 coordinators.append(coordinator)
             case .invoices:
-                let coordinator = InvoiceFlowCoordinator(dataModel: dataModel)
+                let coordinator = InvoiceFlowCoordinator(dataModel: dataModel, health: health)
+                coordinator.delegate = self
                 coordinator.start()
                 coordinators.append(coordinator)
             case .addInvoice:
@@ -175,18 +176,28 @@ class TabBarCoordinator: UITabBarController {
         }
     }
 
-    func showInvoiceDetail() {
+    func showInvoiceDetail(with paymentRequestId: String) {
         newInvoiceFlowCoordinator?.abortCoordinator()
         self.selectedIndex = 1
-        (coordinators.first(where: { $0 is InvoiceFlowCoordinator }) as? InvoiceFlowCoordinator)?.showInvoiceDetail(with: "123445")
+        (coordinators.first(where: { $0 is InvoiceFlowCoordinator }) as? InvoiceFlowCoordinator)?.showInvoiceDetailAndChangePaymentStatus(with: paymentRequestId)
+    }
+
+    func showInvoiceDetailWith(invoiceID: String) {
+        self.selectedIndex = 1
+        (coordinators.first(where: { $0 is InvoiceFlowCoordinator }) as? InvoiceFlowCoordinator)?.showInvoiceDetail(with: invoiceID)
     }
 }
 
 // MARK: ComponentAPICoordinatorDelegate
 
 extension TabBarCoordinator: ComponentAPICoordinatorDelegate {
+    func updateInvoicePaymentId(for invoiceID: String, paymentID: String) {
+        dataModel.updateInvoice(paymentId: paymentID, forInvoiceWith: invoiceID)
+    }
+
     func componentAPIDidSelectSave(invoice: Invoice) {
         dataModel.addNewInvoice(invoice: invoice)
+        showInvoiceDetailWith(invoiceID: invoice.invoiceID)
     }
 
     func componentAPI(coordinator: ComponentAPICoordinator, didFinish: ()) {
@@ -194,3 +205,5 @@ extension TabBarCoordinator: ComponentAPICoordinatorDelegate {
         self.newInvoiceFlowCoordinator = nil
     }
 }
+
+extension TabBarCoordinator: InvoiceFlowCoordinatorDelegate {}

@@ -50,7 +50,7 @@ final class InvoiceListViewModel: ObservableObject {
         case .all:
             thisMonthList = dataModel.invoiceList.filter({ InvoiceListViewModel.isDateInThisMonth($0.creationDate) })
         case .open:
-            thisMonthList = dataModel.invoiceList.filter({ InvoiceListViewModel.isDateInThisMonth($0.creationDate) }).filter { $0.reimbursed == .notSent }
+            thisMonthList = dataModel.invoiceList.filter({ InvoiceListViewModel.isDateInThisMonth($0.creationDate) }).filter { $0.reimbursed != .reimbursed || !$0.paid }
         case .unpaid:
             thisMonthList = dataModel.invoiceList.filter({ InvoiceListViewModel.isDateInThisMonth($0.creationDate) }).filter { $0.paid == false }
         case .reimbursed:
@@ -63,7 +63,7 @@ final class InvoiceListViewModel: ObservableObject {
         case .all:
             lastMonthList = dataModel.invoiceList.filter({ !InvoiceListViewModel.isDateInThisMonth($0.creationDate) })
         case .open:
-            lastMonthList = dataModel.invoiceList.filter({ !InvoiceListViewModel.isDateInThisMonth($0.creationDate) }).filter { $0.reimbursed == .notSent }
+            lastMonthList = dataModel.invoiceList.filter({ !InvoiceListViewModel.isDateInThisMonth($0.creationDate) }).filter { $0.reimbursed != .reimbursed || !$0.paid }
         case .unpaid:
             lastMonthList = dataModel.invoiceList.filter({ !InvoiceListViewModel.isDateInThisMonth($0.creationDate) }).filter { $0.paid == false }
         case .reimbursed:

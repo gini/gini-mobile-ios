@@ -14,6 +14,7 @@ import GiniHealthSDK
 
 protocol ComponentAPICoordinatorDelegate: AnyObject {
     func componentAPIDidSelectSave(invoice: Invoice)
+    func updateInvoicePaymentId(for invoiceID: String, paymentID: String)
     func componentAPI(coordinator: ComponentAPICoordinator, didFinish:())
 }
 
@@ -34,6 +35,8 @@ final class ComponentAPICoordinator: NSObject, Coordinator {
     fileprivate let giniColor = UIColor(red: 0, green: (157/255), blue: (220/255), alpha: 1)
     fileprivate let giniConfiguration: GiniConfiguration
     fileprivate var giniHealth: GiniHealth
+
+    private var currentInvoice: Invoice?
 
     fileprivate lazy var navigationController: UINavigationController = {
         let navBarViewController = UINavigationController()
@@ -642,6 +645,7 @@ extension ComponentAPICoordinator {
                     if isPayable {
                         var invoice = Invoice(extractions: extractions, document: document)
                         invoice.creationDate = Date() // WARNING - This date is overwritten only for filtering
+                        currentInvoice = invoice
                         let coordinator = InvoiceExtractionFlowCoordinator(giniHealth: giniHealth)
                         coordinator.start(withInvoice: invoice)
                         coordinator.delegate = self
@@ -718,7 +722,8 @@ extension ComponentAPICoordinator: GiniHealthDelegate {
     
     func didCreatePaymentRequest(paymentRequestID: String) {
         print("✅ Created payment request with id \(paymentRequestID)")
-        
+        guard let invoice = currentInvoice else { return }
+        delegate?.updateInvoicePaymentId(for: invoice.invoiceID, paymentID: paymentRequestID)
     }
 }
 

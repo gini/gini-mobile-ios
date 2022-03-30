@@ -7,9 +7,24 @@
 
 import SwiftUI
 
-struct InvoiceDetailListView: View {
+class InvoiceDetailListViewModel {
+    var creationDate: Date
+    var dueDate: Date
+    var amountWithCurrency: String
+    var paid: Bool
+    var numberOfDaysUntilDue: Int
 
-    var viewModel: NewInvoiceDetailViewModel
+    init(invoice: Invoice) {
+        self.creationDate = invoice.creationDate
+        self.dueDate = invoice.dueDate
+        self.amountWithCurrency = "\(invoice.price) \(invoice.currency)"
+        self.paid = invoice.paid
+        self.numberOfDaysUntilDue = Int((invoice.dueDate - Date()) / (24*60*60))
+    }
+}
+
+struct InvoiceDetailListView: View {
+    var viewModel: InvoiceDetailListViewModel
 
     var body: some View {
         VStack {
@@ -17,15 +32,7 @@ struct InvoiceDetailListView: View {
                 Text("Invoice details")
                     .font(Style.appFont(style: .semiBold, 14))
                 Spacer()
-                Text("Due in \(viewModel.numberOfDaysUntilDue) days")
-                    .font(Style.appFont(style: .medium, 14))
-                    .foregroundColor(.gray)
-                    .padding(4)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 4)
-                                .stroke(Color.gray, lineWidth: 1)
-                            .opacity(0.5)
-                            )
+                PaymentInfoView(paid: viewModel.paid, dueDaysCont: viewModel.numberOfDaysUntilDue)
             }.padding()
 
             HStack {
@@ -33,7 +40,7 @@ struct InvoiceDetailListView: View {
                     .font(Style.appFont(14))
                     .foregroundColor(.gray)
                 Spacer()
-                Text(viewModel.creationDate)
+                Text(viewModel.creationDate.getFormattedDate(format: "dd MMMM, yyyy"))
             }.padding([.top, .leading, .trailing])
 
             HStack {
@@ -41,7 +48,7 @@ struct InvoiceDetailListView: View {
                     .font(Style.appFont(14))
                     .foregroundColor(.gray)
                 Spacer()
-                Text(viewModel.amount)
+                Text(viewModel.amountWithCurrency)
             }.padding([.top, .leading, .trailing])
 
             HStack {
@@ -49,7 +56,7 @@ struct InvoiceDetailListView: View {
                     .font(Style.appFont(14))
                     .foregroundColor(.gray)
                 Spacer()
-                Text(viewModel.dueDate)
+                Text(viewModel.dueDate.getFormattedDate(format: "dd MMMM, yyyy"))
             }.padding([.top, .leading, .trailing])
         }
     }

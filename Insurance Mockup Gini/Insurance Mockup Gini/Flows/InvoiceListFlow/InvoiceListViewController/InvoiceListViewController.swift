@@ -42,7 +42,7 @@ final class InvoiceListViewController: UIViewController {
             hostingView.view.topAnchor.constraint(equalTo: view.topAnchor),
             hostingView.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             hostingView.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            hostingView.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            hostingView.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -95),
         ])
     }
 }

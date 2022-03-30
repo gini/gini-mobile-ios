@@ -11,15 +11,17 @@ import GiniHealthAPILibrary
 struct Invoice {
     var invoiceID: String
     var invoiceTitle: String
-    var priceString: String
+    var price: Double
+    var currency: String = "EUR"
     var creationDate: Date
-    var dueDate: Date
+    var dueDate = Date().addingTimeInterval(Double.random(in: 5..<24)*24*60*60)
     var iban: String
     var reimbursmentStatus: ReimbursmentState
     var paid: Bool
     var iconTitle: String
     var adress: String
     var description: String
+    var paymentRequestID: String?
     var extractions: [Extraction]
     var document: Document?
 
@@ -30,11 +32,13 @@ struct Invoice {
          adress: String = "Munich",
          desciption: String = "Lorem ipsum") {
         invoiceID = id
-        invoiceTitle = extractions.first { $0.entity == "companyname" }?.value ?? "Company name"
-        priceString = extractions.first { $0.entity == "amount" }?.value ?? "00000"
+
+        // adress from extraction
+        invoiceTitle = extractions.first { $0.entity == "text" }?.value ?? "Company name"
+        let priceStrings = extractions.first { $0.entity == "amount" }?.value.split(separator: ":") ?? ["12", "EUR"]
+        price = Double(priceStrings[0]) ?? 123.9
+        currency = String(priceStrings[1])
         creationDate = document?.creationDate ?? Date()
-        // Adding 7 days to the creation date in order to have mocked due date
-        dueDate = document?.creationDate.addingTimeInterval(7*24*60*60) ?? Date().addingTimeInterval(7*24*60*60)
         iban = extractions.first { $0.entity == "iban" }?.value ?? "123456789"
         reimbursmentStatus = .notSent
         paid = false
