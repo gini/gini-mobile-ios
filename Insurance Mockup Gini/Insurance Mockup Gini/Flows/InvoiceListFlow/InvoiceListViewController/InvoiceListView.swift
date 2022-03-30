@@ -55,8 +55,8 @@ struct InvoiceListView: View {
 
                     HStack(spacing: 16) {
                         ForEach(filterItems, id: \.self) { item in
-                            InvoiceFilterItemView(text: item.rawValue, isSelected: item == viewModel.activeFilter)
-                                .frame(width: 90, height: 30)
+                            InvoiceFilterItemView(text: item.rawValue, count: viewModel.filterCount[item], isSelected: item == viewModel.activeFilter)
+                                .frame(width: 100, height: 30)
                                 .onTapGesture {
                                     withAnimation {
                                         viewModel.updateFilter(item)
@@ -96,7 +96,7 @@ struct InvoiceListView: View {
                 }
             } header: {
                 HStack {
-                    Text("January")
+                    Text("Last month")
                         .font(Style.appFont(14))
 
                     Spacer()

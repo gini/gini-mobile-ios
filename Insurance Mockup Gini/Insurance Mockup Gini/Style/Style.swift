@@ -37,6 +37,8 @@ public enum Style {
         static let grayTextColor = Color(red: 0.235, green: 0.235, blue: 0.263)
         static let textFieldColor = Color(red: 0.953, green: 0.953, blue: 0.953)
     }
+
+    static let yellow = Color(red: 0.761, green: 0.584, blue: 0.125)
 }
 
 extension Style {

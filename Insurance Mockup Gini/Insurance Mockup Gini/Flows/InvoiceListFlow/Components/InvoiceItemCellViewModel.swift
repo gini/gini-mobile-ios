@@ -31,6 +31,6 @@ class InvoiceItemCellViewModel {
 
 enum ReimbursmentState: String {
     case notSent = "Not sent"
-    case sent = "Sent"
+    case sent = "Submitted"
     case reimbursed = "Reimbursed"
 }

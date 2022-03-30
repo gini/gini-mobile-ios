@@ -9,15 +9,25 @@ import SwiftUI
 
 struct InvoiceFilterItemView: View {
     var text: String
+    var count: Int?
     var isSelected: Bool
 
     var body: some View {
         HStack {
             VStack(spacing: 4) {
-                Text(text)
-                    .font(Style.appFont(style: .semiBold, 14))
-                    .foregroundColor(isSelected ? Color.black : Color.gray)
-                    .padding(.bottom, 3)
+                HStack {
+                    Text(text)
+                        .font(Style.appFont(style: .semiBold, 14))
+                        .foregroundColor(isSelected ? Color.black : Color.gray)
+                        .padding(.bottom, 3)
+
+                    if let count = count, count > 0 {
+                        Text("(\(count))")
+                            .font(Style.appFont(style: .semiBold, 14))
+                            .foregroundColor(isSelected ? Color.black : Color.gray)
+                            .padding(.bottom, 3)
+                    }
+                }
 
                 if isSelected {
                     Rectangle()

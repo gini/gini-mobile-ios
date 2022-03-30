@@ -15,7 +15,10 @@ protocol InvoiceListViewModelDelegate: AnyObject {
 final class InvoiceListViewModel: ObservableObject {
     weak var delegate: InvoiceListViewModelDelegate?
 
+    typealias FilterCount = [FilterOptions: Int]
+
     @Published var activeFilter: FilterOptions = .all
+    @Published var filterCount: FilterCount = [FilterOptions.all: 0, FilterOptions.open: 0, FilterOptions.unpaid: 0, FilterOptions.reimbursed: 0]
 
     @Published var thisMonthList: [InvoiceItemCellViewModel] = []
     @Published var lastMonthList: [InvoiceItemCellViewModel] = []
@@ -30,6 +33,7 @@ final class InvoiceListViewModel: ObservableObject {
         dataModel.updateList = { [weak self] in
             guard let self = self else { return }
             self.updateFilter(self.activeFilter)
+            self.updateFilterCount()
         }
 
         dataModel.updateInfoBannerVisibility = { [weak self] visibility in
@@ -38,6 +42,15 @@ final class InvoiceListViewModel: ObservableObject {
                 self.infoBannerShowing = visibility
             }
         }
+
+        updateFilterCount()
+    }
+
+    func updateFilterCount() {
+        filterCount[.all] = 0 // This filter should not show the count
+        filterCount[.unpaid] = dataModel.invoiceList.filter { !$0.paid }.count
+        filterCount[.open] = dataModel.invoiceList.filter { $0.reimbursed != .reimbursed || !$0.paid }.count
+        filterCount[.reimbursed] = dataModel.invoiceList.filter { $0.reimbursed == .reimbursed }.count
     }
 
     func updateFilter(_ filter: FilterOptions) {

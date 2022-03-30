@@ -52,6 +52,7 @@ struct PaymentInfoView: View {
                 .font(Style.appFont(style: .medium, 14))
                 .foregroundColor(.gray)
                 .padding([.leading, .trailing], 4)
+                .frame(height: 16)
                 .overlay(
                     RoundedRectangle(cornerRadius: 4)
                             .stroke(Color.gray, lineWidth: 1)
@@ -72,7 +73,7 @@ struct ReinbursmentInfoView: View {
                     .font(Style.appFont(style: .medium, 14))
                     .foregroundColor(.gray)
                     .padding([.leading, .trailing], 4)
-                    .frame(height: 14)
+                    .frame(height: 16)
             }
             .overlay(
                 RoundedRectangle(cornerRadius: 4)
@@ -83,13 +84,12 @@ struct ReinbursmentInfoView: View {
             HStack {
                 Text(reimbursmentState.rawValue)
                     .font(Style.appFont(style: .medium, 14))
-                    .foregroundColor(.gray)
+                    .foregroundColor(Style.yellow)
                     .padding([.leading, .trailing], 4)
-                    .frame(height: 14)
+                    .frame(height: 16)
             }.overlay(
                 RoundedRectangle(cornerRadius: 4)
-                        .stroke(Color.gray, lineWidth: 1)
-                    .opacity(0.5)
+                    .stroke(Style.yellow, lineWidth: 1)
         )
         case .reimbursed:
             HStack {
