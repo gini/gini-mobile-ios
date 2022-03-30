@@ -71,6 +71,14 @@ final class InvoiceFlowCoordinator: Coordinator {
         let vc = DocuementViewController(viewModel: viewModel)
         navigationController.present(vc , animated: true)
     }
+
+    func showConfirmationScreen(ofType type: ConfirmationType) {
+        let viewModel = ConfirmationViewModel(type: type)
+        let viewController = ConfirmationViewController(viewModel: viewModel)
+        viewModel.delegate = self
+        navigationController.modalPresentationStyle = .fullScreen
+        navigationController.present(viewController, animated: true)
+    }
 }
 
 extension InvoiceFlowCoordinator: InvoiceListViewModelDelegate {
@@ -79,6 +87,7 @@ extension InvoiceFlowCoordinator: InvoiceListViewModelDelegate {
         let viewModel = InvoiceDetailViewModel(invoice: invoice, giniHealth: giniHealth)
         viewModel.delegate = self
         let viewController = InvoiceDetailViewController(viewModel: viewModel)
+        viewController.modalPresentationStyle = .fullScreen
         navigationController.pushViewController(viewController, animated: true)
     }
 }
@@ -106,6 +115,17 @@ extension InvoiceFlowCoordinator: InvoiceDetailViewModelDelegate {
     func didSelectPay(invoice: Invoice) {
         currentInvoice = invoice
         showPaymentScreen(for: invoice)
+    }
+
+    func didSelectSubmitForClaim(onInvoiceWith id: String) {
+        dataModel.markInvoiceReimbursed(forInvoiceWith: id)
+        showConfirmationScreen(ofType: .reimbursment)
+    }
+}
+
+extension InvoiceFlowCoordinator: ConfirmationViewModelDelegate {
+    func didTapContinue() {
+        navigationController.dismiss(animated: true)
     }
 }
 

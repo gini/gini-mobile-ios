@@ -57,6 +57,8 @@ struct InvoiceDetailView: View {
                                 Button(action: {
                                     if viewModel.reimbursmentStatus == .reimbursed {
                                         viewModel.didSelectShowReimbursmentDoc()
+                                    } else if viewModel.reimbursmentStatus == .notSent {
+                                        viewModel.didSelectSubmitForClaim()
                                     }
                                 }) {
                                     if viewModel.reimbursmentStatus == .notSent {

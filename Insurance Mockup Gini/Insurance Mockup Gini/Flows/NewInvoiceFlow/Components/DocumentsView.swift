@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DocumentsView: View {
-    var images: [Image]
+    var images: [Data]
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -18,17 +18,18 @@ struct DocumentsView: View {
                     Spacer()
                 }.padding()
 
+
+
                 ScrollView (.horizontal, showsIndicators: false) {
                     HStack {
-                        ForEach(0..<images.count) { imageIndex in
-                                   images[imageIndex]
+                        ForEach(images, id: \.self) { data in
+                            if let uiImage = UIImage(data: data) {
+                                Image(uiImage: uiImage)
                                     .resizable()
                                     .frame(width: 150)
                                     .aspectRatio(contentMode: .fit)
-                                    .onTapGesture {
-                                        print("\(imageIndex)")
-                                    }
-                                }
+                            }
+                        }
                     }
                 }.padding()
 

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 import SwiftUI
 import GiniHealthAPILibrary
 import GiniHealthSDK
@@ -14,6 +15,7 @@ protocol InvoiceDetailViewModelDelegate: AnyObject {
     func didTapBack()
     func didSelectPay(invoice: Invoice)
     func didSelectShowReimbursmentDoc()
+    func didSelectSubmitForClaim(onInvoiceWith id: String)
     func didSelectDocument(_ image: Image)
 }
 
@@ -35,7 +37,7 @@ final class InvoiceDetailViewModel: ObservableObject {
 
     var invoiceHeaderViewModel: InvoiceDetailHeaderViewModel
     var invoiceDetailListViewModel: InvoiceDetailListViewModel
-    @Published var images = [Image]()
+    @Published var images = [Data]()
 
     private var invoice: Invoice
 
@@ -46,10 +48,19 @@ final class InvoiceDetailViewModel: ObservableObject {
         invoiceHeaderViewModel = InvoiceDetailHeaderViewModel(invoice: invoice)
         invoiceDetailListViewModel = InvoiceDetailListViewModel(invoice: invoice)
 
-        images = [Image("invoice1"), Image("invoice2")]
-//        DocumentImageFetcher.fetchDocumentPreviews(for: invoice.document, with: giniHealth) { [weak self] images in
-//            self?.images = images.map({ Image(uiImage: $0) })
-//        }
+        DocumentImageFetcher.fetchDocumentPreviews(for: invoice.document, with: giniHealth) { [weak self] images in
+            // This if is just for mocking data
+            if images.count == 0 {
+                let imageNames = ["invoice1", "invoice2"]
+                imageNames.forEach { imageName in
+                    if let uiImage = UIImage(named: imageName), let imageData = uiImage.jpegData(compressionQuality: 1) {
+                        self?.images.append(imageData)
+                    }
+                }
+            } else {
+                self?.images = images
+            }
+        }
     }
 
     func didTapBack() {
@@ -62,6 +73,12 @@ final class InvoiceDetailViewModel: ObservableObject {
 
     func didSelectShowReimbursmentDoc() {
         delegate?.didSelectShowReimbursmentDoc()
+    }
+
+    func didSelectSubmitForClaim() {
+        invoice.reimbursmentStatus = .sent
+        delegate?.didSelectSubmitForClaim(onInvoiceWith: invoice.invoiceID)
+        objectWillChange.send()
     }
 
     func didSelectDocument(_ image: Image) {

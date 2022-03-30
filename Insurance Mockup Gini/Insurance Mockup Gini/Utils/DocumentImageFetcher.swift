@@ -10,12 +10,15 @@ import GiniHealthAPILibrary
 import GiniHealthSDK
 
 struct DocumentImageFetcher {
-    static func fetchDocumentPreviews(for document: Document?, with healthSDK: GiniHealth, completion: @escaping ([UIImage]) -> Void) {
-        guard let document = document else { return }
+    static func fetchDocumentPreviews(for document: Document?, with healthSDK: GiniHealth, completion: @escaping ([Data]) -> Void) {
+        guard let document = document else {
+            completion([])
+            return
+        }
         let dispatchGroup = DispatchGroup()
         let dispatchQueue = DispatchQueue(label: "imagesQueue")
         let dispatchSemaphore = DispatchSemaphore(value: 0)
-        var images = [UIImage]()
+        var images = [Data]()
         dispatchQueue.async {
             for page in 1 ... document.pageCount {
                 dispatchGroup.enter()
@@ -23,9 +26,7 @@ struct DocumentImageFetcher {
                 healthSDK.documentService.preview(for: document.id, pageNumber: page) { result in
                     switch result {
                     case let .success(dataImage):
-                        if let image = UIImage(data: dataImage) {
-                            images.append(image)
-                        }
+                        images.append(dataImage)
                     case let .failure(error):
                         print(error)
                     }

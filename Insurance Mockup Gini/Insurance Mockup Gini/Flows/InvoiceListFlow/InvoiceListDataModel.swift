@@ -78,6 +78,14 @@ final class InvoiceListDataModel {
         updateInvoiceList()
     }
 
+    func markInvoiceReimbursed(forInvoiceWith id: String) {
+        guard let index = invoiceData.firstIndex(where: { $0.invoiceID == id }) else { return }
+        var invoice = invoiceData[index]
+        invoice.reimbursmentStatus = .sent
+        invoiceData[index] = invoice
+        updateInvoiceList()
+    }
+
     func updateInvoiceList() {
         invoiceList = invoiceData.sorted(by: { $0.creationDate > $1.creationDate }).map { InvoiceItemCellViewModel(invoice: $0) }
         updateList?()

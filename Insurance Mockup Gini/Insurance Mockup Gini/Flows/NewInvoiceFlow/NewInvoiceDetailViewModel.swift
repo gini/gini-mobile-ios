@@ -46,7 +46,7 @@ class NewInvoiceDetailViewModel: ObservableObject {
     private var healthSDK: GiniHealth
 
     @Published var paymentOptionSheetPosition: PaymentOptionSheetPosition = .hidden
-    @Published var images = [Image]()
+    @Published var images = [Data]()
 
     weak var delegate: NewInvoiceDetailViewModelDelegate?
 
@@ -69,8 +69,8 @@ class NewInvoiceDetailViewModel: ObservableObject {
         numberOfDaysUntilDue = Int((invoice.dueDate - Date()) / (24*60*60))
         sheetViewModel.delegate = self
 
-        DocumentImageFetcher.fetchDocumentPreviews(for: document, with: healthSDK) { [weak self] images in
-            self?.images = images.map({ Image(uiImage: $0) })
+        DocumentImageFetcher.fetchDocumentPreviews(for: document, with: healthSDK) { [weak self] dataImages in
+            self?.images = dataImages
         }
     }
 
