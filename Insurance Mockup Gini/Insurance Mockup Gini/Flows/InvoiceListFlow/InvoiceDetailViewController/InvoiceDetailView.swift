@@ -94,7 +94,7 @@ struct InvoiceDetailView: View {
                             }
                         }
 
-                        DocumentsView(images: viewModel.images)
+                        DocumentsView(images: viewModel.images, selectedImage: viewModel.selectedImage)
                     }
                     .background(Color.white)
                     .cornerRadius(20)

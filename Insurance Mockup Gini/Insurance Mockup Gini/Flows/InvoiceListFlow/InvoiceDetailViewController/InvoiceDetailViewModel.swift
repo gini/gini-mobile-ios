@@ -35,12 +35,15 @@ final class InvoiceDetailViewModel: ObservableObject {
     var result: [Extraction] { return invoice.extractions }
     var document: Document? { return invoice.document }
 
+    var selectedImage = PassthroughSubject<Image, Never>()
+
     var invoiceHeaderViewModel: InvoiceDetailHeaderViewModel
     var invoiceDetailListViewModel: InvoiceDetailListViewModel
     @Published var images = [Data]()
 
     private var invoice: Invoice
 
+    var disposeBag = [AnyCancellable]()
     weak var delegate: InvoiceDetailViewModelDelegate?
 
     init(invoice: Invoice, giniHealth: GiniHealth) {
@@ -61,6 +64,10 @@ final class InvoiceDetailViewModel: ObservableObject {
                 self?.images = images
             }
         }
+
+        selectedImage.sink { [weak self] image in
+            self?.didSelectDocument(image)
+        }.store(in: &disposeBag)
     }
 
     func didTapBack() {

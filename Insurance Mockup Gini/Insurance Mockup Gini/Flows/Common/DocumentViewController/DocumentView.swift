@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct DocumentView: View {
-    var viewModel: DocuementViewModel
+    var viewModel: DocumentViewModel
+    @State private var lastScaleValue: CGFloat = 1.0
 
     var body: some View {
         VStack {
@@ -20,14 +21,23 @@ struct DocumentView: View {
                     Image("exit_icon")
                 }
             }
-            .padding(.top)
+            .padding(.top, 40)
             .padding(.trailing)
 
-            Spacer()
-            viewModel.image
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-            Spacer()
+            ScrollView {
+                Spacer()
+                viewModel.image
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .scaleEffect(lastScaleValue)
+                Spacer()
+            }
+            .gesture(MagnificationGesture().onChanged { value in
+                lastScaleValue = value
+            }.onEnded { value in
+                lastScaleValue = 1.0
+            })
+
         }
         .background(Color.gray)
         .ignoresSafeArea()
@@ -36,6 +46,6 @@ struct DocumentView: View {
 
 struct ReimbursmentDocumentView_Previews: PreviewProvider {
     static var previews: some View {
-        DocumentView(viewModel: DocuementViewModel())
+        DocumentView(viewModel: DocumentViewModel())
     }
 }

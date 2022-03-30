@@ -8,17 +8,17 @@
 import Foundation
 import SwiftUI
 
-protocol DocuementViewModelDelegate: AnyObject {
+protocol DocumentViewModelDelegate: AnyObject {
     func didTapClose()
 }
 
-final class DocuementViewModel {
+final class DocumentViewModel {
     var image: Image
 
     init(image: Image = Image("invoice1")) {
         self.image = image
     }
-    weak var delegate: DocuementViewModelDelegate?
+    weak var delegate: DocumentViewModelDelegate?
 
     func didTapClose() {
         delegate?.didTapClose()

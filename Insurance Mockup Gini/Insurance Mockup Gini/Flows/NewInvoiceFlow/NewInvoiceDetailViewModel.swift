@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 import GiniHealthAPILibrary
 import SwiftUI
 import GiniHealthSDK
@@ -20,6 +21,7 @@ protocol NewInvoiceDetailViewModelDelegate: AnyObject {
     func saveNewInvoice(invoice: Invoice)
     func didTapSendInvoice()
     func didTapCancel()
+    func didSelectDocument(_ image: Image)
 }
 
 class NewInvoiceDetailViewModel: ObservableObject {
@@ -48,6 +50,9 @@ class NewInvoiceDetailViewModel: ObservableObject {
     @Published var paymentOptionSheetPosition: PaymentOptionSheetPosition = .hidden
     @Published var images = [Data]()
 
+    var selectedImage = PassthroughSubject<Image, Never>()
+    var disposeBag = [AnyCancellable]()
+    
     weak var delegate: NewInvoiceDetailViewModelDelegate?
 
     init(invoice: Invoice, healthSDK: GiniHealth) {
@@ -72,6 +77,10 @@ class NewInvoiceDetailViewModel: ObservableObject {
         DocumentImageFetcher.fetchDocumentPreviews(for: document, with: healthSDK) { [weak self] dataImages in
             self?.images = dataImages
         }
+
+        selectedImage.sink { [weak self] image in
+            self?.delegate?.didSelectDocument(image)
+        }.store(in: &disposeBag)
     }
 
     func didTapCancel() {

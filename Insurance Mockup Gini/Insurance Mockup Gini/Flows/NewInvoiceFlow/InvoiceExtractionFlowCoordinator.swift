@@ -5,6 +5,7 @@
 //  Created by David Vizaknai on 28.03.2022.
 //
 
+import SwiftUI
 import UIKit
 import GiniHealthSDK
 import GiniHealthAPILibrary
@@ -40,7 +41,16 @@ final class InvoiceExtractionFlowCoordinator: Coordinator {
         let viewModel = ConfirmationViewModel(type: type)
         let viewController = ConfirmationViewController(viewModel: viewModel)
         viewModel.delegate = self
+        viewController.modalPresentationStyle = .fullScreen
         navigationController.present(viewController, animated: true)
+    }
+
+    func showDocumentScreen(with image: Image) {
+        let viewModel = DocumentViewModel(image: image)
+        viewModel.delegate = self
+        let viewController = DocumentViewController(viewModel: viewModel)
+        viewController.modalPresentationStyle = .fullScreen
+        navigationController.present(viewController , animated: true)
     }
 }
 
@@ -89,5 +99,15 @@ extension InvoiceExtractionFlowCoordinator: NewInvoiceDetailViewModelDelegate {
     func didTapCancel() {
         self.navigationController.dismiss(animated: true)
         delegate?.extractionFlowDidFinish(self)
+    }
+
+    func didSelectDocument(_ image: Image) {
+        showDocumentScreen(with: image)
+    }
+}
+
+extension InvoiceExtractionFlowCoordinator: DocumentViewModelDelegate {
+    func didTapClose() {
+        navigationController.dismiss(animated: true)
     }
 }

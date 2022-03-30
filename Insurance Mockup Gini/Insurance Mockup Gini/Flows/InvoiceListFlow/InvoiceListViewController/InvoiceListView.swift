@@ -28,21 +28,25 @@ struct InvoiceListView: View {
                 Image("help_icon")
             }.padding([.top, .bottom])
 
-            HStack {
-                Spacer()
-                HStack {
-                    Image("check_icon")
-                    Text("Your dental bill has been reimbursed")
-                        .font(Style.appFont(style: .medium, 14))
-                }.offset(x: -12, y: 0)
-                Spacer()
+            if viewModel.infoBannerShowing {
+                withAnimation {
+                    HStack {
+                        Spacer()
+                        HStack {
+                            Image("check_icon")
+                            Text("Your dental bill has been reimbursed")
+                                .font(Style.appFont(style: .medium, 14))
+                        }.offset(x: -12, y: 0)
+                        Spacer()
+                    }
+                    .padding()
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(style: StrokeStyle(lineWidth: 1, dash: [5]))
+                            .opacity(0.5)
+                            )
+                }
             }
-            .padding()
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(style: StrokeStyle(lineWidth: 1, dash: [5]))
-                    .opacity(0.5)
-                    )
 
             ScrollView (.horizontal, showsIndicators: false) {
                 ZStack(alignment: .bottom) {

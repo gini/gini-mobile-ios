@@ -5,10 +5,12 @@
 //  Created by David Vizaknai on 29.03.2022.
 //
 
+import Combine
 import SwiftUI
 
 struct DocumentsView: View {
     var images: [Data]
+    var selectedImage = PassthroughSubject<Image, Never>()
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -28,6 +30,11 @@ struct DocumentsView: View {
                                     .resizable()
                                     .frame(width: 150)
                                     .aspectRatio(contentMode: .fit)
+                                    .onTapGesture {
+                                        if let uiImage = UIImage(data: data) {
+                                            selectedImage.send(Image(uiImage: uiImage))
+                                        }
+                                    }
                             }
                         }
                     }

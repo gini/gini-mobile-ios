@@ -11,6 +11,7 @@ import GiniBankAPILibrary
 final class InvoiceListDataModel {
     private static var dayTimeInterval: Double = 60*60*24
     var updateList: (() -> Void)?
+    var updateInfoBannerVisibility: ((Bool) -> Void)?
     var invoiceData: [Invoice] = [
         {   var invoice = Invoice(extractions: [], document: nil)
             invoice.invoiceTitle = "Dr. Theresa Müller"
@@ -20,7 +21,8 @@ final class InvoiceListDataModel {
         }(),
         {   var invoice = Invoice(extractions: [], document: nil)
             invoice.invoiceTitle = "Dr. Mara Klinsmann"
-            invoice.iconTitle = "icon_book"
+            invoice.invoiceID = "5CF076CE-F548-403E-9F76-9768CC128E8E"
+            invoice.iconTitle = "icon_dentist"
             invoice.price = 145.99
             invoice.creationDate = Date().addingTimeInterval(-4 * dayTimeInterval)
             return invoice
@@ -82,6 +84,10 @@ final class InvoiceListDataModel {
         guard let index = invoiceData.firstIndex(where: { $0.invoiceID == id }) else { return }
         var invoice = invoiceData[index]
         invoice.reimbursmentStatus = .sent
+        if id == "5CF076CE-F548-403E-9F76-9768CC128E8E" {
+            // Show the info banner only for this reimbursment action for the speific cell
+            updateInfoBannerVisibility?(true)
+        }
         invoiceData[index] = invoice
         updateInvoiceList()
     }

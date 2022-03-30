@@ -1,5 +1,5 @@
 //
-//  DocuementViewController.swift
+//  DocumentViewController.swift
 //  Insurance Mockup Gini
 //
 //  Created by David Vizaknai on 29.03.2022.
@@ -8,11 +8,11 @@
 import UIKit
 import SwiftUI
 
-final class DocuementViewController: UIViewController {
+final class DocumentViewController: UIViewController {
     private var hostingView: UIHostingController<DocumentView>
-    var viewModel: DocuementViewModel
+    var viewModel: DocumentViewModel
 
-    init(viewModel: DocuementViewModel) {
+    init(viewModel: DocumentViewModel) {
         self.viewModel = viewModel
         hostingView = UIHostingController(rootView: DocumentView(viewModel: viewModel))
         super.init(nibName: nil, bundle: nil)

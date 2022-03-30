@@ -19,6 +19,7 @@ final class InvoiceListViewModel: ObservableObject {
 
     @Published var thisMonthList: [InvoiceItemCellViewModel] = []
     @Published var lastMonthList: [InvoiceItemCellViewModel] = []
+    @Published var infoBannerShowing: Bool = false
 
     private var dataModel: InvoiceListDataModel
 
@@ -28,6 +29,10 @@ final class InvoiceListViewModel: ObservableObject {
         dataModel.updateList = { [weak self] in
             guard let self = self else { return }
             self.updateFilter(self.activeFilter)
+        }
+
+        dataModel.updateInfoBannerVisibility = { [weak self] visibility in
+            self?.infoBannerShowing = visibility
         }
     }
 
@@ -40,8 +45,6 @@ final class InvoiceListViewModel: ObservableObject {
     func didSelectInvoice(with id: String) {
         delegate?.didSelectInvoice(with: id)
     }
-
-
 
     // MARK: - Private
 

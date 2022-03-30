@@ -30,7 +30,6 @@ final class InvoiceFlowCoordinator: Coordinator {
     init(dataModel: InvoiceListDataModel, health: GiniHealth) {
         self.dataModel = dataModel
         self.giniHealth = health
-//        self.giniHealth.delegate = self
     }
 
     func start() {
@@ -57,26 +56,53 @@ final class InvoiceFlowCoordinator: Coordinator {
         didSelectInvoice(with: invoiceId)
     }
 
+    func showUnpayableDocumentAlert() {
+        let alertViewController = UIAlertController(title: "",
+                                                    message: "This document is unpayable",
+                                                    preferredStyle: .alert)
+
+        alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+            alertViewController.dismiss(animated: true)
+        })
+        navigationController.present(alertViewController, animated: true, completion: nil)
+    }
+
     func showPaymentScreen(for invoice: Invoice) {
-        guard let document = invoice.document else { return }
-        let fetchedData = DataForReview(document: document, extractions: invoice.extractions)
-        giniHealth.delegate = self
-        let vc = PaymentReviewViewController.instantiate(with: giniHealth, data: fetchedData, trackingDelegate: self)
-        navigationController.present(vc , animated: true)
+        guard let document = invoice.document else {
+            showUnpayableDocumentAlert()
+            return
+        }
+
+        self.giniHealth.checkIfDocumentIsPayable(docId: document.id) { [self] result in
+            switch result {
+            case let .success(isPayable):
+                    if isPayable {
+                        let fetchedData = DataForReview(document: document, extractions: invoice.extractions)
+                        giniHealth.delegate = self
+                        let vc = PaymentReviewViewController.instantiate(with: giniHealth, data: fetchedData, trackingDelegate: self)
+                        navigationController.present(vc , animated: true)
+                    } else {
+                        showUnpayableDocumentAlert()
+                    }
+            case .failure:
+                showUnpayableDocumentAlert()
+            }
+        }
     }
 
     func showDocumentScreen(with image: Image) {
-        let viewModel = DocuementViewModel(image: image)
+        let viewModel = DocumentViewModel(image: image)
         viewModel.delegate = self
-        let vc = DocuementViewController(viewModel: viewModel)
-        navigationController.present(vc , animated: true)
+        let viewController = DocumentViewController(viewModel: viewModel)
+        viewController.modalPresentationStyle = .fullScreen
+        navigationController.present(viewController , animated: true)
     }
 
     func showConfirmationScreen(ofType type: ConfirmationType) {
         let viewModel = ConfirmationViewModel(type: type)
         let viewController = ConfirmationViewController(viewModel: viewModel)
+        viewController.modalPresentationStyle = .fullScreen
         viewModel.delegate = self
-        navigationController.modalPresentationStyle = .fullScreen
         navigationController.present(viewController, animated: true)
     }
 }
@@ -87,12 +113,11 @@ extension InvoiceFlowCoordinator: InvoiceListViewModelDelegate {
         let viewModel = InvoiceDetailViewModel(invoice: invoice, giniHealth: giniHealth)
         viewModel.delegate = self
         let viewController = InvoiceDetailViewController(viewModel: viewModel)
-        viewController.modalPresentationStyle = .fullScreen
         navigationController.pushViewController(viewController, animated: true)
     }
 }
 
-extension InvoiceFlowCoordinator: DocuementViewModelDelegate {
+extension InvoiceFlowCoordinator: DocumentViewModelDelegate {
     func didTapClose() {
         navigationController.dismiss(animated: true)
     }
