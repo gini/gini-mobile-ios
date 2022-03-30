@@ -19,7 +19,6 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
     var giniBankAPIdocumentService: GiniBankAPILibrary.DefaultDocumentService!
     var uploadedDocument: Document?
     var sendFeedbackBlock: (([String: Extraction]) -> Void) = {_ in }
-    var captureResultsDelegate = GiniCaptureResultsDelegateMock()
     var docId = ""
     override func setUp() {
         giniBankAPILib = GiniBankAPI
@@ -33,7 +32,6 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
             let extractions = updatedExtractions.map {$0.1}
             documentService?.sendFeedback(with: extractions)
         }
-        //captureResultsDelegate.sendFeedbackBlock ?? {_ in }
     }
 
     func loadFile(withName name: String, ofType type: String) -> Data {
@@ -79,16 +77,7 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
 
                             return (name, $0)
                         })
-//                        let analysisResult = AnalysisResult(extractions: extractionsForResult, images: [], document: self.documentService?.document)
-                        
-//                        self.captureResultsDelegate.giniCaptureAnalysisDidFinishWith(result: analysisResult) { updatedExtractionDictionary in
-//                            let extractions = updatedExtractionDictionary.map {$0.1}
-//                            self.documentService?.sendFeedback(with: extractions)
-//                        }
-                        // self.captureResultsDelegate.giniCaptureAnalysisDidFinishWith(result: AnalysisResult(extractions: extractionsForResult, images: [], document: self.documentService?.document)) { _ in
-
                        self.sendFeedbackBlock(extractionsForResult)
-                        // }
 
                         // 4. Verify that the extractions were updated
                         self.getUpdatedExtractionsFromGiniCaptureSDK { result in
@@ -162,25 +151,6 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                     completion(.failure(error))
                 }
             }
-        }
-    }
-
-    class GiniCaptureResultsDelegateMock: GiniCaptureResultsDelegate {
-        
-        var sendFeedbackBlock: (([String: Extraction]) -> Void)?
-        
-        func giniCaptureAnalysisDidFinishWith(result: AnalysisResult,
-                                             sendFeedbackBlock: @escaping ([String: Extraction]) -> Void) {
-            self.sendFeedbackBlock = sendFeedbackBlock
-            DispatchQueue.main.async {
-                sendFeedbackBlock(result.extractions)
-            }
-        }
-        
-        func giniCaptureDidCancelAnalysis() {
-        }
-        
-        func giniCaptureAnalysisDidFinishWithoutResults(_ showingNoResultsScreen: Bool) {
         }
     }
 }
