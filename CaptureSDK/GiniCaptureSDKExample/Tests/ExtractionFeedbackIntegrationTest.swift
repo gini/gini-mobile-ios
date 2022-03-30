@@ -46,6 +46,8 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
         let expect = expectation(description: "feedback was correctly sent and extractions were updated")
 
         var extractions: [Extraction] = []
+        
+        // 1. Getting the extractions for the uploaded document.
         self.getExtractionsFromGiniCaptureSDK { result in
             switch result {
             case let .success(extractionResult):
@@ -55,7 +57,7 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
 
                     let fixtureExtractionsContainer = try! JSONDecoder().decode(ExtractionsContainer.self, from: fixtureExtractionsJson)
 
-                    // Verify we received the correct extractions for this test
+                    // 2. Verify we received the correct extractions for this test
                     XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "iban" })?.value, extractions.first(where: { $0.name == "iban" })?.value)
 
                     XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "paymentRecipient" })?.value,
@@ -64,22 +66,25 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                                    extractions.first(where: { $0.name == "paymentPurpose" })?.value)
                     XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "bic" })?.value, extractions.first(where: { $0.name == "bic" })?.value)
                     XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "amountToPay" })?.value, extractions.first(where: { $0.name == "amountToPay" })?.value)
+                    
                     // 3. Assuming the user saw the following extractions:
                     //    amountToPay, iban, bic, paymentPurpose and paymentRecipient
                     //    Supposing the user changed the amountToPay from "995.00:EUR" to "950.00:EUR"
                     //    we need to update that extraction
                     extractions.first(where: { $0.name == "amountToPay" })?.value = "950.00:EUR"
                     if extractions.first(where: { $0.name == "amountToPay" }) != nil {
-                        //    Send feedback for the extractions the user saw
-                        //    with the final (user confirmed or updated) extraction values
+                        
                         let extractionsForResult: [String: Extraction] = Dictionary(uniqueKeysWithValues: extractionResult.extractions.compactMap {
                             guard let name = $0.name else { return nil }
-
                             return (name, $0)
                         })
+                        
+                        // 4. Send feedback for the extractions the user saw
+                        //    with the final (user confirmed or updated) extraction values
+                        
                        self.sendFeedbackBlock(extractionsForResult)
 
-                        // 4. Verify that the extractions were updated
+                        // 5. Verify that the extractions were updated
                         self.getUpdatedExtractionsFromGiniCaptureSDK { result in
                             switch result {
                             case let .success(extractionResult):
@@ -113,17 +118,30 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
         }
         wait(for: [expect], timeout: 60)
     }
-
+    
+    /**
+      * This method reproduces the document upload and analysis done by the Capture SDK.
+      *
+      * The intent of this method is to create an extractions like the one your app
+      * receives after a user analysed a document with the Capture SDK.
+      *
+      * In your production code you should not call `DocumentService` methods.
+      * Interaction with the network service is handled by the Capture SDK internally.
+      */
     private func getExtractionsFromGiniCaptureSDK(completion: @escaping AnalysisCompletion) {
         let testDocumentData = loadFile(withName: "Gini_invoice_example", ofType: "pdf")
         let builder = GiniCaptureDocumentBuilder(documentSource: .appName(name: "GiniCaptureSDKExample"))
         let captureDocument = builder.build(with: testDocumentData)!
+        
+        // Upload a test document
         documentService?.upload(document: captureDocument) { result in
             DispatchQueue.main.async { [weak self] in
                 switch result {
                 case let .success(createdDocument):
                     self?.uploadedDocument = createdDocument
                     print(createdDocument)
+                    
+                    // Analyze the uploaded test document
                     self?.documentService?.startAnalysis { result in
                         switch result {
                         case let .success(extractionResult):
@@ -140,6 +158,11 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
         }
     }
 
+    /**
+      * This method reproduces the getting extractions for the already known document by the Capture SDK.
+      * In your production code you should not call  any`GiniBankAPILibrary` methods.
+      * Interaction with the network service is handled by the Capture SDK internally.
+      */
     private func getUpdatedExtractionsFromGiniCaptureSDK(completion: @escaping AnalysisCompletion){
         self.giniBankAPIdocumentService.extractions(for: (self.uploadedDocument)!,
                            cancellationToken: CancellationToken()) { result in
