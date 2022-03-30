@@ -27,6 +27,11 @@ final class InvoiceListViewController: UIViewController {
         setupView()
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.viewDidDissapear()
+    }
+
     private func setupView() {
         addChild(hostingView)
         view.addSubview(hostingView.view)

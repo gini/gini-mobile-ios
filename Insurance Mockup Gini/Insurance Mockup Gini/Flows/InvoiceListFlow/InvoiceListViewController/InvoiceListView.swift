@@ -34,7 +34,7 @@ struct InvoiceListView: View {
                         Spacer()
                         HStack {
                             Image("check_icon")
-                            Text("Your dental bill has been reimbursed")
+                            Text("Your dental bill has been submitted")
                                 .font(Style.appFont(style: .medium, 14))
                         }.offset(x: -12, y: 0)
                         Spacer()
