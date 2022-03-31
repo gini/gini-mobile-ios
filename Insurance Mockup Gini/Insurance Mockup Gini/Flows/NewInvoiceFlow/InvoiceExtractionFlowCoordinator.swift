@@ -12,7 +12,7 @@ import GiniHealthAPILibrary
 
 protocol InvoiceExtractionFlowCoordinatorDelegate: AnyObject {
     func extractionFlowDidSelectSave(invoice: Invoice)
-    func extractionFlowDidFinish(_ coordinator: InvoiceExtractionFlowCoordinator)
+    func extractionFlowDidFinish(_ coordinator: InvoiceExtractionFlowCoordinator, withSuccess: Bool)
 }
 
 final class InvoiceExtractionFlowCoordinator: Coordinator {
@@ -56,8 +56,8 @@ final class InvoiceExtractionFlowCoordinator: Coordinator {
 
 extension InvoiceExtractionFlowCoordinator: ConfirmationViewModelDelegate {
     func didTapContinue() {
-        self.navigationController.popToRootViewController(animated: true)
-        delegate?.extractionFlowDidFinish(self)
+        navigationController.popToRootViewController(animated: true)
+        delegate?.extractionFlowDidFinish(self, withSuccess: true)
     }
 }
 
@@ -80,12 +80,14 @@ extension InvoiceExtractionFlowCoordinator: GiniHealthTrackingDelegate {
 
 
 extension InvoiceExtractionFlowCoordinator: NewInvoiceDetailViewModelDelegate {
-    func saveNewInvoice(invoice: Invoice) {
+    func saveNewInvoice(invoice: Invoice, shouldShowConfirmation: Bool) {
         delegate?.extractionFlowDidSelectSave(invoice: invoice)
-        showConfirmationScreen(ofType: .save)
+        if shouldShowConfirmation {
+            showConfirmationScreen(ofType: .save)
+        }
     }
 
-    func didTapPayAndSaveNewInvoice(withExtraction extraction: [Extraction], document: Document?) {
+    func didTapPay(withExtraction extraction: [Extraction], document: Document?) {
         guard let document = document else { return }
         let fetchedData = DataForReview(document: document, extractions: extraction)
         let vc = PaymentReviewViewController.instantiate(with: giniHealth, data: fetchedData, trackingDelegate: self)
@@ -98,7 +100,7 @@ extension InvoiceExtractionFlowCoordinator: NewInvoiceDetailViewModelDelegate {
 
     func didTapCancel() {
         self.navigationController.dismiss(animated: true)
-        delegate?.extractionFlowDidFinish(self)
+        self.delegate?.extractionFlowDidFinish(self, withSuccess: false)
     }
 
     func didSelectDocument(_ image: Image) {

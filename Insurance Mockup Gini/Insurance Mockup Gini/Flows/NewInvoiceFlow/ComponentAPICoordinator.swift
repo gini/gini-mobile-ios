@@ -15,7 +15,7 @@ import GiniHealthSDK
 protocol ComponentAPICoordinatorDelegate: AnyObject {
     func componentAPIDidSelectSave(invoice: Invoice)
     func updateInvoicePaymentId(for invoiceID: String, paymentID: String)
-    func componentAPI(coordinator: ComponentAPICoordinator, didFinish:())
+    func componentAPI(coordinator: ComponentAPICoordinator, didFinish: String?)
 }
 
 //swiftlint:disable file_length
@@ -204,7 +204,7 @@ extension ComponentAPICoordinator {
     }
     
     @objc fileprivate func closeComponentAPI() {
-        delegate?.componentAPI(coordinator: self, didFinish: ())
+        delegate?.componentAPI(coordinator: self, didFinish: nil)
     }
     
     
@@ -638,19 +638,46 @@ extension ComponentAPICoordinator {
 extension ComponentAPICoordinator {
     
     fileprivate func handleAnalysis(document: Document, giniHealth: GiniHealth, extractions: [Extraction]) {
+        var allExtractions = extractions
         
         self.giniHealth.checkIfDocumentIsPayable(docId: document.id) { [self] result in
             switch result {
             case let .success(isPayable):
                     if isPayable {
-                        var invoice = Invoice(extractions: extractions, document: document)
-                        invoice.creationDate = Date() // WARNING - This date is overwritten only for filtering
-                        currentInvoice = invoice
-                        let coordinator = InvoiceExtractionFlowCoordinator(giniHealth: giniHealth)
-                        coordinator.start(withInvoice: invoice)
-                        coordinator.delegate = self
-                        add(childCoordinator: coordinator)
-                        navigationController.present(coordinator.rootViewController, animated: true)
+
+                        giniHealth.documentService.extractions(for: document, cancellationToken: CancellationToken()) { result in
+                            switch result {
+
+                            case .success(let extractions):
+                                if let lineItems = extractions.lineItems?.flatMap({ $0 }) {
+                                    allExtractions += lineItems
+                                }
+
+                                if let lineItems = extractions.payment?.flatMap({ $0 }) {
+                                    allExtractions += lineItems
+                                }
+
+                                if let lineItems = extractions.invoiceSender?.flatMap({ $0 }) {
+                                    allExtractions += lineItems
+                                }
+
+                                var invoice = Invoice(extractions: allExtractions, document: document)
+                                invoice.creationDate = Date() // WARNING - This date is overwritten only for filtering
+                                currentInvoice = invoice
+
+                                DispatchQueue.main.async {
+                                    let coordinator = InvoiceExtractionFlowCoordinator(giniHealth: giniHealth)
+                                    coordinator.start(withInvoice: invoice)
+                                    coordinator.delegate = self
+                                    add(childCoordinator: coordinator)
+                                    navigationController.present(coordinator.rootViewController, animated: true)
+                                }
+                            case .failure(_):
+                                print("error")
+                            }
+                        }
+
+
                     } else {
                         let alertViewController = UIAlertController(title: "",
                                                                     message: "This document is unpayable",
@@ -680,8 +707,8 @@ extension ComponentAPICoordinator {
 
     func abortCoordinator() {
         navigationController.dismiss(animated: false)
-        childCoordinators.forEach { remove(childCoordinator: $0) }
-        delegate?.componentAPI(coordinator: self, didFinish: ())
+        childCoordinators.forEach { self.remove(childCoordinator: $0) }
+        delegate?.componentAPI(coordinator: self, didFinish: nil)
     }
 }
 
@@ -690,10 +717,11 @@ extension ComponentAPICoordinator: InvoiceExtractionFlowCoordinatorDelegate {
         delegate?.componentAPIDidSelectSave(invoice: invoice)
     }
 
-    func extractionFlowDidFinish(_ coordinator: InvoiceExtractionFlowCoordinator) {
+    func extractionFlowDidFinish(_ coordinator: InvoiceExtractionFlowCoordinator, withSuccess: Bool) {
         navigationController.dismiss(animated: false)
+//        coordinator.rootViewController.dismiss(animated: true, completion: nil)
         remove(childCoordinator: coordinator)
-        delegate?.componentAPI(coordinator: self, didFinish: ())
+        delegate?.componentAPI(coordinator: self, didFinish: withSuccess ? self.currentInvoice?.invoiceID : nil)
     }
 }
 

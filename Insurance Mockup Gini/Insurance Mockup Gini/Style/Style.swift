@@ -38,6 +38,13 @@ public enum Style {
         static let textFieldColor = Color(red: 0.953, green: 0.953, blue: 0.953)
     }
 
+    enum InvoiceIcon {
+        static let backgroundColorOff = Color(red: 0.953, green: 0.953, blue: 0.953)
+        static let backgroundColorOn = Color(red: 0.871, green: 0.933, blue: 0.89)
+        static let iconColorOff = Color.black
+        static let iconColorOn = Color(red: 0.165, green: 0.686, blue: 0.314)
+    }
+
     static let yellow = Color(red: 0.761, green: 0.584, blue: 0.125)
 }
 

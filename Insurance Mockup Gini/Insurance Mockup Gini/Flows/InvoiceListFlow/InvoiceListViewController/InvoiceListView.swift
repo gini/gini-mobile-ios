@@ -15,7 +15,7 @@ enum FilterOptions: String {
 }
 struct InvoiceListView: View {
 
-    @ObservedObject var viewModel: InvoiceListViewModel
+    @StateObject var viewModel: InvoiceListViewModel
     var filterItems: [FilterOptions] = [.all, .open, .unpaid, .reimbursed]
 
     var body: some View {
@@ -34,7 +34,7 @@ struct InvoiceListView: View {
                         Spacer()
                         HStack {
                             Image("check_icon")
-                            Text("Your dental bill has been submitted")
+                            Text("Your dental bill has been reimbursed")
                                 .font(Style.appFont(style: .medium, 14))
                         }.offset(x: -12, y: 0)
                         Spacer()
@@ -53,7 +53,7 @@ struct InvoiceListView: View {
                     Rectangle().fill(Color.gray).frame(height: 1, alignment: .center).padding([.leading, .trailing], -26)
                         .offset(x: 0, y: -1)
 
-                    HStack(spacing: 16) {
+                    HStack(spacing: 0) {
                         ForEach(filterItems, id: \.self) { item in
                             InvoiceFilterItemView(text: item.rawValue, count: viewModel.filterCount[item], isSelected: item == viewModel.activeFilter)
                                 .frame(width: 100, height: 30)

@@ -54,6 +54,7 @@
 		76CC0D9F27F42D2100EBA356 /* ConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CC0D9E27F42D2100EBA356 /* ConfirmationViewController.swift */; };
 		76CC0DA127F42D2E00EBA356 /* ConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CC0DA027F42D2E00EBA356 /* ConfirmationViewModel.swift */; };
 		76CC0DA327F42D3900EBA356 /* ConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CC0DA227F42D3900EBA356 /* ConfirmationView.swift */; };
+		76CC0DA627F47CCA00EBA356 /* InvoiceIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CC0DA527F47CCA00EBA356 /* InvoiceIconView.swift */; };
 		76D98C3227E8FA0A004790C5 /* InvoiceFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C3127E8FA0A004790C5 /* InvoiceFlowCoordinator.swift */; };
 		76D98C3627E8FA5A004790C5 /* SessionsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C3527E8FA5A004790C5 /* SessionsCoordinator.swift */; };
 		76D98C3827E8FA75004790C5 /* MedicineFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D98C3727E8FA75004790C5 /* MedicineFlowCoordinator.swift */; };
@@ -123,6 +124,7 @@
 		76CC0D9E27F42D2100EBA356 /* ConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationViewController.swift; sourceTree = "<group>"; };
 		76CC0DA027F42D2E00EBA356 /* ConfirmationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationViewModel.swift; sourceTree = "<group>"; };
 		76CC0DA227F42D3900EBA356 /* ConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationView.swift; sourceTree = "<group>"; };
+		76CC0DA527F47CCA00EBA356 /* InvoiceIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceIconView.swift; sourceTree = "<group>"; };
 		76D98C3127E8FA0A004790C5 /* InvoiceFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceFlowCoordinator.swift; sourceTree = "<group>"; };
 		76D98C3527E8FA5A004790C5 /* SessionsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionsCoordinator.swift; sourceTree = "<group>"; };
 		76D98C3727E8FA75004790C5 /* MedicineFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicineFlowCoordinator.swift; sourceTree = "<group>"; };
@@ -281,6 +283,7 @@
 		76CC0D9C27F42CF700EBA356 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				76CC0DA427F47CBC00EBA356 /* Components */,
 				76CC0D9D27F42D0B00EBA356 /* ConfirmationViewController */,
 				76CC0D9727F3428800EBA356 /* DocumentViewController */,
 			);
@@ -295,6 +298,14 @@
 				76CC0DA227F42D3900EBA356 /* ConfirmationView.swift */,
 			);
 			path = ConfirmationViewController;
+			sourceTree = "<group>";
+		};
+		76CC0DA427F47CBC00EBA356 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				76CC0DA527F47CCA00EBA356 /* InvoiceIconView.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		76D98C3927E9B4C6004790C5 /* HomeScreenFlow */ = {
@@ -489,6 +500,7 @@
 				766012E027EDC05E00F1F442 /* InvoiceFilterItemView.swift in Sources */,
 				7687EC4227EB44980040F7BE /* Triangle.swift in Sources */,
 				7672311F27EDF50D0071572E /* InvoiceItemCellViewModel.swift in Sources */,
+				76CC0DA627F47CCA00EBA356 /* InvoiceIconView.swift in Sources */,
 				76CC0DA327F42D3900EBA356 /* ConfirmationView.swift in Sources */,
 				76D98C3827E8FA75004790C5 /* MedicineFlowCoordinator.swift in Sources */,
 				76D98C3227E8FA0A004790C5 /* InvoiceFlowCoordinator.swift in Sources */,

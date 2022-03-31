@@ -22,7 +22,7 @@ final class InvoiceListViewModel: ObservableObject {
 
     @Published var thisMonthList: [InvoiceItemCellViewModel] = []
     @Published var lastMonthList: [InvoiceItemCellViewModel] = []
-    @Published var infoBannerShowing: Bool = false
+    @Published var infoBannerShowing: Bool = true
     private var infoBannerAlreadyShown = false
 
     private var dataModel: InvoiceListDataModel
@@ -34,13 +34,6 @@ final class InvoiceListViewModel: ObservableObject {
             guard let self = self else { return }
             self.updateFilter(self.activeFilter)
             self.updateFilterCount()
-        }
-
-        dataModel.updateInfoBannerVisibility = { [weak self] visibility in
-            guard let self = self else { return }
-            if !self.infoBannerAlreadyShown {
-                self.infoBannerShowing = visibility
-            }
         }
 
         updateFilterCount()

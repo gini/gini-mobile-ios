@@ -11,7 +11,8 @@ struct InvoiceItemCell: View {
     var viewModel: InvoiceItemCellViewModel
     var body: some View {
         HStack {
-            Image(viewModel.iconName)
+            InvoiceIconView(paid: viewModel.paid, iconName: viewModel.iconName)
+            .frame(width: 48, height: 48)
 
             VStack(alignment: .leading) {
                 Text(viewModel.title)
@@ -22,6 +23,7 @@ struct InvoiceItemCell: View {
             }
 
             Spacer()
+
 
             Text(viewModel.price)
         }

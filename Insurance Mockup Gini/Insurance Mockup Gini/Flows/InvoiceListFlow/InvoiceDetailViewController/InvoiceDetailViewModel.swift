@@ -28,7 +28,7 @@ final class InvoiceDetailViewModel: ObservableObject {
     var iban: String { return invoice.iban }
     var numberOfDaysUntilDue: Int { return Int((invoice.dueDate - Date()) / (24*60*60)) }
     var reimbursmentStatus: ReimbursmentState { return invoice.reimbursmentStatus }
-    var iconTitle = "icon_dentist"
+    var iconTitle = "teeth_icon"
     var adress = "Musterstrasse 11, 1234 Musterstadt"
     var description = "Prophylaxe"
     var paid: Bool { return invoice.paid }

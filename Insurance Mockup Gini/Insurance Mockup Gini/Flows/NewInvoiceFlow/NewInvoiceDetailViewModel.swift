@@ -17,8 +17,8 @@ enum PaymentOptionSheetPosition: CGFloat, CaseIterable {
 }
 
 protocol NewInvoiceDetailViewModelDelegate: AnyObject {
-    func didTapPayAndSaveNewInvoice(withExtraction extraction: [Extraction], document: Document?)
-    func saveNewInvoice(invoice: Invoice)
+    func didTapPay(withExtraction extraction: [Extraction], document: Document?)
+    func saveNewInvoice(invoice: Invoice, shouldShowConfirmation: Bool)
     func didTapSendInvoice()
     func didTapCancel()
     func didSelectDocument(_ image: Image)
@@ -33,7 +33,7 @@ class NewInvoiceDetailViewModel: ObservableObject {
     var iban: String
     var numberOfDaysUntilDue: Int
     var reimbursmentStatus: ReimbursmentState
-    var iconTitle = "icon_dentist"
+    var iconTitle = "teeth_icon"
     var sheetViewModel = ButtonSheetViewModel()
     var adress = "Musterstrasse 11, 1234 Musterstadt"
     var description = "Prophylaxe"
@@ -90,23 +90,23 @@ class NewInvoiceDetailViewModel: ObservableObject {
 
 extension NewInvoiceDetailViewModel: ButtonSheetViewModelDelegate {
     func didTapPayAndSave() {
-        delegate?.saveNewInvoice(invoice: invoice)
-        delegate?.didTapPayAndSaveNewInvoice(withExtraction: result, document: document)
+        delegate?.saveNewInvoice(invoice: invoice, shouldShowConfirmation: false)
+        delegate?.didTapPay(withExtraction: result, document: document)
     }
 
     func didTapPayAndSubmit() {
         invoice.reimbursmentStatus = .sent
-        delegate?.saveNewInvoice(invoice: invoice)
-        delegate?.didTapPayAndSaveNewInvoice(withExtraction: result, document: document)
+        delegate?.saveNewInvoice(invoice: invoice, shouldShowConfirmation: false)
+        delegate?.didTapPay(withExtraction: result, document: document)
     }
 
     func didTapSubmit() {
         invoice.reimbursmentStatus = .sent
-        delegate?.saveNewInvoice(invoice: invoice)
+        delegate?.saveNewInvoice(invoice: invoice, shouldShowConfirmation: false)
         delegate?.didTapSendInvoice()
     }
 
     func didTapSave() {
-        delegate?.saveNewInvoice(invoice: invoice)
+        delegate?.saveNewInvoice(invoice: invoice, shouldShowConfirmation: true)
     }
 }

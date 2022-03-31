@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct InvoiceDetailView: View {
-    @ObservedObject var viewModel: InvoiceDetailViewModel
+    @StateObject var viewModel: InvoiceDetailViewModel
 
     var body: some View {
         VStack {
@@ -99,7 +99,7 @@ struct InvoiceDetailView: View {
                     .background(Color.white)
                     .cornerRadius(20)
 
-                    Image(viewModel.iconTitle)
+                    InvoiceIconView(paid: viewModel.paid, iconName: viewModel.iconTitle)
                         .frame(width: 58, height: 58)
                         .offset(x: 0, y: -29)
                 }.padding(.top, 40)

@@ -23,7 +23,7 @@ class InvoiceItemCellViewModel {
         self.title = invoice.invoiceTitle
         self.paid = invoice.paid
         self.reimbursed = invoice.reimbursmentStatus
-        self.price = "\(invoice.price) \(invoice.currency)"
+        self.price = "\(String(format: "%.2f", invoice.price)) \(invoice.currency)"
         self.creationDate = invoice.creationDate
         self.numberOfDaysUntilDue = Int((invoice.dueDate - Date()) / (24*60*60))
     }

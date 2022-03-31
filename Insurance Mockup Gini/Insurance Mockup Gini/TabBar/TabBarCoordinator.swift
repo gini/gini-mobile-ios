@@ -17,7 +17,7 @@ class TabBarCoordinator: UITabBarController {
     private var tabBarHeight: CGFloat = 107.0
     private var coordinators = [Coordinator]()
 
-    private var newInvoiceFlowCoordinator: ComponentAPICoordinator?
+    private var scanInvoiceFlowCoordinator: ComponentAPICoordinator?
 
     private lazy var giniConfiguration: GiniConfiguration = {
         let giniConfiguration = GiniConfiguration()
@@ -145,7 +145,7 @@ class TabBarCoordinator: UITabBarController {
                                                                   documentService: self.componentAPIDocumentService(),
                                                                   giniHealth: self.health)
             componentAPICoordinator.delegate = self
-            self.newInvoiceFlowCoordinator = componentAPICoordinator
+            self.scanInvoiceFlowCoordinator = componentAPICoordinator
             componentAPICoordinator.start()
 
             self.present(componentAPICoordinator.rootViewController, animated: true, completion: nil)
@@ -177,14 +177,15 @@ class TabBarCoordinator: UITabBarController {
     }
 
     func showInvoiceDetail(with paymentRequestId: String) {
-        newInvoiceFlowCoordinator?.abortCoordinator()
+        scanInvoiceFlowCoordinator?.abortCoordinator()
         self.selectedIndex = 1
         (coordinators.first(where: { $0 is InvoiceFlowCoordinator }) as? InvoiceFlowCoordinator)?.showInvoiceDetailAndChangePaymentStatus(with: paymentRequestId)
     }
 
     func showInvoiceDetailWith(invoiceID: String) {
-        self.selectedIndex = 1
-        (coordinators.first(where: { $0 is InvoiceFlowCoordinator }) as? InvoiceFlowCoordinator)?.showInvoiceDetail(with: invoiceID)
+        print("X: Thread.isMainThreadThread.isMainThread \(Thread.isMainThread), current: \(Thread.current)")
+//        self.selectedIndex = 1
+//        (coordinators.first(where: { $0 is InvoiceFlowCoordinator }) as? InvoiceFlowCoordinator)?.showInvoiceDetail(with: invoiceID)
     }
 }
 
@@ -197,12 +198,16 @@ extension TabBarCoordinator: ComponentAPICoordinatorDelegate {
 
     func componentAPIDidSelectSave(invoice: Invoice) {
         dataModel.addNewInvoice(invoice: invoice)
-        showInvoiceDetailWith(invoiceID: invoice.invoiceID)
+//        showInvoiceDetailWith(invoiceID: invoice.invoiceID)
     }
 
-    func componentAPI(coordinator: ComponentAPICoordinator, didFinish: ()) {
+    func componentAPI(coordinator: ComponentAPICoordinator, didFinish: String?) {
         coordinator.rootViewController.dismiss(animated: true, completion: nil)
-        self.newInvoiceFlowCoordinator = nil
+        self.scanInvoiceFlowCoordinator = nil
+
+        if let invoiceID = didFinish {
+            showInvoiceDetailWith(invoiceID: invoiceID)
+        }
     }
 }
 

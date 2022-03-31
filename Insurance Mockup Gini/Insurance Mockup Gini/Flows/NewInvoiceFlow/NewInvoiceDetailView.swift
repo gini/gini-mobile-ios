@@ -12,7 +12,7 @@ import BottomSheet
 struct NewInvoiceDetailView: View {
 
     @State private var isPresented: Bool = false
-    @ObservedObject var viewModel: NewInvoiceDetailViewModel
+    @StateObject var viewModel: NewInvoiceDetailViewModel
 
     @ObservedObject private var keyboard = KeyboardResponder()
     @State private var textFieldInput: String = ""
@@ -47,7 +47,7 @@ struct NewInvoiceDetailView: View {
                     .background(Color.white)
                     .cornerRadius(20)
 
-                    Image(viewModel.iconTitle)
+                    InvoiceIconView(paid: viewModel.paid, iconName: viewModel.iconTitle)
                         .frame(width: 58, height: 58)
                         .offset(x: 0, y: -29)
                 }.padding(.top, 40)

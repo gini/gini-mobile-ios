@@ -28,13 +28,27 @@ struct Invoice {
     init(id: String = UUID().uuidString,
          extractions: [Extraction],
          document: Document?,
-         iconTitle: String = "icon_dentist",
-         adress: String = "Munich",
+         iconTitle: String = "teeth_icon",
          desciption: String = "Lorem ipsum") {
+
+
+//        if extractions.count > 0 {
+//            print("X: =================")
+//            print("X: InvoiceID \(id)")
+//
+//            for ext in extractions {
+//                print("X: entity \(ext.entity)")
+//                print("X: value \(ext.value)")
+//                print("X: -")
+//            }
+//
+//            print("X: =================")
+//        }
+
         invoiceID = id
 
         // adress from extraction
-        invoiceTitle = extractions.first { $0.entity == "text" }?.value ?? "Company name"
+        invoiceTitle = extractions.first { $0.entity == "text" }?.value ?? "Dr. Mara Mustermann"
         let priceStrings = extractions.first { $0.entity == "amount" }?.value.split(separator: ":") ?? ["12", "EUR"]
         price = Double(priceStrings[0]) ?? 123.9
         currency = String(priceStrings[1])
@@ -43,9 +57,11 @@ struct Invoice {
         reimbursmentStatus = .notSent
         paid = false
         self.iconTitle = iconTitle
-        self.adress = adress
         self.description = desciption
         self.extractions = extractions
         self.document = document
+        self.adress = [extractions.first { $0.entity == "street" }?.value ?? "Maximillianstrasse",
+                            extractions.first { $0.entity == "city" }?.value ?? "Munich",
+                            extractions.first { $0.entity == "postal_code" }?.value ?? "80339"].joined(separator: ", ")
     }
 }

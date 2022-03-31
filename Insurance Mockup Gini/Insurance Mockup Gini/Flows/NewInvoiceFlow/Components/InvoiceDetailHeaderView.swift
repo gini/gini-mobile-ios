@@ -17,14 +17,14 @@ class InvoiceDetailHeaderViewModel: ObservableObject {
     init(invoice: Invoice) {
         companyTitle = invoice.invoiceTitle
         description = invoice.description
-        ammount = "\(invoice.price) \(invoice.currency)"
+        ammount = "\(String(format: "%.2f", invoice.price)) \(invoice.currency)"
         adress = invoice.adress
         paid = invoice.paid
     }
 }
 
 struct InvoiceDetailHeaderView: View {
-    @ObservedObject var viewModel: InvoiceDetailHeaderViewModel
+    @StateObject var viewModel: InvoiceDetailHeaderViewModel
     var body: some View {
         VStack {
             Text(viewModel.companyTitle)

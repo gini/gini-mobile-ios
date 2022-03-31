@@ -80,6 +80,7 @@ final class InvoiceFlowCoordinator: Coordinator {
                         let fetchedData = DataForReview(document: document, extractions: invoice.extractions)
                         giniHealth.delegate = self
                         let vc = PaymentReviewViewController.instantiate(with: giniHealth, data: fetchedData, trackingDelegate: self)
+                        vc.modalPresentationStyle = .fullScreen
                         navigationController.present(vc , animated: true)
                     } else {
                         showUnpayableDocumentAlert()

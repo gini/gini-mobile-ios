@@ -11,25 +11,25 @@ import GiniBankAPILibrary
 final class InvoiceListDataModel {
     private static var dayTimeInterval: Double = 60*60*24
     var updateList: (() -> Void)?
-    var updateInfoBannerVisibility: ((Bool) -> Void)?
     var invoiceData: [Invoice] = [
         {   var invoice = Invoice(extractions: [], document: nil)
             invoice.invoiceTitle = "Dr. Theresa Müller"
+            invoice.iconTitle = "book_icon"
             invoice.price = 450.11
             invoice.creationDate = Date().addingTimeInterval(-1 * dayTimeInterval)
             return invoice
         }(),
         {   var invoice = Invoice(extractions: [], document: nil)
             invoice.invoiceTitle = "Dr. Mara Klinsmann"
-            invoice.invoiceID = "5CF076CE-F548-403E-9F76-9768CC128E8E"
-            invoice.iconTitle = "icon_dentist"
-            invoice.price = 145.99
+            invoice.iconTitle = "teeth_icon"
+            invoice.reimbursmentStatus = .reimbursed
+            invoice.price = 14.99
             invoice.creationDate = Date().addingTimeInterval(-4 * dayTimeInterval)
             return invoice
         }(),
         {   var invoice = Invoice(extractions: [], document: nil)
             invoice.invoiceTitle = "Dr. Mara Klinsmann"
-            invoice.iconTitle = "icon_book"
+            invoice.iconTitle = "git_icon"
             invoice.price = 145.99
             invoice.paid = true
             invoice.reimbursmentStatus = .sent
@@ -38,14 +38,14 @@ final class InvoiceListDataModel {
         }(),
         {   var invoice = Invoice(extractions: [], document: nil)
             invoice.invoiceTitle = "Universitätsklinikum Berlin"
-            invoice.iconTitle = "icon_book"
+            invoice.iconTitle = "aperture_icon"
             invoice.price = 45.12
             invoice.creationDate = Date().addingTimeInterval(-40 * dayTimeInterval)
             return invoice
         }(),
         {   var invoice = Invoice(extractions: [], document: nil)
             invoice.invoiceTitle = "Bayer Klinikum"
-            invoice.iconTitle = "icon_dentist"
+            invoice.iconTitle = "settings_icon"
             invoice.price = 15.89
             invoice.paid = true
             invoice.reimbursmentStatus = .sent
@@ -54,7 +54,7 @@ final class InvoiceListDataModel {
         }(),
         {   var invoice = Invoice(extractions: [], document: nil)
             invoice.invoiceTitle = "Universitätsklinikum Frankfurt"
-            invoice.iconTitle = "icon_book"
+            invoice.iconTitle = "aperture_icon"
             invoice.price = 15.89
             invoice.paid = true
             invoice.reimbursmentStatus = .reimbursed
@@ -84,10 +84,6 @@ final class InvoiceListDataModel {
         guard let index = invoiceData.firstIndex(where: { $0.invoiceID == id }) else { return }
         var invoice = invoiceData[index]
         invoice.reimbursmentStatus = .sent
-        if id == "5CF076CE-F548-403E-9F76-9768CC128E8E" {
-            // Show the info banner only for this reimbursment action for the speific cell
-            updateInfoBannerVisibility?(true)
-        }
         invoiceData[index] = invoice
         updateInvoiceList()
     }
