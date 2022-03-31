@@ -49,6 +49,7 @@ final class AppCoordinator: Coordinator {
         }
         let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
         configuration.customMenuItems = [customMenuItem]
+        configuration.albumsScreenSelectMorePhotosTextColor = GiniColor(lightModeColor: .systemBlue, darkModeColor: .systemBlue)
        return configuration
     }()
     
