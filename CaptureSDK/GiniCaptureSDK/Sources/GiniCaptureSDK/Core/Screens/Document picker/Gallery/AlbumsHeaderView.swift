@@ -21,7 +21,7 @@ final class AlbumsHeaderView: UITableViewHeaderFooterView {
                                                            comment: "Title for select more photos button")
         selectPhotosButton.titleLabel?.font = configuration.customFont.with(weight: .regular, size: 16, style: .footnote)
         selectPhotosButton.setTitle(buttonTitle, for: .normal)
-        selectPhotosButton.setTitleColor(configuration.navigationBarTintColor, for: .normal)
+        selectPhotosButton.setTitleColor(UIColor.from(giniColor: configuration.albumsScreenSelectMorePhotosTextColor), for: .normal)
         selectPhotosButton.sizeToFit()
     }
 

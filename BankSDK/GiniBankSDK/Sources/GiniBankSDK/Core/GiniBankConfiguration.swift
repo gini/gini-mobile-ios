@@ -11,7 +11,7 @@ import GiniCaptureSDK
 public final class GiniBankConfiguration: NSObject {
     
     /**
-     Singleton to make configuration internally accessible in all classes of the Gini Pay Bank SDK.
+     Singleton to make configuration internally accessible in all classes of the Gini Bank SDK.
      */
     public static var shared = GiniBankConfiguration()
     
@@ -20,7 +20,6 @@ public final class GiniBankConfiguration: NSObject {
      the user will be presented with a digital representation of their invoice where they
      can see individual line items and are able to amend them or choose to not to pay for them.
     */
-    
     @objc public var returnAssistantEnabled = true
     
     /**
@@ -51,7 +50,6 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Used to handle all the logging messages in order to log them in a different way.
      */
-
     @objc public var logger: GiniLogger = GiniConfiguration().logger
     
     /**
@@ -61,7 +59,7 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var multipageEnabled = false
     
     /**
-     Sets the tint color of the navigation bar in all screens of the Gini Pay Bank SDK to
+     Sets the tint color of the navigation bar in all screens of the Gini Bank SDK to
      the globally specified color or to a default color.
      
      - note: Screen API only.
@@ -69,7 +67,7 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var navigationBarTintColor = UINavigationBar.appearance().barTintColor ?? Colors.Gini.raspberry
     
     /**
-     Sets the tint color of all navigation items in all screens of the Gini Pay Bank SDK to
+     Sets the tint color of all navigation items in all screens of the Gini Bank SDK to
      the globally specified color.
      
      - note: Screen API only.
@@ -77,7 +75,7 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var navigationBarItemTintColor = UINavigationBar.appearance().tintColor
     
     /**
-     Sets the font of all navigation items in all screens of the Gini Pay Bank SDK to
+     Sets the font of all navigation items in all screens of the Gini Bank SDK to
      the globally specified font or a default font.
      
      - note: Screen API only.
@@ -87,7 +85,7 @@ public final class GiniBankConfiguration: NSObject {
         UIFont.systemFont(ofSize: 16, weight: .bold)
     
     /**
-     Sets the title color in the navigation bar in all screens of the Gini Pay Bank SDK to
+     Sets the title color in the navigation bar in all screens of the Gini Bank SDK to
      the globally specified color or to a default color.
      
      - note: Screen API only.
@@ -97,7 +95,7 @@ public final class GiniBankConfiguration: NSObject {
         .titleTextAttributes?[NSAttributedString.Key.foregroundColor] as? UIColor ?? .white
     
     /**
-     Sets the title font in the navigation bar in all screens of the Gini Pay Bank SDK to
+     Sets the title font in the navigation bar in all screens of the Gini Bank SDK to
      the globally specified font or to a default font.
 
      - note: Screen API only.
@@ -140,7 +138,7 @@ public final class GiniBankConfiguration: NSObject {
     
     /**
      Indicates whether the open with feature is enabled or not. In case of `true`,
-     a new option with the open with tutorial wil be shown in the Help menu
+     a new option with the open with tutorial wil be shown in the Help menu.
      */
     @objc public var openWithEnabled = false
     
@@ -150,11 +148,11 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var qrCodeScanningEnabled = false
     
     /**
-     Indicates the status bar style in the Gini Pay Bank SDK.
+     Indicates the status bar style in the Gini Bank SDK.
      
      - note: If `UIViewControllerBasedStatusBarAppearance` is set to `false` in the `Info.plist`,
      it may not work in future versions of iOS since the `UIApplication.setStatusBarStyle` method was
-     deprecated on iOS 9.0
+     deprecated on iOS 9.0.
      */
     @objc public var statusBarStyle = UIStatusBarStyle.lightContent
     
@@ -171,33 +169,32 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var cameraNotAuthorizedButtonTitleColor = UIColor.white
     
     /**
-     Sets the color of camera preview corner guides
+     Sets the color of camera preview corner guides.
      */
     @objc public var cameraPreviewCornerGuidesColor = UIColor.white
     
     /**
-     Set the types supported by the file import feature. `GiniCaptureImportFileTypes.none` by default
-     
+     Set the types supported by the file import feature. `GiniCaptureImportFileTypes.none` by default.
      */
     @objc public var fileImportSupportedTypes = GiniConfiguration.GiniCaptureImportFileTypes.none
     
     /**
-     Sets the background color of the new file import button hint
+     Sets the background color of the new file import button hint.
      */
     @objc public var fileImportToolTipBackgroundColor = UIColor.white
     
     /**
-     Sets the text color of the new file import button hint
+     Sets the text color of the new file import button hint.
      */
     @objc public var fileImportToolTipTextColor = UIColor.black
     
     /**
-     Sets the text color of the new file import button hint
+     Sets the close button color of the new file import button hint.
      */
     @objc public var fileImportToolTipCloseButtonColor = Colors.Gini.grey
     
     /**
-     Sets the background style when the tooltip is shown
+     Sets the background style when the tooltip is shown.
      */
     public var toolTipOpaqueBackgroundStyle: OpaqueViewStyle {
         
@@ -223,19 +220,17 @@ public final class GiniBankConfiguration: NSObject {
     private var _toolTipOpaqueBackgroundStyle: OpaqueViewStyle?
     
     /**
-     Sets the text color of the item selected background check
+     Sets the text color of the item selected background check.
      */
     @objc public var galleryPickerItemSelectedBackgroundCheckColor = Colors.Gini.blue
     
     /**
      Sets the background color for gallery screen.
      */
-    
     @objc public var galleryScreenBackgroundColor = GiniColor(lightModeColor: .black, darkModeColor: .black)
     
     /**
      Indicates whether the flash toggle should be shown in the camera screen.
-     
      */
     @objc public var flashToggleEnabled = false
     
@@ -264,17 +259,17 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var navigationBarCameraTitleHelpButton = ""
     
     /**
-     Sets the text color of the QR Code popup button
+     Sets the text color of the QR Code popup button.
      */
     @objc public var qrCodePopupButtonColor = Colors.Gini.blue
     
     /**
-     Sets the text color of the QR Code popup label
+     Sets the text color of the QR Code popup label.
      */
     @objc public var qrCodePopupTextColor = GiniColor(lightModeColor: .black, darkModeColor: .white)
     
     /**
-     Sets the text color of the QR Code popup background
+     Sets the text color of the QR Code popup background.
      */
     @objc public var qrCodePopupBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: UIColor.from(hex: 0x1c1c1e))
     
@@ -303,7 +298,7 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var onboardingCurrentPageIndicatorAlpha: CGFloat = 0.2
     
     /**
-     Indicates whether the onboarding screen should be presented at each start of the Gini Pay Bank SDK.
+     Indicates whether the onboarding screen should be presented at each start of the Gini Bank SDK.
      
      - note: Screen API only.
      */
@@ -311,7 +306,7 @@ public final class GiniBankConfiguration: NSObject {
     
     /**
      Indicates whether the onboarding screen should be presented at the first
-     start of the Gini Pay Bank SDK. It is advised to do so.
+     start of the Gini Bank SDK. It is advised to do so.
      
      - note: Overwrites `onboardingShowAtLaunch` for the first launch.
      - note: Screen API only.
@@ -331,7 +326,7 @@ public final class GiniBankConfiguration: NSObject {
     
     /**
      All onboarding pages which will be presented in a horizontal scroll view to the user.
-     By default the Gini Pay Bank SDK comes with three pages advising the user to keep the
+     By default the Gini Bank SDK comes with three pages advising the user to keep the
      document flat, hold the device parallel and capture the whole document.
      
      - note: Any array of views can be passed, but for your convenience we provide the `GINIOnboardingPage` class.
@@ -408,46 +403,46 @@ public final class GiniBankConfiguration: NSObject {
     // MARK: Multipage options
     
     /**
-     Sets the color of the pages container and toolbar
+     Sets the color of the pages container and toolbar.
      */
     @objc public var multipagePagesContainerAndToolBarColor = GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: UIColor.from(hex: 0x1c1c1c))
     
     @objc private var _multipagePagesContainerAndToolBarColor: UIColor?
     
     /**
-     Sets the color of the circle indicator
+     Sets the color of the circle indicator.
      */
     @objc public var indicatorCircleColor = GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: .lightGray)
     
     /**
-     Sets the tint color of the toolbar items
+     Sets the tint color of the toolbar items.
      */
     @objc public var multipageToolbarItemsColor = Colors.Gini.blue
     
     /**
-     Sets the tint color of the page indicator
+     Sets the tint color of the page indicator.
      */
     @objc public var multipagePageIndicatorColor = Colors.Gini.blue
     
     /**
-     Sets the background color of the page selected indicator
+     Sets the background color of the page selected indicator.
      */
     @objc public var multipagePageSelectedIndicatorColor = Colors.Gini.blue
     
     /**
-     Sets the background color of the page background
+     Sets the background color of the page background.
      */
     @objc public var multipagePageBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: UIColor.from(hex: 0x1c1c1e))
     
     @objc private var _multipagePageBackgroundColor: UIColor?
     
     /**
-     Sets the tint color of the draggable icon in the page collection cell
+     Sets the tint color of the draggable icon in the page collection cell.
      */
     @objc public var multipageDraggableIconColor = Colors.Gini.veryLightGray
 
     /**
-     Sets the background style when the tooltip is shown in the multipage screen
+     Sets the background style when the tooltip is shown in the multipage screen.
      */
     public var multipageToolTipOpaqueBackgroundStyle: OpaqueViewStyle = .blurred(style: .light)
     
@@ -480,7 +475,6 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Sets the background color for all help screens.
      */
-    
     @objc public var helpScreenBackgroundColor =  GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: UIColor.from(hex: 0x1C1C1C))
     
     /**
@@ -523,31 +517,36 @@ public final class GiniBankConfiguration: NSObject {
     // MARK: Open with tutorial options
     
     /**
-     Sets the text of the app name for the Open with tutorial texts
-     
+     Sets the text of the app name for the Open with tutorial texts.
      */
     @objc public var openWithAppNameForTexts = Bundle.main.appName
     
     /**
-     Sets the color of the step indicator for the Open with tutorial
-     
+     Sets the color of the step indicator for the Open with tutorial.
      */
     @objc public var stepIndicatorColor = Colors.Gini.blue
     
     // MARK: No results options
     
     /**
-     Sets the color of the bottom button to the specified color
+     Sets the color of the bottom button to the specified color.
      */
     @objc public var noResultsBottomButtonColor = Colors.Gini.blue
     
     /**
-     Sets the color of the warning container background to the specified color
+     Sets the color of the warning container background to the specified color.
      */
     @objc public var noResultsWarningContainerIconColor = Colors.Gini.rose
     
+    // MARK: Albums screen
+    
     /**
-     Sets if the Drag&Drop step should be shown in the "Open with" tutorial
+     Sets the text color for the select more photos button on the albums screen.
+     */
+    @objc public var albumsScreenSelectMorePhotosTextColor =  GiniColor(lightModeColor: Colors.Gini.blue, darkModeColor: Colors.Gini.blue)
+    
+    /**
+     Sets if the Drag&Drop step should be shown in the "Open with" tutorial.
      */
     @objc public var shouldShowDragAndDropTutorial = true
     
@@ -610,12 +609,12 @@ public final class GiniBankConfiguration: NSObject {
     // MARK: Digital invoice
 
     /**
-     Sets the color of the active elements on the digital invoice line item cells to the specified color
+     Sets the color of the active elements on the digital invoice line item cells to the specified color.
      */
     @objc public var lineItemTintColor = Colors.Gini.blue
     
     /**
-     Sets the color of the active elements on the digital invoice line item count label to the specified color
+     Sets the color of the active elements on the digital invoice line item count label to the specified color.
      */
     @objc public var lineItemCountLabelColor = UIColor.lightGray
     
@@ -640,19 +639,17 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var digitalInvoiceLineItemQuantityFont = UIFont.systemFont(ofSize: 32, weight: .bold)
     
     /**
-     Sets the color of  the line item label that  displays the quantity on the digital invoice line item cells to the specified color
+     Sets the color of  the line item label that  displays the quantity on the digital invoice line item cells to the specified color.
      */
     @objc public var digitalInvoiceLineItemQuantityColor =  GiniColor(lightModeColor: .black, darkModeColor: .white)
     
     /**
-     Sets the font of the main currency unit of the price on the line item
-     of the digital invoice screen to the specified font.
+     Sets the font of the main currency unit of the price on the line item of the digital invoice screen to the specified font.
      */
     @objc public var digitalInvoiceLineItemPriceMainUnitFont = UIFont.systemFont(ofSize: 32, weight: .bold)
     
     /**
-    Sets the font of the fractional currency unit of the price on the line item
-    of the digital invoice screen to the specified font.
+    Sets the font of the fractional currency unit of the price on the line item of the digital invoice screen to the specified font.
     */
     @objc public var digitalInvoiceLineItemPriceFractionalUnitFont = UIFont.systemFont(ofSize: 18, weight: .bold)
     
@@ -662,7 +659,7 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var digitalInvoiceSecondaryMessageTextFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
     
     /**
-     Sets the color of the secondary message label on the digital invoice line item cells to the specified color
+     Sets the color of the secondary message label on the digital invoice line item cells to the specified color.
      */
     @objc public var digitalInvoiceSecondaryMessageTextColor = Colors.Gini.blue
     
@@ -702,37 +699,37 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var digitalInvoiceItemsSectionHeaderTextFont = UIFont.systemFont(ofSize: 12)
     
     /**
-     Sets the background color of the digital invoice pay button to the specified color
+     Sets the background color of the digital invoice pay button to the specified color.
      */
     @objc public var payButtonBackgroundColor = Colors.Gini.blue
     
     /**
-     Sets the title text color of the digital invoice pay button to the specified color
+     Sets the title text color of the digital invoice pay button to the specified color.
      */
     @objc public var payButtonTitleTextColor = UIColor.white
     
     /**
-     Sets the title text font of the digital invoice pay button to the specified font
+     Sets the title text font of the digital invoice pay button to the specified font.
      */
     @objc public var payButtonTitleFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
     
     /**
-     Sets the background color of the digital invoice skip button to the specified color
+     Sets the background color of the digital invoice skip button to the specified color.
      */
     @objc public var skipButtonBackgroundColor = UIColor.white
     
     /**
-     Sets the title text color of the digital invoice skip button to the specified color
+     Sets the title text color of the digital invoice skip button to the specified color.
      */
     @objc public var skipButtonTitleTextColor = Colors.Gini.blue
     
     /**
-     Sets the layer border color of the digital invoice skip button to the specified color
+     Sets the layer border color of the digital invoice skip button to the specified color.
      */
     @objc public var skipButtonBorderColor = Colors.Gini.blue
     
     /**
-     Sets the title text font of the digital invoice skip button to the specified font
+     Sets the title text font of the digital invoice skip button to the specified font.
      */
     @objc public var skipButtonTitleFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
     
@@ -757,17 +754,17 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var digitalInvoiceTotalExplanationLabelTextColor = GiniColor(lightModeColor: .lightGray, darkModeColor: .lightGray)
     
     /**
-     Sets the font of the main unit of the addon price labels to the specified font
+     Sets the font of the main unit of the addon price labels to the specified font.
      */
     @objc public var digitalInvoiceAddonPriceMainUnitFont = UIFont.systemFont(ofSize: 16, weight: .bold)
     
     /**
-     Sets the font of the fractional unit of the addon price labels to the specified font
+     Sets the font of the fractional unit of the addon price labels to the specified font.
      */
     @objc public var digitalInvoiceAddonPriceFractionalUnitFont = UIFont.systemFont(ofSize: 9, weight: .bold)
     
     /**
-     Sets the color of the addon price labels in the digital invoice screen to the specified color
+     Sets the color of the addon price labels in the digital invoice screen to the specified color.
      */
     @objc public var digitalInvoiceAddonPriceColor: UIColor {
         
@@ -795,7 +792,7 @@ public final class GiniBankConfiguration: NSObject {
     @objc private var _digitalInvoiceAddonPriceColor: UIColor?
     
     /**
-     Sets the color of the total price label in the digital invoice screen to the specified color
+     Sets the color of the total price label in the digital invoice screen to the specified color.
      */
     @objc public var digitalInvoiceTotalPriceColor: UIColor {
         
@@ -823,24 +820,23 @@ public final class GiniBankConfiguration: NSObject {
     @objc private var _digitalInvoiceTotalPriceColor: UIColor?
     
     /**
-     Sets the font of the digital invoice main unit of the total price label to the specified font
+     Sets the font of the digital invoice main unit of the total price label to the specified font.
      */
     @objc public var digitalInvoiceTotalPriceMainUnitFont = UIFont.systemFont(ofSize: 32, weight: .bold)
     
     /**
-     Sets the font of the digital invoice fractional unit of the total price label to the specified font
+     Sets the font of the digital invoice fractional unit of the total price label to the specified font.
      */
     @objc public var digitalInvoiceTotalPriceFractionalUnitFont = UIFont.systemFont(ofSize: 18, weight: .bold)
     
     /**
-     Sets the font of the content description labels in the line item details view controller to the specified font
+     Sets the font of the content description labels in the line item details view controller to the specified font.
      */
     @objc public var lineItemDetailsDescriptionLabelFont = UIFont.systemFont(ofSize: 12)
     
     /**
-     Sets the color of the content description labels in the line item details view controller to the specified color
+     Sets the color of the content description labels in the line item details view controller to the specified color.
      */
-    
     @objc public var lineItemDetailsDescriptionLabelColor: UIColor {
         
         set {
@@ -872,12 +868,12 @@ public final class GiniBankConfiguration: NSObject {
     @objc private var _lineItemDetailsDescriptionLabelColor: UIColor?
     
     /**
-     Sets the font of the content labels in the line item details view controller to the specified font
+     Sets the font of the content labels in the line item details view controller to the specified font.
      */
     @objc public var lineItemDetailsContentLabelFont = UIFont.systemFont(ofSize: 15, weight: .medium)
     
     /**
-     Sets the color of the content labels in the line item details view controller to the specified color
+     Sets the color of the content labels in the line item details view controller to the specified color.
      */
     @objc public var lineItemDetailsContentLabelColor: UIColor {
         
@@ -905,129 +901,128 @@ public final class GiniBankConfiguration: NSObject {
     @objc private var _lineItemDetailsContentLabelColor: UIColor?
     
     /**
-     Sets the font of the line item details screen main unit of the total price label to the specified font
+     Sets the font of the line item details screen main unit of the total price label to the specified font.
      */
     @objc public var lineItemDetailsTotalPriceMainUnitFont = UIFont.systemFont(ofSize: 20, weight: .bold)
     
     /**
-     Sets the font of the line item details screen fractional unit of the total price label to the specified font
+     Sets the font of the line item details screen fractional unit of the total price label to the specified font.
      */
     @objc public var lineItemDetailsTotalPriceFractionalUnitFont = UIFont.systemFont(ofSize: 12, weight: .bold)
     
     /**
-     Sets the backgroundColor on the digital invoice onboarding screen
+     Sets the backgroundColor on the digital invoice onboarding screen.
      */
     @objc public var digitalInvoiceOnboardingBackgroundColor = GiniColor(lightModeColor: Colors.Gini.blue, darkModeColor: Colors.Gini.blue)
     
     /**
-     Sets the color on the digital invoice onboarding screen for text labels
+     Sets the color on the digital invoice onboarding screen for text labels.
      */
     @objc public var digitalInvoiceOnboardingTextColor = GiniColor(lightModeColor: UIColor.white, darkModeColor: UIColor.white)
 
     /**
-     Sets the font of the first text label on the digital invoice onboarding screen
+     Sets the font of the first text label on the digital invoice onboarding screen.
      */
     @objc public var digitalInvoiceOnboardingFirstLabelTextFont = UIFont.systemFont(ofSize: 32, weight: .semibold)
     
     /**
-     Sets the font of the second text label on the digital invoice onboarding screen
+     Sets the font of the second text label on the digital invoice onboarding screen.
      */
     @objc public var digitalInvoiceOnboardingSecondLabelTextFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
     
     /**
-     Sets the backgroundColor  on the digital invoice onboarding screen for done button
+     Sets the backgroundColor  on the digital invoice onboarding screen for done button.
      */
     @objc public var digitalInvoiceOnboardingDoneButtonBackgroundColor = GiniColor(lightModeColor: UIColor.white, darkModeColor: UIColor.white)
     
     /**
-     Sets the font of the done button on the digital invoice onboarding screen
+     Sets the font of the done button on the digital invoice onboarding screen.
      */
     @objc public var digitalInvoiceOnboardingDoneButtonTextFont = UIFont.systemFont(ofSize: 16, weight: .bold)
     
     /**
-     Sets the font of the hide button on the digital invoice onboarding screen
+     Sets the font of the hide button on the digital invoice onboarding screen.
      */
     @objc public var digitalInvoiceOnboardingHideButtonTextFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
     
     /**
-     Sets the text color of the done button on the digital invoice onboarding screen
+     Sets the text color of the done button on the digital invoice onboarding screen.
      */
     @objc public var digitalInvoiceOnboardingDoneButtonTextColor = GiniColor(lightModeColor: Colors.Gini.blue, darkModeColor: Colors.Gini.blue)
     
     /**
-     Sets the text color of the done button on the digital invoice onboarding screen
+     Sets the text color of the done button on the digital invoice onboarding screen.
      */
     @objc public var digitalInvoiceOnboardingHideButtonTextColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
     
     /**
-     Sets the background color of the warning info view on the digital invoice screen
+     Sets the background color of the warning info view on the digital invoice screen.
      */
     @objc public var digitalInvoiceInfoViewBackgroundColor = Colors.Gini.blue
     
     /**
-     Sets the  chevron image tint color of the warning info view on the digital invoice screen
+     Sets the  chevron image tint color of the warning info view on the digital invoice screen.
      */
     @objc public var  digitalInvoiceInfoViewChevronImageViewTintColor = UIColor.white
     
     /**
-     Sets the text color for the warning info view warning labels on the digital invoice screen
+     Sets the text color for the warning info view warning labels on the digital invoice screen.
      */
     @objc public var digitalInvoiceInfoViewWarningLabelsTextColor = UIColor.white
     
     /**
-     Sets the font for the warning info view top label on the digital invoice screen
+     Sets the font for the warning info view top label on the digital invoice screen.
      */
     @objc public var digitalInvoiceInfoViewTopLabelFont = UIFont.systemFont(ofSize: 17, weight: .regular)
     
     /**
-     Sets the font for the warning info view middle label on the digital invoice screen
+     Sets the font for the warning info view middle label on the digital invoice screen.
      */
     @objc public var digitalInvoiceInfoViewMiddleLabelFont = UIFont.systemFont(ofSize: 14, weight: .regular)
     
     /**
-     Sets the font for the warning info view bottom label on the digital invoice screen
+     Sets the font for the warning info view bottom label on the digital invoice screen.
      */
     @objc public var digitalInvoiceInfoViewBottomLabelFont = UIFont.systemFont(ofSize: 14, weight: .regular)
     
     /**
-     Sets the background color for the warning info left button on the digital invoice screen
+     Sets the background color for the warning info left button on the digital invoice screen.
      */
     @objc public var digitalInvoiceInfoViewLeftButtonBackgroundColor = UIColor.white
     
     /**
-     Sets the border color for the warning info left button on the digital invoice screen
+     Sets the border color for the warning info left button on the digital invoice screen.
      */
     @objc public var digitalInvoiceInfoViewLeftButtonBorderColor = UIColor.white
     
     /**
-     Sets the title color for the warning info left button on the digital invoice screen
+     Sets the title color for the warning info left button on the digital invoice screen.
      */
     @objc public var digitalInvoiceInfoViewLeftkButtonTitleColor = Colors.Gini.blue
     
     /**
-     Sets the background color for the warning info right button on the digital invoice screen
+     Sets the background color for the warning info right button on the digital invoice screen.
      */
     @objc public var digitalInvoiceInfoViewRightButtonBackgroundColor = UIColor.clear
     
     /**
-     Sets the border color for the warning info right button on the digital invoice screen
+     Sets the border color for the warning info right button on the digital invoice screen.
      */
     @objc public var digitalInvoiceInfoViewRightButtonBorderColor = UIColor.white
     
     /**
-     Sets the title color for the warning info right button on the digital invoice screen
+     Sets the title color for the warning info right button on the digital invoice screen.
      */
     @objc public var digitalInvoiceInfoViewRightButtonTitleColor = UIColor.white
     
     /**
-     Sets the font for the warning info buttons on the digital invoice screen
+     Sets the font for the warning info buttons on the digital invoice screen.
      */
     @objc public var digitalInvoiceInfoViewButtonsFont = UIFont.systemFont(ofSize: 16)
     
     /**
      Sets the font used in the Return Assistant screens by default.
      */
-    
     @objc public lazy var customFont = GiniCaptureFont(regular: UIFont.systemFont(ofSize: 14,
                                                                                                  weight: .regular),
                                                                       bold: UIFont.systemFont(ofSize: 14,
@@ -1043,17 +1038,17 @@ public final class GiniBankConfiguration: NSObject {
     public var customMenuItems: [HelpMenuViewController.Item] = []
     
     /**
-     Sets if the default error logging implementation is on
+     Sets if the default error logging implementation is on.
      */
     public var giniErrorLoggerIsOn: Bool = true
     
     /**
-     Should sets if the custom error logging is implemented
+     Should be set if the custom error logging is implemented.
      */
     public var customGiniErrorLoggerDelegate : GiniCaptureErrorLoggerDelegate?
     
     /**
-     Should be set if the default name "Localizable.strings" are not used
+     Should be set if the default name "Localizable.strings" are not used.
      */
     public var localizedStringsTableName: String?
     
@@ -1177,6 +1172,7 @@ public final class GiniBankConfiguration: NSObject {
         
         configuration.giniErrorLoggerIsOn = self.giniErrorLoggerIsOn
         configuration.customGiniErrorLoggerDelegate = self.customGiniErrorLoggerDelegate
+        configuration.albumsScreenSelectMorePhotosTextColor = self.albumsScreenSelectMorePhotosTextColor
         
         // Undocumented--Xamarin only
         configuration.closeButtonResource = self.closeButtonResource
@@ -1406,6 +1402,8 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.giniErrorLoggerIsOn = configuration.giniErrorLoggerIsOn
         giniBankConfiguration.customGiniErrorLoggerDelegate = configuration.customGiniErrorLoggerDelegate
         giniBankConfiguration.localizedStringsTableName = configuration.localizedStringsTableName
+        
+        giniBankConfiguration.albumsScreenSelectMorePhotosTextColor = configuration.albumsScreenSelectMorePhotosTextColor
         
         // Undocumented--Xamarin only
         giniBankConfiguration.closeButtonResource = configuration.closeButtonResource
