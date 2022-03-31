@@ -183,9 +183,8 @@ class TabBarCoordinator: UITabBarController {
     }
 
     func showInvoiceDetailWith(invoiceID: String) {
-        print("X: Thread.isMainThreadThread.isMainThread \(Thread.isMainThread), current: \(Thread.current)")
-//        self.selectedIndex = 1
-//        (coordinators.first(where: { $0 is InvoiceFlowCoordinator }) as? InvoiceFlowCoordinator)?.showInvoiceDetail(with: invoiceID)
+        self.selectedIndex = 1
+        (coordinators.first(where: { $0 is InvoiceFlowCoordinator }) as? InvoiceFlowCoordinator)?.showInvoiceDetail(with: invoiceID)
     }
 }
 
@@ -198,16 +197,15 @@ extension TabBarCoordinator: ComponentAPICoordinatorDelegate {
 
     func componentAPIDidSelectSave(invoice: Invoice) {
         dataModel.addNewInvoice(invoice: invoice)
-//        showInvoiceDetailWith(invoiceID: invoice.invoiceID)
     }
 
-    func componentAPI(coordinator: ComponentAPICoordinator, didFinish: String?) {
-        coordinator.rootViewController.dismiss(animated: true, completion: nil)
-        self.scanInvoiceFlowCoordinator = nil
-
-        if let invoiceID = didFinish {
-            showInvoiceDetailWith(invoiceID: invoiceID)
-        }
+    func componentAPICoordinatorDidFinish(_: ComponentAPICoordinator, with invoiceId: String?) {
+        dismiss(animated: true, completion: { [weak self] in
+            self?.scanInvoiceFlowCoordinator = nil
+            if let invoiceId = invoiceId {
+                self?.showInvoiceDetailWith(invoiceID: invoiceId)
+            }
+        })
     }
 }
 

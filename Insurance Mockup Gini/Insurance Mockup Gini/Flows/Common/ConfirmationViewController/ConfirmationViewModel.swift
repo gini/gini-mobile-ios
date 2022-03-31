@@ -20,6 +20,8 @@ final class ConfirmationViewModel {
     var description: String
     var imageName: String
 
+    var shouldDismiss: (() -> Void)?
+
     init(type: ConfirmationType) {
         switch type {
         case .reimbursment:
@@ -36,6 +38,6 @@ final class ConfirmationViewModel {
     weak var delegate: ConfirmationViewModelDelegate?
 
     func didTapContinue() {
-        delegate?.didTapContinue()
+        shouldDismiss?()
     }
 }

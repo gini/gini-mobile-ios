@@ -15,7 +15,7 @@ import GiniHealthSDK
 protocol ComponentAPICoordinatorDelegate: AnyObject {
     func componentAPIDidSelectSave(invoice: Invoice)
     func updateInvoicePaymentId(for invoiceID: String, paymentID: String)
-    func componentAPI(coordinator: ComponentAPICoordinator, didFinish: String?)
+    func componentAPICoordinatorDidFinish(_ : ComponentAPICoordinator, with invoiceId: String?)
 }
 
 //swiftlint:disable file_length
@@ -204,7 +204,7 @@ extension ComponentAPICoordinator {
     }
     
     @objc fileprivate func closeComponentAPI() {
-        delegate?.componentAPI(coordinator: self, didFinish: nil)
+        delegate?.componentAPICoordinatorDidFinish(self, with: nil)
     }
     
     
@@ -708,7 +708,7 @@ extension ComponentAPICoordinator {
     func abortCoordinator() {
         navigationController.dismiss(animated: false)
         childCoordinators.forEach { self.remove(childCoordinator: $0) }
-        delegate?.componentAPI(coordinator: self, didFinish: nil)
+        delegate?.componentAPICoordinatorDidFinish(self, with: nil)
     }
 }
 
@@ -717,11 +717,10 @@ extension ComponentAPICoordinator: InvoiceExtractionFlowCoordinatorDelegate {
         delegate?.componentAPIDidSelectSave(invoice: invoice)
     }
 
-    func extractionFlowDidFinish(_ coordinator: InvoiceExtractionFlowCoordinator, withSuccess: Bool) {
+    func extractionFlowDidFinish(_ coordinator: InvoiceExtractionFlowCoordinator, with invoiceId: String?) {
         navigationController.dismiss(animated: false)
-//        coordinator.rootViewController.dismiss(animated: true, completion: nil)
         remove(childCoordinator: coordinator)
-        delegate?.componentAPI(coordinator: self, didFinish: withSuccess ? self.currentInvoice?.invoiceID : nil)
+        delegate?.componentAPICoordinatorDidFinish(self, with: invoiceId)
     }
 }
 

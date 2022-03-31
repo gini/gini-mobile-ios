@@ -25,6 +25,12 @@ final class ConfirmationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+
+        viewModel.shouldDismiss = { [weak self] in
+            self?.dismiss(animated: false, completion: {
+                self?.viewModel.delegate?.didTapContinue()
+            })
+        }
     }
 
     private func setupView() {

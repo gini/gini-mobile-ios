@@ -18,8 +18,9 @@ enum PaymentOptionSheetPosition: CGFloat, CaseIterable {
 
 protocol NewInvoiceDetailViewModelDelegate: AnyObject {
     func didTapPay(withExtraction extraction: [Extraction], document: Document?)
-    func saveNewInvoice(invoice: Invoice, shouldShowConfirmation: Bool)
+    func saveNewInvoice(invoice: Invoice)
     func didTapSendInvoice()
+    func didTapSaveInvoice()
     func didTapCancel()
     func didSelectDocument(_ image: Image)
 }
@@ -90,23 +91,24 @@ class NewInvoiceDetailViewModel: ObservableObject {
 
 extension NewInvoiceDetailViewModel: ButtonSheetViewModelDelegate {
     func didTapPayAndSave() {
-        delegate?.saveNewInvoice(invoice: invoice, shouldShowConfirmation: false)
+        delegate?.saveNewInvoice(invoice: invoice)
         delegate?.didTapPay(withExtraction: result, document: document)
     }
 
     func didTapPayAndSubmit() {
         invoice.reimbursmentStatus = .sent
-        delegate?.saveNewInvoice(invoice: invoice, shouldShowConfirmation: false)
+        delegate?.saveNewInvoice(invoice: invoice)
         delegate?.didTapPay(withExtraction: result, document: document)
     }
 
     func didTapSubmit() {
         invoice.reimbursmentStatus = .sent
-        delegate?.saveNewInvoice(invoice: invoice, shouldShowConfirmation: false)
+        delegate?.saveNewInvoice(invoice: invoice)
         delegate?.didTapSendInvoice()
     }
 
     func didTapSave() {
-        delegate?.saveNewInvoice(invoice: invoice, shouldShowConfirmation: true)
+        delegate?.saveNewInvoice(invoice: invoice)
+        delegate?.didTapSaveInvoice()
     }
 }

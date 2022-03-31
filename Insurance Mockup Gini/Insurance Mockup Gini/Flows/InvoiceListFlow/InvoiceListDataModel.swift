@@ -89,8 +89,15 @@ final class InvoiceListDataModel {
     }
 
     func updateInvoiceList() {
-        invoiceList = invoiceData.sorted(by: { $0.creationDate > $1.creationDate }).map { InvoiceItemCellViewModel(invoice: $0) }
-        updateList?()
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self = self else { return }
+            self.invoiceList = self.invoiceData.sorted(by: { $0.creationDate > $1.creationDate }).map { InvoiceItemCellViewModel(invoice: $0) }
+            DispatchQueue.main.async { [weak self] in
+                self?.updateList?()
+            }
+        }
+
+
     }
 
     func addNewInvoice(invoice: Invoice) {
