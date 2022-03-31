@@ -15,7 +15,7 @@ import UIKit
     var darkModeColor: UIColor
     
     /**
-     Creates a GiniColor with the colors for the light and dark modes
+     Creates a GiniColor with the colors for the light and dark modes.
      
      - parameter lightModeColor: color for the light mode
      - parameter darkModeColor: color for the dark mode
@@ -50,7 +50,6 @@ import UIKit
     /**
      Supported document types by Gini Capture SDK.
     */
-    
     @objc public enum GiniCaptureImportFileTypes: Int {
         case none
         case pdf
@@ -87,7 +86,6 @@ import UIKit
     /**
      Sets the font used in the GiniCapture library by default.
      */
-    
     @objc public lazy var customFont: GiniCaptureFont = GiniCaptureFont(regular: UIFont.systemFont(ofSize: 14,
                                                                                                  weight: .regular),
                                                                       bold: UIFont.systemFont(ofSize: 14,
@@ -108,7 +106,6 @@ import UIKit
     /**
      Used to handle all the logging messages in order to log them in a different way.
      */
-
     @objc public var logger: GiniLogger = DefaultLogger()
     
     /**
@@ -197,7 +194,7 @@ import UIKit
     
     /**
      Indicates whether the open with feature is enabled or not. In case of `true`,
-     a new option with the open with tutorial wil be shown in the Help menu
+     a new option with the open with tutorial wil be shown in the Help menu.
      */
     @objc public var openWithEnabled = false
     
@@ -211,7 +208,7 @@ import UIKit
      
      - note: If `UIViewControllerBasedStatusBarAppearance` is set to `false` in the `Info.plist`,
      it may not work in future versions of iOS since the `UIApplication.setStatusBarStyle` method was
-     deprecated on iOS 9.0
+     deprecated on iOS 9.0.
      */
     @objc public var statusBarStyle = UIStatusBarStyle.lightContent
     
@@ -233,33 +230,32 @@ import UIKit
     @objc public var cameraSetupLoadingIndicatorColor = UIColor.white
     
     /**
-     Sets the color of camera preview corner guides
+     Sets the color of camera preview corner guides.
      */
     @objc public var cameraPreviewCornerGuidesColor = UIColor.white
     
     /**
-     Set the types supported by the file import feature. `GiniCaptureImportFileTypes.none` by default
-     
+     Set the types supported by the file import feature. `GiniCaptureImportFileTypes.none` by default.
      */
     @objc public var fileImportSupportedTypes: GiniCaptureImportFileTypes = .none
     
     /**
-     Sets the background color of the new file import button hint
+     Sets the background color of the new file import button hint.
      */
     @objc public var fileImportToolTipBackgroundColor = UIColor.white
     
     /**
-     Sets the text color of the new file import button hint
+     Sets the text color of the new file import button hint.
      */
     @objc public var fileImportToolTipTextColor = UIColor.black
     
     /**
-     Sets the text color of the new file import button hint
+     Sets the color of the close button for the file import button hint.
      */
     @objc public var fileImportToolTipCloseButtonColor = Colors.Gini.grey
     
     /**
-     Sets the background style when the tooltip is shown
+     Sets the background style when the tooltip is shown.
      */
     public var toolTipOpaqueBackgroundStyle: OpaqueViewStyle {
         
@@ -285,19 +281,17 @@ import UIKit
     private var _toolTipOpaqueBackgroundStyle: OpaqueViewStyle?
     
     /**
-     Sets the text color of the item selected background check
+     Sets the text color of the item selected background check.
      */
     @objc public var galleryPickerItemSelectedBackgroundCheckColor = Colors.Gini.blue
     
     /**
      Sets the background color for gallery screen.
      */
-    
     @objc public var galleryScreenBackgroundColor = GiniColor(lightModeColor: .black, darkModeColor: .black)
     
     /**
      Indicates whether the flash toggle should be shown in the camera screen.
-     
      */
     @objc public var flashToggleEnabled = false
     
@@ -307,7 +301,7 @@ import UIKit
     @objc public var flashOnByDefault = true
     
     /**
-     Sets the color of the captured images stack indicator label
+     Sets the color of the captured images stack indicator label.
      */
     @objc public var imagesStackIndicatorLabelTextcolor: UIColor = Colors.Gini.blue
     
@@ -326,31 +320,32 @@ import UIKit
     @objc public var navigationBarCameraTitleHelpButton = ""
     
     /**
-     Sets the text color of the QR Code popup button
+     Sets the text color of the QR Code popup button.
      */
     @objc public var qrCodePopupButtonColor = Colors.Gini.blue
     
     /**
-     Sets the text color of the QR Code popup label
+     Sets the text color of the QR Code popup label.
      */
     @objc public var qrCodePopupTextColor = GiniColor(lightModeColor: .black, darkModeColor: .white)
     
     /**
-     Sets the text color of the QR Code popup background
+     Sets the text color of the QR Code popup background.
      */
     @objc public var qrCodePopupBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: UIColor.from(hex: 0x1c1c1e))
+    
     /**
-     Sets the button color of the unsupported QR Code popup
+     Sets the button color of the unsupported QR Code popup.
      */
     @objc public var unsupportedQrCodePopupButtonColor : UIColor = .red
     
     /**
-     Sets the text color of the unsupported QR Code popup
+     Sets the text color of the unsupported QR Code popup.
      */
     @objc public var unsupportedQrCodePopupTextColor = GiniColor(lightModeColor: .red, darkModeColor: .red)
     
     /**
-     Sets the  background color of the unsupported QR Code popup
+     Sets the  background color of the unsupported QR Code popup.
      */
     @objc public var unsupportedQrCodePopupBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: UIColor.from(hex: 0x1c1c1e))
     
@@ -402,7 +397,6 @@ import UIKit
     /**
      Sets the background color for all onboarding pages.
      */
-        
     @objc public var onboardingScreenBackgroundColor = GiniColor(lightModeColor: .black, darkModeColor: .black)
     
     /**
@@ -484,46 +478,46 @@ import UIKit
     // MARK: Multipage options
     
     /**
-     Sets the color of the pages container and toolbar
+     Sets the color of the pages container and toolbar.
      */
     @objc public var multipagePagesContainerAndToolBarColor = GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: UIColor.from(hex: 0x1c1c1c))
     
     @objc private var _multipagePagesContainerAndToolBarColor: UIColor?
     
     /**
-     Sets the color of the circle indicator
+     Sets the color of the circle indicator.
      */
     @objc public var indicatorCircleColor = GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: .lightGray)
     
     /**
-     Sets the tint color of the toolbar items
+     Sets the tint color of the toolbar items.
      */
     @objc public var multipageToolbarItemsColor = Colors.Gini.blue
     
     /**
-     Sets the tint color of the page indicator
+     Sets the tint color of the page indicator.
      */
     @objc public var multipagePageIndicatorColor = Colors.Gini.blue
     
     /**
-     Sets the background color of the page selected indicator
+     Sets the background color of the page selected indicator.
      */
     @objc public var multipagePageSelectedIndicatorColor = Colors.Gini.blue
     
     /**
-     Sets the background color of the page background
+     Sets the background color of the page background.
      */
     @objc public var multipagePageBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: UIColor.from(hex: 0x1c1c1e))
     
     @objc private var _multipagePageBackgroundColor: UIColor?
     
     /**
-     Sets the tint color of the draggable icon in the page collection cell
+     Sets the tint color of the draggable icon in the page collection cell.
      */
     @objc public var multipageDraggableIconColor = Colors.Gini.veryLightGray
 
     /**
-     Sets the background style when the tooltip is shown in the multipage screen
+     Sets the background style when the tooltip is shown in the multipage screen.
      */
     public var multipageToolTipOpaqueBackgroundStyle: OpaqueViewStyle = .blurred(style: .light)
     
@@ -556,7 +550,6 @@ import UIKit
     /**
      Sets the background color for all help screens.
      */
-    
     @objc public var helpScreenBackgroundColor =  GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: UIColor.from(hex: 0x1C1C1C))
     
     /**
@@ -599,33 +592,38 @@ import UIKit
     // MARK: Open with tutorial options
     
     /**
-     Sets the text of the app name for the Open with tutorial texts
-     
-     */
+     Sets the text of the app name for the Open with tutorial texts.
+    */
     @objc public var openWithAppNameForTexts = Bundle.main.appName
     
     /**
-     Sets the color of the step indicator for the Open with tutorial
-     
+     Sets the color of the step indicator for the Open with tutorial.
      */
     @objc public var stepIndicatorColor = Colors.Gini.blue
     
     // MARK: No results options
     
     /**
-     Sets the color of the bottom button to the specified color
+     Sets the color of the bottom button to the specified color.
      */
     @objc public var noResultsBottomButtonColor = Colors.Gini.blue
     
     /**
-     Sets the color of the warning container background to the specified color
+     Sets the color of the warning container background to the specified color.
      */
     @objc public var noResultsWarningContainerIconColor = Colors.Gini.rose
     
     /**
-     Sets if the Drag&Drop step should be shown in the "Open with" tutorial
+     Sets if the Drag&Drop step should be shown in the "Open with" tutorial.
      */
     @objc public var shouldShowDragAndDropTutorial = true
+    
+    // MARK: Albums screen
+    
+    /**
+     Sets the text color for the select more photos button on the albums screen.
+     */
+    @objc public var albumsScreenSelectMorePhotosTextColor =  GiniColor(lightModeColor: Colors.Gini.blue, darkModeColor: Colors.Gini.blue)
     
     /**
      Set an array of additional custom help menu items . Those items will be presented as table view cells on the help menu screen. By selecting the cell the user will be redirected to the page, which represented by viewController provided by customer during the  `HelpMenuViewController.Item` initialization.
@@ -649,7 +647,7 @@ import UIKit
     let errorLogger = GiniCaptureErrorLogger()
     
     /**
-     Sets if the default error logging implementation is on
+     Sets if the default error logging implementation is on.
      */
     @objc public var giniErrorLoggerIsOn: Bool {
         get {
@@ -661,7 +659,7 @@ import UIKit
     }
     
     /**
-     Should sets if the custom error logging is implemented
+     Should sets if the custom error logging is implemented.
      */
     public var customGiniErrorLoggerDelegate : GiniCaptureErrorLoggerDelegate? {
         get {
@@ -673,7 +671,7 @@ import UIKit
     }
     
     /**
-     Should be set if the default name "Localizable.strings" are not used
+     Should be set if the default name "Localizable.strings" are not used.
      */
     public var localizedStringsTableName: String?
 
