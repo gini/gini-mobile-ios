@@ -546,6 +546,13 @@ public final class GiniBankConfiguration: NSObject {
      */
     @objc public var noResultsWarningContainerIconColor = Colors.Gini.rose
     
+    // MARK: Albums screen
+    
+    /**
+     Sets the text color for the select more photos button on the albums screen.
+     */
+    @objc public var albumsScreenSelectMorePhotosTextColor =  GiniColor(lightModeColor: Colors.Gini.blue, darkModeColor: Colors.Gini.blue)
+    
     /**
      Sets if the Drag&Drop step should be shown in the "Open with" tutorial
      */
@@ -1177,6 +1184,7 @@ public final class GiniBankConfiguration: NSObject {
         
         configuration.giniErrorLoggerIsOn = self.giniErrorLoggerIsOn
         configuration.customGiniErrorLoggerDelegate = self.customGiniErrorLoggerDelegate
+        configuration.albumsScreenSelectMorePhotosTextColor = self.albumsScreenSelectMorePhotosTextColor
         
         // Undocumented--Xamarin only
         configuration.closeButtonResource = self.closeButtonResource
@@ -1406,6 +1414,8 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.giniErrorLoggerIsOn = configuration.giniErrorLoggerIsOn
         giniBankConfiguration.customGiniErrorLoggerDelegate = configuration.customGiniErrorLoggerDelegate
         giniBankConfiguration.localizedStringsTableName = configuration.localizedStringsTableName
+        
+        giniBankConfiguration.albumsScreenSelectMorePhotosTextColor = configuration.albumsScreenSelectMorePhotosTextColor
         
         // Undocumented--Xamarin only
         giniBankConfiguration.closeButtonResource = configuration.closeButtonResource
