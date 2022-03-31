@@ -627,6 +627,13 @@ import UIKit
      */
     @objc public var shouldShowDragAndDropTutorial = true
     
+    // MARK: Albums screen
+    
+    /**
+     Sets the text color for the select more photos button on the albums screen.
+     */
+    @objc public var albumsScreenSelectMorePhotosTextColor =  GiniColor(lightModeColor: Colors.Gini.blue, darkModeColor: Colors.Gini.blue)
+    
     /**
      Set an array of additional custom help menu items . Those items will be presented as table view cells on the help menu screen. By selecting the cell the user will be redirected to the page, which represented by viewController provided by customer during the  `HelpMenuViewController.Item` initialization.
     */
