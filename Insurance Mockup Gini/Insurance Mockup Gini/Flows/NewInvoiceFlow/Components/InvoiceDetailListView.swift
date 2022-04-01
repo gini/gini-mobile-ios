@@ -29,14 +29,14 @@ struct InvoiceDetailListView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Invoice details")
+                Text(NSLocalizedString("giniinsurancemock.newinvoicedetailscreen.title", comment: ""))
                     .font(Style.appFont(style: .semiBold, 14))
                 Spacer()
                 PaymentInfoView(paid: viewModel.paid, dueDaysCont: viewModel.numberOfDaysUntilDue)
             }.padding()
 
             HStack {
-                Text("Date of Document")
+                Text(NSLocalizedString("giniinsurancemock.newinvoicedetailscreen.invoice.date", comment: ""))
                     .font(Style.appFont(14))
                     .foregroundColor(.gray)
                 Spacer()
@@ -44,7 +44,7 @@ struct InvoiceDetailListView: View {
             }.padding([.top, .leading, .trailing])
 
             HStack {
-                Text("Amount")
+                Text(NSLocalizedString("giniinsurancemock.newinvoicedetailscreen.invoice.amount", comment: ""))
                     .font(Style.appFont(14))
                     .foregroundColor(.gray)
                 Spacer()
@@ -52,7 +52,7 @@ struct InvoiceDetailListView: View {
             }.padding([.top, .leading, .trailing])
 
             HStack {
-                Text("Due date")
+                Text(NSLocalizedString("giniinsurancemock.newinvoicedetailscreen.invoice.duedate", comment: ""))
                     .font(Style.appFont(14))
                     .foregroundColor(.gray)
                 Spacer()

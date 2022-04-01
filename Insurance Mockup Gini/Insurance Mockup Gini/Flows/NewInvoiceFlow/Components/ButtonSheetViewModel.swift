@@ -40,20 +40,20 @@ class ButtonSheetViewModel {
 
     init() {
         buttonViewModels = [
-            SheetButtonViewModel(title: "Pay and save",
-                                 description: "Pay and save the invoice",
+            SheetButtonViewModel(title: NSLocalizedString("giniinsurancemock.bottomsheet.payandsave.title", comment: ""),
+                                 description: NSLocalizedString("giniinsurancemock.bottomsheet.payandsave.description", comment: ""),
                                  iconName: "pay_save_icon",
                                  belowTreshold: false),
-            SheetButtonViewModel(title: "Pay & submit for reimbursement",
-                                 description: "You are below the threshold",
+            SheetButtonViewModel(title: NSLocalizedString("giniinsurancemock.bottomsheet.payandsubmit.title", comment: ""),
+                                 description: NSLocalizedString("giniinsurancemock.bottomsheet.payandsubmit.description", comment: ""),
                                  iconName: "pay_submit_icon",
                                  belowTreshold: true),
-            SheetButtonViewModel(title: "Submit for reimbursement",
-                                 description: "You are below the threshold",
+            SheetButtonViewModel(title: NSLocalizedString("giniinsurancemock.bottomsheet.submit.title", comment: ""),
+                                 description: NSLocalizedString("giniinsurancemock.bottomsheet.submit.description", comment: ""),
                                  iconName: "submit_icon",
                                  belowTreshold: true),
-            SheetButtonViewModel(title: "Save for later",
-                                 description: "You can always come back to it later",
+            SheetButtonViewModel(title: NSLocalizedString("giniinsurancemock.bottomsheet.save.title", comment: ""),
+                                 description: NSLocalizedString("giniinsurancemock.bottomsheet.save.description", comment: ""),
                                  iconName: "save_icon",
                                  belowTreshold: false)]
 

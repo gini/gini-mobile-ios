@@ -30,7 +30,7 @@ final class InvoiceDetailViewModel: ObservableObject {
     var reimbursmentStatus: ReimbursmentState { return invoice.reimbursmentStatus }
     var iconTitle = "teeth_icon"
     var adress = "Musterstrasse 11, 1234 Musterstadt"
-    var description = "Prophylaxe"
+    var description: String { return invoice.description }
     var paid: Bool { return invoice.paid }
     var result: [Extraction] { return invoice.extractions }
     var document: Document? { return invoice.document }

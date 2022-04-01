@@ -21,7 +21,7 @@ struct NewInvoiceDetailView: View {
         ZStack(alignment: .bottom) {
             ScrollView {
                 HStack {
-                    Text("New invoice")
+                    Text(NSLocalizedString("giniinsurancemock.newinvoicedetailscreen.title", comment: ""))
                         .font(Style.appFont(style: .bold, 20))
                     Spacer()
                     Button {

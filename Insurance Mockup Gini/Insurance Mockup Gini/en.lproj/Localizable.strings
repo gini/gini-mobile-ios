@@ -33,4 +33,53 @@
 "giniinsurancemock.filteroptions.unpaid" = "Unpaid";
 "giniinsurancemock.filteroptions.reimbursed" = "Reimbursed";
 
+"giniinsurancemock.invoicelistscreen.title" = "Invoices";
+"giniinsurancemock.invoicelistscreen.notification.title" = "Your dental bill has been reimbursed";
+
+"giniinsurancemock.invoicelistscreen.list.header.thismonth" = "This month";
+"giniinsurancemock.invoicelistscreen.list.header.lastmonth" = "Last month";
+
+"giniinsurancemock.invoicedetailscreen.paybutton.title" = "Pay invoice";
+"giniinsurancemock.invoicedetailscreen.submitbutton.title" = "Submit for claim";
+"giniinsurancemock.invoicedetailscreen.showdocumentbutton.title" = "Show reimbursement document";
+
+"giniinsurancemock.newinvoicedetailscreen.title" = "Invoice details";
+"giniinsurancemock.newinvoicedetailscreen.invoice.date" = "Date of Document";
+"giniinsurancemock.newinvoicedetailscreen.invoice.amount" = "Amount";
+"giniinsurancemock.newinvoicedetailscreen.invoice.duedate" = "Due date";
+
+"giniinsurancemock.bottomsheet.payandsave.title" = "Pay and save";
+"giniinsurancemock.bottomsheet.payandsave.description" = "Pay and save the invoice";
+"giniinsurancemock.bottomsheet.payandsubmit.title" = "Pay & submit for reimbursement";
+"giniinsurancemock.bottomsheet.payandsubmit.description" = "You are below the threshold";
+"giniinsurancemock.bottomsheet.submit.title" = "Submit for reimbursement";
+"giniinsurancemock.bottomsheet.submit.description" = "You are below the threshold";
+"giniinsurancemock.bottomsheet.save.title" = "Save for later";
+"giniinsurancemock.bottomsheet.save.description" = "You can always come back to it later";
+
+"giniinsurancemock.newinvoicedetailscreen.reimbrsment" = "Reimbursement";
+"giniinsurancemock.newinvoicedetailscreen.reimbrsment.date" = "Date of reimbursement";
+"giniinsurancemock.newinvoicedetailscreen.reimbrsment.amount" = "Reimbursed amount";
+"giniinsurancemock.newinvoicedetailscreen.documents" = "Documents";
+"giniinsurancemock.newinvoicedetailscreen.title" = "New invoice";
+
+"giniinsurancemock.unpayable.error.description" = "This document is unpayable";
+"giniinsurancemock.nobankingapp.error.description" = "We didn't find any banking apps installed which support Gini Pay";
+
+"giniinsurancemock.appointmenttype.consultation" = "Consultation";
+"giniinsurancemock.appointmenttype.treatment" = "Treatment";
+
+"giniinsurancemock.homescreen.title" = "Overview";
+"giniinsurancemock.homescreen.treshold.description" = "You are close to the threshold!";
+"giniinsurancemock.homescreen.appointments.upcoming" = "Upcoming appointments";
+"giniinsurancemock.homescreen.appointments.seeall" = "See all";
+"giniinsurancemock.homescreen.today" = "Today";
+"giniinsurancemock.homescreen.tomorrow" = "Tomorrow";
+"giniinsurancemock.homescreen.services" = "Our services";
+"giniinsurancemock.homescreen.medical.treatments" = "Medical treatments";
+"giniinsurancemock.homescreen.medical.treatments.description" = "A detailed summary of a patient’s disease, the type of treatment ...";
+"giniinsurancemock.homescreen.medical.treatments.2" = "Naturopathy";
+"giniinsurancemock.homescreen.medical.treatments.2.description" = "Naturopathy is a form of healthcare that combines modern treatment...";
+
+
 

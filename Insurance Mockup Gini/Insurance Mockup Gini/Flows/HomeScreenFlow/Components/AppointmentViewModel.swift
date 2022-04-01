@@ -7,9 +7,16 @@
 
 import Foundation
 
-enum AppointmentType: String {
-    case consultation = "Consultation"
-    case treatment = "Treatment"
+enum AppointmentType {
+    case consultation
+    case treatment
+
+    var stringValue: String {
+        switch self {
+        case .consultation: return NSLocalizedString("giniinsurancemock.appointmenttype.consultation", comment: "")
+        case .treatment: return NSLocalizedString("giniinsurancemock.appointmenttype.treatment", comment: "")
+        }
+    }
 }
 
 struct AppointmentViewModel {

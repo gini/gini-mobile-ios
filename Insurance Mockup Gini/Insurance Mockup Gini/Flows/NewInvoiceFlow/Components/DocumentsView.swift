@@ -16,7 +16,7 @@ struct DocumentsView: View {
         ZStack(alignment: .top) {
             VStack {
                 HStack{
-                    Text("Documents")
+                    Text(NSLocalizedString("giniinsurancemock.newinvoicedetailscreen.documents", comment: ""))
                     Spacer()
                 }.padding()
 

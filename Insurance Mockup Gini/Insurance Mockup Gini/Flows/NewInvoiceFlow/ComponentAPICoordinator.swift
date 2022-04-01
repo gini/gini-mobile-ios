@@ -680,7 +680,7 @@ extension ComponentAPICoordinator {
 
                     } else {
                         let alertViewController = UIAlertController(title: "",
-                                                                    message: "This document is unpayable",
+                                                                    message: NSLocalizedString("giniinsurancemock.unpayable.error.description", comment: ""),
                                                                     preferredStyle: .alert)
                         
                         alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
@@ -732,7 +732,7 @@ extension ComponentAPICoordinator: GiniHealthDelegate {
         case .noInstalledApps:
             // shows own error
             let alertViewController = UIAlertController(title: "",
-                                                        message: "We didn't find any banking apps installed which support Gini Pay",
+                                                        message: NSLocalizedString("giniinsurancemock.nobankingapp.error.description", comment: ""),
                                                         preferredStyle: .alert)
             
             alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in

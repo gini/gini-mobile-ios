@@ -30,7 +30,7 @@ struct InvoiceListView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             HStack(spacing: 16) {
-                Text("Invoices")
+                Text(NSLocalizedString("giniinsurancemock.invoicelistscreen.title", comment: "invoices"))
                     .font(Style.appFont(style: .bold, 20))
                 Spacer()
                 Image("search_icon")
@@ -43,7 +43,7 @@ struct InvoiceListView: View {
                         Spacer()
                         HStack {
                             Image("check_icon")
-                            Text("Your dental bill has been reimbursed")
+                            Text(NSLocalizedString("giniinsurancemock.invoicelistscreen.notification.title", comment: "notificationtitle"))
                                 .font(Style.appFont(style: .medium, 14))
                         }.offset(x: -12, y: 0)
                         Spacer()
@@ -89,7 +89,7 @@ struct InvoiceListView: View {
                 }
             } header: {
                 HStack {
-                    Text("This month")
+                    Text(NSLocalizedString("giniinsurancemock.invoicelistscreen.list.header.thismonth", comment: ""))
                         .font(Style.appFont(14))
 
                     Spacer()
@@ -105,7 +105,7 @@ struct InvoiceListView: View {
                 }
             } header: {
                 HStack {
-                    Text("Last month")
+                    Text(NSLocalizedString("giniinsurancemock.invoicelistscreen.list.header.lastmonth", comment: ""))
                         .font(Style.appFont(14))
 
                     Spacer()

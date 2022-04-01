@@ -29,7 +29,7 @@ struct Invoice {
          extractions: [Extraction],
          document: Document?,
          iconTitle: String = "teeth_icon",
-         desciption: String = "Lorem ipsum") {
+         desciption: String = "Prophylaxe") {
         invoiceID = id
 
         // adress from extraction

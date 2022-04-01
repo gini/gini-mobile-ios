@@ -14,14 +14,14 @@ struct ReinbursmentStatusView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Reimbursement")
+                Text(NSLocalizedString("giniinsurancemock.newinvoicedetailscreen.reimbrsment", comment: ""))
                     .font(Style.appFont(style: .semiBold, 14))
                 Spacer()
                 ReinbursmentInfoView(reimbursmentState: reimbursmentStatus)
             }.padding([.top, .leading, .trailing])
 
             HStack {
-                Text("Date of reimbursement")
+                Text(NSLocalizedString("giniinsurancemock.newinvoicedetailscreen.reimbrsment.date", comment: ""))
                     .font(Style.appFont(14))
                     .foregroundColor(.gray)
                 Spacer()
@@ -31,7 +31,7 @@ struct ReinbursmentStatusView: View {
 
             if reimbursmentStatus == .reimbursed {
                 HStack {
-                    Text("Reimbursed amount")
+                    Text(NSLocalizedString("giniinsurancemock.newinvoicedetailscreen.reimbrsment.amount", comment: ""))
                         .font(Style.appFont(14))
                         .foregroundColor(.gray)
                     Spacer()

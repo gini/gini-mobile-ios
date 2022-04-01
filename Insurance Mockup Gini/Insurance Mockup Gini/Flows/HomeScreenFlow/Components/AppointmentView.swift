@@ -11,7 +11,7 @@ struct AppointmentView: View {
     var appointmentViewModel: AppointmentViewModel
     var body: some View {
         VStack(alignment: .leading) {
-            Text(appointmentViewModel.type.rawValue)
+            Text(appointmentViewModel.type.stringValue)
                 .font(.system(size: 14))
                 .foregroundColor(.white)
                 .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))

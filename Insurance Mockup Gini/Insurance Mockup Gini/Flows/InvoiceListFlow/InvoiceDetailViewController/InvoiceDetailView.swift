@@ -35,7 +35,7 @@ struct InvoiceDetailView: View {
                                 }) {
                                     HStack {
                                         Spacer()
-                                        Text("Pay invoice")
+                                        Text(NSLocalizedString("giniinsurancemock.invoicedetailscreen.paybutton.title", comment: ""))
                                             .foregroundColor(.white)
                                             .padding()
                                             .font(Style.appFont(style: .semiBold, 16))
@@ -64,7 +64,7 @@ struct InvoiceDetailView: View {
                                     if viewModel.reimbursmentStatus == .notSent {
                                         HStack {
                                             Spacer()
-                                            Text("Submit for claim")
+                                            Text(NSLocalizedString("giniinsurancemock.invoicedetailscreen.submitbutton.title", comment: ""))
                                                 .foregroundColor(Style.NewInvoice.accentBlue)
                                                 .padding()
                                                 .font(Style.appFont(style: .semiBold, 16))
@@ -76,7 +76,7 @@ struct InvoiceDetailView: View {
                                     } else if viewModel.reimbursmentStatus == .reimbursed {
                                         HStack {
                                             Spacer()
-                                            Text("Show reimbursement document")
+                                            Text(NSLocalizedString("giniinsurancemock.invoicedetailscreen.showdocumentbutton.title", comment: ""))
                                                 .foregroundColor(Color.gray)
                                                 .padding()
                                                 .font(Style.appFont(style: .semiBold, 16))
