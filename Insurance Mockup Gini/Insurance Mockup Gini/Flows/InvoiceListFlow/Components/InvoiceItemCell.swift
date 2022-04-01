@@ -40,7 +40,7 @@ struct PaymentInfoView: View {
                     .resizable()
                     .frame(width: 14, height: 14)
                     .padding(.leading, 4)
-                Text("Paid")
+                Text(NSLocalizedString("giniinsurancemock.paidstatus.paid", comment: "paid"))
                     .font(Style.appFont(style: .medium, 14))
                     .foregroundColor(.green)
                     .padding(.trailing, 4)
@@ -50,7 +50,7 @@ struct PaymentInfoView: View {
                         .stroke(Color.green, lineWidth: 1)
                     )
         } else if dueDaysCont > 0 {
-            Text("Due in \(dueDaysCont) days")
+            Text(String(format: NSLocalizedString("giniinsurancemock.paidstatus.dueindays", comment: ""), dueDaysCont))
                 .font(Style.appFont(style: .medium, 14))
                 .foregroundColor(.gray)
                 .padding([.leading, .trailing], 4)
@@ -71,7 +71,7 @@ struct ReinbursmentInfoView: View {
         switch reimbursmentState {
         case .notSent:
             HStack {
-                Text(reimbursmentState.rawValue)
+                Text(reimbursmentState.stringValue)
                     .font(Style.appFont(style: .medium, 14))
                     .foregroundColor(.gray)
                     .padding([.leading, .trailing], 4)
@@ -84,7 +84,7 @@ struct ReinbursmentInfoView: View {
         )
         case .sent:
             HStack {
-                Text(reimbursmentState.rawValue)
+                Text(reimbursmentState.stringValue)
                     .font(Style.appFont(style: .medium, 14))
                     .foregroundColor(Style.yellow)
                     .padding([.leading, .trailing], 4)
@@ -99,7 +99,7 @@ struct ReinbursmentInfoView: View {
                     .resizable()
                     .frame(width: 14, height: 14)
                     .padding(.leading, 4)
-                Text(reimbursmentState.rawValue)
+                Text(reimbursmentState.stringValue)
                     .font(Style.appFont(style: .medium, 14))
                     .foregroundColor(.green)
                     .padding(.trailing, 4)

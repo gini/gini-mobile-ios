@@ -58,7 +58,7 @@ final class InvoiceFlowCoordinator: Coordinator {
 
     func showUnpayableDocumentAlert() {
         let alertViewController = UIAlertController(title: "",
-                                                    message: "This document is unpayable",
+                                                    message: NSLocalizedString("giniinsurancemock.npayabledocument.error.title", comment: "errortitle"),
                                                     preferredStyle: .alert)
 
         alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
@@ -182,7 +182,7 @@ extension InvoiceFlowCoordinator: GiniHealthDelegate {
         case .noInstalledApps:
             // shows own error
             let alertViewController = UIAlertController(title: "",
-                                                        message: "We didn't find any banking apps installed which support Gini Pay",
+                                                        message: NSLocalizedString("giniinsurancemock.nobankingapp.error.title", comment: "error title"),
                                                         preferredStyle: .alert)
 
             alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in

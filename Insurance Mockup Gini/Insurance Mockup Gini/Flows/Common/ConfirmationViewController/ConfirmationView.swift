@@ -25,7 +25,7 @@ struct ConfirmationView: View {
             }) {
                 HStack {
                     Spacer()
-                    Text("Continue")
+                    Text(NSLocalizedString("giniinsurancemock.continue.button.title", comment: "continue"))
                         .foregroundColor(.white)
                         .padding()
                         .font(Style.appFont(style: .semiBold, 16))

@@ -25,12 +25,12 @@ final class ConfirmationViewModel {
     init(type: ConfirmationType) {
         switch type {
         case .reimbursment:
-            self.title = "Document submitted"
-            self.description = "Your document has been submitted for. We will process it as soon as possible."
+            self.title = NSLocalizedString("giniinsurancemock.confirmationscreen.sent.title", comment: "document sent")
+            self.description = NSLocalizedString("giniinsurancemock.confirmationscreen.sent.description", comment: "description")
             self.imageName = "sent_icon"
         case .save:
-            self.title = "Document saved"
-            self.description = "We will store your health document until you decide you want to submit it to the insurer."
+            self.title = NSLocalizedString("giniinsurancemock.confirmationscreen.saved.title", comment: "title")
+            self.description = NSLocalizedString("giniinsurancemock.confirmationscreen.saved.description", comment: "description")
             self.imageName = "saved_icon"
         }
     }

@@ -1,0 +1,36 @@
+/* 
+  Localizable.strings
+  Insurance Mockup Gini
+
+  Created by David Vizaknai on 01.04.2022.
+  
+*/
+
+"giniinsurancemock.tabbar.home" = "Home";
+"giniinsurancemock.tabbar.invoices" = "Invoices";
+"giniinsurancemock.tabbar.sessions" = "Sessions";
+"giniinsurancemock.tabbar.medicines" = "Medicines";
+
+"giniinsurancemock.confirmationscreen.sent.title" = "Document submitted";
+"giniinsurancemock.confirmationscreen.sent.description" = "Your document has been submitted for. We will process it as soon as possible.";
+"giniinsurancemock.confirmationscreen.saved.title" = "Document saved";
+"giniinsurancemock.confirmationscreen.saved.description" = "We will store your health document until you decide you want to submit it to the insurer.";
+
+"giniinsurancemock.continue.button.title" = "Continue";
+
+"giniinsurancemock.nobankingapp.error.title" = "We didn't find any banking apps installed which support Gini Pay";
+"giniinsurancemock.npayabledocument.error.title" = "This document is unpayable";
+
+"giniinsurancemock.paidstatus.paid" = "Paid";
+"giniinsurancemock.paidstatus.dueindays" = "Due in %d days";
+
+"giniinsurancemock.reimbursedstatus.notsent" = "Not sent";
+"giniinsurancemock.reimbursedstatus.sent" = "Submitted";
+"giniinsurancemock.reimbursedstatus.reimbursed" = "Reimbursed";
+
+"giniinsurancemock.filteroptions.all" = "All";
+"giniinsurancemock.filteroptions.open" = "Open";
+"giniinsurancemock.filteroptions.unpaid" = "Unpaid";
+"giniinsurancemock.filteroptions.reimbursed" = "Reimbursed";
+
+

@@ -7,11 +7,20 @@
 
 import SwiftUI
 
-enum FilterOptions: String {
-    case all = "All"
-    case open = "Open"
-    case unpaid = "Unpaid"
-    case reimbursed = "Reimbursed"
+enum FilterOptions {
+    case all
+    case open
+    case unpaid
+    case reimbursed
+
+    var stringValue: String {
+        switch self {
+        case .all: return NSLocalizedString("giniinsurancemock.filteroptions.all", comment: "all")
+        case .open: return NSLocalizedString("giniinsurancemock.filteroptions.open", comment: "open")
+        case .unpaid: return NSLocalizedString("giniinsurancemock.filteroptions.unpaid", comment: "unpaid")
+        case .reimbursed: return NSLocalizedString("giniinsurancemock.filteroptions.reimbursed", comment: "reimbursed")
+        }
+    }
 }
 struct InvoiceListView: View {
 
@@ -55,7 +64,7 @@ struct InvoiceListView: View {
 
                     HStack(spacing: 0) {
                         ForEach(filterItems, id: \.self) { item in
-                            InvoiceFilterItemView(text: item.rawValue, count: viewModel.filterCount[item], isSelected: item == viewModel.activeFilter)
+                            InvoiceFilterItemView(text: item.stringValue, count: viewModel.filterCount[item], isSelected: item == viewModel.activeFilter)
                                 .frame(width: 100, height: 30)
                                 .onTapGesture {
                                     withAnimation {

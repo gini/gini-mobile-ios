@@ -29,8 +29,16 @@ class InvoiceItemCellViewModel {
     }
 }
 
-enum ReimbursmentState: String {
-    case notSent = "Not sent"
-    case sent = "Submitted"
-    case reimbursed = "Reimbursed"
+enum ReimbursmentState {
+    case notSent
+    case sent
+    case reimbursed
+
+    var stringValue: String {
+        switch self {
+        case .notSent: return NSLocalizedString("giniinsurancemock.reimbursedstatus.notsent", comment: "reimbursed")
+        case .sent: return NSLocalizedString("giniinsurancemock.reimbursedstatus.sent", comment: "sent")
+        case .reimbursed: return NSLocalizedString("giniinsurancemock.reimbursedstatus.reimbursed", comment: "reimbursed")
+        }
+    }
 }

@@ -37,15 +37,15 @@ enum TabBarItem: CaseIterable {
     var displayTitle: String {
         switch self {
         case .home:
-            return "Home"
+            return NSLocalizedString("giniinsurancemock.tabbar.home", comment: "home")
         case .invoices:
-            return "Invoices"
+            return NSLocalizedString("giniinsurancemock.tabbar.invoices", comment: "Invoices")
         case .addInvoice:
             return ""
         case .sessions:
-            return "Sessions"
+            return NSLocalizedString("giniinsurancemock.tabbar.sessions", comment: "Invoices")
         case .medicines:
-            return "Medicines"
+            return NSLocalizedString("giniinsurancemock.tabbar.medicines", comment: "medicines")
         }
     }
 }
