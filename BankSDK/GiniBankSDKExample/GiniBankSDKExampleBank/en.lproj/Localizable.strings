@@ -17,3 +17,33 @@
 "ginipaybank.errors.failed.amount.non.empty.check" = "Amount can't be 0";
 "ginipaybank.errors.failed.purpose.non.empty.check" = "Purpose is required.";
 "ginipaybank.errors.failed.default.textfield.validation.check" = "The field is not valid";
+
+"ginipaybank.paymentscreen.title" = "Transfer";
+"ginipaybank.paymentscreen.myaccount.header" = "My account";
+"ginipaybank.paymentscreen.beneficiary.header" = "Beneficiary";
+"ginipaybank.paymentscreen.pay.button.title" = "Confirm payment";
+
+"ginipaybank.paymentscreen.payment.adreess.key" = "To";
+"ginipaybank.paymentscreen.payment.adress.placeholder" = "Invoice adress";
+"ginipaybank.paymentscreen.payment.reference.key" = "Reference";
+"ginipaybank.paymentscreen.payment.edit.button" = "Edit";
+
+"ginipaybank.paymentscreen.payment.recipient.title" = "Recipient gets";
+"ginipaybank.paymentscreen.payment.recipient.price" = "Price";
+"ginipaybank.paymentscreen.payment.recipient.transfer.fee" = "Transfer fee";
+"ginipaybank.paymentscreen.payment.recipient.transfer.total" = "Your total";
+
+"ginipaybank.paymentscreen.payment.estimated.title" = "Estimated arrival";
+"ginipaybank.paymentscreen.payment.estimated.value" = "Tomorrow";
+
+"ginipaybank.paymentconfirmationscreen.button.title" = "Back to the Insurance App";
+"ginipaybank.paymentconfirmationscreen.transfer.status" = "Transfer successful";
+"ginipaybank.paymentconfirmationscreen.transfer.to" = "To";
+"ginipaybank.paymentconfirmationscreen.payment.method" = "Payment method";
+"ginipaybank.paymentconfirmationscreen.payment.card" = "Debit card";
+"ginipaybank.paymentconfirmationscreen.status" = "Status";
+"ginipaybank.paymentconfirmationscreen.status.completed" = "Completed";
+"ginipaybank.paymentconfirmationscreen.time" = "Time";
+"ginipaybank.paymentconfirmationscreen.date" = "Date";
+"ginipaybank.paymentconfirmationscreen.transactionid" = "Transaction ID";
+"ginipaybank.paymentconfirmationscreen.amount" = "Amount";

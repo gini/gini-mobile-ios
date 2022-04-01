@@ -8,6 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		4C84B5DD264ED55100853F33 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C84B5DC264ED55100853F33 /* Credentials.plist */; };
+		7621C91A27F722AB00B3DA3A /* PaymentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7621C91827F722A700B3DA3A /* PaymentCoordinator.swift */; };
+		7621C91F27F7253500B3DA3A /* PaymentConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7621C91E27F7253500B3DA3A /* PaymentConfirmationViewController.swift */; };
+		7621C92127F7254100B3DA3A /* PaymentConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7621C92027F7254100B3DA3A /* PaymentConfirmationViewModel.swift */; };
+		7621C92327F7254E00B3DA3A /* PaymentConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7621C92227F7254E00B3DA3A /* PaymentConfirmationView.swift */; };
+		7621C92527F7265B00B3DA3A /* ConfirmationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7621C92427F7265B00B3DA3A /* ConfirmationHeaderView.swift */; };
+		7621C92727F72C1600B3DA3A /* PaymentConfirmationStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7621C92627F72C1600B3DA3A /* PaymentConfirmationStatusView.swift */; };
+		7621C92927F72DD900B3DA3A /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7621C92827F72DD900B3DA3A /* DateFormatter.swift */; };
+		76DF822E27F71221007D2491 /* KeyBoardGuardian.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DF822C27F7121A007D2491 /* KeyBoardGuardian.swift */; };
+		76FA16F727F6FF11002FFDEC /* PaymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FA16F327F6FF11002FFDEC /* PaymentView.swift */; };
+		76FA16F827F6FF11002FFDEC /* PaymentFeeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FA16F427F6FF11002FFDEC /* PaymentFeeView.swift */; };
+		76FA16F927F6FF11002FFDEC /* MyAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FA16F527F6FF11002FFDEC /* MyAccountView.swift */; };
+		76FA16FA27F6FF11002FFDEC /* ReferenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FA16F627F6FF11002FFDEC /* ReferenceView.swift */; };
+		76FA16FC27F6FF57002FFDEC /* BeneficiaryBankDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FA16FB27F6FF57002FFDEC /* BeneficiaryBankDetailView.swift */; };
+		76FA16FE27F6FF66002FFDEC /* EstimatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FA16FD27F6FF66002FFDEC /* EstimatedView.swift */; };
 		F407A41825E5805E00BC5F36 /* ScreenAPICoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407A41425E5805E00BC5F36 /* ScreenAPICoordinatorTests.swift */; };
 		F407A41925E5805E00BC5F36 /* ComponentAPICoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407A41525E5805E00BC5F36 /* ComponentAPICoordinatorTests.swift */; };
 		F407A41A25E5805E00BC5F36 /* SettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F407A41625E5805E00BC5F36 /* SettingsViewControllerTests.swift */; };
@@ -28,7 +42,6 @@
 		F46B1657273BE52000229E69 /* GiniBankSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F46B1656273BE52000229E69 /* GiniBankSDK */; };
 		F4807C37263C20BA00F30FF3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807C36263C20BA00F30FF3 /* AppDelegate.swift */; };
 		F4807C3B263C20BA00F30FF3 /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807C3A263C20BA00F30FF3 /* PaymentViewController.swift */; };
-		F4807C3E263C20BA00F30FF3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4807C3C263C20BA00F30FF3 /* Main.storyboard */; };
 		F4807C40263C20BB00F30FF3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4807C3F263C20BB00F30FF3 /* Assets.xcassets */; };
 		F4807C43263C20BB00F30FF3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4807C41263C20BB00F30FF3 /* LaunchScreen.storyboard */; };
 		F4807F342640177600F30FF3 /* PaymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807F332640177500F30FF3 /* PaymentViewModel.swift */; };
@@ -73,6 +86,20 @@
 /* Begin PBXFileReference section */
 		4C84B5DC264ED55100853F33 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
 		4C84B5DE2653FFF000853F33 /* Example Swift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Example Swift.entitlements"; sourceTree = "<group>"; };
+		7621C91827F722A700B3DA3A /* PaymentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCoordinator.swift; sourceTree = "<group>"; };
+		7621C91E27F7253500B3DA3A /* PaymentConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentConfirmationViewController.swift; sourceTree = "<group>"; };
+		7621C92027F7254100B3DA3A /* PaymentConfirmationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentConfirmationViewModel.swift; sourceTree = "<group>"; };
+		7621C92227F7254E00B3DA3A /* PaymentConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentConfirmationView.swift; sourceTree = "<group>"; };
+		7621C92427F7265B00B3DA3A /* ConfirmationHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationHeaderView.swift; sourceTree = "<group>"; };
+		7621C92627F72C1600B3DA3A /* PaymentConfirmationStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentConfirmationStatusView.swift; sourceTree = "<group>"; };
+		7621C92827F72DD900B3DA3A /* DateFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
+		76DF822C27F7121A007D2491 /* KeyBoardGuardian.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBoardGuardian.swift; sourceTree = "<group>"; };
+		76FA16F327F6FF11002FFDEC /* PaymentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentView.swift; sourceTree = "<group>"; };
+		76FA16F427F6FF11002FFDEC /* PaymentFeeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentFeeView.swift; sourceTree = "<group>"; };
+		76FA16F527F6FF11002FFDEC /* MyAccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAccountView.swift; sourceTree = "<group>"; };
+		76FA16F627F6FF11002FFDEC /* ReferenceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceView.swift; sourceTree = "<group>"; };
+		76FA16FB27F6FF57002FFDEC /* BeneficiaryBankDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeneficiaryBankDetailView.swift; sourceTree = "<group>"; };
+		76FA16FD27F6FF66002FFDEC /* EstimatedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EstimatedView.swift; sourceTree = "<group>"; };
 		F407A41425E5805E00BC5F36 /* ScreenAPICoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinatorTests.swift; sourceTree = "<group>"; };
 		F407A41525E5805E00BC5F36 /* ComponentAPICoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentAPICoordinatorTests.swift; sourceTree = "<group>"; };
 		F407A41625E5805E00BC5F36 /* SettingsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewControllerTests.swift; sourceTree = "<group>"; };
@@ -96,7 +123,6 @@
 		F4807C34263C20BA00F30FF3 /* GinBankSDKExampleBank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GinBankSDKExampleBank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4807C36263C20BA00F30FF3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4807C3A263C20BA00F30FF3 /* PaymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
-		F4807C3D263C20BA00F30FF3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F4807C3F263C20BB00F30FF3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F4807C42263C20BB00F30FF3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F4807C44263C20BB00F30FF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -161,6 +187,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7621C91B27F724D300B3DA3A /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				76FA16F527F6FF11002FFDEC /* MyAccountView.swift */,
+				76FA16F427F6FF11002FFDEC /* PaymentFeeView.swift */,
+				76FA16FD27F6FF66002FFDEC /* EstimatedView.swift */,
+				76FA16FB27F6FF57002FFDEC /* BeneficiaryBankDetailView.swift */,
+				76FA16F627F6FF11002FFDEC /* ReferenceView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		7621C91C27F724DB00B3DA3A /* PaymentViewController */ = {
+			isa = PBXGroup;
+			children = (
+				7621C91B27F724D300B3DA3A /* Components */,
+				F4807C3A263C20BA00F30FF3 /* PaymentViewController.swift */,
+				F4807F332640177500F30FF3 /* PaymentViewModel.swift */,
+				76FA16F327F6FF11002FFDEC /* PaymentView.swift */,
+			);
+			path = PaymentViewController;
+			sourceTree = "<group>";
+		};
+		7621C91D27F7251900B3DA3A /* PaymentConfirmationScreen */ = {
+			isa = PBXGroup;
+			children = (
+				7621C91E27F7253500B3DA3A /* PaymentConfirmationViewController.swift */,
+				7621C92027F7254100B3DA3A /* PaymentConfirmationViewModel.swift */,
+				7621C92227F7254E00B3DA3A /* PaymentConfirmationView.swift */,
+				7621C92427F7265B00B3DA3A /* ConfirmationHeaderView.swift */,
+				7621C92627F72C1600B3DA3A /* PaymentConfirmationStatusView.swift */,
+			);
+			path = PaymentConfirmationScreen;
+			sourceTree = "<group>";
+		};
 		F439C210273555B60010D77D /* Packages */ = {
 			isa = PBXGroup;
 			children = (
@@ -218,13 +279,15 @@
 		F4807C35263C20BA00F30FF3 /* GiniBankSDKExampleBank */ = {
 			isa = PBXGroup;
 			children = (
+				7621C92827F72DD900B3DA3A /* DateFormatter.swift */,
+				7621C91D27F7251900B3DA3A /* PaymentConfirmationScreen */,
+				7621C91C27F724DB00B3DA3A /* PaymentViewController */,
+				76DF822C27F7121A007D2491 /* KeyBoardGuardian.swift */,
 				F4807C36263C20BA00F30FF3 /* AppDelegate.swift */,
 				F4E0218727BD349A0042D000 /* Amount.swift */,
-				F4807F332640177500F30FF3 /* PaymentViewModel.swift */,
-				F4807C3A263C20BA00F30FF3 /* PaymentViewController.swift */,
+				7621C91827F722A700B3DA3A /* PaymentCoordinator.swift */,
 				F4807FC8264183C000F30FF3 /* Credentials.plist */,
 				F4807FBB264182BD00F30FF3 /* Helpers */,
-				F4807C3C263C20BA00F30FF3 /* Main.storyboard */,
 				F4807C3F263C20BB00F30FF3 /* Assets.xcassets */,
 				F4807C41263C20BB00F30FF3 /* LaunchScreen.storyboard */,
 				F4807C44263C20BB00F30FF3 /* Info.plist */,
@@ -424,7 +487,6 @@
 				F4807F9026416E2E00F30FF3 /* Localizable.strings in Resources */,
 				F4807FC9264183C000F30FF3 /* Credentials.plist in Resources */,
 				F4807C40263C20BB00F30FF3 /* Assets.xcassets in Resources */,
-				F4807C3E263C20BA00F30FF3 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -459,11 +521,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7621C92127F7254100B3DA3A /* PaymentConfirmationViewModel.swift in Sources */,
 				F4807C3B263C20BA00F30FF3 /* PaymentViewController.swift in Sources */,
+				76FA16FE27F6FF66002FFDEC /* EstimatedView.swift in Sources */,
+				76FA16F727F6FF11002FFDEC /* PaymentView.swift in Sources */,
+				7621C92527F7265B00B3DA3A /* ConfirmationHeaderView.swift in Sources */,
+				76FA16FC27F6FF57002FFDEC /* BeneficiaryBankDetailView.swift in Sources */,
 				F4807F9F2641709500F30FF3 /* UITextField+Utils.swift in Sources */,
+				7621C91F27F7253500B3DA3A /* PaymentConfirmationViewController.swift in Sources */,
+				7621C91A27F722AB00B3DA3A /* PaymentCoordinator.swift in Sources */,
+				76FA16F927F6FF11002FFDEC /* MyAccountView.swift in Sources */,
+				76FA16FA27F6FF11002FFDEC /* ReferenceView.swift in Sources */,
+				76DF822E27F71221007D2491 /* KeyBoardGuardian.swift in Sources */,
 				F4807F7426416A5200F30FF3 /* IBANValidator.swift in Sources */,
 				F4807FB52641713700F30FF3 /* Amount.swift in Sources */,
 				F4807FC22641830D00F30FF3 /* CredentialsManager.swift in Sources */,
+				76FA16F827F6FF11002FFDEC /* PaymentFeeView.swift in Sources */,
+				7621C92927F72DD900B3DA3A /* DateFormatter.swift in Sources */,
+				7621C92327F7254E00B3DA3A /* PaymentConfirmationView.swift in Sources */,
+				7621C92727F72C1600B3DA3A /* PaymentConfirmationStatusView.swift in Sources */,
 				F4807F342640177600F30FF3 /* PaymentViewModel.swift in Sources */,
 				F4807F542641347F00F30FF3 /* UIView+Utils.swift in Sources */,
 				F4807C37263C20BA00F30FF3 /* AppDelegate.swift in Sources */,
@@ -562,14 +638,6 @@
 			name = LaunchScreen.xib;
 			sourceTree = "<group>";
 		};
-		F4807C3C263C20BA00F30FF3 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F4807C3D263C20BA00F30FF3 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		F4807C41263C20BB00F30FF3 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -598,7 +666,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BQY9KX4V88;
 				INFOPLIST_FILE = GiniBankSDKExampleBank/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -606,7 +674,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.gini.ginipaybank.Bank.Bank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -618,7 +686,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BQY9KX4V88;
 				INFOPLIST_FILE = GiniBankSDKExampleBank/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -626,7 +694,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.gini.ginipaybank.Bank.Bank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

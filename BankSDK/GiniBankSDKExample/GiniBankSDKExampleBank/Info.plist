@@ -24,10 +24,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>net.gini.ginipay</string>
+			<string>net.gini.ginipay-insurance-bank-mock</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>ginipay-bank</string>
+				<string>ginipay-insurance-bank-mock</string>
 			</array>
 		</dict>
 	</array>
@@ -44,8 +44,6 @@
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
-	<key>UIMainStoryboardFile</key>
-	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

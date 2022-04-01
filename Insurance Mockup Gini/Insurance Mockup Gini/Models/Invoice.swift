@@ -30,21 +30,6 @@ struct Invoice {
          document: Document?,
          iconTitle: String = "teeth_icon",
          desciption: String = "Lorem ipsum") {
-
-
-//        if extractions.count > 0 {
-//            print("X: =================")
-//            print("X: InvoiceID \(id)")
-//
-//            for ext in extractions {
-//                print("X: entity \(ext.entity)")
-//                print("X: value \(ext.value)")
-//                print("X: -")
-//            }
-//
-//            print("X: =================")
-//        }
-
         invoiceID = id
 
         // adress from extraction

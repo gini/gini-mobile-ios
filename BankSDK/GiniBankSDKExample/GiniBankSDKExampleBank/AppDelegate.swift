@@ -12,15 +12,16 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var paymentRequestId: String = ""
-    let apiLib = GiniBankAPI.Builder(client: CredentialsManager.fetchClientFromBundle()).build()
+    private let apiLib = GiniBankAPI.Builder(client: CredentialsManager.fetchClientFromBundle()).build()
+    private var coordinator: PaymentCordinator!
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
-        let paymentViewController = PaymentViewController.instantiate(with: apiLib)
 
-        let navigationController = UINavigationController(rootViewController: paymentViewController)
-        window?.rootViewController = navigationController
+        coordinator = PaymentCordinator(apiLib: apiLib)
+        coordinator.start()
+        window?.rootViewController = coordinator.rootViewController
 
         window?.makeKeyAndVisible()
         return true
