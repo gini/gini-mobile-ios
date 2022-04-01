@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIViewController {
+public extension UIViewController {
     
     enum NavBarItemPosition {
         case left, right

@@ -54,11 +54,23 @@
 				<string>ginipay-business</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>net.gini.ginipay-insurance-mock</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>ginipay-insurance-mock</string>
+			</array>
+		</dict>
 	</array>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>ginipay-bank</string>
 		<string>ginipay-ginibank</string>
+		<string>ginipay-insurance-bank-mock</string>
+		<string></string>
 	</array>
 </dict>
 </plist>

@@ -20,11 +20,15 @@ import Foundation
     
     /// The line item compound extractions.
     public var lineItems: [[Extraction]]?
+
+    /// The line item compound extractions.
+    public var invoiceSender: [[Extraction]]?
         
-    public init(extractions: [Extraction], payment:  [[Extraction]]?,  lineItems: [[Extraction]]?) {
+    public init(extractions: [Extraction], payment:  [[Extraction]]?,  lineItems: [[Extraction]]?, invoiceSender: [[Extraction]]?) {
         self.extractions = extractions
         self.payment = payment
         self.lineItems = lineItems
+        self.invoiceSender = invoiceSender
         super.init()
     }
     
@@ -32,6 +36,7 @@ import Foundation
         
         self.init(extractions: extractionsContainer.extractions,
                   payment: extractionsContainer.compoundExtractions?["payment"],
-                  lineItems: extractionsContainer.compoundExtractions?["lineItems"])
+                  lineItems: extractionsContainer.compoundExtractions?["line_items"],
+                  invoiceSender: extractionsContainer.compoundExtractions?["line_items"])
     }
 }
