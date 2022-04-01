@@ -34,6 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             switch result {
             case let .success(requestId):
                 self.paymentRequestId = requestId
+                NotificationCenter.default.post(name: .appBecomeActive, object: nil)
             case .failure:
                 break
             }

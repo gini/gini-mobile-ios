@@ -10,7 +10,7 @@ import UIKit
 
 struct PaymentFeeView: View {
     @Binding var invoicePrice: Double
-    var tax: Double = 4.99
+    var tax: Double = 0
 
     var body: some View {
         HStack {

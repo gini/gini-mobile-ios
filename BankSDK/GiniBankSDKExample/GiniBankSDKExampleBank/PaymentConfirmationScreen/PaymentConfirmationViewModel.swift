@@ -14,6 +14,8 @@ public class PaymentConfirmationViewModel: ObservableObject {
     private var paymentRequest: ResolvedPaymentRequest
     private let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
+    var dismiss: (() -> Void)?
+
     @Published var date: Date = Date()
     @Published var price: String = ""
     @Published var id: String = ""
@@ -25,6 +27,7 @@ public class PaymentConfirmationViewModel: ObservableObject {
     }
 
     func openPaymentRequesterApp() {
+        dismiss?()
         bankSDK.returnBackToBusinessAppHandler(resolvedPaymentRequest: paymentRequest)
     }
 

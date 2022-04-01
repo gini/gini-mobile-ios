@@ -81,14 +81,15 @@ struct PaymentView: View {
 
                 Spacer()
             }
-            .background(Style.backgroundColor)
             .onAppear {
                 viewModel.fetchPaymentRequest()
             }
             .offset(y: -kGuardian.slide/4).animation(.easeInOut, value: 0.9)
             .onAppear { self.kGuardian.addObserver() }
             .onDisappear { self.kGuardian.removeObserver() }
-        }.ignoresSafeArea()
+        }
+        .background(Style.backgroundColor)
+        .ignoresSafeArea()
     }
 }
 

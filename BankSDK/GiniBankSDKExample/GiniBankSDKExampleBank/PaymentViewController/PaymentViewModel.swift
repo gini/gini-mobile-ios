@@ -12,6 +12,10 @@ import UIKit
 import SwiftUI
 import Combine
 
+extension NSNotification.Name {
+    static let appBecomeActive = Notification.Name("gini.app.become.active")
+}
+
 protocol PaymentViewModelDelegate: AnyObject {
     func paymentViewModelDidFinishPayment(_ paymentViewModel: PaymentViewModel, with paymentRequest: ResolvedPaymentRequest)
 }
@@ -25,7 +29,7 @@ public class PaymentViewModel: ObservableObject {
     @Published var invoiceTitle: String = ""
     @Published var iban: String = ""
     @Published var invoiceReference: String = ""
-    @Published var invoicePrice: Double = 28
+    @Published var invoicePrice: Double = 0
 
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
@@ -57,6 +61,8 @@ public class PaymentViewModel: ObservableObject {
         $invoicePrice.sink { [weak self] newValue in
             self?.paymentInfo?.amount = String(newValue)
         }.store(in: &disposeBag)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(fetchPaymentRequest), name: .appBecomeActive, object: nil)
     }
     
 
@@ -92,6 +98,7 @@ public class PaymentViewModel: ObservableObject {
         }
     }
 
+    @objc
     func fetchPaymentRequest() {
         if appDelegate.paymentRequestId != "" {
             isLoading = true
@@ -116,5 +123,9 @@ public class PaymentViewModel: ObservableObject {
                 }
             }
         }
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }

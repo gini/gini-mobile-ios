@@ -24,7 +24,7 @@ final class InvoiceListDataModel {
             invoice.iconTitle = "teeth_icon"
             invoice.reimbursmentStatus = .reimbursed
             invoice.price = 14.99
-            invoice.creationDate = Date().addingTimeInterval(-4 * dayTimeInterval)
+            invoice.creationDate = Date().addingTimeInterval(-1 * dayTimeInterval)
             return invoice
         }(),
         {   var invoice = Invoice(extractions: [], document: nil)

@@ -28,6 +28,13 @@ class PaymentConfirmationViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setupConstraints()
+        setupBindings()
+    }
+
+    private func setupBindings() {
+        viewModel.dismiss = { [weak self] in
+            self?.dismiss(animated: false)
+        }
     }
 
     private func setupView() {
