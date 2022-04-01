@@ -16,6 +16,8 @@ If you plan to use a custom name for localizable strings, you need to set it in 
 - [Gallery album screen](#gallery-album-screen)
 - [Onboarding screens](#onboarding-screens)
 - [Help screen](#help-screen)
+- [No results screen](#no-results-screen)
+- [Albums screen](#albums-screen)
 
 ## Supporting dark mode
 
@@ -304,3 +306,35 @@ Some background and text colors use the `GiniColor` type with which you can set 
 ##### 4. Additional help menu items
 
 - Custom help menu items &#8594; `GiniBankConfiguration.customMenuItems` an array of `HelpMenuViewController.Item` objects
+
+## No results screen
+
+<br>
+<center><img src="img/Customization guide/No results.png" height="500"/></center>
+</br>
+
+##### 1. Back to camera button
+
+- Background color &#8594; `GiniBankConfiguration.noResultsBottomButtonColor`
+
+- Back button
+    noResultsBottomButtonColor
+  - With image and title
+      - Image &#8594; <span style="color:#009EDF">*navigationHelpBack*</span> image asset
+      - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.help.backToCamera*</span> localized string
+  - With title only
+      - Title &#8594; `GiniBankConfiguration.navigationBarHelpMenuTitleBackToCameraButton`
+
+##### 2. Warning container icon
+
+- Background color &#8594; `GiniBankConfiguration.noResultsWarningContainerIconColor`
+
+## Albums screen
+
+<br>
+<center><img src="img/Customization guide/Albums screen.png" height="500"/></center>
+</br>
+
+##### 1. Select more photos button
+
+- Text color &#8594; `GiniBankConfiguration.albumsScreenSelectMorePhotosTextColor` using `GiniColor` with dark mode and light mode colors
