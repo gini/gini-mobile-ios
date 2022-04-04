@@ -19,7 +19,7 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
     var giniBankAPIdocumentService: GiniBankAPILibrary.DefaultDocumentService!
     var uploadedDocument: Document?
     var sendFeedbackBlock: (([String: Extraction]) -> Void) = {_ in }
-    var docId = ""
+    var captureResultsDelegate = GiniCaptureResultsDelegateMock()
     override func setUp() {
         giniBankAPILib = GiniBankAPI
             .Builder(client: Client(id: clientId,
@@ -41,7 +41,7 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
 
         return data!
     }
-
+    
     func testSendExtractionFeedback() {
         let expect = expectation(description: "feedback was correctly sent and extractions were updated")
 
@@ -82,8 +82,9 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                         // 4. Send feedback for the extractions the user saw
                         //    with the final (user confirmed or updated) extraction values
                         
-                       self.sendFeedbackBlock(extractionsForResult)
-
+                        let result = AnalysisResult.init(extractions: extractionsForResult, lineItems: [], images: [], document: self.uploadedDocument)
+                        self.captureResultsDelegate.giniCaptureAnalysisDidFinishWith(result: result, sendFeedbackBlock: self.sendFeedbackBlock)
+                        
                         // 5. Verify that the extractions were updated
                         self.getUpdatedExtractionsFromGiniCaptureSDK { result in
                             switch result {
@@ -174,6 +175,19 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                     completion(.failure(error))
                 }
             }
+        }
+    }
+    
+    class GiniCaptureResultsDelegateMock: GiniCaptureResultsDelegate {
+        
+        func giniCaptureAnalysisDidFinishWith(result: AnalysisResult, sendFeedbackBlock: @escaping ([String : Extraction]) -> Void) {
+            sendFeedbackBlock(result.extractions)
+        }
+        
+        func giniCaptureAnalysisDidFinishWithoutResults(_ showingNoResultsScreen: Bool) {
+        }
+        
+        func giniCaptureDidCancelAnalysis() {
         }
     }
 }
