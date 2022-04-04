@@ -9,6 +9,17 @@
 @testable import GiniCaptureSDK
 import XCTest
 
+extension UIControl {
+    func simulateEvent(_ event: UIControl.Event) {
+        for target in allTargets {
+            let target = target as NSObjectProtocol
+            for actionName in actions(forTarget: target, forControlEvent: event) ?? [] {
+                let selector = Selector(actionName)
+                target.perform(selector)
+            }
+        }
+    }
+}
 final class GalleryCoordinatorTests: XCTestCase {
     let galleryManager = GalleryManagerMock()
     let giniConfiguration: GiniConfiguration = GiniConfiguration.shared
@@ -49,33 +60,33 @@ final class GalleryCoordinatorTests: XCTestCase {
         }
     }
 
-//    func testOpenImages() {
-//        let expect = expectation(description: "feedback was correctly sent and extractions were updated")
-//        let delegate = GalleryCoordinatorDelegateMock()
-//        coordinator.delegate = delegate
-//
-//        selectImage(at: IndexPath(row: 0, section: 0), in: galleryManager.albums[2]) { _ in
-////            let expect = self.expectation(for: NSPredicate(value: true),
-////                                          evaluatedWith: delegate.didOpenImages,
-////                                          handler: nil)
-//
-//            DispatchQueue.main.async {
-//                self.selectImage(at: IndexPath(row: 1, section: 0), in: self.galleryManager.albums[2]) { _ in
-//                    let innerButton = self.coordinator.openImagesButton.customView as? UIButton
-//                    innerButton?.sendActions(for: .touchUpInside)
-//
-//                    XCTAssertTrue(delegate.didOpenImages,
-//                                  "gallery images picked should be processed after tapping open images button")
-//                    XCTAssertEqual(delegate.openedImageDocuments.count, 2,
-//                                   "delegate opened image documents should be 2")
-//                    XCTAssertTrue(self.coordinator.selectedImageDocuments.isEmpty,
-//                                  "selected image documents collection should be empty after opening them")
-//                    expect.fulfill()
-//                }
-//            }
-//        }
-//        self.wait(for: [expect], timeout: 30)
-//    }
+    func testOpenImages() {
+        let delegate = GalleryCoordinatorDelegateMock()
+        coordinator.delegate = delegate
+
+        selectImage(at: IndexPath(row: 0, section: 0), in: galleryManager.albums[2]) { _ in
+
+            DispatchQueue.main.async {
+                self.selectImage(at: IndexPath(row: 1, section: 0), in: self.galleryManager.albums[2]) { _ in
+                    if let innerButton = self.coordinator.openImagesButton.customView as? UIButton {
+                        innerButton.simulateEvent(.touchUpInside)
+                    }
+                    let expect = self.expectation(for: NSPredicate(value: true),
+                                                  evaluatedWith: delegate.didOpenImages,
+                                                  handler: nil)
+                    self.wait(for: [expect], timeout: 10)
+
+                    XCTAssertTrue(delegate.didOpenImages,
+                                  "gallery images picked should be processed after tapping open images button")
+
+                    XCTAssertEqual(delegate.openedImageDocuments.count, 2,
+                                   "delegate opened image documents should be 2")
+                    XCTAssertTrue(self.coordinator.selectedImageDocuments.isEmpty,
+                                  "selected image documents collection should be empty after opening them")
+                }
+            }
+        }
+    }
 
     func testNavigateBackToAlbumsTable() {
         coordinator.start()
