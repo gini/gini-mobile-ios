@@ -11,7 +11,7 @@ on:
       - 'CaptureSDK/**'
       - 'BankAPILibrary/**'
   workflow_call:
-  secrets:
+    secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET:
         required: true
   
