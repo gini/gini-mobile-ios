@@ -140,7 +140,6 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                 switch result {
                 case let .success(createdDocument):
                     self?.uploadedDocument = createdDocument
-                    print(createdDocument)
                     
                     // Analyze the uploaded test document
                     self?.documentService?.startAnalysis { result in
