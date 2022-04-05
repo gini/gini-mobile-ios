@@ -17,6 +17,7 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
     var giniBankAPILib: GiniBankAPI!
     var giniCaptureSDKDocumentService: GiniCaptureSDK.DocumentService!
     var giniBankAPIDocumentService: GiniBankAPILibrary.DefaultDocumentService!
+    var feedbackSendingGroup: DispatchGroup!
     
     override func setUp() {
         giniBankAPILib = GiniBankAPI
@@ -28,6 +29,8 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
         giniCaptureSDKDocumentService = DocumentService(lib: giniBankAPILib, metadata: nil)
         
         giniBankAPIDocumentService = giniBankAPILib.documentService()
+        
+        feedbackSendingGroup = DispatchGroup()
     }
 
     func loadFile(withName name: String, ofType type: String) -> Data {
@@ -63,63 +66,59 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
         
         func giniCaptureAnalysisDidFinishWith(result: AnalysisResult, sendFeedbackBlock: @escaping ([String : Extraction]) -> Void) {
             // 1b. Received the extractions for the uploaded document
-            DispatchQueue.main.async {
-                let fixtureExtractionsJson = self.integrationTest.loadFile(withName: "result_Gini_invoice_example", ofType: "json")
-
-                let fixtureExtractionsContainer = try! JSONDecoder().decode(ExtractionsContainer.self, from: fixtureExtractionsJson)
-
-                // 2. Verify we received the correct extractions for this test
-                XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "iban" })?.value,
-                               result.extractions["iban"]?.value)
-                XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "paymentRecipient" })?.value,
-                               result.extractions["paymentRecipient"]?.value)
-                XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "paymentPurpose" })?.value,
-                               result.extractions["paymentPurpose"]?.value)
-                XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "bic" })?.value,
-                               result.extractions["bic"]?.value)
-                XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
-                               result.extractions["amountToPay"]?.value)
+            let fixtureExtractionsJson = self.integrationTest.loadFile(withName: "result_Gini_invoice_example", ofType: "json")
+            
+            let fixtureExtractionsContainer = try! JSONDecoder().decode(ExtractionsContainer.self, from: fixtureExtractionsJson)
+            
+            // 2. Verify we received the correct extractions for this test
+            XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "iban" })?.value,
+                           result.extractions["iban"]?.value)
+            XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "paymentRecipient" })?.value,
+                           result.extractions["paymentRecipient"]?.value)
+            XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "paymentPurpose" })?.value,
+                           result.extractions["paymentPurpose"]?.value)
+            XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "bic" })?.value,
+                           result.extractions["bic"]?.value)
+            XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
+                           result.extractions["amountToPay"]?.value)
+            
+            // 3. Assuming the user saw the following extractions:
+            //    amountToPay, iban, bic, paymentPurpose and paymentRecipient
+            //    Supposing the user changed the amountToPay from "995.00:EUR" to "950.00:EUR"
+            //    we need to update that extraction
+            result.extractions["amountToPay"]?.value = "950.00:EUR"
+            
+            if result.extractions["amountToPay"] != nil {
+                // 4. Send feedback for the extractions the user saw
+                //    with the final (user confirmed or updated) extraction values
+                sendFeedbackBlock(result.extractions)
                 
-                // 3. Assuming the user saw the following extractions:
-                //    amountToPay, iban, bic, paymentPurpose and paymentRecipient
-                //    Supposing the user changed the amountToPay from "995.00:EUR" to "950.00:EUR"
-                //    we need to update that extraction
-                result.extractions["amountToPay"]?.value = "950.00:EUR"
-                
-                if result.extractions["amountToPay"] != nil {
-                    // 4. Send feedback for the extractions the user saw
-                    //    with the final (user confirmed or updated) extraction values
-                    sendFeedbackBlock(result.extractions)
-                                        
+                self.integrationTest.feedbackSendingGroup.notify(queue: DispatchQueue.main) {
                     // 5. Verify that the extractions were updated
                     self.integrationTest.getUpdatedExtractionsFromGiniCaptureSDK(for: result.document!) { result in
                         switch result {
                         case let .success(extractionResult):
-                            DispatchQueue.main.async {
-                                let extractionsAfterFeedback = extractionResult.extractions
-                                let fixtureExtractionsAfterFeedbackJson = self.integrationTest.loadFile(withName: "result_Gini_invoice_example_after_feedback", ofType: "json")
-                                let fixtureExtractionsAfterFeedbackContainer = try! JSONDecoder().decode(ExtractionsContainer.self, from: fixtureExtractionsAfterFeedbackJson)
-                                XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "iban" })?.value,
-                                               extractionsAfterFeedback.first(where: { $0.name == "iban" })?.value)
-                                XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "paymentRecipient" })?.value,
-                                               extractionsAfterFeedback.first(where: { $0.name == "paymentRecipient" })?.value)
-                                XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "paymentPurpose" })?.value,
-                                               extractionsAfterFeedback.first(where: { $0.name == "paymentPurpose" })?.value)
-                                XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "bic" })?.value,
-                                               extractionsAfterFeedback.first(where: { $0.name == "bic" })?.value)
-                                XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
-                                               extractionsAfterFeedback.first(where: { $0.name == "amountToPay" })?.value)
-
-                                self.expect.fulfill()
-                            }
-
+                            let extractionsAfterFeedback = extractionResult.extractions
+                            let fixtureExtractionsAfterFeedbackJson = self.integrationTest.loadFile(withName: "result_Gini_invoice_example_after_feedback", ofType: "json")
+                            let fixtureExtractionsAfterFeedbackContainer = try! JSONDecoder().decode(ExtractionsContainer.self, from: fixtureExtractionsAfterFeedbackJson)
+                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "iban" })?.value,
+                                           extractionsAfterFeedback.first(where: { $0.name == "iban" })?.value)
+                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "paymentRecipient" })?.value,
+                                           extractionsAfterFeedback.first(where: { $0.name == "paymentRecipient" })?.value)
+                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "paymentPurpose" })?.value,
+                                           extractionsAfterFeedback.first(where: { $0.name == "paymentPurpose" })?.value)
+                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "bic" })?.value,
+                                           extractionsAfterFeedback.first(where: { $0.name == "bic" })?.value)
+                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
+                                           extractionsAfterFeedback.first(where: { $0.name == "amountToPay" })?.value)
+                            
+                            self.expect.fulfill()
                         case let .failure(error):
                             XCTFail(String(describing: error))
                         }
                     }
                 }
             }
-            
         }
         
         func giniCaptureAnalysisDidFinishWithoutResults(_ showingNoResultsScreen: Bool) {
@@ -145,37 +144,46 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
         
         // Upload a test document
         giniCaptureSDKDocumentService.upload(document: captureDocument) { result in
-            DispatchQueue.main.async { [weak self] in
-                switch result {
-                case .success(_):
-                    // Analyze the uploaded test document
-                    self?.giniCaptureSDKDocumentService?.startAnalysis { result in
-                        switch result {
-                        case let .success(extractionResult):
-                            let extractions: [String: Extraction] = Dictionary(uniqueKeysWithValues: extractionResult.extractions.compactMap {
-                                guard let name = $0.name else { return nil }
-                                
-                                return (name, $0)
-                            })
+            switch result {
+            case .success(_):
+                // Analyze the uploaded test document
+                self.giniCaptureSDKDocumentService?.startAnalysis { result in
+                    switch result {
+                    case let .success(extractionResult):
+                        let extractions: [String: Extraction] = Dictionary(uniqueKeysWithValues: extractionResult.extractions.compactMap {
+                            guard let name = $0.name else { return nil }
                             
-                            let analysisResult = AnalysisResult(extractions: extractions,
-                                                                lineItems: extractionResult.lineItems,
-                                                                images: [],
-                                                                document: self?.giniCaptureSDKDocumentService?.document)
+                            return (name, $0)
+                        })
+                        
+                        let analysisResult = AnalysisResult(extractions: extractions,
+                                                            lineItems: extractionResult.lineItems,
+                                                            images: [],
+                                                            document: self.giniCaptureSDKDocumentService?.document)
+                        
+                        let sendFeedbackBlock: (([String: Extraction]) -> Void) = { [self] updatedExtractions in
+                            let extractions = updatedExtractions.map {$0.1}
                             
-                            let sendFeedbackBlock: (([String: Extraction]) -> Void) = { [self] updatedExtractions in
-                                let extractions = updatedExtractions.map {$0.1}
-                                self?.giniCaptureSDKDocumentService?.sendFeedback(with: extractions)
+                            self.feedbackSendingGroup.enter()
+                            
+                            self.giniBankAPIDocumentService.submitFeedback(for: self.giniCaptureSDKDocumentService!.document!,
+                                                                           with: extractions) { result in
+                                switch result {
+                                case .success():
+                                    self.feedbackSendingGroup.leave()
+                                case let .failure(error):
+                                    XCTFail(String(describing: error))
+                                }
                             }
-                            
-                            delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult, sendFeedbackBlock: sendFeedbackBlock)
-                        case let .failure(error):
-                            XCTFail(String(describing: error))
                         }
+                        
+                        delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult, sendFeedbackBlock: sendFeedbackBlock)
+                    case let .failure(error):
+                        XCTFail(String(describing: error))
                     }
-                case let .failure(error):
-                    XCTFail(String(describing: error))
                 }
+            case let .failure(error):
+                XCTFail(String(describing: error))
             }
         }
     }
@@ -187,14 +195,12 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
       */
     private func getUpdatedExtractionsFromGiniCaptureSDK(for document: Document, completion: @escaping AnalysisCompletion){
         self.giniBankAPIDocumentService.extractions(for: document,
-                           cancellationToken: CancellationToken()) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case let .success(extractionResult):
-                    completion(.success(extractionResult))
-                case let .failure(error):
-                    completion(.failure(error))
-                }
+                                                    cancellationToken: CancellationToken()) { result in
+            switch result {
+            case let .success(extractionResult):
+                completion(.success(extractionResult))
+            case let .failure(error):
+                completion(.failure(error))
             }
         }
     }
