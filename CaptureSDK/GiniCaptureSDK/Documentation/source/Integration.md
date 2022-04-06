@@ -110,9 +110,14 @@ The components that can be found in the SDK are:
 
 Your app should send feedback for the extractions the Gini Bank API delivered. Feedback should be sent only for the extractions the user has seen and accepted (or corrected).
 
+We provide a sample test case [here](https://github.com/gini/gini-mobile-ios/blob/main/CaptureSDK/GiniCaptureSDKExample/Tests/ExtractionFeedbackIntegrationTest.swift) to verify that extraction feedback sending works. 
+You may use it along with the example pdf and json files as a starting point to write your own test case.
+
+The sample test case is based on the Bank API documentation's [recommended steps](https://pay-api.gini.net/documentation/#test-example) for testing extraction feedback sending.
+
 For additional information about feedback see the [Gini Bank API documentation](https://pay-api.gini.net/documentation/#send-feedback-and-get-even-better-extractions-next-time).
 
-### Default Implementation
+### Default networking implementation
 
 The example below shows how to correct extractions and send feedback using the default networking implementation:
 
@@ -138,7 +143,7 @@ updatedExtractions.map{$0.value}.first(where: {$0.name == "amountToPay"})?.value
 sendFeedbackBlock(updatedExtractions)
 
 ```
-### Custom Implementation
+### Custom networking implementation
 
 If you use your own networking implementation and directly communicate with the Gini Bank API then see [this section](https://pay-api.gini.net/documentation/#submitting-feedback-on-extractions) in its documentation on how to send feedback.
 
