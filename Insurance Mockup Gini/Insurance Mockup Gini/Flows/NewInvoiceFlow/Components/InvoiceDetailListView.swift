@@ -17,7 +17,7 @@ class InvoiceDetailListViewModel {
     init(invoice: Invoice) {
         self.creationDate = invoice.creationDate
         self.dueDate = invoice.dueDate
-        self.amountWithCurrency = "\(invoice.price) \(invoice.currency)"
+        self.amountWithCurrency = "\(String(format: "%.2f", invoice.price)) \(invoice.currency)"
         self.paid = invoice.paid
         self.numberOfDaysUntilDue = Int((invoice.dueDate - Date()) / (24*60*60))
     }

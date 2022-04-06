@@ -45,6 +45,7 @@ public enum Style {
         static let iconColorOn = Color(red: 0.165, green: 0.686, blue: 0.314)
     }
 
+    static let buttonContainerColor = Color(red: 0.973, green: 0.973, blue: 0.957)
     static let yellow = Color(red: 0.761, green: 0.584, blue: 0.125)
 }
 

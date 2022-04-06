@@ -71,6 +71,10 @@
 
 "giniinsurancemock.homescreen.title" = "Overview";
 "giniinsurancemock.homescreen.treshold.description" = "You are close to the threshold!";
+"giniinsurancemock.homescreen.treshold.description.submit" = "It’s time to submit all your invoices";
+"giniinsurancemock.homescreen.treshold.description.documents.to.submit" = "You have 4 invoices to submit";
+"giniinsurancemock.homescreen.treshold.button.submit" = "Submit all";
+"giniinsurancemock.homescreen.treshold.button.showall" = "Show";
 "giniinsurancemock.homescreen.appointments.upcoming" = "Upcoming appointments";
 "giniinsurancemock.homescreen.appointments.seeall" = "See all";
 "giniinsurancemock.homescreen.today" = "Today";
@@ -80,6 +84,7 @@
 "giniinsurancemock.homescreen.medical.treatments.description" = "A detailed summary of a patient’s disease, the type of treatment ...";
 "giniinsurancemock.homescreen.medical.treatments.2" = "Naturopathy";
 "giniinsurancemock.homescreen.medical.treatments.2.description" = "Naturopathy is a form of healthcare that combines modern treatment...";
+"giniinsurancemock.homescreen.appointments.in.x.days" = "In %d days";
 
 
 

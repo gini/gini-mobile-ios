@@ -7,12 +7,28 @@
 
 import Foundation
 
-struct HomeScreenViewModel {
+enum TresholdStatus {
+    case below, submit
+
+    mutating func toggle() {
+        switch self {
+        case .below:
+            self = .submit
+        case .submit:
+            self = .below
+        }
+    }
+}
+
+class HomeScreenViewModel: ObservableObject {
 
     // MARK: - Overview section
 
+    @Published var tresholdStatus: TresholdStatus = .below
+
     var overviewSectionTitle = NSLocalizedString("giniinsurancemock.homescreen.title", comment: "")
     var tresholdTitle = NSLocalizedString("giniinsurancemock.homescreen.treshold.description", comment: "")
+    var tresholdTitleSubmit = NSLocalizedString("giniinsurancemock.homescreen.treshold.description.submit", comment: "")
 
     var ammount = "€1,248.00"
     var tresholdAmmount = " / €1,600.00"
@@ -37,11 +53,11 @@ struct HomeScreenViewModel {
                              appointmentHour: "12:30"),
         AppointmentViewModel(type: .consultation,
                              title: "Prophylaxis - Dr. Thomas Schuster",
-                             appointmentDay: "6 August",
+                             appointmentDay: String(format: NSLocalizedString("giniinsurancemock.homescreen.appointments.in.x.days", comment: ""), Int.random(in: (2..<8))),
                              appointmentHour: "08:15"),
         AppointmentViewModel(type: .treatment,
                              title: "Pediatry - Saint Ludovic Hospital",
-                             appointmentDay: "15 September",
+                             appointmentDay: String(format: NSLocalizedString("giniinsurancemock.homescreen.appointments.in.x.days", comment: ""), Int.random(in: (9..<12))),
                              appointmentHour: "13:00")]
 
     // MARK: - Services section

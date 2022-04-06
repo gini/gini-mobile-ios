@@ -708,7 +708,7 @@
 				DEVELOPMENT_TEAM = BQY9KX4V88;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Insurance Mockup Gini/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Insurance Mockup Gini";
+				INFOPLIST_KEY_CFBundleDisplayName = PKV;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Um Dokumente mit deinem Gerät zu scannen, erlaube den Zugriff auf deine Kamera.  📸 -> 📄 -> 🎉";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Um Dokumente auf deinem Gerät zu scannen, erlaube den Zugriff auf deine Fotos  🏞 -> 📄 -> 🎉";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -740,7 +740,7 @@
 				DEVELOPMENT_TEAM = BQY9KX4V88;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Insurance Mockup Gini/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Insurance Mockup Gini";
+				INFOPLIST_KEY_CFBundleDisplayName = PKV;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Um Dokumente mit deinem Gerät zu scannen, erlaube den Zugriff auf deine Kamera.  📸 -> 📄 -> 🎉";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Um Dokumente auf deinem Gerät zu scannen, erlaube den Zugriff auf deine Fotos  🏞 -> 📄 -> 🎉";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

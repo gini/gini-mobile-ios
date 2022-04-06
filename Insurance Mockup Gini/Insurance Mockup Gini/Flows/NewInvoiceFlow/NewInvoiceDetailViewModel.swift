@@ -61,7 +61,7 @@ class NewInvoiceDetailViewModel: ObservableObject {
         self.invoice = invoice
         self.result = invoice.extractions
         self.document = invoice.document
-        amountWithCurrency = "\(invoice.price) \(invoice.currency)"
+        amountWithCurrency = "\(String(format: "%.2f", invoice.price)) \(invoice.currency)"
         price = invoice.price
         companyName = invoice.invoiceTitle
         iban = invoice.iban
