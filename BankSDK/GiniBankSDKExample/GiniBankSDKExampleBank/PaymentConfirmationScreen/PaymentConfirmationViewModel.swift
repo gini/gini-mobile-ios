@@ -40,13 +40,15 @@ public class PaymentConfirmationViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.invoiceTitle = payment.recipient
                     self.id = "#390913832472"
-                    self.date = Date() //payment.paidAt
-                    self.price = String(payment.amount.split(separator: ":").first ?? "29")
+                    self.date = Date()
+                    if let priceString = payment.amount.split(separator: ":").first, let priceDouble = Double(priceString) {
+                        self.price = "\(String(format: "%.2f", priceDouble))"
+                    } else {
+                        self.price = "99.00"
+                    }
                 }
-//                self?.isLoading = false
             case .failure:
                 print("error")
-//                self?.isLoading = false
             }
         }
     }

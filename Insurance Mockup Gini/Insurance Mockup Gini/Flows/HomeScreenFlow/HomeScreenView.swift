@@ -19,7 +19,6 @@ struct HomeScreenView: View {
                 Image(viewModel.infoIcon)
                     .onTapGesture {
                         withAnimation {
-                            print("X: fghjkl \(viewModel.tresholdStatus)")
                             viewModel.tresholdStatus.toggle()
                         }
                     }

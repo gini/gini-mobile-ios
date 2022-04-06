@@ -76,7 +76,7 @@ struct PaymentConfirmationStatusView: View {
 
                 Spacer()
 
-                Text("€ \(price).00")
+                Text("€ \(price)")
             }
             .padding(.bottom, 4)
         }
