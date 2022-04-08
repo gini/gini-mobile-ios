@@ -64,6 +64,27 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "F490C7E125DE873900D8CA6F"
+            BuildableName = "GiniBankSDKExample.app"
+            BlueprintName = "GiniBankSDKExample"
+            ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "CLIENT_SECRET"
+            value = " $(CLIENT_SECRET)"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "CLIENT_ID"
+            value = " $(CLIENT_ID)"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

@@ -19,6 +19,14 @@
 		F439C21B27355C310010D77D /* GiniBankSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F439C21A27355C310010D77D /* GiniBankSDK */; };
 		F439C21D27355C3A0010D77D /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F439C21C27355C3A0010D77D /* GiniCaptureSDK */; };
 		F439C21F27355C430010D77D /* GiniBankAPILibrary in Frameworks */ = {isa = PBXBuildFile; productRef = F439C21E27355C430010D77D /* GiniBankAPILibrary */; };
+		F43EB6E727FDE91F00289619 /* ExtractionFeedbackIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43EB6E627FDE91F00289619 /* ExtractionFeedbackIntegrationTest.swift */; };
+		F43EB6E827FDE91F00289619 /* ExtractionFeedbackIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43EB6E627FDE91F00289619 /* ExtractionFeedbackIntegrationTest.swift */; };
+		F43EB6EE27FF155A00289619 /* result_Gini_invoice_example.json in Resources */ = {isa = PBXBuildFile; fileRef = F43EB6EA27FF155A00289619 /* result_Gini_invoice_example.json */; };
+		F43EB6EF27FF155A00289619 /* result_Gini_invoice_example.json in Resources */ = {isa = PBXBuildFile; fileRef = F43EB6EA27FF155A00289619 /* result_Gini_invoice_example.json */; };
+		F43EB6F227FF155A00289619 /* Gini_invoice_example.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F43EB6EC27FF155A00289619 /* Gini_invoice_example.pdf */; };
+		F43EB6F327FF155A00289619 /* Gini_invoice_example.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F43EB6EC27FF155A00289619 /* Gini_invoice_example.pdf */; };
+		F43EB6F427FF155A00289619 /* result_Gini_invoice_example_after_feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = F43EB6ED27FF155A00289619 /* result_Gini_invoice_example_after_feedback.json */; };
+		F43EB6F527FF155A00289619 /* result_Gini_invoice_example_after_feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = F43EB6ED27FF155A00289619 /* result_Gini_invoice_example_after_feedback.json */; };
 		F441DCA525E55D5800AAB09A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F441DCA725E55D5800AAB09A /* Main.storyboard */; };
 		F441DCB625E568C400AAB09A /* LaunchScreen.strings in Resources */ = {isa = PBXBuildFile; fileRef = F441DCB225E568C400AAB09A /* LaunchScreen.strings */; };
 		F441DCB725E568C400AAB09A /* Main.strings in Resources */ = {isa = PBXBuildFile; fileRef = F441DCB425E568C400AAB09A /* Main.strings */; };
@@ -78,13 +86,17 @@
 		F407A41525E5805E00BC5F36 /* ComponentAPICoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentAPICoordinatorTests.swift; sourceTree = "<group>"; };
 		F407A41625E5805E00BC5F36 /* SettingsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewControllerTests.swift; sourceTree = "<group>"; };
 		F407A41725E5805E00BC5F36 /* DocumentServiceMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentServiceMock.swift; sourceTree = "<group>"; };
-		F407A42425E580F000BC5F36 /* testPDF.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = testPDF.pdf; sourceTree = "<group>"; };
+		F407A42425E580F000BC5F36 /* testPDF.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = testPDF.pdf; path = ../testPDF.pdf; sourceTree = "<group>"; };
 		F4083ED82735B0CB004DDD3B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F4083EDA2735B0CD004DDD3B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F40E1435273C06AA00734A0E /* PartialDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PartialDocument.swift; path = GiniBankSDKExample/PartialDocument.swift; sourceTree = SOURCE_ROOT; };
 		F40E1437273C08D200734A0E /* testPDF.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = testPDF.pdf; path = GiniBankSDKExample/testPDF.pdf; sourceTree = SOURCE_ROOT; };
 		F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAnalysisHelper.swift; sourceTree = "<group>"; };
 		F439C21827355C0C0010D77D /* GiniBankSDK */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniBankSDK; path = ../GiniBankSDK; sourceTree = "<group>"; };
+		F43EB6E627FDE91F00289619 /* ExtractionFeedbackIntegrationTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionFeedbackIntegrationTest.swift; sourceTree = "<group>"; };
+		F43EB6EA27FF155A00289619 /* result_Gini_invoice_example.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example.json; sourceTree = "<group>"; };
+		F43EB6EC27FF155A00289619 /* Gini_invoice_example.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example.pdf; sourceTree = "<group>"; };
+		F43EB6ED27FF155A00289619 /* result_Gini_invoice_example_after_feedback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_after_feedback.json; sourceTree = "<group>"; };
 		F441DCA625E55D5800AAB09A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F441DCB325E568C400AAB09A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		F441DCB525E568C400AAB09A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
@@ -176,6 +188,17 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F43EB6E927FF155900289619 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F43EB6EA27FF155A00289619 /* result_Gini_invoice_example.json */,
+				F407A42425E580F000BC5F36 /* testPDF.pdf */,
+				F43EB6EC27FF155A00289619 /* Gini_invoice_example.pdf */,
+				F43EB6ED27FF155A00289619 /* result_Gini_invoice_example_after_feedback.json */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		F441DC0025E51F4B00AAB09A /* ComponentAPI */ = {
@@ -303,11 +326,12 @@
 			isa = PBXGroup;
 			children = (
 				F407A41525E5805E00BC5F36 /* ComponentAPICoordinatorTests.swift */,
+				F43EB6E627FDE91F00289619 /* ExtractionFeedbackIntegrationTest.swift */,
 				F407A41725E5805E00BC5F36 /* DocumentServiceMock.swift */,
 				F407A41425E5805E00BC5F36 /* ScreenAPICoordinatorTests.swift */,
 				F4B7B0AB27F1FEF200B615B7 /* ScreenAPICoordinator+UI_Only.swift */,
 				F407A41625E5805E00BC5F36 /* SettingsViewControllerTests.swift */,
-				F407A42425E580F000BC5F36 /* testPDF.pdf */,
+				F43EB6E927FF155900289619 /* Resources */,
 				F490C80125DE87A900D8CA6F /* Info.plist */,
 			);
 			path = GiniBankSDKExampleTests;
@@ -435,7 +459,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F43EB6EE27FF155A00289619 /* result_Gini_invoice_example.json in Resources */,
 				F40E1438273C08D200734A0E /* testPDF.pdf in Resources */,
+				F43EB6F227FF155A00289619 /* Gini_invoice_example.pdf in Resources */,
+				F43EB6F427FF155A00289619 /* result_Gini_invoice_example_after_feedback.json in Resources */,
 				F441DCBD25E5694600AAB09A /* Settings.bundle in Resources */,
 				F4AD010125DFDF4500C34E15 /* Images.xcassets in Resources */,
 				F441DCB625E568C400AAB09A /* LaunchScreen.strings in Resources */,
@@ -451,6 +478,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F43EB6EF27FF155A00289619 /* result_Gini_invoice_example.json in Resources */,
+				F43EB6F327FF155A00289619 /* Gini_invoice_example.pdf in Resources */,
+				F43EB6F527FF155A00289619 /* result_Gini_invoice_example_after_feedback.json in Resources */,
 				F4B78A6025E6AB4B00CBE2E4 /* testPDF.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -479,6 +509,7 @@
 			files = (
 				F4AD00FD25DFDF4500C34E15 /* ComponentAPIDocumentsService.swift in Sources */,
 				F4AD00B625DED1A000C34E15 /* AppCoordinator.swift in Sources */,
+				F43EB6E727FDE91F00289619 /* ExtractionFeedbackIntegrationTest.swift in Sources */,
 				F490C7E925DE873900D8CA6F /* NoResultViewController.swift in Sources */,
 				F4AD00FB25DFDF4500C34E15 /* ComponentAPIDocumentServiceProtocol.swift in Sources */,
 				F4AD00EC25DFDE2000C34E15 /* RootNavigationController.swift in Sources */,
@@ -506,6 +537,7 @@
 			files = (
 				F4B7B0AC27F1FEF200B615B7 /* ScreenAPICoordinator+UI_Only.swift in Sources */,
 				F407A41B25E5805E00BC5F36 /* DocumentServiceMock.swift in Sources */,
+				F43EB6E827FDE91F00289619 /* ExtractionFeedbackIntegrationTest.swift in Sources */,
 				F407A41925E5805E00BC5F36 /* ComponentAPICoordinatorTests.swift in Sources */,
 				F407A41A25E5805E00BC5F36 /* SettingsViewControllerTests.swift in Sources */,
 				F407A41825E5805E00BC5F36 /* ScreenAPICoordinatorTests.swift in Sources */,
@@ -673,6 +705,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -738,6 +771,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
