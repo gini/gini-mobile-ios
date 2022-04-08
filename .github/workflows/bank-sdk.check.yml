@@ -14,7 +14,7 @@ on:
       - 'BankAPILibrary/**'
   workflow_call:
     secrets:
-      GINI_MOBILE_TEST_CLIENT_SECRET:
+      GINI_MOBILE_TEST_BANK_EXAMPLE_SECRET:
         required: true
   
 jobs:
