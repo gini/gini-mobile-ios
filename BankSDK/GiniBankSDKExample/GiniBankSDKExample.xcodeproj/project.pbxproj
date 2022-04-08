@@ -34,7 +34,6 @@
 		F45D7F182800583500C73C63 /* testPDF.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F45D7F062800566900C73C63 /* testPDF.pdf */; };
 		F45D7F192800583800C73C63 /* Gini_invoice_example.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F45D7F072800566900C73C63 /* Gini_invoice_example.pdf */; };
 		F45D7F1A2800583B00C73C63 /* result_Gini_invoice_example_after_feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = F45D7F082800566900C73C63 /* result_Gini_invoice_example_after_feedback.json */; };
-		F45D7F1B28006CFC00C73C63 /* ExtractionFeedbackIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45D7F002800566900C73C63 /* ExtractionFeedbackIntegrationTest.swift */; };
 		F46B1657273BE52000229E69 /* GiniBankSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F46B1656273BE52000229E69 /* GiniBankSDK */; };
 		F4807C37263C20BA00F30FF3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807C36263C20BA00F30FF3 /* AppDelegate.swift */; };
 		F4807C3B263C20BA00F30FF3 /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4807C3A263C20BA00F30FF3 /* PaymentViewController.swift */; };
@@ -509,7 +508,6 @@
 			files = (
 				F4AD00FD25DFDF4500C34E15 /* ComponentAPIDocumentsService.swift in Sources */,
 				F4AD00B625DED1A000C34E15 /* AppCoordinator.swift in Sources */,
-				F45D7F1B28006CFC00C73C63 /* ExtractionFeedbackIntegrationTest.swift in Sources */,
 				F490C7E925DE873900D8CA6F /* NoResultViewController.swift in Sources */,
 				F4AD00FB25DFDF4500C34E15 /* ComponentAPIDocumentServiceProtocol.swift in Sources */,
 				F4AD00EC25DFDE2000C34E15 /* RootNavigationController.swift in Sources */,

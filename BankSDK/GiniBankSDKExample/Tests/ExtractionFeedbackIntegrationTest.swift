@@ -23,8 +23,6 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
         let client = Client(id: clientId,
                             secret: clientSecret,
                             domain: "bank-sdk-example")
-        try! GiniBank.removeStoredCredentials(for: client)
-        
         giniBankAPILib = GiniBankAPI
             .Builder(client: client)
             .build()
