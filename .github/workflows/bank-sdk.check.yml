@@ -14,7 +14,7 @@ on:
       - 'BankAPILibrary/**'
   workflow_call:
     secrets:
-      GINI_MOBILE_TEST_BANK_EXAMPLE_SECRET:
+      GINI_MOBILE_TEST_CLIENT_SECRET:
         required: true
   
 jobs:
@@ -27,7 +27,7 @@ jobs:
     steps:
     - uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '13.0'
+        xcode-version: '13.3'
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -58,7 +58,7 @@ jobs:
       run: |
         xcodebuild clean test -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}Tests" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
    
-    - name: Build example app and run unit tests
+    - name: Build example app and run unit and integration tests
       run: >
         xcodebuild clean test
         -project BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj
@@ -68,4 +68,4 @@ jobs:
         CODE_SIGNING_REQUIRED=NO
         ONLY_ACTIVE_ARCH=NO
         CLIENT_ID="gini-mobile-test"
-        CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_BANK_EXAMPLE_SECRET }}"
+        CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
