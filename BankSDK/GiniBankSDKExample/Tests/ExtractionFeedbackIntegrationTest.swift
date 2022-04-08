@@ -20,10 +20,13 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
     var feedbackSendingGroup: DispatchGroup!
 
     override func setUp() {
+        let client = Client(id: clientId,
+                            secret: clientSecret,
+                            domain: "bank-sdk-example")
+        try! GiniBank.removeStoredCredentials(for: client)
+        
         giniBankAPILib = GiniBankAPI
-            .Builder(client: Client(id: clientId,
-                                    secret: clientSecret,
-                                    domain: "bank-sdk-example"))
+            .Builder(client: client)
             .build()
 
         giniCaptureSDKDocumentService = DocumentService(lib: giniBankAPILib, metadata: nil)
