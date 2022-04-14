@@ -10,6 +10,7 @@ import UIKit
 import GiniCaptureSDK
 import GiniBankAPILibrary
 import GiniBankSDK
+import Lottie
 
 final class AppCoordinator: Coordinator {
         
@@ -50,6 +51,25 @@ final class AppCoordinator: Coordinator {
         let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
         configuration.customMenuItems = [customMenuItem]
         configuration.albumsScreenSelectMorePhotosTextColor = GiniColor(lightModeColor: .systemBlue, darkModeColor: .systemBlue)
+        
+        // Custom onboarding pages with Lottie animation
+        configuration.customMenuItems = [customMenuItem]
+        let animatedOnboardingPage1 = AnimationView(name: "cameraAnimation")
+        animatedOnboardingPage1.loopMode = .loop
+        animatedOnboardingPage1.contentMode = .scaleAspectFit
+        animatedOnboardingPage1.play()
+
+        let animatedOnboardingPage2 = AnimationView(name: "uploadAnimation")
+        animatedOnboardingPage2.loopMode = .loop
+        animatedOnboardingPage2.contentMode = .scaleAspectFit
+        animatedOnboardingPage2.play()
+        
+        let animatedOnboardingPage3 = AnimationView(name: "magicAnimation")
+        animatedOnboardingPage3.loopMode = .loop
+        animatedOnboardingPage3.contentMode = .scaleAspectFit
+        animatedOnboardingPage3.play()
+
+        configuration.onboardingPages = [animatedOnboardingPage1, animatedOnboardingPage2, animatedOnboardingPage3]
        return configuration
     }()
     
