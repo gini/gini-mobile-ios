@@ -14,7 +14,85 @@ protocol Coordinator: AnyObject {
     var rootViewController: UIViewController { get }
 }
 
-open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator {
+open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, GiniCaptureDelegate {
+    
+    // MARK: - GiniCaptureDelegate
+    
+    public func didCapture(document: GiniCaptureDocument, networkDelegate: GiniCaptureNetworkDelegate) {
+        // The EPS QR codes are a special case, since they don0t have to be analyzed by the Gini Bank API and therefore,
+        // they are ready to be delivered after capturing them.
+        if let qrCodeDocument = document as? GiniQRCodeDocument,
+           let format = qrCodeDocument.qrCodeFormat,
+           case .eps4mobile = format {
+            let extractions = qrCodeDocument.extractedParameters.compactMap {
+                Extraction(box: nil, candidates: nil,
+                           entity: QRCodesExtractor.epsCodeUrlKey,
+                           value: $0.value,
+                           name: QRCodesExtractor.epsCodeUrlKey)
+            }
+            let extractionResult = ExtractionResult(extractions: extractions, lineItems: [], returnReasons: [])
+
+            deliver(result: extractionResult, analysisDelegate: networkDelegate)
+            return
+        }
+
+        // When an non reviewable document or an image in multipage mode is captured,
+        // it has to be uploaded right away.
+        if giniConfiguration.multipageEnabled || !document.isReviewable {
+            if !document.isReviewable {
+                uploadAndStartAnalysisWithReturnAssistant(document: document, networkDelegate: networkDelegate, uploadDidFail: {
+                    self.didCapture(document: document, networkDelegate: networkDelegate)
+                })
+            } else if giniConfiguration.multipageEnabled {
+                // When multipage is enabled the document updload result should be communicated to the network delegate
+                uploadWithReturnAssistant(document: document,
+                                          didComplete: networkDelegate.uploadDidComplete,
+                                          didFail: networkDelegate.uploadDidFail)
+            }
+        }
+    }
+
+    public func didReview(documents: [GiniCaptureDocument], networkDelegate: GiniCaptureNetworkDelegate) {
+        // It is necessary to check the order when using multipage before
+        // creating the composite document
+        if giniConfiguration.multipageEnabled {
+            documentService.sortDocuments(withSameOrderAs: documents)
+        }
+
+        // And review the changes for each document recursively.
+        for document in (documents.compactMap { $0 as? GiniImageDocument }) {
+            documentService.update(imageDocument: document)
+        }
+
+        // In multipage mode the analysis can be triggered once the documents have been uploaded.
+        // However, in single mode, the analysis can be triggered right after capturing the image.
+        // That is why the document upload shuld be done here and start the analysis afterwards
+        if giniConfiguration.multipageEnabled {
+            startAnalysisWithReturnAssistant(networkDelegate: networkDelegate)
+        } else {
+            uploadAndStartAnalysisWithReturnAssistant(document: documents[0], networkDelegate: networkDelegate, uploadDidFail: {
+                self.didReview(documents: documents, networkDelegate: networkDelegate)
+            })
+        }
+    }
+
+    public func didCancelCapturing() {
+        resultsDelegate?.giniCaptureDidCancelAnalysis()
+    }
+
+    public func didCancelReview(for document: GiniCaptureDocument) {
+        documentService.remove(document: document)
+    }
+
+    public func didCancelAnalysis() {
+        // Cancel analysis process to avoid unnecessary network calls.
+        if pages.type == .image {
+            documentService.cancelAnalysis()
+        } else {
+            documentService.resetToInitialState()
+        }
+    }
+
     weak var resultsDelegate: GiniCaptureResultsDelegate?
     let documentService: DocumentServiceProtocol
     var giniPayBankConfiguration = GiniBankConfiguration.shared
@@ -240,84 +318,5 @@ extension GiniBankNetworkingScreenApiCoordinator {
                 return
             }
         })
-    }
-}
-
-// MARK: - GiniCaptureDelegate
-
-extension GiniBankNetworkingScreenApiCoordinator: GiniCaptureDelegate {
-    public func didCancelCapturing() {
-        resultsDelegate?.giniCaptureDidCancelAnalysis()
-    }
-
-    public func didCapture(document: GiniCaptureDocument, networkDelegate: GiniCaptureNetworkDelegate) {
-        // The EPS QR codes are a special case, since they don0t have to be analyzed by the Gini Bank API and therefore,
-        // they are ready to be delivered after capturing them.
-        if let qrCodeDocument = document as? GiniQRCodeDocument,
-           let format = qrCodeDocument.qrCodeFormat,
-           case .eps4mobile = format {
-            let extractions = qrCodeDocument.extractedParameters.compactMap {
-                Extraction(box: nil, candidates: nil,
-                           entity: QRCodesExtractor.epsCodeUrlKey,
-                           value: $0.value,
-                           name: QRCodesExtractor.epsCodeUrlKey)
-            }
-            let extractionResult = ExtractionResult(extractions: extractions, lineItems: [], returnReasons: [])
-
-            deliver(result: extractionResult, analysisDelegate: networkDelegate)
-            return
-        }
-
-        // When an non reviewable document or an image in multipage mode is captured,
-        // it has to be uploaded right away.
-        if giniConfiguration.multipageEnabled || !document.isReviewable {
-            if !document.isReviewable {
-                uploadAndStartAnalysisWithReturnAssistant(document: document, networkDelegate: networkDelegate, uploadDidFail: {
-                    self.didCapture(document: document, networkDelegate: networkDelegate)
-                })
-            } else if giniConfiguration.multipageEnabled {
-                // When multipage is enabled the document updload result should be communicated to the network delegate
-                uploadWithReturnAssistant(document: document,
-                             didComplete: networkDelegate.uploadDidComplete,
-                             didFail: networkDelegate.uploadDidFail)
-            }
-        }
-    }
-
-    public func didReview(documents: [GiniCaptureDocument], networkDelegate: GiniCaptureNetworkDelegate) {
-        // It is necessary to check the order when using multipage before
-        // creating the composite document
-        if giniConfiguration.multipageEnabled {
-            documentService.sortDocuments(withSameOrderAs: documents)
-        }
-
-        // And review the changes for each document recursively.
-        for document in (documents.compactMap { $0 as? GiniImageDocument }) {
-            documentService.update(imageDocument: document)
-        }
-
-        // In multipage mode the analysis can be triggered once the documents have been uploaded.
-        // However, in single mode, the analysis can be triggered right after capturing the image.
-        // That is why the document upload shuld be done here and start the analysis afterwards
-        if giniConfiguration.multipageEnabled {
-            startAnalysisWithReturnAssistant(networkDelegate: networkDelegate)
-        } else {
-            uploadAndStartAnalysisWithReturnAssistant(document: documents[0], networkDelegate: networkDelegate, uploadDidFail: {
-                self.didReview(documents: documents, networkDelegate: networkDelegate)
-            })
-        }
-    }
-
-    public func didCancelReview(for document: GiniCaptureDocument) {
-        documentService.remove(document: document)
-    }
-
-    public func didCancelAnalysis() {
-        // Cancel analysis process to avoid unnecessary network calls.
-        if pages.type == .image {
-            documentService.cancelAnalysis()
-        } else {
-            documentService.resetToInitialState()
-        }
     }
 }
