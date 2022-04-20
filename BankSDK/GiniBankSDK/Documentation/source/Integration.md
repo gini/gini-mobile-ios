@@ -204,7 +204,7 @@ You can also provide your own networking by implementing the `GiniCaptureNetwork
 
 ```swift
 let viewController = GiniBank.viewController(importedDocuments: visionDocuments,
-                                            configuration: configuration,
+                                            configuration: giniBankConfiguration,
                                             resultsDelegate: resultsDelegate,
                                             documentMetadata: documentMetadata,
                                             trackingDelegate: trackingDelegate,
