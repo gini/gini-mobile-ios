@@ -6,7 +6,7 @@
 
 3. In `Project` -> `Build Settings` set `Base SDK` parameter to `iOS`
 
-4. In `Project` -> `Info` -> `Deployment Target` set `iOS Deployment Target` to `13`
+4. In `Project` -> `Info` -> `Deployment Target` set `iOS Deployment Target` to `11`
 
 5. For each dependency target in `Build Settings` set `Base SDK` parameter to `iOS`
 
