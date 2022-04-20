@@ -13,6 +13,9 @@ on:
       - 'CaptureSDK/**'
       - 'BankAPILibrary/**'
   workflow_call:
+    secrets:
+      GINI_MOBILE_TEST_CLIENT_SECRET:
+        required: true
   
 jobs:
   check:
@@ -55,7 +58,7 @@ jobs:
       run: |
         xcodebuild clean test -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}Tests" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
    
-    - name: Build example app and run unit tests
+    - name: Build example app and run unit and integration tests
       run: >
         xcodebuild clean test
         -project BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj
@@ -64,3 +67,5 @@ jobs:
         CODE_SIGN_IDENTITY=""
         CODE_SIGNING_REQUIRED=NO
         ONLY_ACTIVE_ARCH=NO
+        CLIENT_ID="gini-mobile-test"
+        CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"

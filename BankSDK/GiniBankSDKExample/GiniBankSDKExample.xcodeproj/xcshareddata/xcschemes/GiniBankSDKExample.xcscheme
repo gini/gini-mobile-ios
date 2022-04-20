@@ -20,6 +20,20 @@
                ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F490C7FC25DE87A800D8CA6F"
+               BuildableName = "GiniBankSDKExampleTests.xctest"
+               BlueprintName = "GiniBankSDKExampleTests"
+               ReferencedContainer = "container:GiniBankSDKExample.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
