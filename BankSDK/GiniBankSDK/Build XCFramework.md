@@ -1,5 +1,7 @@
 # Gini Bank SDK XCFrameworks for iOS
 
+**Note: Xcode 13.2 required**
+
 1. Navigate to the ` cd GiniBankSDK` directory and run `swift create-xcframework`
 
 2. In terminal open the newly generated project `open .build/swift-create-xcframework/GiniBankSDK.xcodeproj`
