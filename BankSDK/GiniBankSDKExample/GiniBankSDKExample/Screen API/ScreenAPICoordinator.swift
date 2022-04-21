@@ -50,6 +50,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     var visionDocuments: [GiniCaptureDocument]?
     var configuration: GiniBankConfiguration
     var sendFeedbackBlock: (([String: Extraction]) -> Void)?
+    var manuallyCreatedDocument: Document?
     
     init(configuration: GiniBankConfiguration,
          importedDocuments documents: [GiniCaptureDocument]?,
@@ -65,21 +66,21 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     func start() {
         
 // MARK: - Screen API with default networking
-    let viewController = GiniBank.viewController(withClient: client,
-                                                 importedDocuments: visionDocuments,
-                                                 configuration: configuration,
-                                                 resultsDelegate: self,
-                                                 documentMetadata: documentMetadata,
-                                                 api: .default,
-                                                 userApi: .default,
-                                                 trackingDelegate: trackingDelegate)
+//    let viewController = GiniBank.viewController(withClient: client,
+//                                                 importedDocuments: visionDocuments,
+//                                                 configuration: configuration,
+//                                                 resultsDelegate: self,
+//                                                 documentMetadata: documentMetadata,
+//                                                 api: .default,
+//                                                 userApi: .default,
+//                                                 trackingDelegate: trackingDelegate)
 // MARK: - Screen API with custom networking
-//        let viewController = GiniBank.viewController(importedDocuments: visionDocuments,
-//                                                        configuration: configuration,
-//                                                        resultsDelegate: self,
-//                                                        documentMetadata: documentMetadata,
-//                                                        trackingDelegate: trackingDelegate,
-//                                                        networkingService: self)
+        let viewController = GiniBank.viewController(importedDocuments: visionDocuments,
+                                                        configuration: configuration,
+                                                        resultsDelegate: self,
+                                                        documentMetadata: documentMetadata,
+                                                        trackingDelegate: trackingDelegate,
+                                                        networkingService: self)
 // MARK: - Screen API - UI Only
 //        let viewController = GiniBank.viewController(withDelegate: self, withConfiguration: configuration)
 
@@ -167,14 +168,28 @@ extension ScreenAPICoordinator: GiniCaptureNetworkService {
     
     func cleanup() {
         print("💻 custom networking - cleanup event called")
-
     }
     
     func analyse(partialDocuments: [PartialDocumentInfo], metadata: Document.Metadata?, cancellationToken: CancellationToken, completion: @escaping (Result<(document: Document, extractionResult: ExtractionResult), GiniError>) -> Void) {
+        let extraction = Extraction.init(box: nil, candidates: "", entity: "entity", value: "value", name: "")
+        let extractionResult = ExtractionResult.init(extractions: [extraction], lineItems: [], returnReasons: [])
+        if let doc = self.manuallyCreatedDocument {
+            let result = (document: doc, extractionResult: extractionResult)
+            completion(.success(result))
+        }
         print("💻 custom networking - analyse documents event called")
     }
     
     func upload(document: GiniCaptureDocument, metadata: Document.Metadata?, completion: @escaping UploadDocumentCompletion) {
+        let creationDate = Date()
+        if let defaultUrl = URL.init(string: "https://pay-api.gini.net/documentation/#documents") {
+            let links = Document.Links.init(extractions: defaultUrl, layout: defaultUrl, processed: defaultUrl, document: defaultUrl, pages: defaultUrl)
+            let manuallyCreatedDoc = Document.init(compositeDocuments: [], creationDate: creationDate, id: "1234", name: "manuallyCreatedDocument", origin: .unknown, pageCount: 1, pages: [], links: links, partialDocuments: [], progress: .completed, sourceClassification: .text)
+            self.manuallyCreatedDocument = manuallyCreatedDoc
+            completion(.success(manuallyCreatedDoc))
+        } else {
+            completion(.failure(.unknown(response: nil, data: nil)))
+        }
         print("💻 custom networking - upload document event called")
     }
     
