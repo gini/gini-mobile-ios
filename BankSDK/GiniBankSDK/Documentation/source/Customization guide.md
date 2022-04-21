@@ -235,7 +235,7 @@ Some background and text colors use the `GiniColor` type with which you can set 
 ## Capturing tips screen
 
 <br>
-<center><img src="img/Customization guide/Tips for photo.png" height="500"/></center>
+<center><img src="img/Customization guide/Tips for photos.png" height="500"/></center>
 </br>
 
 ##### 1. Navigation bar
@@ -342,6 +342,7 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
   - With image and title
       - Image &#8594; <span style="color:#009EDF">*cameraIcon*</span> image asset
       - Title &#8594; <span style="color:#009EDF">*ginicapture.noresults.gotocamera*</span> localized string
+
 ## Albums screen
 
 <br>
