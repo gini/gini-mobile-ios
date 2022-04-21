@@ -46,6 +46,30 @@ public struct Document {
         case progress
         case sourceClassification
     }
+    
+    public init(compositeDocuments: [CompositeDocument]?,
+                creationDate: Date,
+                id: String,
+                name: String,
+                origin: Origin,
+                pageCount: Int,
+                pages: [Page]?,
+                links: Links,
+                partialDocuments: [PartialDocumentInfo]?,
+                progress: Progress,
+                sourceClassification: SourceClassification){
+        self.compositeDocuments = compositeDocuments
+        self.creationDate = creationDate
+        self.id = id
+        self.name = name
+        self.origin = origin
+        self.pageCount = pageCount
+        self.pages = pages
+        self.links = links
+        self.partialDocuments = partialDocuments
+        self.progress = progress
+        self.sourceClassification = sourceClassification
+    }
 }
 
 // MARK: - Inner types
@@ -110,6 +134,14 @@ extension Document {
         public let processed: URL
         public let document: URL
         public let pages: URL?
+        
+        public init(extractions: URL, layout: URL, processed: URL, document: URL, pages: URL?) {
+            self.extractions = extractions
+            self.layout = layout
+            self.processed = processed
+            self.document = document
+            self.pages = pages
+        }
     }
     
     /// The document's layout, formed by an array of pages
