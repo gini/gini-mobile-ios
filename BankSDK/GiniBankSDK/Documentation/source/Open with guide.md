@@ -49,6 +49,8 @@ Add the following to your `Info.plist`:
 
 You can also add these by going to your target’s *Info* tab and enter the values into the *Document Types* section.
 
+In order to initiate `Open with` from your app’s Documents folder add [`UISupportsDocumentBrowser`](https://developer.apple.com/documentation/bundleresources/information_property_list/uisupportsdocumentbrowser) to your `Info.plist`.
+
 ### Documentation
 
 -   [Document types](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/DocumentInteraction_TopicsForIOS/Articles/RegisteringtheFileTypesYourAppSupports.html) from _Apple documentation_.

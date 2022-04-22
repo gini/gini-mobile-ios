@@ -16,6 +16,8 @@ If you plan to use a custom name for localizable strings, you need to set it in 
 - [Gallery album screen](#gallery-album-screen)
 - [Onboarding screens](#onboarding-screens)
 - [Help screen](#help-screen)
+- [No results screen](#no-results-screen)
+- [Albums screen](#albums-screen)
 
 ## Supporting dark mode
 
@@ -233,19 +235,29 @@ Some background and text colors use the `GiniColor` type with which you can set 
 ## Capturing tips screen
 
 <br>
-<center><img src="img/Customization guide/No results.jpg" height="500"/></center>
+<center><img src="img/Customization guide/Tips for photos.png" height="500"/></center>
 </br>
 
-##### 1. Capturing tip images
+##### 1. Navigation bar
+- Title &#8594; <span style="color:#009EDF">*ginicapture.noresults.title*</span> localized string
+
+##### 2. Header container
+- Text &#8594; <span style="color:#009EDF">*ginicapture.noresults.warningHelpMenu*</span> localized string
+
+##### 3. Capturing tip images
 - Tip 1 image &#8594; <span style="color:#009EDF">*captureSuggestion1*</span> image asset
 - Tip 2 image &#8594; <span style="color:#009EDF">*captureSuggestion2*</span> image asset
 - Tip 3 image &#8594; <span style="color:#009EDF">*captureSuggestion3*</span> image asset
 - Tip 4 image &#8594; <span style="color:#009EDF">*captureSuggestion4*</span> image asset
 - Tip 5 image &#8594; <span style="color:#009EDF">*captureSuggestion5*</span> image asset
 
-##### 2. Go to camera button
+##### 4. Go to camera button
 - Background color &#8594; `GiniBankConfiguration.noResultsBottomButtonColor`
-
+- Back button
+    noResultsBottomButtonColor
+  - With image and title
+      - Image &#8594; <span style="color:#009EDF">*cameraIcon*</span> image asset
+      - Title &#8594; <span style="color:#009EDF">*ginicapture.noresults.gotocamera*</span> localized string
 ## Gallery album screen
 
 <br>
@@ -285,7 +297,6 @@ Some background and text colors use the `GiniColor` type with which you can set 
 </br>
 
 ##### 1. Navigation bar
-
 - Back button
   - With image and title
 	  - Image &#8594; <span style="color:#009EDF">*navigationHelpBack*</span> image asset
@@ -294,13 +305,50 @@ Some background and text colors use the `GiniColor` type with which you can set 
 	  - Title &#8594; `GiniBankConfiguration.navigationBarHelpMenuTitleBackToCameraButton`
 
 ##### 2. Table View Cells
-
 - Background color &#8594; `GiniBankConfiguration.helpScreenCellsBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
 ##### 3. Background
-
 - Background color &#8594; `GiniBankConfiguration.helpScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
 ##### 4. Additional help menu items
-
 - Custom help menu items &#8594; `GiniBankConfiguration.customMenuItems` an array of `HelpMenuViewController.Item` objects
+
+## No results screen
+
+<br>
+<center><img src="img/Customization guide/No results.png" height="500"/></center>
+</br>
+
+##### 1. Warning container
+- Background color &#8594; `GiniBankConfiguration.noResultsWarningContainerIconColor`
+- Image &#8594; <span style="color:#009EDF">*warningNoResults*</span> image asset
+- Title &#8594; <span style="color:#009EDF">*ginicapture.noresults.warning*</span> localized string
+
+##### 2. Tips for photo collection
+- Header title &#8594; <span style="color:#009EDF">*ginicapture.noresults.collection.header*</span> localized string
+
+Overriding tips images below will lead to the changes on the [Capturing tips screen](#capturing-tips-screen).
+
+- Tip 1 image &#8594; <span style="color:#009EDF">*captureSuggestion1*</span> image asset
+- Tip 2 image &#8594; <span style="color:#009EDF">*captureSuggestion2*</span> image asset
+- Tip 3 image &#8594; <span style="color:#009EDF">*captureSuggestion3*</span> image asset
+- Tip 4 image &#8594; <span style="color:#009EDF">*captureSuggestion4*</span> image asset
+- Tip 5 image &#8594; <span style="color:#009EDF">*captureSuggestion5*</span> image asset
+
+##### 3. Back to camera button
+- Background color &#8594; `GiniBankConfiguration.noResultsBottomButtonColor`
+- Back button
+    noResultsBottomButtonColor
+  - With image and title
+      - Image &#8594; <span style="color:#009EDF">*cameraIcon*</span> image asset
+      - Title &#8594; <span style="color:#009EDF">*ginicapture.noresults.gotocamera*</span> localized string
+
+## Albums screen
+
+<br>
+<center><img src="img/Customization guide/Albums screen.png" height="500"/></center>
+</br>
+
+##### 1. Select more photos button
+- Text color &#8594; `GiniBankConfiguration.albumsScreenSelectMorePhotosTextColor` using `GiniColor` with dark mode and light mode colors
+- Title &#8594; <span style="color:#009EDF">*ginicapture.albums.selectMorePhotosButton*</span> localized string
