@@ -66,21 +66,21 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     func start() {
         
 // MARK: - Screen API with default networking
-//    let viewController = GiniBank.viewController(withClient: client,
-//                                                 importedDocuments: visionDocuments,
-//                                                 configuration: configuration,
-//                                                 resultsDelegate: self,
-//                                                 documentMetadata: documentMetadata,
-//                                                 api: .default,
-//                                                 userApi: .default,
-//                                                 trackingDelegate: trackingDelegate)
+    let viewController = GiniBank.viewController(withClient: client,
+                                                 importedDocuments: visionDocuments,
+                                                 configuration: configuration,
+                                                 resultsDelegate: self,
+                                                 documentMetadata: documentMetadata,
+                                                 api: .default,
+                                                 userApi: .default,
+                                                 trackingDelegate: trackingDelegate)
 // MARK: - Screen API with custom networking
-        let viewController = GiniBank.viewController(importedDocuments: visionDocuments,
-                                                        configuration: configuration,
-                                                        resultsDelegate: self,
-                                                        documentMetadata: documentMetadata,
-                                                        trackingDelegate: trackingDelegate,
-                                                        networkingService: self)
+//        let viewController = GiniBank.viewController(importedDocuments: visionDocuments,
+//                                                        configuration: configuration,
+//                                                        resultsDelegate: self,
+//                                                        documentMetadata: documentMetadata,
+//                                                        trackingDelegate: trackingDelegate,
+//                                                        networkingService: self)
 // MARK: - Screen API - UI Only
 //        let viewController = GiniBank.viewController(withDelegate: self, withConfiguration: configuration)
 
@@ -128,7 +128,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
 
 
 // MARK: - NoResultsScreenDelegate
-
 extension ScreenAPICoordinator: NoResultsScreenDelegate {
     func noResults(viewController: NoResultViewController, didTapRetry: ()) {
         screenAPIViewController.popToRootViewController(animated: true)
@@ -136,7 +135,6 @@ extension ScreenAPICoordinator: NoResultsScreenDelegate {
 }
 
 // MARK: - GiniCaptureResultsDelegate
-
 extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult,
@@ -161,6 +159,7 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     }
 }
 
+// MARK: - Screen API with custom networking GiniCaptureNetworkService
 extension ScreenAPICoordinator: GiniCaptureNetworkService {
     func delete(document: Document, completion: @escaping (Result<String, GiniError>) -> Void) {
         print("💻 custom networking - delete document event called")
