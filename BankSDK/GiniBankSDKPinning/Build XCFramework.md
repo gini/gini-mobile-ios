@@ -4,7 +4,7 @@
 [here](https://medium.com/a-swift-misadventure/how-to-install-multiple-versions-of-xcode-on-the-same-macos-machine-a2836387e57f) 
 and then use [xcode-select](https://riptutorial.com/xcode/example/19193/switching-command-line-tools-with-xcode-select) to make Xcode 13.2 the default while building the XCFramework. Don't forget to reset it after you're done.**
 
-Before starting you need to install [swift-create-xcframework](https://github.com/unsignedapps/swift-create-xcframework/tree/v2.1.0#installation).
+Before starting you need to install [swift-create-xcframework](https://github.com/unsignedapps/swift-create-xcframework/tree/main#installation).
 
 1. Navigate to the `cd GiniBankSDKPinning` directory and run `swift create-xcframework`
 
