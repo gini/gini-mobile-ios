@@ -110,7 +110,6 @@
 		OBJ_344 /* GiniCaptureSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "GiniCaptureSDK::GiniCaptureSDK::Product" /* GiniCaptureSDK.framework */; };
 		OBJ_345 /* GiniBankAPILibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "GiniBankAPILibrary::GiniBankAPILibrary::Product" /* GiniBankAPILibrary.framework */; };
 		OBJ_359 /* CameraMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_47 /* CameraMock.swift */; };
-		OBJ_360 /* GiniBankSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_48 /* GiniBankSDKTests.swift */; };
 		OBJ_362 /* GiniBankSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "GiniBankSDK::GiniBankSDK::Product" /* GiniBankSDK.framework */; };
 		OBJ_363 /* GiniCaptureSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "GiniCaptureSDK::GiniCaptureSDK::Product" /* GiniCaptureSDK.framework */; };
 		OBJ_364 /* GiniBankAPILibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "GiniBankAPILibrary::GiniBankAPILibrary::Product" /* GiniBankAPILibrary.framework */; };
@@ -464,7 +463,6 @@
 		OBJ_43 /* String+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Utils.swift"; sourceTree = "<group>"; };
 		OBJ_44 /* URL+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Utils.swift"; sourceTree = "<group>"; };
 		OBJ_47 /* CameraMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraMock.swift; sourceTree = "<group>"; };
-		OBJ_48 /* GiniBankSDKTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniBankSDKTests.swift; sourceTree = "<group>"; };
 		OBJ_54 /* ContainerNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerNavigationController.swift; sourceTree = "<group>"; };
 		OBJ_55 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		OBJ_56 /* FileImportButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImportButtonView.swift; sourceTree = "<group>"; };
@@ -966,7 +964,6 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_47 /* CameraMock.swift */,
-				OBJ_48 /* GiniBankSDKTests.swift */,
 			);
 			name = GiniBankSDKTests;
 			path = Tests/GiniBankSDKTests;
@@ -1355,7 +1352,6 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_359 /* CameraMock.swift in Sources */,
-				OBJ_360 /* GiniBankSDKTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1582,7 +1578,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ".build/swift-create-xcframework/GiniBankSDK.xcodeproj/GiniBankAPILibrary_Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_CFLAGS = "$(inherited)";
@@ -1614,7 +1610,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ".build/swift-create-xcframework/GiniBankSDK.xcodeproj/GiniBankAPILibrary_Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_CFLAGS = "$(inherited)";
@@ -1650,7 +1646,7 @@
 					"SWIFT_PACKAGE=1",
 					"DEBUG=1",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
@@ -1677,7 +1673,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ".build/swift-create-xcframework/GiniBankSDK.xcodeproj/GiniBankSDK_Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_CFLAGS = "$(inherited)";
@@ -1710,7 +1706,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ".build/swift-create-xcframework/GiniBankSDK.xcodeproj/GiniBankSDK_Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_CFLAGS = "$(inherited)";
@@ -1808,7 +1804,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ".build/swift-create-xcframework/GiniBankSDK.xcodeproj/GiniCaptureSDK_Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_CFLAGS = "$(inherited)";
@@ -1840,7 +1836,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ".build/swift-create-xcframework/GiniBankSDK.xcodeproj/GiniCaptureSDK_Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_CFLAGS = "$(inherited)";
@@ -1874,7 +1870,7 @@
 					"$(inherited)",
 					"SWIFT_PACKAGE=1",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
