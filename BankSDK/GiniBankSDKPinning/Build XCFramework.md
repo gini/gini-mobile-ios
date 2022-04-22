@@ -24,14 +24,17 @@ Before starting you need to install [swift-create-xcframework](https://github.co
 
 9. For each dependency target in `Build Phases` -> `Compile Sources` add Resources and check that the target is checked the `Target Membership` in info tab.
 
-10. Create archives for GiniBankSDKPinning for device and simulator:
+10. Navigate to the `cd .build/swift-create-xcframework/` directory and create archives for GiniBankSDKPinning for device and simulator:
 
+```
 xcodebuild archive -project GiniBankSDKPinning.xcodeproj -scheme GiniBankSDKPinning -sdk iphonesimulator -configuration Release -archivePath "iphonesimulator.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
 
 xcodebuild archive -project GiniBankSDKPinning.xcodeproj -scheme GiniBankSDKPinning -sdk iphoneos -configuration Release -archivePath "iphoneos.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
+```
 
 11. Create XCFrameworks for GiniBankSDKPinning and dependant packages:
 
+```
 xcodebuild -create-xcframework -framework iphoneos.xcarchive/Products/Library/Frameworks/GiniBankAPILibrary.framework -framework iphonesimulator.xcarchive/Products/Library/Frameworks/GiniBankAPILibrary.framework -output GiniBankAPILibrary.xcframework
 
 xcodebuild -create-xcframework -framework iphoneos.xcarchive/Products/Library/Frameworks/GiniBankAPILibraryPinning.framework -framework iphonesimulator.xcarchive/Products/Library/Frameworks/GiniBankAPILibraryPinning.framework -output GiniBankAPILibraryPinning.xcframework
@@ -45,3 +48,4 @@ xcodebuild -create-xcframework -framework iphoneos.xcarchive/Products/Library/Fr
 xcodebuild -create-xcframework -framework iphoneos.xcarchive/Products/Library/Frameworks/GiniBankSDKPinning.framework -framework iphonesimulator.xcarchive/Products/Library/Frameworks/GiniBankSDKPinning.framework -output GiniBankSDKPinning.xcframework
 
 xcodebuild -create-xcframework -framework iphoneos.xcarchive/Products/Library/Frameworks/TrustKit.framework -framework iphonesimulator.xcarchive/Products/Library/Frameworks/TrustKit.framework -output TrustKit.xcframework
+```
