@@ -171,26 +171,38 @@ extension ScreenAPICoordinator: GiniCaptureNetworkService {
     }
     
     func analyse(partialDocuments: [PartialDocumentInfo], metadata: Document.Metadata?, cancellationToken: CancellationToken, completion: @escaping (Result<(document: Document, extractionResult: ExtractionResult), GiniError>) -> Void) {
-        let extraction = Extraction.init(box: nil, candidates: "", entity: "entity", value: "value", name: "")
-        let extractionResult = ExtractionResult.init(extractions: [extraction], lineItems: [], returnReasons: [])
+        print("💻 custom networking - analyse documents event called")
+        
+        let extractionPaymentPurpose = Extraction.init(box: nil, candidates: nil, entity: "text", value: "20980000", name: "paymentPurpose")
+        let extractionAmountToPay = Extraction.init(box: nil, candidates: "amounts", entity: "amount", value: "12.00:EUR", name: "amountToPay")
+        let extractionIban = Extraction.init(box: nil, candidates: "ibans", entity: "amount", value: "DE74700500000000028273", name: "iban")
+        let extractionPaymentRecipient = Extraction.init(box: nil, candidates: nil, entity: "text", value: "Deutsche Post AG", name: "paymentRecipient")
+        let extractionsBaseGross = Extraction.init(box: nil, candidates: "", entity: "amount", value: "14.99:EUR", name: "baseGross")
+        let extractionDescription = Extraction.init(box: nil, candidates: "", entity: "text", value: "T-Shirt, black Size S", name: "description")
+        let extractionArtNumber = Extraction.init(box: nil, candidates: "", entity: "text", value: "10101", name: "artNumber")
+        let extractionQuantity = Extraction.init(box: nil, candidates: "", entity: "numeric", value: "1", name: "quantity")
+
+        let lineItem = [extractionQuantity, extractionsBaseGross, extractionDescription, extractionArtNumber]
+        let extractionResult = ExtractionResult.init(extractions: [extractionPaymentPurpose,extractionAmountToPay,extractionIban,extractionPaymentRecipient], lineItems: [lineItem, lineItem] , returnReasons: [])
         if let doc = self.manuallyCreatedDocument {
             let result = (document: doc, extractionResult: extractionResult)
             completion(.success(result))
+        } else {
+            completion(.failure(.noResponse))
         }
-        print("💻 custom networking - analyse documents event called")
     }
     
     func upload(document: GiniCaptureDocument, metadata: Document.Metadata?, completion: @escaping UploadDocumentCompletion) {
+        print("💻 custom networking - upload document event called")
         let creationDate = Date()
-        if let defaultUrl = URL.init(string: "https://pay-api.gini.net/documentation/#documents") {
+        if let defaultUrl = URL.init(string: "https://pay-api.gini.net/documentation") {
             let links = Document.Links.init(extractions: defaultUrl, layout: defaultUrl, processed: defaultUrl, document: defaultUrl, pages: defaultUrl)
-            let manuallyCreatedDoc = Document.init(compositeDocuments: [], creationDate: creationDate, id: "1234", name: "manuallyCreatedDocument", origin: .unknown, pageCount: 1, pages: [], links: links, partialDocuments: [], progress: .completed, sourceClassification: .text)
+            let manuallyCreatedDoc = Document.init(compositeDocuments: [], creationDate: creationDate, id: "1234", name: "manuallyCreatedDocument", origin: .unknown, pageCount: 1, pages: [], links: links, partialDocuments: [], progress: .completed, sourceClassification: .composite)
             self.manuallyCreatedDocument = manuallyCreatedDoc
             completion(.success(manuallyCreatedDoc))
         } else {
-            completion(.failure(.unknown(response: nil, data: nil)))
+            completion(.failure(.noResponse))
         }
-        print("💻 custom networking - upload document event called")
     }
     
     func sendFeedback(document: Document, updatedExtractions: [Extraction], completion: @escaping (Result<Void, GiniError>) -> Void) {
