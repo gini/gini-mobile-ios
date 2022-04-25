@@ -196,7 +196,7 @@ extension ScreenAPICoordinator: GiniCaptureNetworkService {
         let creationDate = Date()
         if let defaultUrl = URL.init(string: "https://pay-api.gini.net/documents/3008db90-c499-11ec-a6b8-d5d497bfXXXX") {
             let links = Document.Links.init(giniAPIDocumentURL: defaultUrl)
-            let manuallyCreatedDoc = Document.init(creationDate: creationDate, id: "3008db90-c499-11ec-a6b8-d5d497bfXXXX", name: "manuallyCreatedDocument", links: links, sourceClassification: .composite)
+            let manuallyCreatedDoc = Document.init(creationDate: creationDate, id: "3008db90-c499-11ec-a6b8-d5d497bfXXXX", name: "manuallyCreatedDocument", links: links, sourceClassification: .scanned)
             self.manuallyCreatedDocument = manuallyCreatedDoc
             completion(.success(manuallyCreatedDoc))
         } else {
