@@ -160,7 +160,8 @@ extension Document {
          An  initializer for a `Links` structure if you are receiving a customized JSON structure from your proxy backend.
          For this particular case all links will be pointed to the document's link.
          
-         - parameter giniAPIDocumentURL: The document's link receive from Gini API. For example "https://pay-api.gini.net/documents/\(documentID)".
+         - parameter giniAPIDocumentURL: The document's link received from the Gini API. This must be the same URL that you received in the `Location` header from the Gini API. For example "https://pay-api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000".
+```.
          
          - note: Screen API with custom networking only.
          
