@@ -194,9 +194,9 @@ extension ScreenAPICoordinator: GiniCaptureNetworkService {
     func upload(document: GiniCaptureDocument, metadata: Document.Metadata?, completion: @escaping UploadDocumentCompletion) {
         print("💻 custom networking - upload document event called")
         let creationDate = Date()
-        if let defaultUrl = URL.init(string: "https://pay-api.gini.net/documentation") {
-            let links = Document.Links.init(extractions: defaultUrl, layout: defaultUrl, processed: defaultUrl, document: defaultUrl, pages: defaultUrl)
-            let manuallyCreatedDoc = Document.init(compositeDocuments: [], creationDate: creationDate, id: "1234", name: "manuallyCreatedDocument", origin: .unknown, pageCount: 1, pages: [], links: links, partialDocuments: [], progress: .completed, sourceClassification: .composite)
+        if let defaultUrl = URL.init(string: "https://pay-api.gini.net/documents/3008db90-c499-11ec-a6b8-d5d497bfXXXX") {
+            let links = Document.Links.init(giniAPIDocumentURL: defaultUrl)
+            let manuallyCreatedDoc = Document.init(creationDate: creationDate, id: "3008db90-c499-11ec-a6b8-d5d497bfXXXX", name: "manuallyCreatedDocument", links: links, sourceClassification: .composite)
             self.manuallyCreatedDocument = manuallyCreatedDoc
             completion(.success(manuallyCreatedDoc))
         } else {
