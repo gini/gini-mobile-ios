@@ -81,8 +81,6 @@ public struct Document {
      - parameter sourceClassification: The document's source classification. We recommend to use `scanned` or `composite`.
      
      - note: Screen API with custom networking only.
-     
-     - returns: A `Document` structure.
      */
     public init(creationDate: Date,
                      id: String,
@@ -161,11 +159,8 @@ extension Document {
          For this particular case all links will be pointed to the document's link.
          
          - parameter giniAPIDocumentURL: The document's link received from the Gini API. This must be the same URL that you received in the `Location` header from the Gini API. For example "https://pay-api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000".
-```.
          
          - note: Screen API with custom networking only.
-         
-         - returns: A `Links` structure.
          */
         public init(giniAPIDocumentURL: URL) {
             self.extractions = giniAPIDocumentURL
