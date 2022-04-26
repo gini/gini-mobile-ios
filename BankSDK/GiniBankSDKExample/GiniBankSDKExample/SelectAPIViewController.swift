@@ -39,8 +39,8 @@ final class SelectAPIViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
                 
-       // let metaTitle = "Gini Bank SDK: (\(versionString)) / Gini Capture SDK: (\(GiniCaptureSDKVersion)) / Client id: \(self.clientId ?? "")"
-       // metaInformationButton.setTitle(metaTitle, for: .normal)
+        let metaTitle = "Gini Bank SDK: (\(GiniBankSDKVersion)) / Gini Capture SDK: (\(GiniCaptureSDKVersion)) / Client id: \(self.clientId ?? "")"
+        metaInformationButton.setTitle(metaTitle, for: .normal)
     }
     
     // MARK: User interaction
