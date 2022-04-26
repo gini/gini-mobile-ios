@@ -46,6 +46,49 @@ public struct Document {
         case progress
         case sourceClassification
     }
+    
+    init(compositeDocuments: [CompositeDocument]?,
+                creationDate: Date,
+                id: String,
+                name: String,
+                origin: Origin,
+                pageCount: Int,
+                pages: [Page]?,
+                links: Links,
+                partialDocuments: [PartialDocumentInfo]?,
+                progress: Progress,
+                sourceClassification: SourceClassification){
+        self.compositeDocuments = compositeDocuments
+        self.creationDate = creationDate
+        self.id = id
+        self.name = name
+        self.origin = origin
+        self.pageCount = pageCount
+        self.pages = pages
+        self.links = links
+        self.partialDocuments = partialDocuments
+        self.progress = progress
+        self.sourceClassification = sourceClassification
+    }
+    
+    /**
+     It's the easiest way to initialize a `Document` if you are receiving a customized JSON structure from your proxy backend.
+     
+     - parameter creationDate: The document's creation date.
+     - parameter id: The document's unique identifier.
+     - parameter name: The document's file name.
+     - parameter links: Links to related resources, such as extractions, document, processed, layout or pages.
+     - parameter sourceClassification: The document's source classification. We recommend to use `scanned` or `composite`.
+     
+     - note: Screen API with custom networking only.
+     */
+    public init(creationDate: Date,
+                     id: String,
+                     name: String,
+                     links: Links,
+                     sourceClassification: SourceClassification) {
+        self.init(compositeDocuments: [], creationDate: creationDate, id: id, name: name, origin: .upload, pageCount: 1, pages: [], links: links, partialDocuments: [], progress: .completed, sourceClassification: sourceClassification)
+    }
 }
 
 // MARK: - Inner types
@@ -110,6 +153,22 @@ extension Document {
         public let processed: URL
         public let document: URL
         public let pages: URL?
+        
+        /**
+         An initializer for a `Links` structure if you are receiving a customized JSON structure from your proxy backend.
+         For this particular case all links will be pointed to the document's link.
+         
+         - parameter giniAPIDocumentURL: The document's link received from the Gini API. This must be the same URL that you received in the `Location` header from the Gini API. For example "https://pay-api.gini.net/documents/626626a0-749f-11e2-bfd6-000000000000".
+         
+         - note: Screen API with custom networking only.
+         */
+        public init(giniAPIDocumentURL: URL) {
+            self.extractions = giniAPIDocumentURL
+            self.layout = giniAPIDocumentURL
+            self.processed = giniAPIDocumentURL
+            self.document = giniAPIDocumentURL
+            self.pages = nil
+        }
     }
     
     /// The document's layout, formed by an array of pages
