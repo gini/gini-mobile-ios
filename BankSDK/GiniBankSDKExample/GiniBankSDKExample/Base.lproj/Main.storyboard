@@ -11,7 +11,7 @@
         <!--Help-->
         <scene sceneID="fjb-3f-tFA">
             <objects>
-                <viewController storyboardIdentifier="componentAPIOnboardingViewController" id="bdp-eQ-uaN" customClass="ComponentAPIOnboardingViewController" customModule="Example_Swift" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="componentAPIOnboardingViewController" id="bdp-eQ-uaN" customClass="ComponentAPIOnboardingViewController" customModule="GiniBankSDKExample" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="fbF-Nt-pDT"/>
                         <viewControllerLayoutGuide type="bottom" id="Mpx-4F-QTB"/>
@@ -68,7 +68,7 @@
         <!--API Selection-->
         <scene sceneID="Cmn-ER-b8i">
             <objects>
-                <viewController storyboardIdentifier="selectAPIViewController" id="Ggv-ZP-h5h" userLabel="API Selection" customClass="SelectAPIViewController" customModule="Example_Swift" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="selectAPIViewController" id="Ggv-ZP-h5h" userLabel="API Selection" customClass="SelectAPIViewController" customModule="GiniBankSDKExample" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="a3q-Yk-YSo"/>
                         <viewControllerLayoutGuide type="bottom" id="Z9y-Oh-GoV"/>
@@ -77,7 +77,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZlJ-hw-K1e" customClass="GiniButton" customModule="Example_Swift" customModuleProvider="target">
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZlJ-hw-K1e" customClass="GiniButton" customModule="GiniBankSDKExample" customModuleProvider="target">
                                 <rect key="frame" x="91" y="375.5" width="232" height="40"/>
                                 <color key="backgroundColor" systemColor="quaternarySystemFillColor"/>
                                 <constraints>
@@ -102,7 +102,7 @@
                                     <action selector="launchScreenAPI:" destination="Ggv-ZP-h5h" eventType="touchUpInside" id="qq6-dF-m7w"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1gj-uu-hKJ" customClass="GiniButton" customModule="Example_Swift" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1gj-uu-hKJ" customClass="GiniButton" customModule="GiniBankSDKExample" customModuleProvider="target">
                                 <rect key="frame" x="91" y="431.5" width="232" height="40"/>
                                 <color key="backgroundColor" systemColor="quaternarySystemFillColor"/>
                                 <constraints>
@@ -133,7 +133,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" name=".SFNS-Regular" family=".AppleSystemUIFont" pointSize="9"/>
                                 <state key="normal" title="GiniCaptureVersion">
-                                    <color key="titleColor" systemColor="labelColor"/>
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <action selector="launchSettings:" destination="Ggv-ZP-h5h" eventType="touchUpInside" id="Tfb-tc-51t"/>
@@ -211,7 +211,7 @@
         <!--Settings View Controller-->
         <scene sceneID="Kzg-pN-qlA">
             <objects>
-                <viewController storyboardIdentifier="settingsViewController" id="jLX-Py-40o" customClass="SettingsViewController" customModule="Example_Swift" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="settingsViewController" id="jLX-Py-40o" customClass="SettingsViewController" customModule="GiniBankSDKExample" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="kpE-ut-yIQ"/>
                         <viewControllerLayoutGuide type="bottom" id="LAk-oa-XC9"/>
@@ -383,7 +383,7 @@
         <!--Result Table View Controller-->
         <scene sceneID="dA0-59-wBc">
             <objects>
-                <tableViewController storyboardIdentifier="resultScreen" id="QXp-IJ-1GQ" customClass="ResultTableViewController" customModule="Example_Swift" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="resultScreen" id="QXp-IJ-1GQ" customClass="ResultTableViewController" customModule="GiniBankSDKExample" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="cFL-Kk-4eP">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -430,7 +430,7 @@
         <!--Ihre Überweisung-->
         <scene sceneID="hVm-Cc-8N0">
             <objects>
-                <viewController storyboardIdentifier="noResultScreen" hidesBottomBarWhenPushed="YES" id="pIn-fG-Rai" customClass="NoResultViewController" customModule="Example_Swift" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="noResultScreen" hidesBottomBarWhenPushed="YES" id="pIn-fG-Rai" customClass="NoResultViewController" customModule="GiniBankSDKExample" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="JXc-eh-Te3"/>
                         <viewControllerLayoutGuide type="bottom" id="q1e-9E-wVG"/>
