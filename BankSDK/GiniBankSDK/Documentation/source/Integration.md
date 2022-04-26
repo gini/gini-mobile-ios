@@ -213,6 +213,9 @@ let viewController = GiniBank.viewController(importedDocuments: visionDocuments,
 
 present(viewController, animated: true, completion: nil)
 ```
+
+We provide an example implementation [here](https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/GiniBankSDKExample/Screen%20API/ScreenAPICoordinator.swift#L162).
+
 You may also use the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios) or implement communication with the Gini Bank API yourself.
 
 ## Component API

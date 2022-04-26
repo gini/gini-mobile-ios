@@ -18,7 +18,7 @@ import GiniBankAPILibrary
      *  Specific extractions obtained in the analysis.
      *
      *  Besides the list of extractions that can be found
-     *  [here](http://developer.gini.net/gini-api/html/document_extractions.html#available-specific-extractions),
+     *  [here](https://pay-api.gini.net/documentation/#specific-extractions),
      *  it can also return the epsPaymentQRCodeUrl extraction, obtained from a EPS QR code.
      */
     public let extractions: [String: Extraction]

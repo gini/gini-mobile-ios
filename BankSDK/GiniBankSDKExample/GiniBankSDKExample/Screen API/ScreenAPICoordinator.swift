@@ -50,6 +50,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     var visionDocuments: [GiniCaptureDocument]?
     var configuration: GiniBankConfiguration
     var sendFeedbackBlock: (([String: Extraction]) -> Void)?
+    var manuallyCreatedDocument: Document?
     
     init(configuration: GiniBankConfiguration,
          importedDocuments documents: [GiniCaptureDocument]?,
@@ -127,7 +128,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
 
 
 // MARK: - NoResultsScreenDelegate
-
 extension ScreenAPICoordinator: NoResultsScreenDelegate {
     func noResults(viewController: NoResultViewController, didTapRetry: ()) {
         screenAPIViewController.popToRootViewController(animated: true)
@@ -135,7 +135,6 @@ extension ScreenAPICoordinator: NoResultsScreenDelegate {
 }
 
 // MARK: - GiniCaptureResultsDelegate
-
 extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult,
@@ -160,6 +159,7 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     }
 }
 
+// MARK: - Screen API with custom networking GiniCaptureNetworkService
 extension ScreenAPICoordinator: GiniCaptureNetworkService {
     func delete(document: Document, completion: @escaping (Result<String, GiniError>) -> Void) {
         print("💻 custom networking - delete document event called")
@@ -167,15 +167,41 @@ extension ScreenAPICoordinator: GiniCaptureNetworkService {
     
     func cleanup() {
         print("💻 custom networking - cleanup event called")
-
     }
     
     func analyse(partialDocuments: [PartialDocumentInfo], metadata: Document.Metadata?, cancellationToken: CancellationToken, completion: @escaping (Result<(document: Document, extractionResult: ExtractionResult), GiniError>) -> Void) {
         print("💻 custom networking - analyse documents event called")
+        
+        let extractionPaymentPurpose = Extraction.init(box: nil, candidates: nil, entity: "text", value: "20980000", name: "paymentPurpose")
+        let extractionAmountToPay = Extraction.init(box: nil, candidates: "amounts", entity: "amount", value: "12.00:EUR", name: "amountToPay")
+        let extractionIban = Extraction.init(box: nil, candidates: "ibans", entity: "amount", value: "DE74700500000000028273", name: "iban")
+        let extractionPaymentRecipient = Extraction.init(box: nil, candidates: nil, entity: "text", value: "Deutsche Post AG", name: "paymentRecipient")
+        let extractionsBaseGross = Extraction.init(box: nil, candidates: "", entity: "amount", value: "14.99:EUR", name: "baseGross")
+        let extractionDescription = Extraction.init(box: nil, candidates: "", entity: "text", value: "T-Shirt, black Size S", name: "description")
+        let extractionArtNumber = Extraction.init(box: nil, candidates: "", entity: "text", value: "10101", name: "artNumber")
+        let extractionQuantity = Extraction.init(box: nil, candidates: "", entity: "numeric", value: "1", name: "quantity")
+
+        let lineItem = [extractionQuantity, extractionsBaseGross, extractionDescription, extractionArtNumber]
+        let extractionResult = ExtractionResult.init(extractions: [extractionPaymentPurpose,extractionAmountToPay,extractionIban,extractionPaymentRecipient], lineItems: [lineItem, lineItem] , returnReasons: [])
+        if let doc = self.manuallyCreatedDocument {
+            let result = (document: doc, extractionResult: extractionResult)
+            completion(.success(result))
+        } else {
+            completion(.failure(.noResponse))
+        }
     }
     
     func upload(document: GiniCaptureDocument, metadata: Document.Metadata?, completion: @escaping UploadDocumentCompletion) {
         print("💻 custom networking - upload document event called")
+        let creationDate = Date()
+        if let defaultUrl = URL.init(string: "https://pay-api.gini.net/documents/3008db90-c499-11ec-a6b8-d5d497bfXXXX") {
+            let links = Document.Links.init(giniAPIDocumentURL: defaultUrl)
+            let manuallyCreatedDoc = Document.init(creationDate: creationDate, id: "3008db90-c499-11ec-a6b8-d5d497bfXXXX", name: "manuallyCreatedDocument", links: links, sourceClassification: .scanned)
+            self.manuallyCreatedDocument = manuallyCreatedDoc
+            completion(.success(manuallyCreatedDoc))
+        } else {
+            completion(.failure(.noResponse))
+        }
     }
     
     func sendFeedback(document: Document, updatedExtractions: [Extraction], completion: @escaping (Result<Void, GiniError>) -> Void) {
