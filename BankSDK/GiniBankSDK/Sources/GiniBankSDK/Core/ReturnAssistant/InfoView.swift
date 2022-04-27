@@ -28,9 +28,9 @@ class InfoView: UIView {
     private var okButton = UIButton()
     private var skipButton = UIButton()
     
-    private var illustrationImageView = UIImageView(image: UIImage(named: "ra-warning-illustration", in: giniBankBundle(), compatibleWith: nil))
+    private var illustrationImageView = UIImageView(image: prefferedImage(named: "ra-warning-illustration"))
     private lazy var actionButtonsStackView = UIStackView(arrangedSubviews: [okButton, skipButton])
-    private var chevronImageView = UIImageView(image: UIImage(named: "chevron-up-icon", in: giniBankBundle(), compatibleWith: nil))
+    private var chevronImageView = UIImageView(image:prefferedImage(named: "chevron-up-icon"))
     
     weak var delegate: InfoViewDelegate?
     private var isExpanded = false

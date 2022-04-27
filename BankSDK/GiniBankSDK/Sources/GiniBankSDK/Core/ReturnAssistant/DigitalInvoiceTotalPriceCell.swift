@@ -69,7 +69,7 @@ class DigitalInvoiceTotalPriceCell: UITableViewCell {
         contentView.addSubview(addArticleButton)
         addArticleButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
         addArticleButton.setTitle(.ginibankLocalized(resource: DigitalInvoiceStrings.addArticleButton), for: .normal)
-        addArticleButton.setImage(UIImage(named: "plus-icon", in: giniBankBundle(), compatibleWith: nil), for: .normal)
+        addArticleButton.setImage(prefferedImage(named: "plus-icon"), for: .normal)
         addArticleButton.setTitleColor(returnAssistantConfiguration?.digitalInvoiceFooterAddArticleButtonTintColor ?? ReturnAssistantConfiguration.shared.digitalInvoiceFooterAddArticleButtonTintColor, for: .normal)
         addArticleButton.tintColor = returnAssistantConfiguration?.digitalInvoiceFooterAddArticleButtonTintColor ?? ReturnAssistantConfiguration.shared.digitalInvoiceFooterAddArticleButtonTintColor
         addArticleButton.semanticContentAttribute = .forceRightToLeft
