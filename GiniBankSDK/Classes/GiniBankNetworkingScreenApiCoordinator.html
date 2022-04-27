@@ -177,8 +177,7 @@
             <h1>GiniBankNetworkingScreenApiCoordinator</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">class</span> <span class="kt">GiniBankNetworkingScreenApiCoordinator</span> <span class="p">:</span> <span class="kt">GiniScreenAPICoordinator</span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">GiniBankNetworkingScreenApiCoordinator</span><span class="p">:</span> <span class="kt">GiniCaptureDelegate</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">class</span> <span class="kt">GiniBankNetworkingScreenApiCoordinator</span> <span class="p">:</span> <span class="kt">GiniScreenAPICoordinator</span><span class="p">,</span> <span class="kt">GiniCaptureDelegate</span></code></pre>
 <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">GiniBankNetworkingScreenApiCoordinator</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DigitalInvoiceViewControllerDelegate.html">DigitalInvoiceViewControllerDelegate</a></span></code></pre>
 
                 </div>
@@ -191,7 +190,144 @@
         <section class="section">
           <div class="section-content">
             <div class="task-group">
+              <div class="task-name-container">
+                <a name="/GiniCaptureDelegate"></a>
+                <a name="//apple_ref/swift/Section/GiniCaptureDelegate" class="dashAnchor"></a>
+                <a href="#/GiniCaptureDelegate">
+                  <h3 class="section-name">GiniCaptureDelegate</h3>
+                </a>
+              </div>
               <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCaptureWithDocument:networkDelegate:"></a>
+                    <a name="//apple_ref/swift/Method/didCapture(document:networkDelegate:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCaptureWithDocument:networkDelegate:">didCapture(document:networkDelegate:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didCapture</span><span class="p">(</span><span class="nv">document</span><span class="p">:</span> <span class="kt">GiniCaptureDocument</span><span class="p">,</span> <span class="nv">networkDelegate</span><span class="p">:</span> <span class="kt">GiniCaptureNetworkDelegate</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didReviewWithDocuments:networkDelegate:"></a>
+                    <a name="//apple_ref/swift/Method/didReview(documents:networkDelegate:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didReviewWithDocuments:networkDelegate:">didReview(documents:networkDelegate:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didReview</span><span class="p">(</span><span class="nv">documents</span><span class="p">:</span> <span class="p">[</span><span class="kt">GiniCaptureDocument</span><span class="p">],</span> <span class="nv">networkDelegate</span><span class="p">:</span> <span class="kt">GiniCaptureNetworkDelegate</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCancelCapturing"></a>
+                    <a name="//apple_ref/swift/Method/didCancelCapturing()" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCancelCapturing">didCancelCapturing()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didCancelCapturing</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCancelReviewFor:"></a>
+                    <a name="//apple_ref/swift/Method/didCancelReview(for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCancelReviewFor:">didCancelReview(for:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didCancelReview</span><span class="p">(</span><span class="k">for</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">GiniCaptureDocument</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCancelAnalysis"></a>
+                    <a name="//apple_ref/swift/Method/didCancelAnalysis()" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCancelAnalysis">didCancelAnalysis()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didCancelAnalysis</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
                 <li class="item">
                   <div>
                     <code>
@@ -337,147 +473,6 @@
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/GiniCaptureDelegate"></a>
-                <a name="//apple_ref/swift/Section/GiniCaptureDelegate" class="dashAnchor"></a>
-                <a href="#/GiniCaptureDelegate">
-                  <h3 class="section-name">GiniCaptureDelegate</h3>
-                </a>
-              </div>
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCancelCapturing"></a>
-                    <a name="//apple_ref/swift/Method/didCancelCapturing()" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCancelCapturing">didCancelCapturing()</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didCancelCapturing</span><span class="p">()</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCaptureWithDocument:networkDelegate:"></a>
-                    <a name="//apple_ref/swift/Method/didCapture(document:networkDelegate:)" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCaptureWithDocument:networkDelegate:">didCapture(document:networkDelegate:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didCapture</span><span class="p">(</span><span class="nv">document</span><span class="p">:</span> <span class="kt">GiniCaptureDocument</span><span class="p">,</span> <span class="nv">networkDelegate</span><span class="p">:</span> <span class="kt">GiniCaptureNetworkDelegate</span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didReviewWithDocuments:networkDelegate:"></a>
-                    <a name="//apple_ref/swift/Method/didReview(documents:networkDelegate:)" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didReviewWithDocuments:networkDelegate:">didReview(documents:networkDelegate:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didReview</span><span class="p">(</span><span class="nv">documents</span><span class="p">:</span> <span class="p">[</span><span class="kt">GiniCaptureDocument</span><span class="p">],</span> <span class="nv">networkDelegate</span><span class="p">:</span> <span class="kt">GiniCaptureNetworkDelegate</span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCancelReviewFor:"></a>
-                    <a name="//apple_ref/swift/Method/didCancelReview(for:)" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCancelReviewFor:">didCancelReview(for:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didCancelReview</span><span class="p">(</span><span class="k">for</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">GiniCaptureDocument</span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCancelAnalysis"></a>
-                    <a name="//apple_ref/swift/Method/didCancelAnalysis()" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCancelAnalysis">didCancelAnalysis()</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didCancelAnalysis</span><span class="p">()</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
                 <li class="item">
                   <div>
                     <code>
@@ -512,7 +507,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2022 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2022-04-08)</p>
+      <p>&copy; 2022 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2022-04-27)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
