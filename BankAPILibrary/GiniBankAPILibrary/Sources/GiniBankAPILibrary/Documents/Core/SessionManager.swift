@@ -6,9 +6,9 @@
 //
 
 import Foundation
-#if canImport(TrustKit)
-import TrustKit
-#endif
+//#if canImport(TrustKit)
+//import TrustKit
+//#endif
 
 /// Represents a completion result callback
 public typealias CompletionResult<T> = (Result<T, GiniError>) -> Void
@@ -54,7 +54,7 @@ extension SessionProtocol {
 
 typealias SessionManagerProtocol = SessionProtocol & SessionAuthenticationProtocol
 
-final class SessionManager: NSObject {
+public final class SessionManager: NSObject {
     
     let keyStore: KeyStore
     let alternativeTokenSource: AlternativeTokenSource?
@@ -73,9 +73,21 @@ final class SessionManager: NSObject {
         self.keyStore = keyStore
         self.alternativeTokenSource = alternativeTokenSource
         self.session = urlSession
-        #if canImport(TrustKit)
-        self.session.delegate = self
-        #endif
+//        #if canImport(TrustKit)
+//        self.session.delegate = self
+//        #endif
+        self.userDomain = userDomain
+    }
+    
+    init(keyStore: KeyStore = KeychainStore(),
+         alternativeTokenSource: AlternativeTokenSource? = nil,
+         urlSession: URLSession = .init(configuration: .default),
+         userDomain: UserDomain = .default,
+         pinningDelegate: URLSessionDelegate? = nil) {
+        
+        self.keyStore = keyStore
+        self.alternativeTokenSource = alternativeTokenSource
+        self.session = URLSession.init(configuration: urlSession.configuration, delegate: pinningDelegate, delegateQueue: nil)
         self.userDomain = userDomain
     }
 }
@@ -354,16 +366,16 @@ private extension SessionManager {
 
 // MARK: - URLSessionDelegate
 
-#if canImport(TrustKit)
-
-extension SessionManager: URLSessionDelegate {
-    func urlSession(_ session: URLSession,
-                    didReceive challenge: URLAuthenticationChallenge,
-                    completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        if TrustKit.sharedInstance().pinningValidator.handle(challenge, completionHandler: completionHandler) == false {
-            completionHandler(.performDefaultHandling, nil)
-        }
-    }
-}
-
-#endif
+//#if canImport(TrustKit)
+//
+//extension SessionManager: URLSessionDelegate {
+//    func urlSession(_ session: URLSession,
+//                    didReceive challenge: URLAuthenticationChallenge,
+//                    completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+//        if TrustKit.sharedInstance().pinningValidator.handle(challenge, completionHandler: completionHandler) == false {
+//            completionHandler(.performDefaultHandling, nil)
+//        }
+//    }
+//}
+//
+//#endif
