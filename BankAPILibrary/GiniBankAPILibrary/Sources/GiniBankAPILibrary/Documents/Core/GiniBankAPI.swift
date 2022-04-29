@@ -6,9 +6,6 @@
 //
 
 import Foundation
-#if canImport(TrustKit)
-import TrustKit
-#endif
 
 /// The Gini Bank API Library
 public final class GiniBankAPI {
@@ -81,6 +78,15 @@ extension GiniBankAPI {
             self.logLevel = logLevel
         }
         
+        public init(sessionManager: SessionManager,
+                    api: APIDomain = .default,
+                    logLevel: LogLevel = .none) {
+            self.client = sessionManager.client
+            self.api = api
+            self.userApi = sessionManager.userDomain
+            self.logLevel = logLevel
+        }
+        
         /**
          * Creates a Gini Bank API Library to be used with a transparent proxy and a custom api access token source.
          */
@@ -113,6 +119,36 @@ extension GiniBankAPI {
                      sessionManager = SessionManager(alternativeTokenSource: tokenSource)
                 } else {
                     sessionManager = SessionManager(userDomain: userApi)
+                }
+                return GiniBankAPI(documentService: DefaultDocumentService(sessionManager: sessionManager,apiDomain: api), paymentService: PaymentService(sessionManager: sessionManager, apiDomain: api))
+            case let .gym(tokenSource):
+                let sessionManager = SessionManager(alternativeTokenSource: tokenSource)
+                return GiniBankAPI(documentService: DefaultDocumentService(sessionManager:
+                                                                            sessionManager), paymentService: PaymentService(sessionManager: sessionManager))
+            }
+        }
+        
+        public func buildForPinning(pinningDelegate: URLSessionDelegate) -> GiniBankAPI {
+            // Save client information
+            save(client)
+
+            // Initialize logger
+            GiniBankAPI.logLevel = logLevel
+
+            // Initialize GiniBankAPI
+            switch api {
+            case .accounting:
+                let sessionManager = SessionManager(userDomain: userApi, pinningDelegate: pinningDelegate)
+                return GiniBankAPI(documentService: AccountingDocumentService(sessionManager: sessionManager), paymentService: PaymentService(sessionManager: sessionManager, apiDomain: .default))
+            case .default:
+                let sessionManager = SessionManager(userDomain: userApi, pinningDelegate: pinningDelegate)
+                return GiniBankAPI(documentService: DefaultDocumentService(sessionManager: sessionManager), paymentService: PaymentService(sessionManager: sessionManager, apiDomain: .default))
+            case .custom(_, let tokenSource):
+                var sessionManager : SessionManager
+                if let tokenSource = tokenSource {
+                     sessionManager = SessionManager(alternativeTokenSource: tokenSource, pinningDelegate: pinningDelegate)
+                } else {
+                    sessionManager = SessionManager(userDomain: userApi, pinningDelegate: pinningDelegate)
                 }
                 return GiniBankAPI(documentService: DefaultDocumentService(sessionManager: sessionManager,apiDomain: api), paymentService: PaymentService(sessionManager: sessionManager, apiDomain: api))
             case let .gym(tokenSource):
