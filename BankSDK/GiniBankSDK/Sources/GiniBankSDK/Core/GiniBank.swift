@@ -10,10 +10,10 @@ import GiniBankAPILibrary
 import GiniCaptureSDK
 
 /**
- Core class for GiniPayBank SDK.
+ Core class for Gini Bank SDK.
  */
 @objc public final class GiniBank: NSObject {
-    /// reponsible for interaction with Gini Pay backend .
+    /// reponsible for interaction with Gini Bank backend.
     public var giniApiLib: GiniBankAPI
     /// reponsible for the payment processing.
     public var paymentService: PaymentService
@@ -27,6 +27,8 @@ import GiniCaptureSDK
         self.giniApiLib = giniApiLib
         paymentService = giniApiLib.paymentService()
     }
+    
+    // MARK: - Gini Pay Connect
 
     /**
      Fetches the payment request via payment request id.
