@@ -13,23 +13,12 @@ public extension GiniBankAPI.Builder {
                 api: APIDomain = .default,
                 pinningConfig: [String: Any],
                 logLevel: LogLevel = .none) {
-        self.init(client: client, api: api, logLevel: logLevel)
-        
+        self.init(client: client, api: api, userApi: .default, logLevel: logLevel, sessionDelegate: SessionDelegate())
         TrustKit.initSharedInstance(withConfiguration: pinningConfig)
     }
-    
-    init(client: Client,
-         sessionManager: SessionManager,
-                api: APIDomain = .default,
-                pinningConfig: [String: Any],
-                logLevel: LogLevel = .none) {
-        self.init(sessionManager: sessionManager, api: .default, logLevel: .none)
-        self.init(client: client, api: api, logLevel: logLevel)
-        TrustKit.initSharedInstance(withConfiguration: pinningConfig)
-    }    
 }
 
-extension SessionManager: URLSessionDelegate {
+class SessionDelegate: NSObject, URLSessionDelegate {
     public func urlSession(_ session: URLSession,
                     didReceive challenge: URLAuthenticationChallenge,
                     completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {

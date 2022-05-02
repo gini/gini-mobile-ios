@@ -83,11 +83,11 @@ public final class SessionManager: NSObject {
          alternativeTokenSource: AlternativeTokenSource? = nil,
          urlSession: URLSession = .init(configuration: .default),
          userDomain: UserDomain = .default,
-         pinningDelegate: URLSessionDelegate? = nil) {
+         sessionDelegate: URLSessionDelegate? = nil) {
         
         self.keyStore = keyStore
         self.alternativeTokenSource = alternativeTokenSource
-        self.session = URLSession.init(configuration: urlSession.configuration, delegate: pinningDelegate, delegateQueue: nil)
+        self.session = URLSession.init(configuration: urlSession.configuration, delegate: sessionDelegate, delegateQueue: nil)
         self.userDomain = userDomain
     }
 }
