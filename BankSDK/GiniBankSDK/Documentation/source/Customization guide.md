@@ -352,3 +352,262 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 ##### 1. Select more photos button
 - Text color &#8594; `GiniBankConfiguration.albumsScreenSelectMorePhotosTextColor` using `GiniColor` with dark mode and light mode colors
 - Title &#8594; <span style="color:#009EDF">*ginicapture.albums.selectMorePhotosButton*</span> localized string
+
+## Return assistant
+
+### Onboarding screen
+
+<br>
+<center><img src="img/Customization guide/Digital Invoice Onboarding Screen.jpg" height="500"/></center>
+</br>
+
+##### 1. Background
+- Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceBackgroundColor`
+
+##### 2. Title
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.onboarding.text1*</span> localized string
+- Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceOnboardingFirstLabelTextFont` 
+- Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceOnboardingTextColor`
+
+##### 3. Illustration
+
+- Image &#8594; <span style="color:#009EDF">*digital_invoice_onboarding_icon*</span> image asset
+
+##### 4. Message
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.onboarding.text2*</span> localized string
+- Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceOnboardingSecondLabelTextFont`
+- Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceOnboardingTextColor`
+
+##### 5. "Done" button
+- Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.onboarding.donebutton*</span> localized string
+- Background color &#8594; `ReturnAssistantConfiguration.digitalInvoiceOnboardingDoneButtonBackgroundColor`
+- Text color &#8594; `ReturnAssistantConfiguration.digitalInvoiceOnboardingDoneButtonTextColor`
+- Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceOnboardingDoneButtonTextFont`
+
+##### 6. "Don't Show Again" button
+- Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.onboarding.hidebutton*</span> localized string
+- Text color &#8594; `ReturnAssistantConfiguration.digitalInvoiceOnboardingHideButtonTextColor`
+- Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceOnboardingHideButtonTextFont`
+
+### Info Box
+
+<br>
+<center><img src="img/Customization guide/Digital Invoice Check Items Info Box.jpg" height="500"/></center>
+</br>
+
+##### 1. Background
+- Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceInfoViewBackgroundColor`
+
+##### 2. Title and message
+- Title
+  - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.warningtoptitle*</span> localized string
+  - Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceInfoViewTopLabelFont` 
+  - Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceInfoViewWarningLabelsTextColor`
+- Message
+  - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.warningmiddletext*</span> localized string
+  - Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceInfoViewMiddleLabelFont` 
+  - Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceInfoViewWarningLabelsTextColor`
+
+##### 3. Expand/collapse button
+- Image &#8594; <span style="color:#009EDF">*chevron-up-icon*</span> image asset
+- Tint color &#8594; `ReturnAssistantConfiguration.digitalInvoiceInfoViewChevronImageViewTintColor`
+
+##### 4. Illustration
+- Image &#8594; <span style="color:#009EDF">*ra-warning-illustration*</span> image asset
+
+##### 5. Bottom message
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.warningbottomtext*</span> localized string
+- Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceInfoViewBottomLabelFont` 
+- Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceInfoViewWarningLabelsTextColor`
+
+##### 6. "OK" button
+- Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.warningleftbuttontitle*</span> localized string
+- Background color &#8594; `ReturnAssistantConfiguration.digitalInvoiceInfoViewLeftButtonBackgroundColor`
+- Border color &#8594; `ReturnAssistantConfiguration.digitalInvoiceInfoViewLeftButtonBorderColor`
+- Text color &#8594; `ReturnAssistantConfiguration.digitalInvoiceInfoViewLeftkButtonTitleColor`
+- Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceInfoViewButtonsFont`
+
+##### 7. "Skip" button
+- Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.warningrightbuttontitle*</span> localized string
+- Background color &#8594; `ReturnAssistantConfiguration.digitalInvoiceInfoViewRightButtonBackgroundColor`
+- Border color &#8594; `ReturnAssistantConfiguration.digitalInvoiceInfoViewRightButtonBorderColor`
+- Text color &#8594; `ReturnAssistantConfiguration.digitalInvoiceInfoViewRightButtonTitleColor`
+- Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceInfoViewButtonsFont`
+
+### Digital invoice screen
+
+<br>
+<center><img src="img/Customization guide/Digital Invoice Screen.jpg" height="500"/></center>
+</br>
+
+##### 1. Navigation bar
+- Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.screentitle*</span> localized string
+- Help button image &#8594; <span style="color:#009EDF">*infoIcon*</span> image asset
+
+##### 2. Background
+- Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceBackgroundColor`
+
+##### 3. Line item index
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.items*</span> localized string.  
+  Please include two decimal format arguments:
+  1. Current index: `%d`
+  2. Total count: `%d`
+- Font &#8594;  `ReturnAssistantConfiguration.lineItemCountLabelFont`
+- Color &#8594; `ReturnAssistantConfiguration.lineItemCountLabelColor`
+
+##### 4. Line item edit button
+- Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.editbutton*</span> localized string
+- Icon &#8594; <span style="color:#009EDF">*editIcon*</span> image asset
+- Tint color &#8594; `ReturnAssistantConfiguration.lineItemTintColor` [TODO: update for dedicated color]
+- Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceLineItemEditButtonTitleFont`
+
+##### 5. Line item card
+- Background
+  - Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceLineItemsBackgroundColor`
+- Border
+  - Color &#8594; `ReturnAssistantConfiguration.lineItemTintColor` [TODO: update for dedicated color]
+- Toggle switch
+  - Color &#8594; `ReturnAssistantConfiguration.lineItemTintColor` [TODO: update for dedicated color]
+- Item name
+  - Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceLineItemNameFont`
+  - Color &#8594; [TODO: missing color config]
+- Quantity
+  - Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceLineItemQuantityFont`
+  - Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceLineItemQuantityColor`
+- Price
+  - Main unit
+    - Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceLineItemPriceMainUnitFont`
+    - Color &#8594; [TODO: missing color config]
+  - Fractional unit
+    - Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceLineItemPriceFractionalUnitFont`
+    - Color &#8594; [TODO: missing color config]
+- Delete button (shown only for manually added line items)
+  - Icon &#8594; <span style="color:#009EDF">*garbage-bin-icon*</span> image asset
+  - Tint color &#8594; `ReturnAssistantConfiguration.lineItemTintColor` [TODO: update for dedicated color]
+- Disabled state
+  - Color &#8594; [TODO: missing color config]
+
+##### 6. Additional costs
+- Label
+  - Font &#8594; `ReturnAssistantConfiguration.digitalInvoiceAddonLabelFont`
+  - Color &#8594; [TODO: missing color config]
+- Price
+  - Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceAddonPriceColor`
+  - Main unit font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceAddonPriceMainUnitFont`
+  - Fractional unit font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceAddonPriceFractionalUnitFont`
+
+##### 7. "Add article" button
+- Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.total.addArticleButtonTitle*</span> localized string
+- Icon &#8594; <span style="color:#009EDF">*plus-icon*</span> image asset
+- Text color &#8594; `ReturnAssistantConfiguration.digitalInvoiceFooterAddArticleButtonTintColor`
+- Font &#8594; [TODO: missing font config]
+
+##### 8. Total price
+- Caption 
+  - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.totalcaptionlabeltext*</span> localized string
+  - Color &#8594; [TODO: missing color config]
+  - Font &#8594; `ReturnAssistantConfiguration.digitalInvoiceTotalCaptionLabelFont`
+- Explanation 
+  - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.totalexplanationlabeltext*</span> localized string
+  - Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceTotalExplanationLabelTextColor`
+  - Font &#8594; `ReturnAssistantConfiguration.digitalInvoiceTotalExplanationLabelFont`
+- Price
+  - Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceTotalPriceColor`
+  - Main unit font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceTotalPriceMainUnitFont`
+  - Fractional unit font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceTotalPriceFractionalUnitFont`
+
+##### 9. Footer message
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.footermessage*</span> localized string
+- Text color &#8594; `ReturnAssistantConfiguration.digitalInvoiceFooterMessageTextColor`
+- Font &#8594; `ReturnAssistantConfiguration.digitalInvoiceFooterMessageTextFont`
+
+##### 10. "Pay" button
+- Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.paybuttontitle*</span> localized string.  
+  Please include two decimal format arguments:
+  1. Selected items count: `%d`
+  2. Total count: `%d`
+- Background color &#8594;  `ReturnAssistantConfiguration.payButtonBackgroundColor`
+- Title color &#8594; `ReturnAssistantConfiguration.payButtonTitleTextColor`
+- Font &#8594;  `ReturnAssistantConfiguration.payButtonTitleFont`
+
+##### 11. "Skip" Button
+- Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.skipbuttontitle*</span> localized string
+- Background color &#8594;  `ReturnAssistantConfiguration.skipButtonBackgroundColor`
+- Border color &#8594;  `ReturnAssistantConfiguration.skipButtonBorderColor`
+- Title color &#8594; `ReturnAssistantConfiguration.skipButtonTitleTextColor`
+- Font &#8594;  `ReturnAssistantConfiguration.skipButtonTitleFont`
+
+### Return reason action sheet
+
+<br>
+<center><img src="img/Customization guide/Digital Invoice Return Reason Picker.jpg" height="500"/></center>
+</br>
+
+##### 1. Title
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.deselectreasonactionsheet.message*</span> localized string
+
+##### 2. "Cancel" button
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel*</span> localized string
+
+### Info dialog
+
+<br>
+<center><img src="img/Customization guide/Digital Invoice Info Dialog.jpg" height="500"/></center>
+</br>
+
+##### 1. Title
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.whatisthisactionsheet.title*</span> localized string
+
+##### 2. Message
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.whatisthisactionsheet.message*</span> localized string
+
+##### 3. "Helpful" button
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.whatisthisactionsheet.action.helpful*</span> localized string
+
+##### 4. "Not helpful" button
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.whatisthisactionsheet.action.nothelpful*</span> localized string
+
+##### 5. "Cancel" button
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.whatisthisactionsheet.action.cancel*</span> localized string
+
+### Edit line item screen
+
+<br>
+<center><img src="img/Customization guide/Digital Invoice Edit Line Item.jpg" height="500"/></center>
+</br>
+
+##### 1. Navigation bar
+- Save button title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.savebutton*</span> localized string
+
+##### 2. Background
+- Color &#8594; `ReturnAssistantConfiguration.lineItemDetailsBackgroundColor`
+
+##### 3. Checkmark
+- Color &#8594; `ReturnAssistantConfiguration.lineItemTintColor` [TODO: update for dedicated color]
+- Label text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.checkmark.label*</span> [plural](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPInternational/StringsdictFileFormat/StringsdictFileFormat.html) localized string.  
+  Please include a decimal format argument for the quantity integer (e.g. `%d Artikel ausgewählt`).
+
+##### 4. 5. 6. Text fields: name, quantity, price
+- Item name field title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.itemnametextfieldtitle*</span> localized string
+- Quantity field title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.quantitytextfieldtitle*</span> localized string
+- Price field title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.pricetextfieldtitle*</span> localized string
+- Field title
+  - Color &#8594; `ReturnAssistantConfiguration.lineItemDetailsDescriptionLabelFont`
+  - Font &#8594; `ReturnAssistantConfiguration.lineItemDetailsDescriptionLabelColor`
+- Field content
+  - Color &#8594; `ReturnAssistantConfiguration.lineItemDetailsContentLabelColor`
+  - Font &#8594; `ReturnAssistantConfiguration.lineItemDetailsContentLabelFont`
+
+##### 7. Multiplication symbol
+- Color &#8594; `ReturnAssistantConfiguration.lineItemDetailsContentLabelFont`
+- Font &#8594; `ReturnAssistantConfiguration.lineItemDetailsContentLabelColor`
+
+##### 8. Total price
+- Label
+  - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.totalpricetitle*</span> localized string
+  - Color &#8594; `ReturnAssistantConfiguration.lineItemDetailsDescriptionLabelFont`
+  - Font &#8594; `ReturnAssistantConfiguration.lineItemDetailsDescriptionLabelColor`
+- Price
+  - Color &#8594; `ReturnAssistantConfiguration.lineItemDetailsContentLabelColor`
+  - Main unit font &#8594;  `ReturnAssistantConfiguration.lineItemDetailsTotalPriceMainUnitFont`
+  - Fractional unit font &#8594;  `ReturnAssistantConfiguration.lineItemDetailsTotalPriceFractionalUnitFont`
