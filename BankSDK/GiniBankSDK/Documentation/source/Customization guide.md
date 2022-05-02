@@ -452,6 +452,10 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
   Please include two decimal format arguments:
   1. Current index: `%d`
   2. Total count: `%d`
+- Accessibility label &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.items.accessibilitylabel*</span> localized string.  
+  Please include two decimal format arguments:
+  1. Current index: `%d`
+  2. Total count: `%d`
 - Font &#8594;  `ReturnAssistantConfiguration.lineItemCountLabelFont`
 - Color &#8594; `ReturnAssistantConfiguration.lineItemCountLabelColor`
 
@@ -468,6 +472,9 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
   - Color &#8594; `ReturnAssistantConfiguration.lineItemTintColor` [TODO: update for dedicated color]
 - Toggle switch
   - Color &#8594; `ReturnAssistantConfiguration.lineItemTintColor` [TODO: update for dedicated color]
+  - Accessibility label
+    - Select &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.checkmarkbutton.select.accessibilitylabel*</span> localized string
+    - Deselect &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.checkmarkbutton.deselect.accessibilitylabel*</span> localized string
 - Item name
   - Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceLineItemNameFont`
   - Color &#8594; [TODO: missing color config]
@@ -481,6 +488,7 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
   - Fractional unit
     - Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceLineItemPriceFractionalUnitFont`
     - Color &#8594; [TODO: missing color config]
+  - Accessibility label &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.total.accessibilitylabel*</span> localized string
 - Delete button (shown only for manually added line items)
   - Icon &#8594; <span style="color:#009EDF">*garbage-bin-icon*</span> image asset
   - Tint color &#8594; `ReturnAssistantConfiguration.lineItemTintColor` [TODO: update for dedicated color]
@@ -515,6 +523,7 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
   - Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceTotalPriceColor`
   - Main unit font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceTotalPriceMainUnitFont`
   - Fractional unit font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceTotalPriceFractionalUnitFont`
+  - Accessibility label &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.total.accessibilitylabel*</span> localized string
 
 ##### 9. Footer message
 - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.footermessage*</span> localized string
@@ -523,6 +532,10 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 
 ##### 10. "Pay" button
 - Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.paybuttontitle*</span> localized string.  
+  Please include two decimal format arguments:
+  1. Selected items count: `%d`
+  2. Total count: `%d`
+- Accessibility label &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.paybuttontitle.accessibilitylabel*</span> localized string.  
   Please include two decimal format arguments:
   1. Selected items count: `%d`
   2. Total count: `%d`
@@ -601,6 +614,7 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 ##### 7. Multiplication symbol
 - Color &#8594; `ReturnAssistantConfiguration.lineItemDetailsContentLabelFont`
 - Font &#8594; `ReturnAssistantConfiguration.lineItemDetailsContentLabelColor`
+- Accessibility label &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.multiplication.accessibilitylabel*</span> localized string
 
 ##### 8. Total price
 - Label
