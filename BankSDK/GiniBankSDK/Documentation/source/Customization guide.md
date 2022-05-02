@@ -472,9 +472,6 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
   - Color &#8594; `ReturnAssistantConfiguration.lineItemTintColor` [TODO: update for dedicated color]
 - Toggle switch
   - Color &#8594; `ReturnAssistantConfiguration.lineItemTintColor` [TODO: update for dedicated color]
-  - Accessibility label
-    - Select &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.checkmarkbutton.select.accessibilitylabel*</span> localized string
-    - Deselect &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.checkmarkbutton.deselect.accessibilitylabel*</span> localized string
 - Item name
   - Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceLineItemNameFont`
   - Color &#8594; [TODO: missing color config]
@@ -599,6 +596,9 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 - Color &#8594; `ReturnAssistantConfiguration.lineItemTintColor` [TODO: update for dedicated color]
 - Label text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.checkmark.label*</span> [plural](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPInternational/StringsdictFileFormat/StringsdictFileFormat.html) localized string.  
   Please include a decimal format argument for the quantity integer (e.g. `%d Artikel ausgewählt`).
+- Accessibility label
+    - Select &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.checkmarkbutton.select.accessibilitylabel*</span> localized string
+    - Deselect &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.checkmarkbutton.deselect.accessibilitylabel*</span> localized string
 
 ##### 4. 5. 6. Text fields: name, quantity, price
 - Item name field title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.itemnametextfieldtitle*</span> localized string
