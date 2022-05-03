@@ -126,10 +126,12 @@ class GiniTextField: UIView {
         }
     }
     
+    var underscoreColor: UIColor? = nil
+    
     private func underscoreColor(for isFirstResponder: Bool) -> UIColor {
         
         if isFirstResponder {
-            return tintColor
+            return underscoreColor ?? tintColor
         } else {
             if #available(iOS 13.0, *) {
                 return .separator
