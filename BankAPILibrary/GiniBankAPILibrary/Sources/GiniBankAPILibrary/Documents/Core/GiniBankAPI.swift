@@ -68,25 +68,7 @@ extension GiniBankAPI {
          * - Parameter api:               The Gini Bank API that the library interacts with. `APIDomain.default` by default
          * - Parameter userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
          * - Parameter logLevel:          The log level. `LogLevel.none` by default.
-         */
-        public init(client: Client,
-                    api: APIDomain = .default,
-                    userApi: UserDomain = .default,
-                    logLevel: LogLevel = .none) {
-            self.client = client
-            self.api = api
-            self.userApi = userApi
-            self.logLevel = logLevel
-        }
-        
-        /**
-         *  Used internally for Gini Bank API Library with `Pinning`.
-         *
-         * - Parameter client:            The Gini Bank API client credentials
-         * - Parameter api:               The Gini Bank API that the library interacts with. `APIDomain.default` by default
-         * - Parameter userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
-         * - Parameter logLevel:          The log level. `LogLevel.none` by default.
-         * - Parameter sessionDelegate:   The session delegate `URLSessionDelegate`.
+         * - Parameter sessionDelegate:   The session delegate `URLSessionDelegate` will be set for Gini Bank API Library with `Pinning`.
          */
         public init(client: Client,
                     api: APIDomain = .default,
