@@ -705,6 +705,11 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var digitalInvoiceLineItemsBackgroundColor =  GiniColor(lightModeColor: .white, darkModeColor: .black)
     
     /**
+     Sets the disabled color for the line items on the digital invoice screen.
+     */
+    @objc public var digitalInvoiceLineItemsDisabledColor =  UIColor.gray
+    
+    /**
      Sets the font of the footer message on the digital invoice screen to the specified font.
      */
     @objc public var digitalInvoiceFooterMessageTextFont = UIFont.systemFont(ofSize: 14)
@@ -1250,6 +1255,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.digitalInvoiceSecondaryMessageTextColor = self.digitalInvoiceSecondaryMessageTextColor
         configuration.digitalInvoiceBackgroundColor = self.digitalInvoiceBackgroundColor
         configuration.digitalInvoiceLineItemsBackgroundColor = self.digitalInvoiceLineItemsBackgroundColor
+        configuration.digitalInvoiceLineItemsDisabledColor = self.digitalInvoiceLineItemsDisabledColor
         configuration.digitalInvoiceFooterAddArticleButtonTintColor = self.digitalInvoiceFooterAddArticleButtonTintColor
         configuration.digitalInvoiceFooterMessageTextFont = self.digitalInvoiceFooterMessageTextFont
         configuration.digitalInvoiceFooterMessageTextColor = self.digitalInvoiceFooterMessageTextColor

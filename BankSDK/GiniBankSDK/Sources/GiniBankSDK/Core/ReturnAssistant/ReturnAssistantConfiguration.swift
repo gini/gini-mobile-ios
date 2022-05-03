@@ -171,6 +171,11 @@ public final class ReturnAssistantConfiguration: NSObject {
     @objc public var digitalInvoiceLineItemsBackgroundColor =  GiniColor(lightModeColor: .white, darkModeColor: .black)
     
     /**
+     Sets the disabled color for the line items on the digital invoice screen.
+     */
+    @objc public var digitalInvoiceLineItemsDisabledColor =  UIColor.gray
+    
+    /**
      Sets the font of the footer message on the digital invoice screen to the specified font.
      */
     @objc public var digitalInvoiceFooterMessageTextFont = UIFont.systemFont(ofSize: 14)
