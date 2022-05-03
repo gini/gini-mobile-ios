@@ -848,6 +848,11 @@ public final class GiniBankConfiguration: NSObject {
     @objc private var _digitalInvoiceAddonPriceColor: UIColor?
     
     /**
+     Sets the color of the addon name labels in the digital invoice screen to the specified color
+     */
+    @objc public var digitalInvoiceAddonLabelColor = GiniColor(lightModeColor: .black, darkModeColor: .white)
+    
+    /**
      Sets the color of the total price label in the digital invoice screen to the specified color.
      */
     @objc public var digitalInvoiceTotalPriceColor: UIColor {
@@ -1317,6 +1322,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.digitalInvoiceAddonPriceMainUnitFont = self.digitalInvoiceAddonPriceMainUnitFont
         configuration.digitalInvoiceAddonPriceFractionalUnitFont = self.digitalInvoiceAddonPriceFractionalUnitFont
         configuration.digitalInvoiceAddonPriceColor = self.digitalInvoiceAddonPriceColor
+        configuration.digitalInvoiceAddonLabelColor = self.digitalInvoiceAddonLabelColor
         configuration.digitalInvoiceTotalPriceColor = self.digitalInvoiceTotalPriceColor
         
 
