@@ -501,7 +501,7 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 ##### 6. Additional costs
 - Label
   - Font &#8594; `ReturnAssistantConfiguration.digitalInvoiceAddonLabelFont`
-  - Color &#8594; [TODO: missing color config]
+  - Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceAddonLabelColor`
 - Price
   - Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceAddonPriceColor`
   - Main unit font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceAddonPriceMainUnitFont`
@@ -511,12 +511,12 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 - Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.total.addArticleButtonTitle*</span> localized string
 - Icon &#8594; <span style="color:#009EDF">*plus-icon*</span> image asset
 - Text color &#8594; `ReturnAssistantConfiguration.digitalInvoiceFooterAddArticleButtonTintColor`
-- Font &#8594; [TODO: missing font config]
+- Font &#8594; `ReturnAssistantConfiguration.digitalInvoiceFooterAddArticleButtonTitleFont`
 
 ##### 8. Total price
 - Caption 
   - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.totalcaptionlabeltext*</span> localized string
-  - Color &#8594; [TODO: missing color config]
+  - Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceTotalCaptionLabelTextColor`
   - Font &#8594; `ReturnAssistantConfiguration.digitalInvoiceTotalCaptionLabelFont`
 - Explanation 
   - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.totalexplanationlabeltext*</span> localized string
