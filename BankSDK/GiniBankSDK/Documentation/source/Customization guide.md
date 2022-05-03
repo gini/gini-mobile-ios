@@ -480,17 +480,17 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
   - Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceLineItemToggleSwitchTintColor`
 - Item name
   - Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceLineItemNameFont`
-  - Color &#8594; [TODO: missing color config]
+  - Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceLineItemNameColor`
 - Quantity
   - Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceLineItemQuantityFont`
   - Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceLineItemQuantityColor`
 - Price
   - Main unit
     - Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceLineItemPriceMainUnitFont`
-    - Color &#8594; [TODO: missing color config]
+    - Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceLineItemPriceColor`
   - Fractional unit
     - Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceLineItemPriceFractionalUnitFont`
-    - Color &#8594; [TODO: missing color config]
+    - Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceLineItemPriceColor`
   - Accessibility label &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.total.accessibilitylabel*</span> localized string
 - Delete button (shown only for manually added line items)
   - Icon &#8594; <span style="color:#009EDF">*garbage-bin-icon*</span> image asset
