@@ -314,6 +314,11 @@ public final class ReturnAssistantConfiguration: NSObject {
     @objc private var _digitalInvoiceAddonPriceColor: UIColor?
     
     /**
+     Sets the color of the addon name labels in the digital invoice screen to the specified color
+     */
+    @objc public var digitalInvoiceAddonLabelColor = GiniColor(lightModeColor: .black, darkModeColor: .white)
+    
+    /**
      Sets the color of the total price label in the digital invoice screen to the specified color
      */
     @objc public var digitalInvoiceTotalPriceColor: UIColor {
