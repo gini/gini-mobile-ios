@@ -73,9 +73,19 @@ public final class ReturnAssistantConfiguration: NSObject {
     // MARK: Digital invoice
 
     /**
-     Sets the color of the active elements on the digital invoice line item cells to the specified color
+     Sets the color of the active elements on the digital invoice line item cells to the specified color.
+     
+     Can be overridden by the specific line item tint color customisation options: `lineItemBorderColor`, `digitalInvoiceLineItemEditButtonTintColor`,
+     `digitalInvoiceLineItemToggleSwitchTintColor`, `digitalInvoiceLineItemDeleteButtonTintColor`.
      */
     @objc public var lineItemTintColor = Colors.Gini.blue
+    
+    /**
+     Sets the border color on the digital invoice line item cells to the specified color.
+     
+     Overrides `lineItemTintColor` if not `nil`.
+     */
+    @objc public var lineItemBorderColor: UIColor? = nil
     
     /**
      Sets the color of the active elements on the digital invoice line item count label to the specified color
@@ -96,6 +106,27 @@ public final class ReturnAssistantConfiguration: NSObject {
      Sets the font of the line item edit button title on the digital invoice screen to the specified font.
      */
     @objc public var digitalInvoiceLineItemEditButtonTitleFont = UIFont.systemFont(ofSize: 14, weight: .medium)
+    
+    /**
+     Sets the edit button tint color on the digital invoice screen to the specified color.
+     
+     Overrides `lineItemTintColor` if not `nil`.
+     */
+    @objc public var digitalInvoiceLineItemEditButtonTintColor: UIColor? = nil
+    
+    /**
+     Sets the toggle switch tint color on the digital invoice line item cells to the specified color.
+     
+     Overrides `lineItemTintColor` if not `nil`.
+     */
+    @objc public var digitalInvoiceLineItemToggleSwitchTintColor: UIColor? = nil
+    
+    /**
+     Sets the delete button tint color on the digital invoice screen to the specified color.
+     
+     Overrides `lineItemTintColor` if not `nil`.
+     */
+    @objc public var digitalInvoiceLineItemDeleteButtonTintColor: UIColor? = nil
     
     /**
      Sets the font of the line item label that  displays the quantity on the digital invoice screen to the specified font.

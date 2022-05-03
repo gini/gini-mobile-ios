@@ -86,7 +86,7 @@ class LineItemDetailsViewController: UIViewController {
         
         checkboxContainerStackView.axis = .horizontal
         
-        checkboxButton.tintColor = returnAssistantConfiguration?.lineItemTintColor
+        checkboxButton.tintColor = returnAssistantConfiguration?.digitalInvoiceLineItemToggleSwitchTintColor ?? returnAssistantConfiguration?.lineItemTintColor
         checkboxButton.checkedState = .checked
         checkboxButton.addTarget(self, action: #selector(checkboxButtonTapped), for: .touchUpInside)
         checkboxContainerStackView.addArrangedSubview(checkboxButton)
