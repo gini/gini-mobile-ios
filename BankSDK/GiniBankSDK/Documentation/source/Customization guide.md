@@ -616,6 +616,7 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 - Field content
   - Color &#8594; `ReturnAssistantConfiguration.lineItemDetailsContentLabelColor`
   - Font &#8594; `ReturnAssistantConfiguration.lineItemDetailsContentLabelFont`
+- Field highlighted color &#8594; `ReturnAssistantConfiguration.lineItemDetailsContentHighlightedColor`
 
 ##### 7. Multiplication symbol
 - Color &#8594; `ReturnAssistantConfiguration.lineItemDetailsContentLabelFont`
