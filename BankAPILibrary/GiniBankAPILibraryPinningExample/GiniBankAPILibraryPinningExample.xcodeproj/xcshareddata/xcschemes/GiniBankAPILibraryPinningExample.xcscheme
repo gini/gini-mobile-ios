@@ -9,14 +9,28 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F44C6A1E272AD82F00177319"
                BuildableName = "GiniBankAPILibraryPinningExample.app"
                BlueprintName = "GiniBankAPILibraryPinningExample"
+               ReferencedContainer = "container:GiniBankAPILibraryPinningExample.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F4CBE2F328204E6D00B28220"
+               BuildableName = "GiniBankAPILibraryPinningExampleTests.xctest"
+               BlueprintName = "GiniBankAPILibraryPinningExampleTests"
                ReferencedContainer = "container:GiniBankAPILibraryPinningExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -50,6 +64,18 @@
             ReferencedContainer = "container:GiniBankAPILibraryPinningExample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "CLIENT_ID"
+            value = "$(CLIENT_ID)"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "CLIENT_SECRET"
+            value = "$(CLIENT_SECRET)"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -57,8 +83,7 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F44C6A1E272AD82F00177319"
@@ -66,7 +91,7 @@
             BlueprintName = "GiniBankAPILibraryPinningExample"
             ReferencedContainer = "container:GiniBankAPILibraryPinningExample.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
