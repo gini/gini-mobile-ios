@@ -50,6 +50,7 @@ class DigitalInvoiceTotalPriceCell: UITableViewCell {
         
         totalCaptionLabel.text = .ginibankLocalized(resource: DigitalInvoiceStrings.totalCaptionLabel)
         totalCaptionLabel.font = returnAssistantConfiguration?.digitalInvoiceTotalCaptionLabelFont ?? ReturnAssistantConfiguration.shared.digitalInvoiceTotalCaptionLabelFont
+        totalCaptionLabel.textColor = UIColor.from(giniColor: returnAssistantConfiguration?.digitalInvoiceTotalCaptionLabelTextColor ?? ReturnAssistantConfiguration.shared.digitalInvoiceTotalCaptionLabelTextColor)
         
         totalCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(totalCaptionLabel)
