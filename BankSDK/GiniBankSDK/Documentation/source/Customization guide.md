@@ -370,7 +370,6 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 - Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceOnboardingTextColor`
 
 ##### 3. Illustration
-
 - Image &#8594; <span style="color:#009EDF">*digital_invoice_onboarding_icon*</span> image asset
 
 ##### 4. Message
