@@ -43,10 +43,11 @@ struct DigitalLineItemViewModel {
         }
     }
     
-    var outilneViewColor: UIColor {
+    var outlineViewColor: UIColor {
         switch lineItem.selectedState {
         case .selected:
-            return returnAssistantConfiguration.lineItemTintColor
+            return returnAssistantConfiguration.lineItemBorderColor
+            ?? returnAssistantConfiguration.lineItemTintColor
         case .deselected:
             return UIColor.gray
         }
@@ -68,7 +69,8 @@ struct DigitalLineItemViewModel {
         
         switch lineItem.selectedState {
         case .selected:
-            return returnAssistantConfiguration.lineItemTintColor
+            return returnAssistantConfiguration.digitalInvoiceLineItemToggleSwitchTintColor
+            ?? returnAssistantConfiguration.lineItemTintColor
         case .deselected:
             return .white
         }
@@ -77,7 +79,8 @@ struct DigitalLineItemViewModel {
     var editButtonTintColor: UIColor {
         switch lineItem.selectedState {
         case .selected:
-            return returnAssistantConfiguration.lineItemTintColor
+            return returnAssistantConfiguration.digitalInvoiceLineItemEditButtonTintColor
+            ?? returnAssistantConfiguration.lineItemTintColor
         case .deselected:
             if #available(iOS 13.0, *) {
                 return .secondaryLabel
@@ -87,8 +90,9 @@ struct DigitalLineItemViewModel {
         }
     }
     
-    var deleButtonTintColor: UIColor {
-        return returnAssistantConfiguration.lineItemTintColor
+    var deleteButtonTintColor: UIColor {
+        return returnAssistantConfiguration.digitalInvoiceLineItemDeleteButtonTintColor
+        ?? returnAssistantConfiguration.lineItemTintColor
     }
     
     var primaryTextColor: UIColor {
@@ -133,18 +137,6 @@ struct DigitalLineItemViewModel {
         }
     }
     
-    var cellBorderColor: UIColor {
-        switch lineItem.selectedState {
-        case .selected:
-            return returnAssistantConfiguration.lineItemTintColor
-        case .deselected:
-            if #available(iOS 13.0, *) {
-                return .secondaryLabel
-            } else {
-                return .gray
-            }
-        }
-    }
 }
 
 protocol DigitalLineItemTableViewCellDelegate: AnyObject {
@@ -173,7 +165,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
             quantityLabel.font = viewModel?.quantityFont
             
             quantityLabel.textColor = viewModel?.quantityColor
-            outilneView.layer.borderColor = viewModel?.outilneViewColor.cgColor
+            outilneView.layer.borderColor = viewModel?.outlineViewColor.cgColor
 
             if let viewModel = viewModel, let priceString = viewModel.totalPriceString {
                 
@@ -199,7 +191,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
                 countLabel.textColor = viewModel.countLabelColor
                 modeSwitch.isHidden = viewModel.lineItem.isUserInitiated
                 deleteButton.isHidden = !viewModel.lineItem.isUserInitiated
-                deleteButton.tintColor = viewModel.deleButtonTintColor
+                deleteButton.tintColor = viewModel.deleteButtonTintColor
             }
             
             modeSwitch.addTarget(self, action: #selector(modeSwitchValueChange(sender:)), for: .valueChanged)
