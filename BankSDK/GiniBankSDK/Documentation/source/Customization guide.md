@@ -18,7 +18,14 @@ If you plan to use a custom name for localizable strings, you need to set it in 
 - [Help screen](#help-screen)
 - [No results screen](#no-results-screen)
 - [Albums screen](#albums-screen)
-
+- [Return assistant](#return-assistant)
+  - [Onboarding screen](#onboarding-screen)
+  - [Info box](#info-box)
+  - [Digital invoice screen](#digital-invoice-screen)
+  - [Return reason action sheet](#return-reason-action-sheet)
+  - [Info dialog](#info-dialog)
+  - [Edit line item screen](#edit-line-item-screen)
+  
 ## Supporting dark mode
 
 Some background and text colors use the `GiniColor` type with which you can set colors for dark and light modes. Please make sure to set contrasting images to the background colors in your `.xcassets` for the Gini Bank SDK images you override (e.g. `onboardingPage1`). The text colors should also be set in contrast to the background colors.
@@ -388,7 +395,7 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 - Text color &#8594; `ReturnAssistantConfiguration.digitalInvoiceOnboardingHideButtonTextColor`
 - Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceOnboardingHideButtonTextFont`
 
-### Info Box
+### Info box
 
 <br>
 <center><img src="img/Customization guide/Digital Invoice Check Items Info Box.jpg" height="500"/></center>
