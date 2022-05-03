@@ -14,7 +14,6 @@
 		F44C6A2C272AD83000177319 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F44C6A2B272AD83000177319 /* Assets.xcassets */; };
 		F44C6A2F272AD83000177319 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F44C6A2D272AD83000177319 /* LaunchScreen.storyboard */; };
 		F44C6A62272AFB4F00177319 /* GiniBankAPILibraryPinning in Frameworks */ = {isa = PBXBuildFile; productRef = F44C6A61272AFB4F00177319 /* GiniBankAPILibraryPinning */; };
-		F4CBE2F728204E6D00B28220 /* GiniBankAPILibraryPinningExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE2F628204E6D00B28220 /* GiniBankAPILibraryPinningExampleTests.swift */; };
 		F4CBE2FE28204E7900B28220 /* GiniBankAPILibraryPinningIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE2FD28204E7900B28220 /* GiniBankAPILibraryPinningIntegrationTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -40,7 +39,6 @@
 		F44C6A5B272AEDA800177319 /* GiniBankAPILibraryExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GiniBankAPILibraryExample.entitlements; sourceTree = "<group>"; };
 		F44C6A60272AFB1F00177319 /* GiniBankAPILibraryPinning */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniBankAPILibraryPinning; path = ../GiniBankAPILibraryPinning; sourceTree = "<group>"; };
 		F4CBE2F428204E6D00B28220 /* GiniBankAPILibraryPinningExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniBankAPILibraryPinningExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F4CBE2F628204E6D00B28220 /* GiniBankAPILibraryPinningExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniBankAPILibraryPinningExampleTests.swift; sourceTree = "<group>"; };
 		F4CBE2FD28204E7900B28220 /* GiniBankAPILibraryPinningIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniBankAPILibraryPinningIntegrationTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -116,7 +114,6 @@
 		F4CBE2F528204E6D00B28220 /* GiniBankAPILibraryPinningExampleTests */ = {
 			isa = PBXGroup;
 			children = (
-				F4CBE2F628204E6D00B28220 /* GiniBankAPILibraryPinningExampleTests.swift */,
 				F4CBE2FD28204E7900B28220 /* GiniBankAPILibraryPinningIntegrationTests.swift */,
 			);
 			path = GiniBankAPILibraryPinningExampleTests;
@@ -237,7 +234,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4CBE2FE28204E7900B28220 /* GiniBankAPILibraryPinningIntegrationTests.swift in Sources */,
-				F4CBE2F728204E6D00B28220 /* GiniBankAPILibraryPinningExampleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
