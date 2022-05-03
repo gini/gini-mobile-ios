@@ -6,9 +6,9 @@
 //
 
 import XCTest
-import TrustKit
 @testable import GiniBankAPILibrary
 @testable import GiniBankAPILibraryPinning
+@testable import TrustKit
 
 class IntegrationTests: XCTestCase {
     
