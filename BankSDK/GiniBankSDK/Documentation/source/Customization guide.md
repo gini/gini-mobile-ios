@@ -468,16 +468,16 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 ##### 4. Line item edit button
 - Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.editbutton*</span> localized string
 - Icon &#8594; <span style="color:#009EDF">*editIcon*</span> image asset
-- Tint color &#8594; `ReturnAssistantConfiguration.lineItemTintColor` [TODO: update for dedicated color]
+- Tint color &#8594; `ReturnAssistantConfiguration.digitalInvoiceLineItemEditButtonTintColor`
 - Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceLineItemEditButtonTitleFont`
 
 ##### 5. Line item card
 - Background
   - Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceLineItemsBackgroundColor`
 - Border
-  - Color &#8594; `ReturnAssistantConfiguration.lineItemTintColor` [TODO: update for dedicated color]
+  - Color &#8594; `ReturnAssistantConfiguration.lineItemBorderColor`
 - Toggle switch
-  - Color &#8594; `ReturnAssistantConfiguration.lineItemTintColor` [TODO: update for dedicated color]
+  - Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceLineItemToggleSwitchTintColor`
 - Item name
   - Font &#8594;  `ReturnAssistantConfiguration.digitalInvoiceLineItemNameFont`
   - Color &#8594; [TODO: missing color config]
@@ -494,7 +494,7 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
   - Accessibility label &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.total.accessibilitylabel*</span> localized string
 - Delete button (shown only for manually added line items)
   - Icon &#8594; <span style="color:#009EDF">*garbage-bin-icon*</span> image asset
-  - Tint color &#8594; `ReturnAssistantConfiguration.lineItemTintColor` [TODO: update for dedicated color]
+  - Tint color &#8594; `ReturnAssistantConfiguration.digitalInvoiceLineItemDeleteButtonTintColor`
 - Disabled state
   - Color &#8594; [TODO: missing color config]
 
@@ -599,7 +599,7 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 - Color &#8594; `ReturnAssistantConfiguration.lineItemDetailsBackgroundColor`
 
 ##### 3. Checkmark
-- Color &#8594; `ReturnAssistantConfiguration.lineItemTintColor` [TODO: update for dedicated color]
+- Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceLineItemToggleSwitchTintColor`
 - Label text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.checkmark.label*</span> [plural](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPInternational/StringsdictFileFormat/StringsdictFileFormat.html) localized string.  
   Please include a decimal format argument for the quantity integer (e.g. `%d Artikel ausgewählt`).
 - Accessibility label
