@@ -962,6 +962,11 @@ public final class GiniBankConfiguration: NSObject {
     @objc private var _lineItemDetailsContentLabelColor: UIColor?
     
     /**
+     Sets the highlighted underline color of the content labels in the line item details view controller to the specified color
+     */
+    @objc public var lineItemDetailsContentHighlightedColor: UIColor = Colors.Gini.blue
+    
+    /**
      Sets the font of the line item details screen main unit of the total price label to the specified font.
      */
     @objc public var lineItemDetailsTotalPriceMainUnitFont = UIFont.systemFont(ofSize: 20, weight: .bold)
@@ -1334,6 +1339,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.lineItemDetailsBackgroundColor = self.lineItemDetailsBackgroundColor
         configuration.lineItemDetailsContentLabelFont = self.lineItemDetailsContentLabelFont
         configuration.lineItemDetailsContentLabelColor = self.lineItemDetailsContentLabelColor
+        configuration.lineItemDetailsContentHighlightedColor = self.lineItemDetailsContentHighlightedColor
         configuration.lineItemDetailsTotalPriceMainUnitFont = self.lineItemDetailsTotalPriceMainUnitFont
         configuration.lineItemDetailsTotalPriceFractionalUnitFont = self.lineItemDetailsTotalPriceFractionalUnitFont
         
