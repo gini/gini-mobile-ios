@@ -53,9 +53,30 @@
 		F4CBE30128216DFE00B28220 /* GiniBankAPILibraryPinning in Frameworks */ = {isa = PBXBuildFile; productRef = F4CBE30028216DFE00B28220 /* GiniBankAPILibraryPinning */; };
 		F4CBE30328216E1B00B28220 /* GiniCaptureSDKPinning in Frameworks */ = {isa = PBXBuildFile; productRef = F4CBE30228216E1B00B28220 /* GiniCaptureSDKPinning */; };
 		F4CBE30528216E2800B28220 /* GiniBankSDKPinning in Frameworks */ = {isa = PBXBuildFile; productRef = F4CBE30428216E2800B28220 /* GiniBankSDKPinning */; };
+		F4CBE34D2821878C00B28220 /* ExtractionFeedbackIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3412821878C00B28220 /* ExtractionFeedbackIntegrationTest.swift */; };
+		F4CBE34E2821878C00B28220 /* ScreenAPICoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3422821878C00B28220 /* ScreenAPICoordinatorTests.swift */; };
+		F4CBE34F2821878C00B28220 /* ScreenAPICoordinator+UI_Only.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3432821878C00B28220 /* ScreenAPICoordinator+UI_Only.swift */; };
+		F4CBE3502821878C00B28220 /* DocumentServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3442821878C00B28220 /* DocumentServiceMock.swift */; };
+		F4CBE3512821878C00B28220 /* result_Gini_invoice_example.json in Resources */ = {isa = PBXBuildFile; fileRef = F4CBE3462821878C00B28220 /* result_Gini_invoice_example.json */; };
+		F4CBE3522821878C00B28220 /* testPDF.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4CBE3472821878C00B28220 /* testPDF.pdf */; };
+		F4CBE3532821878C00B28220 /* Gini_invoice_example.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4CBE3482821878C00B28220 /* Gini_invoice_example.pdf */; };
+		F4CBE3542821878C00B28220 /* result_Gini_invoice_example_after_feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = F4CBE3492821878C00B28220 /* result_Gini_invoice_example_after_feedback.json */; };
+		F4CBE3552821878C00B28220 /* ComponentAPICoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE34A2821878C00B28220 /* ComponentAPICoordinatorTests.swift */; };
+		F4CBE3562821878C00B28220 /* SettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE34B2821878C00B28220 /* SettingsViewControllerTests.swift */; };
+		F4CBE3572821878C00B28220 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4CBE34C2821878C00B28220 /* Info.plist */; };
 		F4DF824F25EFA8ED00A8D755 /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DF824E25EFA8ED00A8D755 /* ScreenAPICoordinator.swift */; };
 		F4E0218827BD349A0042D000 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E0218727BD349A0042D000 /* Amount.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F4CBE33B2821876A00B28220 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F490C7B725DE72E400D8CA6F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F490C7E125DE873900D8CA6F;
+			remoteInfo = GiniBankSDKPinningExample;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		4C84B5DC264ED55100853F33 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
@@ -109,6 +130,18 @@
 		F4AD00F725DFDF4400C34E15 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F4BB7CF126984E5D003FD77E /* CustomMenuItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMenuItemViewController.swift; sourceTree = "<group>"; };
 		F4CBE2FF2821611400B28220 /* GiniBankSDKPinning */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniBankSDKPinning; path = ../GiniBankSDKPinning; sourceTree = "<group>"; };
+		F4CBE3372821876A00B28220 /* GiniBankSDKPinningExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniBankSDKPinningExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4CBE3412821878C00B28220 /* ExtractionFeedbackIntegrationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtractionFeedbackIntegrationTest.swift; sourceTree = "<group>"; };
+		F4CBE3422821878C00B28220 /* ScreenAPICoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinatorTests.swift; sourceTree = "<group>"; };
+		F4CBE3432821878C00B28220 /* ScreenAPICoordinator+UI_Only.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ScreenAPICoordinator+UI_Only.swift"; sourceTree = "<group>"; };
+		F4CBE3442821878C00B28220 /* DocumentServiceMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentServiceMock.swift; sourceTree = "<group>"; };
+		F4CBE3462821878C00B28220 /* result_Gini_invoice_example.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example.json; sourceTree = "<group>"; };
+		F4CBE3472821878C00B28220 /* testPDF.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = testPDF.pdf; sourceTree = "<group>"; };
+		F4CBE3482821878C00B28220 /* Gini_invoice_example.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example.pdf; sourceTree = "<group>"; };
+		F4CBE3492821878C00B28220 /* result_Gini_invoice_example_after_feedback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_after_feedback.json; sourceTree = "<group>"; };
+		F4CBE34A2821878C00B28220 /* ComponentAPICoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentAPICoordinatorTests.swift; sourceTree = "<group>"; };
+		F4CBE34B2821878C00B28220 /* SettingsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewControllerTests.swift; sourceTree = "<group>"; };
+		F4CBE34C2821878C00B28220 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4DF824E25EFA8ED00A8D755 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
 		F4E0218727BD349A0042D000 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -132,6 +165,13 @@
 				F4CBE30128216DFE00B28220 /* GiniBankAPILibraryPinning in Frameworks */,
 				F439C21F27355C430010D77D /* GiniBankAPILibrary in Frameworks */,
 				F4CBE30328216E1B00B28220 /* GiniCaptureSDKPinning in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F4CBE3342821876A00B28220 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,6 +269,7 @@
 				F439C210273555B60010D77D /* Packages */,
 				F490C7E325DE873900D8CA6F /* GiniBankSDKExample */,
 				F4807C35263C20BA00F30FF3 /* GiniBankSDKExampleBank */,
+				F4CBE3382821876A00B28220 /* GiniBankSDKPinningExampleTests */,
 				F490C7C125DE72E400D8CA6F /* Products */,
 				F439C21927355C310010D77D /* Frameworks */,
 			);
@@ -239,6 +280,7 @@
 			children = (
 				F490C7E225DE873900D8CA6F /* GiniBankSDKPinningExample.app */,
 				F4807C34263C20BA00F30FF3 /* GinBankSDKPinningExampleBank.app */,
+				F4CBE3372821876A00B28220 /* GiniBankSDKPinningExampleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -271,6 +313,40 @@
 				4C84B5DC264ED55100853F33 /* Credentials.plist */,
 			);
 			path = GiniBankSDKExample;
+			sourceTree = "<group>";
+		};
+		F4CBE3382821876A00B28220 /* GiniBankSDKPinningExampleTests */ = {
+			isa = PBXGroup;
+			children = (
+				F4CBE3402821878C00B28220 /* Tests */,
+			);
+			path = GiniBankSDKPinningExampleTests;
+			sourceTree = "<group>";
+		};
+		F4CBE3402821878C00B28220 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				F4CBE3412821878C00B28220 /* ExtractionFeedbackIntegrationTest.swift */,
+				F4CBE3422821878C00B28220 /* ScreenAPICoordinatorTests.swift */,
+				F4CBE3432821878C00B28220 /* ScreenAPICoordinator+UI_Only.swift */,
+				F4CBE3442821878C00B28220 /* DocumentServiceMock.swift */,
+				F4CBE3452821878C00B28220 /* Resources */,
+				F4CBE34A2821878C00B28220 /* ComponentAPICoordinatorTests.swift */,
+				F4CBE34B2821878C00B28220 /* SettingsViewControllerTests.swift */,
+				F4CBE34C2821878C00B28220 /* Info.plist */,
+			);
+			path = Tests;
+			sourceTree = SOURCE_ROOT;
+		};
+		F4CBE3452821878C00B28220 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F4CBE3462821878C00B28220 /* result_Gini_invoice_example.json */,
+				F4CBE3472821878C00B28220 /* testPDF.pdf */,
+				F4CBE3482821878C00B28220 /* Gini_invoice_example.pdf */,
+				F4CBE3492821878C00B28220 /* result_Gini_invoice_example_after_feedback.json */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -321,13 +397,31 @@
 			productReference = F490C7E225DE873900D8CA6F /* GiniBankSDKPinningExample.app */;
 			productType = "com.apple.product-type.application";
 		};
+		F4CBE3362821876A00B28220 /* GiniBankSDKPinningExampleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F4CBE33D2821876A00B28220 /* Build configuration list for PBXNativeTarget "GiniBankSDKPinningExampleTests" */;
+			buildPhases = (
+				F4CBE3332821876A00B28220 /* Sources */,
+				F4CBE3342821876A00B28220 /* Frameworks */,
+				F4CBE3352821876A00B28220 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F4CBE33C2821876A00B28220 /* PBXTargetDependency */,
+			);
+			name = GiniBankSDKPinningExampleTests;
+			productName = GiniBankSDKPinningExampleTests;
+			productReference = F4CBE3372821876A00B28220 /* GiniBankSDKPinningExampleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		F490C7B725DE72E400D8CA6F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1250;
+				LastSwiftUpdateCheck = 1330;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
 					F4807C33263C20BA00F30FF3 = {
@@ -335,6 +429,10 @@
 					};
 					F490C7E125DE873900D8CA6F = {
 						CreatedOnToolsVersion = 12.4;
+					};
+					F4CBE3362821876A00B28220 = {
+						CreatedOnToolsVersion = 13.3.1;
+						TestTargetID = F490C7E125DE873900D8CA6F;
 					};
 				};
 			};
@@ -354,6 +452,7 @@
 			targets = (
 				F490C7E125DE873900D8CA6F /* GiniBankSDKPinningExample */,
 				F4807C33263C20BA00F30FF3 /* GinBankSDKPinningExampleBank */,
+				F4CBE3362821876A00B28220 /* GiniBankSDKPinningExampleTests */,
 			);
 		};
 /* End PBXProject section */
@@ -383,6 +482,18 @@
 				4C84B5DD264ED55100853F33 /* Credentials.plist in Resources */,
 				F441DCB725E568C400AAB09A /* Main.strings in Resources */,
 				F4083ED72735B0CB004DDD3B /* LocalizableCustomName.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F4CBE3352821876A00B28220 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4CBE3542821878C00B28220 /* result_Gini_invoice_example_after_feedback.json in Resources */,
+				F4CBE3512821878C00B28220 /* result_Gini_invoice_example.json in Resources */,
+				F4CBE3522821878C00B28220 /* testPDF.pdf in Resources */,
+				F4CBE3572821878C00B28220 /* Info.plist in Resources */,
+				F4CBE3532821878C00B28220 /* Gini_invoice_example.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,7 +542,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F4CBE3332821876A00B28220 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4CBE3562821878C00B28220 /* SettingsViewControllerTests.swift in Sources */,
+				F4CBE3502821878C00B28220 /* DocumentServiceMock.swift in Sources */,
+				F4CBE34D2821878C00B28220 /* ExtractionFeedbackIntegrationTest.swift in Sources */,
+				F4CBE34F2821878C00B28220 /* ScreenAPICoordinator+UI_Only.swift in Sources */,
+				F4CBE3552821878C00B28220 /* ComponentAPICoordinatorTests.swift in Sources */,
+				F4CBE34E2821878C00B28220 /* ScreenAPICoordinatorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F4CBE33C2821876A00B28220 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F490C7E125DE873900D8CA6F /* GiniBankSDKPinningExample */;
+			targetProxy = F4CBE33B2821876A00B28220 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		F4083ED92735B0CB004DDD3B /* LocalizableCustomName.strings */ = {
@@ -713,6 +845,46 @@
 			};
 			name = Release;
 		};
+		F4CBE33E2821876A00B28220 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = BQY9KX4V88;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.banksdknav.GiniBankSDKPinningExampleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GiniBankSDKPinningExample.app/GiniBankSDKPinningExample";
+			};
+			name = Debug;
+		};
+		F4CBE33F2821876A00B28220 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = BQY9KX4V88;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.banksdknav.GiniBankSDKPinningExampleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GiniBankSDKPinningExample.app/GiniBankSDKPinningExample";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -739,6 +911,15 @@
 			buildConfigurations = (
 				F490C7F325DE873B00D8CA6F /* Debug */,
 				F490C7F425DE873B00D8CA6F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F4CBE33D2821876A00B28220 /* Build configuration list for PBXNativeTarget "GiniBankSDKPinningExampleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F4CBE33E2821876A00B28220 /* Debug */,
+				F4CBE33F2821876A00B28220 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
