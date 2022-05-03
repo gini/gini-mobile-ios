@@ -496,7 +496,7 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
   - Icon &#8594; <span style="color:#009EDF">*garbage-bin-icon*</span> image asset
   - Tint color &#8594; `ReturnAssistantConfiguration.digitalInvoiceLineItemDeleteButtonTintColor`
 - Disabled state
-  - Color &#8594; [TODO: missing color config]
+  - Color &#8594; `ReturnAssistantConfiguration.digitalInvoiceLineItemsDisabledColor`
 
 ##### 6. Additional costs
 - Label
