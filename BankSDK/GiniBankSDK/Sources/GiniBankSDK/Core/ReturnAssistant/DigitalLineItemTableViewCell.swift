@@ -35,11 +35,9 @@ struct DigitalLineItemViewModel {
         case .selected:
             return UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceLineItemQuantityColor)
         case .deselected:
-            if #available(iOS 13.0, *) {
-                return .secondaryLabel
-            } else {
-                return .gray
-            }
+            return returnAssistantConfiguration.digitalInvoiceLineItemsDisabledColor
+        }
+    }
         }
     }
     
@@ -49,7 +47,7 @@ struct DigitalLineItemViewModel {
             return returnAssistantConfiguration.lineItemBorderColor
             ?? returnAssistantConfiguration.lineItemTintColor
         case .deselected:
-            return UIColor.gray
+            return returnAssistantConfiguration.digitalInvoiceLineItemsDisabledColor
         }
     }
     
@@ -72,7 +70,7 @@ struct DigitalLineItemViewModel {
             return returnAssistantConfiguration.digitalInvoiceLineItemToggleSwitchTintColor
             ?? returnAssistantConfiguration.lineItemTintColor
         case .deselected:
-            return .white
+            return returnAssistantConfiguration.digitalInvoiceLineItemsDisabledColor
         }
     }
     
@@ -82,11 +80,7 @@ struct DigitalLineItemViewModel {
             return returnAssistantConfiguration.digitalInvoiceLineItemEditButtonTintColor
             ?? returnAssistantConfiguration.lineItemTintColor
         case .deselected:
-            if #available(iOS 13.0, *) {
-                return .secondaryLabel
-            } else {
-                return .gray
-            }
+            return returnAssistantConfiguration.digitalInvoiceLineItemsDisabledColor
         }
     }
     
