@@ -72,6 +72,7 @@ class DigitalInvoiceTotalPriceCell: UITableViewCell {
         addArticleButton.setImage(prefferedImage(named: "plus-icon"), for: .normal)
         addArticleButton.setTitleColor(returnAssistantConfiguration?.digitalInvoiceFooterAddArticleButtonTintColor ?? ReturnAssistantConfiguration.shared.digitalInvoiceFooterAddArticleButtonTintColor, for: .normal)
         addArticleButton.tintColor = returnAssistantConfiguration?.digitalInvoiceFooterAddArticleButtonTintColor ?? ReturnAssistantConfiguration.shared.digitalInvoiceFooterAddArticleButtonTintColor
+        addArticleButton.titleLabel?.font = returnAssistantConfiguration?.digitalInvoiceFooterAddArticleButtonTitleFont ?? ReturnAssistantConfiguration.shared.digitalInvoiceFooterAddArticleButtonTitleFont
         addArticleButton.semanticContentAttribute = .forceRightToLeft
         addArticleButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 12, bottom: 2, right: 0)
         addArticleButton.translatesAutoresizingMaskIntoConstraints = false
