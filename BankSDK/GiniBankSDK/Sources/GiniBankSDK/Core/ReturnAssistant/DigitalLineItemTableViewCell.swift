@@ -38,6 +38,22 @@ struct DigitalLineItemViewModel {
             return returnAssistantConfiguration.digitalInvoiceLineItemsDisabledColor
         }
     }
+    
+    var nameLabelColor: UIColor {
+        switch lineItem.selectedState {
+        case .selected:
+            return UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceLineItemNameColor)
+        case .deselected:
+            return returnAssistantConfiguration.digitalInvoiceLineItemsDisabledColor
+        }
+    }
+    
+    var priceLabelColor: UIColor {
+        switch lineItem.selectedState {
+        case .selected:
+            return UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceLineItemPriceColor)
+        case .deselected:
+            return returnAssistantConfiguration.digitalInvoiceLineItemsDisabledColor
         }
     }
     
@@ -88,24 +104,7 @@ struct DigitalLineItemViewModel {
         return returnAssistantConfiguration.digitalInvoiceLineItemDeleteButtonTintColor
         ?? returnAssistantConfiguration.lineItemTintColor
     }
-    
-    var primaryTextColor: UIColor {
-        switch lineItem.selectedState {
-        case .selected:
-            if #available(iOS 13.0, *) {
-                return .label
-            } else {
-                return .black
-            }
-        case .deselected:
-            if #available(iOS 13.0, *) {
-                return .secondaryLabel
-            } else {
-                return .gray
-            }
-        }
-    }
-    
+        
     var priceMainUnitFont: UIFont {
         return returnAssistantConfiguration.digitalInvoiceLineItemPriceMainUnitFont
     }
@@ -165,10 +164,10 @@ class DigitalLineItemTableViewCell: UITableViewCell {
                 
                 let attributedString =
                     NSMutableAttributedString(string: priceString,
-                                              attributes: [NSAttributedString.Key.foregroundColor: viewModel.primaryTextColor,
+                                              attributes: [NSAttributedString.Key.foregroundColor: viewModel.priceLabelColor,
                                                            NSAttributedString.Key.font: viewModel.priceMainUnitFont])
                 
-                attributedString.setAttributes([NSAttributedString.Key.foregroundColor: viewModel.primaryTextColor,
+                attributedString.setAttributes([NSAttributedString.Key.foregroundColor: viewModel.priceLabelColor,
                                                 NSAttributedString.Key.baselineOffset: 6,
                                                 NSAttributedString.Key.font: viewModel.priceFractionalUnitFont],
                                                range: NSRange(location: priceString.count - 3, length: 3))
@@ -197,7 +196,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
             
             editButton.setTitle(.ginibankLocalized(resource: DigitalInvoiceStrings.lineItemEditButtonTitle), for: .normal)
             
-            nameLabel.textColor = viewModel?.primaryTextColor
+            nameLabel.textColor = viewModel?.nameLabelColor
 
             nameLabel.font = viewModel?.nameLabelFont
             

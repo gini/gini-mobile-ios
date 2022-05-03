@@ -129,14 +129,24 @@ public final class ReturnAssistantConfiguration: NSObject {
     @objc public var digitalInvoiceLineItemDeleteButtonTintColor: UIColor? = nil
     
     /**
-     Sets the font of the line item label that  displays the quantity on the digital invoice screen to the specified font.
+     Sets the font of the line item label that displays the quantity on the digital invoice screen to the specified font.
      */
     @objc public var digitalInvoiceLineItemQuantityFont = UIFont.systemFont(ofSize: 32, weight: .bold)
+        
+    /**
+     Sets the color of  the line item label that displays the quantity on the digital invoice line item cells to the specified color.
+     */
+    @objc public var digitalInvoiceLineItemQuantityColor = GiniColor(lightModeColor: .black, darkModeColor: .white)
     
     /**
-     Sets the color of  the line item label that  displays the quantity on the digital invoice line item cells to the specified color
+     Sets the color of  the line item label that displays the item name on the digital invoice line item cells to the specified color.
      */
-    @objc public var digitalInvoiceLineItemQuantityColor =  GiniColor(lightModeColor: .black, darkModeColor: .white)
+    @objc public var digitalInvoiceLineItemNameColor = GiniColor(lightModeColor: .black, darkModeColor: .white)
+    
+    /**
+     Sets the color of  the line item label that displays the price on the digital invoice line item cells to the specified color.
+     */
+    @objc public var digitalInvoiceLineItemPriceColor = GiniColor(lightModeColor: .black, darkModeColor: .white)
 
     /**
      Sets the font of the main currency unit of the price on the line item
