@@ -87,10 +87,12 @@ extension GiniBankAPI {
          */
         public init(customApiDomain: String,
                     alternativeTokenSource: AlternativeTokenSource,
-                    logLevel: LogLevel = .none) {
+                    logLevel: LogLevel = .none,
+                    sessionDelegate: URLSessionDelegate? = nil) {
             self.client = Client(id: "", secret: "", domain: "")
             self.api = .custom(domain: customApiDomain, tokenSource: alternativeTokenSource)
             self.logLevel = logLevel
+            self.sessionDelegate = sessionDelegate
         }
 
         public func build() -> GiniBankAPI {
@@ -104,7 +106,7 @@ extension GiniBankAPI {
             switch api {
             case .accounting:
                 let sessionManager = SessionManager(userDomain: userApi, sessionDelegate: self.sessionDelegate)
-                return GiniBankAPI(documentService: AccountingDocumentService(sessionManager: SessionManager(userDomain: userApi)), paymentService: PaymentService(sessionManager: sessionManager, apiDomain: .default))
+                return GiniBankAPI(documentService: AccountingDocumentService(sessionManager: sessionManager), paymentService: PaymentService(sessionManager: sessionManager, apiDomain: .default))
             case .default:
                 let sessionManager = SessionManager(userDomain: userApi, sessionDelegate: self.sessionDelegate)
                 return GiniBankAPI(documentService: DefaultDocumentService(sessionManager: sessionManager), paymentService: PaymentService(sessionManager: sessionManager, apiDomain: .default))
