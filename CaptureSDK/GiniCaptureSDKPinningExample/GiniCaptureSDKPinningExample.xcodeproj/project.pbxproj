@@ -35,7 +35,6 @@
 		F4CBE2E12820159300B28220 /* GiniBankAPILibraryPinning in Frameworks */ = {isa = PBXBuildFile; productRef = F4CBE2E02820159300B28220 /* GiniBankAPILibraryPinning */; };
 		F4CBE2E3282015A500B28220 /* GiniCaptureSDKPinning in Frameworks */ = {isa = PBXBuildFile; productRef = F4CBE2E2282015A500B28220 /* GiniCaptureSDKPinning */; };
 		F4CBE3242821797A00B28220 /* DocumentServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3142821797A00B28220 /* DocumentServiceMock.swift */; };
-		F4CBE3252821797A00B28220 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4CBE3152821797A00B28220 /* Info.plist */; };
 		F4CBE3262821797A00B28220 /* GalleryCoordinatorDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3162821797A00B28220 /* GalleryCoordinatorDelegateTests.swift */; };
 		F4CBE3272821797A00B28220 /* AlbumsPickerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3172821797A00B28220 /* AlbumsPickerViewControllerTests.swift */; };
 		F4CBE3282821797A00B28220 /* ScreenAPICoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3182821797A00B28220 /* ScreenAPICoordinatorTests.swift */; };
@@ -49,6 +48,10 @@
 		F4CBE3302821797A00B28220 /* AlbumsPickerViewControllerDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3212821797A00B28220 /* AlbumsPickerViewControllerDelegateTests.swift */; };
 		F4CBE3312821797A00B28220 /* SettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3222821797A00B28220 /* SettingsViewControllerTests.swift */; };
 		F4CBE3322821797A00B28220 /* GalleryManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3232821797A00B28220 /* GalleryManagerTests.swift */; };
+		F4CBE3662822AD1900B28220 /* result_Gini_invoice_example.json in Resources */ = {isa = PBXBuildFile; fileRef = F4CBE31B2821797A00B28220 /* result_Gini_invoice_example.json */; };
+		F4CBE3672822AD1D00B28220 /* testPDF.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4CBE31C2821797A00B28220 /* testPDF.pdf */; };
+		F4CBE3682822AD2100B28220 /* Gini_invoice_example.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4CBE31D2821797A00B28220 /* Gini_invoice_example.pdf */; };
+		F4CBE3692822AD2400B28220 /* result_Gini_invoice_example_after_feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = F4CBE31E2821797A00B28220 /* result_Gini_invoice_example_after_feedback.json */; };
 		F4E561552686315100415EE8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4E561572686315100415EE8 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
@@ -97,7 +100,6 @@
 		F4CBE2DF2820155500B28220 /* GiniCaptureSDKPinning */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniCaptureSDKPinning; path = ../GiniCaptureSDKPinning; sourceTree = "<group>"; };
 		F4CBE30A282178D900B28220 /* GiniCaptureSDKPinningExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniCaptureSDKPinningExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4CBE3142821797A00B28220 /* DocumentServiceMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DocumentServiceMock.swift; path = Tests/DocumentServiceMock.swift; sourceTree = SOURCE_ROOT; };
-		F4CBE3152821797A00B28220 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Tests/Info.plist; sourceTree = SOURCE_ROOT; };
 		F4CBE3162821797A00B28220 /* GalleryCoordinatorDelegateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GalleryCoordinatorDelegateTests.swift; path = Tests/GalleryCoordinatorDelegateTests.swift; sourceTree = SOURCE_ROOT; };
 		F4CBE3172821797A00B28220 /* AlbumsPickerViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlbumsPickerViewControllerTests.swift; path = Tests/AlbumsPickerViewControllerTests.swift; sourceTree = SOURCE_ROOT; };
 		F4CBE3182821797A00B28220 /* ScreenAPICoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScreenAPICoordinatorTests.swift; path = Tests/ScreenAPICoordinatorTests.swift; sourceTree = SOURCE_ROOT; };
@@ -243,7 +245,6 @@
 				F4CBE3162821797A00B28220 /* GalleryCoordinatorDelegateTests.swift */,
 				F4CBE3202821797A00B28220 /* GalleryCoordinatorTests.swift */,
 				F4CBE3232821797A00B28220 /* GalleryManagerTests.swift */,
-				F4CBE3152821797A00B28220 /* Info.plist */,
 				F4CBE31A2821797A00B28220 /* Resources */,
 				F4CBE3182821797A00B28220 /* ScreenAPICoordinatorTests.swift */,
 				F4CBE3222821797A00B28220 /* SettingsViewControllerTests.swift */,
@@ -362,12 +363,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4CBE3672822AD1D00B28220 /* testPDF.pdf in Resources */,
+				F4CBE3662822AD1900B28220 /* result_Gini_invoice_example.json in Resources */,
 				1F195A3320C7C69A008EE2A3 /* Credentials.plist in Resources */,
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				F4E561552686315100415EE8 /* Localizable.strings in Resources */,
 				F4BB7CF02695D96B003FD77E /* CustomMenuItems.storyboard in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
+				F4CBE3682822AD2100B28220 /* Gini_invoice_example.pdf in Resources */,
+				F4CBE3692822AD2400B28220 /* result_Gini_invoice_example_after_feedback.json in Resources */,
 				0A5DDCA61D9E6A5300EBDDCD /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -380,7 +385,6 @@
 				F4CBE32A2821797A00B28220 /* result_Gini_invoice_example.json in Resources */,
 				F4CBE32C2821797A00B28220 /* Gini_invoice_example.pdf in Resources */,
 				F4CBE32D2821797A00B28220 /* result_Gini_invoice_example_after_feedback.json in Resources */,
-				F4CBE3252821797A00B28220 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -755,7 +759,7 @@
 				DEVELOPMENT_TEAM = BQY9KX4V88;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -785,7 +789,7 @@
 				DEVELOPMENT_TEAM = BQY9KX4V88;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = net.gini.banksdknav.GiniCaptureSDKPinningExampleTests;
@@ -813,7 +817,7 @@
 				DEVELOPMENT_TEAM = BQY9KX4V88;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = net.gini.banksdknav.GiniCaptureSDKPinningExampleTests;
