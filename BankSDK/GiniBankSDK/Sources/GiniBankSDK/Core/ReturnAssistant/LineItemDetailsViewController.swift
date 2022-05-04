@@ -86,7 +86,7 @@ class LineItemDetailsViewController: UIViewController {
         
         checkboxContainerStackView.axis = .horizontal
         
-        checkboxButton.tintColor = returnAssistantConfiguration?.lineItemTintColor
+        checkboxButton.tintColor = returnAssistantConfiguration?.digitalInvoiceLineItemToggleSwitchTintColor ?? returnAssistantConfiguration?.lineItemTintColor
         checkboxButton.checkedState = .checked
         checkboxButton.addTarget(self, action: #selector(checkboxButtonTapped), for: .touchUpInside)
         checkboxContainerStackView.addArrangedSubview(checkboxButton)
@@ -147,6 +147,7 @@ class LineItemDetailsViewController: UIViewController {
         itemNameTextField.title = .ginibankLocalized(resource: DigitalInvoiceStrings.lineItemNameTextFieldTitle)
         itemNameTextField.textFont = configuration.lineItemDetailsContentLabelFont
         itemNameTextField.textColor = configuration.lineItemDetailsContentLabelColor
+        itemNameTextField.underscoreColor = configuration.lineItemDetailsContentHighlightedColor
         itemNameTextField.prefixText = nil
         itemNameTextField.shouldAllowLetters = true
         
@@ -157,6 +158,7 @@ class LineItemDetailsViewController: UIViewController {
         quantityTextField.title = .ginibankLocalized(resource: DigitalInvoiceStrings.lineItemQuantityTextFieldTitle)
         quantityTextField.textFont = configuration.lineItemDetailsContentLabelFont
         quantityTextField.textColor = configuration.lineItemDetailsContentLabelColor
+        quantityTextField.underscoreColor = configuration.lineItemDetailsContentHighlightedColor
         quantityTextField.prefixText = nil
         quantityTextField.keyboardType = .numberPad
         quantityTextField.delegate = self
@@ -172,6 +174,7 @@ class LineItemDetailsViewController: UIViewController {
         itemPriceTextField.title = .ginibankLocalized(resource: DigitalInvoiceStrings.lineItemPriceTextFieldTitle)
         itemPriceTextField.textFont = configuration.lineItemDetailsContentLabelFont
         itemPriceTextField.textColor = configuration.lineItemDetailsContentLabelColor
+        itemPriceTextField.underscoreColor = configuration.lineItemDetailsContentHighlightedColor
         
         itemPriceTextField.keyboardType = .decimalPad
         itemPriceTextField.delegate = self
