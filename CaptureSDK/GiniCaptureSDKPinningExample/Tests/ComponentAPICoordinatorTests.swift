@@ -6,7 +6,7 @@
 //  Copyright © 2017 Gini GmbH. All rights reserved.
 //
 
-@testable import GiniCaptureSDKExample
+@testable import GiniCaptureSDKPinningExample
 @testable import GiniCaptureSDK
 import XCTest
 
