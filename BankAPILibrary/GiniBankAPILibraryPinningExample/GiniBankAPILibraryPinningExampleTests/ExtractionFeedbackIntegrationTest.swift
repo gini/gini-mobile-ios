@@ -9,19 +9,37 @@ import Foundation
 
 import XCTest
 @testable import GiniBankAPILibrary
+@testable import GiniBankAPILibraryPinning
+@testable import TrustKit
 
 class ExtractionFeedbackIntegrationTest: XCTestCase {
     let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!
     let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]!
     var giniBankAPILib: GiniBankAPI!
     var documentService: DefaultDocumentService!
+    let yourPublicPinningConfig = [
+        kTSKPinnedDomains: [
+            "pay-api.gini.net": [
+                kTSKPublicKeyHashes: [
+                    // old *.gini.net public key
+                    "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+                    // new *.gini.net public key, active from around June 2020
+                    "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
+                ]],
+            "user.gini.net": [
+                kTSKPublicKeyHashes: [
+                    // old *.gini.net public key
+                    "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+                    // new *.gini.net public key, active from around June 2020
+                    "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo=",
+                ]],
+        ]] as [String: Any]
     
     override func setUp() {
-        giniBankAPILib = GiniBankAPI
-               .Builder(client: Client(id: clientId,
-                                       secret: clientSecret,
-                                       domain: "pay-api-lib-example"))
-               .build()
+        let client = Client(id: clientId,
+                            secret: clientSecret,
+                            domain: "pay-api-lib-example")
+        giniBankAPILib = GiniBankAPI.Builder(client: client, pinningConfig: yourPublicPinningConfig).build()
         documentService = giniBankAPILib.documentService()
     }
     
