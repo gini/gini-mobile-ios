@@ -63,7 +63,10 @@
 		F4CBE3542821878C00B28220 /* result_Gini_invoice_example_after_feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = F4CBE3492821878C00B28220 /* result_Gini_invoice_example_after_feedback.json */; };
 		F4CBE3552821878C00B28220 /* ComponentAPICoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE34A2821878C00B28220 /* ComponentAPICoordinatorTests.swift */; };
 		F4CBE3562821878C00B28220 /* SettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE34B2821878C00B28220 /* SettingsViewControllerTests.swift */; };
-		F4CBE3572821878C00B28220 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4CBE34C2821878C00B28220 /* Info.plist */; };
+		F4CBE36A2822C87C00B28220 /* result_Gini_invoice_example.json in Resources */ = {isa = PBXBuildFile; fileRef = F4CBE3462821878C00B28220 /* result_Gini_invoice_example.json */; };
+		F4CBE36B2822C88000B28220 /* testPDF.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4CBE3472821878C00B28220 /* testPDF.pdf */; };
+		F4CBE36C2822C88300B28220 /* Gini_invoice_example.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4CBE3482821878C00B28220 /* Gini_invoice_example.pdf */; };
+		F4CBE36D2822C88600B28220 /* result_Gini_invoice_example_after_feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = F4CBE3492821878C00B28220 /* result_Gini_invoice_example_after_feedback.json */; };
 		F4DF824F25EFA8ED00A8D755 /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DF824E25EFA8ED00A8D755 /* ScreenAPICoordinator.swift */; };
 		F4E0218827BD349A0042D000 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E0218727BD349A0042D000 /* Amount.swift */; };
 /* End PBXBuildFile section */
@@ -84,7 +87,6 @@
 		F4083ED82735B0CB004DDD3B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F4083EDA2735B0CD004DDD3B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F40E1435273C06AA00734A0E /* PartialDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PartialDocument.swift; path = GiniBankSDKExample/PartialDocument.swift; sourceTree = SOURCE_ROOT; };
-		F40E1437273C08D200734A0E /* testPDF.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = testPDF.pdf; path = GiniBankSDKExample/testPDF.pdf; sourceTree = SOURCE_ROOT; };
 		F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAnalysisHelper.swift; sourceTree = "<group>"; };
 		F439C21827355C0C0010D77D /* GiniBankSDK */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniBankSDK; path = ../GiniBankSDK; sourceTree = "<group>"; };
 		F441DCA625E55D5800AAB09A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -141,7 +143,6 @@
 		F4CBE3492821878C00B28220 /* result_Gini_invoice_example_after_feedback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_after_feedback.json; sourceTree = "<group>"; };
 		F4CBE34A2821878C00B28220 /* ComponentAPICoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentAPICoordinatorTests.swift; sourceTree = "<group>"; };
 		F4CBE34B2821878C00B28220 /* SettingsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewControllerTests.swift; sourceTree = "<group>"; };
-		F4CBE34C2821878C00B28220 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4DF824E25EFA8ED00A8D755 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
 		F4E0218727BD349A0042D000 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -209,7 +210,6 @@
 		F441DC3725E5283300AAB09A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				F40E1437273C08D200734A0E /* testPDF.pdf */,
 				F4AD00F725DFDF4400C34E15 /* Images.xcassets */,
 			);
 			path = "Supporting Files";
@@ -333,7 +333,6 @@
 				F4CBE3452821878C00B28220 /* Resources */,
 				F4CBE34A2821878C00B28220 /* ComponentAPICoordinatorTests.swift */,
 				F4CBE34B2821878C00B28220 /* SettingsViewControllerTests.swift */,
-				F4CBE34C2821878C00B28220 /* Info.plist */,
 			);
 			path = Tests;
 			sourceTree = SOURCE_ROOT;
@@ -478,8 +477,12 @@
 				F4AD010125DFDF4500C34E15 /* Images.xcassets in Resources */,
 				F441DCB625E568C400AAB09A /* LaunchScreen.strings in Resources */,
 				F441DCC325E56BF800AAB09A /* LaunchScreen.xib in Resources */,
+				F4CBE36D2822C88600B28220 /* result_Gini_invoice_example_after_feedback.json in Resources */,
+				F4CBE36A2822C87C00B28220 /* result_Gini_invoice_example.json in Resources */,
 				F441DCA525E55D5800AAB09A /* Main.storyboard in Resources */,
+				F4CBE36C2822C88300B28220 /* Gini_invoice_example.pdf in Resources */,
 				4C84B5DD264ED55100853F33 /* Credentials.plist in Resources */,
+				F4CBE36B2822C88000B28220 /* testPDF.pdf in Resources */,
 				F441DCB725E568C400AAB09A /* Main.strings in Resources */,
 				F4083ED72735B0CB004DDD3B /* LocalizableCustomName.strings in Resources */,
 			);
@@ -492,7 +495,6 @@
 				F4CBE3542821878C00B28220 /* result_Gini_invoice_example_after_feedback.json in Resources */,
 				F4CBE3512821878C00B28220 /* result_Gini_invoice_example.json in Resources */,
 				F4CBE3522821878C00B28220 /* testPDF.pdf in Resources */,
-				F4CBE3572821878C00B28220 /* Info.plist in Resources */,
 				F4CBE3532821878C00B28220 /* Gini_invoice_example.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -731,7 +733,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -791,7 +793,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -812,7 +814,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BQY9KX4V88;
 				INFOPLIST_FILE = GiniBankSDKExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -833,7 +835,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BQY9KX4V88;
 				INFOPLIST_FILE = GiniBankSDKExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -854,7 +856,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BQY9KX4V88;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.gini.banksdknav.GiniBankSDKPinningExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -874,7 +876,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BQY9KX4V88;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.gini.banksdknav.GiniBankSDKPinningExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

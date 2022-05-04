@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import GiniBankSDKExample
+@testable import GiniBankSDKPinningExample
 @testable import GiniCaptureSDK
 @testable import GiniBankSDK
 
