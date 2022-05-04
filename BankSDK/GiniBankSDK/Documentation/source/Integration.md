@@ -218,6 +218,29 @@ We provide an example implementation [here](https://github.com/gini/gini-mobile-
 
 You may also use the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios) or implement communication with the Gini Bank API yourself.
 
+### Return Assistant
+
+The return assistant feature allows your users to view and edit payable items in an invoice. The total amount is
+updated to be the sum of only those items which the user opts to pay.
+
+To enable this feature simply set ``returnAssistantEnabled`` to ``true`` in the ``GiniBankConfiguration``: 
+
+```swift
+let configuration = GiniBankConfiguration()
+configuration.returnAssistantEnabled = true
+```
+
+When integrating using the Screen API it is enough to enable the return assistant feature. The Gini Bank SDK will
+show the return assistant automatically if the invoice contained payable items and will update the extractions returned
+to your app according to the user's changes.
+
+The ``amountToPay`` extraction is updated to be the sum of the items the user decided to pay. It includes discounts and
+additional charges that might be present on the invoice.
+
+The extractions related to the return assistant are stored in the ``lineItems`` field of the ``AnalysisResult``. See the
+Gini Bank API's [documentation](https://pay-api.gini.net/documentation/#return-assistant-extractions) to learn about the
+return assistant's extractions.
+
 ## Component API
 
 The Component API provides a custom `UIViewController` for each screen. This allows a maximum of flexibility, as the screens can be presented modally, used in a container view or pushed to a navigation view controller. Make sure to add your own navigational elements around the provided views.
@@ -239,6 +262,7 @@ The components that can be found in the library are:
 * **Analysis**: Provides a UI for the analysis process of the document by showing the user capture tips when an image is analyzed or the document information when it is a PDF. In both cases an image preview of the document analyzed will be shown (`AnalysisViewController`).
 * **Help**: Helpful tutorials indicating how to use the open with feature, which are the supported file types and how to capture better photos for a good analysis (`HelpMenuViewController`).
 * **No results**: Shows some suggestions to capture better photos when there are no results after an analysis (`ImageAnalysisNoResultsViewController`).
+* **Digital Invoice**: Main screen of the return assistant feature. Allows your users to view and edit payable items in an invoice (`DigitalInvoiceViewController`).
 
 ## Sending Feedback
 
