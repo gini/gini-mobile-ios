@@ -15,6 +15,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     var returnAssistantConfiguration = ReturnAssistantConfiguration()
     weak var delegate: DigitalInvoiceOnboardingViewControllerDelegate?
     
+    @IBOutlet var contentView: UIView!
     @IBOutlet var topImageView: UIImageView!
     @IBOutlet var firstLabel: UILabel!
     @IBOutlet var secondLabel: UILabel!
@@ -49,7 +50,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     
     fileprivate func configureUI() {
         title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
-        view.backgroundColor = UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceOnboardingBackgroundColor)
+        contentView.backgroundColor = UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceOnboardingBackgroundColor)
         
         topImageView.image = topImage
         
