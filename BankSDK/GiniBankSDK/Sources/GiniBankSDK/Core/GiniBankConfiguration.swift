@@ -1120,7 +1120,6 @@ public final class GiniBankConfiguration: NSObject {
         configuration.onboardingShowAtFirstLaunch = self.onboardingShowAtFirstLaunch
         configuration.onboardingTextColor = self.onboardingTextColor
         configuration.onboardingScreenBackgroundColor = self.onboardingScreenBackgroundColor
-        configuration.onboardingPages = self.onboardingPages
         
         configuration.navigationBarReviewTitleBackButton = self.navigationBarReviewTitleBackButton
         configuration.navigationBarReviewTitleCloseButton = self.navigationBarReviewTitleCloseButton
@@ -1184,6 +1183,11 @@ public final class GiniBankConfiguration: NSObject {
         configuration.localizedStringsTableName = self.localizedStringsTableName
         
         GiniCapture.setConfiguration(configuration)
+        
+        // Set onboarding pages after setting the GiniCapture's configuration
+        // because the onboarding page initialisers need the configuration
+        configuration.onboardingPages = self.onboardingPages
+        
         return configuration
     }
     
