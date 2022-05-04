@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C9326312822D6CE0073C5AD /* GiniBankAPILibraryPinningIntegrationWrongCertificatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9326302822D6CE0073C5AD /* GiniBankAPILibraryPinningIntegrationWrongCertificatesTests.swift */; };
 		F44C6A23272AD82F00177319 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44C6A22272AD82F00177319 /* AppDelegate.swift */; };
 		F44C6A25272AD82F00177319 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44C6A24272AD82F00177319 /* SceneDelegate.swift */; };
 		F44C6A27272AD82F00177319 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44C6A26272AD82F00177319 /* ViewController.swift */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4C9326302822D6CE0073C5AD /* GiniBankAPILibraryPinningIntegrationWrongCertificatesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniBankAPILibraryPinningIntegrationWrongCertificatesTests.swift; sourceTree = "<group>"; };
 		F44C6A1F272AD82F00177319 /* GiniBankAPILibraryPinningExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniBankAPILibraryPinningExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F44C6A22272AD82F00177319 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F44C6A24272AD82F00177319 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				F4CBE3592822745600B28220 /* ExtractionFeedbackIntegrationTest.swift */,
 				F4CBE3582822745500B28220 /* GiniBankAPILibraryPinningTests.swift */,
 				F4CBE2FD28204E7900B28220 /* GiniBankAPILibraryPinningIntegrationTests.swift */,
+				4C9326302822D6CE0073C5AD /* GiniBankAPILibraryPinningIntegrationWrongCertificatesTests.swift */,
 			);
 			path = GiniBankAPILibraryPinningExampleTests;
 			sourceTree = "<group>";
@@ -265,6 +268,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C9326312822D6CE0073C5AD /* GiniBankAPILibraryPinningIntegrationWrongCertificatesTests.swift in Sources */,
 				F4CBE2FE28204E7900B28220 /* GiniBankAPILibraryPinningIntegrationTests.swift in Sources */,
 				F4CBE35A2822745600B28220 /* GiniBankAPILibraryPinningTests.swift in Sources */,
 				F4CBE35B2822745600B28220 /* ExtractionFeedbackIntegrationTest.swift in Sources */,

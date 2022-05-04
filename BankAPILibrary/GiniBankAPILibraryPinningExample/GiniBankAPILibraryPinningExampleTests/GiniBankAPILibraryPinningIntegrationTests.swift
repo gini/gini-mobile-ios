@@ -10,7 +10,7 @@ import XCTest
 @testable import GiniBankAPILibraryPinning
 @testable import TrustKit
 
-class IntegrationTests: XCTestCase {
+class PinningIntegrationTests: XCTestCase {
     
     // When running from Xcode: update these environment variables in the scheme.
     // Make sure not to commit the credentials if the scheme is shared!
