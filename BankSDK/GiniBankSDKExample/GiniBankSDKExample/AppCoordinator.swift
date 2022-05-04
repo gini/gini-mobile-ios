@@ -50,6 +50,13 @@ final class AppCoordinator: Coordinator {
         let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
         configuration.customMenuItems = [customMenuItem]
         configuration.albumsScreenSelectMorePhotosTextColor = GiniColor(lightModeColor: .systemBlue, darkModeColor: .systemBlue)
+        
+        // A few return assistant customisation examples
+        configuration.digitalInvoiceLineItemEditButtonTintColor = Colors.Gini.bluishGreen
+        configuration.lineItemBorderColor = Colors.Gini.paleGreen
+        configuration.digitalInvoiceLineItemToggleSwitchTintColor = Colors.Gini.springGreen
+        configuration.digitalInvoiceLineItemsDisabledColor = Colors.Gini.raspberry.withAlphaComponent(0.2)
+        configuration.lineItemDetailsContentHighlightedColor = Colors.Gini.paleGreen
        return configuration
     }()
     
