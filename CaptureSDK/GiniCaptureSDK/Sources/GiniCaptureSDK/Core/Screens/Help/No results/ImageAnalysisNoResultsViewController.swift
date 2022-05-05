@@ -27,11 +27,13 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
         bottomButton.translatesAutoresizingMaskIntoConstraints = false
         bottomButton.setTitle(self.bottomButtonText, for: .normal)
         bottomButton.titleLabel?.font = giniConfiguration.customFont.with(weight: .bold, size: 14, style: .caption1)
-        bottomButton.setTitleColor(UIColor.white.withAlphaComponent(0.5), for: .highlighted)
+        bottomButton.setTitleColor(UIColor.from(giniColor: giniConfiguration.noResultsBottomButtonTextColor), for: .normal)
+        bottomButton.setTitleColor(UIColor.from(giniColor: giniConfiguration.noResultsBottomButtonTextColor).withAlphaComponent(0.5), for: .highlighted)
         bottomButton.setImage(self.bottomButtonIconImage, for: .normal)
         bottomButton.addTarget(self, action: #selector(didTapBottomButtonAction), for: .touchUpInside)
         bottomButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
-        bottomButton.backgroundColor = GiniConfiguration.shared.noResultsBottomButtonColor
+        bottomButton.backgroundColor = giniConfiguration.noResultsBottomButtonColor
+        bottomButton.layer.cornerRadius = giniConfiguration.noResultsBottomButtonCornerRadius
         return bottomButton
     }()
     
