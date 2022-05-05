@@ -174,6 +174,21 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var cameraPreviewCornerGuidesColor = UIColor.white
     
     /**
+     Sets the background color of camera container view.
+     */
+    @objc public var cameraContainerViewBackgroundColor = GiniColor(lightModeColor: .black, darkModeColor: .black)
+    
+    /**
+     Sets the color of camera preview frame.
+     */
+    @objc public var cameraPreviewFrameColor = GiniColor(lightModeColor: UIColor(white: 0.0, alpha: 0.7), darkModeColor: UIColor(white: 0.0, alpha: 0.7))
+    
+    /**
+     Sets the background color of camera buttons view.
+     */
+    @objc public var cameraButtonsViewBackgroundColor = GiniColor(lightModeColor: .black, darkModeColor: .black)
+    
+    /**
      Set the types supported by the file import feature. `GiniCaptureImportFileTypes.none` by default.
      */
     @objc public var fileImportSupportedTypes = GiniConfiguration.GiniCaptureImportFileTypes.none
@@ -1154,6 +1169,9 @@ public final class GiniBankConfiguration: NSObject {
         configuration.cameraNotAuthorizedTextColor = self.cameraNotAuthorizedTextColor
         configuration.cameraNotAuthorizedButtonTitleColor = self.cameraNotAuthorizedButtonTitleColor
         configuration.cameraPreviewCornerGuidesColor = self.cameraPreviewCornerGuidesColor
+        configuration.cameraPreviewFrameColor = self.cameraPreviewFrameColor
+        configuration.cameraContainerViewBackgroundColor = self.cameraContainerViewBackgroundColor
+        configuration.cameraButtonsViewBackgroundColor = self.cameraButtonsViewBackgroundColor
         
         configuration.fileImportSupportedTypes = self.fileImportSupportedTypes
         configuration.fileImportToolTipBackgroundColor = self.fileImportToolTipBackgroundColor
@@ -1398,6 +1416,9 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.cameraNotAuthorizedTextColor = configuration.cameraNotAuthorizedTextColor
         giniBankConfiguration.cameraNotAuthorizedButtonTitleColor = configuration.cameraNotAuthorizedButtonTitleColor
         giniBankConfiguration.cameraPreviewCornerGuidesColor = configuration.cameraPreviewCornerGuidesColor
+        giniBankConfiguration.cameraContainerViewBackgroundColor = configuration.cameraContainerViewBackgroundColor
+        giniBankConfiguration.cameraPreviewFrameColor = configuration.cameraPreviewFrameColor
+        giniBankConfiguration.cameraButtonsViewBackgroundColor = configuration.cameraButtonsViewBackgroundColor
         
         giniBankConfiguration.fileImportSupportedTypes = configuration.fileImportSupportedTypes
         giniBankConfiguration.fileImportToolTipBackgroundColor = configuration.fileImportToolTipBackgroundColor

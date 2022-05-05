@@ -80,12 +80,15 @@ Some background and text colors use the `GiniColor` type with which you can set 
 	- Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.camera.help*</span> localized string
 
 ##### 2. Camera preview
+- Preview frame color &#8594;  `GiniBankConfiguration.cameraPreviewFrameColor`
 - Guides color &#8594;  `GiniBankConfiguration.cameraPreviewCornerGuidesColor`
 - Focus large image &#8594; <span style="color:#009EDF">*cameraFocusLarge*</span> image asset
 - Focus large small &#8594; <span style="color:#009EDF">*cameraFocusSmall*</span> image asset
 - Opaque view style (when tool tip is shown)  &#8594;  `GiniBankConfiguration.toolTipOpaqueBackgroundStyle`
 
 ##### 3. Camera buttons container
+- Background color &#8594;  `GiniBankConfiguration.cameraButtonsViewBackgroundColor`
+- Container view background color under the home indicator  &#8594;  `GiniBankConfiguration.cameraContainerViewBackgroundColor` 
 - Capture button
   - Image &#8594; <span style="color:#009EDF">*cameraCaptureButton*</span> image asset
 - Import button
