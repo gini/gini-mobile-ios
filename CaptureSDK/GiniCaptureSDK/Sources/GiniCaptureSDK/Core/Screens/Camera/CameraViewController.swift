@@ -126,7 +126,7 @@ import AVFoundation
     public override func loadView() {
         super.loadView()
         edgesForExtendedLayout = []
-        view.backgroundColor = .black
+        view.backgroundColor = UIColor.from(giniColor: giniConfiguration.cameraContainerViewBackgroundColor)
         
         // `previewView` must be added at 0 because otherwise NotAuthorizedView button won't ever be touchable
         addChild(cameraPreviewViewController)
