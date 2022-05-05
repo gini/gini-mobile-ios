@@ -1489,7 +1489,7 @@ public final class GiniBankConfiguration: NSObject {
         // Undocumented--Xamarin only
         giniBankConfiguration.closeButtonResource = configuration.closeButtonResource
         giniBankConfiguration.helpButtonResource = configuration.helpButtonResource
-        giniBankConfiguration.backToCameraButtonResource = configuration.helpButtonResource
+        giniBankConfiguration.backToCameraButtonResource = configuration.backToCameraButtonResource
         giniBankConfiguration.backToMenuButtonResource = configuration.backToMenuButtonResource
         giniBankConfiguration.nextButtonResource = configuration.nextButtonResource
         giniBankConfiguration.cancelButtonResource = configuration.cancelButtonResource

@@ -57,6 +57,8 @@ final class AppCoordinator: Coordinator {
         configuration.digitalInvoiceLineItemToggleSwitchTintColor = Colors.Gini.springGreen
         configuration.digitalInvoiceLineItemsDisabledColor = Colors.Gini.raspberry.withAlphaComponent(0.2)
         configuration.lineItemDetailsContentHighlightedColor = Colors.Gini.paleGreen
+        configuration.navigationBarItemFont = UIFont.systemFont(ofSize: 20, weight: .bold)
+        configuration.navigationBarCameraTitleHelpButton = "? Help"
        return configuration
     }()
     
