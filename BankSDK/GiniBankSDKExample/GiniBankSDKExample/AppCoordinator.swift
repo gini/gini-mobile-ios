@@ -57,6 +57,11 @@ final class AppCoordinator: Coordinator {
         configuration.digitalInvoiceLineItemToggleSwitchTintColor = Colors.Gini.springGreen
         configuration.digitalInvoiceLineItemsDisabledColor = Colors.Gini.raspberry.withAlphaComponent(0.2)
         configuration.lineItemDetailsContentHighlightedColor = Colors.Gini.paleGreen
+        
+        // A few camera screen customisation examples
+        configuration.cameraPreviewFrameColor = .init(lightModeColor: UIColor.init(white: 0.5, alpha: 0.1), darkModeColor: UIColor.init(white: 0.5, alpha: 0.3))
+        configuration.cameraButtonsViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
+        configuration.cameraContainerViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
        return configuration
     }()
     
