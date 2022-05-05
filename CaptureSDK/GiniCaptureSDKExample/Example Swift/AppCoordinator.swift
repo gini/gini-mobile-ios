@@ -48,6 +48,10 @@ final class AppCoordinator: Coordinator {
         }
         let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
         giniConfiguration.customMenuItems = [customMenuItem]
+        giniConfiguration.cameraPreviewCornerGuidesColor = .white
+        giniConfiguration.cameraPreviewFrameColor = .init(lightModeColor: UIColor.init(white: 0.5, alpha: 0.1), darkModeColor: UIColor.init(white: 0.5, alpha: 0.3))
+        giniConfiguration.cameraButtonsViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
+        giniConfiguration.cameraContainerViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
         return giniConfiguration
     }()
 
