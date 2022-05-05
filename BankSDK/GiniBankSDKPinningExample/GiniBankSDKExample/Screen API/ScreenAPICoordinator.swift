@@ -224,7 +224,7 @@ extension ScreenAPICoordinator: GiniCaptureNetworkService {
         }
     }
     
-    func sendFeedback(document: Document, updatedExtractions: [Extraction], completion: @escaping (Result<Void, GiniError>) -> Void) {
+    func sendFeedback(document: Document, updatedExtractions: [Extraction], updatedCompoundExtractions: [String : [[Extraction]]]?, completion: @escaping (Result<Void, GiniError>) -> Void) {
         print("💻 custom networking - send feedback event called")
     }
     
