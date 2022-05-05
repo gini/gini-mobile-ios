@@ -5,6 +5,9 @@
       location = "container:"
       name = "GiniBankSDK">
       <FileRef
+         location = "group:BankSDK/GiniBankSDKPinningExample/GiniBankSDKPinningExample.xcodeproj">
+      </FileRef>
+      <FileRef
          location = "group:BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj">
       </FileRef>
       <FileRef
@@ -31,6 +34,9 @@
       location = "container:"
       name = "GiniBankAPILibrary">
       <FileRef
+         location = "group:BankAPILibrary/GiniBankAPILibraryPinningExample/GiniBankAPILibraryPinningExample.xcodeproj">
+      </FileRef>
+      <FileRef
          location = "group:BankAPILibrary/GiniBankAPILibraryExample/GiniBankAPILibraryExample.xcodeproj">
       </FileRef>
       <FileRef
@@ -56,6 +62,9 @@
    <Group
       location = "container:"
       name = "GiniCaptureSDK">
+      <FileRef
+         location = "group:CaptureSDK/GiniCaptureSDKPinningExample/GiniCaptureSDKPinningExample.xcodeproj">
+      </FileRef>
       <FileRef
          location = "group:CaptureSDK/GiniCaptureSDKExample/GiniCaptureSDKExample.xcodeproj">
       </FileRef>
