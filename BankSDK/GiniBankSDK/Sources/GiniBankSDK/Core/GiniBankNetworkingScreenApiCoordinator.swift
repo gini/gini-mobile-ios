@@ -194,9 +194,9 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 self.resultsDelegate?
                     .giniCaptureAnalysisDidFinishWith(result: result) { updatedExtractions in
                         if let lineItems = result.lineItems {
-                            documentService.sendFeedback(with: updatedExtractions.map { $0.value }, and: ["lineItems": lineItems])
+                            documentService.sendFeedback(with: updatedExtractions.map { $0.value }, updatedCompoundExtractions: ["lineItems": lineItems])
                         } else {
-                            documentService.sendFeedback(with: updatedExtractions.map { $0.value })
+                            documentService.sendFeedback(with: updatedExtractions.map { $0.value }, updatedCompoundExtractions: nil)
                         }
                         documentService.resetToInitialState()
                     }
@@ -233,9 +233,9 @@ extension GiniBankNetworkingScreenApiCoordinator {
                 self.resultsDelegate?
                     .giniCaptureAnalysisDidFinishWith(result: result) { updatedExtractions in
                         if let lineItems = result.lineItems {
-                            documentService.sendFeedback(with: updatedExtractions.map { $0.value }, and: ["lineItems": lineItems])
+                            documentService.sendFeedback(with: updatedExtractions.map { $0.value }, updatedCompoundExtractions: ["lineItems": lineItems])
                         } else {
-                            documentService.sendFeedback(with: updatedExtractions.map { $0.value })
+                            documentService.sendFeedback(with: updatedExtractions.map { $0.value }, updatedCompoundExtractions: nil)
                         }
                         documentService.resetToInitialState()
                     }
