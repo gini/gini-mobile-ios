@@ -21,7 +21,8 @@ final class ComponentAPICoordinator: NSObject, Coordinator, DigitalInvoiceViewCo
     
     // Action handler for "Pay" button
     func didFinish(viewController: DigitalInvoiceViewController, invoice: DigitalInvoice) {
-        showResultsTableScreen(withExtractions: invoice.extractionResult.extractions)
+        showResultsTableScreen(withExtractions: invoice.extractionResult.extractions,
+                               lineItems: invoice.extractionResult.lineItems)
     }
 
     weak var delegate: ComponentAPICoordinatorDelegate?
@@ -206,10 +207,11 @@ extension ComponentAPICoordinator {
         navigationController.pushViewController(analysisScreen!, animated: true)
     }
     
-    fileprivate func showResultsTableScreen(withExtractions extractions: [Extraction]) {
+    fileprivate func showResultsTableScreen(withExtractions extractions: [Extraction], lineItems: [[Extraction]]? = nil) {
         resultsScreen = storyboard.instantiateViewController(withIdentifier: "resultScreen")
             as? ResultTableViewController
         resultsScreen?.result = extractions
+        resultsScreen?.lineItems = lineItems
         navigationController.applyStyle(withConfiguration: giniBankConfiguration.captureConfiguration())
         resultsScreen?.navigationItem
             .rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("close",
@@ -280,7 +282,11 @@ extension ComponentAPICoordinator {
     
     @objc fileprivate func closeComponentAPIFromResults() {
         if let results = resultsScreen?.result {
-            documentService?.sendFeedback(with: results)
+            if let lineItems = resultsScreen?.lineItems {
+                documentService?.sendFeedback(with: results, updatedCompoundExtractions: ["lineItems": lineItems])
+            } else {
+                documentService?.sendFeedback(with: results, updatedCompoundExtractions: nil)
+            }
         }
         closeComponentAPI()
     }
@@ -474,7 +480,12 @@ extension ComponentAPICoordinator: UINavigationControllerDelegate {
         }
         
         if let resultsScreen = fromVC as? ResultTableViewController {
-            documentService?.sendFeedback(with: resultsScreen.result)
+            if let lineItems = resultsScreen.lineItems {
+                documentService?.sendFeedback(with: resultsScreen.result, updatedCompoundExtractions: ["lineItems": lineItems])
+            } else {
+                documentService?.sendFeedback(with: resultsScreen.result, updatedCompoundExtractions: nil)
+            }
+            
             closeComponentAPI()
         }
         
@@ -736,7 +747,7 @@ extension ComponentAPICoordinator {
                         let digitalInvoice = try DigitalInvoice(extractionResult: extractionResult)
                         self.showDigitalInvoiceScreen(digitalInvoice: digitalInvoice)
                     } catch {
-                        self.showResultsTableScreen(withExtractions: extractionResult.extractions)
+                        self.showResultsTableScreen(withExtractions: extractionResult.extractions, lineItems: extractionResult.lineItems)
                     }
                 } else {
                     self.showResultsTableScreen(withExtractions: extractionResult.extractions)

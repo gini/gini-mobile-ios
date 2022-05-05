@@ -33,7 +33,7 @@ final class DocumentServiceMock: ComponentAPIDocumentServiceProtocol {
         
     }
     
-    func sendFeedback(with updatedExtractions: [Extraction]) {
+    func sendFeedback(with updatedExtractions: [Extraction], updatedCompoundExtractions: [String : [[Extraction]]]?) {
         
     }
     
