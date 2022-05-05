@@ -20,7 +20,7 @@ public protocol DocumentServiceProtocol: AnyObject {
     func cancelAnalysis()
     func remove(document: GiniCaptureDocument)
     func resetToInitialState()
-    func sendFeedback(with updatedExtractions: [Extraction])
+    func sendFeedback(with updatedExtractions: [Extraction], updatedCompoundExtractions: [String: [[Extraction]]]?)
     func startAnalysis(completion: @escaping AnalysisCompletion)
     func sortDocuments(withSameOrderAs documents: [GiniCaptureDocument])
     func upload(document: GiniCaptureDocument,

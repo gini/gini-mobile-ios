@@ -21,6 +21,7 @@ public protocol GiniCaptureNetworkService: AnyObject  {
                 completion: @escaping UploadDocumentCompletion)
     func sendFeedback(document: Document,
                       updatedExtractions: [Extraction],
+                      updatedCompoundExtractions: [String: [[Extraction]]]?,
                       completion: @escaping (Result<Void, GiniError>) -> Void)
     func log(errorEvent: ErrorEvent,
              completion: @escaping (Result<Void, GiniError>) -> Void)
@@ -134,9 +135,16 @@ class DefaultCaptureNetworkService: GiniCaptureNetworkService {
     
     func sendFeedback(document: Document,
                       updatedExtractions: [Extraction],
+                      updatedCompoundExtractions: [String: [[Extraction]]]?,
                       completion: @escaping (Result<Void, GiniError>) -> Void) {
-        documentService.submitFeedback(for: document, with: updatedExtractions) { result in
-            completion(result)
+        if let updatedCompoundExtractions = updatedCompoundExtractions {
+            documentService.submitFeedback(for: document, with: updatedExtractions, and: updatedCompoundExtractions) { result in
+                completion(result)
+            }
+        } else {
+            documentService.submitFeedback(for: document, with: updatedExtractions) { result in
+                completion(result)
+            }
         }
     }
 }

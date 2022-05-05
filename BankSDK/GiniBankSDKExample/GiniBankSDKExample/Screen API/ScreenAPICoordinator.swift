@@ -50,6 +50,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     var visionDocuments: [GiniCaptureDocument]?
     var configuration: GiniBankConfiguration
     var sendFeedbackBlock: (([String: Extraction]) -> Void)?
+    var extractionsForFeedback: [String: Extraction]?
     var manuallyCreatedDocument: Document?
     
     init(configuration: GiniBankConfiguration,
@@ -108,7 +109,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
                                                                            comment: "close button text"),
                                                   style: .plain,
                                                   target: self,
-                                                  action: #selector(closeSreenAPI))
+                                                  action: #selector(closeSreenAPIAndSendFeedback))
         
         DispatchQueue.main.async { [weak self] in
             if #available(iOS 15.0, *) {
@@ -121,7 +122,13 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         }
     }
     
-    @objc private func closeSreenAPI() {
+    @objc private func closeSreenAPIAndSendFeedback() {
+        if let sendFeedbackBlock = sendFeedbackBlock, let extractionsForFeedback = extractionsForFeedback {
+            print("💬 Sending extractions feedback")
+            sendFeedbackBlock(extractionsForFeedback)
+        } else {
+            print("❌ Extractions feedback was not sent")
+        }
         delegate?.screenAPI(coordinator: self, didFinish: ())
     }
 }
@@ -139,8 +146,8 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult,
                                          sendFeedbackBlock: @escaping ([String: Extraction]) -> Void) {
-        
         showResultsScreen(results: result.extractions.map { $0.value}, document: result.document)
+        self.extractionsForFeedback = result.extractions
         self.sendFeedbackBlock = sendFeedbackBlock
     }
     
@@ -204,7 +211,7 @@ extension ScreenAPICoordinator: GiniCaptureNetworkService {
         }
     }
     
-    func sendFeedback(document: Document, updatedExtractions: [Extraction], completion: @escaping (Result<Void, GiniError>) -> Void) {
+    func sendFeedback(document: Document, updatedExtractions: [Extraction], updatedCompoundExtractions: [String : [[Extraction]]]?, completion: @escaping (Result<Void, GiniError>) -> Void) {
         print("💻 custom networking - send feedback event called")
     }
     
