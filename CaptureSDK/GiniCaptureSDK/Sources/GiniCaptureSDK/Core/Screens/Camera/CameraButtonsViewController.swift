@@ -130,7 +130,7 @@ final class CameraButtonsViewController: UIViewController {
     
     public override func loadView() {
         super.loadView()
-        view.backgroundColor = .black
+        view.backgroundColor = UIColor.from(giniColor: giniConfiguration.cameraButtonsViewBackgroundColor)
         view.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(captureButton)
