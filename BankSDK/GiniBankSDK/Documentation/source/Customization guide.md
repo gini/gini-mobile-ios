@@ -88,7 +88,7 @@ Some background and text colors use the `GiniColor` type with which you can set 
 
 ##### 3. Camera buttons container
 - Background color &#8594;  `GiniBankConfiguration.cameraButtonsViewBackgroundColor`
-- Container view background color under the scroll indicator  &#8594;  `GiniBankConfiguration.cameraContainerViewBackgroundColor` 
+- Container view background color under the home indicator  &#8594;  `GiniBankConfiguration.cameraContainerViewBackgroundColor` 
 - Capture button
   - Image &#8594; <span style="color:#009EDF">*cameraCaptureButton*</span> image asset
 - Import button
