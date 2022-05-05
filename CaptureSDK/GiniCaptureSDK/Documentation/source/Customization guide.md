@@ -66,9 +66,12 @@ Some background and text colors use the `GiniColor` type with which you can set 
   - With title only
 	  -  Title &#8594; `GiniConfiguration.navigationBarCameraTitleCloseButton`
 - Help button
-	- Image &#8594; <span style="color:#009EDF">*navigationCameraHelp*</span> image asset
-	- Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.camera.help*</span> localized string
-
+ - With image and title
+	  - Image &#8594; <span style="color:#009EDF">*navigationCameraHelp*</span> image asset
+	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.camera.help*</span> localized string
+  - With title only
+	  -  Title &#8594; `GiniConfiguration.navigationBarCameraTitleHelpButton`
+      
 ##### 2. Camera preview
 - Guides color &#8594;  `GiniConfiguration.cameraPreviewCornerGuidesColor`
 - Focus large image &#8594; <span style="color:#009EDF">*cameraFocusLarge*</span> image asset
