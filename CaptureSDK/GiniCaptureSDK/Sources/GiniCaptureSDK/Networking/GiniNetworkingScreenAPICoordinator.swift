@@ -131,7 +131,7 @@ import GiniBankAPILibrary
                 let documentService = self.documentService
                 
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result) { updatedExtractions in
-                    documentService.sendFeedback(with: updatedExtractions.map { $0.value })
+                    documentService.sendFeedback(with: updatedExtractions.map { $0.value }, updatedCompoundExtractions: nil)
                     documentService.resetToInitialState()
                 }
             } else {

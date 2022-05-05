@@ -156,6 +156,7 @@ extension ComponentAPIDocumentsService {
                     print("🔎 Starting analysis for composite document with id \(createdDocument.id)")
 
                     self.analysisCancellationToken = CancellationToken()
+                    self.document = createdDocument
                     self.documentService
                         .extractions(for: createdDocument,
                                      cancellationToken: self.analysisCancellationToken!,
