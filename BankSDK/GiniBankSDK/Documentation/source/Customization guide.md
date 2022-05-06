@@ -266,11 +266,13 @@ Some background and text colors use the `GiniColor` type with which you can set 
 
 ##### 4. Go to camera button
 - Background color &#8594; `GiniBankConfiguration.noResultsBottomButtonColor`
+- Text color &#8594; `GiniBankConfiguration.noResultsBottomButtonTextColor`
+- Corner radius &#8594; `GiniBankConfiguration.noResultsBottomButtonCornerRadius`
 - Back button
-    noResultsBottomButtonColor
   - With image and title
       - Image &#8594; <span style="color:#009EDF">*cameraIcon*</span> image asset
       - Title &#8594; <span style="color:#009EDF">*ginicapture.noresults.gotocamera*</span> localized string
+      
 ## Gallery album screen
 
 <br>
@@ -350,8 +352,9 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 
 ##### 3. Back to camera button
 - Background color &#8594; `GiniBankConfiguration.noResultsBottomButtonColor`
+- Text color &#8594; `GiniBankConfiguration.noResultsBottomButtonTextColor`
+- Corner radius &#8594; `GiniBankConfiguration.noResultsBottomButtonCornerRadius`
 - Back button
-    noResultsBottomButtonColor
   - With image and title
       - Image &#8594; <span style="color:#009EDF">*cameraIcon*</span> image asset
       - Title &#8594; <span style="color:#009EDF">*ginicapture.noresults.gotocamera*</span> localized string
