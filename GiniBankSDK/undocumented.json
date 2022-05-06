@@ -9,63 +9,63 @@
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankConfiguration.swift",
-      "line": 554,
+      "line": 579,
       "symbol": "GiniBankConfiguration.closeButtonResource",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankConfiguration.swift",
-      "line": 555,
+      "line": 580,
       "symbol": "GiniBankConfiguration.helpButtonResource",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankConfiguration.swift",
-      "line": 556,
+      "line": 581,
       "symbol": "GiniBankConfiguration.backToCameraButtonResource",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankConfiguration.swift",
-      "line": 557,
+      "line": 582,
       "symbol": "GiniBankConfiguration.backToMenuButtonResource",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankConfiguration.swift",
-      "line": 558,
+      "line": 583,
       "symbol": "GiniBankConfiguration.nextButtonResource",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankConfiguration.swift",
-      "line": 559,
+      "line": 584,
       "symbol": "GiniBankConfiguration.cancelButtonResource",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankConfiguration.swift",
-      "line": 1055,
+      "line": 1146,
       "symbol": "GiniBankConfiguration.captureConfiguration()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankConfiguration.swift",
-      "line": 1190,
+      "line": 1290,
       "symbol": "GiniBankConfiguration.returnAssistantConfiguration()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankConfiguration.swift",
-      "line": 1285,
+      "line": 1396,
       "symbol": "GiniBankConfiguration.updateConfiguration(withCaptureConfiguration:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -135,7 +135,7 @@
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/Networking/GiniBank+Networking.swift",
-      "line": 78,
+      "line": 83,
       "symbol": "GiniBank.removeStoredCredentials(for:)",
       "symbol_kind": "source.lang.swift.decl.function.method.class",
       "warning": "undocumented"
