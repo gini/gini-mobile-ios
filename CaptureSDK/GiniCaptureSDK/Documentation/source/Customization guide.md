@@ -250,6 +250,8 @@ Some background and text colors use the `GiniColor` type with which you can set 
 
 ##### 2. Go to camera button
 - Background color &#8594; `GiniConfiguration.noResultsBottomButtonColor`
+- Text color &#8594; `GiniConfiguration.noResultsBottomButtonTextColor`
+- Corner radius &#8594; `GiniConfiguration.noResultsBottomButtonCornerRadius`
 
 ## Gallery album screen
 
