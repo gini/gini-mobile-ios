@@ -5,4 +5,4 @@
 //  Created by Nadya Karaban on 04.11.21.
 //
 
-public let GiniBankSDKPinningVersion = "1.6.0"
+public let GiniBankSDKPinningVersion = "1.7.0"
