@@ -72,7 +72,14 @@
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/GiniBankAPI.swift",
-      "line": 95,
+      "line": 62,
+      "symbol": "GiniBankAPI.Builder.sessionDelegate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/GiniBankAPI.swift",
+      "line": 98,
       "symbol": "GiniBankAPI.Builder.build()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -233,7 +240,7 @@
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/SessionManager.swift",
-      "line": 114,
+      "line": 109,
       "symbol": "CancellationToken.init()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
