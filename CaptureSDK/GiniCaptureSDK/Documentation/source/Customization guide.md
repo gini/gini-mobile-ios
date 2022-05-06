@@ -199,7 +199,9 @@ Some background and text colors use the `GiniColor` type with which you can set 
 	  - Title &#8594; `GiniConfiguration.navigationBarHelpScreenTitleBackToMenuButton`
 
 ##### 1. Supported format cells
+- Supported fortmats icon &#8594; <span style="color:#009EDF">*supportedFormatsIcon*</span> image asset
 - Supported formats icon color &#8594; `GiniConfiguration.supportedFormatsIconColor`
+- Non supported fortmats icon &#8594; <span style="color:#009EDF">*nonSupportedFormatsIcon*</span> image asset
 - Non supported formats icon color &#8594; `GiniConfiguration.nonSupportedFormatsIconColor`
 
 ## Open with tutorial screen
