@@ -624,6 +624,16 @@ import UIKit
     @objc public var noResultsBottomButtonColor = Colors.Gini.blue
     
     /**
+     Sets the text color of the bottom button to the specified color.
+     */
+    @objc public var noResultsBottomButtonTextColor = GiniColor.init(lightModeColor: .white, darkModeColor: .white)
+    
+    /**
+     Sets the corner radius of the bottom button.
+     */
+    @objc public var noResultsBottomButtonCornerRadius: CGFloat = 0.0
+    
+    /**
      Sets the color of the warning container background to the specified color.
      */
     @objc public var noResultsWarningContainerIconColor = Colors.Gini.rose
