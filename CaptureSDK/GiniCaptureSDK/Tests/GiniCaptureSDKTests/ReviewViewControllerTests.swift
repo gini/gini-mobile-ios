@@ -20,7 +20,8 @@ extension UIControl {
         }
     }
 }
-//TODO: Fix the review button click event
+
+// MARK: - Fix the test with tap event simulation
 
 //final class ReviewViewControllerTests: XCTestCase {
 //
