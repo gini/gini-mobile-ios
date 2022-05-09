@@ -70,24 +70,12 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
     public var didTapBottomButton: (() -> Void) = { }
     
     public convenience init(title: String? = nil,
-                            subHeaderText: String? = NSLocalizedString("ginicapture.noresults.collection.header",
-                                                                       bundle: giniCaptureBundle(),
-                                                                       comment: "no results suggestions collection " +
-        "header title"),
-                            topViewText: String = NSLocalizedString("ginicapture.noresults.warning",
-                                                                    bundle: giniCaptureBundle(),
-                                                                    comment: "Warning text that indicates that there " +
-        "was any result for this photo analysis"),
-                            topViewIcon: UIImage? = UIImage(named: "warningNoResults",
-                                                            in: giniCaptureBundle(),
-                                                            compatibleWith: nil)?.withRenderingMode(.alwaysTemplate),
-                            bottomButtonText: String? = NSLocalizedString("ginicapture.noresults.gotocamera",
-                                                                          bundle: giniCaptureBundle(),
-                                                                          comment: "bottom button title (go to camera" +
-        " button)"),
-                            bottomButtonIcon: UIImage? = UIImage(named: "cameraIcon",
-                                                                 in: giniCaptureBundle(),
-                                                                 compatibleWith: nil)) {
+                            subHeaderText: String? = NSLocalizedStringPreferredFormat("ginicapture.noresults.collection.header", comment: "no results suggestions collection header title"),
+                            topViewText: String = NSLocalizedStringPreferredFormat("ginicapture.noresults.warning", comment: "Warning text that indicates that there " +
+                                "was any result for this photo analysis"),
+                            topViewIcon: UIImage? = UIImageNamedPreferred(named: "warningNoResults"),
+                            bottomButtonText: String? = NSLocalizedStringPreferredFormat("ginicapture.noresults.gotocamera", comment: "bottom button title (go to camera button)"),
+                            bottomButtonIcon: UIImage? = UIImageNamedPreferred(named: "cameraIcon")) {
         self.init(title: title,
                   subHeaderText: subHeaderText,
                   topViewText: topViewText,
