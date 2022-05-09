@@ -17,9 +17,7 @@ final class MultipageReviewMainCollectionCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         
-        imageView.accessibilityLabel = NSLocalizedString("ginicapture.review.documentImageTitle",
-                                                         bundle: giniCaptureBundle(),
-                                                         comment: "Document")
+        imageView.accessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.review.documentImageTitle", comment: "Document")
         
         return imageView
     }()
