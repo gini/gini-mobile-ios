@@ -512,24 +512,12 @@ suggestions when there is no results when analysing an image.</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="nv">title</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
-                        <span class="nv">subHeaderText</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kt">NSLocalizedString</span><span class="p">(</span><span class="s">"ginicapture.noresults.collection.header"</span><span class="p">,</span>
-                                                                   <span class="nv">bundle</span><span class="p">:</span> <span class="nf">giniCaptureBundle</span><span class="p">(),</span>
-                                                                   <span class="nv">comment</span><span class="p">:</span> <span class="s">"no results suggestions collection "</span> <span class="o">+</span>
-    <span class="s">"header title"</span><span class="p">),</span>
-                        <span class="nv">topViewText</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="kt">NSLocalizedString</span><span class="p">(</span><span class="s">"ginicapture.noresults.warning"</span><span class="p">,</span>
-                                                                <span class="nv">bundle</span><span class="p">:</span> <span class="nf">giniCaptureBundle</span><span class="p">(),</span>
-                                                                <span class="nv">comment</span><span class="p">:</span> <span class="s">"Warning text that indicates that there "</span> <span class="o">+</span>
-    <span class="s">"was any result for this photo analysis"</span><span class="p">),</span>
-                        <span class="nv">topViewIcon</span><span class="p">:</span> <span class="kt">UIImage</span><span class="p">?</span> <span class="o">=</span> <span class="kt">UIImage</span><span class="p">(</span><span class="nv">named</span><span class="p">:</span> <span class="s">"warningNoResults"</span><span class="p">,</span>
-                                                        <span class="nv">in</span><span class="p">:</span> <span class="nf">giniCaptureBundle</span><span class="p">(),</span>
-                                                        <span class="nv">compatibleWith</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)?</span><span class="o">.</span><span class="nf">withRenderingMode</span><span class="p">(</span><span class="o">.</span><span class="n">alwaysTemplate</span><span class="p">),</span>
-                        <span class="nv">bottomButtonText</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kt">NSLocalizedString</span><span class="p">(</span><span class="s">"ginicapture.noresults.gotocamera"</span><span class="p">,</span>
-                                                                      <span class="nv">bundle</span><span class="p">:</span> <span class="nf">giniCaptureBundle</span><span class="p">(),</span>
-                                                                      <span class="nv">comment</span><span class="p">:</span> <span class="s">"bottom button title (go to camera"</span> <span class="o">+</span>
-    <span class="s">" button)"</span><span class="p">),</span>
-                        <span class="nv">bottomButtonIcon</span><span class="p">:</span> <span class="kt">UIImage</span><span class="p">?</span> <span class="o">=</span> <span class="kt">UIImage</span><span class="p">(</span><span class="nv">named</span><span class="p">:</span> <span class="s">"cameraIcon"</span><span class="p">,</span>
-                                                             <span class="nv">in</span><span class="p">:</span> <span class="nf">giniCaptureBundle</span><span class="p">(),</span>
-                                                             <span class="nv">compatibleWith</span><span class="p">:</span> <span class="kc">nil</span><span class="p">))</span></code></pre>
+                        <span class="nv">subHeaderText</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kt">NSLocalizedStringPreferredFormat</span><span class="p">(</span><span class="s">"ginicapture.noresults.collection.header"</span><span class="p">,</span> <span class="nv">comment</span><span class="p">:</span> <span class="s">"no results suggestions collection header title"</span><span class="p">),</span>
+                        <span class="nv">topViewText</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="kt">NSLocalizedStringPreferredFormat</span><span class="p">(</span><span class="s">"ginicapture.noresults.warning"</span><span class="p">,</span> <span class="nv">comment</span><span class="p">:</span> <span class="s">"Warning text that indicates that there "</span> <span class="o">+</span>
+                            <span class="s">"was any result for this photo analysis"</span><span class="p">),</span>
+                        <span class="nv">topViewIcon</span><span class="p">:</span> <span class="kt">UIImage</span><span class="p">?</span> <span class="o">=</span> <span class="kt">UIImageNamedPreferred</span><span class="p">(</span><span class="nv">named</span><span class="p">:</span> <span class="s">"warningNoResults"</span><span class="p">),</span>
+                        <span class="nv">bottomButtonText</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kt">NSLocalizedStringPreferredFormat</span><span class="p">(</span><span class="s">"ginicapture.noresults.gotocamera"</span><span class="p">,</span> <span class="nv">comment</span><span class="p">:</span> <span class="s">"bottom button title (go to camera button)"</span><span class="p">),</span>
+                        <span class="nv">bottomButtonIcon</span><span class="p">:</span> <span class="kt">UIImage</span><span class="p">?</span> <span class="o">=</span> <span class="kt">UIImageNamedPreferred</span><span class="p">(</span><span class="nv">named</span><span class="p">:</span> <span class="s">"cameraIcon"</span><span class="p">))</span></code></pre>
 
                         </div>
                       </div>
@@ -816,7 +804,7 @@ suggestions when there is no results when analysing an image.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2022 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2022-05-06)</p>
+      <p>&copy; 2022 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2022-05-10)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
