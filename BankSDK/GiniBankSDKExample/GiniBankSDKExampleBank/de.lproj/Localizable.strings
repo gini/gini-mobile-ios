@@ -1,20 +1,51 @@
-/* 
+/*
   Localizable.strings
   GiniPayBankSDK
 
   Created by Nadya Karaban on 04.05.21.
+
+  Translated by Jonny on 10.5.22
   
 */
 "ginipaybank.reviewscreen.recipient.placeholder" = "Empfänger";
 "ginipaybank.reviewscreen.iban.placeholder" = "IBAN";
 "ginipaybank.reviewscreen.amount.placeholder" = "0,00 €";
 "ginipaybank.reviewscreen.usage.placeholder" = "Verwendungszweck";
+"ginipaybank.errors.default" = "Etwas ist schiefgelaufen. Bitte versuchen Sie es noch einmal";
 
-"ginipaybank.errors.default" = "Oh da ist was schief gelaufen. Probiere es noch einmal.";
-
-"ginipaybank.errors.failed.recipient.non.empty.check" = "Empfänger ist notwendig.";
-"ginipaybank.errors.failed.iban.non.empty.check" = "IBAN ist notwendig.";
+"ginipaybank.errors.failed.recipient.non.empty.check" = "Empfänger fehlt.";
+"ginipaybank.errors.failed.iban.non.empty.check" = "IBAN fehlt.";
 "ginipaybank.errors.failed.iban.validation.check" = "IBAN ist ungültig";
-"ginipaybank.errors.failed.amount.non.empty.check" = "Summe kann nicht 0 sein";
-"ginipaybank.errors.failed.purpose.non.empty.check" = "Verwendungszweck ist notwendig.";
-"ginipaybank.errors.failed.default.textfield.validation.check" = "Das Feld ist ungültig";
+"ginipaybank.errors.failed.amount.non.empty.check" = "Betrag kann nicht 0 sein";
+"ginipaybank.errors.failed.purpose.non.empty.check" = "Verwendungszweck fehlt.";
+"ginipaybank.errors.failed.default.textfield.validation.check" = "Feld ist ungültig";
+
+"ginipaybank.paymentscreen.title" = "Überweisung";
+"ginipaybank.paymentscreen.myaccount.header" = "Mein Konto";
+"ginipaybank.paymentscreen.beneficiary.header" = "Empfänger";
+"ginipaybank.paymentscreen.pay.button.title" = "Bezahlung abschließen";
+
+"ginipaybank.paymentscreen.payment.adreess.key" = "An";
+"ginipaybank.paymentscreen.payment.adress.placeholder" = "Rechungsadresse";
+"ginipaybank.paymentscreen.payment.reference.key" = "Referenz";
+"ginipaybank.paymentscreen.payment.edit.button" = "Berarbeiten";
+
+"ginipaybank.paymentscreen.payment.recipient.title" = "Empfänger bekommt";
+"ginipaybank.paymentscreen.payment.recipient.price" = "Preis";
+"ginipaybank.paymentscreen.payment.recipient.transfer.fee" = "Überweisungsgebühr";
+"ginipaybank.paymentscreen.payment.recipient.transfer.total" = "Dein Gesamtpreis";
+
+"ginipaybank.paymentscreen.payment.estimated.title" = "Geschätzte Ankunft der Zahlung";
+"ginipaybank.paymentscreen.payment.estimated.value" = "Morgen";
+
+"ginipaybank.paymentconfirmationscreen.button.title" = "Zurück zur Versicherungsapp";
+"ginipaybank.paymentconfirmationscreen.transfer.status" = "Überweisung erfolgreich";
+"ginipaybank.paymentconfirmationscreen.transfer.to" = "An";
+"ginipaybank.paymentconfirmationscreen.payment.method" = "Bezahlmethode";
+"ginipaybank.paymentconfirmationscreen.payment.card" = "Debit-Karte";
+"ginipaybank.paymentconfirmationscreen.status" = "Status";
+"ginipaybank.paymentconfirmationscreen.status.completed" = "Abgeschlossen";
+"ginipaybank.paymentconfirmationscreen.time" = "Uhrzeit";
+"ginipaybank.paymentconfirmationscreen.date" = "Datum";
+"ginipaybank.paymentconfirmationscreen.transactionid" = "Transaktions-ID";
+"ginipaybank.paymentconfirmationscreen.amount" = "Betrag";

@@ -5,3 +5,83 @@
   Created by David Vizaknai on 01.04.2022.
 
 */
+
+"giniinsurancemock.tabbar.home" = "Home";
+"giniinsurancemock.tabbar.invoices" = "Rechnungen";
+"giniinsurancemock.tabbar.sessions" = "Sessions";
+"giniinsurancemock.tabbar.medicines" = "Medikamente";
+
+"giniinsurancemock.confirmationscreen.sent.title" = "Dokument eingereicht";
+"giniinsurancemock.confirmationscreen.sent.description" = "Das Dokument wurde eingereicht und wird bearbeitet.";
+"giniinsurancemock.confirmationscreen.saved.title" = "Dokument gesichert";
+"giniinsurancemock.confirmationscreen.saved.description" = "Das Dokument wird gesichert bis zur Einreichung an die Versicherung.";
+
+"giniinsurancemock.continue.button.title" = "Weiter";
+
+"giniinsurancemock.nobankingapp.error.title" = "Es wurden keine installierten Gini Pay-kompatiblen Banking Apps gefunden";
+"giniinsurancemock.npayabledocument.error.title" = "Aus diesem Dokument konnten nicht alle notwendigen Zahlungsdaten ausgelesen werden";
+
+"giniinsurancemock.paidstatus.paid" = "bezahlt";
+"giniinsurancemock.paidstatus.dueindays" = "Fällig in %d Tagen";
+
+"giniinsurancemock.reimbursedstatus.notsent" = "nicht eingereicht";
+"giniinsurancemock.reimbursedstatus.sent" = "eingereicht";
+"giniinsurancemock.reimbursedstatus.reimbursed" = "erstattet";
+
+"giniinsurancemock.filteroptions.all" = "Alle";
+"giniinsurancemock.filteroptions.open" = "Offen";
+"giniinsurancemock.filteroptions.unpaid" = "Nicht bezahlt";
+"giniinsurancemock.filteroptions.reimbursed" = "Erstattet";
+
+"giniinsurancemock.invoicelistscreen.title" = "Rechnungen";
+"giniinsurancemock.invoicelistscreen.notification.title" = "Ihre Rechnung wurde erstattet";
+
+"giniinsurancemock.invoicelistscreen.list.header.thismonth" = "Dieser Monat";
+"giniinsurancemock.invoicelistscreen.list.header.lastmonth" = "Letzter Monat";
+
+"giniinsurancemock.invoicedetailscreen.paybutton.title" = "Rechnung bezahlen";
+"giniinsurancemock.invoicedetailscreen.submitbutton.title" = "Einreichen";
+"giniinsurancemock.invoicedetailscreen.showdocumentbutton.title" = "Dokument anzeigen";
+
+"giniinsurancemock.newinvoicedetailscreen.title" = "Rechnungsinformationen";
+"giniinsurancemock.newinvoicedetailscreen.invoice.date" = "Rechnungsdatum";
+"giniinsurancemock.newinvoicedetailscreen.invoice.amount" = "Betrag";
+"giniinsurancemock.newinvoicedetailscreen.invoice.duedate" = "Fälligkeit";
+
+"giniinsurancemock.bottomsheet.payandsave.title" = "Bezahlen und sichern";
+"giniinsurancemock.bottomsheet.payandsave.description" = "Bezahlen und ablegen zur späteren Einreichung";
+"giniinsurancemock.bottomsheet.payandsubmit.title" = "Bezahlen und einreichen";
+"giniinsurancemock.bottomsheet.payandsubmit.description" = "Eine Einreichung lohnt sich noch nicht";
+"giniinsurancemock.bottomsheet.submit.title" = "Einreichen";
+"giniinsurancemock.bottomsheet.submit.description" = "Eine Einreichung lohnt sich noch nicht";
+"giniinsurancemock.bottomsheet.save.title" = "Sichern";
+"giniinsurancemock.bottomsheet.save.description" = "Sichern für eine spätere Einreichung und Bezahlung";
+
+"giniinsurancemock.newinvoicedetailscreen.reimbrsment" = "Erstattung";
+"giniinsurancemock.newinvoicedetailscreen.reimbrsment.date" = "Erstattungsdatum";
+"giniinsurancemock.newinvoicedetailscreen.reimbrsment.amount" = "Erstattungsbetrag";
+"giniinsurancemock.newinvoicedetailscreen.documents" = "Dokumente";
+"giniinsurancemock.newinvoicedetailscreen.title" = "Neue Rechnung";
+
+"giniinsurancemock.unpayable.error.description" = "Aus diesem Dokument konnten nicht alle Zahlungsdaten ausgelesen werden";
+"giniinsurancemock.nobankingapp.error.description" = "Es wurden keine installierten Gini Pay-kompatiblen Banking Apps gefunden";
+
+"giniinsurancemock.appointmenttype.consultation" = "Beratung";
+"giniinsurancemock.appointmenttype.treatment" = "Behandlung";
+
+"giniinsurancemock.homescreen.title" = "Überblick";
+"giniinsurancemock.homescreen.treshold.description" = "Eine Einreichung lohnt sich demnächst!";
+"giniinsurancemock.homescreen.treshold.description.submit" = "Jetzt alle offenen Belege einreichen";
+"giniinsurancemock.homescreen.treshold.description.documents.to.submit" = "Es gibt vier Rechnungen die eingereicht werden können";
+"giniinsurancemock.homescreen.treshold.button.submit" = "Alle einreichen";
+"giniinsurancemock.homescreen.treshold.button.showall" = "Anzeigen";
+"giniinsurancemock.homescreen.appointments.upcoming" = "Vereinbarte Termine";
+"giniinsurancemock.homescreen.appointments.seeall" = "Alle anzeigen";
+"giniinsurancemock.homescreen.today" = "Heute";
+"giniinsurancemock.homescreen.tomorrow" = "Morgen";
+"giniinsurancemock.homescreen.services" = "Unsere Services";
+"giniinsurancemock.homescreen.medical.treatments" = "Medizinische Behandlungen";
+"giniinsurancemock.homescreen.medical.treatments.description" = "Übersicht Krankheitsverläufe und Behandlungen...";
+"giniinsurancemock.homescreen.medical.treatments.2" = "Naturheilkunde";
+"giniinsurancemock.homescreen.medical.treatments.2.description" = "Die Naturheilkunde kombiniert moderne Behandlungsmethoden mit...";
+"giniinsurancemock.homescreen.appointments.in.x.days" = "In %d Tagen";
