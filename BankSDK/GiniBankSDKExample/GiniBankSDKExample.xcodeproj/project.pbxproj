@@ -85,7 +85,6 @@
 		F4083ED82735B0CB004DDD3B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F4083EDA2735B0CD004DDD3B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F40E1435273C06AA00734A0E /* PartialDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PartialDocument.swift; path = GiniBankSDKExample/PartialDocument.swift; sourceTree = SOURCE_ROOT; };
-		F40E1437273C08D200734A0E /* testPDF.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = testPDF.pdf; path = GiniBankSDKExample/testPDF.pdf; sourceTree = SOURCE_ROOT; };
 		F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAnalysisHelper.swift; sourceTree = "<group>"; };
 		F439C21827355C0C0010D77D /* GiniBankSDK */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniBankSDK; path = ../GiniBankSDK; sourceTree = "<group>"; };
 		F441DCA625E55D5800AAB09A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -205,7 +204,6 @@
 		F441DC3725E5283300AAB09A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				F40E1437273C08D200734A0E /* testPDF.pdf */,
 				F4AD00F725DFDF4400C34E15 /* Images.xcassets */,
 			);
 			path = "Supporting Files";
