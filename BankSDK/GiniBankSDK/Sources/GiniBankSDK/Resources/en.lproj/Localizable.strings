@@ -95,3 +95,4 @@
 "ginibank.digitalinvoice.onboarding.text2" = "Deselect article that you want to return and pay only for what you keep!";
 "ginibank.digitalinvoice.onboarding.donebutton" = "Next";
 "ginibank.digitalinvoice.onboarding.hidebutton" = "Don’t show anymore";
+"ginibank.analysis.error.analysis" = "An error occurred while parsing the document.";
