@@ -26,8 +26,6 @@
 "help" = "Help";
 "analysisFailedErrorMessage" = "Dokumentanalyse fehlgeschlagen. Möchten Sie es erneut versuchen?";
 "ginicapture.navigationbar.camera.title"        = "Make a picture";
-"ginicapture.noresults.warning" = "Warning";
-"ginicapture.noresults.collection.header" = "A new header";
 "ginibank.digitalinvoice.deselectreasonactionsheet.message" = "Do you want to deselect?";
 "ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel" = "Yes, deselect it.";
 "ginicapture.review.documentImageTitle" = "Docs";
