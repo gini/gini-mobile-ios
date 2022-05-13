@@ -1,14 +1,11 @@
 /* 
   Localizable.strings
-  GiniVision
+  GiniBank
 
-  Created by Peter Pult on 08/06/16.
-  Copyright © 2016 Gini. All rights reserved.
+  Created by Nadzeya Karaban on 04/11/21.
+  Copyright © 2021 Gini. All rights reserved.
 */
-"ginibank.help.menu.title" = "Help";
-"ginibank.help.menu.firstItem" = "Tips for best results from photos";
-"ginibank.help.menu.secondItem" = "Open document from other apps";
-"ginibank.help.menu.thirdItem" = "Supported formats";
+
 "ginibank.help.menu.fourthItem" = "The new return assistant";
 
 "ginibank.help.menu.returnAssistant.title" = "Return Assistant";
@@ -22,20 +19,6 @@
 "ginibank.help.menu.returnAssistant.section3.title" = "Fix the price";
 "ginibank.help.menu.returnAssistant.section3.body" = "If the price has not been read out perfectly, you can simply correct it manually. The total price is updated automatically.";
 "ginibank.help.menu.returnAssistant.backButton.title" = "Back";
-
-"ginibank.albums.title" = "Albums";
-"ginibank.imagepicker.openbutton" = "Open";
-
-"ginibank.multipagereview.reorderContainerTooltipMessage" = "The pages must be in the right order. You can sort them here.";
-"ginibank.multipagereview.addButtonLabel" = "Add a page";
-"ginibank.multipagereview.dragAndDropTip" = "Drag & Drop to sort";
-"ginibank.multipagereview.title" = "%d of %d";
-"ginibank.multipagereview.error.retakeAction" = "Retake";
-"ginibank.multipagereview.error.retryAction" = "Retry";
-
-"ginibank.images.openWithTutorialStep1" = "openWithTutorialStep1_en";
-"ginibank.images.openWithTutorialStep2" = "openWithTutorialStep2_en";
-"ginibank.images.openWithTutorialStep3" = "openWithTutorialStep3_en";
 
 "ginibank.digitalinvoice.screentitle" = "Digital Invoice";
 "ginibank.digitalinvoice.paybuttontitle.noinvoice" = "Pay";

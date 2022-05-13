@@ -35,10 +35,7 @@ enum ReviewStrings: LocalizableStringResource {
     }
     
     var isCustomizable: Bool {
-        switch self {
-        case .bottomText, .documentImageTitle, .rotateButton, .topText, .unknownErrorMessage:
-            return true
-        }
+        return true
     }
     
     var fallbackTableEntry: String {

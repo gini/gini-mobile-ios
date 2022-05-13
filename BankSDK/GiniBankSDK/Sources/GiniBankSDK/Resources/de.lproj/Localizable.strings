@@ -1,15 +1,11 @@
-/* 
+/*
   Localizable.strings
   GiniBank
 
-  Created by Peter Pult on 08/06/16.
-  Copyright © 2016 Gini. All rights reserved.
+  Created by Nadzeya Karaban on 04/11/21.
+  Copyright © 2021 Gini. All rights reserved.
 */
 
-"ginibank.help.menu.title" = "Hilfe";
-"ginibank.help.menu.firstItem" = "Tipps für beste Ergebnisse aus Fotos";
-"ginibank.help.menu.secondItem" = "Dokumente aus anderen Apps öffnen";
-"ginibank.help.menu.thirdItem" = "Unterstützte Formate";
 "ginibank.help.menu.fourthItem" = "Der neue Retourenassistent";
 
 "ginibank.help.menu.returnAssistant.title" = "Retourenassistent";
