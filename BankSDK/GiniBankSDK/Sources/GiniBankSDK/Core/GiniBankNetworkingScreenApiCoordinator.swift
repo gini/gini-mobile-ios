@@ -282,7 +282,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
 
                 guard error != .requestCancelled else { return }
 
-                networkDelegate.displayError(withMessage: .ginibankLocalized(resource: AnalysisStrings.analysisErrorMessage),
+                networkDelegate.displayError(withMessage: .localized(resource: AnalysisStrings.analysisErrorMessage),
                                              andAction: {
                                                  self.startAnalysisWithReturnAssistant(networkDelegate: networkDelegate)
                                              })
