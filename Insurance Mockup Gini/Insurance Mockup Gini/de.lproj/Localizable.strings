@@ -6,12 +6,12 @@
 
 */
 
-"next" = "weiter";
-"close" = "schließen";
+"next" = "Weiter";
+"close" = "Schließen";
 
 "giniinsurancemock.tabbar.home" = "Home";
 "giniinsurancemock.tabbar.invoices" = "Rechnungen";
-"giniinsurancemock.tabbar.sessions" = "Sessions";
+"giniinsurancemock.tabbar.sessions" = "Termine";
 "giniinsurancemock.tabbar.medicines" = "Medikamente";
 
 "giniinsurancemock.confirmationscreen.sent.title" = "Dokument eingereicht";
