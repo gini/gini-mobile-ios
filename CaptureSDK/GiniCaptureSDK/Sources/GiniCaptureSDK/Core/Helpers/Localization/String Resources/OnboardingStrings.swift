@@ -32,11 +32,7 @@ public enum OnboardingStrings: LocalizableStringResource {
     }
     
     public var isCustomizable: Bool {
-        switch self {
-        case .onboardingFirstPageText, .onboardingSecondPageText, .onboardingThirdPageText, .onboardingFourthPageText,
-             .onboardingFifthPageText:
-            return true
-        }
+        return true
     }
     
     public var fallbackTableEntry: String {

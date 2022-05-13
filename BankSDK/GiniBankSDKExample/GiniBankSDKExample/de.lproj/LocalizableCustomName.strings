@@ -1,16 +1,16 @@
 /* 
   Localizable.strings
-  GiniCapture
+  GiniBankExample
 
-  Created by Peter Pult on 16/06/16.
-  Copyright © 2016 Gini. All rights reserved.
+  Created by Nadzeya Karaban on 02/11/21.
+  Copyright © 2021 Gini. All rights reserved.
 */
 
 /*
- Gini Capture SDK
+ Gini Bank SDK
  ===================
  
- To easily customize texts in the Gini Capture SDK overwrite keys by your own definitions.
+ To easily customize texts in the Gini Bank SDK overwrite keys by your own definitions.
  For example to change the title of the camera add:
  ```
  "ginicapture.navigationbar.camera.title" = "Fotoüberweisung";
@@ -20,8 +20,49 @@
  or on [Github](https://github.com/gini/gini-capture-sdk-ios/blob/master/GiniCapture/Assets/Localizable.strings).
 */
 
-"next" = "Weiter";
-"close" = "Close";
-"newDocument" = "New document";
-"help" = "Help";
-"analysisFailedErrorMessage" = "Dokumentanalyse fehlgeschlagen. Möchten Sie es erneut versuchen?";
+//"ginicapture.analysis.error.analysis" = "CM Beim Analysieren des Dokuments ist ein Fehler aufgetreten.";
+//"ginicapture.camera.popupTitleImportPDF" = "CM PDF importieren";
+//"ginicapture.camera.popupOptionPhotos" = "CM Fotos";
+//"ginicapture.camera.popupOptionFiles" = "CM Dokumente";
+//"ginicapture.camera.popupTitleImportPDForPhotos" = "CM Fotos oder PDF importieren";
+//"ginicapture.camera.popupCancel" = "CM Abbrechen";
+//"ginicapture.camera.capturedImagesStackLabel" = "CM Erfasste Dokumente";
+
+//"ginicapture.imagepicker.openbutton" = "CM Öffnen";
+
+//"ginicapture.multipagereview.addButtonLabel" = "CM Seiten hinzufügen";
+//"ginicapture.multipagereview.title" = "CM %d von %d";
+//"ginicapture.multipagereview.reorderContainerTooltipMessage" = "CM Die Seiten müssen in der richtigen Reihenfolge sein. Hier können Sie sie sortieren.";
+//"ginicapture.multipagereview.dragAndDropTip" = "CM Drag & Drop zum Sortieren";
+//"ginicapture.multipagereview.error.retakeAction" = "CM Wiederholung";
+//"ginicapture.multipagereview.error.retryAction" = "CM Wiederholen";
+//
+//"ginicapture.images.openWithTutorialStep1" = "openWithTutorialStep1";
+//"ginicapture.images.openWithTutorialStep2" = "openWithTutorialStep2";
+//"ginicapture.images.openWithTutorialStep3" = "openWithTutorialStep3";
+//
+//"ginicapture.albums.title" = "CM Alben";
+
+//"ginicapture.noresults.collection.header" = "CM Tipps für beste Ergebnisse:";
+//"ginicapture.noresults.warning" = "CM Es konnten keine Daten ausgelesen werden. Bitte Aufnahme wiederholen.";
+//"ginicapture.noresults.gotocamera" = "CM Zur Kamera";
+//"ginicapture.noresults.title" = "CM Tipps für Fotos";
+//"ginicapture.noresults.warningHelpMenu" = "CM Zur Erkennung aller Daten bitte folgende Tipps beim Abfotografieren beachten:";
+
+//"ginicapture.help.supportedFormats.title" = "CM Unterstützte Formate";
+//"ginicapture.help.supportedFormats.section.1.title" = "CM Folgende Formate werden unterstützt:";
+//"ginicapture.help.supportedFormats.section.1.item.1" = "CM Computer-erstellte Überweisungsträger und Rechnungen";
+//"ginicapture.help.supportedFormats.section.1.item.2" = "CM Einseitige Bilder im jpg, png, gif oder tiff Format";
+//"ginicapture.help.supportedFormats.section.1.item.3" = "CM PDF Dokumente von bis zu 10 Seiten";
+//"ginicapture.help.supportedFormats.section.1.item.4" = "CM QR Codes";
+//"ginicapture.help.supportedFormats.section.2.title" = "CM Was nicht analysiert wird:";
+//"ginicapture.help.supportedFormats.section.2.item.1" = "CM Handschrift";
+//"ginicapture.help.supportedFormats.section.2.item.2" = "CM Fotos von Bildschirmen";
+//
+//"ginicapture.help.menu.title" = "CM Hilfe";
+//"ginicapture.help.menu.firstItem" = "CM Tipps für beste Ergebnisse aus Fotos";
+//"ginicapture.help.menu.secondItem" = "CM Dokumente aus anderen Apps öffnen";
+//"ginicapture.help.menu.thirdItem" = "CM Unterstützte Formate";
+//
+//"ginicapture.help.openWithTutorial.title" = "CM Dokumente aus anderen Apps öffnen";
+"close" = "Schließen";
