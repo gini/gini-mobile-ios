@@ -40,3 +40,6 @@
 //"ginicapture.camera.capturedImagesStackLabel" = "CM Captured documents";
 
 //"ginicapture.imagepicker.openbutton" = "CM Open";
+
+//"ginicapture.multipagereview.addButtonLabel" = "CM Add a page";
+//"ginicapture.multipagereview.title" = "CM %d of %d";
