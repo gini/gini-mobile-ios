@@ -25,3 +25,9 @@
 "newDocument" = "New document";
 "help" = "Help";
 "analysisFailedErrorMessage" = "Dokumentanalyse fehlgeschlagen. Möchten Sie es erneut versuchen?";
+//"ginicapture.camera.popupTitleImportPDF" = "CM PDF importieren";
+//"ginicapture.camera.popupOptionPhotos" = "CM Fotos";
+//"ginicapture.camera.popupOptionFiles" = "CM Dokumente";
+//"ginicapture.camera.popupTitleImportPDForPhotos" = "CM Fotos oder PDF importieren";
+//"ginicapture.camera.popupCancel" = "CM Abbrechen";
+//"ginicapture.camera.capturedImagesStackLabel" = "CM Erfasste Dokumente";
