@@ -33,3 +33,6 @@
 //"ginicapture.camera.capturedImagesStackLabel" = "CM Erfasste Dokumente";
 
 //"ginicapture.imagepicker.openbutton" = "CM Öffnen";
+
+//"ginicapture.multipagereview.addButtonLabel" = "CM Seiten hinzufügen";
+//"ginicapture.multipagereview.title" = "CM %d von %d";
