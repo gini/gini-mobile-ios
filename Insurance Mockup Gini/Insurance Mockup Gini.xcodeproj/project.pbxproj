@@ -150,6 +150,7 @@
 		76E4B4A027E8A1EC004027BB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		76E4B4A327E8A1EC004027BB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		76E4B4A527E8A1EC004027BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F4FE48CB282E5F9C00046E7E /* Insurance Mockup Gini.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Insurance Mockup Gini.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -394,6 +395,7 @@
 		76E4B49627E8A1E9004027BB /* Insurance Mockup Gini */ = {
 			isa = PBXGroup;
 			children = (
+				F4FE48CB282E5F9C00046E7E /* Insurance Mockup Gini.entitlements */,
 				76CC0D6A27F2276B00EBA356 /* Models */,
 				7687EC4727EB6FED0040F7BE /* Utils */,
 				76D98C4927E9E38E004790C5 /* Style */,
@@ -703,6 +705,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Insurance Mockup Gini/Insurance Mockup Gini.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = BQY9KX4V88;
@@ -736,6 +739,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Insurance Mockup Gini/Insurance Mockup Gini.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = BQY9KX4V88;
