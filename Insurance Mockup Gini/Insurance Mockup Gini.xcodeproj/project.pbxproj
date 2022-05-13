@@ -707,7 +707,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Insurance Mockup Gini/Insurance Mockup Gini.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = BQY9KX4V88;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Insurance Mockup Gini/Info.plist";
@@ -741,7 +741,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Insurance Mockup Gini/Insurance Mockup Gini.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = BQY9KX4V88;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Insurance Mockup Gini/Info.plist";
