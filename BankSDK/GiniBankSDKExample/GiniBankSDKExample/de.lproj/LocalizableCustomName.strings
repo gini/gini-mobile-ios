@@ -36,3 +36,13 @@
 
 //"ginicapture.multipagereview.addButtonLabel" = "CM Seiten hinzufügen";
 //"ginicapture.multipagereview.title" = "CM %d von %d";
+//"ginicapture.multipagereview.reorderContainerTooltipMessage" = "CM Die Seiten müssen in der richtigen Reihenfolge sein. Hier können Sie sie sortieren.";
+//"ginicapture.multipagereview.dragAndDropTip" = "CM Drag & Drop zum Sortieren";
+//"ginicapture.multipagereview.error.retakeAction" = "CM Wiederholung";
+//"ginicapture.multipagereview.error.retryAction" = "CM Wiederholen";
+//
+//"ginicapture.images.openWithTutorialStep1" = "openWithTutorialStep1";
+//"ginicapture.images.openWithTutorialStep2" = "openWithTutorialStep2";
+//"ginicapture.images.openWithTutorialStep3" = "openWithTutorialStep3";
+//
+//"ginicapture.albums.title" = "CM Alben";
