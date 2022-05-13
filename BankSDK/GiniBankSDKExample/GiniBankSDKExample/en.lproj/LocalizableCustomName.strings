@@ -32,3 +32,9 @@
 "ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel" = "Yes, deselect it.";
 "ginicapture.review.documentImageTitle" = "Docs";
 "ginicapture.review.rotateButton" = "Rotate in 90 degrees";
+//"ginicapture.camera.popupTitleImportPDF" = "CM Import PDF";
+//"ginicapture.camera.popupOptionPhotos" = "CM Gallery";
+//"ginicapture.camera.popupOptionFiles" = "CM Documents";
+//"ginicapture.camera.popupTitleImportPDForPhotos" = "CM Import Photos or PDF files";
+//"ginicapture.camera.popupCancel" = "CM Cancel";
+//"ginicapture.camera.capturedImagesStackLabel" = "CM Captured documents";

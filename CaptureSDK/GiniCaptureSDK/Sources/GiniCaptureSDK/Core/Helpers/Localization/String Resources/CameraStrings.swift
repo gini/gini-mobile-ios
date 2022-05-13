@@ -98,18 +98,7 @@ enum CameraStrings: LocalizableStringResource {
     }
     
     var isCustomizable: Bool {
-        switch self {
-        case .captureButton, .captureFailedMessage, .errorPopupCancelButton,
-             .errorPopupGrantAccessButton, .errorPopupPickAnotherFileButton, .errorPopupReviewPagesButton,
-             .exceededFileSizeErrorMessage, .documentValidationGeneralErrorMessage,
-             .mixedArraysPopupCancelButton, .mixedArraysPopupUsePhotosButton, .mixedDocumentsErrorMessage,
-             .notAuthorizedButton, .notAuthorizedMessage, .photoLibraryAccessDeniedMessage, .qrCodeDetectedPopupMessage,
-             .qrCodeDetectedPopupButton, .tooManyPagesErrorMessage, .unknownErrorMessage, .wrongFormatErrorMessage, .unsupportedQrCodeDetectedPopupMessage, .fileImportTipLabel, .qrCodeTipLabel, .importFileButtonLabel, .failedToOpenDocumentErrorMessage:
-            return true
-        case .capturedImagesStackSubtitleLabel, .popupTitleImportPDF,
-             .popupTitleImportPDForPhotos, .popupOptionPhotos, .popupOptionFiles, .popupCancel:
-            return false
-        }
+        return true
     }
     
     var fallbackTableEntry: String {
