@@ -1,9 +1,9 @@
 /* 
   Localizable.strings
-  GiniVision
+  GiniBank
 
-  Created by Peter Pult on 08/06/16.
-  Copyright © 2016 Gini. All rights reserved.
+  Created by Nadzeya Karaban on 04/11/21.
+  Copyright © 2021 Gini. All rights reserved.
 */
 "ginibank.help.menu.title" = "Help";
 "ginibank.help.menu.firstItem" = "Tips for best results from photos";
@@ -27,9 +27,7 @@
 "ginibank.imagepicker.openbutton" = "Open";
 
 "ginibank.multipagereview.reorderContainerTooltipMessage" = "The pages must be in the right order. You can sort them here.";
-"ginibank.multipagereview.addButtonLabel" = "Add a page";
 "ginibank.multipagereview.dragAndDropTip" = "Drag & Drop to sort";
-"ginibank.multipagereview.title" = "%d of %d";
 "ginibank.multipagereview.error.retakeAction" = "Retake";
 "ginibank.multipagereview.error.retryAction" = "Retry";
 
