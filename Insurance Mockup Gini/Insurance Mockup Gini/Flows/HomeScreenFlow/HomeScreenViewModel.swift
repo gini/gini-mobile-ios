@@ -44,19 +44,19 @@ class HomeScreenViewModel: ObservableObject {
 
     var appointments: [AppointmentViewModel] = [
         AppointmentViewModel(type: .consultation,
-                             title: "Prophylaxis - Dr. Thomas Schuster",
+                             title: "Prophylaxe - Dr. Thomas Schuster",
                              appointmentDay: NSLocalizedString("giniinsurancemock.homescreen.today", comment: ""),
                              appointmentHour: "16:45"),
         AppointmentViewModel(type: .treatment,
-                             title: "Aromatic Pediatry - Saint Ludovic Hospital",
+                             title: "Gastro-Endoskopie - Sankt Ludovic Klinikum",
                              appointmentDay: NSLocalizedString("giniinsurancemock.homescreen.tomorrow", comment: ""),
                              appointmentHour: "12:30"),
         AppointmentViewModel(type: .consultation,
-                             title: "Prophylaxis - Dr. Thomas Schuster",
+                             title: "Prophylaxe - Dr. Thomas Schuster",
                              appointmentDay: String(format: NSLocalizedString("giniinsurancemock.homescreen.appointments.in.x.days", comment: ""), Int.random(in: (2..<8))),
                              appointmentHour: "08:15"),
         AppointmentViewModel(type: .treatment,
-                             title: "Pediatry - Saint Ludovic Hospital",
+                             title: "Gastro-Endoskopie - Sankt Ludovic Klinikum",
                              appointmentDay: String(format: NSLocalizedString("giniinsurancemock.homescreen.appointments.in.x.days", comment: ""), Int.random(in: (9..<12))),
                              appointmentHour: "13:00")]
 

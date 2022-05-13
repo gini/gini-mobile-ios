@@ -6,6 +6,9 @@
 
 */
 
+"next" = "weiter";
+"close" = "schließen";
+
 "giniinsurancemock.tabbar.home" = "Home";
 "giniinsurancemock.tabbar.invoices" = "Rechnungen";
 "giniinsurancemock.tabbar.sessions" = "Sessions";
@@ -40,7 +43,7 @@
 "giniinsurancemock.invoicelistscreen.list.header.lastmonth" = "Letzter Monat";
 
 "giniinsurancemock.invoicedetailscreen.paybutton.title" = "Rechnung bezahlen";
-"giniinsurancemock.invoicedetailscreen.submitbutton.title" = "Einreichen";
+"giniinsurancemock.invoicedetailscreen.submitbutton.title" = "Beleg einreichen";
 "giniinsurancemock.invoicedetailscreen.showdocumentbutton.title" = "Dokument anzeigen";
 
 "giniinsurancemock.newinvoicedetailscreen.title" = "Rechnungsinformationen";
@@ -69,8 +72,8 @@
 "giniinsurancemock.appointmenttype.consultation" = "Beratung";
 "giniinsurancemock.appointmenttype.treatment" = "Behandlung";
 
-"giniinsurancemock.homescreen.title" = "Überblick";
-"giniinsurancemock.homescreen.treshold.description" = "Eine Einreichung lohnt sich demnächst!";
+"giniinsurancemock.homescreen.title" = "Übersicht";
+"giniinsurancemock.homescreen.treshold.description" = "Eine Einreichung lohnt sich bald!";
 "giniinsurancemock.homescreen.treshold.description.submit" = "Jetzt alle offenen Belege einreichen";
 "giniinsurancemock.homescreen.treshold.description.documents.to.submit" = "Es gibt vier Rechnungen die eingereicht werden können";
 "giniinsurancemock.homescreen.treshold.button.submit" = "Alle einreichen";

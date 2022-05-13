@@ -6,6 +6,8 @@
   
 */
 
+"next" = "Next";
+"close" = "Close";
 "giniinsurancemock.tabbar.home" = "Home";
 "giniinsurancemock.tabbar.invoices" = "Invoices";
 "giniinsurancemock.tabbar.sessions" = "Sessions";

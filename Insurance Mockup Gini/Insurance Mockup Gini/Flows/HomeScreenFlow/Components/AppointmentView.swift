@@ -51,7 +51,7 @@ struct AppointmentView: View {
 struct AppointmentView_Previews: PreviewProvider {
     static var previews: some View {
         AppointmentView(appointmentViewModel: AppointmentViewModel(type: .consultation,
-                                                                   title: "Prophylaxis - Dr. Thomas Schuster",
+                                                                   title: "Prophylaxe - Dr. Thomas Schuster",
                                                                    appointmentDay: "Today",
                                                                    appointmentHour: "16:45"))
     }
