@@ -33,10 +33,7 @@ public enum ImageAnalysisNoResultsStrings: LocalizableStringResource {
     }
     
     public var isCustomizable: Bool {
-        switch self {
-        case .collectionHeaderText, .goToCameraButton, .titleText, .warningText, .warningHelpMenuText:
-            return false
-        }
+        return true
     }
     
     public var fallbackTableEntry: String {
