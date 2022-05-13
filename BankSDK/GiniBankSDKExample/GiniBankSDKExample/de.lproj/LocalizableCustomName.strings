@@ -46,3 +46,9 @@
 //"ginicapture.images.openWithTutorialStep3" = "openWithTutorialStep3";
 //
 //"ginicapture.albums.title" = "CM Alben";
+
+//"ginicapture.noresults.collection.header" = "CM Tipps für beste Ergebnisse:";
+//"ginicapture.noresults.warning" = "CM Es konnten keine Daten ausgelesen werden. Bitte Aufnahme wiederholen.";
+//"ginicapture.noresults.gotocamera" = "CM Zur Kamera";
+//"ginicapture.noresults.title" = "CM Tipps für Fotos";
+//"ginicapture.noresults.warningHelpMenu" = "CM Zur Erkennung aller Daten bitte folgende Tipps beim Abfotografieren beachten:";

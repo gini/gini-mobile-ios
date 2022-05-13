@@ -53,3 +53,9 @@
 //"ginicapture.images.openWithTutorialStep3" = "openWithTutorialStep3_en";
 //
 //"ginicapture.albums.title" = "CM Albums";
+
+//"ginicapture.noresults.collection.header" = " CM Tips for best results:";
+//"ginicapture.noresults.warning" = "CM No information could be extracted. Please take a new photo.";
+//"ginicapture.noresults.gotocamera" = "CM Back to the camera";
+//"ginicapture.noresults.title" = "CM Tips for photos";
+//"ginicapture.noresults.warningHelpMenu" = "CM For best extraction results, please apply the following tips for photos:";
