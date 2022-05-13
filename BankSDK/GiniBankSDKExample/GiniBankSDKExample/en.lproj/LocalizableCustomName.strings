@@ -38,3 +38,5 @@
 //"ginicapture.camera.popupTitleImportPDForPhotos" = "CM Import Photos or PDF files";
 //"ginicapture.camera.popupCancel" = "CM Cancel";
 //"ginicapture.camera.capturedImagesStackLabel" = "CM Captured documents";
+
+//"ginicapture.imagepicker.openbutton" = "CM Open";
