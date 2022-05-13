@@ -57,3 +57,20 @@
 //"ginicapture.noresults.gotocamera" = "CM Back to the camera";
 //"ginicapture.noresults.title" = "CM Tips for photos";
 //"ginicapture.noresults.warningHelpMenu" = "CM For best extraction results, please apply the following tips for photos:";
+
+//"ginicapture.help.supportedFormats.title" = "CM Supported formats";
+//"ginicapture.help.supportedFormats.section.1.title" = "CM The following formats are supported:";
+//"ginicapture.help.supportedFormats.section.1.item.1" = "CM Computer-generated invoices and remittance slips";
+//"ginicapture.help.supportedFormats.section.1.item.2" = "CM 1-sided photos of format jpeg, png or gif";
+//"ginicapture.help.supportedFormats.section.1.item.3" = "CM PDF documents of up to 10 pages";
+//"ginicapture.help.supportedFormats.section.1.item.4" = "CM QR Codes";
+//"ginicapture.help.supportedFormats.section.2.title" = "CM What is not supported:";
+//"ginicapture.help.supportedFormats.section.2.item.1" = "CM Handwriting";
+//"ginicapture.help.supportedFormats.section.2.item.2" = "CM Photos of monitors or screens";
+//
+//"ginicapture.help.menu.title" = "CM Help";
+//"ginicapture.help.menu.firstItem" = "CM Tips for best results from photos";
+//"ginicapture.help.menu.secondItem" = "CM Open document from other apps";
+//"ginicapture.help.menu.thirdItem" = "CM Supported formats";
+//
+//"ginicapture.help.openWithTutorial.title" = "CM Open documents from other apps";
