@@ -1,16 +1,16 @@
 /* 
   Localizable.strings
-  GiniCapture
+  GiniBankExample
 
-  Created by Peter Pult on 16/06/16.
-  Copyright © 2016 Gini. All rights reserved.
+  Created by Nadzeya Karaban on 02/11/21.
+  Copyright © 2021 Gini. All rights reserved.
 */
 
 /*
- Gini Capture SDK
+ Gini Bank SDK
  ===================
  
- To easily customize texts in the Gini Capture SDK overwrite keys by your own definitions.
+ To easily customize texts in the Gini Bank SDK overwrite keys by your own definitions.
  For example to change the title of the camera add:
  ```
  "ginicapture.navigationbar.camera.title" = "Fotoüberweisung";
