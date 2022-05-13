@@ -20,16 +20,7 @@
  or on [Github](https://github.com/gini/gini-capture-sdk-ios/blob/master/GiniCapture/Assets/Localizable.strings).
 */
 
-"next" = "Weiter";
-"close" = "Close";
-"newDocument" = "New document";
-"help" = "Help";
-"analysisFailedErrorMessage" = "Dokumentanalyse fehlgeschlagen. Möchten Sie es erneut versuchen?";
-"ginicapture.navigationbar.camera.title"        = "Make a picture";
-"ginibank.digitalinvoice.deselectreasonactionsheet.message" = "Do you want to deselect?";
-"ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel" = "Yes, deselect it.";
-"ginicapture.review.documentImageTitle" = "Docs";
-"ginicapture.review.rotateButton" = "Rotate in 90 degrees";
+
 //"ginicapture.analysis.error.analysis" = "CM An error occurred while parsing the document.";
 //"ginicapture.camera.popupTitleImportPDF" = "CM Import PDF";
 //"ginicapture.camera.popupOptionPhotos" = "CM Gallery";
