@@ -20,11 +20,6 @@
  or on [Github](https://github.com/gini/gini-capture-sdk-ios/blob/master/GiniCapture/Assets/Localizable.strings).
 */
 
-"next" = "Weiter";
-"close" = "Close";
-"newDocument" = "New document";
-"help" = "Help";
-"analysisFailedErrorMessage" = "Dokumentanalyse fehlgeschlagen. Möchten Sie es erneut versuchen?";
 //"ginicapture.analysis.error.analysis" = "CM Beim Analysieren des Dokuments ist ein Fehler aufgetreten.";
 //"ginicapture.camera.popupTitleImportPDF" = "CM PDF importieren";
 //"ginicapture.camera.popupOptionPhotos" = "CM Fotos";
