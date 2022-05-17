@@ -15,6 +15,8 @@
 		F46DE0532705FC21002F7420 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F46DE0512705FC21002F7420 /* Main.storyboard */; };
 		F46DE0552705FC22002F7420 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F46DE0542705FC22002F7420 /* Assets.xcassets */; };
 		F46DE0582705FC22002F7420 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F46DE0562705FC22002F7420 /* LaunchScreen.storyboard */; };
+		F4A183D02833E90200873F5F /* IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A183CE2833E90200873F5F /* IntegrationTests.swift */; };
+		F4A183D12833E90200873F5F /* GiniHealthAPILibraryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A183CF2833E90200873F5F /* GiniHealthAPILibraryTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +41,9 @@
 		F46DE0572705FC22002F7420 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F46DE0592705FC22002F7420 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4A183CC2833C06E00873F5F /* GiniHealthAPILibraryPinningExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GiniHealthAPILibraryPinningExample.entitlements; sourceTree = "<group>"; };
+		F4A183CE2833E90200873F5F /* IntegrationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntegrationTests.swift; sourceTree = "<group>"; };
+		F4A183CF2833E90200873F5F /* GiniHealthAPILibraryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniHealthAPILibraryTests.swift; sourceTree = "<group>"; };
+		F4A183D22833EB2C00873F5F /* GiniHealthAPILibraryPinning */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniHealthAPILibraryPinning; path = ../GiniHealthAPILibraryPinning; sourceTree = "<group>"; };
 		F4FD486E270F1F7D007F1EFA /* GiniHealthAPILibraryPinningExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniHealthAPILibraryPinningExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -65,10 +70,10 @@
 		F46DE03F2705FC21002F7420 = {
 			isa = PBXGroup;
 			children = (
+				F4A183CD2833E90200873F5F /* GiniHealthAPILibraryPinningExampleTests */,
 				F4A183CC2833C06E00873F5F /* GiniHealthAPILibraryPinningExample.entitlements */,
 				F46DE05F2705FCAC002F7420 /* Packages */,
 				F46DE04A2705FC21002F7420 /* GiniHealthAPILibraryExample */,
-				F4FD486F270F1F7D007F1EFA /* GiniHealthAPILibraryExampleTests */,
 				F46DE0492705FC21002F7420 /* Products */,
 				F46DE0622705FEF4002F7420 /* Frameworks */,
 			);
@@ -101,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				F466A5D7270F26B200FB1364 /* GiniHealthAPILibraryPinning */,
+				F4A183D22833EB2C00873F5F /* GiniHealthAPILibraryPinning */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -113,11 +119,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		F4FD486F270F1F7D007F1EFA /* GiniHealthAPILibraryExampleTests */ = {
+		F4A183CD2833E90200873F5F /* GiniHealthAPILibraryPinningExampleTests */ = {
 			isa = PBXGroup;
 			children = (
+				F4A183CE2833E90200873F5F /* IntegrationTests.swift */,
+				F4A183CF2833E90200873F5F /* GiniHealthAPILibraryTests.swift */,
 			);
-			path = GiniHealthAPILibraryExampleTests;
+			path = GiniHealthAPILibraryPinningExampleTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -234,6 +242,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4A183D02833E90200873F5F /* IntegrationTests.swift in Sources */,
+				F4A183D12833E90200873F5F /* GiniHealthAPILibraryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -464,7 +474,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GiniHealthAPILibraryExample.app/GiniHealthAPILibraryExample";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GiniHealthAPILibraryPinningExample.app/GiniHealthAPILibraryPinningExample";
 			};
 			name = Debug;
 		};
@@ -487,7 +497,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GiniHealthAPILibraryExample.app/GiniHealthAPILibraryExample";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GiniHealthAPILibraryPinningExample.app/GiniHealthAPILibraryPinningExample";
 			};
 			name = Release;
 		};
