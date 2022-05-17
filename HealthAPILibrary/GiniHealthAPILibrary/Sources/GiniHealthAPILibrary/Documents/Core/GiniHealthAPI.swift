@@ -6,9 +6,6 @@
 //
 
 import Foundation
-#if canImport(TrustKit)
-import TrustKit
-#endif
 
 /// The Gini Health API Library
 public final class GiniHealthAPI {
@@ -16,6 +13,7 @@ public final class GiniHealthAPI {
     private let docService: DocumentService!
     private let payService: PaymentService?
     static var logLevel: LogLevel = .none
+    public var sessionDelegate: URLSessionDelegate? = nil
 
     init<T: DocumentService>(documentService: T, paymentService: PaymentService? )
     {
@@ -70,15 +68,18 @@ extension GiniHealthAPI {
          * - Parameter api:               The Gini Health API that the library interacts with. `APIDomain.default` by default
          * - Parameter userApi:           The Gini User API that the library interacts with. `UserDomain.default` by default
          * - Parameter logLevel:          The log level. `LogLevel.none` by default.
+         * - Parameter sessionDelegate:   The session delegate `URLSessionDelegate` will be set for Gini Health API Library with `Pinning`.
          */
         public init(client: Client,
                     api: APIDomain = .default,
                     userApi: UserDomain = .default,
-                    logLevel: LogLevel = .none) {
+                    logLevel: LogLevel = .none,
+                    sessionDelegate: URLSessionDelegate? = nil) {
             self.client = client
             self.api = api
             self.userApi = userApi
             self.logLevel = logLevel
+            self.sessionDelegate = sessionDelegate
         }
         
         /**
@@ -86,10 +87,12 @@ extension GiniHealthAPI {
          */
         public init(customApiDomain: String,
                     alternativeTokenSource: AlternativeTokenSource,
-                    logLevel: LogLevel = .none) {
+                    logLevel: LogLevel = .none,
+                    sessionDelegate: URLSessionDelegate? = nil) {
             self.client = Client(id: "", secret: "", domain: "")
             self.api = .custom(domain: customApiDomain, tokenSource: alternativeTokenSource)
             self.logLevel = logLevel
+            self.sessionDelegate = sessionDelegate
         }
 
         public func build() -> GiniHealthAPI {
@@ -102,20 +105,26 @@ extension GiniHealthAPI {
             // Initialize GiniHealthAPILib
             switch api {
             case .default:
-                let sessionManager = SessionManager(userDomain: userApi)
-                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager), paymentService: PaymentService(sessionManager: sessionManager, apiDomain: .default))
-            case .custom(_, let tokenSource):
-                var sessionManager : SessionManager
+                let sessionManager = SessionManager(userDomain: userApi,
+                                                    sessionDelegate: self.sessionDelegate)
+                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager),
+                                     paymentService: PaymentService(sessionManager: sessionManager, apiDomain: .default))
+            case let .custom(_, tokenSource):
+                var sessionManager: SessionManager
                 if let tokenSource = tokenSource {
-                     sessionManager = SessionManager(alternativeTokenSource: tokenSource)
+                    sessionManager = SessionManager(alternativeTokenSource: tokenSource,
+                                                    sessionDelegate: self.sessionDelegate)
                 } else {
-                    sessionManager = SessionManager(userDomain: userApi)
+                    sessionManager = SessionManager(userDomain: userApi,
+                                                    sessionDelegate: self.sessionDelegate)
                 }
-                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager,apiDomain: api), paymentService: PaymentService(sessionManager: sessionManager, apiDomain: api))
+                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager, apiDomain: api),
+                                     paymentService: PaymentService(sessionManager: sessionManager, apiDomain: api))
             case let .gym(tokenSource):
-                let sessionManager = SessionManager(alternativeTokenSource: tokenSource)
-                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager:
-                                                                            sessionManager), paymentService: PaymentService(sessionManager: sessionManager))
+                let sessionManager = SessionManager(alternativeTokenSource: tokenSource,
+                                                    sessionDelegate: self.sessionDelegate)
+                return GiniHealthAPI(documentService: DefaultDocumentService(sessionManager: sessionManager),
+                                     paymentService: PaymentService(sessionManager: sessionManager))
             }
         }
         
