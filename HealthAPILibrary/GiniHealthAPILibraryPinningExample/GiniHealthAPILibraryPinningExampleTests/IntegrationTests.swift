@@ -20,7 +20,7 @@ class IntegrationTests: XCTestCase {
     let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]!
     let yourPublicPinningConfig = [
         kTSKPinnedDomains: [
-            "pay-api.gini.net": [
+            "health-api.gini.net": [
                 kTSKPublicKeyHashes: [
                     // old *.gini.net public key
                     "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
