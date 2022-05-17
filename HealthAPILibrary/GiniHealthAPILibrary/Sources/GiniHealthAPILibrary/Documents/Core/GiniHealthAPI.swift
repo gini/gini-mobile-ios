@@ -60,6 +60,7 @@ extension GiniHealthAPI {
         var api: APIDomain = .default
         var userApi: UserDomain = .default
         var logLevel: LogLevel
+        public var sessionDelegate: URLSessionDelegate? = nil
         
         /**
          *  Creates a Gini Health API Library
