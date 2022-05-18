@@ -21,7 +21,7 @@ class HealthAPILibraryPinningWrongCertificatesTests: XCTestCase {
     override func setUp() {
         let yourPublicPinningConfig = [
             kTSKPinnedDomains: [
-                "pay-api.gini.net": [
+                "health-api.gini.net": [
                     kTSKPublicKeyHashes: [
                         // Wrong hashes
                         "TQEtdMbmwFgYUifM4LDF+xgEtd0z69mPGmkp014d6ZY=",
