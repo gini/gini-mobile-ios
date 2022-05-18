@@ -6,9 +6,6 @@
 //
 
 import Foundation
-#if canImport(TrustKit)
-import TrustKit
-#endif
 
 /// Represents a completion result callback
 public typealias CompletionResult<T> = (Result<T, GiniError>) -> Void
@@ -68,14 +65,12 @@ final class SessionManager: NSObject {
     init(keyStore: KeyStore = KeychainStore(),
          alternativeTokenSource: AlternativeTokenSource? = nil,
          urlSession: URLSession = .init(configuration: .default),
-         userDomain: UserDomain = .default) {
-        
+         userDomain: UserDomain = .default,
+         sessionDelegate: URLSessionDelegate? = nil) {
+
         self.keyStore = keyStore
         self.alternativeTokenSource = alternativeTokenSource
-        self.session = urlSession
-        #if canImport(TrustKit)
-        self.session.delegate = self
-        #endif
+        self.session = URLSession.init(configuration: urlSession.configuration, delegate: sessionDelegate, delegateQueue: nil)
         self.userDomain = userDomain
     }
 }
@@ -351,19 +346,3 @@ private extension SessionManager {
     }
     
 }
-
-// MARK: - URLSessionDelegate
-
-#if canImport(TrustKit)
-
-extension SessionManager: URLSessionDelegate {
-    func urlSession(_ session: URLSession,
-                    didReceive challenge: URLAuthenticationChallenge,
-                    completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        if TrustKit.sharedInstance().pinningValidator.handle(challenge, completionHandler: completionHandler) == false {
-            completionHandler(.performDefaultHandling, nil)
-        }
-    }
-}
-
-#endif
