@@ -58,13 +58,12 @@ jobs:
    
     - name: Build example app
       run: |
-        cd HealthSDK/GiniHealthSDKExample
-        xcodebuild -project GiniHealthSDKExample.xcodeproj -scheme "GiniHealthSDKPinningExample" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO    
+        xcodebuild -project HealthSDK/GiniHealthSDKExample.xcodeproj -scheme "GiniHealthSDKPinningExample" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO    
 
     - name: Build pinning example app and run integration tests
       run: >
         xcodebuild clean test
-        -project GiniHealthSDKExample.xcodeproj
+        -project HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj
         -scheme "GiniHealthSDKPinningExampleTests"
         -destination "${{ matrix.destination }}"
         -skip-testing:GiniHealthSDKPinningExampleTests/GiniHealthSDKPinningExampleWrongCertificatesTests
@@ -75,7 +74,7 @@ jobs:
         CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
         &&
         xcodebuild clean test
-        -project GiniHealthSDKExample.xcodeproj
+        -project HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample.xcodeproj
         -scheme "GiniHealthSDKPinningExampleTests"
         -destination "${{ matrix.destination }}"
         -only-testing:GiniHealthSDKPinningExampleTests/GiniHealthSDKPinningExampleWrongCertificatesTests
