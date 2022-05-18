@@ -18,6 +18,7 @@
 		F4A183D02833E90200873F5F /* IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A183CE2833E90200873F5F /* IntegrationTests.swift */; };
 		F4A183D12833E90200873F5F /* GiniHealthAPILibraryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A183CF2833E90200873F5F /* GiniHealthAPILibraryTests.swift */; };
 		F4A183D42833F40300873F5F /* GiniHealthAPILibraryPinningIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A183D32833F40300873F5F /* GiniHealthAPILibraryPinningIntegrationTests.swift */; };
+		F4A183DD2835279300873F5F /* GiniHealthAPILibraryPinningIntegrationWrongCertificatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A183DC2835279300873F5F /* GiniHealthAPILibraryPinningIntegrationWrongCertificatesTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		F4A183CF2833E90200873F5F /* GiniHealthAPILibraryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniHealthAPILibraryTests.swift; sourceTree = "<group>"; };
 		F4A183D22833EB2C00873F5F /* GiniHealthAPILibraryPinning */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniHealthAPILibraryPinning; path = ../GiniHealthAPILibraryPinning; sourceTree = "<group>"; };
 		F4A183D32833F40300873F5F /* GiniHealthAPILibraryPinningIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniHealthAPILibraryPinningIntegrationTests.swift; sourceTree = "<group>"; };
+		F4A183DC2835279300873F5F /* GiniHealthAPILibraryPinningIntegrationWrongCertificatesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniHealthAPILibraryPinningIntegrationWrongCertificatesTests.swift; sourceTree = "<group>"; };
 		F4FD486E270F1F7D007F1EFA /* GiniHealthAPILibraryPinningExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniHealthAPILibraryPinningExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -127,6 +129,7 @@
 				F4A183CE2833E90200873F5F /* IntegrationTests.swift */,
 				F4A183CF2833E90200873F5F /* GiniHealthAPILibraryTests.swift */,
 				F4A183D32833F40300873F5F /* GiniHealthAPILibraryPinningIntegrationTests.swift */,
+				F4A183DC2835279300873F5F /* GiniHealthAPILibraryPinningIntegrationWrongCertificatesTests.swift */,
 			);
 			path = GiniHealthAPILibraryPinningExampleTests;
 			sourceTree = "<group>";
@@ -248,6 +251,7 @@
 				F4A183D02833E90200873F5F /* IntegrationTests.swift in Sources */,
 				F4A183D42833F40300873F5F /* GiniHealthAPILibraryPinningIntegrationTests.swift in Sources */,
 				F4A183D12833E90200873F5F /* GiniHealthAPILibraryTests.swift in Sources */,
+				F4A183DD2835279300873F5F /* GiniHealthAPILibraryPinningIntegrationWrongCertificatesTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
