@@ -47,7 +47,7 @@ class HealthAPILibraryPinningWrongCertificatesTests: XCTestCase {
             case .success:
                 XCTFail("creating a payment request should have failed due to wrong pinning certificates")
             case let .failure(error):
-                XCTAssertEqual(error, GiniHealthAPILibrary.GiniError.unauthorized())
+                XCTAssertEqual(error, GiniHealthAPILibrary.GiniError.noResponse)
                 expect.fulfill()
             }
         }
