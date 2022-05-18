@@ -9,15 +9,15 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F4FD486D270F1F7D007F1EFA"
-               BuildableName = "GiniHealthAPILibraryPinningExampleTests.xctest"
-               BlueprintName = "GiniHealthAPILibraryPinningExampleTests"
-               ReferencedContainer = "container:GiniHealthAPILibraryPinningExample.xcodeproj">
+               BlueprintIdentifier = "F4C36A87270C6EBF00CCC69C"
+               BuildableName = "GiniHealthSDKPinningExample.app"
+               BlueprintName = "GiniHealthSDKPinningExample"
+               ReferencedContainer = "container:GiniHealthSDKExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -28,10 +28,10 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F46DE0472705FC21002F7420"
-               BuildableName = "GiniHealthAPILibraryPinningExample.app"
-               BlueprintName = "GiniHealthAPILibraryPinningExample"
-               ReferencedContainer = "container:GiniHealthAPILibraryPinningExample.xcodeproj">
+               BlueprintIdentifier = "F4FD486D270F1F7D007F1EFA"
+               BuildableName = "GiniHealthAPILibraryPinningExampleTests.xctest"
+               BlueprintName = "GiniHealthAPILibraryPinningExampleTests"
+               ReferencedContainer = "container:../../HealthAPILibrary/GiniHealthAPILibraryPinningExample/GiniHealthAPILibraryPinningExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -42,16 +42,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F4FD486D270F1F7D007F1EFA"
-               BuildableName = "GiniHealthAPILibraryPinningExampleTests.xctest"
-               BlueprintName = "GiniHealthAPILibraryPinningExampleTests"
-               ReferencedContainer = "container:GiniHealthAPILibraryPinningExample.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -64,15 +54,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F4FD486D270F1F7D007F1EFA"
-            BuildableName = "GiniHealthAPILibraryPinningExampleTests.xctest"
-            BlueprintName = "GiniHealthAPILibraryPinningExampleTests"
-            ReferencedContainer = "container:GiniHealthAPILibraryPinningExample.xcodeproj">
+            BlueprintIdentifier = "F4C36A87270C6EBF00CCC69C"
+            BuildableName = "GiniHealthSDKPinningExample.app"
+            BlueprintName = "GiniHealthSDKPinningExample"
+            ReferencedContainer = "container:GiniHealthSDKExample.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "CLIENT_SECRET"
@@ -95,10 +86,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F4FD486D270F1F7D007F1EFA"
-            BuildableName = "GiniHealthAPILibraryPinningExampleTests.xctest"
-            BlueprintName = "GiniHealthAPILibraryPinningExampleTests"
-            ReferencedContainer = "container:GiniHealthAPILibraryPinningExample.xcodeproj">
+            BlueprintIdentifier = "F4C36A87270C6EBF00CCC69C"
+            BuildableName = "GiniHealthSDKPinningExample.app"
+            BlueprintName = "GiniHealthSDKPinningExample"
+            ReferencedContainer = "container:GiniHealthSDKExample.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
