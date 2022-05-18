@@ -12,8 +12,8 @@ on:
       - 'HealthAPILibrary/**'
   workflow_call:
     secrets:
-    GINI_MOBILE_TEST_CLIENT_SECRET:
-      required: true
+      GINI_MOBILE_TEST_CLIENT_SECRET:
+        required: true
   
 jobs:
   check:
