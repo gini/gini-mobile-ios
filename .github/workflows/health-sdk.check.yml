@@ -11,6 +11,9 @@ on:
       - 'HealthSDK/**'
       - 'HealthAPILibrary/**'
   workflow_call:
+    secrets:
+    GINI_MOBILE_TEST_CLIENT_SECRET:
+      required: true
   
 jobs:
   check:
@@ -57,3 +60,27 @@ jobs:
       run: |
         cd HealthSDK/GiniHealthSDKExample
         xcodebuild -project GiniHealthSDKExample.xcodeproj -scheme "GiniHealthSDKPinningExample" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO    
+
+    - name: Build pinning example app and run integration tests
+      run: >
+        xcodebuild clean test
+        -project GiniHealthSDKExample.xcodeproj
+        -scheme "GiniHealthSDKPinningExampleTests"
+        -destination "${{ matrix.destination }}"
+        -skip-testing:GiniHealthSDKPinningExampleTests/GiniHealthSDKPinningExampleWrongCertificatesTests
+        CODE_SIGN_IDENTITY=""
+        CODE_SIGNING_REQUIRED=NO
+        ONLY_ACTIVE_ARCH=NO
+        CLIENT_ID="gini-mobile-test"
+        CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
+        &&
+        xcodebuild clean test
+        -project GiniHealthSDKExample.xcodeproj
+        -scheme "GiniHealthSDKPinningExampleTests"
+        -destination "${{ matrix.destination }}"
+        -only-testing:GiniHealthSDKPinningExampleTests/GiniHealthSDKPinningExampleWrongCertificatesTests
+        CODE_SIGN_IDENTITY=""
+        CODE_SIGNING_REQUIRED=NO
+        ONLY_ACTIVE_ARCH=NO
+        CLIENT_ID="gini-mobile-test"
+        CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
