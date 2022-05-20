@@ -18,6 +18,8 @@
 		F4C36A95270C6EC200CCC69C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4C36A94270C6EC200CCC69C /* Assets.xcassets */; };
 		F4C36A98270C6EC200CCC69C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4C36A96270C6EC200CCC69C /* LaunchScreen.storyboard */; };
 		F4CEC7ED270CB06D004A862F /* GiniHealthSDKPinning in Frameworks */ = {isa = PBXBuildFile; productRef = F4CEC7EC270CB06D004A862F /* GiniHealthSDKPinning */; };
+		F4DB6421283546960027681C /* GiniHealthSDKPinningExampleIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DB6420283546960027681C /* GiniHealthSDKPinningExampleIntegrationTests.swift */; };
+		F4DB642828354B2B0027681C /* GiniHealthSDKPinningExampleWrongCertificatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DB642728354B2B0027681C /* GiniHealthSDKPinningExampleWrongCertificatesTests.swift */; };
 		F4EC38C2273C21E4007045DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC38C1273C21E4007045DC /* AppDelegate.swift */; };
 		F4EC38C4273C21E4007045DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC38C3273C21E4007045DC /* SceneDelegate.swift */; };
 		F4EC38C6273C21E4007045DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC38C5273C21E4007045DC /* ViewController.swift */; };
@@ -41,6 +43,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		F4DB6422283546960027681C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F4C36A80270C6EBF00CCC69C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F4C36A87270C6EBF00CCC69C;
+			remoteInfo = GiniHealthSDKPinningExample;
+		};
 		F4EC38D5273C21E6007045DC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F4C36A80270C6EBF00CCC69C /* Project object */;
@@ -66,6 +75,9 @@
 		F4C36A94270C6EC200CCC69C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F4C36A97270C6EC200CCC69C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F4C36A99270C6EC200CCC69C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F4DB641E283546960027681C /* GiniHealthSDKPinningExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniHealthSDKPinningExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4DB6420283546960027681C /* GiniHealthSDKPinningExampleIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniHealthSDKPinningExampleIntegrationTests.swift; sourceTree = "<group>"; };
+		F4DB642728354B2B0027681C /* GiniHealthSDKPinningExampleWrongCertificatesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniHealthSDKPinningExampleWrongCertificatesTests.swift; sourceTree = "<group>"; };
 		F4EC38BF273C21E4007045DC /* GiniHealthSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniHealthSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4EC38C1273C21E4007045DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4EC38C3273C21E4007045DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -101,6 +113,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F4DB641B283546960027681C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4EC38BC273C21E4007045DC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -128,6 +147,7 @@
 				F4C36A8A270C6EBF00CCC69C /* GiniHealthSDKPinningExample */,
 				F4EC38C0273C21E4007045DC /* GiniHealthSDKExample */,
 				F4EC38D7273C21E6007045DC /* GiniHealthSDKExampleTests */,
+				F4DB641F283546960027681C /* GiniHealthSDKPinningExampleTests */,
 				F4C36A89270C6EBF00CCC69C /* Products */,
 				F4C36AA1270C6F9C00CCC69C /* Frameworks */,
 			);
@@ -139,6 +159,7 @@
 				F4C36A88270C6EBF00CCC69C /* GiniHealthSDKPinningExample.app */,
 				F4EC38BF273C21E4007045DC /* GiniHealthSDKExample.app */,
 				F4EC38D4273C21E6007045DC /* GiniHealthSDKExampleTests.xctest */,
+				F4DB641E283546960027681C /* GiniHealthSDKPinningExampleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -174,6 +195,15 @@
 				F42377252799ABB000FAC3D6 /* CloudKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F4DB641F283546960027681C /* GiniHealthSDKPinningExampleTests */ = {
+			isa = PBXGroup;
+			children = (
+				F4DB6420283546960027681C /* GiniHealthSDKPinningExampleIntegrationTests.swift */,
+				F4DB642728354B2B0027681C /* GiniHealthSDKPinningExampleWrongCertificatesTests.swift */,
+			);
+			path = GiniHealthSDKPinningExampleTests;
 			sourceTree = "<group>";
 		};
 		F4EC38C0273C21E4007045DC /* GiniHealthSDKExample */ = {
@@ -235,6 +265,24 @@
 			productReference = F4C36A88270C6EBF00CCC69C /* GiniHealthSDKPinningExample.app */;
 			productType = "com.apple.product-type.application";
 		};
+		F4DB641D283546960027681C /* GiniHealthSDKPinningExampleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F4DB6426283546960027681C /* Build configuration list for PBXNativeTarget "GiniHealthSDKPinningExampleTests" */;
+			buildPhases = (
+				F4DB641A283546960027681C /* Sources */,
+				F4DB641B283546960027681C /* Frameworks */,
+				F4DB641C283546960027681C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F4DB6423283546960027681C /* PBXTargetDependency */,
+			);
+			name = GiniHealthSDKPinningExampleTests;
+			productName = GiniHealthSDKPinningExampleTests;
+			productReference = F4DB641E283546960027681C /* GiniHealthSDKPinningExampleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		F4EC38BE273C21E4007045DC /* GiniHealthSDKExample */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4EC38EC273C21E6007045DC /* Build configuration list for PBXNativeTarget "GiniHealthSDKExample" */;
@@ -281,11 +329,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1310;
+				LastSwiftUpdateCheck = 1330;
 				LastUpgradeCheck = 1300;
 				TargetAttributes = {
 					F4C36A87270C6EBF00CCC69C = {
 						CreatedOnToolsVersion = 13.0;
+					};
+					F4DB641D283546960027681C = {
+						CreatedOnToolsVersion = 13.3.1;
+						TestTargetID = F4C36A87270C6EBF00CCC69C;
 					};
 					F4EC38BE273C21E4007045DC = {
 						CreatedOnToolsVersion = 13.1;
@@ -313,6 +365,7 @@
 				F4C36A87270C6EBF00CCC69C /* GiniHealthSDKPinningExample */,
 				F4EC38BE273C21E4007045DC /* GiniHealthSDKExample */,
 				F4EC38D3273C21E6007045DC /* GiniHealthSDKExampleTests */,
+				F4DB641D283546960027681C /* GiniHealthSDKPinningExampleTests */,
 			);
 		};
 /* End PBXProject section */
@@ -326,6 +379,13 @@
 				F466A5DF270F2F9500FB1364 /* Localizable.strings in Resources */,
 				F4C36A95270C6EC200CCC69C /* Assets.xcassets in Resources */,
 				F4C36A93270C6EBF00CCC69C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F4DB641C283546960027681C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -362,6 +422,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F4DB641A283546960027681C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4DB642828354B2B0027681C /* GiniHealthSDKPinningExampleWrongCertificatesTests.swift in Sources */,
+				F4DB6421283546960027681C /* GiniHealthSDKPinningExampleIntegrationTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4EC38BB273C21E4007045DC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -393,6 +462,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		F4DB6423283546960027681C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F4C36A87270C6EBF00CCC69C /* GiniHealthSDKPinningExample */;
+			targetProxy = F4DB6422283546960027681C /* PBXContainerItemProxy */;
+		};
 		F4EC38D6273C21E6007045DC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F4EC38BE273C21E4007045DC /* GiniHealthSDKExample */;
@@ -624,6 +698,44 @@
 			};
 			name = Release;
 		};
+		F4DB6424283546960027681C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = BQY9KX4V88;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.healthsdk.GiniHealthSDKPinningExampleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GiniHealthSDKPinningExample.app/GiniHealthSDKPinningExample";
+			};
+			name = Debug;
+		};
+		F4DB6425283546960027681C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = BQY9KX4V88;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.healthsdk.GiniHealthSDKPinningExampleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GiniHealthSDKPinningExample.app/GiniHealthSDKPinningExample";
+			};
+			name = Release;
+		};
 		F4EC38E6273C21E6007045DC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -711,7 +823,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BQY9KX4V88;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -736,7 +848,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BQY9KX4V88;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -769,6 +881,15 @@
 			buildConfigurations = (
 				F4C36A9D270C6EC200CCC69C /* Debug */,
 				F4C36A9E270C6EC200CCC69C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F4DB6426283546960027681C /* Build configuration list for PBXNativeTarget "GiniHealthSDKPinningExampleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F4DB6424283546960027681C /* Debug */,
+				F4DB6425283546960027681C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
