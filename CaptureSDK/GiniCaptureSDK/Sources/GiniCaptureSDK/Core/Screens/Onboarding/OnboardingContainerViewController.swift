@@ -72,6 +72,8 @@ final class OnboardingContainerViewController: UIViewController, ContainerViewCo
         )
     }()
     
+    fileprivate var navigationBarBottomProvider: DefaultBottomNavigationBar?
+
     init(giniConfiguration: GiniConfiguration = GiniConfiguration.shared,
          trackingDelegate: OnboardingScreenTrackingDelegate? = nil,
          withCompletion completion: @escaping OnboardingContainerCompletionBlock) {
@@ -85,14 +87,37 @@ final class OnboardingContainerViewController: UIViewController, ContainerViewCo
         fatalError("init(coder:) has not been implemented")
     }
     
+    fileprivate func configureNavigationBar() {
+        if GiniConfiguration.shared.bottomNavigationBarEnabled {
+            if let bottomNavigationBar = DefaultBottomNavigationBar().loadNib() as?
+                DefaultBottomNavigationBar {
+                bottomNavigationBar.frame = CGRect(x: 0, y: pageControlContainerView.frame.height, width: pageControlContainerView.frame.width, height: 56)
+                bottomNavigationBar.didTapForwardButton = {
+                    self.nextPage()
+                }
+                bottomNavigationBar.didTapBackButton = {
+                    self.close()
+                }
+                self.navigationBarBottomProvider = bottomNavigationBar
+                pageControlContainerView.addSubview(bottomNavigationBar)
+            }
+        } else {
+            self.navigationController?.isNavigationBarHidden = false
+            navigationItem.setRightBarButton(continueButton, animated: false)
+        }
+    }
+    
     override func loadView() {
         super.loadView()
-        
+
         view.addSubview(containerView)
+
         view.addSubview(pageControlContainerView)
-        pageControlContainerView.addSubview(pageControl)
-        navigationItem.setRightBarButton(continueButton, animated: false)
         
+        configureNavigationBar()
+        
+        pageControlContainerView.addSubview(pageControl)
+
         addConstraints()
     }
     
