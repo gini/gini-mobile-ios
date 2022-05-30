@@ -536,6 +536,16 @@ import UIKit
      */
     public var multipageToolTipOpaqueBackgroundStyle: OpaqueViewStyle = .blurred(style: .light)
     
+    /**
+     Sets the background color for the successfull upload icon.
+     */
+    public var multipagePageSuccessfullUploadIconBackgroundColor = Colors.Gini.springGreen
+    
+    /**
+     Sets the background color for the failed upload icon.
+     */
+    public var multipagePageFailureUploadIconBackgroundColor = Colors.Gini.springGreen
+    
     // MARK: Analysis options
     
     /**
