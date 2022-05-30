@@ -55,16 +55,12 @@ final class PageStateView: UIView {
         switch status {
         case .succeeded:
             backgroundColor = GiniConfiguration.shared.multipagePageSuccessfullUploadIconBackgroundColor
-            icon.image = UIImage.init(named: "successfullUploadIcon",
-                                      in: giniCaptureBundle(),
-                                      compatibleWith: nil)
+            icon.image = UIImageNamedPreferred(named: "successfullUploadIcon")
             loadingIndicator.stopAnimating()
             
         case .failed:
             backgroundColor = GiniConfiguration.shared.multipagePageFailureUploadIconBackgroundColor
-            icon.image = UIImage.init(named: "failureUploadIcon",
-                                      in: giniCaptureBundle(),
-                                      compatibleWith: nil)
+            icon.image = UIImageNamedPreferred(named: "failureUploadIcon")
             loadingIndicator.stopAnimating()
         case .loading:
             backgroundColor = .clear
