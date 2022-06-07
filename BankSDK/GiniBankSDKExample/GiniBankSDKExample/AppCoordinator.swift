@@ -64,6 +64,9 @@ final class AppCoordinator: Coordinator {
         configuration.cameraPreviewFrameColor = .init(lightModeColor: UIColor.init(white: 0.5, alpha: 0.1), darkModeColor: UIColor.init(white: 0.5, alpha: 0.3))
         configuration.cameraButtonsViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
         configuration.cameraContainerViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
+        
+        configuration.multipagePageSuccessfullUploadIconBackgroundColor = .systemGreen
+        configuration.multipagePageFailureUploadIconBackgroundColor = .systemRed
        return configuration
     }()
     

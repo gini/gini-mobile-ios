@@ -111,8 +111,8 @@ import UIKit
     }
     
     public override func viewWillLayoutSubviews() {
-        scrollView.contentInsetAdjustmentBehavior = .never
         super.viewWillLayoutSubviews()
+        scrollView.contentInsetAdjustmentBehavior = .never
     }
     
     /**

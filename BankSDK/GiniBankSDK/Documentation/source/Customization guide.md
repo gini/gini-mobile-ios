@@ -161,6 +161,12 @@ Some background and text colors use the `GiniColor` type with which you can set 
 - Opaque view style (when tool tip is shown)  &#8594;  `GiniBankConfiguration.multipageToolTipOpaqueBackgroundStyle`
 
 ##### 3. Page item
+- Page upload state icon
+  - Successful upload &#8594; <span style="color:#009EDF">*successfullUploadIcon*</span> image asset
+  - Failed upload &#8594; <span style="color:#009EDF">*failureUploadIcon*</span> image asset
+- Page upload state icon background color
+  - Successful upload &#8594; `GiniBankConfiguration.multipagePageSuccessfullUploadIconBackgroundColor`
+  - Failed upload &#8594; `GiniBankConfiguration.multipagePageFailureUploadIconBackgroundColor`
 - Page circle indicator color &#8594; `GiniBankConfiguration.indicatorCircleColor` using `GiniColor` with dark mode and light mode colors
 - Page indicator color &#8594; `GiniBankConfiguration.multipagePageIndicatorColor` 
 - Page background color &#8594; `GiniBankConfiguration.multipagePageBackgroundColor` using `GiniColor` with dark mode and light mode colors
