@@ -50,14 +50,16 @@ jobs:
             -exportOptionsPlist  $PWD/GinBankSDKExampleBank.xcarchive/Info.plist
   
       - name: Check file existence
-          id: check_files
-          uses: andstor/file-existence-action@v1
-          with:
-            files: "*.ipa"
+        uses: andstor/file-existence-action@v1
+        with:
+          files: "*.ipa"
       
       - name: Distribute to AppCenter
-          uses: grndvl1/appcenter-distribute-action@master
-          with:
-            args: stores publish --file $PWD/GinBankSDKExampleBank.ipa --store Production --app Gini-Team-Organization/Gini-Bank-SDK-Example
-          env:
-            APPCENTER_ACCESS_TOKEN: ${{ secrets.GINI_APPCENTER_API_TOKEN }}
+        uses: devussy/AppCenter-Distribute-Github-Action@v1.0.5
+        with:
+          app: Gini-Team-Organization/Gini-Bank-SDK-Example
+          token: ${{ secrets.GINI_APPCENTER_API_TOKEN }}
+          group: Production
+          file: $PWD/GinBankSDKExampleBank.ipa
+          silent: false
+          
