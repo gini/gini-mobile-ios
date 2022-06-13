@@ -2,7 +2,7 @@ name: Publish Gini-Bank-SDK-Example
 on:
   push:
     tags:
-      - 'GiniBankSDK;[0-9]+.[0-9]+.[0-9]+'
+      - 'Gini-Bank-SDK-Example ;[0-9]+.[0-9]+.[0-9]+'
   
 jobs:
   check:
