@@ -1,0 +1,63 @@
+name: Publish Gini-Bank-SDK-Example
+on:
+  push:
+    tags:
+      - 'GiniBankSDK;[0-9]+.[0-9]+.[0-9]+'
+  
+jobs:
+  check:
+    uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@main
+    secrets:
+      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
+
+  upload-version:
+    needs: check
+    runs-on: macOS-11    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '13.0'
+        
+      - name: Install gpg
+        run: brew install gnupg
+  
+      - name: Setup provisioning profile
+        env:
+          IOS_KEYS: ${{ secrets.IOS_KEYS }}
+        run: ./.github/secrets/decrypt_secrets.sh
+  
+      - name: Archiving project
+        env:
+          PR_NUMBER: $(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+        run: >
+            xcodebuild -workspace GiniMobile.xcworkspace \
+            -scheme GinBankSDKExampleBank \
+            -sdk iphoneos \
+            -archivePath $PWD/GinBankSDKExampleBank.xcarchive \
+            clean archive | xcpretty \
+            CLIENT_ID="gini-mobile-test" \
+            CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
+    
+      - name: Exporting .ipa
+        run: >
+            xcodebuild -archivePath $PWD/GinBankSDKExampleBank.xcarchive \
+            -exportPath $PWD/ \
+            -allowProvisioningUpdates \
+            -exportArchive \
+            -exportOptionsPlist  $PWD/GinBankSDKExampleBank.xcarchive/Info.plist
+  
+      - name: Check file existence
+          id: check_files
+          uses: andstor/file-existence-action@v1
+          with:
+            files: "*.ipa"
+      
+      - name: Distribute to AppCenter
+          uses: grndvl1/appcenter-distribute-action@master
+          with:
+            args: stores publish --file $PWD/GinBankSDKExampleBank.ipa --store Production --app Gini-Team-Organization/Gini-Bank-SDK-Example
+          env:
+            APPCENTER_ACCESS_TOKEN: ${{ secrets.GINI_APPCENTER_API_TOKEN }}
