@@ -46,7 +46,7 @@ jobs:
             -project GiniBankSDKExample/GiniBankSDKExample.xcodeproj \
             -scheme "GinBankSDKExampleBank" \
             -archivePath $PWD/../GinBankSDKExampleBank.xcarchive \
-            CODE_SIGN_IDENTITY="" \
+            -configuration Release
             CODE_SIGNING_REQUIRED=NO \
             ONLY_ACTIVE_ARCH=NO \
             CLIENT_ID="gini-mobile-test" \
@@ -61,7 +61,7 @@ jobs:
             -destination "generic/platform=iOS"
             CODE_SIGNING_REQUIRED=YES \
             ONLY_ACTIVE_ARCH=NO \
-            -exportOptionsPlist  $PWD/GinBankSDKExampleBank.xcarchive/Info.plist
+            -exportOptionsPlist  $PWD/ExportOptions.plist
   
       - name: Check file existence
         uses: andstor/file-existence-action@v1
