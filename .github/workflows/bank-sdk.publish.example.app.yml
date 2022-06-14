@@ -3,20 +3,6 @@ on:
   push:
     branches:
       - PIA-1851_distr_appcenter
-  workflow_call:    
-    secrets:
-      GINI_MOBILE_TEST_CLIENT_SECRET:
-        required: true
-      IOS_KEYS:
-        required: true
-      RELEASE_GITHUB_PASSWORD:
-        required: true
-      GINI_MOBILE_TEST_CLIENT_SECRET:
-        required: true
-      GINI_APPCENTER_API_TOKEN:
-        required: true
-      IOS_CERTS_SECRET:
-        required: true
 
 jobs:
   check:
