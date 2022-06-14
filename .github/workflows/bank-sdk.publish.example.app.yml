@@ -39,7 +39,6 @@ jobs:
 
       - name: Archiving project
         run: |
-            cd BankSDK
             xcodebuild clean archive \
             -workspace GiniMobile.xcworkspace \
             -scheme "GiniBankSDKExample" \
