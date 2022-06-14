@@ -1,12 +1,10 @@
 name: Publish GiniBankSDKExample to App Center
 on:
   push:
+    branches:
+      - PIA-1851_distr_appcenter
     tags:
       - 'GiniBankSDKExample'
-  pull_request:
-    paths:
-      - 'BankSDK/**'
-      - 'BankAPILibrary/**'
   workflow_call:    
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET:
