@@ -305,7 +305,7 @@ platform :ios do
           export_options: {
             "net.gini.ginipaybank.Example-Swift": "Bank SDK Example Distribution"
           },
-          codesigning_identity: "Apple Development" #"iOS Distribution: Gini GmbH",
+          codesigning_identity: "Apple Development",
           xcargs: "-allowProvisioningUpdates"
         )
   end
