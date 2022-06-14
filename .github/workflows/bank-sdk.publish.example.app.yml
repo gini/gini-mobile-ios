@@ -41,14 +41,15 @@ jobs:
 
       - name: Archiving project
         run: |
-            cd BankSDK/GiniBankSDKExample
+            cd BankSDK
             xcodebuild \
             -project GiniBankSDKExample/GiniBankSDKExample.xcodeproj \
             -scheme "GinBankSDKExampleBank" \
+            -archivePath $PWD/../GinBankSDKExampleBank.xcarchive \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             ONLY_ACTIVE_ARCH=NO \
-            CLIENT_ID="gini-mobile-test"
+            CLIENT_ID="gini-mobile-test" \
             CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
     
       - name: Exporting .ipa
