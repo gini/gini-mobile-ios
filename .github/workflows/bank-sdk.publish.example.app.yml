@@ -47,17 +47,18 @@ jobs:
             -scheme "GinBankSDKExampleBank" \
             -sdk iphoneos \
             -archivePath $PWD/GinBankSDKExampleBank.xcarchive \
-            clean archive | xcpretty \
+            clean archive \
             CLIENT_ID="gini-mobile-test" \
             CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
     
       - name: Exporting .ipa
         run: >
             xcodebuild -archivePath $PWD/GinBankSDKExampleBank.xcarchive \
-            -scheme "GinBankSDKExampleBank" \
+            -exportArchive \
             -exportPath $PWD/ \
             -allowProvisioningUpdates \
-            -exportArchive \
+            CODE_SIGNING_REQUIRED=YES \
+            ONLY_ACTIVE_ARCH=NO \
             -exportOptionsPlist  $PWD/GinBankSDKExampleBank.xcarchive/Info.plist
   
       - name: Check file existence
