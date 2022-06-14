@@ -43,7 +43,6 @@ jobs:
             -workspace GiniMobile.xcworkspace \
             -scheme "GiniBankSDKExample" \
             -archivePath $PWD/../GinBankSDKExampleBank.xcarchive \
-            -allowProvisioningUpdates \
             -configuration Release \
             -destination generic/platform=iOS \
             CODE_SIGN_IDENTITY="Apple Development" \
