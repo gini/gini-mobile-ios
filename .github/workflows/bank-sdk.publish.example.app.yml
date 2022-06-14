@@ -1,12 +1,12 @@
-name: Publish Gini-Bank-SDK-Example
+name: Publish GiniBankSDKExample to App Center
 on:
   push:
     tags:
-      - 'Gini-Bank-SDK-Example ;[0-9]+.[0-9]+.[0-9]+'
+      - 'GiniBankSDKExample ;[0-9]+.[0-9]+.[0-9]+'
   
 jobs:
   check:
-    uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@main
+    uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@PIA-1851_distr_appcenter
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
 
