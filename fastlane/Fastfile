@@ -286,5 +286,22 @@ platform :ios do
       end
     end
   end
-  
+
+  desc <<~DOC
+    Create ipa for bank app
+  DOC
+  lane :publish_example do |options|
+    (ipa_path, output_name, ci) = 
+      check_and_get_options(options, [:ipa_path, :output_name, :ci], UI)
+        build_app( 
+          workspace: "GiniMobile.xcworkspace",
+          configuration: 'Release',
+          clean: true,
+          output_directory: ipa_path,
+          output_name: output_name,
+          scheme: 'GiniBankSDKExample',
+          export_method: 'enterprise',
+          codesigning_identity: "Apple Development"
+        )
+  end
 end

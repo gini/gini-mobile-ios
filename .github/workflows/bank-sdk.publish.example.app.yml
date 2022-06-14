@@ -39,33 +39,44 @@ jobs:
           security unlock-keychain -p "" ~/Library/Keychains/build.keychain
           security set-key-partition-list -S apple-tool:,apple: -s -k "" ~/Library/Keychains/build.keychain
 
-      - name: Archiving project
-        run: |
-            cd BankSDK
-            xcodebuild \
-            -project GiniBankSDKExample/GiniBankSDKExample.xcodeproj \
-            -scheme "GiniBankSDKExample" \
-            -archivePath $PWD/../GinBankSDKExampleBank.xcarchive \
-            -allowProvisioningUpdates \
-            -configuration Release \
-            -destination generic/platform=iOS \
-            CODE_SIGN_IDENTITY="" \
-            CODE_SIGNING_REQUIRED=NO \
-            ONLY_ACTIVE_ARCH=NO \
-            CLIENT_ID="gini-mobile-test" \
-            CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
+  #    - name: Archiving project
+  #      run: |
+  #          cd BankSDK
+  #          xcodebuild \
+  #          -project GiniBankSDKExample/GiniBankSDKExample.xcodeproj \
+  #          -scheme "GiniBankSDKExample" \
+  #          -archivePath $PWD/../GinBankSDKExampleBank.xcarchive \
+  #          -allowProvisioningUpdates \
+  #          -configuration Release \
+  #          -destination generic/platform=iOS \
+  #          CODE_SIGN_IDENTITY="" \
+  #          CODE_SIGNING_REQUIRED=NO \
+  #          ONLY_ACTIVE_ARCH=NO \
+  #          CLIENT_ID="gini-mobile-test" \
+  #          CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
     
-      - name: Exporting .ipa
-        run: >
-            xcodebuild -archivePath $PWD/GinBankSDKExampleBank.xcarchive \
-            -exportArchive \
-            -exportPath $PWD/ \
-            -allowProvisioningUpdates \
-            -destination "generic/platform=iOS"
-            CODE_SIGNING_REQUIRED=YES \
-            ONLY_ACTIVE_ARCH=NO \
-            -exportOptionsPlist  $PWD/ExportOptions.plist
-  
+    #  - name: Exporting .ipa
+    #    run: >
+    #        xcodebuild -archivePath $PWD/GinBankSDKExampleBank.xcarchive \
+    #        -exportArchive \
+    #        -exportPath $PWD/ \
+    #        -allowProvisioningUpdates \
+    #        -destination "generic/platform=iOS"
+    #        CODE_SIGNING_REQUIRED=YES \
+    #        ONLY_ACTIVE_ARCH=NO \
+    #        -exportOptionsPlist  $PWD/ExportOptions.plist
+
+      - name: Build Bank Example app
+        uses: maierj/fastlane-action@v2.0.1
+        with:
+          lane: 'publish_example'
+          options: >
+          { 
+            "ipa_path": $PWD/,
+            "output_name": "GinBankSDKExampleBank"
+            "ci": "true"
+          }
+
       - name: Check file existence
         uses: andstor/file-existence-action@v1
         with:
