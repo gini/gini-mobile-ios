@@ -5,13 +5,13 @@ on:
       - PIA-1851_distr_appcenter
 
 jobs:
-  check:
-    uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@PIA-1851_distr_appcenter
-    secrets:
-      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
+  #check:
+  #  uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@PIA-1851_distr_appcenter
+  #  secrets:
+  #    GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
 
   upload-version:
-    needs: check
+    #needs: check
     runs-on: macOS-11    
     steps:
       - name: Checkout repository
@@ -55,7 +55,7 @@ jobs:
           files: "*.ipa"
       
       - name: Distribute to AppCenter
-        uses: devussy/AppCenter-Distribute-Github-Action@v1.0.5
+        uses: devussy/AppCenter-Distribute-Github-Action@v1.0.2
         with:
           app: Gini-Team-Organization/Gini-Bank-SDK-Example
           token: ${{ secrets.GINI_APPCENTER_API_TOKEN }}
