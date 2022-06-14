@@ -46,6 +46,7 @@ jobs:
             -project GiniBankSDKExample/GiniBankSDKExample.xcodeproj \
             -scheme "GinBankSDKExampleBank" \
             -archivePath $PWD/../GinBankSDKExampleBank.xcarchive \
+            -allowProvisioningUpdates \
             -configuration Release
             CODE_SIGNING_REQUIRED=NO \
             ONLY_ACTIVE_ARCH=NO \
