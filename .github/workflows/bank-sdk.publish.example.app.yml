@@ -44,7 +44,6 @@ jobs:
           PR_NUMBER: $(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
         run: >
             xcodebuild \
-            -workspace GiniMobile.xcworkspace \
             -scheme "GinBankSDKExampleBank" \
             -archivePath $PWD/GinBankSDKExampleBank.xcarchive \
             -destination "generic/platform=iOS" \
