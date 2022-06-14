@@ -73,7 +73,7 @@ jobs:
           options: >
             { 
               "ipa_path": $PWD/,
-              "output_name": "GinBankSDKExampleBank"
+              "output_name": "GinBankSDKExampleBank",
               "ci": "true"
             }
 
