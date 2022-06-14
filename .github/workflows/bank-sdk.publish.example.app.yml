@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - PIA-1851_distr_appcenter
-    tags:
-      - 'GiniBankSDKExample'
   workflow_call:    
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET:
