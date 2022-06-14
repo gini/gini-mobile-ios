@@ -299,12 +299,15 @@ platform :ios do
           configuration: 'Release',
           clean: true,
           output_directory: ipa_path,
-          output_name: output_name,
           scheme: 'GiniBankSDKExample',
           export_method: 'enterprise',
+          export_team_id: 'BQY9KX4V88',
           export_options: {
+            signingStyle: "manual",
+            method: "ad-hoc",
             "net.gini.ginipaybank.Example-Swift": "Bank SDK Example Distribution"
           },
+          output_name: output_name,
           codesigning_identity: "Apple Development",
           xcargs: "-allowProvisioningUpdates"
         )
