@@ -301,7 +301,8 @@ platform :ios do
           output_name: output_name,
           scheme: 'GiniBankSDKExample',
           export_method: 'enterprise',
-          codesigning_identity: "Apple Development"
+          codesigning_identity: "Apple Development",
+          xcargs: "-allowProvisioningUpdates"
         )
   end
 end
