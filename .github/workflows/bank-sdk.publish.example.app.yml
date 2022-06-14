@@ -44,7 +44,7 @@ jobs:
           PR_NUMBER: $(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
         run: >
             xcodebuild -workspace GiniMobile.xcworkspace \
-            -scheme GinBankSDKExampleBank \
+            -scheme "GinBankSDKExampleBank" \
             -sdk iphoneos \
             -archivePath $PWD/GinBankSDKExampleBank.xcarchive \
             clean archive | xcpretty \
@@ -54,6 +54,7 @@ jobs:
       - name: Exporting .ipa
         run: >
             xcodebuild -archivePath $PWD/GinBankSDKExampleBank.xcarchive \
+            -scheme "GinBankSDKExampleBank" \
             -exportPath $PWD/ \
             -allowProvisioningUpdates \
             -exportArchive \
