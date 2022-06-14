@@ -40,15 +40,14 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple: -s -k "" ~/Library/Keychains/build.keychain
   
       - name: Archiving project
-        env:
-          PR_NUMBER: $(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
         run: >
-            xcodebuild \
+            xcodebuild archive
+            -project GiniBankSDKExample/GiniBankSDKExample.xcodeproj 
             -scheme "GinBankSDKExampleBank" \
-            -archivePath $PWD/GinBankSDKExampleBank.xcarchive \
-            -destination "generic/platform=iOS" \
-            CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO \
-            CLIENT_ID="gini-mobile-test" \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            ONLY_ACTIVE_ARCH=NO \
+            CLIENT_ID="gini-mobile-test"
             CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
     
       - name: Exporting .ipa
