@@ -40,7 +40,7 @@ jobs:
       - name: Archiving project
         run: |
             cd BankSDK
-            xcodebuild clean archive\
+            xcodebuild clean archive \
             -workspace GiniMobile.xcworkspace \
             -scheme "GiniBankSDKExample" \
             -archivePath $PWD/../GinBankSDKExampleBank.xcarchive \
