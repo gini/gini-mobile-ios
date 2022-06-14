@@ -38,11 +38,12 @@ jobs:
           security default-keychain -s ~/Library/Keychains/build.keychain
           security unlock-keychain -p "" ~/Library/Keychains/build.keychain
           security set-key-partition-list -S apple-tool:,apple: -s -k "" ~/Library/Keychains/build.keychain
-  
+
       - name: Archiving project
-        run: >
-            xcodebuild archive
-            -project GiniBankSDKExample/GiniBankSDKExample.xcodeproj 
+        run: |
+            cd BankSDK/GiniBankSDKExample
+            xcodebuild \
+            -project GiniBankSDKExample/GiniBankSDKExample.xcodeproj \
             -scheme "GinBankSDKExampleBank" \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
