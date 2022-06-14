@@ -72,7 +72,7 @@ jobs:
           lane: 'publish_example'
           options: >
             { 
-              "ipa_path": $PWD/,
+              "ipa_path": "./",
               "output_name": "GinBankSDKExampleBank",
               "ci": "true"
             }
