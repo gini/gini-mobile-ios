@@ -74,7 +74,6 @@ jobs:
             { 
               "ipa_path": "./",
               "output_name": "GinBankSDKExampleBank",
-              "profile_path": "~/Library/MobileDevice/Provisioning\ Profiles/Bank_SDK_Example_Distribution.mobileprovision.mobileprovision",
               "ci": "true"
             }
 

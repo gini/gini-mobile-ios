@@ -291,9 +291,9 @@ platform :ios do
     Create ipa for bank app
   DOC
   lane :publish_example do |options|
-    (ipa_path, output_name, profile_path, ci) = 
-      check_and_get_options(options, [:ipa_path, :output_name, :profile_path, :ci], UI)
-        install_provisioning_profile(path: profile_path)
+    (ipa_path, output_name, ci) = 
+      check_and_get_options(options, [:ipa_path, :output_name, :ci], UI)
+        install_provisioning_profile(path: "~/Library/MobileDevice/Provisioning\ Profiles/Bank_SDK_Example_Distribution.mobileprovision.mobileprovision")
         build_app( 
           workspace: "GiniMobile.xcworkspace",
           configuration: 'Release',
