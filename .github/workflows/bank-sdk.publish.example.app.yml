@@ -43,11 +43,13 @@ jobs:
         env:
           PR_NUMBER: $(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
         run: >
-            xcodebuild -workspace GiniMobile.xcworkspace \
+            xcodebuild clean archive \
+            -workspace GiniMobile.xcworkspace \
             -scheme "GinBankSDKExampleBank" \
             -sdk iphoneos \
             -archivePath $PWD/GinBankSDKExampleBank.xcarchive \
-            clean archive \
+            -destination "generic/platform=iOS" \
+            CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO \
             CLIENT_ID="gini-mobile-test" \
             CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
     
@@ -57,6 +59,7 @@ jobs:
             -exportArchive \
             -exportPath $PWD/ \
             -allowProvisioningUpdates \
+            -destination "generic/platform=iOS"
             CODE_SIGNING_REQUIRED=YES \
             ONLY_ACTIVE_ARCH=NO \
             -exportOptionsPlist  $PWD/GinBankSDKExampleBank.xcarchive/Info.plist
