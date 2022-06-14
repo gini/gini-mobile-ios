@@ -26,10 +26,10 @@ jobs:
   
       - name: Setup provisioning profile
         env:
-          IOS_KEYS: ${{ secrets.IOS_KEYS }}
+          IOS_KEYS: ${{ secrets.IOS_CERTS_SECRET }}
         run: |
-          gpg --quiet --batch --yes --decrypt --passphrase="${{ secrets.IOS_KEYS }}" --output ./.github/secrets/Bank_SDK_Example_Distribution.mobileprovision.mobileprovision ./.github/secrets/Bank_SDK_Example_Distribution.mobileprovision.gpg
-          gpg --quiet --batch --yes --decrypt --passphrase="${{ secrets.IOS_KEYS }}" --output ./.github/secrets/ios_distribution_universal.p12 ./.github/secrets/ios_distribution_universal.p12.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase="${{ secrets.IOS_CERTS_SECRET }}" --output ./.github/secrets/Bank_SDK_Example_Distribution.mobileprovision.mobileprovision ./.github/secrets/Bank_SDK_Example_Distribution.mobileprovision.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase="${{ secrets.IOS_CERTS_SECRET }}" --output ./.github/secrets/ios_distribution_universal.p12 ./.github/secrets/ios_distribution_universal.p12.gpg
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp ./.github/secrets/Bank_SDK_Example_Distribution.mobileprovision.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/Bank_SDK_Example_Distribution.mobileprovision.mobileprovision
           security create-keychain -p "" build.keychain
