@@ -65,12 +65,12 @@ jobs:
     
       - name: Exporting .ipa
         run: >
-            xcodebuild -archivePath GiniBankSDKExample.xcarchive \
+            xcodebuild  \
             -exportArchive \
+            -archivePath GiniBankSDKExample.xcarchive \
             -exportPath . \
-            -exportOptionsPlist ExportOptions.plist
-            -allowProvisioningUpdates \
-            -destination "generic/platform=iOS"
+            -exportOptionsPlist ExportOptions.plist \
+            -destination "generic/platform=iOS" \
             CODE_SIGNING_REQUIRED=YES \
             ONLY_ACTIVE_ARCH=NO 
 
