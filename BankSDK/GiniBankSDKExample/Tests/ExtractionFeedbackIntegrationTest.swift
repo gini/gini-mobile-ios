@@ -6,10 +6,9 @@
 //
 
 import XCTest
-
-@testable import GiniBankAPILibrary
-@testable import GiniCaptureSDK
-@testable import GiniBankSDK
+import GiniBankAPILibrary
+import GiniCaptureSDK
+import GiniBankSDK
 
 class ExtractionFeedbackIntegrationTest: XCTestCase {
     let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!

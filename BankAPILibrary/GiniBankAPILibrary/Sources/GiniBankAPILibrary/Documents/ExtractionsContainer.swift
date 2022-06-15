@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct ExtractionsContainer {
-    let extractions: [Extraction]
+public struct ExtractionsContainer {
+    public let extractions: [Extraction]
     let compoundExtractions: [String : [[Extraction]]]?
     let candidates: [Extraction.Candidate]
     let returnReasons: [ReturnReason]?
@@ -25,7 +25,7 @@ struct ExtractionsContainer {
 
 extension ExtractionsContainer: Decodable {
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         let decodedExtractions = try container.decode([String : Extraction].self,
