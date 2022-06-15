@@ -64,7 +64,7 @@ jobs:
             CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
     
       - name: Exporting .ipa
-        run: >
+        run: |
             xcodebuild  \
             -exportArchive \
             -archivePath GiniBankSDKExample.xcarchive \
