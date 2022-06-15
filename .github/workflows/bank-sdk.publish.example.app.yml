@@ -65,8 +65,7 @@ jobs:
     
       - name: Exporting .ipa
         run: >
-            xcodebuild -archivePath ./GiniBankSDKExample.xcarchive \
-            -scheme "GiniBankSDKExample" \
+            xcodebuild -archivePath GiniBankSDKExample.xcarchive \
             -exportArchive \
             -exportPath . \
             -exportOptionsPlist ExportOptions.plist
