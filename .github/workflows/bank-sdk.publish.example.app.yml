@@ -25,26 +25,39 @@ jobs:
         run: brew install gnupg
 
       - name: Setup provisioning profile
+        env:
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.GINI_DISTRIBUTION_UNIVERSAL_CERTIFICATE }}
+          P12_PASSWORD: ${{ secrets.IOS_CERTS_SECRET }}
+          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.GINI_BANK_SDK_EXAMPLE_PROVISION_PROFILE }}
+          KEYCHAIN_PASSWORD: ${{ secrets.IOS_CERTS_SECRET }}
         run: |
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
-          gpg --quiet --batch --yes --decrypt --passphrase="${{ secrets.IOS_CERTS_SECRET }}" --output ./.github/secrets/Bank_SDK_Example_Distribution.mobileprovision.mobileprovision ./.github/secrets/Bank_SDK_Example_Distribution.mobileprovision.gpg
-          gpg --quiet --batch --yes --decrypt --passphrase="${{ secrets.IOS_CERTS_SECRET }}" --output ./.github/secrets/ios_distribution_universal.p12 ./.github/secrets/ios_distribution_universal.p12.gpg
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          cp ./.github/secrets/Bank_SDK_Example_Distribution.mobileprovision.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/Bank_SDK_Example_Distribution.mobileprovision.mobileprovision
-          security create-keychain -p "" $KEYCHAIN_PATH
+
+          # import certificate and provisioning profile from secrets
+          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode --output $CERTIFICATE_PATH
+          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode --output $PP_PATH
+
+          # create temporary keychain
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-          security unlock-keychain -p "" $KEYCHAIN_PATH
-          
-          security import ./.github/secrets/ios_distribution_universal.p12 -P "" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-          
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+          # import certificate to keychain
+          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
           security list-keychain -d user -s $KEYCHAIN_PATH
+
+          # apply provisioning profile
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
       - name: Archiving project
         run: |
             xcodebuild clean archive \
             -workspace GiniMobile.xcworkspace \
             -scheme "GiniBankSDKExample" \
-            -archivePath $PWD/../GinBankSDKExampleBank.xcarchive \
+            -archivePath ./GiniBankSDKExample.xcarchive \
             -configuration Release \
             -destination generic/platform=iOS \
             CODE_SIGN_IDENTITY="Apple Distribution" \
@@ -55,14 +68,14 @@ jobs:
     
       - name: Exporting .ipa
         run: >
-            xcodebuild -archivePath $PWD/GinBankSDKExampleBank.xcarchive \
+            xcodebuild -archivePath ./GiniBankSDKExample.xcarchive \
             -exportArchive \
-            -exportPath $PWD/ \
+            -exportPath . \
+            -exportOptionsPlist  ExportOptions.plist
             -allowProvisioningUpdates \
             -destination "generic/platform=iOS"
             CODE_SIGNING_REQUIRED=YES \
-            ONLY_ACTIVE_ARCH=NO \
-            -exportOptionsPlist  $PWD/ExportOptions.plist
+            ONLY_ACTIVE_ARCH=NO 
 
       - name: Check file existence
         uses: andstor/file-existence-action@v1
