@@ -83,7 +83,7 @@ jobs:
         uses: akiojin/appcenter-distribute-github-action@v1
         with:
           token: ${{ secrets.GINI_APPCENTER_API_TOKEN }}
-          path: GinBankSDKExampleBank.ipa
+          path: GiniBankSDKExample.ipa
           app: Gini-Team-Organization/Gini-Bank-SDK-Example
           group: 'Public'
 
