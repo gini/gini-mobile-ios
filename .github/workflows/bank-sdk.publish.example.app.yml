@@ -79,12 +79,11 @@ jobs:
         with:
           files: "*.ipa"
       
-      - name: Distribute to AppCenter
-        uses: devussy/AppCenter-Distribute-Github-Action@v1.0.2
+      - name: Distribute ipa to App Center
+        uses: akiojin/appcenter-distribute-github-action@v1
         with:
-          app: Gini-Team-Organization/Gini-Bank-SDK-Example
           token: ${{ secrets.GINI_APPCENTER_API_TOKEN }}
-          group: Production
-          file: $PWD/GinBankSDKExampleBank.ipa
-          silent: false
+          path: GinBankSDKExampleBank.ipa
+          app: Gini-Team-Organization/Gini-Bank-SDK-Example
+
           
