@@ -85,5 +85,6 @@ jobs:
           token: ${{ secrets.GINI_APPCENTER_API_TOKEN }}
           path: GinBankSDKExampleBank.ipa
           app: Gini-Team-Organization/Gini-Bank-SDK-Example
+          group: 'Public'
 
           
