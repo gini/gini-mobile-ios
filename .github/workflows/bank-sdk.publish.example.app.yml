@@ -1,17 +1,17 @@
 name: Publish GiniBankSDKExample to App Center
 on:
   push:
-    branches:
-      - PIA-1851_distr_appcenter
+    paths:
+      - 'BankSDK/**'
 
 jobs:
-  #check:
-  #  uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@PIA-1851_distr_appcenter
-  #  secrets:
-  #    GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
+  check:
+    uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@PIA-1851_distr_appcenter
+    secrets:
+      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
 
   upload-version:
-    #needs: check
+    needs: check
     runs-on: macOS-11    
     steps:
       - name: Checkout repository
@@ -48,10 +48,12 @@ jobs:
           # apply provisioning profile
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+
       - name: Setup Credentials
         run: |
             plutil -replace client_id -string "gini-mobile-test" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
             plutil -replace client_password -string "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
+            
       - name: Archiving project
         run: |
             xcodebuild clean archive \

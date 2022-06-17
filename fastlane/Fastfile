@@ -286,30 +286,5 @@ platform :ios do
       end
     end
   end
-
-  desc <<~DOC
-    Create ipa for bank app
-  DOC
-  lane :publish_example do |options|
-    (ipa_path, output_name, ci) = 
-      check_and_get_options(options, [:ipa_path, :output_name, :ci], UI)
-        install_provisioning_profile(path: "~/Library/MobileDevice/Provisioning\ Profiles/Bank_SDK_Example_Distribution.mobileprovision.mobileprovision")
-        build_app( 
-          workspace: "GiniMobile.xcworkspace",
-          configuration: 'Release',
-          clean: true,
-          output_directory: ipa_path,
-          scheme: 'GiniBankSDKExample',
-          export_method: 'enterprise',
-          export_team_id: 'BQY9KX4V88',
-          export_options: {
-            signingStyle: "manual",
-            method: "ad-hoc",
-            "net.gini.ginipaybank.Example-Swift": "Bank SDK Example Distribution"
-          },
-          output_name: output_name,
-          codesigning_identity: "Apple Development",
-          xcargs: "-allowProvisioningUpdates"
-        )
-  end
+  
 end
