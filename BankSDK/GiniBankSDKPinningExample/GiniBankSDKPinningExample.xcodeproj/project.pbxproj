@@ -320,7 +320,7 @@
 			children = (
 				F4CBE3402821878C00B28220 /* Tests */,
 			);
-			path = GiniBankSDKPinningExampleTests;
+			name = GiniBankSDKPinningExampleTests;
 			sourceTree = "<group>";
 		};
 		F4CBE3402821878C00B28220 /* Tests */ = {
