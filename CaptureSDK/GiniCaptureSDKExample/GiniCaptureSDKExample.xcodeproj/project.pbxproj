@@ -48,7 +48,6 @@
 		F4BB7CEE2695D66C003FD77E /* CustomMenuItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BB7CED2695D66C003FD77E /* CustomMenuItemViewController.swift */; };
 		F4BB7CF02695D96B003FD77E /* CustomMenuItems.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4BB7CEF2695D96B003FD77E /* CustomMenuItems.storyboard */; };
 		F4E561552686315100415EE8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4E561572686315100415EE8 /* Localizable.strings */; };
-		F4F1A77127EB479D0004FF42 /* ExtractionFeedbackIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F1A77027EB479D0004FF42 /* ExtractionFeedbackIntegrationTest.swift */; };
 		F4F1A77227EB479D0004FF42 /* ExtractionFeedbackIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F1A77027EB479D0004FF42 /* ExtractionFeedbackIntegrationTest.swift */; };
 		F4F1A77727EB47CA0004FF42 /* result_Gini_invoice_example.json in Resources */ = {isa = PBXBuildFile; fileRef = F4F1A77427EB47CA0004FF42 /* result_Gini_invoice_example.json */; };
 		F4F1A77827EB47CA0004FF42 /* result_Gini_invoice_example.json in Resources */ = {isa = PBXBuildFile; fileRef = F4F1A77427EB47CA0004FF42 /* result_Gini_invoice_example.json */; };
@@ -492,7 +491,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -526,7 +525,6 @@
 				1F578E111FBD7C7D00C17F62 /* SettingsViewController.swift in Sources */,
 				0AAE6D4A1D6B6BC500EE9EDD /* NoResultViewController.swift in Sources */,
 				0AAE6D4C1D6B6C0B00EE9EDD /* ResultTableViewController.swift in Sources */,
-				F4F1A77127EB479D0004FF42 /* ExtractionFeedbackIntegrationTest.swift in Sources */,
 				1F2E1A9D1FB4855000E1022A /* ComponentAPIOnboardingViewController.swift in Sources */,
 				1FEEADA91F793F84005BA159 /* ComponentAPICoordinator.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
