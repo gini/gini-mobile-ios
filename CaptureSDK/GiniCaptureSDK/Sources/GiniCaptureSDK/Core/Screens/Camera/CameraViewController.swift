@@ -145,13 +145,14 @@ import AVFoundation
             cameraButtonsViewController.addFileImportButton()
 
             // If FileImportToolTip was shown and QRCodeToolTip not yet
-            if !OnboardingContainerViewController.willBeShown {
-                if ToolTipView.shouldShowFileImportToolTip {
-                    showFileImportTip()
-                } else {
-                    showQrCodeTip()
-                }
-            }
+// MARK: - TODO 
+//            if !OnboardingContainerViewController.willBeShown {
+//                if ToolTipView.shouldShowFileImportToolTip {
+//                    showFileImportTip()
+//                } else {
+//                    showQrCodeTip()
+//                }
+//            }
         }
     }
     
