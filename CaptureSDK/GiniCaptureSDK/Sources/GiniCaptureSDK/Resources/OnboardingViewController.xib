@@ -27,7 +27,7 @@
                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="r9F-HC-Y7G">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="370"/>
                             <color key="backgroundColor" red="0.84321624040603638" green="0.15548175573348999" blue="0.066902250051498413" alpha="0.99988555909999999" colorSpace="custom" customColorSpace="sRGB"/>
-                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Ohp-ah-9Sw" customClass="CollectionFlowLayout" customModule="NavigationTest" customModuleProvider="target">
+                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Ohp-ah-9Sw" customClass="CollectionFlowLayout" customModule="GiniCaptureSDK">
                                 <size key="itemSize" width="414" height="500"/>
                                 <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                 <size key="footerReferenceSize" width="0.0" height="0.0"/>
