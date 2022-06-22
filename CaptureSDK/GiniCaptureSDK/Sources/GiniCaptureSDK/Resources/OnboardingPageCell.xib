@@ -5,7 +5,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -20,7 +19,6 @@
                     <subviews>
                         <view clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" placeholderIntrinsicWidth="9000" placeholderIntrinsicHeight="5555" translatesAutoresizingMaskIntoConstraints="NO" id="dej-Ye-zj2" customClass="OnboardingImageView" customModule="GiniCaptureSDK">
                             <rect key="frame" x="62" y="0.0" width="290" height="277"/>
-                            <color key="backgroundColor" red="1" green="0.40863117580000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="260" id="JYx-hV-vXE">
                                     <variation key="heightClass=regular-widthClass=compact" constant="260"/>
@@ -69,7 +67,6 @@
                             </constraints>
                         </stackView>
                     </subviews>
-                    <color key="backgroundColor" red="0.058291204270000001" green="0.61419159170000004" blue="0.86277651789999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <constraints>
                         <constraint firstItem="dej-Ye-zj2" firstAttribute="centerX" secondItem="SSz-Qg-jWg" secondAttribute="centerX" id="Ou8-S1-vHR"/>
                         <constraint firstItem="6G9-tW-cX2" firstAttribute="top" secondItem="dej-Ye-zj2" secondAttribute="bottom" constant="20" id="QHA-32-54z"/>
@@ -79,7 +76,6 @@
                 </stackView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <color key="backgroundColor" systemColor="systemGreenColor"/>
             <constraints>
                 <constraint firstItem="dej-Ye-zj2" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.5197" id="1rF-Tr-LNk"/>
                 <constraint firstItem="SSz-Qg-jWg" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="26b-6F-DKV"/>
@@ -100,9 +96,4 @@
             <point key="canvasLocation" x="203.62318840579712" y="143.30357142857142"/>
         </view>
     </objects>
-    <resources>
-        <systemColor name="systemGreenColor">
-            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-    </resources>
 </document>
