@@ -1,10 +1,8 @@
 # Gini Bank SDK XCFrameworks for iOS
 
-**Note: Xcode 13.2 required. If you don't have it installed you can download it as shown 
-[here](https://medium.com/a-swift-misadventure/how-to-install-multiple-versions-of-xcode-on-the-same-macos-machine-a2836387e57f) 
-and then use [xcode-select](https://riptutorial.com/xcode/example/19193/switching-command-line-tools-with-xcode-select) to make Xcode 13.2 the default while building the XCFramework. Don't forget to reset it after you're done.**
-
 Before starting you need to install [swift-create-xcframework](https://github.com/unsignedapps/swift-create-xcframework/tree/main#installation).
+
+**Note: Use at least version 2.2.0 of `swift-create-xcframework`, otherwise it won't work with Xcode 13.4.
 
 1. Navigate to the `cd GiniBankSDK` directory and run `swift create-xcframework`
 
@@ -24,20 +22,20 @@ Before starting you need to install [swift-create-xcframework](https://github.co
 
 9. For each dependency target in `Build Phases` -> `Compile Sources` add Resources and check that the target is checked the `Target Membership` in info tab.
 
-10. Navigate to the `cd .build/swift-create-xcframework/` directory and create archives for GiniBankSDK for device and simulator:
+10. Navigate to the `cd .build/swift-create-xcframework/` directory and create archives for GiniBankSDK for device and simulator (you can copy paste the whole snippet into your terminal and run it):
 
 ```
-xcodebuild archive -project GiniBankSDK.xcodeproj -scheme GiniBankSDK -sdk iphonesimulator -configuration Release -archivePath "iphonesimulator.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
-
+xcodebuild archive -project GiniBankSDK.xcodeproj -scheme GiniBankSDK -sdk iphonesimulator -configuration Release -archivePath "iphonesimulator.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES &&\
+\
 xcodebuild archive -project GiniBankSDK.xcodeproj -scheme GiniBankSDK -sdk iphoneos -configuration Release -archivePath "iphoneos.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
 ```
 
-11. Create XCFrameworks for GiniBankSDK and dependant packages:
+11. Create XCFrameworks for GiniBankSDK and dependant packages (you can copy paste the whole snippet into your terminal and run it):
 
 ```
-xcodebuild -create-xcframework -framework iphoneos.xcarchive/Products/Library/Frameworks/GiniBankAPILibrary.framework -framework iphonesimulator.xcarchive/Products/Library/Frameworks/GiniBankAPILibrary.framework -output GiniBankAPILibrary.xcframework
-
-xcodebuild -create-xcframework -framework iphoneos.xcarchive/Products/Library/Frameworks/GiniCaptureSDK.framework -framework iphonesimulator.xcarchive/Products/Library/Frameworks/GiniCaptureSDK.framework -output GiniCaptureSDK.xcframework
-
+xcodebuild -create-xcframework -framework iphoneos.xcarchive/Products/Library/Frameworks/GiniBankAPILibrary.framework -framework iphonesimulator.xcarchive/Products/Library/Frameworks/GiniBankAPILibrary.framework -output GiniBankAPILibrary.xcframework &&\
+\
+xcodebuild -create-xcframework -framework iphoneos.xcarchive/Products/Library/Frameworks/GiniCaptureSDK.framework -framework iphonesimulator.xcarchive/Products/Library/Frameworks/GiniCaptureSDK.framework -output GiniCaptureSDK.xcframework &&\
+\
 xcodebuild -create-xcframework -framework iphoneos.xcarchive/Products/Library/Frameworks/GiniBankSDK.framework -framework iphonesimulator.xcarchive/Products/Library/Frameworks/GiniBankSDK.framework -output GiniBankSDK.xcframework
 ```
