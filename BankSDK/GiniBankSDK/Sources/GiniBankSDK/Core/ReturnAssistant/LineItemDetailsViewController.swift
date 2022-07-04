@@ -85,11 +85,6 @@ class LineItemDetailsViewController: UIViewController {
     
     private func setupView() {
         let configuration = returnAssistantConfiguration ?? ReturnAssistantConfiguration.shared
-        if #available(iOS 13.0, *) {
-            view.backgroundColor = .systemBackground
-        } else {
-            view.backgroundColor = .white
-        }
         stackView.translatesAutoresizingMaskIntoConstraints = false
         checkboxContainerStackView.translatesAutoresizingMaskIntoConstraints = false
         checkboxButton.translatesAutoresizingMaskIntoConstraints = false
