@@ -55,13 +55,41 @@ class LineItemDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: .ginibankLocalized(
+                resource: DigitalInvoiceStrings.lineItemSaveButtonTitle
+            ),
+            style: .plain,
+            target: self,
+            action: #selector(saveButtonTapped)
+        )
+        setupView()
+        update()
+        let configuration  = returnAssistantConfiguration ?? ReturnAssistantConfiguration.shared
+        view.backgroundColor = UIColor.from(giniColor: configuration.lineItemDetailsBackgroundColor
+        )
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        guard let lineItem = lineItem, !lineItem.isUserInitiated else { return }
+        
+        if isMovingFromParent, transitionCoordinator?.isInteractive == false {
+            /*
+            Automatically save changes before user returns to main screen, so in case he
+            forgets to save it, changes are not lost
+             */
+            proceedWithSaveAction(shouldPopViewController: false)
+        }
+    }
+    
+    private func setupView() {
         let configuration = returnAssistantConfiguration ?? ReturnAssistantConfiguration.shared
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: .ginibankLocalized(resource: DigitalInvoiceStrings.lineItemSaveButtonTitle),
-                                                            style: .plain,
-                                                            target: self,
-                                                            action: #selector(saveButtonTapped))
-        
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = .systemBackground
+        } else {
+            view.backgroundColor = .white
+        }
         stackView.translatesAutoresizingMaskIntoConstraints = false
         checkboxContainerStackView.translatesAutoresizingMaskIntoConstraints = false
         checkboxButton.translatesAutoresizingMaskIntoConstraints = false
@@ -74,16 +102,8 @@ class LineItemDetailsViewController: UIViewController {
         totalPriceStackView.translatesAutoresizingMaskIntoConstraints = false
         totalPriceTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         totalPriceLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        if #available(iOS 13.0, *) {
-            view.backgroundColor = .systemBackground
-        } else {
-            view.backgroundColor = .white
-        }
-        
         stackView.axis = .vertical
         stackView.spacing = 16
-        
         checkboxContainerStackView.axis = .horizontal
         
         checkboxButton.tintColor = returnAssistantConfiguration?.digitalInvoiceLineItemToggleSwitchTintColor ?? returnAssistantConfiguration?.lineItemTintColor
@@ -162,12 +182,8 @@ class LineItemDetailsViewController: UIViewController {
         quantityTextField.prefixText = nil
         quantityTextField.keyboardType = .numberPad
         quantityTextField.delegate = self
-        quantityAndItemPriceContainer.addSubview(quantityTextField)
         
-        multiplicationLabel.font = configuration.lineItemDetailsContentLabelFont
-        multiplicationLabel.textColor = configuration.lineItemDetailsContentLabelColor
-        multiplicationLabel.text = "X"
-        quantityAndItemPriceContainer.addSubview(multiplicationLabel)
+        quantityAndItemPriceContainer.addSubview(quantityTextField)
         
         itemPriceTextField.titleFont = configuration.lineItemDetailsDescriptionLabelFont
         itemPriceTextField.titleTextColor = configuration.lineItemDetailsDescriptionLabelColor
@@ -182,20 +198,10 @@ class LineItemDetailsViewController: UIViewController {
         
         quantityTextField.leadingAnchor.constraint(equalTo: quantityAndItemPriceContainer.leadingAnchor).isActive = true
         quantityTextField.topAnchor.constraint(equalTo: quantityAndItemPriceContainer.topAnchor).isActive = true
-        quantityTextField.trailingAnchor.constraint(equalTo: multiplicationLabel.leadingAnchor,
+        quantityTextField.trailingAnchor.constraint(equalTo: itemPriceTextField.leadingAnchor,
                                                     constant: -margin).isActive = true
         quantityTextField.bottomAnchor.constraint(equalTo: quantityAndItemPriceContainer.bottomAnchor).isActive = true
-        
-        multiplicationLabel.centerXAnchor.constraint(equalTo: quantityAndItemPriceContainer.centerXAnchor)
-            .isActive = true
-        multiplicationLabel.firstBaselineAnchor.constraint(equalTo: quantityTextField.textFieldFirstBaselineAnchor)
-            .isActive = true
-        multiplicationLabel.trailingAnchor.constraint(equalTo: itemPriceTextField.leadingAnchor,
-                                                      constant: -margin).isActive = true
-        multiplicationLabel.setContentHuggingPriority(.required, for: .horizontal)
-        multiplicationLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-        multiplicationLabel.accessibilityLabel = .ginibankLocalized(resource: DigitalInvoiceStrings.lineItemMultiplicationAccessibilityLabel)
-        
+        quantityTextField.widthAnchor.constraint(equalTo: itemPriceTextField.widthAnchor, multiplier: 1.0).isActive = true
         itemPriceTextField.topAnchor.constraint(equalTo: quantityAndItemPriceContainer.topAnchor).isActive = true
         itemPriceTextField.trailingAnchor.constraint(equalTo: quantityAndItemPriceContainer.trailingAnchor)
             .isActive = true
@@ -236,22 +242,7 @@ class LineItemDetailsViewController: UIViewController {
                                  totalPriceTitleLabel,
                                  totalPriceLabel]
         
-        update()
-        view.backgroundColor = UIColor.from(giniColor: configuration.lineItemDetailsBackgroundColor)
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        guard let lineItem = lineItem, !lineItem.isUserInitiated else { return }
-        
-        if isMovingFromParent, transitionCoordinator?.isInteractive == false {
-            /*
-            Automatically save changes before user returns to main screen, so in case he
-            forgets to save it, changes are not lost
-             */
-            proceedWithSaveAction(shouldPopViewController: false)
-        }
-      }
     
     @objc func saveButtonTapped() {
         proceedWithSaveAction(shouldPopViewController: true)
@@ -267,9 +258,7 @@ class LineItemDetailsViewController: UIViewController {
     }
     
     @objc func checkboxButtonTapped() {
-        
         guard let lineItem = lineItem else { return }
-        
         switch lineItem.selectedState {
         case .deselected:
             self.lineItem?.selectedState = .selected
