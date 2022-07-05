@@ -219,7 +219,6 @@ class GiniTextField: UIView {
 extension GiniTextField: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        
         underscoreView.backgroundColor = underscoreColor(for: true)
         if textFieldType == .amountFieldTag, let text = textField.text, text.count > 0 {
             let trimmedText = textField.text?.trimmingCharacters(in: .whitespaces)
@@ -247,12 +246,8 @@ extension GiniTextField: UITextFieldDelegate {
     fileprivate func updateAmoutToPayWithCurrencyFormat() {
         if let amountFieldText = textField.text {
             if let priceValue = decimal(from: amountFieldText ) {
-                if priceValue > 0 {
-                    let amountToPayText = "\(priceValue)"
-                    textField.text = amountToPayText
-                } else {
-                    textField.text = ""
-                }
+                let amountToPayText = "\(priceValue)"
+                textField.text = amountToPayText
             }
         }
     }
