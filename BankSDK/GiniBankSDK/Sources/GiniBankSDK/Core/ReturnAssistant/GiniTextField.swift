@@ -22,8 +22,14 @@ class GiniTextField: UIView {
     private let textField = UITextField()
     private let underscoreView = UIView()
     
+    enum TextFieldType: Int {
+        case amountFieldTag
+        case other
+    }
+    
     weak var delegate: GiniTextFieldDelegate?
     
+    var textFieldType: TextFieldType = .other
     var shouldAllowLetters = false
     
     var title: String? {
@@ -215,10 +221,46 @@ extension GiniTextField: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
         underscoreView.backgroundColor = underscoreColor(for: true)
+        if textFieldType == .amountFieldTag, let text = textField.text, text.count > 0 {
+            let trimmedText = textField.text?.trimmingCharacters(in: .whitespaces)
+            textField.text = trimmedText
+        }
+    }
+    /**
+     Returns a decimal value
+     
+     - parameter inputFieldString: String from input field.
+     
+     - returns: decimal value in current locale.
+     */
+
+    func decimal(from inputFieldString: String) -> Decimal? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencySymbol = ""
+        return formatter.number(from: inputFieldString)?.decimalValue
+    }
+    
+    /**
+     Updates amoutToPay, formated string with a currency and removes "0.00" value
+     */
+    fileprivate func updateAmoutToPayWithCurrencyFormat() {
+        if let amountFieldText = textField.text {
+            if let priceValue = decimal(from: amountFieldText ) {
+                if priceValue > 0 {
+                    let amountToPayText = "\(priceValue)"
+                    textField.text = amountToPayText
+                } else {
+                    textField.text = ""
+                }
+            }
+        }
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        
+        if textFieldType == .amountFieldTag {
+            updateAmoutToPayWithCurrencyFormat()
+        }
         underscoreView.backgroundColor = underscoreColor(for: false)
         delegate?.textDidChange(self)
     }
@@ -230,9 +272,50 @@ extension GiniTextField: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if shouldAllowLetters { return true }
-        guard CharacterSet(charactersIn: "0123456789,.").isSuperset(of: CharacterSet(charactersIn: string)) else {
-            return false
+        if textFieldType == .amountFieldTag,
+           let text = textField.text,
+           let textRange = Range(range, in: text) {
+            
+             let updatedText = text.replacingCharacters(in: textRange, with: string)
+             
+             // Limit length to 7 digits
+             let onlyDigits = String(updatedText
+                                         .trimmingCharacters(in: .whitespaces)
+                                         .filter { c in c != "," && c != "."}
+                                         .prefix(7))
+             if let decimal = Decimal(string: onlyDigits) {
+                 let decimalWithFraction = decimal / 100
+                 if let newAmount = Price.stringWithoutSymbol(
+                    from: decimalWithFraction
+                 )?.trimmingCharacters(in: .whitespaces) {
+                     // Save the selected text range to restore the cursor position after replacing the text
+                     let selectedRange = textField.selectedTextRange
+                     textField.text = newAmount
+                     // Move the cursor position after the inserted character
+                     if let selectedRange = selectedRange {
+                         let countDelta = newAmount.count - text.count
+                         let offset = countDelta == 0 ? 1 : countDelta
+                         textField.moveSelectedTextRange(from: selectedRange.start, to: offset)
+                     }
+                 }
+            }
+             return false
+            
+        } else {
+            guard CharacterSet(charactersIn: "0123456789,.").isSuperset(of: CharacterSet(charactersIn: string)) else {
+                return false
+            }
+            return true
         }
-        return true
+    }
+}
+
+public extension UITextField {
+    
+    func moveSelectedTextRange(from position: UITextPosition, to offset: Int) {
+        if let newSelectedRangeFromTo = self.position(from: position, offset: offset),
+           let newSelectedRange = self.textRange(from: newSelectedRangeFromTo, to: newSelectedRangeFromTo) {
+            self.selectedTextRange = newSelectedRange
+        }
     }
 }
