@@ -265,24 +265,17 @@ extension GiniTextField: UITextFieldDelegate {
         return true
     }
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
         if shouldAllowLetters { return true }
         if textFieldType == .amountFieldTag,
            let text = textField.text,
            let textRange = Range(range, in: text) {
-            
-             let updatedText = text.replacingCharacters(in: textRange, with: string)
-             
-             // Limit length to 7 digits
-             let onlyDigits = String(updatedText
-                                         .trimmingCharacters(in: .whitespaces)
-                                         .filter { c in c != "," && c != "."}
-                                         .prefix(7))
-             if let decimal = Decimal(string: onlyDigits) {
-                 let decimalWithFraction = decimal / 100
-                 if let newAmount = Price.stringWithoutSymbol(
-                    from: decimalWithFraction
-                 )?.trimmingCharacters(in: .whitespaces) {
+                let updatedText = text.replacingCharacters(in: textRange, with: string)
+                if let newAmount = Price.formatAmountString(newText: updatedText) {
                      // Save the selected text range to restore the cursor position after replacing the text
                      let selectedRange = textField.selectedTextRange
                      textField.text = newAmount
@@ -292,10 +285,8 @@ extension GiniTextField: UITextFieldDelegate {
                          let offset = countDelta == 0 ? 1 : countDelta
                          textField.moveSelectedTextRange(from: selectedRange.start, to: offset)
                      }
-                 }
-            }
-             return false
-            
+                }
+            return false
         } else {
             guard CharacterSet(charactersIn: "0123456789,.").isSuperset(of: CharacterSet(charactersIn: string)) else {
                 return false
