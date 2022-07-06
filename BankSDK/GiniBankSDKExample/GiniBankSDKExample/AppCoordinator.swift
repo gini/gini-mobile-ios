@@ -67,6 +67,7 @@ final class AppCoordinator: Coordinator {
         
         configuration.multipagePageSuccessfullUploadIconBackgroundColor = .systemGreen
         configuration.multipagePageFailureUploadIconBackgroundColor = .systemRed
+        configuration.enableReturnReasons = false
        return configuration
     }()
     
