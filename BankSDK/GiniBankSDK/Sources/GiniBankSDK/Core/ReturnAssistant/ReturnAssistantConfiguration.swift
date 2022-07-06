@@ -554,6 +554,11 @@ public final class ReturnAssistantConfiguration: NSObject {
     @objc public var digitalInvoiceInfoViewButtonsFont = UIFont.systemFont(ofSize: 16)
     
     /**
+     Shows the return reasons dialog.
+     */
+    @objc public var enableReturnReasons: Bool = true
+    
+    /**
      Sets the font used in the Return Assistant screens by default.
      */
     
