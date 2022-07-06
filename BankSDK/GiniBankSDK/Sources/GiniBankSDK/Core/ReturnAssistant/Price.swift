@@ -64,6 +64,22 @@ struct Price {
         formatter.currencySymbol = ""
         return formatter.string(from: NSDecimalNumber(decimal: value))
     }
+    
+    static func formatAmountString(newText: String) -> String? {
+        let onlyDigits = String(
+            newText.trimmingCharacters(
+                in: .whitespaces
+            ).filter { c in c != "," && c != "."}
+            .prefix(7)
+        )
+        if let decimal = Decimal(string: onlyDigits) {
+            let decimalWithFraction = decimal / 100
+            return  Price.stringWithoutSymbol(
+               from: decimalWithFraction
+            )?.trimmingCharacters(in: .whitespaces)
+        }
+        return nil
+    }
 }
 
 extension Price: Equatable {}
