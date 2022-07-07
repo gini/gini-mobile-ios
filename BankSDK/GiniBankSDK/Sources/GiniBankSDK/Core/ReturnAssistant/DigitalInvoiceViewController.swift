@@ -376,14 +376,13 @@ extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
         
         case .selected:
             
-            guard let returnReasons = self.invoice?.returnReasons else {
-                self.invoice?.lineItems[viewModel.index].selectedState = .deselected(reason: nil)
-                return
-            }
-            if returnAssistantConfiguration.enableReturnReasons {
+            if let returnReasons = self.invoice?.returnReasons, returnAssistantConfiguration.enableReturnReasons {
                 presentReturnReasonActionSheet(for: viewModel.index,
                                                source: cell.modeSwitch,
                                                with: returnReasons)
+            } else {
+                self.invoice?.lineItems[viewModel.index].selectedState = .deselected(reason: nil)
+                return
             }
             
         case .deselected:
