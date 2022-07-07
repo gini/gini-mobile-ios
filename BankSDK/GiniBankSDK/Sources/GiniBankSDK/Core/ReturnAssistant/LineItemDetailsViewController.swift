@@ -253,25 +253,28 @@ class LineItemDetailsViewController: UIViewController {
 
     }
     
+    fileprivate func presentReturnReasonActionSheet(source: UIView, with returnReasons: [ReturnReason]) {
+        DeselectLineItemActionSheet().present(from: self, source: source, returnReasons: returnReasons) { selectedState in
+            switch selectedState {
+            case .selected:
+                break
+            case .deselected(let reason):
+                self.lineItem?.selectedState = .deselected(reason: reason)
+            }
+        }
+    }
+    
     @objc func checkboxButtonTapped() {
         guard let lineItem = lineItem else { return }
         switch lineItem.selectedState {
         case .deselected:
             self.lineItem?.selectedState = .selected
         case .selected:
-            guard let returnReasons = returnReasons else {
+            if let returnReasons = returnReasons, let configuration = returnAssistantConfiguration, configuration.enableReturnReasons {
+                presentReturnReasonActionSheet(source: checkboxButton, with: returnReasons)
+            } else {
                 self.lineItem?.selectedState = .deselected(reason: nil)
                 return
-            }
-            
-            DeselectLineItemActionSheet().present(from: self, source: checkboxButton, returnReasons: returnReasons) { selectedState in
-                
-                switch selectedState {
-                case .selected:
-                    break
-                case .deselected(let reason):
-                    self.lineItem?.selectedState = .deselected(reason: reason)
-                }
             }
         }
     }
