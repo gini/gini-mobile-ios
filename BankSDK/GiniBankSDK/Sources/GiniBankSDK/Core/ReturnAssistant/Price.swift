@@ -47,7 +47,7 @@ struct Price {
             sign = "- "
         }
         
-        let result = sign + (currencySymbol ?? "") + (stringWithoutSymbol(from: abs(value)) ?? "")
+        let result = sign + (currencySymbol ?? "") + (Price.stringWithoutSymbol(from: abs(value)) ?? "")
         
         if result.isEmpty { return nil }
         
@@ -55,14 +55,30 @@ struct Price {
     }
     
     var stringWithoutSymbol: String? {
-        return stringWithoutSymbol(from: value)
+        return Price.stringWithoutSymbol(from: value)
     }
     
-    private func stringWithoutSymbol(from value: Decimal) -> String? {
+    static func stringWithoutSymbol(from value: Decimal) -> String? {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.currencySymbol = ""
         return formatter.string(from: NSDecimalNumber(decimal: value))
+    }
+    
+    static func formatAmountString(newText: String) -> String? {
+        let onlyDigits = String(
+            newText.trimmingCharacters(
+                in: .whitespaces
+            ).filter { c in c != "," && c != "."}
+            .prefix(7)
+        )
+        if let decimal = Decimal(string: onlyDigits) {
+            let decimalWithFraction = decimal / 100
+            return  Price.stringWithoutSymbol(
+               from: decimalWithFraction
+            )?.trimmingCharacters(in: .whitespaces)
+        }
+        return nil
     }
 }
 
