@@ -62,13 +62,7 @@ public class DigitalInvoiceViewController: UIViewController {
     private var didShowInfoViewInCurrentSession = false
 
     
-    override public func viewDidLoad() {
-        super.viewDidLoad()
-        
-        title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: prefferedImage(named: "infoIcon"), style: .plain, target: self, action: #selector(whatIsThisTapped(source:)))
-        
+    fileprivate func configureTableView() {
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -100,6 +94,19 @@ public class DigitalInvoiceViewController: UIViewController {
         
         tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
         tableView.backgroundColor = UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceBackgroundColor)
+    }
+    
+    fileprivate func configureNavigationBar() {
+        title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: prefferedImage(named: "infoIcon"), style: .plain, target: self, action: #selector(whatIsThisTapped(source:)))
+    }
+    
+    override public func viewDidLoad() {
+        super.viewDidLoad()
+        
+        configureNavigationBar()
+        configureTableView()
     }
     
     override public func viewWillAppear(_ animated: Bool) {
