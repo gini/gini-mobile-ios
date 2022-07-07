@@ -189,6 +189,7 @@ class LineItemDetailsViewController: UIViewController {
         
         itemPriceTextField.keyboardType = .decimalPad
         itemPriceTextField.delegate = self
+        itemPriceTextField.textFieldType = .amountFieldTag
         quantityAndItemPriceContainer.addSubview(itemPriceTextField)
         
         quantityTextField.leadingAnchor.constraint(equalTo: quantityAndItemPriceContainer.leadingAnchor).isActive = true

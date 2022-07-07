@@ -61,4 +61,19 @@ final class StringUtilsTests: XCTestCase {
         }
         XCTAssertEqual(giniBankError, GiniBankError.amountParsingError(amountString: "28.10:EUR"))
     }
+    
+    func testFormatAmountWithAdditionalDecimals() {
+        let amountToPay = "28.100:EUR"
+        let formattedAmount = Price.formatAmountString(newText: amountToPay)
+        ///
+        /// The last digit is the entered digit so it should shfit all numbers to left to preserve just 2 decimals
+        ///
+        XCTAssertEqual(formattedAmount, "281.00")
+    }
+    
+    func testFormatAmountWithAdditionalZeros() {
+        let amountToPay2 = "0000.0000"
+        let formattedAmount2 = Price.formatAmountString(newText: amountToPay2)
+        XCTAssertEqual(formattedAmount2, "0.00")
+    }
 }
