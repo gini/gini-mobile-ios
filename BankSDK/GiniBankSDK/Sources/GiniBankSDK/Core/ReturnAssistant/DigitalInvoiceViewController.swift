@@ -125,7 +125,9 @@ public class DigitalInvoiceViewController: UIViewController {
         guard let invoice = invoice else {
             return .ginibankLocalized(resource: DigitalInvoiceStrings.noInvoicePayButtonTitle)
         }
-        
+        if invoice.numSelected == 0 {
+            return .ginibankLocalized(resource: DigitalInvoiceStrings.noInvoicePayButtonTitle)
+        }
         return String.localizedStringWithFormat(DigitalInvoiceStrings.payButtonTitle.localizedGiniBankFormat,
                                                 invoice.numSelected,
                                                 invoice.numTotal)
@@ -313,14 +315,7 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
             cell.returnAssistantConfiguration = returnAssistantConfiguration
             if let invoice = invoice {
                 let addon = invoice.addons[indexPath.row]
-                let shouldNullAddonPrice = invoice.numSelected == 0
-
-                if shouldNullAddonPrice {
-                    cell.addonPrice = Price(value: .zero, currencyCode: addon.price.currencyCode)
-                } else {
-                    cell.addonPrice = addon.price
-                }
-                
+                cell.addonPrice = addon.price
                 cell.addonName = addon.name
             }
             
@@ -349,7 +344,8 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
             cell.payButton.accessibilityLabel = payButtonAccessibilityLabel()
             cell.payButton.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
             if let invoice = invoice {
-                let shouldEnablePayButton = invoice.numSelected > 0
+                let total = invoice.total?.value ?? 0
+                let shouldEnablePayButton = invoice.numSelected > 0 || total > 0
                 cell.enableButtons(shouldEnablePayButton)
                 cell.shouldSetUIForInaccurateResults(invoice.inaccurateResults)
                 cell.skipButton.setTitle(skipButtonTitle(), for: .normal)

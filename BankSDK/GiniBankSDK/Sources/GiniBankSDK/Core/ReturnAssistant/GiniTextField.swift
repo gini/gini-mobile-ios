@@ -225,37 +225,8 @@ extension GiniTextField: UITextFieldDelegate {
             textField.text = trimmedText
         }
     }
-    /**
-     Returns a decimal value
-     
-     - parameter inputFieldString: String from input field.
-     
-     - returns: decimal value in current locale.
-     */
-
-    func decimal(from inputFieldString: String) -> Decimal? {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.currencySymbol = ""
-        return formatter.number(from: inputFieldString)?.decimalValue
-    }
-    
-    /**
-     Updates amoutToPay, formated string with a currency and removes "0.00" value
-     */
-    fileprivate func updateAmoutToPayWithCurrencyFormat() {
-        if let amountFieldText = textField.text {
-            if let priceValue = decimal(from: amountFieldText ) {
-                let amountToPayText = "\(priceValue)"
-                textField.text = amountToPayText
-            }
-        }
-    }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if textFieldType == .amountFieldTag {
-            updateAmoutToPayWithCurrencyFormat()
-        }
         underscoreView.backgroundColor = underscoreColor(for: false)
         delegate?.textDidChange(self)
     }
