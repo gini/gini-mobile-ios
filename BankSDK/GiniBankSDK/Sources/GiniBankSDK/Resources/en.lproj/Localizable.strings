@@ -67,7 +67,8 @@
 "ginibank.digitalinvoice.lineitem.quantitytextfieldtitle" = "Quantity";
 "ginibank.digitalinvoice.lineitem.pricetextfieldtitle" = "Item Price";
 "ginibank.digitalinvoice.lineitem.multiplication.accessibilitylabel" = "times";
-"ginibank.digitalinvoice.lineitem.totalpricetitle" = "Total:";
+"ginibank.digitalinvoice.lineitem.totalpricetitle" = "Total";
+"ginibank.digitalinvoice.lineitem.includevattitle" = "Incl. tax";
 
 "ginibank.digitalinvoice.addonname.discount" = "Discount";
 "ginibank.digitalinvoice.addonname.giftcard" = "Giftcard";
