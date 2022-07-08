@@ -376,7 +376,7 @@ extension LineItemDetailsViewController {
     
     private func decimal(from priceString: String) -> Decimal? {
         let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
+        formatter.numberStyle = .decimal
         formatter.currencySymbol = ""
         return formatter.number(from: priceString)?.decimalValue
     }
