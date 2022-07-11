@@ -231,10 +231,10 @@ class LineItemDetailsViewController: UIViewController {
         totalPriceTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         totalPriceLabel.translatesAutoresizingMaskIntoConstraints = false
         includeVatTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-
+        totalPriceStackView.distribution = .fill
         totalPriceStackView.axis = .horizontal
         totalPriceStackView.spacing = 16
-        totalPriceTitleLabel.setContentHuggingPriority(.required, for: .horizontal)
+        totalPriceTitleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         totalPriceTitleLabel.font = configuration.lineItemDetailsDescriptionLabelFont
         totalPriceTitleLabel.textColor = configuration.lineItemDetailsContentLabelColor
         totalPriceTitleLabel.text = .ginibankLocalized(
