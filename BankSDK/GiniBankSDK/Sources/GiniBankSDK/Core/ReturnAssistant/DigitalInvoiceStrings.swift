@@ -29,6 +29,7 @@ enum DigitalInvoiceStrings: LocalizableStringResource {
     case totalExplanationLabel
     case footerMessage
     case addonNameDiscount, addonNameGiftCard, addonNameOtherDiscounts, addonNameOtherCharges, addonNameShipment
+    case backButtonTitle
     
     
     var tableName: String {
@@ -120,6 +121,8 @@ enum DigitalInvoiceStrings: LocalizableStringResource {
             return("total.addArticleButtonTitle", "Digital invoice add article button title")
         case .noTitleArticle:
             return ("lineitem.notitle", "Digital invoice article without title")
+        case .backButtonTitle:
+            return ("backbutton", "Digital invoice back button title")
         }
     }
     
