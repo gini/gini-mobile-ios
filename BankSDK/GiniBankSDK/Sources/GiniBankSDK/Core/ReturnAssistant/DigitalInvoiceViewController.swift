@@ -36,8 +36,12 @@ public class DigitalInvoiceViewController: UIViewController {
      */
     public var invoice: DigitalInvoice? {
         didSet {
-            toggleUIChanges()
-            tableView.reloadData()
+            if tableView.superview != nil {
+                toggleUIChanges()
+                tableView.reloadData()
+            } else {
+                toggleUIUpdates = true
+            }
         }
     }
     
@@ -60,7 +64,7 @@ public class DigitalInvoiceViewController: UIViewController {
     
     private var didShowOnboardInCurrentSession = false
     private var didShowInfoViewInCurrentSession = false
-
+    private var toggleUIUpdates = false
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -105,12 +109,17 @@ public class DigitalInvoiceViewController: UIViewController {
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         showDigitalInvoiceOnboarding()
+        
     }
     
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if !onboardingWillBeShown {
             showFooterDemo()
+        }
+        if toggleUIUpdates {
+            toggleUIChanges()
+            toggleUIUpdates = false
         }
     }
     

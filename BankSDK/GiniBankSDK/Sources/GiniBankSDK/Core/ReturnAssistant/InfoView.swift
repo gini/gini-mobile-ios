@@ -28,7 +28,11 @@ class InfoView: UIView {
     private var okButton = UIButton()
     private var skipButton = UIButton()
     
-    private var illustrationImageView = UIImageView(image: prefferedImage(named: "ra-warning-illustration"))
+    lazy private var illustrationImageView: UIImageView = {
+        let image = UIImageView(image: prefferedImage(named: "ra-warning-illustration"))
+        image.contentMode = .scaleAspectFit
+        return image
+    } ()
     private lazy var actionButtonsStackView = UIStackView(arrangedSubviews: [okButton, skipButton])
     private var chevronImageView = UIImageView(image:prefferedImage(named: "chevron-up-icon"))
     
@@ -43,7 +47,7 @@ class InfoView: UIView {
 
     private func setup() {
         let configuration = returnAssistantConfiguration ?? ReturnAssistantConfiguration.shared
-
+        self.translatesAutoresizingMaskIntoConstraints = false
         addSubview(contentView)
         contentView.backgroundColor = configuration.digitalInvoiceInfoViewBackgroundColor
         contentView.layer.cornerRadius = 10
@@ -164,6 +168,9 @@ class InfoView: UIView {
         skipButton.setTitleColor(configuration.digitalInvoiceInfoViewRightButtonTitleColor, for: .normal)
         skipButton.titleLabel?.font = configuration.digitalInvoiceInfoViewButtonsFont
         skipButton.addTarget(self, action: #selector(didTapSkipButton), for: .touchUpInside)
+    }
+    
+    func setupLayout() {
         
     }
     
@@ -174,7 +181,7 @@ class InfoView: UIView {
     
     @objc func animate() {
         contentViewHeightConstraint.constant =  isExpanded ? 54 : 400
-        contentViewWidthConstraint.constant = isExpanded ? 115 : UIScreen.main.bounds.width - 18
+        contentViewWidthConstraint.constant = isExpanded ? 115 : self.bounds.width - 18
         infoLabelCenterXConstraint.isActive = !isExpanded
         infoLabelTrailingConstraint.isActive = isExpanded
         let alphaAnimationDuration = isExpanded ? 0.2 : 0.6
