@@ -106,7 +106,7 @@ public class DigitalInvoiceViewController: UIViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: prefferedImage(named: "infoIcon"), style: .plain, target: self, action: #selector(whatIsThisTapped(source:)))
         let leftBarButtonItemTitle = String.ginibankLocalized(resource: DigitalInvoiceStrings.backButtonTitle)
-        navigationItem.leftBarButtonItem = GiniBarButtonItem.init(image: prefferedImage(named: "navigationDigitalInvoiceBack"), title: leftBarButtonItemTitle, style: .plain, target: self, action: #selector(closeReturnAssistantOverview))
+        navigationItem.leftBarButtonItem = GiniBarButtonItem.init(image: prefferedImage(named: "arrowBack"), title: leftBarButtonItemTitle, style: .plain, target: self, action: #selector(closeReturnAssistantOverview))
     }
     
     override public func viewDidLoad() {
