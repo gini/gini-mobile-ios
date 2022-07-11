@@ -47,6 +47,7 @@ public class DigitalInvoiceViewController: UIViewController {
     // Remove ASAP
     public var analysisDelegate: AnalysisDelegate?
     
+    public var closeReturnAssistantBlock: () -> Void = {}
     /**
      The `ReturnAssistantConfiguration` instance used by this class to customise its appearance.
      By default the shared instance is used.
@@ -100,6 +101,8 @@ public class DigitalInvoiceViewController: UIViewController {
         title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: prefferedImage(named: "infoIcon"), style: .plain, target: self, action: #selector(whatIsThisTapped(source:)))
+        let leftBarButtonItemTitle = String.ginibankLocalized(resource: DigitalInvoiceStrings.backButtonTitle)
+        navigationItem.leftBarButtonItem = GiniBarButtonItem.init(image: prefferedImage(named: "navigationDigitalInvoiceBack"), title: leftBarButtonItemTitle, style: .plain, target: self, action: #selector(closeReturnAssistantOverview))
     }
     
     override public func viewDidLoad() {
@@ -192,6 +195,10 @@ public class DigitalInvoiceViewController: UIViewController {
         actionSheet.popoverPresentationController?.sourceView = source
         
         present(actionSheet, animated: true, completion: nil)
+    }
+    
+    @objc func closeReturnAssistantOverview(){
+        closeReturnAssistantBlock()
     }
     
     fileprivate var onboardingWillBeShown: Bool {
