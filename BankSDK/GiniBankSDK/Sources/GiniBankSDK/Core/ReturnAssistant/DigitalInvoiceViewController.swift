@@ -47,7 +47,11 @@ public class DigitalInvoiceViewController: UIViewController {
     // Remove ASAP
     public var analysisDelegate: AnalysisDelegate?
     
+    /**
+     Handler will be called when back button was pressed.
+     */
     public var closeReturnAssistantBlock: () -> Void = {}
+    
     /**
      The `ReturnAssistantConfiguration` instance used by this class to customise its appearance.
      By default the shared instance is used.
