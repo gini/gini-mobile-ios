@@ -78,6 +78,7 @@
 "ginibank.digitalinvoice.onboarding.text2" = "Deselect article that you want to return and pay only for what you keep!";
 "ginibank.digitalinvoice.onboarding.donebutton" = "Next";
 "ginibank.digitalinvoice.onboarding.hidebutton" = "Don’t show anymore";
+"ginibank.digitalinvoice.backbutton" = "Back";
 
 "ginibank.digitalinvoice.info.text1" = "What is it?";
 "ginibank.digitalinvoice.info.text2" = "We extracted the articles from your invoice. Simply deselect articles if you want to return them. The new total will be calculated for you.";

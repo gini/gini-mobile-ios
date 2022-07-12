@@ -484,6 +484,8 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 ##### 1. Navigation bar
 - Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.screentitle*</span> localized string
 - Help button image &#8594; <span style="color:#009EDF">*infoIcon*</span> image asset
+- Back button title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.backbutton*</span> localized string
+- Back button image &#8594; <span style="color:#009EDF">*arrowBack*</span> image asset
 
 ##### 2. Background
 - Color &#8594; `GiniBankConfiguration.digitalInvoiceBackgroundColor`

@@ -48,6 +48,11 @@ public class DigitalInvoiceViewController: UIViewController {
     public var analysisDelegate: AnalysisDelegate?
     
     /**
+     Handler will be called when back button was pressed.
+     */
+    public var closeReturnAssistantBlock: () -> Void = {}
+    
+    /**
      The `ReturnAssistantConfiguration` instance used by this class to customise its appearance.
      By default the shared instance is used.
      */
@@ -62,13 +67,7 @@ public class DigitalInvoiceViewController: UIViewController {
     private var didShowInfoViewInCurrentSession = false
 
     
-    override public func viewDidLoad() {
-        super.viewDidLoad()
-        
-        title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: prefferedImage(named: "infoIcon"), style: .plain, target: self, action: #selector(whatIsThisTapped(source:)))
-        
+    fileprivate func configureTableView() {
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -100,6 +99,21 @@ public class DigitalInvoiceViewController: UIViewController {
         
         tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
         tableView.backgroundColor = UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceBackgroundColor)
+    }
+    
+    fileprivate func configureNavigationBar() {
+        title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: prefferedImage(named: "infoIcon"), style: .plain, target: self, action: #selector(whatIsThisTapped(source:)))
+        let leftBarButtonItemTitle = String.ginibankLocalized(resource: DigitalInvoiceStrings.backButtonTitle)
+        navigationItem.leftBarButtonItem = GiniBarButtonItem.init(image: prefferedImage(named: "arrowBack"), title: leftBarButtonItemTitle, style: .plain, target: self, action: #selector(closeReturnAssistantOverview))
+    }
+    
+    override public func viewDidLoad() {
+        super.viewDidLoad()
+        
+        configureNavigationBar()
+        configureTableView()
     }
     
     override public func viewWillAppear(_ animated: Bool) {
@@ -176,6 +190,10 @@ public class DigitalInvoiceViewController: UIViewController {
         let onbardingVC = getOnBoardingScreen()
         onbardingVC.infoType = .info
         present(onbardingVC, animated: true)
+    }
+    
+    @objc func closeReturnAssistantOverview(){
+        closeReturnAssistantBlock()
     }
     
     fileprivate var onboardingWillBeShown: Bool {
