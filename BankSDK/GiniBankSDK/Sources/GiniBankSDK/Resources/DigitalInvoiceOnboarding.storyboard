@@ -30,7 +30,7 @@
                                         <rect key="frame" x="69" y="167" width="276" height="313.5"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ydb-dv-dAn">
-                                        <rect key="frame" x="16" y="715" width="382" height="48"/>
+                                        <rect key="frame" x="16" y="695" width="382" height="48"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="48" id="C36-9G-Njd">
                                                 <variation key="heightClass=regular-widthClass=compact" constant="48"/>
@@ -39,7 +39,7 @@
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sVR-qv-0Gz">
-                                        <rect key="frame" x="16" y="768" width="382" height="48"/>
+                                        <rect key="frame" x="16" y="748" width="382" height="48"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Deselect article that you want to return and pay only for what you keep!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b5g-YZ-Ffz">
@@ -79,7 +79,7 @@
                             <constraint firstItem="3IY-Df-aw6" firstAttribute="trailing" secondItem="ySK-ra-mer" secondAttribute="trailing" id="V7X-1Q-pcj"/>
                             <constraint firstAttribute="bottom" secondItem="ySK-ra-mer" secondAttribute="bottom" id="a1m-GS-s53"/>
                             <constraint firstItem="ySK-ra-mer" firstAttribute="leading" secondItem="3IY-Df-aw6" secondAttribute="leading" id="ro5-DT-5Yn"/>
-                            <constraint firstItem="3IY-Df-aw6" firstAttribute="bottom" secondItem="Ydb-dv-dAn" secondAttribute="bottom" constant="55" id="tCq-I2-uAa"/>
+                            <constraint firstItem="3IY-Df-aw6" firstAttribute="bottom" secondItem="Ydb-dv-dAn" secondAttribute="bottom" constant="75" id="tCq-I2-uAa"/>
                         </constraints>
                     </view>
                     <connections>
