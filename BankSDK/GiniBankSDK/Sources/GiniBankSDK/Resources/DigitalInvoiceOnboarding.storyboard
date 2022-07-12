@@ -39,7 +39,7 @@
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sVR-qv-0Gz">
-                                        <rect key="frame" x="184" y="768" width="46" height="30"/>
+                                        <rect key="frame" x="16" y="768" width="382" height="48"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Deselect article that you want to return and pay only for what you keep!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b5g-YZ-Ffz">
@@ -56,9 +56,12 @@
                                     <constraint firstAttribute="trailing" secondItem="b5g-YZ-Ffz" secondAttribute="trailing" constant="40" id="8g0-DW-fbi"/>
                                     <constraint firstAttribute="trailingMargin" secondItem="Wrk-c0-ekq" secondAttribute="trailing" constant="25" id="BAS-u8-o2S"/>
                                     <constraint firstItem="vN8-eg-TBS" firstAttribute="centerX" secondItem="ySK-ra-mer" secondAttribute="centerX" id="HRp-HJ-8Ro"/>
+                                    <constraint firstItem="sVR-qv-0Gz" firstAttribute="height" secondItem="Ydb-dv-dAn" secondAttribute="height" id="MjZ-oq-Dhl"/>
                                     <constraint firstItem="vN8-eg-TBS" firstAttribute="centerY" secondItem="ySK-ra-mer" secondAttribute="centerY" multiplier="0.76" id="RhS-AE-95n"/>
                                     <constraint firstAttribute="trailing" secondItem="Ydb-dv-dAn" secondAttribute="trailing" constant="16" id="TaD-II-KDq"/>
                                     <constraint firstItem="Wrk-c0-ekq" firstAttribute="top" secondItem="ySK-ra-mer" secondAttribute="top" constant="30" id="Wwu-Iz-7F9"/>
+                                    <constraint firstItem="sVR-qv-0Gz" firstAttribute="leading" secondItem="Ydb-dv-dAn" secondAttribute="leading" id="YF4-rT-bhD"/>
+                                    <constraint firstItem="sVR-qv-0Gz" firstAttribute="trailing" secondItem="Ydb-dv-dAn" secondAttribute="trailing" id="bOQ-Hb-an3"/>
                                     <constraint firstItem="sVR-qv-0Gz" firstAttribute="centerX" secondItem="ySK-ra-mer" secondAttribute="centerX" id="bZd-eE-sMt"/>
                                     <constraint firstItem="Ydb-dv-dAn" firstAttribute="leading" secondItem="ySK-ra-mer" secondAttribute="leading" constant="16" id="cTf-iM-2Nl"/>
                                     <constraint firstItem="Wrk-c0-ekq" firstAttribute="leading" secondItem="ySK-ra-mer" secondAttribute="leadingMargin" constant="21" id="g6E-J0-wSL"/>
