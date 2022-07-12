@@ -635,7 +635,11 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
   - Font &#8594; `GiniBankConfiguration.lineItemDetailsContentLabelFont`
 - Field highlighted color &#8594; `GiniBankConfiguration.lineItemDetailsContentHighlightedColor`
 
-##### 7. Total price
+##### 7. Total price, Vat title
+- Tax title
+  - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.includevattitle*</span> localized
+  - Color &#8594; `GiniBankConfiguration.lineItemDetailsDescriptionLabelColor`
+  - Font &#8594; `GiniBankConfiguration.lineItemDetailsDescriptionLabelFont` 
 - Label
   - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.totalpricetitle*</span> localized string
   - Color &#8594; `GiniBankConfiguration.lineItemDetailsContentLabelColor`
