@@ -185,31 +185,20 @@ public class DigitalInvoiceViewController: UIViewController {
         return .ginibankLocalized(resource: DigitalInvoiceStrings.skipButtonTitle)
     }
     
+    private func getOnBoardingScreen() -> DigitalInvoiceOnboardingViewController {
+        let bundle = giniBankBundle()
+        let storyboard = UIStoryboard(name: "DigitalInvoiceOnboarding", bundle: bundle)
+        let digitalInvoiceOnboardingViewController = storyboard.instantiateViewController(withIdentifier: "digitalInvoiceOnboardingViewController") as! DigitalInvoiceOnboardingViewController
+        
+        digitalInvoiceOnboardingViewController.delegate = self
+        digitalInvoiceOnboardingViewController.returnAssistantConfiguration = returnAssistantConfiguration
+        return digitalInvoiceOnboardingViewController
+    }
+
     @objc func whatIsThisTapped(source: UIButton) {
-        
-        let actionSheet = UIAlertController(title: .ginibankLocalized(resource: DigitalInvoiceStrings.whatIsThisActionSheetTitle),
-                                            message: .ginibankLocalized(resource: DigitalInvoiceStrings.whatIsThisActionSheetMessage),
-                                            preferredStyle: .actionSheet)
-        
-        actionSheet.addAction(UIAlertAction(title: .ginibankLocalized(resource: DigitalInvoiceStrings.whatIsThisActionSheetActionHelpful),
-                                            style: .default,
-                                            handler: { _ in
-                                                // TODO:
-        }))
-        
-        actionSheet.addAction(UIAlertAction(title: .ginibankLocalized(resource: DigitalInvoiceStrings.whatIsThisActionSheetActionNotHelpful),
-                                            style: .destructive,
-                                            handler: { _ in
-                                                // TODO:
-        }))
-        
-        actionSheet.addAction(UIAlertAction(title: .ginibankLocalized(resource: DigitalInvoiceStrings.whatIsThisActionSheetActionCancel),
-                                            style: .cancel,
-                                            handler: nil))
-        
-        actionSheet.popoverPresentationController?.sourceView = source
-        
-        present(actionSheet, animated: true, completion: nil)
+        let onbardingVC = getOnBoardingScreen()
+        onbardingVC.infoType = .info
+        present(onbardingVC, animated: true)
     }
     
     @objc func closeReturnAssistantOverview(){
@@ -228,12 +217,9 @@ public class DigitalInvoiceViewController: UIViewController {
     
     fileprivate func showDigitalInvoiceOnboarding() {
         if onboardingWillBeShown && !didShowOnboardInCurrentSession {
-            let bundle = giniBankBundle()
-            let storyboard = UIStoryboard(name: "DigitalInvoiceOnboarding", bundle: bundle)
-            let digitalInvoiceOnboardingViewController = storyboard.instantiateViewController(withIdentifier: "digitalInvoiceOnboardingViewController") as! DigitalInvoiceOnboardingViewController
-            digitalInvoiceOnboardingViewController.delegate = self
-            digitalInvoiceOnboardingViewController.returnAssistantConfiguration = returnAssistantConfiguration
-            present(digitalInvoiceOnboardingViewController, animated: true)
+            let onbardingVC = getOnBoardingScreen()
+            onbardingVC.infoType = .onboarding
+            present(onbardingVC, animated: true)
             didShowOnboardInCurrentSession = true
         }
     }

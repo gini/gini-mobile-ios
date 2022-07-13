@@ -20,10 +20,10 @@ If you plan to use a custom name for localizable strings, you need to set it in 
 - [Albums screen](#albums-screen)
 - [Return assistant](#return-assistant)
   - [Onboarding screen](#onboarding-screen)
+  - [Info screen](#info-screen)
   - [Info box](#info-box)
   - [Digital invoice screen](#digital-invoice-screen)
   - [Return reason action sheet](#return-reason-action-sheet)
-  - [Info dialog](#info-dialog)
   - [Edit line item screen](#edit-line-item-screen)
   
 ## Supporting dark mode
@@ -412,6 +412,24 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 - Text color &#8594; `GiniBankConfiguration.digitalInvoiceOnboardingHideButtonTextColor`
 - Font &#8594;  `GiniBankConfiguration.digitalInvoiceOnboardingHideButtonTextFont`
 
+### Info screen
+
+<br>
+<center><img src="img/Customization guide/Digital Invoice Info Dialog.jpg" height="500"/></center>
+</br>
+
+##### 1. Title
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.info.text1*</span> localized string
+
+##### 2. Illustration
+- Image &#8594; <span style="color:#009EDF">*digital_invoice_onboarding_icon*</span> image asset
+
+##### 3. Message
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.info.text2*</span> localized string
+
+##### 4. "Close" button
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.info.hidebutton*</span> localized string
+
 ### Info box
 
 <br>
@@ -583,27 +601,6 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 
 ##### 2. "Cancel" button
 - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel*</span> localized string
-
-### Info dialog
-
-<br>
-<center><img src="img/Customization guide/Digital Invoice Info Dialog.jpg" height="500"/></center>
-</br>
-
-##### 1. Title
-- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.whatisthisactionsheet.title*</span> localized string
-
-##### 2. Message
-- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.whatisthisactionsheet.message*</span> localized string
-
-##### 3. "Helpful" button
-- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.whatisthisactionsheet.action.helpful*</span> localized string
-
-##### 4. "Not helpful" button
-- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.whatisthisactionsheet.action.nothelpful*</span> localized string
-
-##### 5. "Cancel" button
-- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.whatisthisactionsheet.action.cancel*</span> localized string
 
 ### Edit line item screen
 
