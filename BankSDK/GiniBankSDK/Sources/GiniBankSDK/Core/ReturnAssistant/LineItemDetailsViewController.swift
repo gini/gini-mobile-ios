@@ -395,7 +395,13 @@ extension LineItemDetailsViewController {
             
             lineItem.name = itemName.isEmpty ? emptyNameCaption : itemName
         }
-        lineItem.quantity = Int(quantityTextField.text ?? "") ?? 0
+        let quantity = Int(quantityTextField.text ?? "") ?? 0
+        if quantity > 0 {
+            lineItem.quantity = quantity
+        } else {
+            lineItem.quantity = 1
+            quantityTextField.text = "1"
+        }
         lineItem.price = Price(value: itemPriceValue, currencyCode: lineItem.price.currencyCode)
         
         return lineItem
