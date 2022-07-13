@@ -50,8 +50,10 @@ class LineItemDetailsViewController: UIViewController {
     private let itemPriceTextField = GiniTextField()
     
     private let totalPriceStackView = UIStackView()
+    private let totalPriceVatStackView = UIStackView()
     private let totalPriceTitleLabel = UILabel()
     private let totalPriceLabel = UILabel()
+    private let includeVatTitleLabel : UILabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,9 +96,7 @@ class LineItemDetailsViewController: UIViewController {
         quantityTextField.translatesAutoresizingMaskIntoConstraints = false
         multiplicationLabel.translatesAutoresizingMaskIntoConstraints = false
         itemPriceTextField.translatesAutoresizingMaskIntoConstraints = false
-        totalPriceStackView.translatesAutoresizingMaskIntoConstraints = false
-        totalPriceTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        totalPriceLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         stackView.axis = .vertical
         stackView.spacing = 16
         checkboxContainerStackView.axis = .horizontal
@@ -204,28 +204,11 @@ class LineItemDetailsViewController: UIViewController {
         itemPriceTextField.bottomAnchor.constraint(equalTo: quantityAndItemPriceContainer.bottomAnchor).isActive = true
         
         stackView.addArrangedSubview(quantityAndItemPriceContainer)
-        
-        totalPriceStackView.axis = .horizontal
-        totalPriceStackView.spacing = 16
-        
-        let dummyView = UIView()
-        dummyView.translatesAutoresizingMaskIntoConstraints = false
-        
-        totalPriceStackView.addArrangedSubview(dummyView)
-        
-        totalPriceTitleLabel.setContentHuggingPriority(.required, for: .horizontal)
-        totalPriceTitleLabel.font = configuration.lineItemDetailsDescriptionLabelFont
-        totalPriceTitleLabel.textColor = configuration.lineItemDetailsDescriptionLabelColor
-        totalPriceTitleLabel.text = .ginibankLocalized(resource: DigitalInvoiceStrings.lineItemTotalPriceTitle)
-        totalPriceTitleLabel.font = UIFont.systemFont(ofSize: 12)
-        
-        totalPriceStackView.addArrangedSubview(totalPriceTitleLabel)
-        
-        totalPriceLabel.setContentHuggingPriority(.required, for: .horizontal)
-        
+        self.setupTotalPrice(configuration: configuration)
         totalPriceStackView.addArrangedSubview(totalPriceLabel)
-        
-        stackView.addArrangedSubview(totalPriceStackView)
+        totalPriceVatStackView.addArrangedSubview(includeVatTitleLabel)
+        totalPriceVatStackView.addArrangedSubview(totalPriceStackView)
+        stackView.addArrangedSubview(totalPriceVatStackView)
         
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(backgroundTapped))
         view.addGestureRecognizer(gestureRecognizer)
@@ -238,6 +221,44 @@ class LineItemDetailsViewController: UIViewController {
                                  totalPriceTitleLabel,
                                  totalPriceLabel]
         
+    }
+
+    private func setupTotalPrice(
+        configuration: ReturnAssistantConfiguration
+    ) {
+        totalPriceStackView.translatesAutoresizingMaskIntoConstraints = false
+        totalPriceVatStackView.translatesAutoresizingMaskIntoConstraints = false
+        totalPriceTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        totalPriceLabel.translatesAutoresizingMaskIntoConstraints = false
+        includeVatTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        totalPriceStackView.distribution = .fill
+        totalPriceStackView.axis = .horizontal
+        totalPriceStackView.spacing = 16
+        totalPriceTitleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        totalPriceTitleLabel.font = configuration.lineItemDetailsDescriptionLabelFont
+        totalPriceTitleLabel.textColor = configuration.lineItemDetailsContentLabelColor
+        totalPriceTitleLabel.text = .ginibankLocalized(
+            resource: DigitalInvoiceStrings.lineItemTotalPriceTitle
+        )
+        totalPriceTitleLabel.font = configuration.lineItemDetailsTotalPriceMainUnitFont
+        totalPriceStackView.addArrangedSubview(totalPriceTitleLabel)
+        totalPriceLabel.setContentHuggingPriority(.required, for: .horizontal)
+        self.setupVatTitleView(configuration: configuration)
+        totalPriceVatStackView.axis = .vertical
+        totalPriceVatStackView.spacing = 0
+        totalPriceVatStackView.addArrangedSubview(includeVatTitleLabel)
+        totalPriceVatStackView.addArrangedSubview(totalPriceStackView)
+    }
+
+    private func setupVatTitleView(
+        configuration: ReturnAssistantConfiguration
+    ) {
+        includeVatTitleLabel.setContentHuggingPriority(.required, for: .horizontal)
+        includeVatTitleLabel.textAlignment = .right
+        includeVatTitleLabel.textColor =
+        configuration.lineItemDetailsDescriptionLabelColor
+        includeVatTitleLabel.text = .ginibankLocalized(resource: DigitalInvoiceStrings.lineItemIncludeVatTitle)
+        includeVatTitleLabel.font = configuration.lineItemDetailsDescriptionLabelFont
     }
     
     @objc func saveButtonTapped() {
@@ -355,7 +376,7 @@ extension LineItemDetailsViewController {
     
     private func decimal(from priceString: String) -> Decimal? {
         let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
+        formatter.numberStyle = .decimal
         formatter.currencySymbol = ""
         return formatter.number(from: priceString)?.decimalValue
     }

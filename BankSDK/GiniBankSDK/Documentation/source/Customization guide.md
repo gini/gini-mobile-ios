@@ -637,16 +637,15 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
   - Font &#8594; `GiniBankConfiguration.lineItemDetailsContentLabelFont`
 - Field highlighted color &#8594; `GiniBankConfiguration.lineItemDetailsContentHighlightedColor`
 
-##### 7. Multiplication symbol
-- Color &#8594; `GiniBankConfiguration.lineItemDetailsContentLabelFont`
-- Font &#8594; `GiniBankConfiguration.lineItemDetailsContentLabelColor`
-- Accessibility label &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.multiplication.accessibilitylabel*</span> localized string
-
-##### 8. Total price
+##### 7. Total price, Vat title
+- Tax title
+  - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.includevattitle*</span> localized
+  - Color &#8594; `GiniBankConfiguration.lineItemDetailsDescriptionLabelColor`
+  - Font &#8594; `GiniBankConfiguration.lineItemDetailsDescriptionLabelFont` 
 - Label
   - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.totalpricetitle*</span> localized string
-  - Color &#8594; `GiniBankConfiguration.lineItemDetailsDescriptionLabelFont`
-  - Font &#8594; `GiniBankConfiguration.lineItemDetailsDescriptionLabelColor`
+  - Color &#8594; `GiniBankConfiguration.lineItemDetailsContentLabelColor`
+  - Font &#8594; `GiniBankConfiguration.lineItemDetailsDescriptionLabelFont`
 - Price
   - Color &#8594; `GiniBankConfiguration.lineItemDetailsContentLabelColor`
   - Main unit font &#8594;  `GiniBankConfiguration.lineItemDetailsTotalPriceMainUnitFont`
