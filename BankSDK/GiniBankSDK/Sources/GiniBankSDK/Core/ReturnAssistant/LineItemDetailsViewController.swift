@@ -285,11 +285,51 @@ class LineItemDetailsViewController: UIViewController {
         }
     }
     
+    private func updateItemState(isEnabled: Bool) {
+        var color: UIColor
+        if isEnabled {
+            color = returnAssistantConfiguration?.lineItemDetailsContentLabelColor ?? UIColor.black
+        } else {
+            self.view.endEditing(true)
+            color = returnAssistantConfiguration?.digitalInvoiceLineItemsDisabledColor ?? UIColor.lightGray
+        }
+        totalPriceLabel.textColor = color
+        totalPriceTitleLabel.textColor = color
+        
+        itemNameTextField.setupState(
+            isEnabled: isEnabled,
+            color: color)
+        itemPriceTextField.setupState(
+            isEnabled: isEnabled,
+            color: color)
+        itemNameTextField.setupState(
+            isEnabled: isEnabled,
+            color: color)
+        quantityTextField.setupState(
+            isEnabled: isEnabled,
+            color: color)
+        if let lineItem = lineItem, let totalPriceString = lineItem.totalPrice.string {
+            let configuration  = returnAssistantConfiguration ?? ReturnAssistantConfiguration.shared
+            let attributedString =
+                NSMutableAttributedString(string: totalPriceString,
+                                          attributes: [NSAttributedString.Key.foregroundColor: color,
+                                                       NSAttributedString.Key.font: configuration.lineItemDetailsTotalPriceMainUnitFont])
+            
+            attributedString.setAttributes([NSAttributedString.Key.foregroundColor: color,
+                                            NSAttributedString.Key.baselineOffset: 5,
+                                            NSAttributedString.Key.font: configuration.lineItemDetailsTotalPriceFractionalUnitFont],
+                                           range: NSRange(location: totalPriceString.count - 3, length: 3))
+            
+            totalPriceLabel.attributedText = attributedString
+        }
+    }
+    
     @objc func checkboxButtonTapped() {
-        guard let lineItem = lineItem else { return }
+        guard var lineItem = lineItem else { return }
         switch lineItem.selectedState {
         case .deselected:
             self.lineItem?.selectedState = .selected
+            
         case .selected:
             if let returnReasons = returnReasons, let configuration = returnAssistantConfiguration, configuration.enableReturnReasons {
                 presentReturnReasonActionSheet(source: checkboxButton, with: returnReasons)
@@ -329,23 +369,10 @@ extension LineItemDetailsViewController {
         switch lineItem.selectedState {
         case .selected:
             checkboxButton.checkedState = .checked
+            updateItemState(isEnabled: true)
         case .deselected:
             checkboxButton.checkedState = .unchecked
-        }
-        
-        if let totalPriceString = lineItem.totalPrice.string {
-            let configuration  = returnAssistantConfiguration ?? ReturnAssistantConfiguration.shared
-            let attributedString =
-                NSMutableAttributedString(string: totalPriceString,
-                                          attributes: [NSAttributedString.Key.foregroundColor: configuration.lineItemDetailsContentLabelColor,
-                                                       NSAttributedString.Key.font: configuration.lineItemDetailsTotalPriceMainUnitFont])
-            
-            attributedString.setAttributes([NSAttributedString.Key.foregroundColor: configuration.lineItemDetailsContentLabelColor,
-                                            NSAttributedString.Key.baselineOffset: 5,
-                                            NSAttributedString.Key.font: configuration.lineItemDetailsTotalPriceFractionalUnitFont],
-                                           range: NSRange(location: totalPriceString.count - 3, length: 3))
-            
-            totalPriceLabel.attributedText = attributedString
+            updateItemState(isEnabled: false)
         }
     }
 }

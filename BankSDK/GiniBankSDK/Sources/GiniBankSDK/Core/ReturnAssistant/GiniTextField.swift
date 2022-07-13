@@ -214,6 +214,11 @@ class GiniTextField: UIView {
     override func becomeFirstResponder() -> Bool {
         textField.becomeFirstResponder()
     }
+    
+    func setupState(isEnabled: Bool, color: UIColor) {
+        textField.isUserInteractionEnabled = isEnabled
+        textColor = color
+    }
 }
 
 extension GiniTextField: UITextFieldDelegate {
