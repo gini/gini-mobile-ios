@@ -19,7 +19,7 @@ enum DigitalInvoiceStrings: LocalizableStringResource {
     case whatIsThisActionSheetTitle, whatIsThisActionSheetMessage, whatIsThisActionSheetActionHelpful, whatIsThisActionSheetActionNotHelpful,
     whatIsThisActionSheetActionCancel
     case lineItemCheckmarkLabel, lineItemQuantity, lineItemEditButtonTitle, lineItemSaveButtonTitle, lineItemNameTextFieldTitle, lineItemQuantityTextFieldTitle,
-    lineItemPriceTextFieldTitle, lineItemMultiplicationAccessibilityLabel, lineItemTotalPriceTitle
+    lineItemPriceTextFieldTitle, lineItemMultiplicationAccessibilityLabel, lineItemTotalPriceTitle, lineItemIncludeVatTitle
     case checkmarkButtonDeselectAccessibilityLabel, checkmarkButtonSelectAccessibilityLabel
     case headerMessagePrimary, headerMessageSecondary
     case totalAccessibilityLabel
@@ -81,6 +81,8 @@ enum DigitalInvoiceStrings: LocalizableStringResource {
             return ("lineitem.multiplication.accessibilitylabel", "Digital invoice line item multiplication symbol accessibility label")
         case .lineItemTotalPriceTitle:
             return ("lineitem.totalpricetitle", "Digital invoice line item total price title")
+        case .lineItemIncludeVatTitle:
+            return ("lineitem.includevattitle", "Digital invoice line item include vat title")
         case .checkmarkButtonDeselectAccessibilityLabel:
             return ("checkmarkbutton.deselect.accessibilitylabel", "Digital invoice checkmark deselect accessibility label")
         case .checkmarkButtonSelectAccessibilityLabel:
