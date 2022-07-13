@@ -36,12 +36,6 @@
 "ginibank.digitalinvoice.items" = "Article %d/%d";
 "ginibank.digitalinvoice.items.accessibilitylabel" = "Items %d out of %d";
 
-"ginibank.digitalinvoice.whatisthisactionsheet.title" = "What is this?";
-"ginibank.digitalinvoice.whatisthisactionsheet.message" = "We extracted the detailed items from your invoice. If you would like to return some items or partially pay the invoice, you can deselect them and the amount to pay will be recalculated.";
-"ginibank.digitalinvoice.whatisthisactionsheet.action.helpful" = "Yes, that's helpful";
-"ginibank.digitalinvoice.whatisthisactionsheet.action.nothelpful" = "No, I don't want to see it again";
-"ginibank.digitalinvoice.whatisthisactionsheet.action.cancel" = "Cancel";
-
 "ginibank.digitalinvoice.lineitem.quantity" = "%dx";
 "ginibank.digitalinvoice.lineitem.editbutton" = "Edit";
 
@@ -80,3 +74,7 @@
 "ginibank.digitalinvoice.onboarding.donebutton" = "Next";
 "ginibank.digitalinvoice.onboarding.hidebutton" = "Don’t show anymore";
 "ginibank.digitalinvoice.backbutton" = "Back";
+
+"ginibank.digitalinvoice.info.text1" = "What is it?";
+"ginibank.digitalinvoice.info.text2" = "We extracted the articles from your invoice. Simply deselect articles if you want to return them. The new total will be calculated for you.";
+"ginibank.digitalinvoice.info.hidebutton" = "Close";

@@ -16,8 +16,6 @@ enum DigitalInvoiceStrings: LocalizableStringResource {
     case warningViewLeftButtonTitle, warningViewRightButtonTitle
     case warningViewTopTitle, warningViewMiddleTitle, warningViewBottomTitle
     case items, itemsAccessibilityLabel
-    case whatIsThisActionSheetTitle, whatIsThisActionSheetMessage, whatIsThisActionSheetActionHelpful, whatIsThisActionSheetActionNotHelpful,
-    whatIsThisActionSheetActionCancel
     case lineItemCheckmarkLabel, lineItemQuantity, lineItemEditButtonTitle, lineItemSaveButtonTitle, lineItemNameTextFieldTitle, lineItemQuantityTextFieldTitle,
     lineItemPriceTextFieldTitle, lineItemMultiplicationAccessibilityLabel, lineItemTotalPriceTitle, lineItemIncludeVatTitle
     case checkmarkButtonDeselectAccessibilityLabel, checkmarkButtonSelectAccessibilityLabel
@@ -53,16 +51,6 @@ enum DigitalInvoiceStrings: LocalizableStringResource {
             return ("items", "Digital invoice selected and total items")
         case .itemsAccessibilityLabel:
             return ("items.accessibilitylabel", "Digital invoice selected and total items accessibility label")
-        case .whatIsThisActionSheetTitle:
-            return ("whatisthisactionsheet.title", "Digital invoice 'What is this?' action sheet title")
-        case .whatIsThisActionSheetMessage:
-            return ("whatisthisactionsheet.message", "Digital invoice 'What is this?' action sheet message")
-        case .whatIsThisActionSheetActionHelpful:
-            return ("whatisthisactionsheet.action.helpful", "Digital invoice 'What is this?' action sheet helpful action button title")
-        case .whatIsThisActionSheetActionNotHelpful:
-            return ("whatisthisactionsheet.action.nothelpful", "Digital invoice 'What is this?' action sheet not helpful action button title")
-        case .whatIsThisActionSheetActionCancel:
-            return ("whatisthisactionsheet.action.cancel", "Digital invoice 'What is this?' action sheet cancel action button title")
         case .lineItemCheckmarkLabel:
             return ("lineitem.checkmark.label", "Digital invoice line item checkmark label")
         case .lineItemQuantity:
