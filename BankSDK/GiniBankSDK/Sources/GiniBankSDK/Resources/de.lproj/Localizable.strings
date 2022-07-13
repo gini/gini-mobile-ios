@@ -32,11 +32,6 @@
 "ginibank.digitalinvoice.skipbuttontitle" = "Funktion überspringen";
 "ginibank.digitalinvoice.items" = "Artikel %d/%d";
 "ginibank.digitalinvoice.items.accessibilitylabel" = "%d von %d Artikel";
-"ginibank.digitalinvoice.whatisthisactionsheet.title" = "Was ist das?";
-"ginibank.digitalinvoice.whatisthisactionsheet.message" = "Wir haben die Artikel aus deiner Rechnung extrahiert. Wenn du einige Artikel zurückschicken oder du deine Rechnung nur teilweise bezahlen möchtest, kannst du einzelne Artikel abwählen und der zu bezahlende Betrag wird automatisch neu berechnet.";
-"ginibank.digitalinvoice.whatisthisactionsheet.action.helpful" = "Ja, das ist hilfreich";
-"ginibank.digitalinvoice.whatisthisactionsheet.action.nothelpful" = "Nein, nicht mehr angezeigen";
-"ginibank.digitalinvoice.whatisthisactionsheet.action.cancel" = "Cancel";
 "ginibank.digitalinvoice.lineitem.quantity" = "%dx";
 "ginibank.digitalinvoice.lineitem.editbutton" = "Bearbeiten";
 "ginibank.digitalinvoice.checkmarkbutton.deselect.accessibilitylabel" = "Artikel abwählen";
