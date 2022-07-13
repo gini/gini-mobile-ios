@@ -415,7 +415,7 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 ### Info screen
 
 <br>
-<center><img src="img/Customization guide/Digital Invoice Info Dialog.jpg" height="500"/></center>
+<center><img src="img/Customization guide/Digital Invoice Info Screen.jpg" height="500"/></center>
 </br>
 
 ##### 1. Title
