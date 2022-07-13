@@ -64,6 +64,10 @@
 //"ginicapture.help.menu.secondItem" = "CM Open document from other apps";
 //"ginicapture.help.menu.thirdItem" = "CM Supported formats";
 //
+//"ginibank.digitalinvoice.info.text1" = "CM What is it?";
+//"ginibank.digitalinvoice.info.text2" = "CM We extracted the articles from your invoice. Simply deselect articles if you want to return them. The new total will be calculated for you.";
+//"ginibank.digitalinvoice.info.hidebutton" = "CM Close";
+//
 //"ginicapture.help.openWithTutorial.title" = "CM Open documents from other apps";
 "close" = "Close";
 //"ginibank.digitalinvoice.backbutton" = "CM Back";
