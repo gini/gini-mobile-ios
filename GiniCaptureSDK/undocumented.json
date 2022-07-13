@@ -1,6 +1,20 @@
 {
   "warnings": [
     {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Custom views/GiniBarButtonItem.swift",
+      "line": 11,
+      "symbol": "GiniBarButtonItem",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Custom views/GiniBarButtonItem.swift",
+      "line": 13,
+      "symbol": "GiniBarButtonItem.init(image:title:style:target:action:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Custom views/NoticeView.swift",
       "line": 11,
       "symbol": "NoticeActionType",
