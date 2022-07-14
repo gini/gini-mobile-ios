@@ -325,7 +325,7 @@ class LineItemDetailsViewController: UIViewController {
     }
     
     @objc func checkboxButtonTapped() {
-        guard var lineItem = lineItem else { return }
+        guard let lineItem = lineItem else { return }
         switch lineItem.selectedState {
         case .deselected:
             self.lineItem?.selectedState = .selected
