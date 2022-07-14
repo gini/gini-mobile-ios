@@ -20,7 +20,9 @@ Before starting you need to install [swift-create-xcframework](https://github.co
 
 8. For each dependency target in `Build Settings` -> `Deployment` set `Skip install` parameter to `No`
 
-9. For each dependency target in `Build Phases` -> `Compile Sources` add Resources and check that the target is checked the `Target Membership` in info tab.
+9. Include resources in `Build Phases` -> `Compile Sources`.
+Make sure to include GiniBankSDK Resources for GiniBankSDK target.
+Make sure to include GiniCaptureSDK Resources for GiniCaptureSDK target and check that the target is checked the `Target Membership` in info tab.
 
 10. Navigate to the `cd .build/swift-create-xcframework/` directory and create archives for GiniBankSDK for device and simulator (you can copy paste the whole snippet into your terminal and run it):
 
