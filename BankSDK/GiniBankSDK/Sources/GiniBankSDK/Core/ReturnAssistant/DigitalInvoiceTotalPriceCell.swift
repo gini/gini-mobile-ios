@@ -44,7 +44,7 @@ class DigitalInvoiceTotalPriceCell: UITableViewCell {
         }
     }
     
-    fileprivate func configureAddArticleButton() {
+    private func configureAddArticleButton() {
         addArticleButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
         addArticleButton.setTitle(.ginibankLocalized(resource: DigitalInvoiceStrings.addArticleButton), for: .normal)
         addArticleButton.setImage(prefferedImage(named: "plus-icon"), for: .normal)
@@ -56,9 +56,9 @@ class DigitalInvoiceTotalPriceCell: UITableViewCell {
         addArticleButton.translatesAutoresizingMaskIntoConstraints = false
         if #available(iOS 13.0, *) {
         } else {
-            let spaceBetweenLabelAndIcon: CGFloat = 5
-            addArticleButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 12 + spaceBetweenLabelAndIcon, bottom: 2, right: 12)
-            addArticleButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: -spaceBetweenLabelAndIcon, bottom: 2, right: spaceBetweenLabelAndIcon)
+            let labelAndIconMargin: CGFloat = 10
+            addArticleButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 12 + labelAndIconMargin, bottom: 2, right: 12)
+            addArticleButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: -labelAndIconMargin, bottom: 2, right: labelAndIconMargin)
         }
         
         NSLayoutConstraint.activate([
@@ -67,14 +67,14 @@ class DigitalInvoiceTotalPriceCell: UITableViewCell {
         ])
     }
     
-    fileprivate func configureTotalPriceLabel() {
+    private func configureTotalPriceLabel() {
         totalPriceLabel.translatesAutoresizingMaskIntoConstraints = false
         totalPriceLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 55).isActive = true
         totalPriceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
         totalPriceLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
     }
     
-    fileprivate func configureTotalCaptionLabel() {
+    private func configureTotalCaptionLabel() {
         totalCaptionLabel.text = .ginibankLocalized(resource: DigitalInvoiceStrings.totalCaptionLabel)
         totalCaptionLabel.font = returnAssistantConfiguration?.digitalInvoiceTotalCaptionLabelFont ?? ReturnAssistantConfiguration.shared.digitalInvoiceTotalCaptionLabelFont
         totalCaptionLabel.textColor = UIColor.from(giniColor: returnAssistantConfiguration?.digitalInvoiceTotalCaptionLabelTextColor ?? ReturnAssistantConfiguration.shared.digitalInvoiceTotalCaptionLabelTextColor)
