@@ -54,6 +54,7 @@ class LineItemDetailsViewController: UIViewController {
     private let totalPriceTitleLabel = UILabel()
     private let totalPriceLabel = UILabel()
     private let includeVatTitleLabel : UILabel = UILabel()
+    private let kQuantityLimit = 99999
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -379,6 +380,19 @@ extension LineItemDetailsViewController {
 
 extension LineItemDetailsViewController {
     
+    private func getQuantityForLineItem(quantityString: String) -> Int {
+        let quantity = Int(quantityString) ?? 0
+        if quantity > 0 {
+            if quantity > kQuantityLimit {
+                return kQuantityLimit
+            } else {
+                return quantity
+            }
+        } else {
+            return 1
+        }
+    }
+    
     private func lineItemFromFields() -> DigitalInvoice.LineItem? {
         let lineItemMaximumAllowedValue = Decimal(25000)
         
@@ -392,16 +406,15 @@ extension LineItemDetailsViewController {
         }
         if let itemName = itemNameTextField.text {
             let emptyNameCaption: String = .ginibankLocalized(resource: DigitalInvoiceStrings.noTitleArticle)
-            
             lineItem.name = itemName.isEmpty ? emptyNameCaption : itemName
         }
-        let quantity = Int(quantityTextField.text ?? "") ?? 0
-        if quantity > 0 {
-            lineItem.quantity = quantity
-        } else {
-            lineItem.quantity = 1
-            quantityTextField.text = "1"
+        
+        let quantity = getQuantityForLineItem(quantityString: quantityTextField.text ?? "")
+        if quantity == 1 || quantity == kQuantityLimit {
+            // we need to update textfield beacuse the quantity was changed due to the limitations
+            quantityTextField.text = "\(quantity)"
         }
+        lineItem.quantity = quantity
         lineItem.price = Price(value: itemPriceValue, currencyCode: lineItem.price.currencyCode)
         
         return lineItem
