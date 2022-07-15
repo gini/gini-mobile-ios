@@ -44,30 +44,7 @@ class DigitalInvoiceTotalPriceCell: UITableViewCell {
         }
     }
     
-    private func setup() {
-        
-        selectionStyle = .none
-        
-        totalCaptionLabel.text = .ginibankLocalized(resource: DigitalInvoiceStrings.totalCaptionLabel)
-        totalCaptionLabel.font = returnAssistantConfiguration?.digitalInvoiceTotalCaptionLabelFont ?? ReturnAssistantConfiguration.shared.digitalInvoiceTotalCaptionLabelFont
-        totalCaptionLabel.textColor = UIColor.from(giniColor: returnAssistantConfiguration?.digitalInvoiceTotalCaptionLabelTextColor ?? ReturnAssistantConfiguration.shared.digitalInvoiceTotalCaptionLabelTextColor)
-        
-        totalCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(totalCaptionLabel)
-        
-        totalCaptionLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 55).isActive = true
-        totalCaptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20).isActive = true
-        totalCaptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-    
-        totalPriceLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(totalPriceLabel)
-        
-        totalPriceLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 55).isActive = true
-        totalPriceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
-        totalPriceLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-        backgroundColor = UIColor.from(giniColor: returnAssistantConfiguration?.digitalInvoiceBackgroundColor ?? ReturnAssistantConfiguration.shared.digitalInvoiceBackgroundColor)
-        
-        contentView.addSubview(addArticleButton)
+    fileprivate func configureAddArticleButton() {
         addArticleButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
         addArticleButton.setTitle(.ginibankLocalized(resource: DigitalInvoiceStrings.addArticleButton), for: .normal)
         addArticleButton.setImage(prefferedImage(named: "plus-icon"), for: .normal)
@@ -88,6 +65,39 @@ class DigitalInvoiceTotalPriceCell: UITableViewCell {
             addArticleButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 14),
             addArticleButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -22)
         ])
+    }
+    
+    fileprivate func configureTotalPriceLabel() {
+        totalPriceLabel.translatesAutoresizingMaskIntoConstraints = false
+        totalPriceLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 55).isActive = true
+        totalPriceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
+        totalPriceLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+    }
+    
+    fileprivate func configureTotalCaptionLabel() {
+        totalCaptionLabel.text = .ginibankLocalized(resource: DigitalInvoiceStrings.totalCaptionLabel)
+        totalCaptionLabel.font = returnAssistantConfiguration?.digitalInvoiceTotalCaptionLabelFont ?? ReturnAssistantConfiguration.shared.digitalInvoiceTotalCaptionLabelFont
+        totalCaptionLabel.textColor = UIColor.from(giniColor: returnAssistantConfiguration?.digitalInvoiceTotalCaptionLabelTextColor ?? ReturnAssistantConfiguration.shared.digitalInvoiceTotalCaptionLabelTextColor)
+        
+        totalCaptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        totalCaptionLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 55).isActive = true
+        totalCaptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20).isActive = true
+        totalCaptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+    }
+    
+    private func setup() {
+        
+        selectionStyle = .none
+        backgroundColor = UIColor.from(giniColor: returnAssistantConfiguration?.digitalInvoiceBackgroundColor ?? ReturnAssistantConfiguration.shared.digitalInvoiceBackgroundColor)
+        
+        contentView.addSubview(totalCaptionLabel)
+        contentView.addSubview(totalPriceLabel)
+        contentView.addSubview(addArticleButton)
+
+        configureTotalCaptionLabel()
+        configureTotalPriceLabel()
+        configureAddArticleButton()
     }
     
     @objc func didTapAddButton() {
