@@ -77,6 +77,12 @@ class DigitalInvoiceTotalPriceCell: UITableViewCell {
         addArticleButton.semanticContentAttribute = .forceRightToLeft
         addArticleButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 12, bottom: 2, right: 0)
         addArticleButton.translatesAutoresizingMaskIntoConstraints = false
+        if #available(iOS 13.0, *) {
+        } else {
+            let spaceBetweenLabelAndIcon: CGFloat = 5
+            addArticleButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 12 + spaceBetweenLabelAndIcon, bottom: 2, right: 12)
+            addArticleButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: -spaceBetweenLabelAndIcon, bottom: 2, right: 5)
+        }
         
         NSLayoutConstraint.activate([
             addArticleButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 14),
