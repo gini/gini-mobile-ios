@@ -81,7 +81,7 @@ class DigitalInvoiceTotalPriceCell: UITableViewCell {
         } else {
             let spaceBetweenLabelAndIcon: CGFloat = 5
             addArticleButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 12 + spaceBetweenLabelAndIcon, bottom: 2, right: 12)
-            addArticleButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: -spaceBetweenLabelAndIcon, bottom: 2, right: 5)
+            addArticleButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: -spaceBetweenLabelAndIcon, bottom: 2, right: spaceBetweenLabelAndIcon)
         }
         
         NSLayoutConstraint.activate([
