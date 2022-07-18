@@ -380,7 +380,7 @@ extension LineItemDetailsViewController {
 
 extension LineItemDetailsViewController {
     
-    private func getQuantityForLineItem(quantityString: String) -> Int {
+    private func quantityForLineItem(quantityString: String) -> Int {
         let quantity = Int(quantityString) ?? 0
         if quantity > 0 {
             if quantity > kQuantityLimit {
@@ -409,7 +409,7 @@ extension LineItemDetailsViewController {
             lineItem.name = itemName.isEmpty ? emptyNameCaption : itemName
         }
         
-        let quantity = getQuantityForLineItem(quantityString: quantityTextField.text ?? "")
+        let quantity = quantityForLineItem(quantityString: quantityTextField.text ?? "")
         if quantity == 1 || quantity == kQuantityLimit {
             // we need to update textfield beacuse the quantity was changed due to the limitations
             quantityTextField.text = "\(quantity)"
