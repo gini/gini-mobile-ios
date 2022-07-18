@@ -18,7 +18,7 @@ final class DigitalInvoiceViewModel {
         numTotal: Int
     ) -> String {
 
-        if isEnabled {
+        if isEnabled && numSelected != 0 {
             return String.localizedStringWithFormat(
                 DigitalInvoiceStrings.payButtonTitle.localizedGiniBankFormat,
                 numSelected,
