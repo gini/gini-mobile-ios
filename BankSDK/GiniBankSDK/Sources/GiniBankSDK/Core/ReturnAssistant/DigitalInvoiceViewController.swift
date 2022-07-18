@@ -143,17 +143,19 @@ public class DigitalInvoiceViewController: UIViewController {
         delegate?.didFinish(viewController: self, invoice: invoice)
     }
     
-    private func payButtonTitle() -> String {
-        
-        guard let invoice = invoice else {
-            return .ginibankLocalized(resource: DigitalInvoiceStrings.noInvoicePayButtonTitle)
+    private func payButtonTitle(
+        isEnabled: Bool = false,
+        numSelected: Int,
+        numTotal: Int
+    ) -> String {
+
+        if isEnabled {
+            return String.localizedStringWithFormat(
+                DigitalInvoiceStrings.payButtonTitle.localizedGiniBankFormat,
+                numSelected,
+                numTotal)
         }
-        if invoice.numSelected == 0 {
-            return .ginibankLocalized(resource: DigitalInvoiceStrings.noInvoicePayButtonTitle)
-        }
-        return String.localizedStringWithFormat(DigitalInvoiceStrings.payButtonTitle.localizedGiniBankFormat,
-                                                invoice.numSelected,
-                                                invoice.numTotal)
+        return .ginibankLocalized(resource: DigitalInvoiceStrings.noInvoicePayButtonTitle)
     }
     
     private func payButtonAccessibilityLabel() -> String {
@@ -347,22 +349,33 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
             return cell
             
         case .footer:
-            
             let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceFooterCell",
                                                      for: indexPath) as! DigitalInvoiceFooterCell
-            
             cell.returnAssistantConfiguration = returnAssistantConfiguration
-
-            cell.payButton.setTitle(payButtonTitle(), for: .normal)
             cell.payButton.accessibilityLabel = payButtonAccessibilityLabel()
             cell.payButton.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
             if let invoice = invoice {
                 let total = invoice.total?.value ?? 0
-                let shouldEnablePayButton = invoice.numSelected > 0 || total > 0
+                let shouldEnablePayButton = total > 0
                 cell.enableButtons(shouldEnablePayButton)
+                let buttonTitle = payButtonTitle(
+                    isEnabled: shouldEnablePayButton,
+                    numSelected: invoice.numSelected,
+                    numTotal: invoice.numTotal
+                )
+                cell.payButton.setTitle(
+                    buttonTitle,
+                    for: .normal)
                 cell.shouldSetUIForInaccurateResults(invoice.inaccurateResults)
                 cell.skipButton.setTitle(skipButtonTitle(), for: .normal)
                 cell.skipButton.addTarget(self, action: #selector(skipButtonTapped), for: .touchUpInside)
+            } else {
+                let buttonTitle = payButtonTitle(
+                    isEnabled: false,
+                    numSelected: 0,
+                    numTotal: 0
+                )
+                cell.payButton.setTitle(buttonTitle, for: .normal)
             }
             return cell
             
