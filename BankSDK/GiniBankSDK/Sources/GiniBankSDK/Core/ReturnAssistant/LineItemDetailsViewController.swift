@@ -15,6 +15,8 @@ protocol LineItemDetailsViewControllerDelegate: AnyObject {
                          index: Int,
                          shouldPopViewController: Bool)
 }
+let kQuantityLimit = 99999
+let kMaxQuantityCharacters = 5
 
 class LineItemDetailsViewController: UIViewController {
 
@@ -54,7 +56,7 @@ class LineItemDetailsViewController: UIViewController {
     private let totalPriceTitleLabel = UILabel()
     private let totalPriceLabel = UILabel()
     private let includeVatTitleLabel : UILabel = UILabel()
-    private let kQuantityLimit = 99999
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -176,6 +178,7 @@ class LineItemDetailsViewController: UIViewController {
         quantityTextField.textColor = configuration.lineItemDetailsContentLabelColor
         quantityTextField.underscoreColor = configuration.lineItemDetailsContentHighlightedColor
         quantityTextField.prefixText = nil
+        quantityTextField.textFieldType = .quantityFieldTag
         quantityTextField.keyboardType = .numberPad
         quantityTextField.delegate = self
         
