@@ -48,27 +48,27 @@ final class AppCoordinator: Coordinator {
             }
             return CustomDocumentValidationResult.success()
         }
-        let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
-        configuration.customMenuItems = [customMenuItem]
-        configuration.albumsScreenSelectMorePhotosTextColor = GiniColor(lightModeColor: .systemBlue, darkModeColor: .systemBlue)
+//        let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
+//        configuration.customMenuItems = [customMenuItem]
+//        configuration.albumsScreenSelectMorePhotosTextColor = GiniColor(lightModeColor: .systemBlue, darkModeColor: .systemBlue)
         
         // A few return assistant customisation examples
-        configuration.digitalInvoiceLineItemEditButtonTintColor = Colors.Gini.bluishGreen
-        configuration.lineItemBorderColor = Colors.Gini.paleGreen
-        configuration.digitalInvoiceLineItemToggleSwitchTintColor = Colors.Gini.springGreen
-        configuration.digitalInvoiceLineItemsDisabledColor = Colors.Gini.raspberry.withAlphaComponent(0.2)
-        configuration.lineItemDetailsContentHighlightedColor = Colors.Gini.paleGreen
+//        configuration.digitalInvoiceLineItemEditButtonTintColor = Colors.Gini.bluishGreen
+//        configuration.lineItemBorderColor = Colors.Gini.paleGreen
+//        configuration.digitalInvoiceLineItemToggleSwitchTintColor = Colors.Gini.springGreen
+//        configuration.digitalInvoiceLineItemsDisabledColor = Colors.Gini.raspberry.withAlphaComponent(0.2)
+//        configuration.lineItemDetailsContentHighlightedColor = Colors.Gini.paleGreen
 
         // A few camera screen customisation examples
-        configuration.navigationBarItemFont = UIFont.systemFont(ofSize: 20, weight: .bold)
-        configuration.navigationBarCameraTitleHelpButton = "? Help"
-        configuration.cameraPreviewFrameColor = .init(lightModeColor: UIColor.init(white: 0.5, alpha: 0.1), darkModeColor: UIColor.init(white: 0.5, alpha: 0.3))
-        configuration.cameraButtonsViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
-        configuration.cameraContainerViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
-        
-        configuration.multipagePageSuccessfullUploadIconBackgroundColor = .systemGreen
-        configuration.multipagePageFailureUploadIconBackgroundColor = .systemRed
-        configuration.enableReturnReasons = false
+//        configuration.navigationBarItemFont = UIFont.systemFont(ofSize: 20, weight: .bold)
+//        configuration.navigationBarCameraTitleHelpButton = "? Help"
+//        configuration.cameraPreviewFrameColor = .init(lightModeColor: UIColor.init(white: 0.5, alpha: 0.1), darkModeColor: UIColor.init(white: 0.5, alpha: 0.3))
+//        configuration.cameraButtonsViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
+//        configuration.cameraContainerViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
+//
+//        configuration.multipagePageSuccessfullUploadIconBackgroundColor = .systemGreen
+//        configuration.multipagePageFailureUploadIconBackgroundColor = .systemRed
+//        configuration.enableReturnReasons = false
        return configuration
     }()
     
