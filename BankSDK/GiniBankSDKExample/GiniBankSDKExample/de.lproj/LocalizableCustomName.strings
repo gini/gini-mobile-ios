@@ -70,4 +70,8 @@
 //
 //"ginicapture.help.openWithTutorial.title" = "CM Dokumente aus anderen Apps öffnen";
 "close" = "Schließen";
+//
 //"ginibank.digitalinvoice.backbutton" = "CM Schließen";
+//"ginibank.digitalinvoice.paybuttontitle.disabled" = "CM Bezahlen";
+//"ginibank.digitalinvoice.paybuttontitle.othercharges" = "CM Bezahlen";
+//"ginibank.digitalinvoice.paybuttontitle" = "CM Bezahlen %d/%d";
