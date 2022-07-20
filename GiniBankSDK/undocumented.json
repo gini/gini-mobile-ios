@@ -198,63 +198,63 @@
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/ReturnAssistant/DigitalInvoiceViewController.swift",
-      "line": 116,
+      "line": 117,
       "symbol": "DigitalInvoiceViewController.viewDidLoad()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/ReturnAssistant/DigitalInvoiceViewController.swift",
-      "line": 123,
+      "line": 124,
       "symbol": "DigitalInvoiceViewController.viewWillAppear(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/ReturnAssistant/DigitalInvoiceViewController.swift",
-      "line": 129,
+      "line": 130,
       "symbol": "DigitalInvoiceViewController.viewDidAppear(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/ReturnAssistant/DigitalInvoiceViewController.swift",
-      "line": 279,
+      "line": 278,
       "symbol": "DigitalInvoiceViewController.tableView(_:heightForRowAt:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/ReturnAssistant/DigitalInvoiceViewController.swift",
-      "line": 283,
+      "line": 282,
       "symbol": "DigitalInvoiceViewController.tableView(_:estimatedHeightForRowAt:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/ReturnAssistant/DigitalInvoiceViewController.swift",
-      "line": 294,
+      "line": 293,
       "symbol": "DigitalInvoiceViewController.numberOfSections(in:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/ReturnAssistant/DigitalInvoiceViewController.swift",
-      "line": 298,
+      "line": 297,
       "symbol": "DigitalInvoiceViewController.tableView(_:numberOfRowsInSection:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/ReturnAssistant/DigitalInvoiceViewController.swift",
-      "line": 309,
+      "line": 308,
       "symbol": "DigitalInvoiceViewController.tableView(_:cellForRowAt:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/ReturnAssistant/GiniTextField.swift",
-      "line": 272,
+      "line": 296,
       "symbol": "UITextField.moveSelectedTextRange(from:to:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
