@@ -104,7 +104,8 @@ final class StringUtilsTests: XCTestCase {
         let totalItems = 3
         let isEnabled = false
         let title = vm.payButtonTitle(isEnabled: isEnabled, numSelected: 0, numTotal: totalItems)
-        XCTAssertEqual(title, "Pay")
+        XCTAssertEqual(title,  .ginibankLocalized(resource: DigitalInvoiceStrings.disabledPayButtonTitle)
+)
     }
     
     func testPayButtonEnabledItemsZeroTotalTitle() {
@@ -112,7 +113,7 @@ final class StringUtilsTests: XCTestCase {
         let totalItems = 3
         let isEnabled = false
         let title = vm.payButtonTitle(isEnabled: isEnabled, numSelected: 3, numTotal: totalItems)
-        XCTAssertEqual(title, "Pay")
+        XCTAssertEqual(title, .ginibankLocalized(resource: DigitalInvoiceStrings.disabledPayButtonTitle))
     }
     
     func testPayButtonEnabled2ItemsTotalPositiveTitle() {
@@ -120,14 +121,19 @@ final class StringUtilsTests: XCTestCase {
         let totalItems = 3
         let isEnabled = true
         let title = vm.payButtonTitle(isEnabled: isEnabled, numSelected: 3, numTotal: totalItems)
-        XCTAssertEqual(title, "Pay 3/3")
+        XCTAssertEqual(
+            title,
+            String.localizedStringWithFormat(
+                DigitalInvoiceStrings.payButtonTitle.localizedGiniBankFormat,
+                3,
+                3))
     }
     
     func testPayButtonEnabled0ItemsTotalPositiveTitle() {
         let vm = DigitalInvoiceViewModel()
         let totalItems = 3
-        let isEnabled = true
+        let isEnabled = vm.isPayButtonEnabled(total: 23.03)
         let title = vm.payButtonTitle(isEnabled: isEnabled, numSelected: 0, numTotal: totalItems)
-        XCTAssertEqual(title, "Pay")
+        XCTAssertEqual(title, .ginibankLocalized(resource: DigitalInvoiceStrings.payButtonOtherCharges))
     }
 }

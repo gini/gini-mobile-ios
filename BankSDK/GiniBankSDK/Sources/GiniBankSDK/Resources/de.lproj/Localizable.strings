@@ -21,7 +21,8 @@
 "ginibank.help.menu.returnAssistant.backButton.title" = "Zurück";
 
 "ginibank.digitalinvoice.screentitle" = "Digitale Rechnung";
-"ginibank.digitalinvoice.paybuttontitle.noinvoice" = "Bezahlen";
+"ginibank.digitalinvoice.paybuttontitle.disabled" = "Bezahlen";
+"ginibank.digitalinvoice.paybuttontitle.othercharges" = "Bezahlen";
 "ginibank.digitalinvoice.paybuttontitle" = "Bezahlen %d/%d";
 "ginibank.digitalinvoice.paybuttontitle.accessibilitylabel" = "Bezahlen %d von %d";
 "ginibank.digitalinvoice.warningleftbuttontitle" = "OK";

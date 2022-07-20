@@ -24,6 +24,9 @@ final class DigitalInvoiceViewModel {
                 numSelected,
                 numTotal)
         }
-        return .ginibankLocalized(resource: DigitalInvoiceStrings.noInvoicePayButtonTitle)
+        if numSelected == 0 {
+            return .ginibankLocalized(resource: DigitalInvoiceStrings.payButtonOtherCharges)
+        }
+        return .ginibankLocalized(resource: DigitalInvoiceStrings.disabledPayButtonTitle)
     }
 }

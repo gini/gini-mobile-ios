@@ -139,15 +139,26 @@ public class DigitalInvoiceViewController: UIViewController {
     }
     
     @objc func payButtonTapped() {
-        
         guard let invoice = invoice else { return }
         delegate?.didFinish(viewController: self, invoice: invoice)
+    }
+    
+    private func payButtonTitle() -> String {
+        guard let invoice = invoice else {
+            return .ginibankLocalized(resource: DigitalInvoiceStrings.disabledPayButtonTitle)
+        }
+        if invoice.numSelected == 0 {
+            return .ginibankLocalized(resource: DigitalInvoiceStrings.payButtonOtherCharges)
+        }
+        return String.localizedStringWithFormat(DigitalInvoiceStrings.payButtonTitle.localizedGiniBankFormat,
+                                                invoice.numSelected,
+                                                invoice.numTotal)
     }
     
     private func payButtonAccessibilityLabel() -> String {
         
         guard let invoice = invoice else {
-            return .ginibankLocalized(resource: DigitalInvoiceStrings.noInvoicePayButtonTitle)
+            return .ginibankLocalized(resource: DigitalInvoiceStrings.disabledPayButtonTitle)
         }
         
         return String.localizedStringWithFormat(DigitalInvoiceStrings.payButtonTitleAccessibilityLabel.localizedGiniBankFormat,
