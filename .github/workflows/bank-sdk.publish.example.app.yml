@@ -54,9 +54,9 @@ jobs:
             plutil -replace client_id -string "gini-mobile-test" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
             plutil -replace client_password -string "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
       
-       - name: Setup Manual Signing for Xcode project
-         uses: maierj/fastlane-action@v2.0.1
-         with:
+      - name: Setup Manual Signing for Xcode project
+        uses: maierj/fastlane-action@v2.0.1
+        with:
           lane: 'setup_manual_signing'
           options: >
             { 
