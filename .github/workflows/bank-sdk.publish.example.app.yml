@@ -53,7 +53,21 @@ jobs:
         run: |
             plutil -replace client_id -string "gini-mobile-test" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
             plutil -replace client_password -string "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
-            
+      
+      - name: Setup Manual Signing for Xcode project
+        uses: maierj/fastlane-action@v2.0.1
+        with:
+          lane: 'setup_manual_signing'
+          options: >
+            { 
+              "project_path": "BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj",
+              "team_id": "BQY9KX4V88",
+              "bundle_identifier": "net.gini.ginipaybank.Example-Swift",
+              "profile_name": "Bank SDK Example Distribution", 
+              "entitlements_file_path": "GiniBankSDKExample/Example Swift.entitlements", 
+              "ci": "true"
+            }   
+        
       - name: Archiving project
         run: |
             xcodebuild clean archive \
@@ -88,6 +102,6 @@ jobs:
           token: ${{ secrets.GINI_APPCENTER_API_TOKEN }}
           path: GiniBankSDKExample.ipa
           app: Gini-Team-Organization/Example-Gini-Pay-Bank-SDK
-          group: 'Public'
+          group: 'Internal'
 
 
