@@ -70,7 +70,8 @@ public class DigitalInvoiceViewController: UIViewController {
     private var didShowOnboardInCurrentSession = false
     private var didShowInfoViewInCurrentSession = false
     private var toggleUIUpdates = false
-    
+    private let vm = DigitalInvoiceViewModel()
+
     fileprivate func configureTableView() {
         tableView.delegate = self
         tableView.dataSource = self
@@ -138,18 +139,16 @@ public class DigitalInvoiceViewController: UIViewController {
     }
     
     @objc func payButtonTapped() {
-        
         guard let invoice = invoice else { return }
         delegate?.didFinish(viewController: self, invoice: invoice)
     }
     
     private func payButtonTitle() -> String {
-        
         guard let invoice = invoice else {
-            return .ginibankLocalized(resource: DigitalInvoiceStrings.noInvoicePayButtonTitle)
+            return .ginibankLocalized(resource: DigitalInvoiceStrings.disabledPayButtonTitle)
         }
         if invoice.numSelected == 0 {
-            return .ginibankLocalized(resource: DigitalInvoiceStrings.noInvoicePayButtonTitle)
+            return .ginibankLocalized(resource: DigitalInvoiceStrings.payButtonOtherCharges)
         }
         return String.localizedStringWithFormat(DigitalInvoiceStrings.payButtonTitle.localizedGiniBankFormat,
                                                 invoice.numSelected,
@@ -159,7 +158,7 @@ public class DigitalInvoiceViewController: UIViewController {
     private func payButtonAccessibilityLabel() -> String {
         
         guard let invoice = invoice else {
-            return .ginibankLocalized(resource: DigitalInvoiceStrings.noInvoicePayButtonTitle)
+            return .ginibankLocalized(resource: DigitalInvoiceStrings.disabledPayButtonTitle)
         }
         
         return String.localizedStringWithFormat(DigitalInvoiceStrings.payButtonTitleAccessibilityLabel.localizedGiniBankFormat,
@@ -347,22 +346,33 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
             return cell
             
         case .footer:
-            
             let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceFooterCell",
                                                      for: indexPath) as! DigitalInvoiceFooterCell
-            
             cell.returnAssistantConfiguration = returnAssistantConfiguration
-
-            cell.payButton.setTitle(payButtonTitle(), for: .normal)
             cell.payButton.accessibilityLabel = payButtonAccessibilityLabel()
             cell.payButton.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
             if let invoice = invoice {
                 let total = invoice.total?.value ?? 0
-                let shouldEnablePayButton = invoice.numSelected > 0 || total > 0
+                let shouldEnablePayButton = vm.isPayButtonEnabled(total: total)
                 cell.enableButtons(shouldEnablePayButton)
+                let buttonTitle = vm.payButtonTitle(
+                    isEnabled: shouldEnablePayButton,
+                    numSelected: invoice.numSelected,
+                    numTotal: invoice.numTotal
+                )
+                cell.payButton.setTitle(
+                    buttonTitle,
+                    for: .normal)
                 cell.shouldSetUIForInaccurateResults(invoice.inaccurateResults)
                 cell.skipButton.setTitle(skipButtonTitle(), for: .normal)
                 cell.skipButton.addTarget(self, action: #selector(skipButtonTapped), for: .touchUpInside)
+            } else {
+                let buttonTitle = vm.payButtonTitle(
+                    isEnabled: false,
+                    numSelected: 0,
+                    numTotal: 0
+                )
+                cell.payButton.setTitle(buttonTitle, for: .normal)
             }
             return cell
             

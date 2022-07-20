@@ -11,7 +11,7 @@ import GiniCaptureSDK
 enum DigitalInvoiceStrings: LocalizableStringResource {
     
     case screenTitle
-    case noInvoicePayButtonTitle, payButtonTitle, payButtonTitleAccessibilityLabel
+    case disabledPayButtonTitle, payButtonTitle, payButtonTitleAccessibilityLabel, payButtonOtherCharges
     case skipButtonTitle
     case warningViewLeftButtonTitle, warningViewRightButtonTitle
     case warningViewTopTitle, warningViewMiddleTitle, warningViewBottomTitle
@@ -36,11 +36,12 @@ enum DigitalInvoiceStrings: LocalizableStringResource {
     
     var tableEntry: LocalizationEntry {
         switch self {
-        
         case .screenTitle:
             return ("screentitle", "Digital invoice screen title")
-        case .noInvoicePayButtonTitle:
-            return ("paybuttontitle.noinvoice", "Digital invoice pay button title when the invoice is missing")
+        case .disabledPayButtonTitle:
+            return ("paybuttontitle.disabled", "Digital invoice pay button title when the invoice is missing")
+        case .payButtonOtherCharges:
+            return ("paybuttontitle.othercharges", "Digital invoice pay button title when there are other charges")
         case .payButtonTitle:
             return ("paybuttontitle", "Digital invoice pay button title")
         case .payButtonTitleAccessibilityLabel:
