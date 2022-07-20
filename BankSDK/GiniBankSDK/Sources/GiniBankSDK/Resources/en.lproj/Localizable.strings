@@ -21,7 +21,8 @@
 "ginibank.help.menu.returnAssistant.backButton.title" = "Back";
 
 "ginibank.digitalinvoice.screentitle" = "Digital Invoice";
-"ginibank.digitalinvoice.paybuttontitle.noinvoice" = "Pay";
+"ginibank.digitalinvoice.paybuttontitle.disabled" = "Pay";
+"ginibank.digitalinvoice.paybuttontitle.othercharges" = "Pay";
 "ginibank.digitalinvoice.paybuttontitle" = "Pay %d/%d";
 "ginibank.digitalinvoice.paybuttontitle.accessibilitylabel" = "Pay %d out of %d";
 
