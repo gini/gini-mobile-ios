@@ -25,7 +25,8 @@ class DigitalInvoiceTotalPriceCell: UITableViewCell {
     private var totalCaptionLabel = UILabel()
     private var totalPriceLabel = UILabel()
     private var addArticleButton = UIButton()
-    
+    private let margin: CGFloat = 5
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -72,6 +73,7 @@ class DigitalInvoiceTotalPriceCell: UITableViewCell {
         totalPriceLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 55).isActive = true
         totalPriceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
         totalPriceLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        totalPriceLabel.leadingAnchor.constraint(greaterThanOrEqualTo: totalCaptionLabel.trailingAnchor, constant: margin).isActive = true
     }
     
     private func configureTotalCaptionLabel() {
