@@ -1,8 +1,8 @@
 name: Publish GiniBankSDKExample to App Center
 on:
   push:
-    branches:
-      - 'PIA-2700'
+    paths:
+      - 'BankSDK/**'
 
 jobs:
   check:
