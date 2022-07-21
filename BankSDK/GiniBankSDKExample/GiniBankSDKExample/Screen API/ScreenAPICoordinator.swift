@@ -13,6 +13,7 @@ import GiniCaptureSDK
 
 protocol ScreenAPICoordinatorDelegate: AnyObject {
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish:())
+    func screenAPIShowNoResults(coordinator: ScreenAPICoordinator)
 }
 
 class TrackingDelegate: GiniCaptureTrackingDelegate {
@@ -133,14 +134,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     }
 }
 
-
-// MARK: - NoResultsScreenDelegate
-extension ScreenAPICoordinator: NoResultsScreenDelegate {
-    func noResults(viewController: NoResultViewController, didTapRetry: ()) {
-        screenAPIViewController.popToRootViewController(animated: true)
-    }
-}
-
 // MARK: - GiniCaptureResultsDelegate
 extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     
@@ -157,11 +150,7 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     
     func giniCaptureAnalysisDidFinishWithoutResults(_ showingNoResultsScreen: Bool) {
         if !showingNoResultsScreen {
-            let customNoResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
-                .instantiateViewController(withIdentifier: "noResultScreen") as? NoResultViewController)!
-            customNoResultsScreen.delegate = self
-            self.screenAPIViewController.setNavigationBarHidden(false, animated: false)
-            self.screenAPIViewController.pushViewController(customNoResultsScreen, animated: true)
+            delegate?.screenAPIShowNoResults(coordinator: self)
         }
     }
 }
