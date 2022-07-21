@@ -75,3 +75,4 @@
 //"ginibank.digitalinvoice.paybuttontitle.disabled" = "CM Bezahlen";
 //"ginibank.digitalinvoice.paybuttontitle.othercharges" = "CM Bezahlen";
 //"ginibank.digitalinvoice.paybuttontitle" = "CM Bezahlen %d/%d";
+"results.sendfeedback.button.title" = "Feedback senden und schließen";

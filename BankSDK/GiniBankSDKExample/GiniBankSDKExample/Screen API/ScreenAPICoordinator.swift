@@ -104,14 +104,14 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         let customResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "resultScreen") as? ResultTableViewController)!
         customResultsScreen.result = results
-        
+        customResultsScreen.navigationItem.setHidesBackButton(true, animated: true)
+        let title =
+        NSLocalizedStringPreferredFormat("results.sendfeedback.button.title", fallbackKey: "Send feedback and close", comment: "title for send feedback button", isCustomizable: true)
         customResultsScreen.navigationItem
-            .rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("close",
-                                                                           comment: "close button text"),
+            .rightBarButtonItem = UIBarButtonItem(title: title,
                                                   style: .plain,
                                                   target: self,
                                                   action: #selector(closeSreenAPIAndSendFeedback))
-        
         DispatchQueue.main.async { [weak self] in
             if #available(iOS 15.0, *) {
                 let config = self?.configuration.captureConfiguration()
