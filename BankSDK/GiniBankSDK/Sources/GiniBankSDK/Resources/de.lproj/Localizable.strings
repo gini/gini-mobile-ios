@@ -68,5 +68,5 @@ Bezahle nur, was du behältst.";
 "ginibank.digitalinvoice.backbutton" = "Zurück";
 
 "ginibank.digitalinvoice.info.text1" = "Was ist das?";
-"ginibank.digitalinvoice.info.text2" = "Wir haben die Artikel aus deiner Rechnung extrahiert. Wenn du einige Artikel zurückschicken oder du deine Rechnung nur teilweise bezahlen möchtest, kannst du einzelne Artikel abwählen und der zu bezahlende Betrag wird automatisch  neu berechnet.";
+"ginibank.digitalinvoice.info.text2" = "Wir haben die Artikel aus deiner Rechnung extrahiert. Wenn du einige Artikel zurückschicken oder du deine Rechnung nur teilweise bezahlen möchtest, kannst du einzelne Artikel abwählen und der zu bezahlende Betrag wird automatisch neu berechnet.";
 "ginibank.digitalinvoice.info.hidebutton" = "Schließen";
