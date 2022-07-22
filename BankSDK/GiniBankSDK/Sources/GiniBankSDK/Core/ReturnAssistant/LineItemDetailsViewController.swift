@@ -79,13 +79,6 @@ class LineItemDetailsViewController: UIViewController {
         super.viewWillDisappear(animated)
         guard let lineItem = lineItem, !lineItem.isUserInitiated else { return }
         
-        if isMovingFromParent, transitionCoordinator?.isInteractive == false {
-            /*
-            Automatically save changes before user returns to main screen, so in case he
-            forgets to save it, changes are not lost
-             */
-            proceedWithSaveAction(shouldPopViewController: false)
-        }
     }
     
     private func setupView() {
