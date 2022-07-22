@@ -575,8 +575,8 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
   Please include two decimal format arguments:
   1. Selected items count: `%d`
   2. Total count: `%d`
-- Title, when the invoice is missing or the button is disabled &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.paybuttontitle.othercharges*</span> localized string.  
-- Title, when the items are not selected but there are other charges &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.paybuttontitle.disabled*</span> localized string.  
+- The “othercharges” title is used when items are not selected but there are other charges to pay &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.paybuttontitle.othercharges*</span> localized string.  
+- The “disabled” title is used when the pay button is disabled &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.paybuttontitle.disabled*</span> localized string.  
 - Accessibility label &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.paybuttontitle.accessibilitylabel*</span> localized string.  
   Please include two decimal format arguments:
   1. Selected items count: `%d`
