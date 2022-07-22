@@ -13,6 +13,7 @@ import GiniCaptureSDK
 
 protocol ScreenAPICoordinatorDelegate: AnyObject {
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish:())
+    func screenAPIShowNoResults(coordinator: ScreenAPICoordinator)
 }
 
 class TrackingDelegate: GiniCaptureTrackingDelegate {
@@ -103,14 +104,14 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         let customResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "resultScreen") as? ResultTableViewController)!
         customResultsScreen.result = results
-        
+        customResultsScreen.navigationItem.setHidesBackButton(true, animated: true)
+        let title =
+        NSLocalizedStringPreferredFormat("results.sendfeedback.button.title", fallbackKey: "Send feedback and close", comment: "title for send feedback button", isCustomizable: true)
         customResultsScreen.navigationItem
-            .rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("close",
-                                                                           comment: "close button text"),
+            .rightBarButtonItem = UIBarButtonItem(title: title,
                                                   style: .plain,
                                                   target: self,
                                                   action: #selector(closeSreenAPIAndSendFeedback))
-        
         DispatchQueue.main.async { [weak self] in
             if #available(iOS 15.0, *) {
                 let config = self?.configuration.captureConfiguration()
@@ -133,14 +134,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     }
 }
 
-
-// MARK: - NoResultsScreenDelegate
-extension ScreenAPICoordinator: NoResultsScreenDelegate {
-    func noResults(viewController: NoResultViewController, didTapRetry: ()) {
-        screenAPIViewController.popToRootViewController(animated: true)
-    }
-}
-
 // MARK: - GiniCaptureResultsDelegate
 extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     
@@ -157,11 +150,7 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     
     func giniCaptureAnalysisDidFinishWithoutResults(_ showingNoResultsScreen: Bool) {
         if !showingNoResultsScreen {
-            let customNoResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
-                .instantiateViewController(withIdentifier: "noResultScreen") as? NoResultViewController)!
-            customNoResultsScreen.delegate = self
-            self.screenAPIViewController.setNavigationBarHidden(false, animated: false)
-            self.screenAPIViewController.pushViewController(customNoResultsScreen, animated: true)
+            delegate?.screenAPIShowNoResults(coordinator: self)
         }
     }
 }

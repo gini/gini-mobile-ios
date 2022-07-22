@@ -75,3 +75,4 @@
 //"ginibank.digitalinvoice.paybuttontitle.disabled" = "CM Pay";
 //"ginibank.digitalinvoice.paybuttontitle.othercharges" = "CM Pay";
 //"ginibank.digitalinvoice.paybuttontitle" = "CM Pay %d/%d";
+"results.sendfeedback.button.title" = "Send feedback and close";
