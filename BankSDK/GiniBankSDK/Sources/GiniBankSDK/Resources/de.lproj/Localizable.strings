@@ -62,11 +62,11 @@
 "ginibank.digitalinvoice.addonname.shipment" = "Versandkosten";
 "ginibank.digitalinvoice.onboarding.text1" = "Dein neuer Retouren Assistent!";
 "ginibank.digitalinvoice.onboarding.text2" = "Du kannst jetzt Artikel abwählen, die du zurückschicken möchtest.
-Bezahle nur, was du behälst.";
+Bezahle nur, was du behältst.";
 "ginibank.digitalinvoice.onboarding.donebutton" = "Weiter";
 "ginibank.digitalinvoice.onboarding.hidebutton" = "Bitte nicht mehr anzeigen";
 "ginibank.digitalinvoice.backbutton" = "Zurück";
 
 "ginibank.digitalinvoice.info.text1" = "Was ist das?";
-"ginibank.digitalinvoice.info.text2" = "Wir haben die Artikel aus deiner Rechnung extrahiert. Wenn du einige Artikel zurückschicken oder du deine Rechnung nur teilweise bezahlen möchtest, kannst du einzelne Artikel abwählen und der zu bezahlende Betrag wird automatisch  neu berechnet.";
+"ginibank.digitalinvoice.info.text2" = "Wir haben die Artikel aus deiner Rechnung extrahiert. Wenn du einige Artikel zurückschicken oder du deine Rechnung nur teilweise bezahlen möchtest, kannst du einzelne Artikel abwählen und der zu bezahlende Betrag wird automatisch neu berechnet.";
 "ginibank.digitalinvoice.info.hidebutton" = "Schließen";
