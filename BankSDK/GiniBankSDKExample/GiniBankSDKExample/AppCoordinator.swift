@@ -37,6 +37,7 @@ final class AppCoordinator: Coordinator {
         configuration.multipageEnabled = true
         configuration.flashToggleEnabled = true
         configuration.navigationBarItemTintColor = .white
+        configuration.navigationBarTintColor = Colors.Gini.blue
         configuration.localizedStringsTableName = "LocalizableCustomName"
         configuration.customDocumentValidations = { document in
             // As an example of custom document validation, we add a more strict check for file size
@@ -47,27 +48,27 @@ final class AppCoordinator: Coordinator {
             }
             return CustomDocumentValidationResult.success()
         }
-        let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
-        configuration.customMenuItems = [customMenuItem]
-        configuration.albumsScreenSelectMorePhotosTextColor = GiniColor(lightModeColor: .systemBlue, darkModeColor: .systemBlue)
+//        let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
+//        configuration.customMenuItems = [customMenuItem]
+//        configuration.albumsScreenSelectMorePhotosTextColor = GiniColor(lightModeColor: .systemBlue, darkModeColor: .systemBlue)
         
         // A few return assistant customisation examples
-        configuration.digitalInvoiceLineItemEditButtonTintColor = Colors.Gini.bluishGreen
-        configuration.lineItemBorderColor = Colors.Gini.paleGreen
-        configuration.digitalInvoiceLineItemToggleSwitchTintColor = Colors.Gini.springGreen
-        configuration.digitalInvoiceLineItemsDisabledColor = Colors.Gini.raspberry.withAlphaComponent(0.2)
-        configuration.lineItemDetailsContentHighlightedColor = Colors.Gini.paleGreen
+//        configuration.digitalInvoiceLineItemEditButtonTintColor = Colors.Gini.bluishGreen
+//        configuration.lineItemBorderColor = Colors.Gini.paleGreen
+//        configuration.digitalInvoiceLineItemToggleSwitchTintColor = Colors.Gini.springGreen
+//        configuration.digitalInvoiceLineItemsDisabledColor = Colors.Gini.raspberry.withAlphaComponent(0.2)
+//        configuration.lineItemDetailsContentHighlightedColor = Colors.Gini.paleGreen
 
         // A few camera screen customisation examples
-        configuration.navigationBarItemFont = UIFont.systemFont(ofSize: 20, weight: .bold)
-        configuration.navigationBarCameraTitleHelpButton = "? Help"
-        configuration.cameraPreviewFrameColor = .init(lightModeColor: UIColor.init(white: 0.5, alpha: 0.1), darkModeColor: UIColor.init(white: 0.5, alpha: 0.3))
-        configuration.cameraButtonsViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
-        configuration.cameraContainerViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
-        
-        configuration.multipagePageSuccessfullUploadIconBackgroundColor = .systemGreen
-        configuration.multipagePageFailureUploadIconBackgroundColor = .systemRed
-        configuration.enableReturnReasons = false
+//        configuration.navigationBarItemFont = UIFont.systemFont(ofSize: 20, weight: .bold)
+//        configuration.navigationBarCameraTitleHelpButton = "? Help"
+//        configuration.cameraPreviewFrameColor = .init(lightModeColor: UIColor.init(white: 0.5, alpha: 0.1), darkModeColor: UIColor.init(white: 0.5, alpha: 0.3))
+//        configuration.cameraButtonsViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
+//        configuration.cameraContainerViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
+//
+//        configuration.multipagePageSuccessfullUploadIconBackgroundColor = .systemGreen
+//        configuration.multipagePageFailureUploadIconBackgroundColor = .systemRed
+//        configuration.enableReturnReasons = false
        return configuration
     }()
     
@@ -230,6 +231,22 @@ extension AppCoordinator: SettingsViewControllerDelegate {
 // MARK: ScreenAPICoordinatorDelegate
 
 extension AppCoordinator: ScreenAPICoordinatorDelegate {
+    func screenAPIShowNoResults(coordinator: ScreenAPICoordinator) {
+        coordinator.rootViewController.dismiss(animated: true, completion: nil)
+        self.remove(childCoordinator: coordinator as Coordinator)
+        
+        let customNoResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewController(withIdentifier: "noResultScreen") as? NoResultViewController)!
+        customNoResultsScreen.delegate = self
+        rootViewController.present(customNoResultsScreen, animated: true)
+    }
+    
+    func screenAPIShouldRestart(coordinator: ScreenAPICoordinator) {
+        coordinator.rootViewController.dismiss(animated: false, completion: nil)
+        coordinator.start()
+        rootViewController.present(coordinator.rootViewController, animated: false, completion: nil)
+    }
+    
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ()) {
         coordinator.rootViewController.dismiss(animated: true, completion: nil)
         self.remove(childCoordinator: coordinator as Coordinator)
@@ -242,5 +259,13 @@ extension AppCoordinator: ComponentAPICoordinatorDelegate {
     func componentAPI(coordinator: ComponentAPICoordinator, didFinish: ()) {
         coordinator.rootViewController.dismiss(animated: true, completion: nil)
         self.remove(childCoordinator: coordinator)
+    }
+}
+
+// MARK: - NoResultsScreenDelegate
+extension AppCoordinator: NoResultsScreenDelegate {
+    func noResults(viewController: NoResultViewController, didTapRetry: ()) {
+        viewController.dismiss(animated: true)
+        showScreenAPI()
     }
 }
