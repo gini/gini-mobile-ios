@@ -452,6 +452,12 @@ import UIKit
     }
     fileprivate var onboardingCustomPages: [UIView]?
     
+    public var bottomNavigationBarEnabled: Bool = true
+    
+    public var navigationBarTopProvider: NavigationBarTopProvider?
+    
+    public var navigationBarBottomProvider: NavigationBarBottomProvider?
+    
     /**
      Sets the back button text in the navigation bar on the review screen. Use this if you only want to show the title.
      

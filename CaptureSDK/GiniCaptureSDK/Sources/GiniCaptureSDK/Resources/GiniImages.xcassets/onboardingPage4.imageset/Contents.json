@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "ipad_onboarding_screen_4_illustration.pdf",
+      "filename" : "Onboarding.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Onboarding-1.pdf",
       "idiom" : "universal"
     }
   ],
