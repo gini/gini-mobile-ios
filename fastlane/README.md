@@ -91,7 +91,16 @@ Create documentation release tags for all packages that have documentation that 
 [bundle exec] fastlane ios setup_manual_signing
 ```
 
-Setup Manual Signing
+Setup Manual Signing for project at path
+
+
+### ios add_resources
+
+```sh
+[bundle exec] fastlane ios add_resources
+```
+
+Add Resources to Project file
 
 
 ----
