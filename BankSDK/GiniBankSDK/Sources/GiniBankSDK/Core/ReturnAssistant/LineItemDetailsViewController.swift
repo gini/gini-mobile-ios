@@ -75,12 +75,6 @@ class LineItemDetailsViewController: UIViewController {
         )
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        guard let lineItem = lineItem, !lineItem.isUserInitiated else { return }
-        
-    }
-    
     private func setupView() {
         let configuration = returnAssistantConfiguration ?? ReturnAssistantConfiguration.shared
         stackView.translatesAutoresizingMaskIntoConstraints = false
