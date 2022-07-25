@@ -16,7 +16,8 @@ jobs:
 
       - name: Setup Project File
         run: |
-          mint install unsignedapps/swift-create-xcframework
+          /usr/local/bin/brew install mint
+          /usr/local/bin/mint install unsignedapps/swift-create-xcframework@v2.2.0
           cd BankSDK/GiniBankSDK
           swift create-xcframework
 
