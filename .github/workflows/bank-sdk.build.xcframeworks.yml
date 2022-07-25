@@ -19,7 +19,7 @@ jobs:
           /usr/local/bin/brew install mint
           /usr/local/bin/mint install unsignedapps/swift-create-xcframework@v2.2.0
           cd BankSDK/GiniBankSDK
-          swift create-xcframework
+          /usr/local/bin/mint run swift-create-xcframework
 
       - name: Add resources to BankSDK target for generated Xcode project
         uses: maierj/fastlane-action@v2.0.1
