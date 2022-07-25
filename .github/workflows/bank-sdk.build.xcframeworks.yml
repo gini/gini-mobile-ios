@@ -11,8 +11,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Setup directory
         run: |
           cd BankSDK/GiniBankSDK
+
       - name: Setup Project File
         uses: unsignedapps/swift-create-xcframework@v2
 
