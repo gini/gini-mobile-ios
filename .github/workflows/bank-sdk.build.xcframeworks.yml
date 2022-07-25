@@ -17,7 +17,7 @@ jobs:
           cd BankSDK/GiniBankSDK
 
       - name: Setup Project File
-        uses: unsignedapps/swift-create-xcframework@v2
+        uses: unsignedapps/swift-create-xcframework@v2.2.0
 
       - name: Add resources to BankSDK target for generated Xcode project
         uses: maierj/fastlane-action@v2.0.1
