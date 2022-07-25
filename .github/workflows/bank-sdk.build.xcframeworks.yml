@@ -27,10 +27,10 @@ jobs:
           lane: 'add_resources'
           options: >
             { 
-              "project_path": '../BankSDK/GiniBankSDK/.build/swift-create-xcframework/GiniBankSDK.xcodeproj',
-              "resource_name": 'BankSDKResources'',
-              "target_name": 'GiniBankSDK'.
-              "resources_path": '../BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources',
+              "project_path": "../BankSDK/GiniBankSDK/.build/swift-create-xcframework/GiniBankSDK.xcodeproj",
+              "resource_name": "BankSDKResources",
+              "target_name": "GiniBankSDK",
+              "resources_path": "../BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources",
               "ci": "true"
             }
         
@@ -40,10 +40,10 @@ jobs:
           lane: 'add_resources'
           options: >
             { 
-              "project_path": '../BankSDK/GiniBankSDK/.build/swift-create-xcframework/GiniBankSDK.xcodeproj',
-              "resource_name": 'CaptureSDKResources',
-              "target_name": 'GiniCaptureSDK'.
-              "resources_path": '../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources',
+              "project_path": "../BankSDK/GiniBankSDK/.build/swift-create-xcframework/GiniBankSDK.xcodeproj",
+              "resource_name": "CaptureSDKResources",
+              "target_name": "GiniCaptureSDK",
+              "resources_path": "../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources",
               "ci": "true"
             }      
       
