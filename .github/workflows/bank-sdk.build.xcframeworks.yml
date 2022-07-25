@@ -12,9 +12,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup Project File
-        uses: unsignedapps/swift-create-xcframework@v2.2.0
-        with: 
-          package-path: BankSDK/GiniBankSDK
+        run: |
+          mint install unsignedapps/swift-create-xcframework
+          cd BankSDK/GiniBankSDK
+          swift create-xcframework
 
       - name: Add resources to BankSDK target for generated Xcode project
         uses: maierj/fastlane-action@v2.0.1
