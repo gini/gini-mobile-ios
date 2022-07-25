@@ -86,67 +86,45 @@ class LineItemDetailsViewController: UIViewController {
         quantityTextField.translatesAutoresizingMaskIntoConstraints = false
         multiplicationLabel.translatesAutoresizingMaskIntoConstraints = false
         itemPriceTextField.translatesAutoresizingMaskIntoConstraints = false
-        
+
         stackView.axis = .vertical
         stackView.spacing = 16
         checkboxContainerStackView.axis = .horizontal
-        
+
         checkboxButton.tintColor = returnAssistantConfiguration?.digitalInvoiceLineItemToggleSwitchTintColor ?? returnAssistantConfiguration?.lineItemTintColor
         checkboxButton.checkedState = .checked
         checkboxButton.addTarget(self, action: #selector(checkboxButtonTapped), for: .touchUpInside)
         checkboxContainerStackView.addArrangedSubview(checkboxButton)
-        
+
         checkboxButtonTextLabel.font = returnAssistantConfiguration?.lineItemDetailsDescriptionLabelFont
         checkboxButtonTextLabel.textColor = returnAssistantConfiguration?.lineItemDetailsDescriptionLabelColor
         checkboxContainerStackView.addArrangedSubview(checkboxButtonTextLabel)
-        
+
         // This is outside of the main stackView in order to deal with the checkbox button being larger
         // than it appears (for accessibility reasons)
         view.addSubview(checkboxContainerStackView)
-        
+
         let margin: CGFloat = 16
-        
-        if #available(iOS 11.0, *) {
-            
-            checkboxContainerStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
-                                                                constant: margin - CheckboxButton.margin).isActive = true
-            checkboxContainerStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+
+        checkboxContainerStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
                                                             constant: margin - CheckboxButton.margin).isActive = true
-            checkboxContainerStackView.trailingAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.trailingAnchor,
-                                                                 constant: -margin).isActive = true
-            
-        } else {
-            
-            checkboxContainerStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                                constant: margin - CheckboxButton.margin).isActive = true
-            checkboxContainerStackView.topAnchor.constraint(equalTo: view.topAnchor,
-                                                            constant: margin - CheckboxButton.margin).isActive = true
-            checkboxContainerStackView.trailingAnchor.constraint(greaterThanOrEqualTo: view.trailingAnchor,
-                                                                 constant: -margin).isActive = true
-        }
-        
+        checkboxContainerStackView.topAnchor.constraint(equalTo: view.topAnchor,
+                                                        constant: margin - CheckboxButton.margin).isActive = true
+        checkboxContainerStackView.trailingAnchor.constraint(greaterThanOrEqualTo: view.trailingAnchor,
+                                                             constant: -margin).isActive = true
+
         view.addSubview(stackView)
-        
+
         stackView.topAnchor.constraint(equalTo: checkboxContainerStackView.bottomAnchor,
                                        constant: margin - CheckboxButton.margin).isActive = true
-        
-        if #available(iOS 11.0, *) {
-            stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
-                                               constant: margin).isActive = true
 
-            stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
-                                                constant: -margin).isActive = true
-            stackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                              constant: -margin).isActive = true
-        } else {
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                               constant: margin).isActive = true
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                constant: -margin).isActive = true
-            stackView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor,
-                                              constant: -margin).isActive = true
-        }
-        
+        stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                           constant: margin).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                            constant: -margin).isActive = true
+        stackView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor,
+                                          constant: -margin).isActive = true
+
         itemNameTextField.titleFont = configuration.lineItemDetailsDescriptionLabelFont
         itemNameTextField.titleTextColor = configuration.lineItemDetailsDescriptionLabelColor
         itemNameTextField.title = .ginibankLocalized(resource: DigitalInvoiceStrings.lineItemNameTextFieldTitle)
