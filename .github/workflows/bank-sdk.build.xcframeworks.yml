@@ -11,6 +11,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Setup Mint
+        uses: fabasoad/setup-mint-action@main
+
       - name: Setup Project File
         run: |
           mint install unsignedapps/swift-create-xcframework
