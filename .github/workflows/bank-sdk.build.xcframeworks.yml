@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - PIA-2257_xcframeworks_script
-
 jobs:
   prepare-project-file:
     name: Create Release
@@ -15,9 +14,11 @@ jobs:
       - name: Setup directory
         run: |
           cd BankSDK/GiniBankSDK
+          pwd
 
       - name: Setup Project File
         uses: unsignedapps/swift-create-xcframework@v2.2.0
+        working-directory: ./BankSDK/GiniBankSDK
 
       - name: Add resources to BankSDK target for generated Xcode project
         uses: maierj/fastlane-action@v2.0.1
@@ -47,7 +48,7 @@ jobs:
       
       - name: Archiving projects
         run: |
-          xcodebuild clean archive -project .build/swift-create-xcframework/GiniBankSDK.xcodeproj \
+          xcodebuild clean archive -project BankSDK/GiniBankSDK/.build/swift-create-xcframework/GiniBankSDK.xcodeproj \
           -scheme GiniBankSDK \
           -sdk iphonesimulator \
           -xcconfig Distribution.xcconfig \
@@ -55,7 +56,7 @@ jobs:
           -destination="iOS" \
           -archivePath "iphonesimulator.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
 
-          xcodebuild clean archive -project .build/swift-create-xcframework/GiniBankSDK.xcodeproj \
+          xcodebuild clean archive -project BankSDK/GiniBankSDK/.build/swift-create-xcframework/GiniBankSDK.xcodeproj \
           -scheme GiniBankSDK -sdk iphoneos \
           -destination generic/platform=iOS -xcconfig Distribution.xcconfig \
           -configuration Release \
