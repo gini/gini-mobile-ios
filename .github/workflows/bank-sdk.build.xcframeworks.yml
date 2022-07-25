@@ -76,18 +76,9 @@ jobs:
       - name: archive frameworks GiniBankAPILibrary
         uses: actions/upload-artifact@v2
         with:
-          name: GiniBankAPILibrary.xcframework
-          path: GiniBankAPILibrary.xcframework
-      
-      - name: archive frameworks GiniBankSDK
-        uses: actions/upload-artifact@v2
-        with:
-          name: GiniBankSDK.xcframework
-          path: GiniBankSDK.xcframework
-      
-      - name: archive frameworks GiniBankSDK
-        uses: actions/upload-artifact@v2
-        with:
-          name: GiniCaptureSDK.xcframework
-          path: GiniCaptureSDK.xcframework
+          name: GiniBankSDKFramework
+          path: |
+            GiniBankAPILibrary.xcframework
+            GiniBankSDK.xcframework
+            GiniCaptureSDK.xcframework
 
