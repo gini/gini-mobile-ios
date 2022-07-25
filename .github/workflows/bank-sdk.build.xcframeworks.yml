@@ -59,8 +59,10 @@ jobs:
 
           xcodebuild clean archive -project BankSDK/GiniBankSDK/.build/swift-create-xcframework/GiniBankSDK.xcodeproj \
           -scheme GiniBankSDK -sdk iphoneos \
-          -destination generic/platform=iOS -xcconfig Distribution.xcconfig \
+          -xcconfig Distribution.xcconfig \
           -configuration Release \
+          -destination generic/platform=iOS \
+          -archivePath "iphoneos.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
       - name: Generate XCFrameworks
         run: |
           xcodebuild -create-xcframework \
@@ -71,9 +73,21 @@ jobs:
           xcodebuild -create-xcframework -framework iphoneos.xcarchive/Products/Library/Frameworks/GiniCaptureSDK.framework -framework iphonesimulator.xcarchive/Products/Library/Frameworks/GiniCaptureSDK.framework -output GiniCaptureSDK.xcframework &&\
           \
           xcodebuild -create-xcframework -framework iphoneos.xcarchive/Products/Library/Frameworks/GiniBankSDK.framework -framework iphonesimulator.xcarchive/Products/Library/Frameworks/GiniBankSDK.framework -output GiniBankSDK.xcframework
-      - name: archive frameworks
+      - name: archive frameworks GiniBankAPILibrary
         uses: actions/upload-artifact@v2
         with:
-          name: GiniBankXCFrameworks
-          path: BankSDK/GiniBankSDK/.build/swift-create-xcframework/
+          name: GiniBankAPILibrary.xcframework
+          path: GiniBankAPILibrary.xcframework
+      
+      - name: archive frameworks GiniBankSDK
+        uses: actions/upload-artifact@v2
+        with:
+          name: GiniBankSDK.xcframework
+          path: GiniBankSDK.xcframework
+      
+      - name: archive frameworks GiniBankSDK
+        uses: actions/upload-artifact@v2
+        with:
+          name: GiniCaptureSDK.xcframework
+          path: GiniCaptureSDK.xcframework
 

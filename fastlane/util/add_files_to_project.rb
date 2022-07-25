@@ -4,7 +4,7 @@ def addFiles (direc, current_group, main_target)
         next if item == '.' or item == '.DS_Store'
         if File.directory?(item)
             if filePath.end_with?("xcassets")
-                i = current_group.new_file(item)
+                i = current_group.new_file(File.expand_path(item))
                 main_target.add_resources([i])
             else
                 new_folder = File.basename(item)
@@ -12,7 +12,7 @@ def addFiles (direc, current_group, main_target)
                 addFiles("#{item}/*", created_group, main_target)
             end
         else
-            i = current_group.new_file(item)
+            i = current_group.new_reference(File.expand_path(item))
             main_target.add_resources([i])
         end
     end
