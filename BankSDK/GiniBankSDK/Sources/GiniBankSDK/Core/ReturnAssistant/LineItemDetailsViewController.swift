@@ -36,6 +36,12 @@ class LineItemDetailsViewController: UIViewController {
         }
     }
     
+    var shouldEnableSaveButton : Bool? {
+        didSet {
+            navigationItem.rightBarButtonItem?.isEnabled = shouldEnableSaveButton ?? true
+        }
+    }
+    
     weak var delegate: LineItemDetailsViewControllerDelegate?
     
     private let stackView = UIStackView()
@@ -68,6 +74,7 @@ class LineItemDetailsViewController: UIViewController {
             target: self,
             action: #selector(saveButtonTapped)
         )
+        navigationItem.rightBarButtonItem?.isEnabled = shouldEnableSaveButton ?? true
         setupView()
         update()
         let configuration  = returnAssistantConfiguration ?? ReturnAssistantConfiguration.shared
@@ -364,8 +371,9 @@ extension LineItemDetailsViewController {
     private func lineItemFromFields() -> DigitalInvoice.LineItem? {
         let lineItemMaximumAllowedValue = Decimal(25000)
         
-        guard var lineItem = lineItem else { return nil}
-        guard let priceValue = decimal(from: itemPriceTextField.text ?? "0") else{ return nil }
+        guard var lineItem = lineItem else { return nil }
+        guard let priceValue = decimal(from: itemPriceTextField.text ?? "0") else { return nil }
+        shouldEnableSaveButton = priceValue > 0
         
         var itemPriceValue = priceValue
         
@@ -379,7 +387,7 @@ extension LineItemDetailsViewController {
         
         let quantity = quantityForLineItem(quantityString: quantityTextField.text ?? "")
         if quantity == 1 || quantity == kQuantityLimit {
-            // we need to update textfield beacuse the quantity was changed due to the limitations
+            // we need to update textfield because the quantity was changed due to the limitations
             quantityTextField.text = "\(quantity)"
         }
         lineItem.quantity = quantity
@@ -398,8 +406,18 @@ extension LineItemDetailsViewController {
 }
 
 extension LineItemDetailsViewController: GiniTextFieldDelegate {
+    func textFieldWillChangeCharacters(_ giniTextField: GiniTextField) {
+        if let amountText = giniTextField.text, let decimal = decimal(from: amountText){
+            shouldEnableSaveButton = !amountText.isEmpty && (decimal > 0)
+        }
+    }
+    
+    func textWillClear(_ giniTextField: GiniTextField) {
+        shouldEnableSaveButton = false
+    }
     
     func textDidChange(_ giniTextField: GiniTextField) {
         lineItem = lineItemFromFields()
+        shouldEnableSaveButton = (lineItem?.price.value)! > 0
     }
 }
