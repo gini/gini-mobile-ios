@@ -10,6 +10,7 @@ import UIKit
 protocol GiniTextFieldDelegate: AnyObject {
     
     func textDidChange(_ giniTextField: GiniTextField)
+    func textWillClear(_ giniTextField: GiniTextField)
 }
 
 class GiniTextField: UIView {
@@ -287,6 +288,11 @@ extension GiniTextField: UITextFieldDelegate {
                 return false
             }
         }
+        return true
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        delegate?.textWillClear(self)
         return true
     }
 }
