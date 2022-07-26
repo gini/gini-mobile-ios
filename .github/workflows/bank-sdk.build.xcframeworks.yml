@@ -4,7 +4,7 @@ on:
     branches:
       - PIA-2257_xcframeworks_script
 jobs:
-  prepare-xcframeworks:
+  prepare-frameworks:
     name: Create Release
     runs-on: macos-latest
     steps:
@@ -55,17 +55,17 @@ jobs:
             }      
       
       - name: Add resources to BankSDK target for generated Xcode project
-      uses: maierj/fastlane-action@v2.0.1
-      with:
-        lane: 'add_resources'
-        options: >
-          { 
-            "project_path": "../BankSDK/GiniBankSDKPinning/.build/swift-create-xcframework/GiniBankSDKPinning.xcodeproj",
-            "resource_name": "BankSDKResources",
-            "target_name": "GiniBankSDK",
-            "resources_path": "../BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources",
-            "ci": "true"
-          }
+        uses: maierj/fastlane-action@v2.0.1
+        with:
+          lane: 'add_resources'
+          options: >
+            { 
+              "project_path": "../BankSDK/GiniBankSDKPinning/.build/swift-create-xcframework/GiniBankSDKPinning.xcodeproj",
+              "resource_name": "BankSDKResources",
+              "target_name": "GiniBankSDK",
+              "resources_path": "../BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources",
+              "ci": "true"
+            }
 
       - name: Archiving projects
         run: |
@@ -86,7 +86,7 @@ jobs:
 
       - name: Archiving Pinning projects
         run: |
-           xcodebuild archive -project BankSDK/GiniBankSDKPinning/.build/swift-create-xcframework/GiniBankSDKPinning.xcodeproj \
+          xcodebuild archive -project BankSDK/GiniBankSDKPinning/.build/swift-create-xcframework/GiniBankSDKPinning.xcodeproj \
           -scheme GiniBankSDKPinning \
           -sdk iphonesimulator \
           -xcconfig Distribution.xcconfig \
