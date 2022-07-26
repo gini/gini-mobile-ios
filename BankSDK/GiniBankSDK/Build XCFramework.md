@@ -28,18 +28,18 @@ Make sure to include GiniCaptureSDK Resources for GiniCaptureSDK target and chec
 
 ```
 xcodebuild clean archive -project GiniBankSDK.xcodeproj \
--scheme GiniBankSDK \
--sdk iphonesimulator \
--xcconfig Distribution.xcconfig \
--configuration Release \
--destination="iOS" \
--archivePath "iphonesimulator.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES &&\
+    -scheme GiniBankSDK \
+    -sdk iphonesimulator \
+    -configuration Release \
+    -destination="iOS" \
+    -archivePath "iphonesimulator.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES &&\
 \
-xcodebuild clean archive -project GiniBankSDK.xcodeproj \
- -scheme GiniBankSDK -sdk iphoneos \
- -destination generic/platform=iOS -xcconfig Distribution.xcconfig \
- -configuration Release \
- -archivePath "iphoneos.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
+xcodebuild clean archive -project GiniBankSDK.xcodeproj  \
+          -scheme GiniBankSDK -sdk iphoneos \
+          -xcconfig Distribution.xcconfig \
+          -configuration Release \
+          -destination generic/platform=iOS \
+          -archivePath "iphoneos.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
 ```
 
 11. Create XCFrameworks for GiniBankSDK and dependant packages (you can copy paste the whole snippet into your terminal and run it):
