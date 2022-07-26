@@ -53,20 +53,7 @@ jobs:
               "resources_path": "../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources",
               "ci": "true"
             }      
-      
-      - name: Add resources to BankSDK target for generated Xcode project
-        uses: maierj/fastlane-action@v2.0.1
-        with:
-          lane: 'add_resources'
-          options: >
-            { 
-              "project_path": "../BankSDK/GiniBankSDKPinning/.build/swift-create-xcframework/GiniBankSDKPinning.xcodeproj",
-              "resource_name": "BankSDKResources",
-              "target_name": "GiniBankSDK",
-              "resources_path": "../BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources",
-              "ci": "true"
-            }
-
+    
       - name: Archiving projects
         run: |
           xcodebuild clean archive -project BankSDK/GiniBankSDK/.build/swift-create-xcframework/GiniBankSDK.xcodeproj \
