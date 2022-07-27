@@ -113,11 +113,11 @@ class LineItemDetailsViewController: UIViewController {
 
         let margin: CGFloat = 16
 
-        checkboxContainerStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+        checkboxContainerStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
                                                             constant: margin - CheckboxButton.margin).isActive = true
-        checkboxContainerStackView.topAnchor.constraint(equalTo: view.topAnchor,
+        checkboxContainerStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
                                                         constant: margin - CheckboxButton.margin).isActive = true
-        checkboxContainerStackView.trailingAnchor.constraint(greaterThanOrEqualTo: view.trailingAnchor,
+        checkboxContainerStackView.trailingAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.trailingAnchor,
                                                              constant: -margin).isActive = true
 
         view.addSubview(stackView)
@@ -125,11 +125,12 @@ class LineItemDetailsViewController: UIViewController {
         stackView.topAnchor.constraint(equalTo: checkboxContainerStackView.bottomAnchor,
                                        constant: margin - CheckboxButton.margin).isActive = true
 
-        stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+        stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
                                            constant: margin).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+
+        stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
                                             constant: -margin).isActive = true
-        stackView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor,
+        stackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
                                           constant: -margin).isActive = true
 
         itemNameTextField.titleFont = configuration.lineItemDetailsDescriptionLabelFont
