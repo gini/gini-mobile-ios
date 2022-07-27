@@ -10,6 +10,8 @@ import UIKit
 protocol GiniTextFieldDelegate: AnyObject {
     
     func textDidChange(_ giniTextField: GiniTextField)
+    func textWillClear(_ giniTextField: GiniTextField)
+    func textFieldWillChangeCharacters(_ giniTextField: GiniTextField)
 }
 
 class GiniTextField: UIView {
@@ -269,6 +271,7 @@ extension GiniTextField: UITextFieldDelegate {
                          textField.moveSelectedTextRange(from: selectedRange.start, to: offset)
                      }
                 }
+                delegate?.textFieldWillChangeCharacters(self)
                 return false
             }
         case .quantityFieldTag:
@@ -287,6 +290,11 @@ extension GiniTextField: UITextFieldDelegate {
                 return false
             }
         }
+        return true
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        delegate?.textWillClear(self)
         return true
     }
 }
