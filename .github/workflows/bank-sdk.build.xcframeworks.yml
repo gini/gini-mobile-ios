@@ -18,10 +18,6 @@ jobs:
         run: |
           /usr/local/bin/brew install mint
           /usr/local/bin/mint install unsignedapps/swift-create-xcframework@v2.2.0
-      - name: Setup GiniBankSDK Project File
-        run: |
-          cd BankSDK/GiniBankSDK
-          /usr/local/bin/mint run swift-create-xcframework
 
       - name: GiniBankSDKPinning Project File
         run: |
@@ -34,7 +30,7 @@ jobs:
           lane: 'add_resources'
           options: >
             { 
-              "project_path": "../BankSDK/GiniBankSDK/.build/swift-create-xcframework/GiniBankSDK.xcodeproj",
+              "project_path": "../BankSDK/GiniBankSDKPinning/.build/swift-create-xcframework/GiniBankSDKPinning.xcodeproj",
               "resource_name": "BankSDKResources",
               "target_name": "GiniBankSDK",
               "resources_path": "../BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources",
@@ -47,31 +43,14 @@ jobs:
           lane: 'add_resources'
           options: >
             { 
-              "project_path": "../BankSDK/GiniBankSDK/.build/swift-create-xcframework/GiniBankSDK.xcodeproj",
+              "project_path": "../BankSDK/GiniBankSDKPinning/.build/swift-create-xcframework/GiniBankSDKPinning.xcodeproj",
               "resource_name": "CaptureSDKResources",
               "target_name": "GiniCaptureSDK",
               "resources_path": "../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources",
               "ci": "true"
-            }      
-    
-      - name: Archiving projects
-        run: |
-          xcodebuild clean archive -project BankSDK/GiniBankSDK/.build/swift-create-xcframework/GiniBankSDK.xcodeproj \
-          -scheme GiniBankSDK \
-          -sdk iphonesimulator \
-          -xcconfig Distribution.xcconfig \
-          -configuration Release \
-          -destination="iOS" \
-          -archivePath "iphonesimulator.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
-
-          xcodebuild clean archive -project BankSDK/GiniBankSDK/.build/swift-create-xcframework/GiniBankSDK.xcodeproj \
-          -scheme GiniBankSDK -sdk iphoneos \
-          -xcconfig Distribution.xcconfig \
-          -configuration Release \
-          -destination generic/platform=iOS \
-          -archivePath "iphoneos.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
-
-      - name: Archiving Pinning projects
+            }
+          
+      - name: Archiving project
         run: |
           xcodebuild archive -project BankSDK/GiniBankSDKPinning/.build/swift-create-xcframework/GiniBankSDKPinning.xcodeproj \
           -scheme GiniBankSDKPinning \
@@ -87,16 +66,17 @@ jobs:
           -configuration Release \
           -destination generic/platform=iOS \
           -archivePath "iphoneosPinning.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
+  
       - name: Generate XCFrameworks
         run: |
           xcodebuild -create-xcframework \
-          -framework iphoneos.xcarchive/Products/Library/Frameworks/GiniBankAPILibrary.framework \
-          -framework iphonesimulator.xcarchive/Products/Library/Frameworks/GiniBankAPILibrary.framework \
+          -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniBankAPILibrary.framework \
+          -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniBankAPILibrary.framework \
           -output GiniBankAPILibrary.xcframework &&\
           \
-          xcodebuild -create-xcframework -framework iphoneos.xcarchive/Products/Library/Frameworks/GiniCaptureSDK.framework -framework iphonesimulator.xcarchive/Products/Library/Frameworks/GiniCaptureSDK.framework -output GiniCaptureSDK.xcframework &&\
+          xcodebuild -create-xcframework -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniCaptureSDK.framework -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniCaptureSDK.framework -output GiniCaptureSDK.xcframework &&\
           \
-          xcodebuild -create-xcframework -framework iphoneos.xcarchive/Products/Library/Frameworks/GiniBankSDK.framework -framework iphonesimulator.xcarchive/Products/Library/Frameworks/GiniBankSDK.framework -output GiniBankSDK.xcframework &&\
+          xcodebuild -create-xcframework -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniBankSDK.framework -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniBankSDK.framework -output GiniBankSDK.xcframework &&\
           \
           xcodebuild -create-xcframework -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniBankAPILibraryPinning.framework -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniBankAPILibraryPinning.framework -output GiniBankAPILibraryPinning.xcframework && \
           \
@@ -105,6 +85,7 @@ jobs:
           xcodebuild -create-xcframework -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniBankSDKPinning.framework -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniBankSDKPinning.framework -output GiniBankSDKPinning.xcframework && \
           \
           xcodebuild -create-xcframework -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/TrustKit.framework -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/TrustKit.framework -output TrustKit.xcframework
+        
       - name: archive frameworks GiniBankAPILibrary
         uses: actions/upload-artifact@v2
         with:
