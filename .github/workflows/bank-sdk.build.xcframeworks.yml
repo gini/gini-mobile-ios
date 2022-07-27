@@ -3,6 +3,7 @@ on:
   push:
     tags:
       - 'GiniBankSDK;[0-9]+.[0-9]+.[0-9]+;xcframeworks**'
+  workflow_call:
 jobs:
   prepare-frameworks:
     name: Create Release
