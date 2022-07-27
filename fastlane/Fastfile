@@ -19,6 +19,8 @@ load "util/lanes.rb"
 load "util/versions.rb"
 load "util/git.rb" 
 load "util/swift_package_releases.rb"
+load "util/add_files_to_project.rb"
+
 
 platform :ios do
   desc <<~DOC
@@ -304,4 +306,17 @@ platform :ios do
     )
   end
   
+  desc <<~DOC
+    Add Resources to Project file
+  DOC
+  lane :add_resources do |options|
+    (project_path, resource_name, target_name, resources_path, ci) = 
+      check_and_get_options(options, [:project_path, :resource_name, :target_name, :resources_path, :ci], UI)
+
+    project = Xcodeproj::Project.open(project_path)
+    targetSDK = project.targets.find { |target| target.to_s == target_name }
+    resourcesgroup = project.new_group(resource_name)
+    addFiles("#{resources_path}/*", resourcesgroup, targetSDK)
+    project.save
+  end
 end
