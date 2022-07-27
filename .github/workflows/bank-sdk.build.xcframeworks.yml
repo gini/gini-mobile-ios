@@ -97,5 +97,5 @@ jobs:
             TrustKit.xcframework
             GiniBankSDKPinning.xcframework
             GiniCaptureSDKPinning.xcframework
-            GiniBankAPILibraryPinning
+            GiniBankAPILibraryPinning.xcframework
 
