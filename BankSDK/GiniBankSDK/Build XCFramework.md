@@ -27,17 +27,29 @@ Make sure to include GiniCaptureSDK Resources for GiniCaptureSDK target and chec
 10. Navigate to the `cd .build/swift-create-xcframework/` directory and create archives for GiniBankSDK for device and simulator (you can copy paste the whole snippet into your terminal and run it):
 
 ```
-xcodebuild archive -project GiniBankSDK.xcodeproj -scheme GiniBankSDK -sdk iphonesimulator -configuration Release -archivePath "iphonesimulator.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES &&\
+xcodebuild clean archive -project GiniBankSDK.xcodeproj \
+    -scheme GiniBankSDK \
+    -sdk iphonesimulator \
+    -configuration Release \
+    -destination="iOS" \
+    -archivePath "iphonesimulator.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES &&\
 \
-xcodebuild archive -project GiniBankSDK.xcodeproj -scheme GiniBankSDK -sdk iphoneos -configuration Release -archivePath "iphoneos.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
+xcodebuild clean archive -project GiniBankSDK.xcodeproj  \
+          -scheme GiniBankSDK -sdk iphoneos \
+          -xcconfig Distribution.xcconfig \
+          -configuration Release \
+          -destination generic/platform=iOS \
+          -archivePath "iphoneos.xcarchive" SKIP_INSTALL=NO BUILD_LIBRARIES_FOR_DISTRIBUTION=YES
 ```
 
 11. Create XCFrameworks for GiniBankSDK and dependant packages (you can copy paste the whole snippet into your terminal and run it):
 
 ```
-xcodebuild -create-xcframework -framework iphoneos.xcarchive/Products/Library/Frameworks/GiniBankAPILibrary.framework -framework iphonesimulator.xcarchive/Products/Library/Frameworks/GiniBankAPILibrary.framework -output GiniBankAPILibrary.xcframework &&\
+xcodebuild -create-xcframework -framework iphoneos.xcarchive/Products/Library/Frameworks/GiniBankAPILibrary.framework -framework iphonesimulator.xcarchive/Products/Library/Frameworks/GiniBankAPILibrary.framework \
+-output GiniBankAPILibrary.xcframework &&\
 \
 xcodebuild -create-xcframework -framework iphoneos.xcarchive/Products/Library/Frameworks/GiniCaptureSDK.framework -framework iphonesimulator.xcarchive/Products/Library/Frameworks/GiniCaptureSDK.framework -output GiniCaptureSDK.xcframework &&\
 \
 xcodebuild -create-xcframework -framework iphoneos.xcarchive/Products/Library/Frameworks/GiniBankSDK.framework -framework iphonesimulator.xcarchive/Products/Library/Frameworks/GiniBankSDK.framework -output GiniBankSDK.xcframework
+
 ```
