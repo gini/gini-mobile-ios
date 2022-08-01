@@ -238,18 +238,21 @@ extension GiniScreenAPICoordinator {
     }
     
     @objc func showHelpMenuScreen() {
-        
-        trackingDelegate?.onCameraScreenEvent(event: Event(type: .help))
-        
-        let helpMenuViewController = HelpMenuViewController(giniConfiguration: giniConfiguration)
+        let helpMenuViewController = HelpMenuViewController(
+            giniConfiguration: giniConfiguration
+        )
         helpMenuViewController.delegate = self
+        trackingDelegate?.onCameraScreenEvent(event: Event(type: .help))
         helpMenuViewController.setupNavigationItem(usingResources: backToCameraFromHelpMenuButtonResource,
                                                    selector: #selector(back),
                                                    position: .left,
                                                    target: self)
-        if helpMenuViewController.menuItems.count == 1 {
+        
+        //In case of 1 menu item it's better to show the item immediately without any selection
+         
+        if helpMenuViewController.dataSource.menuItems.count == 1 {
             screenAPINavigationController
-                .pushViewController(helpItemViewController(for: helpMenuViewController.menuItems[0]),
+                .pushViewController(helpItemViewController(for: helpMenuViewController.dataSource.menuItems[0]),
                                     animated: true)
         } else {
             screenAPINavigationController
@@ -330,12 +333,12 @@ extension GiniScreenAPICoordinator: UINavigationControllerDelegate {
 // MARK: - HelpMenuViewControllerDelegate
 
 extension GiniScreenAPICoordinator: HelpMenuViewControllerDelegate {
-    public func help(_ menuViewController: HelpMenuViewController, didSelect item: HelpMenuViewController.Item) {
+    public func help(_ menuViewController: HelpMenuViewController, didSelect item: HelpMenuDataSource.Item) {
         screenAPINavigationController.pushViewController(helpItemViewController(for: item),
                                                          animated: true)
     }
     
-    func helpItemViewController(for item: HelpMenuViewController.Item) -> UIViewController {
+    func helpItemViewController(for item: HelpMenuDataSource.Item) -> UIViewController {
         var viewController: UIViewController
         switch item {
         case .noResultsTips:
