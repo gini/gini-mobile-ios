@@ -9,7 +9,7 @@ jobs:
     uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@main
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
-      
+  
   release:
     needs: check
     runs-on: macOS-11    
@@ -65,3 +65,7 @@ jobs:
     secrets:
       RELEASE_GITHUB_USER: ${{ secrets.RELEASE_GITHUB_USER }}
       RELEASE_GITHUB_PASSWORD: ${{ secrets.RELEASE_GITHUB_PASSWORD }}
+
+  build-xcframeworks:
+    needs: release
+    uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.build.xcframeworks.yml@main

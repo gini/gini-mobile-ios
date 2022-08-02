@@ -1122,6 +1122,11 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var digitalInvoiceInfoViewButtonsFont = UIFont.systemFont(ofSize: 16)
     
     /**
+     Shows the return reasons dialog.
+     */
+    @objc public var enableReturnReasons: Bool = true
+    
+    /**
      Sets the font used in the Return Assistant screens by default.
      */
     @objc public lazy var customFont = GiniCaptureFont(regular: UIFont.systemFont(ofSize: 14,
@@ -1398,6 +1403,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.digitalInvoiceOnboardingHideButtonTextFont = self.digitalInvoiceOnboardingHideButtonTextFont
         configuration.digitalInvoiceOnboardingDoneButtonTextColor = self.digitalInvoiceOnboardingDoneButtonTextColor
         configuration.digitalInvoiceOnboardingHideButtonTextColor = self.digitalInvoiceOnboardingHideButtonTextColor
+        configuration.enableReturnReasons = self.enableReturnReasons
         configuration.customFont = self.customFont
         
         // TODO! Add for Xamarin colors

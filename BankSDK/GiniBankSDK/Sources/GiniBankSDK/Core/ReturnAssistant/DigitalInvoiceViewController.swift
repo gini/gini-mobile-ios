@@ -36,8 +36,12 @@ public class DigitalInvoiceViewController: UIViewController {
      */
     public var invoice: DigitalInvoice? {
         didSet {
-            toggleUIChanges()
-            tableView.reloadData()
+            if tableView.superview != nil {
+                toggleUIChanges()
+                tableView.reloadData()
+            } else {
+                toggleUIUpdates = true
+            }
         }
     }
     
@@ -46,6 +50,11 @@ public class DigitalInvoiceViewController: UIViewController {
     // TODO: This is to cope with the screen coordinator being inadequate at this point to support the return assistant step and needing a refactor.
     // Remove ASAP
     public var analysisDelegate: AnalysisDelegate?
+    
+    /**
+     Handler will be called when back button was pressed.
+     */
+    public var closeReturnAssistantBlock: () -> Void = {}
     
     /**
      The `ReturnAssistantConfiguration` instance used by this class to customise its appearance.
@@ -60,15 +69,10 @@ public class DigitalInvoiceViewController: UIViewController {
     
     private var didShowOnboardInCurrentSession = false
     private var didShowInfoViewInCurrentSession = false
+    private var toggleUIUpdates = false
+    private let vm = DigitalInvoiceViewModel()
 
-    
-    override public func viewDidLoad() {
-        super.viewDidLoad()
-        
-        title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: prefferedImage(named: "infoIcon"), style: .plain, target: self, action: #selector(whatIsThisTapped(source:)))
-        
+    fileprivate func configureTableView() {
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -102,9 +106,25 @@ public class DigitalInvoiceViewController: UIViewController {
         tableView.backgroundColor = UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceBackgroundColor)
     }
     
+    fileprivate func configureNavigationBar() {
+        title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: prefferedImage(named: "infoIcon"), style: .plain, target: self, action: #selector(whatIsThisTapped(source:)))
+        let leftBarButtonItemTitle = String.ginibankLocalized(resource: DigitalInvoiceStrings.backButtonTitle)
+        navigationItem.leftBarButtonItem = GiniBarButtonItem.init(image: prefferedImage(named: "arrowBack"), title: leftBarButtonItemTitle, style: .plain, target: self, action: #selector(closeReturnAssistantOverview))
+    }
+    
+    override public func viewDidLoad() {
+        super.viewDidLoad()
+        
+        configureNavigationBar()
+        configureTableView()
+    }
+    
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         showDigitalInvoiceOnboarding()
+        
     }
     
     public override func viewDidAppear(_ animated: Bool) {
@@ -112,20 +132,24 @@ public class DigitalInvoiceViewController: UIViewController {
         if !onboardingWillBeShown {
             showFooterDemo()
         }
+        if toggleUIUpdates {
+            toggleUIChanges()
+            toggleUIUpdates = false
+        }
     }
     
     @objc func payButtonTapped() {
-        
         guard let invoice = invoice else { return }
         delegate?.didFinish(viewController: self, invoice: invoice)
     }
     
     private func payButtonTitle() -> String {
-        
         guard let invoice = invoice else {
-            return .ginibankLocalized(resource: DigitalInvoiceStrings.noInvoicePayButtonTitle)
+            return .ginibankLocalized(resource: DigitalInvoiceStrings.disabledPayButtonTitle)
         }
-        
+        if invoice.numSelected == 0 {
+            return .ginibankLocalized(resource: DigitalInvoiceStrings.payButtonOtherCharges)
+        }
         return String.localizedStringWithFormat(DigitalInvoiceStrings.payButtonTitle.localizedGiniBankFormat,
                                                 invoice.numSelected,
                                                 invoice.numTotal)
@@ -134,7 +158,7 @@ public class DigitalInvoiceViewController: UIViewController {
     private func payButtonAccessibilityLabel() -> String {
         
         guard let invoice = invoice else {
-            return .ginibankLocalized(resource: DigitalInvoiceStrings.noInvoicePayButtonTitle)
+            return .ginibankLocalized(resource: DigitalInvoiceStrings.disabledPayButtonTitle)
         }
         
         return String.localizedStringWithFormat(DigitalInvoiceStrings.payButtonTitleAccessibilityLabel.localizedGiniBankFormat,
@@ -160,31 +184,24 @@ public class DigitalInvoiceViewController: UIViewController {
         return .ginibankLocalized(resource: DigitalInvoiceStrings.skipButtonTitle)
     }
     
+    private func getOnBoardingScreen() -> DigitalInvoiceOnboardingViewController {
+        let bundle = giniBankBundle()
+        let storyboard = UIStoryboard(name: "DigitalInvoiceOnboarding", bundle: bundle)
+        let digitalInvoiceOnboardingViewController = storyboard.instantiateViewController(withIdentifier: "digitalInvoiceOnboardingViewController") as! DigitalInvoiceOnboardingViewController
+        
+        digitalInvoiceOnboardingViewController.delegate = self
+        digitalInvoiceOnboardingViewController.returnAssistantConfiguration = returnAssistantConfiguration
+        return digitalInvoiceOnboardingViewController
+    }
+
     @objc func whatIsThisTapped(source: UIButton) {
-        
-        let actionSheet = UIAlertController(title: .ginibankLocalized(resource: DigitalInvoiceStrings.whatIsThisActionSheetTitle),
-                                            message: .ginibankLocalized(resource: DigitalInvoiceStrings.whatIsThisActionSheetMessage),
-                                            preferredStyle: .actionSheet)
-        
-        actionSheet.addAction(UIAlertAction(title: .ginibankLocalized(resource: DigitalInvoiceStrings.whatIsThisActionSheetActionHelpful),
-                                            style: .default,
-                                            handler: { _ in
-                                                // TODO:
-        }))
-        
-        actionSheet.addAction(UIAlertAction(title: .ginibankLocalized(resource: DigitalInvoiceStrings.whatIsThisActionSheetActionNotHelpful),
-                                            style: .destructive,
-                                            handler: { _ in
-                                                // TODO:
-        }))
-        
-        actionSheet.addAction(UIAlertAction(title: .ginibankLocalized(resource: DigitalInvoiceStrings.whatIsThisActionSheetActionCancel),
-                                            style: .cancel,
-                                            handler: nil))
-        
-        actionSheet.popoverPresentationController?.sourceView = source
-        
-        present(actionSheet, animated: true, completion: nil)
+        let onbardingVC = getOnBoardingScreen()
+        onbardingVC.infoType = .info
+        present(onbardingVC, animated: true)
+    }
+    
+    @objc func closeReturnAssistantOverview(){
+        closeReturnAssistantBlock()
     }
     
     fileprivate var onboardingWillBeShown: Bool {
@@ -199,12 +216,9 @@ public class DigitalInvoiceViewController: UIViewController {
     
     fileprivate func showDigitalInvoiceOnboarding() {
         if onboardingWillBeShown && !didShowOnboardInCurrentSession {
-            let bundle = giniBankBundle()
-            let storyboard = UIStoryboard(name: "DigitalInvoiceOnboarding", bundle: bundle)
-            let digitalInvoiceOnboardingViewController = storyboard.instantiateViewController(withIdentifier: "digitalInvoiceOnboardingViewController") as! DigitalInvoiceOnboardingViewController
-            digitalInvoiceOnboardingViewController.delegate = self
-            digitalInvoiceOnboardingViewController.returnAssistantConfiguration = returnAssistantConfiguration
-            present(digitalInvoiceOnboardingViewController, animated: true)
+            let onbardingVC = getOnBoardingScreen()
+            onbardingVC.infoType = .onboarding
+            present(onbardingVC, animated: true)
             didShowOnboardInCurrentSession = true
         }
     }
@@ -313,14 +327,7 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
             cell.returnAssistantConfiguration = returnAssistantConfiguration
             if let invoice = invoice {
                 let addon = invoice.addons[indexPath.row]
-                let shouldNullAddonPrice = invoice.numSelected == 0
-
-                if shouldNullAddonPrice {
-                    cell.addonPrice = Price(value: .zero, currencyCode: addon.price.currencyCode)
-                } else {
-                    cell.addonPrice = addon.price
-                }
-                
+                cell.addonPrice = addon.price
                 cell.addonName = addon.name
             }
             
@@ -339,21 +346,33 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
             return cell
             
         case .footer:
-            
             let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceFooterCell",
                                                      for: indexPath) as! DigitalInvoiceFooterCell
-            
             cell.returnAssistantConfiguration = returnAssistantConfiguration
-
-            cell.payButton.setTitle(payButtonTitle(), for: .normal)
             cell.payButton.accessibilityLabel = payButtonAccessibilityLabel()
             cell.payButton.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
             if let invoice = invoice {
-                let shouldEnablePayButton = invoice.numSelected > 0
+                let total = invoice.total?.value ?? 0
+                let shouldEnablePayButton = vm.isPayButtonEnabled(total: total)
                 cell.enableButtons(shouldEnablePayButton)
+                let buttonTitle = vm.payButtonTitle(
+                    isEnabled: shouldEnablePayButton,
+                    numSelected: invoice.numSelected,
+                    numTotal: invoice.numTotal
+                )
+                cell.payButton.setTitle(
+                    buttonTitle,
+                    for: .normal)
                 cell.shouldSetUIForInaccurateResults(invoice.inaccurateResults)
                 cell.skipButton.setTitle(skipButtonTitle(), for: .normal)
                 cell.skipButton.addTarget(self, action: #selector(skipButtonTapped), for: .touchUpInside)
+            } else {
+                let buttonTitle = vm.payButtonTitle(
+                    isEnabled: false,
+                    numSelected: 0,
+                    numTotal: 0
+                )
+                cell.payButton.setTitle(buttonTitle, for: .normal)
             }
             return cell
             
@@ -376,14 +395,14 @@ extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
         
         case .selected:
             
-            guard let returnReasons = self.invoice?.returnReasons else {
+            if let returnReasons = self.invoice?.returnReasons, returnAssistantConfiguration.enableReturnReasons {
+                presentReturnReasonActionSheet(for: viewModel.index,
+                                               source: cell.modeSwitch,
+                                               with: returnReasons)
+            } else {
                 self.invoice?.lineItems[viewModel.index].selectedState = .deselected(reason: nil)
                 return
             }
-            
-            presentReturnReasonActionSheet(for: viewModel.index,
-                                           source: cell.modeSwitch,
-                                           with: returnReasons)
             
         case .deselected:
             self.invoice?.lineItems[viewModel.index].selectedState = .selected
@@ -467,10 +486,12 @@ extension DigitalInvoiceViewController: DigitalInvoiceTotalPriceCellDelegate {
     func didTapAddArticleButton() {
         guard let firstItem = invoice?.lineItems.first else { return }
         let viewController = LineItemDetailsViewController()
-        viewController.lineItem = DigitalInvoice.LineItem(name: "", quantity: 0, price: Price(value: 0, currencyCode: firstItem.price.currencyCode), selectedState: .selected, isUserInitiated: true)
+        let price = Price(value: 0, currencyCode: firstItem.price.currencyCode)
+        viewController.lineItem = DigitalInvoice.LineItem(name: "", quantity: 0, price: price, selectedState: .selected, isUserInitiated: true)
         viewController.returnAssistantConfiguration = returnAssistantConfiguration
         viewController.lineItemIndex = invoice?.lineItems.count
         viewController.delegate = self
+        viewController.shouldEnableSaveButton = false
         
         navigationController?.pushViewController(viewController, animated: true)
     }

@@ -8,9 +8,9 @@
 
 import UIKit
 
-final class GiniBarButtonItem: UIBarButtonItem {
+public final class GiniBarButtonItem: UIBarButtonItem {
     
-    init(image: UIImage?, title: String?, style: UIBarButtonItem.Style, target: AnyObject?, action: Selector) {
+    public init(image: UIImage?, title: String?, style: UIBarButtonItem.Style, target: AnyObject?, action: Selector) {
         super.init()
         
         let button = UIButton(type: .system)

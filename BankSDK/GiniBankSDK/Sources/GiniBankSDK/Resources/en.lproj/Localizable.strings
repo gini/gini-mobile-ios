@@ -21,7 +21,8 @@
 "ginibank.help.menu.returnAssistant.backButton.title" = "Back";
 
 "ginibank.digitalinvoice.screentitle" = "Digital Invoice";
-"ginibank.digitalinvoice.paybuttontitle.noinvoice" = "Pay";
+"ginibank.digitalinvoice.paybuttontitle.disabled" = "Pay";
+"ginibank.digitalinvoice.paybuttontitle.othercharges" = "Pay";
 "ginibank.digitalinvoice.paybuttontitle" = "Pay %d/%d";
 "ginibank.digitalinvoice.paybuttontitle.accessibilitylabel" = "Pay %d out of %d";
 
@@ -35,12 +36,6 @@
 
 "ginibank.digitalinvoice.items" = "Article %d/%d";
 "ginibank.digitalinvoice.items.accessibilitylabel" = "Items %d out of %d";
-
-"ginibank.digitalinvoice.whatisthisactionsheet.title" = "What is this?";
-"ginibank.digitalinvoice.whatisthisactionsheet.message" = "We extracted the detailed items from your invoice. If you would like to return some items or partially pay the invoice, you can deselect them and the amount to pay will be recalculated.";
-"ginibank.digitalinvoice.whatisthisactionsheet.action.helpful" = "Yes, that's helpful";
-"ginibank.digitalinvoice.whatisthisactionsheet.action.nothelpful" = "No, I don't want to see it again";
-"ginibank.digitalinvoice.whatisthisactionsheet.action.cancel" = "Cancel";
 
 "ginibank.digitalinvoice.lineitem.quantity" = "%dx";
 "ginibank.digitalinvoice.lineitem.editbutton" = "Edit";
@@ -67,7 +62,8 @@
 "ginibank.digitalinvoice.lineitem.quantitytextfieldtitle" = "Quantity";
 "ginibank.digitalinvoice.lineitem.pricetextfieldtitle" = "Item Price";
 "ginibank.digitalinvoice.lineitem.multiplication.accessibilitylabel" = "times";
-"ginibank.digitalinvoice.lineitem.totalpricetitle" = "Total:";
+"ginibank.digitalinvoice.lineitem.totalpricetitle" = "Total";
+"ginibank.digitalinvoice.lineitem.includevattitle" = "Incl. tax";
 
 "ginibank.digitalinvoice.addonname.discount" = "Discount";
 "ginibank.digitalinvoice.addonname.giftcard" = "Giftcard";
@@ -78,3 +74,8 @@
 "ginibank.digitalinvoice.onboarding.text2" = "Deselect article that you want to return and pay only for what you keep!";
 "ginibank.digitalinvoice.onboarding.donebutton" = "Next";
 "ginibank.digitalinvoice.onboarding.hidebutton" = "Don’t show anymore";
+"ginibank.digitalinvoice.backbutton" = "Back";
+
+"ginibank.digitalinvoice.info.text1" = "What is it?";
+"ginibank.digitalinvoice.info.text2" = "We extracted the articles from your invoice. Simply deselect articles if you want to return them. The new total will be calculated for you.";
+"ginibank.digitalinvoice.info.hidebutton" = "Close";

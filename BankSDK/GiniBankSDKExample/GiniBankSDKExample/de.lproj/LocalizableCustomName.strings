@@ -64,5 +64,15 @@
 //"ginicapture.help.menu.secondItem" = "CM Dokumente aus anderen Apps öffnen";
 //"ginicapture.help.menu.thirdItem" = "CM Unterstützte Formate";
 //
+//"ginibank.digitalinvoice.info.text1" = "Was ist das?";
+//"ginibank.digitalinvoice.info.text2" = "Wir haben die Artikel aus deiner Rechnung extrahiert. Wenn du einige Artikel zurückschicken oder du deine Rechnung nur teilweise bezahlen möchtest, kannst du einzelne Artikel abwählen und der zu bezahlende Betrag wird automatisch  neu berechnet.";
+//"ginibank.digitalinvoice.info.hidebutton" = "Schließen";
+//
 //"ginicapture.help.openWithTutorial.title" = "CM Dokumente aus anderen Apps öffnen";
 "close" = "Schließen";
+//
+//"ginibank.digitalinvoice.backbutton" = "CM Schließen";
+//"ginibank.digitalinvoice.paybuttontitle.disabled" = "CM Bezahlen";
+//"ginibank.digitalinvoice.paybuttontitle.othercharges" = "CM Bezahlen";
+//"ginibank.digitalinvoice.paybuttontitle" = "CM Bezahlen %d/%d";
+"results.sendfeedback.button.title" = "Feedback senden und schließen";
