@@ -15,7 +15,7 @@ import UIKit
  */
 
 public protocol HelpMenuViewControllerDelegate: AnyObject {
-    func help(_ menuViewController: HelpMenuViewController, didSelect item: HelpMenuDataSource.Item)
+    func help(_ menuViewController: HelpMenuViewController, didSelect item: HelpMenuItem)
 }
 
 /**
@@ -26,12 +26,13 @@ public protocol HelpMenuViewControllerDelegate: AnyObject {
 final public class HelpMenuViewController: UIViewController {
     
     public weak var delegate: HelpMenuViewControllerDelegate?
+
     private (set) var dataSource: HelpMenuDataSource
-    let giniConfiguration: GiniConfiguration
-    let tableRowHeight: CGFloat = 44
-    static let helpMenuCellIdentifier = "kHelpMenuCellIdentifier"
+    private let giniConfiguration: GiniConfiguration
+    private let tableRowHeight: CGFloat = 44
+    
     private let margin: CGFloat = 16
-    lazy var tableView: UITableView = {
+    private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
@@ -56,6 +57,7 @@ final public class HelpMenuViewController: UIViewController {
     private func setupView() {
         configureMainView()
         configureTableView()
+        configureConstraints()
         edgesForExtendedLayout = []
     }
     
@@ -64,22 +66,25 @@ final public class HelpMenuViewController: UIViewController {
         tableView.delegate = self.dataSource
         tableView.backgroundColor = UIColor.clear
         tableView.tableFooterView = UIView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Self.helpMenuCellIdentifier)
-        tableView.rowHeight = tableRowHeight
-        
-        // In iOS it is .automatic by default, having an initial animation when the view is loaded.
+        tableView.register(
+            HelpMenuCell.self, forCellReuseIdentifier: HelpMenuCell.reuseIdentifier)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = tableRowHeight
         tableView.contentInsetAdjustmentBehavior = .never
     }
-    
-    private func configureMainView() {
-        view.backgroundColor = UIColor.from(giniColor: giniConfiguration.helpScreenBackgroundColor)
-        view.addSubview(tableView)
+
+    private func configureConstraints() {
         view.addConstraints([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: margin),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: margin),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -margin),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+
+    private func configureMainView() {
+        view.backgroundColor = UIColor.white//UIColor.from(giniColor: giniConfiguration.helpScreenBackgroundColor)
+        view.addSubview(tableView)
         title = .localized(resource: HelpStrings.menuTitle)
         view.layoutSubviews()
     }
@@ -92,7 +97,7 @@ final public class HelpMenuViewController: UIViewController {
 // MARK: - HelpMenuDataSourceDelegate
 
 extension HelpMenuViewController: HelpMenuDataSourceDelegate {
-    func didSelecthelpItem(didSelect item: HelpMenuDataSource.Item) {
+    func didSelectHelpItem(didSelect item: HelpMenuItem) {
         delegate?.help(self, didSelect: item)
     }
 }

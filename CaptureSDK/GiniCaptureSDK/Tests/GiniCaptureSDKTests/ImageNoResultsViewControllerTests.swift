@@ -11,8 +11,8 @@ import XCTest
 final class ImageNoResultsViewControllerTests: XCTestCase {
     
     let viewControllerTitle = "Title"
-    lazy var viewController: ImageAnalysisNoResultsViewController =
-        ImageAnalysisNoResultsViewController(title: self.viewControllerTitle)
+    lazy var viewController: HelpTipsViewController =
+        HelpTipsViewController(title: self.viewControllerTitle)
     lazy var items: [(image: UIImage?, text: String)] = [
         (UIImageNamedPreferred(named: "captureSuggestion1"),
          "Capture suggestion text 1"),
@@ -66,7 +66,7 @@ final class ImageNoResultsViewControllerTests: XCTestCase {
     }
     
     func testNoBottomButtonWhenNoText() {
-        viewController = ImageAnalysisNoResultsViewController(bottomButtonText: nil)
+        viewController = HelpTipsViewController(bottomButtonText: nil)
         _ = viewController.view
         
         let bottomButton = viewController.bottomButton

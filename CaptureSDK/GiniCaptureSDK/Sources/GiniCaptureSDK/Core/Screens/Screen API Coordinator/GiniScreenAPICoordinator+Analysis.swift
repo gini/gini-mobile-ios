@@ -23,8 +23,8 @@ extension GiniScreenAPICoordinator {
 // MARK: - ImageAnalysisNoResults screen
 
 extension GiniScreenAPICoordinator {
-    func createImageAnalysisNoResultsScreen() -> ImageAnalysisNoResultsViewController {
-        let imageAnalysisNoResultsViewController: ImageAnalysisNoResultsViewController
+    func createImageAnalysisNoResultsScreen() -> HelpTipsViewController {
+        let imageAnalysisNoResultsViewController: HelpTipsViewController
         let isCameraViewControllerLoaded: Bool = {
             guard let cameraViewController = cameraViewController else {
                 return false
@@ -33,23 +33,22 @@ extension GiniScreenAPICoordinator {
         }()
         
         if isCameraViewControllerLoaded {
-            imageAnalysisNoResultsViewController = ImageAnalysisNoResultsViewController()
+            imageAnalysisNoResultsViewController = HelpTipsViewController(giniConfiguration: giniConfiguration)
             imageAnalysisNoResultsViewController.setupNavigationItem(usingResources: backButtonResource,
                                                                      selector: #selector(backToCamera),
                                                                      position: .left,
                                                                      target: self)
         } else {
-            imageAnalysisNoResultsViewController = ImageAnalysisNoResultsViewController(bottomButtonText: nil,
-                                                                                        bottomButtonIcon: nil)
+            imageAnalysisNoResultsViewController = HelpTipsViewController(giniConfiguration: giniConfiguration)
             imageAnalysisNoResultsViewController.setupNavigationItem(usingResources: closeButtonResource,
                                                                      selector: #selector(closeScreenApi),
                                                                      position: .left,
                                                                      target: self)
         }
-        
+        /*
         imageAnalysisNoResultsViewController.didTapBottomButton = { [weak self] in
             self?.backToCamera()
-        }
+        }*/
         
         return imageAnalysisNoResultsViewController
     }
