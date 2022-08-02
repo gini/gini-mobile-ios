@@ -1,0 +1,81 @@
+//
+//  ImageAnalysisNoResultsViewController.swift
+//  GiniCapture
+//
+//  Created by Enrique del Pozo Gómez on 10/6/17.
+//  Copyright © 2017 Gini GmbH. All rights reserved.
+//
+
+import Foundation
+import UIKit
+
+/**
+ The `HelpTipsViewController` provides a custom no results screen which shows some capture
+ suggestions when there is no results when analysing an image.
+ */
+
+public final class HelpTipsViewController: UIViewController {
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
+    }()
+    private (set) var dataSource: HelpTipsDataSource
+    private var giniConfiguration: GiniConfiguration
+    private let tableRowHeight: CGFloat = 76
+    private let margin: CGFloat = 16
+    
+    public init(giniConfiguration: GiniConfiguration) {
+        self.giniConfiguration = giniConfiguration
+        self.dataSource = HelpTipsDataSource(configuration: giniConfiguration)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(title:subHeaderText:topViewText:topViewIcon:bottomButtonText:bottomButtonIcon:)" +
+            "has not been implemented")
+    }
+
+    override public func viewDidLoad() {
+        super.viewDidLoad()
+        setupView()
+    }
+
+    private func setupView() {
+        configureMainView()
+        configureTableView()
+        configureConstraints()
+        edgesForExtendedLayout = []
+    }
+
+    public func configureMainView() {
+        view.addSubview(tableView)
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = .systemBackground
+        } else {
+            view.backgroundColor = .white
+        }
+        edgesForExtendedLayout = []
+    }
+    
+    private func configureTableView() {
+        tableView.dataSource = self.dataSource
+        tableView.delegate = self.dataSource
+        tableView.backgroundColor = UIColor.clear
+        tableView.tableFooterView = UIView()
+        
+        tableView.register(UINib(nibName: "HelpTipCell", bundle:giniCaptureBundle()), forCellReuseIdentifier: HelpTipCell.reuseIdentifier)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = tableRowHeight
+        tableView.contentInsetAdjustmentBehavior = .never
+    }
+    
+    private func configureConstraints() {
+        view.addConstraints([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: margin),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: margin),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -margin),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+}

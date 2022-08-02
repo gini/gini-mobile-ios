@@ -31,7 +31,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     // Screens
     var analysisViewController: AnalysisViewController?
     var cameraViewController: CameraViewController?
-    var imageAnalysisNoResultsViewController: ImageAnalysisNoResultsViewController?
+    var imageAnalysisNoResultsViewController: HelpTipsViewController?
     var reviewViewController: ReviewViewController?
     lazy var multiPageReviewViewController: MultipageReviewViewController = {
         return self.createMultipageReviewScreenContainer(with: [])
@@ -250,9 +250,9 @@ extension GiniScreenAPICoordinator {
         
         //In case of 1 menu item it's better to show the item immediately without any selection
          
-        if helpMenuViewController.dataSource.menuItems.count == 1 {
+        if helpMenuViewController.dataSource.items.count == 1 {
             screenAPINavigationController
-                .pushViewController(helpItemViewController(for: helpMenuViewController.dataSource.menuItems[0]),
+                .pushViewController(helpItemViewController(for: helpMenuViewController.dataSource.items[0]),
                                     animated: true)
         } else {
             screenAPINavigationController
@@ -315,7 +315,7 @@ extension GiniScreenAPICoordinator: UINavigationControllerDelegate {
         if toVC is CameraViewController &&
             (fromVC is ReviewViewController ||
                 fromVC is AnalysisViewController ||
-                fromVC is ImageAnalysisNoResultsViewController) {
+                fromVC is HelpTipsViewController) {
             // When going directly from the analysis or from the single page review screen to the camera the pages
             // collection should be cleared, since the document processed in that cases is not going to be reused
             clearDocuments()
@@ -333,26 +333,25 @@ extension GiniScreenAPICoordinator: UINavigationControllerDelegate {
 // MARK: - HelpMenuViewControllerDelegate
 
 extension GiniScreenAPICoordinator: HelpMenuViewControllerDelegate {
-    public func help(_ menuViewController: HelpMenuViewController, didSelect item: HelpMenuDataSource.Item) {
+    public func help(_ menuViewController: HelpMenuViewController, didSelect item: HelpMenuItem) {
         screenAPINavigationController.pushViewController(helpItemViewController(for: item),
                                                          animated: true)
     }
     
-    func helpItemViewController(for item: HelpMenuDataSource.Item) -> UIViewController {
+    func helpItemViewController(for item: HelpMenuItem) -> UIViewController {
         var viewController: UIViewController
+        
         switch item {
-        case .noResultsTips:
-            let imageNoResultViewController = item.viewController as? ImageAnalysisNoResultsViewController
-            imageNoResultViewController?.didTapBottomButton = { [weak self] in
-                guard let self = self, let cameraViewController = self.cameraViewController else { return }
-                self.screenAPINavigationController.popToViewController(cameraViewController, animated: true)
-            }
-            
-            viewController = imageNoResultViewController!
-        case .openWithTutorial, .supportedFormats:
-            viewController = item.viewController
-        case .custom(_, let customViewController):
-            viewController = customViewController
+            case .noResultsTips:
+                let title: String = .localized(resource: ImageAnalysisNoResultsStrings.titleText)
+                let topViewText: String = .localized(resource: ImageAnalysisNoResultsStrings.warningHelpMenuText)
+                viewController = HelpTipsViewController(giniConfiguration: giniConfiguration)
+            case .openWithTutorial:
+                viewController = OpenWithTutorialViewController()
+            case .supportedFormats:
+                viewController = SupportedFormatsViewController()
+            case .custom(_, let customViewController):
+                viewController = customViewController
         }
         
         viewController.setupNavigationItem(usingResources: backToHelpMenuButtonResource,
