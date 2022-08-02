@@ -11,11 +11,11 @@
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
+			<string>ld</string>
 			<key>one</key>
-			<string>%d item selected</string>
+			<string>%ld item selected</string>
 			<key>other</key>
-			<string>%d items selected</string>
+			<string>%ld items selected</string>
 		</dict>
 	</dict>
 </dict>

@@ -10,6 +10,8 @@ import UIKit
 protocol GiniTextFieldDelegate: AnyObject {
     
     func textDidChange(_ giniTextField: GiniTextField)
+    func textWillClear(_ giniTextField: GiniTextField)
+    func textFieldWillChangeCharacters(_ giniTextField: GiniTextField)
 }
 
 class GiniTextField: UIView {
@@ -22,8 +24,15 @@ class GiniTextField: UIView {
     private let textField = UITextField()
     private let underscoreView = UIView()
     
+    enum TextFieldType: Int {
+        case amountFieldTag
+        case quantityFieldTag
+        case other
+    }
+    
     weak var delegate: GiniTextFieldDelegate?
     
+    var textFieldType: TextFieldType = .other
     var shouldAllowLetters = false
     
     var title: String? {
@@ -208,17 +217,29 @@ class GiniTextField: UIView {
     override func becomeFirstResponder() -> Bool {
         textField.becomeFirstResponder()
     }
+    
+    func setupState(isEnabled: Bool, color: UIColor) {
+        textField.isUserInteractionEnabled = isEnabled
+        textColor = color
+    }
 }
 
 extension GiniTextField: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        
         underscoreView.backgroundColor = underscoreColor(for: true)
+        switch textFieldType {
+        case .amountFieldTag:
+            if let text = textField.text, text.count > 0 {
+                let trimmedText = textField.text?.trimmingCharacters(in: .whitespaces)
+                textField.text = trimmedText
+            }
+        default:
+            break
+        }
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        
         underscoreView.backgroundColor = underscoreColor(for: false)
         delegate?.textDidChange(self)
     }
@@ -228,11 +249,62 @@ extension GiniTextField: UITextFieldDelegate {
         return true
     }
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
         if shouldAllowLetters { return true }
-        guard CharacterSet(charactersIn: "0123456789,.").isSuperset(of: CharacterSet(charactersIn: string)) else {
-            return false
+        switch textFieldType {
+        case .amountFieldTag:
+            if let text = textField.text,
+               let textRange = Range(range, in: text) {
+                let updatedText = text.replacingCharacters(in: textRange, with: string)
+                if let newAmount = Price.formatAmountString(newText: updatedText) {
+                     // Save the selected text range to restore the cursor position after replacing the text
+                     let selectedRange = textField.selectedTextRange
+                     textField.text = newAmount
+                     // Move the cursor position after the inserted character
+                     if let selectedRange = selectedRange {
+                         let countDelta = newAmount.count - text.count
+                         let offset = countDelta == 0 ? 1 : countDelta
+                         textField.moveSelectedTextRange(from: selectedRange.start, to: offset)
+                     }
+                }
+                delegate?.textFieldWillChangeCharacters(self)
+                return false
+            }
+        case .quantityFieldTag:
+            guard CharacterSet(charactersIn: "0123456789,.").isSuperset(of: CharacterSet(charactersIn: string)) else {
+                return false
+            }
+            if let text = textField.text,
+               let textRange = Range(range, in: text) {
+                let updatedText = text.replacingCharacters(in: textRange, with: string)
+                    if updatedText.count > kMaxQuantityCharacters {
+                        return false
+                    }
+            }
+        case .other:
+            guard CharacterSet(charactersIn: "0123456789,.").isSuperset(of: CharacterSet(charactersIn: string)) else {
+                return false
+            }
         }
         return true
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        delegate?.textWillClear(self)
+        return true
+    }
+}
+
+public extension UITextField {
+    
+    func moveSelectedTextRange(from position: UITextPosition, to offset: Int) {
+        if let newSelectedRangeFromTo = self.position(from: position, offset: offset),
+           let newSelectedRange = self.textRange(from: newSelectedRangeFromTo, to: newSelectedRangeFromTo) {
+            self.selectedTextRange = newSelectedRange
+        }
     }
 }

@@ -11,15 +11,13 @@ import GiniCaptureSDK
 enum DigitalInvoiceStrings: LocalizableStringResource {
     
     case screenTitle
-    case noInvoicePayButtonTitle, payButtonTitle, payButtonTitleAccessibilityLabel
+    case disabledPayButtonTitle, payButtonTitle, payButtonTitleAccessibilityLabel, payButtonOtherCharges
     case skipButtonTitle
     case warningViewLeftButtonTitle, warningViewRightButtonTitle
     case warningViewTopTitle, warningViewMiddleTitle, warningViewBottomTitle
     case items, itemsAccessibilityLabel
-    case whatIsThisActionSheetTitle, whatIsThisActionSheetMessage, whatIsThisActionSheetActionHelpful, whatIsThisActionSheetActionNotHelpful,
-    whatIsThisActionSheetActionCancel
     case lineItemCheckmarkLabel, lineItemQuantity, lineItemEditButtonTitle, lineItemSaveButtonTitle, lineItemNameTextFieldTitle, lineItemQuantityTextFieldTitle,
-    lineItemPriceTextFieldTitle, lineItemMultiplicationAccessibilityLabel, lineItemTotalPriceTitle
+    lineItemPriceTextFieldTitle, lineItemMultiplicationAccessibilityLabel, lineItemTotalPriceTitle, lineItemIncludeVatTitle
     case checkmarkButtonDeselectAccessibilityLabel, checkmarkButtonSelectAccessibilityLabel
     case headerMessagePrimary, headerMessageSecondary
     case totalAccessibilityLabel
@@ -29,6 +27,7 @@ enum DigitalInvoiceStrings: LocalizableStringResource {
     case totalExplanationLabel
     case footerMessage
     case addonNameDiscount, addonNameGiftCard, addonNameOtherDiscounts, addonNameOtherCharges, addonNameShipment
+    case backButtonTitle
     
     
     var tableName: String {
@@ -37,11 +36,12 @@ enum DigitalInvoiceStrings: LocalizableStringResource {
     
     var tableEntry: LocalizationEntry {
         switch self {
-        
         case .screenTitle:
             return ("screentitle", "Digital invoice screen title")
-        case .noInvoicePayButtonTitle:
-            return ("paybuttontitle.noinvoice", "Digital invoice pay button title when the invoice is missing")
+        case .disabledPayButtonTitle:
+            return ("paybuttontitle.disabled", "Digital invoice pay button title when the invoice is missing")
+        case .payButtonOtherCharges:
+            return ("paybuttontitle.othercharges", "Digital invoice pay button title when there are other charges")
         case .payButtonTitle:
             return ("paybuttontitle", "Digital invoice pay button title")
         case .payButtonTitleAccessibilityLabel:
@@ -52,16 +52,6 @@ enum DigitalInvoiceStrings: LocalizableStringResource {
             return ("items", "Digital invoice selected and total items")
         case .itemsAccessibilityLabel:
             return ("items.accessibilitylabel", "Digital invoice selected and total items accessibility label")
-        case .whatIsThisActionSheetTitle:
-            return ("whatisthisactionsheet.title", "Digital invoice 'What is this?' action sheet title")
-        case .whatIsThisActionSheetMessage:
-            return ("whatisthisactionsheet.message", "Digital invoice 'What is this?' action sheet message")
-        case .whatIsThisActionSheetActionHelpful:
-            return ("whatisthisactionsheet.action.helpful", "Digital invoice 'What is this?' action sheet helpful action button title")
-        case .whatIsThisActionSheetActionNotHelpful:
-            return ("whatisthisactionsheet.action.nothelpful", "Digital invoice 'What is this?' action sheet not helpful action button title")
-        case .whatIsThisActionSheetActionCancel:
-            return ("whatisthisactionsheet.action.cancel", "Digital invoice 'What is this?' action sheet cancel action button title")
         case .lineItemCheckmarkLabel:
             return ("lineitem.checkmark.label", "Digital invoice line item checkmark label")
         case .lineItemQuantity:
@@ -80,6 +70,8 @@ enum DigitalInvoiceStrings: LocalizableStringResource {
             return ("lineitem.multiplication.accessibilitylabel", "Digital invoice line item multiplication symbol accessibility label")
         case .lineItemTotalPriceTitle:
             return ("lineitem.totalpricetitle", "Digital invoice line item total price title")
+        case .lineItemIncludeVatTitle:
+            return ("lineitem.includevattitle", "Digital invoice line item include vat title")
         case .checkmarkButtonDeselectAccessibilityLabel:
             return ("checkmarkbutton.deselect.accessibilitylabel", "Digital invoice checkmark deselect accessibility label")
         case .checkmarkButtonSelectAccessibilityLabel:
@@ -120,6 +112,8 @@ enum DigitalInvoiceStrings: LocalizableStringResource {
             return("total.addArticleButtonTitle", "Digital invoice add article button title")
         case .noTitleArticle:
             return ("lineitem.notitle", "Digital invoice article without title")
+        case .backButtonTitle:
+            return ("backbutton", "Digital invoice back button title")
         }
     }
     

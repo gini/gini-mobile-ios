@@ -20,10 +20,10 @@ If you plan to use a custom name for localizable strings, you need to set it in 
 - [Albums screen](#albums-screen)
 - [Return assistant](#return-assistant)
   - [Onboarding screen](#onboarding-screen)
+  - [Info screen](#info-screen)
   - [Info box](#info-box)
   - [Digital invoice screen](#digital-invoice-screen)
   - [Return reason action sheet](#return-reason-action-sheet)
-  - [Info dialog](#info-dialog)
   - [Edit line item screen](#edit-line-item-screen)
   
 ## Supporting dark mode
@@ -412,6 +412,24 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 - Text color &#8594; `GiniBankConfiguration.digitalInvoiceOnboardingHideButtonTextColor`
 - Font &#8594;  `GiniBankConfiguration.digitalInvoiceOnboardingHideButtonTextFont`
 
+### Info screen
+
+<br>
+<center><img src="img/Customization guide/Digital Invoice Info Screen.jpg" height="500"/></center>
+</br>
+
+##### 1. Title
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.info.text1*</span> localized string
+
+##### 2. Illustration
+- Image &#8594; <span style="color:#009EDF">*digital_invoice_onboarding_icon*</span> image asset
+
+##### 3. Message
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.info.text2*</span> localized string
+
+##### 4. "Close" button
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.info.hidebutton*</span> localized string
+
 ### Info box
 
 <br>
@@ -466,6 +484,8 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 ##### 1. Navigation bar
 - Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.screentitle*</span> localized string
 - Help button image &#8594; <span style="color:#009EDF">*infoIcon*</span> image asset
+- Back button title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.backbutton*</span> localized string
+- Back button image &#8594; <span style="color:#009EDF">*arrowBack*</span> image asset
 
 ##### 2. Background
 - Color &#8594; `GiniBankConfiguration.digitalInvoiceBackgroundColor`
@@ -555,6 +575,8 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
   Please include two decimal format arguments:
   1. Selected items count: `%d`
   2. Total count: `%d`
+- The “othercharges” title is used when items are not selected but there are other charges to pay &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.paybuttontitle.othercharges*</span> localized string.  
+- The “disabled” title is used when the pay button is disabled &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.paybuttontitle.disabled*</span> localized string.  
 - Accessibility label &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.paybuttontitle.accessibilitylabel*</span> localized string.  
   Please include two decimal format arguments:
   1. Selected items count: `%d`
@@ -581,27 +603,6 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 
 ##### 2. "Cancel" button
 - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel*</span> localized string
-
-### Info dialog
-
-<br>
-<center><img src="img/Customization guide/Digital Invoice Info Dialog.jpg" height="500"/></center>
-</br>
-
-##### 1. Title
-- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.whatisthisactionsheet.title*</span> localized string
-
-##### 2. Message
-- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.whatisthisactionsheet.message*</span> localized string
-
-##### 3. "Helpful" button
-- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.whatisthisactionsheet.action.helpful*</span> localized string
-
-##### 4. "Not helpful" button
-- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.whatisthisactionsheet.action.nothelpful*</span> localized string
-
-##### 5. "Cancel" button
-- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.whatisthisactionsheet.action.cancel*</span> localized string
 
 ### Edit line item screen
 
@@ -635,16 +636,15 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
   - Font &#8594; `GiniBankConfiguration.lineItemDetailsContentLabelFont`
 - Field highlighted color &#8594; `GiniBankConfiguration.lineItemDetailsContentHighlightedColor`
 
-##### 7. Multiplication symbol
-- Color &#8594; `GiniBankConfiguration.lineItemDetailsContentLabelFont`
-- Font &#8594; `GiniBankConfiguration.lineItemDetailsContentLabelColor`
-- Accessibility label &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.multiplication.accessibilitylabel*</span> localized string
-
-##### 8. Total price
+##### 7. Total price, Vat title
+- Tax title
+  - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.includevattitle*</span> localized
+  - Color &#8594; `GiniBankConfiguration.lineItemDetailsDescriptionLabelColor`
+  - Font &#8594; `GiniBankConfiguration.lineItemDetailsDescriptionLabelFont` 
 - Label
   - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.totalpricetitle*</span> localized string
-  - Color &#8594; `GiniBankConfiguration.lineItemDetailsDescriptionLabelFont`
-  - Font &#8594; `GiniBankConfiguration.lineItemDetailsDescriptionLabelColor`
+  - Color &#8594; `GiniBankConfiguration.lineItemDetailsContentLabelColor`
+  - Font &#8594; `GiniBankConfiguration.lineItemDetailsDescriptionLabelFont`
 - Price
   - Color &#8594; `GiniBankConfiguration.lineItemDetailsContentLabelColor`
   - Main unit font &#8594;  `GiniBankConfiguration.lineItemDetailsTotalPriceMainUnitFont`
