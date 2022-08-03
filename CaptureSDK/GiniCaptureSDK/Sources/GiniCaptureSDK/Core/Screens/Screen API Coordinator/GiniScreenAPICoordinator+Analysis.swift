@@ -45,6 +45,8 @@ extension GiniScreenAPICoordinator {
                                                                      position: .left,
                                                                      target: self)
         }
+        
+        // TODO: no results screen
         /*
         imageAnalysisNoResultsViewController.didTapBottomButton = { [weak self] in
             self?.backToCamera()

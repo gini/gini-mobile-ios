@@ -226,10 +226,13 @@ extension ComponentAPICoordinator {
     fileprivate func showNoResultsScreen() {
         let vc: UIViewController
         if pages.type == .image {
-            let imageAnalysisNoResultsViewController = HelpTipsViewController()
-            imageAnalysisNoResultsViewController.didTapBottomButton = { [unowned self] in
+            let imageAnalysisNoResultsViewController = HelpTipsViewController(giniConfiguration: giniBankConfiguration.captureConfiguration())
+            // TODO: retry button
+            /*
+             imageAnalysisNoResultsViewController.didTapBottomButton = { [unowned self] in
                 self.didTapRetry()
             }
+             */
             vc = imageAnalysisNoResultsViewController
         } else {
             let genericNoResults = storyboard
