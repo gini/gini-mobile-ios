@@ -217,10 +217,13 @@ extension ComponentAPICoordinator {
     fileprivate func showNoResultsScreen() {
         let noResultsViewController: UIViewController
         if pages.type == .image {
-            let imageAnalysisNoResultsViewController = HelpTipsViewController()
+            let imageAnalysisNoResultsViewController = HelpTipsViewController(giniConfiguration: giniConfiguration)
+            // TODO: retry button
+            /*
             imageAnalysisNoResultsViewController.didTapBottomButton = { [unowned self] in
                 self.didTapRetry()
             }
+             */
             noResultsViewController = imageAnalysisNoResultsViewController
         } else {
             let genericNoResults = storyboard

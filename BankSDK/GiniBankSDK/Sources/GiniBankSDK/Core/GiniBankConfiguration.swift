@@ -1141,7 +1141,7 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Set an array of additional custom help menu items . Those items will be presented as table view cells on the help menu screen. By selecting the cell the user will be redirected to the page, which represented by viewController provided by customer during the  `HelpMenuViewController.Item` initialization.
     */
-    public var customMenuItems: [HelpMenuViewController.Item] = []
+    public var customMenuItems: [HelpMenuItem] = []
     
     /**
      Sets if the default error logging implementation is on.
