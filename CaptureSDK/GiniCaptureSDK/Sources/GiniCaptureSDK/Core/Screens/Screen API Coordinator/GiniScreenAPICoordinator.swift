@@ -344,10 +344,10 @@ extension GiniScreenAPICoordinator: HelpMenuViewControllerDelegate {
         switch item {
             case .noResultsTips:
                 let title: String = .localized(resource: ImageAnalysisNoResultsStrings.titleText)
-                let topViewText: String = .localized(resource: ImageAnalysisNoResultsStrings.warningHelpMenuText)
                 viewController = HelpTipsViewController(giniConfiguration: giniConfiguration)
+                viewController.title = title
             case .openWithTutorial:
-                viewController = OpenWithTutorialViewController()
+                viewController = HelpImportViewController(giniConfiguration: giniConfiguration)
             case .supportedFormats:
                 viewController = SupportedFormatsViewController()
             case .custom(_, let customViewController):
