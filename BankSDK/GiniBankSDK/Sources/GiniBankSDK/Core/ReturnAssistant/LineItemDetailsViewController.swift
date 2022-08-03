@@ -54,7 +54,6 @@ class LineItemDetailsViewController: UIViewController {
     
     private let quantityAndItemPriceContainer = UIView()
     private let quantityTextField = GiniTextField()
-    private let multiplicationLabel = UILabel()
     private let itemPriceTextField = GiniTextField()
     
     private let totalPriceStackView = UIStackView()
@@ -91,7 +90,6 @@ class LineItemDetailsViewController: UIViewController {
         itemNameTextField.translatesAutoresizingMaskIntoConstraints = false
         quantityAndItemPriceContainer.translatesAutoresizingMaskIntoConstraints = false
         quantityTextField.translatesAutoresizingMaskIntoConstraints = false
-        multiplicationLabel.translatesAutoresizingMaskIntoConstraints = false
         itemPriceTextField.translatesAutoresizingMaskIntoConstraints = false
 
         stackView.axis = .vertical
@@ -193,7 +191,6 @@ class LineItemDetailsViewController: UIViewController {
         accessibilityElements = [checkboxContainerStackView,
                                  itemNameTextField,
                                  quantityTextField,
-                                 multiplicationLabel,
                                  itemPriceTextField,
                                  totalPriceTitleLabel,
                                  totalPriceLabel]
