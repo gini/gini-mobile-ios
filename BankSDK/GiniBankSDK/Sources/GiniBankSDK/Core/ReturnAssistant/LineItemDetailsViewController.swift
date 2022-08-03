@@ -336,6 +336,7 @@ extension LineItemDetailsViewController {
         quantityTextField.text = String(lineItem.quantity)
         itemPriceTextField.prefixText = lineItem.price.currencySymbol
         itemPriceTextField.text = lineItem.price.stringWithoutSymbol
+        itemPriceTextField.separatorColor = .clear
         
         checkboxButton.isHidden = lineItem.isUserInitiated
         checkboxButtonTextLabel.isHidden = lineItem.isUserInitiated
