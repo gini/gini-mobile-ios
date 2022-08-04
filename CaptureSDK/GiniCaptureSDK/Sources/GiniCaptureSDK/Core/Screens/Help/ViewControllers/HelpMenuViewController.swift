@@ -12,6 +12,7 @@ import UIKit
  The `HelpMenuViewControllerDelegate` protocol defines methods that allow you to handle table item selection actions.
  
  - note: Component API only.
+ - TODO:  - REMOVE Componen API
  */
 
 public protocol HelpMenuViewControllerDelegate: AnyObject {
@@ -30,9 +31,8 @@ final public class HelpMenuViewController: UIViewController {
     private (set) var dataSource: HelpMenuDataSource
     private let giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 44
-    
     private let margin: CGFloat = 16
-    private lazy var tableView: UITableView = {
+    lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView

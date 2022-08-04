@@ -9,11 +9,11 @@
 import UIKit
 
 class HelpFormatsViewController: UIViewController {
-    private let tableRowHeight: CGFloat = 44
     private let margin: CGFloat = 16
-    private let sectionHeight: CGFloat = 70
+    let tableRowHeight: CGFloat = 44
+    let sectionHeight: CGFloat = 70
     
-    private lazy var tableView: UITableView = {
+    lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
