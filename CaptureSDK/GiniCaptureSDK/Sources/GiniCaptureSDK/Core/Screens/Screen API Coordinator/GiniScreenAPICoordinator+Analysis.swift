@@ -23,8 +23,8 @@ extension GiniScreenAPICoordinator {
 // MARK: - ImageAnalysisNoResults screen
 
 extension GiniScreenAPICoordinator {
-    func createImageAnalysisNoResultsScreen() -> HelpTipsViewController {
-        let imageAnalysisNoResultsViewController: HelpTipsViewController
+    func createImageAnalysisNoResultsScreen() -> ImageAnalysisNoResultsViewController {
+        let imageAnalysisNoResultsViewController: ImageAnalysisNoResultsViewController
         let isCameraViewControllerLoaded: Bool = {
             guard let cameraViewController = cameraViewController else {
                 return false
@@ -33,13 +33,14 @@ extension GiniScreenAPICoordinator {
         }()
         
         if isCameraViewControllerLoaded {
-            imageAnalysisNoResultsViewController = HelpTipsViewController(giniConfiguration: giniConfiguration)
+            imageAnalysisNoResultsViewController = ImageAnalysisNoResultsViewController()
             imageAnalysisNoResultsViewController.setupNavigationItem(usingResources: backButtonResource,
                                                                      selector: #selector(backToCamera),
                                                                      position: .left,
                                                                      target: self)
         } else {
-            imageAnalysisNoResultsViewController = HelpTipsViewController(giniConfiguration: giniConfiguration)
+            imageAnalysisNoResultsViewController = ImageAnalysisNoResultsViewController(bottomButtonText: nil,
+                                                                                        bottomButtonIcon: nil)
             imageAnalysisNoResultsViewController.setupNavigationItem(usingResources: closeButtonResource,
                                                                      selector: #selector(closeScreenApi),
                                                                      position: .left,
