@@ -34,7 +34,7 @@ final public class HelpMenuDataSource: HelpBaseDataSource<HelpMenuItem, HelpMenu
     ) {
         super.init(configuration: configuration)
         self.items.append(contentsOf: defaultItems)
-        self.items.append(contentsOf: giniConfiguration.customMenuItems)
+        self.items.append(contentsOf: configuration.customMenuItems)
     }
 
     public override func configureCell(cell: HelpMenuCell, indexPath: IndexPath) {
