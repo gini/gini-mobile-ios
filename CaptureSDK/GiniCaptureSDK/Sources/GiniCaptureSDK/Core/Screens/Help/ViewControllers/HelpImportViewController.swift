@@ -42,7 +42,6 @@ class HelpImportViewController: UIViewController {
         configureMainView()
         configureTableView()
         configureConstraints()
-        edgesForExtendedLayout = []
     }
     
     public func configureMainView() {
@@ -104,6 +103,7 @@ extension HelpImportViewController: UITableViewDataSource {
         cell.descriptionLabel.backgroundColor = UIColor.clear
         cell.contentView.backgroundColor = UIColor.clear
     }
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: HelpImportCell.reuseIdentifier) as? HelpImportCell {
             configureCell(cell: cell, indexPath: indexPath)
