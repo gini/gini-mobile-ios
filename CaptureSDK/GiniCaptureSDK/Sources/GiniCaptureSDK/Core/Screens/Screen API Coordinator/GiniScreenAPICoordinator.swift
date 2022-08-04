@@ -349,7 +349,7 @@ extension GiniScreenAPICoordinator: HelpMenuViewControllerDelegate {
             case .openWithTutorial:
                 viewController = HelpImportViewController(giniConfiguration: giniConfiguration)
             case .supportedFormats:
-                viewController = SupportedFormatsViewController()
+                viewController = HelpFormatsViewController(giniConfiguration: giniConfiguration)
             case .custom(_, let customViewController):
                 viewController = customViewController
         }

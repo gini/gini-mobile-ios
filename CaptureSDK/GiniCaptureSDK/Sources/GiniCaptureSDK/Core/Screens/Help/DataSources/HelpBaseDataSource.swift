@@ -3,6 +3,7 @@
 //  
 //
 //  Created by Krzysztof Kryniecki on 02/08/2022.
+//  Copyright © 2022 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -19,6 +20,7 @@ public class HelpBaseDataSource<Item, Cell>: NSObject, UITableViewDelegate, UITa
     }
     
     public func configureCell(cell: Cell, indexPath: IndexPath) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     @objc public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -31,6 +33,10 @@ public class HelpBaseDataSource<Item, Cell>: NSObject, UITableViewDelegate, UITa
             return cell
         }
         fatalError()
+    }
+    
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
     
     @objc(tableView:willDisplayCell:forRowAtIndexPath:) public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -47,6 +53,6 @@ public class HelpBaseDataSource<Item, Cell>: NSObject, UITableViewDelegate, UITa
     }
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        fatalError("init(coder:) has not been implemented")
     }
 }

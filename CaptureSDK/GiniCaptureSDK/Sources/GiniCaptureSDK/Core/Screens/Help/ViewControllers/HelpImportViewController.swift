@@ -8,12 +8,13 @@
 
 import UIKit
 
-enum HelpImportCellType {
-    case selectInvoice
-    case importToApp
-}
-
 class HelpImportViewController: UIViewController {
+    enum HelpImportCellType {
+        case selectInvoice
+        case importToApp
+    }
+    
+    private let margin: CGFloat = 0
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -21,7 +22,7 @@ class HelpImportViewController: UIViewController {
     }()
     private var dataSource: [HelpImportCellType] = [.selectInvoice, .importToApp]
     private var giniConfiguration: GiniConfiguration
-    private let margin: CGFloat = 0
+    
     
     public init(giniConfiguration: GiniConfiguration) {
         self.giniConfiguration = giniConfiguration

@@ -14,7 +14,4 @@ class HelpImportCell: UITableViewCell {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var importImageView: UIImageView!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
 }
