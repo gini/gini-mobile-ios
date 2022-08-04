@@ -12,7 +12,6 @@ public class HelpBaseDataSource<Item, Cell>: NSObject, UITableViewDelegate, UITa
     
     var items: [Item] = []
     let giniConfiguration: GiniConfiguration
-    
     init(
         configuration: GiniConfiguration
     ) {
@@ -41,13 +40,13 @@ public class HelpBaseDataSource<Item, Cell>: NSObject, UITableViewDelegate, UITa
     
     @objc(tableView:willDisplayCell:forRowAtIndexPath:) public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if items.count == 1 {
-          cell.round(corners: [.bottomLeft, .bottomRight, .topLeft, .topRight], withRadius: 8)
+            cell.round(corners: [.bottomLeft, .bottomRight, .topLeft, .topRight], withRadius: RoundedCorners.cornerRadius)
         } else {
             if indexPath.row == 0 {
-                cell.round(corners: [.topLeft, .topRight], withRadius: 8)
+                cell.round(corners: [.topLeft, .topRight], withRadius: RoundedCorners.cornerRadius)
             }
             if indexPath.row == items.count - 1 {
-                cell.round(corners: [.bottomLeft, .bottomRight], withRadius: 8)
+                cell.round(corners: [.bottomLeft, .bottomRight], withRadius: RoundedCorners.cornerRadius)
             }
         }
     }
