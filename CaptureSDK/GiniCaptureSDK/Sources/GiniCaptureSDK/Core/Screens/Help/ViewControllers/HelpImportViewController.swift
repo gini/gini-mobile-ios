@@ -109,7 +109,7 @@ extension HelpImportViewController: UITableViewDataSource {
             configureCell(cell: cell, indexPath: indexPath)
             return cell
         }
-        fatalError()
+        fatalError("undefined cell")
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

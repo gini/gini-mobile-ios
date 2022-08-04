@@ -22,23 +22,23 @@ public class HelpBaseDataSource<Item, Cell>: NSObject, UITableViewDelegate, UITa
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
     
-    @objc(tableView:cellForRowAtIndexPath:) public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: Cell.reuseIdentifier) as? Cell {
             self.configureCell(cell: cell, indexPath: indexPath)
             return cell
         }
-        fatalError()
+        fatalError("undefined cell")
     }
     
     public func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    @objc(tableView:willDisplayCell:forRowAtIndexPath:) public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if items.count == 1 {
             cell.round(corners: [.bottomLeft, .bottomRight, .topLeft, .topRight], withRadius: RoundedCorners.cornerRadius)
         } else {
@@ -52,6 +52,6 @@ public class HelpBaseDataSource<Item, Cell>: NSObject, UITableViewDelegate, UITa
     }
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("tableView(tableView: didSelectRowAt:) has not been implemented")
     }
 }
