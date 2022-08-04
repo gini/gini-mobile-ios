@@ -254,7 +254,7 @@
     },
     {
       "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/ReturnAssistant/GiniTextField.swift",
-      "line": 304,
+      "line": 310,
       "symbol": "UITextField.moveSelectedTextRange(from:to:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
