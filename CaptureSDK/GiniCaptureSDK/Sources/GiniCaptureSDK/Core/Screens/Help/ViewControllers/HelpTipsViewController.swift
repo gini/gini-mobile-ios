@@ -50,11 +50,7 @@ public final class HelpTipsViewController: UIViewController {
 
     public func configureMainView() {
         view.addSubview(tableView)
-        if #available(iOS 13.0, *) {
-            view.backgroundColor = .systemBackground
-        } else {
-            view.backgroundColor = .white
-        }
+        view.backgroundColor = .white
         edgesForExtendedLayout = []
     }
     
@@ -68,6 +64,7 @@ public final class HelpTipsViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = tableRowHeight
         tableView.contentInsetAdjustmentBehavior = .never
+        tableView.separatorStyle = .none
     }
     
     private func configureConstraints() {

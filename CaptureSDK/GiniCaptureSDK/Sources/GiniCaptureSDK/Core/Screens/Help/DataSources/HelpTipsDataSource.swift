@@ -3,6 +3,7 @@
 //  
 //
 //  Created by Krzysztof Kryniecki on 01/08/2022.
+//  Copyright © 2022 Gini GmbH. All rights reserved.
 //
 
 import UIKit
