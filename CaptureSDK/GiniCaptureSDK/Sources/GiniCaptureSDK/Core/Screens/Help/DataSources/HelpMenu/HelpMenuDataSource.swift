@@ -39,11 +39,15 @@ final public class HelpMenuDataSource: HelpBaseDataSource<HelpMenuItem, HelpMenu
 
     public override func configureCell(cell: HelpMenuCell, indexPath: IndexPath) {
 
-        cell.backgroundColor = UIColor.from(giniColor: giniConfiguration.helpScreenCellsBackgroundColor)
+        cell.backgroundColor = giniConfiguration.helpScreensCellsBackgroundColor
         cell.textLabel?.text = items[indexPath.row].title
+        cell.textLabel?.textColor = giniConfiguration.helpScreensLabelColor
         cell.textLabel?.font = giniConfiguration.customFont.with(weight: .regular, size: 14, style: .body)
         cell.accessoryType = .disclosureIndicator
         cell.selectionStyle = .none
+        if indexPath.row == self.items.count - 1 {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+        }
     }
 
     // MARK: - UITableViewDelegate

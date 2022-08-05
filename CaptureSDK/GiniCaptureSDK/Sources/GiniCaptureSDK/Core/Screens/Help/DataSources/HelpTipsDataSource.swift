@@ -49,8 +49,12 @@ final public class HelpTipsDataSource: HelpBaseDataSource<HelpTipsItem, HelpTipC
     public override func configureCell(cell: HelpTipCell, indexPath: IndexPath) {
         let item = self.items[indexPath.row]
         cell.headerLabel.text = item.header
+        cell.headerLabel.textColor = giniConfiguration.helpScreensLabelColor
+        cell.backgroundColor = giniConfiguration.helpScreensCellsBackgroundColor
         cell.descriptionLabel.text = item.details
+        cell.descriptionLabel.textColor = giniConfiguration.helpScreensDefaultTextColor
         cell.iconImageView.image = UIImageNamedPreferred(named: item.iconName)
+        cell.separatorView.backgroundColor = giniConfiguration.helpScreensSeparatorColor
         cell.selectionStyle = .none
     }
     

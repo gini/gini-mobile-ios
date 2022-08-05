@@ -577,10 +577,18 @@ import UIKit
      */
     @objc public var helpScreenBackgroundColor =  GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: UIColor.from(hex: 0x1C1C1C))
     
+    @objc public var helpScreensBackgroundColor =  UIColorPreferred(named: "systemGray06")
+    @objc public var helpScreensLabelColor =  UIColorPreferred(named: "labelColor")
+    
+    @objc public var helpScreensDefaultTextColor =  UIColorPreferred(named: "subHeadline")
+    @objc public var helpScreensSeparatorColor =  UIColorPreferred(named: "separator")
+    
     /**
      Sets the background color for the cells on help screen.
      */
     @objc public var helpScreenCellsBackgroundColor =  GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: UIColor.from(hex: 0x1C1C1C))
+    
+    @objc public var helpScreensCellsBackgroundColor =  UIColorPreferred(named: "systemWhite")
     
     /**
      Sets the back button text in the navigation bar on the help menu screen. Use this if you only want to show the title.

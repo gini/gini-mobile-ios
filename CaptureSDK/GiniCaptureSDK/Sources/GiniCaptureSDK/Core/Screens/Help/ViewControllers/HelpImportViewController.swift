@@ -47,7 +47,7 @@ class HelpImportViewController: UIViewController {
     public func configureMainView() {
         self.title = "How to import"
         view.addSubview(tableView)
-        view.backgroundColor = UIColor.from(giniColor: giniConfiguration.helpScreenBackgroundColor)
+        view.backgroundColor = giniConfiguration.helpScreensBackgroundColor
         edgesForExtendedLayout = []
     }
     
@@ -100,8 +100,10 @@ extension HelpImportViewController: UITableViewDataSource {
             cell.importImageView.image = UIImageNamedPreferred(named: "helpImport2")
         }
         cell.backgroundColor = UIColor.clear
+        cell.headerLabel.textColor = giniConfiguration.helpScreensLabelColor
         cell.headerLabel.backgroundColor = UIColor.clear
         cell.descriptionLabel.backgroundColor = UIColor.clear
+        cell.descriptionLabel.textColor = giniConfiguration.helpScreensDefaultTextColor
         cell.contentView.backgroundColor = UIColor.clear
     }
 
