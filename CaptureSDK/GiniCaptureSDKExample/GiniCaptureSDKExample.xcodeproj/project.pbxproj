@@ -38,6 +38,7 @@
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
+		F426ABF3289ABAA8007F4EB6 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F426ABF2289ABAA8007F4EB6 /* Colors.xcassets */; };
 		F42F027926D65DF2003A3695 /* AlbumsPickerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42F027826D65DF2003A3695 /* AlbumsPickerViewControllerTests.swift */; };
 		F42F027B26D65F67003A3695 /* GalleryCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42F027A26D65F67003A3695 /* GalleryCoordinatorTests.swift */; };
 		F42F027D26D65FC0003A3695 /* GalleryManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42F027C26D65FC0003A3695 /* GalleryManagerTests.swift */; };
@@ -115,6 +116,7 @@
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F40B4064252C9CC700D04B6F /* Credentials.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
+		F426ABF2289ABAA8007F4EB6 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		F42F027826D65DF2003A3695 /* AlbumsPickerViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsPickerViewControllerTests.swift; sourceTree = "<group>"; };
 		F42F027A26D65F67003A3695 /* GalleryCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryCoordinatorTests.swift; sourceTree = "<group>"; };
 		F42F027C26D65FC0003A3695 /* GalleryManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryManagerTests.swift; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 			children = (
 				1FF3A42020C6D20900081A32 /* Credentials.plist */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
+				F426ABF2289ABAA8007F4EB6 /* Colors.xcassets */,
 				0A5DDCA51D9E6A5300EBDDCD /* Settings.bundle */,
 				F4E561572686315100415EE8 /* Localizable.strings */,
 				607FACD41AFB9204008FA782 /* Info.plist */,
@@ -460,6 +463,7 @@
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 				1FEED2941F6AC0440068E8AB /* testPDF.pdf in Resources */,
 				F4F1A77927EB47CA0004FF42 /* Gini_invoice_example.pdf in Resources */,
+				F426ABF3289ABAA8007F4EB6 /* Colors.xcassets in Resources */,
 				F4F1A77B27EB47CA0004FF42 /* result_Gini_invoice_example_after_feedback.json in Resources */,
 				0A5DDCA61D9E6A5300EBDDCD /* Settings.bundle in Resources */,
 			);
