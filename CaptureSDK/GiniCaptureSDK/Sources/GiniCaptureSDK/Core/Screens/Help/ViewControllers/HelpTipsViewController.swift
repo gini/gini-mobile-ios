@@ -50,7 +50,7 @@ public final class HelpTipsViewController: UIViewController {
 
     public func configureMainView() {
         view.addSubview(tableView)
-        view.backgroundColor = .white
+        view.backgroundColor = giniConfiguration.helpScreensBackgroundColor
         edgesForExtendedLayout = []
     }
     
@@ -59,7 +59,6 @@ public final class HelpTipsViewController: UIViewController {
         tableView.delegate = self.dataSource
         tableView.backgroundColor = UIColor.clear
         tableView.tableFooterView = UIView()
-        
         tableView.register(UINib(nibName: "HelpTipCell", bundle:giniCaptureBundle()), forCellReuseIdentifier: HelpTipCell.reuseIdentifier)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = tableRowHeight

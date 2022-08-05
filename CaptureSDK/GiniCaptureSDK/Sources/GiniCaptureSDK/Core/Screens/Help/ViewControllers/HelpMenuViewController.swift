@@ -18,7 +18,6 @@ import UIKit
 public protocol HelpMenuViewControllerDelegate: AnyObject {
     func help(_ menuViewController: HelpMenuViewController, didSelect item: HelpMenuItem)
 }
-
 /**
  The `HelpMenuViewController` provides explanations on how to take better pictures, how to
  use the _Open with_ feature and which formats are supported by the Gini Capture SDK. 
@@ -71,6 +70,7 @@ final public class HelpMenuViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = tableRowHeight
         tableView.contentInsetAdjustmentBehavior = .never
+        tableView.separatorColor = giniConfiguration.helpScreensSeparatorColor
     }
 
     private func configureConstraints() {
@@ -83,7 +83,7 @@ final public class HelpMenuViewController: UIViewController {
     }
 
     private func configureMainView() {
-        view.backgroundColor = UIColor.white//UIColor.from(giniColor: giniConfiguration.helpScreenBackgroundColor)
+        view.backgroundColor = giniConfiguration.helpScreensBackgroundColor
         view.addSubview(tableView)
         title = .localized(resource: HelpStrings.menuTitle)
         view.layoutSubviews()
