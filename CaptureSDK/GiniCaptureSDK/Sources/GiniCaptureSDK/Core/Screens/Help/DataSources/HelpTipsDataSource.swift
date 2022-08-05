@@ -53,5 +53,9 @@ final public class HelpTipsDataSource: HelpBaseDataSource<HelpTipsItem, HelpTipC
         cell.iconImageView.image = UIImageNamedPreferred(named: item.iconName)
         cell.selectionStyle = .none
     }
+    
+    public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+    }
 }
 

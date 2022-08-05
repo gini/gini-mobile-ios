@@ -55,6 +55,7 @@ class HelpImportViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
+        tableView.allowsSelection = false
         tableView.backgroundColor = UIColor.clear
         tableView.tableFooterView = UIView()
         tableView.register(UINib(nibName: "HelpImportCell", bundle:giniCaptureBundle()), forCellReuseIdentifier: HelpImportCell.reuseIdentifier)
