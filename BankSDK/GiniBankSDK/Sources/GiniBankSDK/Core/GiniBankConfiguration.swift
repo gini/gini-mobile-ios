@@ -1126,6 +1126,7 @@ public final class GiniBankConfiguration: NSObject {
      */
     @objc public var enableReturnReasons: Bool = true
     
+    // MARK: - TODO DELETE
     /**
      Sets the font used in the Return Assistant screens by default.
      */
