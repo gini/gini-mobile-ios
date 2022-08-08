@@ -83,10 +83,10 @@ import UIKit
         return CustomDocumentValidationResult.success()
     }
     
+    // MARK: - TODO DELETE
     /**
      Sets the font used in the GiniCapture library by default.
      */
-    @available(*, deprecated, message: "Please use `updateFont(font: UIFont, for textStyle: UIFont.TextStyle)` instead")
     @objc public lazy var customFont: GiniCaptureFont = GiniCaptureFont(regular: UIFont.systemFont(ofSize: 14,
                                                                                                  weight: .regular),
                                                                       bold: UIFont.systemFont(ofSize: 14,
