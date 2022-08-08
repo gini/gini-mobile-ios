@@ -1314,7 +1314,9 @@ public final class GiniBankConfiguration: NSObject {
         configuration.localizedStringsTableName = self.localizedStringsTableName
         
         for textStyle in UIFont.TextStyle.allCases {
-            configuration.updateFont(font: self.textStyleFonts[textStyle] ?? UIFont.preferredFont(forTextStyle: textStyle), for: textStyle)
+            if let newFont = textStyleFonts[textStyle]{
+                configuration.updateFont(font: newFont, for: textStyle)
+            }
         }
         
         GiniCapture.setConfiguration(configuration)
