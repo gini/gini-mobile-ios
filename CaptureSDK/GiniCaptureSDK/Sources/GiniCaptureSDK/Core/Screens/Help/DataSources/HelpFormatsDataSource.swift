@@ -22,24 +22,55 @@ class HelpFormatsDataSource: NSObject  {
     
     lazy var sections: [HelpFormatsCollectionSection] = {
         var sections: [HelpFormatsCollectionSection] =  [
-            (.localized(resource: HelpStrings.supportedFormatsSection1Title),
-             [.localized(resource: HelpStrings.supportedFormatsSection1Item1Text)],
+            (NSLocalizedString(
+                "ginicapture.help.supportedFormats.section.1.title",
+                bundle: giniCaptureBundle(),
+                comment: ""),
+             [
+                NSLocalizedString(
+                    "ginicapture.help.supportedFormats.section.1.item.1",
+                    bundle: giniCaptureBundle(),
+                    comment: "")],
              UIImageNamedPreferred(named: "supportedFormatsIcon")),
-            (.localized(resource: HelpStrings.supportedFormatsSection2Title),
-             [.localized(resource: HelpStrings.supportedFormatsSection2Item1Text),
-              .localized(resource: HelpStrings.supportedFormatsSection2Item2Text)],
+            (NSLocalizedString(
+                "ginicapture.help.supportedFormats.section.2.title",
+                bundle: giniCaptureBundle(),
+                comment: ""),
+             [
+                NSLocalizedString(
+                    "ginicapture.help.supportedFormats.section.2.item.1",
+                    bundle: giniCaptureBundle(),
+                    comment: "")],
              UIImageNamedPreferred(named: "nonSupportedFormatsIcon"))
         ]
         
         if GiniConfiguration.shared.fileImportSupportedTypes != .none {
             if GiniConfiguration.shared.fileImportSupportedTypes == .pdf_and_images {
-                sections[0].items.append(.localized(resource: HelpStrings.supportedFormatsSection1Item2Text))
+                sections[0].items.append(
+                    NSLocalizedString(
+                        "ginicapture.help.supportedFormats.section.1.item.2",
+                        bundle: giniCaptureBundle(),
+                        comment: ""))
             }
-            sections[0].items.append(.localized(resource: HelpStrings.supportedFormatsSection1Item3Text))
+            sections[0].items.append(
+                NSLocalizedString(
+                    "ginicapture.help.supportedFormats.section.1.item.3",
+                    bundle: giniCaptureBundle(),
+                    comment: ""))
         }
+        
         if GiniConfiguration.shared.qrCodeScanningEnabled {
-            sections[0].items.append(.localized(resource: HelpStrings.supportedFormatsSection1Item4Text))
+            sections[0].items.append(
+                NSLocalizedString(
+                    "ginicapture.help.supportedFormats.section.1.item.4",
+                    bundle: giniCaptureBundle(),
+                    comment: ""))
         }
+        sections[0].items.append(
+            NSLocalizedString(
+                "ginicapture.help.supportedFormats.section.1.item.5",
+                bundle: giniCaptureBundle(),
+                comment: ""))
         return sections
     }()
     
@@ -88,7 +119,7 @@ extension HelpFormatsDataSource: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section].title
+        return sections[section].title.uppercased()
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {

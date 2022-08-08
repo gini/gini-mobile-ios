@@ -45,10 +45,10 @@ class HelpFormatsViewController: UIViewController {
     }
     
     private func configureMainView() {
-        title = .localized(resource: HelpStrings.supportedFormatsTitle)
+        title = NSLocalizedString("ginicapture.help.supportedFormats.title", bundle: giniCaptureBundle(), comment: "")
         view.backgroundColor = giniConfiguration.helpScreensBackgroundColor
         view.addSubview(tableView)
-        title = .localized(resource: HelpStrings.formatsTitle)
+        
         view.layoutSubviews()
     }
     
