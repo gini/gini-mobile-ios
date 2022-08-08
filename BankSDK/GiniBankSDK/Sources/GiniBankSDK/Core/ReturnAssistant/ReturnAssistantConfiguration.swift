@@ -558,10 +558,10 @@ public final class ReturnAssistantConfiguration: NSObject {
      */
     @objc public var enableReturnReasons: Bool = true
     
+    // MARK: - TODO DELETE
     /**
      Sets the font used in the Return Assistant screens by default.
      */
-    
     @objc public lazy var customFont = GiniCaptureFont(regular: UIFont.systemFont(ofSize: 14,
                                                                                                  weight: .regular),
                                                                       bold: UIFont.systemFont(ofSize: 14,
