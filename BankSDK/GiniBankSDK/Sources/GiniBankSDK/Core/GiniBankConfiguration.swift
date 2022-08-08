@@ -1434,142 +1434,32 @@ public final class GiniBankConfiguration: NSObject {
      return configuration
     }
     
+    /**
+     Sets the configuration flags back. Used only in the example app. See `SettingsViewController` for the details.
+     */
     public func updateConfiguration(withCaptureConfiguration configuration: GiniConfiguration) {
-        let giniBankConfiguration = GiniBankConfiguration.shared
-        giniBankConfiguration.customDocumentValidations = configuration.customDocumentValidations
         
+        let giniBankConfiguration = GiniBankConfiguration.shared
         giniBankConfiguration.customFont = configuration.customFont
         
         giniBankConfiguration.debugModeOn = configuration.debugModeOn
-        
-        giniBankConfiguration.logger = configuration.logger
-        
+                
         giniBankConfiguration.multipageEnabled = configuration.multipageEnabled
-
-        giniBankConfiguration.navigationBarTintColor = configuration.navigationBarTintColor
-        giniBankConfiguration.navigationBarItemTintColor = configuration.navigationBarTintColor
-        giniBankConfiguration.navigationBarItemFont = configuration.navigationBarItemFont
-        giniBankConfiguration.navigationBarTitleColor = configuration.navigationBarTitleColor
-        giniBankConfiguration.navigationBarTitleFont = configuration.navigationBarTitleFont
-        
-        giniBankConfiguration.documentPickerNavigationBarTintColor = configuration.documentPickerNavigationBarTintColor
-
-        giniBankConfiguration.noticeInformationBackgroundColor = configuration.noticeInformationBackgroundColor
-        
-        giniBankConfiguration.noticeInformationTextColor = configuration.noticeInformationTextColor
-        giniBankConfiguration.noticeErrorBackgroundColor = configuration.noticeErrorBackgroundColor
-        giniBankConfiguration.noticeErrorTextColor = configuration.noticeErrorTextColor
         
         giniBankConfiguration.openWithEnabled = configuration.openWithEnabled
         
         giniBankConfiguration.qrCodeScanningEnabled = configuration.qrCodeScanningEnabled
         
-        giniBankConfiguration.statusBarStyle = configuration.statusBarStyle
-        
-        giniBankConfiguration.cameraNotAuthorizedTextColor = configuration.cameraNotAuthorizedTextColor
-        giniBankConfiguration.cameraNotAuthorizedButtonTitleColor = configuration.cameraNotAuthorizedButtonTitleColor
-        giniBankConfiguration.cameraPreviewCornerGuidesColor = configuration.cameraPreviewCornerGuidesColor
-        giniBankConfiguration.cameraContainerViewBackgroundColor = configuration.cameraContainerViewBackgroundColor
-        giniBankConfiguration.cameraPreviewFrameColor = configuration.cameraPreviewFrameColor
-        giniBankConfiguration.cameraButtonsViewBackgroundColor = configuration.cameraButtonsViewBackgroundColor
-        
         giniBankConfiguration.fileImportSupportedTypes = configuration.fileImportSupportedTypes
-        giniBankConfiguration.fileImportToolTipBackgroundColor = configuration.fileImportToolTipBackgroundColor
-        giniBankConfiguration.fileImportToolTipTextColor = configuration.fileImportToolTipTextColor
-        giniBankConfiguration.fileImportToolTipCloseButtonColor = configuration.fileImportToolTipCloseButtonColor
-        
-        giniBankConfiguration.toolTipOpaqueBackgroundStyle = configuration.toolTipOpaqueBackgroundStyle
-
-        giniBankConfiguration.galleryPickerItemSelectedBackgroundCheckColor = configuration.galleryPickerItemSelectedBackgroundCheckColor
-        giniBankConfiguration.galleryScreenBackgroundColor = configuration.galleryScreenBackgroundColor
         
         giniBankConfiguration.flashToggleEnabled = configuration.flashToggleEnabled
         giniBankConfiguration.flashOnByDefault = configuration.flashOnByDefault
         
-        giniBankConfiguration.imagesStackIndicatorLabelTextcolor = configuration.imagesStackIndicatorLabelTextcolor
-        
-        giniBankConfiguration.navigationBarCameraTitleCloseButton = configuration.navigationBarCameraTitleCloseButton
-        giniBankConfiguration.navigationBarCameraTitleHelpButton = configuration.navigationBarCameraTitleHelpButton
-        
-        giniBankConfiguration.qrCodePopupButtonColor = configuration.qrCodePopupButtonColor
-        giniBankConfiguration.qrCodePopupTextColor = configuration.qrCodePopupTextColor
-        giniBankConfiguration.qrCodePopupBackgroundColor = configuration.qrCodePopupBackgroundColor
-        
-        giniBankConfiguration.navigationBarOnboardingTitleContinueButton = configuration.navigationBarOnboardingTitleContinueButton
-        
-        giniBankConfiguration.onboardingPageIndicatorColor = configuration.onboardingPageIndicatorColor
-        giniBankConfiguration.onboardingCurrentPageIndicatorColor = configuration.onboardingCurrentPageIndicatorColor
-        giniBankConfiguration.onboardingCurrentPageIndicatorAlpha = configuration.onboardingCurrentPageIndicatorAlpha
         giniBankConfiguration.onboardingShowAtLaunch = configuration.onboardingShowAtLaunch
         giniBankConfiguration.onboardingShowAtFirstLaunch = configuration.onboardingShowAtFirstLaunch
-        giniBankConfiguration.onboardingTextColor = configuration.onboardingTextColor
-        giniBankConfiguration.onboardingScreenBackgroundColor = configuration.onboardingScreenBackgroundColor
-        giniBankConfiguration.onboardingPages = configuration.onboardingPages
-        
-        giniBankConfiguration.navigationBarReviewTitleBackButton = configuration.navigationBarReviewTitleBackButton
-        giniBankConfiguration.navigationBarReviewTitleCloseButton = configuration.navigationBarReviewTitleCloseButton
-        giniBankConfiguration.navigationBarReviewTitleContinueButton = configuration.navigationBarReviewTitleContinueButton
-        
-        giniBankConfiguration.reviewBottomViewBackgroundColor = configuration.reviewBottomViewBackgroundColor
-        giniBankConfiguration.reviewTextBottomFont = configuration.reviewTextBottomFont
-        giniBankConfiguration.reviewTextBottomColor = configuration.reviewTextBottomColor
-        
-        giniBankConfiguration.indicatorCircleColor = configuration.indicatorCircleColor
-        
-        giniBankConfiguration.multipagePagesContainerAndToolBarColor = configuration.multipagePagesContainerAndToolBarColor
-        giniBankConfiguration.multipageToolbarItemsColor = configuration.multipageToolbarItemsColor
-        giniBankConfiguration.multipagePageIndicatorColor = configuration.multipagePageIndicatorColor
-        giniBankConfiguration.multipagePageSelectedIndicatorColor = configuration.multipagePageSelectedIndicatorColor
-        giniBankConfiguration.multipagePageBackgroundColor = configuration.multipagePageBackgroundColor
-        giniBankConfiguration.multipageDraggableIconColor = configuration.multipageDraggableIconColor
-        giniBankConfiguration.multipageToolTipOpaqueBackgroundStyle = configuration.multipageToolTipOpaqueBackgroundStyle
-        
-        giniBankConfiguration.analysisLoadingIndicatorColor = configuration.analysisLoadingIndicatorColor
-        giniBankConfiguration.analysisPDFInformationBackgroundColor = configuration.analysisPDFInformationBackgroundColor
-        giniBankConfiguration.analysisPDFInformationTextColor = configuration.analysisPDFInformationTextColor
-        
-        giniBankConfiguration.navigationBarAnalysisTitleBackButton = configuration.navigationBarAnalysisTitleBackButton
-        
-        giniBankConfiguration.helpScreenBackgroundColor = configuration.helpScreenBackgroundColor
-        giniBankConfiguration.helpScreenCellsBackgroundColor = configuration.helpScreenCellsBackgroundColor
-        
-        giniBankConfiguration.navigationBarHelpMenuTitleBackToCameraButton = configuration.navigationBarHelpMenuTitleBackToCameraButton
-        giniBankConfiguration.navigationBarHelpScreenTitleBackToMenuButton = configuration.navigationBarHelpScreenTitleBackToMenuButton
-        
         giniBankConfiguration.shouldShowSupportedFormatsScreen = configuration.shouldShowSupportedFormatsScreen
-        
-        giniBankConfiguration.nonSupportedFormatsIconColor = configuration.nonSupportedFormatsIconColor
-        
-        giniBankConfiguration.supportedFormatsIconColor = configuration.supportedFormatsIconColor
-        
-        giniBankConfiguration.openWithAppNameForTexts = configuration.openWithAppNameForTexts
-        
-        giniBankConfiguration.stepIndicatorColor = configuration.stepIndicatorColor
-        
-        giniBankConfiguration.noResultsBottomButtonColor = configuration.noResultsBottomButtonColor
-        giniBankConfiguration.noResultsBottomButtonTextColor = configuration.noResultsBottomButtonTextColor
-        giniBankConfiguration.noResultsBottomButtonCornerRadius = configuration.noResultsBottomButtonCornerRadius
-        
-        giniBankConfiguration.noResultsWarningContainerIconColor = configuration.noResultsWarningContainerIconColor
-        
+                                
         giniBankConfiguration.shouldShowDragAndDropTutorial = configuration.shouldShowDragAndDropTutorial
-        
-        giniBankConfiguration.customMenuItems = configuration.customMenuItems
-        
-        giniBankConfiguration.giniErrorLoggerIsOn = configuration.giniErrorLoggerIsOn
-        giniBankConfiguration.customGiniErrorLoggerDelegate = configuration.customGiniErrorLoggerDelegate
-        giniBankConfiguration.localizedStringsTableName = configuration.localizedStringsTableName
-        
-        giniBankConfiguration.albumsScreenSelectMorePhotosTextColor = configuration.albumsScreenSelectMorePhotosTextColor
-        giniBankConfiguration.textStyleFonts = configuration.textStyleFonts
-        
-        // Undocumented--Xamarin only
-        giniBankConfiguration.closeButtonResource = configuration.closeButtonResource
-        giniBankConfiguration.helpButtonResource = configuration.helpButtonResource
-        giniBankConfiguration.backToCameraButtonResource = configuration.backToCameraButtonResource
-        giniBankConfiguration.backToMenuButtonResource = configuration.backToMenuButtonResource
-        giniBankConfiguration.nextButtonResource = configuration.nextButtonResource
-        giniBankConfiguration.cancelButtonResource = configuration.cancelButtonResource
     }
     
     /**
