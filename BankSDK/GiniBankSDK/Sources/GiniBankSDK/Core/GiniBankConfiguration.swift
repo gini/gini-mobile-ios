@@ -1313,7 +1313,9 @@ public final class GiniBankConfiguration: NSObject {
         configuration.cancelButtonResource = self.cancelButtonResource
         configuration.localizedStringsTableName = self.localizedStringsTableName
         
-        configuration.textStyleFonts = self.textStyleFonts
+        for textStyle in UIFont.TextStyle.allCases {
+            configuration.updateFont(font: self.textStyleFonts[textStyle] ?? UIFont.preferredFont(forTextStyle: textStyle), for: textStyle)
+        }
         
         GiniCapture.setConfiguration(configuration)
         
