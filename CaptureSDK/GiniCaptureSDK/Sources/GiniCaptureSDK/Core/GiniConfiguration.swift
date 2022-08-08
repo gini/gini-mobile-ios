@@ -722,7 +722,7 @@ import UIKit
     /**
      Set dictionary of fonts for available text styles. Used internally.
      */
-    var textStyleFonts: [UIFont.TextStyle: UIFont] = [
+    public var textStyleFonts: [UIFont.TextStyle: UIFont] = [
     .largeTitle: UIFontMetrics(forTextStyle: .largeTitle).scaledFont(for: UIFont.systemFont(ofSize: 34)),
     .title1: UIFontMetrics(forTextStyle: .title1).scaledFont(for: UIFont.systemFont(ofSize: 28)),
     .title2: UIFontMetrics(forTextStyle: .title2).scaledFont(for: UIFont.systemFont(ofSize: 22)),
