@@ -109,8 +109,8 @@ platform :ios do
     <gh_pages_url>/<package_folder>/<project_version>
     Example: <gh_pages_url>/GiniCaptureSDK/1.11.0
 
-    On the 'main' branch it updates the package root index.html (at <gh_pages_url>/<package_folder>/index.html) 
-    to automatically redirect to the released version.
+    If the 'is_stable_release' option is set to 'true', then it updates the package root index.html 
+    (at <gh_pages_url>/<package_folder>/index.html) to automatically redirect to the released version.
     
     Parameters:
       project_folder        - the folder of the project to be released (e.g., HealthAPILibrary, HealthSDK)
