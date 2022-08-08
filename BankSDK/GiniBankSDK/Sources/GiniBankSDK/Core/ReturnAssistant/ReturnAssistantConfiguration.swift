@@ -8,10 +8,10 @@
 import UIKit
 import GiniCaptureSDK
 
+// MARK: - TODO DELETE
 public final class ReturnAssistantConfiguration: NSObject {
-    
     /**
-     Singleton to make configuration internally accessible in all classes of the Gini PayBank SDK.
+     Singleton to make configuration internally accessible in all classes of the Gini Bank SDK.
      */
    public static var shared = ReturnAssistantConfiguration()
     
