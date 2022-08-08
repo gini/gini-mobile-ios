@@ -85,7 +85,7 @@ final public class HelpMenuViewController: UIViewController {
     private func configureMainView() {
         view.backgroundColor = giniConfiguration.helpScreensBackgroundColor
         view.addSubview(tableView)
-        title = .localized(resource: HelpStrings.menuTitle)
+        title = NSLocalizedString("ginicapture.help.menu.title", bundle: giniCaptureBundle(), comment: "Help Import screen title")
         view.layoutSubviews()
     }
     

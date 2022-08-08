@@ -45,7 +45,7 @@ class HelpImportViewController: UIViewController {
     }
     
     public func configureMainView() {
-        self.title = "How to import"
+        self.title = NSLocalizedString("ginicapture.help.import.title", bundle: giniCaptureBundle(), comment: "Help Import screen title")
         view.addSubview(tableView)
         view.backgroundColor = giniConfiguration.helpScreensBackgroundColor
         edgesForExtendedLayout = []
@@ -89,14 +89,27 @@ extension HelpImportViewController: UITableViewDataSource {
     
     private func configureCell(cell: HelpImportCell, indexPath: IndexPath) {
         let itemType = dataSource[indexPath.row]
+        let rowNr = indexPath.row + 1
         switch itemType {
         case .selectInvoice:
-            cell.headerLabel.text = "1. Select an invoice"
-            cell.descriptionLabel.text = "To do so, please select a PDF invoice from within your email app, PDF viewer or other app on your smarthpone. To redirect the file to GiniVision, use the “Share” function, represented as a square with the arrow pointing up."
+            cell.headerLabel.text = "\(rowNr). " + NSLocalizedString(
+                "ginicapture.help.import.selectInvoice.title",
+                bundle:giniCaptureBundle(),
+                comment: "Select an invoice header")
+            cell.descriptionLabel.text = NSLocalizedString(
+                "ginicapture.help.import.selectInvoice.desc",
+                bundle:giniCaptureBundle(),
+                comment: "Select an invoice description")
             cell.importImageView.image = UIImageNamedPreferred(named: "helpImport1")
         case .importToApp:
-            cell.headerLabel.text = "2. Import to app"
-            cell.descriptionLabel.text = "Please select your Banking App from the list to start the analysis and transfer process."
+            cell.headerLabel.text = "\(rowNr). " + NSLocalizedString(
+                "ginicapture.help.import.importtoapp.title",
+                bundle:giniCaptureBundle(),
+                comment: "Import to app header")
+            cell.descriptionLabel.text = NSLocalizedString(
+                "ginicapture.help.import.importtoapp.desc",
+                bundle:giniCaptureBundle(),
+                comment: "Import to app description")
             cell.importImageView.image = UIImageNamedPreferred(named: "helpImport2")
         }
         cell.backgroundColor = UIColor.clear
