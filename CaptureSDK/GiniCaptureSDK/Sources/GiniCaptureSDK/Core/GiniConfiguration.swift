@@ -86,6 +86,7 @@ import UIKit
     /**
      Sets the font used in the GiniCapture library by default.
      */
+    @available(*, deprecated, message: "Please use `updateFont(font: UIFont, for textStyle: UIFont.TextStyle)` instead")
     @objc public lazy var customFont: GiniCaptureFont = GiniCaptureFont(regular: UIFont.systemFont(ofSize: 14,
                                                                                                  weight: .regular),
                                                                       bold: UIFont.systemFont(ofSize: 14,
@@ -717,4 +718,31 @@ import UIKit
     @objc public var backToMenuButtonResource: PreferredButtonResource?
     @objc public var nextButtonResource: PreferredButtonResource?
     @objc public var cancelButtonResource: PreferredButtonResource?
+    
+    /**
+     Set dictionary of fonts for available text styles. Used internally.
+     */
+    var textStyleFonts: [UIFont.TextStyle: UIFont] = [
+    .largeTitle: UIFontMetrics(forTextStyle: .largeTitle).scaledFont(for: UIFont.systemFont(ofSize: 34)),
+    .title1: UIFontMetrics(forTextStyle: .title1).scaledFont(for: UIFont.systemFont(ofSize: 28)),
+    .title2: UIFontMetrics(forTextStyle: .title2).scaledFont(for: UIFont.systemFont(ofSize: 22)),
+    .title3: UIFontMetrics(forTextStyle: .title3).scaledFont(for: UIFont.systemFont(ofSize: 20)),
+    .caption1: UIFontMetrics(forTextStyle: .caption1).scaledFont(for: UIFont.systemFont(ofSize: 12)),
+    .caption2: UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 11)),
+    .headline: UIFontMetrics(forTextStyle: .headline).scaledFont(for: UIFont.systemFont(ofSize: 17)),
+    .subheadline: UIFontMetrics(forTextStyle: .subheadline).scaledFont(for: UIFont.systemFont(ofSize: 15)),
+    .body: UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont.systemFont(ofSize: 17)),
+    .callout: UIFontMetrics(forTextStyle: .callout).scaledFont(for: UIFont.systemFont(ofSize: 16)),
+    .footnote: UIFontMetrics(forTextStyle: .footnote).scaledFont(for: UIFont.systemFont(ofSize: 13)),
+    ]
+
+    /**
+     Allows setting a custom font for specific text styles. The change will affect all screens where a specific text style was used.
+     
+     - parameter font: Font that is going to be assosiated with specific text style
+     - parameter textStyle: Constants that describe the preferred styles for fonts. Please, find additional information [here](https://developer.apple.com/documentation/uikit/uifont/textstyle)
+    */
+    public func updateFont(font: UIFont, for textStyle: UIFont.TextStyle) {
+      textStyleFonts[textStyle] = UIFontMetrics(forTextStyle: textStyle).scaledFont(for: font)
+    }
 }
