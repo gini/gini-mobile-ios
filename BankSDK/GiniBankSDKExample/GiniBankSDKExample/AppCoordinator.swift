@@ -69,6 +69,8 @@ final class AppCoordinator: Coordinator {
 //        configuration.multipagePageSuccessfullUploadIconBackgroundColor = .systemGreen
 //        configuration.multipagePageFailureUploadIconBackgroundColor = .systemRed
 //        configuration.enableReturnReasons = false
+//        configuration.updateFont(font: UIFont(name: "Avenir", size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .regular), for: .caption2)
+
        return configuration
     }()
     
