@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Customization guide  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+    <script src="js/lunr.min.js" defer></script>
+    <script src="js/typeahead.jquery.js" defer></script>
+    <script src="js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+
+    <a title="Customization guide  Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="index.html">
+        <img class="logo-icon" src="img/logo.png"/>
+    
+        </a>
+        
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/gini/gini-mobile-ios.git">
+            <img class="header-icon" src="img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="index.html">GiniCaptureSDK Reference</a>
+      <img class="carat" src="img/carat.png" />
+      Customization guide  Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Documentation.html">Documentation</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="installation.html">Installation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="integration.html">Integration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="integration-in-a-xamarin-project.html">Integration in a Xamarin Project</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="license.html">License</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Guides.html">Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="customization-guide.html">Customization guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="open-with-guide.html">Open with guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="import-pdfs-and-images-guide.html">Import PDFs and images guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="qr-code-scanning-guide.html">QR Code scanning guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="event-tracking-guide.html">Event tracking guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="error-logging-guide.html">Error logging guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="migration-guide.html">Migration guide</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/AnalysisViewController.html">AnalysisViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/AnalysisResult.html">AnalysisResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/CameraViewController.html">CameraViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/CustomDocumentValidationError.html">CustomDocumentValidationError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/CustomDocumentValidationResult.html">CustomDocumentValidationResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DocumentPickerCoordinator.html">DocumentPickerCoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniConfiguration.html">GiniConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniConfiguration/GiniCaptureImportFileTypes.html">– GiniCaptureImportFileTypes</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniImageDocument.html">GiniImageDocument</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniPDFDocument.html">GiniPDFDocument</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniQRCodeDocument.html">GiniQRCodeDocument</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniCapture.html">GiniCapture</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniCaptureDocumentBuilder.html">GiniCaptureDocumentBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniCaptureDocumentValidator.html">GiniCaptureDocumentValidator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/HelpMenuViewController.html">HelpMenuViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/HelpMenuViewController/Item.html">– Item</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/ImageAnalysisNoResultsViewController.html">ImageAnalysisNoResultsViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/MultipageReviewViewController.html">MultipageReviewViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/OnboardingPage.html">OnboardingPage</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/OnboardingViewController.html">OnboardingViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/ReviewViewController.html">ReviewViewController</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/AnalysisDelegate.html">AnalysisDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/CameraViewControllerDelegate.html">CameraViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/Diffable.html">Diffable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/DocumentPickerCoordinatorDelegate.html">DocumentPickerCoordinatorDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/GiniLogger.html">GiniLogger</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/GiniCaptureDelegate.html">GiniCaptureDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/GiniCaptureDocument.html">GiniCaptureDocument</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/GiniCaptureError.html">GiniCaptureError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/GiniCaptureResultsDelegate.html">GiniCaptureResultsDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HelpMenuViewControllerDelegate.html">HelpMenuViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/MultipageReviewViewControllerDelegate.html">MultipageReviewViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/ReviewViewControllerDelegate.html">ReviewViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/UploadDelegate.html">UploadDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums.html#/s:14GiniCaptureSDK0aB16TrackingDelegateP">GiniCaptureTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/OnboardingScreenTrackingDelegate.html">OnboardingScreenTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/CameraScreenTrackingDelegate.html">CameraScreenTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/ReviewScreenTrackingDelegate.html">ReviewScreenTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/AnalysisScreenTrackingDelegate.html">AnalysisScreenTrackingDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Structs.html">Structs</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniCaptureFont.html">GiniCaptureFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/GiniCapturePage.html">GiniCapturePage</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Event.html">Event</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Typealiases.html">Typealiases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Typealiases.html#/s:14GiniCaptureSDK0aB15NetworkDelegatea">GiniCaptureNetworkDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/AccountingDocumentService.html">AccountingDocumentService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/Constraints.html">Constraints</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DefaultLogger.html">DefaultLogger</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DocumentService.html">DocumentService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniBarButtonItem.html">GiniBarButtonItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniCaptureErrorLogger.html">GiniCaptureErrorLogger</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniColor.html">GiniColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniNetworkingScreenAPICoordinator.html">GiniNetworkingScreenAPICoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniScreenAPICoordinator.html">GiniScreenAPICoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/QRCodesExtractor.html">QRCodesExtractor</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Global Variables.html">Other Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Global%20Variables.html#/s:14GiniCaptureSDK0aB10SDKVersionSSvp">GiniCaptureSDKVersion</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Enumerations.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/AnalysisError.html">AnalysisError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/AnalysisScreenEventType.html">AnalysisScreenEventType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/AnalysisStrings.html">AnalysisStrings</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/CameraError.html">CameraError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/CameraScreenEventType.html">CameraScreenEventType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/DocumentImportMethod.html">DocumentImportMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/DocumentPickerType.html">DocumentPickerType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/DocumentSource.html">DocumentSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/DocumentValidationError.html">DocumentValidationError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/FilePickerError.html">FilePickerError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/GiniCaptureDocumentType.html">GiniCaptureDocumentType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/ImageAnalysisNoResultsStrings.html">ImageAnalysisNoResultsStrings</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/ImageAssetsStrings.html">ImageAssetsStrings</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/NoticeActionType.html">NoticeActionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/OnboardingScreenEventType.html">OnboardingScreenEventType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/OnboardingStrings.html">OnboardingStrings</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/OpaqueViewStyle.html">OpaqueViewStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/QRCodesFormat.html">QRCodesFormat</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/ReviewError.html">ReviewError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/ReviewScreenEventType.html">ReviewScreenEventType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/Bundle.html">Bundle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/Collection.html">Collection</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/Optional.html">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UIColor.html">UIColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UIDevice.html">UIDevice</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UINavigationController.html">UINavigationController</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Functions.html">Other Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Functions.html#/s:14GiniCaptureSDK32NSLocalizedStringPreferredFormat_11fallbackKey7comment14isCustomizableS2S_S2SSbtF">NSLocalizedStringPreferredFormat(_:fallbackKey:comment:isCustomizable:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Functions.html#/s:14GiniCaptureSDK21UIImageNamedPreferred5namedSo0D0CSgSS_tF">UIImageNamedPreferred(named:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Functions.html#/s:14GiniCaptureSDK04giniB6BundleSo8NSBundleCyF">giniCaptureBundle()</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/DocumentServiceProtocol.html">DocumentServiceProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/GiniCaptureErrorLoggerDelegate.html">GiniCaptureErrorLoggerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/GiniCaptureNetworkService.html">GiniCaptureNetworkService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/LocalizableStringResource.html">LocalizableStringResource</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/PreferredButtonResource.html">PreferredButtonResource</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Structures.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Colors.html">Colors</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Colors/Gini.html">– Gini</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ErrorLog.html">ErrorLog</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Type Aliases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Typealiases.html#/s:14GiniCaptureSDK18AnalysisCompletiona">AnalysisCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Typealiases.html#/s:14GiniCaptureSDK17LocalizationEntrya">LocalizationEntry</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Typealiases.html#/s:14GiniCaptureSDK24UploadDocumentCompletiona">UploadDocumentCompletion</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            
+            <h1 id='customization-guide' class='heading'>Customization guide</h1>
+
+<p>The Gini Capture SDK components can be customized either through the <code><a href="Classes/GiniConfiguration.html">GiniConfiguration</a></code>, the <code>Localizable.string</code> file or through the assets. Here you can find a complete guide with the reference to every customizable item.</p>
+
+<ul>
+<li><a href="#generic-components">Generic components</a></li>
+<li><a href="#camera-screen">Camera screen</a></li>
+<li><a href="#review-screen">Review screen</a></li>
+<li><a href="#multipage-review-screen">Multipage Review screen</a></li>
+<li><a href="#analysis-screen">Analysis screen</a></li>
+<li><a href="#supported-formats-screen">Supported formats screen</a></li>
+<li><a href="#open-with-tutorial-screen">Open with tutorial screen</a></li>
+<li><a href="#capturing-tips-screen">Capturing tips screen</a></li>
+<li><a href="#gallery-album-screen">Gallery album screen</a></li>
+<li><a href="#onboarding-screens">Onboarding screens</a></li>
+<li><a href="#help-screen">Help screen</a></li>
+</ul>
+<h2 id='supporting-dark-mode' class='heading'>Supporting dark mode</h2>
+
+<p>Some background and text colors use the <code><a href="Classes/GiniColor.html">GiniColor</a></code> type with which you can set colors for dark and light modes. Please make sure to set contrasting images to the background colors in your <code>.xcassets</code> for the Gini Capture SDK images you override (e.g. <code>onboardingPage1</code>). The text colors should also be set in contrast to the background colors.</p>
+<h2 id='generic-components' class='heading'>Generic components</h2>
+<h5 id='1-navigation-bar' class='heading'>1. Navigation bar</h5>
+
+<p><center><img src="img/Customization guide/Navigation bar.jpg" height="70"/></center></p>
+
+<ul>
+<li>Tint color &#8594;  <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)navigationBarTintColor">GiniConfiguration.navigationBarTintColor</a></code></li>
+<li>Item tint color &#8594;  <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)navigationBarItemTintColor">GiniConfiguration.navigationBarItemTintColor</a></code></li>
+<li>Title color &#8594;  <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)navigationBarTitleColor">GiniConfiguration.navigationBarTitleColor</a></code></li>
+<li>Item font &#8594;  <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)navigationBarItemFont">GiniConfiguration.navigationBarItemFont</a></code></li>
+<li>Title font &#8594;  <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)navigationBarTitleFont">GiniConfiguration.navigationBarTitleFont</a></code></li>
+</ul>
+<h5 id='2-notice' class='heading'>2. Notice</h5>
+
+<p><center><img src="img/Customization guide/Notice.jpg" height="70"/></center></p>
+
+<ul>
+<li>Information background color &#8594;  <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)noticeInformationBackgroundColor">GiniConfiguration.noticeInformationBackgroundColor</a></code></li>
+<li>Information text color &#8594;  <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)noticeInformationTextColor">GiniConfiguration.noticeInformationTextColor</a></code></li>
+<li>Error background &#8594;  <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)noticeErrorBackgroundColor">GiniConfiguration.noticeErrorBackgroundColor</a></code></li>
+<li>Error text color <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)noticeErrorTextColor">GiniConfiguration.noticeErrorTextColor</a></code></li>
+</ul>
+<h5 id='3-tooltip' class='heading'>3. Tooltip</h5>
+
+<p><center><img src="img/Customization guide/Tooltip.jpg" height="120"/></center></p>
+
+<ul>
+<li>Background color &#8594;  <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)fileImportToolTipBackgroundColor">GiniConfiguration.fileImportToolTipBackgroundColor</a></code></li>
+<li>Text color &#8594;  <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)fileImportToolTipTextColor">GiniConfiguration.fileImportToolTipTextColor</a></code></li>
+<li>Close button color &#8594;  <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)fileImportToolTipCloseButtonColor">GiniConfiguration.fileImportToolTipCloseButtonColor</a></code></li>
+<li>Text &#8594; 
+
+<ul>
+<li><span style="color:#009EDF"><em>ginicapture.camera.fileImportTip</em></span> localized string for file import tooltip</li>
+<li><span style="color:#009EDF"><em>ginicapture.camera.qrCodeTip</em></span> localized string for qr code tooltip</li>
+<li><span style="color:#009EDF"><em>ginicapture.multipagereview.reorderContainerTooltipMessage</em></span> localized string for reorder tooltip</li>
+</ul></li>
+</ul>
+<h5 id='4-gini-capture-font' class='heading'>4. Gini Capture font</h5>
+
+<ul>
+<li>Font &#8594;  <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)customFont">GiniConfiguration.customFont</a></code></li>
+</ul>
+<h2 id='camera-screen' class='heading'>Camera screen</h2>
+
+<p><br>
+<center><img src="img/Customization guide/Camera.jpg" height="500"/></center>
+</br></p>
+<h5 id='1-navigation-bar' class='heading'>1. Navigation bar</h5>
+
+<ul>
+<li>Title &#8594; <span style="color:#009EDF"><em>ginicapture.navigationbar.camera.title</em></span> localized string</li>
+<li>Close button
+
+<ul>
+<li>With image and title
+
+<ul>
+<li>Image &#8594; <span style="color:#009EDF"><em>navigationCameraClose</em></span> image asset</li>
+<li>Title &#8594; <span style="color:#009EDF"><em>ginicapture.navigationbar.camera.close</em></span> localized string</li>
+</ul></li>
+<li>With title only
+
+<ul>
+<li>Title &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)navigationBarCameraTitleCloseButton">GiniConfiguration.navigationBarCameraTitleCloseButton</a></code></li>
+</ul></li>
+</ul></li>
+<li>Help button
+
+<ul>
+<li>With image and title
+
+<ul>
+<li>Image &#8594; <span style="color:#009EDF"><em>navigationCameraHelp</em></span> image asset</li>
+<li>Title &#8594; <span style="color:#009EDF"><em>ginicapture.navigationbar.camera.help</em></span> localized string</li>
+</ul></li>
+<li>With title only
+
+<ul>
+<li>Title &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)navigationBarCameraTitleHelpButton">GiniConfiguration.navigationBarCameraTitleHelpButton</a></code></li>
+</ul></li>
+</ul></li>
+</ul>
+<h5 id='2-camera-preview' class='heading'>2. Camera preview</h5>
+
+<ul>
+<li>Preview frame color &#8594;  <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)cameraPreviewFrameColor">GiniConfiguration.cameraPreviewFrameColor</a></code></li>
+<li>Guides color &#8594;  <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)cameraPreviewCornerGuidesColor">GiniConfiguration.cameraPreviewCornerGuidesColor</a></code></li>
+<li>Focus large image &#8594; <span style="color:#009EDF"><em>cameraFocusLarge</em></span> image asset</li>
+<li>Focus large small &#8594; <span style="color:#009EDF"><em>cameraFocusSmall</em></span> image asset</li>
+<li>Opaque view style (when tool tip is shown)  &#8594;  <code><a href="Classes/GiniConfiguration.html#/s:14GiniCaptureSDK0A13ConfigurationC28toolTipOpaqueBackgroundStyleAA0g4ViewI0Ovp">GiniConfiguration.toolTipOpaqueBackgroundStyle</a></code></li>
+</ul>
+<h5 id='3-camera-buttons-container' class='heading'>3. Camera buttons container</h5>
+
+<ul>
+<li>Background color &#8594;  <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)cameraButtonsViewBackgroundColor">GiniConfiguration.cameraButtonsViewBackgroundColor</a></code></li>
+<li>Container view background color under the home indicator  &#8594;  <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)cameraContainerViewBackgroundColor">GiniConfiguration.cameraContainerViewBackgroundColor</a></code></li>
+<li>Capture button
+
+<ul>
+<li>Image &#8594; <span style="color:#009EDF"><em>cameraCaptureButton</em></span> image asset</li>
+</ul></li>
+<li>Import button
+
+<ul>
+<li>Image &#8594; <span style="color:#009EDF"><em>documentImportButton</em></span> image asset</li>
+</ul></li>
+<li>Captured images stack indicator color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)imagesStackIndicatorLabelTextcolor">GiniConfiguration.imagesStackIndicatorLabelTextcolor</a></code></li>
+<li>Flash toggle can be enabled through &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)flashToggleEnabled">GiniConfiguration.flashToggleEnabled</a></code></li>
+<li>Flash button
+
+<ul>
+<li>Image &#8594; <span style="color:#009EDF"><em>flashOn</em></span> image asset</li>
+<li>Image &#8594; <span style="color:#009EDF"><em>flashOff</em></span> image asset</li>
+</ul></li>
+</ul>
+<h5 id='4-qr-code-popup' class='heading'>4. QR code popup</h5>
+
+<p><br>
+<center><img src="img/Customization guide/QR code popup.jpg" height="70"/></center>
+</br></p>
+
+<ul>
+<li>Background color &#8594;  <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)qrCodePopupBackgroundColor">GiniConfiguration.qrCodePopupBackgroundColor</a></code> using <code><a href="Classes/GiniColor.html">GiniColor</a></code> with dark mode and light mode colors</li>
+<li>Button color &#8594;  <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)qrCodePopupButtonColor">GiniConfiguration.qrCodePopupButtonColor</a></code></li>
+<li>Text color &#8594;  <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)qrCodePopupTextColor">GiniConfiguration.qrCodePopupTextColor</a></code> using <code><a href="Classes/GiniColor.html">GiniColor</a></code> with dark mode and light mode colors</li>
+<li>Title &#8594; <span style="color:#009EDF"><em>ginicapture.camera.qrCodeDetectedPopup.buttonTitle</em></span> localized string</li>
+<li>Message &#8594; <span style="color:#009EDF"><em>ginicapture.camera.qrCodeDetectedPopup.message</em></span> localized string</li>
+</ul>
+<h2 id='review-screen' class='heading'>Review screen</h2>
+
+<p><br>
+<center><img src="img/Customization guide/Review.jpg" height="500"/></center>
+</br></p>
+<h5 id='1-navigation-bar' class='heading'>1. Navigation bar</h5>
+
+<ul>
+<li>Title &#8594; <span style="color:#009EDF"><em>ginicapture.navigationbar.review.title</em></span> localized string</li>
+<li>Back button
+
+<ul>
+<li>With image and title
+
+<ul>
+<li>Image &#8594; <span style="color:#009EDF"><em>navigationReviewBack</em></span> image asset</li>
+<li>Title &#8594; <span style="color:#009EDF"><em>ginicapture.navigationbar.review.back</em></span> localized string</li>
+</ul></li>
+<li>With title only
+
+<ul>
+<li>Title &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)navigationBarReviewTitleBackButton">GiniConfiguration.navigationBarReviewTitleBackButton</a></code></li>
+</ul></li>
+</ul></li>
+<li>Next button
+
+<ul>
+<li>Image &#8594; <span style="color:#009EDF"><em>navigationReviewContinue</em></span> image asset</li>
+<li>Title &#8594; <span style="color:#009EDF"><em>ginicapture.navigationbar.review.continue</em></span> localized string</li>
+</ul></li>
+</ul>
+<h5 id='2-review-top-view' class='heading'>2. Review top view</h5>
+
+<ul>
+<li>Title &#8594; <span style="color:#009EDF"><em>ginicapture.review.top</em></span> localized string</li>
+</ul>
+<h5 id='3-review-bottom-view' class='heading'>3. Review bottom view</h5>
+
+<ul>
+<li>Background color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)reviewBottomViewBackgroundColor">GiniConfiguration.reviewBottomViewBackgroundColor</a></code></li>
+<li>Rotation button image &#8594;  <span style="color:#009EDF"><em>reviewRotateButton</em></span> image asset</li>
+<li>Rotation message
+
+<ul>
+<li>Text &#8594; <span style="color:#009EDF"><em>ginicapture.review.bottom</em></span> localized string</li>
+<li>Text color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)reviewTextBottomColor">GiniConfiguration.reviewTextBottomColor</a></code></li>
+</ul></li>
+</ul>
+<h2 id='multipage-review-screen' class='heading'>Multipage Review screen</h2>
+
+<p><br>
+<center><img src="img/Customization guide/MultipageReview.jpg" height="500"/></center>
+</br></p>
+<h5 id='1-navigation-bar' class='heading'>1. Navigation bar</h5>
+
+<ul>
+<li>Back button
+
+<ul>
+<li>With image and title
+
+<ul>
+<li>Image &#8594; <span style="color:#009EDF"><em>navigationReviewBack</em></span> image asset</li>
+<li>Title &#8594; <span style="color:#009EDF"><em>ginicapture.navigationbar.review.back</em></span> localized string</li>
+</ul></li>
+<li>With title only
+
+<ul>
+<li>Title &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)navigationBarReviewTitleBackButton">GiniConfiguration.navigationBarReviewTitleBackButton</a></code></li>
+</ul></li>
+</ul></li>
+<li>Next button
+
+<ul>
+<li>Image &#8594; <span style="color:#009EDF"><em>navigationReviewContinue</em></span> image asset</li>
+<li>Title &#8594; <span style="color:#009EDF"><em>ginicapture.navigationbar.review.continue</em></span> localized string</li>
+</ul></li>
+</ul>
+<h5 id='2-main-collection' class='heading'>2. Main collection</h5>
+
+<ul>
+<li>Opaque view style (when tool tip is shown)  &#8594;  <code><a href="Classes/GiniConfiguration.html#/s:14GiniCaptureSDK0A13ConfigurationC37multipageToolTipOpaqueBackgroundStyleAA0h4ViewJ0Ovp">GiniConfiguration.multipageToolTipOpaqueBackgroundStyle</a></code></li>
+</ul>
+<h5 id='3-page-item' class='heading'>3. Page item</h5>
+
+<ul>
+<li>Page upload state icon
+
+<ul>
+<li>Successful upload &#8594; <span style="color:#009EDF"><em>successfullUploadIcon</em></span> image asset</li>
+<li>Failed upload &#8594; <span style="color:#009EDF"><em>failureUploadIcon</em></span> image asset</li>
+</ul></li>
+<li>Page upload state icon background color
+
+<ul>
+<li>Successful upload &#8594; <code><a href="Classes/GiniConfiguration.html#/s:14GiniCaptureSDK0A13ConfigurationC49multipagePageSuccessfullUploadIconBackgroundColorSo7UIColorCvp">GiniConfiguration.multipagePageSuccessfullUploadIconBackgroundColor</a></code></li>
+<li>Failed upload &#8594; <code><a href="Classes/GiniConfiguration.html#/s:14GiniCaptureSDK0A13ConfigurationC45multipagePageFailureUploadIconBackgroundColorSo7UIColorCvp">GiniConfiguration.multipagePageFailureUploadIconBackgroundColor</a></code></li>
+</ul></li>
+<li>Page circle indicator color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)indicatorCircleColor">GiniConfiguration.indicatorCircleColor</a></code> using <code><a href="Classes/GiniColor.html">GiniColor</a></code> with dark mode and light mode colors</li>
+<li>Page indicator color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)multipagePageIndicatorColor">GiniConfiguration.multipagePageIndicatorColor</a></code></li>
+<li>Page background color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)multipagePageBackgroundColor">GiniConfiguration.multipagePageBackgroundColor</a></code> using <code><a href="Classes/GiniColor.html">GiniColor</a></code> with dark mode and light mode colors</li>
+<li>Page selected indicator color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)multipagePageSelectedIndicatorColor">GiniConfiguration.multipagePageSelectedIndicatorColor</a></code></li>
+<li>Page draggable icon tint color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)multipageDraggableIconColor">GiniConfiguration.multipageDraggableIconColor</a></code></li>
+</ul>
+<h5 id='4-bottom-container' class='heading'>4. Bottom container</h5>
+
+<ul>
+<li>Background color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)multipagePagesContainerAndToolBarColor">GiniConfiguration.multipagePagesContainerAndToolBarColor</a></code> using <code><a href="Classes/GiniColor.html">GiniColor</a></code> with dark mode and light mode colors</li>
+<li>Rotation button image &#8594;  <span style="color:#009EDF"><em>rotateImageIcon</em></span> image asset</li>
+<li>Delete button image &#8594;  <span style="color:#009EDF"><em>trashIcon</em></span> image asset</li>
+</ul>
+<h2 id='analysis-screen' class='heading'>Analysis screen</h2>
+
+<p><br>
+<center><img src="img/Customization guide/Analysis.jpg" height="500"/></center>
+</br></p>
+<h5 id='1-navigation-bar' class='heading'>1. Navigation bar</h5>
+
+<ul>
+<li>Cancel button
+
+<ul>
+<li>With image and title
+
+<ul>
+<li>Image &#8594; <span style="color:#009EDF"><em>navigationAnalysisBack</em></span> image asset</li>
+<li>Title &#8594; <span style="color:#009EDF"><em>ginicapture.navigationbar.analysis.back</em></span> localized string</li>
+</ul></li>
+<li>With title only
+
+<ul>
+<li>Title &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)navigationBarAnalysisTitleBackButton">GiniConfiguration.navigationBarAnalysisTitleBackButton</a></code></li>
+</ul></li>
+</ul></li>
+</ul>
+<h5 id='2-pdf-information-view' class='heading'>2. PDF Information view</h5>
+
+<ul>
+<li>Text color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)analysisPDFInformationTextColor">GiniConfiguration.analysisPDFInformationTextColor</a></code></li>
+<li>Background color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)analysisPDFInformationBackgroundColor">GiniConfiguration.analysisPDFInformationBackgroundColor</a></code></li>
+</ul>
+<h5 id='3-loading-view' class='heading'>3. Loading view</h5>
+
+<ul>
+<li>Indicator color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)analysisLoadingIndicatorColor">GiniConfiguration.analysisLoadingIndicatorColor</a></code> (Only with PDFs)</li>
+<li>Text &#8594; <span style="color:#009EDF"><em>ginicapture.analysis.loadingText</em></span> localized string</li>
+</ul>
+<h2 id='supported-formats-screen' class='heading'>Supported formats screen</h2>
+
+<p><br>
+<center><img src="img/Customization guide/Supported formats.jpg" height="500"/></center>
+</br></p>
+<h5 id='navigation-bar' class='heading'>Navigation bar</h5>
+
+<ul>
+<li>Back button
+
+<ul>
+<li>With image and title
+
+<ul>
+<li>Image &#8594; <span style="color:#009EDF"><em>arrowBack</em></span> image asset</li>
+<li>Title &#8594; <span style="color:#009EDF"><em>ginicapture.navigationbar.help.backToMenu</em></span> localized string</li>
+</ul></li>
+<li>With title only
+
+<ul>
+<li>Title &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)navigationBarHelpScreenTitleBackToMenuButton">GiniConfiguration.navigationBarHelpScreenTitleBackToMenuButton</a></code></li>
+</ul></li>
+</ul></li>
+</ul>
+<h5 id='1-supported-format-cells' class='heading'>1. Supported format cells</h5>
+
+<ul>
+<li>Supported fortmats icon &#8594; <span style="color:#009EDF"><em>supportedFormatsIcon</em></span> image asset</li>
+<li>Supported formats icon color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)supportedFormatsIconColor">GiniConfiguration.supportedFormatsIconColor</a></code></li>
+<li>Non supported fortmats icon &#8594; <span style="color:#009EDF"><em>nonSupportedFormatsIcon</em></span> image asset</li>
+<li>Non supported formats icon color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)nonSupportedFormatsIconColor">GiniConfiguration.nonSupportedFormatsIconColor</a></code></li>
+</ul>
+<h2 id='open-with-tutorial-screen' class='heading'>Open with tutorial screen</h2>
+
+<p><br>
+<center><img src="img/Customization guide/Open with tutorial.jpg" height="500"/></center>
+</br></p>
+<h5 id='navigation-bar' class='heading'>Navigation bar</h5>
+
+<ul>
+<li>Back button
+
+<ul>
+<li>With image and title
+
+<ul>
+<li>Image &#8594; <span style="color:#009EDF"><em>arrowBack</em></span> image asset</li>
+<li>Title &#8594; <span style="color:#009EDF"><em>ginicapture.navigationbar.help.backToMenu</em></span> localized string</li>
+</ul></li>
+<li>With title only
+
+<ul>
+<li>Title &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)navigationBarHelpScreenTitleBackToMenuButton">GiniConfiguration.navigationBarHelpScreenTitleBackToMenuButton</a></code></li>
+</ul></li>
+</ul></li>
+</ul>
+<h5 id='1-header' class='heading'>1. Header</h5>
+
+<ul>
+<li>Text &#8594; <span style="color:#009EDF"><em>ginicapture.help.openWithTutorial.collectionHeader</em></span> localized string</li>
+</ul>
+<h5 id='2-open-with-steps' class='heading'>2. Open with steps</h5>
+
+<ul>
+<li>App name &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)openWithAppNameForTexts">GiniConfiguration.openWithAppNameForTexts</a></code></li>
+<li>Step indicator color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)stepIndicatorColor">GiniConfiguration.stepIndicatorColor</a></code></li>
+<li>Step 1
+
+<ul>
+<li>Title &#8594; <span style="color:#009EDF"><em>ginicapture.help.openWithTutorial.step1.title</em></span> localized string</li>
+<li>Subtitle &#8594; <span style="color:#009EDF"><em>ginicapture.help.openWithTutorial.step1.subtitle</em></span> localized string</li>
+<li>Image &#8594; <span style="color:#009EDF"><em>openWithTutorialStep1</em> (German) and <em>openWithTutorialStep1_en</em> (English)</span> image assets</li>
+</ul></li>
+<li>Step 2
+
+<ul>
+<li>Title &#8594; <span style="color:#009EDF"><em>ginicapture.help.openWithTutorial.step2.title</em></span> localized string</li>
+<li>Subtitle &#8594; <span style="color:#009EDF"><em>ginicapture.help.openWithTutorial.step2.subtitle</em></span> localized string</li>
+<li>Image &#8594; <span style="color:#009EDF"><em>openWithTutorialStep2</em> (German) and <em>openWithTutorialStep2_en</em> (English)</span> image assets</li>
+</ul></li>
+<li>Step 3
+
+<ul>
+<li>Title &#8594; <span style="color:#009EDF"><em>ginicapture.help.openWithTutorial.step3.title</em></span> localized string</li>
+<li>Subtitle &#8594; <span style="color:#009EDF"><em>ginicapture.help.openWithTutorial.step3.subtitle</em></span> localized string</li>
+<li>Image &#8594; <span style="color:#009EDF"><em>openWithTutorialStep3</em> (German) and <em>openWithTutorialStep3_en</em> (English)</span> image assets</li>
+</ul></li>
+</ul>
+<h2 id='capturing-tips-screen' class='heading'>Capturing tips screen</h2>
+
+<p><br>
+<center><img src="img/Customization guide/No results.jpg" height="500"/></center>
+</br></p>
+<h5 id='1-capturing-tip-images' class='heading'>1. Capturing tip images</h5>
+
+<ul>
+<li>Tip 1 image &#8594; <span style="color:#009EDF"><em>captureSuggestion1</em></span> image asset</li>
+<li>Tip 2 image &#8594; <span style="color:#009EDF"><em>captureSuggestion2</em></span> image asset</li>
+<li>Tip 3 image &#8594; <span style="color:#009EDF"><em>captureSuggestion3</em></span> image asset</li>
+<li>Tip 4 image &#8594; <span style="color:#009EDF"><em>captureSuggestion4</em></span> image asset</li>
+<li>Tip 5 image &#8594; <span style="color:#009EDF"><em>captureSuggestion5</em></span> image asset</li>
+</ul>
+<h5 id='2-go-to-camera-button' class='heading'>2. Go to camera button</h5>
+
+<ul>
+<li>Background color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)noResultsBottomButtonColor">GiniConfiguration.noResultsBottomButtonColor</a></code></li>
+<li>Text color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)noResultsBottomButtonTextColor">GiniConfiguration.noResultsBottomButtonTextColor</a></code></li>
+<li>Corner radius &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)noResultsBottomButtonCornerRadius">GiniConfiguration.noResultsBottomButtonCornerRadius</a></code></li>
+</ul>
+<h2 id='gallery-album-screen' class='heading'>Gallery album screen</h2>
+
+<p><br>
+<center><img src="img/Customization guide/Gallery album.jpg" height="500"/></center>
+</br></p>
+<h5 id='1-selected-image' class='heading'>1. Selected image</h5>
+
+<ul>
+<li>Selected item check color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)galleryPickerItemSelectedBackgroundCheckColor">GiniConfiguration.galleryPickerItemSelectedBackgroundCheckColor</a></code></li>
+<li>Background color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)galleryScreenBackgroundColor">GiniConfiguration.galleryScreenBackgroundColor</a></code> using <code><a href="Classes/GiniColor.html">GiniColor</a></code> with dark mode and light mode colors</li>
+</ul>
+<h2 id='onboarding-screens' class='heading'>Onboarding screens</h2>
+
+<p><br>
+<center><img src="img/Customization guide/Onboarding.png" height="500"/></center>
+</br></p>
+<h5 id='1-background' class='heading'>1. Background</h5>
+
+<ul>
+<li>Background Color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)onboardingScreenBackgroundColor">GiniConfiguration.onboardingScreenBackgroundColor</a></code> using <code><a href="Classes/GiniColor.html">GiniColor</a></code> with dark mode and light mode colors</li>
+</ul>
+<h5 id='2-image' class='heading'>2. Image</h5>
+
+<ul>
+<li>Page image &#8594; <span style="color:#009EDF"><em>onboardingPage</em>*</span> image asset</li>
+</ul>
+<h5 id='3-text' class='heading'>3. Text</h5>
+
+<ul>
+<li>Color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)onboardingTextColor">GiniConfiguration.onboardingTextColor</a></code> using <code><a href="Classes/GiniColor.html">GiniColor</a></code> with dark mode and light mode colors</li>
+</ul>
+<h5 id='4-page-indicator' class='heading'>4. Page indicator</h5>
+
+<ul>
+<li>Color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)onboardingPageIndicatorColor">GiniConfiguration.onboardingPageIndicatorColor</a></code> using <code><a href="Classes/GiniColor.html">GiniColor</a></code> with dark mode and light mode colors</li>
+</ul>
+<h5 id='5-current-page-indicator' class='heading'>5. Current page indicator</h5>
+
+<ul>
+<li>Color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)onboardingCurrentPageIndicatorColor">GiniConfiguration.onboardingCurrentPageIndicatorColor</a></code> using <code><a href="Classes/GiniColor.html">GiniColor</a></code> with dark mode and light mode colors</li>
+<li>Alpha &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)onboardingCurrentPageIndicatorAlpha">GiniConfiguration.onboardingCurrentPageIndicatorAlpha</a></code> sets alpha to the <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)onboardingCurrentPageIndicatorColor">GiniConfiguration.onboardingCurrentPageIndicatorColor</a></code></li>
+</ul>
+<h2 id='help-screen' class='heading'>Help screen</h2>
+
+<p><br>
+<center><img src="img/Customization guide/Help screen.png" height="500"/></center>
+</br></p>
+<h5 id='1-navigation-bar' class='heading'>1. Navigation bar</h5>
+
+<ul>
+<li>Back button
+
+<ul>
+<li>With image and title
+
+<ul>
+<li>Image &#8594; <span style="color:#009EDF"><em>navigationHelpBack</em></span> image asset</li>
+<li>Title &#8594; <span style="color:#009EDF"><em>ginicapture.navigationbar.help.backToCamera</em></span> localized string</li>
+</ul></li>
+<li>With title only
+
+<ul>
+<li>Title &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)navigationBarHelpMenuTitleBackToCameraButton">GiniConfiguration.navigationBarHelpMenuTitleBackToCameraButton</a></code></li>
+</ul></li>
+</ul></li>
+</ul>
+<h5 id='2-table-view-cells' class='heading'>2. Table View Cells</h5>
+
+<ul>
+<li>Background color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)helpScreenCellsBackgroundColor">GiniConfiguration.helpScreenCellsBackgroundColor</a></code> using <code><a href="Classes/GiniColor.html">GiniColor</a></code> with dark mode and light mode colors</li>
+</ul>
+<h5 id='3-background' class='heading'>3. Background</h5>
+
+<ul>
+<li>Background color &#8594; <code><a href="Classes/GiniConfiguration.html#/c:@M@GiniCaptureSDK@objc(cs)GiniConfiguration(py)helpScreenBackgroundColor">GiniConfiguration.helpScreenBackgroundColor</a></code> using <code><a href="Classes/GiniColor.html">GiniColor</a></code> with dark mode and light mode colors</li>
+</ul>
+<h5 id='4-additional-help-menu-items' class='heading'>4. Additional help menu items</h5>
+
+<ul>
+<li>Custom help menu items &#8594; <code><a href="Classes/GiniConfiguration.html#/s:14GiniCaptureSDK0A13ConfigurationC15customMenuItemsSayAA04HelpF14ViewControllerC4ItemOGvp">GiniConfiguration.customMenuItems</a></code> an array of <code><a href="Classes/HelpMenuViewController/Item.html">HelpMenuViewController.Item</a></code> objects</li>
+</ul>
+
+          </div>
+        </section>
+
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2022 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2022-08-08)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
