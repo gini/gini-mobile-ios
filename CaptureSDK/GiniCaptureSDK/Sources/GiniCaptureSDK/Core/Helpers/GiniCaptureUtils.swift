@@ -27,6 +27,20 @@ public func UIImageNamedPreferred(named name: String) -> UIImage? {
 }
 
 /**
+ Returns an optional `UIColor` instance with the given `name` preferably from the client's bundle.
+ 
+ - parameter name: The name of the UIColor from `GiniColors` asset catalog.
+ 
+ - returns: color if found with name.
+ */
+public func UIColorPreferred(named name: String) -> UIColor? {
+    if let clientColor = UIColor(named: name) {
+        return clientColor
+    }
+    return UIColor(named: name, in: giniCaptureBundle(), compatibleWith: nil)
+}
+
+/**
  Returns a localized string resource preferably from the client's bundle.
  
  - parameter key:     The key to search for in the strings file.

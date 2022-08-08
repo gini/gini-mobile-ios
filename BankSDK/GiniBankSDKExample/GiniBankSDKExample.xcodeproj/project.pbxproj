@@ -11,6 +11,7 @@
 		F4083ED72735B0CB004DDD3B /* LocalizableCustomName.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4083ED92735B0CB004DDD3B /* LocalizableCustomName.strings */; };
 		F40E1436273C06AA00734A0E /* PartialDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40E1435273C06AA00734A0E /* PartialDocument.swift */; };
 		F414A56325EBB87F00D04A80 /* DocumentAnalysisHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */; };
+		F426ABF1289AB1D7007F4EB6 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F426ABF0289AB1D7007F4EB6 /* Colors.xcassets */; };
 		F439C21B27355C310010D77D /* GiniBankSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F439C21A27355C310010D77D /* GiniBankSDK */; };
 		F439C21D27355C3A0010D77D /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F439C21C27355C3A0010D77D /* GiniCaptureSDK */; };
 		F439C21F27355C430010D77D /* GiniBankAPILibrary in Frameworks */ = {isa = PBXBuildFile; productRef = F439C21E27355C430010D77D /* GiniBankAPILibrary */; };
@@ -85,6 +86,7 @@
 		F4083EDA2735B0CD004DDD3B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F40E1435273C06AA00734A0E /* PartialDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PartialDocument.swift; path = GiniBankSDKExample/PartialDocument.swift; sourceTree = SOURCE_ROOT; };
 		F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAnalysisHelper.swift; sourceTree = "<group>"; };
+		F426ABF0289AB1D7007F4EB6 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		F439C21827355C0C0010D77D /* GiniBankSDK */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniBankSDK; path = ../GiniBankSDK; sourceTree = "<group>"; };
 		F441DCA625E55D5800AAB09A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F441DCB325E568C400AAB09A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				F4AD00F725DFDF4400C34E15 /* Images.xcassets */,
+				F426ABF0289AB1D7007F4EB6 /* Colors.xcassets */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -458,6 +461,7 @@
 			files = (
 				F45D7F172800583300C73C63 /* result_Gini_invoice_example.json in Resources */,
 				F45D7F192800583800C73C63 /* Gini_invoice_example.pdf in Resources */,
+				F426ABF1289AB1D7007F4EB6 /* Colors.xcassets in Resources */,
 				F45D7F1A2800583B00C73C63 /* result_Gini_invoice_example_after_feedback.json in Resources */,
 				F441DCBD25E5694600AAB09A /* Settings.bundle in Resources */,
 				F4AD010125DFDF4500C34E15 /* Images.xcassets in Resources */,
