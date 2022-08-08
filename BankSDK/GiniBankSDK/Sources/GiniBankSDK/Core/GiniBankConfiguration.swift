@@ -1158,6 +1158,23 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var localizedStringsTableName: String?
     
+    /**
+     Set dictionary of fonts for available text styles. Used internally.
+     */
+    var textStyleFonts: [UIFont.TextStyle: UIFont] = [
+    .largeTitle: UIFontMetrics(forTextStyle: .largeTitle).scaledFont(for: UIFont.systemFont(ofSize: 34)),
+    .title1: UIFontMetrics(forTextStyle: .title1).scaledFont(for: UIFont.systemFont(ofSize: 28)),
+    .title2: UIFontMetrics(forTextStyle: .title2).scaledFont(for: UIFont.systemFont(ofSize: 22)),
+    .title3: UIFontMetrics(forTextStyle: .title3).scaledFont(for: UIFont.systemFont(ofSize: 20)),
+    .caption1: UIFontMetrics(forTextStyle: .caption1).scaledFont(for: UIFont.systemFont(ofSize: 12)),
+    .caption2: UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 11)),
+    .headline: UIFontMetrics(forTextStyle: .headline).scaledFont(for: UIFont.systemFont(ofSize: 17)),
+    .subheadline: UIFontMetrics(forTextStyle: .subheadline).scaledFont(for: UIFont.systemFont(ofSize: 15)),
+    .body: UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont.systemFont(ofSize: 17)),
+    .callout: UIFontMetrics(forTextStyle: .callout).scaledFont(for: UIFont.systemFont(ofSize: 16)),
+    .footnote: UIFontMetrics(forTextStyle: .footnote).scaledFont(for: UIFont.systemFont(ofSize: 13)),
+    ]
+    
     public func captureConfiguration() -> GiniConfiguration {
      let configuration = GiniConfiguration()
         
@@ -1295,6 +1312,8 @@ public final class GiniBankConfiguration: NSObject {
         configuration.cancelButtonResource = self.cancelButtonResource
         configuration.localizedStringsTableName = self.localizedStringsTableName
         
+        configuration.textStyleFonts = self.textStyleFonts
+        
         GiniCapture.setConfiguration(configuration)
         
         // Set onboarding pages after setting the GiniCapture's configuration
@@ -1405,6 +1424,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.digitalInvoiceOnboardingHideButtonTextColor = self.digitalInvoiceOnboardingHideButtonTextColor
         configuration.enableReturnReasons = self.enableReturnReasons
         configuration.customFont = self.customFont
+        configuration.textStyleFonts = self.textStyleFonts
         
         // TODO! Add for Xamarin colors
         
@@ -1538,6 +1558,7 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.localizedStringsTableName = configuration.localizedStringsTableName
         
         giniBankConfiguration.albumsScreenSelectMorePhotosTextColor = configuration.albumsScreenSelectMorePhotosTextColor
+        giniBankConfiguration.textStyleFonts = configuration.textStyleFonts
         
         // Undocumented--Xamarin only
         giniBankConfiguration.closeButtonResource = configuration.closeButtonResource
@@ -1546,5 +1567,15 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.backToMenuButtonResource = configuration.backToMenuButtonResource
         giniBankConfiguration.nextButtonResource = configuration.nextButtonResource
         giniBankConfiguration.cancelButtonResource = configuration.cancelButtonResource
+    }
+    
+    /**
+     Allows setting a custom font for specific text styles. The change will affect all screens where a specific text style was used.
+     
+     - parameter font: Font that is going to be assosiated with specific text style
+     - parameter textStyle: Constants that describe the preferred styles for fonts. Please, find additional information [here](https://developer.apple.com/documentation/uikit/uifont/textstyle)
+    */
+    public func updateFont(font: UIFont, for textStyle: UIFont.TextStyle) {
+      textStyleFonts[textStyle] = UIFontMetrics(forTextStyle: textStyle).scaledFont(for: font)
     }
 }
