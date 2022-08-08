@@ -52,6 +52,8 @@ final class AppCoordinator: Coordinator {
         giniConfiguration.cameraPreviewFrameColor = .init(lightModeColor: UIColor.init(white: 0.5, alpha: 0.1), darkModeColor: UIColor.init(white: 0.5, alpha: 0.3))
         giniConfiguration.cameraButtonsViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
         giniConfiguration.cameraContainerViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
+        
+//        giniConfiguration.updateFont(UIFont(name: "Avenir", size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .regular), for: .caption2)
         return giniConfiguration
     }()
 
