@@ -743,6 +743,6 @@ import UIKit
      - parameter textStyle: Constants that describe the preferred styles for fonts. Please, find additional information [here](https://developer.apple.com/documentation/uikit/uifont/textstyle)
     */
     public func updateFont(font: UIFont, for textStyle: UIFont.TextStyle) {
-      textStyleFonts[textStyle] = UIFontMetrics(forTextStyle: textStyle).scaledFont(for: font)
+        textStyleFonts[textStyle] = font
     }
 }
