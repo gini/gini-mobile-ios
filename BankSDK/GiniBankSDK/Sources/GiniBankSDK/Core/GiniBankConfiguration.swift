@@ -1256,9 +1256,6 @@ public final class GiniBankConfiguration: NSObject {
         
         configuration.navigationBarAnalysisTitleBackButton = self.navigationBarAnalysisTitleBackButton
         
-        configuration.helpScreenBackgroundColor = self.helpScreenBackgroundColor
-        configuration.helpScreenCellsBackgroundColor = self.helpScreenCellsBackgroundColor
-        
         configuration.navigationBarHelpMenuTitleBackToCameraButton = self.navigationBarHelpMenuTitleBackToCameraButton
         configuration.navigationBarHelpScreenTitleBackToMenuButton = self.navigationBarHelpScreenTitleBackToMenuButton
         
@@ -1506,10 +1503,7 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.analysisPDFInformationTextColor = configuration.analysisPDFInformationTextColor
         
         giniBankConfiguration.navigationBarAnalysisTitleBackButton = configuration.navigationBarAnalysisTitleBackButton
-        
-        giniBankConfiguration.helpScreenBackgroundColor = configuration.helpScreenBackgroundColor
-        giniBankConfiguration.helpScreenCellsBackgroundColor = configuration.helpScreenCellsBackgroundColor
-        
+    
         giniBankConfiguration.navigationBarHelpMenuTitleBackToCameraButton = configuration.navigationBarHelpMenuTitleBackToCameraButton
         giniBankConfiguration.navigationBarHelpScreenTitleBackToMenuButton = configuration.navigationBarHelpScreenTitleBackToMenuButton
         
