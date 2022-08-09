@@ -46,7 +46,7 @@ class HelpFormatsViewController: UIViewController {
     
     private func configureMainView() {
         title = NSLocalizedString("ginicapture.help.supportedFormats.title", bundle: giniCaptureBundle(), comment: "")
-        view.backgroundColor = giniConfiguration.helpScreensBackgroundColor
+        view.backgroundColor = UIColorPreferred(named: "systemGray06")
         view.addSubview(tableView)
         
         view.layoutSubviews()

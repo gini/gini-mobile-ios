@@ -47,7 +47,7 @@ class HelpImportViewController: UIViewController {
     public func configureMainView() {
         self.title = NSLocalizedString("ginicapture.help.import.title", bundle: giniCaptureBundle(), comment: "Help Import screen title")
         view.addSubview(tableView)
-        view.backgroundColor = giniConfiguration.helpScreensBackgroundColor
+        view.backgroundColor = UIColorPreferred(named: "systemGray06")
         edgesForExtendedLayout = []
     }
     
@@ -113,10 +113,10 @@ extension HelpImportViewController: UITableViewDataSource {
             cell.importImageView.image = UIImageNamedPreferred(named: "helpImport2")
         }
         cell.backgroundColor = UIColor.clear
-        cell.headerLabel.textColor = giniConfiguration.helpScreensLabelColor
+        cell.headerLabel.textColor = UIColorPreferred(named: "labelColor")
         cell.headerLabel.backgroundColor = UIColor.clear
         cell.descriptionLabel.backgroundColor = UIColor.clear
-        cell.descriptionLabel.textColor = giniConfiguration.helpScreensDefaultTextColor
+        cell.descriptionLabel.textColor = UIColorPreferred(named: "subHeadline")
         cell.contentView.backgroundColor = UIColor.clear
     }
 

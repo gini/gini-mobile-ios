@@ -50,7 +50,7 @@ public final class HelpTipsViewController: UIViewController {
 
     public func configureMainView() {
         view.addSubview(tableView)
-        view.backgroundColor = giniConfiguration.helpScreensBackgroundColor
+        view.backgroundColor = UIColorPreferred(named: "systemGray06")
         edgesForExtendedLayout = []
     }
     

@@ -10,20 +10,37 @@ import XCTest
 @testable import GiniCaptureSDK
 final class SupportedFormatsViewControllerTests: XCTestCase {
     
-    var supportedFormatsViewController = HelpFormatsViewController(giniConfiguration: .shared)
+    var supportedFormatsViewController = HelpFormatsViewController(
+        giniConfiguration: .shared
+    )
+    
     let initialGiniConfiguration = GiniConfiguration.shared
     
-    var sections: [HelpFormatsCollectionSection] =  [
-        (.localized(resource: HelpStrings.supportedFormatsSection1Title),
-         [.localized(resource: HelpStrings.supportedFormatsSection1Item1Text)],
-         UIImageNamedPreferred(named: "supportedFormatsIcon"),
-         GiniConfiguration.shared.supportedFormatsIconColor),
-        (.localized(resource: HelpStrings.supportedFormatsSection2Title),
-         [.localized(resource: HelpStrings.supportedFormatsSection2Item1Text),
-          .localized(resource: HelpStrings.supportedFormatsSection2Item2Text)],
-         UIImageNamedPreferred(named: "nonSupportedFormatsIcon"),
-         GiniConfiguration.shared.nonSupportedFormatsIconColor)
-    ]
+    lazy var sections: [HelpFormatsCollectionSection] = {
+        var sections: [HelpFormatsCollectionSection] =  [
+            (NSLocalizedString(
+                "ginicapture.help.supportedFormats.section.1.title",
+                bundle: giniCaptureBundle(),
+                comment: ""),
+             [
+                NSLocalizedString(
+                    "ginicapture.help.supportedFormats.section.1.item.1",
+                    bundle: giniCaptureBundle(),
+                    comment: "")],
+             UIImageNamedPreferred(named: "supportedFormatsIcon")),
+            (NSLocalizedString(
+                "ginicapture.help.supportedFormats.section.2.title",
+                bundle: giniCaptureBundle(),
+                comment: ""),
+             [
+                NSLocalizedString(
+                    "ginicapture.help.supportedFormats.section.2.item.1",
+                    bundle: giniCaptureBundle(),
+                    comment: "")],
+             UIImageNamedPreferred(named: "nonSupportedFormatsIcon"))
+        ]
+        return sections
+    }()
     
     override func setUp() {
         super.setUp()
@@ -56,10 +73,12 @@ final class SupportedFormatsViewControllerTests: XCTestCase {
         
         _ = supportedFormatsViewController.view
         
-        let section1items = supportedFormatsViewController.dataSource.tableView(supportedFormatsViewController.tableView,
-                                                                     numberOfRowsInSection: 0)
+        let section1items = supportedFormatsViewController.dataSource.tableView(
+            supportedFormatsViewController.tableView,
+            numberOfRowsInSection: 0
+        )
         
-        XCTAssertEqual(section1items, 1, "items count in section 1 should be 1 when file import is disabled")
+        XCTAssertEqual(section1items, 2, "items count in section 1 should be 1 when file import is disabled")
     }
     
     func testFirstSectionItemsCountFileImportDisabledForImages() {
@@ -71,7 +90,7 @@ final class SupportedFormatsViewControllerTests: XCTestCase {
         let section1items = supportedFormatsViewController.dataSource.tableView(supportedFormatsViewController.tableView,
                                                                      numberOfRowsInSection: 0)
         
-        XCTAssertEqual(section1items, 2,
+        XCTAssertEqual(section1items, 3,
                        "items count in section 1 should be 2 when file import is enabled only for pdfs")
     }
     
@@ -79,7 +98,7 @@ final class SupportedFormatsViewControllerTests: XCTestCase {
         let indexPath = IndexPath(row: 0, section: 1)
         let section = sections[indexPath.section]
         let sectionImage = section.itemsImage
-        let sectionImageBackgroundColor = section.itemsImageBackgroundColor
+        
         let sectionItemsCount = section.items.count
         let sectionTitle = section.title
         
@@ -93,7 +112,7 @@ final class SupportedFormatsViewControllerTests: XCTestCase {
         XCTAssertNotNil(cell, "cell in this table view should always be of type HelpFormatCell")
         XCTAssertEqual(sectionImage, cell?.iconImageView?.image,
                        "cell image should be equal to section image since it is the same for each item in the section")
-        XCTAssertEqual(sectionTitle, headerTitle,
+        XCTAssertEqual(sectionTitle.uppercased(), headerTitle?.uppercased(),
                        "header title should be equal to section title")
         XCTAssertEqual(sectionItemsCount, tableViewSectionItemsCount,
                        "section items count and table section items count should be always equal")
