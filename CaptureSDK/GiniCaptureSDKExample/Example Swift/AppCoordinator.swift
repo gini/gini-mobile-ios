@@ -55,11 +55,11 @@ final class AppCoordinator: Coordinator {
         
         // If you need to scale your font please use our method `scaledFont()`. Please, find the example below.
 //        let customFontToBeScaled = UIFont.scaledFont(UIFont(name: "Avenir", size: 20) ?? UIFont.systemFont(ofSize: 7, weight: .regular), textStyle: .caption1)
-//        giniConfiguration.updateFont(font: customFontToBeScaled, for: .caption1)
+//        giniConfiguration.updateFont(customFontToBeScaled, for: .caption1)
         
         // If you would like to pass us already scaled font.
 //        let customScaledFont = UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 28))
-//        giniConfiguration.updateFont(font: customScaledFont, for: .caption2)
+//        giniConfiguration.updateFont(customScaledFont, for: .caption2)
 
         return giniConfiguration
     }()
