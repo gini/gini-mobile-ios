@@ -39,9 +39,9 @@ final public class HelpMenuDataSource: HelpBaseDataSource<HelpMenuItem, HelpMenu
 
     public override func configureCell(cell: HelpMenuCell, indexPath: IndexPath) {
 
-        cell.backgroundColor = giniConfiguration.helpScreensCellsBackgroundColor
+        cell.backgroundColor = UIColorPreferred(named: "systemWhite")
         cell.textLabel?.text = items[indexPath.row].title
-        cell.textLabel?.textColor = giniConfiguration.helpScreensLabelColor
+        cell.textLabel?.textColor = UIColorPreferred(named: "labelColor")
         cell.textLabel?.font = giniConfiguration.customFont.with(weight: .regular, size: 14, style: .body)
         cell.accessoryType = .disclosureIndicator
         cell.selectionStyle = .none

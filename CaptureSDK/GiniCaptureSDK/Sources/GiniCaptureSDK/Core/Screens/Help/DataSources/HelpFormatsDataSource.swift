@@ -85,12 +85,12 @@ class HelpFormatsDataSource: NSObject  {
         let item = section.items[indexPath.row]
             
         cell.descriptionLabel.text = item
-        cell.descriptionLabel.textColor = giniConfiguration.helpScreensLabelColor
+        cell.descriptionLabel.textColor = UIColorPreferred(named: "labelColor")
         cell.descriptionLabel.font = giniConfiguration.customFont.with(weight: .regular, size: 14, style: .body)
         cell.iconImageView.image = section.itemsImage
         cell.iconImageView.backgroundColor = UIColor.clear
-        cell.backgroundColor = giniConfiguration.helpScreensCellsBackgroundColor
-        cell.separatorView.backgroundColor = giniConfiguration.helpScreensSeparatorColor
+        cell.backgroundColor = UIColorPreferred(named: "systemWhite")
+        cell.separatorView.backgroundColor = UIColorPreferred(named: "separator")
         if indexPath.row == sections[indexPath.section].items.count - 1 {
             cell.separatorView.isHidden = true
         } else {
@@ -126,7 +126,7 @@ extension HelpFormatsDataSource: UITableViewDataSource {
         if let headerView = view as? UITableViewHeaderFooterView {
             headerView.contentView.backgroundColor = .clear
             headerView.backgroundView?.backgroundColor = .clear
-            headerView.textLabel?.textColor = giniConfiguration.helpScreensDefaultTextColor
+            headerView.textLabel?.textColor = UIColorPreferred(named: "subHeadline")
         }
     }
     
