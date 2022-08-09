@@ -739,10 +739,10 @@ import UIKit
     /**
      Allows setting a custom font for specific text styles. The change will affect all screens where a specific text style was used.
      
-     - parameter font: Font that is going to be assosiated with specific text style
+     - parameter font: Font that is going to be assosiated with specific text style. You can use scaled font or scale your font with our util method `UIFont.scaledFont(_ font: UIFont, textStyle: UIFont.TextStyle)`
      - parameter textStyle: Constants that describe the preferred styles for fonts. Please, find additional information [here](https://developer.apple.com/documentation/uikit/uifont/textstyle)
     */
-    public func updateFont(font: UIFont, for textStyle: UIFont.TextStyle) {
+    public func updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle) {
         textStyleFonts[textStyle] = font
     }
 }
