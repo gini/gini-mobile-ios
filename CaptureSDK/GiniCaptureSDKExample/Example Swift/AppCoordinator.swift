@@ -53,7 +53,14 @@ final class AppCoordinator: Coordinator {
         giniConfiguration.cameraButtonsViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
         giniConfiguration.cameraContainerViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
         
-//        giniConfiguration.updateFont(UIFont(name: "Avenir", size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .regular), for: .caption2)
+        // If you need to scale your font please use our method `scaledFont()`. Please, find the example below.
+//        let customFontToBeScaled = UIFont.scaledFont(UIFont(name: "Avenir", size: 20) ?? UIFont.systemFont(ofSize: 7, weight: .regular), textStyle: .caption1)
+//        giniConfiguration.updateFont(font: customFontToBeScaled, for: .caption1)
+        
+        // If you would like to pass us already scaled font.
+//        let customScaledFont = UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 28))
+//        giniConfiguration.updateFont(font: customScaledFont, for: .caption2)
+
         return giniConfiguration
     }()
 
