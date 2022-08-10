@@ -45,13 +45,13 @@ public final class HelpTipsViewController: UIViewController {
         configureMainView()
         configureTableView()
         configureConstraints()
-        edgesForExtendedLayout = []
     }
 
     public func configureMainView() {
         view.addSubview(tableView)
-        view.backgroundColor = UIColorPreferred(named: "systemGray06")
+        view.backgroundColor = UIColorPreferred(named: "helpBackground")
         edgesForExtendedLayout = []
+        tableView.bounces = false
     }
 
     private func configureTableView() {

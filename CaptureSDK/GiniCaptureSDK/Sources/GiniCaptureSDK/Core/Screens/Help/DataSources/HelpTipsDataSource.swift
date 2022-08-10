@@ -15,7 +15,6 @@ public struct HelpTipsItem {
 }
 
 final public class HelpTipsDataSource: HelpBaseDataSource<HelpTipsItem, HelpTipCell> {
-
     // swiftlint:disable function_body_length
     override init(configuration: GiniConfiguration) {
         super.init(configuration: configuration)
@@ -78,5 +77,4 @@ final public class HelpTipsDataSource: HelpBaseDataSource<HelpTipsItem, HelpTipC
         cell.separatorView.backgroundColor = UIColorPreferred(named: "separator")
         cell.selectionStyle = .none
     }
-
 }

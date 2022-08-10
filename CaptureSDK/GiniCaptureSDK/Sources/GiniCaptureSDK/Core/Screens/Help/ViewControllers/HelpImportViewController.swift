@@ -48,7 +48,7 @@ class HelpImportViewController: UIViewController {
             "ginicapture.help.import.title",
             comment: "Help Import screen title")
         view.addSubview(tableView)
-        view.backgroundColor = UIColorPreferred(named: "systemGray06")
+        view.backgroundColor = UIColorPreferred(named: "helpBackground")
         edgesForExtendedLayout = []
     }
 

@@ -119,7 +119,7 @@ extension HelpFormatsDataSource: UITableViewDataSource {
         if let headerView = view as? UITableViewHeaderFooterView {
             headerView.contentView.backgroundColor = .clear
             headerView.backgroundView?.backgroundColor = .clear
-            headerView.textLabel?.textColor = UIColorPreferred(named: "subHeadline")
+            headerView.textLabel?.textColor =  UIColorPreferred(named: "subheadline")
         }
     }
 
@@ -141,5 +141,9 @@ extension HelpFormatsDataSource: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sections[section].items.count
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 52
     }
 }

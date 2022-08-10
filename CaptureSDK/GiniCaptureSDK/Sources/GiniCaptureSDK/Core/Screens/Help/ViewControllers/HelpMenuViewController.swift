@@ -82,7 +82,7 @@ final public class HelpMenuViewController: UIViewController {
     }
 
     private func configureMainView() {
-        view.backgroundColor = UIColorPreferred(named: "systemGray06")
+        view.backgroundColor = UIColorPreferred(named: "helpBackground")
         view.addSubview(tableView)
         title = NSLocalizedStringPreferredFormat("ginicapture.help.menu.title", comment: "Help Import screen title")
         view.layoutSubviews()
