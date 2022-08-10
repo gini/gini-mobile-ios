@@ -40,8 +40,8 @@ class HelpFormatsDataSource: NSObject  {
              UIImageNamedPreferred(named: "nonSupportedFormatsIcon"))
         ]
         
-        if GiniConfiguration.shared.fileImportSupportedTypes != .none {
-            if GiniConfiguration.shared.fileImportSupportedTypes == .pdf_and_images {
+        if giniConfiguration.fileImportSupportedTypes != .none {
+            if giniConfiguration.fileImportSupportedTypes == .pdf_and_images {
                 sections[0].items.append(
                     NSLocalizedStringPreferredFormat(
                         "ginicapture.help.supportedFormats.section.1.item.2",
@@ -53,7 +53,7 @@ class HelpFormatsDataSource: NSObject  {
                     comment: "supported format for section 1 item 3"))
         }
         
-        if GiniConfiguration.shared.qrCodeScanningEnabled {
+        if giniConfiguration.qrCodeScanningEnabled {
             sections[0].items.append(
                 NSLocalizedStringPreferredFormat(
                     "ginicapture.help.supportedFormats.section.1.item.4",
