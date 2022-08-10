@@ -68,6 +68,7 @@ public final class HelpTipsViewController: UIViewController {
         tableView.estimatedRowHeight = tableRowHeight
         tableView.contentInsetAdjustmentBehavior = .never
         tableView.separatorStyle = .none
+        tableView.allowsSelection = false
     }
 
     private func configureConstraints() {
