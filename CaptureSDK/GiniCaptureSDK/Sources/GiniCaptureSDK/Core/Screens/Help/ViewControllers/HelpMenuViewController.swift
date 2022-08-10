@@ -24,9 +24,8 @@ public protocol HelpMenuViewControllerDelegate: AnyObject {
  */
 
 final public class HelpMenuViewController: UIViewController {
-    
-    public weak var delegate: HelpMenuViewControllerDelegate?
 
+    public weak var delegate: HelpMenuViewControllerDelegate?
     private (set) var dataSource: HelpMenuDataSource
     private let giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 44
@@ -42,24 +41,24 @@ final public class HelpMenuViewController: UIViewController {
         self.dataSource = HelpMenuDataSource(configuration: giniConfiguration)
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(giniConfiguration:) has not been implemented")
     }
-    
+
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.dataSource.delegate = self
         setupView()
     }
-    
+
     private func setupView() {
         configureMainView()
         configureTableView()
         configureConstraints()
         edgesForExtendedLayout = []
     }
-    
+
     private func configureTableView() {
         tableView.dataSource = self.dataSource
         tableView.delegate = self.dataSource
@@ -88,7 +87,7 @@ final public class HelpMenuViewController: UIViewController {
         title = NSLocalizedStringPreferredFormat("ginicapture.help.menu.title", comment: "Help Import screen title")
         view.layoutSubviews()
     }
-    
+
     @objc func back() {
         navigationController?.popViewController(animated: true)
     }

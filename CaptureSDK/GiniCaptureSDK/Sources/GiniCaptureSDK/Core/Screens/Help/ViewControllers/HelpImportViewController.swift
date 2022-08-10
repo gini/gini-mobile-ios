@@ -13,7 +13,7 @@ class HelpImportViewController: UIViewController {
         case selectInvoice
         case importToApp
     }
-    
+
     private let margin: CGFloat = 0
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -22,13 +22,12 @@ class HelpImportViewController: UIViewController {
     }()
     private var dataSource: [HelpImportCellType] = [.selectInvoice, .importToApp]
     private var giniConfiguration: GiniConfiguration
-    
-    
+
     public init(giniConfiguration: GiniConfiguration) {
         self.giniConfiguration = giniConfiguration
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(giniConfiguration:) has not been implemented")
     }
@@ -37,20 +36,22 @@ class HelpImportViewController: UIViewController {
         super.viewDidLoad()
         setupView()
     }
-    
+
     private func setupView() {
         configureMainView()
         configureTableView()
         configureConstraints()
     }
-    
+
     public func configureMainView() {
-        self.title = NSLocalizedStringPreferredFormat("ginicapture.help.import.title",  comment: "Help Import screen title")
+        self.title = NSLocalizedStringPreferredFormat(
+            "ginicapture.help.import.title",
+            comment: "Help Import screen title")
         view.addSubview(tableView)
         view.backgroundColor = UIColorPreferred(named: "systemGray06")
         edgesForExtendedLayout = []
     }
-    
+
     private func configureTableView() {
         tableView.dataSource = self
         tableView.delegate = self
@@ -58,10 +59,14 @@ class HelpImportViewController: UIViewController {
         tableView.allowsSelection = false
         tableView.backgroundColor = UIColor.clear
         tableView.tableFooterView = UIView()
-        tableView.register(UINib(nibName: "HelpImportCell", bundle:giniCaptureBundle()), forCellReuseIdentifier: HelpImportCell.reuseIdentifier)
+        tableView.register(
+            UINib(
+                nibName: "HelpImportCell",
+                bundle: giniCaptureBundle()),
+            forCellReuseIdentifier: HelpImportCell.reuseIdentifier)
         tableView.contentInsetAdjustmentBehavior = .never
     }
-    
+
     private func configureConstraints() {
         view.addConstraints([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: margin),
@@ -70,7 +75,7 @@ class HelpImportViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
-    
+
 }
 
 extension HelpImportViewController: UITableViewDelegate {
@@ -86,7 +91,7 @@ extension HelpImportViewController: UITableViewDelegate {
 }
 
 extension HelpImportViewController: UITableViewDataSource {
-    
+
     private func configureCell(cell: HelpImportCell, indexPath: IndexPath) {
         let itemType = dataSource[indexPath.row]
         let rowNr = indexPath.row + 1
@@ -123,11 +128,11 @@ extension HelpImportViewController: UITableViewDataSource {
         }
         fatalError("undefined cell")
     }
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataSource.count
     }

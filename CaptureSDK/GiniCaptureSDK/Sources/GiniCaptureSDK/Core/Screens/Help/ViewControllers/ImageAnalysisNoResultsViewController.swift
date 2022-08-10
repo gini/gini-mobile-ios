@@ -15,13 +15,13 @@ import UIKit
  */
 
 public final class ImageAnalysisNoResultsViewController: UIViewController {
-    
+
     lazy var suggestionsCollectionView: CaptureSuggestionsCollectionView = {
         let collection = CaptureSuggestionsCollectionView()
         collection.translatesAutoresizingMaskIntoConstraints = false
         return collection
     }()
-    
+
     lazy var bottomButton: UIButton = {
         let bottomButton = UIButton()
         bottomButton.translatesAutoresizingMaskIntoConstraints = false
@@ -31,7 +31,8 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
         bottomButton.setTitleColor(bottomButtonTextColor, for: .normal)
         bottomButton.setTitleColor(bottomButtonTextColor.withAlphaComponent(0.5), for: .highlighted)
         bottomButton.setImage(self.bottomButtonIconImage, for: .normal)
-        if let highlightedImage = self.bottomButtonIconImage?.tintedImageWithColor(bottomButtonTextColor.withAlphaComponent(0.5)){
+        if let highlightedImage = self.bottomButtonIconImage?.tintedImageWithColor(
+            bottomButtonTextColor.withAlphaComponent(0.5)) {
             bottomButton.setImage(highlightedImage, for: .highlighted)
         }
         bottomButton.addTarget(self, action: #selector(didTapBottomButtonAction), for: .touchUpInside)
@@ -40,7 +41,7 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
         bottomButton.layer.cornerRadius = giniConfiguration.noResultsBottomButtonCornerRadius
         return bottomButton
     }()
-    
+
     lazy var captureSuggestions: [(image: UIImage?, text: String)] = {
         var suggestions: [(image: UIImage?, text: String)] = [
             (UIImageNamedPreferred(named: "captureSuggestion1"),
@@ -52,29 +53,35 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
             (UIImageNamedPreferred(named: "captureSuggestion4"),
              .localized(resource: AnalysisStrings.suggestion4Text))
         ]
-        
+
         if giniConfiguration.multipageEnabled {
             suggestions.append((UIImageNamedPreferred(named: "captureSuggestion5"),
                                 .localized(resource: AnalysisStrings.suggestion5Text)))
         }
         return suggestions
     }()
-    
+
     fileprivate var subHeaderTitle: String?
     fileprivate var topViewText: String?
     fileprivate var topViewIcon: UIImage?
     fileprivate var bottomButtonText: String?
     fileprivate var bottomButtonIconImage: UIImage?
     fileprivate var giniConfiguration: GiniConfiguration
-    
+
     public var didTapBottomButton: (() -> Void) = { }
-    
+
     public convenience init(title: String? = nil,
-                            subHeaderText: String? = NSLocalizedStringPreferredFormat("ginicapture.noresults.collection.header", comment: "no results suggestions collection header title"),
-                            topViewText: String = NSLocalizedStringPreferredFormat("ginicapture.noresults.warning", comment: "Warning text that indicates that there " +
+                            subHeaderText: String? = NSLocalizedStringPreferredFormat(
+                                "ginicapture.noresults.collection.header",
+                                comment: "no results suggestions collection header title"),
+                            topViewText: String = NSLocalizedStringPreferredFormat(
+                                "ginicapture.noresults.warning",
+                                comment: "Warning text that indicates that there " +
                                 "was any result for this photo analysis"),
                             topViewIcon: UIImage? = UIImageNamedPreferred(named: "warningNoResults"),
-                            bottomButtonText: String? = NSLocalizedStringPreferredFormat("ginicapture.noresults.gotocamera", comment: "bottom button title (go to camera button)"),
+                            bottomButtonText: String? = NSLocalizedStringPreferredFormat(
+                                "ginicapture.noresults.gotocamera",
+                                comment: "bottom button title (go to camera button)"),
                             bottomButtonIcon: UIImage? = UIImageNamedPreferred(named: "cameraIcon")) {
         self.init(title: title,
                   subHeaderText: subHeaderText,
@@ -84,7 +91,7 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
                   bottomButtonIcon: bottomButtonIcon,
                   giniConfiguration: .shared)
     }
-    
+
     init(title: String? = nil,
          subHeaderText: String?,
          topViewText: String,
@@ -101,48 +108,48 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
         self.bottomButtonText = bottomButtonText
         self.bottomButtonIconImage = bottomButtonIcon
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(title:subHeaderText:topViewText:topViewIcon:bottomButtonText:bottomButtonIcon:)" +
             "has not been implemented")
     }
-    
+
     public override func loadView() {
         super.loadView()
         edgesForExtendedLayout = []
-        
+
         if #available(iOS 13.0, *) {
             view.backgroundColor = .systemBackground
         } else {
             view.backgroundColor = .white
         }
-        
+
         view.addSubview(suggestionsCollectionView)
-        
+
         if bottomButtonText != nil {
             view.addSubview(bottomButton)
         }
         addConstraints()
-        
+
         suggestionsCollectionView.dataSource = self
         suggestionsCollectionView.delegate = self
     }
-    
+
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         coordinator.animate(alongsideTransition: { _ in
             self.suggestionsCollectionView.collectionViewLayout.invalidateLayout()
         }, completion: nil)
     }
-    
+
     fileprivate func addConstraints() {
-        
+
         // Collection View
         Constraints.active(item: suggestionsCollectionView, attr: .top, relatedBy: .equal, to: self.view, attr: .top)
         Constraints.active(item: self.view, attr: .leading, relatedBy: .equal, to: suggestionsCollectionView,
                            attr: .leading)
         Constraints.active(item: self.view, attr: .trailing, relatedBy: .equal, to: suggestionsCollectionView,
                            attr: .trailing)
-        
+
         // Button
         if bottomButtonText != nil {
             Constraints.active(item: view.safeAreaLayoutGuide, attr: .bottom, relatedBy: .equal, to: bottomButton,
@@ -162,9 +169,9 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
             Constraints.active(item: self.view, attr: .bottom, relatedBy: .equal, to: suggestionsCollectionView,
                                attr: .bottom, constant: 0, priority: 999)
         }
-        
+
     }
-    
+
     // MARK: Button action
     @objc func didTapBottomButtonAction() {
         didTapBottomButton()
@@ -177,7 +184,7 @@ extension ImageAnalysisNoResultsViewController: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return captureSuggestions.count
     }
-    
+
     public func collectionView(_ collectionView: UICollectionView,
                                cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let identifier = CaptureSuggestionsCollectionView.captureSuggestionsCellIdentifier
@@ -188,7 +195,7 @@ extension ImageAnalysisNoResultsViewController: UICollectionViewDataSource {
         cell.suggestionImage.image = self.captureSuggestions[indexPath.row].image
         return cell
     }
-    
+
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -202,13 +209,13 @@ extension ImageAnalysisNoResultsViewController: UICollectionViewDelegateFlowLayo
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
         return suggestionsCollectionView.cellSize()
     }
-    
+
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                referenceSizeForHeaderInSection section: Int) -> CGSize {
         return suggestionsCollectionView.headerSize(withSubHeader: subHeaderTitle != nil)
     }
-    
+
     public func collectionView(_ collectionView: UICollectionView,
                                viewForSupplementaryElementOfKind kind: String,
                                at indexPath: IndexPath) -> UICollectionReusableView {
