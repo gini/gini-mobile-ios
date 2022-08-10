@@ -47,7 +47,7 @@ class HelpFormatsViewController: UIViewController {
         title = NSLocalizedStringPreferredFormat(
             "ginicapture.help.supportedFormats.title",
             comment: "Supported formats screen title")
-        view.backgroundColor = UIColorPreferred(named: "systemGray06")
+        view.backgroundColor = UIColorPreferred(named: "helpBackground")
         view.addSubview(tableView)
 
         view.layoutSubviews()
@@ -75,7 +75,7 @@ class HelpFormatsViewController: UIViewController {
 
     private func configureConstraints() {
         view.addConstraints([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: margin),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: margin),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -margin),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
