@@ -45,7 +45,7 @@ class HelpImportViewController: UIViewController {
     }
     
     public func configureMainView() {
-        self.title = NSLocalizedString("ginicapture.help.import.title", bundle: giniCaptureBundle(), comment: "Help Import screen title")
+        self.title = NSLocalizedStringPreferredFormat("ginicapture.help.import.title",  comment: "Help Import screen title")
         view.addSubview(tableView)
         view.backgroundColor = UIColorPreferred(named: "systemGray06")
         edgesForExtendedLayout = []
@@ -92,23 +92,19 @@ extension HelpImportViewController: UITableViewDataSource {
         let rowNr = indexPath.row + 1
         switch itemType {
         case .selectInvoice:
-            cell.headerLabel.text = "\(rowNr). " + NSLocalizedString(
+            cell.headerLabel.text = "\(rowNr). " + NSLocalizedStringPreferredFormat(
                 "ginicapture.help.import.selectInvoice.title",
-                bundle:giniCaptureBundle(),
                 comment: "Select an invoice header")
-            cell.descriptionLabel.text = NSLocalizedString(
+            cell.descriptionLabel.text = NSLocalizedStringPreferredFormat(
                 "ginicapture.help.import.selectInvoice.desc",
-                bundle:giniCaptureBundle(),
                 comment: "Select an invoice description")
             cell.importImageView.image = UIImageNamedPreferred(named: "helpImport1")
         case .importToApp:
-            cell.headerLabel.text = "\(rowNr). " + NSLocalizedString(
+            cell.headerLabel.text = "\(rowNr). " + NSLocalizedStringPreferredFormat(
                 "ginicapture.help.import.importtoapp.title",
-                bundle:giniCaptureBundle(),
                 comment: "Import to app header")
-            cell.descriptionLabel.text = NSLocalizedString(
+            cell.descriptionLabel.text = NSLocalizedStringPreferredFormat(
                 "ginicapture.help.import.importtoapp.desc",
-                bundle:giniCaptureBundle(),
                 comment: "Import to app description")
             cell.importImageView.image = UIImageNamedPreferred(named: "helpImport2")
         }

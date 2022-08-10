@@ -22,55 +22,47 @@ class HelpFormatsDataSource: NSObject  {
     
     lazy var sections: [HelpFormatsCollectionSection] = {
         var sections: [HelpFormatsCollectionSection] =  [
-            (NSLocalizedString(
+            (NSLocalizedStringPreferredFormat(
                 "ginicapture.help.supportedFormats.section.1.title",
-                bundle: giniCaptureBundle(),
-                comment: ""),
+                comment: "supported format for section 1 title"),
              [
-                NSLocalizedString(
+                NSLocalizedStringPreferredFormat(
                     "ginicapture.help.supportedFormats.section.1.item.1",
-                    bundle: giniCaptureBundle(),
-                    comment: "")],
+                    comment: "supported format for section 1 item 1")],
              UIImageNamedPreferred(named: "supportedFormatsIcon")),
-            (NSLocalizedString(
+            (NSLocalizedStringPreferredFormat(
                 "ginicapture.help.supportedFormats.section.2.title",
-                bundle: giniCaptureBundle(),
-                comment: ""),
+                comment: "supported format for section 2 title"),
              [
-                NSLocalizedString(
+                NSLocalizedStringPreferredFormat(
                     "ginicapture.help.supportedFormats.section.2.item.1",
-                    bundle: giniCaptureBundle(),
-                    comment: "")],
+                    comment: "supported format for section 2 item 1")],
              UIImageNamedPreferred(named: "nonSupportedFormatsIcon"))
         ]
         
         if GiniConfiguration.shared.fileImportSupportedTypes != .none {
             if GiniConfiguration.shared.fileImportSupportedTypes == .pdf_and_images {
                 sections[0].items.append(
-                    NSLocalizedString(
+                    NSLocalizedStringPreferredFormat(
                         "ginicapture.help.supportedFormats.section.1.item.2",
-                        bundle: giniCaptureBundle(),
-                        comment: ""))
+                        comment: "supported format for section 1 itemm 2"))
             }
             sections[0].items.append(
-                NSLocalizedString(
+                NSLocalizedStringPreferredFormat(
                     "ginicapture.help.supportedFormats.section.1.item.3",
-                    bundle: giniCaptureBundle(),
-                    comment: ""))
+                    comment: "supported format for section 1 item 3"))
         }
         
         if GiniConfiguration.shared.qrCodeScanningEnabled {
             sections[0].items.append(
-                NSLocalizedString(
+                NSLocalizedStringPreferredFormat(
                     "ginicapture.help.supportedFormats.section.1.item.4",
-                    bundle: giniCaptureBundle(),
-                    comment: ""))
+                    comment: "supported format for section 1 item 4"))
         }
         sections[0].items.append(
-            NSLocalizedString(
+            NSLocalizedStringPreferredFormat(
                 "ginicapture.help.supportedFormats.section.1.item.5",
-                bundle: giniCaptureBundle(),
-                comment: ""))
+                comment: "supported format for section 1 item 5"))
         return sections
     }()
     
