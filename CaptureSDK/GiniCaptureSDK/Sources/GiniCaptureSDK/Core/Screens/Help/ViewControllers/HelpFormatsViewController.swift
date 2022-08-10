@@ -12,7 +12,7 @@ class HelpFormatsViewController: UIViewController {
     private let margin: CGFloat = 16
     let tableRowHeight: CGFloat = 44
     let sectionHeight: CGFloat = 70
-    
+
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -20,40 +20,45 @@ class HelpFormatsViewController: UIViewController {
     }()
     private (set) var dataSource: HelpFormatsDataSource
     private var giniConfiguration: GiniConfiguration
-    
-    
+
     public init(giniConfiguration: GiniConfiguration) {
         self.giniConfiguration = giniConfiguration
         self.dataSource = HelpFormatsDataSource(configuration: giniConfiguration)
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
     }
-    
+
     private func setupView() {
         configureMainView()
         configureTableView()
         configureConstraints()
         edgesForExtendedLayout = []
     }
-    
+
     private func configureMainView() {
-        title = NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.title",  comment: "Supported formats screen title")
+        title = NSLocalizedStringPreferredFormat(
+            "ginicapture.help.supportedFormats.title",
+            comment: "Supported formats screen title")
         view.backgroundColor = UIColorPreferred(named: "systemGray06")
         view.addSubview(tableView)
-        
+
         view.layoutSubviews()
     }
-    
+
     private func configureTableView() {
-        tableView.register(UINib(nibName: "HelpFormatCell", bundle:giniCaptureBundle()), forCellReuseIdentifier: HelpFormatCell.reuseIdentifier)
+        tableView.register(
+            UINib(
+                nibName: "HelpFormatCell",
+                bundle: giniCaptureBundle()),
+            forCellReuseIdentifier: HelpFormatCell.reuseIdentifier)
         tableView.delegate = self.dataSource
         tableView.dataSource = self.dataSource
         tableView.estimatedRowHeight = tableRowHeight
@@ -67,7 +72,7 @@ class HelpFormatsViewController: UIViewController {
         tableView.contentInsetAdjustmentBehavior = .never
         tableView.separatorStyle = .none
     }
-    
+
     private func configureConstraints() {
         view.addConstraints([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: margin),
@@ -75,6 +80,5 @@ class HelpFormatsViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -margin),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-    }    
+    }
 }
-

@@ -24,13 +24,13 @@ public final class HelpTipsViewController: UIViewController {
     private var giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 76
     private let margin: CGFloat = 16
-    
+
     public init(giniConfiguration: GiniConfiguration) {
         self.giniConfiguration = giniConfiguration
         self.dataSource = HelpTipsDataSource(configuration: giniConfiguration)
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(title:subHeaderText:topViewText:topViewIcon:bottomButtonText:bottomButtonIcon:)" +
             "has not been implemented")
@@ -53,19 +53,23 @@ public final class HelpTipsViewController: UIViewController {
         view.backgroundColor = UIColorPreferred(named: "systemGray06")
         edgesForExtendedLayout = []
     }
-    
+
     private func configureTableView() {
         tableView.dataSource = self.dataSource
         tableView.delegate = self.dataSource
         tableView.backgroundColor = UIColor.clear
         tableView.tableFooterView = UIView()
-        tableView.register(UINib(nibName: "HelpTipCell", bundle:giniCaptureBundle()), forCellReuseIdentifier: HelpTipCell.reuseIdentifier)
+        tableView.register(
+            UINib(
+                nibName: "HelpTipCell",
+                bundle: giniCaptureBundle()),
+            forCellReuseIdentifier: HelpTipCell.reuseIdentifier)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = tableRowHeight
         tableView.contentInsetAdjustmentBehavior = .never
         tableView.separatorStyle = .none
     }
-    
+
     private func configureConstraints() {
         view.addConstraints([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: margin),

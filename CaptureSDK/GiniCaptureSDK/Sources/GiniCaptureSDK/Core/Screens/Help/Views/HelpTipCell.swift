@@ -12,7 +12,7 @@ public class HelpTipCell: UITableViewCell, HelpCell {
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
-    
+
     public static var reuseIdentifier: String = "kHelpTipCell"
 
     public override func awakeFromNib() {

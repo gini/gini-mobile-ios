@@ -13,20 +13,20 @@ protocol HelpMenuDataSourceDelegate: UIViewController {
 }
 
 final public class HelpMenuDataSource: HelpBaseDataSource<HelpMenuItem, HelpMenuCell> {
-    
+
     private lazy var defaultItems: [HelpMenuItem] = {
         var defaultItems: [HelpMenuItem] = [ .noResultsTips]
-        
+
         if giniConfiguration.shouldShowSupportedFormatsScreen {
             defaultItems.append(.supportedFormats)
         }
-        
+
         if giniConfiguration.openWithEnabled {
             defaultItems.append(.openWithTutorial)
         }
         return defaultItems
     }()
-    
+
     weak var delegate: HelpMenuDataSourceDelegate?
 
     override init(
@@ -51,9 +51,7 @@ final public class HelpMenuDataSource: HelpBaseDataSource<HelpMenuItem, HelpMenu
     }
 
     // MARK: - UITableViewDelegate
-    public  override func tableView(
-        _ tableView: UITableView,
-        didSelectRowAt indexPath: IndexPath) {
+    public  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = items[indexPath.row]
         self.delegate?.didSelectHelpItem(didSelect: item)
     }

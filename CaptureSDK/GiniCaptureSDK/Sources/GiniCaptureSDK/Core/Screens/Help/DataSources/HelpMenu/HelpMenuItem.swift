@@ -14,7 +14,7 @@ public enum HelpMenuItem {
     case openWithTutorial
     case supportedFormats
     case custom(String, UIViewController)
-    
+
     var title: String {
         switch self {
         case .noResultsTips:

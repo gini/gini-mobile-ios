@@ -17,9 +17,9 @@ typealias HelpFormatsCollectionSection = (title: String,
     items: [String],
     itemsImage: UIImage?)
 
-class HelpFormatsDataSource: NSObject  {
+class HelpFormatsDataSource: NSObject {
     let giniConfiguration: GiniConfiguration
-    
+
     lazy var sections: [HelpFormatsCollectionSection] = {
         var sections: [HelpFormatsCollectionSection] =  [
             (NSLocalizedStringPreferredFormat(
@@ -39,7 +39,7 @@ class HelpFormatsDataSource: NSObject  {
                     comment: "supported format for section 2 item 1")],
              UIImageNamedPreferred(named: "nonSupportedFormatsIcon"))
         ]
-        
+
         if giniConfiguration.fileImportSupportedTypes != .none {
             if giniConfiguration.fileImportSupportedTypes == .pdf_and_images {
                 sections[0].items.append(
@@ -52,7 +52,7 @@ class HelpFormatsDataSource: NSObject  {
                     "ginicapture.help.supportedFormats.section.1.item.3",
                     comment: "supported format for section 1 item 3"))
         }
-        
+
         if giniConfiguration.qrCodeScanningEnabled {
             sections[0].items.append(
                 NSLocalizedStringPreferredFormat(
@@ -65,17 +65,17 @@ class HelpFormatsDataSource: NSObject  {
                 comment: "supported format for section 1 item 5"))
         return sections
     }()
-    
+
     init(
         configuration: GiniConfiguration
     ) {
         giniConfiguration = configuration
     }
-    
+
     private func configureCell(cell: HelpFormatCell, indexPath: IndexPath) {
         let section = sections[indexPath.section]
         let item = section.items[indexPath.row]
-            
+
         cell.descriptionLabel.text = item
         cell.descriptionLabel.textColor = UIColorPreferred(named: "labelColor")
         cell.descriptionLabel.font = giniConfiguration.customFont.with(weight: .regular, size: 14, style: .body)
@@ -92,12 +92,13 @@ class HelpFormatsDataSource: NSObject  {
 }
 
 extension HelpFormatsDataSource: UITableViewDataSource {
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
+
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        
+
         if sections[indexPath.section].items.count == 1 {
           cell.round(corners: [.bottomLeft, .bottomRight, .topLeft, .topRight], withRadius: RoundedCorners.cornerRadius)
         } else {
@@ -113,7 +114,7 @@ extension HelpFormatsDataSource: UITableViewDataSource {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sections[section].title.uppercased()
     }
-    
+
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let headerView = view as? UITableViewHeaderFooterView {
             headerView.contentView.backgroundColor = .clear
@@ -121,11 +122,8 @@ extension HelpFormatsDataSource: UITableViewDataSource {
             headerView.textLabel?.textColor = UIColorPreferred(named: "subHeadline")
         }
     }
-    
-    func tableView(
-        _ tableView: UITableView,
-        cellForRowAt indexPath: IndexPath
-    ) -> UITableViewCell {
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(
             withIdentifier: HelpFormatCell.reuseIdentifier,
             for: indexPath) as? HelpFormatCell {

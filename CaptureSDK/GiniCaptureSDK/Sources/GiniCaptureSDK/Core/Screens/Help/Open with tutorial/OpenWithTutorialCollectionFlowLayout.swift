@@ -29,19 +29,19 @@ final class OpenWithTutorialCollectionFlowLayout: UICollectionViewFlowLayout {
         }
         return nil
     }
-    
+
     private class func alignToTopForSameLineElements(sameLineElements: [UICollectionViewLayoutAttributes]) {
         if sameLineElements.count < 1 {
             return
         }
-        
+
         let sorted = sameLineElements.sorted {
             let height1 = $0.frame.size.height
             let height2 = $1.frame.size.height
             let delta = height1 - height2
             return delta <= 0
         }
-        
+
         if let tallest = sorted.last {
             for obj in sameLineElements {
                 obj.frame = obj.frame.offsetBy(dx: 0, dy: tallest.frame.origin.y - obj.frame.origin.y)
