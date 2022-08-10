@@ -18,11 +18,11 @@ public enum HelpMenuItem {
     var title: String {
         switch self {
         case .noResultsTips:
-            return NSLocalizedString("ginicapture.help.menu.firstItem", bundle: giniCaptureBundle(), comment: "")
+            return NSLocalizedStringPreferredFormat("ginicapture.help.menu.firstItem", comment: "First Menu Item")
         case .openWithTutorial:
-            return NSLocalizedString("ginicapture.help.menu.secondItem", bundle: giniCaptureBundle(), comment: "")
+            return NSLocalizedStringPreferredFormat("ginicapture.help.menu.secondItem", comment: "Second Menu Item")
         case .supportedFormats:
-            return NSLocalizedString("ginicapture.help.menu.thirdItem", bundle: giniCaptureBundle(), comment: "")
+            return NSLocalizedStringPreferredFormat("ginicapture.help.menu.thirdItem", comment: "Third Menu Item")
         case .custom(let title, _):
             return title
         }

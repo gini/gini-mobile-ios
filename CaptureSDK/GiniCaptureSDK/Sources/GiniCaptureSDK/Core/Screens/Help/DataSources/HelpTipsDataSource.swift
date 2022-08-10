@@ -20,28 +20,28 @@ final public class HelpTipsDataSource: HelpBaseDataSource<HelpTipsItem, HelpTipC
         super.init(configuration: configuration)
         items.append(contentsOf:[
             HelpTipsItem(
-                header: NSLocalizedString("ginicapture.analysis.suggestion.1", bundle: giniCaptureBundle(), comment: ""),
-                details:NSLocalizedString("ginicapture.analysis.suggestion.1.details", bundle: giniCaptureBundle(), comment: ""),
+                header: NSLocalizedStringPreferredFormat("ginicapture.analysis.suggestion.1", comment: "Analysis suggestion 1 header"),
+                details:NSLocalizedStringPreferredFormat("ginicapture.analysis.suggestion.1.details", comment: "Analysis suggestion 1 details"),
                 iconName: "captureSuggestion1"),
             HelpTipsItem(
-                header: NSLocalizedString("ginicapture.analysis.suggestion.2", bundle: giniCaptureBundle(), comment: ""),
-                details: NSLocalizedString("ginicapture.analysis.suggestion.2.details", bundle: giniCaptureBundle(), comment: ""),
+                header: NSLocalizedStringPreferredFormat("ginicapture.analysis.suggestion.2", comment: "Analysis suggestion 2 header"),
+                details: NSLocalizedStringPreferredFormat("ginicapture.analysis.suggestion.2.details", comment: "Analysis suggestion 2 details"),
                 iconName: "captureSuggestion2"),
             HelpTipsItem(
-                header: NSLocalizedString("ginicapture.analysis.suggestion.3", bundle: giniCaptureBundle(), comment: ""),
-                details: NSLocalizedString("ginicapture.analysis.suggestion.3.details", bundle: giniCaptureBundle(), comment: ""),
+                header: NSLocalizedStringPreferredFormat("ginicapture.analysis.suggestion.3", comment: "Analysis suggestion 3 header"),
+                details: NSLocalizedStringPreferredFormat("ginicapture.analysis.suggestion.3.details", comment: "Analysis suggestion 3 details"),
                 iconName: "captureSuggestion3"),
             HelpTipsItem(
-                header: NSLocalizedString("ginicapture.analysis.suggestion.4", bundle: giniCaptureBundle(), comment: ""),
-                details: NSLocalizedString("ginicapture.analysis.suggestion.4.details", bundle: giniCaptureBundle(), comment: ""),
+                header: NSLocalizedStringPreferredFormat("ginicapture.analysis.suggestion.4", comment: "Analysis suggestion 4 header"),
+                details: NSLocalizedStringPreferredFormat("ginicapture.analysis.suggestion.4.details", comment: "Analysis suggestion 4 details"),
                 iconName: "captureSuggestion4")
         ])
     
         if giniConfiguration.multipageEnabled {
             items.append(
                 HelpTipsItem(
-                    header: NSLocalizedString("ginicapture.analysis.suggestion.5", bundle: giniCaptureBundle(), comment: ""),
-                    details: NSLocalizedString("ginicapture.analysis.suggestion.5.details", bundle: giniCaptureBundle(), comment: ""),
+                    header: NSLocalizedStringPreferredFormat("ginicapture.analysis.suggestion.5", comment: "Analysis suggestion 5 header"),
+                    details: NSLocalizedStringPreferredFormat("ginicapture.analysis.suggestion.5.details", comment: "Analysis suggestion 5 details"),
                     iconName: "captureSuggestion5"))
         }
     }
