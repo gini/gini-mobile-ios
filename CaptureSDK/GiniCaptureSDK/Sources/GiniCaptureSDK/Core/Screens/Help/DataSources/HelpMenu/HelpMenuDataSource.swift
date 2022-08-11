@@ -38,7 +38,6 @@ final public class HelpMenuDataSource: HelpBaseDataSource<HelpMenuItem, HelpMenu
     }
 
     public override func configureCell(cell: HelpMenuCell, indexPath: IndexPath) {
-
         cell.backgroundColor = UIColorPreferred(named: "systemWhite")
         cell.textLabel?.text = items[indexPath.row].title
         cell.textLabel?.textColor = UIColorPreferred(named: "labelColor")
