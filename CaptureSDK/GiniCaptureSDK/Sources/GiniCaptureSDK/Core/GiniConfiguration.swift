@@ -574,16 +574,6 @@ import UIKit
     // MARK: Help screens
     
     /**
-     Sets the background color for all help screens.
-     */
-    @objc public var helpScreenBackgroundColor =  GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: UIColor.from(hex: 0x1C1C1C))
-    
-    /**
-     Sets the background color for the cells on help screen.
-     */
-    @objc public var helpScreenCellsBackgroundColor =  GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: UIColor.from(hex: 0x1C1C1C))
-    
-    /**
      Sets the back button text in the navigation bar on the help menu screen. Use this if you only want to show the title.
      
      - note: Screen API only.
@@ -664,7 +654,7 @@ import UIKit
     /**
      Set an array of additional custom help menu items . Those items will be presented as table view cells on the help menu screen. By selecting the cell the user will be redirected to the page, which represented by viewController provided by customer during the  `HelpMenuViewController.Item` initialization.
     */
-    public var customMenuItems: [HelpMenuViewController.Item] = []
+    public var customMenuItems: [HelpMenuItem] = []
     
     /**
      Sets the default error logger. It is only used when giniErrorLoggerIsOn is true.

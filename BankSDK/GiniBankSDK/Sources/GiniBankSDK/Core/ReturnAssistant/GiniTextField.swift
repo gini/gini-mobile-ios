@@ -150,6 +150,12 @@ class GiniTextField: UIView {
         }
     }
     
+    var separatorColor: UIColor? {
+        didSet {
+            separatorView.backgroundColor = separatorColor
+        }
+    }
+
     override init(frame: CGRect) {
         
         super.init(frame: frame)

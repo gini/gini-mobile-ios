@@ -46,7 +46,7 @@ final class AppCoordinator: Coordinator {
             }
             return CustomDocumentValidationResult.success()
         }
-        let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
+        let customMenuItem = HelpMenuItem.custom("Custom menu item", CustomMenuItemViewController())
         giniConfiguration.customMenuItems = [customMenuItem]
         giniConfiguration.cameraPreviewCornerGuidesColor = .white
         giniConfiguration.cameraPreviewFrameColor = .init(lightModeColor: UIColor.init(white: 0.5, alpha: 0.1), darkModeColor: UIColor.init(white: 0.5, alpha: 0.3))

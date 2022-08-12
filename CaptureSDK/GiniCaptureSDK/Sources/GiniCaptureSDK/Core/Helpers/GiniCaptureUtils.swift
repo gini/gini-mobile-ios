@@ -250,3 +250,7 @@ extension Foundation.Bundle {
         return Bundle(for: GiniCapture.self)
     }()
 }
+
+public struct RoundedCorners {
+    static let cornerRadius: CGFloat = 8
+}
