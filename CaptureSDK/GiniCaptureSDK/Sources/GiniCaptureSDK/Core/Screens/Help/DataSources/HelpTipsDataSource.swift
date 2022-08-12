@@ -78,7 +78,7 @@ final public class HelpTipsDataSource: HelpBaseDataSource<HelpTipsItem, HelpTipC
         cell.descriptionLabel.text = item.details
         cell.descriptionLabel.font = giniConfiguration.textStyleFonts[.subheadline]
         cell.descriptionLabel.adjustsFontForContentSizeCategory = true
-        cell.descriptionLabel.textColor = UIColorPreferred(named: "subHeadline")
+        cell.descriptionLabel.textColor = UIColorPreferred(named: "subheadline")
         cell.iconImageView.image = UIImageNamedPreferred(named: item.iconName)
         cell.separatorView.backgroundColor = UIColorPreferred(named: "separator")
         cell.selectionStyle = .none

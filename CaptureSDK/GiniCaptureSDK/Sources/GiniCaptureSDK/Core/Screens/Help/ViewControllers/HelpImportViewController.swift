@@ -120,7 +120,7 @@ extension HelpImportViewController: UITableViewDataSource {
         cell.headerLabel.adjustsFontForContentSizeCategory = true
         cell.headerLabel.font = giniConfiguration.textStyleFonts[.headline]
         cell.descriptionLabel.backgroundColor = UIColor.clear
-        cell.descriptionLabel.textColor = UIColorPreferred(named: "subHeadline")
+        cell.descriptionLabel.textColor = UIColorPreferred(named: "subheadline")
         cell.descriptionLabel.font = giniConfiguration.textStyleFonts[.body]
         cell.descriptionLabel.adjustsFontForContentSizeCategory = true
         cell.contentView.backgroundColor = UIColor.clear
