@@ -59,6 +59,11 @@ class HelpFormatsViewController: UIViewController {
                 nibName: "HelpFormatCell",
                 bundle: giniCaptureBundle()),
             forCellReuseIdentifier: HelpFormatCell.reuseIdentifier)
+        tableView.register(
+            UINib(
+                nibName: "HelpFormatSectionHeader",
+                bundle: giniCaptureBundle()),
+            forHeaderFooterViewReuseIdentifier: HelpFormatSectionHeader.reuseIdentifier)
         tableView.delegate = self.dataSource
         tableView.dataSource = self.dataSource
         tableView.estimatedRowHeight = tableRowHeight
