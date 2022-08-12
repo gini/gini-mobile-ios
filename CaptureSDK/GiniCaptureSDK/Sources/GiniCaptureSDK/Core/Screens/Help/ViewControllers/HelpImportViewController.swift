@@ -59,6 +59,7 @@ class HelpImportViewController: UIViewController {
         tableView.allowsSelection = false
         tableView.backgroundColor = UIColor.clear
         tableView.tableFooterView = UIView()
+        tableView.estimatedRowHeight = 300
         tableView.register(
             UINib(
                 nibName: "HelpImportCell",
@@ -83,9 +84,9 @@ extension HelpImportViewController: UITableViewDelegate {
         let itemType = dataSource[indexPath.row]
         switch itemType {
         case .importToApp:
-            return 350
+            return UITableView.automaticDimension
         case .selectInvoice:
-            return 300
+            return UITableView.automaticDimension
         }
     }
 }
@@ -116,10 +117,12 @@ extension HelpImportViewController: UITableViewDataSource {
         cell.backgroundColor = UIColor.clear
         cell.headerLabel.textColor = UIColorPreferred(named: "labelColor")
         cell.headerLabel.backgroundColor = UIColor.clear
+        cell.headerLabel.adjustsFontForContentSizeCategory = true
         cell.headerLabel.font = giniConfiguration.textStyleFonts[.headline]
         cell.descriptionLabel.backgroundColor = UIColor.clear
         cell.descriptionLabel.textColor = UIColorPreferred(named: "subHeadline")
         cell.descriptionLabel.font = giniConfiguration.textStyleFonts[.body]
+        cell.descriptionLabel.adjustsFontForContentSizeCategory = true
         cell.contentView.backgroundColor = UIColor.clear
     }
 

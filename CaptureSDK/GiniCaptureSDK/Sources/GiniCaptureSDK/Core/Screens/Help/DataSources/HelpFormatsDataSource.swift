@@ -121,6 +121,8 @@ extension HelpFormatsDataSource: UITableViewDataSource {
             headerView.contentView.backgroundColor = .clear
             headerView.backgroundView?.backgroundColor = .clear
             headerView.textLabel?.font = giniConfiguration.textStyleFonts[.caption1]
+            headerView.textLabel?.adjustsFontForContentSizeCategory = true
+            headerView.textLabel?.numberOfLines = 0
             headerView.textLabel?.textColor =  UIColorPreferred(named: "subheadline")
         }
     }
@@ -146,6 +148,6 @@ extension HelpFormatsDataSource: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 52
+        return UITableView.automaticDimension
     }
 }

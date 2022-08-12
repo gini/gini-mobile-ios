@@ -69,11 +69,15 @@ final public class HelpTipsDataSource: HelpBaseDataSource<HelpTipsItem, HelpTipC
     public override func configureCell(cell: HelpTipCell, indexPath: IndexPath) {
         let item = self.items[indexPath.row]
         cell.headerLabel.text = item.header
-        cell.headerLabel.font = UIFontMetrics(forTextStyle: .subheadline).scaledFont(for: UIFont.boldSystemFont(ofSize: 16))
+        cell.headerLabel.font = UIFontMetrics(
+            forTextStyle: .subheadline
+        ).scaledFont(for: UIFont.boldSystemFont(ofSize: 16))
+        cell.headerLabel.adjustsFontForContentSizeCategory = true
         cell.headerLabel.textColor = UIColorPreferred(named: "labelColor")
         cell.backgroundColor = UIColorPreferred(named: "systemWhite")
         cell.descriptionLabel.text = item.details
         cell.descriptionLabel.font = giniConfiguration.textStyleFonts[.subheadline]
+        cell.descriptionLabel.adjustsFontForContentSizeCategory = true
         cell.descriptionLabel.textColor = UIColorPreferred(named: "subHeadline")
         cell.iconImageView.image = UIImageNamedPreferred(named: item.iconName)
         cell.separatorView.backgroundColor = UIColorPreferred(named: "separator")
