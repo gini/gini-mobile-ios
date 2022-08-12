@@ -227,7 +227,7 @@ extension ComponentAPICoordinator {
         let vc: UIViewController
         if pages.type == .image {
             let imageAnalysisNoResultsViewController = ImageAnalysisNoResultsViewController()
-            imageAnalysisNoResultsViewController.didTapBottomButton = { [unowned self] in
+             imageAnalysisNoResultsViewController.didTapBottomButton = { [unowned self] in
                 self.didTapRetry()
             }
             vc = imageAnalysisNoResultsViewController

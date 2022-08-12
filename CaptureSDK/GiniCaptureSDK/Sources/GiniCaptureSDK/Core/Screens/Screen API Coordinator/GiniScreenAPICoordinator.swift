@@ -238,18 +238,21 @@ extension GiniScreenAPICoordinator {
     }
     
     @objc func showHelpMenuScreen() {
-        
-        trackingDelegate?.onCameraScreenEvent(event: Event(type: .help))
-        
-        let helpMenuViewController = HelpMenuViewController(giniConfiguration: giniConfiguration)
+        let helpMenuViewController = HelpMenuViewController(
+            giniConfiguration: giniConfiguration
+        )
         helpMenuViewController.delegate = self
+        trackingDelegate?.onCameraScreenEvent(event: Event(type: .help))
         helpMenuViewController.setupNavigationItem(usingResources: backToCameraFromHelpMenuButtonResource,
                                                    selector: #selector(back),
                                                    position: .left,
                                                    target: self)
-        if helpMenuViewController.menuItems.count == 1 {
+        
+        //In case of 1 menu item it's better to show the item immediately without any selection
+         
+        if helpMenuViewController.dataSource.items.count == 1 {
             screenAPINavigationController
-                .pushViewController(helpItemViewController(for: helpMenuViewController.menuItems[0]),
+                .pushViewController(helpItemViewController(for: helpMenuViewController.dataSource.items[0]),
                                     animated: true)
         } else {
             screenAPINavigationController
@@ -330,26 +333,25 @@ extension GiniScreenAPICoordinator: UINavigationControllerDelegate {
 // MARK: - HelpMenuViewControllerDelegate
 
 extension GiniScreenAPICoordinator: HelpMenuViewControllerDelegate {
-    public func help(_ menuViewController: HelpMenuViewController, didSelect item: HelpMenuViewController.Item) {
+    public func help(_ menuViewController: HelpMenuViewController, didSelect item: HelpMenuItem) {
         screenAPINavigationController.pushViewController(helpItemViewController(for: item),
                                                          animated: true)
     }
     
-    func helpItemViewController(for item: HelpMenuViewController.Item) -> UIViewController {
+    func helpItemViewController(for item: HelpMenuItem) -> UIViewController {
         var viewController: UIViewController
+        
         switch item {
-        case .noResultsTips:
-            let imageNoResultViewController = item.viewController as? ImageAnalysisNoResultsViewController
-            imageNoResultViewController?.didTapBottomButton = { [weak self] in
-                guard let self = self, let cameraViewController = self.cameraViewController else { return }
-                self.screenAPINavigationController.popToViewController(cameraViewController, animated: true)
-            }
-            
-            viewController = imageNoResultViewController!
-        case .openWithTutorial, .supportedFormats:
-            viewController = item.viewController
-        case .custom(_, let customViewController):
-            viewController = customViewController
+            case .noResultsTips:
+                let title: String = .localized(resource: ImageAnalysisNoResultsStrings.titleText)
+                viewController = HelpTipsViewController(giniConfiguration: giniConfiguration)
+                viewController.title = title
+            case .openWithTutorial:
+                viewController = HelpImportViewController(giniConfiguration: giniConfiguration)
+            case .supportedFormats:
+                viewController = HelpFormatsViewController(giniConfiguration: giniConfiguration)
+            case .custom(_, let customViewController):
+                viewController = customViewController
         }
         
         viewController.setupNavigationItem(usingResources: backToHelpMenuButtonResource,

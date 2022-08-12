@@ -11,7 +11,8 @@ public enum AnalysisStrings: LocalizableStringResource {
     
     case analysisErrorMessage, documentCreationErrorMessage, cancelledMessage, loadingText, pdfPages,
     suggestion1Text, suggestion2Text, suggestion3Text, suggestion4Text, suggestion5Text, suggestionHeader,
-    defaultPdfDokumentTitle
+    defaultPdfDokumentTitle,
+    suggestion1Details, suggestion2Details, suggestion3Details, suggestion4Details, suggestion5Details
     
     public var tableName: String {
         return "analysis"
@@ -40,6 +41,16 @@ public enum AnalysisStrings: LocalizableStringResource {
         case .suggestion4Text:
             return ("suggestion.4", "Fourth suggestion text for analysis screen")
         case .suggestion5Text:
+            return ("suggestion.5", "Fifth suggestion text for analysis screen")
+        case .suggestion1Details:
+            return ("suggestion.5", "Fifth suggestion text for analysis screen")
+        case .suggestion2Details:
+            return ("suggestion.5", "Fifth suggestion text for analysis screen")
+        case .suggestion3Details:
+            return ("suggestion.5", "Fifth suggestion text for analysis screen")
+        case .suggestion4Details:
+            return ("suggestion.5", "Fifth suggestion text for analysis screen")
+        case .suggestion5Details:
             return ("suggestion.5", "Fifth suggestion text for analysis screen")
         case .suggestionHeader:
             return ("suggestion.header", "Fourth suggestion text for analysis screen")

@@ -20,6 +20,21 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: get branch name
+      id: branch
+      shell: bash
+      run: |
+        # Get the branch ref that contains the tag in github.ref
+        # (github.ref contains the tag because this workflow is triggered by tags: 
+        # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context)
+        branch_ref=$(git branch -r --contains "${{ github.ref }}")
+        # Remove "origin/" prefix from branch_ref and trim whitespace
+        branch_name=$(echo ${branch_ref/origin\/} | tr -d '[:space:]')
+        echo "::set-output name=branch_name::$branch_name"
+        echo "branch_name: $branch_name"
 
     - name: setup ruby
       uses: ruby/setup-ruby@v1
@@ -36,6 +51,8 @@ jobs:
             "project_folder": "HealthAPILibrary",
             "package_folder": "GiniHealthAPILibrary",
             "version_file_path": "HealthAPILibrary/GiniHealthAPILibrary/Sources/GiniHealthAPILibrary/GiniHealthAPILibraryVersion.swift", 
+            "documentation_title":"GiniHealthAPILibrary Reference",
+            "is_stable_release": "${{ steps.branch.outputs.branch_name == 'main' }}",
             "git_tag": "${{ github.ref }}",
             "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
             "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
