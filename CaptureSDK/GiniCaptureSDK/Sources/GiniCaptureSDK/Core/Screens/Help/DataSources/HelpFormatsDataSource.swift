@@ -90,6 +90,17 @@ class HelpFormatsDataSource: NSObject {
             cell.separatorView.isHidden = false
         }
     }
+
+    fileprivate func configureHeader(
+        header: HelpFormatSectionHeader,
+        section: Int) {
+        header.titleLabel.font = giniConfiguration.textStyleFonts[.caption1]
+        header.titleLabel.adjustsFontForContentSizeCategory = true
+        header.titleLabel.numberOfLines = 0
+        header.titleLabel.textColor =  UIColorPreferred(named: "subheadline")
+        header.titleLabel.text = sections[section].title.uppercased()
+        header.backgroundView?.backgroundColor = UIColor.clear
+    }
 }
 
 extension HelpFormatsDataSource: UITableViewDataSource {
@@ -112,19 +123,14 @@ extension HelpFormatsDataSource: UITableViewDataSource {
         }
     }
 
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section].title.uppercased()
-    }
-
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        if let headerView = view as? UITableViewHeaderFooterView {
-            headerView.contentView.backgroundColor = .clear
-            headerView.backgroundView?.backgroundColor = .clear
-            headerView.textLabel?.font = giniConfiguration.textStyleFonts[.caption1]
-            headerView.textLabel?.adjustsFontForContentSizeCategory = true
-            headerView.textLabel?.numberOfLines = 0
-            headerView.textLabel?.textColor =  UIColorPreferred(named: "subheadline")
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if let header = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: HelpFormatSectionHeader.reuseIdentifier
+        ) as? HelpFormatSectionHeader {
+            configureHeader(header: header, section: section)
+            return header
         }
+        fatalError("Section header is missing")
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
