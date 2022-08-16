@@ -452,11 +452,35 @@ import UIKit
     }
     fileprivate var onboardingCustomPages: [UIView]?
     
+    /**
+     Enable/disable the bottom navigation bar.
+     */
     public var bottomNavigationBarEnabled: Bool = true
     
-    public var navigationBarTopProvider: NavigationBarTopProvider?
+    /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the onboarding screen.
+     */
+    public var onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
     
-    public var navigationBarBottomProvider: NavigationBarBottomProvider?
+    /**
+      * Set an adapter implementation to show a custom illustration on the "align corners" onboarding page.
+     */
+    public var onboardingAlignCornersIllustrationAdapter: OnboardingIllustrationAdapter?
+
+     /**
+       * Set an adapter implementation to show a custom illustration on the "lighting" onboarding page.
+      */
+    public var onboardingLightingIllustrationAdapter: OnboardingIllustrationAdapter?
+
+     /**
+      * Set an adapter implementation to show a custom illustration on the "multi-page" onboarding page.
+      */
+    public var onboardingMultiPageIllustrationAdapter: OnboardingIllustrationAdapter?
+
+     /**
+      * Set an adapter implementation to show a custom illustration on the "QR code" onboarding page.
+      */
+    public var onboardingQRCodeIllustrationAdapter: OnboardingIllustrationAdapter?
     
     /**
      Sets the back button text in the navigation bar on the review screen. Use this if you only want to show the title.
