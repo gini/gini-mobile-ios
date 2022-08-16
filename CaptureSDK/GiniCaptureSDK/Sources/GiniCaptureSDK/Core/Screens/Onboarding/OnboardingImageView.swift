@@ -6,7 +6,19 @@
 
 import UIKit
 
-class OnboardingImageView: UIView, OnboardingIconAdapter {
+class OnboardingImageView: UIView, OnboardingIllustrationAdapter {
+    func pageDidAppear() {
+        
+    }
+    
+    func pageDidDisappear() {
+        
+    }
+    
+    func injectedView() -> UIView {
+        self
+    }
+    
         
     var icon: UIImage? {
         didSet {
@@ -42,17 +54,6 @@ class OnboardingImageView: UIView, OnboardingIconAdapter {
             }
 
         }
-    
-    func onVisible() {
-    }
-    
-    func onHidden() {
-    }
-}
-
-protocol OnboardingIconAdapter {
-    func onVisible()
-    func onHidden()
 }
 
 extension UIView {
