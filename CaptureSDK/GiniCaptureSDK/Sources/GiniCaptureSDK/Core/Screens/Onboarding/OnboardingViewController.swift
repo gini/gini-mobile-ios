@@ -14,8 +14,7 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var containerView: UIStackView!
         @IBOutlet weak var viewContainer: UIStackView!
-    fileprivate var navigationBarBottomProvider: DefaultBottomNavigationBar?
-
+    fileprivate var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
     
     fileprivate func configureCollectionView() {
         pagesCollection.register(UINib(nibName: "OnboardingPageCell", bundle: giniCaptureBundle()), forCellWithReuseIdentifier: "onboardingPageCellIdentifier")
@@ -33,18 +32,24 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
         configureBottomNavigation()
     }
     
+    fileprivate func layoutBottomNavigationBar(_ navigationBar: OnboardingBottomNavigationBar) {
+        navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        let horizontalConstraint = navigationBar.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        let verticalConstraint = navigationBar.topAnchor.constraint(equalTo: pageControl.bottomAnchor)
+        let widthConstraint = navigationBar.widthAnchor.constraint(equalTo: view.widthAnchor)
+        let heightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: 100)
+        let bottomConstraint = navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        view.addConstraints([horizontalConstraint, verticalConstraint, widthConstraint, heightConstraint, bottomConstraint])
+    }
+    
     func configureBottomNavigation() {
         if GiniConfiguration.shared.bottomNavigationBarEnabled {
             removeButtons()
-            if let someCustomView = DefaultBottomNavigationBar().loadNib() as?
-                DefaultBottomNavigationBar {
-                someCustomView.nextBottom.addTarget(self, action: #selector(close), for: .touchUpInside)
-
-                let customItem = UIBarButtonItem(customView: someCustomView)
-                
-                toolbarItems = [customItem]
-                navigationController?.toolbar.frame = CGRect(x: 0, y: view.frame.size.height - 120, width: view.frame.size.width, height: 120)
-                navigationController?.setToolbarHidden(false, animated: false)
+            if let navigationBar =
+                OnboardingBottomNavigationBar().loadNib() as?
+                    OnboardingBottomNavigationBar {
+                view.addSubview(navigationBar)
+                layoutBottomNavigationBar(navigationBar)
 
                 navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Skip",
                                                                     style: .plain,
@@ -57,7 +62,7 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
 
     fileprivate func removeButtons() {
         nextButton.removeFromSuperview()
-        containerView.layoutSubviews()
+        containerView.removeArrangedSubview(nextButton)
     }
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
