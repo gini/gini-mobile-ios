@@ -67,7 +67,7 @@ final public class HelpTipsDataSource: HelpBaseDataSource<HelpTipsItem, HelpTipC
     }
 
     public override func configureCell(cell: HelpTipCell, indexPath: IndexPath) {
-        let item = self.items[indexPath.row]
+        let item = items[indexPath.row]
         cell.headerLabel.text = item.header
         cell.headerLabel.font = giniConfiguration.textStyleFonts[.subheadline]?.bold()
         cell.headerLabel.adjustsFontForContentSizeCategory = true
@@ -80,5 +80,10 @@ final public class HelpTipsDataSource: HelpBaseDataSource<HelpTipsItem, HelpTipC
         cell.iconImageView.image = UIImageNamedPreferred(named: item.iconName)
         cell.separatorView.backgroundColor = UIColorPreferred(named: "separator")
         cell.selectionStyle = .none
+        if indexPath.row == items.count - 1 {
+            cell.separatorView.alpha = 0
+        } else {
+            cell.separatorView.alpha = 1
+        }
     }
 }
