@@ -45,36 +45,5 @@ final class CameraViewControllerTests: XCTestCase {
         XCTAssertNil(cameraViewController.fileImportToolTipView,
                      "ToolTipView should not be created when file import is disabled.")
     }
-    
-    func testCaptureButtonDisabledWhenToolTipIsShown() {
-        ToolTipView.shouldShowFileImportToolTip = true
-        giniConfiguration.fileImportSupportedTypes = .pdf_and_images
-        
-        // Disable onboarding on launch
-        giniConfiguration.onboardingShowAtLaunch = false
-        giniConfiguration.onboardingShowAtFirstLaunch = false
-        cameraViewController = CameraViewController(giniConfiguration: giniConfiguration)
-        
-        _ = cameraViewController.view
-        
-        XCTAssertFalse(cameraViewController.cameraButtonsViewController.captureButton.isEnabled,
-                       "capture button should be disaled when tooltip is shown")
-    }
-    
-    func testOpaqueViewWhenToolTipIsShown() {
-        ToolTipView.shouldShowFileImportToolTip = true
-        GiniConfiguration.shared.fileImportSupportedTypes = .pdf_and_images
-        GiniConfiguration.shared.toolTipOpaqueBackgroundStyle = .dimmed
-        
-        // Disable onboarding on launch
-        GiniConfiguration.shared.onboardingShowAtLaunch = false
-        GiniConfiguration.shared.onboardingShowAtFirstLaunch = false
-        
-        cameraViewController = CameraViewController.init(giniConfiguration: GiniConfiguration.shared)
-        _ = cameraViewController.view
-        
-        XCTAssertEqual(cameraViewController.opaqueView?.backgroundColor, UIColor.black.withAlphaComponent(0.8))
-    }
-
 }
 
