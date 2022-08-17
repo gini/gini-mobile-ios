@@ -83,6 +83,7 @@ import UIKit
         return CustomDocumentValidationResult.success()
     }
     
+    // MARK: - TODO DELETE
     /**
      Sets the font used in the GiniCapture library by default.
      */
@@ -603,16 +604,6 @@ import UIKit
     // MARK: Help screens
     
     /**
-     Sets the background color for all help screens.
-     */
-    @objc public var helpScreenBackgroundColor =  GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: UIColor.from(hex: 0x1C1C1C))
-    
-    /**
-     Sets the background color for the cells on help screen.
-     */
-    @objc public var helpScreenCellsBackgroundColor =  GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: UIColor.from(hex: 0x1C1C1C))
-    
-    /**
      Sets the back button text in the navigation bar on the help menu screen. Use this if you only want to show the title.
      
      - note: Screen API only.
@@ -693,7 +684,7 @@ import UIKit
     /**
      Set an array of additional custom help menu items . Those items will be presented as table view cells on the help menu screen. By selecting the cell the user will be redirected to the page, which represented by viewController provided by customer during the  `HelpMenuViewController.Item` initialization.
     */
-    public var customMenuItems: [HelpMenuViewController.Item] = []
+    public var customMenuItems: [HelpMenuItem] = []
     
     /**
      Sets the default error logger. It is only used when giniErrorLoggerIsOn is true.
@@ -747,4 +738,31 @@ import UIKit
     @objc public var backToMenuButtonResource: PreferredButtonResource?
     @objc public var nextButtonResource: PreferredButtonResource?
     @objc public var cancelButtonResource: PreferredButtonResource?
+    
+    /**
+     Set dictionary of fonts for available text styles. Used internally.
+     */
+    var textStyleFonts: [UIFont.TextStyle: UIFont] = [
+    .largeTitle: UIFontMetrics(forTextStyle: .largeTitle).scaledFont(for: UIFont.systemFont(ofSize: 34)),
+    .title1: UIFontMetrics(forTextStyle: .title1).scaledFont(for: UIFont.systemFont(ofSize: 28)),
+    .title2: UIFontMetrics(forTextStyle: .title2).scaledFont(for: UIFont.systemFont(ofSize: 22)),
+    .title3: UIFontMetrics(forTextStyle: .title3).scaledFont(for: UIFont.systemFont(ofSize: 20)),
+    .caption1: UIFontMetrics(forTextStyle: .caption1).scaledFont(for: UIFont.systemFont(ofSize: 12)),
+    .caption2: UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 11)),
+    .headline: UIFontMetrics(forTextStyle: .headline).scaledFont(for: UIFont.systemFont(ofSize: 17)),
+    .subheadline: UIFontMetrics(forTextStyle: .subheadline).scaledFont(for: UIFont.systemFont(ofSize: 15)),
+    .body: UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont.systemFont(ofSize: 17)),
+    .callout: UIFontMetrics(forTextStyle: .callout).scaledFont(for: UIFont.systemFont(ofSize: 16)),
+    .footnote: UIFontMetrics(forTextStyle: .footnote).scaledFont(for: UIFont.systemFont(ofSize: 13)),
+    ]
+
+    /**
+     Allows setting a custom font for specific text styles. The change will affect all screens where a specific text style was used.
+     
+     - parameter font: Font that is going to be assosiated with specific text style. You can use scaled font or scale your font with our util method `UIFont.scaledFont(_ font: UIFont, textStyle: UIFont.TextStyle)`
+     - parameter textStyle: Constants that describe the preferred styles for fonts. Please, find additional information [here](https://developer.apple.com/documentation/uikit/uifont/textstyle)
+    */
+    public func updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle) {
+        textStyleFonts[textStyle] = font
+    }
 }
