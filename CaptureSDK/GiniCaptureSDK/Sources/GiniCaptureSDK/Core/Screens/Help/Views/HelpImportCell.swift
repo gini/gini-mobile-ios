@@ -14,4 +14,11 @@ class HelpImportCell: UITableViewCell {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var importImageView: UIImageView!
 
+    public override func awakeFromNib() {
+        super.awakeFromNib()
+        self.isAccessibilityElement = false
+        self.headerLabel.isAccessibilityElement = true
+        self.descriptionLabel.isAccessibilityElement = true
+        self.importImageView.isAccessibilityElement = true
+    }
 }
