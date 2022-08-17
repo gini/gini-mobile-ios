@@ -69,11 +69,18 @@
 
 "ginicapture.analysis.loadingText" = "Dokument wird analysiert";
 "ginicapture.analysis.suggestion.header" = "Um schneller Ergebnisse zu erhalten, bitte:";
-"ginicapture.analysis.suggestion.1" = "Auf gute Beleuchtung achten";
+"ginicapture.analysis.suggestion.1" = "TODO Good lightning";
+"ginicapture.analysis.suggestion.1.details" = "TODO Proper lighting leads to better results than flash.";
+
 "ginicapture.analysis.suggestion.2" = "Seite glatt streichen";
-"ginicapture.analysis.suggestion.3" = "Gerät parallel über die Seite halten";
-"ginicapture.analysis.suggestion.4" = "Seite vollständig in den angezeigten Rahmen einpassen";
-"ginicapture.analysis.suggestion.5" = "Jetzt ist es möglich, eine Rechnung mit mehreren Seiten zu analysieren";
+"ginicapture.analysis.suggestion.2.details" = "TODO Tips for best results from photos.";
+"ginicapture.analysis.suggestion.3" = "TODO Position in the frame";
+"ginicapture.analysis.suggestion.3.details" = "TODO Capture the entire page within the frame shown on the camera screen.";
+"ginicapture.analysis.suggestion.4" = "TODO Parallel";
+"ginicapture.analysis.suggestion.4.details" = "TODO Hold the device parallel over the page.";
+"ginicapture.analysis.suggestion.5" = "TODO Multiple pages";
+"ginicapture.analysis.suggestion.5.details" = "TODO It’s now possible to analyse an invoice with multiple pages.";
+
 "ginicapture.analysis.error.actionTitle" = "Wiederholen";
 "ginicapture.analysis.error.documentCreation" = "Beim Hochladen des Dokuments ist ein Fehler aufgetreten.";
 "ginicapture.analysis.error.analysis" = "Beim Analysieren des Dokuments ist ein Fehler aufgetreten.";
@@ -96,19 +103,26 @@
 "ginicapture.noresults.title" = "Tipps für Fotos";
 "ginicapture.noresults.warningHelpMenu" = "Zur Erkennung aller Daten bitte folgende Tipps beim Abfotografieren beachten:";
 
-"ginicapture.help.supportedFormats.title" = "Unterstützte Formate";
-"ginicapture.help.supportedFormats.section.1.title" = "Folgende Formate werden unterstützt:";
+"ginicapture.help.import.title" = "TODO How to import";
+"ginicapture.help.import.selectInvoice.title" = "TODO Select an invoice";
+"ginicapture.help.import.selectInvoice.desc" = "TODO To do so, please select a PDF invoice from within your email app, PDF viewer or other app on your smarthpone. To redirect the file to GiniVision, use the “Share” function, represented as a square with the arrow pointing up.";
+"ginicapture.help.import.importtoapp.title" = "TODO Import to app";
+"ginicapture.help.import.importtoapp.desc" = "TODO Please select your Banking App from the list to start the analysis and transfer process.";
+
+"ginicapture.help.supportedFormats.title" = "TODO Formats";
+"ginicapture.help.supportedFormats.section.1.title" = "TODO SUPPORTED FORMATS";
 "ginicapture.help.supportedFormats.section.1.item.1" = "Computer-erstellte Überweisungsträger und Rechnungen";
 "ginicapture.help.supportedFormats.section.1.item.2" = "Einseitige Bilder im jpg, png, gif oder tiff Format";
 "ginicapture.help.supportedFormats.section.1.item.3" = "PDF Dokumente von bis zu 10 Seiten";
 "ginicapture.help.supportedFormats.section.1.item.4" = "QR Codes";
-"ginicapture.help.supportedFormats.section.2.title" = "Was nicht analysiert wird:";
+"ginicapture.help.supportedFormats.section.1.item.5" = "Photos of monitors or screens";
+"ginicapture.help.supportedFormats.section.2.title" = "not supported formats";
 "ginicapture.help.supportedFormats.section.2.item.1" = "Handschrift";
 "ginicapture.help.supportedFormats.section.2.item.2" = "Fotos von Bildschirmen";
 
 "ginicapture.help.menu.title" = "Hilfe";
 "ginicapture.help.menu.firstItem" = "Tipps für beste Ergebnisse aus Fotos";
-"ginicapture.help.menu.secondItem" = "Dokumente aus anderen Apps öffnen";
+"ginicapture.help.menu.secondItem" = "Import documents from other apps";
 "ginicapture.help.menu.thirdItem" = "Unterstützte Formate";
 
 "ginicapture.albums.title" = "Alben";

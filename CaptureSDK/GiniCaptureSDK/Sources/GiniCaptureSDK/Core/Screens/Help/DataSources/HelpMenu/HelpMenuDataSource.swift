@@ -41,7 +41,7 @@ final public class HelpMenuDataSource: HelpBaseDataSource<HelpMenuItem, HelpMenu
         cell.backgroundColor = UIColorPreferred(named: "systemWhite")
         cell.textLabel?.text = items[indexPath.row].title
         cell.textLabel?.textColor = UIColorPreferred(named: "labelColor")
-        cell.textLabel?.font = giniConfiguration.customFont.with(weight: .regular, size: 14, style: .body)
+        cell.textLabel?.font = giniConfiguration.textStyleFonts[.body]
         cell.accessoryType = .disclosureIndicator
         cell.selectionStyle = .none
         if indexPath.row == self.items.count - 1 {
