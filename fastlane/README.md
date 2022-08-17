@@ -56,6 +56,13 @@ Parameters:
 
 Publish a documentation to gh-pages.
 
+Releases the documentation into a folder hierarchy constructed from the package_folder and project version:
+<gh_pages_url>/<package_folder>/<project_version>
+Example: <gh_pages_url>/GiniCaptureSDK/1.11.0
+
+If the 'is_stable_release' option is set to 'true', then it updates the package root index.html 
+(at <gh_pages_url>/<package_folder>/index.html) to automatically redirect to the released version.
+
 Parameters:
   project_folder        - the folder of the project to be released (e.g., HealthAPILibrary, HealthSDK)
   package_folder        - the folder to the swift package to be released (e.g., GiniHealthAPILibrary, GiniHealthAPILibraryPinning)
@@ -64,6 +71,9 @@ Parameters:
   repo_user             - the username to use for authentication
   repo_password         - the password to use for authentication
   ci                    - set to "true" if running on a CI machine
+  documentation_title   - the title used on the root index page
+  is_stable_release     - set to "true" if it's a stable release that should be shown by default 
+  dry_run               - (optional) executes without permanent side effects
 
 
 
