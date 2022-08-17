@@ -23,7 +23,13 @@ public enum OnboardingNavigationBarBottomButton: Int {
 
 class DefaultOnboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter {
     func injectedView() -> UIView {
-        return UIView()
+        if let navigationBarView =
+            OnboardingBottomNavigationBar().loadNib() as?
+                OnboardingBottomNavigationBar {
+            return navigationBarView
+        } else {
+            return UIView()
+        }
     }
     
     func didClickSkipButton() {

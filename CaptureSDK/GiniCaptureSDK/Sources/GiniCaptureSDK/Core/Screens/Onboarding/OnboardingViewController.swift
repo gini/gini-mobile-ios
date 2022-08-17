@@ -15,6 +15,7 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
     @IBOutlet weak var containerView: UIStackView!
         @IBOutlet weak var viewContainer: UIStackView!
     fileprivate var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
+    let configuration = GiniConfiguration.shared
     
     fileprivate func configureCollectionView() {
         pagesCollection.register(UINib(nibName: "OnboardingPageCell", bundle: giniCaptureBundle()), forCellWithReuseIdentifier: "onboardingPageCellIdentifier")
@@ -32,7 +33,7 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
         configureBottomNavigation()
     }
     
-    fileprivate func layoutBottomNavigationBar(_ navigationBar: OnboardingBottomNavigationBar) {
+    fileprivate func layoutBottomNavigationBar(_ navigationBar: UIView) {
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
         let horizontalConstraint = navigationBar.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         let verticalConstraint = navigationBar.topAnchor.constraint(equalTo: pageControl.bottomAnchor)
@@ -43,19 +44,25 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
     }
     
     func configureBottomNavigation() {
-        if GiniConfiguration.shared.bottomNavigationBarEnabled {
+        if configuration.bottomNavigationBarEnabled {
             removeButtons()
+            if let customBottomNavigationBar = configuration.onboardingNavigationBarBottomAdapter {
+                navigationBarBottomAdapter = customBottomNavigationBar
+            } else {
+                navigationBarBottomAdapter = DefaultOnboardingNavigationBarBottomAdapter()
+            }
+
             if let navigationBar =
-                OnboardingBottomNavigationBar().loadNib() as?
-                    OnboardingBottomNavigationBar {
+                navigationBarBottomAdapter?.injectedView() {
                 view.addSubview(navigationBar)
                 layoutBottomNavigationBar(navigationBar)
-
-                navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Skip",
-                                                                    style: .plain,
-                                                                    target: self,
-                                                                    action: #selector(close))
             }
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Skip",
+                                                                style: .plain,
+                                                                target: self,
+                                                                action: #selector(close))
+
         }
     }
 
