@@ -17,4 +17,20 @@ extension UIFont {
     public static func scaledFont(_ font: UIFont, textStyle: UIFont.TextStyle) -> UIFont {
         return UIFontMetrics(forTextStyle: textStyle).scaledFont(for: font)
     }
+    
+    func withTraits(traits: UIFontDescriptor.SymbolicTraits) -> UIFont {
+        if let descriptor = fontDescriptor.withSymbolicTraits(traits) {
+            return UIFont(descriptor: descriptor, size: 0)
+            // size 0 means keep the size as it is
+        }
+        fatalError("Font not found")
+    }
+
+    func bold() -> UIFont {
+        return withTraits(traits: .traitBold)
+    }
+
+    func italic() -> UIFont {
+        return withTraits(traits: .traitItalic)
+    }
 }
