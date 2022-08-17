@@ -94,39 +94,6 @@ final class SupportedFormatsViewControllerTests: XCTestCase {
                        "items count in section 1 should be 2 when file import is enabled only for pdfs")
     }
     
-    func testSecondSectionProperties() {
-        let indexPath = IndexPath(row: 0, section: 1)
-        let section = sections[indexPath.section]
-        let sectionImage = section.itemsImage
-        
-        let sectionItemsCount = section.items.count
-        let sectionTitle = section.title
-        
-        let cell = supportedFormatsViewController.dataSource.tableView(supportedFormatsViewController.tableView, cellForRowAt: indexPath)
-            as? HelpFormatCell
-        let headerTitle = supportedFormatsViewController.dataSource.tableView(supportedFormatsViewController.tableView, titleForHeaderInSection: indexPath.section)
-        let tableViewSectionItemsCount = supportedFormatsViewController
-            .tableView
-            .numberOfRows(inSection: indexPath.section)
-        
-        XCTAssertNotNil(cell, "cell in this table view should always be of type HelpFormatCell")
-        XCTAssertEqual(sectionImage, cell?.iconImageView?.image,
-                       "cell image should be equal to section image since it is the same for each item in the section")
-        XCTAssertEqual(sectionTitle.uppercased(), headerTitle?.uppercased(),
-                       "header title should be equal to section title")
-        XCTAssertEqual(sectionItemsCount, tableViewSectionItemsCount,
-                       "section items count and table section items count should be always equal")
-    }
-    
-    func testSectionTitle() {
-        let section1Title = sections[0].title
-        let tableSection1Title = supportedFormatsViewController.dataSource.tableView(supportedFormatsViewController.tableView,
-                                                                          titleForHeaderInSection: 0)
-        
-        XCTAssertEqual(section1Title, tableSection1Title,
-                       "table view section 1 title should be equal to the one declare on initialization")
-    }
-    
     func testRowSelectionDisabled() {
         let selectionState = supportedFormatsViewController.tableView.allowsSelection
         
