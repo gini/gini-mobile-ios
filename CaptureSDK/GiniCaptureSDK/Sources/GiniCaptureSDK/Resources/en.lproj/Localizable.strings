@@ -114,7 +114,7 @@
 "ginicapture.help.supportedFormats.section.1.item.3" = "PDF documents of up to 10 pages";
 "ginicapture.help.supportedFormats.section.1.item.4" = "QR Codes";
 "ginicapture.help.supportedFormats.section.1.item.5" = "Photos of monitors or screens";
-"ginicapture.help.supportedFormats.section.2.title" = "not supported formats:";
+"ginicapture.help.supportedFormats.section.2.title" = "not supported formats";
 "ginicapture.help.supportedFormats.section.2.item.1" = "Handwriting";
 "ginicapture.help.supportedFormats.section.2.item.2" = "Photos of monitors or screens";
 

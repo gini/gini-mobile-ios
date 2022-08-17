@@ -17,6 +17,7 @@ public class HelpTipCell: UITableViewCell, HelpCell {
 
     public override func awakeFromNib() {
         super.awakeFromNib()
+        self.iconImageView.adjustsImageSizeForAccessibilityContentSizeCategory = true
         self.headerLabel.font = UIFont.boldSystemFont(ofSize: 18)
     }
 

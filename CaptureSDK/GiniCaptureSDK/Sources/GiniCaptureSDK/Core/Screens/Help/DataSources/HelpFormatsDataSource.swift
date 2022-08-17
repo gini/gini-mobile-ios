@@ -77,8 +77,8 @@ class HelpFormatsDataSource: NSObject {
         let item = section.items[indexPath.row]
 
         cell.descriptionLabel.text = item
+        cell.descriptionLabel.font = giniConfiguration.textStyleFonts[.body]
         cell.descriptionLabel.textColor = UIColorPreferred(named: "labelColor")
-        cell.descriptionLabel.font = giniConfiguration.customFont.with(weight: .regular, size: 14, style: .body)
         cell.iconImageView.image = section.itemsImage
         cell.iconImageView.backgroundColor = UIColor.clear
         cell.backgroundColor = UIColorPreferred(named: "systemWhite")
@@ -88,6 +88,17 @@ class HelpFormatsDataSource: NSObject {
         } else {
             cell.separatorView.isHidden = false
         }
+    }
+
+    fileprivate func configureHeader(
+        header: HelpFormatSectionHeader,
+        section: Int) {
+        header.titleLabel.font = giniConfiguration.textStyleFonts[.caption1]
+        header.titleLabel.adjustsFontForContentSizeCategory = true
+        header.titleLabel.numberOfLines = 0
+        header.titleLabel.textColor =  UIColorPreferred(named: "subheadline")
+        header.titleLabel.text = sections[section].title.uppercased()
+        header.backgroundView?.backgroundColor = UIColor.clear
     }
 }
 
@@ -111,16 +122,14 @@ extension HelpFormatsDataSource: UITableViewDataSource {
         }
     }
 
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section].title.uppercased()
-    }
-
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        if let headerView = view as? UITableViewHeaderFooterView {
-            headerView.contentView.backgroundColor = .clear
-            headerView.backgroundView?.backgroundColor = .clear
-            headerView.textLabel?.textColor =  UIColorPreferred(named: "subheadline")
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if let header = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: HelpFormatSectionHeader.reuseIdentifier
+        ) as? HelpFormatSectionHeader {
+            configureHeader(header: header, section: section)
+            return header
         }
+        fatalError("Section header is missing")
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -144,6 +153,6 @@ extension HelpFormatsDataSource: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 52
+        return UITableView.automaticDimension
     }
 }
