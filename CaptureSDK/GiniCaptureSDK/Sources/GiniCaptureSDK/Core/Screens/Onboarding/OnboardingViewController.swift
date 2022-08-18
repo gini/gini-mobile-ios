@@ -38,7 +38,7 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
         let horizontalConstraint = navigationBar.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         let verticalConstraint = navigationBar.topAnchor.constraint(equalTo: pageControl.bottomAnchor)
         let widthConstraint = navigationBar.widthAnchor.constraint(equalTo: view.widthAnchor)
-        let heightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: 100)
+        let heightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: 300)
         let bottomConstraint = navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         view.addConstraints([horizontalConstraint, verticalConstraint, widthConstraint, heightConstraint, bottomConstraint])
     }
@@ -50,12 +50,18 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
                 navigationBarBottomAdapter = customBottomNavigationBar
             } else {
                 navigationBarBottomAdapter = DefaultOnboardingNavigationBarBottomAdapter()
+                navigationBarBottomAdapter?.nextButtonCompletionHandler = {
+                    // we can modify a handler action
+                    self.nextPage()
+                }
             }
 
             if let navigationBar =
                 navigationBarBottomAdapter?.injectedView() {
                 view.addSubview(navigationBar)
                 layoutBottomNavigationBar(navigationBar)
+                
+                
             }
         } else {
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Skip",
@@ -65,6 +71,7 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
 
         }
     }
+
 
 
     fileprivate func removeButtons() {
@@ -82,8 +89,10 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
             dismiss(animated: true)
         }
     
-        @IBAction func nextPage() {
+        func nextPage() {
+            //navigationBarBottomAdapter?.didClickNextButton()
         }
+    
 
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { 1 }
 

@@ -9,9 +9,6 @@ import Foundation
 import UIKit
 
 final class OnboardingBottomNavigationBar: UIView {
-        
-    var didTapBackButton: (() -> Void) = {}
-    var didTapForwardButton: (() -> Void) = {}
 
     @IBOutlet weak var nextButton: UIButton!
     
@@ -20,14 +17,7 @@ final class OnboardingBottomNavigationBar: UIView {
         configureView()
     }
 
-    @IBAction func nextButtonClicked(_ sender: Any) {
-        print("nextButtonClicked")
-    }
-    
     fileprivate func configureView() {
         let configuration = GiniConfiguration.shared
     }
-    
-    
-    
 }
