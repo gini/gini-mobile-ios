@@ -9,7 +9,7 @@ import Foundation
 
 public enum AnalysisStrings: LocalizableStringResource {
     
-    case analysisErrorMessage, documentCreationErrorMessage, cancelledMessage, loadingText, pdfPages,
+    case analysisErrorMessage, documentCreationErrorMessage, cancelledMessage, loadingText, loadingTextPDF, pdfPages,
     suggestion1Text, suggestion2Text, suggestion3Text, suggestion4Text, suggestion5Text, suggestionHeader,
     defaultPdfDokumentTitle
     
@@ -28,6 +28,9 @@ public enum AnalysisStrings: LocalizableStringResource {
         case .loadingText:
             return ("loadingText", "Text appearing at the center of the analysis screen " +
             "indicating that the document is being analysed")
+        case .loadingTextPDF:
+            return ("loadingText.pdf", "Text appearing at the center of the analysis screen " +
+            "indicating that a PDF document is being analysed, indicating the title of the document")
         case .pdfPages:
             return ("pdfpages",
                     "Text appearing at the top of the analysis screen indicating pdf number of pages")
