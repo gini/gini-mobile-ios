@@ -69,12 +69,17 @@
 
 "ginicapture.analysis.loadingText" = "Analyzing documents";
 "ginicapture.analysis.loadingText.pdf" = "Analyzing";
-"ginicapture.analysis.suggestion.header" = "For faster results, please:";
-"ginicapture.analysis.suggestion.1" = "Ensure good lighting";
-"ginicapture.analysis.suggestion.2" = "Flatten the page";
-"ginicapture.analysis.suggestion.3" = "Hold device parallel over the page";
-"ginicapture.analysis.suggestion.4" = "Capture the entire page within the frame shown on the camera screen";
-"ginicapture.analysis.suggestion.5" = "It's now possible to analyse an invoice with multiple pages";
+"ginicapture.analysis.suggestion.title.1" = "Good lighting";
+"ginicapture.analysis.suggestion.title.2" = "Flatten the page";
+"ginicapture.analysis.suggestion.title.3" = "Parallel";
+"ginicapture.analysis.suggestion.title.4" = "Position in the frame";
+"ginicapture.analysis.suggestion.title.5" = "Multiple pages";
+"ginicapture.analysis.suggestion.description.1" = "Proper lighting leads to better results than flash.";
+"ginicapture.analysis.suggestion.description.2" = "Tips for best results from photos";
+"ginicapture.analysis.suggestion.description.3" = "Hold the device parallel over the page";
+"ginicapture.analysis.suggestion.description.4" = "Capture the entire page within the frame shown on the camera screen";
+"ginicapture.analysis.suggestion.description.5" = "It’s now possible to analyse an invoice with multiple pages";
+
 "ginicapture.analysis.error.actionTitle" = "Retry";
 "ginicapture.analysis.error.documentCreation" = "An error occurred while uploading the document.";
 "ginicapture.analysis.error.analysis" = "An error occurred while parsing the document.";

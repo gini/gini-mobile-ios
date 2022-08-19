@@ -9,9 +9,7 @@ import Foundation
 
 public enum AnalysisStrings: LocalizableStringResource {
     
-    case analysisErrorMessage, documentCreationErrorMessage, cancelledMessage, loadingText, loadingTextPDF, pdfPages,
-    suggestion1Text, suggestion2Text, suggestion3Text, suggestion4Text, suggestion5Text, suggestionHeader,
-    defaultPdfDokumentTitle
+    case analysisErrorMessage, documentCreationErrorMessage, cancelledMessage, loadingText, loadingTextPDF, pdfPages, suggestion1Title, suggestion2Title, suggestion3Title, suggestion4Title, suggestion5Title, suggestion1Description, suggestion2Description, suggestion3Description, suggestion4Description, suggestion5Description, defaultPdfDokumentTitle
     
     public var tableName: String {
         return "analysis"
@@ -34,18 +32,28 @@ public enum AnalysisStrings: LocalizableStringResource {
         case .pdfPages:
             return ("pdfpages",
                     "Text appearing at the top of the analysis screen indicating pdf number of pages")
-        case .suggestion1Text:
-            return ("suggestion.1", "First suggestion text for analysis screen")
-        case .suggestion2Text:
-            return ("suggestion.2", "Second suggestion text for analysis screen")
-        case .suggestion3Text:
-            return ("suggestion.3", "Third suggestion text for analysis screen")
-        case .suggestion4Text:
-            return ("suggestion.4", "Fourth suggestion text for analysis screen")
-        case .suggestion5Text:
-            return ("suggestion.5", "Fifth suggestion text for analysis screen")
-        case .suggestionHeader:
-            return ("suggestion.header", "Fourth suggestion text for analysis screen")
+        case .suggestion1Title:
+            return ("suggestion.title.1", "First suggestion title for analysis screen")
+        case .suggestion2Title:
+            return ("suggestion.title.2", "Second suggestion title for analysis screen")
+        case .suggestion3Title:
+            return ("suggestion.title.3", "Third suggestion title for analysis screen")
+        case .suggestion4Title:
+            return ("suggestion.title.4", "Fourth suggestion title for analysis screen")
+        case .suggestion5Title:
+            return ("suggestion.title.5", "Fifth suggestion title for analysis screen")
+
+        case .suggestion1Description:
+            return ("suggestion.description.1", "First suggestion description for analysis screen")
+        case .suggestion2Description:
+            return ("suggestion.description.2", "Second suggestion description for analysis screen")
+        case .suggestion3Description:
+            return ("suggestion.description.3", "Third suggestion description for analysis screen")
+        case .suggestion4Description:
+            return ("suggestion.description.4", "Fourth suggestion description for analysis screen")
+        case .suggestion5Description:
+            return ("suggestion.description.5", "Fifth suggestion description for analysis screen")
+
         case .defaultPdfDokumentTitle:
             return ("defaultPdfDokumentTitle", "Default PDF document title")
         }
