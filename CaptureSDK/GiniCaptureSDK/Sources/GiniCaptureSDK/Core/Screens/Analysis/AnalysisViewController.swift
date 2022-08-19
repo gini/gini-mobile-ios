@@ -78,8 +78,6 @@ import UIKit
                           height: AnalysisViewController.loadingIndicatorContainerHeight)
         let loadingIndicatorContainer = UIView(frame: CGRect(origin: .zero,
                                                              size: size))
-        loadingIndicatorContainer.backgroundColor = .white
-        loadingIndicatorContainer.layer.cornerRadius = AnalysisViewController.loadingIndicatorContainerHeight / 2
         return loadingIndicatorContainer
     }()
     
@@ -133,30 +131,14 @@ import UIKit
     
     public override func loadView() {
         super.loadView()
-        imageView.image = document.previewImage
-        edgesForExtendedLayout = []
-        view.backgroundColor = .black
-        
+
+    }
+
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+
         // Configure view hierachy
-        addImageView()
-        
-        if let document = document as? GiniPDFDocument {
-            addLoadingView(intoContainer: loadingIndicatorContainer)
-            loadingIndicatorView.color = giniConfiguration.analysisLoadingIndicatorColor
-            
-            showPDFInformationView(withDocument: document,
-                                   giniConfiguration: giniConfiguration)
-        } else {
-            addLoadingView()
-            addLoadingText(below: loadingIndicatorView)
-            addOverlay()
-            
-            if document.type == .image {
-                showCaptureSuggestions(giniConfiguration: giniConfiguration)
-            }
-        }
-        
-        addErrorView()
+        setupView()
     }
     
     override public func viewDidAppear(_ animated: Bool) {
@@ -177,6 +159,31 @@ import UIKit
      */
     public func hideAnimation() {
         loadingIndicatorView.stopAnimating()
+    }
+
+    /**
+     Set up the view elements on the screen
+     */
+
+    private func setupView() {
+        addImageView()
+        edgesForExtendedLayout = []
+        view.backgroundColor = .black
+
+        if let document = document as? GiniPDFDocument {
+            imageView.image = document.previewImage
+        }
+
+        loadingIndicatorView.color = giniConfiguration.analysisLoadingIndicatorColor
+        addLoadingView(intoContainer: loadingIndicatorContainer)
+        addLoadingText(below: loadingIndicatorView)
+        addOverlay()
+
+        if document is GiniImageDocument {
+            showCaptureSuggestions(giniConfiguration: giniConfiguration)
+        }
+
+        addErrorView()
     }
     
     /**
@@ -268,24 +275,7 @@ import UIKit
         
         Constraints.pin(view: errorView, toSuperView: view, positions: [.left, .right, .top])
     }
-    
-    fileprivate func showPDFInformationView(withDocument document: GiniPDFDocument,
-                                            giniConfiguration: GiniConfiguration) {
-        let title: String = document.pdfTitle ?? .localized(resource: AnalysisStrings.defaultPdfDokumentTitle)
-        let pdfView = PDFInformationView(title: title,
-                                         subtitle: .localized(resource: AnalysisStrings.pdfPages,
-                                                              args: document.numberPages),
-                                         textColor: giniConfiguration.analysisPDFInformationTextColor,
-                                         textFont: giniConfiguration.customFont.with(weight: .regular,
-                                                                                     size: 16,
-                                                                                     style: .body),
-                                         backgroundColor: giniConfiguration.analysisPDFInformationBackgroundColor,
-                                         superView: self.view,
-                                         viewBelow: self.imageView)
-        
-        pdfView.show()
-    }
-    
+
     fileprivate func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {
         let captureSuggestions = CaptureSuggestionsView(superView: self.view,
                                                         bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor,
