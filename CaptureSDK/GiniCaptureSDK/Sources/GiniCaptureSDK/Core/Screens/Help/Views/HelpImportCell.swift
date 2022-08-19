@@ -17,6 +17,7 @@ class HelpImportCell: UITableViewCell {
     public override func awakeFromNib() {
         super.awakeFromNib()
         self.isAccessibilityElement = false
+        self.accessibilityElements = [headerLabel as Any, descriptionLabel as Any, importImageView as Any]
         self.headerLabel.isAccessibilityElement = true
         self.descriptionLabel.isAccessibilityElement = true
         self.importImageView.isAccessibilityElement = true
