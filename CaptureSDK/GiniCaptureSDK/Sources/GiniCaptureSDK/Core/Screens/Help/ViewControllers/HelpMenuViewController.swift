@@ -29,8 +29,7 @@ final public class HelpMenuViewController: UIViewController {
     private (set) var dataSource: HelpMenuDataSource
     private let giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 44
-    private let margin: CGFloat = 16
-    private var horizontalMargin: CGFloat = 16
+
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -76,17 +75,14 @@ final public class HelpMenuViewController: UIViewController {
 
     private func configureConstraints() {
         view.addConstraints([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: margin),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalMargin),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalMargin),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: GiniMargins.horizontalMargin),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -GiniMargins.horizontalMargin),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
 
     private func configureMainView() {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            horizontalMargin = 126 - 16
-        }
         view.backgroundColor = UIColorPreferred(named: "helpBackground")
         view.addSubview(tableView)
         title = NSLocalizedStringPreferredFormat("ginicapture.help.menu.title", comment: "Help Import screen title")

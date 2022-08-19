@@ -9,10 +9,8 @@
 import UIKit
 
 class HelpFormatsViewController: UIViewController {
-    private let margin: CGFloat = 16
     let tableRowHeight: CGFloat = 44
     let sectionHeight: CGFloat = 70
-    private var horizontalMargin: CGFloat = 16
 
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -45,9 +43,6 @@ class HelpFormatsViewController: UIViewController {
     }
 
     private func configureMainView() {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            horizontalMargin = 126 - 16
-        }
         title = NSLocalizedStringPreferredFormat(
             "ginicapture.help.supportedFormats.title",
             comment: "Supported formats screen title")
@@ -89,9 +84,9 @@ class HelpFormatsViewController: UIViewController {
 
     private func configureConstraints() {
         view.addConstraints([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: margin),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalMargin),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalMargin),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: GiniMargins.horizontalMargin),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -GiniMargins.horizontalMargin),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
