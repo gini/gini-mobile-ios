@@ -73,6 +73,11 @@ final public class HelpMenuViewController: UIViewController {
         tableView.separatorColor = UIColorPreferred(named: "separator")
     }
 
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        tableView.reloadData()
+    }
+
     private func configureConstraints() {
         view.addConstraints([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
