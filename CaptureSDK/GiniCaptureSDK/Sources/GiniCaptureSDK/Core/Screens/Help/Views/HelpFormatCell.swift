@@ -15,4 +15,10 @@ class HelpFormatCell: UITableViewCell, HelpCell {
     @IBOutlet weak var separatorView: UIView!
     static var reuseIdentifier: String = "kHelpFormatCell"
 
+    public override func awakeFromNib() {
+        super.awakeFromNib()
+        self.isAccessibilityElement = false
+        self.iconImageView.isAccessibilityElement = true
+        self.descriptionLabel.isAccessibilityElement = true
+    }
 }

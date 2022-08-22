@@ -93,26 +93,36 @@ extension HelpImportViewController: UITableViewDelegate {
 
 extension HelpImportViewController: UITableViewDataSource {
 
+    private func configureCellAccessibility(
+        cell: HelpImportCell,
+        item: String) {
+        cell.importImageView?.accessibilityTraits = .image
+        cell.importImageView.accessibilityLabel = item
+    }
+
     private func configureCell(cell: HelpImportCell, indexPath: IndexPath) {
         let itemType = dataSource[indexPath.row]
         let rowNr = indexPath.row + 1
         switch itemType {
         case .selectInvoice:
-            cell.headerLabel.text = "\(rowNr). " + NSLocalizedStringPreferredFormat(
+            let headerTitle = "\(rowNr). " + NSLocalizedStringPreferredFormat(
                 "ginicapture.help.import.selectInvoice.title",
                 comment: "Select an invoice header")
+            cell.headerLabel.text = headerTitle
             cell.descriptionLabel.text = NSLocalizedStringPreferredFormat(
                 "ginicapture.help.import.selectInvoice.desc",
                 comment: "Select an invoice description")
             cell.importImageView.image = UIImageNamedPreferred(named: "helpImport1")
+            configureCellAccessibility(cell: cell, item: headerTitle)
         case .importToApp:
-            cell.headerLabel.text = "\(rowNr). " + NSLocalizedStringPreferredFormat(
-                "ginicapture.help.import.importtoapp.title",
-                comment: "Import to app header")
+            let headerTitle = "\(rowNr). " + NSLocalizedStringPreferredFormat(
+                "ginicapture.help.import.importtoapp.title", comment: "Import to app header")
+            cell.headerLabel.text = headerTitle
             cell.descriptionLabel.text = NSLocalizedStringPreferredFormat(
                 "ginicapture.help.import.importtoapp.desc",
                 comment: "Import to app description")
             cell.importImageView.image = UIImageNamedPreferred(named: "helpImport2")
+            configureCellAccessibility(cell: cell, item: headerTitle)
         }
         cell.backgroundColor = UIColor.clear
         cell.headerLabel.textColor = UIColorPreferred(named: "labelColor")
