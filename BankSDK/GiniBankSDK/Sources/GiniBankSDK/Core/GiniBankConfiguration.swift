@@ -476,7 +476,7 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Sets the color of the loading indicator on the analysis screen to the specified color.
      */
-    @objc public var analysisLoadingIndicatorColor = Colors.Gini.blue
+    @objc public var analysisLoadingIndicatorColor = UIColor.from(giniColor: GiniColor(lightModeColor: .black, darkModeColor: .white))
     
     /**
      Sets the color of the PDF information view on the analysis screen to the specified color.
