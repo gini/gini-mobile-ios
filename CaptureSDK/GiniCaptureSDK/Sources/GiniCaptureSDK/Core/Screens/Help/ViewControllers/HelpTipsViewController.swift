@@ -23,7 +23,6 @@ public final class HelpTipsViewController: UIViewController {
     private (set) var dataSource: HelpTipsDataSource
     private var giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 76
-    private let margin: CGFloat = 16
 
     public init(giniConfiguration: GiniConfiguration) {
         self.giniConfiguration = giniConfiguration
@@ -71,11 +70,16 @@ public final class HelpTipsViewController: UIViewController {
         tableView.allowsSelection = false
     }
 
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        tableView.reloadData()
+    }
+    
     private func configureConstraints() {
         view.addConstraints([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: margin),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: margin),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -margin),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: GiniMargins.horizontalMargin),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -GiniMargins.horizontalMargin),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }

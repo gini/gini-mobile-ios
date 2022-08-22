@@ -9,7 +9,6 @@
 import UIKit
 
 class HelpFormatsViewController: UIViewController {
-    private let margin: CGFloat = 16
     let tableRowHeight: CGFloat = 44
     let sectionHeight: CGFloat = 70
 
@@ -76,13 +75,23 @@ class HelpFormatsViewController: UIViewController {
         tableView.alwaysBounceVertical = false
         tableView.contentInsetAdjustmentBehavior = .never
         tableView.separatorStyle = .none
+        if #available(iOS 14.0, *) {
+            var bgConfig = UIBackgroundConfiguration.listPlainCell()
+            bgConfig.backgroundColor = UIColor.clear
+            UITableViewHeaderFooterView.appearance().backgroundConfiguration = bgConfig
+        }
+    }
+
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        tableView.reloadData()
     }
 
     private func configureConstraints() {
         view.addConstraints([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: margin),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -margin),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: GiniMargins.horizontalMargin),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -GiniMargins.horizontalMargin),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
