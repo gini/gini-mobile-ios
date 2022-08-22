@@ -66,10 +66,21 @@ import UIKit
     
     fileprivate lazy var loadingIndicatorText: UILabel = {
         var loadingText = UILabel()
-        loadingText.text = .localized(resource: AnalysisStrings.loadingText)
         loadingText.font = giniConfiguration.customFont.with(weight: .regular, size: 18, style: .body)
         loadingText.textAlignment = .center
         loadingText.textColor = .white
+        loadingText.numberOfLines = 0
+
+        if document.type == .pdf {
+            if let documentTitle = (document as? GiniPDFDocument)?.pdfTitle {
+                loadingText.text = .localized(resource: AnalysisStrings.loadingTextPDF) + " \(documentTitle)"
+            } else {
+                loadingText.text =  .localized(resource: AnalysisStrings.loadingText)
+            }
+        } else {
+            loadingText.text =  .localized(resource: AnalysisStrings.loadingText)
+        }
+
         return loadingText
     }()
     
