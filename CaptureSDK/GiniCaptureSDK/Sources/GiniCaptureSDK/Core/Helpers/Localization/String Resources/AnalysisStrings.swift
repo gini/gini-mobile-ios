@@ -9,7 +9,7 @@ import Foundation
 
 public enum AnalysisStrings: LocalizableStringResource {
     
-    case analysisErrorMessage, documentCreationErrorMessage, cancelledMessage, loadingText, loadingTextPDF, pdfPages, suggestion1Title, suggestion2Title, suggestion3Title, suggestion4Title, suggestion5Title, suggestion1Description, suggestion2Description, suggestion3Description, suggestion4Description, suggestion5Description, defaultPdfDokumentTitle
+    case analysisErrorMessage, documentCreationErrorMessage, cancelledMessage, loadingText, loadingTextPDF, pdfPages, screenTitle, suggestion1Title, suggestion2Title, suggestion3Title, suggestion4Title, suggestion5Title, suggestion1Description, suggestion2Description, suggestion3Description, suggestion4Description, suggestion5Description, defaultPdfDokumentTitle
     
     public var tableName: String {
         return "analysis"
@@ -32,6 +32,9 @@ public enum AnalysisStrings: LocalizableStringResource {
         case .pdfPages:
             return ("pdfpages",
                     "Text appearing at the top of the analysis screen indicating pdf number of pages")
+        case .screenTitle:
+            return ("screenTitle",
+                    "Text appearing on the top of thje navigation bar as the screen title.")
         case .suggestion1Title:
             return ("suggestion.title.1", "First suggestion title for analysis screen")
         case .suggestion2Title:

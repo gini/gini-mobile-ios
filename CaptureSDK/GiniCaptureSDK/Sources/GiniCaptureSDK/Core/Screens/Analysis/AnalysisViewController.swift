@@ -180,6 +180,7 @@ import UIKit
         addImageView()
         edgesForExtendedLayout = []
         view.backgroundColor = UIColor.from(giniColor: GiniColor(lightModeColor: .white, darkModeColor: .black))
+        title = .localized(resource: AnalysisStrings.screenTitle)
 
         if let document = document as? GiniPDFDocument {
             imageView.image = document.previewImage
