@@ -132,6 +132,9 @@
 "ginicapture.multipagereview.title" = "%d of %d";
 "ginicapture.multipagereview.error.retakeAction" = "Retake";
 "ginicapture.multipagereview.error.retryAction" = "Retry";
+"ginicapture.error.enterManually" = "Enter manually";
+"ginicapture.error.retakeImages" = "Retake images";
+"ginicapture.error.title" = "Error";
 
 "ginicapture.images.openWithTutorialStep1" = "openWithTutorialStep1_en";
 "ginicapture.images.openWithTutorialStep2" = "openWithTutorialStep2_en";
