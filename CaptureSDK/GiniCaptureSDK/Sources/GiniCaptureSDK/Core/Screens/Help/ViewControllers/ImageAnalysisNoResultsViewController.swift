@@ -45,18 +45,18 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
     lazy var captureSuggestions: [(image: UIImage?, text: String)] = {
         var suggestions: [(image: UIImage?, text: String)] = [
             (UIImageNamedPreferred(named: "captureSuggestion1"),
-             .localized(resource: AnalysisStrings.suggestion1Text)),
+             .localized(resource: AnalysisStrings.suggestion1Title)),
             (UIImageNamedPreferred(named: "captureSuggestion2"),
-             .localized(resource: AnalysisStrings.suggestion2Text)),
+             .localized(resource: AnalysisStrings.suggestion2Title)),
             (UIImageNamedPreferred(named: "captureSuggestion3"),
-             .localized(resource: AnalysisStrings.suggestion3Text)),
+             .localized(resource: AnalysisStrings.suggestion3Title)),
             (UIImageNamedPreferred(named: "captureSuggestion4"),
-             .localized(resource: AnalysisStrings.suggestion4Text))
+             .localized(resource: AnalysisStrings.suggestion4Title))
         ]
 
         if giniConfiguration.multipageEnabled {
             suggestions.append((UIImageNamedPreferred(named: "captureSuggestion5"),
-                                .localized(resource: AnalysisStrings.suggestion5Text)))
+                                .localized(resource: AnalysisStrings.suggestion5Title)))
         }
         return suggestions
     }()
