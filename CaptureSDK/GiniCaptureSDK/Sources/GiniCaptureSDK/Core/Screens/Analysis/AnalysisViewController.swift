@@ -68,7 +68,7 @@ import UIKit
         var loadingText = UILabel()
         loadingText.font = giniConfiguration.customFont.with(weight: .regular, size: 18, style: .body)
         loadingText.textAlignment = .center
-        loadingText.textColor = .white
+        loadingText.textColor = UIColor.from(giniColor: GiniColor(lightModeColor: .black, darkModeColor: .white))
         loadingText.numberOfLines = 0
 
         if document.type == .pdf {
@@ -94,7 +94,7 @@ import UIKit
     
     fileprivate lazy var overlayView: UIView = {
         let overlayView = UIView()
-        overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        overlayView.backgroundColor = UIColor.from(giniColor: GiniColor(lightModeColor: .white, darkModeColor: .black)).withAlphaComponent(0.6)
         return overlayView
     }()
     
@@ -179,7 +179,7 @@ import UIKit
     private func setupView() {
         addImageView()
         edgesForExtendedLayout = []
-        view.backgroundColor = .black
+        view.backgroundColor = UIColor.from(giniColor: GiniColor(lightModeColor: .white, darkModeColor: .black))
 
         if let document = document as? GiniPDFDocument {
             imageView.image = document.previewImage
@@ -290,9 +290,8 @@ import UIKit
     fileprivate func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {
         let captureSuggestions = CaptureSuggestionsView(superView: self.view,
                                                         bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor,
-                                                        font: giniConfiguration.customFont.with(weight: .bold,
-                                                                                                size: 16,
-                                                                                                style: .body))
+                                                        font: giniConfiguration.customFont,
+                                                        multiPageEnabled: giniConfiguration.multipageEnabled)
         captureSuggestions.start()
     }
 }
