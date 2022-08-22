@@ -8,10 +8,10 @@
 import Foundation
 
 public enum AnalysisStrings: LocalizableStringResource {
-    
+
     case analysisErrorMessage, documentCreationErrorMessage, cancelledMessage, loadingText, loadingTextPDF, pdfPages,
     suggestion1Text, suggestion2Text, suggestion3Text, suggestion4Text, suggestion5Text, suggestionHeader,
-    defaultPdfDokumentTitle,
+    defaultPdfDokumentTitle, screenTitle,
     suggestion1Details, suggestion2Details, suggestion3Details, suggestion4Details, suggestion5Details
 
     public var tableName: String {
@@ -57,6 +57,9 @@ public enum AnalysisStrings: LocalizableStringResource {
             return ("suggestion.5", "Fifth suggestion text for analysis screen")
         case .suggestionHeader:
             return ("suggestion.header", "Fourth suggestion text for analysis screen")
+        case .screenTitle:
+            return ("screenTitle",
+                    "Text appearing on the top of thje navigation bar as the screen title.")
         case .defaultPdfDokumentTitle:
             return ("defaultPdfDokumentTitle", "Default PDF document title")
         }
