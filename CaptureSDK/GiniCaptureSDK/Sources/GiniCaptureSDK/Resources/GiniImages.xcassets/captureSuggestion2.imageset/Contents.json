@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "captureSuggestion2Light.pdf",
+      "filename" : "Flatten.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "captureSuggestion2Dark.pdf",
+      "filename" : "Flatten-1.pdf",
       "idiom" : "universal"
     }
   ],

@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "captureSuggestion3Light.pdf",
+      "filename" : "Frame.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "captureSuggestion3Dark.pdf",
+      "filename" : "Frame-1.pdf",
       "idiom" : "universal"
     }
   ],
