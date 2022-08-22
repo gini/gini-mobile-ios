@@ -46,15 +46,15 @@ public enum AnalysisStrings: LocalizableStringResource {
         case .suggestion5Text:
             return ("suggestion.5", "Fifth suggestion text for analysis screen")
         case .suggestion1Details:
-            return ("suggestion.5", "Fifth suggestion text for analysis screen")
+            return ("suggestion.1.details", "First suggestion text detail for analysis screen")
         case .suggestion2Details:
-            return ("suggestion.5", "Fifth suggestion text for analysis screen")
+            return ("suggestion.2.details", "Second suggestion text detail for analysis screen")
         case .suggestion3Details:
-            return ("suggestion.5", "Fifth suggestion text for analysis screen")
+            return ("suggestion.3.details", "Third suggestion text detail for analysis screen")
         case .suggestion4Details:
-            return ("suggestion.5", "Fifth suggestion text for analysis screen")
+            return ("suggestion.4.details", "Fourth suggestion text detail for analysis screen")
         case .suggestion5Details:
-            return ("suggestion.5", "Fifth suggestion text for analysis screen")
+            return ("suggestion.5.details", "Fifth suggestion text detail for analysis screen")
         case .suggestionHeader:
             return ("suggestion.header", "Fourth suggestion text for analysis screen")
         case .screenTitle:
