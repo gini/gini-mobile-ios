@@ -13,7 +13,7 @@ public enum AnalysisStrings: LocalizableStringResource {
     suggestion1Text, suggestion2Text, suggestion3Text, suggestion4Text, suggestion5Text, suggestionHeader,
     defaultPdfDokumentTitle,
     suggestion1Details, suggestion2Details, suggestion3Details, suggestion4Details, suggestion5Details
-    
+
     public var tableName: String {
         return "analysis"
     }
