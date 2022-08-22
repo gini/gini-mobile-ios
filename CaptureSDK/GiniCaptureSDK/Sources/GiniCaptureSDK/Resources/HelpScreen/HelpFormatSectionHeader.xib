@@ -4,7 +4,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,18 +14,17 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xwt-uA-xrm">
-                    <rect key="frame" x="10" y="15" width="404" height="70"/>
+                    <rect key="frame" x="10" y="0.0" width="394" height="85"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <viewLayoutGuide key="safeArea" id="G8V-ck-L4W"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="Xwt-uA-xrm" secondAttribute="trailing" id="I9P-fd-ais"/>
-                <constraint firstItem="Xwt-uA-xrm" firstAttribute="top" secondItem="t6c-Gu-yrL" secondAttribute="top" constant="15" id="YgK-cL-D83"/>
+                <constraint firstAttribute="trailing" secondItem="Xwt-uA-xrm" secondAttribute="trailing" constant="10" id="I9P-fd-ais"/>
+                <constraint firstItem="Xwt-uA-xrm" firstAttribute="top" secondItem="t6c-Gu-yrL" secondAttribute="top" id="YgK-cL-D83"/>
+                <constraint firstAttribute="bottom" secondItem="Xwt-uA-xrm" secondAttribute="bottom" constant="15" id="jvg-9l-rl1"/>
                 <constraint firstItem="Xwt-uA-xrm" firstAttribute="leading" secondItem="t6c-Gu-yrL" secondAttribute="leading" constant="10" id="me3-8p-PgQ"/>
-                <constraint firstItem="G8V-ck-L4W" firstAttribute="bottom" secondItem="Xwt-uA-xrm" secondAttribute="bottom" constant="15" id="o9j-9t-nUk"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
