@@ -32,11 +32,11 @@ final class CaptureSuggestionsViewContainer: UIView {
         layer.cornerRadius = 16
 
         titleLabel.adjustsFontForContentSizeCategory = true
-        titleLabel.font = configuration.customFont.with(weight: .bold, size: 16, style: .body)
+        titleLabel.font = configuration.textStyleFonts[.callout]?.bold()
         titleLabel.textColor = UIColorPreferred(named: "label")
 
         descriptionLabel.adjustsFontForContentSizeCategory = true
-        descriptionLabel.font = configuration.customFont.with(weight: .regular, size: 15, style: .body)
+        descriptionLabel.font = configuration.textStyleFonts[.subheadline]
         descriptionLabel.textColor = UIColorPreferred(named: "systemGray")
     }
 

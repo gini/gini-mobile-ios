@@ -68,17 +68,18 @@ import UIKit
         var loadingText = UILabel()
         loadingText.font = giniConfiguration.customFont.with(weight: .regular, size: 18, style: .body)
         loadingText.textAlignment = .center
+        loadingText.adjustsFontForContentSizeCategory = true
         loadingText.textColor = UIColor.from(giniColor: GiniColor(lightModeColor: .black, darkModeColor: .white))
         loadingText.numberOfLines = 0
 
         if document.type == .pdf {
             if let documentTitle = (document as? GiniPDFDocument)?.pdfTitle {
-                loadingText.text = .localized(resource: AnalysisStrings.loadingTextPDF) + " \(documentTitle)"
+                loadingText.text = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText.pdf", comment: "Analysis screen loading text for PDF") + " \(documentTitle)"
             } else {
-                loadingText.text =  .localized(resource: AnalysisStrings.loadingText)
+                loadingText.text = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText", comment: "Analysis screen loading text for images")
             }
         } else {
-            loadingText.text =  .localized(resource: AnalysisStrings.loadingText)
+            loadingText.text = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText", comment: "Analysis screen loading text for images")
         }
 
         return loadingText
@@ -139,11 +140,6 @@ import UIKit
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    public override func loadView() {
-        super.loadView()
-
-    }
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -180,7 +176,7 @@ import UIKit
         addImageView()
         edgesForExtendedLayout = []
         view.backgroundColor = UIColor.from(giniColor: GiniColor(lightModeColor: .white, darkModeColor: .black))
-        title = .localized(resource: AnalysisStrings.screenTitle)
+        title = NSLocalizedStringPreferredFormat("ginicapture.analysis.screenTitle", comment: "Analysis screen title")
 
         if let document = document as? GiniPDFDocument {
             imageView.image = document.previewImage
