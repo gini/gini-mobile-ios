@@ -286,9 +286,7 @@ import UIKit
 
     fileprivate func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {
         let captureSuggestions = CaptureSuggestionsView(superView: self.view,
-                                                        bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor,
-                                                        font: giniConfiguration.customFont,
-                                                        multiPageEnabled: giniConfiguration.multipageEnabled)
+                                                        bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
         captureSuggestions.start()
     }
 }
