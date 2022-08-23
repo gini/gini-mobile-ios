@@ -84,7 +84,7 @@ class HelpFormatsDataSource: NSObject {
         let item = section.items[indexPath.row]
         cell.descriptionLabel.text = item
         cell.descriptionLabel.font = giniConfiguration.textStyleFonts[.body]
-        cell.descriptionLabel.textColor = UIColorPreferred(named: "labelColor")
+        cell.descriptionLabel.textColor = UIColorPreferred(named: "label")
         cell.descriptionLabel.adjustsFontForContentSizeCategory = true
         cell.iconImageView.image = section.itemsImage
         cell.iconImageView.backgroundColor = UIColor.clear

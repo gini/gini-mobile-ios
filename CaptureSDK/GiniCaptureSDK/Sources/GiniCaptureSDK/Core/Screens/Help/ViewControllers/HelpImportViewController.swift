@@ -124,7 +124,7 @@ extension HelpImportViewController: UITableViewDataSource {
             configureCellAccessibility(cell: cell, item: headerTitle)
         }
         cell.backgroundColor = UIColor.clear
-        cell.headerLabel.textColor = UIColorPreferred(named: "labelColor")
+        cell.headerLabel.textColor = UIColorPreferred(named: "label")
         cell.headerLabel.backgroundColor = UIColor.clear
         cell.headerLabel.adjustsFontForContentSizeCategory = true
         cell.headerLabel.font = giniConfiguration.textStyleFonts[.headline]
