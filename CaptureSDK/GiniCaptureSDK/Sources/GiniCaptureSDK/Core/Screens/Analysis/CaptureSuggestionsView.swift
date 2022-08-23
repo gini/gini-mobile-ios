@@ -43,8 +43,8 @@ final class CaptureSuggestionsView: UIView {
         NSLocalizedStringPreferredFormat("ginicapture.analysis.suggestion.4.details", comment: "Fourth suggestion description for analysis screen")
     ]
     
-    init(superView: UIView, bottomAnchor: NSLayoutYAxisAnchor, font: GiniCaptureFont, multiPageEnabled: Bool) {
-        if multiPageEnabled {
+    init(superView: UIView, bottomAnchor: NSLayoutYAxisAnchor) {
+        if GiniConfiguration.shared.multipageEnabled {
             suggestionIconImages.append(UIImageNamedPreferred(named: "captureSuggestion5"))
             suggestionTitle.append(NSLocalizedStringPreferredFormat("ginicapture.analysis.suggestion.5", comment: "Fifth suggestion title for analysis screen"))
             suggestionDescription.append(NSLocalizedStringPreferredFormat("ginicapture.analysis.suggestion.5.details", comment: "Fifth suggestion description for analysis screen"))
