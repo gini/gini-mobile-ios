@@ -8,10 +8,7 @@
 
 import UIKit
 
-class HelpFormatsViewController: UIViewController {
-    let tableRowHeight: CGFloat = 44
-    let sectionHeight: CGFloat = 70
-
+final class HelpFormatsViewController: UIViewController {
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -19,6 +16,8 @@ class HelpFormatsViewController: UIViewController {
     }()
     private (set) var dataSource: HelpFormatsDataSource
     private var giniConfiguration: GiniConfiguration
+    private let tableRowHeight: CGFloat = 44
+    private let sectionHeight: CGFloat = 70
 
     public init(giniConfiguration: GiniConfiguration) {
         self.giniConfiguration = giniConfiguration

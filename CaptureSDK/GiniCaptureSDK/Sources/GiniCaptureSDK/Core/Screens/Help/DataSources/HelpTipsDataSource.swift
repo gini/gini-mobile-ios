@@ -78,7 +78,7 @@ final public class HelpTipsDataSource: HelpBaseDataSource<HelpTipsItem, HelpTipC
         cell.headerLabel.text = item.header
         cell.headerLabel.font = giniConfiguration.textStyleFonts[.bodyBold]
         cell.headerLabel.adjustsFontForContentSizeCategory = true
-        cell.headerLabel.textColor = UIColorPreferred(named: "labelColor")
+        cell.headerLabel.textColor = UIColorPreferred(named: "label")
         cell.backgroundColor = UIColorPreferred(named: "systemWhite")
         cell.descriptionLabel.text = item.details
         cell.descriptionLabel.font = giniConfiguration.textStyleFonts[.subheadline]
