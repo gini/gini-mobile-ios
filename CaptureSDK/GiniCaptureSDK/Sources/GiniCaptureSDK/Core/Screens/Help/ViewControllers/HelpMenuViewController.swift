@@ -69,7 +69,7 @@ final public class HelpMenuViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = tableRowHeight
         tableView.contentInsetAdjustmentBehavior = .never
-        tableView.separatorColor = UIColorPreferred(named: "separator")
+        tableView.separatorColor = UIColor.Gini.separator
     }
 
     private func configureConstraints() {
@@ -82,7 +82,7 @@ final public class HelpMenuViewController: UIViewController {
     }
 
     private func configureMainView() {
-        view.backgroundColor = UIColorPreferred(named: "helpBackground")
+        view.backgroundColor = UIColor.Gini.helpBackground
         view.addSubview(tableView)
         title = NSLocalizedStringPreferredFormat("ginicapture.help.menu.title", comment: "Help Import screen title")
         view.layoutSubviews()
