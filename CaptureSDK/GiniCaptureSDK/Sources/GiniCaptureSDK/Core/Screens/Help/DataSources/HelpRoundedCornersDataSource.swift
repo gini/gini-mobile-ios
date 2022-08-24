@@ -21,7 +21,7 @@ public class HelpRoundedCornersDataSource<Item, Cell>: NSObject, HelpDataSource 
     public func configureCell(cell: Cell, indexPath: IndexPath) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - HelpMenuDataSourceDelegate
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
