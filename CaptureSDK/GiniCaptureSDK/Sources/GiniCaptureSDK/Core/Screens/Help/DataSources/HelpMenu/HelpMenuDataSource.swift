@@ -29,7 +29,7 @@ final public class HelpMenuDataSource: HelpBaseDataSource<HelpMenuItem, HelpMenu
 
     weak var delegate: HelpMenuDataSourceDelegate?
 
-    override init(
+    required init(
         configuration: GiniConfiguration
     ) {
         super.init(configuration: configuration)

@@ -8,12 +8,11 @@
 
 import UIKit
 
-public class HelpBaseDataSource<Item, Cell>: NSObject,
-    UITableViewDelegate, UITableViewDataSource  where Cell: HelpCell {
+public class HelpBaseDataSource<Item, Cell>: NSObject, HelpDataSource where Cell: HelpCell {
     var items: [Item] = []
     let giniConfiguration: GiniConfiguration
 
-    init(
+    required init(
         configuration: GiniConfiguration
     ) {
         giniConfiguration = configuration
@@ -23,6 +22,7 @@ public class HelpBaseDataSource<Item, Cell>: NSObject,
         fatalError("init(coder:) has not been implemented")
     }
 
+    
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
@@ -37,6 +37,14 @@ public class HelpBaseDataSource<Item, Cell>: NSObject,
 
     public func numberOfSections(in tableView: UITableView) -> Int {
         return 1
+    }
+
+    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return nil
+    }
+
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return UITableView.automaticDimension
     }
 
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
