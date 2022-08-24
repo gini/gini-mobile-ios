@@ -14,7 +14,7 @@ public struct HelpTipsItem {
     let iconName: String
 }
 
-final public class HelpTipsDataSource: HelpBaseDataSource<HelpTipsItem, HelpTipCell> {
+final public class HelpTipsDataSource: HelpRoundedCornersDataSource<HelpTipsItem, HelpTipCell> {
     // swiftlint:disable function_body_length
     required init(configuration: GiniConfiguration) {
         super.init(configuration: configuration)
@@ -94,6 +94,13 @@ final public class HelpTipsDataSource: HelpBaseDataSource<HelpTipsItem, HelpTipC
             return header
         }
         return nil
+    }
+
+    public override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if showHeader {
+            return UITableView.automaticDimension
+        }
+        return 0
     }
 
     public override func configureCell(cell: HelpTipCell, indexPath: IndexPath) {

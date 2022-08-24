@@ -65,6 +65,7 @@ final class HelpFormatsViewController: UIViewController {
         tableView.delegate = self.dataSource
         tableView.dataSource = self.dataSource
         tableView.estimatedRowHeight = tableRowHeight
+        tableView.showsVerticalScrollIndicator = false
         tableView.rowHeight = UITableView.automaticDimension
         tableView.tableFooterView = UIView()
         tableView.tableHeaderView = UIView()
