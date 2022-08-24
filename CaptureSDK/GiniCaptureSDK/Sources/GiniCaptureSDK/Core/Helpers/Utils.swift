@@ -27,4 +27,5 @@ public struct GiniMargins {
         }
         return Self.margin
     }
+    public static let fixediPadWidth: CGFloat = 559
 }

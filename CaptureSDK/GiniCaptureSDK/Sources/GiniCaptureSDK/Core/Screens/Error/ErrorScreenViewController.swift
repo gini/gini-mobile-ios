@@ -160,6 +160,7 @@ final public class ErrorScreenViewController: UIViewController {
         tableView.allowsSelection = false
         tableView.backgroundColor = UIColor.clear
         tableView.alwaysBounceVertical = false
+        tableView.showsVerticalScrollIndicator = false
         tableView.separatorStyle = .none
         if #available(iOS 14.0, *) {
             var bgConfig = UIBackgroundConfiguration.listPlainCell()
@@ -206,16 +207,29 @@ final public class ErrorScreenViewController: UIViewController {
             errorHeader.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             errorHeader.heightAnchor.constraint(greaterThanOrEqualToConstant: 62),
             tableView.topAnchor.constraint(equalTo: errorHeader.bottomAnchor, constant: 13),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: GiniMargins.horizontalMargin),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -GiniMargins.horizontalMargin),
             tableView.bottomAnchor.constraint(equalTo: buttonsView.topAnchor, constant: -32),
-            buttonsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: GiniMargins.horizontalMargin),
-            buttonsView.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -GiniMargins.horizontalMargin),
-            buttonsView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            buttonsView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
+            buttonsView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
+            buttonsView.bottomAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                constant: -GiniMargins.margin),
             buttonsView.heightAnchor.constraint(equalToConstant: 130)
         ])
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            view.addConstraints([
+                tableView.widthAnchor.constraint(equalToConstant: GiniMargins.fixediPadWidth),
+                tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            ])
+        } else {
+            view.addConstraints([
+                tableView.leadingAnchor.constraint(
+                    equalTo: view.leadingAnchor,
+                    constant: GiniMargins.horizontalMargin),
+                tableView.trailingAnchor.constraint(
+                    equalTo: view.trailingAnchor,
+                    constant: -GiniMargins.horizontalMargin)
+            ])
+        }
         view.layoutSubviews()
     }
 }
