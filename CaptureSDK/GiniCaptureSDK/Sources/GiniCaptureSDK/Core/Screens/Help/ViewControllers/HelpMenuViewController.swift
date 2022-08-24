@@ -63,6 +63,7 @@ final public class HelpMenuViewController: UIViewController {
         tableView.dataSource = self.dataSource
         tableView.delegate = self.dataSource
         tableView.backgroundColor = UIColor.clear
+        tableView.showsVerticalScrollIndicator = false
         tableView.tableHeaderView = UIView()
         tableView.tableFooterView = UIView()
         tableView.register(
@@ -80,7 +81,7 @@ final public class HelpMenuViewController: UIViewController {
 
     private func configureConstraints() {
         view.addConstraints([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: GiniMargins.horizontalMargin),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -GiniMargins.horizontalMargin),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)

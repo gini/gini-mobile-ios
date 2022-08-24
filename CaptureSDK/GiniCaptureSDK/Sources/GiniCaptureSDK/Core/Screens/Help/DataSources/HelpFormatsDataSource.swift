@@ -12,10 +12,9 @@ typealias HelpFormatsCollectionSection = (title: String,
     formats: [String],
     formatsImage: UIImage?)
 
-class HelpFormatsDataSource: NSObject, HelpDataSource {
-    let giniConfiguration: GiniConfiguration
+class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionSection, HelpFormatCell> {
 
-    lazy var sections: [HelpFormatsCollectionSection] = {
+    lazy var itemSections: [HelpFormatsCollectionSection] = {
         var sections: [HelpFormatsCollectionSection] =  [
             (NSLocalizedStringPreferredFormat(
                 "ginicapture.help.supportedFormats.section.1.title",
@@ -61,10 +60,13 @@ class HelpFormatsDataSource: NSObject, HelpDataSource {
         return sections
     }()
 
-    required init(
-        configuration: GiniConfiguration
-    ) {
-        giniConfiguration = configuration
+    override var items: [HelpFormatsCollectionSection] {
+        get {
+            return itemSections
+        }
+        set {
+            itemSections = newValue
+        }
     }
 
     private func configureCellAccessibility(
@@ -74,8 +76,8 @@ class HelpFormatsDataSource: NSObject, HelpDataSource {
         cell.iconImageView.accessibilityLabel = title
     }
 
-    private func configureCell(cell: HelpFormatCell, indexPath: IndexPath) {
-        let section = sections[indexPath.section]
+    override func configureCell(cell: HelpFormatCell, indexPath: IndexPath) {
+        let section = items[indexPath.section]
         let item = section.formats[indexPath.row]
         cell.descriptionLabel.text = item
         cell.descriptionLabel.font = giniConfiguration.textStyleFonts[.body]
@@ -86,46 +88,25 @@ class HelpFormatsDataSource: NSObject, HelpDataSource {
         cell.backgroundColor = UIColorPreferred(named: "systemWhite")
         cell.separatorView.backgroundColor = UIColorPreferred(named: "separator")
         configureCellAccessibility(cell: cell, title: section.title.uppercased())
-        if indexPath.row == sections[indexPath.section].formats.count - 1 {
+        if indexPath.row == items[indexPath.section].formats.count - 1 {
             cell.separatorView.isHidden = true
         } else {
             cell.separatorView.isHidden = false
         }
     }
 
-    fileprivate func configureHeader(
+    private func configureHeader(
         header: HelpFormatSectionHeader,
         section: Int) {
         header.titleLabel.font = giniConfiguration.textStyleFonts[.caption1]
         header.titleLabel.adjustsFontForContentSizeCategory = true
         header.titleLabel.numberOfLines = 0
         header.titleLabel.textColor =  UIColorPreferred(named: "subheadline")
-        header.titleLabel.text = sections[section].title.uppercased()
+        header.titleLabel.text = items[section].title.uppercased()
         header.backgroundView?.backgroundColor = UIColor.clear
     }
-}
 
-extension HelpFormatsDataSource: UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-
-        if sections[indexPath.section].formats.count == 1 {
-          cell.round(corners: [.bottomLeft, .bottomRight, .topLeft, .topRight], withRadius: RoundedCorners.cornerRadius)
-        } else {
-            if indexPath.row == 0 {
-                cell.round(corners: [.topLeft, .topRight], withRadius: RoundedCorners.cornerRadius)
-            }
-            if indexPath.row == sections[indexPath.section].formats.count - 1 {
-                cell.round(corners: [.bottomLeft, .bottomRight], withRadius: RoundedCorners.cornerRadius)
-            }
-        }
-    }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let header = tableView.dequeueReusableHeaderFooterView(
             withIdentifier: HelpFormatSectionHeader.reuseIdentifier
         ) as? HelpFormatSectionHeader {
@@ -135,7 +116,7 @@ extension HelpFormatsDataSource: UITableViewDataSource {
         fatalError("Section header is missing")
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(
             withIdentifier: HelpFormatCell.reuseIdentifier,
             for: indexPath) as? HelpFormatCell {
@@ -144,18 +125,16 @@ extension HelpFormatsDataSource: UITableViewDataSource {
         }
         fatalError()
     }
-}
 
-extension HelpFormatsDataSource: UITableViewDelegate {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return items.count
     }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].formats.count
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return items[section].formats.count
     }
 
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return UITableView.automaticDimension
     }
 }

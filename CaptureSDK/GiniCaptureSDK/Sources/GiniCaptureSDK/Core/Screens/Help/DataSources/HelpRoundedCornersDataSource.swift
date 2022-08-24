@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class HelpBaseDataSource<Item, Cell>: NSObject, HelpDataSource where Cell: HelpCell {
+public class HelpRoundedCornersDataSource<Item, Cell>: NSObject, HelpDataSource where Cell: HelpCell {
     var items: [Item] = []
     let giniConfiguration: GiniConfiguration
 
@@ -21,8 +21,8 @@ public class HelpBaseDataSource<Item, Cell>: NSObject, HelpDataSource where Cell
     public func configureCell(cell: Cell, indexPath: IndexPath) {
         fatalError("init(coder:) has not been implemented")
     }
-
     
+    // MARK: - HelpMenuDataSourceDelegate
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
