@@ -1,9 +1,9 @@
 //
-//  ImageAnalysisNoResultsViewController.swift
+//  HelpTipsViewController.swift
 //  GiniCapture
 //
 //  Created by Enrique del Pozo Gómez on 10/6/17.
-//  Copyright © 2017 Gini GmbH. All rights reserved.
+//  Copyright © 2022 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -74,7 +74,7 @@ public final class HelpTipsViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
         tableView.reloadData()
     }
-    
+
     private func configureConstraints() {
         view.addConstraints([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),

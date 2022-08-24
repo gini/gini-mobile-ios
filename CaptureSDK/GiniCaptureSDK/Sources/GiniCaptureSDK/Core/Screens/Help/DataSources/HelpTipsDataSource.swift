@@ -16,7 +16,7 @@ public struct HelpTipsItem {
 
 final public class HelpTipsDataSource: HelpBaseDataSource<HelpTipsItem, HelpTipCell> {
     // swiftlint:disable function_body_length
-    override init(configuration: GiniConfiguration) {
+    required init(configuration: GiniConfiguration) {
         super.init(configuration: configuration)
         items.append(contentsOf: [
             HelpTipsItem(
@@ -71,6 +71,29 @@ final public class HelpTipsDataSource: HelpBaseDataSource<HelpTipsItem, HelpTipC
         item: HelpTipsItem) {
         cell.iconImageView?.accessibilityTraits = .image
         cell.iconImageView?.accessibilityLabel = item.header
+    }
+
+    private func configureHeader(
+        header: HelpFormatSectionHeader,
+        section: Int) {
+        header.titleLabel.font = giniConfiguration.textStyleFonts[.caption1]
+        header.titleLabel.adjustsFontForContentSizeCategory = true
+        header.titleLabel.numberOfLines = 0
+        header.titleLabel.textColor =  UIColorPreferred(named: "subheadline")
+        header.titleLabel.text = "Useful Tips".uppercased()
+        header.backgroundView?.backgroundColor = UIColor.clear
+    }
+
+    var showHeader = false
+
+    public override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if showHeader, let header = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: HelpFormatSectionHeader.reuseIdentifier
+        ) as? HelpFormatSectionHeader {
+            configureHeader(header: header, section: section)
+            return header
+        }
+        return nil
     }
 
     public override func configureCell(cell: HelpTipCell, indexPath: IndexPath) {

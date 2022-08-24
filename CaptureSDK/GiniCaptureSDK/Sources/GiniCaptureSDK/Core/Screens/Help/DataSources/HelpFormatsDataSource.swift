@@ -8,16 +8,11 @@
 
 import UIKit
 
-public struct  HelpFormatsSection {
-    let items: [String]
-    let iconName: String
-}
-
 typealias HelpFormatsCollectionSection = (title: String,
-    items: [String],
-    itemsImage: UIImage?)
+    formats: [String],
+    formatsImage: UIImage?)
 
-class HelpFormatsDataSource: NSObject {
+class HelpFormatsDataSource: NSObject, HelpDataSource {
     let giniConfiguration: GiniConfiguration
 
     lazy var sections: [HelpFormatsCollectionSection] = {
@@ -42,31 +37,31 @@ class HelpFormatsDataSource: NSObject {
 
         if giniConfiguration.fileImportSupportedTypes != .none {
             if giniConfiguration.fileImportSupportedTypes == .pdf_and_images {
-                sections[0].items.append(
+                sections[0].formats.append(
                     NSLocalizedStringPreferredFormat(
                         "ginicapture.help.supportedFormats.section.1.item.2",
                         comment: "supported format for section 1 itemm 2"))
             }
-            sections[0].items.append(
+            sections[0].formats.append(
                 NSLocalizedStringPreferredFormat(
                     "ginicapture.help.supportedFormats.section.1.item.3",
                     comment: "supported format for section 1 item 3"))
         }
 
         if giniConfiguration.qrCodeScanningEnabled {
-            sections[0].items.append(
+            sections[0].formats.append(
                 NSLocalizedStringPreferredFormat(
                     "ginicapture.help.supportedFormats.section.1.item.4",
                     comment: "supported format for section 1 item 4"))
         }
-        sections[0].items.append(
+        sections[0].formats.append(
             NSLocalizedStringPreferredFormat(
                 "ginicapture.help.supportedFormats.section.1.item.5",
                 comment: "supported format for section 1 item 5"))
         return sections
     }()
 
-    init(
+    required init(
         configuration: GiniConfiguration
     ) {
         giniConfiguration = configuration
@@ -81,17 +76,17 @@ class HelpFormatsDataSource: NSObject {
 
     private func configureCell(cell: HelpFormatCell, indexPath: IndexPath) {
         let section = sections[indexPath.section]
-        let item = section.items[indexPath.row]
+        let item = section.formats[indexPath.row]
         cell.descriptionLabel.text = item
         cell.descriptionLabel.font = giniConfiguration.textStyleFonts[.body]
         cell.descriptionLabel.textColor = UIColorPreferred(named: "label")
         cell.descriptionLabel.adjustsFontForContentSizeCategory = true
-        cell.iconImageView.image = section.itemsImage
+        cell.iconImageView.image = section.formatsImage
         cell.iconImageView.backgroundColor = UIColor.clear
         cell.backgroundColor = UIColorPreferred(named: "systemWhite")
         cell.separatorView.backgroundColor = UIColorPreferred(named: "separator")
         configureCellAccessibility(cell: cell, title: section.title.uppercased())
-        if indexPath.row == sections[indexPath.section].items.count - 1 {
+        if indexPath.row == sections[indexPath.section].formats.count - 1 {
             cell.separatorView.isHidden = true
         } else {
             cell.separatorView.isHidden = false
@@ -118,13 +113,13 @@ extension HelpFormatsDataSource: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 
-        if sections[indexPath.section].items.count == 1 {
+        if sections[indexPath.section].formats.count == 1 {
           cell.round(corners: [.bottomLeft, .bottomRight, .topLeft, .topRight], withRadius: RoundedCorners.cornerRadius)
         } else {
             if indexPath.row == 0 {
                 cell.round(corners: [.topLeft, .topRight], withRadius: RoundedCorners.cornerRadius)
             }
-            if indexPath.row == sections[indexPath.section].items.count - 1 {
+            if indexPath.row == sections[indexPath.section].formats.count - 1 {
                 cell.round(corners: [.bottomLeft, .bottomRight], withRadius: RoundedCorners.cornerRadius)
             }
         }
@@ -157,7 +152,7 @@ extension HelpFormatsDataSource: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].items.count
+        return sections[section].formats.count
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
