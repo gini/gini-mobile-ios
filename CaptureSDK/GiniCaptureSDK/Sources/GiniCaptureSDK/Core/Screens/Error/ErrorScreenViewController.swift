@@ -10,16 +10,20 @@ import UIKit
 
 final public class ErrorScreenViewController: UIViewController {
     public enum ErrorType {
-        case invalidDocument
+        case noResults
         case other
         case custom(String)
 
         var description: String {
             switch self {
-            case .invalidDocument:
-                return "Could not retrieve any information from your documents."
+            case .noResults:
+                return NSLocalizedStringPreferredFormat(
+                    "ginicapture.error.header.no.results",
+                    comment: "no results error header")
             case .other:
-                return "Some other error occured."
+                return NSLocalizedStringPreferredFormat(
+                    "ginicapture.error.header.no.results",
+                    comment: "other error header")
             case .custom(let text):
                 return text
             }
@@ -81,7 +85,7 @@ final public class ErrorScreenViewController: UIViewController {
         self.giniConfiguration = giniConfiguration
         self.errorType = errorType
         switch errorType {
-        case .invalidDocument:
+        case .noResults:
             self.dataSource = HelpFormatsDataSource(configuration: giniConfiguration)
         case .other:
             let tipsDS = HelpTipsDataSource(configuration: giniConfiguration)
@@ -116,6 +120,7 @@ final public class ErrorScreenViewController: UIViewController {
             "ginicapture.error.title",
             comment: "Error screen title")
         errorHeader.headerLabel.text = errorType.description
+        errorHeader.headerLabel.textColor = UIColorPreferred(named: "label")
         view.backgroundColor = UIColorPreferred(named: "helpBackground")
         view.addSubview(errorHeader)
         view.addSubview(tableView)
@@ -125,7 +130,7 @@ final public class ErrorScreenViewController: UIViewController {
 
     private func configureTableView() {
         switch errorType {
-        case .invalidDocument:
+        case .noResults:
             tableView.register(
                 UINib(
                     nibName: "HelpFormatCell",

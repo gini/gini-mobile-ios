@@ -23,8 +23,9 @@ extension GiniScreenAPICoordinator {
 // MARK: - ImageAnalysisNoResults screen
 
 extension GiniScreenAPICoordinator {
-    func createImageAnalysisNoResultsScreen() -> ImageAnalysisNoResultsViewController {
-        let imageAnalysisNoResultsViewController: ImageAnalysisNoResultsViewController
+    func createImageAnalysisNoResultsScreen() -> ErrorScreenViewController {
+        let vm: ErrorScreenViewModel
+        let errorViewController: ErrorScreenViewController
         let isCameraViewControllerLoaded: Bool = {
             guard let cameraViewController = cameraViewController else {
                 return false
@@ -33,27 +34,26 @@ extension GiniScreenAPICoordinator {
         }()
         
         if isCameraViewControllerLoaded {
-            imageAnalysisNoResultsViewController = ImageAnalysisNoResultsViewController()
-            imageAnalysisNoResultsViewController.setupNavigationItem(usingResources: backButtonResource,
-                                                                     selector: #selector(backToCamera),
-                                                                     position: .left,
-                                                                     target: self)
+            vm = ErrorScreenViewModel {
+                
+            } manuallyPressed: {
+                
+            } cancellPressed: { [weak self] in
+                self?.backToCamera()
+            }
+            
         } else {
-            imageAnalysisNoResultsViewController = ImageAnalysisNoResultsViewController(bottomButtonText: nil,
-                                                                                        bottomButtonIcon: nil)
-            imageAnalysisNoResultsViewController.setupNavigationItem(usingResources: closeButtonResource,
-                                                                     selector: #selector(closeScreenApi),
-                                                                     position: .left,
-                                                                     target: self)
+            vm = ErrorScreenViewModel {
+                
+            } manuallyPressed: {
+                
+            } cancellPressed: { [weak self] in
+                self?.closeScreenApi()
+            }
         }
+        errorViewController = ErrorScreenViewController(giniConfiguration: giniConfiguration, errorType: .noResults, viewModel: vm)
         
-        // TODO: no results screen
-        /*
-        imageAnalysisNoResultsViewController.didTapBottomButton = { [weak self] in
-            self?.backToCamera()
-        }*/
-        
-        return imageAnalysisNoResultsViewController
+        return errorViewController
     }
 }
 
