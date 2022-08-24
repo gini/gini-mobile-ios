@@ -13,9 +13,10 @@ public final class ErrorScreenViewModel {
     let enterManuallyPressed: (() -> Void)
     let cancellPressed: (() -> Void)
 
-    init(retakeBlock: @escaping (() -> Void),
-         manuallyPressed: @escaping(() -> Void),
-         cancellPressed: @escaping(() -> Void)) {
+    public init(
+        retakeBlock: @escaping (() -> Void),
+        manuallyPressed: @escaping(() -> Void),
+        cancellPressed: @escaping(() -> Void)) {
         self.retakePressed = retakeBlock
         self.enterManuallyPressed = manuallyPressed
         self.cancellPressed = cancellPressed
