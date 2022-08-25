@@ -120,6 +120,7 @@ final public class NoResultScreenViewController: UIViewController {
             "ginicapture.noresult.title",
             comment: "No result screen title")
         header.headerLabel.text = errorType.description
+        header.headerLabel.font = giniConfiguration.textStyleFonts[.subheadline]
         header.headerLabel.textColor = UIColorPreferred(named: "label")
         view.backgroundColor = UIColorPreferred(named: "helpBackground")
         view.addSubview(header)

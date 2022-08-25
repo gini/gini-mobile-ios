@@ -103,6 +103,11 @@
 "ginicapture.noresults.title" = "Tipps für Fotos";
 "ginicapture.noresults.warningHelpMenu" = "Zur Erkennung aller Daten bitte folgende Tipps beim Abfotografieren beachten:";
 
+"ginicapture.noresult.enterManually" = "TODO Enter manually";
+"ginicapture.noresult.retakeImages" = "TODO Retake images";
+"ginicapture.noresult.title" = "TODO No results";
+"ginicapture.noresult.header.no.results" = "TODO Could not retrieve any information from your documents.";
+
 "ginicapture.help.import.title" = "TODO How to import";
 "ginicapture.help.import.selectInvoice.title" = "TODO Select an invoice";
 "ginicapture.help.import.selectInvoice.desc" = "TODO To do so, please select a PDF invoice from within your email app, PDF viewer or other app on your smartphone. To redirect the file to GiniBank, use the “Share” function, represented as a square with the arrow pointing up.";
