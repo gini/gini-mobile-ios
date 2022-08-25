@@ -105,7 +105,7 @@
 
 "ginicapture.help.import.title" = "How to import";
 "ginicapture.help.import.selectInvoice.title" = "Select an invoice";
-"ginicapture.help.import.selectInvoice.desc" = "To do so, please select a PDF invoice from within your email app, PDF viewer or other app on your smarthpone. To redirect the file to GiniVision, use the “Share” function, represented as a square with the arrow pointing up.";
+"ginicapture.help.import.selectInvoice.desc" = "To do so, please select a PDF invoice from within your email app, PDF viewer or other app on your smartphone. To redirect the file to GiniBank, use the “Share” function, represented as a square with the arrow pointing up.";
 "ginicapture.help.import.importtoapp.title" = "Import to app";
 "ginicapture.help.import.importtoapp.desc" = "Please select your Banking App from the list to start the analysis and transfer process.";
 
