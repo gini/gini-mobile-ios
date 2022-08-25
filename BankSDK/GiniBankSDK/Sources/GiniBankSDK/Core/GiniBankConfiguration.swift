@@ -472,21 +472,7 @@ public final class GiniBankConfiguration: NSObject {
     public var multipagePageFailureUploadIconBackgroundColor = Colors.Gini.springGreen
     
     // MARK: Analysis options
-    
-    /**
-     Sets the color of the loading indicator on the analysis screen to the specified color.
-     */
-    @objc public var analysisLoadingIndicatorColor = UIColor.Gini.systemBlack ?? .black
-    /**
-     Sets the color of the PDF information view on the analysis screen to the specified color.
-     */
-    @objc public var analysisPDFInformationBackgroundColor = Colors.Gini.bluishGreen
-    
-    /**
-     Sets the color of the PDF information view on the analysis screen to the specified color.
-     */
-    @objc public var analysisPDFInformationTextColor = UIColor.white
-    
+
     /**
      Sets the back button text in the navigation bar on the analysis screen. Use this if you only want to show the title.
      
@@ -1266,11 +1252,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.multipageToolTipOpaqueBackgroundStyle = self.multipageToolTipOpaqueBackgroundStyle
         configuration.multipagePageSuccessfullUploadIconBackgroundColor = self.multipagePageSuccessfullUploadIconBackgroundColor
         configuration.multipagePageFailureUploadIconBackgroundColor = self.multipagePageFailureUploadIconBackgroundColor
-        
-        configuration.analysisLoadingIndicatorColor = self.analysisLoadingIndicatorColor
-        configuration.analysisPDFInformationBackgroundColor = self.analysisPDFInformationBackgroundColor
-        configuration.analysisPDFInformationTextColor = self.analysisPDFInformationTextColor
-        
+
         configuration.navigationBarAnalysisTitleBackButton = self.navigationBarAnalysisTitleBackButton
         
         configuration.navigationBarHelpMenuTitleBackToCameraButton = self.navigationBarHelpMenuTitleBackToCameraButton
