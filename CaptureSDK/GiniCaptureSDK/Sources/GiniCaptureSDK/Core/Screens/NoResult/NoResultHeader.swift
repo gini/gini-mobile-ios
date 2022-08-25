@@ -9,8 +9,8 @@
 import Foundation
 import UIKit
 
-class ErrorHeader: UIView {
-    static var reuseIdentifier: String = "kErrorHeader"
+class NoResultHeader: UIView {
+    static var reuseIdentifier: String = "kNoResultHeader"
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var headerLabel: UILabel!
 }
