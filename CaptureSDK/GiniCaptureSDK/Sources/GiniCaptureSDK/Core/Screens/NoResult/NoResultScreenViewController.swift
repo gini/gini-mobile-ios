@@ -119,6 +119,9 @@ final public class NoResultScreenViewController: UIViewController {
         title = NSLocalizedStringPreferredFormat(
             "ginicapture.noresult.title",
             comment: "No result screen title")
+        header.iconImageView.accessibilityLabel = NSLocalizedStringPreferredFormat(
+            "ginicapture.noresult.title",
+            comment: "No result screen title")
         header.headerLabel.text = errorType.description
         header.headerLabel.font = giniConfiguration.textStyleFonts[.subheadline]
         header.headerLabel.textColor = UIColorPreferred(named: "label")

@@ -13,4 +13,14 @@ class NoResultHeader: UIView {
     static var reuseIdentifier: String = "kNoResultHeader"
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var headerLabel: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        isAccessibilityElement = false
+        iconImageView.accessibilityTraits = .image
+        headerLabel.adjustsFontForContentSizeCategory = true
+        headerLabel.isAccessibilityElement = true
+        iconImageView.isAccessibilityElement = true
+        accessibilityElements = [iconImageView as Any, headerLabel as Any]
+    }
 }
