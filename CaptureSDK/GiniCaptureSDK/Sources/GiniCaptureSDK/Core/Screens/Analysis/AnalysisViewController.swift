@@ -69,7 +69,7 @@ import UIKit
         loadingText.font = giniConfiguration.textStyleFonts[.bodyBold]
         loadingText.textAlignment = .center
         loadingText.adjustsFontForContentSizeCategory = true
-        loadingText.textColor = UIColor.Gini.systemBlack
+        loadingText.textColor = UIColor.GiniCapture.label
         loadingText.numberOfLines = 0
 
         if document.type == .pdf {
@@ -95,7 +95,7 @@ import UIKit
     
     fileprivate lazy var overlayView: UIView = {
         let overlayView = UIView()
-        overlayView.backgroundColor = UIColor.Gini.systemWhite?.withAlphaComponent(0.6)
+        overlayView.backgroundColor = UIColor.GiniCapture.systemWhite?.withAlphaComponent(0.6)
         return overlayView
     }()
     
@@ -175,14 +175,14 @@ import UIKit
     private func setupView() {
         addImageView()
         edgesForExtendedLayout = []
-        view.backgroundColor = UIColor.Gini.systemWhite
+        view.backgroundColor = UIColor.GiniCapture.systemWhite
         title = NSLocalizedStringPreferredFormat("ginicapture.analysis.screenTitle", comment: "Analysis screen title")
 
         if let document = document as? GiniPDFDocument {
             imageView.image = document.previewImage
         }
 
-        loadingIndicatorView.color = UIColor.Gini.systemWhite
+        loadingIndicatorView.color = UIColor.GiniCapture.label
         addLoadingView(intoContainer: loadingIndicatorContainer)
         addLoadingText(below: loadingIndicatorView)
         addOverlay()
