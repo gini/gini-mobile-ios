@@ -74,17 +74,17 @@ final public class NoResultScreenViewController: UIViewController {
     private var giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 44
     private let sectionHeight: CGFloat = 70
-    private let errorType: NoResultType
+    private let type: NoResultType
     private let viewModel: NoResultScreenViewModel
 
     public init(
         giniConfiguration: GiniConfiguration,
-        errorType: NoResultType,
+        type: NoResultType,
         viewModel: NoResultScreenViewModel
     ) {
         self.giniConfiguration = giniConfiguration
-        self.errorType = errorType
-        switch errorType {
+        self.type = type
+        switch type {
         case .image:
             let tipsDS = HelpTipsDataSource(configuration: giniConfiguration)
             tipsDS.showHeader = true
@@ -122,7 +122,7 @@ final public class NoResultScreenViewController: UIViewController {
         header.iconImageView.accessibilityLabel = NSLocalizedStringPreferredFormat(
             "ginicapture.noresult.title",
             comment: "No result screen title")
-        header.headerLabel.text = errorType.description
+        header.headerLabel.text = type.description
         header.headerLabel.font = giniConfiguration.textStyleFonts[.subheadline]
         header.headerLabel.textColor = UIColorPreferred(named: "label")
         view.backgroundColor = UIColorPreferred(named: "helpBackground")
@@ -156,7 +156,7 @@ final public class NoResultScreenViewController: UIViewController {
     }
 
     private func registerCells() {
-        switch errorType {
+        switch type {
         case .pdf:
             tableView.register(
                 UINib(
