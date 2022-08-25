@@ -8,9 +8,8 @@
 import UIKit
 
 extension UIColor {
-    struct Gini {
+    struct GiniBank {
         static let systemWhite = prefferedColor(named: "systemWhite")
-        static let systemBlack = prefferedColor(named: "systemBlack")
         static let label = prefferedColor(named: "label")
         static let helpBackground = prefferedColor(named: "helpBackground")
         static let separator = prefferedColor(named: "separator")
