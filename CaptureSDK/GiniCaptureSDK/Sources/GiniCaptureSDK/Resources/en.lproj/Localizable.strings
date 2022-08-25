@@ -135,7 +135,8 @@
 "ginicapture.error.enterManually" = "Enter manually";
 "ginicapture.error.retakeImages" = "Retake images";
 "ginicapture.error.title" = "Error";
-
+"ginicapture.error.header.no.results" = "Could not retrieve any information from your documents.";
+"ginicapture.error.header.other" = "Some other error occured.";
 "ginicapture.images.openWithTutorialStep1" = "openWithTutorialStep1_en";
 "ginicapture.images.openWithTutorialStep2" = "openWithTutorialStep2_en";
 "ginicapture.images.openWithTutorialStep3" = "openWithTutorialStep3_en";
