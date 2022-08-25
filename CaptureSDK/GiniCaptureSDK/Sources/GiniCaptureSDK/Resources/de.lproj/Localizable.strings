@@ -67,9 +67,9 @@
 "ginicapture.review.documentImageTitle" = "Dokument";
 "ginicapture.review.unknownError"       = "Auf dem Überprüfungsbildschirm ist ein unbekannter Fehler aufgetreten";
 
-"ginicapture.analysis.screenTitle" = "Review";
-"ginicapture.analysis.loadingText" = "Analyzing documents";
-"ginicapture.analysis.loadingText.pdf" = "Analyzing";
+"ginicapture.analysis.screenTitle" = "TODO Review";
+"ginicapture.analysis.loadingText" = "TODO Analyzing documents";
+"ginicapture.analysis.loadingText.pdf" = "TODO Analyzing";
 "ginicapture.analysis.suggestion.header" = "Um schneller Ergebnisse zu erhalten, bitte:";
 "ginicapture.analysis.suggestion.1" = "TODO Good lightning";
 "ginicapture.analysis.suggestion.1.details" = "TODO Proper lighting leads to better results than flash.";

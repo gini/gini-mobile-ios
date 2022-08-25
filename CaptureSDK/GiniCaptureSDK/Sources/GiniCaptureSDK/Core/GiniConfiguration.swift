@@ -550,21 +550,6 @@ import UIKit
     // MARK: Analysis options
     
     /**
-     Sets the color of the loading indicator on the analysis screen to the specified color.
-     */
-    @objc public var analysisLoadingIndicatorColor = Colors.Gini.blue
-    
-    /**
-     Sets the color of the PDF information view on the analysis screen to the specified color.
-     */
-    @objc public var analysisPDFInformationBackgroundColor = Colors.Gini.bluishGreen
-    
-    /**
-     Sets the color of the PDF information view on the analysis screen to the specified color.
-     */
-    @objc public var analysisPDFInformationTextColor = UIColor.white
-    
-    /**
      Sets the back button text in the navigation bar on the analysis screen. Use this if you only want to show the title.
      
      - note: Screen API only.

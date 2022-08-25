@@ -66,7 +66,7 @@ import UIKit
     
     fileprivate lazy var loadingIndicatorText: UILabel = {
         var loadingText = UILabel()
-        loadingText.font = giniConfiguration.customFont.with(weight: .regular, size: 18, style: .body)
+        loadingText.font = giniConfiguration.textStyleFonts[.bodyBold]
         loadingText.textAlignment = .center
         loadingText.adjustsFontForContentSizeCategory = true
         loadingText.textColor = UIColor.Gini.systemBlack
