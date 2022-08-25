@@ -23,7 +23,7 @@ extension GiniScreenAPICoordinator {
 // MARK: - ImageAnalysisNoResults screen
 
 extension GiniScreenAPICoordinator {
-    func createImageAnalysisNoResultsScreen() -> ErrorScreenViewController {
+    func createImageAnalysisNoResultsScreen(type: ErrorScreenViewController.ErrorType) -> ErrorScreenViewController {
         let vm: ErrorScreenViewModel
         let errorViewController: ErrorScreenViewController
         let isCameraViewControllerLoaded: Bool = {
@@ -34,19 +34,22 @@ extension GiniScreenAPICoordinator {
         }()
         
         if isCameraViewControllerLoaded {
-            vm = ErrorScreenViewModel {
-                
-            } manuallyPressed: {
-                
+            vm = ErrorScreenViewModel { [weak self] in
+                self?.backToCamera()
+            } manuallyPressed: { [weak self] in
+                //TODO: the same as cancel
+                self?.closeScreenApi()
             } cancellPressed: { [weak self] in
                 self?.backToCamera()
             }
             
         } else {
-            vm = ErrorScreenViewModel {
-                
-            } manuallyPressed: {
-                
+            vm = ErrorScreenViewModel { [weak self] in
+                //TODO: check if this make sense
+                self?.closeScreenApi()
+            } manuallyPressed: { [weak self] in
+                //TODO: check if this make sense
+                self?.closeScreenApi()
             } cancellPressed: { [weak self] in
                 self?.closeScreenApi()
             }
@@ -83,12 +86,20 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
         if pages.type == .image {
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                self.imageAnalysisNoResultsViewController = self.createImageAnalysisNoResultsScreen()
+                self.imageAnalysisNoResultsViewController = self.createImageAnalysisNoResultsScreen(type: .noResults)
                 self.screenAPINavigationController.pushViewController(self.imageAnalysisNoResultsViewController!,
                                                                       animated: true)
             }
             
             return true
+        } else if pages.type == .pdf {
+            //TODO: no results for pdf
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.imageAnalysisNoResultsViewController = self.createImageAnalysisNoResultsScreen(type: .other)
+                self.screenAPINavigationController.pushViewController(self.imageAnalysisNoResultsViewController!,
+                                                                      animated: true)
+            }
         }
         return false
     }    

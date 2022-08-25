@@ -129,6 +129,29 @@ final public class ErrorScreenViewController: UIViewController {
     }
 
     private func configureTableView() {
+        configureCells()
+        tableView.delegate = self.dataSource
+        tableView.dataSource = self.dataSource
+        tableView.estimatedRowHeight = tableRowHeight
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.tableFooterView = UIView()
+        tableView.tableHeaderView = UIView()
+        tableView.sectionHeaderHeight = sectionHeight
+        tableView.allowsSelection = false
+        tableView.backgroundColor = UIColor.clear
+        tableView.alwaysBounceVertical = false
+        tableView.showsVerticalScrollIndicator = false
+        tableView.separatorStyle = .none
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 130 + GiniMargins.margin, right: 0)
+
+        if #available(iOS 14.0, *) {
+            var bgConfig = UIBackgroundConfiguration.listPlainCell()
+            bgConfig.backgroundColor = UIColor.clear
+            UITableViewHeaderFooterView.appearance().backgroundConfiguration = bgConfig
+        }
+    }
+
+    private func configureCells() {
         switch errorType {
         case .noResults:
             tableView.register(
@@ -154,24 +177,6 @@ final public class ErrorScreenViewController: UIViewController {
                 nibName: "HelpFormatSectionHeader",
                 bundle: giniCaptureBundle()),
             forHeaderFooterViewReuseIdentifier: HelpFormatSectionHeader.reuseIdentifier)
-
-        tableView.delegate = self.dataSource
-        tableView.dataSource = self.dataSource
-        tableView.estimatedRowHeight = tableRowHeight
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.tableFooterView = UIView()
-        tableView.tableHeaderView = UIView()
-        tableView.sectionHeaderHeight = sectionHeight
-        tableView.allowsSelection = false
-        tableView.backgroundColor = UIColor.clear
-        tableView.alwaysBounceVertical = false
-        tableView.showsVerticalScrollIndicator = false
-        tableView.separatorStyle = .none
-        if #available(iOS 14.0, *) {
-            var bgConfig = UIBackgroundConfiguration.listPlainCell()
-            bgConfig.backgroundColor = UIColor.clear
-            UITableViewHeaderFooterView.appearance().backgroundConfiguration = bgConfig
-        }
     }
 
     private func configureButtons() {
@@ -179,11 +184,12 @@ final public class ErrorScreenViewController: UIViewController {
                 "ginicapture.error.enterManually",
                 comment: "Enter manually"),
                              for: .normal)
+        let cornerRadius: CGFloat = 14
+        enterButton.addBlurEffect(cornerRadius: cornerRadius)
         enterButton.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         enterButton.titleLabel?.adjustsFontForContentSizeCategory = true
         enterButton.setTitleColor(UIColorPreferred(named: "grayLabel"), for: .normal)
-        enterButton.layer.cornerRadius = 14
-        enterButton.backgroundColor = UIColorPreferred(named: "helpBackground")
+        enterButton.layer.cornerRadius = cornerRadius
         enterButton.layer.borderWidth = 1.0
         enterButton.layer.borderColor = UIColorPreferred(named: "grayLabel")?.cgColor ?? UIColor.white.cgColor
         enterButton.addTarget(viewModel, action: #selector(viewModel.didPressEnterManually), for: .touchUpInside)
@@ -194,7 +200,7 @@ final public class ErrorScreenViewController: UIViewController {
         retakeButton.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         retakeButton.titleLabel?.adjustsFontForContentSizeCategory = true
         retakeButton.setTitleColor(UIColorPreferred(named: "labelWhite"), for: .normal)
-        retakeButton.layer.cornerRadius = 14
+        retakeButton.layer.cornerRadius = cornerRadius
         retakeButton.backgroundColor = UIColorPreferred(named: "systemBlue")
         retakeButton.addTarget(viewModel, action: #selector(viewModel.didPressRetake), for: .touchUpInside)
         navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -212,7 +218,9 @@ final public class ErrorScreenViewController: UIViewController {
             errorHeader.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             errorHeader.heightAnchor.constraint(greaterThanOrEqualToConstant: 62),
             tableView.topAnchor.constraint(equalTo: errorHeader.bottomAnchor, constant: 13),
-            tableView.bottomAnchor.constraint(equalTo: buttonsView.topAnchor, constant: -32),
+            tableView.bottomAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                constant: -GiniMargins.margin),
             buttonsView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
             buttonsView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
             buttonsView.bottomAnchor.constraint(
