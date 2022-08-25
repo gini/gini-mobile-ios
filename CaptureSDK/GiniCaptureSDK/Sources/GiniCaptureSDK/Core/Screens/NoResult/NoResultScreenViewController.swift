@@ -1,5 +1,5 @@
 //
-//  ErrorViewController.swift
+//  NoResultScreenViewController.swift
 //  GiniCapture
 //
 //  Created by Krzysztof Kryniecki on 22/08/2022.
@@ -8,22 +8,22 @@
 
 import UIKit
 
-final public class ErrorScreenViewController: UIViewController {
-    public enum ErrorType {
-        case noResults
-        case other
+final public class NoResultScreenViewController: UIViewController {
+    public enum NoResultType {
+        case image
+        case pdf
         case custom(String)
 
         var description: String {
             switch self {
-            case .noResults:
+            case .pdf:
                 return NSLocalizedStringPreferredFormat(
-                    "ginicapture.error.header.no.results",
-                    comment: "no results error header")
-            case .other:
+                    "ginicapture.noresult.header.other",
+                    comment: "no results header")
+            case .image:
                 return NSLocalizedStringPreferredFormat(
-                    "ginicapture.error.header.no.results",
-                    comment: "other error header")
+                    "ginicapture.noresult.header.no.results",
+                    comment: "other no result header")
             case .custom(let text):
                 return text
             }
@@ -59,38 +59,38 @@ final public class ErrorScreenViewController: UIViewController {
         return stackView
     }()
 
-    lazy var errorHeader: ErrorHeader = {
+    lazy var header: NoResultHeader = {
         if let header = UINib(
-            nibName: "ErrorHeader",
+            nibName: "NoResultHeader",
             bundle: giniCaptureBundle()
-        ).instantiate(withOwner: nil, options: nil)[0]  as? ErrorHeader {
+        ).instantiate(withOwner: nil, options: nil)[0]  as? NoResultHeader {
             header.translatesAutoresizingMaskIntoConstraints = false
         return header
         }
-        fatalError("Error header not found")
+        fatalError("No result header not found")
     }()
 
     private (set) var dataSource: HelpDataSource
     private var giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 44
     private let sectionHeight: CGFloat = 70
-    private let errorType: ErrorType
-    private let viewModel: ErrorScreenViewModel
+    private let errorType: NoResultType
+    private let viewModel: NoResultScreenViewModel
 
     public init(
         giniConfiguration: GiniConfiguration,
-        errorType: ErrorType,
-        viewModel: ErrorScreenViewModel
+        errorType: NoResultType,
+        viewModel: NoResultScreenViewModel
     ) {
         self.giniConfiguration = giniConfiguration
         self.errorType = errorType
         switch errorType {
-        case .noResults:
-            self.dataSource = HelpFormatsDataSource(configuration: giniConfiguration)
-        case .other:
+        case .image:
             let tipsDS = HelpTipsDataSource(configuration: giniConfiguration)
             tipsDS.showHeader = true
             self.dataSource = tipsDS
+        case .pdf:
+            self.dataSource = HelpFormatsDataSource(configuration: giniConfiguration)
         case .custom(_):
             self.dataSource = HelpFormatsDataSource(configuration: giniConfiguration)
         }
@@ -117,19 +117,19 @@ final public class ErrorScreenViewController: UIViewController {
 
     private func configureMainView() {
         title = NSLocalizedStringPreferredFormat(
-            "ginicapture.error.title",
-            comment: "Error screen title")
-        errorHeader.headerLabel.text = errorType.description
-        errorHeader.headerLabel.textColor = UIColorPreferred(named: "label")
+            "ginicapture.noresult.title",
+            comment: "No result screen title")
+        header.headerLabel.text = errorType.description
+        header.headerLabel.textColor = UIColorPreferred(named: "label")
         view.backgroundColor = UIColorPreferred(named: "helpBackground")
-        view.addSubview(errorHeader)
+        view.addSubview(header)
         view.addSubview(tableView)
         view.addSubview(buttonsView)
-        errorHeader.backgroundColor = UIColorPreferred(named: "errorBackground")
+        header.backgroundColor = UIColorPreferred(named: "errorBackground")
     }
 
     private func configureTableView() {
-        configureCells()
+        registerCells()
         tableView.delegate = self.dataSource
         tableView.dataSource = self.dataSource
         tableView.estimatedRowHeight = tableRowHeight
@@ -151,15 +151,15 @@ final public class ErrorScreenViewController: UIViewController {
         }
     }
 
-    private func configureCells() {
+    private func registerCells() {
         switch errorType {
-        case .noResults:
+        case .pdf:
             tableView.register(
                 UINib(
                     nibName: "HelpFormatCell",
                     bundle: giniCaptureBundle()),
                 forCellReuseIdentifier: HelpFormatCell.reuseIdentifier)
-        case .other:
+        case .image:
             tableView.register(
                 UINib(
                     nibName: "HelpTipCell",
@@ -181,7 +181,7 @@ final public class ErrorScreenViewController: UIViewController {
 
     private func configureButtons() {
         enterButton.setTitle(NSLocalizedStringPreferredFormat(
-                "ginicapture.error.enterManually",
+                "ginicapture.noresult.enterManually",
                 comment: "Enter manually"),
                              for: .normal)
         let cornerRadius: CGFloat = 14
@@ -194,7 +194,7 @@ final public class ErrorScreenViewController: UIViewController {
         enterButton.layer.borderColor = UIColorPreferred(named: "grayLabel")?.cgColor ?? UIColor.white.cgColor
         enterButton.addTarget(viewModel, action: #selector(viewModel.didPressEnterManually), for: .touchUpInside)
         retakeButton.setTitle(NSLocalizedStringPreferredFormat(
-            "ginicapture.error.retakeImages",
+            "ginicapture.noresult.retakeImages",
             comment: "Enter manually"),
                               for: .normal)
         retakeButton.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
@@ -210,14 +210,14 @@ final public class ErrorScreenViewController: UIViewController {
     }
 
     private func configureConstraints() {
-        errorHeader.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
-        errorHeader.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        header.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
+        header.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         view.addConstraints([
-            errorHeader.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-            errorHeader.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            errorHeader.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            errorHeader.heightAnchor.constraint(greaterThanOrEqualToConstant: 62),
-            tableView.topAnchor.constraint(equalTo: errorHeader.bottomAnchor, constant: 13),
+            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            header.heightAnchor.constraint(greaterThanOrEqualToConstant: 62),
+            tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 13),
             tableView.bottomAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.bottomAnchor,
                 constant: -GiniMargins.margin),

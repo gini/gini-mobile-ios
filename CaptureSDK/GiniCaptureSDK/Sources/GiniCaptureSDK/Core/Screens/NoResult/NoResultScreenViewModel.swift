@@ -1,5 +1,5 @@
 //
-//  ErrorViewModel.swift
+//  NoResultViewModel.swift
 //  GiniCapture
 //
 //  Created by Krzysztof Kryniecki on 23/08/2022.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class ErrorScreenViewModel {
+public final class NoResultScreenViewModel {
     let retakePressed: (() -> Void)
     let enterManuallyPressed: (() -> Void)
     let cancellPressed: (() -> Void)
