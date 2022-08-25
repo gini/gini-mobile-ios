@@ -137,4 +137,21 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return UITableView.automaticDimension
     }
+
+    override  func tableView(
+        _ tableView: UITableView,
+        willDisplay cell: UITableViewCell,
+        forRowAt indexPath: IndexPath) {
+        if items[indexPath.section].formats.count == 1 {
+            cell.round(
+                corners: [.bottomLeft, .bottomRight, .topLeft, .topRight], withRadius: RoundedCorners.cornerRadius)
+        } else {
+            if indexPath.row == 0 {
+                cell.round(corners: [.topLeft, .topRight], withRadius: RoundedCorners.cornerRadius)
+            }
+            if indexPath.row == items[indexPath.section].formats.count - 1 {
+                    cell.round(corners: [.bottomLeft, .bottomRight], withRadius: RoundedCorners.cornerRadius)
+            }
+        }
+    }
 }
