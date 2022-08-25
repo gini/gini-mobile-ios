@@ -80,7 +80,7 @@
 "ginicapture.analysis.suggestion.4.details" = "TODO Hold the device parallel over the page.";
 "ginicapture.analysis.suggestion.5" = "TODO Multiple pages";
 "ginicapture.analysis.suggestion.5.details" = "TODO It’s now possible to analyse an invoice with multiple pages.";
-
+"ginicapture.analysis.section.header" = "TODO Useful Tips";
 "ginicapture.analysis.error.actionTitle" = "Wiederholen";
 "ginicapture.analysis.error.documentCreation" = "Beim Hochladen des Dokuments ist ein Fehler aufgetreten.";
 "ginicapture.analysis.error.analysis" = "Beim Analysieren des Dokuments ist ein Fehler aufgetreten.";
