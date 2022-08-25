@@ -54,7 +54,7 @@ extension GiniScreenAPICoordinator {
                 self?.closeScreenApi()
             }
         }
-        viewController = NoResultScreenViewController(giniConfiguration: giniConfiguration, errorType: .image, viewModel: vm)
+        viewController = NoResultScreenViewController(giniConfiguration: giniConfiguration, type: .image, viewModel: vm)
         
         return viewController
     }
