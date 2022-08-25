@@ -66,10 +66,17 @@ final public class HelpTipsDataSource: HelpBaseDataSource<HelpTipsItem, HelpTipC
         }
     }
 
+    private func configureCellAccessibility(
+        cell: HelpTipCell,
+        item: HelpTipsItem) {
+        cell.iconImageView?.accessibilityTraits = .image
+        cell.iconImageView?.accessibilityLabel = item.header
+    }
+
     public override func configureCell(cell: HelpTipCell, indexPath: IndexPath) {
         let item = items[indexPath.row]
         cell.headerLabel.text = item.header
-        cell.headerLabel.font = giniConfiguration.textStyleFonts[.subheadline]?.bold()
+        cell.headerLabel.font = giniConfiguration.textStyleFonts[.bodyBold]
         cell.headerLabel.adjustsFontForContentSizeCategory = true
         cell.headerLabel.textColor = UIColor.Gini.label
         cell.backgroundColor = UIColor.Gini.systemWhite
@@ -80,6 +87,7 @@ final public class HelpTipsDataSource: HelpBaseDataSource<HelpTipsItem, HelpTipC
         cell.iconImageView.image = UIImageNamedPreferred(named: item.iconName)
         cell.separatorView.backgroundColor = UIColor.Gini.separator
         cell.selectionStyle = .none
+        configureCellAccessibility(cell: cell, item: item)
         if indexPath.row == items.count - 1 {
             cell.separatorView.alpha = 0
         } else {

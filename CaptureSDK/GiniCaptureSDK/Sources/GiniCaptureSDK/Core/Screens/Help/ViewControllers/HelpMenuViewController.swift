@@ -29,7 +29,7 @@ final public class HelpMenuViewController: UIViewController {
     private (set) var dataSource: HelpMenuDataSource
     private let giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 44
-    private let margin: CGFloat = 16
+
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -63,6 +63,7 @@ final public class HelpMenuViewController: UIViewController {
         tableView.dataSource = self.dataSource
         tableView.delegate = self.dataSource
         tableView.backgroundColor = UIColor.clear
+        tableView.tableHeaderView = UIView()
         tableView.tableFooterView = UIView()
         tableView.register(
             HelpMenuCell.self, forCellReuseIdentifier: HelpMenuCell.reuseIdentifier)
@@ -72,11 +73,16 @@ final public class HelpMenuViewController: UIViewController {
         tableView.separatorColor = UIColor.Gini.separator
     }
 
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        tableView.reloadData()
+    }
+
     private func configureConstraints() {
         view.addConstraints([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: margin),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: margin),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -margin),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: GiniMargins.horizontalMargin),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -GiniMargins.horizontalMargin),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }

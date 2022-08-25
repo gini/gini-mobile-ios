@@ -72,17 +72,26 @@ class HelpFormatsDataSource: NSObject {
         giniConfiguration = configuration
     }
 
+    private func configureCellAccessibility(
+        cell: HelpFormatCell,
+        title: String) {
+        cell.iconImageView?.accessibilityTraits = .image
+        cell.iconImageView.accessibilityLabel = title
+    }
+
     private func configureCell(cell: HelpFormatCell, indexPath: IndexPath) {
         let section = sections[indexPath.section]
         let item = section.items[indexPath.row]
-
         cell.descriptionLabel.text = item
         cell.descriptionLabel.font = giniConfiguration.textStyleFonts[.body]
+
         cell.descriptionLabel.textColor = UIColor.Gini.label
+        cell.descriptionLabel.adjustsFontForContentSizeCategory = true
         cell.iconImageView.image = section.itemsImage
         cell.iconImageView.backgroundColor = UIColor.clear
         cell.backgroundColor = UIColor.Gini.systemWhite
         cell.separatorView.backgroundColor = UIColor.Gini.separator
+        configureCellAccessibility(cell: cell, title: section.title.uppercased())
         if indexPath.row == sections[indexPath.section].items.count - 1 {
             cell.separatorView.isHidden = true
         } else {
