@@ -220,7 +220,7 @@ final public class NoResultScreenViewController: UIViewController {
                 constant: -GiniMargins.margin),
             buttonsView.heightAnchor.constraint(equalToConstant: 130)
         ])
-        if UIDevice.current.userInterfaceIdiom == .pad {
+        if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
                 tableView.widthAnchor.constraint(equalToConstant: GiniMargins.fixediPadWidth),
                 tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
@@ -229,10 +229,10 @@ final public class NoResultScreenViewController: UIViewController {
             NSLayoutConstraint.activate([
                 tableView.leadingAnchor.constraint(
                     equalTo: view.leadingAnchor,
-                    constant: GiniMargins.horizontalMargin),
+                    constant: GiniMargins.margin),
                 tableView.trailingAnchor.constraint(
                     equalTo: view.trailingAnchor,
-                    constant: -GiniMargins.horizontalMargin)
+                    constant: -GiniMargins.margin)
             ])
         }
         view.layoutSubviews()
