@@ -84,12 +84,13 @@ class HelpFormatsDataSource: NSObject {
         let item = section.items[indexPath.row]
         cell.descriptionLabel.text = item
         cell.descriptionLabel.font = giniConfiguration.textStyleFonts[.body]
-        cell.descriptionLabel.textColor = UIColorPreferred(named: "labelColor")
+
+        cell.descriptionLabel.textColor = UIColor.GiniCapture.label
         cell.descriptionLabel.adjustsFontForContentSizeCategory = true
         cell.iconImageView.image = section.itemsImage
         cell.iconImageView.backgroundColor = UIColor.clear
-        cell.backgroundColor = UIColorPreferred(named: "systemWhite")
-        cell.separatorView.backgroundColor = UIColorPreferred(named: "separator")
+        cell.backgroundColor = UIColor.GiniCapture.systemWhite
+        cell.separatorView.backgroundColor = UIColor.GiniCapture.separator
         configureCellAccessibility(cell: cell, title: section.title.uppercased())
         if indexPath.row == sections[indexPath.section].items.count - 1 {
             cell.separatorView.isHidden = true
@@ -104,7 +105,7 @@ class HelpFormatsDataSource: NSObject {
         header.titleLabel.font = giniConfiguration.textStyleFonts[.caption1]
         header.titleLabel.adjustsFontForContentSizeCategory = true
         header.titleLabel.numberOfLines = 0
-        header.titleLabel.textColor =  UIColorPreferred(named: "subheadline")
+            header.titleLabel.textColor =  UIColor.GiniCapture.subheadline
         header.titleLabel.text = sections[section].title.uppercased()
         header.backgroundView?.backgroundColor = UIColor.clear
     }
