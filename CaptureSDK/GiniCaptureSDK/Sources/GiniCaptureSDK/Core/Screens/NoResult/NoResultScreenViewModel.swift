@@ -11,15 +11,15 @@ import Foundation
 public final class NoResultScreenViewModel {
     let retakePressed: (() -> Void)
     let enterManuallyPressed: (() -> Void)
-    let cancellPressed: (() -> Void)
+    let cancelPressed: (() -> Void)
 
     public init(
         retakeBlock: @escaping (() -> Void),
         manuallyPressed: @escaping(() -> Void),
-        cancellPressed: @escaping(() -> Void)) {
+        cancelPressed: @escaping(() -> Void)) {
         self.retakePressed = retakeBlock
         self.enterManuallyPressed = manuallyPressed
-        self.cancellPressed = cancellPressed
+        self.cancelPressed = cancelPressed
     }
 
     @objc func didPressRetake() {
@@ -31,6 +31,6 @@ public final class NoResultScreenViewModel {
     }
 
     @objc func didPressCancell() {
-        cancellPressed()
+        cancelPressed()
     }
 }
