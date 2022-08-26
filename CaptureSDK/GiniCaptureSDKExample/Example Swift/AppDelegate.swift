@@ -29,7 +29,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        if UIDevice.current.userInterfaceIdiom == .pad {
+        if UIDevice.current.isIpad {
             return UIInterfaceOrientationMask.allButUpsideDown
         }
         return UIInterfaceOrientationMask.portrait

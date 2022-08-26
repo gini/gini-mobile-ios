@@ -72,7 +72,7 @@ class HelpImportViewController: UIViewController {
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-        if UIDevice.current.userInterfaceIdiom == .pad {
+        if UIDevice.current.isIpad {
             view.addConstraints([
                 tableView.widthAnchor.constraint(equalToConstant: GiniMargins.fixediPadWidth),
                 tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
