@@ -77,19 +77,19 @@ public final class HelpTipsViewController: UIViewController {
     }
 
     private func configureConstraints() {
-        view.addConstraints([
+        NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
             tableView.bottomAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.bottomAnchor,
                 constant: -GiniMargins.margin)
         ])
         if UIDevice.current.userInterfaceIdiom == .pad {
-            view.addConstraints([
+            NSLayoutConstraint.activate([
                 tableView.widthAnchor.constraint(equalToConstant: GiniMargins.fixediPadWidth),
                 tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
         } else {
-            view.addConstraints([
+            NSLayoutConstraint.activate([
                 tableView.leadingAnchor.constraint(
                     equalTo: view.leadingAnchor,
                     constant: GiniMargins.horizontalMargin),

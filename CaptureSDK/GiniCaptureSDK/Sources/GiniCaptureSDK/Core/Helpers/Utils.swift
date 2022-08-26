@@ -36,9 +36,7 @@ public struct GiniMargins {
 extension UIButton {
     func addBlurEffect(cornerRadius: CGFloat) {
         backgroundColor = .clear
-        let effect: UIBlurEffect
-        effect = UIBlurEffect(style: .light)
-        let blurView = UIVisualEffectView(effect: effect)
+        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
         blurView.isUserInteractionEnabled = false
         blurView.backgroundColor = .clear
         if cornerRadius > 0 {
@@ -47,10 +45,10 @@ extension UIButton {
         }
         insertSubview(blurView, at: 0)
         blurView.translatesAutoresizingMaskIntoConstraints = false
-        leadingAnchor.constraint(equalTo: blurView.leadingAnchor, constant: 0).isActive = true
+        leadingAnchor.constraint(equalTo: blurView.leadingAnchor).isActive = true
         trailingAnchor.constraint(equalTo: blurView.trailingAnchor, constant: -0).isActive = true
-        topAnchor.constraint(equalTo: blurView.topAnchor, constant: 0).isActive = true
-        bottomAnchor.constraint(equalTo: blurView.bottomAnchor, constant: -0).isActive = true
+        topAnchor.constraint(equalTo: blurView.topAnchor).isActive = true
+        bottomAnchor.constraint(equalTo: blurView.bottomAnchor).isActive = true
         if let imageView = self.imageView {
             imageView.backgroundColor = .clear
             bringSubviewToFront(imageView)
