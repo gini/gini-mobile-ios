@@ -39,7 +39,7 @@ extension GiniScreenAPICoordinator {
             } manuallyPressed: { [weak self] in
                 //TODO: the same as cancel
                 self?.closeScreenApi()
-            } cancellPressed: { [weak self] in
+            } cancelPressed: { [weak self] in
                 self?.backToCamera()
             }
             
@@ -50,7 +50,7 @@ extension GiniScreenAPICoordinator {
             } manuallyPressed: { [weak self] in
                 //TODO: check if this make sense
                 self?.closeScreenApi()
-            } cancellPressed: { [weak self] in
+            } cancelPressed: { [weak self] in
                 self?.closeScreenApi()
             }
         }
