@@ -244,10 +244,10 @@ import UIKit
         loadingIndicatorText.translatesAutoresizingMaskIntoConstraints = false
         
         Constraints.active(item: loadingIndicatorText, attr: .trailing, relatedBy: .equal, to: imageView,
-                          attr: .trailing)
+                          attr: .trailing, constant: -16)
         Constraints.active(item: loadingIndicatorText, attr: .top, relatedBy: .equal, to: below, attr: .bottom,
                           constant: 16)
-        Constraints.active(item: loadingIndicatorText, attr: .leading, relatedBy: .equal, to: imageView, attr: .leading)
+        Constraints.active(item: loadingIndicatorText, attr: .leading, relatedBy: .equal, to: imageView, attr: .leading, constant: 16)
     }
     
     fileprivate func addLoadingView(intoContainer container: UIView? = nil) {
