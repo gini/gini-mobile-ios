@@ -60,10 +60,8 @@ final public class NoResultScreenViewController: UIViewController {
     }()
 
     lazy var header: NoResultHeader = {
-        if let header = UINib(
-            nibName: "NoResultHeader",
-            bundle: giniCaptureBundle()
-        ).instantiate(withOwner: nil, options: nil)[0]  as? NoResultHeader {
+        
+        if let header = NoResultHeader().loadNib() as? NoResultHeader {
             header.translatesAutoresizingMaskIntoConstraints = false
         return header
         }
@@ -160,13 +158,7 @@ final public class NoResultScreenViewController: UIViewController {
                     nibName: "HelpFormatCell",
                     bundle: giniCaptureBundle()),
                 forCellReuseIdentifier: HelpFormatCell.reuseIdentifier)
-        case .image:
-            tableView.register(
-                UINib(
-                    nibName: "HelpTipCell",
-                    bundle: giniCaptureBundle()),
-                forCellReuseIdentifier: HelpTipCell.reuseIdentifier)
-        case .custom(_):
+        case .image, .custom(_):
             tableView.register(
                 UINib(
                     nibName: "HelpTipCell",
@@ -213,7 +205,7 @@ final public class NoResultScreenViewController: UIViewController {
     private func configureConstraints() {
         header.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
         header.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-        view.addConstraints([
+        NSLayoutConstraint.activate([
             header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -230,12 +222,12 @@ final public class NoResultScreenViewController: UIViewController {
             buttonsView.heightAnchor.constraint(equalToConstant: 130)
         ])
         if UIDevice.current.userInterfaceIdiom == .pad {
-            view.addConstraints([
+            NSLayoutConstraint.activate([
                 tableView.widthAnchor.constraint(equalToConstant: GiniMargins.fixediPadWidth),
                 tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
         } else {
-            view.addConstraints([
+            NSLayoutConstraint.activate([
                 tableView.leadingAnchor.constraint(
                     equalTo: view.leadingAnchor,
                     constant: GiniMargins.horizontalMargin),
