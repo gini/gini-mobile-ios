@@ -24,7 +24,7 @@ extension GiniScreenAPICoordinator {
 
 extension GiniScreenAPICoordinator {
     func createImageAnalysisNoResultsScreen(type: NoResultScreenViewController.NoResultType) -> NoResultScreenViewController {
-        let vm: NoResultScreenViewModel
+        let viewModel: NoResultScreenViewModel
         let viewController: NoResultScreenViewController
         let isCameraViewControllerLoaded: Bool = {
             guard let cameraViewController = cameraViewController else {
@@ -34,7 +34,7 @@ extension GiniScreenAPICoordinator {
         }()
         
         if isCameraViewControllerLoaded {
-            vm = NoResultScreenViewModel { [weak self] in
+            viewModel = NoResultScreenViewModel { [weak self] in
                 self?.backToCamera()
             } manuallyPressed: { [weak self] in
                 //TODO: the same as cancel
@@ -44,7 +44,7 @@ extension GiniScreenAPICoordinator {
             }
             
         } else {
-            vm = NoResultScreenViewModel { [weak self] in
+            viewModel = NoResultScreenViewModel { [weak self] in
                 //TODO: check if this make sense
                 self?.closeScreenApi()
             } manuallyPressed: { [weak self] in
@@ -54,7 +54,7 @@ extension GiniScreenAPICoordinator {
                 self?.closeScreenApi()
             }
         }
-        viewController = NoResultScreenViewController(giniConfiguration: giniConfiguration, errorType: .image, viewModel: vm)
+        viewController = NoResultScreenViewController(giniConfiguration: giniConfiguration, errorType: .image, viewModel: viewModel)
         
         return viewController
     }
