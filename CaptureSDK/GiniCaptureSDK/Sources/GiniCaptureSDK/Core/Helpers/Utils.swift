@@ -22,14 +22,7 @@ extension UITableViewCell {
 }
 
 public struct GiniMargins {
-    public static let iPadHorizontalMargin: CGFloat = 126
     public static let margin: CGFloat = 16
-    public static var horizontalMargin: CGFloat {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            return Self.iPadHorizontalMargin
-        }
-        return Self.margin
-    }
     public static let fixediPadWidth: CGFloat = 559
 }
 

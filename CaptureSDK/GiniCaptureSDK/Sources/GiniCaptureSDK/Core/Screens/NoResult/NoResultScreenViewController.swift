@@ -50,7 +50,14 @@ final public class NoResultScreenViewController: UIViewController {
     }()
 
     lazy var buttonsView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [enterButton, retakeButton])
+        let stackView = UIStackView()
+        if viewModel.isEnterManuallyHidden() == false {
+            stackView.addArrangedSubview(enterButton)
+        }
+        if viewModel.isRetakePressedHidden() == false {
+            stackView.addArrangedSubview(retakeButton)
+        }
+        
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.distribution = .fillEqually
         stackView.axis = .vertical
@@ -118,13 +125,12 @@ final public class NoResultScreenViewController: UIViewController {
             "ginicapture.noresult.title",
             comment: "No result screen title")
         header.headerLabel.text = type.description
-        header.headerLabel.font = giniConfiguration.textStyleFonts[.subheadline]
-        header.headerLabel.textColor = UIColorPreferred(named: "label")
-        view.backgroundColor = UIColorPreferred(named: "helpBackground")
+        header.headerLabel.textColor = UIColor.GiniCapture.label
+        view.backgroundColor = UIColor.GiniCapture.helpBackground
         view.addSubview(header)
         view.addSubview(tableView)
         view.addSubview(buttonsView)
-        header.backgroundColor = UIColorPreferred(named: "errorBackground")
+        header.backgroundColor = UIColor.GiniCapture.errorBackground
     }
 
     private func configureTableView() {
@@ -181,10 +187,11 @@ final public class NoResultScreenViewController: UIViewController {
         enterButton.addBlurEffect(cornerRadius: cornerRadius)
         enterButton.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         enterButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        enterButton.setTitleColor(UIColorPreferred(named: "grayLabel"), for: .normal)
+        
+        enterButton.setTitleColor(UIColor.GiniCapture.grayLabel, for: .normal)
         enterButton.layer.cornerRadius = cornerRadius
         enterButton.layer.borderWidth = 1.0
-        enterButton.layer.borderColor = UIColorPreferred(named: "grayLabel")?.cgColor ?? UIColor.white.cgColor
+        enterButton.layer.borderColor = UIColor.GiniCapture.grayLabel?.cgColor ?? UIColor.white.cgColor
         enterButton.addTarget(viewModel, action: #selector(viewModel.didPressEnterManually), for: .touchUpInside)
         retakeButton.setTitle(NSLocalizedStringPreferredFormat(
             "ginicapture.noresult.retakeImages",
@@ -192,9 +199,10 @@ final public class NoResultScreenViewController: UIViewController {
                               for: .normal)
         retakeButton.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         retakeButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        retakeButton.setTitleColor(UIColorPreferred(named: "labelWhite"), for: .normal)
+        
+        retakeButton.setTitleColor(UIColor.GiniCapture.labelWhite, for: .normal)
         retakeButton.layer.cornerRadius = cornerRadius
-        retakeButton.backgroundColor = UIColorPreferred(named: "systemBlue")
+        retakeButton.backgroundColor = UIColor.GiniCapture.systemBlue
         retakeButton.addTarget(viewModel, action: #selector(viewModel.didPressRetake), for: .touchUpInside)
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .cancel,
@@ -221,7 +229,7 @@ final public class NoResultScreenViewController: UIViewController {
                 constant: -GiniMargins.margin),
             buttonsView.heightAnchor.constraint(equalToConstant: 130)
         ])
-        if UIDevice.current.userInterfaceIdiom == .pad {
+        if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
                 tableView.widthAnchor.constraint(equalToConstant: GiniMargins.fixediPadWidth),
                 tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
@@ -230,10 +238,10 @@ final public class NoResultScreenViewController: UIViewController {
             NSLayoutConstraint.activate([
                 tableView.leadingAnchor.constraint(
                     equalTo: view.leadingAnchor,
-                    constant: GiniMargins.horizontalMargin),
+                    constant: GiniMargins.margin),
                 tableView.trailingAnchor.constraint(
                     equalTo: view.trailingAnchor,
-                    constant: -GiniMargins.horizontalMargin)
+                    constant: -GiniMargins.margin)
             ])
         }
         view.layoutSubviews()

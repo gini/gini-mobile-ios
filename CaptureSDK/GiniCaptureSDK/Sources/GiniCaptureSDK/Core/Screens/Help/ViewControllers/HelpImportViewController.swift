@@ -47,7 +47,7 @@ class HelpImportViewController: UIViewController {
             "ginicapture.help.import.title",
             comment: "Help Import screen title")
         view.addSubview(tableView)
-        view.backgroundColor = UIColorPreferred(named: "helpBackground")
+        view.backgroundColor = UIColor.GiniCapture.helpBackground
         edgesForExtendedLayout = []
     }
 
@@ -72,7 +72,7 @@ class HelpImportViewController: UIViewController {
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-        if UIDevice.current.userInterfaceIdiom == .pad {
+        if UIDevice.current.isIpad {
             view.addConstraints([
                 tableView.widthAnchor.constraint(equalToConstant: GiniMargins.fixediPadWidth),
                 tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
@@ -135,12 +135,12 @@ extension HelpImportViewController: UITableViewDataSource {
             configureCellAccessibility(cell: cell, item: headerTitle)
         }
         cell.backgroundColor = UIColor.clear
-        cell.headerLabel.textColor = UIColorPreferred(named: "label")
+        cell.headerLabel.textColor = UIColor.GiniCapture.label
         cell.headerLabel.backgroundColor = UIColor.clear
         cell.headerLabel.adjustsFontForContentSizeCategory = true
         cell.headerLabel.font = giniConfiguration.textStyleFonts[.headline]
         cell.descriptionLabel.backgroundColor = UIColor.clear
-        cell.descriptionLabel.textColor = UIColorPreferred(named: "subheadline")
+        cell.descriptionLabel.textColor = UIColor.GiniCapture.subheadline
         cell.descriptionLabel.font = giniConfiguration.textStyleFonts[.body]
         cell.descriptionLabel.adjustsFontForContentSizeCategory = true
         cell.contentView.backgroundColor = UIColor.clear

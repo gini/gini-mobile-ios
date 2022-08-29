@@ -108,16 +108,16 @@ final public class HelpTipsDataSource: HelpRoundedCornersDataSource<HelpTipsItem
     public override func configureCell(cell: HelpTipCell, indexPath: IndexPath) {
         let item = items[indexPath.row]
         cell.headerLabel.text = item.header
-        cell.headerLabel.font = giniConfiguration.textStyleFonts[.bodyBold]
+        cell.headerLabel.font = giniConfiguration.textStyleFonts[.calloutBold]
         cell.headerLabel.adjustsFontForContentSizeCategory = true
-        cell.headerLabel.textColor = UIColorPreferred(named: "label")
-        cell.backgroundColor = UIColorPreferred(named: "systemWhite")
+        cell.headerLabel.textColor = UIColor.GiniCapture.label
+        cell.backgroundColor = UIColor.GiniCapture.systemGray05
         cell.descriptionLabel.text = item.details
         cell.descriptionLabel.font = giniConfiguration.textStyleFonts[.subheadline]
         cell.descriptionLabel.adjustsFontForContentSizeCategory = true
-        cell.descriptionLabel.textColor = UIColorPreferred(named: "subheadline")
+        cell.descriptionLabel.textColor = UIColor.GiniCapture.subheadline
         cell.iconImageView.image = UIImageNamedPreferred(named: item.iconName)
-        cell.separatorView.backgroundColor = UIColorPreferred(named: "separator")
+        cell.separatorView.backgroundColor = UIColor.GiniCapture.separator
         cell.selectionStyle = .none
         configureCellAccessibility(cell: cell, item: item)
         if indexPath.row == items.count - 1 {
