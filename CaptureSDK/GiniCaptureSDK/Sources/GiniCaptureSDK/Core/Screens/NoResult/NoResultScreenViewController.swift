@@ -50,7 +50,14 @@ final public class NoResultScreenViewController: UIViewController {
     }()
 
     lazy var buttonsView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [enterButton, retakeButton])
+        let stackView = UIStackView()
+        if viewModel.isEnterManuallyHidden() == false {
+            stackView.addArrangedSubview(enterButton)
+        }
+        if viewModel.isRetakePressedHidden() == false {
+            stackView.addArrangedSubview(retakeButton)
+        }
+        
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.distribution = .fillEqually
         stackView.axis = .vertical
