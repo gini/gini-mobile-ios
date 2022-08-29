@@ -45,7 +45,7 @@ final class HelpFormatsViewController: UIViewController {
         title = NSLocalizedStringPreferredFormat(
             "ginicapture.help.supportedFormats.title",
             comment: "Supported formats screen title")
-        view.backgroundColor = UIColorPreferred(named: "helpBackground")
+        view.backgroundColor = UIColor.GiniCapture.helpBackground
         view.addSubview(tableView)
 
         view.layoutSubviews()
@@ -92,7 +92,7 @@ final class HelpFormatsViewController: UIViewController {
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-        if UIDevice.current.userInterfaceIdiom == .pad {
+        if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
                 tableView.widthAnchor.constraint(equalToConstant: GiniMargins.fixediPadWidth),
                 tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
@@ -101,10 +101,10 @@ final class HelpFormatsViewController: UIViewController {
             NSLayoutConstraint.activate([
                 tableView.leadingAnchor.constraint(
                     equalTo: view.leadingAnchor,
-                    constant: GiniMargins.horizontalMargin),
+                    constant: GiniMargins.margin),
                 tableView.trailingAnchor.constraint(
                     equalTo: view.trailingAnchor,
-                    constant: -GiniMargins.horizontalMargin)
+                    constant: -GiniMargins.margin)
             ])
         }
         view.layoutSubviews()

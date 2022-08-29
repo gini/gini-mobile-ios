@@ -550,21 +550,6 @@ import UIKit
     // MARK: Analysis options
     
     /**
-     Sets the color of the loading indicator on the analysis screen to the specified color.
-     */
-    @objc public var analysisLoadingIndicatorColor = Colors.Gini.blue
-    
-    /**
-     Sets the color of the PDF information view on the analysis screen to the specified color.
-     */
-    @objc public var analysisPDFInformationBackgroundColor = Colors.Gini.bluishGreen
-    
-    /**
-     Sets the color of the PDF information view on the analysis screen to the specified color.
-     */
-    @objc public var analysisPDFInformationTextColor = UIColor.white
-    
-    /**
      Sets the back button text in the navigation bar on the analysis screen. Use this if you only want to show the title.
      
      - note: Screen API only.
@@ -724,6 +709,7 @@ import UIKit
     .body: UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont.systemFont(ofSize: 17)),
     .bodyBold: UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont.boldSystemFont(ofSize: 17)),
     .callout: UIFontMetrics(forTextStyle: .callout).scaledFont(for: UIFont.systemFont(ofSize: 16)),
+    .calloutBold: UIFontMetrics(forTextStyle: .callout).scaledFont(for: UIFont.boldSystemFont(ofSize: 16)),
     .footnote: UIFontMetrics(forTextStyle: .footnote).scaledFont(for: UIFont.systemFont(ofSize: 13)),
     ]
 
