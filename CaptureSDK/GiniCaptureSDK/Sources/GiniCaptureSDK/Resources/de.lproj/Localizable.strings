@@ -67,7 +67,9 @@
 "ginicapture.review.documentImageTitle" = "Dokument";
 "ginicapture.review.unknownError"       = "Auf dem Überprüfungsbildschirm ist ein unbekannter Fehler aufgetreten";
 
-"ginicapture.analysis.loadingText" = "Dokument wird analysiert";
+"ginicapture.analysis.screenTitle" = "TODO Review";
+"ginicapture.analysis.loadingText" = "TODO Analyzing documents";
+"ginicapture.analysis.loadingText.pdf" = "TODO Analyzing";
 "ginicapture.analysis.suggestion.header" = "Um schneller Ergebnisse zu erhalten, bitte:";
 "ginicapture.analysis.suggestion.1" = "TODO Good lightning";
 "ginicapture.analysis.suggestion.1.details" = "TODO Proper lighting leads to better results than flash.";
@@ -103,11 +105,11 @@
 "ginicapture.noresults.title" = "Tipps für Fotos";
 "ginicapture.noresults.warningHelpMenu" = "Zur Erkennung aller Daten bitte folgende Tipps beim Abfotografieren beachten:";
 
-"ginicapture.noresult.enterManually" = "TODO Enter manually";
-"ginicapture.noresult.retakeImages" = "TODO Retake images";
-"ginicapture.noresult.title" = "TODO No results";
-"ginicapture.noresult.header.no.results" = "TODO Could not retrieve any information from your documents.";
-
+"ginicapture.noresult.enterManually" = "Zahlungsdaten manuell eingeben";
+"ginicapture.noresult.retakeImages" = "Foto wiederholen";
+"ginicapture.noresult.title" = "Fehler";
+"ginicapture.noresult.header.no.results" = "Leider konnten keine Informationen aus dem Dokument ausgelesen werden";
+"ginicapture.noresult.header.other" = "Entschuldigung, da  ist ein Fehler aufgetreten.";
 "ginicapture.help.import.title" = "TODO How to import";
 "ginicapture.help.import.selectInvoice.title" = "TODO Select an invoice";
 "ginicapture.help.import.selectInvoice.desc" = "TODO To do so, please select a PDF invoice from within your email app, PDF viewer or other app on your smartphone. To redirect the file to GiniBank, use the “Share” function, represented as a square with the arrow pointing up.";

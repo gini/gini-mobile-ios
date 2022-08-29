@@ -71,7 +71,7 @@ final public class HelpMenuViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = tableRowHeight
         tableView.contentInsetAdjustmentBehavior = .never
-        tableView.separatorColor = UIColorPreferred(named: "separator")
+        tableView.separatorColor = UIColor.GiniCapture.separator
     }
 
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -84,7 +84,7 @@ final public class HelpMenuViewController: UIViewController {
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-        if UIDevice.current.userInterfaceIdiom == .pad {
+        if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
                 tableView.widthAnchor.constraint(equalToConstant: GiniMargins.fixediPadWidth),
                 tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
@@ -93,17 +93,17 @@ final public class HelpMenuViewController: UIViewController {
             NSLayoutConstraint.activate([
                 tableView.leadingAnchor.constraint(
                     equalTo: view.leadingAnchor,
-                    constant: GiniMargins.horizontalMargin),
+                    constant: GiniMargins.margin),
                 tableView.trailingAnchor.constraint(
                     equalTo: view.trailingAnchor,
-                    constant: -GiniMargins.horizontalMargin)
+                    constant: -GiniMargins.margin)
             ])
         }
         view.layoutSubviews()
     }
 
     private func configureMainView() {
-        view.backgroundColor = UIColorPreferred(named: "helpBackground")
+        view.backgroundColor = UIColor.GiniCapture.helpBackground
         view.addSubview(tableView)
         title = NSLocalizedStringPreferredFormat("ginicapture.help.menu.title", comment: "Help Import screen title")
         view.layoutSubviews()
