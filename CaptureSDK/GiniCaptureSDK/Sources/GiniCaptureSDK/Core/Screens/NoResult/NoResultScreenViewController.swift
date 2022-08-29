@@ -125,12 +125,12 @@ final public class NoResultScreenViewController: UIViewController {
             "ginicapture.noresult.title",
             comment: "No result screen title")
         header.headerLabel.text = errorType.description
-        header.headerLabel.textColor = UIColorPreferred(named: "label")
-        view.backgroundColor = UIColorPreferred(named: "helpBackground")
+        header.headerLabel.textColor = UIColor.GiniCapture.label
+        view.backgroundColor = UIColor.GiniCapture.helpBackground
         view.addSubview(header)
         view.addSubview(tableView)
         view.addSubview(buttonsView)
-        header.backgroundColor = UIColorPreferred(named: "errorBackground")
+        header.backgroundColor = UIColor.GiniCapture.errorBackground
     }
 
     private func configureTableView() {
@@ -187,10 +187,11 @@ final public class NoResultScreenViewController: UIViewController {
         enterButton.addBlurEffect(cornerRadius: cornerRadius)
         enterButton.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         enterButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        enterButton.setTitleColor(UIColorPreferred(named: "grayLabel"), for: .normal)
+        
+        enterButton.setTitleColor(UIColor.GiniCapture.grayLabel, for: .normal)
         enterButton.layer.cornerRadius = cornerRadius
         enterButton.layer.borderWidth = 1.0
-        enterButton.layer.borderColor = UIColorPreferred(named: "grayLabel")?.cgColor ?? UIColor.white.cgColor
+        enterButton.layer.borderColor = UIColor.GiniCapture.grayLabel?.cgColor ?? UIColor.white.cgColor
         enterButton.addTarget(viewModel, action: #selector(viewModel.didPressEnterManually), for: .touchUpInside)
         retakeButton.setTitle(NSLocalizedStringPreferredFormat(
             "ginicapture.noresult.retakeImages",
@@ -198,9 +199,10 @@ final public class NoResultScreenViewController: UIViewController {
                               for: .normal)
         retakeButton.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         retakeButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        retakeButton.setTitleColor(UIColorPreferred(named: "labelWhite"), for: .normal)
+        
+        retakeButton.setTitleColor(UIColor.GiniCapture.labelWhite, for: .normal)
         retakeButton.layer.cornerRadius = cornerRadius
-        retakeButton.backgroundColor = UIColorPreferred(named: "systemBlue")
+        retakeButton.backgroundColor = UIColor.GiniCapture.systemBlue
         retakeButton.addTarget(viewModel, action: #selector(viewModel.didPressRetake), for: .touchUpInside)
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .cancel,

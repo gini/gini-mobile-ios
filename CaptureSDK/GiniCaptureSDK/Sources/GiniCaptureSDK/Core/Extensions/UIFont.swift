@@ -22,5 +22,6 @@ extension UIFont {
 extension UIFont.TextStyle {
 
     public static let bodyBold: UIFont.TextStyle = .init(rawValue: "kBodyBold")
+    public static let calloutBold: UIFont.TextStyle = .init(rawValue: "kCalloutBold")
 
 }
