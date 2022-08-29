@@ -17,10 +17,11 @@ class NoResultHeader: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         isAccessibilityElement = false
-        iconImageView.accessibilityTraits = .image
+        
+        accessibilityElements = [iconImageView as Any, headerLabel as Any]
         headerLabel.adjustsFontForContentSizeCategory = true
         headerLabel.isAccessibilityElement = true
         iconImageView.isAccessibilityElement = true
-        accessibilityElements = [iconImageView as Any, headerLabel as Any]
+        iconImageView.accessibilityTraits = .image
     }
 }
