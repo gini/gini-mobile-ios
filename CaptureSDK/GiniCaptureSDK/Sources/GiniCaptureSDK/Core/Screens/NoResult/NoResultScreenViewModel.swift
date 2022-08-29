@@ -9,13 +9,13 @@
 import Foundation
 
 public final class NoResultScreenViewModel {
-    let retakePressed: (() -> Void)
-    let enterManuallyPressed: (() -> Void)
+    let retakePressed: (() -> Void)?
+    let enterManuallyPressed: (() -> Void)?
     let cancelPressed: (() -> Void)
 
     public init(
-        retakeBlock: @escaping (() -> Void),
-        manuallyPressed: @escaping(() -> Void),
+        retakeBlock: (() -> Void)? = nil,
+        manuallyPressed: (() -> Void)? = nil,
         cancelPressed: @escaping(() -> Void)) {
         self.retakePressed = retakeBlock
         self.enterManuallyPressed = manuallyPressed
@@ -23,14 +23,22 @@ public final class NoResultScreenViewModel {
     }
 
     @objc func didPressRetake() {
-        retakePressed()
+        retakePressed?()
     }
 
     @objc func didPressEnterManually() {
-        enterManuallyPressed()
+        enterManuallyPressed?()
     }
 
     @objc func didPressCancell() {
         cancelPressed()
+    }
+    
+    func isEnterManuallyHidden() -> Bool {
+        return enterManuallyPressed == nil
+    }
+    
+    func isRetakePressedHidden() -> Bool {
+        return retakePressed == nil
     }
 }

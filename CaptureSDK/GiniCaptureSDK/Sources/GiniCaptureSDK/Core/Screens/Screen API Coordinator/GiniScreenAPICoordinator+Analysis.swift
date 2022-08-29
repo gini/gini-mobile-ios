@@ -44,15 +44,9 @@ extension GiniScreenAPICoordinator {
             }
             
         } else {
-            viewModel = NoResultScreenViewModel { [weak self] in
-                //TODO: check if this make sense
+            viewModel = NoResultScreenViewModel( cancelPressed: { [weak self] in
                 self?.closeScreenApi()
-            } manuallyPressed: { [weak self] in
-                //TODO: check if this make sense
-                self?.closeScreenApi()
-            } cancelPressed: { [weak self] in
-                self?.closeScreenApi()
-            }
+            })
         }
         viewController = NoResultScreenViewController(giniConfiguration: giniConfiguration, errorType: type, viewModel: viewModel)
         
