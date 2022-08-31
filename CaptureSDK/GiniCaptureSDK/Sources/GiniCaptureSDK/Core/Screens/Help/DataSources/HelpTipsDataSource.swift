@@ -79,7 +79,7 @@ final public class HelpTipsDataSource: HelpRoundedCornersDataSource<HelpTipsItem
         header.titleLabel.font = giniConfiguration.textStyleFonts[.caption1]
         header.titleLabel.adjustsFontForContentSizeCategory = true
         header.titleLabel.numberOfLines = 0
-        header.titleLabel.textColor =  UIColorPreferred(named: "subheadline")
+            header.titleLabel.textColor =  UIColor.GiniCapture.subheadline
         header.titleLabel.text = NSLocalizedStringPreferredFormat(
             "ginicapture.analysis.section.header",
             comment: "Analysis section header").uppercased()
