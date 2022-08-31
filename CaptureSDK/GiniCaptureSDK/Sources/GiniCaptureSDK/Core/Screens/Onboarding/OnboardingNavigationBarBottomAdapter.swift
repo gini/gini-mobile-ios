@@ -45,7 +45,7 @@ class DefaultOnboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottom
     private var getStartedButtonCallback: (() -> Void)?
     
     // Add the callback whenever the next button is clicked
-    @objc func setNextButtonClickedActionCallback(callback: @escaping () -> Void) {
+    @objc func setNextButtonClickedActionCallback(_ callback: @escaping () -> Void) {
         nextButtonCallback = callback
     }
     
