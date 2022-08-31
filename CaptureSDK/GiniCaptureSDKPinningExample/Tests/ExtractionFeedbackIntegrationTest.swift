@@ -69,7 +69,7 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
         // (subsequent steps are in CaptureResultsDelegateForExtractionsFeedbackTest)
         self.getExtractionsFromGiniCaptureSDK(delegate: CaptureResultsDelegateForExtractionsFeedbackTest(integrationTest: self, expect: expect))
         
-        wait(for: [expect], timeout: 60)
+        wait(for: [expect], timeout: 65)
     }
     
     /**
