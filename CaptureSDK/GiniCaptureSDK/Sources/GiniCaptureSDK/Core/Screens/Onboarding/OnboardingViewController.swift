@@ -27,10 +27,14 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
         pagesCollection.reloadData()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    fileprivate func setupView() {
         configureCollectionView()
         configureBottomNavigation()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupView()
     }
     
     fileprivate func layoutBottomNavigationBar(_ navigationBar: UIView) {
@@ -38,9 +42,9 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
         let horizontalConstraint = navigationBar.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         let verticalConstraint = navigationBar.topAnchor.constraint(equalTo: pageControl.bottomAnchor)
         let widthConstraint = navigationBar.widthAnchor.constraint(equalTo: view.widthAnchor)
-        let heightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: 300)
+//        let heightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: 300)
         let bottomConstraint = navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        view.addConstraints([horizontalConstraint, verticalConstraint, widthConstraint, heightConstraint, bottomConstraint])
+        view.addConstraints([horizontalConstraint, verticalConstraint, widthConstraint, bottomConstraint])
     }
     
     func configureBottomNavigation() {
@@ -50,25 +54,25 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
                 navigationBarBottomAdapter = customBottomNavigationBar
             } else {
                 navigationBarBottomAdapter = DefaultOnboardingNavigationBarBottomAdapter()
-                navigationBarBottomAdapter?.nextButtonCompletionHandler = {
-                    // we can modify a handler action
+                navigationBarBottomAdapter?.setNextButtonClickedActionCallback {
                     self.nextPage()
                 }
-            }
+                                
+                navigationBarBottomAdapter?.setSkipButtonClickedActionCallback {
+                    print("skip")
+                }
 
-            if let navigationBar =
-                navigationBarBottomAdapter?.injectedView() {
-                view.addSubview(navigationBar)
-                layoutBottomNavigationBar(navigationBar)
-                
-                
+                if let navigationBar =
+                    navigationBarBottomAdapter?.injectedView() {
+                    view.addSubview(navigationBar)
+                    layoutBottomNavigationBar(navigationBar)
+                }
             }
         } else {
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Skip",
                                                                 style: .plain,
                                                                 target: self,
                                                                 action: #selector(close))
-
         }
     }
 
@@ -90,7 +94,7 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
         }
     
         func nextPage() {
-            //navigationBarBottomAdapter?.didClickNextButton()
+            print("self.nextPage()")
         }
     
 
