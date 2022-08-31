@@ -98,6 +98,37 @@ import UIKit
                                                                       isEnabled: false)
     
     /**
+     Indicates corner radius for buttons within the screens
+     */
+    
+    @objc public var actionButtonCornerRadius: CGFloat = 14
+    
+    /**
+     Indicates border width for buttons within the screens
+     */
+    
+    @objc public var actionButtonBorderWidth: CGFloat = 1
+    
+    /**
+     Indicates shadow corner radius for buttons within the screens
+     */
+    
+    @objc public var actionButtonShadowRadius: CGFloat = 14
+    
+    /**
+     Indicates opacity for buttons within the screens
+     */
+    
+    @objc public var actionButtonShadowOpacity: Float = 1
+    
+    /**
+     Indicates shadow color for buttons within the screens
+     */
+    
+    @objc public var actionButtonShadowColor: UIColor = UIColor.clear
+    
+    
+    /**
      Can be turned on during development to unlock extra information and to save captured images to camera roll.
      
      - warning: Should never be used outside of a development enviroment.
