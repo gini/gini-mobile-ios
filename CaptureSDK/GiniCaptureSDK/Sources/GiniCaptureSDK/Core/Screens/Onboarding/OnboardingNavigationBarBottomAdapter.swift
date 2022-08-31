@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  OnboardingNavigationBarBottomAdapter.swift
 //  
 //
 //  Created by Nadya Karaban on 08.08.22.
@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 
-//Option 1 Use blocks
 public protocol OnboardingNavigationBarBottomAdapter: InjectedViewAdapter {
     
     func showButtons(navigationButtons: [OnboardingNavigationBarBottomButton])
@@ -21,13 +20,14 @@ public protocol OnboardingNavigationBarBottomAdapter: InjectedViewAdapter {
 
 class DefaultOnboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter {
     
+    private var nextButtonCallback: (() -> Void)?
+    private var skipButtonCallback: (() -> Void)?
+    private var getStartedButtonCallback: (() -> Void)?
+    
     @objc func setNextButtonClickedActionCallback(callback: @escaping () -> Void) {
         nextButtonCallback = callback
     }
     
-    private var nextButtonCallback: (() -> Void)?
-    private var skipButtonCallback: (() -> Void)?
-    private var getStartedButtonCallback: (() -> Void)?
     // Add the callback whenever the
     @objc func setSkipButtonClickedActionCallback(_ callback: @escaping () -> Void) {
         skipButtonCallback = callback
