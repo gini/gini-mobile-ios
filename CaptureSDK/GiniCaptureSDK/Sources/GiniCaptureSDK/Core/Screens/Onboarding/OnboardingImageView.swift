@@ -7,6 +7,10 @@
 import UIKit
 
 class OnboardingImageView: UIView, OnboardingIllustrationAdapter {
+    func onDestroy() {
+        
+    }
+    
     func pageDidAppear() {
         
     }
