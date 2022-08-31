@@ -67,7 +67,9 @@
 "ginicapture.review.documentImageTitle" = "Dokument";
 "ginicapture.review.unknownError"       = "Auf dem Überprüfungsbildschirm ist ein unbekannter Fehler aufgetreten";
 
-"ginicapture.analysis.loadingText" = "Dokument wird analysiert";
+"ginicapture.analysis.screenTitle" = "TODO Review";
+"ginicapture.analysis.loadingText" = "TODO Analyzing documents";
+"ginicapture.analysis.loadingText.pdf" = "TODO Analyzing";
 "ginicapture.analysis.suggestion.header" = "Um schneller Ergebnisse zu erhalten, bitte:";
 "ginicapture.analysis.suggestion.1" = "TODO Good lightning";
 "ginicapture.analysis.suggestion.1.details" = "TODO Proper lighting leads to better results than flash.";
@@ -105,7 +107,7 @@
 
 "ginicapture.help.import.title" = "TODO How to import";
 "ginicapture.help.import.selectInvoice.title" = "TODO Select an invoice";
-"ginicapture.help.import.selectInvoice.desc" = "TODO To do so, please select a PDF invoice from within your email app, PDF viewer or other app on your smarthpone. To redirect the file to GiniVision, use the “Share” function, represented as a square with the arrow pointing up.";
+"ginicapture.help.import.selectInvoice.desc" = "TODO To do so, please select a PDF invoice from within your email app, PDF viewer or other app on your smartphone. To redirect the file to GiniBank, use the “Share” function, represented as a square with the arrow pointing up.";
 "ginicapture.help.import.importtoapp.title" = "TODO Import to app";
 "ginicapture.help.import.importtoapp.desc" = "TODO Please select your Banking App from the list to start the analysis and transfer process.";
 

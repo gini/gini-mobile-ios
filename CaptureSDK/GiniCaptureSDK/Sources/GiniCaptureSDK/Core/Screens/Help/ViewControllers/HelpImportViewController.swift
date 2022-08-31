@@ -14,7 +14,6 @@ class HelpImportViewController: UIViewController {
         case importToApp
     }
 
-    private let margin: CGFloat = 0
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -48,7 +47,7 @@ class HelpImportViewController: UIViewController {
             "ginicapture.help.import.title",
             comment: "Help Import screen title")
         view.addSubview(tableView)
-        view.backgroundColor = UIColorPreferred(named: "helpBackground")
+        view.backgroundColor = UIColor.GiniCapture.helpBackground
         edgesForExtendedLayout = []
     }
 
@@ -70,9 +69,9 @@ class HelpImportViewController: UIViewController {
 
     private func configureConstraints() {
         view.addConstraints([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: margin),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: margin),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -margin),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
@@ -93,34 +92,44 @@ extension HelpImportViewController: UITableViewDelegate {
 
 extension HelpImportViewController: UITableViewDataSource {
 
+    private func configureCellAccessibility(
+        cell: HelpImportCell,
+        item: String) {
+        cell.importImageView?.accessibilityTraits = .image
+        cell.importImageView.accessibilityLabel = item
+    }
+
     private func configureCell(cell: HelpImportCell, indexPath: IndexPath) {
         let itemType = dataSource[indexPath.row]
         let rowNr = indexPath.row + 1
         switch itemType {
         case .selectInvoice:
-            cell.headerLabel.text = "\(rowNr). " + NSLocalizedStringPreferredFormat(
+            let headerTitle = "\(rowNr). " + NSLocalizedStringPreferredFormat(
                 "ginicapture.help.import.selectInvoice.title",
                 comment: "Select an invoice header")
+            cell.headerLabel.text = headerTitle
             cell.descriptionLabel.text = NSLocalizedStringPreferredFormat(
                 "ginicapture.help.import.selectInvoice.desc",
                 comment: "Select an invoice description")
             cell.importImageView.image = UIImageNamedPreferred(named: "helpImport1")
+            configureCellAccessibility(cell: cell, item: headerTitle)
         case .importToApp:
-            cell.headerLabel.text = "\(rowNr). " + NSLocalizedStringPreferredFormat(
-                "ginicapture.help.import.importtoapp.title",
-                comment: "Import to app header")
+            let headerTitle = "\(rowNr). " + NSLocalizedStringPreferredFormat(
+                "ginicapture.help.import.importtoapp.title", comment: "Import to app header")
+            cell.headerLabel.text = headerTitle
             cell.descriptionLabel.text = NSLocalizedStringPreferredFormat(
                 "ginicapture.help.import.importtoapp.desc",
                 comment: "Import to app description")
             cell.importImageView.image = UIImageNamedPreferred(named: "helpImport2")
+            configureCellAccessibility(cell: cell, item: headerTitle)
         }
         cell.backgroundColor = UIColor.clear
-        cell.headerLabel.textColor = UIColorPreferred(named: "labelColor")
+        cell.headerLabel.textColor = UIColor.GiniCapture.label
         cell.headerLabel.backgroundColor = UIColor.clear
         cell.headerLabel.adjustsFontForContentSizeCategory = true
         cell.headerLabel.font = giniConfiguration.textStyleFonts[.headline]
         cell.descriptionLabel.backgroundColor = UIColor.clear
-        cell.descriptionLabel.textColor = UIColorPreferred(named: "subheadline")
+        cell.descriptionLabel.textColor = UIColor.GiniCapture.subheadline
         cell.descriptionLabel.font = giniConfiguration.textStyleFonts[.body]
         cell.descriptionLabel.adjustsFontForContentSizeCategory = true
         cell.contentView.backgroundColor = UIColor.clear
