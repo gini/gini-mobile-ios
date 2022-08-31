@@ -57,7 +57,7 @@ final class CaptureSuggestionsViewContainer: UIView {
         self.titleLabel.text = title
         self.titleLabel.accessibilityValue = title
         self.descriptionLabel.text = description
-        self.descriptionLabel.accessibilityValue = title
+        self.descriptionLabel.accessibilityValue = description
         self.accessibilityImageDescription = description
     }
 }
