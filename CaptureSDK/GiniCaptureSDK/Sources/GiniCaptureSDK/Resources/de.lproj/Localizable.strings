@@ -82,7 +82,7 @@
 "ginicapture.analysis.suggestion.4.details" = "TODO Hold the device parallel over the page.";
 "ginicapture.analysis.suggestion.5" = "TODO Multiple pages";
 "ginicapture.analysis.suggestion.5.details" = "TODO It’s now possible to analyse an invoice with multiple pages.";
-
+"ginicapture.analysis.section.header" = "TODO Useful Tips";
 "ginicapture.analysis.error.actionTitle" = "Wiederholen";
 "ginicapture.analysis.error.documentCreation" = "Beim Hochladen des Dokuments ist ein Fehler aufgetreten.";
 "ginicapture.analysis.error.analysis" = "Beim Analysieren des Dokuments ist ein Fehler aufgetreten.";
@@ -105,6 +105,11 @@
 "ginicapture.noresults.title" = "Tipps für Fotos";
 "ginicapture.noresults.warningHelpMenu" = "Zur Erkennung aller Daten bitte folgende Tipps beim Abfotografieren beachten:";
 
+"ginicapture.noresult.enterManually" = "Zahlungsdaten manuell eingeben";
+"ginicapture.noresult.retakeImages" = "Foto wiederholen";
+"ginicapture.noresult.title" = "Fehler";
+"ginicapture.noresult.header.no.results" = "Leider konnten keine Informationen aus dem Dokument ausgelesen werden";
+"ginicapture.noresult.header.other" = "Entschuldigung, da  ist ein Fehler aufgetreten.";
 "ginicapture.help.import.title" = "TODO How to import";
 "ginicapture.help.import.selectInvoice.title" = "TODO Select an invoice";
 "ginicapture.help.import.selectInvoice.desc" = "TODO To do so, please select a PDF invoice from within your email app, PDF viewer or other app on your smartphone. To redirect the file to GiniBank, use the “Share” function, represented as a square with the arrow pointing up.";

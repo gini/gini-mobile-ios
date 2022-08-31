@@ -80,7 +80,9 @@ final public class HelpTipsDataSource: HelpRoundedCornersDataSource<HelpTipsItem
         header.titleLabel.adjustsFontForContentSizeCategory = true
         header.titleLabel.numberOfLines = 0
         header.titleLabel.textColor =  UIColorPreferred(named: "subheadline")
-        header.titleLabel.text = "Useful Tips".uppercased()
+        header.titleLabel.text = NSLocalizedStringPreferredFormat(
+            "ginicapture.analysis.section.header",
+            comment: "Analysis section header").uppercased()
         header.backgroundView?.backgroundColor = UIColor.clear
     }
 

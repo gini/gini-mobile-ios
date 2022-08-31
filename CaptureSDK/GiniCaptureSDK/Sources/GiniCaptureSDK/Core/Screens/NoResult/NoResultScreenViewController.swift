@@ -36,14 +36,14 @@ final public class NoResultScreenViewController: UIViewController {
         return tableView
     }()
 
-    lazy var enterButton: UIButton = {
-        let button = UIButton()
+    lazy var enterButton: MultilineTitleButton = {
+        let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
 
-    lazy var retakeButton: UIButton = {
-        let button = UIButton()
+    lazy var retakeButton: MultilineTitleButton = {
+        let button = MultilineTitleButton()
         button.layer.cornerRadius = 14
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -69,6 +69,8 @@ final public class NoResultScreenViewController: UIViewController {
     lazy var header: NoResultHeader = {
         
         if let header = NoResultHeader().loadNib() as? NoResultHeader {
+            header.headerLabel.adjustsFontForContentSizeCategory = true
+            header.headerLabel.adjustsFontSizeToFitWidth = true
             header.translatesAutoresizingMaskIntoConstraints = false
         return header
         }
@@ -79,17 +81,17 @@ final public class NoResultScreenViewController: UIViewController {
     private var giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 44
     private let sectionHeight: CGFloat = 70
-    private let errorType: NoResultType
+    private let type: NoResultType
     private let viewModel: NoResultScreenViewModel
 
     public init(
         giniConfiguration: GiniConfiguration,
-        errorType: NoResultType,
+        type: NoResultType,
         viewModel: NoResultScreenViewModel
     ) {
         self.giniConfiguration = giniConfiguration
-        self.errorType = errorType
-        switch errorType {
+        self.type = type
+        switch type {
         case .image:
             let tipsDS = HelpTipsDataSource(configuration: giniConfiguration)
             tipsDS.showHeader = true
@@ -111,7 +113,20 @@ final public class NoResultScreenViewController: UIViewController {
         super.viewDidLoad()
         self.setupView()
     }
-
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: buttonsView.bounds.size.height + GiniMargins.margin, right: 0)
+    }
+    
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: buttonsView.bounds.size.height + GiniMargins.margin, right: 0)
+    }
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: buttonsView.bounds.size.height + GiniMargins.margin, right: 0)
+    }
+    
     private func setupView() {
         configureMainView()
         configureTableView()
@@ -124,7 +139,11 @@ final public class NoResultScreenViewController: UIViewController {
         title = NSLocalizedStringPreferredFormat(
             "ginicapture.noresult.title",
             comment: "No result screen title")
-        header.headerLabel.text = errorType.description
+        header.iconImageView.accessibilityLabel = NSLocalizedStringPreferredFormat(
+            "ginicapture.noresult.title",
+            comment: "No result screen title")
+        header.headerLabel.text = type.description
+        header.headerLabel.font = giniConfiguration.textStyleFonts[.subheadline]
         header.headerLabel.textColor = UIColor.GiniCapture.label
         view.backgroundColor = UIColor.GiniCapture.helpBackground
         view.addSubview(header)
@@ -147,7 +166,7 @@ final public class NoResultScreenViewController: UIViewController {
         tableView.alwaysBounceVertical = false
         tableView.showsVerticalScrollIndicator = false
         tableView.separatorStyle = .none
-        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 130 + GiniMargins.margin, right: 0)
+        
 
         if #available(iOS 14.0, *) {
             var bgConfig = UIBackgroundConfiguration.listPlainCell()
@@ -157,7 +176,7 @@ final public class NoResultScreenViewController: UIViewController {
     }
 
     private func registerCells() {
-        switch errorType {
+        switch type {
         case .pdf:
             tableView.register(
                 UINib(
@@ -187,19 +206,20 @@ final public class NoResultScreenViewController: UIViewController {
         enterButton.addBlurEffect(cornerRadius: cornerRadius)
         enterButton.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         enterButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        
         enterButton.setTitleColor(UIColor.GiniCapture.grayLabel, for: .normal)
         enterButton.layer.cornerRadius = cornerRadius
         enterButton.layer.borderWidth = 1.0
         enterButton.layer.borderColor = UIColor.GiniCapture.grayLabel?.cgColor ?? UIColor.white.cgColor
         enterButton.addTarget(viewModel, action: #selector(viewModel.didPressEnterManually), for: .touchUpInside)
+        enterButton.adjustsImageSizeForAccessibilityContentSizeCategory = true
+        enterButton.titleLabel?.adjustsFontForContentSizeCategory = true
         retakeButton.setTitle(NSLocalizedStringPreferredFormat(
             "ginicapture.noresult.retakeImages",
             comment: "Enter manually"),
                               for: .normal)
         retakeButton.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
-        retakeButton.titleLabel?.adjustsFontForContentSizeCategory = true
         
+        retakeButton.titleLabel?.adjustsFontForContentSizeCategory = true
         retakeButton.setTitleColor(UIColor.GiniCapture.labelWhite, for: .normal)
         retakeButton.layer.cornerRadius = cornerRadius
         retakeButton.backgroundColor = UIColor.GiniCapture.systemBlue
@@ -209,15 +229,19 @@ final public class NoResultScreenViewController: UIViewController {
             target: viewModel,
             action: #selector(viewModel.didPressCancell))
     }
-
+    
     private func configureConstraints() {
         header.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
         header.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        tableView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        
         NSLayoutConstraint.activate([
+            tableView.heightAnchor.constraint(greaterThanOrEqualToConstant: view.bounds.size.height * 0.6),
             header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             header.heightAnchor.constraint(greaterThanOrEqualToConstant: 62),
+            
             tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 13),
             tableView.bottomAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.bottomAnchor,
@@ -227,7 +251,7 @@ final public class NoResultScreenViewController: UIViewController {
             buttonsView.bottomAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.bottomAnchor,
                 constant: -GiniMargins.margin),
-            buttonsView.heightAnchor.constraint(equalToConstant: 130)
+            buttonsView.heightAnchor.constraint(greaterThanOrEqualToConstant: 130)
         ])
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
