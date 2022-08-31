@@ -68,22 +68,27 @@ import UIKit
         loadingText.font = giniConfiguration.textStyleFonts[.bodyBold]
         loadingText.textAlignment = .center
         loadingText.adjustsFontForContentSizeCategory = true
+        loadingText.isAccessibilityElement = true
         loadingText.textColor = UIColor.GiniCapture.label
         loadingText.numberOfLines = 0
+        var loadingTextTitle: String
 
         if document.type == .pdf {
             if let documentTitle = (document as? GiniPDFDocument)?.pdfTitle {
-                loadingText.text = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText.pdf",
+                loadingTextTitle = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText.pdf",
                                                                     comment: "Analysis screen loading text for PDF")
                                                                     + " \(documentTitle)"
             } else {
-                loadingText.text = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
+                loadingTextTitle = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
                                                                     comment: "Analysis screen loading text for images")
             }
         } else {
-            loadingText.text = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
+            loadingTextTitle = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
                                                                 comment: "Analysis screen loading text for images")
         }
+
+        loadingText.text = loadingTextTitle
+        loadingText.accessibilityValue = loadingTextTitle
 
         return loadingText
     }()
