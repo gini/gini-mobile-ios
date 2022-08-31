@@ -74,7 +74,7 @@ class HelpImportViewController: UIViewController {
         ])
         if UIDevice.current.isIpad {
             view.addConstraints([
-                tableView.widthAnchor.constraint(equalToConstant: GiniMargins.fixediPadWidth),
+                tableView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: GiniMargins.iPadAspectScale),
                 tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
         } else {
