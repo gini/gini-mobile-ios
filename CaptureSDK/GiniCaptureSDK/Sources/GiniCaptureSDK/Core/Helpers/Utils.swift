@@ -23,7 +23,7 @@ extension UITableViewCell {
 
 public struct GiniMargins {
     public static let margin: CGFloat = 16
-    public static let fixediPadWidth: CGFloat = 559
+    public static let iPadAspectScale: CGFloat = 0.7
 }
 
 extension UIButton {

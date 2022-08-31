@@ -197,6 +197,15 @@ final public class NoResultScreenViewController: UIViewController {
             forHeaderFooterViewReuseIdentifier: HelpFormatSectionHeader.reuseIdentifier)
     }
 
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        tableView.reloadData()
+        if UIDevice.current.orientation == .portrait {
+            
+        }
+        view.layoutSubviews()
+    }
+    
     private func configureButtons() {
         enterButton.setTitle(NSLocalizedStringPreferredFormat(
                 "ginicapture.noresult.enterManually",
@@ -246,18 +255,20 @@ final public class NoResultScreenViewController: UIViewController {
             tableView.bottomAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.bottomAnchor,
                 constant: -GiniMargins.margin),
-            buttonsView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
-            buttonsView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
+            
             buttonsView.bottomAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.bottomAnchor,
                 constant: -GiniMargins.margin),
-            buttonsView.heightAnchor.constraint(greaterThanOrEqualToConstant: 130)
+            buttonsView.heightAnchor.constraint(greaterThanOrEqualToConstant: 112)
         ])
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
-                tableView.widthAnchor.constraint(equalToConstant: GiniMargins.fixediPadWidth),
-                tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+                tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                tableView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7),
+                buttonsView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                buttonsView.widthAnchor.constraint(equalToConstant: 280)
             ])
+            
         } else {
             NSLayoutConstraint.activate([
                 tableView.leadingAnchor.constraint(
@@ -265,7 +276,9 @@ final public class NoResultScreenViewController: UIViewController {
                     constant: GiniMargins.margin),
                 tableView.trailingAnchor.constraint(
                     equalTo: view.trailingAnchor,
-                    constant: -GiniMargins.margin)
+                    constant: -GiniMargins.margin),
+                buttonsView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
+                buttonsView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
             ])
         }
         view.layoutSubviews()

@@ -86,7 +86,7 @@ final public class HelpMenuViewController: UIViewController {
         ])
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
-                tableView.widthAnchor.constraint(equalToConstant: GiniMargins.fixediPadWidth),
+                tableView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: GiniMargins.iPadAspectScale),
                 tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
         } else {
