@@ -7,45 +7,58 @@
 
 import Foundation
 import UIKit
-// Option 3 to limit UI Control variety and limit it to UIControl and connect control and action on Gini side
-public protocol GiniNavigationButtonView: UIControl {
-    func handlePressAction()
-}
-
-class CustomNavigationButtonView: UIControl, GiniNavigationButtonView {
-    func handlePressAction() {
-    }
-}
 
 //Option 1 Use blocks
 public protocol OnboardingNavigationBarBottomAdapter: InjectedViewAdapter {
-    // Problem 1 - needs to be called in didClickNextButton()
-    var nextButtonCompletionHandler: () -> Void { get set }
-    // Problem 2  - Action needs to be connected to the control
-    func didClickNextButton()
     
     func showButtons(navigationButtons: [OnboardingNavigationBarBottomButton])
+    
+    func setNextButtonClickedActionCallback(callback: @escaping () -> Void)
+    func setSkipButtonClickedActionCallback(_ callback: @escaping () -> Void)
+    func setGetStartedButtonClickedActionCallback(_ callback: @escaping  () -> Void)
+    
 }
 
-// Option 2 Use Subclass of  Base class
-// Problem - Action needs to be connected to the control
-
-class BaseNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter {
-    var nextButton = CustomNavigationButtonView()
+class DefaultOnboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter {
     
-    func didClickNextButton() {
-        nextButton.handlePressAction()
+    @objc func setNextButtonClickedActionCallback(callback: @escaping () -> Void) {
+        nextButtonCallback = callback
     }
     
-    var nextButtonCompletionHandler: (() -> Void) = {}
+    private var nextButtonCallback: (() -> Void)?
+    private var skipButtonCallback: (() -> Void)?
+    private var getStartedButtonCallback: (() -> Void)?
+    // Add the callback whenever the
+    @objc func setSkipButtonClickedActionCallback(_ callback: @escaping () -> Void) {
+        skipButtonCallback = callback
+    }
+    
+    @objc func setGetStartedButtonClickedActionCallback(_ callback: @escaping () -> Void) {
+        getStartedButtonCallback = callback
+    }
     
     func showButtons(navigationButtons: [OnboardingNavigationBarBottomButton]) {
+    }
+        
+    @objc func nextButtonClicked() {
+        nextButtonCallback?()
+    }
+    
+    @objc func skipButtonClicked() {
+        skipButtonCallback?()
+    }
+    
+    @objc func getStartedButtonClicked() {
+        getStartedButtonCallback?()
     }
     
     func injectedView() -> UIView {
         if let navigationBarView =
             OnboardingBottomNavigationBar().loadNib() as?
                 OnboardingBottomNavigationBar {
+            navigationBarView.nextButton.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
+            navigationBarView.skipButton.addTarget(self, action: #selector(skipButtonClicked), for: .touchUpInside)
+            navigationBarView.getStarted.addTarget(self, action: #selector(getStartedButtonClicked), for: .touchUpInside)
 
             return navigationBarView
         } else {
@@ -53,76 +66,15 @@ class BaseNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter {
         }
     }
     
-    
-}
-
-class CustomNavigationBarBottomAdapter: BaseNavigationBarBottomAdapter {
-    
-    override func injectedView() -> UIView {
-        return UIView()
+    func onDestroy() {
+        nextButtonCallback = nil
+        skipButtonCallback = nil
+        getStartedButtonCallback = nil
     }
-    
-    
-//    override func didClickNextButton() {
-//        super.didClickNextButton()
-//        //custom
-//    }
 }
 
 public enum OnboardingNavigationBarBottomButton: Int {
     case SKIP
     case NEXT
     case GET_STARTED
-}
-
-//public protocol OnboardingNextButton {
-//    func nextButton() -> UIView
-//    func nextButtonAction()
-//}
-
-class DefaultOnboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter {
-    var nextButtonCompletionHandler: (() -> Void) = {}
-    private func addAnimation(){}
-    private func bindAction(){}
-    func didClickSkipButton(completion: () -> Void) {
-    }
-    
-    func didClickSkipButton() {
-    }
-    //return UIView
-//    func nextButton() -> UIView {
-//        let btn = UIButton()
-//        //btn.addTarget(<#T##target: Any?##Any?#>, action: (), for: UIControl.Event)
-//        return UIView()
-//    }
-//
-//    func nextButtonAction() {
-//       print("nextButtonAction")
-//    }
-    
-    private var bottomBarView : OnboardingBottomNavigationBar?
-    func injectedView() -> UIView {
-        if let navigationBarView =
-            OnboardingBottomNavigationBar().loadNib() as?
-                OnboardingBottomNavigationBar {
-           // navigationBarView.nextButton.addTarget(self, action: #selector(didClickNextButton), for: .touchUpInside)
-
-            return navigationBarView
-        } else {
-            return UIView()
-        }
-    }
-        
-    @objc func didClickNextButton() {
-        self.nextButtonCompletionHandler()
-    }
-    
-    func didClickGetStartedButton() {
-    }
-    
-    func showButtons(navigationButtons: [OnboardingNavigationBarBottomButton]) {
-        
-    }
-    
-    
 }
