@@ -11,6 +11,8 @@ import UIKit
 final class OnboardingBottomNavigationBar: UIView {
 
     @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var skipButton: UIButton!
+    @IBOutlet weak var getStarted: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
