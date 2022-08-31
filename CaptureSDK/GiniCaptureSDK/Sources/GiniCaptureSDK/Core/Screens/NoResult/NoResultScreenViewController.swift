@@ -39,13 +39,28 @@ final public class NoResultScreenViewController: UIViewController {
     lazy var enterButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.borderColor = UIColor.GiniCapture.grayLabel?.cgColor ?? UIColor.white.cgColor
+        button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.setTitleColor(UIColor.GiniCapture.grayLabel, for: .normal)
+        button.setTitle(NSLocalizedStringPreferredFormat(
+                "ginicapture.noresult.enterManually",
+                comment: "Enter manually"),
+                             for: .normal)
         return button
     }()
 
     lazy var retakeButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
-        button.layer.cornerRadius = 14
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.setTitleColor(UIColor.GiniCapture.labelWhite, for: .normal)
+        button.backgroundColor = UIColor.GiniCapture.systemBlue
+        button.setTitle(NSLocalizedStringPreferredFormat(
+            "ginicapture.noresult.retakeImages",
+            comment: "Enter manually"),
+                              for: .normal)
         return button
     }()
 
@@ -57,7 +72,6 @@ final public class NoResultScreenViewController: UIViewController {
         if viewModel.isRetakePressedHidden() == false {
             stackView.addArrangedSubview(retakeButton)
         }
-        
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.distribution = .fillEqually
         stackView.axis = .vertical
@@ -200,38 +214,44 @@ final public class NoResultScreenViewController: UIViewController {
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         tableView.reloadData()
-        if UIDevice.current.orientation == .portrait {
-            
-        }
         view.layoutSubviews()
     }
     
+    private func setupButonShadow(button: UIButton) {
+        button.layer.cornerRadius = giniConfiguration.actionButtonCornerRadius
+        button.layer.borderWidth = giniConfiguration.actionButtonBorderWidth
+        button.layer.shadowRadius = giniConfiguration.actionButtonShadowRadius
+        button.layer.shadowOpacity = giniConfiguration.actionButtonShadowOpacity
+        button.layer.shadowColor = giniConfiguration.actionButtonShadowColor.cgColor
+    }
+
+    private func addBlurEffect(button: UIButton, cornerRadius: CGFloat) {
+        button.backgroundColor = .clear
+        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+        blurView.isUserInteractionEnabled = false
+        blurView.backgroundColor = .clear
+        if cornerRadius > 0 {
+            blurView.layer.cornerRadius = cornerRadius
+            blurView.layer.masksToBounds = true
+        }
+        button.insertSubview(blurView, at: 0)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        button.leadingAnchor.constraint(equalTo: blurView.leadingAnchor).isActive = true
+        button.trailingAnchor.constraint(equalTo: blurView.trailingAnchor, constant: -0).isActive = true
+        button.topAnchor.constraint(equalTo: blurView.topAnchor).isActive = true
+        button.bottomAnchor.constraint(equalTo: blurView.bottomAnchor).isActive = true
+        if let imageView = button.imageView {
+            imageView.backgroundColor = .clear
+            button.bringSubviewToFront(imageView)
+        }
+    }
+
+    
     private func configureButtons() {
-        enterButton.setTitle(NSLocalizedStringPreferredFormat(
-                "ginicapture.noresult.enterManually",
-                comment: "Enter manually"),
-                             for: .normal)
-        let cornerRadius: CGFloat = 14
-        enterButton.addBlurEffect(cornerRadius: cornerRadius)
-        enterButton.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
-        enterButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        enterButton.setTitleColor(UIColor.GiniCapture.grayLabel, for: .normal)
-        enterButton.layer.cornerRadius = cornerRadius
-        enterButton.layer.borderWidth = 1.0
-        enterButton.layer.borderColor = UIColor.GiniCapture.grayLabel?.cgColor ?? UIColor.white.cgColor
+        setupButonShadow(button: enterButton)
+        setupButonShadow(button: retakeButton)
+        addBlurEffect(button: enterButton, cornerRadius: 14)
         enterButton.addTarget(viewModel, action: #selector(viewModel.didPressEnterManually), for: .touchUpInside)
-        enterButton.adjustsImageSizeForAccessibilityContentSizeCategory = true
-        enterButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        retakeButton.setTitle(NSLocalizedStringPreferredFormat(
-            "ginicapture.noresult.retakeImages",
-            comment: "Enter manually"),
-                              for: .normal)
-        retakeButton.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
-        
-        retakeButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        retakeButton.setTitleColor(UIColor.GiniCapture.labelWhite, for: .normal)
-        retakeButton.layer.cornerRadius = cornerRadius
-        retakeButton.backgroundColor = UIColor.GiniCapture.systemBlue
         retakeButton.addTarget(viewModel, action: #selector(viewModel.didPressRetake), for: .touchUpInside)
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .cancel,

@@ -1124,6 +1124,37 @@ public final class GiniBankConfiguration: NSObject {
                                                                       thin: UIFont.systemFont(ofSize: 14,
                                                                                               weight: .thin),
                                                                       isEnabled: false)
+
+    /**
+     Indicates corner radius for buttons within the screens
+     */
+    
+    @objc public var actionButtonCornerRadius: CGFloat = 14
+    
+    /**
+     Indicates border width for buttons within the screens
+     */
+    
+    @objc public var actionButtonBorderWidth: CGFloat = 1
+    
+    /**
+     Indicates shadow corner radius for buttons within the screens
+     */
+    
+    @objc public var actionButtonShadowRadius: CGFloat = 14
+    
+    /**
+     Indicates opacity for buttons within the screens
+     */
+    
+    @objc public var actionButtonShadowOpacity: Float = 1
+    
+    /**
+     Indicates shadow color for buttons within the screens
+     */
+    
+    @objc public var actionButtonShadowColor: UIColor = UIColor.clear
+    
     /**
      Set an array of additional custom help menu items . Those items will be presented as table view cells on the help menu screen. By selecting the cell the user will be redirected to the page, which represented by viewController provided by customer during the  `HelpMenuViewController.Item` initialization.
     */
