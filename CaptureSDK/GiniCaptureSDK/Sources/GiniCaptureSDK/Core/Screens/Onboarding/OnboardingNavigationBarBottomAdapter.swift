@@ -8,14 +8,34 @@
 import Foundation
 import UIKit
 
+/**
+Protocol that Gini Bank SDK uses to allow custom view for bottom navigation Bar.
+
+- note: Bottom navigation only.
+*/
 public protocol OnboardingNavigationBarBottomAdapter: InjectedViewAdapter {
     
     func showButtons(navigationButtons: [OnboardingNavigationBarBottomButton])
+    /**
+     *  Sets the callback on next button action
+     *
+     * - Parameter callback:          An  action callback, which should be retained and called in next button action method
+     */
+    func setNextButtonClickedActionCallback(_ callback: @escaping () -> Void)
     
-    func setNextButtonClickedActionCallback(callback: @escaping () -> Void)
+    /**
+     *  Sets the callback on skip button action
+     *
+     * - Parameter callback:          An  action callback, which should be retained and called in skip button action method
+     */
     func setSkipButtonClickedActionCallback(_ callback: @escaping () -> Void)
-    func setGetStartedButtonClickedActionCallback(_ callback: @escaping  () -> Void)
     
+    /**
+     *  Sets the callback on get started button action
+     *
+     * - Parameter callback:          An  action callback, which should be retained and called in get started button action method
+     */
+    func setGetStartedButtonClickedActionCallback(_ callback: @escaping  () -> Void)
 }
 
 class DefaultOnboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter {
@@ -24,15 +44,17 @@ class DefaultOnboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottom
     private var skipButtonCallback: (() -> Void)?
     private var getStartedButtonCallback: (() -> Void)?
     
+    // Add the callback whenever the next button is clicked
     @objc func setNextButtonClickedActionCallback(callback: @escaping () -> Void) {
         nextButtonCallback = callback
     }
     
-    // Add the callback whenever the
+    // Add the callback whenever the skip button is clicked
     @objc func setSkipButtonClickedActionCallback(_ callback: @escaping () -> Void) {
         skipButtonCallback = callback
     }
     
+    // Add the callback whenever the get started button is clicked
     @objc func setGetStartedButtonClickedActionCallback(_ callback: @escaping () -> Void) {
         getStartedButtonCallback = callback
     }
