@@ -39,10 +39,8 @@ final public class NoResultScreenViewController: UIViewController {
     lazy var enterButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.borderColor = UIColor.GiniCapture.grayLabel?.cgColor ?? UIColor.white.cgColor
         button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.setTitleColor(UIColor.GiniCapture.grayLabel, for: .normal)
         button.setTitle(NSLocalizedStringPreferredFormat(
                 "ginicapture.noresult.enterManually",
                 comment: "Enter manually"),
@@ -55,8 +53,6 @@ final public class NoResultScreenViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.setTitleColor(UIColor.GiniCapture.labelWhite, for: .normal)
-        button.backgroundColor = UIColor.GiniCapture.systemBlue
         button.setTitle(NSLocalizedStringPreferredFormat(
             "ginicapture.noresult.retakeImages",
             comment: "Enter manually"),
@@ -180,7 +176,6 @@ final public class NoResultScreenViewController: UIViewController {
         tableView.alwaysBounceVertical = false
         tableView.showsVerticalScrollIndicator = false
         tableView.separatorStyle = .none
-        
 
         if #available(iOS 14.0, *) {
             var bgConfig = UIBackgroundConfiguration.listPlainCell()
@@ -216,14 +211,6 @@ final public class NoResultScreenViewController: UIViewController {
         tableView.reloadData()
         view.layoutSubviews()
     }
-    
-    private func setupButonShadow(button: UIButton) {
-        button.layer.cornerRadius = giniConfiguration.actionButtonCornerRadius
-        button.layer.borderWidth = giniConfiguration.actionButtonBorderWidth
-        button.layer.shadowRadius = giniConfiguration.actionButtonShadowRadius
-        button.layer.shadowOpacity = giniConfiguration.actionButtonShadowOpacity
-        button.layer.shadowColor = giniConfiguration.actionButtonShadowColor.cgColor
-    }
 
     private func addBlurEffect(button: UIButton, cornerRadius: CGFloat) {
         button.backgroundColor = .clear
@@ -248,8 +235,22 @@ final public class NoResultScreenViewController: UIViewController {
 
     
     private func configureButtons() {
-        setupButonShadow(button: enterButton)
-        setupButonShadow(button: retakeButton)
+        retakeButton.setTitleColor(giniConfiguration.primaryButtonTitleColor, for: .normal)
+        retakeButton.backgroundColor = giniConfiguration.primaryButtonBackgroundColor
+        retakeButton.layer.borderColor = giniConfiguration.primaryButtonBorderColor.cgColor
+        retakeButton.layer.cornerRadius = giniConfiguration.primaryButtonCornerRadius
+        retakeButton.layer.borderWidth = giniConfiguration.primaryButtonBorderWidth
+        retakeButton.layer.shadowRadius = giniConfiguration.primaryButtonShadowRadius
+        retakeButton.layer.shadowColor = giniConfiguration.primaryButtonShadowColor.cgColor
+        
+        
+        enterButton.backgroundColor = giniConfiguration.outlineButtonBackground
+        enterButton.layer.cornerRadius = giniConfiguration.outlineButtonCornerRadius
+        enterButton.layer.borderWidth = giniConfiguration.outlineButtonBorderWidth
+        enterButton.layer.borderColor = giniConfiguration.outlineButtonBorderColor.cgColor
+        enterButton.layer.shadowRadius = giniConfiguration.outlineButtonShadowRadius
+        enterButton.layer.shadowColor = giniConfiguration.outlineButtonShadowColor.cgColor
+        enterButton.setTitleColor(giniConfiguration.outlineButtonTitleColor, for: .normal)
         addBlurEffect(button: enterButton, cornerRadius: 14)
         enterButton.addTarget(viewModel, action: #selector(viewModel.didPressEnterManually), for: .touchUpInside)
         retakeButton.addTarget(viewModel, action: #selector(viewModel.didPressRetake), for: .touchUpInside)
