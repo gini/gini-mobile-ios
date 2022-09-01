@@ -1194,7 +1194,6 @@ public final class GiniBankConfiguration: NSObject {
     
     public func captureConfiguration() -> GiniConfiguration {
      let configuration = GiniConfiguration()
-        
         configuration.customDocumentValidations = self.customDocumentValidations
         
         configuration.customFont = self.customFont
@@ -1327,7 +1326,11 @@ public final class GiniBankConfiguration: NSObject {
                 configuration.updateFont(newFont, for: textStyle)
             }
         }
-        
+        configuration.actionButtonCornerRadius = self.actionButtonCornerRadius
+        configuration.actionButtonBorderWidth = self.actionButtonBorderWidth
+        configuration.actionButtonShadowColor = self.actionButtonShadowColor
+        configuration.actionButtonShadowOpacity = self.actionButtonShadowOpacity
+        configuration.actionButtonShadowRadius = self.actionButtonShadowRadius
         GiniCapture.setConfiguration(configuration)
         
         // Set onboarding pages after setting the GiniCapture's configuration

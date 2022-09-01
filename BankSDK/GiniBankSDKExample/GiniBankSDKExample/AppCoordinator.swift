@@ -77,6 +77,11 @@ final class AppCoordinator: Coordinator {
     // If you would like to pass us already scaled font.
 //    let customScaledFont = UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 28))
 //    configuration.updateFont(customScaledFont, for: .caption2)
+//    configuration.actionButtonBorderWidth = 10
+//    configuration.actionButtonShadowColor = UIColor.red.cgColor
+//    configuration.actionButtonShadowRadius = 10
+//    configuration.actionButtonShadowOpacity = 0.7
+//    configuration.actionButtonCornerRadius = 10
         
        return configuration
     }()

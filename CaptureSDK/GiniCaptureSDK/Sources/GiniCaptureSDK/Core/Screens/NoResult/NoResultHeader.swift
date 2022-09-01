@@ -1,5 +1,5 @@
 //
-//  ErrorHeader.swift
+//  NoResultHeader.swift
 //  GiniCapture
 //
 //  Created by Krzysztof Kryniecki on 22/08/2022.
