@@ -97,7 +97,9 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
         self.title = title
         self.subHeaderTitle = subHeaderText
         self.topViewText = topViewText
-        self.topViewIcon = topViewIcon
+        if let topViewIcon = topViewIcon {
+            self.topViewIcon = topViewIcon.tintedImageWithColor(giniConfiguration.noResultsWarningContainerIconColor)
+        }
         self.bottomButtonText = bottomButtonText
         self.bottomButtonIconImage = bottomButtonIcon
     }
