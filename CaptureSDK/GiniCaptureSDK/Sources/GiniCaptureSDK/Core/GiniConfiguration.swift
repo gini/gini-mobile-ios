@@ -98,35 +98,90 @@ import UIKit
                                                                       isEnabled: false)
     
     /**
-     Indicates corner radius for buttons within the screens
+     Indicates corner radius for primary buttons within the screens
      */
     
-    @objc public var actionButtonCornerRadius: CGFloat = 14
+    @objc public var primaryButtonCornerRadius: CGFloat = 14
     
     /**
-     Indicates border width for buttons within the screens
+     Indicates border width for primary buttons within the screens
      */
     
-    @objc public var actionButtonBorderWidth: CGFloat = 1
+    @objc public var primaryButtonBorderWidth: CGFloat = 1
     
     /**
-     Indicates shadow corner radius for buttons within the screens
+     Indicates shadow corner radius for primary buttons within the screens
      */
     
-    @objc public var actionButtonShadowRadius: CGFloat = 14
+    @objc public var primaryButtonShadowRadius: CGFloat = 14
+    
     
     /**
-     Indicates opacity for buttons within the screens
+     Indicates shadow color for primary buttons within the screens
      */
     
-    @objc public var actionButtonShadowOpacity: Float = 1
+    @objc public var primaryButtonShadowColor: UIColor = UIColor.clear
     
     /**
-     Indicates shadow color for buttons within the screens
+     Indicates border color for primary buttons within the screens
      */
     
-    @objc public var actionButtonShadowColor: UIColor = UIColor.clear
+    @objc public var primaryButtonBorderColor: UIColor = UIColor.clear
     
+    /**
+     Indicates background color for primary buttons within the screens
+     */
+    
+    @objc public var primaryButtonBackgroundColor: UIColor = UIColor.GiniCapture.systemBlue ?? UIColor.clear
+    
+    /**
+     Indicates title color for primary buttons within the screens
+     */
+    
+    @objc public var primaryButtonTitleColor: UIColor = UIColor.GiniCapture.labelWhite ?? UIColor.clear
+    
+    
+    /**
+     Indicates corner radius for outline buttons within the screens
+     */
+    
+    @objc public var outlineButtonCornerRadius: CGFloat = 14
+    
+    /**
+     Indicates border width for outline buttons within the screens
+     */
+    
+    @objc public var outlineButtonBorderWidth: CGFloat = 1
+    
+    /**
+     Indicates shadow corner radius for outline buttons within the screens
+     */
+    
+    @objc public var outlineButtonShadowRadius: CGFloat = 14
+    
+    /**
+     Indicates shadow color for outline buttons within the screens
+     */
+    
+    @objc public var outlineButtonShadowColor: UIColor = UIColor.clear
+    
+    /**
+     Indicates background color for outline buttons within the screens
+     */
+    
+    @objc public var outlineButtonBackground: UIColor = UIColor.clear
+    
+    /**
+     Indicates border color for outline buttons within the screens
+     */
+    
+    @objc public var outlineButtonBorderColor: UIColor = UIColor.GiniCapture.grayLabel ?? UIColor.clear
+    
+    /**
+     Indicates title color for outline buttons within the screens
+     */
+    
+    @objc public var outlineButtonTitleColor: UIColor = UIColor.GiniCapture.grayLabel ?? UIColor.clear
     
     /**
      Can be turned on during development to unlock extra information and to save captured images to camera roll.
