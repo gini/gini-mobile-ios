@@ -1,0 +1,2711 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ReturnAssistantConfiguration Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/ReturnAssistantConfiguration" class="dashAnchor"></a>
+
+    <a title="ReturnAssistantConfiguration Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+        <img class="logo-icon" src="../img/logo.png"/>
+    
+        </a>
+        
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/gini/gini-mobile-ios.git">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">GiniBankSDK Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      ReturnAssistantConfiguration Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Documentation.html">Documentation</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../installation.html">Installation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../integration.html">Integration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../license.html">License</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Guides.html">Other Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../customization-guide.html">Customization guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../error-logging-guide.html">Error logging guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../event-tracking-guide.html">Event tracking guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../import-pdfs-and-images-guide.html">Import PDFs and images guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../migration-from-gini-pay-bank-sdk.html">Migration from Gini Pay Bank SDK</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../migration-from-gini-vision-library.html">Migration from Gini Vision Library</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../open-with-guide.html">Open with guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../qr-code-scanning-guide.html">QR Code scanning guide</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DigitalInvoiceViewController.html">DigitalInvoiceViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniBank.html">GiniBank</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniBankConfiguration.html">GiniBankConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniBankNetworkingScreenApiCoordinator.html">GiniBankNetworkingScreenApiCoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ReturnAssistantConfiguration.html">ReturnAssistantConfiguration</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Global Variables.html">Other Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Global%20Variables.html#/s:11GiniBankSDK0aB10SDKVersionSSvp">GiniBankSDKVersion</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Enumerations.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniBankError.html">GiniBankError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UITextField.html">UITextField</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Functions.html">Other Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Functions.html#/s:11GiniBankSDK23receivePaymentRequestId3url10completiony10Foundation3URLV_ys6ResultOySSAA0aB5ErrorOGctF">receivePaymentRequestId(url:completion:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DigitalInvoiceViewControllerDelegate.html">DigitalInvoiceViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Protocols.html#/s:11GiniBankSDK0aB16AnalysisDelegateP">GiniBankAnalysisDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Structures.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/DigitalInvoice.html">DigitalInvoice</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentInfo.html">PaymentInfo</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>ReturnAssistantConfiguration</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">ReturnAssistantConfiguration</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                </div>
+              </div>
+            <p>Undocumented</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11GiniBankSDK28ReturnAssistantConfigurationC6sharedACvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/shared" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11GiniBankSDK28ReturnAssistantConfigurationC6sharedACvpZ">shared</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Singleton to make configuration internally accessible in all classes of the Gini PayBank SDK.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">shared</span><span class="p">:</span> <span class="kt">ReturnAssistantConfiguration</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(im)init"></a>
+                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(im)init">init()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns a <code>ReturnAssistantConfiguration</code> instance which allows to set individual configurations
+to change the look and feel of the Gini Capture SDK.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">override</span> <span class="nf">init</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Instance of <code>ReturnAssistantConfiguration</code>.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Return%20Assistant"></a>
+                <a name="//apple_ref/swift/Section/Return Assistant" class="dashAnchor"></a>
+                <a href="#/Return%20Assistant">
+                  <h3 class="section-name">Return Assistant</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)helpReturnAssistantScreenBackgroundColor"></a>
+                    <a name="//apple_ref/swift/Property/helpReturnAssistantScreenBackgroundColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)helpReturnAssistantScreenBackgroundColor">helpReturnAssistantScreenBackgroundColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the background color for the return assistant help screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">helpReturnAssistantScreenBackgroundColor</span><span class="p">:</span> <span class="kt">GiniColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)helpReturnAssistantScreenSectionTitleColor"></a>
+                    <a name="//apple_ref/swift/Property/helpReturnAssistantScreenSectionTitleColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)helpReturnAssistantScreenSectionTitleColor">helpReturnAssistantScreenSectionTitleColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the text color for the section titles on the return assistant help screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">helpReturnAssistantScreenSectionTitleColor</span><span class="p">:</span> <span class="kt">GiniColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)helpReturnAssistantScreenPageTitleFont"></a>
+                    <a name="//apple_ref/swift/Property/helpReturnAssistantScreenPageTitleFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)helpReturnAssistantScreenPageTitleFont">helpReturnAssistantScreenPageTitleFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font for the page title on the return assistant help screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">helpReturnAssistantScreenPageTitleFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)helpReturnAssistantScreenSectionTitleFont"></a>
+                    <a name="//apple_ref/swift/Property/helpReturnAssistantScreenSectionTitleFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)helpReturnAssistantScreenSectionTitleFont">helpReturnAssistantScreenSectionTitleFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font for the section titles on the return assistant help screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">helpReturnAssistantScreenSectionTitleFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)helpReturnAssistantScreenInstructionColor"></a>
+                    <a name="//apple_ref/swift/Property/helpReturnAssistantScreenInstructionColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)helpReturnAssistantScreenInstructionColor">helpReturnAssistantScreenInstructionColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the text color for the instructions on the return assistant help screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">helpReturnAssistantScreenInstructionColor</span><span class="p">:</span> <span class="kt">GiniColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)helpReturnAssistantScreenInstructionFont"></a>
+                    <a name="//apple_ref/swift/Property/helpReturnAssistantScreenInstructionFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)helpReturnAssistantScreenInstructionFont">helpReturnAssistantScreenInstructionFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font for the instructions on the return assistant help screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">helpReturnAssistantScreenInstructionFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)helpReturnAssistantScreenBackButtonColor"></a>
+                    <a name="//apple_ref/swift/Property/helpReturnAssistantScreenBackButtonColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)helpReturnAssistantScreenBackButtonColor">helpReturnAssistantScreenBackButtonColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the background color for the back button on the return assistant help screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">helpReturnAssistantScreenBackButtonColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)helpReturnAssistantScreenBackButtonTitleColor"></a>
+                    <a name="//apple_ref/swift/Property/helpReturnAssistantScreenBackButtonTitleColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)helpReturnAssistantScreenBackButtonTitleColor">helpReturnAssistantScreenBackButtonTitleColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the title color for the back button on the return assistant help screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">helpReturnAssistantScreenBackButtonTitleColor</span><span class="p">:</span> <span class="kt">GiniColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)helpReturnAssistantScreenBackButtonTitleFont"></a>
+                    <a name="//apple_ref/swift/Property/helpReturnAssistantScreenBackButtonTitleFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)helpReturnAssistantScreenBackButtonTitleFont">helpReturnAssistantScreenBackButtonTitleFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font for the back button title on the return assistant help screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">helpReturnAssistantScreenBackButtonTitleFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Digital%20invoice"></a>
+                <a name="//apple_ref/swift/Section/Digital invoice" class="dashAnchor"></a>
+                <a href="#/Digital%20invoice">
+                  <h3 class="section-name">Digital invoice</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemTintColor"></a>
+                    <a name="//apple_ref/swift/Property/lineItemTintColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemTintColor">lineItemTintColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the color of the active elements on the digital invoice line item cells to the specified color.</p>
+
+<p>Can be overridden by the specific line item tint color customisation options: <code><a href="../Classes/ReturnAssistantConfiguration.html#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemBorderColor">lineItemBorderColor</a></code>, <code><a href="../Classes/ReturnAssistantConfiguration.html#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemEditButtonTintColor">digitalInvoiceLineItemEditButtonTintColor</a></code>,
+<code><a href="../Classes/ReturnAssistantConfiguration.html#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemToggleSwitchTintColor">digitalInvoiceLineItemToggleSwitchTintColor</a></code>, <code><a href="../Classes/ReturnAssistantConfiguration.html#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemDeleteButtonTintColor">digitalInvoiceLineItemDeleteButtonTintColor</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">lineItemTintColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemBorderColor"></a>
+                    <a name="//apple_ref/swift/Property/lineItemBorderColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemBorderColor">lineItemBorderColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the border color on the digital invoice line item cells to the specified color.</p>
+
+<p>Overrides <code><a href="../Classes/ReturnAssistantConfiguration.html#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemTintColor">lineItemTintColor</a></code> if not <code>nil</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">lineItemBorderColor</span><span class="p">:</span> <span class="kt">UIColor</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemCountLabelColor"></a>
+                    <a name="//apple_ref/swift/Property/lineItemCountLabelColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemCountLabelColor">lineItemCountLabelColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the color of the active elements on the digital invoice line item count label to the specified color</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">lineItemCountLabelColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemCountLabelFont"></a>
+                    <a name="//apple_ref/swift/Property/lineItemCountLabelFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemCountLabelFont">lineItemCountLabelFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the line item name on the digital invoice  line item count label to the specified font.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">lineItemCountLabelFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemNameFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceLineItemNameFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemNameFont">digitalInvoiceLineItemNameFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the line item name on the digital invoice screen to the specified font.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceLineItemNameFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemEditButtonTitleFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceLineItemEditButtonTitleFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemEditButtonTitleFont">digitalInvoiceLineItemEditButtonTitleFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the line item edit button title on the digital invoice screen to the specified font.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceLineItemEditButtonTitleFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemEditButtonTintColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceLineItemEditButtonTintColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemEditButtonTintColor">digitalInvoiceLineItemEditButtonTintColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the edit button tint color on the digital invoice screen to the specified color.</p>
+
+<p>Overrides <code><a href="../Classes/ReturnAssistantConfiguration.html#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemTintColor">lineItemTintColor</a></code> if not <code>nil</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceLineItemEditButtonTintColor</span><span class="p">:</span> <span class="kt">UIColor</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemToggleSwitchTintColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceLineItemToggleSwitchTintColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemToggleSwitchTintColor">digitalInvoiceLineItemToggleSwitchTintColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the toggle switch tint color on the digital invoice line item cells to the specified color.</p>
+
+<p>Overrides <code><a href="../Classes/ReturnAssistantConfiguration.html#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemTintColor">lineItemTintColor</a></code> if not <code>nil</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceLineItemToggleSwitchTintColor</span><span class="p">:</span> <span class="kt">UIColor</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemDeleteButtonTintColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceLineItemDeleteButtonTintColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemDeleteButtonTintColor">digitalInvoiceLineItemDeleteButtonTintColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the delete button tint color on the digital invoice screen to the specified color.</p>
+
+<p>Overrides <code><a href="../Classes/ReturnAssistantConfiguration.html#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemTintColor">lineItemTintColor</a></code> if not <code>nil</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceLineItemDeleteButtonTintColor</span><span class="p">:</span> <span class="kt">UIColor</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemQuantityFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceLineItemQuantityFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemQuantityFont">digitalInvoiceLineItemQuantityFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the line item label that displays the quantity on the digital invoice screen to the specified font.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceLineItemQuantityFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemQuantityColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceLineItemQuantityColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemQuantityColor">digitalInvoiceLineItemQuantityColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the color of  the line item label that displays the quantity on the digital invoice line item cells to the specified color.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceLineItemQuantityColor</span><span class="p">:</span> <span class="kt">GiniColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemNameColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceLineItemNameColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemNameColor">digitalInvoiceLineItemNameColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the color of  the line item label that displays the item name on the digital invoice line item cells to the specified color.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceLineItemNameColor</span><span class="p">:</span> <span class="kt">GiniColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemPriceColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceLineItemPriceColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemPriceColor">digitalInvoiceLineItemPriceColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the color of  the line item label that displays the price on the digital invoice line item cells to the specified color.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceLineItemPriceColor</span><span class="p">:</span> <span class="kt">GiniColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemPriceMainUnitFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceLineItemPriceMainUnitFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemPriceMainUnitFont">digitalInvoiceLineItemPriceMainUnitFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the main currency unit of the price on the line item
+of the digital invoice screen to the specified font.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceLineItemPriceMainUnitFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemPriceFractionalUnitFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceLineItemPriceFractionalUnitFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemPriceFractionalUnitFont">digitalInvoiceLineItemPriceFractionalUnitFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the fractional currency unit of the price on the line item
+of the digital invoice screen to the specified font.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceLineItemPriceFractionalUnitFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceSecondaryMessageTextFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceSecondaryMessageTextFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceSecondaryMessageTextFont">digitalInvoiceSecondaryMessageTextFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the secondary informational message on the digital invoice screen to the specified font.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceSecondaryMessageTextFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceSecondaryMessageTextColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceSecondaryMessageTextColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceSecondaryMessageTextColor">digitalInvoiceSecondaryMessageTextColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the color of the secondary message label on the digital invoice line item cells to the specified color</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceSecondaryMessageTextColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceBackgroundColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceBackgroundColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceBackgroundColor">digitalInvoiceBackgroundColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the background color for digital invoice screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceBackgroundColor</span><span class="p">:</span> <span class="kt">GiniColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemsBackgroundColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceLineItemsBackgroundColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemsBackgroundColor">digitalInvoiceLineItemsBackgroundColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the background color for the line items on the digital invoice screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceLineItemsBackgroundColor</span><span class="p">:</span> <span class="kt">GiniColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemsDisabledColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceLineItemsDisabledColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceLineItemsDisabledColor">digitalInvoiceLineItemsDisabledColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the disabled color for the line items on the digital invoice screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceLineItemsDisabledColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceFooterMessageTextFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceFooterMessageTextFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceFooterMessageTextFont">digitalInvoiceFooterMessageTextFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the footer message on the digital invoice screen to the specified font.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceFooterMessageTextFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceFooterAddArticleButtonTintColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceFooterAddArticleButtonTintColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceFooterAddArticleButtonTintColor">digitalInvoiceFooterAddArticleButtonTintColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the add article button tint color of the footer section on the digital invoice screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceFooterAddArticleButtonTintColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceFooterAddArticleButtonTitleFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceFooterAddArticleButtonTitleFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceFooterAddArticleButtonTitleFont">digitalInvoiceFooterAddArticleButtonTitleFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the add article button of the footer section on the digital invoice screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceFooterAddArticleButtonTitleFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceFooterMessageTextColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceFooterMessageTextColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceFooterMessageTextColor">digitalInvoiceFooterMessageTextColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the text color of the footer message on the digital invoice screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceFooterMessageTextColor</span><span class="p">:</span> <span class="kt">GiniColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceItemsSectionHeaderTextFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceItemsSectionHeaderTextFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceItemsSectionHeaderTextFont">digitalInvoiceItemsSectionHeaderTextFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the items section header on the digital invoice screen to the specified font.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceItemsSectionHeaderTextFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceItemsSectionHeaderTextColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceItemsSectionHeaderTextColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceItemsSectionHeaderTextColor">digitalInvoiceItemsSectionHeaderTextColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the text color of the items section header on the digital invoice screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceItemsSectionHeaderTextColor</span><span class="p">:</span> <span class="kt">GiniColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)payButtonBackgroundColor"></a>
+                    <a name="//apple_ref/swift/Property/payButtonBackgroundColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)payButtonBackgroundColor">payButtonBackgroundColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the background color of the digital invoice pay button to the specified color</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">payButtonBackgroundColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)payButtonTitleTextColor"></a>
+                    <a name="//apple_ref/swift/Property/payButtonTitleTextColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)payButtonTitleTextColor">payButtonTitleTextColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the title text color of the digital invoice pay button to the specified color</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">payButtonTitleTextColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)payButtonTitleFont"></a>
+                    <a name="//apple_ref/swift/Property/payButtonTitleFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)payButtonTitleFont">payButtonTitleFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the title text font of the digital invoice pay button to the specified font</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">payButtonTitleFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)skipButtonBackgroundColor"></a>
+                    <a name="//apple_ref/swift/Property/skipButtonBackgroundColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)skipButtonBackgroundColor">skipButtonBackgroundColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the background color of the digital invoice skip button to the specified color</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">skipButtonBackgroundColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)skipButtonTitleTextColor"></a>
+                    <a name="//apple_ref/swift/Property/skipButtonTitleTextColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)skipButtonTitleTextColor">skipButtonTitleTextColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the title text color of the digital invoice skip button to the specified color</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">skipButtonTitleTextColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)skipButtonBorderColor"></a>
+                    <a name="//apple_ref/swift/Property/skipButtonBorderColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)skipButtonBorderColor">skipButtonBorderColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the layer border color of the digital invoice skip button to the specified color</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">skipButtonBorderColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)skipButtonTitleFont"></a>
+                    <a name="//apple_ref/swift/Property/skipButtonTitleFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)skipButtonTitleFont">skipButtonTitleFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the title text font of the digital invoice skip button to the specified font</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">skipButtonTitleFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceAddonLabelFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceAddonLabelFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceAddonLabelFont">digitalInvoiceAddonLabelFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the addon labels on the digital invoice screen to the specified font.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceAddonLabelFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceTotalCaptionLabelFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceTotalCaptionLabelFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceTotalCaptionLabelFont">digitalInvoiceTotalCaptionLabelFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the total caption label on the digital invoice screen to the specified font.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceTotalCaptionLabelFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceTotalCaptionLabelTextColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceTotalCaptionLabelTextColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceTotalCaptionLabelTextColor">digitalInvoiceTotalCaptionLabelTextColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the text color of the total caption label on the digital invoice screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceTotalCaptionLabelTextColor</span><span class="p">:</span> <span class="kt">GiniColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceTotalExplanationLabelFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceTotalExplanationLabelFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceTotalExplanationLabelFont">digitalInvoiceTotalExplanationLabelFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the total explanation label on the digital invoice screen to the specified font.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceTotalExplanationLabelFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceTotalExplanationLabelTextColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceTotalExplanationLabelTextColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceTotalExplanationLabelTextColor">digitalInvoiceTotalExplanationLabelTextColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the text color of the explanation label on the digital invoice screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceTotalExplanationLabelTextColor</span><span class="p">:</span> <span class="kt">GiniColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceAddonPriceMainUnitFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceAddonPriceMainUnitFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceAddonPriceMainUnitFont">digitalInvoiceAddonPriceMainUnitFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the main unit of the addon price labels to the specified font</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceAddonPriceMainUnitFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceAddonPriceFractionalUnitFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceAddonPriceFractionalUnitFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceAddonPriceFractionalUnitFont">digitalInvoiceAddonPriceFractionalUnitFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the fractional unit of the addon price labels to the specified font</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceAddonPriceFractionalUnitFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceAddonPriceColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceAddonPriceColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceAddonPriceColor">digitalInvoiceAddonPriceColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the color of the addon price labels in the digital invoice screen to the specified color</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceAddonPriceColor</span><span class="p">:</span> <span class="kt">UIColor</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceAddonLabelColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceAddonLabelColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceAddonLabelColor">digitalInvoiceAddonLabelColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the color of the addon name labels in the digital invoice screen to the specified color</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceAddonLabelColor</span><span class="p">:</span> <span class="kt">GiniColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceTotalPriceColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceTotalPriceColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceTotalPriceColor">digitalInvoiceTotalPriceColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the color of the total price label in the digital invoice screen to the specified color</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceTotalPriceColor</span><span class="p">:</span> <span class="kt">UIColor</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceTotalPriceMainUnitFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceTotalPriceMainUnitFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceTotalPriceMainUnitFont">digitalInvoiceTotalPriceMainUnitFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the digital invoice main unit of the total price label to the specified font</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceTotalPriceMainUnitFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceTotalPriceFractionalUnitFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceTotalPriceFractionalUnitFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceTotalPriceFractionalUnitFont">digitalInvoiceTotalPriceFractionalUnitFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the digital invoice fractional unit of the total price label to the specified font</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceTotalPriceFractionalUnitFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemDetailsDescriptionLabelFont"></a>
+                    <a name="//apple_ref/swift/Property/lineItemDetailsDescriptionLabelFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemDetailsDescriptionLabelFont">lineItemDetailsDescriptionLabelFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the content description labels in the line item details view controller to the specified font</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">lineItemDetailsDescriptionLabelFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemDetailsDescriptionLabelColor"></a>
+                    <a name="//apple_ref/swift/Property/lineItemDetailsDescriptionLabelColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemDetailsDescriptionLabelColor">lineItemDetailsDescriptionLabelColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the color of the content description labels in the line item details view controller to the specified color</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">lineItemDetailsDescriptionLabelColor</span><span class="p">:</span> <span class="kt">UIColor</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemDetailsBackgroundColor"></a>
+                    <a name="//apple_ref/swift/Property/lineItemDetailsBackgroundColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemDetailsBackgroundColor">lineItemDetailsBackgroundColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the background color for  the line item details view.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">lineItemDetailsBackgroundColor</span><span class="p">:</span> <span class="kt">GiniColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemDetailsContentLabelFont"></a>
+                    <a name="//apple_ref/swift/Property/lineItemDetailsContentLabelFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemDetailsContentLabelFont">lineItemDetailsContentLabelFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the content labels in the line item details view controller to the specified font</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">lineItemDetailsContentLabelFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemDetailsContentLabelColor"></a>
+                    <a name="//apple_ref/swift/Property/lineItemDetailsContentLabelColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemDetailsContentLabelColor">lineItemDetailsContentLabelColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the color of the content labels in the line item details view controller to the specified color</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">lineItemDetailsContentLabelColor</span><span class="p">:</span> <span class="kt">UIColor</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemDetailsContentHighlightedColor"></a>
+                    <a name="//apple_ref/swift/Property/lineItemDetailsContentHighlightedColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemDetailsContentHighlightedColor">lineItemDetailsContentHighlightedColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the highlighted color of the content labels in the line item details view controller to the specified color</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">lineItemDetailsContentHighlightedColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemDetailsTotalPriceMainUnitFont"></a>
+                    <a name="//apple_ref/swift/Property/lineItemDetailsTotalPriceMainUnitFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemDetailsTotalPriceMainUnitFont">lineItemDetailsTotalPriceMainUnitFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the line item details screen main unit of the total price label to the specified font</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">lineItemDetailsTotalPriceMainUnitFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemDetailsTotalPriceFractionalUnitFont"></a>
+                    <a name="//apple_ref/swift/Property/lineItemDetailsTotalPriceFractionalUnitFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)lineItemDetailsTotalPriceFractionalUnitFont">lineItemDetailsTotalPriceFractionalUnitFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the line item details screen fractional unit of the total price label to the specified font</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">lineItemDetailsTotalPriceFractionalUnitFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceOnboardingBackgroundColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceOnboardingBackgroundColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceOnboardingBackgroundColor">digitalInvoiceOnboardingBackgroundColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the backgroundColor on the digital invoice onboarding screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceOnboardingBackgroundColor</span><span class="p">:</span> <span class="kt">GiniColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceOnboardingTextColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceOnboardingTextColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceOnboardingTextColor">digitalInvoiceOnboardingTextColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the color on the digital invoice onboarding screen for text labels</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceOnboardingTextColor</span><span class="p">:</span> <span class="kt">GiniColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceOnboardingFirstLabelTextFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceOnboardingFirstLabelTextFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceOnboardingFirstLabelTextFont">digitalInvoiceOnboardingFirstLabelTextFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the first text label on the digital invoice onboarding screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceOnboardingFirstLabelTextFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceOnboardingSecondLabelTextFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceOnboardingSecondLabelTextFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceOnboardingSecondLabelTextFont">digitalInvoiceOnboardingSecondLabelTextFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the second text label on the digital invoice onboarding screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceOnboardingSecondLabelTextFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceOnboardingDoneButtonBackgroundColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceOnboardingDoneButtonBackgroundColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceOnboardingDoneButtonBackgroundColor">digitalInvoiceOnboardingDoneButtonBackgroundColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the backgroundColor  on the digital invoice onboarding screen for done button</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceOnboardingDoneButtonBackgroundColor</span><span class="p">:</span> <span class="kt">GiniColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceOnboardingDoneButtonTextFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceOnboardingDoneButtonTextFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceOnboardingDoneButtonTextFont">digitalInvoiceOnboardingDoneButtonTextFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the done button on the digital invoice onboarding screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceOnboardingDoneButtonTextFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceOnboardingHideButtonTextFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceOnboardingHideButtonTextFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceOnboardingHideButtonTextFont">digitalInvoiceOnboardingHideButtonTextFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font of the hide button on the digital invoice onboarding screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceOnboardingHideButtonTextFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceOnboardingDoneButtonTextColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceOnboardingDoneButtonTextColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceOnboardingDoneButtonTextColor">digitalInvoiceOnboardingDoneButtonTextColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the text color of the done button on the digital invoice onboarding screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceOnboardingDoneButtonTextColor</span><span class="p">:</span> <span class="kt">GiniColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceOnboardingHideButtonTextColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceOnboardingHideButtonTextColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceOnboardingHideButtonTextColor">digitalInvoiceOnboardingHideButtonTextColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the text color of the done button on the digital invoice onboarding screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceOnboardingHideButtonTextColor</span><span class="p">:</span> <span class="kt">GiniColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewBackgroundColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceInfoViewBackgroundColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewBackgroundColor">digitalInvoiceInfoViewBackgroundColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the background color of the warning info view on the digital invoice screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceInfoViewBackgroundColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewChevronImageViewTintColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceInfoViewChevronImageViewTintColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewChevronImageViewTintColor">digitalInvoiceInfoViewChevronImageViewTintColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the  chevron image tint color of the warning info view on the digital invoice screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceInfoViewChevronImageViewTintColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewWarningLabelsTextColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceInfoViewWarningLabelsTextColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewWarningLabelsTextColor">digitalInvoiceInfoViewWarningLabelsTextColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the text color for the warning info view warning labels on the digital invoice screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceInfoViewWarningLabelsTextColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewTopLabelFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceInfoViewTopLabelFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewTopLabelFont">digitalInvoiceInfoViewTopLabelFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font for the warning info view top label on the digital invoice screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceInfoViewTopLabelFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewMiddleLabelFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceInfoViewMiddleLabelFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewMiddleLabelFont">digitalInvoiceInfoViewMiddleLabelFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font for the warning info view middle label on the digital invoice screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceInfoViewMiddleLabelFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewBottomLabelFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceInfoViewBottomLabelFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewBottomLabelFont">digitalInvoiceInfoViewBottomLabelFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font for the warning info view bottom label on the digital invoice screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceInfoViewBottomLabelFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewLeftButtonBackgroundColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceInfoViewLeftButtonBackgroundColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewLeftButtonBackgroundColor">digitalInvoiceInfoViewLeftButtonBackgroundColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the background color for the warning info left button on the digital invoice screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceInfoViewLeftButtonBackgroundColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewLeftButtonBorderColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceInfoViewLeftButtonBorderColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewLeftButtonBorderColor">digitalInvoiceInfoViewLeftButtonBorderColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the border color for the warning info left button on the digital invoice screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceInfoViewLeftButtonBorderColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewLeftkButtonTitleColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceInfoViewLeftkButtonTitleColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewLeftkButtonTitleColor">digitalInvoiceInfoViewLeftkButtonTitleColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the title color for the warning info left button on the digital invoice screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceInfoViewLeftkButtonTitleColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewRightButtonBackgroundColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceInfoViewRightButtonBackgroundColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewRightButtonBackgroundColor">digitalInvoiceInfoViewRightButtonBackgroundColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the background color for the warning info right button on the digital invoice screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceInfoViewRightButtonBackgroundColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewRightButtonBorderColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceInfoViewRightButtonBorderColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewRightButtonBorderColor">digitalInvoiceInfoViewRightButtonBorderColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the border color for the warning info right button on the digital invoice screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceInfoViewRightButtonBorderColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewRightButtonTitleColor"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceInfoViewRightButtonTitleColor" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewRightButtonTitleColor">digitalInvoiceInfoViewRightButtonTitleColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the title color for the warning info right button on the digital invoice screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceInfoViewRightButtonTitleColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewButtonsFont"></a>
+                    <a name="//apple_ref/swift/Property/digitalInvoiceInfoViewButtonsFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)digitalInvoiceInfoViewButtonsFont">digitalInvoiceInfoViewButtonsFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font for the warning info buttons on the digital invoice screen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">digitalInvoiceInfoViewButtonsFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)enableReturnReasons"></a>
+                    <a name="//apple_ref/swift/Property/enableReturnReasons" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)enableReturnReasons">enableReturnReasons</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Shows the return reasons dialog.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">enableReturnReasons</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)customFont"></a>
+                    <a name="//apple_ref/swift/Property/customFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)ReturnAssistantConfiguration(py)customFont">customFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the font used in the Return Assistant screens by default.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">lazy</span> <span class="k">var</span> <span class="nv">customFont</span><span class="p">:</span> <span class="kt">GiniCaptureFont</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2022 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2022-09-01)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
