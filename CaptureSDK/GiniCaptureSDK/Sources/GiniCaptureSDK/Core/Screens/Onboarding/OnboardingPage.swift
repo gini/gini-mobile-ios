@@ -90,7 +90,6 @@ import UIKit
     // MARK: Constraints
     fileprivate func addConstraints() {
         let superview = self
-            
         // Content view
         contentView.translatesAutoresizingMaskIntoConstraints = false
         Constraints.active(item: contentView, attr: .top, relatedBy: .greaterThanOrEqual, to: superview, attr: .top,
@@ -98,7 +97,6 @@ import UIKit
         Constraints.active(item: contentView, attr: .centerX, relatedBy: .equal, to: superview, attr: .centerX)
         Constraints.active(item: contentView, attr: .centerY, relatedBy: .equal, to: superview, attr: .centerY,
                           constant: 5, priority: 999)
-    
         // Image view
         imageView.translatesAutoresizingMaskIntoConstraints = false
         Constraints.active(item: imageView, attr: .top, relatedBy: .equal, to: contentView, attr: .top)
@@ -123,5 +121,4 @@ import UIKit
         Constraints.active(item: textLabel, attr: .height, relatedBy: .greaterThanOrEqual, to: nil, attr: .height,
                           constant: 70)
     }
-    
 }

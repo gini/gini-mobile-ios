@@ -8,19 +8,14 @@ import Foundation
 import UIKit
 
 class OnboardingPageCell: UICollectionViewCell {
+    static var identifier: String = "onboardingPageCellIdentifier"
 
     @IBOutlet weak var iconView: OnboardingImageView!
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var fullText: UILabel!
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-    
-    func configureCell(){
-    }
-    
+    func configureCell() {}
 }
-
-

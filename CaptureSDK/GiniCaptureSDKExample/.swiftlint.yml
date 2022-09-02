@@ -17,6 +17,8 @@ excluded: # paths to ignore during linting.
 included:
   - ../GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Help
   - ../GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Analysis
+  - ../GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Onboarding
+
 cyclomatic_complexity:
   ignores_case_statements: true
 line_length:
