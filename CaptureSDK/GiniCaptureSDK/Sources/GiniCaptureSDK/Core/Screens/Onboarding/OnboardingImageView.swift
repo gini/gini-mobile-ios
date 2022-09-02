@@ -8,22 +8,14 @@ import UIKit
 
 class OnboardingImageView: UIView, OnboardingIllustrationAdapter {
     func onDeinit() {
-        
     }
-    
     func pageDidAppear() {
-        
     }
-    
     func pageDidDisappear() {
-        
     }
-    
     func injectedView() -> UIView {
         self
     }
-    
-        
     var icon: UIImage? {
         didSet {
             self.subviews.forEach({ $0.removeFromSuperview() })
@@ -38,12 +30,8 @@ class OnboardingImageView: UIView, OnboardingIllustrationAdapter {
         required init?(coder aDecoder: NSCoder) {
             super.init(coder: aDecoder)
         }
-    
     // MARK: - Private Helper Methods
-    
-        // Performs the initial setup.
         private func setupView() {
-
             if let image = icon {
                 let imageView = UIImageView()
                 imageView.image = image
@@ -62,16 +50,18 @@ class OnboardingImageView: UIView, OnboardingIllustrationAdapter {
 
 extension UIView {
     func viewFromNibForClass() -> UIView {
-        
         let bundle = Bundle(for: type(of: self))
         let nibName = type(of: self).description().components(separatedBy: ".").last!
         let nib = UINib(nibName: nibName, bundle: bundle)
-        return nib.instantiate(withOwner: self, options: nil).first as! UIView
+        guard let view = nib.instantiate(withOwner: self, options: nil).first, view is UIView else {
+            fatalError("View initializing with nib failed while casting")
+        }
+        return view as? UIView ?? UIView()
     }
 }
 
 extension UIView {
-    func fixInView(_ container: UIView!) -> Void{
+    func fixInView(_ container: UIView!) {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.frame = container.frame
         container.addSubview(self)

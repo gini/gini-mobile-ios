@@ -26,14 +26,12 @@ public protocol OnboardingNavigationBarBottomAdapter: InjectedViewAdapter {
      * - Parameter callback:          An  action callback, which should be retained and called in next button action method
      */
     func setNextButtonClickedActionCallback(_ callback: @escaping () -> Void)
-    
     /**
      *  Set the callback for the skip button action.
      *
      * - Parameter callback:          An  action callback, which should be retained and called in skip button action method
      */
     func setSkipButtonClickedActionCallback(_ callback: @escaping () -> Void)
-    
     /**
      *  Set the callback for the get started button action.
      *
@@ -43,7 +41,6 @@ public protocol OnboardingNavigationBarBottomAdapter: InjectedViewAdapter {
 }
 
 class DefaultOnboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter {
-    
     private var nextButtonCallback: (() -> Void)?
     private var skipButtonCallback: (() -> Void)?
     private var getStartedButtonCallback: (() -> Void)?
@@ -57,41 +54,35 @@ class DefaultOnboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottom
     @objc func setSkipButtonClickedActionCallback(_ callback: @escaping () -> Void) {
         skipButtonCallback = callback
     }
-    
     // Add the callback whenever the get started button is clicked
     @objc func setGetStartedButtonClickedActionCallback(_ callback: @escaping () -> Void) {
         getStartedButtonCallback = callback
     }
-    
     func showButtons(navigationButtons: [OnboardingNavigationBarBottomButton]) {
     }
-        
     @objc func nextButtonClicked() {
         nextButtonCallback?()
     }
-    
     @objc func skipButtonClicked() {
         skipButtonCallback?()
     }
-    
     @objc func getStartedButtonClicked() {
         getStartedButtonCallback?()
     }
-    
     func injectedView() -> UIView {
         if let navigationBarView =
             OnboardingBottomNavigationBar().loadNib() as?
                 OnboardingBottomNavigationBar {
             navigationBarView.nextButton.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
             navigationBarView.skipButton.addTarget(self, action: #selector(skipButtonClicked), for: .touchUpInside)
-            navigationBarView.getStarted.addTarget(self, action: #selector(getStartedButtonClicked), for: .touchUpInside)
+            navigationBarView.getStarted.addTarget(self, action: #selector(getStartedButtonClicked),
+                                                   for: .touchUpInside)
 
             return navigationBarView
         } else {
             return UIView()
         }
     }
-    
     func onDeinit() {
         nextButtonCallback = nil
         skipButtonCallback = nil
