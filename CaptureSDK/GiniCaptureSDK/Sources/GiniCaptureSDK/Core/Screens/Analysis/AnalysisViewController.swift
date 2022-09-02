@@ -71,24 +71,20 @@ import UIKit
         loadingText.isAccessibilityElement = true
         loadingText.textColor = UIColor.GiniCapture.label
         loadingText.numberOfLines = 0
-        var loadingTextTitle: String
 
         if document.type == .pdf {
             if let documentTitle = (document as? GiniPDFDocument)?.pdfTitle {
-                loadingTextTitle = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText.pdf",
+                loadingText.text = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText.pdf",
                                                                     comment: "Analysis screen loading text for PDF")
                                                                     + " \(documentTitle)"
             } else {
-                loadingTextTitle = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
+                loadingText.text = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
                                                                     comment: "Analysis screen loading text for images")
             }
         } else {
-            loadingTextTitle = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
+            loadingText.text = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
                                                                 comment: "Analysis screen loading text for images")
         }
-
-        loadingText.text = loadingTextTitle
-        loadingText.accessibilityValue = loadingTextTitle
 
         return loadingText
     }()
