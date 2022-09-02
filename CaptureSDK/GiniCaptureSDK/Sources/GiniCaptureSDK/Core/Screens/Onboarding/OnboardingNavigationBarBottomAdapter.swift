@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 /**
-Protocol that Gini Bank SDK uses to allow custom view for bottom navigation Bar.
+Protocol for injecting a custom bottom navigation bar on the onboarding screen.
 
 - note: Bottom navigation only.
 */
