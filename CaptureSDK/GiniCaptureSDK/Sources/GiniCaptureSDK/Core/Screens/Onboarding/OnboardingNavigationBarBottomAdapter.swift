@@ -88,7 +88,7 @@ class DefaultOnboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottom
         }
     }
     
-    func onDestroy() {
+    func onDeinit() {
         nextButtonCallback = nil
         skipButtonCallback = nil
         getStartedButtonCallback = nil
