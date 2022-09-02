@@ -31,7 +31,7 @@ public protocol OnboardingNavigationBarBottomAdapter: InjectedViewAdapter {
     func setSkipButtonClickedActionCallback(_ callback: @escaping () -> Void)
     
     /**
-     *  Sets the callback on get started button action
+     *  Set the callback for the get started button action.
      *
      * - Parameter callback:          An  action callback, which should be retained and called in get started button action method
      */
