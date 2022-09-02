@@ -14,7 +14,11 @@ Protocol for injecting a custom bottom navigation bar on the onboarding screen.
 - note: Bottom navigation only.
 */
 public protocol OnboardingNavigationBarBottomAdapter: InjectedViewAdapter {
-    
+    /**
+     *  Called when the displayed buttons have to change. Show only the buttons that are in the list.
+     *
+     * - Parameter navigationButtons:          The list of buttons that have to be shown
+     */
     func showButtons(navigationButtons: [OnboardingNavigationBarBottomButton])
     /**
      *  Set the callback for the next button action.
