@@ -23,7 +23,7 @@ final class CaptureSuggestionsViewContainer: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         configureView()
-        configureAccessability()
+        configureAccessibility()
     }
 
     private func configureView() {
@@ -39,7 +39,7 @@ final class CaptureSuggestionsViewContainer: UIView {
         descriptionLabel.textColor = UIColor.GiniCapture.systemGray
     }
 
-    private func configureAccessability() {
+    private func configureAccessibility() {
         isAccessibilityElement = false
         imageView.accessibilityTraits = .image
         imageView.isAccessibilityElement = true
