@@ -17,7 +17,7 @@ public protocol OnboardingNavigationBarBottomAdapter: InjectedViewAdapter {
     
     func showButtons(navigationButtons: [OnboardingNavigationBarBottomButton])
     /**
-     *  Sets the callback on next button action
+     *  Set the callback for the next button action.
      *
      * - Parameter callback:          An  action callback, which should be retained and called in next button action method
      */
