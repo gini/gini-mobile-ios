@@ -11,11 +11,6 @@ final class CaptureSuggestionsViewContainer: UIView {
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var descriptionLabel: UILabel!
-    private var accessibilityImageDescription: String? {
-        didSet {
-            imageView.accessibilityLabel = accessibilityImageDescription
-        }
-    }
 
     init() {
         super.init(frame: CGRect.zero)
@@ -27,19 +22,11 @@ final class CaptureSuggestionsViewContainer: UIView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-
-        isAccessibilityElement = false
-        imageView.accessibilityTraits = .image
-        imageView.isAccessibilityElement = true
-        titleLabel.adjustsFontForContentSizeCategory = true
-        titleLabel.isAccessibilityElement = true
-        descriptionLabel.adjustsFontForContentSizeCategory = true
-        descriptionLabel.isAccessibilityElement = true
-        accessibilityElements = [imageView as Any, titleLabel as Any, descriptionLabel as Any]
         configureView()
+        configureAccessability()
     }
 
-    fileprivate func configureView() {
+    private func configureView() {
         let configuration = GiniConfiguration.shared
 
         backgroundColor = UIColor.GiniCapture.systemGray05
@@ -52,12 +39,21 @@ final class CaptureSuggestionsViewContainer: UIView {
         descriptionLabel.textColor = UIColor.GiniCapture.systemGray
     }
 
+    private func configureAccessability() {
+        isAccessibilityElement = false
+        imageView.accessibilityTraits = .image
+        imageView.isAccessibilityElement = true
+        titleLabel.adjustsFontForContentSizeCategory = true
+        titleLabel.isAccessibilityElement = true
+        descriptionLabel.adjustsFontForContentSizeCategory = true
+        descriptionLabel.isAccessibilityElement = true
+        accessibilityElements = [imageView as Any, titleLabel as Any, descriptionLabel as Any]
+    }
+
     func configureContent(with image: UIImage?, title: String, description: String) {
-        self.imageView.image = image
-        self.titleLabel.text = title
-        self.titleLabel.accessibilityValue = title
-        self.descriptionLabel.text = description
-        self.descriptionLabel.accessibilityValue = description
-        self.accessibilityImageDescription = description
+        imageView.image = image
+        imageView.accessibilityLabel = description
+        titleLabel.text = title
+        descriptionLabel.text = description
     }
 }
