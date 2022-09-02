@@ -24,7 +24,7 @@ public protocol OnboardingNavigationBarBottomAdapter: InjectedViewAdapter {
     func setNextButtonClickedActionCallback(_ callback: @escaping () -> Void)
     
     /**
-     *  Sets the callback on skip button action
+     *  Set the callback for the skip button action.
      *
      * - Parameter callback:          An  action callback, which should be retained and called in skip button action method
      */
