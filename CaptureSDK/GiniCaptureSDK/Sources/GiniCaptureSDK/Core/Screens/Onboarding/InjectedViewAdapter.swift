@@ -10,5 +10,5 @@ import UIKit
 
 public protocol InjectedViewAdapter {
     func injectedView() -> UIView
-    func onDestroy()
+    func onDeinit()
 }

@@ -27,7 +27,7 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
         pagesCollection.reloadData()
     }
     
-    fileprivate func setupView() {
+    private func setupView() {
         configureCollectionView()
         configureBottomNavigation()
     }
@@ -37,17 +37,17 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
         setupView()
     }
     
-    fileprivate func layoutBottomNavigationBar(_ navigationBar: UIView) {
+    private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
         let horizontalConstraint = navigationBar.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         let verticalConstraint = navigationBar.topAnchor.constraint(equalTo: pageControl.bottomAnchor)
         let widthConstraint = navigationBar.widthAnchor.constraint(equalTo: view.widthAnchor)
         let heightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: navigationBar.frame.height)
         let bottomConstraint = navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        view.addConstraints([horizontalConstraint, verticalConstraint, heightConstraint, widthConstraint, bottomConstraint])
+        NSLayoutConstraint.activate([horizontalConstraint, verticalConstraint, heightConstraint, widthConstraint, bottomConstraint])
     }
     
-    func configureBottomNavigation() {
+    private func configureBottomNavigation() {
         if configuration.bottomNavigationBarEnabled {
             removeButtons()
             if let customBottomNavigationBar = configuration.onboardingNavigationBarBottomAdapter {
@@ -59,7 +59,6 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
                 }
                                 
                 navigationBarBottomAdapter?.setSkipButtonClickedActionCallback {
-                    print("skip")
                 }
 
                 if let navigationBar =
@@ -76,9 +75,7 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
         }
     }
 
-
-
-    fileprivate func removeButtons() {
+    private func removeButtons() {
         nextButton.removeFromSuperview()
         containerView.removeArrangedSubview(nextButton)
     }
@@ -89,14 +86,12 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
         }
     }
     
-        @IBAction func close() {
-            dismiss(animated: true)
-        }
-    
-        func nextPage() {
-            print("self.nextPage()")
-        }
-    
+    @objc private func close() {
+        dismiss(animated: true)
+    }
+
+    private func nextPage() {
+    }
 
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { 1 }
 
