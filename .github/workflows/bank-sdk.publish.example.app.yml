@@ -3,7 +3,7 @@ on:
   push:
     paths:
       - 'BankSDK/**'
-
+      - 'CaptureSDK/**'
 jobs:
   check:
     uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@main
@@ -103,5 +103,5 @@ jobs:
           path: GiniBankSDKExample.ipa
           app: Gini-Team-Organization/Example-Gini-Pay-Bank-SDK
           group: 'Internal'
-
+          release_notes: ${{ format('{{ {0} {1} }}', github.ref, github.sha) }}
 
