@@ -54,18 +54,19 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
                 navigationBarBottomAdapter = customBottomNavigationBar
             } else {
                 navigationBarBottomAdapter = DefaultOnboardingNavigationBarBottomAdapter()
-                navigationBarBottomAdapter?.setNextButtonClickedActionCallback {
-                    self.nextPage()
-                }
-                                
-                navigationBarBottomAdapter?.setSkipButtonClickedActionCallback {
-                }
+            }
+            navigationBarBottomAdapter?.setNextButtonClickedActionCallback {
+                self.nextPage()
+            }
+                            
+            navigationBarBottomAdapter?.setSkipButtonClickedActionCallback {
+                self.skip()
+            }
 
-                if let navigationBar =
-                    navigationBarBottomAdapter?.injectedView() {
-                    view.addSubview(navigationBar)
-                    layoutBottomNavigationBar(navigationBar)
-                }
+            if let navigationBar =
+                navigationBarBottomAdapter?.injectedView() {
+                view.addSubview(navigationBar)
+                layoutBottomNavigationBar(navigationBar)
             }
         } else {
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Skip",
@@ -91,6 +92,10 @@ class OnboardingViewController: UIViewController, UICollectionViewDelegate, UICo
     }
 
     private func nextPage() {
+    }
+    
+    private func skip() {
+        close()
     }
 
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { 1 }
