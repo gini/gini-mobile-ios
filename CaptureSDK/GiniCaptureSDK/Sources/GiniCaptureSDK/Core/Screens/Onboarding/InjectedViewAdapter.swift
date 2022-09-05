@@ -16,7 +16,6 @@ public protocol InjectedViewAdapter {
  *  Called when the custom view is required. It will be injected into the SDK's layout.
  */
     func injectedView() -> UIView
-    
 /**
  *  Called when the view is destroyed/deinitialized.
  */
