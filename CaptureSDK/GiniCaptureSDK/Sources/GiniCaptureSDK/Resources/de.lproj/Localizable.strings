@@ -77,7 +77,7 @@
 "ginicapture.analysis.suggestion.2" = "Flach ausrichten";
 "ginicapture.analysis.suggestion.2.details" = "Flach gestrichene Dokumente erleichtern die Auswertung";
 "ginicapture.analysis.suggestion.3" = "Im Rahmen positionieren";
-"ginicapture.analysis.suggestion.3.details" = "Das gesamte Dokumente sollte sich im Rahmen befinden";
+"ginicapture.analysis.suggestion.3.details" = "Das gesamte Dokument sollte sich im Rahmen befinden";
 "ginicapture.analysis.suggestion.4" = "Parallel";
 "ginicapture.analysis.suggestion.4.details" = "Das Handy sollte parallel über dem Dokument gehalten werden";
 "ginicapture.analysis.suggestion.5" = "Mehrere Seiten";
@@ -115,7 +115,7 @@
 "ginicapture.help.supportedFormats.section.1.title" = "Unterstützte Formate";
 "ginicapture.help.supportedFormats.section.1.item.1" = "Computer-generierte Rechnungen und Überweisungsträger";
 "ginicapture.help.supportedFormats.section.1.item.2" = "1-seitige Fotos im Format jpeg, png oder gif";
-"ginicapture.help.supportedFormats.section.1.item.3" = "PDF Documente bis zu 10 Seiten";
+"ginicapture.help.supportedFormats.section.1.item.3" = "PDF Dokumente bis zu 10 Seiten";
 "ginicapture.help.supportedFormats.section.1.item.4" = "QR Codes";
 "ginicapture.help.supportedFormats.section.1.item.5" = "Monitoraufnahmen oder Screenshots";
 "ginicapture.help.supportedFormats.section.2.title" = "Nicht unterstütztes Format";
@@ -123,9 +123,9 @@
 "ginicapture.help.supportedFormats.section.2.item.2" = "Fotos von Bildschirmen";
 
 "ginicapture.help.menu.title" = "Hilfe";
-"ginicapture.help.menu.firstItem" = "Tipps für beste Ergebnisse aus Fotos";
-"ginicapture.help.menu.secondItem" = "Import documents from other apps";
-"ginicapture.help.menu.thirdItem" = "Unterstützte Formate";
+"ginicapture.help.menu.firstItem" = "Tipps für bessere Ergebnisse";
+"ginicapture.help.menu.secondItem" = "Unterstützte Formate";
+"ginicapture.help.menu.thirdItem" = "Dokumente von anderen Apps importieren";
 
 "ginicapture.albums.title" = "Alben";
 "ginicapture.imagepicker.openbutton" = "Öffnen";
