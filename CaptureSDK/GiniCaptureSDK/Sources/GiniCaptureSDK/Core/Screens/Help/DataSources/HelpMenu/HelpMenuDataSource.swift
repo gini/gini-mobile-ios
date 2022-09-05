@@ -17,12 +17,12 @@ final public class HelpMenuDataSource: HelpBaseDataSource<HelpMenuItem, HelpMenu
     private lazy var defaultItems: [HelpMenuItem] = {
         var defaultItems: [HelpMenuItem] = [ .noResultsTips]
 
-        if giniConfiguration.shouldShowSupportedFormatsScreen {
-            defaultItems.append(.supportedFormats)
-        }
-
         if giniConfiguration.openWithEnabled {
             defaultItems.append(.openWithTutorial)
+        }
+
+        if giniConfiguration.shouldShowSupportedFormatsScreen {
+            defaultItems.append(.supportedFormats)
         }
         return defaultItems
     }()
