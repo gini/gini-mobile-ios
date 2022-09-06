@@ -60,9 +60,9 @@
 //"ginicapture.help.supportedFormats.section.2.item.2" = "CM Fotos von Bildschirmen";
 //
 //"ginicapture.help.menu.title" = "CM Hilfe";
-//"ginicapture.help.menu.firstItem" = "CM Tipps für beste Ergebnisse aus Fotos";
-//"ginicapture.help.menu.secondItem" = "CM Dokumente aus anderen Apps öffnen";
-//"ginicapture.help.menu.thirdItem" = "CM Unterstützte Formate";
+//"ginicapture.help.menu.tips" = "CM Tipps für beste Ergebnisse aus Fotos";
+//"ginicapture.help.menu.import" = "CM Dokumente aus anderen Apps öffnen";
+//"ginicapture.help.menu.formats" = "CM Unterstützte Formate";
 //
 //"ginibank.digitalinvoice.info.text1" = "Was ist das?";
 //"ginibank.digitalinvoice.info.text2" = "Wir haben die Artikel aus deiner Rechnung extrahiert. Wenn du einige Artikel zurückschicken oder du deine Rechnung nur teilweise bezahlen möchtest, kannst du einzelne Artikel abwählen und der zu bezahlende Betrag wird automatisch  neu berechnet.";
