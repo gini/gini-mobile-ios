@@ -121,9 +121,9 @@
 "ginicapture.help.supportedFormats.section.2.item.2" = "Photos of monitors or screens";
 
 "ginicapture.help.menu.title" = "Help";
-"ginicapture.help.menu.firstItem" = "Tips for best results from photos";
-"ginicapture.help.menu.secondItem" = "Import documents from other apps";
-"ginicapture.help.menu.thirdItem" = "Supported formats";
+"ginicapture.help.menu.tips" = "Tips for best results from photos";
+"ginicapture.help.menu.formats" = "Supported formats";
+"ginicapture.help.menu.import" = "Import documents from other apps";
 
 "ginicapture.albums.title" = "Albums";
 "ginicapture.imagepicker.openbutton" = "Open";
