@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Camera-1.pdf",
+      "filename" : "folder-1.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Camera.pdf",
+      "filename" : "folder.pdf",
       "idiom" : "universal"
     }
   ],
