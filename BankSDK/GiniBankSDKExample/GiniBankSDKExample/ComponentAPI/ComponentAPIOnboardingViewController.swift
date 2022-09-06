@@ -23,10 +23,10 @@ final class ComponentAPIOnboardingViewController: UIViewController {
         super.viewDidLoad()
         
         // 1. Create the onboarding view controller
-        contentController = OnboardingViewController(scrollViewDelegate: nil)
+       // contentController = OnboardingViewController(scrollViewDelegate: nil)
         
         // 2. Display the onboarding view controller
-        displayContent(contentController)
+       // displayContent(contentController)
     }
     
     // Displays the content controller inside the container view
@@ -41,7 +41,7 @@ final class ComponentAPIOnboardingViewController: UIViewController {
     @IBAction func nextPage(_ sender: AnyObject) {
         
         // Scroll the onboarding to the next page.
-        (contentController as? OnboardingViewController)?.scrollToNextPage(true)
+       // (contentController as? OnboardingViewController)?.scrollToNextPage(true)
     }
     
 }

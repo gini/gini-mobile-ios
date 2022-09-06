@@ -34,7 +34,7 @@ final class OnboardingContainerViewController: UIViewController, ContainerViewCo
     lazy var contentController: UIViewController = {
         var pages = self.giniConfiguration.onboardingPages
         pages.append(UIView()) // Add an empty last page to transition nicely back to camera
-        return OnboardingViewController(pages: pages,
+        return OnboardingViewControllerOld(pages: pages,
                                         scrollViewDelegate: self)
     }()
     
@@ -85,14 +85,22 @@ final class OnboardingContainerViewController: UIViewController, ContainerViewCo
         fatalError("init(coder:) has not been implemented")
     }
     
+    fileprivate func configureNavigationBar() {
+        self.navigationController?.isNavigationBarHidden = false
+        navigationItem.setRightBarButton(continueButton, animated: false)
+    }
+    
     override func loadView() {
         super.loadView()
-        
+
         view.addSubview(containerView)
+
         view.addSubview(pageControlContainerView)
-        pageControlContainerView.addSubview(pageControl)
-        navigationItem.setRightBarButton(continueButton, animated: false)
         
+        configureNavigationBar()
+        
+        pageControlContainerView.addSubview(pageControl)
+
         addConstraints()
     }
     
@@ -121,7 +129,7 @@ final class OnboardingContainerViewController: UIViewController, ContainerViewCo
             guard let self = self else {
                 return
             }
-            (self.contentController as? OnboardingViewController)?.centerTo(page: self.pageControl.currentPage)
+            (self.contentController as? OnboardingViewControllerOld)?.centerTo(page: self.pageControl.currentPage)
         })
     }
     
@@ -132,7 +140,7 @@ final class OnboardingContainerViewController: UIViewController, ContainerViewCo
     }
     
     @IBAction func nextPage() {
-        (contentController as? OnboardingViewController)?.scrollToNextPage(true)
+        (contentController as? OnboardingViewControllerOld)?.scrollToNextPage(true)
     }
     
     // MARK: Constraints
