@@ -77,7 +77,8 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         showMultipageReview()
     }
     
-    func createCameraViewController() -> CameraViewController {
+    func createCameraViewController() -> Camera2ViewController {
+        /*
         let cameraViewController = CameraViewController(giniConfiguration: giniConfiguration)
         cameraViewController.delegate = self
         cameraViewController.trackingDelegate = trackingDelegate
@@ -104,7 +105,8 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
                 documentPickerCoordinator.setupDragAndDrop(in: cameraViewController.view)
             }
         }
-        
+        */
+        let cameraViewController = Camera2ViewController(giniConfiguration: giniConfiguration)
         return cameraViewController
     }
     
@@ -125,22 +127,23 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
     }
     
     private func showOnboardingScreen(completion: @escaping () -> Void) {
+        /*
         cameraViewController?.hideCameraOverlay()
         cameraViewController?.hideCaptureButton()
         cameraViewController?.hideFileImportTip()
         cameraViewController?.hideQrCodeTip()
-        
+        */
         let vc = OnboardingContainerViewController(trackingDelegate: trackingDelegate) { [weak self] in
             
             guard let cameraViewController = self?.cameraViewController else { return }
             
-            cameraViewController.showCameraOverlay()
-            cameraViewController.showCaptureButton()
+            //cameraViewController.showCameraOverlay()
+            //cameraViewController.showCaptureButton()
             if let config = self?.giniConfiguration {
                 if config.fileImportSupportedTypes != GiniConfiguration.GiniCaptureImportFileTypes.none {
-                    cameraViewController.showFileImportTip()
+                    //cameraViewController.showFileImportTip()
                 } else if config.qrCodeScanningEnabled {
-                    cameraViewController.showQrCodeTip()
+                    //cameraViewController.showQrCodeTip()
                 }
             }
             
