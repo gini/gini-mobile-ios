@@ -98,7 +98,7 @@ import UIKit
 
     private lazy var overlayView: UIView = {
         let overlayView = UIView()
-        overlayView.backgroundColor = UIColor.GiniCapture.systemWhite?.withAlphaComponent(0.6)
+        overlayView.backgroundColor = UIColor.GiniCapture.systemWhite.withAlphaComponent(0.6)
         return overlayView
     }()
 
