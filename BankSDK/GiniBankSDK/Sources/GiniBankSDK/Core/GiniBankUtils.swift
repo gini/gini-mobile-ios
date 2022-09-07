@@ -77,12 +77,15 @@ func prefferedImage(named name: String) -> UIImage? {
  
  - returns: UIColor if found with name.
  */
-func prefferedColor(named name: String) -> UIColor? {
+func prefferedColor(named name: String) -> UIColor {
     if let clientColor = UIColor(named: name) {
         return clientColor
     }
-    let bundle = giniBankBundle()
-    return UIColor(named: name, in: bundle, compatibleWith: nil)
+    if let color = UIColor(named: name, in: giniBankBundle(), compatibleWith: nil) {
+        return color
+    } else {
+        fatalError("The color named '\(name)' does not exist.")
+    }
 }
 
 /**
