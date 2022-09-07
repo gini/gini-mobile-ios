@@ -27,12 +27,12 @@ public final class ReturnAssistantConfiguration: NSObject {
     /**
      Sets the background color for the return assistant help screen.
      */
-    @objc public var helpReturnAssistantScreenBackgroundColor =  GiniColor(lightModeColor: .white, darkModeColor:.black)
+    @objc public var helpReturnAssistantScreenBackgroundColor =  GiniColor(light: .white, dark:.black)
     
     /**
      Sets the text color for the section titles on the return assistant help screen.
      */
-    @objc public var helpReturnAssistantScreenSectionTitleColor =  GiniColor(lightModeColor: Colors.Gini.blue, darkModeColor: Colors.Gini.blue)
+    @objc public var helpReturnAssistantScreenSectionTitleColor =  GiniColor(light: Colors.Gini.blue, dark: Colors.Gini.blue)
     
     /**
      Sets the font for the page title on the return assistant help screen.
@@ -47,7 +47,7 @@ public final class ReturnAssistantConfiguration: NSObject {
     /**
      Sets the text color for the instructions on the return assistant help screen.
      */
-    @objc public var helpReturnAssistantScreenInstructionColor =  GiniColor(lightModeColor: .black, darkModeColor:.white)
+    @objc public var helpReturnAssistantScreenInstructionColor =  GiniColor(light: .black, dark:.white)
     
     /**
      Sets the font for the instructions on the return assistant help screen.
@@ -62,7 +62,7 @@ public final class ReturnAssistantConfiguration: NSObject {
     /**
      Sets the title color for the back button on the return assistant help screen.
      */
-    @objc public var helpReturnAssistantScreenBackButtonTitleColor =  GiniColor(lightModeColor: .white, darkModeColor:.black)
+    @objc public var helpReturnAssistantScreenBackButtonTitleColor =  GiniColor(light: .white, dark:.black)
     
     /**
      Sets the font for the back button title on the return assistant help screen.
@@ -136,17 +136,17 @@ public final class ReturnAssistantConfiguration: NSObject {
     /**
      Sets the color of  the line item label that displays the quantity on the digital invoice line item cells to the specified color.
      */
-    @objc public var digitalInvoiceLineItemQuantityColor = GiniColor(lightModeColor: .black, darkModeColor: .white)
+    @objc public var digitalInvoiceLineItemQuantityColor = GiniColor(light: .black, dark: .white)
     
     /**
      Sets the color of  the line item label that displays the item name on the digital invoice line item cells to the specified color.
      */
-    @objc public var digitalInvoiceLineItemNameColor = GiniColor(lightModeColor: .black, darkModeColor: .white)
+    @objc public var digitalInvoiceLineItemNameColor = GiniColor(light: .black, dark: .white)
     
     /**
      Sets the color of  the line item label that displays the price on the digital invoice line item cells to the specified color.
      */
-    @objc public var digitalInvoiceLineItemPriceColor = GiniColor(lightModeColor: .black, darkModeColor: .white)
+    @objc public var digitalInvoiceLineItemPriceColor = GiniColor(light: .black, dark: .white)
 
     /**
      Sets the font of the main currency unit of the price on the line item
@@ -173,12 +173,12 @@ public final class ReturnAssistantConfiguration: NSObject {
     /**
      Sets the background color for digital invoice screen.
      */
-    @objc public var digitalInvoiceBackgroundColor =  GiniColor(lightModeColor: .white, darkModeColor: .black)
+    @objc public var digitalInvoiceBackgroundColor =  GiniColor(light: .white, dark: .black)
     
     /**
      Sets the background color for the line items on the digital invoice screen.
      */
-    @objc public var digitalInvoiceLineItemsBackgroundColor =  GiniColor(lightModeColor: .white, darkModeColor: .black)
+    @objc public var digitalInvoiceLineItemsBackgroundColor =  GiniColor(light: .white, dark: .black)
     
     /**
      Sets the disabled color for the line items on the digital invoice screen.
@@ -203,7 +203,7 @@ public final class ReturnAssistantConfiguration: NSObject {
     /**
      Sets the text color of the footer message on the digital invoice screen.
      */
-    @objc public var digitalInvoiceFooterMessageTextColor = GiniColor(lightModeColor: .darkGray, darkModeColor:.white)
+    @objc public var digitalInvoiceFooterMessageTextColor = GiniColor(light: .darkGray, dark:.white)
     
     /**
      Sets the font of the items section header on the digital invoice screen to the specified font.
@@ -213,7 +213,7 @@ public final class ReturnAssistantConfiguration: NSObject {
     /**
      Sets the text color of the items section header on the digital invoice screen.
      */
-    @objc public var digitalInvoiceItemsSectionHeaderTextColor = GiniColor(lightModeColor: .gray, darkModeColor:.white)
+    @objc public var digitalInvoiceItemsSectionHeaderTextColor = GiniColor(light: .gray, dark:.white)
     
     /**
      Sets the background color of the digital invoice pay button to the specified color
@@ -263,7 +263,7 @@ public final class ReturnAssistantConfiguration: NSObject {
     /**
      Sets the text color of the total caption label on the digital invoice screen.
      */
-    @objc public var digitalInvoiceTotalCaptionLabelTextColor = GiniColor(lightModeColor: .black, darkModeColor: .white)
+    @objc public var digitalInvoiceTotalCaptionLabelTextColor = GiniColor(light: .black, dark: .white)
     
     /**
      Sets the font of the total explanation label on the digital invoice screen to the specified font.
@@ -273,7 +273,7 @@ public final class ReturnAssistantConfiguration: NSObject {
     /**
      Sets the text color of the explanation label on the digital invoice screen.
      */
-    @objc public var digitalInvoiceTotalExplanationLabelTextColor = GiniColor(lightModeColor: .lightGray, darkModeColor: .lightGray)
+    @objc public var digitalInvoiceTotalExplanationLabelTextColor = GiniColor(light: .lightGray, dark: .lightGray)
     
     /**
      Sets the font of the main unit of the addon price labels to the specified font
@@ -316,7 +316,7 @@ public final class ReturnAssistantConfiguration: NSObject {
     /**
      Sets the color of the addon name labels in the digital invoice screen to the specified color
      */
-    @objc public var digitalInvoiceAddonLabelColor = GiniColor(lightModeColor: .black, darkModeColor: .white)
+    @objc public var digitalInvoiceAddonLabelColor = GiniColor(light: .black, dark: .white)
     
     /**
      Sets the color of the total price label in the digital invoice screen to the specified color
@@ -391,7 +391,7 @@ public final class ReturnAssistantConfiguration: NSObject {
     /**
      Sets the background color for  the line item details view.
      */
-    @objc public var lineItemDetailsBackgroundColor =  GiniColor(lightModeColor: .white, darkModeColor: .black)
+    @objc public var lineItemDetailsBackgroundColor =  GiniColor(light: .white, dark: .black)
     
     @objc private var _lineItemDetailsDescriptionLabelColor: UIColor?
     
@@ -446,12 +446,12 @@ public final class ReturnAssistantConfiguration: NSObject {
     /**
      Sets the backgroundColor on the digital invoice onboarding screen
      */
-    @objc public var digitalInvoiceOnboardingBackgroundColor = GiniColor(lightModeColor: Colors.Gini.blue, darkModeColor: Colors.Gini.blue)
+    @objc public var digitalInvoiceOnboardingBackgroundColor = GiniColor(light: Colors.Gini.blue, dark: Colors.Gini.blue)
 
     /**
      Sets the color on the digital invoice onboarding screen for text labels
      */
-    @objc public var digitalInvoiceOnboardingTextColor = GiniColor(lightModeColor: UIColor.white, darkModeColor: UIColor.white)
+    @objc public var digitalInvoiceOnboardingTextColor = GiniColor(light: UIColor.white, dark: UIColor.white)
     
     /**
      Sets the font of the first text label on the digital invoice onboarding screen
@@ -466,7 +466,7 @@ public final class ReturnAssistantConfiguration: NSObject {
     /**
      Sets the backgroundColor  on the digital invoice onboarding screen for done button
      */
-    @objc public var digitalInvoiceOnboardingDoneButtonBackgroundColor = GiniColor(lightModeColor: UIColor.white, darkModeColor: UIColor.white)
+    @objc public var digitalInvoiceOnboardingDoneButtonBackgroundColor = GiniColor(light: UIColor.white, dark: UIColor.white)
     
     /**
      Sets the font of the done button on the digital invoice onboarding screen
@@ -481,12 +481,12 @@ public final class ReturnAssistantConfiguration: NSObject {
     /**
      Sets the text color of the done button on the digital invoice onboarding screen
      */
-    @objc public var digitalInvoiceOnboardingDoneButtonTextColor = GiniColor(lightModeColor: Colors.Gini.blue, darkModeColor: Colors.Gini.blue)
+    @objc public var digitalInvoiceOnboardingDoneButtonTextColor = GiniColor(light: Colors.Gini.blue, dark: Colors.Gini.blue)
     
     /**
      Sets the text color of the done button on the digital invoice onboarding screen
      */
-    @objc public var digitalInvoiceOnboardingHideButtonTextColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
+    @objc public var digitalInvoiceOnboardingHideButtonTextColor = GiniColor(light: .white, dark: .white)
     
     /**
      Sets the background color of the warning info view on the digital invoice screen
