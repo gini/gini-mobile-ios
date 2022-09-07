@@ -3,6 +3,7 @@
 //  
 //
 //  Created by Krzysztof Kryniecki on 06/09/2022.
+//  Copyright © 2022 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -26,8 +27,8 @@ class BottomLabelButton: UIButton {
         label.adjustsFontForContentSizeCategory = true
         label.textAlignment = .center
         label.textColor = .white
-        //label.minimumScaleFactor = 10 / label.font.pointSize
-        //label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 10 / label.font.pointSize
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
@@ -84,7 +85,6 @@ class BottomLabelButton: UIButton {
     }
     
     @objc fileprivate func didPressButton(_ sender: UIButton) {
-        print("Work")
         didTapButton?()
     }
 }
