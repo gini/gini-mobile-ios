@@ -27,7 +27,7 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
         bottomButton.translatesAutoresizingMaskIntoConstraints = false
         bottomButton.setTitle(self.bottomButtonText, for: .normal)
         bottomButton.titleLabel?.font = giniConfiguration.customFont.with(weight: .bold, size: 14, style: .caption1)
-        let bottomButtonTextColor = UIColor.from(giniColor: giniConfiguration.noResultsBottomButtonTextColor)
+        let bottomButtonTextColor = giniConfiguration.noResultsBottomButtonTextColor.uiColor()
         bottomButton.setTitleColor(bottomButtonTextColor, for: .normal)
         bottomButton.setTitleColor(bottomButtonTextColor.withAlphaComponent(0.5), for: .highlighted)
         bottomButton.setImage(self.bottomButtonIconImage, for: .normal)

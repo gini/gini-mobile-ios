@@ -65,9 +65,9 @@ final class QRCodeDetectedPopupView: UIView {
     }
     
     fileprivate func setupViews(with giniConfiguration: GiniConfiguration) {
-        backgroundColor = UIColor.from(giniColor: giniConfiguration.qrCodePopupBackgroundColor)
+        backgroundColor = giniConfiguration.qrCodePopupBackgroundColor.uiColor()
         qrText.font = giniConfiguration.customFont.with(weight: .regular, size: 14, style: .body)
-        qrText.textColor = UIColor.from(giniColor: giniConfiguration.qrCodePopupTextColor)
+        qrText.textColor = giniConfiguration.qrCodePopupTextColor.uiColor()
         proceedButton.titleLabel?.font = giniConfiguration.customFont.with(weight: .bold, size: 14, style: .caption1)
         proceedButton.setTitleColor(giniConfiguration.qrCodePopupButtonColor, for: .normal)
         proceedButton.setTitleColor(giniConfiguration.qrCodePopupButtonColor.withAlphaComponent(0.5),

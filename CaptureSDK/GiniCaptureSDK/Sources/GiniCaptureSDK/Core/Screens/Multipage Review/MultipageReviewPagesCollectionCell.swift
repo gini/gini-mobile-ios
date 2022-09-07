@@ -29,10 +29,10 @@ final class MultipageReviewPagesCollectionCell: UICollectionViewCell {
     
     private func applyConfiguration(giniConfiguration: GiniConfiguration) {
         draggableIcon.tintColor = giniConfiguration.multipageDraggableIconColor
-        bottomContainer.backgroundColor = UIColor.from(giniColor: giniConfiguration.multipagePageBackgroundColor)
+        bottomContainer.backgroundColor = giniConfiguration.multipagePageBackgroundColor.uiColor()
         pageIndicatorLabel.textColor = giniConfiguration.multipagePageIndicatorColor
         pageSelectedLine.backgroundColor = giniConfiguration.multipagePageSelectedIndicatorColor
-        pageIndicatorCircle.layer.borderColor = UIColor.from(giniColor: giniConfiguration.indicatorCircleColor).cgColor
+        pageIndicatorCircle.layer.borderColor = giniConfiguration.indicatorCircleColor.uiColor().cgColor
     }
     
     private lazy var roundMask: UIView = {
@@ -80,7 +80,7 @@ final class MultipageReviewPagesCollectionCell: UICollectionViewCell {
         let view = UIView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         
-        view.backgroundColor = UIColor.from(giniColor: giniConfiguration.multipagePageBackgroundColor)
+        view.backgroundColor = giniConfiguration.multipagePageBackgroundColor.uiColor()
         
         return view
     }()
@@ -149,7 +149,7 @@ final class MultipageReviewPagesCollectionCell: UICollectionViewCell {
     
     private func updatePageIndicatorCircleColor(pageIndicatorCircle: UIView) {
         
-        pageIndicatorCircle.layer.borderColor = UIColor.from(giniColor: giniConfiguration.indicatorCircleColor).cgColor
+        pageIndicatorCircle.layer.borderColor = giniConfiguration.indicatorCircleColor.uiColor().cgColor
     }
     
     //swiftlint:disable function_body_length
