@@ -11,18 +11,35 @@ import UIKit
  The `GiniColor` class allows to customize color for the light and the dark modes.
  */
 @objc public class GiniColor : NSObject {
-    var lightModeColor: UIColor
-    var darkModeColor: UIColor
+    var light: UIColor
+    var dark: UIColor
     
     /**
      Creates a GiniColor with the colors for the light and dark modes.
      
-     - parameter lightModeColor: color for the light mode
-     - parameter darkModeColor: color for the dark mode
+     - parameter light: color for the light mode
+     - parameter dark: color for the dark mode
      */
-    public init(lightModeColor: UIColor, darkModeColor: UIColor) {
-        self.lightModeColor = lightModeColor
-        self.darkModeColor = darkModeColor
+    public init(light: UIColor, dark: UIColor) {
+        self.light = light
+        self.dark = dark
+    }
+
+    public func uiColor() -> UIColor {
+        if #available(iOS 13, *) {
+            return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
+                if UITraitCollection.userInterfaceStyle == .dark {
+                    /// Return the color for Dark Mode
+                    return self.dark
+                } else {
+                    /// Return the color for Light Mode
+                    return self.light
+                }
+            }
+        } else {
+            /// Return a fallback color for iOS 12 and lower.
+            return self.light
+        }
     }
 }
 
@@ -238,17 +255,17 @@ import UIKit
     /**
      Sets the background color of camera container view.
      */
-    @objc public var cameraContainerViewBackgroundColor = GiniColor(lightModeColor: .black, darkModeColor: .black)
+    @objc public var cameraContainerViewBackgroundColor = GiniColor(light: .black, dark: .black)
     
     /**
      Sets the color of camera preview frame.
      */
-    @objc public var cameraPreviewFrameColor = GiniColor(lightModeColor: UIColor(white: 0.0, alpha: 0.7), darkModeColor: UIColor(white: 0.0, alpha: 0.7))
+    @objc public var cameraPreviewFrameColor = GiniColor(light: UIColor(white: 0.0, alpha: 0.7), dark: UIColor(white: 0.0, alpha: 0.7))
     
     /**
      Sets the background color of camera buttons view.
      */
-    @objc public var cameraButtonsViewBackgroundColor = GiniColor(lightModeColor: .black, darkModeColor: .black)
+    @objc public var cameraButtonsViewBackgroundColor = GiniColor(light: .black, dark: .black)
     
     /**
      Set the types supported by the file import feature. `GiniCaptureImportFileTypes.none` by default.
@@ -304,7 +321,7 @@ import UIKit
     /**
      Sets the background color for gallery screen.
      */
-    @objc public var galleryScreenBackgroundColor = GiniColor(lightModeColor: .black, darkModeColor: .black)
+    @objc public var galleryScreenBackgroundColor = GiniColor(light: .black, dark: .black)
     
     /**
      Indicates whether the flash toggle should be shown in the camera screen.
@@ -343,12 +360,12 @@ import UIKit
     /**
      Sets the text color of the QR Code popup label.
      */
-    @objc public var qrCodePopupTextColor = GiniColor(lightModeColor: .black, darkModeColor: .white)
+    @objc public var qrCodePopupTextColor = GiniColor(light: .black, dark: .white)
     
     /**
      Sets the text color of the QR Code popup background.
      */
-    @objc public var qrCodePopupBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: UIColor.from(hex: 0x1c1c1e))
+    @objc public var qrCodePopupBackgroundColor = GiniColor(light: .white, dark: UIColor.from(hex: 0x1c1c1e))
     
     /**
      Sets the button color of the unsupported QR Code popup.
@@ -358,12 +375,12 @@ import UIKit
     /**
      Sets the text color of the unsupported QR Code popup.
      */
-    @objc public var unsupportedQrCodePopupTextColor = GiniColor(lightModeColor: .red, darkModeColor: .red)
+    @objc public var unsupportedQrCodePopupTextColor = GiniColor(light: .red, dark: .red)
     
     /**
      Sets the  background color of the unsupported QR Code popup.
      */
-    @objc public var unsupportedQrCodePopupBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: UIColor.from(hex: 0x1c1c1e))
+    @objc public var unsupportedQrCodePopupBackgroundColor = GiniColor(light: .white, dark: UIColor.from(hex: 0x1c1c1e))
     
     // MARK: Onboarding screens
 
@@ -377,12 +394,12 @@ import UIKit
     /**
      Sets the color of the page controller's page indicator items.
      */
-    @objc public var onboardingPageIndicatorColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
+    @objc public var onboardingPageIndicatorColor = GiniColor(light: .white, dark: .white)
     
     /**
      Sets the color of the page controller's current page indicator item.
      */
-    @objc public var onboardingCurrentPageIndicatorColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
+    @objc public var onboardingCurrentPageIndicatorColor = GiniColor(light: .white, dark: .white)
     
     /**
      Sets alpha to the color of the page controller's current page indicator item.
@@ -408,12 +425,12 @@ import UIKit
     /**
      Sets the color ot the text for all onboarding pages.
      */
-    @objc public var onboardingTextColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
+    @objc public var onboardingTextColor = GiniColor(light: .white, dark: .white)
     
     /**
      Sets the background color for all onboarding pages.
      */
-    @objc public var onboardingScreenBackgroundColor = GiniColor(lightModeColor: .black, darkModeColor: .black)
+    @objc public var onboardingScreenBackgroundColor = GiniColor(light: .black, dark: .black)
     
     /**
      All onboarding pages which will be presented in a horizontal scroll view to the user.
@@ -526,14 +543,14 @@ import UIKit
     /**
      Sets the color of the pages container and toolbar.
      */
-    @objc public var multipagePagesContainerAndToolBarColor = GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: UIColor.from(hex: 0x1c1c1c))
+    @objc public var multipagePagesContainerAndToolBarColor = GiniColor(light: Colors.Gini.pearl, dark: UIColor.from(hex: 0x1c1c1c))
     
     @objc private var _multipagePagesContainerAndToolBarColor: UIColor?
     
     /**
      Sets the color of the circle indicator.
      */
-    @objc public var indicatorCircleColor = GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: .lightGray)
+    @objc public var indicatorCircleColor = GiniColor(light: Colors.Gini.pearl, dark: .lightGray)
     
     /**
      Sets the tint color of the toolbar items.
@@ -553,7 +570,7 @@ import UIKit
     /**
      Sets the background color of the page background.
      */
-    @objc public var multipagePageBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: UIColor.from(hex: 0x1c1c1e))
+    @objc public var multipagePageBackgroundColor = GiniColor(light: .white, dark: UIColor.from(hex: 0x1c1c1e))
     
     @objc private var _multipagePageBackgroundColor: UIColor?
     
@@ -642,7 +659,7 @@ import UIKit
     /**
      Sets the text color of the bottom button to the specified color.
      */
-    @objc public var noResultsBottomButtonTextColor = GiniColor.init(lightModeColor: .white, darkModeColor: .white)
+    @objc public var noResultsBottomButtonTextColor = GiniColor(light: .white, dark: .white)
     
     /**
      Sets the corner radius of the bottom button.
@@ -664,7 +681,7 @@ import UIKit
     /**
      Sets the text color for the select more photos button on the albums screen.
      */
-    @objc public var albumsScreenSelectMorePhotosTextColor =  GiniColor(lightModeColor: Colors.Gini.blue, darkModeColor: Colors.Gini.blue)
+    @objc public var albumsScreenSelectMorePhotosTextColor =  GiniColor(light: Colors.Gini.blue, dark: Colors.Gini.blue)
     
     /**
      Set an array of additional custom help menu items . Those items will be presented as table view cells on the help menu screen. By selecting the cell the user will be redirected to the page, which represented by viewController provided by customer during the  `HelpMenuViewController.Item` initialization.
