@@ -77,8 +77,7 @@ class LineItemDetailsViewController: UIViewController {
         setupView()
         update()
         let configuration  = returnAssistantConfiguration ?? ReturnAssistantConfiguration.shared
-        view.backgroundColor = UIColor.from(giniColor: configuration.lineItemDetailsBackgroundColor
-        )
+        view.backgroundColor = configuration.lineItemDetailsBackgroundColor.uiColor()
     }
     
     private func setupView() {
