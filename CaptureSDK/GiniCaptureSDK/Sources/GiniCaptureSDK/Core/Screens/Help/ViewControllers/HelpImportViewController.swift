@@ -47,7 +47,7 @@ class HelpImportViewController: UIViewController {
             "ginicapture.help.import.title",
             comment: "Help Import screen title")
         view.addSubview(tableView)
-        view.backgroundColor = UIColor.GiniCapture.helpBackground
+        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         edgesForExtendedLayout = []
     }
 
@@ -124,12 +124,12 @@ extension HelpImportViewController: UITableViewDataSource {
             configureCellAccessibility(cell: cell, item: headerTitle)
         }
         cell.backgroundColor = UIColor.clear
-        cell.headerLabel.textColor = UIColor.GiniCapture.label
+        cell.headerLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark1, dark: UIColor.GiniCapture.light1).uiColor()
         cell.headerLabel.backgroundColor = UIColor.clear
         cell.headerLabel.adjustsFontForContentSizeCategory = true
         cell.headerLabel.font = giniConfiguration.textStyleFonts[.headline]
         cell.descriptionLabel.backgroundColor = UIColor.clear
-        cell.descriptionLabel.textColor = UIColor.GiniCapture.subheadline
+        cell.descriptionLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark6, dark: UIColor.GiniCapture.dark7).uiColor()
         cell.descriptionLabel.font = giniConfiguration.textStyleFonts[.body]
         cell.descriptionLabel.adjustsFontForContentSizeCategory = true
         cell.contentView.backgroundColor = UIColor.clear

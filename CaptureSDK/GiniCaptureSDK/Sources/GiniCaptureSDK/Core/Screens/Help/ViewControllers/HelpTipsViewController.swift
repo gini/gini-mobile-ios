@@ -48,7 +48,7 @@ public final class HelpTipsViewController: UIViewController {
 
     public func configureMainView() {
         view.addSubview(tableView)
-        view.backgroundColor = UIColor.GiniCapture.helpBackground
+        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         edgesForExtendedLayout = []
         tableView.bounces = false
     }

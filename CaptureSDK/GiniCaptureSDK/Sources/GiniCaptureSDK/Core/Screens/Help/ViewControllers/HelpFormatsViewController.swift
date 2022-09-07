@@ -46,7 +46,7 @@ class HelpFormatsViewController: UIViewController {
         title = NSLocalizedStringPreferredFormat(
             "ginicapture.help.supportedFormats.title",
             comment: "Supported formats screen title")
-        view.backgroundColor = UIColor.GiniCapture.helpBackground
+        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         view.addSubview(tableView)
 
         view.layoutSubviews()
