@@ -81,13 +81,16 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
         let item = section.formats[indexPath.row]
         cell.descriptionLabel.text = item
         cell.descriptionLabel.font = giniConfiguration.textStyleFonts[.body]
-
-        cell.descriptionLabel.textColor = UIColor.GiniCapture.label
+        cell.descriptionLabel.textColor = GiniColor(
+            light: UIColor.GiniCapture.dark1,
+            dark: UIColor.GiniCapture.light1).uiColor()
         cell.descriptionLabel.adjustsFontForContentSizeCategory = true
         cell.iconImageView.image = section.formatsImage
         cell.iconImageView.backgroundColor = UIColor.clear
-        cell.backgroundColor = UIColor.GiniCapture.systemWhite
-        cell.separatorView.backgroundColor = UIColor.GiniCapture.separator
+        cell.backgroundColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.dark3).uiColor()
+        cell.separatorView.backgroundColor = GiniColor(
+            light: UIColor.GiniCapture.light3,
+            dark: UIColor.GiniCapture.dark4).uiColor()
         configureCellAccessibility(cell: cell, title: section.title.uppercased())
         if indexPath.row == items[indexPath.section].formats.count - 1 {
             cell.separatorView.isHidden = true
@@ -102,7 +105,9 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
         header.titleLabel.font = giniConfiguration.textStyleFonts[.caption1]
         header.titleLabel.adjustsFontForContentSizeCategory = true
         header.titleLabel.numberOfLines = 0
-            header.titleLabel.textColor =  UIColor.GiniCapture.subheadline
+            header.titleLabel.textColor =  GiniColor(
+                light: UIColor.GiniCapture.dark7,
+                dark: UIColor.GiniCapture.dark7).uiColor()
         header.titleLabel.text = items[section].title.uppercased()
         header.backgroundView?.backgroundColor = UIColor.clear
     }

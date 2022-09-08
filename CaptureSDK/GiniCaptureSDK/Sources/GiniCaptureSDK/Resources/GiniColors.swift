@@ -57,7 +57,6 @@ extension UIColor {
         static let helpBackground = UIColorPreferred(named: "helpBackground")
         static let separator = UIColorPreferred(named: "separator")
         static let subheadline = UIColorPreferred(named: "subheadline")
-        static let systemBlue = UIColorPreferred(named: "systemBlue")
         static let systemGray = UIColorPreferred(named: "systemGray")
         static let systemGray02 = UIColorPreferred(named: "systemGray02")
         static let systemGray03 = UIColorPreferred(named: "systemGray03")

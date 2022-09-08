@@ -143,6 +143,7 @@ final public class NoResultScreenViewController: UIViewController {
     public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: buttonsView.bounds.size.height + GiniMargins.margin, right: 0)
+        configureButtonsColors()
     }
     
     private func setupView() {
@@ -162,12 +163,12 @@ final public class NoResultScreenViewController: UIViewController {
             comment: "No result screen title")
         header.headerLabel.text = type.description
         header.headerLabel.font = giniConfiguration.textStyleFonts[.subheadline]
-        header.headerLabel.textColor = UIColor.GiniCapture.label
-        view.backgroundColor = UIColor.GiniCapture.helpBackground
+        header.headerLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark1, dark: UIColor.GiniCapture.light1).uiColor()
+        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         view.addSubview(header)
         view.addSubview(tableView)
         view.addSubview(buttonsView)
-        header.backgroundColor = UIColor.GiniCapture.errorBackground
+        header.backgroundColor = GiniColor(light: UIColor.GiniCapture.error4, dark: UIColor.GiniCapture.error1).uiColor()
     }
 
     private func configureTableView() {
@@ -241,8 +242,7 @@ final public class NoResultScreenViewController: UIViewController {
         }
     }
 
-    
-    private func configureButtons() {
+    private func configureButtonsColors() {
         retakeButton.setTitleColor(giniConfiguration.primaryButtonTitleColor, for: .normal)
         retakeButton.backgroundColor = giniConfiguration.primaryButtonBackgroundColor
         retakeButton.layer.borderColor = giniConfiguration.primaryButtonBorderColor.cgColor
@@ -251,7 +251,6 @@ final public class NoResultScreenViewController: UIViewController {
         retakeButton.layer.shadowRadius = giniConfiguration.primaryButtonShadowRadius
         retakeButton.layer.shadowColor = giniConfiguration.primaryButtonShadowColor.cgColor
         
-        
         enterButton.backgroundColor = giniConfiguration.outlineButtonBackground
         enterButton.layer.cornerRadius = giniConfiguration.outlineButtonCornerRadius
         enterButton.layer.borderWidth = giniConfiguration.outlineButtonBorderWidth
@@ -259,6 +258,10 @@ final public class NoResultScreenViewController: UIViewController {
         enterButton.layer.shadowRadius = giniConfiguration.outlineButtonShadowRadius
         enterButton.layer.shadowColor = giniConfiguration.outlineButtonShadowColor.cgColor
         enterButton.setTitleColor(giniConfiguration.outlineButtonTitleColor, for: .normal)
+    }
+    
+    private func configureButtons() {
+        configureButtonsColors()
         addBlurEffect(button: enterButton, cornerRadius: 14)
         enterButton.addTarget(viewModel, action: #selector(viewModel.didPressEnterManually), for: .touchUpInside)
         retakeButton.addTarget(viewModel, action: #selector(viewModel.didPressRetake), for: .touchUpInside)

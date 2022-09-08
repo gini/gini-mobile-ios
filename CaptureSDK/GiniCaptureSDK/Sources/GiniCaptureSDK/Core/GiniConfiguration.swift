@@ -149,13 +149,13 @@ import UIKit
      Indicates background color for primary buttons within the screens
      */
     
-    @objc public var primaryButtonBackgroundColor: UIColor = UIColor.GiniCapture.systemBlue
+    @objc public var primaryButtonBackgroundColor: UIColor = GiniColor(light: UIColor.GiniCapture.accent1, dark: UIColor.GiniCapture.accent1).uiColor()
     
     /**
      Indicates title color for primary buttons within the screens
      */
     
-    @objc public var primaryButtonTitleColor: UIColor = UIColor.GiniCapture.labelWhite
+    @objc public var primaryButtonTitleColor: UIColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.light1).uiColor()
     
     
     /**
@@ -192,13 +192,13 @@ import UIKit
      Indicates border color for outline buttons within the screens
      */
     
-    @objc public var outlineButtonBorderColor: UIColor = UIColor.GiniCapture.grayLabel
+    @objc public var outlineButtonBorderColor: UIColor = GiniColor(light: UIColor.GiniCapture.light6, dark: UIColor.clear).uiColor()
     
     /**
      Indicates title color for outline buttons within the screens
      */
     
-    @objc public var outlineButtonTitleColor: UIColor = UIColor.GiniCapture.grayLabel
+    @objc public var outlineButtonTitleColor: UIColor = GiniColor(light: UIColor.GiniCapture.dark6, dark: UIColor.GiniCapture.light1).uiColor()
     
     /**
      Can be turned on during development to unlock extra information and to save captured images to camera roll.
