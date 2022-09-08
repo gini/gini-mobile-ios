@@ -29,14 +29,14 @@ final class CaptureSuggestionsViewContainer: UIView {
     private func configureView() {
         let configuration = GiniConfiguration.shared
 
-        backgroundColor = UIColor.GiniCapture.systemGray05
+        backgroundColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.dark3).uiColor()
         layer.cornerRadius = 16
 
         titleLabel.font = configuration.textStyleFonts[.calloutBold]
-        titleLabel.textColor = UIColor.GiniCapture.label
+        titleLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark1, dark: UIColor.GiniCapture.light1).uiColor()
 
         descriptionLabel.font = configuration.textStyleFonts[.subheadline]
-        descriptionLabel.textColor = UIColor.GiniCapture.systemGray
+        descriptionLabel.textColor = UIColor.GiniCapture.dark7
     }
 
     private func configureAccessibility() {
