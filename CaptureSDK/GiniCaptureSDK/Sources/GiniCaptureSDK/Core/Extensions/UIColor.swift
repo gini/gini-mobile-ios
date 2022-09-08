@@ -7,24 +7,7 @@
 
 import UIKit
 
-extension UIColor {
-    public static func from(giniColor: GiniColor) -> UIColor {
-        if #available(iOS 13, *) {
-            return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
-                if UITraitCollection.userInterfaceStyle == .dark {
-                    /// Return the color for Dark Mode
-                    return giniColor.darkModeColor
-                } else {
-                    /// Return the color for Light Mode
-                    return giniColor.lightModeColor
-                }
-            }
-        } else {
-            /// Return a fallback color for iOS 12 and lower.
-            return giniColor.lightModeColor
-        }
-    }
-    
+extension UIColor {    
     public static func from(hex: UInt) -> UIColor {
         return UIColor(
             red: CGFloat((hex & 0xFF0000) >> 16) / 255.0,

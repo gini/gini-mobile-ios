@@ -41,7 +41,7 @@ import UIKit
 
         // Configure label
         textLabel.numberOfLines = 0
-        textLabel.textColor = UIColor.from(giniColor: GiniConfiguration.shared.onboardingTextColor)
+        textLabel.textColor = GiniConfiguration.shared.onboardingTextColor.uiColor()
         textLabel.textAlignment = .center
         textLabel.font = GiniConfiguration.shared.customFont.with(weight: .thin, size: 28, style: .title1)
         

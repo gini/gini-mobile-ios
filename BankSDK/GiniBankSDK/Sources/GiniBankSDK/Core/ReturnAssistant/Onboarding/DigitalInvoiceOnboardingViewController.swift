@@ -76,31 +76,31 @@ class DigitalInvoiceOnboardingViewController: UIViewController {
     private func setupWhiteButton(button: UIButton) {
         button.isHidden = false
         button.layer.cornerRadius = 7.0
-        button.backgroundColor = UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceOnboardingDoneButtonBackgroundColor)
-        button.tintColor = UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceOnboardingDoneButtonTextColor)
+        button.backgroundColor = returnAssistantConfiguration.digitalInvoiceOnboardingDoneButtonBackgroundColor.uiColor()
+        button.tintColor = returnAssistantConfiguration.digitalInvoiceOnboardingDoneButtonTextColor.uiColor()
         button.titleLabel?.font = returnAssistantConfiguration.digitalInvoiceOnboardingDoneButtonTextFont
     }
 
     fileprivate func configureUI() {
         title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
-        contentView.backgroundColor = UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceOnboardingBackgroundColor)
+        contentView.backgroundColor = returnAssistantConfiguration.digitalInvoiceOnboardingBackgroundColor.uiColor()
         
         topImageView.image = topImage
         
         firstLabel.text = firstLabelText
         firstLabel.font = returnAssistantConfiguration.digitalInvoiceOnboardingFirstLabelTextFont
-        firstLabel.textColor = UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceOnboardingTextColor)
+        firstLabel.textColor = returnAssistantConfiguration.digitalInvoiceOnboardingTextColor.uiColor()
         
         secondLabel.text = secondLabelText
         secondLabel.font = returnAssistantConfiguration.digitalInvoiceOnboardingSecondLabelTextFont
-        secondLabel.textColor = UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceOnboardingTextColor)
+        secondLabel.textColor = returnAssistantConfiguration.digitalInvoiceOnboardingTextColor.uiColor()
 
         hideButton.addTarget(self, action: #selector(hideAction(_:)), for: .touchUpInside)
         
         switch infoType {
         case .onboarding:
             hideButton.titleLabel?.font = returnAssistantConfiguration.digitalInvoiceOnboardingHideButtonTextFont
-            hideButton.tintColor = UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceOnboardingHideButtonTextColor)
+            hideButton.tintColor = returnAssistantConfiguration.digitalInvoiceOnboardingHideButtonTextColor.uiColor()
             doneButton.addTarget(self, action: #selector(doneAction(_:)), for: .touchUpInside)
             setupWhiteButton(button: doneButton)
             doneButton.isHidden = false
