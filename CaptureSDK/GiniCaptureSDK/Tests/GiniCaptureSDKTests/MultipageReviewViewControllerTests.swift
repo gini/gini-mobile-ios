@@ -111,23 +111,23 @@ final class MultipageReviewViewControllerTests: XCTestCase {
     
     func testToolBarTintColor() {
         let giniConfiguration = GiniConfiguration()
-        giniConfiguration.multipagePagesContainerAndToolBarColor = GiniColor(lightModeColor: .black, darkModeColor: .black)
+        giniConfiguration.multipagePagesContainerAndToolBarColor = GiniColor(light: .black, dark: .black)
         let multipageReviewViewController = MultipageReviewViewController(pages: [],
                                                                           giniConfiguration: giniConfiguration)
         
         XCTAssertEqual(multipageReviewViewController.toolBar.barTintColor?.cgColor,
-                       UIColor.from(giniColor: giniConfiguration.multipagePagesContainerAndToolBarColor).cgColor,
+                       giniConfiguration.multipagePagesContainerAndToolBarColor.uiColor().cgColor,
                        "toolbar tint color should match the one specified in the configuration")
     }
     
     func testPagesContainerBackgroundColor() {
         let giniConfiguration = GiniConfiguration()
-        giniConfiguration.multipagePagesContainerAndToolBarColor = GiniColor(lightModeColor: .black, darkModeColor: .black)
+        giniConfiguration.multipagePagesContainerAndToolBarColor = GiniColor(light: .black, dark: .black)
         let multipageReviewViewController = MultipageReviewViewController(pages: [],
                                                                           giniConfiguration: giniConfiguration)
         
         XCTAssertEqual(multipageReviewViewController.pagesCollectionContainer.backgroundColor?.cgColor,
-                       UIColor.from(giniColor: giniConfiguration.multipagePagesContainerAndToolBarColor).cgColor,
+                       giniConfiguration.multipagePagesContainerAndToolBarColor.uiColor().cgColor,
                        "pages container background color should match the one specified in the gini configuration")
     }
     

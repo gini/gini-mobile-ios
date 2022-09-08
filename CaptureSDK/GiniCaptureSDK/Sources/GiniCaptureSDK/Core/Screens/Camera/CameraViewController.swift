@@ -126,7 +126,7 @@ import AVFoundation
     public override func loadView() {
         super.loadView()
         edgesForExtendedLayout = []
-        view.backgroundColor = UIColor.from(giniColor: giniConfiguration.cameraContainerViewBackgroundColor)
+        view.backgroundColor = giniConfiguration.cameraContainerViewBackgroundColor.uiColor()
         
         // `previewView` must be added at 0 because otherwise NotAuthorizedView button won't ever be touchable
         addChild(cameraPreviewViewController)
@@ -145,13 +145,14 @@ import AVFoundation
             cameraButtonsViewController.addFileImportButton()
 
             // If FileImportToolTip was shown and QRCodeToolTip not yet
-            if !OnboardingContainerViewController.willBeShown {
-                if ToolTipView.shouldShowFileImportToolTip {
-                    showFileImportTip()
-                } else {
-                    showQrCodeTip()
-                }
-            }
+// MARK: - TODO 
+//            if !OnboardingContainerViewController.willBeShown {
+//                if ToolTipView.shouldShowFileImportToolTip {
+//                    showFileImportTip()
+//                } else {
+//                    showQrCodeTip()
+//                }
+//            }
         }
     }
     
@@ -390,8 +391,8 @@ extension CameraViewController {
     
     fileprivate func configurePopupViewForUnsupportedQR(_ newQRCodePopup: QRCodeDetectedPopupView,
                                                         dismissCompletion: @escaping () -> Void) {
-        newQRCodePopup.backgroundColor = UIColor.from(giniColor:giniConfiguration.unsupportedQrCodePopupBackgroundColor)
-        newQRCodePopup.qrText.textColor = UIColor.from(giniColor: giniConfiguration.unsupportedQrCodePopupTextColor)
+        newQRCodePopup.backgroundColor = giniConfiguration.unsupportedQrCodePopupBackgroundColor.uiColor()
+        newQRCodePopup.qrText.textColor = giniConfiguration.unsupportedQrCodePopupTextColor.uiColor()
         newQRCodePopup.qrText.text = .localized(resource: CameraStrings.unsupportedQrCodeDetectedPopupMessage)
         newQRCodePopup.proceedButton.setTitle("✕", for: .normal)
         newQRCodePopup.proceedButton.setTitleColor(giniConfiguration.unsupportedQrCodePopupButtonColor, for: .normal)
