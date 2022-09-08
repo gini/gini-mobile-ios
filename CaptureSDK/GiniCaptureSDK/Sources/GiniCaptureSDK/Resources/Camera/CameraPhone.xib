@@ -23,6 +23,10 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fqz-Ub-N9F">
+                    <rect key="frame" x="0.0" y="689" width="414" height="207"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qey-Uj-2J2">
                     <rect key="frame" x="0.0" y="689" width="414" height="173"/>
                     <subviews>
@@ -67,7 +71,7 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" red="0.036998286575797783" green="0.038202858585344862" blue="0.039999999105930328" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="displayP3"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="zFz-gY-AMg" firstAttribute="leading" secondItem="qey-Uj-2J2" secondAttribute="leading" id="2MR-qQ-nQt"/>
                         <constraint firstItem="0Yg-3y-VKg" firstAttribute="centerY" secondItem="dQe-NY-Bi9" secondAttribute="centerY" id="6E5-zb-nf7"/>
@@ -84,18 +88,22 @@
                 </view>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cameraFocus" translatesAutoresizingMaskIntoConstraints="NO" id="2eO-4o-6WG">
                     <rect key="frame" x="0.0" y="60" width="414" height="629"/>
-                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </imageView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstItem="fqz-Ub-N9F" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="2Bq-c4-MVH"/>
                 <constraint firstAttribute="trailing" secondItem="qey-Uj-2J2" secondAttribute="trailing" id="DJb-3E-lB1"/>
                 <constraint firstItem="qey-Uj-2J2" firstAttribute="top" secondItem="2eO-4o-6WG" secondAttribute="bottom" id="MfE-7l-XLm"/>
                 <constraint firstItem="2eO-4o-6WG" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="Qft-ST-Zj6"/>
+                <constraint firstAttribute="bottom" secondItem="fqz-Ub-N9F" secondAttribute="bottom" id="X6N-M1-p1n"/>
                 <constraint firstAttribute="trailing" secondItem="2eO-4o-6WG" secondAttribute="trailing" id="eJa-hf-dLk"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="fqz-Ub-N9F" secondAttribute="trailing" id="hQ2-gz-HkV"/>
                 <constraint firstItem="2eO-4o-6WG" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="kY4-CT-J8e"/>
+                <constraint firstItem="qey-Uj-2J2" firstAttribute="top" secondItem="fqz-Ub-N9F" secondAttribute="top" id="kah-ed-q4R"/>
                 <constraint firstItem="qey-Uj-2J2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ujq-KI-fiR"/>
                 <constraint firstItem="qey-Uj-2J2" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="y2K-If-8UR"/>
             </constraints>

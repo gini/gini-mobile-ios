@@ -31,6 +31,9 @@ final class CameraPreviewView: UIView {
             return (self.layer as? AVCaptureVideoPreviewLayer)!.session!
         }
         set(newSession) {
+            if let captureLayer = layer as? AVCaptureVideoPreviewLayer {
+                captureLayer.videoGravity = .resizeAspectFill
+            }
             (self.layer as? AVCaptureVideoPreviewLayer)!.session = newSession
         }
     }
@@ -41,8 +44,8 @@ final class CameraPreviewView: UIView {
     }
     
     func positionViews() {
-        positionGuides()
-        positionFrame()
+        //positionGuides()
+        //positionFrame()
     }
     
 }

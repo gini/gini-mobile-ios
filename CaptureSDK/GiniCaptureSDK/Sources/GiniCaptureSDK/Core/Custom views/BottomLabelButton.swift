@@ -22,7 +22,6 @@ class BottomLabelButton: UIButton {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = .localized(resource: CameraStrings.importFileButtonLabel)
-        
         label.font = GiniConfiguration.shared.customFont.with(weight: .regular, size: 12, style: .footnote)
         label.adjustsFontForContentSizeCategory = true
         label.textAlignment = .center

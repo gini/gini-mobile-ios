@@ -44,6 +44,7 @@ final class ThumbnailView: UIView {
         var view = UIView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.frame.size = self.stackCountCircleSize
+        view.layer.cornerRadius = stackCountCircleSize.height * 0.5
         view.backgroundColor = .green
         return view
     }()
