@@ -136,7 +136,7 @@ final public class NoResultScreenViewController: UIViewController {
         if numberOfButtons > 0 {
             tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: buttonsView.bounds.size.height + numberOfButtons * GiniMargins.margin, right: 0)
         } else {
-            tableView.contentInset = UIEdgeInsets.zero
+            tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom:  GiniMargins.margin, right: 0)
         }
     }
     
