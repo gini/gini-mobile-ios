@@ -103,7 +103,7 @@ public class DigitalInvoiceViewController: UIViewController {
         tableView.separatorStyle = .none
         
         tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
-        tableView.backgroundColor = UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceBackgroundColor)
+        tableView.backgroundColor = returnAssistantConfiguration.digitalInvoiceBackgroundColor.uiColor()
     }
     
     fileprivate func configureNavigationBar() {
