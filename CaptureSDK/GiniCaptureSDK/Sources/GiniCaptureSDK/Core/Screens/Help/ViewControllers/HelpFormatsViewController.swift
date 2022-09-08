@@ -34,6 +34,11 @@ final class HelpFormatsViewController: UIViewController {
         setupView()
     }
 
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom:  GiniMargins.margin, right: 0)
+    }
+    
     private func setupView() {
         configureMainView()
         configureTableView()
@@ -65,7 +70,7 @@ final class HelpFormatsViewController: UIViewController {
         tableView.delegate = self.dataSource
         tableView.dataSource = self.dataSource
         tableView.estimatedRowHeight = tableRowHeight
-        tableView.showsVerticalScrollIndicator = false
+        tableView.showsVerticalScrollIndicator = true
         tableView.rowHeight = UITableView.automaticDimension
         tableView.tableFooterView = UIView()
         tableView.tableHeaderView = UIView()
