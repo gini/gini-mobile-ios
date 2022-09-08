@@ -28,16 +28,16 @@ final class CaptureSuggestionsViewContainer: UIView {
     fileprivate func configureView() {
         let configuration = GiniConfiguration.shared
 
-        backgroundColor = UIColor.GiniCapture.systemGray05
+        backgroundColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.dark1).uiColor()
         layer.cornerRadius = 16
 
         titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.font = configuration.textStyleFonts[.calloutBold]
-        titleLabel.textColor = UIColor.GiniCapture.label
+        titleLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark1, dark: UIColor.GiniCapture.light1).uiColor()
 
         descriptionLabel.adjustsFontForContentSizeCategory = true
         descriptionLabel.font = configuration.textStyleFonts[.subheadline]
-        descriptionLabel.textColor = UIColor.GiniCapture.systemGray
+        descriptionLabel.textColor = UIColor.GiniCapture.dark7
     }
 
     func configureContent(with image: UIImage?, title: String, description: String) {
