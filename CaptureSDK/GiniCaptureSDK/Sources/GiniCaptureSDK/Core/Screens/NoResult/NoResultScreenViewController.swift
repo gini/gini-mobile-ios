@@ -123,15 +123,23 @@ final public class NoResultScreenViewController: UIViewController {
         super.viewDidLoad()
         self.setupView()
     }
-    public override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: buttonsView.bounds.size.height + GiniMargins.margin, right: 0)
-    }
     
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: buttonsView.bounds.size.height + GiniMargins.margin, right: 0)
+        var numberOfButtons: CGFloat = 0
+        if viewModel.isEnterManuallyHidden() == false {
+            numberOfButtons += 1
+        }
+        if viewModel.isRetakePressedHidden() == false {
+            numberOfButtons += 1
+        }
+        if numberOfButtons > 0 {
+            tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: buttonsView.bounds.size.height + numberOfButtons * GiniMargins.margin, right: 0)
+        } else {
+            tableView.contentInset = UIEdgeInsets.zero
+        }
     }
+    
     public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: buttonsView.bounds.size.height + GiniMargins.margin, right: 0)
@@ -274,8 +282,8 @@ final public class NoResultScreenViewController: UIViewController {
             
             tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 13),
             tableView.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                constant: -GiniMargins.margin),
+                equalTo: view.bottomAnchor
+            ),
             
             buttonsView.bottomAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.bottomAnchor,
