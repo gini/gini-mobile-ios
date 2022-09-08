@@ -93,16 +93,15 @@ final class CaptureSuggestionsView: UIView {
         bottomConstraint = self.bottomAnchor.constraint(equalTo: superViewBottomAnchor, constant: containerHeight)
         Constraints.active(item: self, attr: .leading, relatedBy: .equal, to: superview, attr: .leading)
         Constraints.active(item: self, attr: .trailing, relatedBy: .equal, to: superview, attr: .trailing)
-        Constraints.active(item: self, attr: .height, relatedBy: .lessThanOrEqual,
+        Constraints.active(item: self, attr: .height, relatedBy: .greaterThanOrEqual,
                            to: nil, attr: .notAnAttribute, constant: containerHeight, priority: 250)
         Constraints.active(constraint: bottomConstraint)
 
         // suggestionContainer
-        itemSeparationConstraint = NSLayoutConstraint(item: suggestionContainer, attribute: .top, relatedBy: .equal,
-                                                      toItem: self, attribute: .top, multiplier: 1,
-                                                      constant: 0)
-        Constraints.active(item: suggestionContainer, attr: .height, relatedBy: .equal, to: nil, attr: .notAnAttribute,
-                          constant: containerHeight)
+        itemSeparationConstraint = NSLayoutConstraint(item: suggestionContainer, attribute: .bottom, relatedBy: .equal,
+                                                      toItem: self, attribute: .bottom, multiplier: 1, constant: 0)
+        Constraints.active(item: suggestionContainer, attr: .height, relatedBy: .greaterThanOrEqual,
+                           to: nil, attr: .notAnAttribute, constant: containerHeight)
         Constraints.active(constraint: itemSeparationConstraint)
 
         // Center on align to margins depending on device
