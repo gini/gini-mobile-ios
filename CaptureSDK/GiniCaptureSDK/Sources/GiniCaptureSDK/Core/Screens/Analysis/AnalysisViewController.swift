@@ -68,6 +68,7 @@ import UIKit
         loadingText.font = giniConfiguration.textStyleFonts[.bodyBold]
         loadingText.textAlignment = .center
         loadingText.adjustsFontForContentSizeCategory = true
+        loadingText.isAccessibilityElement = true
         loadingText.textColor = UIColor.GiniCapture.label
         loadingText.numberOfLines = 0
 
@@ -89,10 +90,8 @@ import UIKit
     }()
 
     private lazy var loadingIndicatorContainer: UIView = {
-        let size = CGSize(width: AnalysisViewController.loadingIndicatorContainerHeight,
-                          height: AnalysisViewController.loadingIndicatorContainerHeight)
         let loadingIndicatorContainer = UIView(frame: CGRect(origin: .zero,
-                                                             size: size))
+                                                             size: .zero))
         return loadingIndicatorContainer
     }()
 
@@ -185,9 +184,10 @@ import UIKit
             imageView.image = document.previewImage
         }
 
+        addLoadingContainer()
         loadingIndicatorView.color = UIColor.GiniCapture.label
-        addLoadingView(intoContainer: loadingIndicatorContainer)
-        addLoadingText(below: loadingIndicatorView)
+        addLoadingView()
+        addLoadingText()
         addOverlay()
 
         if document is GiniImageDocument {
@@ -203,6 +203,7 @@ import UIKit
     public func showError(with message: String, action: @escaping () -> Void ) {
         trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .error, info: ["message": message]))
 
+        errorView.isHidden = false
         errorView.textLabel.text = message
         errorView.userAction = NoticeAction(title: NoticeActionType.retry.title, action: { [weak self] in
             guard let self = self else { return }
@@ -217,6 +218,7 @@ import UIKit
      */
     public func hideError(animated: Bool = false) {
         errorView.hide(animated, completion: nil)
+        errorView.isHidden = true
     }
 
     private func addImageView() {
@@ -241,48 +243,40 @@ import UIKit
         Constraints.active(item: overlayView, attr: .leading, relatedBy: .equal, to: imageView, attr: .leading)
     }
 
-    private func addLoadingText(below: UIView) {
-        self.view.addSubview(loadingIndicatorText)
-        loadingIndicatorText.translatesAutoresizingMaskIntoConstraints = false
-
-        Constraints.active(item: loadingIndicatorText, attr: .trailing, relatedBy: .equal, to: imageView,
-                          attr: .trailing, constant: -16)
-        Constraints.active(item: loadingIndicatorText, attr: .top, relatedBy: .equal, to: below, attr: .bottom,
-                          constant: 16)
-        Constraints.active(item: loadingIndicatorText, attr: .leading, relatedBy: .equal, to: imageView,
-                           attr: .leading, constant: 16)
+    private func addLoadingContainer() {
+        loadingIndicatorContainer.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(loadingIndicatorContainer)
+        NSLayoutConstraint.activate([
+            loadingIndicatorContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            loadingIndicatorContainer.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+            loadingIndicatorContainer.topAnchor.constraint(greaterThanOrEqualTo: self.view.topAnchor),
+            loadingIndicatorContainer.leadingAnchor.constraint(greaterThanOrEqualTo: self.view.leadingAnchor,
+                                                               constant: 16)])
     }
 
-    private func addLoadingView(intoContainer container: UIView? = nil) {
+    private func addLoadingView() {
         loadingIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        loadingIndicatorContainer.addSubview(loadingIndicatorView)
 
-        if let container = container {
-            container.translatesAutoresizingMaskIntoConstraints = false
-            self.view.addSubview(container)
-            container.addSubview(loadingIndicatorView)
+        NSLayoutConstraint.activate([
+            loadingIndicatorView.centerXAnchor.constraint(equalTo: loadingIndicatorContainer.centerXAnchor),
+            loadingIndicatorView.topAnchor.constraint(equalTo: loadingIndicatorContainer.topAnchor)])
+    }
 
-            Constraints.active(item: container, attr: .centerX, relatedBy: .equal, to: self.view, attr: .centerX)
-            Constraints.active(item: container, attr: .centerY, relatedBy: .equal, to: self.view, attr: .centerY)
-            Constraints.active(item: container, attr: .height, relatedBy: .equal, to: nil, attr: .notAnAttribute,
-                              constant: AnalysisViewController.loadingIndicatorContainerHeight)
-            Constraints.active(item: container, attr: .width, relatedBy: .equal, to: nil, attr: .notAnAttribute,
-                              constant: AnalysisViewController.loadingIndicatorContainerHeight)
-            Constraints.active(item: loadingIndicatorView, attr: .centerX, relatedBy: .equal, to: container,
-                              attr: .centerX, constant: 1.5)
-            Constraints.active(item: loadingIndicatorView, attr: .centerY, relatedBy: .equal, to: container,
-                              attr: .centerY, constant: 1.5)
+    private func addLoadingText() {
+        loadingIndicatorContainer.addSubview(loadingIndicatorText)
+        loadingIndicatorText.translatesAutoresizingMaskIntoConstraints = false
 
-        } else {
-            self.view.addSubview(loadingIndicatorView)
-            Constraints.active(item: loadingIndicatorView, attr: .centerX, relatedBy: .equal, to: self.view,
-                              attr: .centerX)
-            Constraints.active(item: loadingIndicatorView, attr: .centerY, relatedBy: .equal, to: self.view,
-                              attr: .centerY)
-        }
+        NSLayoutConstraint.activate([
+            loadingIndicatorText.topAnchor.constraint(equalTo: loadingIndicatorView.bottomAnchor, constant: 16),
+            loadingIndicatorText.leadingAnchor.constraint(equalTo: loadingIndicatorContainer.leadingAnchor),
+            loadingIndicatorText.centerXAnchor.constraint(equalTo: loadingIndicatorContainer.centerXAnchor),
+            loadingIndicatorText.bottomAnchor.constraint(equalTo: loadingIndicatorContainer.bottomAnchor)])
     }
 
     private func addErrorView() {
         view.addSubview(errorView)
+        errorView.isHidden = true
 
         Constraints.pin(view: errorView, toSuperView: view, positions: [.left, .right, .top])
     }
