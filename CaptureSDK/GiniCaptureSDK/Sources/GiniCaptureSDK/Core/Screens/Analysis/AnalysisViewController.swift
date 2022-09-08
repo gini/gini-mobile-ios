@@ -161,14 +161,22 @@ import UIKit
      Displays a loading activity indicator. Should be called when document analysis is started.
      */
     public func showAnimation() {
-        loadingIndicatorView.startAnimating()
+        if let loadingIndicator = giniConfiguration.loadingIndicator {
+            loadingIndicator.startAnimation()
+        } else {
+            loadingIndicatorView.startAnimating()
+        }
     }
 
     /**
      Hides the loading activity indicator. Should be called when document analysis is finished.
      */
     public func hideAnimation() {
-        loadingIndicatorView.stopAnimating()
+        if let loadingIndicator = giniConfiguration.loadingIndicator {
+            loadingIndicator.stopAnimation()
+        } else {
+            loadingIndicatorView.stopAnimating()
+        }
     }
 
     /**
@@ -254,12 +262,19 @@ import UIKit
     }
 
     private func addLoadingView(intoContainer container: UIView? = nil) {
-        loadingIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        let loadingIndicator: UIView
+
+        if let loading = giniConfiguration.loadingIndicator?.injectedView() {
+            loadingIndicator = loading
+        } else {
+            loadingIndicator = loadingIndicatorView
+        }
 
         if let container = container {
             container.translatesAutoresizingMaskIntoConstraints = false
+            loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
             self.view.addSubview(container)
-            container.addSubview(loadingIndicatorView)
+            container.addSubview(loadingIndicator)
 
             Constraints.active(item: container, attr: .centerX, relatedBy: .equal, to: self.view, attr: .centerX)
             Constraints.active(item: container, attr: .centerY, relatedBy: .equal, to: self.view, attr: .centerY)
@@ -267,16 +282,16 @@ import UIKit
                               constant: AnalysisViewController.loadingIndicatorContainerHeight)
             Constraints.active(item: container, attr: .width, relatedBy: .equal, to: nil, attr: .notAnAttribute,
                               constant: AnalysisViewController.loadingIndicatorContainerHeight)
-            Constraints.active(item: loadingIndicatorView, attr: .centerX, relatedBy: .equal, to: container,
+            Constraints.active(item: loadingIndicator, attr: .centerX, relatedBy: .equal, to: container,
                               attr: .centerX, constant: 1.5)
-            Constraints.active(item: loadingIndicatorView, attr: .centerY, relatedBy: .equal, to: container,
+            Constraints.active(item: loadingIndicator, attr: .centerY, relatedBy: .equal, to: container,
                               attr: .centerY, constant: 1.5)
 
         } else {
             self.view.addSubview(loadingIndicatorView)
-            Constraints.active(item: loadingIndicatorView, attr: .centerX, relatedBy: .equal, to: self.view,
+            Constraints.active(item: loadingIndicator, attr: .centerX, relatedBy: .equal, to: self.view,
                               attr: .centerX)
-            Constraints.active(item: loadingIndicatorView, attr: .centerY, relatedBy: .equal, to: self.view,
+            Constraints.active(item: loadingIndicator, attr: .centerY, relatedBy: .equal, to: self.view,
                               attr: .centerY)
         }
     }
