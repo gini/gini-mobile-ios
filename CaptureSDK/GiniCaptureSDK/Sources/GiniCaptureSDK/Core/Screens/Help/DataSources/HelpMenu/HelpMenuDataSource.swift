@@ -12,7 +12,7 @@ protocol HelpMenuDataSourceDelegate: UIViewController {
     func didSelectHelpItem(didSelect item: HelpMenuItem)
 }
 
-final public class HelpMenuDataSource: HelpBaseDataSource<HelpMenuItem, HelpMenuCell> {
+final public class HelpMenuDataSource: HelpRoundedCornersDataSource<HelpMenuItem, HelpMenuCell> {
 
     private lazy var defaultItems: [HelpMenuItem] = {
         var defaultItems: [HelpMenuItem] = [ .noResultsTips]
@@ -20,7 +20,7 @@ final public class HelpMenuDataSource: HelpBaseDataSource<HelpMenuItem, HelpMenu
         if giniConfiguration.shouldShowSupportedFormatsScreen {
             defaultItems.append(.supportedFormats)
         }
-        
+
         if giniConfiguration.openWithEnabled {
             defaultItems.append(.openWithTutorial)
         }
@@ -29,7 +29,7 @@ final public class HelpMenuDataSource: HelpBaseDataSource<HelpMenuItem, HelpMenu
 
     weak var delegate: HelpMenuDataSourceDelegate?
 
-    override init(
+    required init(
         configuration: GiniConfiguration
     ) {
         super.init(configuration: configuration)
@@ -55,4 +55,7 @@ final public class HelpMenuDataSource: HelpBaseDataSource<HelpMenuItem, HelpMenu
         self.delegate?.didSelectHelpItem(didSelect: item)
     }
 
+    public override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0
+    }
 }

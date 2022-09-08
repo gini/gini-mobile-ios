@@ -18,7 +18,9 @@ extension UIFont.TextStyle: CaseIterable {
           .headline,
           .subheadline,
           .body,
+          .bodyBold,
           .callout,
+          .calloutBold,
           .footnote
         ]
     }

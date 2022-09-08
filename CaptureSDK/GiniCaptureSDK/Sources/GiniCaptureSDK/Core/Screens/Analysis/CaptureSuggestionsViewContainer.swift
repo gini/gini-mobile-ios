@@ -23,26 +23,37 @@ final class CaptureSuggestionsViewContainer: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         configureView()
+        configureAccessibility()
     }
 
-    fileprivate func configureView() {
+    private func configureView() {
         let configuration = GiniConfiguration.shared
 
         backgroundColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.dark3).uiColor()
         layer.cornerRadius = 16
 
-        titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.font = configuration.textStyleFonts[.calloutBold]
         titleLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark1, dark: UIColor.GiniCapture.light1).uiColor()
 
-        descriptionLabel.adjustsFontForContentSizeCategory = true
         descriptionLabel.font = configuration.textStyleFonts[.subheadline]
         descriptionLabel.textColor = UIColor.GiniCapture.dark7
     }
 
+    private func configureAccessibility() {
+        isAccessibilityElement = false
+        imageView.accessibilityTraits = .image
+        imageView.isAccessibilityElement = true
+        titleLabel.adjustsFontForContentSizeCategory = true
+        titleLabel.isAccessibilityElement = true
+        descriptionLabel.adjustsFontForContentSizeCategory = true
+        descriptionLabel.isAccessibilityElement = true
+        accessibilityElements = [imageView as Any, titleLabel as Any, descriptionLabel as Any]
+    }
+
     func configureContent(with image: UIImage?, title: String, description: String) {
-        self.imageView.image = image
-        self.titleLabel.text = title
-        self.descriptionLabel.text = description
+        imageView.image = image
+        imageView.accessibilityLabel = description
+        titleLabel.text = title
+        descriptionLabel.text = description
     }
 }

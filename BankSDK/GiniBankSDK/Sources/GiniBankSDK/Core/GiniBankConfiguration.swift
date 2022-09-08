@@ -1124,6 +1124,91 @@ public final class GiniBankConfiguration: NSObject {
                                                                       thin: UIFont.systemFont(ofSize: 14,
                                                                                               weight: .thin),
                                                                       isEnabled: false)
+
+    /**
+     Indicates corner radius for primary buttons within the screens
+     */
+    
+    @objc public var primaryButtonCornerRadius: CGFloat = 14
+    
+    /**
+     Indicates border width for primary buttons within the screens
+     */
+    
+    @objc public var primaryButtonBorderWidth: CGFloat = 1
+    
+    /**
+     Indicates shadow corner radius for primary buttons within the screens
+     */
+    
+    @objc public var primaryButtonShadowRadius: CGFloat = 14
+    
+    /**
+     Indicates shadow color for primary buttons within the screens
+     */
+    
+    @objc public var primaryButtonShadowColor: UIColor = UIColor.clear
+    
+    /**
+     Indicates border color for primary buttons within the screens
+     */
+    
+    @objc public var primaryButtonBorderColor: UIColor = UIColor.GiniBank.systemBlue ?? UIColor.clear
+    
+    /**
+     Indicates background color for primary buttons within the screens
+     */
+    
+    @objc public var primaryButtonBackgroundColor: UIColor = UIColor.GiniBank.systemBlue ?? UIColor.clear
+    
+    /**
+     Indicates title color for primary buttons within the screens
+     */
+    
+    @objc public var primaryButtonTitleColor: UIColor = UIColor.GiniBank.labelWhite ?? UIColor.clear
+    
+    /**
+     Indicates corner radius for outline buttons within the screens
+     */
+    
+    @objc public var outlineButtonCornerRadius: CGFloat = 14
+    
+    /**
+     Indicates border width for outline buttons within the screens
+     */
+    
+    @objc public var outlineButtonBorderWidth: CGFloat = 1
+    
+    /**
+     Indicates shadow corner radius for outline buttons within the screens
+     */
+    
+    @objc public var outlineButtonShadowRadius: CGFloat = 14
+    
+    /**
+     Indicates shadow color for outline buttons within the screens
+     */
+    
+    @objc public var outlineButtonShadowColor: UIColor = UIColor.clear
+    
+    /**
+     Indicates border color for outline buttons within the screens
+     */
+    
+    @objc public var outlineButtonBorderColor: UIColor = UIColor.GiniBank.grayLabel ?? UIColor.clear
+    
+    /**
+     Indicates background color for outline buttons within the screens
+     */
+    
+    @objc public var outlineButtonBackground: UIColor = UIColor.clear
+    
+    /**
+     Indicates title color for outline buttons within the screens
+     */
+    
+    @objc public var outlineButtonTitleColor: UIColor = UIColor.GiniBank.grayLabel ?? UIColor.clear
+    
     /**
      Set an array of additional custom help menu items . Those items will be presented as table view cells on the help menu screen. By selecting the cell the user will be redirected to the page, which represented by viewController provided by customer during the  `HelpMenuViewController.Item` initialization.
     */
@@ -1157,13 +1242,14 @@ public final class GiniBankConfiguration: NSObject {
     .headline: UIFontMetrics(forTextStyle: .headline).scaledFont(for: UIFont.systemFont(ofSize: 17)),
     .subheadline: UIFontMetrics(forTextStyle: .subheadline).scaledFont(for: UIFont.systemFont(ofSize: 15)),
     .body: UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont.systemFont(ofSize: 17)),
+    .bodyBold: UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont.boldSystemFont(ofSize: 17)),
     .callout: UIFontMetrics(forTextStyle: .callout).scaledFont(for: UIFont.systemFont(ofSize: 16)),
+    .calloutBold: UIFontMetrics(forTextStyle: .callout).scaledFont(for: UIFont.boldSystemFont(ofSize: 16)),
     .footnote: UIFontMetrics(forTextStyle: .footnote).scaledFont(for: UIFont.systemFont(ofSize: 13)),
     ]
     
     public func captureConfiguration() -> GiniConfiguration {
      let configuration = GiniConfiguration()
-        
         configuration.customDocumentValidations = self.customDocumentValidations
         
         configuration.customFont = self.customFont
@@ -1296,7 +1382,22 @@ public final class GiniBankConfiguration: NSObject {
                 configuration.updateFont(newFont, for: textStyle)
             }
         }
+
+        configuration.primaryButtonCornerRadius = self.primaryButtonCornerRadius
+        configuration.primaryButtonBorderWidth = self.primaryButtonBorderWidth
+        configuration.primaryButtonBorderColor = self.primaryButtonBorderColor
+        configuration.primaryButtonShadowColor = self.primaryButtonShadowColor
+        configuration.primaryButtonShadowRadius = self.primaryButtonShadowRadius
+        configuration.primaryButtonBackgroundColor = self.primaryButtonBackgroundColor
+        configuration.primaryButtonTitleColor = self.primaryButtonTitleColor
         
+        configuration.outlineButtonCornerRadius = self.outlineButtonCornerRadius
+        configuration.outlineButtonBorderColor = self.outlineButtonBorderColor
+        configuration.outlineButtonBorderWidth = self.outlineButtonBorderWidth
+        configuration.outlineButtonShadowColor = self.outlineButtonShadowColor
+        configuration.outlineButtonShadowRadius = self.outlineButtonShadowRadius
+        configuration.outlineButtonBackground = self.outlineButtonBackground
+        configuration.outlineButtonTitleColor = self.outlineButtonTitleColor
         GiniCapture.setConfiguration(configuration)
         
         // Set onboarding pages after setting the GiniCapture's configuration
