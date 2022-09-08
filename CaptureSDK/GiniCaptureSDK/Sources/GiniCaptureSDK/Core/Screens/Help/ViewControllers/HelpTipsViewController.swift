@@ -40,6 +40,11 @@ public final class HelpTipsViewController: UIViewController {
         setupView()
     }
 
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom:  GiniMargins.margin, right: 0)
+    }
+    
     private func setupView() {
         configureMainView()
         configureTableView()
@@ -63,7 +68,7 @@ public final class HelpTipsViewController: UIViewController {
                 nibName: "HelpTipCell",
                 bundle: giniCaptureBundle()),
             forCellReuseIdentifier: HelpTipCell.reuseIdentifier)
-        tableView.showsVerticalScrollIndicator = false
+        tableView.showsVerticalScrollIndicator = true
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = tableRowHeight
         tableView.contentInsetAdjustmentBehavior = .never
@@ -80,8 +85,7 @@ public final class HelpTipsViewController: UIViewController {
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
             tableView.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                constant: -GiniMargins.margin)
+                equalTo: view.bottomAnchor)
         ])
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
