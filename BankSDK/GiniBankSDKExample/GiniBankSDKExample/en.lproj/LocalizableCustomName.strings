@@ -60,9 +60,9 @@
 //"ginicapture.help.supportedFormats.section.2.item.2" = "CM Photos of monitors or screens";
 //
 //"ginicapture.help.menu.title" = "CM Help";
-//"ginicapture.help.menu.firstItem" = "CM Tips for best results from photos";
-//"ginicapture.help.menu.secondItem" = "CM Open document from other apps";
-//"ginicapture.help.menu.thirdItem" = "CM Supported formats";
+//"ginicapture.help.menu.tips" = "CM Tips for best results from photos";
+//"ginicapture.help.menu.import" = "CM Open document from other apps";
+//"ginicapture.help.menu.formats" = "CM Supported formats";
 //
 //"ginibank.digitalinvoice.info.text1" = "CM What is it?";
 //"ginibank.digitalinvoice.info.text2" = "CM We extracted the articles from your invoice. Simply deselect articles if you want to return them. The new total will be calculated for you.";

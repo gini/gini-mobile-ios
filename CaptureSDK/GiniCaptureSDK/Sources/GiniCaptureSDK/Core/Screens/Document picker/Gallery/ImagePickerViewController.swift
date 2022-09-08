@@ -67,7 +67,7 @@ final class ImagePickerViewController: UIViewController {
         
         title = currentAlbum.title
         
-        view.backgroundColor = UIColor.from(giniColor: giniConfiguration.galleryScreenBackgroundColor)
+        view.backgroundColor = giniConfiguration.galleryScreenBackgroundColor.uiColor()
         
         view.addSubview(collectionView)
         

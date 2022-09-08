@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "mobile_onboarding_screen_5_illustration.pdf",
+      "filename" : "Onboarding-2.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Onboarding-3.pdf",
       "idiom" : "universal"
     }
   ],
