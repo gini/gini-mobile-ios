@@ -138,8 +138,7 @@
 "ginicapture.noresult.enterManually" = "Enter manually";
 "ginicapture.noresult.retakeImages" = "Retake images";
 "ginicapture.noresult.title" = "No results";
-"ginicapture.noresult.header.no.results" = "Could not retrieve any information from your documents.";
-"ginicapture.noresult.header.other" = "Some other error occured.";
+"ginicapture.noresult.header" = "Could not retrieve any information from your documents.";
 "ginicapture.images.openWithTutorialStep1" = "openWithTutorialStep1_en";
 "ginicapture.images.openWithTutorialStep2" = "openWithTutorialStep2_en";
 "ginicapture.images.openWithTutorialStep3" = "openWithTutorialStep3_en";

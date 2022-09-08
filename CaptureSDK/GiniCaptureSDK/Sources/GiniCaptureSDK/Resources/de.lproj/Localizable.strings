@@ -109,8 +109,7 @@
 "ginicapture.noresult.enterManually" = "Zahlungsdaten manuell eingeben";
 "ginicapture.noresult.retakeImages" = "Foto wiederholen";
 "ginicapture.noresult.title" = "TODO Fehler";
-"ginicapture.noresult.header.no.results" = "Leider konnten keine Informationen aus dem Dokument ausgelesen werden";
-"ginicapture.noresult.header.other" = "Leider konnten keine Informationen aus dem Dokument ausgelesen werden";
+"ginicapture.noresult.header" = "Leider konnten keine Informationen aus dem Dokument ausgelesen werden";
 
 "ginicapture.help.import.title" = "Importieren";
 "ginicapture.help.import.selectInvoice.title" = "Rechnung auswählen";

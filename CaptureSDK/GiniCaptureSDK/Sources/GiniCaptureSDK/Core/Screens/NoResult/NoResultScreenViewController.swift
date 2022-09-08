@@ -18,12 +18,12 @@ final public class NoResultScreenViewController: UIViewController {
             switch self {
             case .pdf:
                 return NSLocalizedStringPreferredFormat(
-                    "ginicapture.noresult.header.other",
+                    "ginicapture.noresult.header",
                     comment: "no results header")
             case .image:
                 return NSLocalizedStringPreferredFormat(
-                    "ginicapture.noresult.header.no.results",
-                    comment: "other no result header")
+                    "ginicapture.noresult.header",
+                    comment: "no results header")
             case .custom(let text):
                 return text
             }
