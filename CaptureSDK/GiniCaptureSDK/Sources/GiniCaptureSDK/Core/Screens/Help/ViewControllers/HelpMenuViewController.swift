@@ -63,6 +63,7 @@ final public class HelpMenuViewController: UIViewController {
         tableView.dataSource = self.dataSource
         tableView.delegate = self.dataSource
         tableView.backgroundColor = UIColor.clear
+        tableView.showsVerticalScrollIndicator = false
         tableView.tableHeaderView = UIView()
         tableView.tableFooterView = UIView()
         tableView.register(
@@ -80,12 +81,26 @@ final public class HelpMenuViewController: UIViewController {
     }
 
     private func configureConstraints() {
-        view.addConstraints([
+        NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: GiniMargins.horizontalMargin),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -GiniMargins.horizontalMargin),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        if UIDevice.current.isIpad {
+            NSLayoutConstraint.activate([
+                tableView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: GiniMargins.iPadAspectScale),
+                tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                tableView.leadingAnchor.constraint(
+                    equalTo: view.leadingAnchor,
+                    constant: GiniMargins.margin),
+                tableView.trailingAnchor.constraint(
+                    equalTo: view.trailingAnchor,
+                    constant: -GiniMargins.margin)
+            ])
+        }
+        view.layoutSubviews()
     }
 
     private func configureMainView() {

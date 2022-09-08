@@ -23,8 +23,9 @@ extension GiniScreenAPICoordinator {
 // MARK: - ImageAnalysisNoResults screen
 
 extension GiniScreenAPICoordinator {
-    func createImageAnalysisNoResultsScreen() -> ImageAnalysisNoResultsViewController {
-        let imageAnalysisNoResultsViewController: ImageAnalysisNoResultsViewController
+    func createImageAnalysisNoResultsScreen(type: NoResultScreenViewController.NoResultType) -> NoResultScreenViewController {
+        let viewModel: NoResultScreenViewModel
+        let viewController: NoResultScreenViewController
         let isCameraViewControllerLoaded: Bool = {
             guard let cameraViewController = cameraViewController else {
                 return false
@@ -33,27 +34,23 @@ extension GiniScreenAPICoordinator {
         }()
         
         if isCameraViewControllerLoaded {
-            imageAnalysisNoResultsViewController = ImageAnalysisNoResultsViewController()
-            imageAnalysisNoResultsViewController.setupNavigationItem(usingResources: backButtonResource,
-                                                                     selector: #selector(backToCamera),
-                                                                     position: .left,
-                                                                     target: self)
+            viewModel = NoResultScreenViewModel { [weak self] in
+                self?.backToCamera()
+            } manuallyPressed: { [weak self] in
+                //TODO: the same as cancel
+                self?.closeScreenApi()
+            } cancelPressed: { [weak self] in
+                self?.backToCamera()
+            }
+            
         } else {
-            imageAnalysisNoResultsViewController = ImageAnalysisNoResultsViewController(bottomButtonText: nil,
-                                                                                        bottomButtonIcon: nil)
-            imageAnalysisNoResultsViewController.setupNavigationItem(usingResources: closeButtonResource,
-                                                                     selector: #selector(closeScreenApi),
-                                                                     position: .left,
-                                                                     target: self)
+            viewModel = NoResultScreenViewModel( cancelPressed: { [weak self] in
+                self?.closeScreenApi()
+            })
         }
+        viewController = NoResultScreenViewController(giniConfiguration: giniConfiguration, type: type, viewModel: viewModel)
         
-        // TODO: no results screen
-        /*
-        imageAnalysisNoResultsViewController.didTapBottomButton = { [weak self] in
-            self?.backToCamera()
-        }*/
-        
-        return imageAnalysisNoResultsViewController
+        return viewController
     }
 }
 
@@ -83,11 +80,21 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
         if pages.type == .image {
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                self.imageAnalysisNoResultsViewController = self.createImageAnalysisNoResultsScreen()
+                self.imageAnalysisNoResultsViewController = self.createImageAnalysisNoResultsScreen(type: .image)
                 self.screenAPINavigationController.pushViewController(self.imageAnalysisNoResultsViewController!,
                                                                       animated: true)
             }
             
+            return true
+        } else if pages.type == .pdf {
+            //TODO: no results for pdf
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.imageAnalysisNoResultsViewController = self.createImageAnalysisNoResultsScreen(type: .pdf)
+                self.screenAPINavigationController.pushViewController(self.imageAnalysisNoResultsViewController!,
+                                                                      animated: true)
+                
+            }
             return true
         }
         return false

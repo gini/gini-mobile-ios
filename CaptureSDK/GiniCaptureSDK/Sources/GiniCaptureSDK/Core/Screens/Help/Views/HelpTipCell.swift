@@ -22,7 +22,6 @@ public class HelpTipCell: UITableViewCell, HelpCell {
         self.headerLabel.isAccessibilityElement = true
         self.descriptionLabel.isAccessibilityElement = true
         self.iconImageView.adjustsImageSizeForAccessibilityContentSizeCategory = true
-        self.headerLabel.font = UIFont.boldSystemFont(ofSize: 18)
     }
 
 }

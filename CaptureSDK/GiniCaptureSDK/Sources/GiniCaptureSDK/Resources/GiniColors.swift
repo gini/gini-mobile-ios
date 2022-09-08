@@ -51,6 +51,9 @@ extension UIColor {
         // GiniColors OLD
         static let systemWhite = UIColorPreferred(named: "systemWhite")
         static let label = UIColorPreferred(named: "label")
+        static let labelWhite = UIColorPreferred(named: "labelWhite")
+        static let grayLabel = UIColorPreferred(named: "grayLabel")
+        static let errorBackground = UIColorPreferred(named: "errorBackground")
         static let helpBackground = UIColorPreferred(named: "helpBackground")
         static let separator = UIColorPreferred(named: "separator")
         static let subheadline = UIColorPreferred(named: "subheadline")
