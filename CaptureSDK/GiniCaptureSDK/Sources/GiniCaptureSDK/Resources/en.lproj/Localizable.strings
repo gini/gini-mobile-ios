@@ -74,13 +74,14 @@
 "ginicapture.analysis.suggestion.1" = "Good lightning";
 "ginicapture.analysis.suggestion.1.details" = "Proper lighting leads to better results than flash.";
 "ginicapture.analysis.suggestion.2" = "Flatten the page";
-"ginicapture.analysis.suggestion.2.details" = "Tips for best results from photos.";
+"ginicapture.analysis.suggestion.2.details" = "A flat paper helps to receive better results.";
 "ginicapture.analysis.suggestion.3" = "Position in the frame";
 "ginicapture.analysis.suggestion.3.details" = "Capture the entire page within the frame shown on the camera screen.";
 "ginicapture.analysis.suggestion.4" = "Parallel";
 "ginicapture.analysis.suggestion.4.details" = "Hold the device parallel over the page.";
 "ginicapture.analysis.suggestion.5" = "Multiple pages";
 "ginicapture.analysis.suggestion.5.details" = "It’s now possible to analyse an invoice with multiple pages.";
+"ginicapture.analysis.section.header" = "Useful Tips";
 "ginicapture.analysis.error.actionTitle" = "Retry";
 "ginicapture.analysis.error.documentCreation" = "An error occurred while uploading the document.";
 "ginicapture.analysis.error.analysis" = "An error occurred while parsing the document.";
@@ -134,7 +135,10 @@
 "ginicapture.multipagereview.title" = "%d of %d";
 "ginicapture.multipagereview.error.retakeAction" = "Retake";
 "ginicapture.multipagereview.error.retryAction" = "Retry";
-
+"ginicapture.noresult.enterManually" = "Enter manually";
+"ginicapture.noresult.retakeImages" = "Retake images";
+"ginicapture.noresult.title" = "No results";
+"ginicapture.noresult.header" = "Could not retrieve any information from your documents.";
 "ginicapture.images.openWithTutorialStep1" = "openWithTutorialStep1_en";
 "ginicapture.images.openWithTutorialStep2" = "openWithTutorialStep2_en";
 "ginicapture.images.openWithTutorialStep3" = "openWithTutorialStep3_en";

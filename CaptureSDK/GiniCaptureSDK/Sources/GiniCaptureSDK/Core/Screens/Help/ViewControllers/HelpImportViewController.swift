@@ -70,12 +70,23 @@ class HelpImportViewController: UIViewController {
     private func configureConstraints() {
         view.addConstraints([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        if UIDevice.current.isIpad {
+            view.addConstraints([
+                tableView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: GiniMargins.iPadAspectScale),
+                tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            ])
+        } else {
+            view.addConstraints([
+                tableView.leadingAnchor.constraint(
+                    equalTo: view.leadingAnchor),
+                tableView.trailingAnchor.constraint(
+                    equalTo: view.trailingAnchor)
+            ])
+        }
+        view.layoutSubviews()
     }
-
 }
 
 extension HelpImportViewController: UITableViewDelegate {
