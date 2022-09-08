@@ -14,9 +14,9 @@ public struct HelpTipsItem {
     let iconName: String
 }
 
-final public class HelpTipsDataSource: HelpBaseDataSource<HelpTipsItem, HelpTipCell> {
+final public class HelpTipsDataSource: HelpRoundedCornersDataSource<HelpTipsItem, HelpTipCell> {
     // swiftlint:disable function_body_length
-    override init(configuration: GiniConfiguration) {
+    required init(configuration: GiniConfiguration) {
         super.init(configuration: configuration)
         items.append(contentsOf: [
             HelpTipsItem(
@@ -73,13 +73,45 @@ final public class HelpTipsDataSource: HelpBaseDataSource<HelpTipsItem, HelpTipC
         cell.iconImageView?.accessibilityLabel = item.header
     }
 
+    private func configureHeader(
+        header: HelpFormatSectionHeader,
+        section: Int) {
+        header.titleLabel.font = giniConfiguration.textStyleFonts[.caption1]
+        header.titleLabel.adjustsFontForContentSizeCategory = true
+        header.titleLabel.numberOfLines = 0
+            header.titleLabel.textColor =  UIColor.GiniCapture.subheadline
+        header.titleLabel.text = NSLocalizedStringPreferredFormat(
+            "ginicapture.analysis.section.header",
+            comment: "Analysis section header").uppercased()
+        header.backgroundView?.backgroundColor = UIColor.clear
+    }
+
+    var showHeader = false
+
+    public override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if showHeader, let header = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: HelpFormatSectionHeader.reuseIdentifier
+        ) as? HelpFormatSectionHeader {
+            configureHeader(header: header, section: section)
+            return header
+        }
+        return nil
+    }
+
+    public override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if showHeader {
+            return UITableView.automaticDimension
+        }
+        return 0
+    }
+
     public override func configureCell(cell: HelpTipCell, indexPath: IndexPath) {
         let item = items[indexPath.row]
         cell.headerLabel.text = item.header
-        cell.headerLabel.font = giniConfiguration.textStyleFonts[.bodyBold]
+        cell.headerLabel.font = giniConfiguration.textStyleFonts[.calloutBold]
         cell.headerLabel.adjustsFontForContentSizeCategory = true
         cell.headerLabel.textColor = UIColor.GiniCapture.label
-        cell.backgroundColor = UIColor.GiniCapture.systemWhite
+        cell.backgroundColor = UIColor.GiniCapture.systemGray05
         cell.descriptionLabel.text = item.details
         cell.descriptionLabel.font = giniConfiguration.textStyleFonts[.subheadline]
         cell.descriptionLabel.adjustsFontForContentSizeCategory = true
