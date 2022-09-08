@@ -48,7 +48,7 @@ public final class HelpTipsViewController: UIViewController {
 
     public func configureMainView() {
         view.addSubview(tableView)
-        view.backgroundColor = UIColor.GiniCapture.helpBackground
+        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         edgesForExtendedLayout = []
         tableView.bounces = false
     }
@@ -75,7 +75,7 @@ public final class HelpTipsViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
         tableView.reloadData()
     }
-
+    
     private func configureConstraints() {
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),

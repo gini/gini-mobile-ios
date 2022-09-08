@@ -20,7 +20,6 @@ final public class HelpMenuDataSource: HelpRoundedCornersDataSource<HelpMenuItem
         if giniConfiguration.shouldShowSupportedFormatsScreen {
             defaultItems.append(.supportedFormats)
         }
-
         if giniConfiguration.openWithEnabled {
             defaultItems.append(.openWithTutorial)
         }
