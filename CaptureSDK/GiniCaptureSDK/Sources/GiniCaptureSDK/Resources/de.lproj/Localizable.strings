@@ -70,6 +70,7 @@
 "ginicapture.analysis.screenTitle" = "TODO Review";
 "ginicapture.analysis.loadingText" = "TODO Analyzing documents";
 "ginicapture.analysis.loadingText.pdf" = "TODO Analyzing";
+"ginicapture.analysis.section.header" = "Nützliche Tipps";
 "ginicapture.analysis.suggestion.header" = "Um schneller Ergebnisse zu erhalten, bitte:";
 "ginicapture.analysis.suggestion.1" = "Gute Lichtverhältnisse";
 "ginicapture.analysis.suggestion.1.details" = "Gutes Licht führt zu besseren Ergebnissen als mit Blitz";
@@ -104,6 +105,11 @@
 "ginicapture.noresults.gotocamera" = "Zur Kamera";
 "ginicapture.noresults.title" = "Tipps";
 "ginicapture.noresults.warningHelpMenu" = "Zur Erkennung aller Daten bitte folgende Tipps beim Abfotografieren beachten:";
+
+"ginicapture.noresult.enterManually" = "Zahlungsdaten manuell eingeben";
+"ginicapture.noresult.retakeImages" = "Foto wiederholen";
+"ginicapture.noresult.title" = "TODO Fehler";
+"ginicapture.noresult.header" = "Leider konnten keine Informationen aus dem Dokument ausgelesen werden";
 
 "ginicapture.help.import.title" = "Importieren";
 "ginicapture.help.import.selectInvoice.title" = "Rechnung auswählen";
