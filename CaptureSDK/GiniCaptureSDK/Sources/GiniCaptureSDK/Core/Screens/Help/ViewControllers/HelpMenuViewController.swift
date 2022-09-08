@@ -70,7 +70,8 @@ final public class HelpMenuViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = tableRowHeight
         tableView.contentInsetAdjustmentBehavior = .never
-        tableView.separatorColor = GiniColor(light: UIColor.GiniCapture.light3, dark: UIColor.GiniCapture.dark4).uiColor()
+        tableView.separatorColor = GiniColor(light: UIColor.GiniCapture.light3,
+                                             dark: UIColor.GiniCapture.dark4).uiColor()
     }
 
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

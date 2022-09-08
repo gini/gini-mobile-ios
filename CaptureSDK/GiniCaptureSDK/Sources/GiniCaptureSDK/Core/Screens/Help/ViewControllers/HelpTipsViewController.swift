@@ -74,7 +74,6 @@ public final class HelpTipsViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
         tableView.reloadData()
     }
-    
     private func configureConstraints() {
         view.addConstraints([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
