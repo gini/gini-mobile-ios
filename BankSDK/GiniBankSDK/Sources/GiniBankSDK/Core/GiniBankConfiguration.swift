@@ -1147,25 +1147,26 @@ public final class GiniBankConfiguration: NSObject {
      Indicates shadow color for primary buttons within the screens
      */
     
-    @objc public var primaryButtonShadowColor: UIColor = UIColor.clear
+    @objc public var primaryButtonShadowColor = GiniColor(light: UIColor.clear, dark: UIColor.clear)
     
     /**
      Indicates border color for primary buttons within the screens
      */
     
-    @objc public var primaryButtonBorderColor: UIColor = UIColor.GiniBank.systemBlue ?? UIColor.clear
+    @objc public var primaryButtonBorderColor = GiniColor(light: UIColor.clear, dark: UIColor.clear)
     
     /**
      Indicates background color for primary buttons within the screens
      */
     
-    @objc public var primaryButtonBackgroundColor: UIColor = UIColor.GiniBank.systemBlue ?? UIColor.clear
+    @objc public var primaryButtonBackgroundColor = GiniColor(light: UIColor.GiniBank.accent1, dark: UIColor.GiniBank.accent1)
     
     /**
      Indicates title color for primary buttons within the screens
      */
     
-    @objc public var primaryButtonTitleColor: UIColor = UIColor.GiniBank.labelWhite ?? UIColor.clear
+    @objc public var primaryButtonTitleColor = GiniColor(light: UIColor.GiniBank.light1, dark: UIColor.GiniBank.light1)
+    
     
     /**
      Indicates corner radius for outline buttons within the screens
@@ -1189,25 +1190,25 @@ public final class GiniBankConfiguration: NSObject {
      Indicates shadow color for outline buttons within the screens
      */
     
-    @objc public var outlineButtonShadowColor: UIColor = UIColor.clear
-    
-    /**
-     Indicates border color for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonBorderColor: UIColor = UIColor.GiniBank.grayLabel ?? UIColor.clear
+    @objc public var outlineButtonShadowColor = GiniColor(light: UIColor.clear, dark: UIColor.clear)
     
     /**
      Indicates background color for outline buttons within the screens
      */
     
-    @objc public var outlineButtonBackground: UIColor = UIColor.clear
+    @objc public var outlineButtonBackground = GiniColor(light: UIColor.clear, dark: UIColor.clear)
+    
+    /**
+     Indicates border color for outline buttons within the screens
+     */
+    
+    @objc public var outlineButtonBorderColor = GiniColor(light: UIColor.GiniBank.light6, dark: UIColor.clear)
     
     /**
      Indicates title color for outline buttons within the screens
      */
     
-    @objc public var outlineButtonTitleColor: UIColor = UIColor.GiniBank.grayLabel ?? UIColor.clear
+    @objc public var outlineButtonTitleColor = GiniColor(light: UIColor.GiniBank.dark6, dark: UIColor.GiniBank.light1)
     
     /**
      Set an array of additional custom help menu items . Those items will be presented as table view cells on the help menu screen. By selecting the cell the user will be redirected to the page, which represented by viewController provided by customer during the  `HelpMenuViewController.Item` initialization.
