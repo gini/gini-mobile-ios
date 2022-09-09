@@ -9,7 +9,7 @@
 import UIKit
 
 class HelpImportViewController: UIViewController {
-    enum HelpImportCellType {
+    private enum HelpImportCellType {
         case selectInvoice
         case importToApp
         case dragAndDrop
@@ -110,13 +110,14 @@ extension HelpImportViewController: UITableViewDataSource {
         cell.importImageView.accessibilityLabel = item
     }
 
-    private func configureCell(cell: HelpImportCell, indexPath: IndexPath) {
-        let itemType = dataSource[indexPath.row]
-        let rowNr = indexPath.row + 1
+    private func configureAssetsForCell(
+        cell: HelpImportCell,
+        itemType: HelpImportCellType,
+        rowNumber: Int) {
         let headerTitle: String
         switch itemType {
         case .selectInvoice:
-            headerTitle = "\(rowNr). " + NSLocalizedStringPreferredFormat(
+            headerTitle = "\(rowNumber). " + NSLocalizedStringPreferredFormat(
                 "ginicapture.help.import.selectInvoice.title",
                 comment: "Select an invoice header")
             cell.headerLabel.text = headerTitle
@@ -125,7 +126,7 @@ extension HelpImportViewController: UITableViewDataSource {
                 comment: "Select an invoice description")
             cell.importImageView.image = UIImageNamedPreferred(named: "helpImport1")
         case .importToApp:
-            headerTitle = "\(rowNr). " + NSLocalizedStringPreferredFormat(
+            headerTitle = "\(rowNumber). " + NSLocalizedStringPreferredFormat(
                 "ginicapture.help.import.importtoapp.title", comment: "Import to app header")
             cell.headerLabel.text = headerTitle
             cell.descriptionLabel.text = NSLocalizedStringPreferredFormat(
@@ -133,7 +134,7 @@ extension HelpImportViewController: UITableViewDataSource {
                 comment: "Import to app description")
             cell.importImageView.image = UIImageNamedPreferred(named: "helpImport2")
         case .dragAndDrop:
-            headerTitle = "\(rowNr). " + NSLocalizedStringPreferredFormat(
+            headerTitle = "\(rowNumber). " + NSLocalizedStringPreferredFormat(
                 "ginicapture.help.import.draganddrop.title", comment: "Drag and Drop header")
             cell.headerLabel.text = headerTitle
             cell.descriptionLabel.text = NSLocalizedStringPreferredFormat(
@@ -142,6 +143,12 @@ extension HelpImportViewController: UITableViewDataSource {
             cell.importImageView.image = UIImageNamedPreferred(named: "helpImport3")
         }
         configureCellAccessibility(cell: cell, item: headerTitle)
+    }
+
+    private func configureCell(cell: HelpImportCell, indexPath: IndexPath) {
+        let itemType = dataSource[indexPath.row]
+        let rowNumber = indexPath.row + 1
+        configureAssetsForCell(cell: cell, itemType: itemType, rowNumber: rowNumber)
         cell.backgroundColor = UIColor.clear
         cell.headerLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark1,
                                                dark: UIColor.GiniCapture.light1).uiColor()

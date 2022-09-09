@@ -38,7 +38,7 @@ final class HelpFormatsViewController: UIViewController {
         super.viewDidLayoutSubviews()
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom:  GiniMargins.margin, right: 0)
     }
-    
+
     private func setupView() {
         configureMainView()
         configureTableView()
