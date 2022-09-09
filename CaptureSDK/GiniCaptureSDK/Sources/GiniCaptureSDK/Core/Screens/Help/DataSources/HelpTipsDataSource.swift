@@ -79,7 +79,9 @@ final public class HelpTipsDataSource: HelpRoundedCornersDataSource<HelpTipsItem
         header.titleLabel.font = giniConfiguration.textStyleFonts[.caption1]
         header.titleLabel.adjustsFontForContentSizeCategory = true
         header.titleLabel.numberOfLines = 0
-            header.titleLabel.textColor =  UIColor.GiniCapture.subheadline
+            header.titleLabel.textColor =  GiniColor(
+                light: UIColor.GiniCapture.dark7,
+                dark: UIColor.GiniCapture.dark7).uiColor()
         header.titleLabel.text = NSLocalizedStringPreferredFormat(
             "ginicapture.analysis.section.header",
             comment: "Analysis section header").uppercased()
@@ -110,14 +112,22 @@ final public class HelpTipsDataSource: HelpRoundedCornersDataSource<HelpTipsItem
         cell.headerLabel.text = item.header
         cell.headerLabel.font = giniConfiguration.textStyleFonts[.calloutBold]
         cell.headerLabel.adjustsFontForContentSizeCategory = true
-        cell.headerLabel.textColor = UIColor.GiniCapture.label
-        cell.backgroundColor = UIColor.GiniCapture.systemGray05
+        cell.headerLabel.textColor = GiniColor(
+            light: UIColor.GiniCapture.dark1,
+            dark: UIColor.GiniCapture.light1).uiColor()
+        cell.backgroundColor = GiniColor(
+            light: UIColor.GiniCapture.light1,
+            dark: UIColor.GiniCapture.dark3).uiColor()
         cell.descriptionLabel.text = item.details
         cell.descriptionLabel.font = giniConfiguration.textStyleFonts[.subheadline]
         cell.descriptionLabel.adjustsFontForContentSizeCategory = true
-        cell.descriptionLabel.textColor = UIColor.GiniCapture.subheadline
+        cell.descriptionLabel.textColor = GiniColor(
+            light: UIColor.GiniCapture.dark7,
+            dark: UIColor.GiniCapture.dark7).uiColor()
         cell.iconImageView.image = UIImageNamedPreferred(named: item.iconName)
-        cell.separatorView.backgroundColor = UIColor.GiniCapture.separator
+        cell.separatorView.backgroundColor = GiniColor(
+            light: UIColor.GiniCapture.light3,
+            dark: UIColor.GiniCapture.dark4).uiColor()
         cell.selectionStyle = .none
         configureCellAccessibility(cell: cell, item: item)
         if indexPath.row == items.count - 1 {

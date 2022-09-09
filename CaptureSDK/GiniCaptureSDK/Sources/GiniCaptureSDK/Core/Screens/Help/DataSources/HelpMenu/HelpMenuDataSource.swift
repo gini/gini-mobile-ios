@@ -37,9 +37,11 @@ final public class HelpMenuDataSource: HelpRoundedCornersDataSource<HelpMenuItem
     }
 
     public override func configureCell(cell: HelpMenuCell, indexPath: IndexPath) {
-        cell.backgroundColor = UIColor.GiniCapture.systemWhite
+        cell.backgroundColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.dark3).uiColor()
         cell.textLabel?.text = items[indexPath.row].title
-        cell.textLabel?.textColor = UIColor.GiniCapture.label
+        cell.textLabel?.textColor = GiniColor(
+            light: UIColor.GiniCapture.dark1,
+            dark: UIColor.GiniCapture.light1).uiColor()
         cell.textLabel?.font = giniConfiguration.textStyleFonts[.body]
         cell.accessoryType = .disclosureIndicator
         cell.selectionStyle = .none
