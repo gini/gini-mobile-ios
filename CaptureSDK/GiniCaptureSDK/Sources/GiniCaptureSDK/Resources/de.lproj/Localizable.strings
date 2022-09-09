@@ -67,9 +67,9 @@
 "ginicapture.review.documentImageTitle" = "Dokument";
 "ginicapture.review.unknownError"       = "Auf dem Überprüfungsbildschirm ist ein unbekannter Fehler aufgetreten";
 
-"ginicapture.analysis.screenTitle" = "TODO Review";
-"ginicapture.analysis.loadingText" = "TODO Analyzing documents";
-"ginicapture.analysis.loadingText.pdf" = "TODO Analyzing";
+"ginicapture.analysis.screenTitle" = "Übersicht";
+"ginicapture.analysis.loadingText" = "Dokument wird analysiert";
+"ginicapture.analysis.loadingText.pdf" = "%@ wird analysiert";
 "ginicapture.analysis.section.header" = "Nützliche Tipps";
 "ginicapture.analysis.suggestion.header" = "Um schneller Ergebnisse zu erhalten, bitte:";
 "ginicapture.analysis.suggestion.1" = "Gute Lichtverhältnisse";
