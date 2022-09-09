@@ -68,7 +68,6 @@ public final class HelpTipsViewController: UIViewController {
                 nibName: "HelpTipCell",
                 bundle: giniCaptureBundle()),
             forCellReuseIdentifier: HelpTipCell.reuseIdentifier)
-        tableView.showsVerticalScrollIndicator = true
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = tableRowHeight
         tableView.contentInsetAdjustmentBehavior = .never

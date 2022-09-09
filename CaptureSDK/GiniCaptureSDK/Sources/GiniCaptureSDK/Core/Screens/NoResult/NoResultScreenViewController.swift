@@ -243,21 +243,21 @@ final public class NoResultScreenViewController: UIViewController {
     }
 
     private func configureButtonsColors() {
-        retakeButton.setTitleColor(giniConfiguration.primaryButtonTitleColor, for: .normal)
-        retakeButton.backgroundColor = giniConfiguration.primaryButtonBackgroundColor
-        retakeButton.layer.borderColor = giniConfiguration.primaryButtonBorderColor.cgColor
+        retakeButton.setTitleColor(giniConfiguration.primaryButtonTitleColor.uiColor(), for: .normal)
+        retakeButton.backgroundColor = giniConfiguration.primaryButtonBackgroundColor.uiColor()
+        retakeButton.layer.borderColor = giniConfiguration.primaryButtonBorderColor.uiColor().cgColor
         retakeButton.layer.cornerRadius = giniConfiguration.primaryButtonCornerRadius
         retakeButton.layer.borderWidth = giniConfiguration.primaryButtonBorderWidth
         retakeButton.layer.shadowRadius = giniConfiguration.primaryButtonShadowRadius
-        retakeButton.layer.shadowColor = giniConfiguration.primaryButtonShadowColor.cgColor
+        retakeButton.layer.shadowColor = giniConfiguration.primaryButtonShadowColor.uiColor().cgColor
         
-        enterButton.backgroundColor = giniConfiguration.outlineButtonBackground
+        enterButton.backgroundColor = giniConfiguration.outlineButtonBackground.uiColor()
         enterButton.layer.cornerRadius = giniConfiguration.outlineButtonCornerRadius
         enterButton.layer.borderWidth = giniConfiguration.outlineButtonBorderWidth
-        enterButton.layer.borderColor = giniConfiguration.outlineButtonBorderColor.cgColor
+        enterButton.layer.borderColor = giniConfiguration.outlineButtonBorderColor.uiColor().cgColor
         enterButton.layer.shadowRadius = giniConfiguration.outlineButtonShadowRadius
-        enterButton.layer.shadowColor = giniConfiguration.outlineButtonShadowColor.cgColor
-        enterButton.setTitleColor(giniConfiguration.outlineButtonTitleColor, for: .normal)
+        enterButton.layer.shadowColor = giniConfiguration.outlineButtonShadowColor.uiColor().cgColor
+        enterButton.setTitleColor(giniConfiguration.outlineButtonTitleColor.uiColor(), for: .normal)
     }
     
     private func configureButtons() {

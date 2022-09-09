@@ -58,7 +58,6 @@ class HelpImportViewController: UIViewController {
         tableView.allowsSelection = false
         tableView.backgroundColor = UIColor.clear
         tableView.tableFooterView = UIView()
-        tableView.showsVerticalScrollIndicator = true
         tableView.estimatedRowHeight = 300
         tableView.register(
             UINib(
