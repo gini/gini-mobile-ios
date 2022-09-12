@@ -15,16 +15,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="NIV-Jj-zXU">
-                    <rect key="frame" x="65" y="14" width="328" height="50"/>
+                    <rect key="frame" x="203" y="14" width="52" height="50"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xz2-Pu-vNR">
-                            <rect key="frame" x="0.0" y="0.0" width="154" height="50"/>
+                            <rect key="frame" x="0.0" y="0.0" width="52" height="50"/>
                             <color key="tintColor" name="systemBlue"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="Skip"/>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lP4-6j-E7S">
-                            <rect key="frame" x="174" y="0.0" width="154" height="50"/>
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lP4-6j-E7S">
+                            <rect key="frame" x="0.0" y="0.0" width="154" height="50"/>
                             <color key="backgroundColor" name="systemBlue"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="Bny-yr-U9d"/>
@@ -35,7 +35,7 @@
                             <buttonConfiguration key="configuration" style="plain" title="Next"/>
                         </button>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ha0-L4-MHo">
-                            <rect key="frame" x="328" y="0.0" width="0.0" height="50"/>
+                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="50"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="Get Started"/>
                         </button>
