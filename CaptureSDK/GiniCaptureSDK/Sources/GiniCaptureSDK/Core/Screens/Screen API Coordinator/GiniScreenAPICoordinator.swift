@@ -353,11 +353,6 @@ extension GiniScreenAPICoordinator: HelpMenuViewControllerDelegate {
                 viewController = customViewController
         }
         
-        viewController.setupNavigationItem(usingResources: backToHelpMenuButtonResource,
-                                           selector: #selector(back),
-                                           position: .left,
-                                           target: self)
-        
         return viewController
     }
 }
