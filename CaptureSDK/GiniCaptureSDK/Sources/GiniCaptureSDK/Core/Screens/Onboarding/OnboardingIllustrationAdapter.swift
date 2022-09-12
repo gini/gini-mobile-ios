@@ -19,10 +19,3 @@ public protocol OnboardingIllustrationAdapter: InjectedViewAdapter {
  */
     func pageDidDisappear()
 }
-
-public protocol AnalysisScreenLoadingIndicatorAdapter: InjectedViewAdapter {
-
-    func startAnimation()
-
-    func stopAnimation()
-}

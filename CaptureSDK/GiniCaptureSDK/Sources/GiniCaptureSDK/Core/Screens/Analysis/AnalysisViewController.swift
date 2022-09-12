@@ -161,7 +161,7 @@ import UIKit
      Displays a loading activity indicator. Should be called when document analysis is started.
      */
     public func showAnimation() {
-        if let loadingIndicator = giniConfiguration.loadingIndicator {
+        if let loadingIndicator = giniConfiguration.analysisScreenLoadingIndicator {
             loadingIndicator.startAnimation()
         } else {
             loadingIndicatorView.startAnimating()
@@ -172,7 +172,7 @@ import UIKit
      Hides the loading activity indicator. Should be called when document analysis is finished.
      */
     public func hideAnimation() {
-        if let loadingIndicator = giniConfiguration.loadingIndicator {
+        if let loadingIndicator = giniConfiguration.analysisScreenLoadingIndicator {
             loadingIndicator.stopAnimation()
         } else {
             loadingIndicatorView.stopAnimating()
@@ -193,9 +193,8 @@ import UIKit
             imageView.image = document.previewImage
         }
 
-        loadingIndicatorView.color = UIColor.GiniCapture.label
-        addLoadingView(intoContainer: loadingIndicatorContainer)
-        addLoadingText(below: loadingIndicatorView)
+        configureLoadingIndicator()
+
         addOverlay()
 
         if document is GiniImageDocument {
@@ -249,6 +248,19 @@ import UIKit
         Constraints.active(item: overlayView, attr: .leading, relatedBy: .equal, to: imageView, attr: .leading)
     }
 
+    private func configureLoadingIndicator() {
+        loadingIndicatorView.color = UIColor.GiniCapture.label
+        addLoadingView(intoContainer: loadingIndicatorContainer)
+
+        if let loadingIndicator = giniConfiguration.analysisScreenLoadingIndicator {
+            addLoadingText(below: loadingIndicator.injectedView())
+            loadingIndicator.startAnimation()
+        } else {
+            addLoadingText(below: loadingIndicatorView)
+            loadingIndicatorView.startAnimating()
+        }
+    }
+
     private func addLoadingText(below: UIView) {
         self.view.addSubview(loadingIndicatorText)
         loadingIndicatorText.translatesAutoresizingMaskIntoConstraints = false
@@ -264,7 +276,7 @@ import UIKit
     private func addLoadingView(intoContainer container: UIView? = nil) {
         let loadingIndicator: UIView
 
-        if let loading = giniConfiguration.loadingIndicator?.injectedView() {
+        if let loading = giniConfiguration.analysisScreenLoadingIndicator?.injectedView() {
             loadingIndicator = loading
         } else {
             loadingIndicator = loadingIndicatorView
@@ -276,23 +288,22 @@ import UIKit
             self.view.addSubview(container)
             container.addSubview(loadingIndicator)
 
-            Constraints.active(item: container, attr: .centerX, relatedBy: .equal, to: self.view, attr: .centerX)
-            Constraints.active(item: container, attr: .centerY, relatedBy: .equal, to: self.view, attr: .centerY)
-            Constraints.active(item: container, attr: .height, relatedBy: .equal, to: nil, attr: .notAnAttribute,
-                              constant: AnalysisViewController.loadingIndicatorContainerHeight)
-            Constraints.active(item: container, attr: .width, relatedBy: .equal, to: nil, attr: .notAnAttribute,
-                              constant: AnalysisViewController.loadingIndicatorContainerHeight)
-            Constraints.active(item: loadingIndicator, attr: .centerX, relatedBy: .equal, to: container,
-                              attr: .centerX, constant: 1.5)
-            Constraints.active(item: loadingIndicator, attr: .centerY, relatedBy: .equal, to: container,
-                              attr: .centerY, constant: 1.5)
-
+            NSLayoutConstraint.activate([
+                container.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                container.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                container.heightAnchor.constraint(equalToConstant:
+                                                    AnalysisViewController.loadingIndicatorContainerHeight),
+                container.widthAnchor.constraint(equalTo: container.heightAnchor),
+                loadingIndicator.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+                loadingIndicator.centerYAnchor.constraint(equalTo: container.centerYAnchor)
+            ])
         } else {
             self.view.addSubview(loadingIndicatorView)
-            Constraints.active(item: loadingIndicator, attr: .centerX, relatedBy: .equal, to: self.view,
-                              attr: .centerX)
-            Constraints.active(item: loadingIndicator, attr: .centerY, relatedBy: .equal, to: self.view,
-                              attr: .centerY)
+
+            NSLayoutConstraint.activate([
+                loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            ])
         }
     }
 
