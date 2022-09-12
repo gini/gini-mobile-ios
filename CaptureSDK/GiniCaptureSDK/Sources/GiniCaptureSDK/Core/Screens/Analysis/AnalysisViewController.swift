@@ -238,10 +238,10 @@ import UIKit
         self.view.insertSubview(overlayView, aboveSubview: imageView)
         overlayView.translatesAutoresizingMaskIntoConstraints = false
 
-        Constraints.active(item: overlayView, attr: .top, relatedBy: .equal, to: imageView, attr: .top)
-        Constraints.active(item: overlayView, attr: .trailing, relatedBy: .equal, to: imageView, attr: .trailing)
-        Constraints.active(item: overlayView, attr: .bottom, relatedBy: .equal, to: imageView, attr: .bottom)
-        Constraints.active(item: overlayView, attr: .leading, relatedBy: .equal, to: imageView, attr: .leading)
+        NSLayoutConstraint.activate([overlayView.topAnchor.constraint(equalTo: view.topAnchor),
+                                     overlayView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                                     overlayView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                                     overlayView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
     }
 
     private func addLoadingContainer() {
