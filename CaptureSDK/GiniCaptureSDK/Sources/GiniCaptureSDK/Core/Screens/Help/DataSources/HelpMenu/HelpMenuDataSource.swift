@@ -42,6 +42,7 @@ final public class HelpMenuDataSource: HelpRoundedCornersDataSource<HelpMenuItem
         cell.textLabel?.textColor = GiniColor(
             light: UIColor.GiniCapture.dark1,
             dark: UIColor.GiniCapture.light1).uiColor()
+        cell.textLabel?.numberOfLines = 0
         cell.textLabel?.font = giniConfiguration.textStyleFonts[.body]
         cell.accessoryType = .disclosureIndicator
         cell.selectionStyle = .none
