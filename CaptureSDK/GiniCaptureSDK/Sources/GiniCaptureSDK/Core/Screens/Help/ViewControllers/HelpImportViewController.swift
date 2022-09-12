@@ -39,9 +39,7 @@ class HelpImportViewController: UIViewController {
 
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        if view.safeAreaInsets.bottom > 0 {
-            tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: GiniMargins.margin, right: 0)
-        }
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: GiniMargins.margin, right: 0)
     }
     
     private func setupView() {
