@@ -42,9 +42,9 @@ public final class HelpTipsViewController: UIViewController {
 
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom:  GiniMargins.margin, right: 0)
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: GiniMargins.margin, right: 0)
     }
-    
+
     private func setupView() {
         configureMainView()
         configureTableView()
@@ -79,7 +79,7 @@ public final class HelpTipsViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
         tableView.reloadData()
     }
-    
+
     private func configureConstraints() {
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
