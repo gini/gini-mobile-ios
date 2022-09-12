@@ -57,7 +57,6 @@ final public class HelpMenuViewController: UIViewController {
         configureTableView()
         configureConstraints()
         edgesForExtendedLayout = []
-        navigationItem.leftBarButtonItem = nil
     }
 
     private func configureTableView() {
