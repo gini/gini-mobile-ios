@@ -12,7 +12,7 @@ protocol HelpMenuDataSourceDelegate: UIViewController {
     func didSelectHelpItem(didSelect item: HelpMenuItem)
 }
 
-final public class HelpMenuDataSource: HelpBaseDataSource<HelpMenuItem, HelpMenuCell> {
+final public class HelpMenuDataSource: HelpRoundedCornersDataSource<HelpMenuItem, HelpMenuCell> {
 
     private lazy var defaultItems: [HelpMenuItem] = {
         var defaultItems: [HelpMenuItem] = [ .noResultsTips]
@@ -20,7 +20,6 @@ final public class HelpMenuDataSource: HelpBaseDataSource<HelpMenuItem, HelpMenu
         if giniConfiguration.shouldShowSupportedFormatsScreen {
             defaultItems.append(.supportedFormats)
         }
-        
         if giniConfiguration.openWithEnabled {
             defaultItems.append(.openWithTutorial)
         }
@@ -29,7 +28,7 @@ final public class HelpMenuDataSource: HelpBaseDataSource<HelpMenuItem, HelpMenu
 
     weak var delegate: HelpMenuDataSourceDelegate?
 
-    override init(
+    required init(
         configuration: GiniConfiguration
     ) {
         super.init(configuration: configuration)
@@ -38,9 +37,12 @@ final public class HelpMenuDataSource: HelpBaseDataSource<HelpMenuItem, HelpMenu
     }
 
     public override func configureCell(cell: HelpMenuCell, indexPath: IndexPath) {
-        cell.backgroundColor = UIColor.GiniCapture.systemWhite
+        cell.backgroundColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.dark3).uiColor()
         cell.textLabel?.text = items[indexPath.row].title
-        cell.textLabel?.textColor = UIColor.GiniCapture.label
+        cell.textLabel?.textColor = GiniColor(
+            light: UIColor.GiniCapture.dark1,
+            dark: UIColor.GiniCapture.light1).uiColor()
+        cell.textLabel?.numberOfLines = 0
         cell.textLabel?.font = giniConfiguration.textStyleFonts[.body]
         cell.accessoryType = .disclosureIndicator
         cell.selectionStyle = .none
@@ -55,4 +57,7 @@ final public class HelpMenuDataSource: HelpBaseDataSource<HelpMenuItem, HelpMenu
         self.delegate?.didSelectHelpItem(didSelect: item)
     }
 
+    public override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0
+    }
 }

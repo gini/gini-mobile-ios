@@ -1,9 +1,9 @@
 //
-//  ImageAnalysisNoResultsViewController.swift
+//  HelpTipsViewController.swift
 //  GiniCapture
 //
 //  Created by Enrique del Pozo Gómez on 10/6/17.
-//  Copyright © 2017 Gini GmbH. All rights reserved.
+//  Copyright © 2022 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -40,6 +40,11 @@ public final class HelpTipsViewController: UIViewController {
         setupView()
     }
 
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: GiniMargins.margin, right: 0)
+    }
+
     private func setupView() {
         configureMainView()
         configureTableView()
@@ -48,7 +53,7 @@ public final class HelpTipsViewController: UIViewController {
 
     public func configureMainView() {
         view.addSubview(tableView)
-        view.backgroundColor = UIColor.GiniCapture.helpBackground
+        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         edgesForExtendedLayout = []
         tableView.bounces = false
     }
@@ -74,13 +79,28 @@ public final class HelpTipsViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
         tableView.reloadData()
     }
-    
+
     private func configureConstraints() {
-        view.addConstraints([
+        NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: GiniMargins.horizontalMargin),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -GiniMargins.horizontalMargin),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            tableView.bottomAnchor.constraint(
+                equalTo: view.bottomAnchor)
         ])
+        if UIDevice.current.isIpad {
+            NSLayoutConstraint.activate([
+                tableView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: GiniMargins.iPadAspectScale),
+                tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                tableView.leadingAnchor.constraint(
+                    equalTo: view.leadingAnchor,
+                    constant: GiniMargins.margin),
+                tableView.trailingAnchor.constraint(
+                    equalTo: view.trailingAnchor,
+                    constant: -GiniMargins.margin)
+            ])
+        }
+        view.layoutSubviews()
     }
 }
