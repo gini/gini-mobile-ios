@@ -63,6 +63,7 @@ final public class HelpMenuViewController: UIViewController {
         tableView.dataSource = self.dataSource
         tableView.delegate = self.dataSource
         tableView.backgroundColor = UIColor.clear
+        tableView.showsVerticalScrollIndicator = false
         tableView.tableHeaderView = UIView()
         tableView.tableFooterView = UIView()
         tableView.register(
@@ -70,7 +71,8 @@ final public class HelpMenuViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = tableRowHeight
         tableView.contentInsetAdjustmentBehavior = .never
-        tableView.separatorColor = UIColor.GiniCapture.separator
+        tableView.separatorColor = GiniColor(light: UIColor.GiniCapture.light3,
+                                             dark: UIColor.GiniCapture.dark4).uiColor()
     }
 
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -79,16 +81,30 @@ final public class HelpMenuViewController: UIViewController {
     }
 
     private func configureConstraints() {
-        view.addConstraints([
+        NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: GiniMargins.horizontalMargin),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -GiniMargins.horizontalMargin),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        if UIDevice.current.isIpad {
+            NSLayoutConstraint.activate([
+                tableView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: GiniMargins.iPadAspectScale),
+                tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                tableView.leadingAnchor.constraint(
+                    equalTo: view.leadingAnchor,
+                    constant: GiniMargins.margin),
+                tableView.trailingAnchor.constraint(
+                    equalTo: view.trailingAnchor,
+                    constant: -GiniMargins.margin)
+            ])
+        }
+        view.layoutSubviews()
     }
 
     private func configureMainView() {
-        view.backgroundColor = UIColor.GiniCapture.helpBackground
+        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         view.addSubview(tableView)
         title = NSLocalizedStringPreferredFormat("ginicapture.help.menu.title", comment: "Help Import screen title")
         view.layoutSubviews()
