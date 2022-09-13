@@ -448,7 +448,7 @@ extension ComponentAPICoordinator: UINavigationControllerDelegate {
             closeComponentAPI()
         }
 
-        if let cameraViewController = toVC as? CameraViewController, fromVC is MultipageReviewViewController {
+        if let cameraViewController = toVC as? CameraScreen, fromVC is MultipageReviewViewController {
             cameraViewController
                 .replaceCapturedStackImages(with: pages.compactMap { $0.document.previewImage })
         }
