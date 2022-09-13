@@ -14,7 +14,8 @@ final class MultipageReviewMainCollectionCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         
-        imageView.accessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.review.documentImageTitle", comment: "Document")
+        imageView.accessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.review.documentImageTitle",
+                                                                        comment: "Document")
         
         return imageView
     }()
@@ -45,13 +46,5 @@ final class MultipageReviewMainCollectionCell: UICollectionViewCell {
         Constraints.pin(view: documentImage, toSuperView: self)
         Constraints.pin(view: errorView, toSuperView: self, positions: [.top, .left, .right])
         Constraints.center(view: documentImage, with: self)
-    }
-}
-
-// MARK: - UIScrollViewDelegate
-
-extension MultipageReviewMainCollectionCell: UIScrollViewDelegate {
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return documentImage
     }
 }
