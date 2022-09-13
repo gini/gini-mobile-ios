@@ -94,7 +94,7 @@ public final class MultipageReviewViewController: UIViewController {
         collection.isPagingEnabled = true
         collection.showsHorizontalScrollIndicator = false
         collection.register(MultipageReviewMainCollectionCell.self,
-                            forCellWithReuseIdentifier: MultipageReviewMainCollectionCell.identifier)
+                            forCellWithReuseIdentifier: MultipageReviewMainCollectionCell.reuseIdentifier)
         return collection
     }()
 
@@ -253,7 +253,7 @@ extension MultipageReviewViewController: UICollectionViewDataSource {
         let collectionCell: MultipageReviewCollectionCellPresenter.MultipageCollectionCellType
 
         let cell = mainCollection
-            .dequeueReusableCell(withReuseIdentifier: MultipageReviewMainCollectionCell.identifier,
+            .dequeueReusableCell(withReuseIdentifier: MultipageReviewMainCollectionCell.reuseIdentifier,
                                  for: indexPath) as? MultipageReviewMainCollectionCell
         collectionCell = .main(cell!, didFailUpload(page: page, indexPath: indexPath))
 
