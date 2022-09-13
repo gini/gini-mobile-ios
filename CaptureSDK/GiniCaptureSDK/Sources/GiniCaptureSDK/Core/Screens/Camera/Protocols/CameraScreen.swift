@@ -21,4 +21,5 @@ import UIKit
     func showCaptureButton()
     func showFileImportTip()
     func showQrCodeTip()
+    func replaceCapturedStackImages(with images: [UIImage])
 }

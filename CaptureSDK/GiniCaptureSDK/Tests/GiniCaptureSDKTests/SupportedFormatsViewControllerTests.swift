@@ -57,7 +57,7 @@ final class SupportedFormatsViewControllerTests: XCTestCase {
     
     func testSectionItemsCount() {
 
-        let section2ItemsCount = sections[1].items.count
+        let section2ItemsCount = sections[1].formats.count
         let tableSection2ItemsCount = supportedFormatsViewController.dataSource
             .tableView(supportedFormatsViewController.tableView,
                        numberOfRowsInSection: 1)

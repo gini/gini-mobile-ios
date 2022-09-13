@@ -90,7 +90,7 @@ class Camera2ViewController: UIViewController, CameraScreen {
     
     func setupView() {
         edgesForExtendedLayout = []
-        view.backgroundColor = UIColor.from(giniColor: giniConfiguration.cameraContainerViewBackgroundColor)
+        view.backgroundColor = giniConfiguration.cameraContainerViewBackgroundColor.uiColor()
         addChild(cameraPreviewViewController)
         view.addSubview(cameraPreviewViewController.view)
         cameraPreviewViewController.didMove(toParent: self)
@@ -170,14 +170,6 @@ class Camera2ViewController: UIViewController, CameraScreen {
     fileprivate func showTooltip() {
         if giniConfiguration.fileImportSupportedTypes != .none {
             fileUploadButton.isHidden = false
-            // If FileImportToolTip was shown and QRCodeToolTip not yet
-            if !OnboardingContainerViewController.willBeShown {
-                if ToolTipView.shouldShowFileImportToolTip {
-                    showFileImportTip()
-                } else {
-                    showQrCodeTip()
-                }
-            }
         } else {
             fileUploadButton.isHidden = true
         }
@@ -390,8 +382,8 @@ extension Camera2ViewController {
     fileprivate func configurePopupViewForUnsupportedQR(
         _ newQRCodePopup: QRCodeDetectedPopupView,
         dismissCompletion: @escaping () -> Void) {
-        newQRCodePopup.backgroundColor = UIColor.from(giniColor:giniConfiguration.unsupportedQrCodePopupBackgroundColor)
-        newQRCodePopup.qrText.textColor = UIColor.from(giniColor: giniConfiguration.unsupportedQrCodePopupTextColor)
+            newQRCodePopup.backgroundColor = giniConfiguration.unsupportedQrCodePopupBackgroundColor.uiColor()
+            newQRCodePopup.qrText.textColor =  giniConfiguration.unsupportedQrCodePopupTextColor.uiColor()
         newQRCodePopup.qrText.text = .localized(resource: CameraStrings.unsupportedQrCodeDetectedPopupMessage)
         newQRCodePopup.proceedButton.setTitle("✕", for: .normal)
         newQRCodePopup.proceedButton.setTitleColor(giniConfiguration.unsupportedQrCodePopupButtonColor, for: .normal)
