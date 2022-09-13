@@ -87,8 +87,6 @@ public final class MultipageReviewViewController: UIViewController {
         var collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.translatesAutoresizingMaskIntoConstraints = false
 
-        collection.backgroundColor = .red
-
         collection.dataSource = self
         collection.delegate = self
         collection.isPagingEnabled = true
@@ -110,12 +108,6 @@ public final class MultipageReviewViewController: UIViewController {
         tipLabel.text = "Make sure the payment details are visible"
 
         return tipLabel
-    }()
-    
-    lazy var deleteButton: UIBarButtonItem = {
-        return barButtonItem(withImage: UIImageNamedPreferred(named: "trashIcon"),
-                             insets: UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2),
-                             action: #selector(deleteImageButtonAction))
     }()
     
     // MARK: - Init
@@ -227,15 +219,7 @@ extension MultipageReviewViewController {
         pages.remove(at: indexPath.row)
         mainCollection.deleteItems(at: [indexPath])
         delegate?.multipageReview(self, didDelete: pageToDelete)
-        deleteButton.isEnabled = false
     }
-
-    @objc fileprivate func deleteImageButtonAction() {
-//        if let currentIndexPath = visibleCell(in: self.mainCollection) {
-//            deleteItem(at: currentIndexPath)
-//        }
-    }
-    
 }
 
 // MARK: UICollectionViewDataSource

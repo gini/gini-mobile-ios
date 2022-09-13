@@ -74,38 +74,6 @@ final class MultipageReviewCollectionCellPresenter {
 
 fileprivate extension MultipageReviewCollectionCellPresenter {
     
-    // MARK: - MultipageReviewPagesCollectionCell
-    
-    func setUp(cell: MultipageReviewPagesCollectionCell,
-               with page: GiniCapturePage,
-               fetchThumbnailTrigger: @autoclosure () -> Void,
-               pageIndex: Int,
-               selected: Bool) {
-        // Thumbnail set
-        if let thumbnail = self.thumbnails[page.document.id, default: [:]][.small] {
-            cell.documentImage.contentMode = thumbnail.size.width > thumbnail.size.height ?
-                .scaleAspectFit :
-                .scaleAspectFill
-            cell.documentImage.image = thumbnail
-        } else {
-            cell.documentImage.image = nil
-            fetchThumbnailTrigger()
-        }
-        
-        cell.pageIndicatorLabel.text = "\(pageIndex + 1)"
-        cell.giniConfiguration = giniConfiguration
-        // Every time the cell is dequeued, its `isSelected` state is set to default, false.
-        cell.isSelected = selected
-        
-        if page.isUploaded {
-            cell.stateView.update(to: .succeeded)
-        } else if page.error != nil {
-            cell.stateView.update(to: .failed)
-        } else {
-            cell.stateView.update(to: .loading)
-        }
-    }
-    
     // MARK: - MultipageReviewMainCollectionCell
     
     func setUp(cell: MultipageReviewMainCollectionCell,
