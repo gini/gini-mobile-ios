@@ -23,3 +23,9 @@ import UIKit
     func showQrCodeTip()
     func replaceCapturedStackImages(with images: [UIImage])
 }
+
+public extension CameraScreen {
+    func animateToControlsView(imageDocument: GiniImageDocument) {
+        animateToControlsView(imageDocument: imageDocument, completion: nil)
+    }
+}

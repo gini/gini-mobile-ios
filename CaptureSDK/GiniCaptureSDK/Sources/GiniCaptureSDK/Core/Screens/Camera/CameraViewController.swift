@@ -264,7 +264,7 @@ extension CameraViewController {
      - parameter completion: Completion block.
      
      */
-    public func animateToControlsView(imageDocument: GiniImageDocument, completion: (() -> Void)? = nil) {
+    public func animateToControlsView(imageDocument: GiniImageDocument, completion: (() -> Void)?) {
         guard let documentImage = imageDocument.previewImage else { return }
         let previewImageView = previewCapturedImageView(with: documentImage)
         view.addSubview(previewImageView)
