@@ -36,7 +36,9 @@
 "ginicapture.camera.documentValidationError.tooManyPages" = "The document can only have a maximum of 10 pages.";
 "ginicapture.camera.documentValidationError.wrongFormat" = "Only files of the formats jpg, png, gif or pdf can be analysed";
 "ginicapture.camera.fileImportTip" = "Now documents can be conveniently uploaded for analysis.";
-"ginicapture.camera.fileImportButtonLabel" = "Import";
+"ginicapture.camera.fileImportButtonLabel" = "Browse";
+"ginicapture.camera.flashButtonLabel" = "On";
+"ginicapture.camera.infoLabel" = "Scan an invoice or a QR code";
 "ginicapture.camera.qrCodeTip" = "Have you checked out the QR code scan yet?";
 "ginicapture.camera.capturedImagesStackLabel" = "Captured documents";
 "ginicapture.camera.qrCodeDetectedPopup.message" = "Use QR code?";

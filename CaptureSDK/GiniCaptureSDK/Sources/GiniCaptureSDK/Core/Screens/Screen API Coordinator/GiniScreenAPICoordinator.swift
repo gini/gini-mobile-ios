@@ -30,7 +30,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     
     // Screens
     var analysisViewController: AnalysisViewController?
-    var cameraViewController: Camera2ViewController?
+    var cameraViewController: CameraScreen?
     var imageAnalysisNoResultsViewController: ImageAnalysisNoResultsViewController?
     var reviewViewController: ReviewViewController?
     lazy var multiPageReviewViewController: MultipageReviewViewController = {
