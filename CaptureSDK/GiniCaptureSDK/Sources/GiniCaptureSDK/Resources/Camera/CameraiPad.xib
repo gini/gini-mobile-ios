@@ -14,6 +14,7 @@
                 <outlet property="captureButton" destination="hTe-DA-2qT" id="u3W-QU-ccv"/>
                 <outlet property="fileUploadButton" destination="fXR-zD-tfI" id="e9r-Dr-BkQ"/>
                 <outlet property="flashButton" destination="MKr-w2-Lou" id="PP1-29-GTG"/>
+                <outlet property="thumbnailView" destination="UDD-dX-FJV" id="Mzg-M8-KjB"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Kff-Gp-d1h"/>
             </connections>
         </placeholder>

@@ -14,9 +14,10 @@ final class ThumbnailView: UIView {
     }
     
     var didTapImageStackButton: (() -> Void)?
+    let thumbnailSize = CGSize(width: 44, height: 52)
     private var giniConfiguration: GiniConfiguration!
-    fileprivate let stackCountCircleSize = CGSize(width: 20, height: 20)
-    fileprivate var imagesCount: Int = 0
+    private let stackCountCircleSize = CGSize(width: 20, height: 20)
+    private var imagesCount: Int = 0
     
     lazy var thumbnailButton: UIButton = {
         let button = UIButton()
@@ -35,8 +36,8 @@ final class ThumbnailView: UIView {
     lazy var stackIndicatorLabel: UILabel = {
         var label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "3"
-        label.textColor = UIColor.gray//giniConfiguration.imagesStackIndicatorLabelTextcolor
+        label.adjustsFontForContentSizeCategory = true
+        label.text = ""
         return label
     }()
     
@@ -45,14 +46,11 @@ final class ThumbnailView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.frame.size = self.stackCountCircleSize
         view.layer.cornerRadius = stackCountCircleSize.height * 0.5
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.darkGray.cgColor
         view.backgroundColor = .green
         return view
     }()
-    
-    init(giniConfiguration: GiniConfiguration = .shared) {
-        self.giniConfiguration = giniConfiguration
-        super.init(frame: .zero)
-    }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(frame: .zero)
@@ -62,15 +60,23 @@ final class ThumbnailView: UIView {
         super.awakeFromNib()
         setupView()
     }
-    
+
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         addSubview(thumbnailImageView)
         addSubview(stackIndicatorCircleView)
         addSubview(thumbnailButton)
-        
         stackIndicatorCircleView.addSubview(stackIndicatorLabel)
         addConstraints()
+    }
+    
+    func configureView(giniConfiguration: GiniConfiguration) {
+        self.giniConfiguration = giniConfiguration
+        configureColors()
+    }
+    
+    private func configureColors() {
+        stackIndicatorLabel.font = giniConfiguration.textStyleFonts[.caption1]
     }
     
     func replaceStackImages(with images: [UIImage]) {
@@ -89,13 +95,11 @@ final class ThumbnailView: UIView {
         switch status {
         case .filled(let count, let lastImage):
             imagesCount = count
-            //thumbnailStackBackgroundView.isHidden = count < 2
-            thumbnailButton.setImage(lastImage, for: .normal)
+            thumbnailImageView.image = lastImage
             isHidden = false
         case .empty:
             imagesCount = 0
-            //thumbnailStackBackgroundView.isHidden = true
-            thumbnailButton.setImage(nil, for: .normal)
+            thumbnailImageView.image = nil
             isHidden = true
         }
         
@@ -116,12 +120,15 @@ final class ThumbnailView: UIView {
             thumbnailImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -9),
             thumbnailImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             thumbnailImageView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
             stackIndicatorCircleView.topAnchor.constraint(equalTo: topAnchor),
             stackIndicatorCircleView.trailingAnchor.constraint(equalTo: trailingAnchor),
             stackIndicatorCircleView.heightAnchor.constraint(equalToConstant: stackCountCircleSize.height),
             stackIndicatorCircleView.widthAnchor.constraint(equalToConstant: stackCountCircleSize.width),
             stackIndicatorLabel.centerXAnchor.constraint(equalTo: stackIndicatorCircleView.centerXAnchor),
-            stackIndicatorLabel.centerYAnchor.constraint(equalTo: stackIndicatorCircleView.centerYAnchor)
+            stackIndicatorLabel.centerYAnchor.constraint(equalTo: stackIndicatorCircleView.centerYAnchor),
+            heightAnchor.constraint(equalToConstant: thumbnailSize.height),
+            widthAnchor.constraint(equalToConstant: thumbnailSize.width),
         ])
     }
 }

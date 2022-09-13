@@ -12,9 +12,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Camera2ViewController" customModule="GiniCaptureSDK">
             <connections>
+                <outlet property="cameraTitleLabel" destination="lfm-sA-fAL" id="FRe-az-hHZ"/>
                 <outlet property="captureButton" destination="dQe-NY-Bi9" id="XVW-PR-aba"/>
                 <outlet property="fileUploadButton" destination="Oxa-p6-f53" id="qqP-RH-BFY"/>
                 <outlet property="flashButton" destination="wph-4w-azi" id="xKt-R1-T4F"/>
+                <outlet property="thumbnailView" destination="0Yg-3y-VKg" id="MGJ-b3-83J"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Rqx-4l-iKM"/>
             </connections>
         </placeholder>
@@ -62,12 +64,12 @@
                                 </view>
                             </subviews>
                         </stackView>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Yg-3y-VKg" customClass="ThumbnailView" customModule="GiniCaptureSDK">
+                        <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Yg-3y-VKg" customClass="ThumbnailView" customModule="GiniCaptureSDK">
                             <rect key="frame" x="262" y="82.666666666666629" width="44" height="52"/>
                             <color key="backgroundColor" systemColor="systemOrangeColor"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="52" id="TK5-dN-auQ"/>
-                                <constraint firstAttribute="width" constant="44" id="ygm-bu-f5T"/>
+                                <constraint firstAttribute="height" constant="52" id="aV8-ZL-Eg8"/>
+                                <constraint firstAttribute="width" constant="44" id="p0H-4p-t9c"/>
                             </constraints>
                         </view>
                     </subviews>

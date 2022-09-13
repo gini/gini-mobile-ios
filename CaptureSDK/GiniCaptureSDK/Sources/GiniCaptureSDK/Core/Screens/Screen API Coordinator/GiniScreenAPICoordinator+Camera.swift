@@ -17,7 +17,9 @@ import UIKit
 }
 
 extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
-    public func camera(_ viewController: CameraViewController, didCapture document: GiniCaptureDocument) {
+    
+    
+    public func camera(_ viewController: CameraScreen, didCapture document: GiniCaptureDocument) {
         let loadingView = viewController.addValidationLoadingView()
         
         validate([document]) { result in
@@ -31,7 +33,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
                 // In case that there is more than one image already captured, an animation is shown instead of
                 // going to next screen
                 if let imageDocument = document as? GiniImageDocument, self.pages.count > 1 {
-                    viewController.animateToControlsView(imageDocument: imageDocument)
+                    viewController.animateToControlsView(imageDocument: imageDocument, completion: nil)
                 } else {
                     self.showNextScreenAfterPicking(pages: [validatedPage])
                 }
@@ -52,7 +54,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         }
     }
     
-    public func camera(_ viewController: CameraViewController, didSelect documentPicker: DocumentPickerType) {
+    public func camera(_ viewController: CameraScreen, didSelect documentPicker: DocumentPickerType) {
         switch documentPicker {
         case .gallery:
             documentPickerCoordinator.showGalleryPicker(from: viewController)
@@ -62,7 +64,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         }
     }
     
-    public func cameraDidAppear(_ viewController: CameraViewController) {
+    public func cameraDidAppear(_ viewController: CameraScreen) {
                 
         if shouldShowOnBoarding() {
             showOnboardingScreen {
@@ -73,13 +75,12 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         }
     }
     
-    public func cameraDidTapMultipageReviewButton(_ viewController: CameraViewController) {
+    public func cameraDidTapMultipageReviewButton(_ viewController: CameraScreen) {
         showMultipageReview()
     }
     
-    func createCameraViewController() -> Camera2ViewController {
-        /*
-        let cameraViewController = CameraViewController(giniConfiguration: giniConfiguration)
+    func createCameraViewController() -> CameraScreen {
+        let cameraViewController = Camera2ViewController(giniConfiguration: giniConfiguration)
         cameraViewController.delegate = self
         cameraViewController.trackingDelegate = trackingDelegate
         cameraViewController.title = .localized(resource: NavigationBarStrings.cameraTitle)
@@ -105,8 +106,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
                 documentPickerCoordinator.setupDragAndDrop(in: cameraViewController.view)
             }
         }
-        */
-        let cameraViewController = Camera2ViewController(giniConfiguration: giniConfiguration)
+        
         return cameraViewController
     }
     
@@ -127,23 +127,23 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
     }
     
     private func showOnboardingScreen(completion: @escaping () -> Void) {
-        /*
+        
         cameraViewController?.hideCameraOverlay()
         cameraViewController?.hideCaptureButton()
         cameraViewController?.hideFileImportTip()
         cameraViewController?.hideQrCodeTip()
-        */
+        
         let vc = OnboardingContainerViewController(trackingDelegate: trackingDelegate) { [weak self] in
             
             guard let cameraViewController = self?.cameraViewController else { return }
             
-            //cameraViewController.showCameraOverlay()
-            //cameraViewController.showCaptureButton()
+            cameraViewController.showCameraOverlay()
+            cameraViewController.showCaptureButton()
             if let config = self?.giniConfiguration {
                 if config.fileImportSupportedTypes != GiniConfiguration.GiniCaptureImportFileTypes.none {
-                    //cameraViewController.showFileImportTip()
+                    cameraViewController.showFileImportTip()
                 } else if config.qrCodeScanningEnabled {
-                    //cameraViewController.showQrCodeTip()
+                    cameraViewController.showQrCodeTip()
                 }
             }
             
@@ -255,6 +255,7 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
         view.addInteraction(dropInteraction)
     }
 }
+
 
 // MARK: - Validation
 
