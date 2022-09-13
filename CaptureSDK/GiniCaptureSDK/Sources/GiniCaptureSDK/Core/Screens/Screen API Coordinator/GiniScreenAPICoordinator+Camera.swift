@@ -166,13 +166,8 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             case .image:
                 if let imageDocuments = visionDocuments as? [GiniImageDocument],
                     let lastDocument = imageDocuments.last {
-                    if self.giniConfiguration.multipageEnabled {
-                        showMultipageReview()
-                    } else {
-                        reviewViewController = createReviewScreen(withDocument: lastDocument)
-                        screenAPINavigationController.pushViewController(reviewViewController!,
-                                                                         animated: true)
-                    }
+
+                    showMultipageReview()
                 }
             case .qrcode, .pdf:
                 showAnalysisScreen()

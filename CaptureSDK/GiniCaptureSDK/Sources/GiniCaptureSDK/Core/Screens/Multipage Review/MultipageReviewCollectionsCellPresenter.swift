@@ -22,7 +22,6 @@ final class MultipageReviewCollectionCellPresenter {
     
     enum MultipageCollectionCellType {
         case main(MultipageReviewMainCollectionCell, (NoticeActionType) -> Void)
-        case pages(MultipageReviewPagesCollectionCell)
     }
     
     enum ThumbnailType {
@@ -55,13 +54,6 @@ final class MultipageReviewCollectionCellPresenter {
                   fetchThumbnailTrigger: fetchThumbnailImage(for: page, of: .big, in: cell, at: indexPath),
                   didTapErrorNotice: errorAction)
             collectionCell = mainCell
-        case .pages(let pageCell):
-            setUp(cell: pageCell,
-                  with: page,
-                  fetchThumbnailTrigger: fetchThumbnailImage(for: page, of: .small, in: cell, at: indexPath),
-                  pageIndex: indexPath.row,
-                  selected: isSelected)
-            collectionCell = pageCell
         }
         
         return collectionCell
