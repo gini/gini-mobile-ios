@@ -8,10 +8,7 @@
 
 import UIKit
 
-class HelpFormatsViewController: UIViewController {
-    let tableRowHeight: CGFloat = 44
-    let sectionHeight: CGFloat = 70
-
+final class HelpFormatsViewController: UIViewController {
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -19,6 +16,8 @@ class HelpFormatsViewController: UIViewController {
     }()
     private (set) var dataSource: HelpFormatsDataSource
     private var giniConfiguration: GiniConfiguration
+    private let tableRowHeight: CGFloat = 44
+    private let sectionHeight: CGFloat = 70
 
     public init(giniConfiguration: GiniConfiguration) {
         self.giniConfiguration = giniConfiguration
@@ -35,6 +34,11 @@ class HelpFormatsViewController: UIViewController {
         setupView()
     }
 
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: GiniMargins.margin, right: 0)
+    }
+
     private func setupView() {
         configureMainView()
         configureTableView()
@@ -46,7 +50,7 @@ class HelpFormatsViewController: UIViewController {
         title = NSLocalizedStringPreferredFormat(
             "ginicapture.help.supportedFormats.title",
             comment: "Supported formats screen title")
-        view.backgroundColor = UIColor.GiniCapture.helpBackground
+        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         view.addSubview(tableView)
 
         view.layoutSubviews()
@@ -88,11 +92,25 @@ class HelpFormatsViewController: UIViewController {
     }
 
     private func configureConstraints() {
-        view.addConstraints([
+        NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: GiniMargins.horizontalMargin),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -GiniMargins.horizontalMargin),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        if UIDevice.current.isIpad {
+            NSLayoutConstraint.activate([
+                tableView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: GiniMargins.iPadAspectScale),
+                tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                tableView.leadingAnchor.constraint(
+                    equalTo: view.leadingAnchor,
+                    constant: GiniMargins.margin),
+                tableView.trailingAnchor.constraint(
+                    equalTo: view.trailingAnchor,
+                    constant: -GiniMargins.margin)
+            ])
+        }
+        view.layoutSubviews()
     }
 }

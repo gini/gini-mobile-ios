@@ -18,7 +18,7 @@
 "ginicapture.navigationbar.review.continue"     = "Weiter";
 "ginicapture.navigationbar.analysis.back"       = "Abbrechen";
 "ginicapture.navigationbar.help.backToCamera"   = "";
-"ginicapture.navigationbar.help.backToMenu"     = "";
+"ginicapture.navigationbar.help.backToMenu"     = "Hilfe";
 
 
 "ginicapture.camera.captureButton" = "Auslösen";
@@ -69,9 +69,10 @@
 "ginicapture.review.documentImageTitle" = "Dokument";
 "ginicapture.review.unknownError"       = "Auf dem Überprüfungsbildschirm ist ein unbekannter Fehler aufgetreten";
 
-"ginicapture.analysis.screenTitle" = "TODO Review";
-"ginicapture.analysis.loadingText" = "TODO Analyzing documents";
-"ginicapture.analysis.loadingText.pdf" = "TODO Analyzing";
+"ginicapture.analysis.screenTitle" = "Übersicht";
+"ginicapture.analysis.loadingText" = "Dokument wird analysiert";
+"ginicapture.analysis.loadingText.pdf" = "%@ wird analysiert";
+"ginicapture.analysis.section.header" = "Nützliche Tipps";
 "ginicapture.analysis.suggestion.header" = "Um schneller Ergebnisse zu erhalten, bitte:";
 "ginicapture.analysis.suggestion.1" = "Gute Lichtverhältnisse";
 "ginicapture.analysis.suggestion.1.details" = "Gutes Licht führt zu besseren Ergebnissen als mit Blitz";
@@ -79,7 +80,7 @@
 "ginicapture.analysis.suggestion.2" = "Flach ausrichten";
 "ginicapture.analysis.suggestion.2.details" = "Flach gestrichene Dokumente erleichtern die Auswertung";
 "ginicapture.analysis.suggestion.3" = "Im Rahmen positionieren";
-"ginicapture.analysis.suggestion.3.details" = "Das gesamte Dokumente sollte sich im Rahmen befinden";
+"ginicapture.analysis.suggestion.3.details" = "Das gesamte Dokument sollte sich im Rahmen befinden";
 "ginicapture.analysis.suggestion.4" = "Parallel";
 "ginicapture.analysis.suggestion.4.details" = "Das Handy sollte parallel über dem Dokument gehalten werden";
 "ginicapture.analysis.suggestion.5" = "Mehrere Seiten";
@@ -107,17 +108,25 @@
 "ginicapture.noresults.title" = "Tipps";
 "ginicapture.noresults.warningHelpMenu" = "Zur Erkennung aller Daten bitte folgende Tipps beim Abfotografieren beachten:";
 
+"ginicapture.noresult.enterManually" = "Zahlungsdaten manuell eingeben";
+"ginicapture.noresult.retakeImages" = "Foto wiederholen";
+"ginicapture.noresult.title" = "TODO Fehler";
+"ginicapture.noresult.header" = "Leider konnten keine Informationen aus dem Dokument ausgelesen werden";
+
 "ginicapture.help.import.title" = "Importieren";
 "ginicapture.help.import.selectInvoice.title" = "Rechnung auswählen";
 "ginicapture.help.import.selectInvoice.desc" = "Bitte die PDF-Rechnung in der Email-App, PDF-Ordner oder einer anderen App aus dem Handy auswählen. Um das Dokument nun an die Banking App zu senden, sollte die “Teilen mit” Funktion benutzt werden, welche mit einem Rechteck und Pfeil nach oben zeigend dargestellt ist.";
 "ginicapture.help.import.importtoapp.title" = "Aus der App importieren";
 "ginicapture.help.import.importtoapp.desc" = "Nun die Banking App aus der Liste auswählen, um das Dokument zum Analysieren weiterzuleiten.";
+"ginicapture.help.import.draganddrop.title" = "TODO: Drag and drop on iPad";
+"ginicapture.help.import.draganddrop.desc" = "TODO: If your iPad is running iOS 12 or newer, you can
+conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to start a payment. To do this, open your Banking App and open the Files app as a second app on the screen. Select the desired invoice file in the Files app and drag this over to your Banking App.";
 
 "ginicapture.help.supportedFormats.title" = "Formate";
 "ginicapture.help.supportedFormats.section.1.title" = "Unterstützte Formate";
 "ginicapture.help.supportedFormats.section.1.item.1" = "Computer-generierte Rechnungen und Überweisungsträger";
 "ginicapture.help.supportedFormats.section.1.item.2" = "1-seitige Fotos im Format jpeg, png oder gif";
-"ginicapture.help.supportedFormats.section.1.item.3" = "PDF Documente bis zu 10 Seiten";
+"ginicapture.help.supportedFormats.section.1.item.3" = "PDF Dokumente bis zu 10 Seiten";
 "ginicapture.help.supportedFormats.section.1.item.4" = "QR Codes";
 "ginicapture.help.supportedFormats.section.1.item.5" = "Monitoraufnahmen oder Screenshots";
 "ginicapture.help.supportedFormats.section.2.title" = "Nicht unterstütztes Format";
@@ -125,9 +134,9 @@
 "ginicapture.help.supportedFormats.section.2.item.2" = "Fotos von Bildschirmen";
 
 "ginicapture.help.menu.title" = "Hilfe";
-"ginicapture.help.menu.firstItem" = "Tipps für beste Ergebnisse aus Fotos";
-"ginicapture.help.menu.secondItem" = "Import documents from other apps";
-"ginicapture.help.menu.thirdItem" = "Unterstützte Formate";
+"ginicapture.help.menu.tips" = "Tipps für bessere Ergebnisse";
+"ginicapture.help.menu.formats" = "Unterstützte Formate";
+"ginicapture.help.menu.import" = "Dokumente von anderen Apps importieren";
 
 "ginicapture.albums.title" = "Alben";
 "ginicapture.imagepicker.openbutton" = "Öffnen";

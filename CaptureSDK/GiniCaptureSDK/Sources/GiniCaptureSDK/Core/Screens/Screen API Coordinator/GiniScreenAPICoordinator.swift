@@ -31,7 +31,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     // Screens
     var analysisViewController: AnalysisViewController?
     var cameraViewController: CameraScreen?
-    var imageAnalysisNoResultsViewController: ImageAnalysisNoResultsViewController?
+    var imageAnalysisNoResultsViewController: NoResultScreenViewController?
     var reviewViewController: ReviewViewController?
     lazy var multiPageReviewViewController: MultipageReviewViewController = {
         return self.createMultipageReviewScreenContainer(with: [])
@@ -145,8 +145,8 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
         if pages.type == .image {
             if giniConfiguration.multipageEnabled {
                 self.cameraViewController = self.createCameraViewController()
-                //self.cameraViewController?
-                //    .replaceCapturedStackImages(with: pages.compactMap { $0.document.previewImage })
+                self.cameraViewController?
+                    .replaceCapturedStackImages(with: pages.compactMap { $0.document.previewImage })
                 
                 self.multiPageReviewViewController =
                     createMultipageReviewScreenContainer(with: pages)
@@ -237,7 +237,7 @@ extension GiniScreenAPICoordinator {
         self.visionDelegate?.didCancelCapturing()
     }
     
-    @objc func showHelpMenuScreen() {
+    @objc func showHelpMenuScreen() {        
         let helpMenuViewController = HelpMenuViewController(
             giniConfiguration: giniConfiguration
         )
@@ -261,7 +261,6 @@ extension GiniScreenAPICoordinator {
     }
     
     @objc func showAnalysisScreen() {
-        
         if screenAPINavigationController.topViewController is MultipageReviewViewController ||
         screenAPINavigationController.topViewController is ReviewViewController {
             trackingDelegate?.onReviewScreenEvent(event: Event(type: .next))
@@ -315,7 +314,7 @@ extension GiniScreenAPICoordinator: UINavigationControllerDelegate {
         if toVC is CameraViewController &&
             (fromVC is ReviewViewController ||
                 fromVC is AnalysisViewController ||
-                fromVC is ImageAnalysisNoResultsViewController) {
+                fromVC is NoResultScreenViewController) {
             // When going directly from the analysis or from the single page review screen to the camera the pages
             // collection should be cleared, since the document processed in that cases is not going to be reused
             clearDocuments()

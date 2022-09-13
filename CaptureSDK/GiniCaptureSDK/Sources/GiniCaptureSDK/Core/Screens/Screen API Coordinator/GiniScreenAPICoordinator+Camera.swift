@@ -133,22 +133,18 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         cameraViewController?.hideFileImportTip()
         cameraViewController?.hideQrCodeTip()
         
-        let vc = OnboardingContainerViewController(trackingDelegate: trackingDelegate) { [weak self] in
-            
-            guard let cameraViewController = self?.cameraViewController else { return }
-            
+        let vc = OnboardingViewController(nibName: "OnboardingViewController", bundle: giniCaptureBundle())
+            guard let cameraViewController = self.cameraViewController else { return }
             cameraViewController.showCameraOverlay()
             cameraViewController.showCaptureButton()
-            if let config = self?.giniConfiguration {
-                if config.fileImportSupportedTypes != GiniConfiguration.GiniCaptureImportFileTypes.none {
+                if giniConfiguration.fileImportSupportedTypes != GiniConfiguration.GiniCaptureImportFileTypes.none {
                     cameraViewController.showFileImportTip()
-                } else if config.qrCodeScanningEnabled {
+                } else if giniConfiguration.qrCodeScanningEnabled {
                     cameraViewController.showQrCodeTip()
                 }
-            }
             
             completion()
-        }
+       
         
         let navigationController = UINavigationController(rootViewController: vc)
         navigationController.applyStyle(withConfiguration: giniConfiguration)

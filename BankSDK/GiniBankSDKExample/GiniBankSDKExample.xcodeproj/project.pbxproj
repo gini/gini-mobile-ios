@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4C84B5DD264ED55100853F33 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C84B5DC264ED55100853F33 /* Credentials.plist */; };
+		764E0AD228CF274A00F96503 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 764E0AD428CF274A00F96503 /* InfoPlist.strings */; };
 		F4083ED72735B0CB004DDD3B /* LocalizableCustomName.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4083ED92735B0CB004DDD3B /* LocalizableCustomName.strings */; };
 		F40E1436273C06AA00734A0E /* PartialDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40E1435273C06AA00734A0E /* PartialDocument.swift */; };
 		F414A56325EBB87F00D04A80 /* DocumentAnalysisHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */; };
@@ -82,6 +83,8 @@
 /* Begin PBXFileReference section */
 		4C84B5DC264ED55100853F33 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
 		4C84B5DE2653FFF000853F33 /* Example Swift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Example Swift.entitlements"; sourceTree = "<group>"; };
+		764E0AD328CF274A00F96503 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		764E0AD528CF275000F96503 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F4083ED82735B0CB004DDD3B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F4083EDA2735B0CD004DDD3B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F40E1435273C06AA00734A0E /* PartialDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PartialDocument.swift; path = GiniBankSDKExample/PartialDocument.swift; sourceTree = SOURCE_ROOT; };
@@ -329,6 +332,7 @@
 				F441DC3725E5283300AAB09A /* Supporting Files */,
 				F441DCBC25E5694600AAB09A /* Settings.bundle */,
 				F4083ED92735B0CB004DDD3B /* LocalizableCustomName.strings */,
+				764E0AD428CF274A00F96503 /* InfoPlist.strings */,
 				F441DCB425E568C400AAB09A /* Main.strings */,
 				F441DCB225E568C400AAB09A /* LaunchScreen.strings */,
 				F441DD1225E5706F00AAB09A /* Info.plist */,
@@ -460,6 +464,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F45D7F172800583300C73C63 /* result_Gini_invoice_example.json in Resources */,
+				764E0AD228CF274A00F96503 /* InfoPlist.strings in Resources */,
 				F45D7F192800583800C73C63 /* Gini_invoice_example.pdf in Resources */,
 				F426ABF1289AB1D7007F4EB6 /* Colors.xcassets in Resources */,
 				F45D7F1A2800583B00C73C63 /* result_Gini_invoice_example_after_feedback.json in Resources */,
@@ -555,6 +560,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		764E0AD428CF274A00F96503 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				764E0AD328CF274A00F96503 /* en */,
+				764E0AD528CF275000F96503 /* de */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		F4083ED92735B0CB004DDD3B /* LocalizableCustomName.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

@@ -1,0 +1,14 @@
+/* 
+  InfoPlist.strings
+  GiniBankSDKExample
+
+  Created by David Vizaknai on 12.09.2022.
+
+ /* iOS camera permissions: OS system level permissions prompt. This key will be converted into NSCameraUsageDescription and used in the InfoPlist.strings files */
+
+ "NSCameraUsageDescription" = "Um Dokumente mit deinem Gerät zu scannen, erlaube den Zugriff auf deine Kamera.  📸 -> 📄 -> 🎉";
+
+ /* iOS photo library permissions: OS system level permissions prompt. This key will be converted into NSPhotoLibraryUsageDescription and used in the InfoPlist.strings files */
+
+ "NSPhotoLibraryUsageDescription" = "Um Dokumente auf deinem Gerät zu scannen, erlaube den Zugriff auf deine Fotos  🏞 -> 📄 -> 🎉";
+*/

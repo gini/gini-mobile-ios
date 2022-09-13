@@ -16,7 +16,11 @@ excluded: # paths to ignore during linting.
   - Pods
 included:
   - ../GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Help
+  - ../GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Error
+  - ../GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Utils.swift
   - ../GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Analysis
+  - ../GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Onboarding
+
 cyclomatic_complexity:
   ignores_case_statements: true
 line_length:

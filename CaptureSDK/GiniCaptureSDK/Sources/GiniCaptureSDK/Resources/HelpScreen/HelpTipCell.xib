@@ -58,7 +58,7 @@
                     <constraint firstItem="Igd-5e-XiR" firstAttribute="leading" secondItem="ehK-UX-btk" secondAttribute="trailing" constant="29" id="YJS-zy-Wa4"/>
                     <constraint firstAttribute="bottom" secondItem="Qww-XN-hks" secondAttribute="bottom" id="YwG-TI-qrw"/>
                     <constraint firstItem="Igd-5e-XiR" firstAttribute="centerY" secondItem="OWJ-Nn-MMP" secondAttribute="centerY" id="tXE-BF-ztv"/>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Igd-5e-XiR" secondAttribute="bottom" constant="24" id="xDR-H7-jhg"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Igd-5e-XiR" secondAttribute="bottom" constant="12" id="xDR-H7-jhg"/>
                     <constraint firstItem="Qww-XN-hks" firstAttribute="leading" secondItem="Igd-5e-XiR" secondAttribute="leading" id="xvG-dt-d5M"/>
                 </constraints>
             </tableViewCellContentView>
