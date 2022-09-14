@@ -82,6 +82,10 @@ final class AppCoordinator: Coordinator {
 //    configuration.primaryButtonShadowRadius = 10
 //    configuration.primaryButtonShadowOpacity = 0.7
 //    configuration.primaryButtonCornerRadius = 10
+
+        // Custom loading indicator customization example
+//        let customLoadingIndicator = CustomLoadingIndicator()
+//        configuration.analysisScreenLoadingIndicator = customLoadingIndicator
         
        return configuration
     }()
