@@ -17,9 +17,9 @@ class OnboardingViewController: UIViewController,
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var containerView: UIStackView!
         @IBOutlet weak var viewContainer: UIStackView!
-    fileprivate var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
+    private var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
     let configuration = GiniConfiguration.shared
-    fileprivate func configureCollectionView() {
+    private func configureCollectionView() {
         pagesCollection.register(
             UINib(nibName: "OnboardingPageCell", bundle: giniCaptureBundle()),
             forCellWithReuseIdentifier: "onboardingPageCellIdentifier")
