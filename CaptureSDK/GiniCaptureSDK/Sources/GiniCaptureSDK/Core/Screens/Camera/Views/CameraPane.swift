@@ -1,0 +1,51 @@
+//
+//  CameraPane.swift
+//  
+//
+//  Created by Krzysztof Kryniecki on 14/09/2022.
+//
+
+import UIKit
+
+class CameraPane: UIView {
+    @IBOutlet weak var cameraTitleLabel: UILabel!
+    @IBOutlet weak var captureButton: UIButton!
+    @IBOutlet weak var fileUploadButton: BottomLabelButton!
+    @IBOutlet weak var flashButton: BottomLabelButton!
+    @IBOutlet weak var thumbnailView: ThumbnailView!
+    let giniConfiguration:GiniConfiguration! = nil
+    
+    
+    func configureView(giniConfiguration: GiniConfiguration) {
+        thumbnailView.isHidden = true
+        fileUploadButton.configureButton(image: UIImageNamedPreferred(named: "folder") ?? UIImage() , name: NSLocalizedStringPreferredFormat(
+            "ginicapture.camera.fileImportButtonLabel",
+            comment: "Import photo"), giniconfiguration: giniConfiguration)
+        flashButton.configureButton(image: UIImageNamedPreferred(named: "flashOff") ?? UIImage(), name: NSLocalizedStringPreferredFormat(
+            "ginicapture.camera.flashButtonLabel",
+            comment: "Flash button"), giniconfiguration: giniConfiguration)
+        flashButton.iconView.image = UIImageNamedPreferred(named: "flashOn")
+    }
+    
+    /**
+     Disable all camera buttons except capture button.
+     */
+    func configureCameraButtonsForQRCodeTip() {
+        captureButton.isEnabled = true
+        flashButton.isEnabled = true
+        flashButton.isSelected = giniConfiguration.flashOnByDefault
+        fileUploadButton.actionButton.isEnabled = false
+        fileUploadButton.actionLabel.isEnabled = false
+        fileUploadButton.actionButton.isUserInteractionEnabled = false
+    }
+    
+    func configureCameraWhenTooltipDismissed() {
+        let isFlashOn = giniConfiguration.flashOnByDefault
+        captureButton.isEnabled = true
+        captureButton.isUserInteractionEnabled = true
+        flashButton.isEnabled = true
+        flashButton.isSelected = isFlashOn
+        fileUploadButton.isEnabled = true
+        fileUploadButton.isUserInteractionEnabled = true
+    }
+}

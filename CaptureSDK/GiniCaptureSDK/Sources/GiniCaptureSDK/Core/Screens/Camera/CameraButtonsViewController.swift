@@ -21,16 +21,14 @@ final class CameraButtonsViewController: UIViewController {
             flashToggleButtonContainerView.isHidden = !isFlashSupported
         }
     }
-    
+    enum Button: Equatable {
+        case fileImport, capture, imagesStack, flashToggle(Bool)
+    }
     fileprivate let giniConfiguration: GiniConfiguration
     fileprivate let currentDevice: UIDevice
     fileprivate let captureButtonMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
     fileprivate var cameraCaptureButtonImage: UIImage? {
         return UIImageNamedPreferred(named: "cameraCaptureButton")
-    }
-    
-    enum Button: Equatable {
-        case fileImport, capture, imagesStack, flashToggle(Bool)
     }
     
     lazy var captureButton: UIButton = {

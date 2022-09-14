@@ -9,10 +9,14 @@
 import Foundation
 import UIKit
 
-@objc public protocol CameraScreen where Self: UIViewController {
+@objc public protocol CameraScreen: CameraTips where Self: UIViewController {
     func animateToControlsView(imageDocument: GiniImageDocument, completion: (() -> Void)?)
     func setupCamera()
     func addValidationLoadingView() -> UIView
+    func replaceCapturedStackImages(with images: [UIImage])
+}
+
+@objc public protocol CameraTips {
     func hideCameraOverlay()
     func hideCaptureButton()
     func hideFileImportTip()
@@ -21,7 +25,6 @@ import UIKit
     func showCaptureButton()
     func showFileImportTip()
     func showQrCodeTip()
-    func replaceCapturedStackImages(with images: [UIImage])
 }
 
 public extension CameraScreen {
