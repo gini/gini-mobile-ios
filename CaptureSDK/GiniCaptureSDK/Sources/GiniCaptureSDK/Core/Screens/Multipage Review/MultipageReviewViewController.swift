@@ -81,7 +81,7 @@ public final class MultipageReviewViewController: UIViewController {
     private lazy var mainCollection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 16
+        layout.minimumLineSpacing = 32
         layout.minimumInteritemSpacing = 1
         
         var collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -109,6 +109,19 @@ public final class MultipageReviewViewController: UIViewController {
 
         return tipLabel
     }()
+
+    private lazy var pageControl: UIPageControl = {
+        let pageControl = UIPageControl()
+        pageControl.numberOfPages = pages.count
+        pageControl.currentPage = 0
+        pageControl.tintColor = UIColor.red
+        pageControl.pageIndicatorTintColor = UIColor.black
+        pageControl.currentPageIndicatorTintColor = UIColor.green
+        pageControl.translatesAutoresizingMaskIntoConstraints = false
+        pageControl.addTarget(self, action: #selector(pageControlTapHandler(sender:)), for: .touchUpInside)
+
+        return pageControl
+    }()
     
     // MARK: - Init
     
@@ -131,6 +144,7 @@ extension MultipageReviewViewController {
 
         view.addSubview(tipLabel)
         view.addSubview(mainCollection)
+        view.addSubview(pageControl)
         edgesForExtendedLayout = []
 
         addConstraints()
@@ -203,10 +217,21 @@ extension MultipageReviewViewController {
             tipLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 
             mainCollection.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: 16),
-            mainCollection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -100),
             mainCollection.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            mainCollection.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            mainCollection.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+
+            pageControl.topAnchor.constraint(equalTo: mainCollection.bottomAnchor, constant: 16),
+            pageControl.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            pageControl.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            pageControl.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
         ])
+    }
+
+    @objc
+    private func pageControlTapHandler(sender:UIPageControl) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: { [weak self] in
+            self?.mainCollection.scrollToItem(at: IndexPath(row: sender.currentPage, section: 0), at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
+        })
     }
 }
 
@@ -227,6 +252,9 @@ extension MultipageReviewViewController {
 extension MultipageReviewViewController: UICollectionViewDataSource {
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        pageControl.numberOfPages = pages.count
+        pageControl.isHidden = !(pages.count > 1)
+
         return pages.count
     }
     
@@ -292,6 +320,11 @@ extension MultipageReviewViewController: UICollectionViewDelegateFlowLayout {
                                layout collectionViewLayout: UICollectionViewLayout,
                                insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+    }
+
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let currentPage = scrollView.contentOffset.x / scrollView.frame.width
+        self.pageControl.currentPage = Int(currentPage.rounded(.up))
     }
 
 //    func visibleCell(in collectionView: UICollectionView) -> IndexPath? {
