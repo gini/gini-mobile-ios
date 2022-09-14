@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Camera2ViewController" customModule="GiniCaptureSDK">
             <connections>
+                <outlet property="cameraPane" destination="qey-Uj-2J2" id="fnE-94-RbB"/>
                 <outlet property="cameraTitleLabel" destination="lfm-sA-fAL" id="FRe-az-hHZ"/>
                 <outlet property="captureButton" destination="dQe-NY-Bi9" id="XVW-PR-aba"/>
                 <outlet property="fileUploadButton" destination="Oxa-p6-f53" id="qqP-RH-BFY"/>
@@ -29,7 +30,7 @@
                     <rect key="frame" x="0.0" y="689" width="414" height="207"/>
                     <color key="backgroundColor" white="0.0" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qey-Uj-2J2">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qey-Uj-2J2" customClass="CameraPane" customModule="GiniCaptureSDK">
                     <rect key="frame" x="0.0" y="689" width="414" height="173"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dQe-NY-Bi9">
@@ -87,6 +88,13 @@
                         <constraint firstAttribute="height" constant="173" id="nAy-AT-Brh"/>
                         <constraint firstAttribute="bottom" secondItem="zFz-gY-AMg" secondAttribute="bottom" id="p46-0k-x4c"/>
                     </constraints>
+                    <connections>
+                        <outlet property="cameraTitleLabel" destination="lfm-sA-fAL" id="QDr-0K-AJy"/>
+                        <outlet property="captureButton" destination="dQe-NY-Bi9" id="rcP-hO-22l"/>
+                        <outlet property="fileUploadButton" destination="Oxa-p6-f53" id="Tmd-jU-HTo"/>
+                        <outlet property="flashButton" destination="wph-4w-azi" id="fl1-4A-KQs"/>
+                        <outlet property="thumbnailView" destination="0Yg-3y-VKg" id="6JD-sz-z55"/>
+                    </connections>
                 </view>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cameraFocus" translatesAutoresizingMaskIntoConstraints="NO" id="2eO-4o-6WG">
                     <rect key="frame" x="0.0" y="60" width="414" height="629"/>

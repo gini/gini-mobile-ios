@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Camera2ViewController" customModule="GiniCaptureSDK">
             <connections>
+                <outlet property="cameraPane" destination="13s-Zb-nTw" id="kgw-sM-jQj"/>
                 <outlet property="captureButton" destination="hTe-DA-2qT" id="u3W-QU-ccv"/>
                 <outlet property="fileUploadButton" destination="fXR-zD-tfI" id="e9r-Dr-BkQ"/>
                 <outlet property="flashButton" destination="MKr-w2-Lou" id="PP1-29-GTG"/>
@@ -23,7 +24,7 @@
             <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="13s-Zb-nTw">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="13s-Zb-nTw" customClass="CameraPane" customModule="GiniCaptureSDK">
                     <rect key="frame" x="900" y="0.0" width="124" height="1366"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hTe-DA-2qT">
@@ -73,6 +74,12 @@
                         <constraint firstAttribute="trailing" secondItem="jYB-R4-Jjg" secondAttribute="trailing" id="oc7-x7-hM6"/>
                         <constraint firstItem="hTe-DA-2qT" firstAttribute="centerY" secondItem="13s-Zb-nTw" secondAttribute="centerY" id="zsn-TD-QbB"/>
                     </constraints>
+                    <connections>
+                        <outlet property="captureButton" destination="hTe-DA-2qT" id="Te8-hA-q3L"/>
+                        <outlet property="fileUploadButton" destination="fXR-zD-tfI" id="vOT-VU-27l"/>
+                        <outlet property="flashButton" destination="MKr-w2-Lou" id="06K-R2-Qon"/>
+                        <outlet property="thumbnailView" destination="UDD-dX-FJV" id="3mt-Az-b9p"/>
+                    </connections>
                 </view>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cameraFocus" translatesAutoresizingMaskIntoConstraints="NO" id="FMH-fq-Dwo">
                     <rect key="frame" x="0.0" y="24" width="900" height="1322"/>
