@@ -40,7 +40,7 @@
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="SS6-Vf-h3i">
                             <rect key="frame" x="75" y="321" width="170" height="90"/>
                             <subviews>
-                                <pageControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="fzW-pg-Fy6">
+                                <pageControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fzW-pg-Fy6">
                                     <rect key="frame" x="0.0" y="0.0" width="170" height="20"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="20" id="VZ7-dq-CjU"/>

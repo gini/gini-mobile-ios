@@ -9,8 +9,6 @@ import Foundation
 import UIKit
 
 class OnboardingViewController: UIViewController,
-                                UICollectionViewDelegate,
-                                UICollectionViewDataSource,
                                 UICollectionViewDelegateFlowLayout {
     @IBOutlet weak var pagesCollection: UICollectionView!
     @IBOutlet weak var pageControl: UIPageControl!
@@ -18,20 +16,31 @@ class OnboardingViewController: UIViewController,
     @IBOutlet weak var containerView: UIStackView!
         @IBOutlet weak var viewContainer: UIStackView!
     private var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
-    let configuration = GiniConfiguration.shared
+    private (set) var dataSource: OnboardingDataSource
+    private let configuration = GiniConfiguration.shared
+    init() {
+        dataSource = OnboardingDataSource(configuration: configuration)
+        super.init(nibName: "OnboardingViewController", bundle: giniCaptureBundle())
+      }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     private func configureCollectionView() {
         pagesCollection.register(
             UINib(nibName: "OnboardingPageCell", bundle: giniCaptureBundle()),
             forCellWithReuseIdentifier: "onboardingPageCellIdentifier")
-        pagesCollection.dataSource = self
-        pagesCollection.delegate = self
         pagesCollection.setNeedsLayout()
         pagesCollection.layoutIfNeeded()
         pagesCollection.reloadData()
+        pagesCollection.dataSource = dataSource
+    }
+    private func configurePageControl() {
+        pageControl.numberOfPages = dataSource.itemSections.count
     }
     private func setupView() {
         configureCollectionView()
         configureBottomNavigation()
+        configurePageControl()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,11 +91,6 @@ class OnboardingViewController: UIViewController,
         nextButton.removeFromSuperview()
         containerView.removeArrangedSubview(nextButton)
     }
-    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if collectionView == pagesCollection {
-            pagesCollection.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-        }
-    }
     @objc private func close() {
         dismiss(animated: true)
     }
@@ -97,27 +101,6 @@ class OnboardingViewController: UIViewController,
         close()
     }
 
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { 1 }
-
-    public func numberOfSections(in collectionView: UICollectionView) -> Int {
-        3
-    }
-
-    fileprivate func configureCell(_ cell: OnboardingPageCell) {
-        let image = UIImageNamedPreferred(named: "onboardingPage1")
-        cell.iconView.icon = image
-        cell.fullText.text = "Ensure that the document is flat, and positioned within the frame"
-        cell.title.text = "Flat paper within the frame"
-    }
-    public func collectionView(_ collectionView: UICollectionView,
-                               cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OnboardingPageCell.identifier,
-                                                         for: indexPath) as? OnboardingPageCell {
-            configureCell(cell)
-            return cell
-        }
-        fatalError("OnboardingPageCell wasn't initialized")
-    }
     // MARK: - UICollectionViewDelegateFlowLayout
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
