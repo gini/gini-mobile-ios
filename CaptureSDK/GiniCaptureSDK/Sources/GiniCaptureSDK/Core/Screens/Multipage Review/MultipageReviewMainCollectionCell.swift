@@ -13,10 +13,10 @@ final class MultipageReviewMainCollectionCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
-        
+        imageView.layer.borderWidth = 1.5
+        imageView.layer.borderColor = UIColor.blue.cgColor
         imageView.accessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.review.documentImageTitle",
                                                                         comment: "Document")
-        
         return imageView
     }()
 
