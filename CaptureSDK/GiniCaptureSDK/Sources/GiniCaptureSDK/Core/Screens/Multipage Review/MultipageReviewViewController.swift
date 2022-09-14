@@ -81,12 +81,13 @@ public final class MultipageReviewViewController: UIViewController {
     private lazy var mainCollection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 32
+        layout.minimumLineSpacing = 8
         layout.minimumInteritemSpacing = 1
         
         var collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.translatesAutoresizingMaskIntoConstraints = false
-
+        collection.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2,
+                                               dark: UIColor.GiniCapture.dark2).uiColor()
         collection.dataSource = self
         collection.delegate = self
         collection.isPagingEnabled = true
@@ -114,9 +115,11 @@ public final class MultipageReviewViewController: UIViewController {
         let pageControl = UIPageControl()
         pageControl.numberOfPages = pages.count
         pageControl.currentPage = 0
-        pageControl.tintColor = UIColor.red
-        pageControl.pageIndicatorTintColor = UIColor.black
-        pageControl.currentPageIndicatorTintColor = UIColor.green
+        pageControl.pageIndicatorTintColor = GiniColor(light: UIColor.GiniCapture.dark1,
+                                                       dark: UIColor.GiniCapture.light1)
+                                                       .uiColor().withAlphaComponent(0.3)
+        pageControl.currentPageIndicatorTintColor = GiniColor(light: UIColor.GiniCapture.dark1,
+                                                              dark: UIColor.GiniCapture.light1).uiColor()
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.addTarget(self, action: #selector(pageControlTapHandler(sender:)), for: .touchUpInside)
 
@@ -142,6 +145,7 @@ extension MultipageReviewViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         view.addSubview(tipLabel)
         view.addSubview(mainCollection)
         view.addSubview(pageControl)
@@ -313,13 +317,13 @@ extension MultipageReviewViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width - 32, height: collectionView.frame.height)
+        return CGSize(width: collectionView.frame.width - 64, height: collectionView.frame.height)
     }
 
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        return UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 32)
     }
 
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -327,8 +331,8 @@ extension MultipageReviewViewController: UICollectionViewDelegateFlowLayout {
         self.pageControl.currentPage = Int(currentPage.rounded(.up))
     }
 
-//    func visibleCell(in collectionView: UICollectionView) -> IndexPath? {
-//        collectionView.layoutIfNeeded() // It is needed due to a bug in UIKit.
-//        return collectionView.indexPathsForVisibleItems.first
-//    }
+    func visibleCell(in collectionView: UICollectionView) -> IndexPath? {
+        collectionView.layoutIfNeeded() // It is needed due to a bug in UIKit.
+        return collectionView.indexPathsForVisibleItems.first
+    }
 }
