@@ -164,11 +164,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         if let documentsType = visionDocuments.type {
             switch documentsType {
             case .image:
-                if let imageDocuments = visionDocuments as? [GiniImageDocument],
-                    let lastDocument = imageDocuments.last {
-
-                    showMultipageReview()
-                }
+                showMultipageReview()
             case .qrcode, .pdf:
                 showAnalysisScreen()
             }
