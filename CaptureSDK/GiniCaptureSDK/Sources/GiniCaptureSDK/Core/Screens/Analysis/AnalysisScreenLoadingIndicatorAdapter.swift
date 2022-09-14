@@ -11,11 +11,11 @@ import Foundation
 */
 public protocol AnalysisScreenLoadingIndicatorAdapter: InjectedViewAdapter {
     /**
-     *  Called when the screen is loaded, can be also called from the AnalysisViewController's showAnimation() method.
+     *  Called when the screen is loaded. You should start the loading indicator animation in this method.
      */
     func startAnimation()
     /**
-     *  Can be called from the AnalysisViewController's hideAnimation() method.
+     *  Called when the screen has disappeared. You should stop the loading indicator animation in this method.
      */
     func stopAnimation()
 }

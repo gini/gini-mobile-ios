@@ -98,7 +98,8 @@ import UIKit
 
     private lazy var overlayView: UIView = {
         let overlayView = UIView()
-        overlayView.backgroundColor = GiniColor(light: .GiniCapture.light1, dark: .GiniCapture.dark1).uiColor().withAlphaComponent(0.6)
+        overlayView.backgroundColor = GiniColor(light: .GiniCapture.light1,
+                                                dark: .GiniCapture.dark1).uiColor().withAlphaComponent(0.6)
         return overlayView
     }()
 
@@ -228,19 +229,19 @@ import UIKit
     }
 
     private func addImageView() {
-        self.view.addSubview(imageView)
+        view.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
 
         Constraints.active(item: imageView, attr: .top, relatedBy: .equal, to: view.safeAreaLayoutGuide, attr: .top,
                           priority: 999)
         Constraints.active(item: imageView, attr: .bottom, relatedBy: .equal, to: view.safeAreaLayoutGuide,
                            attr: .bottom, priority: 999)
-        Constraints.active(item: imageView, attr: .trailing, relatedBy: .equal, to: self.view, attr: .trailing)
-        Constraints.active(item: imageView, attr: .leading, relatedBy: .equal, to: self.view, attr: .leading)
+        Constraints.active(item: imageView, attr: .trailing, relatedBy: .equal, to: view, attr: .trailing)
+        Constraints.active(item: imageView, attr: .leading, relatedBy: .equal, to: view, attr: .leading)
     }
 
     private func addOverlay() {
-        self.view.insertSubview(overlayView, aboveSubview: imageView)
+        view.insertSubview(overlayView, aboveSubview: imageView)
         overlayView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([overlayView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -286,7 +287,7 @@ import UIKit
         if let container = container {
             container.translatesAutoresizingMaskIntoConstraints = false
             loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
-            self.view.addSubview(container)
+            view.addSubview(container)
             container.addSubview(loadingIndicator)
 
             NSLayoutConstraint.activate([
@@ -299,7 +300,7 @@ import UIKit
                 loadingIndicator.centerYAnchor.constraint(equalTo: container.centerYAnchor)
             ])
         } else {
-            self.view.addSubview(loadingIndicatorView)
+            view.addSubview(loadingIndicatorView)
 
             NSLayoutConstraint.activate([
                 loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -312,10 +313,10 @@ import UIKit
         loadingIndicatorContainer.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(loadingIndicatorContainer)
         NSLayoutConstraint.activate([
-            loadingIndicatorContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            loadingIndicatorContainer.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
-            loadingIndicatorContainer.topAnchor.constraint(greaterThanOrEqualTo: self.view.topAnchor),
-            loadingIndicatorContainer.leadingAnchor.constraint(greaterThanOrEqualTo: self.view.leadingAnchor,
+            loadingIndicatorContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loadingIndicatorContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            loadingIndicatorContainer.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor),
+            loadingIndicatorContainer.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
                                                                constant: 16)])
     }
 
@@ -327,7 +328,7 @@ import UIKit
     }
 
     private func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {
-        let captureSuggestions = CaptureSuggestionsView(superView: self.view,
+        let captureSuggestions = CaptureSuggestionsView(superView: view,
                                                         bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
         captureSuggestions.start()
     }
