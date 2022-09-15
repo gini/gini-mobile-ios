@@ -376,6 +376,11 @@ public final class GiniBankConfiguration: NSObject {
         }
     }
     fileprivate var onboardingCustomPages: [UIView]?
+    /**
+     Set custom onboarding pages
+     - note: For your convenience we provide the `OnboardingPageNew` struct.
+     */
+    public var customOnboardingPages: [OnboardingPageNew]?
     
     /**
      Sets the back button text in the navigation bar on the review screen. Use this if you only want to show the title.
@@ -1319,6 +1324,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.onboardingShowAtFirstLaunch = self.onboardingShowAtFirstLaunch
         configuration.onboardingTextColor = self.onboardingTextColor
         configuration.onboardingScreenBackgroundColor = self.onboardingScreenBackgroundColor
+        configuration.customOnboardingPages = self.customOnboardingPages
         
         configuration.navigationBarReviewTitleBackButton = self.navigationBarReviewTitleBackButton
         configuration.navigationBarReviewTitleCloseButton = self.navigationBarReviewTitleCloseButton
