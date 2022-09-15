@@ -37,6 +37,7 @@ final class ThumbnailView: UIView {
         var label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adjustsFontForContentSizeCategory = true
+        label.textAlignment = .center
         label.text = ""
         return label
     }()
@@ -125,8 +126,10 @@ final class ThumbnailView: UIView {
             stackIndicatorCircleView.trailingAnchor.constraint(equalTo: trailingAnchor),
             stackIndicatorCircleView.heightAnchor.constraint(equalToConstant: stackCountCircleSize.height),
             stackIndicatorCircleView.widthAnchor.constraint(equalToConstant: stackCountCircleSize.width),
-            stackIndicatorLabel.centerXAnchor.constraint(equalTo: stackIndicatorCircleView.centerXAnchor),
-            stackIndicatorLabel.centerYAnchor.constraint(equalTo: stackIndicatorCircleView.centerYAnchor),
+            stackIndicatorLabel.leadingAnchor.constraint(equalTo: stackIndicatorCircleView.leadingAnchor),
+            stackIndicatorLabel.trailingAnchor.constraint(equalTo: stackIndicatorCircleView.trailingAnchor),
+            stackIndicatorLabel.topAnchor.constraint(equalTo: stackIndicatorCircleView.topAnchor),
+            stackIndicatorLabel.bottomAnchor.constraint(equalTo: stackIndicatorCircleView.bottomAnchor),
             heightAnchor.constraint(equalToConstant: thumbnailSize.height),
             widthAnchor.constraint(equalToConstant: thumbnailSize.width)
         ])
