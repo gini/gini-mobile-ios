@@ -57,6 +57,12 @@ public protocol MultipageReviewViewControllerDelegate: AnyObject {
      - parameter viewController: `MultipageReviewViewController` where the pages are reviewed.
      */
     func multipageReviewDidTapAddImage(_ viewController: MultipageReviewViewController)
+    /**
+     Called when a user taps on the process documents button
+
+     - parameter viewController: `MultipageReviewViewController` where the pages are reviewed.
+     */
+    func multipageReviewDidTapProcess(_ viewController: MultipageReviewViewController)
 }
 
 //swiftlint:disable file_length
