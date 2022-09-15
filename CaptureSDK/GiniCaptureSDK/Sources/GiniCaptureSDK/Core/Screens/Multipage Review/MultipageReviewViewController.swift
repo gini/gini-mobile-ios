@@ -90,7 +90,6 @@ public final class MultipageReviewViewController: UIViewController {
                                                dark: UIColor.GiniCapture.dark2).uiColor()
         collection.dataSource = self
         collection.delegate = self
-        collection.isPagingEnabled = true
         collection.showsHorizontalScrollIndicator = false
         collection.register(MultipageReviewMainCollectionCell.self,
                             forCellWithReuseIdentifier: MultipageReviewMainCollectionCell.reuseIdentifier)
@@ -317,6 +316,7 @@ extension MultipageReviewViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
+
         return CGSize(width: collectionView.frame.width - 64, height: collectionView.frame.height)
     }
 
@@ -327,12 +327,41 @@ extension MultipageReviewViewController: UICollectionViewDelegateFlowLayout {
     }
 
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let currentPage = scrollView.contentOffset.x / scrollView.frame.width
-        self.pageControl.currentPage = Int(currentPage.rounded(.up))
+
+        setCurrentPage(basedOn: scrollView)
+        let offset = calulateOffset(for: scrollView)
+        scrollView.setContentOffset(offset, animated: true)
     }
 
-    func visibleCell(in collectionView: UICollectionView) -> IndexPath? {
-        collectionView.layoutIfNeeded() // It is needed due to a bug in UIKit.
-        return collectionView.indexPathsForVisibleItems.first
+    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        guard !decelerate else { return }
+        setCurrentPage(basedOn: scrollView)
+        let offset = calulateOffset(for: scrollView)
+        scrollView.setContentOffset(offset, animated: true)
+    }
+
+    private func setCurrentPage(basedOn scrollView: UIScrollView) {
+        guard let layout = mainCollection.collectionViewLayout as? UICollectionViewFlowLayout
+        else { return }
+        let offset = scrollView.contentOffset
+        let cellWidthIncludingSpacing = view.frame.width - 64 + layout.minimumLineSpacing
+        let index = (offset.x + scrollView.contentInset.left) / cellWidthIncludingSpacing
+        let roundedIndex = round(index)
+        self.pageControl.currentPage = Int(roundedIndex)
+    }
+
+    private func calulateOffset(for scrollView: UIScrollView) -> CGPoint {
+        guard let layout = mainCollection.collectionViewLayout as? UICollectionViewFlowLayout
+        else { return CGPoint.zero }
+        let cellWidthIncludingSpacing = view.frame.width - 64 + layout.minimumLineSpacing
+
+        var offset = scrollView.contentOffset
+        let index = (offset.x + scrollView.contentInset.left) / cellWidthIncludingSpacing
+        let roundedIndex = round(index)
+
+        offset = CGPoint(x: roundedIndex * cellWidthIncludingSpacing - scrollView.contentInset.left,
+                         y: -scrollView.contentInset.top)
+
+        return offset
     }
 }
