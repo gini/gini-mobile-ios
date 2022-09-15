@@ -9,7 +9,7 @@
 import UIKit
 
 final class Camera2ViewController: UIViewController, CameraScreen {
-    
+
     /**
      The object that acts as the delegate of the camera view controller.
     */
@@ -48,26 +48,24 @@ final class Camera2ViewController: UIViewController, CameraScreen {
             super.init(nibName: "CameraiPad", bundle: giniCaptureBundle())
         }
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         showUploadButton()
         setupView()
         setupCamera()
-        cameraButtonsViewModel.isFlashOn = cameraPreviewViewController.isFlashOn 
     }
-    
-    
+
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setStatusBarStyle(to: giniConfiguration.statusBarStyle)
         cameraPane.toggleCaptureButtonActivation(state: true)
     }
-    
+
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         delegate?.cameraDidAppear(self)
@@ -77,7 +75,7 @@ final class Camera2ViewController: UIViewController, CameraScreen {
         super.viewDidLayoutSubviews()
         opaqueView?.frame = cameraPreviewViewController.view.frame
     }
-    
+
     func setupView() {
         edgesForExtendedLayout = []
         view.backgroundColor = giniConfiguration.cameraContainerViewBackgroundColor.uiColor()
@@ -92,7 +90,7 @@ final class Camera2ViewController: UIViewController, CameraScreen {
         cameraPane.configureView(giniConfiguration: giniConfiguration)
         configureButtons()
     }
-    
+
     func configureButtons() {
         configureLeftButtons()
         cameraButtonsViewModel.captureAction = { [weak self] in
@@ -132,7 +130,7 @@ final class Camera2ViewController: UIViewController, CameraScreen {
             cameraPane.fileUploadButton.isHidden = true
         }
     }
-    
+
     private func configureLeftButtons() {
         cameraButtonsViewModel.flashAction = { [weak self] isFlashOn in
             self?.cameraPreviewViewController.isFlashOn = isFlashOn
@@ -145,13 +143,13 @@ final class Camera2ViewController: UIViewController, CameraScreen {
         cameraButtonsViewModel.importAction = { [weak self] in
             self?.showImportFileSheet()
         }
-        
+
         cameraPane.fileUploadButton.actionButton.addTarget(
             cameraButtonsViewModel,
             action: #selector(cameraButtonsViewModel.importPressed),
             for: .touchUpInside)
     }
-    
+
     func configureConstraints() {
         NSLayoutConstraint.activate([
             cameraPreviewViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
@@ -161,15 +159,15 @@ final class Camera2ViewController: UIViewController, CameraScreen {
             ]
         )
     }
-    
-    private func setupFlashButton(state:Bool) {
+
+    private func setupFlashButton(state: Bool) {
         if state {
             cameraPane.flashButton.iconView.image = UIImageNamedPreferred(named: "flashOn")
         } else {
             cameraPane.flashButton.iconView.image = UIImageNamedPreferred(named: "flashOff")
         }
     }
-    
+
     fileprivate func didPick(_ document: GiniCaptureDocument) {
         if let delegate = delegate {
             delegate.camera(self, didCapture: document)
@@ -177,12 +175,12 @@ final class Camera2ViewController: UIViewController, CameraScreen {
             assertionFailure("The CameraViewControllerDelegate has not been assigned")
         }
     }
-    
+
     override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: nil)
     }
-    
+
     /**
      Replaces the captured images stack content with new images.
      
@@ -191,7 +189,7 @@ final class Camera2ViewController: UIViewController, CameraScreen {
     public func replaceCapturedStackImages(with images: [UIImage]) {
         cameraPane.thumbnailView.replaceStackImages(with: images)
     }
-    
+
     func addValidationLoadingView() -> UIView {
         let loadingIndicator = UIActivityIndicatorView(style: .whiteLarge)
         let blurredView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
@@ -205,7 +203,6 @@ final class Camera2ViewController: UIViewController, CameraScreen {
         UIView.animate(withDuration: AnimationDuration.medium, animations: {
             blurredView.alpha = 1
         })
-        
         return blurredView
     }
 }
@@ -213,7 +210,7 @@ final class Camera2ViewController: UIViewController, CameraScreen {
 // MARK: - Image capture
 
 extension Camera2ViewController {
-    
+
     /**
      Used to animate the captured image, first shrinking it and then translating it to the captured images stack view.
      
@@ -225,7 +222,6 @@ extension Camera2ViewController {
         guard let documentImage = imageDocument.previewImage else { return }
         let previewImageView = previewCapturedImageView(with: documentImage)
         view.addSubview(previewImageView)
-        
         UIView.animate(withDuration: AnimationDuration.medium, animations: {
             previewImageView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
         }, completion: { _ in
@@ -234,11 +230,11 @@ extension Camera2ViewController {
                     let thumbnailSize = self.cameraPane.thumbnailView.thumbnailImageView.bounds.size
                     let scaleRatioY = thumbnailSize.height / self.cameraPreviewViewController.view.frame.height
                     let scaleRatioX = thumbnailSize.width / self.cameraPreviewViewController.view.frame.width
-                    
                     previewImageView.transform = CGAffineTransform(scaleX: scaleRatioX, y: scaleRatioY)
-                    
-                    previewImageView.frame.origin = self.cameraPane.thumbnailView.thumbnailImageView.convert(self.cameraPane.thumbnailView.thumbnailImageView.frame, to: self.view).origin
-                     
+                    let convertedFrame = self.cameraPane.thumbnailView.thumbnailImageView.convert(
+                            self.cameraPane.thumbnailView.thumbnailImageView.frame,
+                            to: self.view)
+                    previewImageView.frame.origin = convertedFrame.origin
                 })
                 if self.cameraPane.thumbnailView.isHidden == false {
                     UIView.addKeyframe(withRelativeStartTime: 0.9, relativeDuration: 1, animations: {
@@ -253,7 +249,7 @@ extension Camera2ViewController {
         })
         cameraPane.toggleCaptureButtonActivation(state: true)
     }
-    
+
     private func previewCapturedImageView(with image: UIImage) -> UIImageView {
         let imageFrame = cameraPreviewViewController.view.frame
         let imageView = UIImageView(frame: imageFrame)
@@ -265,22 +261,21 @@ extension Camera2ViewController {
         imageView.layer.shadowRadius = 4
         imageView.layer.shadowOpacity = 0.3
         imageView.layer.shadowPath = UIBezierPath(rect: imageView.bounds).cgPath
-        
         return imageView
     }
-    
+
 }
 
 // MARK: - CameraPreviewViewControllerDelegate
 
 extension Camera2ViewController: CameraPreviewViewControllerDelegate {
-    
+
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol) {
         cameraPane.toggleCaptureButtonActivation(state: true)
         cameraPane.flashButton.isHidden = !camera.isFlashSupported
     }
-    
+
     func cameraPreview(_ viewController: CameraPreviewViewController,
                        didDetect qrCodeDocument: GiniQRCodeDocument) {
         if detectedQRCodeDocument != qrCodeDocument {
@@ -300,9 +295,7 @@ extension Camera2ViewController {
 
     @objc fileprivate func showImportFileSheet() {
         let alertViewController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
         var alertViewControllerMessage: String = .localized(resource: CameraStrings.popupTitleImportPDF)
-        
         if giniConfiguration.fileImportSupportedTypes == .pdf_and_images {
             alertViewController.addAction(UIAlertAction(title: .localized(resource: CameraStrings.popupOptionPhotos),
                                                         style: .default) { [unowned self] _ in
@@ -310,18 +303,15 @@ extension Camera2ViewController {
             })
             alertViewControllerMessage = .localized(resource: CameraStrings.popupTitleImportPDForPhotos)
         }
-        
+
         alertViewController.addAction(UIAlertAction(title: .localized(resource: CameraStrings.popupOptionFiles),
                                                     style: .default) { [unowned self] _ in
             self.delegate?.camera(self, didSelect: .explorer)
         })
-        
         alertViewController.addAction(UIAlertAction(title: .localized(resource: CameraStrings.popupCancel),
                                                     style: .cancel, handler: nil))
-        
         alertViewController.message = alertViewControllerMessage
         alertViewController.popoverPresentationController?.sourceView = cameraPane.fileUploadButton
-        
         self.present(alertViewController, animated: true, completion: nil)
     }
 }

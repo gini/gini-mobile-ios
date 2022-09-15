@@ -27,7 +27,7 @@ import UIKit
      */
     @objc func camera(_ viewController: CameraScreen,
                       didCapture document: GiniCaptureDocument)
-    
+
     /**
      Called when a user selects a picker from the picker selector sheet.
      
@@ -35,14 +35,14 @@ import UIKit
      - parameter documentPicker: `DocumentPickerType` selected in the sheet.
      */
     @objc func camera(_ viewController: CameraScreen, didSelect documentPicker: DocumentPickerType)
-    
+
     /**
      Called when the `CameraViewController` appears.
      
      - parameter viewController: Camera view controller that appears.
      */
     @objc func cameraDidAppear(_ viewController: CameraScreen)
-    
+
     /**
      Called when a user taps the `MultipageReviewButton` (the one with the thumbnail of the images(s) taken).
      Once this method is called, the `MultipageReviewViewController` should be presented.
