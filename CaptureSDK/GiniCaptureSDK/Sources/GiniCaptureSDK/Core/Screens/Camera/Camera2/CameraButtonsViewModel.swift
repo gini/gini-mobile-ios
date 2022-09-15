@@ -20,20 +20,20 @@ public final class CameraButtonsViewModel {
     init(trackingDelegate: CameraScreenTrackingDelegate? = nil) {
         self.trackingDelegate = trackingDelegate
     }
-    
+
     @objc func toggleFlash() {
         isFlashOn = !isFlashOn
         flashAction?(isFlashOn)
     }
-    
+
     @objc func importPressed() {
         importAction?()
     }
-    
+
     @objc func thumbnailPressed() {
         imageStackAction?()
     }
-    
+
     @objc func capturePressed() {
         trackingDelegate?.onCameraScreenEvent(event: Event(type: .takePicture))
         captureAction?()
@@ -48,7 +48,8 @@ public final class CameraButtonsViewModel {
         guard let imageData = imageData,
             error == nil else {
             let errorMessage = error?.message ?? "Image data was nil"
-            let errorLog = ErrorLog(description: "There was an error while capturing a picture: \(String(describing: errorMessage))",
+            let errorLog = ErrorLog(
+                description: "There was an error while capturing a picture: \(String(describing: errorMessage))",
                                     error: error)
             giniConfiguration.errorLogger.handleErrorLog(error: errorLog)
             assertionFailure("There was an error while capturing a picture")

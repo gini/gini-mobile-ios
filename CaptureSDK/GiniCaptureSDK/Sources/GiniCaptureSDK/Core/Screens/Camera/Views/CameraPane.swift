@@ -13,20 +13,26 @@ class CameraPane: UIView {
     @IBOutlet weak var fileUploadButton: BottomLabelButton!
     @IBOutlet weak var flashButton: BottomLabelButton!
     @IBOutlet weak var thumbnailView: ThumbnailView!
-    let giniConfiguration:GiniConfiguration! = nil
-    
-    
+    let giniConfiguration: GiniConfiguration! = nil
+
     func configureView(giniConfiguration: GiniConfiguration) {
         thumbnailView.isHidden = true
-        fileUploadButton.configureButton(image: UIImageNamedPreferred(named: "folder") ?? UIImage() , name: NSLocalizedStringPreferredFormat(
+        fileUploadButton.configureButton(
+            image: UIImageNamedPreferred(
+                named: "folder") ?? UIImage(),
+            name: NSLocalizedStringPreferredFormat(
             "ginicapture.camera.fileImportButtonLabel",
-            comment: "Import photo"), giniconfiguration: giniConfiguration)
-        flashButton.configureButton(image: UIImageNamedPreferred(named: "flashOff") ?? UIImage(), name: NSLocalizedStringPreferredFormat(
+            comment: "Import photo"),
+            giniconfiguration: giniConfiguration)
+        flashButton.configureButton(
+            image: UIImageNamedPreferred(named: "flashOff") ?? UIImage(),
+            name: NSLocalizedStringPreferredFormat(
             "ginicapture.camera.flashButtonLabel",
-            comment: "Flash button"), giniconfiguration: giniConfiguration)
+            comment: "Flash button"),
+            giniconfiguration: giniConfiguration)
         flashButton.iconView.image = UIImageNamedPreferred(named: "flashOn")
     }
-    
+
     /**
      Disable all camera buttons except capture button.
      */
@@ -38,7 +44,7 @@ class CameraPane: UIView {
         fileUploadButton.actionLabel.isEnabled = false
         fileUploadButton.actionButton.isUserInteractionEnabled = false
     }
-    
+
     func configureCameraWhenTooltipDismissed() {
         let isFlashOn = giniConfiguration.flashOnByDefault
         captureButton.isEnabled = true
@@ -48,8 +54,8 @@ class CameraPane: UIView {
         fileUploadButton.isEnabled = true
         fileUploadButton.isUserInteractionEnabled = true
     }
-    
-    func toggleCaptureButtonActivation(state:Bool) {
+
+    func toggleCaptureButtonActivation(state: Bool) {
         captureButton.isUserInteractionEnabled = state
         captureButton.isEnabled = state
     }
