@@ -3,6 +3,7 @@
 //  
 //
 //  Created by Krzysztof Kryniecki on 14/09/2022.
+//  Copyright © 2022 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -46,46 +47,8 @@ extension Camera2ViewController {
         cameraPane.captureButton.isEnabled = false
         cameraPane.flashButton.isEnabled = false
     }
-    
-    /**
-     Show the fileImportTip. Should be called when onboarding is dismissed.
-     */
-    public func showFileImportTip() {
-        configureCameraButtonsForFileImportTip()
-        createFileImportTip(giniConfiguration: giniConfiguration)
-        fileImportToolTipView?.show {
-            self.opaqueView?.alpha = 1
-        }
-        ToolTipView.shouldShowFileImportToolTip = false
-    }
-    
-    /**
-     Hide the fileImportTip. Should be called when onboarding is presented.
-     */
-    public func hideFileImportTip() {
-        fileImportToolTipView?.alpha = 0
-    }
-    
-    /**
-     Show the QR code Tip. Should be called when fileImportTip is dismissed.
-     */
-    public func showQrCodeTip() {
-        if ToolTipView.shouldShowQRCodeToolTip && giniConfiguration.qrCodeScanningEnabled {
-            cameraPane.configureCameraButtonsForQRCodeTip()
-            createQRCodeTip(giniConfiguration: giniConfiguration)
-            qrCodeToolTipView?.show {
-                self.opaqueView?.alpha = 1
-            }
-            ToolTipView.shouldShowQRCodeToolTip = false
-            shouldShowQRCodeNext = false
-        }
-    }
-    
-    /**
-     Hide the QR code Tip. Should be called when onboarding is presented.
-     */
-    public func hideQrCodeTip() {
-        self.qrCodeToolTipView?.alpha = 0
-    }
 
+    public func setupCamera() {
+        cameraPreviewViewController.setupCamera()
+    }
 }

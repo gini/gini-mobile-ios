@@ -48,4 +48,9 @@ class CameraPane: UIView {
         fileUploadButton.isEnabled = true
         fileUploadButton.isUserInteractionEnabled = true
     }
+    
+    func toggleCaptureButtonActivation(state:Bool) {
+        captureButton.isUserInteractionEnabled = state
+        captureButton.isEnabled = state
+    }
 }

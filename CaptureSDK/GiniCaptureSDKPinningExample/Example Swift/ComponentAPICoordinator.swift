@@ -128,7 +128,7 @@ final class ComponentAPICoordinator: NSObject, Coordinator {
 
 extension ComponentAPICoordinator {
     fileprivate func showCameraScreen() {
-        cameraScreen = CameraViewController(giniConfiguration: giniConfiguration)
+        cameraScreen = Camera2ViewController(giniConfiguration: giniConfiguration)
         cameraScreen?.delegate = self
         cameraScreen?.navigationItem
             .leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("close",

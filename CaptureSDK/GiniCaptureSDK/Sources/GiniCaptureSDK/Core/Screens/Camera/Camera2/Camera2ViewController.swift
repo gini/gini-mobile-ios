@@ -8,14 +8,12 @@
 
 import UIKit
 
-class Camera2ViewController: UIViewController, CameraScreen {
+final class Camera2ViewController: UIViewController, CameraScreen {
     
     /**
      The object that acts as the delegate of the camera view controller.
     */
     var opaqueView: UIView?
-    var fileImportToolTipView: ToolTipView?
-    var qrCodeToolTipView: ToolTipView?
     let giniConfiguration: GiniConfiguration
     var detectedQRCodeDocument: GiniQRCodeDocument?
     var currentQRCodePopup: QRCodeDetectedPopupView?
@@ -26,13 +24,10 @@ class Camera2ViewController: UIViewController, CameraScreen {
        return cameraPreviewViewController
     }()
     public weak var delegate: CameraViewControllerDelegate?
-    public weak var trackingDelegate: CameraScreenTrackingDelegate?
 
     @IBOutlet weak var cameraPane: CameraPane!
     private var cameraButtonsViewModel = CameraButtonsViewModel()
-    private var isFlashOn: Bool = false
-    
-    
+
     /**
      Designated initializer for the `CameraViewController` which allows
      to set the `GiniConfiguration for the camera screen`.
@@ -43,7 +38,8 @@ class Camera2ViewController: UIViewController, CameraScreen {
      - returns: A view controller instance allowing the user to take a picture or pick a document.
     */
     public init(
-        giniConfiguration: GiniConfiguration
+        giniConfiguration: GiniConfiguration,
+        viewModel: CameraButtonsViewModel
     ) {
         self.giniConfiguration = giniConfiguration
         if UIDevice.current.isIphone {
@@ -62,15 +58,14 @@ class Camera2ViewController: UIViewController, CameraScreen {
         showUploadButton()
         setupView()
         setupCamera()
+        cameraButtonsViewModel.isFlashOn = cameraPreviewViewController.isFlashOn 
     }
+    
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setStatusBarStyle(to: giniConfiguration.statusBarStyle)
-        if let tooltip = fileImportToolTipView, tooltip.isHidden == false {
-        } else {
-           toggleCaptureButtonActivation(state: true)
-        }
+        cameraPane.toggleCaptureButtonActivation(state: true)
     }
     
     public override func viewDidAppear(_ animated: Bool) {
@@ -80,8 +75,6 @@ class Camera2ViewController: UIViewController, CameraScreen {
 
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        fileImportToolTipView?.arrangeViews()
-        qrCodeToolTipView?.arrangeViews()
         opaqueView?.frame = cameraPreviewViewController.view.frame
     }
     
@@ -96,22 +89,25 @@ class Camera2ViewController: UIViewController, CameraScreen {
         cameraPane.cameraTitleLabel.text = NSLocalizedStringPreferredFormat(
             "ginicapture.camera.infoLabel",
             comment: "Info label")
+        cameraPane.configureView(giniConfiguration: giniConfiguration)
         configureButtons()
     }
     
     func configureButtons() {
         configureLeftButtons()
         cameraButtonsViewModel.captureAction = { [weak self] in
-            self?.toggleCaptureButtonActivation(state: false)
-            if let qrToolTip = self?.qrCodeToolTipView, !qrToolTip.isHidden {
-                qrToolTip.dismiss(withCompletion: nil)
-                self?.qrCodeToolTipView = nil
-            }
-            self?.trackingDelegate?.onCameraScreenEvent(event: Event(type: .takePicture))
+            self?.cameraPane.toggleCaptureButtonActivation(state: false)
             self?.cameraPreviewViewController.captureImage { [weak self] data, error in
                 guard let self = self else { return }
-                self.cameraDidCapture(imageData: data, error: error)
-                self.toggleCaptureButtonActivation(state: true)
+                if let image = self.cameraButtonsViewModel.didCapture(
+                    imageData: data,
+                    error: error,
+                    orientation: UIApplication.shared.statusBarOrientation,
+                    giniConfiguration: self.giniConfiguration) {
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                    self.didPick(image)
+                }
+                self.cameraPane.toggleCaptureButtonActivation(state: true)
             }
         }
         cameraPane.captureButton.addTarget(
@@ -139,6 +135,7 @@ class Camera2ViewController: UIViewController, CameraScreen {
     
     private func configureLeftButtons() {
         cameraButtonsViewModel.flashAction = { [weak self] isFlashOn in
+            self?.cameraPreviewViewController.isFlashOn = isFlashOn
             self?.setupFlashButton(state: isFlashOn)
         }
         cameraPane.flashButton.actionButton.addTarget(
@@ -146,17 +143,7 @@ class Camera2ViewController: UIViewController, CameraScreen {
             action: #selector(cameraButtonsViewModel.toggleFlash),
             for: .touchUpInside)
         cameraButtonsViewModel.importAction = { [weak self] in
-            if let tooltip = self?.fileImportToolTipView, tooltip.isHidden == false {
-                self?.showImportFileSheet()
-            } else {
-                if let fileImportToolTipView = self?.fileImportToolTipView, ToolTipView.shouldShowFileImportToolTip {
-                    self?.shouldShowQRCodeNext = true
-                    fileImportToolTipView.dismiss(withCompletion: nil)
-                    self?.fileImportToolTipView = nil
-                } else {
-                    self?.showImportFileSheet()
-                }
-            }
+            self?.showImportFileSheet()
         }
         
         cameraPane.fileUploadButton.actionButton.addTarget(
@@ -176,16 +163,11 @@ class Camera2ViewController: UIViewController, CameraScreen {
     }
     
     private func setupFlashButton(state:Bool) {
-        if isFlashOn {
+        if state {
             cameraPane.flashButton.iconView.image = UIImageNamedPreferred(named: "flashOn")
         } else {
             cameraPane.flashButton.iconView.image = UIImageNamedPreferred(named: "flashOff")
         }
-    }
-    
-    func toggleCaptureButtonActivation(state:Bool) {
-        cameraPane.captureButton.isUserInteractionEnabled = state
-        cameraPane.captureButton.isEnabled = state
     }
     
     fileprivate func didPick(_ document: GiniCaptureDocument) {
@@ -198,18 +180,7 @@ class Camera2ViewController: UIViewController, CameraScreen {
     
     override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-
-        coordinator.animate(alongsideTransition: { [weak self] _ in
-            guard let self = self else {
-                return
-            }
-            self.fileImportToolTipView?.arrangeViews()
-            self.qrCodeToolTipView?.arrangeViews()
-        })
-    }
-    
-    public func setupCamera() {
-        cameraPreviewViewController.setupCamera()
+        coordinator.animate(alongsideTransition: nil)
     }
     
     /**
@@ -280,29 +251,7 @@ extension Camera2ViewController {
                 completion?()
             })
         })
-        if let tooltip = fileImportToolTipView, tooltip.isHidden == false {
-        } else {
-            toggleCaptureButtonActivation(state: true)
-        }
-    }
-    
-    private func cameraDidCapture(imageData: Data?, error: CameraError?) {
-        guard let imageData = imageData,
-            error == nil else {
-            let errorMessage = error?.message ?? "Image data was nil"
-            let errorLog = ErrorLog(description: "There was an error while capturing a picture: \(String(describing: errorMessage))",
-                                    error: error)
-            giniConfiguration.errorLogger.handleErrorLog(error: errorLog)
-            assertionFailure("There was an error while capturing a picture")
-            return
-        }
-        
-        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        
-        let imageDocument = GiniImageDocument(data: imageData,
-                                              imageSource: .camera,
-                                              deviceOrientation: UIApplication.shared.statusBarOrientation)
-        didPick(imageDocument)
+        cameraPane.toggleCaptureButtonActivation(state: true)
     }
     
     private func previewCapturedImageView(with image: UIImage) -> UIImageView {
@@ -328,18 +277,12 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
     
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol) {
-        if let tooltip = fileImportToolTipView, tooltip.isHidden == false {
-        } else {
-            toggleCaptureButtonActivation(state: true)
-        }
+        cameraPane.toggleCaptureButtonActivation(state: true)
         cameraPane.flashButton.isHidden = !camera.isFlashSupported
     }
     
     func cameraPreview(_ viewController: CameraPreviewViewController,
                        didDetect qrCodeDocument: GiniQRCodeDocument) {
-        if let tooltip = qrCodeToolTipView, !tooltip.isHidden {
-            qrCodeToolTipView?.dismiss()
-        }
         if detectedQRCodeDocument != qrCodeDocument {
             detectedQRCodeDocument = qrCodeDocument
             showPopup(forQRDetected: qrCodeDocument) { [weak self] in
@@ -356,9 +299,6 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 extension Camera2ViewController {
 
     @objc fileprivate func showImportFileSheet() {
-        if let tooltip = fileImportToolTipView, !tooltip.isHidden {        fileImportToolTipView?.dismiss(withCompletion: nil)
-        }
-        
         let alertViewController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         var alertViewControllerMessage: String = .localized(resource: CameraStrings.popupTitleImportPDF)

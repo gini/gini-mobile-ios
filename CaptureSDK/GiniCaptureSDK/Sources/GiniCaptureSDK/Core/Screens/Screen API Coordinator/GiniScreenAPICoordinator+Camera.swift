@@ -80,9 +80,12 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
     }
     
     func createCameraViewController() -> CameraScreen {
-        let cameraViewController = Camera2ViewController(giniConfiguration: giniConfiguration)
+        let cameraButtonsViewModel = CameraButtonsViewModel(trackingDelegate: trackingDelegate)
+        let cameraViewController = Camera2ViewController(
+            giniConfiguration: giniConfiguration,
+            viewModel: cameraButtonsViewModel
+        )
         cameraViewController.delegate = self
-        cameraViewController.trackingDelegate = trackingDelegate
         cameraViewController.title = .localized(resource: NavigationBarStrings.cameraTitle)
         
         cameraViewController.setupNavigationItem(usingResources: closeButtonResource,
@@ -130,17 +133,15 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         
         cameraViewController?.hideCameraOverlay()
         cameraViewController?.hideCaptureButton()
-        cameraViewController?.hideFileImportTip()
-        cameraViewController?.hideQrCodeTip()
         
         let vc = OnboardingViewController(nibName: "OnboardingViewController", bundle: giniCaptureBundle())
             guard let cameraViewController = self.cameraViewController else { return }
             cameraViewController.showCameraOverlay()
             cameraViewController.showCaptureButton()
                 if giniConfiguration.fileImportSupportedTypes != GiniConfiguration.GiniCaptureImportFileTypes.none {
-                    cameraViewController.showFileImportTip()
+                    //TODO: remove cameraViewController.showFileImportTip()
                 } else if giniConfiguration.qrCodeScanningEnabled {
-                    cameraViewController.showQrCodeTip()
+                    //TODO: removecameraViewController.showQrCodeTip()
                 }
             
             completion()

@@ -19,12 +19,12 @@ import UIKit
 @objc public protocol CameraTips {
     func hideCameraOverlay()
     func hideCaptureButton()
-    func hideFileImportTip()
-    func hideQrCodeTip()
+//TODO: Remove        func hideFileImportTip()
+//TODO: Remove        func hideQrCodeTip()
     func showCameraOverlay()
     func showCaptureButton()
-    func showFileImportTip()
-    func showQrCodeTip()
+//TODO: Remove    func showFileImportTip()
+//TODO: Remove    func showQrCodeTip()
 }
 
 public extension CameraScreen {
