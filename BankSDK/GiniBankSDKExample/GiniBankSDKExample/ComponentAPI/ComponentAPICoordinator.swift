@@ -630,7 +630,6 @@ extension ComponentAPICoordinator: ReviewViewControllerDelegate {
 // MARK: MultipageReviewViewControllerDelegate
 
 extension ComponentAPICoordinator: MultipageReviewViewControllerDelegate {
-    
     func multipageReview(_ viewController: MultipageReviewViewController,
                          didTapRetryUploadFor page: GiniCapturePage) {
         if let index = pages.index(of: page.document) {
@@ -674,6 +673,8 @@ extension ComponentAPICoordinator: MultipageReviewViewControllerDelegate {
     func multipageReviewDidTapAddImage(_ controller: MultipageReviewViewController) {
         navigationController.popViewController(animated: true)
     }
+
+    func multipageReviewDidTapProcess(_ viewController: MultipageReviewViewController) {}
 }
 
 // MARK: NoResultsScreenDelegate
