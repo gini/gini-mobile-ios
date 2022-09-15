@@ -46,33 +46,33 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
     }
     lazy var itemSections: [OnboardingPageNew] = {
         var sections: [OnboardingPageNew] =  [
-            OnboardingPageNew(imageName: "onboardingPage1", title: NSLocalizedStringPreferredFormat(
-                    "ginicapture.onboarding.firstPage",
-                    comment: "supported format for section 1 title"), description: NSLocalizedStringPreferredFormat(
-                    "ginicapture.help.supportedFormats.section.1.title",
-                    comment: "supported format for section 1 title")),
-            OnboardingPageNew(imageName: "onboardingPage2", title: NSLocalizedStringPreferredFormat(
-                    "ginicapture.onboarding.secondPage",
-                    comment: "supported format for section 1 title"), description: NSLocalizedStringPreferredFormat(
-                    "ginicapture.help.supportedFormats.section.1.title",
-                    comment: "supported format for section 1 title"))
+            OnboardingPageNew(imageName: "onboardingFlatPaper", title: NSLocalizedStringPreferredFormat(
+                    "ginicapture.onboarding.flatPaper.title",
+                    comment: "onboarding flat paper title"), description: NSLocalizedStringPreferredFormat(
+                    "ginicapture.onboarding.flatPaper.description",
+                    comment: "onboarding flat paper description")),
+            OnboardingPageNew(imageName: "onboardingGoodLightning", title: NSLocalizedStringPreferredFormat(
+                    "ginicapture.onboarding.goodLightning.title",
+                    comment: "onboarding good lightning title"), description: NSLocalizedStringPreferredFormat(
+                    "ginicapture.onboarding.goodLightning.description",
+                    comment: "onboarding good lightning description"))
         ]
         if giniConfiguration.multipageEnabled {
                 sections.append(
-                    OnboardingPageNew(imageName: "onboardingPage3", title: NSLocalizedStringPreferredFormat(
-                            "ginicapture.onboarding.thirdPage",
-                            comment: "supported format for section 1 title"),
+                    OnboardingPageNew(imageName: "onboardingMultiPages", title: NSLocalizedStringPreferredFormat(
+                            "ginicapture.onboarding.multiPages.title",
+                            comment: "onboarding multi pages title"),
                                       description: NSLocalizedStringPreferredFormat(
-                            "ginicapture.help.supportedFormats.section.1.title",
-                            comment: "supported format for section 1 title")))
+                            "ginicapture.onboarding.multiPages.description",
+                            comment: "onboarding multi pages description")))
         }
         if giniConfiguration.qrCodeScanningEnabled {
             sections.append(
-                OnboardingPageNew(imageName: "onboardingPage4", title: NSLocalizedStringPreferredFormat(
-                        "ginicapture.onboarding.thirdPage",
-                        comment: "supported format for section 1 title"), description: NSLocalizedStringPreferredFormat(
-                        "ginicapture.help.supportedFormats.section.1.title",
-                        comment: "supported format for section 1 title")))
+                OnboardingPageNew(imageName: "onboardingQRCode", title: NSLocalizedStringPreferredFormat(
+                        "ginicapture.onboarding.qrCode.title",
+                        comment: "onboarding qrcode title"), description: NSLocalizedStringPreferredFormat(
+                        "ginicapture.onboarding.qrCode.description",
+                        comment: "onboarding qrcode description")))
     }
         return sections
     }()

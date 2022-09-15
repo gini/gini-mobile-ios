@@ -61,6 +61,15 @@
 "ginicapture.onboarding.fourthPage" = "Ensure good lighting when photographing the invoice or remittance slip";
 "ginicapture.onboarding.fifthPage"  = "It's now possible to analyse an invoice with multiple pages!";
 
+"ginicapture.onboarding.flatPaper.title"  = "Flat paper within the frame";
+"ginicapture.onboarding.flatPaper.description"  = "Ensure that the document is flat, and positioned within the frame";
+"ginicapture.onboarding.goodLightning.title" = "Good lighting";
+"ginicapture.onboarding.goodLightning.description" = "Proper lighting leads to better results than flash";
+"ginicapture.onboarding.multiPages.title"  = "Add multiple pages";
+"ginicapture.onboarding.multiPages.description"  = "It’s now possible to analyse an invoice with multiple pages";
+"ginicapture.onboarding.qrCode.title"  = "QR codes supported";
+"ginicapture.onboarding.qrCode.description"  = "Besides invoices, QR codes
+are also supported";
 "ginicapture.review.top"                = "Is the document complete, in focus and in the correct orientation?";
 "ginicapture.review.bottom"             = "Double-tap to check the focus";
 "ginicapture.review.rotateButton"       = "Rotate document";
