@@ -40,7 +40,6 @@ class BottomLabelButton: UIButton {
     
     init(giniConfiguration: GiniConfiguration = .shared) {
         super.init(frame: .zero)
-
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -48,7 +47,6 @@ class BottomLabelButton: UIButton {
         addSubview(actionLabel)
         addSubview(iconView)
         addSubview(actionButton)
-    
     }
 
     override func awakeFromNib() {

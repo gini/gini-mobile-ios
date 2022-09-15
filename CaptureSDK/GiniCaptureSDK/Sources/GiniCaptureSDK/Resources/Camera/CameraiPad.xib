@@ -12,10 +12,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Camera2ViewController" customModule="GiniCaptureSDK">
             <connections>
                 <outlet property="cameraPane" destination="13s-Zb-nTw" id="kgw-sM-jQj"/>
-                <outlet property="captureButton" destination="hTe-DA-2qT" id="u3W-QU-ccv"/>
-                <outlet property="fileUploadButton" destination="fXR-zD-tfI" id="e9r-Dr-BkQ"/>
-                <outlet property="flashButton" destination="MKr-w2-Lou" id="PP1-29-GTG"/>
-                <outlet property="thumbnailView" destination="UDD-dX-FJV" id="Mzg-M8-KjB"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Kff-Gp-d1h"/>
             </connections>
         </placeholder>

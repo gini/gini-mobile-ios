@@ -3,12 +3,13 @@
 //  
 //
 //  Created by Krzysztof Kryniecki on 14/09/2022.
+//  Copyright © 2022 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 
 extension Camera2ViewController {
-    
+    /*
     func createFileImportTip(giniConfiguration: GiniConfiguration) {
         opaqueView = OpaqueViewFactory.create(with: giniConfiguration.toolTipOpaqueBackgroundStyle)
         opaqueView?.alpha = 0
@@ -61,24 +62,7 @@ extension Camera2ViewController {
             self?.cameraPane.configureCameraWhenTooltipDismissed()
         }
     }
-    
-    /**
-     Handle tooltip dismiss on tap outside.
-     */
-    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch = touches.first
-        if  let fileImportTooltip = self.fileImportToolTipView, touch?.view != fileImportTooltip && !fileImportTooltip.isHidden  {
-            fileImportToolTipView?.dismiss {
-                if !ToolTipView.shouldShowFileImportToolTip && ToolTipView.shouldShowQRCodeToolTip {
-                    self.showQrCodeTip()
-                    self.fileImportToolTipView = nil
-                }
-            }
-        } else if let qrTooltip = self.qrCodeToolTipView, touch?.view !=  qrTooltip && !qrTooltip.isHidden  {
-            qrCodeToolTipView?.dismiss()
-            qrCodeToolTipView = nil
-        }
-    }
+    */
     
     func showPopup(forQRDetected qrDocument: GiniQRCodeDocument, didTapDone: @escaping () -> Void) {
         DispatchQueue.main.async { [weak self] in

@@ -13,11 +13,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Camera2ViewController" customModule="GiniCaptureSDK">
             <connections>
                 <outlet property="cameraPane" destination="qey-Uj-2J2" id="fnE-94-RbB"/>
-                <outlet property="cameraTitleLabel" destination="lfm-sA-fAL" id="FRe-az-hHZ"/>
-                <outlet property="captureButton" destination="dQe-NY-Bi9" id="XVW-PR-aba"/>
-                <outlet property="fileUploadButton" destination="Oxa-p6-f53" id="qqP-RH-BFY"/>
-                <outlet property="flashButton" destination="wph-4w-azi" id="xKt-R1-T4F"/>
-                <outlet property="thumbnailView" destination="0Yg-3y-VKg" id="MGJ-b3-83J"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Rqx-4l-iKM"/>
             </connections>
         </placeholder>

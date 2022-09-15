@@ -3,9 +3,11 @@
 //  
 //
 //  Created by Krzysztof Kryniecki on 14/09/2022.
+//  Copyright © 2022 Gini GmbH. All rights reserved.
 //
 
 import Foundation
+import UIKit
 
 public final class CameraButtonsViewModel {
     var isFlashOn: Bool = false
@@ -13,38 +15,49 @@ public final class CameraButtonsViewModel {
     var importAction: (() -> Void)?
     var captureAction: (() -> Void)?
     var imageStackAction: (() -> Void)?
-    
-    enum ButtonAction: Equatable {
-        case fileImport, capture, imagesStack, flashToggle(Bool)
-    }
 
+    public weak var trackingDelegate: CameraScreenTrackingDelegate?
+    init(trackingDelegate: CameraScreenTrackingDelegate? = nil) {
+        self.trackingDelegate = trackingDelegate
+    }
+    
     @objc func toggleFlash() {
         isFlashOn = !isFlashOn
+        flashAction?(isFlashOn)
     }
     
     @objc func importPressed() {
-        cameraButtons(didTapOn: .fileImport)
+        importAction?()
     }
     
     @objc func thumbnailPressed() {
-        cameraButtons(didTapOn: .imagesStack)
+        imageStackAction?()
     }
     
     @objc func capturePressed() {
-        cameraButtons(didTapOn: .capture)
+        trackingDelegate?.onCameraScreenEvent(event: Event(type: .takePicture))
+        captureAction?()
     }
-    
-    func cameraButtons(didTapOn button: ButtonAction) {
-        switch button {
-        case let .flashToggle(isOn):
-            flashAction?(isOn)
-        case .fileImport:
-            importAction?()
-        case .capture:
-            captureAction?()
-        case .imagesStack:
-            imageStackAction?()
+
+    func didCapture(
+        imageData: Data?,
+        error: CameraError?,
+        orientation: UIInterfaceOrientation,
+        giniConfiguration: GiniConfiguration
+    ) -> GiniImageDocument? {
+        guard let imageData = imageData,
+            error == nil else {
+            let errorMessage = error?.message ?? "Image data was nil"
+            let errorLog = ErrorLog(description: "There was an error while capturing a picture: \(String(describing: errorMessage))",
+                                    error: error)
+            giniConfiguration.errorLogger.handleErrorLog(error: errorLog)
+            assertionFailure("There was an error while capturing a picture")
+            return nil
         }
+        let imageDocument = GiniImageDocument(
+            data: imageData,
+            imageSource: .camera,
+            deviceOrientation: orientation)
+        return imageDocument
     }
-    
 }
