@@ -89,10 +89,13 @@ extension GiniScreenAPICoordinator: MultipageReviewViewControllerDelegate {
     }
     
     @objc fileprivate func closeMultipageScreen() {
-        
         trackingDelegate?.onReviewScreenEvent(event: Event(type: .back))
         
         self.screenAPINavigationController.popViewController(animated: true)
+    }
+
+    public func multipageReviewDidTapProcess(_ viewController: MultipageReviewViewController) {
+        showAnalysisScreen()
     }
     
     func showMultipageReview() {
@@ -103,7 +106,6 @@ extension GiniScreenAPICoordinator: MultipageReviewViewControllerDelegate {
     }
     
     func refreshMultipageReviewNextButton(with pages: [GiniCapturePage]) {
-        
         multiPageReviewViewController.navigationItem
             .rightBarButtonItem?
             .isEnabled = pages.allSatisfy { $0.isUploaded }

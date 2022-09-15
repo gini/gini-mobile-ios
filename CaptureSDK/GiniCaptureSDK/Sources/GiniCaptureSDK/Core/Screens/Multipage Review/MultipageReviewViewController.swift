@@ -124,6 +124,25 @@ public final class MultipageReviewViewController: UIViewController {
 
         return pageControl
     }()
+
+    private lazy var processButton: MultilineTitleButton = {
+        let button = MultilineTitleButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.layer.cornerRadius = 16
+        button.backgroundColor = UIColor.GiniCapture.accent1
+        button.setTitle("Process documents", for: .normal)
+        return button
+    }()
+
+    private var addPagesButtonView: AddPageButtonView?
+
+    private lazy var cellSize: CGSize = {
+        let width = self.view.bounds.width - 64
+        let height = width * 1.4142 // A4 aspect ratio
+        return CGSize(width: width, height: height)
+    }()
     
     // MARK: - Init
     
@@ -148,6 +167,15 @@ extension MultipageReviewViewController {
         view.addSubview(tipLabel)
         view.addSubview(mainCollection)
         view.addSubview(pageControl)
+        view.addSubview(processButton)
+
+        processButton.addTarget(self, action: #selector(didTapProcessDocument), for: .touchUpInside)
+        addPagesButtonView = AddPageButtonView().loadNib() as? AddPageButtonView
+        addPagesButtonView?.translatesAutoresizingMaskIntoConstraints = false
+        addPagesButtonView?.isHidden = !giniConfiguration.multipageEnabled
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapAddPagesButton))
+        addPagesButtonView?.addGestureRecognizer(gestureRecognizer)
+        view.addSubview(addPagesButtonView!)
         edgesForExtendedLayout = []
 
         addConstraints()
@@ -212,8 +240,6 @@ extension MultipageReviewViewController {
     }
     
     fileprivate func addConstraints() {
-        // mainCollection
-
         NSLayoutConstraint.activate([
             tipLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             tipLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -223,10 +249,18 @@ extension MultipageReviewViewController {
             mainCollection.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             mainCollection.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 
-            pageControl.topAnchor.constraint(equalTo: mainCollection.bottomAnchor, constant: 16),
+            pageControl.topAnchor.constraint(equalTo: mainCollection.bottomAnchor, constant: 32),
             pageControl.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             pageControl.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            pageControl.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
+
+            processButton.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: 32),
+            processButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
+            processButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            processButton.heightAnchor.constraint(equalToConstant: 50),
+            processButton.bottomAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
+
+            addPagesButtonView!.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
+            addPagesButtonView!.leadingAnchor.constraint(equalTo: processButton.trailingAnchor, constant: 8)
         ])
     }
 
@@ -235,6 +269,16 @@ extension MultipageReviewViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: { [weak self] in
             self?.mainCollection.scrollToItem(at: IndexPath(row: sender.currentPage, section: 0), at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
         })
+    }
+
+    @objc
+    private func didTapAddPagesButton() {
+        delegate?.multipageReviewDidTapAddImage(self)
+    }
+
+    @objc
+    private func didTapProcessDocument() {
+        delegate?.multipageReviewDidTapProcess(self)
     }
 }
 
@@ -287,7 +331,6 @@ extension MultipageReviewViewController: UICollectionViewDataSource {
             }
         }
     }
-    
 }
 
 // MARK: - MultipageReviewCollectionsAdapterDelegate
@@ -316,8 +359,7 @@ extension MultipageReviewViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
-
-        return CGSize(width: collectionView.frame.width - 64, height: collectionView.frame.height)
+        return cellSize
     }
 
     public func collectionView(_ collectionView: UICollectionView,
@@ -327,7 +369,6 @@ extension MultipageReviewViewController: UICollectionViewDelegateFlowLayout {
     }
 
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-
         setCurrentPage(basedOn: scrollView)
         let offset = calulateOffset(for: scrollView)
         scrollView.setContentOffset(offset, animated: true)
@@ -344,7 +385,7 @@ extension MultipageReviewViewController: UICollectionViewDelegateFlowLayout {
         guard let layout = mainCollection.collectionViewLayout as? UICollectionViewFlowLayout
         else { return }
         let offset = scrollView.contentOffset
-        let cellWidthIncludingSpacing = view.frame.width - 64 + layout.minimumLineSpacing
+        let cellWidthIncludingSpacing = cellSize.width + layout.minimumLineSpacing
         let index = (offset.x + scrollView.contentInset.left) / cellWidthIncludingSpacing
         let roundedIndex = round(index)
         self.pageControl.currentPage = Int(roundedIndex)
@@ -353,7 +394,7 @@ extension MultipageReviewViewController: UICollectionViewDelegateFlowLayout {
     private func calulateOffset(for scrollView: UIScrollView) -> CGPoint {
         guard let layout = mainCollection.collectionViewLayout as? UICollectionViewFlowLayout
         else { return CGPoint.zero }
-        let cellWidthIncludingSpacing = view.frame.width - 64 + layout.minimumLineSpacing
+        let cellWidthIncludingSpacing = cellSize.width + layout.minimumLineSpacing
 
         var offset = scrollView.contentOffset
         let index = (offset.x + scrollView.contentInset.left) / cellWidthIncludingSpacing
