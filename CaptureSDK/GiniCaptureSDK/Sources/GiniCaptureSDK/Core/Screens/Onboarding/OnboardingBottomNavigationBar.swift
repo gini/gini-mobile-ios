@@ -19,6 +19,6 @@ final class OnboardingBottomNavigationBar: UIView {
     }
 
     fileprivate func configureView() {
-        let configuration = GiniConfiguration.shared
+        _ = GiniConfiguration.shared
     }
 }

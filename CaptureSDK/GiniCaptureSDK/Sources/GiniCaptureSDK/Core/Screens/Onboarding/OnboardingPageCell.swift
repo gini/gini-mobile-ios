@@ -15,7 +15,6 @@ class OnboardingPageCell: UICollectionViewCell {
     @IBOutlet weak var fullText: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
     func configureCell() {}
 }
