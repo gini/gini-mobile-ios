@@ -1110,6 +1110,11 @@ public final class GiniBankConfiguration: NSObject {
      Shows the return reasons dialog.
      */
     @objc public var enableReturnReasons: Bool = true
+
+    /**
+     * Set an adapter implementation to show a custom loading indicator on the document analysis screen.
+     */
+    public var analysisScreenLoadingIndicator: AnalysisScreenLoadingIndicatorAdapter?
     
     // MARK: - TODO DELETE
     /**
@@ -1368,6 +1373,8 @@ public final class GiniBankConfiguration: NSObject {
         configuration.giniErrorLoggerIsOn = self.giniErrorLoggerIsOn
         configuration.customGiniErrorLoggerDelegate = self.customGiniErrorLoggerDelegate
         configuration.albumsScreenSelectMorePhotosTextColor = self.albumsScreenSelectMorePhotosTextColor
+
+        configuration.analysisScreenLoadingIndicator = self.analysisScreenLoadingIndicator
         
         // Undocumented--Xamarin only
         configuration.closeButtonResource = self.closeButtonResource
