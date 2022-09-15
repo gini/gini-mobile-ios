@@ -555,7 +555,12 @@ import UIKit
         }
     }
     fileprivate var onboardingCustomPages: [UIView]?
-    
+    /**
+     Set custom onboarding pages
+     - note: For your convenience we provide the `OnboardingPageNew` struct.
+     */
+    public var customOnboardingPages: [OnboardingPageNew]?
+        
     /**
      Enable/disable the bottom navigation bar.
      */
