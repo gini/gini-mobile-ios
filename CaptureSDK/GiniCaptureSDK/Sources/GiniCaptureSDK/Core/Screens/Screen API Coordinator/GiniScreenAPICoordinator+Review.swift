@@ -7,35 +7,6 @@
 
 import UIKit
 
-// MARK: - Review Screen
-
-extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
-    
-    public func review(_ viewController: ReviewViewController, didReview document: GiniCaptureDocument) {
-        updateDocument(for: document)
-    }
-    
-    func createReviewScreen(withDocument document: GiniCaptureDocument,
-                            isFirstScreen: Bool = false) -> ReviewViewController {
-        let reviewViewController = ReviewViewController(document: document,
-                                                        giniConfiguration: giniConfiguration)
-        reviewViewController.delegate = self
-        reviewViewController.title = .localized(resource: NavigationBarStrings.reviewTitle)
-        reviewViewController.setupNavigationItem(usingResources: nextButtonResource,
-                                                 selector: #selector(showAnalysisScreen),
-                                                 position: .right,
-                                                 target: self)
-        
-        let backResource = isFirstScreen ? closeButtonResource : backButtonResource
-        reviewViewController.setupNavigationItem(usingResources: backResource,
-                                                 selector: #selector(back),
-                                                 position: .left,
-                                                 target: self)
-        
-        return reviewViewController
-    }
-}
-
 // MARK: - Multipage Review screen
 
 extension GiniScreenAPICoordinator: MultipageReviewViewControllerDelegate {
