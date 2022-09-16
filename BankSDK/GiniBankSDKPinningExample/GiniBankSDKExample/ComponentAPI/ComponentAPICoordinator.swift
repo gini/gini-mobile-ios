@@ -91,7 +91,7 @@ final class ComponentAPICoordinator: NSObject, Coordinator, DigitalInvoiceViewCo
     }()
     
     fileprivate(set) var analysisScreen: AnalysisViewController?
-    fileprivate(set) var cameraScreen: CameraViewController?
+    fileprivate(set) var cameraScreen: CameraScreen?
     fileprivate(set) var resultsScreen: ResultTableViewController?
     fileprivate(set) var reviewScreen: ReviewViewController?
     fileprivate(set) lazy var documentPickerCoordinator =
@@ -135,7 +135,8 @@ final class ComponentAPICoordinator: NSObject, Coordinator, DigitalInvoiceViewCo
 
 extension ComponentAPICoordinator {
     fileprivate func showCameraScreen() {
-        cameraScreen = CameraViewController(giniConfiguration: giniBankConfiguration.captureConfiguration())
+        let buttonsViewModel = CameraButtonsViewModel()
+        cameraScreen = Camera2ViewController(giniConfiguration: giniBankConfiguration.captureConfiguration(), viewModel: buttonsViewModel)
         cameraScreen?.delegate = self
         cameraScreen?.navigationItem
             .leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("close",
@@ -431,7 +432,7 @@ extension ComponentAPICoordinator {
     }
     
     func didTapRetry() {
-        if (navigationController.viewControllers.compactMap { $0 as? CameraViewController}).first == nil {
+        if (navigationController.viewControllers.compactMap { $0 as? CameraScreen}).first == nil {
             closeComponentAPI()
             return
         }
@@ -463,7 +464,7 @@ extension ComponentAPICoordinator: UINavigationControllerDelegate {
             }
         }
         
-        if toVC is CameraViewController &&
+        if toVC is CameraScreen &&
             (fromVC is ReviewViewController ||
                 fromVC is AnalysisViewController ||
                 fromVC is ImageAnalysisNoResultsViewController) {
@@ -478,7 +479,7 @@ extension ComponentAPICoordinator: UINavigationControllerDelegate {
             closeComponentAPI()
         }
         
-        if let cameraViewController = toVC as? CameraViewController, fromVC is MultipageReviewViewController {
+        if let cameraViewController = toVC as? CameraScreen, fromVC is MultipageReviewViewController {
             cameraViewController
                 .replaceCapturedStackImages(with: pages.compactMap { $0.document.previewImage })
         }

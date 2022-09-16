@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 @objc public protocol CameraScreen: CameraTips where Self: UIViewController {
+    weak var delegate: CameraViewControllerDelegate? {get set}
     func animateToControlsView(imageDocument: GiniImageDocument, completion: (() -> Void)?)
     func setupCamera()
     func addValidationLoadingView() -> UIView

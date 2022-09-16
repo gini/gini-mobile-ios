@@ -92,7 +92,7 @@ final class ComponentAPICoordinator: NSObject, Coordinator, DigitalInvoiceViewCo
     }()
     
     fileprivate(set) var analysisScreen: AnalysisViewController?
-    fileprivate(set) var cameraScreen: CameraViewController?
+    fileprivate(set) var cameraScreen: CameraScreen?
     fileprivate(set) var resultsScreen: ResultTableViewController?
     fileprivate(set) var reviewScreen: ReviewViewController?
     fileprivate(set) lazy var documentPickerCoordinator =
@@ -136,7 +136,8 @@ final class ComponentAPICoordinator: NSObject, Coordinator, DigitalInvoiceViewCo
 
 extension ComponentAPICoordinator {
     fileprivate func showCameraScreen() {
-        cameraScreen = CameraViewController(giniConfiguration: giniBankConfiguration.captureConfiguration())
+        let buttonsViewModel = CameraButtonsViewModel()
+        cameraScreen = Camera2ViewController(giniConfiguration: giniBankConfiguration.captureConfiguration(), viewModel: buttonsViewModel)
         cameraScreen?.delegate = self
         cameraScreen?.navigationItem
             .leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("close",
