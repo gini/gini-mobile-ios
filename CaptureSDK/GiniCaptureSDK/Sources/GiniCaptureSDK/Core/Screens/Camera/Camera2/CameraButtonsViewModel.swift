@@ -17,7 +17,7 @@ public final class CameraButtonsViewModel {
     var imageStackAction: (() -> Void)?
 
     public weak var trackingDelegate: CameraScreenTrackingDelegate?
-    init(trackingDelegate: CameraScreenTrackingDelegate? = nil) {
+    public init(trackingDelegate: CameraScreenTrackingDelegate? = nil) {
         self.trackingDelegate = trackingDelegate
     }
 

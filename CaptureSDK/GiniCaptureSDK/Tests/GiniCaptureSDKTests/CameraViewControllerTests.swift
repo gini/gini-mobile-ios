@@ -12,7 +12,7 @@ import AVFoundation
 
 final class CameraViewControllerTests: XCTestCase {
     
-    var cameraViewController: CameraViewController!
+    var cameraViewController: CameraScreen!
     var giniConfiguration: GiniConfiguration!
     var screenAPICoordinator: GiniScreenAPICoordinator!
     let visionDelegateMock = GiniCaptureDelegateMock()

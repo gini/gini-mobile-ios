@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class Camera2ViewController: UIViewController, CameraScreen {
+public final class Camera2ViewController: UIViewController, CameraScreen {
 
     /**
      The object that acts as the delegate of the camera view controller.
@@ -53,7 +53,7 @@ final class Camera2ViewController: UIViewController, CameraScreen {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         showUploadButton()
         setupView()
@@ -189,10 +189,12 @@ final class Camera2ViewController: UIViewController, CameraScreen {
      - parameter images: New images to be shown in the stack. (Last image will be shown on top)
      */
     public func replaceCapturedStackImages(with images: [UIImage]) {
-        cameraPane.thumbnailView.replaceStackImages(with: images)
+        if cameraPane != nil {
+            cameraPane.thumbnailView.replaceStackImages(with: images)
+        }
     }
 
-    func addValidationLoadingView() -> UIView {
+    public func addValidationLoadingView() -> UIView {
         let loadingIndicator = UIActivityIndicatorView(style: .whiteLarge)
         let blurredView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
         blurredView.alpha = 0
