@@ -40,11 +40,6 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
 
 extension GiniScreenAPICoordinator: MultipageReviewViewControllerDelegate {
     public func multipageReview(_ controller: MultipageReviewViewController,
-                         didRotate page: GiniCapturePage) {
-        updateDocument(for: page.document)
-    }
-    
-    public func multipageReview(_ controller: MultipageReviewViewController,
                          didDelete page: GiniCapturePage) {
         removeFromDocuments(document: page.document)
         visionDelegate?.didCancelReview(for: page.document)
@@ -53,12 +48,7 @@ extension GiniScreenAPICoordinator: MultipageReviewViewControllerDelegate {
             closeMultipageScreen()
         }
     }
-    
-    public func multipageReview(_ controller: MultipageReviewViewController,
-                         didReorder pages: [GiniCapturePage]) {
-        replaceDocuments(with: pages)
-    }
-    
+
     public func multipageReview(_ viewController: MultipageReviewViewController,
                          didTapRetryUploadFor page: GiniCapturePage) {
         update(page.document, withError: nil, isUploaded: false)
