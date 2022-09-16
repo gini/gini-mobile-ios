@@ -21,8 +21,6 @@ class BottomLabelButton: UIButton {
     lazy var actionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = .localized(resource: CameraStrings.importFileButtonLabel)
-        label.font = GiniConfiguration.shared.customFont.with(weight: .regular, size: 12, style: .footnote)
         label.adjustsFontForContentSizeCategory = true
         label.textAlignment = .center
         label.textColor = .white
@@ -38,7 +36,7 @@ class BottomLabelButton: UIButton {
         return image
     } ()
     
-    init(giniConfiguration: GiniConfiguration = .shared) {
+    init() {
         super.init(frame: .zero)
     }
     
@@ -75,8 +73,7 @@ class BottomLabelButton: UIButton {
     
     func configureButton(
         image: UIImage,
-        name: String,
-        giniconfiguration: GiniConfiguration) {
+        name: String) {
         iconView.image = image
         actionLabel.text = name
     }

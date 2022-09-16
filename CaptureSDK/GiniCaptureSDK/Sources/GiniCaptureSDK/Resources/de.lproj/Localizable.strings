@@ -37,7 +37,8 @@
 "ginicapture.camera.documentValidationError.wrongFormat" = "Nur Dateien vom Format jpg, tiff, png, gif oder pdf können analysiert werden";
 "ginicapture.camera.fileImportTip" = "Es können jetzt auch ganz einfach Dateien hochgeladen werden.";
 "ginicapture.camera.fileImportButtonLabel" = "Durchsuchen";
-"ginicapture.camera.flashButtonLabel" = "An";
+"ginicapture.camera.flashButtonLabel.On" = "An";
+"ginicapture.camera.flashButtonLabel.Off" = "Aus";
 "ginicapture.camera.infoLabel" = "Rechnung oder QR Code scannen";
 "ginicapture.camera.qrCodeTip" = "Haben Sie schon den QR-Codeleser ausprobiert?";
 "ginicapture.camera.capturedImagesStackLabel" = "Erfasste Dokumente";

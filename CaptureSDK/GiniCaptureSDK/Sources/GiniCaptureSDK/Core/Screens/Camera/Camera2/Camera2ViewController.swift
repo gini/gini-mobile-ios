@@ -134,10 +134,11 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     }
 
     private func configureLeftButtons() {
-        cameraPane.flashButton.isHidden = !giniConfiguration.flashToggleEnabled
+        cameraButtonsViewModel.isFlashOn = cameraPreviewViewController.isFlashOn
+        cameraPane.setupFlashButton(state: giniConfiguration.flashToggleEnabled)
         cameraButtonsViewModel.flashAction = { [weak self] isFlashOn in
             self?.cameraPreviewViewController.isFlashOn = isFlashOn
-            self?.setupFlashButton(state: isFlashOn)
+            self?.cameraPane.setupFlashButton(state: isFlashOn)
         }
         cameraPane.flashButton.actionButton.addTarget(
             cameraButtonsViewModel,
@@ -163,14 +164,6 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         )
     }
 
-    private func setupFlashButton(state: Bool) {
-        if state {
-            cameraPane.flashButton.iconView.image = UIImageNamedPreferred(named: "flashOn")
-        } else {
-            cameraPane.flashButton.iconView.image = UIImageNamedPreferred(named: "flashOff")
-        }
-    }
-
     fileprivate func didPick(_ document: GiniCaptureDocument) {
         if let delegate = delegate {
             delegate.camera(self, didCapture: document)
@@ -190,7 +183,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
      - parameter images: New images to be shown in the stack. (Last image will be shown on top)
      */
     public func replaceCapturedStackImages(with images: [UIImage]) {
-        if cameraPane != nil {
+        if cameraPane != nil, giniConfiguration.multipageEnabled {
             cameraPane.thumbnailView.replaceStackImages(with: images)
         }
     }
@@ -277,9 +270,10 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol) {
-        cameraPane.toggleCaptureButtonActivation(state: camera.isFlashSupported)
-        setupFlashButton(state: cameraButtonsViewModel.isFlashOn)
-        cameraPane.flashButton.isHidden = !(camera.isFlashSupported && giniConfiguration.flashToggleEnabled)
+        cameraPane.toggleCaptureButtonActivation(state: true)
+        cameraPane.toggleFlashButtonActivation(state: camera.isFlashSupported && giniConfiguration.flashToggleEnabled)
+        cameraButtonsViewModel.isFlashOn = camera.isFlashOn
+        cameraPane.setupFlashButton(state: cameraButtonsViewModel.isFlashOn)
     }
 
     func cameraPreview(_ viewController: CameraPreviewViewController,

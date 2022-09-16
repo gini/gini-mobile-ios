@@ -15,7 +15,7 @@ final class ThumbnailView: UIView {
 
     var didTapImageStackButton: (() -> Void)?
     let thumbnailSize = CGSize(width: 44, height: 52)
-    private var giniConfiguration: GiniConfiguration!
+    private var giniConfiguration: GiniConfiguration = .shared
     private let stackCountCircleSize = CGSize(width: 20, height: 20)
     private var imagesCount: Int = 0
 
@@ -38,6 +38,8 @@ final class ThumbnailView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adjustsFontForContentSizeCategory = true
         label.textAlignment = .center
+        label.font = giniConfiguration.textStyleFonts[.caption1]
+        label.textColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.light1).uiColor()
         label.text = ""
         return label
     }()
@@ -48,8 +50,12 @@ final class ThumbnailView: UIView {
         view.frame.size = self.stackCountCircleSize
         view.layer.cornerRadius = stackCountCircleSize.height * 0.5
         view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor.darkGray.cgColor
-        view.backgroundColor = .green
+        view.layer.borderColor = GiniColor(
+            light: UIColor.GiniCapture.dark6,
+            dark: UIColor.GiniCapture.dark5).uiColor().cgColor
+        view.backgroundColor = GiniColor(
+            light: UIColor.GiniCapture.accent1,
+            dark: UIColor.GiniCapture.accent1).uiColor()
         return view
     }()
 
@@ -73,11 +79,6 @@ final class ThumbnailView: UIView {
 
     func configureView(giniConfiguration: GiniConfiguration) {
         self.giniConfiguration = giniConfiguration
-        configureColors()
-    }
-
-    private func configureColors() {
-        stackIndicatorLabel.font = giniConfiguration.textStyleFonts[.caption1]
     }
 
     func replaceStackImages(with images: [UIImage]) {
