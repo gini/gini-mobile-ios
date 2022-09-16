@@ -432,8 +432,10 @@ extension ComponentAPICoordinator: CameraViewControllerDelegate {
                 
                 // In case that there is more than one image already captured, an animation is shown instead of
                 // going to next screen
-                if let imageDocument = document as? GiniImageDocument, self.pages.count > 1 {
-                    viewController.animateToControlsView(imageDocument: imageDocument)
+                if let imageDocument = document as? GiniImageDocument,
+                   self.pages.count > 1,
+                   let cameraController = viewController as? CameraViewController {
+                    cameraController.animateToControlsView(imageDocument: imageDocument, completion: nil)
                 } else {
                     self.showNextScreenAfterPicking()
                 }
