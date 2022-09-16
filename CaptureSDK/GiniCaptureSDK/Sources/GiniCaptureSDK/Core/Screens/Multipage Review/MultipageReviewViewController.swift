@@ -16,23 +16,6 @@ import UIKit
  */
 public protocol MultipageReviewViewControllerDelegate: AnyObject {
     /**
-     Called when a user reorder the pages collection
-     
-     - parameter viewController: `MultipageReviewViewController` where the pages are reviewed.
-     - parameter pages: Reordered pages collection
-     */
-    func multipageReview(_ viewController: MultipageReviewViewController,
-                         didReorder pages: [GiniCapturePage])
-    /**
-     Called when a user rotates one of the pages.
-     
-     - parameter viewController: `MultipageReviewViewController` where the pages are reviewed.
-     - parameter page: `GiniCapturePage` rotated.
-     */
-    func multipageReview(_ viewController: MultipageReviewViewController,
-                         didRotate page: GiniCapturePage)
-    
-    /**
      Called when a user deletes one of the pages.
      
      - parameter viewController: `MultipageReviewViewController` where the pages are reviewed.
@@ -74,7 +57,6 @@ public final class MultipageReviewViewController: UIViewController {
     public weak var delegate: MultipageReviewViewControllerDelegate?
     
     var pages: [GiniCapturePage]
-    fileprivate var currentSelectedItemPosition: Int = 0
     fileprivate let giniConfiguration: GiniConfiguration
     fileprivate lazy var presenter: MultipageReviewCollectionCellPresenter = {
         let presenter = MultipageReviewCollectionCellPresenter()
@@ -84,7 +66,7 @@ public final class MultipageReviewViewController: UIViewController {
     
     // MARK: - UI initialization
     
-    private lazy var mainCollection: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 8
@@ -171,7 +153,7 @@ extension MultipageReviewViewController {
 
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         view.addSubview(tipLabel)
-        view.addSubview(mainCollection)
+        view.addSubview(collectionView)
         view.addSubview(pageControl)
         view.addSubview(processButton)
 
@@ -195,7 +177,7 @@ extension MultipageReviewViewController {
 
     public func updateCollections(with pages: [GiniCapturePage]) {
         self.pages = pages
-        mainCollection.reloadData()
+        collectionView.reloadData()
     }
 
     
@@ -251,11 +233,11 @@ extension MultipageReviewViewController {
             tipLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tipLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 
-            mainCollection.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: 16),
-            mainCollection.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            mainCollection.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: 16),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 
-            pageControl.topAnchor.constraint(equalTo: mainCollection.bottomAnchor, constant: 32),
+            pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 32),
             pageControl.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             pageControl.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 
@@ -273,7 +255,8 @@ extension MultipageReviewViewController {
     @objc
     private func pageControlTapHandler(sender:UIPageControl) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: { [weak self] in
-            self?.mainCollection.scrollToItem(at: IndexPath(row: sender.currentPage, section: 0), at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
+            self?.collectionView.scrollToItem(at: IndexPath(row: sender.currentPage, section: 0),
+                                              at: .centeredHorizontally, animated: true)
         })
     }
 
@@ -295,7 +278,7 @@ extension MultipageReviewViewController {
     fileprivate func deleteItem(at indexPath: IndexPath) {
         let pageToDelete = pages[indexPath.row]
         pages.remove(at: indexPath.row)
-        mainCollection.deleteItems(at: [indexPath])
+        collectionView.deleteItems(at: [indexPath])
         delegate?.multipageReview(self, didDelete: pageToDelete)
     }
 }
@@ -314,15 +297,12 @@ extension MultipageReviewViewController: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView,
                                cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let page = pages[indexPath.row]
-        let isSelected = self.currentSelectedItemPosition == indexPath.row
-        let collectionCell: MultipageReviewCollectionCellPresenter.MultipageCollectionCellType
 
-        let cell = mainCollection
-            .dequeueReusableCell(withReuseIdentifier: MultipageReviewMainCollectionCell.reuseIdentifier,
-                                 for: indexPath) as? MultipageReviewMainCollectionCell
-        collectionCell = .main(cell!, didFailUpload(page: page, indexPath: indexPath))
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier:
+                                                        MultipageReviewMainCollectionCell.reuseIdentifier,
+                                 for: indexPath) as! MultipageReviewMainCollectionCell
 
-        return presenter.setUp(collectionCell, with: page, isSelected: isSelected, at: indexPath)
+        return presenter.setUp(cell, with: page, at: indexPath)
     }
     
     private func didFailUpload(page: GiniCapturePage, indexPath: IndexPath) -> ((NoticeActionType) -> Void) {
@@ -343,12 +323,8 @@ extension MultipageReviewViewController: UICollectionViewDataSource {
 
 extension MultipageReviewViewController: MultipageReviewCollectionCellPresenterDelegate {
     func multipage(_ reviewCollectionCellPresenter: MultipageReviewCollectionCellPresenter,
-                   didUpdate cell: MultipageReviewCollectionCellPresenter.MultipageCollectionCellType,
-                   at indexPath: IndexPath) {
-        switch cell {
-        case .main:
-            mainCollection.reloadItems(at: [indexPath])
-        }
+                   didUpdateCellAt indexPath: IndexPath) {
+            collectionView.reloadItems(at: [indexPath])
     }
     
     func multipage(_ reviewCollectionCellPresenter: MultipageReviewCollectionCellPresenter,
@@ -388,7 +364,7 @@ extension MultipageReviewViewController: UICollectionViewDelegateFlowLayout {
     }
 
     private func setCurrentPage(basedOn scrollView: UIScrollView) {
-        guard let layout = mainCollection.collectionViewLayout as? UICollectionViewFlowLayout
+        guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
         else { return }
         let offset = scrollView.contentOffset
         let cellWidthIncludingSpacing = cellSize.width + layout.minimumLineSpacing
@@ -398,7 +374,7 @@ extension MultipageReviewViewController: UICollectionViewDelegateFlowLayout {
     }
 
     private func calulateOffset(for scrollView: UIScrollView) -> CGPoint {
-        guard let layout = mainCollection.collectionViewLayout as? UICollectionViewFlowLayout
+        guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
         else { return CGPoint.zero }
         let cellWidthIncludingSpacing = cellSize.width + layout.minimumLineSpacing
 

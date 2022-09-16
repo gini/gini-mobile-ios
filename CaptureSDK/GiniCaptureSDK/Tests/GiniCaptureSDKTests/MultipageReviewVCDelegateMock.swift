@@ -19,16 +19,8 @@ final class MultipageReviewVCDelegateMock: MultipageReviewViewControllerDelegate
     }
     
     var updatedDocuments: [GiniCapturePage] = []
-
-    func multipageReview(_ controller: MultipageReviewViewController, didReorder pages: [GiniCapturePage]) {
-        updatedDocuments = pages
-    }
     
     func multipageReview(_ controller: MultipageReviewViewController, didDelete pages: GiniCapturePage) {
-        
-    }
-    
-    func multipageReview(_ controller: MultipageReviewViewController, didRotate pages: GiniCapturePage) {
         
     }
 }

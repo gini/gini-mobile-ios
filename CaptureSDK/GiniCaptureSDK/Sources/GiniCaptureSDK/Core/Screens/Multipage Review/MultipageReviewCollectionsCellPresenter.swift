@@ -9,8 +9,7 @@ import UIKit
 
 protocol MultipageReviewCollectionCellPresenterDelegate: AnyObject {
     func multipage(_ reviewCollectionCellPresenter: MultipageReviewCollectionCellPresenter,
-                   didUpdate cell: MultipageReviewCollectionCellPresenter.MultipageCollectionCellType,
-                   at indexPath: IndexPath)
+                   didUpdateCellAt indexPath: IndexPath)
 }
 
 final class MultipageReviewCollectionCellPresenter {
@@ -19,11 +18,7 @@ final class MultipageReviewCollectionCellPresenter {
     var thumbnails: [String: [ThumbnailType: UIImage]] = [:]
     fileprivate let giniConfiguration: GiniConfiguration
     fileprivate let thumbnailsQueue = DispatchQueue(label: "Thumbnails queue")
-    
-    enum MultipageCollectionCellType {
-        case main(MultipageReviewMainCollectionCell, (NoticeActionType) -> Void)
-    }
-    
+
     enum ThumbnailType {
         case big, small
         
@@ -41,22 +36,18 @@ final class MultipageReviewCollectionCellPresenter {
         self.giniConfiguration = giniConfiguration
     }
     
-    func setUp(_ cell: MultipageCollectionCellType,
+    func setUp(_ cell: MultipageReviewMainCollectionCell,
                with page: GiniCapturePage,
-               isSelected: Bool,
                at indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let collectionCell: UICollectionViewCell
-        switch cell {
-        case .main(let mainCell, let errorAction):
-            setUp(cell: mainCell,
-                  with: page,
-                  fetchThumbnailTrigger: fetchThumbnailImage(for: page, of: .big, in: cell, at: indexPath),
-                  didTapErrorNotice: errorAction)
-            collectionCell = mainCell
+
+        if let thumbnail = self.thumbnails[page.document.id, default: [:]][.big] {
+            cell.documentImage.image = thumbnail
+        } else {
+            cell.documentImage.image = nil
+            fetchThumbnailImage(for: page, of: .big, in: cell, at: indexPath)
         }
-        
-        return collectionCell
+
+        return cell
     }
     
     func rotateThumbnails(for page: GiniCapturePage) {
@@ -75,26 +66,6 @@ final class MultipageReviewCollectionCellPresenter {
 fileprivate extension MultipageReviewCollectionCellPresenter {
     
     // MARK: - MultipageReviewMainCollectionCell
-    
-    func setUp(cell: MultipageReviewMainCollectionCell,
-               with page: GiniCapturePage,
-               fetchThumbnailTrigger: @autoclosure () -> Void,
-               didTapErrorNotice action: @escaping (NoticeActionType) -> Void) {
-        // Thumbnail set
-        if let thumbnail = self.thumbnails[page.document.id, default: [:]][.big] {
-            cell.documentImage.image = thumbnail
-        } else {
-            cell.documentImage.image = nil
-            fetchThumbnailTrigger()
-        }
-                
-        if let error = page.error {
-            setUpErrorView(in: cell, with: error, didTapErrorNoticeAction: action)
-            cell.errorView.show(false)
-        } else {
-            cell.errorView.hide(false, completion: nil)
-        }
-    }
     
     func setUpErrorView(in cell: MultipageReviewMainCollectionCell,
                         with error: Error,
@@ -136,7 +107,7 @@ fileprivate extension MultipageReviewCollectionCellPresenter {
 fileprivate extension MultipageReviewCollectionCellPresenter {
     func fetchThumbnailImage(for page: GiniCapturePage,
                              of type: ThumbnailType,
-                             in cell: MultipageCollectionCellType,
+                             in cell: MultipageReviewMainCollectionCell,
                              at indexPath: IndexPath) {
         thumbnailsQueue.async { [weak self] in
             guard let self = self else { return }
@@ -146,7 +117,7 @@ fileprivate extension MultipageReviewCollectionCellPresenter {
             self.thumbnails[page.document.id, default: [:]][type] = thumbnail
             
             DispatchQueue.main.async {
-                self.delegate?.multipage(self, didUpdate: cell, at: indexPath)
+                self.delegate?.multipage(self, didUpdateCellAt: indexPath)
             }
         }
     }
