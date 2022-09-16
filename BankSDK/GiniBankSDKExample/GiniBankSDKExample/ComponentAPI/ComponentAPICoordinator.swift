@@ -643,24 +643,6 @@ extension ComponentAPICoordinator: MultipageReviewViewControllerDelegate {
         }
     }
     
-    func multipageReview(_ controller: MultipageReviewViewController, didReorder pages: [GiniCapturePage]) {
-        self.pages = pages
-        
-        if giniBankConfiguration.multipageEnabled {
-            documentService?.sortDocuments(withSameOrderAs: self.pages.map { $0.document })
-        }
-    }
-    
-    func multipageReview(_ controller: MultipageReviewViewController, didRotate page: GiniCapturePage) {
-        if let index = pages.index(of: page.document) {
-            pages[index].document = page.document
-        }
-        
-        if let imageDocument = page.document as? GiniImageDocument {
-            documentService?.update(imageDocument: imageDocument)
-        }
-    }
-    
     func multipageReview(_ controller: MultipageReviewViewController, didDelete page: GiniCapturePage) {
         documentService?.remove(document: page.document)
         pages.remove(page.document)
