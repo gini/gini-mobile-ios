@@ -134,6 +134,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     }
 
     private func configureLeftButtons() {
+        cameraPane.flashButton.isHidden = !giniConfiguration.flashToggleEnabled
         cameraButtonsViewModel.flashAction = { [weak self] isFlashOn in
             self?.cameraPreviewViewController.isFlashOn = isFlashOn
             self?.setupFlashButton(state: isFlashOn)
@@ -276,8 +277,9 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol) {
-        cameraPane.toggleCaptureButtonActivation(state: true)
-        cameraPane.flashButton.isHidden = !camera.isFlashSupported
+        cameraPane.toggleCaptureButtonActivation(state: camera.isFlashSupported)
+        setupFlashButton(state: cameraButtonsViewModel.isFlashOn)
+        cameraPane.flashButton.isHidden = !(camera.isFlashSupported && giniConfiguration.flashToggleEnabled)
     }
 
     func cameraPreview(_ viewController: CameraPreviewViewController,
