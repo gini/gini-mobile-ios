@@ -59,6 +59,7 @@ import AVFoundation
         self.giniConfiguration = giniConfiguration
         self.currentDevice = .current
         super.init(nibName: nil, bundle: nil)
+        self.cameraPreviewViewController.previewView.guidesEnabled = true
     }
     
     /**
