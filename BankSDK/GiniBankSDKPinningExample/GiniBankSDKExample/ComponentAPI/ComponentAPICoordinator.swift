@@ -93,7 +93,6 @@ final class ComponentAPICoordinator: NSObject, Coordinator, DigitalInvoiceViewCo
     fileprivate(set) var analysisScreen: AnalysisViewController?
     fileprivate(set) var cameraScreen: CameraViewController?
     fileprivate(set) var resultsScreen: ResultTableViewController?
-    fileprivate(set) var reviewScreen: ReviewViewController?
     fileprivate(set) lazy var documentPickerCoordinator =
         DocumentPickerCoordinator(giniConfiguration: giniBankConfiguration.captureConfiguration())
     
@@ -116,11 +115,7 @@ final class ComponentAPICoordinator: NSObject, Coordinator, DigitalInvoiceViewCo
             showCameraScreen()
         } else {
             if pages.type == .image {
-                if giniBankConfiguration.multipageEnabled {
-                    showMultipageReviewScreen()
-                } else {
-                    showReviewScreen()
-                }
+                showMultipageReviewScreen()
                 pages.forEach { process(captured: $0) }
             } else {
                 if ((pages.first?.document.isImported) != nil) {
@@ -163,21 +158,6 @@ extension ComponentAPICoordinator {
         navigationController.pushViewController(multipageReviewScreen, animated: true)
     }
     
-    fileprivate func showReviewScreen() {
-        guard let document = pages.first?.document else { return }
-        reviewScreen = ReviewViewController(document: document, giniConfiguration: giniBankConfiguration.captureConfiguration())
-        reviewScreen?.delegate = self
-        addCloseButtonIfNeeded(onViewController: reviewScreen!)
-        reviewScreen?.navigationItem
-            .rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("next",
-                                                                           comment: "close button text"),
-                                                  style: .plain,
-                                                  target: self,
-                                                  action: #selector(showAnalysisScreen))
-        
-        navigationController.pushViewController(reviewScreen!, animated: true)
-    }
-    
     @objc fileprivate func showAnalysisScreen() {
         guard let page = pages.first else { return }
         
@@ -218,7 +198,7 @@ extension ComponentAPICoordinator {
                                                   target: self,
                                                   action: #selector(closeComponentAPIFromResults))
         
-        push(viewController: resultsScreen!, removing: [reviewScreen, analysisScreen])
+        push(viewController: resultsScreen!, removing: [analysisScreen])
     }
     
     fileprivate func showNoResultsScreen() {
@@ -236,7 +216,7 @@ extension ComponentAPICoordinator {
             vc = genericNoResults!
         }
         
-        push(viewController: vc, removing: [reviewScreen, analysisScreen])
+        push(viewController: vc, removing: [analysisScreen])
     }
 
     fileprivate func showDigitalInvoiceScreen(digitalInvoice: DigitalInvoice) {
@@ -254,7 +234,7 @@ extension ComponentAPICoordinator {
                                                       action: #selector(closeComponentAPIFromResults))
         }
         if !(navigationController.viewControllers.first is DigitalInvoiceViewController){
-            push(viewController: digitalInvoiceViewController, removing: [reviewScreen, analysisScreen])
+            push(viewController: digitalInvoiceViewController, removing: [analysisScreen])
         }
     }
 
@@ -262,12 +242,8 @@ extension ComponentAPICoordinator {
         if let documentsType = pages.type {
             switch documentsType {
             case .image:
-                if giniBankConfiguration.multipageEnabled {
-                    refreshMultipageReview(with: pages)
-                    showMultipageReviewScreen()
-                } else {
-                    showReviewScreen()
-                }
+                refreshMultipageReview(with: pages)
+                showMultipageReviewScreen()
             case .qrcode, .pdf:
                 showAnalysisScreen()
             }
@@ -449,13 +425,6 @@ extension ComponentAPICoordinator: UINavigationControllerDelegate {
                               from fromVC: UIViewController,
                               to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         
-        if fromVC is ReviewViewController && operation == .pop {
-            reviewScreen = nil
-            if let document = pages.first?.document {
-                documentService?.remove(document: document)
-            }
-        }
-        
         if fromVC is AnalysisViewController {
             analysisScreen = nil
             if operation == .pop {
@@ -464,9 +433,8 @@ extension ComponentAPICoordinator: UINavigationControllerDelegate {
         }
         
         if toVC is CameraViewController &&
-            (fromVC is ReviewViewController ||
-                fromVC is AnalysisViewController ||
-                fromVC is ImageAnalysisNoResultsViewController) {
+            (fromVC is AnalysisViewController ||
+             fromVC is ImageAnalysisNoResultsViewController) {
             // When going directly from the analysis or from the single page review screen to the camera the pages
             // collection should be cleared, since the document processed in that cases is not going to be reused
             pages.removeAll()
@@ -572,11 +540,7 @@ extension ComponentAPICoordinator: DocumentPickerCoordinatorDelegate {
                         if !self.pages.isEmpty {
                             positiveAction = {
                                 coordinator.dismissCurrentPicker {
-                                    if self.giniBankConfiguration.multipageEnabled {
-                                        self.showMultipageReviewScreen()
-                                    } else {
-                                        self.showReviewScreen()
-                                    }
+                                    self.showMultipageReviewScreen()
                                 }
                             }
                         }
@@ -601,25 +565,13 @@ extension ComponentAPICoordinator: DocumentPickerCoordinatorDelegate {
     }    
 }
 
-// MARK: - ReviewViewControllerDelegate
-
-extension ComponentAPICoordinator: ReviewViewControllerDelegate {
-    
-    func review(_ viewController: ReviewViewController, didReview document: GiniCaptureDocument) {
-        if let index = pages.index(of: document) {
-            pages[index].document = document
-        }
-        
-        if let imageDocument = document as? GiniImageDocument {
-            documentService?.update(imageDocument: imageDocument)
-        }
-    }
-}
-
 // MARK: MultipageReviewViewControllerDelegate
 
 extension ComponentAPICoordinator: MultipageReviewViewControllerDelegate {
-    
+    func multipageReviewDidTapProcess(_ viewController: MultipageReviewViewController) {
+        showAnalysisScreen()
+    }
+
     func multipageReview(_ viewController: MultipageReviewViewController,
                          didTapRetryUploadFor page: GiniCapturePage) {
         if let index = pages.index(of: page.document) {
@@ -632,7 +584,7 @@ extension ComponentAPICoordinator: MultipageReviewViewControllerDelegate {
             pages.forEach { self.process(captured: $0) }
         }
     }
-    
+
     func multipageReview(_ controller: MultipageReviewViewController, didDelete page: GiniCapturePage) {
         documentService?.remove(document: page.document)
         pages.remove(page.document)
