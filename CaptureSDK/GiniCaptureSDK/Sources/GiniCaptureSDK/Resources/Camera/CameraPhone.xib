@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -22,14 +22,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fqz-Ub-N9F">
-                    <rect key="frame" x="0.0" y="689" width="414" height="207"/>
+                    <rect key="frame" x="0.0" y="682.66666666666663" width="414" height="213.33333333333337"/>
                     <color key="backgroundColor" white="0.0" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qey-Uj-2J2" customClass="CameraPane" customModule="GiniCaptureSDK">
-                    <rect key="frame" x="0.0" y="689" width="414" height="173"/>
+                    <rect key="frame" x="0.0" y="682.66666666666663" width="414" height="179.33333333333337"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dQe-NY-Bi9">
-                            <rect key="frame" x="172" y="73.666666666666629" width="70" height="70"/>
+                            <rect key="frame" x="172" y="77" width="70" height="70"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="70" id="Flv-NK-4aP"/>
                                 <constraint firstAttribute="width" constant="70" id="gVb-eK-08y"/>
@@ -40,28 +40,28 @@
                                 <color key="baseForegroundColor" systemColor="tertiaryLabelColor"/>
                             </buttonConfiguration>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scan an invoice or a QR code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lfm-sA-fAL">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="752" text="Scan an invoice or a QR code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lfm-sA-fAL">
                             <rect key="frame" x="96.333333333333329" y="7.9999999999999982" width="221.66666666666669" height="20.333333333333329"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" name="systemWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="zFz-gY-AMg">
-                            <rect key="frame" x="0.0" y="44.333333333333371" width="152" height="128.66666666666666"/>
+                            <rect key="frame" x="8" y="44.333333333333371" width="156" height="135"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oxa-p6-f53" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
-                                    <rect key="frame" x="0.0" y="0.0" width="73.666666666666671" height="128.66666666666666"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="75.666666666666671" height="135"/>
                                     <color key="backgroundColor" systemColor="systemOrangeColor"/>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wph-4w-azi" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
-                                    <rect key="frame" x="78.666666666666686" y="0.0" width="73.333333333333314" height="128.66666666666666"/>
+                                    <rect key="frame" x="80.666666666666686" y="0.0" width="75.333333333333314" height="135"/>
                                     <color key="backgroundColor" systemColor="systemGreenColor"/>
                                     <color key="tintColor" systemColor="tintColor"/>
                                 </view>
                             </subviews>
                         </stackView>
                         <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Yg-3y-VKg" customClass="ThumbnailView" customModule="GiniCaptureSDK">
-                            <rect key="frame" x="262" y="82.666666666666629" width="44" height="52"/>
+                            <rect key="frame" x="272" y="86" width="44" height="52"/>
                             <color key="backgroundColor" systemColor="systemOrangeColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="52" id="aV8-ZL-Eg8"/>
@@ -71,16 +71,16 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="zFz-gY-AMg" firstAttribute="leading" secondItem="qey-Uj-2J2" secondAttribute="leading" id="2MR-qQ-nQt"/>
+                        <constraint firstItem="zFz-gY-AMg" firstAttribute="leading" secondItem="qey-Uj-2J2" secondAttribute="leading" constant="8" id="2MR-qQ-nQt"/>
                         <constraint firstItem="0Yg-3y-VKg" firstAttribute="centerY" secondItem="dQe-NY-Bi9" secondAttribute="centerY" id="6E5-zb-nf7"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="0Yg-3y-VKg" secondAttribute="trailing" constant="8" id="EwU-7f-8dm"/>
                         <constraint firstItem="zFz-gY-AMg" firstAttribute="top" secondItem="lfm-sA-fAL" secondAttribute="bottom" constant="16" id="IV7-fG-9A2"/>
-                        <constraint firstItem="0Yg-3y-VKg" firstAttribute="leading" secondItem="dQe-NY-Bi9" secondAttribute="trailing" constant="20" id="PbW-4h-wFh"/>
+                        <constraint firstItem="0Yg-3y-VKg" firstAttribute="leading" secondItem="dQe-NY-Bi9" secondAttribute="trailing" constant="30" id="PbW-4h-wFh"/>
                         <constraint firstItem="lfm-sA-fAL" firstAttribute="centerX" secondItem="qey-Uj-2J2" secondAttribute="centerX" id="Z4u-Mw-edC"/>
-                        <constraint firstItem="dQe-NY-Bi9" firstAttribute="leading" secondItem="zFz-gY-AMg" secondAttribute="trailing" constant="20" id="ea5-vT-sWG"/>
+                        <constraint firstItem="dQe-NY-Bi9" firstAttribute="leading" secondItem="zFz-gY-AMg" secondAttribute="trailing" constant="8" id="ea5-vT-sWG"/>
                         <constraint firstItem="lfm-sA-fAL" firstAttribute="top" secondItem="qey-Uj-2J2" secondAttribute="top" constant="8" id="f4b-FG-Wzh"/>
                         <constraint firstItem="dQe-NY-Bi9" firstAttribute="centerX" secondItem="qey-Uj-2J2" secondAttribute="centerX" id="iMg-DB-LrQ"/>
                         <constraint firstItem="dQe-NY-Bi9" firstAttribute="centerY" secondItem="zFz-gY-AMg" secondAttribute="centerY" id="jIy-hN-jDT"/>
-                        <constraint firstAttribute="height" constant="173" id="nAy-AT-Brh"/>
                         <constraint firstAttribute="bottom" secondItem="zFz-gY-AMg" secondAttribute="bottom" id="p46-0k-x4c"/>
                     </constraints>
                     <connections>
@@ -92,7 +92,7 @@
                     </connections>
                 </view>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cameraFocus" translatesAutoresizingMaskIntoConstraints="NO" id="2eO-4o-6WG">
-                    <rect key="frame" x="0.0" y="60" width="414" height="629"/>
+                    <rect key="frame" x="0.0" y="60" width="414" height="622.66666666666663"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </imageView>
@@ -101,6 +101,7 @@
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="fqz-Ub-N9F" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="2Bq-c4-MVH"/>
+                <constraint firstItem="qey-Uj-2J2" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.2" id="5pL-4z-ODy"/>
                 <constraint firstAttribute="trailing" secondItem="qey-Uj-2J2" secondAttribute="trailing" id="DJb-3E-lB1"/>
                 <constraint firstItem="qey-Uj-2J2" firstAttribute="top" secondItem="2eO-4o-6WG" secondAttribute="bottom" id="MfE-7l-XLm"/>
                 <constraint firstItem="2eO-4o-6WG" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="Qft-ST-Zj6"/>
@@ -131,7 +132,7 @@
             <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tertiaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29803921568627451" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tintColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
