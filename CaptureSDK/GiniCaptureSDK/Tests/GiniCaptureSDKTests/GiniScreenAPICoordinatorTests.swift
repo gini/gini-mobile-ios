@@ -91,26 +91,10 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
         _ = rootViewController.view
         let screenNavigator = rootViewController.children.first as? UINavigationController
         
-        XCTAssertNotNil(screenNavigator?.viewControllers.last as? ReviewViewController,
+        XCTAssertNotNil(screenNavigator?.viewControllers.last as? MultipageReviewViewController,
                         "first view controller is not a ReviewViewController")
     }
-    
-    func testDocumentCollectionAfterRotateImageInMultipage() {
-        let capturedImageDocument = GiniCaptureTestsHelper.loadImagePage(named: "invoice")
-        coordinator.addToDocuments(new: [capturedImageDocument])
-        
-        (coordinator.multiPageReviewViewController
-            .pages[0]
-            .document as? GiniImageDocument)?
-            .rotatePreviewImage90Degrees()
-        coordinator.multipageReview(coordinator.multiPageReviewViewController,
-                                    didRotate: coordinator.multiPageReviewViewController.pages[0])
 
-        let imageDocument = coordinator.pages[0].document as? GiniImageDocument
-        XCTAssertEqual(imageDocument?.rotationDelta, 90,
-                       "the image document rotation delta should have been updated after rotation")
-    }
-    
     func testDocumentCollectionAfterRemoveImageInMultipage() {
         let capturedImageDocument = GiniCaptureTestsHelper.loadImagePage(named: "invoice")
         coordinator.addToDocuments(new: [capturedImageDocument])
@@ -120,20 +104,5 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
         XCTAssertTrue(coordinator.pages.isEmpty,
                       "vision documents collection should be empty after delete " +
             "the image in the multipage review view controller")
-    }
-    
-    func testMultipageImageDocumentWhenSortingDocuments() {
-        let capturedImageDocument = [GiniCaptureTestsHelper.loadImagePage(named: "invoice"),
-                                     GiniCaptureTestsHelper.loadImagePage(named: "invoice")]
-        let firstItemId = capturedImageDocument.first?.document.id
-        coordinator.addToDocuments(new: capturedImageDocument)
-        
-        var reorderedItems = capturedImageDocument
-        reorderedItems.swapAt(0, 1)
-        
-        coordinator.multipageReview(coordinator.multiPageReviewViewController, didReorder: reorderedItems)
-        
-        XCTAssertTrue(coordinator.pages.last?.document.id == firstItemId, "last items should be the one moved")
-        
     }
 }

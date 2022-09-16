@@ -23,4 +23,8 @@ final class MultipageReviewVCDelegateMock: MultipageReviewViewControllerDelegate
     func multipageReview(_ controller: MultipageReviewViewController, didDelete pages: GiniCapturePage) {
         
     }
+
+    func multipageReviewDidTapProcess(_ viewController: MultipageReviewViewController) {
+
+    }
 }
