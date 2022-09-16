@@ -33,28 +33,6 @@ class CameraPane: UIView {
         flashButton.iconView.image = UIImageNamedPreferred(named: "flashOn")
     }
 
-    /**
-     Disable all camera buttons except capture button.
-     */
-    func configureCameraButtonsForQRCodeTip() {
-        captureButton.isEnabled = true
-        flashButton.isEnabled = true
-        flashButton.isSelected = giniConfiguration.flashOnByDefault
-        fileUploadButton.actionButton.isEnabled = false
-        fileUploadButton.actionLabel.isEnabled = false
-        fileUploadButton.actionButton.isUserInteractionEnabled = false
-    }
-
-    func configureCameraWhenTooltipDismissed() {
-        let isFlashOn = giniConfiguration.flashOnByDefault
-        captureButton.isEnabled = true
-        captureButton.isUserInteractionEnabled = true
-        flashButton.isEnabled = true
-        flashButton.isSelected = isFlashOn
-        fileUploadButton.isEnabled = true
-        fileUploadButton.isUserInteractionEnabled = true
-    }
-
     func toggleCaptureButtonActivation(state: Bool) {
         captureButton.isUserInteractionEnabled = state
         captureButton.isEnabled = state
