@@ -209,45 +209,6 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
 extension Camera2ViewController {
 
-    /**
-     Used to animate the captured image, first shrinking it and then translating it to the captured images stack view.
-     
-     - parameter imageDocument: `GiniImageDocument` to be animated.
-     - parameter completion: Completion block.
-     
-     */
-    public func animateToControlsView(imageDocument: GiniImageDocument, completion: (() -> Void)?) {
-        guard let documentImage = imageDocument.previewImage else { return }
-        let previewImageView = previewCapturedImageView(with: documentImage)
-        view.addSubview(previewImageView)
-        UIView.animate(withDuration: AnimationDuration.medium, animations: {
-            previewImageView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
-        }, completion: { _ in
-            UIView.animateKeyframes(withDuration: AnimationDuration.medium, delay: 0.6, animations: {
-                UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1, animations: {
-                    let thumbnailSize = self.cameraPane.thumbnailView.thumbnailImageView.bounds.size
-                    let scaleRatioY = thumbnailSize.height / self.cameraPreviewViewController.view.frame.height
-                    let scaleRatioX = thumbnailSize.width / self.cameraPreviewViewController.view.frame.width
-                    previewImageView.transform = CGAffineTransform(scaleX: scaleRatioX, y: scaleRatioY)
-                    let convertedFrame = self.cameraPane.thumbnailView.thumbnailImageView.convert(
-                            self.cameraPane.thumbnailView.thumbnailImageView.frame,
-                            to: self.view)
-                    previewImageView.frame.origin = convertedFrame.origin
-                })
-                if self.cameraPane.thumbnailView.isHidden == false {
-                    UIView.addKeyframe(withRelativeStartTime: 0.9, relativeDuration: 1, animations: {
-                        previewImageView.alpha = 0
-                    })
-                }
-            }, completion: { _ in
-                previewImageView.removeFromSuperview()
-                self.cameraPane.thumbnailView.addImageToStack(image: documentImage)
-                completion?()
-            })
-        })
-        cameraPane.toggleCaptureButtonActivation(state: true)
-    }
-
     private func previewCapturedImageView(with image: UIImage) -> UIImageView {
         let imageFrame = cameraPreviewViewController.view.frame
         let imageView = UIImageView(frame: imageFrame)

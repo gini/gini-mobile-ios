@@ -29,14 +29,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
                 let validatedPage = validatedPages[0]
                 self.addToDocuments(new: [validatedPage])
                 self.didCaptureAndValidate(document)
-                
-                // In case that there is more than one image already captured, an animation is shown instead of
-                // going to next screen
-                if let imageDocument = document as? GiniImageDocument, self.pages.count > 1 {
-                    viewController.animateToControlsView(imageDocument: imageDocument, completion: nil)
-                } else {
-                    self.showNextScreenAfterPicking(pages: [validatedPage])
-                }
+                self.showNextScreenAfterPicking(pages: [validatedPage])
             case .failure(let error):
                 var errorMessage = String(describing: error)
 

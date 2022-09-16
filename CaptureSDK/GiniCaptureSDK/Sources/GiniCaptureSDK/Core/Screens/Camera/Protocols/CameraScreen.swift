@@ -11,7 +11,6 @@ import UIKit
 
 @objc public protocol CameraScreen: CameraTips where Self: UIViewController {
     weak var delegate: CameraViewControllerDelegate? {get set}
-    func animateToControlsView(imageDocument: GiniImageDocument, completion: (() -> Void)?)
     func setupCamera()
     func addValidationLoadingView() -> UIView
     func replaceCapturedStackImages(with images: [UIImage])
@@ -26,10 +25,4 @@ import UIKit
     func showCaptureButton()
 // TODO: Remove    func showFileImportTip()
 // TODO: Remove    func showQrCodeTip()
-}
-
-public extension CameraScreen {
-    func animateToControlsView(imageDocument: GiniImageDocument) {
-        animateToControlsView(imageDocument: imageDocument, completion: nil)
-    }
 }
