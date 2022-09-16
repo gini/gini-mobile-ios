@@ -468,14 +468,7 @@ extension ComponentAPICoordinator: CameraViewControllerDelegate {
                 guard let validatedPage = validatedPages.first else { return }
                 self.pages.append(contentsOf: validatedPages)
                 self.process(captured: validatedPage)
-
-                // In case that there is more than one image already captured, an animation is shown instead of
-                // going to next screen
-                if let imageDocument = document as? GiniImageDocument, self.pages.count > 1 {
-                    viewController.animateToControlsView(imageDocument: imageDocument, completion: nil)
-                } else {
-                    self.showNextScreenAfterPicking()
-                }
+                self.showNextScreenAfterPicking()
             case let .failure(error):
                 if let error = error as? FilePickerError,
                    error == .maxFilesPickedCountExceeded || error == .mixedDocumentsUnsupported {
