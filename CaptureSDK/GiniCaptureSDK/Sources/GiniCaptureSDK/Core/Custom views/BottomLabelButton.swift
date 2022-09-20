@@ -23,9 +23,10 @@ class BottomLabelButton: UIButton {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adjustsFontForContentSizeCategory = true
         label.textAlignment = .center
-        label.textColor = .white
-        label.minimumScaleFactor = 10 / label.font.pointSize
         label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 1
+        label.minimumScaleFactor = 2 / label.font.pointSize
+        label.sizeToFit()
         return label
     }()
     
@@ -49,6 +50,8 @@ class BottomLabelButton: UIButton {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        isAccessibilityElement = true
+        accessibilityTraits = .button
         setupConstraints()
     }
     
@@ -64,9 +67,10 @@ class BottomLabelButton: UIButton {
             iconView.trailingAnchor.constraint(equalTo: trailingAnchor),
             iconView.heightAnchor.constraint(equalToConstant: 20),
             
-            actionLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor, constant: 5),
+            actionLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor, constant: 2),
             actionLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
             actionLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            actionLabel.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor, constant: 2)
             
         ])
     }
@@ -76,6 +80,7 @@ class BottomLabelButton: UIButton {
         name: String) {
         iconView.image = image
         actionLabel.text = name
+        accessibilityValue = name
     }
     
     @objc fileprivate func didPressButton(_ sender: UIButton) {

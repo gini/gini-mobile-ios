@@ -45,6 +45,9 @@ class CameraPane: UIView {
                 light: UIColor.GiniCapture.light1,
                 dark: UIColor.GiniCapture.light1).uiColor()
         }
+        captureButton.accessibilityValue =  NSLocalizedStringPreferredFormat(
+            "ginicapture.camera.capturebutton",
+            comment: "Capture")
     }
 
     func setupFlashButton(state: Bool) {
@@ -66,7 +69,7 @@ class CameraPane: UIView {
     func toggleFlashButtonActivation(state: Bool) {
         flashButton.isHidden = !state
     }
-    
+
     func toggleCaptureButtonActivation(state: Bool) {
         captureButton.isUserInteractionEnabled = state
         captureButton.isEnabled = state

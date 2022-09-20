@@ -40,6 +40,7 @@ final class ThumbnailView: UIView {
         label.textAlignment = .center
         label.font = giniConfiguration.textStyleFonts[.caption1]
         label.textColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.light1).uiColor()
+        label.adjustsFontSizeToFitWidth = true
         label.text = ""
         return label
     }()
@@ -66,6 +67,8 @@ final class ThumbnailView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
+        isAccessibilityElement = true
+        accessibilityTraits = .button
     }
 
     private func setupView() {
@@ -99,10 +102,16 @@ final class ThumbnailView: UIView {
             imagesCount = count
             thumbnailImageView.image = lastImage
             isHidden = false
+            accessibilityValue = NSLocalizedStringPreferredFormat(
+                "ginicapture.camera.thumbnail",
+                comment: "Thumbnail button") + " \(count)"
         case .empty:
             imagesCount = 0
             thumbnailImageView.image = nil
             isHidden = true
+            accessibilityValue = NSLocalizedStringPreferredFormat(
+                "ginicapture.camera.thumbnail",
+                comment: "Thumbnail button") + " 0"
         }
 
         stackIndicatorLabel.text = "\(imagesCount)"
