@@ -248,30 +248,3 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
     }
 
 }
-
-// MARK: - Document import
-
-extension Camera2ViewController {
-
-    @objc fileprivate func showImportFileSheet() {
-        let alertViewController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        var alertViewControllerMessage: String = .localized(resource: CameraStrings.popupTitleImportPDF)
-        if giniConfiguration.fileImportSupportedTypes == .pdf_and_images {
-            alertViewController.addAction(UIAlertAction(title: .localized(resource: CameraStrings.popupOptionPhotos),
-                                                        style: .default) { [unowned self] _ in
-                self.delegate?.camera(self, didSelect: .gallery)
-            })
-            alertViewControllerMessage = .localized(resource: CameraStrings.popupTitleImportPDForPhotos)
-        }
-
-        alertViewController.addAction(UIAlertAction(title: .localized(resource: CameraStrings.popupOptionFiles),
-                                                    style: .default) { [unowned self] _ in
-            self.delegate?.camera(self, didSelect: .explorer)
-        })
-        alertViewController.addAction(UIAlertAction(title: .localized(resource: CameraStrings.popupCancel),
-                                                    style: .cancel, handler: nil))
-        alertViewController.message = alertViewControllerMessage
-        alertViewController.popoverPresentationController?.sourceView = cameraPane.fileUploadButton
-        self.present(alertViewController, animated: true, completion: nil)
-    }
-}

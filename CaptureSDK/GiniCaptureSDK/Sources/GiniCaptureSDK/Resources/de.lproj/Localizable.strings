@@ -53,9 +53,9 @@
 "ginicapture.camera.errorPopup.reviewPages" = "Seitenübersicht";
 "ginicapture.camera.unknownError" = "Auf dem Kamerabildschirm ist ein unbekannter Fehler aufgetreten";
 "ginicapture.camera.popupTitleImportPDF" = "PDF importieren";
-"ginicapture.camera.popupOptionPhotos" = "Fotos";
-"ginicapture.camera.popupOptionFiles" = "Dokumente";
-"ginicapture.camera.popupTitleImportPDForPhotos" = "Fotos oder PDF importieren";
+"ginicapture.camera.popupOptionPhotos" = "Upload photo";
+"ginicapture.camera.popupOptionFiles" = "Upload PDF";
+"ginicapture.camera.popupTitleImportPDForPhotos" = "";
 "ginicapture.camera.popupCancel" = "Abbrechen";
 
 "ginicapture.onboarding.firstPage"  = "Gerät parallel über die Seite halten";
