@@ -20,11 +20,14 @@ class ImageOnboardingIllustrationAdapter: OnboardingIllustrationAdapter {
 }
 
 class OnboardingImageView: UIView {
-var illustrationAdapter: OnboardingIllustrationAdapter?
+    var illustrationAdapter: OnboardingIllustrationAdapter? {
+        didSet {
+            setupView()
+        }
+    }
     var icon: UIImage? {
         didSet {
             //Remove the previous container with an illustration because we dequeue reusable cells
-            self.subviews.forEach({ $0.removeFromSuperview() })
             setupView()
         }
     }
@@ -38,16 +41,16 @@ var illustrationAdapter: OnboardingIllustrationAdapter?
     }
 // MARK: - Private Helper Methods
     private func setupView() {
+        self.subviews.forEach({ $0.removeFromSuperview() })
         if let image = icon {
             let imageView = UIImageView()
             imageView.image = image
-            imageView.center = CGPoint(x: self.frame.size.width / 2,
-                                                   y: self.frame.size.height / 2)
             imageView.contentMode = .scaleAspectFit
-            self.addSubview(imageView)
             imageView.fixInView(self)
         } else {
             if let containerView = illustrationAdapter?.injectedView() {
+                containerView.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
+                containerView.backgroundColor = .purple
                 self.addSubview(containerView)
             }
         }

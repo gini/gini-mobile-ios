@@ -26,6 +26,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         case multipage = 2
         case qrcode = 3
     }
+    var currentPage: Int?
     var items: [OnboardingPageNew] = []
     let giniConfiguration: GiniConfiguration
     required init(configuration: GiniConfiguration) {
@@ -119,4 +120,28 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
             return sections
         }
     }()
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let onboardingPageType = OnboadingPageType.init(rawValue: indexPath.row)
+        if onboardingPageType == .alignCorners {
+            if let adapter = giniConfiguration.onboardingAlignCornersIllustrationAdapter {
+                    adapter.pageDidAppear()
+                    print("pageDidAppear")
+            }
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let onboardingPageType = OnboadingPageType.init(rawValue: indexPath.row)
+        if onboardingPageType == .alignCorners {
+            if let adapter = giniConfiguration.onboardingAlignCornersIllustrationAdapter {
+                adapter.pageDidDisappear()
+                print("pageDidDisappear")
+            }
+        }
+    }
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
+    }
 }
