@@ -57,7 +57,6 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         super.viewDidLoad()
         showUploadButton()
         setupView()
-        setupCamera()
     }
 
     public override func viewWillAppear(_ animated: Bool) {
