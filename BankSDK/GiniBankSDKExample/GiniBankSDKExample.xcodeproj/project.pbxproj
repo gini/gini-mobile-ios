@@ -21,6 +21,9 @@
 		F441DCB725E568C400AAB09A /* Main.strings in Resources */ = {isa = PBXBuildFile; fileRef = F441DCB425E568C400AAB09A /* Main.strings */; };
 		F441DCBD25E5694600AAB09A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F441DCBC25E5694600AAB09A /* Settings.bundle */; };
 		F441DCC325E56BF800AAB09A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F441DCC525E56BF800AAB09A /* LaunchScreen.xib */; };
+		F44AD01528D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44AD01428D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift */; };
+		F44AD01828D49B36002BAD98 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = F44AD01728D49B36002BAD98 /* Lottie */; };
+		F44AD01E28D4BBE7002BAD98 /* page1Animation.json in Resources */ = {isa = PBXBuildFile; fileRef = F44AD01D28D4BBE7002BAD98 /* page1Animation.json */; };
 		F44AD25E25F2443200668B0C /* GiniButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44AD25D25F2443200668B0C /* GiniButton.swift */; };
 		F45D7F0C2800566900C73C63 /* ExtractionFeedbackIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45D7F002800566900C73C63 /* ExtractionFeedbackIntegrationTest.swift */; };
 		F45D7F0D2800566900C73C63 /* ScreenAPICoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45D7F012800566900C73C63 /* ScreenAPICoordinatorTests.swift */; };
@@ -99,6 +102,8 @@
 		F441DCC425E56BF800AAB09A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		F441DCCA25E56C0100AAB09A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		F441DD1225E5706F00AAB09A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F44AD01428D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOnboardingIllustrationAdapter.swift; sourceTree = "<group>"; };
+		F44AD01D28D4BBE7002BAD98 /* page1Animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = page1Animation.json; sourceTree = "<group>"; };
 		F44AD25D25F2443200668B0C /* GiniButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniButton.swift; sourceTree = "<group>"; };
 		F45D7F002800566900C73C63 /* ExtractionFeedbackIntegrationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtractionFeedbackIntegrationTest.swift; sourceTree = "<group>"; };
 		F45D7F012800566900C73C63 /* ScreenAPICoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinatorTests.swift; sourceTree = "<group>"; };
@@ -165,6 +170,7 @@
 				F439C21B27355C310010D77D /* GiniBankSDK in Frameworks */,
 				F439C21D27355C3A0010D77D /* GiniCaptureSDK in Frameworks */,
 				F439C21F27355C430010D77D /* GiniBankAPILibrary in Frameworks */,
+				F44AD01828D49B36002BAD98 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,6 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				F4AD00F725DFDF4400C34E15 /* Images.xcassets */,
+				F44AD01D28D4BBE7002BAD98 /* page1Animation.json */,
 				F426ABF0289AB1D7007F4EB6 /* Colors.xcassets */,
 			);
 			path = "Supporting Files";
@@ -320,6 +327,7 @@
 				F4BB7CF126984E5D003FD77E /* CustomMenuItemViewController.swift */,
 				F441DCA725E55D5800AAB09A /* Main.storyboard */,
 				F4AD00B525DED1A000C34E15 /* AppCoordinator.swift */,
+				F44AD01428D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift */,
 				F441DCC525E56BF800AAB09A /* LaunchScreen.xib */,
 				F4AD00D525DFDC8100C34E15 /* SettingsViewController.swift */,
 				F4AD00CB25DFDB4E00C34E15 /* CredentialsManager.swift */,
@@ -381,6 +389,7 @@
 				F439C21A27355C310010D77D /* GiniBankSDK */,
 				F439C21C27355C3A0010D77D /* GiniCaptureSDK */,
 				F439C21E27355C430010D77D /* GiniBankAPILibrary */,
+				F44AD01728D49B36002BAD98 /* Lottie */,
 			);
 			productName = "Example Swift";
 			productReference = F490C7E225DE873900D8CA6F /* GiniBankSDKExample.app */;
@@ -435,6 +444,9 @@
 				de,
 			);
 			mainGroup = F490C7B625DE72E400D8CA6F;
+			packageReferences = (
+				F44AD01628D49B36002BAD98 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+			);
 			productRefGroup = F490C7C125DE72E400D8CA6F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -463,6 +475,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F44AD01E28D4BBE7002BAD98 /* page1Animation.json in Resources */,
 				F45D7F172800583300C73C63 /* result_Gini_invoice_example.json in Resources */,
 				764E0AD228CF274A00F96503 /* InfoPlist.strings in Resources */,
 				F45D7F192800583800C73C63 /* Gini_invoice_example.pdf in Resources */,
@@ -518,6 +531,7 @@
 				F490C7E925DE873900D8CA6F /* NoResultViewController.swift in Sources */,
 				F4AD00FB25DFDF4500C34E15 /* ComponentAPIDocumentServiceProtocol.swift in Sources */,
 				F4AD00EC25DFDE2000C34E15 /* RootNavigationController.swift in Sources */,
+				F44AD01528D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift in Sources */,
 				F4AD00BC25DED33300C34E15 /* Coordinator.swift in Sources */,
 				F490C7E525DE873900D8CA6F /* AppDelegate.swift in Sources */,
 				F4AD010025DFDF4500C34E15 /* ComponentAPICoordinator.swift in Sources */,
@@ -933,6 +947,17 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		F44AD01628D49B36002BAD98 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		F439C21A27355C310010D77D /* GiniBankSDK */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -945,6 +970,11 @@
 		F439C21E27355C430010D77D /* GiniBankAPILibrary */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GiniBankAPILibrary;
+		};
+		F44AD01728D49B36002BAD98 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F44AD01628D49B36002BAD98 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
 		};
 		F46B1656273BE52000229E69 /* GiniBankSDK */ = {
 			isa = XCSwiftPackageProductDependency;
