@@ -83,11 +83,9 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         cameraPreviewViewController.didMove(toParent: self)
         view.sendSubviewToBack(cameraPreviewViewController.view)
         configureConstraints()
-        if UIDevice.current.isIphone {
-            cameraPane.cameraTitleLabel.text = NSLocalizedStringPreferredFormat(
-                "ginicapture.camera.infoLabel",
-                comment: "Info label")
-        }
+        cameraPane.cameraTitleLabel.text = NSLocalizedStringPreferredFormat(
+            "ginicapture.camera.infoLabel",
+            comment: "Info label")
         cameraPane.configureView(giniConfiguration: giniConfiguration)
         configureButtons()
     }

@@ -67,7 +67,7 @@ extension Camera2ViewController {
 
     @objc func showImportFileSheet() {
         let alertViewController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        var alertViewControllerMessage: String = NSLocalizedStringPreferredFormat(
+        let alertViewControllerMessage: String = NSLocalizedStringPreferredFormat(
             "ginicapture.camera.popupTitleImportPDForPhotos",
             comment: "Info label")
         if giniConfiguration.fileImportSupportedTypes == .pdf_and_images {
