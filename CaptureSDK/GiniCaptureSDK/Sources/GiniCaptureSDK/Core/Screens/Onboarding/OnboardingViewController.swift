@@ -33,6 +33,7 @@ class OnboardingViewController: UIViewController,
         pagesCollection.layoutIfNeeded()
         pagesCollection.reloadData()
         pagesCollection.dataSource = dataSource
+        pagesCollection.delegate = dataSource
     }
     private func configurePageControl() {
         pageControl.numberOfPages = dataSource.itemSections.count
