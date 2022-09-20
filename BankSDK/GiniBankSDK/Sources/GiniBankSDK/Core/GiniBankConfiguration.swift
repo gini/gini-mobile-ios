@@ -383,6 +383,36 @@ public final class GiniBankConfiguration: NSObject {
     public var customOnboardingPages: [OnboardingPageNew]?
     
     /**
+     Enable/disable the bottom navigation bar.
+     */
+    public var bottomNavigationBarEnabled: Bool = true
+    
+    /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the onboarding screen.
+     */
+    public var onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
+    
+    /**
+      * Set an adapter implementation to show a custom illustration on the "align corners" onboarding page.
+     */
+    public var onboardingAlignCornersIllustrationAdapter: OnboardingIllustrationAdapter?
+
+     /**
+       * Set an adapter implementation to show a custom illustration on the "lighting" onboarding page.
+      */
+    public var onboardingLightingIllustrationAdapter: OnboardingIllustrationAdapter?
+
+     /**
+      * Set an adapter implementation to show a custom illustration on the "multi-page" onboarding page.
+      */
+    public var onboardingMultiPageIllustrationAdapter: OnboardingIllustrationAdapter?
+
+     /**
+      * Set an adapter implementation to show a custom illustration on the "QR code" onboarding page.
+      */
+    public var onboardingQRCodeIllustrationAdapter: OnboardingIllustrationAdapter?
+    
+    /**
      Sets the back button text in the navigation bar on the review screen. Use this if you only want to show the title.
      
      - note: Screen API only.
@@ -1325,6 +1355,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.onboardingTextColor = self.onboardingTextColor
         configuration.onboardingScreenBackgroundColor = self.onboardingScreenBackgroundColor
         configuration.customOnboardingPages = self.customOnboardingPages
+        configuration.onboardingAlignCornersIllustrationAdapter = self.onboardingAlignCornersIllustrationAdapter
         
         configuration.navigationBarReviewTitleBackButton = self.navigationBarReviewTitleBackButton
         configuration.navigationBarReviewTitleCloseButton = self.navigationBarReviewTitleCloseButton
@@ -1410,6 +1441,7 @@ public final class GiniBankConfiguration: NSObject {
         // Set onboarding pages after setting the GiniCapture's configuration
         // because the onboarding page initialisers need the configuration
         configuration.onboardingPages = self.onboardingPages
+        configuration.onboardingAlignCornersIllustrationAdapter = self.onboardingAlignCornersIllustrationAdapter
         
         return configuration
     }
