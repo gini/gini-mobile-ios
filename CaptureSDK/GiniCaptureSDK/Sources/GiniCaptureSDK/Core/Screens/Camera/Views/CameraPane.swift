@@ -61,13 +61,19 @@ final class CameraPane: UIView {
                 image: UIImageNamedPreferred(named: "flashOn") ?? UIImage(),
                 name: NSLocalizedStringPreferredFormat(
                 "ginicapture.camera.flashButtonLabel.On",
-                comment: "Flash button"))
+                comment: "Flash button on voice over"))
+            flashButton.accessibilityValue = NSLocalizedStringPreferredFormat(
+                "ginicapture.camera.flashButtonLabel.On.Voice.Over",
+                comment: "Flash button voice over")
         } else {
             flashButton.configureButton(
                 image: UIImageNamedPreferred(named: "flashOff") ?? UIImage(),
                 name: NSLocalizedStringPreferredFormat(
                 "ginicapture.camera.flashButtonLabel.Off",
                 comment: "Flash button"))
+            flashButton.accessibilityValue = NSLocalizedStringPreferredFormat(
+                "ginicapture.camera.flashButtonLabel.Off.Voice.Over",
+                comment: "Flash button off voice over")
         }
     }
 
