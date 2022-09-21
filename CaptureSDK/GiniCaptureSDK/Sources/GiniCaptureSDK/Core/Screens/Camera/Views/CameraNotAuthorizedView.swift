@@ -32,7 +32,7 @@ final class CameraNotAuthorizedView: UIView {
             "ginicapture.camera.notAuthorized",
             comment: "Not authorized text")
         label.numberOfLines = 0
-        label.textColor = giniConfiguration.cameraNotAuthorizedTextColor.uiColor()
+        label.textColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.light1).uiColor()
         label.textAlignment = .center
         label.font = giniConfiguration.textStyleFonts[.title2]
 
@@ -41,8 +41,8 @@ final class CameraNotAuthorizedView: UIView {
             NSLocalizedStringPreferredFormat(
                 "ginicapture.camera.notAuthorizedButton", comment: "Grant permission"),
             for: .normal)
-        button.setTitleColor(giniConfiguration.cameraNotAuthorizedButtonTitleColor.uiColor(), for: .normal)
-        button.setTitleColor(giniConfiguration.cameraNotAuthorizedButtonTitleColor.uiColor().withAlphaComponent(0.8),
+        button.setTitleColor(GiniColor(light: UIColor.GiniCapture.accent1, dark: UIColor.GiniCapture.accent1).uiColor(), for: .normal)
+        button.setTitleColor(GiniColor(light: UIColor.GiniCapture.accent1, dark: UIColor.GiniCapture.accent1).uiColor().withAlphaComponent(0.8),
                              for: .highlighted)
         button.titleLabel?.font = giniConfiguration.textStyleFonts[.subheadline]
 
