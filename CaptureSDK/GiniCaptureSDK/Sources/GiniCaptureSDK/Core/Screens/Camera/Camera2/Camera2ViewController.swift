@@ -25,6 +25,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     }()
     public weak var delegate: CameraViewControllerDelegate?
 
+    @IBOutlet weak var cameraFocusImageView: UIImageView!
     @IBOutlet weak var cameraPane: CameraPane!
     private var cameraButtonsViewModel = CameraButtonsViewModel()
 
@@ -76,6 +77,9 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     }
 
     func setupView() {
+        self.title = NSLocalizedStringPreferredFormat(
+            "ginicapture.camera.infoLabel",
+            comment: "Info label")
         edgesForExtendedLayout = []
         view.backgroundColor = giniConfiguration.cameraContainerViewBackgroundColor.uiColor()
         addChild(cameraPreviewViewController)
@@ -83,9 +87,18 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         cameraPreviewViewController.didMove(toParent: self)
         view.sendSubviewToBack(cameraPreviewViewController.view)
         configureConstraints()
-        cameraPane.cameraTitleLabel.text = NSLocalizedStringPreferredFormat(
-            "ginicapture.camera.infoLabel",
-            comment: "Info label")
+        if UIDevice.current.isIphone {
+            cameraPane.cameraTitleLabel.text = NSLocalizedStringPreferredFormat(
+                "ginicapture.camera.infoLabel",
+                comment: "Info label")
+            self.title = NSLocalizedStringPreferredFormat(
+                "ginicapture.navigationbar.camera.title",
+                comment: "Info label")
+        } else {
+            self.title = NSLocalizedStringPreferredFormat(
+                "ginicapture.camera.infoLabel",
+                comment: "Info label")
+        }
         cameraPane.configureView(giniConfiguration: giniConfiguration)
         configureButtons()
     }
@@ -228,8 +241,11 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol) {
+        cameraPane.setupAuthorization(isHidden: false)
+        cameraFocusImageView.isHidden = false
         cameraPane.toggleCaptureButtonActivation(state: true)
-        cameraPane.toggleFlashButtonActivation(state: camera.isFlashSupported && giniConfiguration.flashToggleEnabled)
+        cameraPane.toggleFlashButtonActivation(
+            state: camera.isFlashSupported && giniConfiguration.flashToggleEnabled)
         cameraButtonsViewModel.isFlashOn = camera.isFlashOn
         cameraPane.setupFlashButton(state: cameraButtonsViewModel.isFlashOn)
     }
@@ -245,4 +261,8 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
         }
     }
 
+    func notAuthorized() {
+        cameraPane.setupAuthorization(isHidden: true)
+        cameraFocusImageView.isHidden = true
+    }
 }

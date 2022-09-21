@@ -321,12 +321,12 @@ import UIKit
     /**
      Sets the text color of the descriptional text when camera access was denied.
      */
-    @objc public var cameraNotAuthorizedTextColor = UIColor.white
+    @objc public var cameraNotAuthorizedTextColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.light1)
     
     /**
      Sets the text color of the button title when camera access was denied.
      */
-    @objc public var cameraNotAuthorizedButtonTitleColor = UIColor.white
+    @objc public var cameraNotAuthorizedButtonTitleColor = GiniColor(light: UIColor.GiniCapture.accent1, dark: UIColor.GiniCapture.accent1)
     
     /**
      Sets the color of the loading indicator on the camera screen to the specified color.
