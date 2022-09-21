@@ -18,7 +18,6 @@ import UIKit
 
 extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
     
-    
     public func camera(_ viewController: CameraScreen, didCapture document: GiniCaptureDocument) {
         let loadingView = viewController.addValidationLoadingView()
         
