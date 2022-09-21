@@ -4,7 +4,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Camera2ViewController" customModule="GiniCaptureSDK">
             <connections>
+                <outlet property="cameraFocusImageView" destination="FMH-fq-Dwo" id="54z-Jl-gCl"/>
                 <outlet property="cameraPane" destination="13s-Zb-nTw" id="kgw-sM-jQj"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Kff-Gp-d1h"/>
             </connections>
@@ -72,7 +72,6 @@
                         <constraint firstItem="hTe-DA-2qT" firstAttribute="centerY" secondItem="13s-Zb-nTw" secondAttribute="centerY" id="zsn-TD-QbB"/>
                     </constraints>
                     <connections>
-                        <outlet property="cameraTitleLabel" destination="Xqa-cE-X5w" id="bo6-Lw-XId"/>
                         <outlet property="captureButton" destination="hTe-DA-2qT" id="Te8-hA-q3L"/>
                         <outlet property="fileUploadButton" destination="fXR-zD-tfI" id="vOT-VU-27l"/>
                         <outlet property="flashButton" destination="MKr-w2-Lou" id="06K-R2-Qon"/>
@@ -84,12 +83,6 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scan an invoice or a QR code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xqa-cE-X5w">
-                    <rect key="frame" x="339" y="79" width="222" height="20.5"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" name="labelWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -101,8 +94,6 @@
                 <constraint firstAttribute="bottom" secondItem="13s-Zb-nTw" secondAttribute="bottom" id="mY8-4T-W5K"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="13s-Zb-nTw" secondAttribute="trailing" id="nDS-Tf-anT"/>
                 <constraint firstItem="13s-Zb-nTw" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="pNX-vt-Y8o"/>
-                <constraint firstItem="Xqa-cE-X5w" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="55" id="tuY-Du-nYv"/>
-                <constraint firstItem="Xqa-cE-X5w" firstAttribute="centerX" secondItem="FMH-fq-Dwo" secondAttribute="centerX" id="uIF-P4-OcB"/>
             </constraints>
             <point key="canvasLocation" x="139" y="66"/>
         </view>
@@ -110,9 +101,6 @@
     <resources>
         <image name="cameraCaptureButton" width="70" height="70"/>
         <image name="cameraFocus" width="353" height="495"/>
-        <namedColor name="labelWhite">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

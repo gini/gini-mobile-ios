@@ -52,7 +52,6 @@ public final class CameraButtonsViewModel {
                 description: "There was an error while capturing a picture: \(String(describing: errorMessage))",
                                     error: error)
             giniConfiguration.errorLogger.handleErrorLog(error: errorLog)
-            assertionFailure("There was an error while capturing a picture")
             return nil
         }
         let imageDocument = GiniImageDocument(
