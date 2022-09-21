@@ -60,7 +60,7 @@ extension CameraPreviewView {
         createGrayFrame()
     }
 
-    fileprivate func createGuides() {
+    private func createGuides() {
         let rectLayer = CAShapeLayer()
         styleLayer(rectLayer)
         layer.addSublayer(rectLayer)
