@@ -25,12 +25,12 @@
                     <rect key="frame" x="900" y="0.0" width="124" height="1366"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hTe-DA-2qT">
-                            <rect key="frame" x="13" y="640.5" width="98.5" height="85"/>
+                            <rect key="frame" x="15" y="641" width="94" height="84"/>
                             <state key="normal" title="Button"/>
-                            <buttonConfiguration key="configuration" style="plain" image="cameraCaptureButton" title=" " subtitle=" "/>
+                            <buttonConfiguration key="configuration" style="plain" image="cameraCaptureButton"/>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UDD-dX-FJV" customClass="ThumbnailView" customModule="GiniCaptureSDK">
-                            <rect key="frame" x="40" y="542.5" width="44" height="52"/>
+                            <rect key="frame" x="40" y="543" width="44" height="52"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="52" id="jLa-kI-mGE"/>
@@ -38,7 +38,7 @@
                             </constraints>
                         </view>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="41" translatesAutoresizingMaskIntoConstraints="NO" id="jYB-R4-Jjg">
-                            <rect key="frame" x="0.0" y="754.5" width="124" height="145"/>
+                            <rect key="frame" x="0.0" y="754" width="124" height="145"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MKr-w2-Lou" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
                                     <rect key="frame" x="0.0" y="0.0" width="124" height="52"/>
