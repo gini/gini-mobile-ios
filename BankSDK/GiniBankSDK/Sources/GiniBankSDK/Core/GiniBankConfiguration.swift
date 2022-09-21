@@ -161,12 +161,12 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Sets the text color of the descriptional text when camera access was denied.
      */
-    @objc public var cameraNotAuthorizedTextColor = UIColor.white
+    @objc public var cameraNotAuthorizedTextColor = GiniColor(light: UIColor.GiniBank.light1, dark: UIColor.GiniBank.light1)
     
     /**
      Sets the text color of the button title when camera access was denied.
      */
-    @objc public var cameraNotAuthorizedButtonTitleColor = UIColor.white
+    @objc public var cameraNotAuthorizedButtonTitleColor = GiniColor(light: UIColor.GiniBank.accent1, dark: UIColor.GiniBank.accent1)
     
     /**
      Sets the color of camera preview corner guides.
