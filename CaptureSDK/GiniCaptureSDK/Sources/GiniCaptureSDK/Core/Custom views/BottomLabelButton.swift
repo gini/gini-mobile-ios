@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BottomLabelButton: UIButton {
+final class BottomLabelButton: UIButton {
     var didTapButton: (() -> Void)?
     
     lazy var actionButton: UIButton = {
@@ -51,6 +51,9 @@ class BottomLabelButton: UIButton {
     override func awakeFromNib() {
         super.awakeFromNib()
         isAccessibilityElement = true
+        actionLabel.isAccessibilityElement = false
+        actionButton.isAccessibilityElement = false
+        iconView.isAccessibilityElement = false
         accessibilityTraits = .button
         setupConstraints()
     }
