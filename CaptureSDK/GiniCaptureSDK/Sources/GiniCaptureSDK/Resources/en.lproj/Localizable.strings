@@ -6,7 +6,7 @@
   Copyright © 2016 Gini. All rights reserved.
 */
 
-"ginicapture.navigationbar.camera.title"        = "Photograph document";
+"ginicapture.navigationbar.camera.title"        = "Scan";
 "ginicapture.navigationbar.onboarding.title"    = "Instructions";
 "ginicapture.navigationbar.review.title"        = "Check photo quality";
 "ginicapture.navigationbar.analysis.title"      = "Be patient, analysing photo";
