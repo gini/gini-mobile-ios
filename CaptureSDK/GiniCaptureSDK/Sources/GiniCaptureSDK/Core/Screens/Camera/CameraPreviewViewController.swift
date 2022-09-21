@@ -177,6 +177,7 @@ final class CameraPreviewViewController: UIViewController {
                 default:
                     if self.giniConfiguration.debugModeOn {
                         #if targetEnvironment(simulator)
+                        self.isAuthorized = true
                         self.addDefaultImage()
                         #endif
                     } else {
