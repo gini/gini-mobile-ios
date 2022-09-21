@@ -28,18 +28,23 @@ final class CameraNotAuthorizedView: UIView {
         imageView.contentMode = .scaleAspectFit
 
         // Configure label
-        label.text = .localized(resource: CameraStrings.notAuthorizedMessage)
+        label.text = NSLocalizedStringPreferredFormat(
+            "ginicapture.camera.notAuthorized",
+            comment: "Not authorized text")
         label.numberOfLines = 0
-        label.textColor = giniConfiguration.cameraNotAuthorizedTextColor
+        label.textColor = giniConfiguration.cameraNotAuthorizedTextColor.uiColor()
         label.textAlignment = .center
-        label.font = giniConfiguration.customFont.with(weight: .thin, size: 20, style: .title2)
+        label.font = giniConfiguration.textStyleFonts[.title2]
 
         // Configure button
-        button.setTitle(.localized(resource: CameraStrings.notAuthorizedButton), for: .normal)
-        button.setTitleColor(giniConfiguration.cameraNotAuthorizedButtonTitleColor, for: .normal)
-        button.setTitleColor(giniConfiguration.cameraNotAuthorizedButtonTitleColor.withAlphaComponent(0.8),
+        button.setTitle(
+            NSLocalizedStringPreferredFormat(
+                "ginicapture.camera.notAuthorizedButton", comment: "Grant permission"),
+            for: .normal)
+        button.setTitleColor(giniConfiguration.cameraNotAuthorizedButtonTitleColor.uiColor(), for: .normal)
+        button.setTitleColor(giniConfiguration.cameraNotAuthorizedButtonTitleColor.uiColor().withAlphaComponent(0.8),
                              for: .highlighted)
-        button.titleLabel?.font = giniConfiguration.customFont.with(weight: .regular, size: 20, style: .caption1)
+        button.titleLabel?.font = giniConfiguration.textStyleFonts[.subheadline]
 
         button.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
 
@@ -68,45 +73,35 @@ final class CameraNotAuthorizedView: UIView {
 
     // MARK: Constraints
     fileprivate func addConstraints() {
-        let superview = self
-
-        // Content view
         contentView.translatesAutoresizingMaskIntoConstraints = false
-        Constraints.active(item: contentView, attr: .top, relatedBy: .greaterThanOrEqual, to: superview, attr: .top,
-                          constant: 30)
-        Constraints.active(item: contentView, attr: .centerX, relatedBy: .equal, to: superview, attr: .centerX)
-        Constraints.active(item: contentView, attr: .centerY, relatedBy: .equal, to: superview, attr: .centerY,
-                          constant: 5, priority: 999)
-
-        // Image view
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        Constraints.active(item: imageView, attr: .top, relatedBy: .equal, to: contentView, attr: .top)
-        Constraints.active(item: imageView, attr: .width, relatedBy: .lessThanOrEqual, to: nil, attr: .width,
-                          constant: 204)
-        Constraints.active(item: imageView, attr: .width, relatedBy: .greaterThanOrEqual, to: nil, attr: .width,
-                          constant: 75)
-        Constraints.active(item: imageView, attr: .height, relatedBy: .lessThanOrEqual, to: nil, attr: .height,
-                          constant: 75)
-        Constraints.active(item: imageView, attr: .height, relatedBy: .greaterThanOrEqual, to: nil, attr: .height,
-                          constant: 50)
-        Constraints.active(item: imageView, attr: .centerX, relatedBy: .equal, to: contentView, attr: .centerX)
-
-        // Text label
         label.translatesAutoresizingMaskIntoConstraints = false
-        Constraints.active(item: label, attr: .top, relatedBy: .equal, to: imageView, attr: .bottom, constant: 35)
-        Constraints.active(item: label, attr: .trailing, relatedBy: .equal, to: contentView, attr: .trailing)
-        Constraints.active(item: label, attr: .leading, relatedBy: .equal, to: contentView, attr: .leading)
-        Constraints.active(item: label, attr: .width, relatedBy: .equal, to: nil, attr: .width, constant: 250)
-        Constraints.active(item: label, attr: .height, relatedBy: .greaterThanOrEqual, to: nil, attr: .height,
-                          constant: 70)
-
-        // Button
         button.translatesAutoresizingMaskIntoConstraints = false
-        Constraints.active(item: button, attr: .top, relatedBy: .equal, to: label, attr: .bottom, constant: 10)
-        Constraints.active(item: button, attr: .bottom, relatedBy: .equal, to: contentView, attr: .bottom)
-        Constraints.active(item: button, attr: .width, relatedBy: .equal, to: label, attr: .width)
-        Constraints.active(item: button, attr: .height, relatedBy: .equal, to: nil, attr: .height, constant: 35)
-        Constraints.active(item: button, attr: .centerX, relatedBy: .equal, to: contentView, attr: .centerX)
+        NSLayoutConstraint.activate([
+            contentView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: 30),
+            contentView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 5),
+            contentView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            contentView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 10),
+            // Image view
+            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            imageView.widthAnchor.constraint(lessThanOrEqualToConstant: 204),
+            imageView.widthAnchor.constraint(greaterThanOrEqualToConstant: 75),
+            imageView.heightAnchor.constraint(greaterThanOrEqualToConstant: 50),
+            imageView.heightAnchor.constraint(lessThanOrEqualToConstant: 75),
+            imageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            // label
+            label.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 35),
+            label.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            label.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.7),
+            // button
+            button.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10),
+            button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            button.widthAnchor.constraint(greaterThanOrEqualTo: label.widthAnchor),
+            button.heightAnchor.constraint(equalToConstant: 35),
+            button.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 4),
+            button.trailingAnchor.constraint(greaterThanOrEqualTo: trailingAnchor, constant: 4),
+            button.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
+        ])
     }
 
 }

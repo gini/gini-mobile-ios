@@ -13,6 +13,7 @@ protocol CameraPreviewViewControllerDelegate: AnyObject {
                        didDetect qrCodeDocument: GiniQRCodeDocument)
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol)
+    func notAuthorized()
 }
 
 final class CameraPreviewViewController: UIViewController {
@@ -57,6 +58,8 @@ final class CameraPreviewViewController: UIViewController {
     fileprivate var defaultImage: UIImage? {
         return UIImageNamedPreferred(named: "cameraDefaultDocumentImage")
     }
+
+    var isAuthorized = false
 
     lazy var previewView: CameraPreviewView = {
         let previewView = CameraPreviewView()
@@ -127,6 +130,10 @@ final class CameraPreviewViewController: UIViewController {
     }
     
     func captureImage(completion: @escaping (Data?, CameraError?) -> Void) {
+        guard isAuthorized == true else {
+            completion(nil, CameraError.notAuthorizedToUseDevice)
+            return
+        }
         if giniConfiguration.debugModeOn {
             // Retrieves the image from default image view to make sure the image
             // was set and therefore the correct states were checked before.
@@ -165,20 +172,27 @@ final class CameraPreviewViewController: UIViewController {
             if let error = error {
                 switch error {
                 case .notAuthorizedToUseDevice:
+                    self.isAuthorized = false
                     self.addNotAuthorizedView()
+                    self.delegate?.notAuthorized()
                 default:
                     if self.giniConfiguration.debugModeOn {
                         #if targetEnvironment(simulator)
+                        self.isAuthorized = true
                         self.addDefaultImage()
                         #endif
+                    } else {
+                        self.isAuthorized = false
                     }
                 }
             } else {
+                self.isAuthorized = true
                 self.delegate?.cameraDidSetUp(self, camera: self.camera)
             }
+            
             self.stopLoadingIndicator()
         }
-        
+
         if giniConfiguration.qrCodeScanningEnabled {
             camera.didDetectQR = { [weak self] qrDocument in
                 guard let self = self else { return }
@@ -226,6 +240,7 @@ extension CameraPreviewViewController {
         super.view.addSubview(view)
         
         view.translatesAutoresizingMaskIntoConstraints = false
+        
         Constraints.active(item: view, attr: .width, relatedBy: .equal, to: super.view, attr: .width)
         Constraints.active(item: view, attr: .height, relatedBy: .equal, to: super.view, attr: .height)
         Constraints.active(item: view, attr: .centerX, relatedBy: .equal, to: super.view, attr: .centerX)

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CameraPane: UIView {
+final class CameraPane: UIView {
     @IBOutlet weak var cameraTitleLabel: UILabel!
     @IBOutlet weak var captureButton: UIButton!
     @IBOutlet weak var fileUploadButton: BottomLabelButton!
@@ -17,6 +17,10 @@ class CameraPane: UIView {
 
     func configureView(giniConfiguration: GiniConfiguration) {
         self.giniConfiguration = giniConfiguration
+        backgroundColor = GiniColor(
+            light: UIColor.GiniCapture.dark1,
+            dark: UIColor.GiniCapture.dark1).uiColor().withAlphaComponent(0.4)
+        captureButton.setTitle("", for: .normal)
         thumbnailView.isHidden = true
         fileUploadButton.configureButton(
             image: UIImageNamedPreferred(
@@ -45,6 +49,7 @@ class CameraPane: UIView {
                 light: UIColor.GiniCapture.light1,
                 dark: UIColor.GiniCapture.light1).uiColor()
         }
+        captureButton.accessibilityLabel = ""
         captureButton.accessibilityValue =  NSLocalizedStringPreferredFormat(
             "ginicapture.camera.capturebutton",
             comment: "Capture")
@@ -73,5 +78,15 @@ class CameraPane: UIView {
     func toggleCaptureButtonActivation(state: Bool) {
         captureButton.isUserInteractionEnabled = state
         captureButton.isEnabled = state
+    }
+
+    func setupAuthorization(isHidden: Bool) {
+        self.isHidden = isHidden
+        captureButton.isHidden = isHidden
+        flashButton.isHidden = isHidden
+        if cameraTitleLabel != nil {
+            cameraTitleLabel.isHidden = isHidden
+        }
+        fileUploadButton.isHidden = isHidden
     }
 }

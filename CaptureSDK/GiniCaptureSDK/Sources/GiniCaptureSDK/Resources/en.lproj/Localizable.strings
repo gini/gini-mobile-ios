@@ -37,7 +37,8 @@
 "ginicapture.camera.documentValidationError.wrongFormat" = "Only files of the formats jpg, png, gif or pdf can be analysed";
 "ginicapture.camera.fileImportTip" = "Now documents can be conveniently uploaded for analysis.";
 "ginicapture.camera.fileImportButtonLabel" = "Files";
-
+"ginicapture.camera.flashButtonLabel.On.Voice.Over" = "Flash On";
+"ginicapture.camera.flashButtonLabel.Off.Voice.Over" = "Flash Off";
 "ginicapture.camera.flashButtonLabel.On" = "On";
 "ginicapture.camera.flashButtonLabel.Off" = "Off";
 "ginicapture.camera.thumbnail" = "Photo review";
@@ -56,9 +57,9 @@
 "ginicapture.camera.errorPopup.reviewPages" = "Review pages";
 "ginicapture.camera.unknownError" = "An unknown error has occurred on the camera screen";
 "ginicapture.camera.popupTitleImportPDF" = "Import PDF";
-"ginicapture.camera.popupOptionPhotos" = "Gallery";
-"ginicapture.camera.popupOptionFiles" = "Documents";
-"ginicapture.camera.popupTitleImportPDForPhotos" = "Import Photos or PDF files";
+"ginicapture.camera.popupOptionPhotos" = "Upload photo";
+"ginicapture.camera.popupOptionFiles" = "Upload PDF";
+"ginicapture.camera.popupTitleImportPDForPhotos" = "";
 "ginicapture.camera.popupCancel" = "Cancel";
 
 "ginicapture.onboarding.firstPage"  = "Hold device parallel over the page";

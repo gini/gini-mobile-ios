@@ -419,6 +419,10 @@ extension CameraViewController: CameraPreviewViewControllerDelegate {
             }
         }
     }
+    
+    func notAuthorized() {
+        
+    }
 }
 
 // MARK: - CameraButtonsViewControllerDelegate

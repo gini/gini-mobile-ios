@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Camera2ViewController" customModule="GiniCaptureSDK">
             <connections>
+                <outlet property="cameraFocusImageView" destination="2eO-4o-6WG" id="uax-Xr-Cwi"/>
                 <outlet property="cameraPane" destination="qey-Uj-2J2" id="fnE-94-RbB"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Rqx-4l-iKM"/>
             </connections>
@@ -21,15 +22,11 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fqz-Ub-N9F">
-                    <rect key="frame" x="0.0" y="611" width="414" height="285"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qey-Uj-2J2" customClass="CameraPane" customModule="GiniCaptureSDK">
-                    <rect key="frame" x="0.0" y="611" width="414" height="251"/>
+                    <rect key="frame" x="0.0" y="716.66666666666663" width="414" height="179.33333333333337"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="753" verticalCompressionResistancePriority="753" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dQe-NY-Bi9">
-                            <rect key="frame" x="172" y="107.66666666666663" width="70" height="70"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dQe-NY-Bi9">
+                            <rect key="frame" x="172" y="60" width="70" height="70"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="70" id="Flv-NK-4aP"/>
                                 <constraint firstAttribute="width" constant="70" id="gVb-eK-08y"/>
@@ -40,28 +37,28 @@
                                 <color key="baseForegroundColor" systemColor="tertiaryLabelColor"/>
                             </buttonConfiguration>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="752" text="Scan an invoice or a QR code" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.14999999999999999" showsExpansionTextWhenTruncated="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lfm-sA-fAL">
-                            <rect key="frame" x="124.66666666666669" y="8" width="165" height="14.333333333333336"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="752" text="Scan an invoice or a QR code" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="lfm-sA-fAL">
+                            <rect key="frame" x="96.333333333333329" y="7.9999999999999982" width="221.66666666666669" height="20.333333333333329"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" name="systemWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" distribution="fillEqually" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="zFz-gY-AMg">
-                            <rect key="frame" x="8" y="38.333333333333357" width="156" height="208.66666666666663"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="zFz-gY-AMg">
+                            <rect key="frame" x="8" y="44.333333333333371" width="156" height="101"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oxa-p6-f53" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
-                                    <rect key="frame" x="0.0" y="0.0" width="76" height="208.66666666666666"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="75.666666666666671" height="101"/>
                                     <color key="backgroundColor" systemColor="systemOrangeColor"/>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wph-4w-azi" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
-                                    <rect key="frame" x="80" y="0.0" width="76" height="208.66666666666666"/>
+                                    <rect key="frame" x="80.666666666666686" y="0.0" width="75.333333333333314" height="101"/>
                                     <color key="backgroundColor" systemColor="systemGreenColor"/>
                                     <color key="tintColor" systemColor="tintColor"/>
                                 </view>
                             </subviews>
                         </stackView>
                         <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Yg-3y-VKg" customClass="ThumbnailView" customModule="GiniCaptureSDK">
-                            <rect key="frame" x="272" y="116.66666666666663" width="44" height="52"/>
+                            <rect key="frame" x="272" y="69" width="44" height="52"/>
                             <color key="backgroundColor" systemColor="systemOrangeColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="52" id="aV8-ZL-Eg8"/>
@@ -69,22 +66,20 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="zFz-gY-AMg" firstAttribute="leading" secondItem="qey-Uj-2J2" secondAttribute="leading" constant="8" id="2MR-qQ-nQt"/>
                         <constraint firstItem="0Yg-3y-VKg" firstAttribute="centerY" secondItem="dQe-NY-Bi9" secondAttribute="centerY" id="6E5-zb-nf7"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="0Yg-3y-VKg" secondAttribute="trailing" constant="8" id="EwU-7f-8dm"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="lfm-sA-fAL" secondAttribute="trailing" constant="8" id="HXc-3E-u8X"/>
                         <constraint firstItem="zFz-gY-AMg" firstAttribute="top" secondItem="lfm-sA-fAL" secondAttribute="bottom" constant="16" id="IV7-fG-9A2"/>
                         <constraint firstItem="0Yg-3y-VKg" firstAttribute="leading" secondItem="dQe-NY-Bi9" secondAttribute="trailing" constant="30" id="PbW-4h-wFh"/>
-                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="lfm-sA-fAL" secondAttribute="trailing" constant="8" id="V2y-Ko-OEV"/>
                         <constraint firstItem="lfm-sA-fAL" firstAttribute="centerX" secondItem="qey-Uj-2J2" secondAttribute="centerX" id="Z4u-Mw-edC"/>
                         <constraint firstItem="dQe-NY-Bi9" firstAttribute="leading" secondItem="zFz-gY-AMg" secondAttribute="trailing" constant="8" id="ea5-vT-sWG"/>
                         <constraint firstItem="lfm-sA-fAL" firstAttribute="top" secondItem="qey-Uj-2J2" secondAttribute="top" constant="8" id="f4b-FG-Wzh"/>
                         <constraint firstItem="dQe-NY-Bi9" firstAttribute="centerX" secondItem="qey-Uj-2J2" secondAttribute="centerX" id="iMg-DB-LrQ"/>
                         <constraint firstItem="dQe-NY-Bi9" firstAttribute="centerY" secondItem="zFz-gY-AMg" secondAttribute="centerY" id="jIy-hN-jDT"/>
-                        <constraint firstAttribute="bottom" secondItem="zFz-gY-AMg" secondAttribute="bottom" constant="4" id="p46-0k-x4c"/>
-                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="dQe-NY-Bi9" secondAttribute="bottom" constant="4" id="rSO-W0-QEF"/>
-                        <constraint firstItem="lfm-sA-fAL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="qey-Uj-2J2" secondAttribute="leading" constant="8" id="tk0-wd-Z1R"/>
+                        <constraint firstItem="lfm-sA-fAL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="qey-Uj-2J2" secondAttribute="leading" constant="8" id="stP-BC-ctT"/>
                     </constraints>
                     <connections>
                         <outlet property="cameraTitleLabel" destination="lfm-sA-fAL" id="QDr-0K-AJy"/>
@@ -95,7 +90,7 @@
                     </connections>
                 </view>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cameraFocus" translatesAutoresizingMaskIntoConstraints="NO" id="2eO-4o-6WG">
-                    <rect key="frame" x="0.0" y="60" width="414" height="551"/>
+                    <rect key="frame" x="0.0" y="60" width="414" height="656.66666666666663"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </imageView>
@@ -103,20 +98,17 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="fqz-Ub-N9F" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="2Bq-c4-MVH"/>
-                <constraint firstItem="qey-Uj-2J2" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.28" id="5pL-4z-ODy"/>
+                <constraint firstItem="qey-Uj-2J2" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.2" id="5pL-4z-ODy"/>
                 <constraint firstAttribute="trailing" secondItem="qey-Uj-2J2" secondAttribute="trailing" id="DJb-3E-lB1"/>
                 <constraint firstItem="qey-Uj-2J2" firstAttribute="top" secondItem="2eO-4o-6WG" secondAttribute="bottom" id="MfE-7l-XLm"/>
                 <constraint firstItem="2eO-4o-6WG" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="Qft-ST-Zj6"/>
-                <constraint firstAttribute="bottom" secondItem="fqz-Ub-N9F" secondAttribute="bottom" id="X6N-M1-p1n"/>
+                <constraint firstAttribute="bottom" secondItem="qey-Uj-2J2" secondAttribute="bottom" id="XnW-wu-lup"/>
                 <constraint firstAttribute="trailing" secondItem="2eO-4o-6WG" secondAttribute="trailing" id="eJa-hf-dLk"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="fqz-Ub-N9F" secondAttribute="trailing" id="hQ2-gz-HkV"/>
+                <constraint firstItem="zFz-gY-AMg" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="h0v-6y-Xer"/>
                 <constraint firstItem="2eO-4o-6WG" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="kY4-CT-J8e"/>
-                <constraint firstItem="qey-Uj-2J2" firstAttribute="top" secondItem="fqz-Ub-N9F" secondAttribute="top" id="kah-ed-q4R"/>
                 <constraint firstItem="qey-Uj-2J2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ujq-KI-fiR"/>
-                <constraint firstItem="qey-Uj-2J2" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="y2K-If-8UR"/>
             </constraints>
-            <point key="canvasLocation" x="136.875" y="101.40845070422536"/>
+            <point key="canvasLocation" x="136.23188405797103" y="101.11607142857143"/>
         </view>
     </objects>
     <resources>

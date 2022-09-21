@@ -25,6 +25,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     }()
     public weak var delegate: CameraViewControllerDelegate?
 
+    @IBOutlet weak var cameraFocusImageView: UIImageView!
     @IBOutlet weak var cameraPane: CameraPane!
     private var cameraButtonsViewModel = CameraButtonsViewModel()
 
@@ -57,7 +58,6 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         super.viewDidLoad()
         showUploadButton()
         setupView()
-        setupCamera()
     }
 
     public override func viewWillAppear(_ animated: Bool) {
@@ -77,6 +77,9 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     }
 
     func setupView() {
+        self.title = NSLocalizedStringPreferredFormat(
+            "ginicapture.camera.infoLabel",
+            comment: "Info label")
         edgesForExtendedLayout = []
         view.backgroundColor = giniConfiguration.cameraContainerViewBackgroundColor.uiColor()
         addChild(cameraPreviewViewController)
@@ -86,6 +89,13 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         configureConstraints()
         if UIDevice.current.isIphone {
             cameraPane.cameraTitleLabel.text = NSLocalizedStringPreferredFormat(
+                "ginicapture.camera.infoLabel",
+                comment: "Info label")
+            self.title = NSLocalizedStringPreferredFormat(
+                "ginicapture.navigationbar.camera.title",
+                comment: "Info label")
+        } else {
+            self.title = NSLocalizedStringPreferredFormat(
                 "ginicapture.camera.infoLabel",
                 comment: "Info label")
         }
@@ -231,8 +241,11 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol) {
+        cameraPane.setupAuthorization(isHidden: false)
+        cameraFocusImageView.isHidden = false
         cameraPane.toggleCaptureButtonActivation(state: true)
-        cameraPane.toggleFlashButtonActivation(state: camera.isFlashSupported && giniConfiguration.flashToggleEnabled)
+        cameraPane.toggleFlashButtonActivation(
+            state: camera.isFlashSupported && giniConfiguration.flashToggleEnabled)
         cameraButtonsViewModel.isFlashOn = camera.isFlashOn
         cameraPane.setupFlashButton(state: cameraButtonsViewModel.isFlashOn)
     }
@@ -248,31 +261,8 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
         }
     }
 
-}
-
-// MARK: - Document import
-
-extension Camera2ViewController {
-
-    @objc fileprivate func showImportFileSheet() {
-        let alertViewController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        var alertViewControllerMessage: String = .localized(resource: CameraStrings.popupTitleImportPDF)
-        if giniConfiguration.fileImportSupportedTypes == .pdf_and_images {
-            alertViewController.addAction(UIAlertAction(title: .localized(resource: CameraStrings.popupOptionPhotos),
-                                                        style: .default) { [unowned self] _ in
-                self.delegate?.camera(self, didSelect: .gallery)
-            })
-            alertViewControllerMessage = .localized(resource: CameraStrings.popupTitleImportPDForPhotos)
-        }
-
-        alertViewController.addAction(UIAlertAction(title: .localized(resource: CameraStrings.popupOptionFiles),
-                                                    style: .default) { [unowned self] _ in
-            self.delegate?.camera(self, didSelect: .explorer)
-        })
-        alertViewController.addAction(UIAlertAction(title: .localized(resource: CameraStrings.popupCancel),
-                                                    style: .cancel, handler: nil))
-        alertViewController.message = alertViewControllerMessage
-        alertViewController.popoverPresentationController?.sourceView = cameraPane.fileUploadButton
-        self.present(alertViewController, animated: true, completion: nil)
+    func notAuthorized() {
+        cameraPane.setupAuthorization(isHidden: true)
+        cameraFocusImageView.isHidden = true
     }
 }
