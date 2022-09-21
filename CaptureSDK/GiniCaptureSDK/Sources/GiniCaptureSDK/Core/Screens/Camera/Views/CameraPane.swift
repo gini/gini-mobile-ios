@@ -94,5 +94,8 @@ final class CameraPane: UIView {
             cameraTitleLabel.isHidden = isHidden
         }
         fileUploadButton.isHidden = isHidden
+        if thumbnailView.thumbnailImageView.image != nil {
+            thumbnailView.isHidden = isHidden
+        }
     }
 }

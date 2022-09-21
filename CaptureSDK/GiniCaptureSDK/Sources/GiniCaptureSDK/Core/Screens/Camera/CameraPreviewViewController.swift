@@ -89,13 +89,12 @@ final class CameraPreviewViewController: UIViewController {
     override func loadView() {
         super.loadView()
         view.translatesAutoresizingMaskIntoConstraints = false
-
         previewView.session = camera.session
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(subjectAreaDidChange),
                                                name: NSNotification.Name.AVCaptureDeviceSubjectAreaDidChange,
                                                object: camera.videoDeviceInput?.device)
-        
+        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.dark1, dark: UIColor.GiniCapture.dark1).uiColor()
         previewView.drawGuides(withColor: giniConfiguration.cameraPreviewCornerGuidesColor)
         
         view.insertSubview(previewView, at: 0)
