@@ -20,6 +20,7 @@ final class CameraPane: UIView {
         backgroundColor = GiniColor(
             light: UIColor.GiniCapture.dark1,
             dark: UIColor.GiniCapture.dark1).uiColor().withAlphaComponent(0.4)
+        captureButton.setTitle("", for: .normal)
         thumbnailView.isHidden = true
         fileUploadButton.configureButton(
             image: UIImageNamedPreferred(
