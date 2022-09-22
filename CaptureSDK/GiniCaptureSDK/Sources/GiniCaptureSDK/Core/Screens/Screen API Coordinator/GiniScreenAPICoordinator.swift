@@ -30,7 +30,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     
     // Screens
     var analysisViewController: AnalysisViewController?
-    var cameraViewController: CameraViewController?
+    var cameraViewController: CameraScreen?
     var imageAnalysisNoResultsViewController: NoResultScreenViewController?
     var reviewViewController: ReviewViewController?
     lazy var multiPageReviewViewController: MultipageReviewViewController = {
@@ -320,7 +320,7 @@ extension GiniScreenAPICoordinator: UINavigationControllerDelegate {
             clearDocuments()
         }
                 
-        if fromVC is MultipageReviewViewController, let cameraVC = toVC as? CameraViewController {
+        if fromVC is MultipageReviewViewController, let cameraVC = toVC as? CameraScreen {
             cameraVC.replaceCapturedStackImages(with: pages.compactMap { $0.document.previewImage })
         }
                 
