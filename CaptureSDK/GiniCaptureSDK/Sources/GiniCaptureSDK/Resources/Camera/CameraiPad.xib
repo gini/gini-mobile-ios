@@ -13,6 +13,7 @@
             <connections>
                 <outlet property="cameraFocusImageView" destination="FMH-fq-Dwo" id="54z-Jl-gCl"/>
                 <outlet property="cameraPane" destination="13s-Zb-nTw" id="kgw-sM-jQj"/>
+                <outlet property="iPadCameraFocusBottomConstraint" destination="jeG-Yr-Ic4" id="2O2-9b-rlp"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Kff-Gp-d1h"/>
             </connections>
         </placeholder>
