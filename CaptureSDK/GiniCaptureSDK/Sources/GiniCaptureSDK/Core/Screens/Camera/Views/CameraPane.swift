@@ -14,7 +14,7 @@ final class CameraPane: UIView {
     @IBOutlet weak var flashButton: BottomLabelButton!
     @IBOutlet weak var thumbnailView: ThumbnailView!
     var giniConfiguration: GiniConfiguration! = nil
-
+    @IBOutlet weak var leftButtonsStack: UIView!
     func configureView(giniConfiguration: GiniConfiguration) {
         self.giniConfiguration = giniConfiguration
         backgroundColor = GiniColor(

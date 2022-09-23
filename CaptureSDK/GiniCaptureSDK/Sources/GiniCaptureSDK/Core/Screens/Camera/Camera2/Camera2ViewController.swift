@@ -28,7 +28,12 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     @IBOutlet weak var cameraFocusImageView: UIImageView!
     @IBOutlet weak var cameraPane: CameraPane!
     private var cameraButtonsViewModel = CameraButtonsViewModel()
+    private var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
 
+    @IBOutlet weak var bottomButtonsConstraints: NSLayoutConstraint!
+    @IBOutlet weak var bottomPaneConstraint: NSLayoutConstraint!
+
+    @IBOutlet weak var iPadCameraFocusBottomConstraint: NSLayoutConstraint!
     /**
      Designated initializer for the `CameraViewController` which allows
      to set the `GiniConfiguration for the camera screen`.
@@ -101,8 +106,77 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         }
         cameraPane.configureView(giniConfiguration: giniConfiguration)
         configureButtons()
+        configureBottomNavigation()
     }
 
+    private func configureBottomNavigation() {
+        if giniConfiguration.bottomNavigationBarEnabled {
+            if let customBottomNavigationBar = giniConfiguration.onboardingNavigationBarBottomAdapter {
+                navigationBarBottomAdapter = customBottomNavigationBar
+            } else {
+                navigationBarBottomAdapter = DefaultOnboardingNavigationBarBottomAdapter()
+            }
+            navigationBarBottomAdapter?.setNextButtonClickedActionCallback {
+                self.nextPage()
+            }
+            navigationBarBottomAdapter?.setSkipButtonClickedActionCallback {
+                self.skip()
+            }
+
+            if let navigationBar =
+                navigationBarBottomAdapter?.injectedView() {
+                view.addSubview(navigationBar)
+                layoutBottomNavigationBar(navigationBar)
+            }
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                title: "Skip",
+                style: .plain,
+                target: self,
+                action: #selector(close))
+        }
+    }
+
+    private func layoutBottomNavigationBar(_ navigationBar: UIView) {
+        if UIDevice.current.isIpad {
+            view.removeConstraints([iPadCameraFocusBottomConstraint])
+            navigationBar.translatesAutoresizingMaskIntoConstraints = false
+            self.view.addSubview(navigationBar)
+            NSLayoutConstraint.activate([
+                navigationBar.topAnchor.constraint(equalTo: cameraFocusImageView.bottomAnchor),
+                navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                navigationBar.heightAnchor.constraint(equalToConstant: navigationBar.frame.height)
+            ])
+        } else {
+            view.removeConstraints([bottomPaneConstraint, bottomButtonsConstraints])
+            navigationBar.translatesAutoresizingMaskIntoConstraints = false
+            self.view.addSubview(navigationBar)
+            NSLayoutConstraint.activate([
+                navigationBar.topAnchor.constraint(equalTo: cameraPane.bottomAnchor),
+                navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                navigationBar.heightAnchor.constraint(equalToConstant: navigationBar.frame.height),
+                cameraPane.leftButtonsStack.bottomAnchor.constraint(equalTo: cameraPane.bottomAnchor)
+            ])
+        }
+        view.bringSubviewToFront(navigationBar)
+        view.layoutSubviews()
+    }
+
+    // MARK: - Bottom Navigation Bar Actions
+    
+    private func nextPage() {
+    }
+
+    private func skip() {
+    }
+
+    @objc func close() {
+    }
+    
     func configureButtons() {
         configureLeftButtons()
         cameraButtonsViewModel.captureAction = { [weak self] in
@@ -213,11 +287,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         })
         return blurredView
     }
-}
-
-// MARK: - Image capture
-
-extension Camera2ViewController {
+    // MARK: - Image capture
 
     private func previewCapturedImageView(with image: UIImage) -> UIImageView {
         let imageFrame = cameraPreviewViewController.view.frame
