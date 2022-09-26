@@ -15,6 +15,8 @@ public final class CameraButtonsViewModel {
     var importAction: (() -> Void)?
     var captureAction: (() -> Void)?
     var imageStackAction: (() -> Void)?
+    var helpPressed: (() -> Void)?
+    var backButtonPressed: (() -> Void)?
 
     public weak var trackingDelegate: CameraScreenTrackingDelegate?
     public init(trackingDelegate: CameraScreenTrackingDelegate? = nil) {
