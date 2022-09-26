@@ -1,5 +1,5 @@
 //
-//  MultipageReviewViewControllerDelegateMock.swift
+//  ReviewViewControllerDelegateMock.swift
 //  GiniCapture_Example
 //
 //  Created by Enrique del Pozo Gómez on 3/26/18.
@@ -8,23 +8,23 @@
 
 import Foundation
 @testable import GiniCaptureSDK
-final class MultipageReviewVCDelegateMock: MultipageReviewViewControllerDelegate {
-    func multipageReview(_ viewController: MultipageReviewViewController,
+final class ReviewVCDelegateMock: ReviewViewControllerDelegate {
+    func review(_ viewController: ReviewViewController,
                          didTapRetryUploadFor page: GiniCapturePage) {
         
     }
     
-    func multipageReviewDidTapAddImage(_ controller: MultipageReviewViewController) {
+    func reviewDidTapAddImage(_ controller: ReviewViewController) {
         
     }
     
     var updatedDocuments: [GiniCapturePage] = []
     
-    func multipageReview(_ controller: MultipageReviewViewController, didDelete pages: GiniCapturePage) {
+    func review(_ controller: ReviewViewController, didDelete pages: GiniCapturePage) {
         
     }
 
-    func multipageReviewDidTapProcess(_ viewController: MultipageReviewViewController) {
+    func reviewDidTapProcess(_ viewController: ReviewViewController) {
 
     }
 }
