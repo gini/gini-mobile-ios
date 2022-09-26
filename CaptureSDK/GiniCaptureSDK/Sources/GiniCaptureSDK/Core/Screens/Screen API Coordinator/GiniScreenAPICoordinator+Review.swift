@@ -7,36 +7,36 @@
 
 import UIKit
 
-// MARK: - Multipage Review screen
+// MARK: -  Review screen
 
-extension GiniScreenAPICoordinator: MultipageReviewViewControllerDelegate {
-    public func multipageReview(_ controller: MultipageReviewViewController,
+extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
+    public func review(_ controller: ReviewViewController,
                          didDelete page: GiniCapturePage) {
         removeFromDocuments(document: page.document)
         visionDelegate?.didCancelReview(for: page.document)
         
         if pages.isEmpty {
-            closeMultipageScreen()
+            closeScreen()
         }
     }
 
-    public func multipageReview(_ viewController: MultipageReviewViewController,
+    public func review(_ viewController: ReviewViewController,
                          didTapRetryUploadFor page: GiniCapturePage) {
         update(page.document, withError: nil, isUploaded: false)
         visionDelegate?.didCapture(document: page.document, networkDelegate: self)
     }
     
-    public func multipageReviewDidTapAddImage(_ controller: MultipageReviewViewController) {
-        closeMultipageScreen()
+    public func reviewDidTapAddImage(_ controller: ReviewViewController) {
+        closeScreen()
     }
 
-    func createMultipageReviewScreenContainer(with pages: [GiniCapturePage])
-        -> MultipageReviewViewController {
-            let vc = MultipageReviewViewController(pages: pages,
-                                                   giniConfiguration: giniConfiguration)
+    func createReviewScreenContainer(with pages: [GiniCapturePage])
+        -> ReviewViewController {
+            let vc = ReviewViewController(pages: pages,
+                                          giniConfiguration: giniConfiguration)
             vc.delegate = self
             vc.setupNavigationItem(usingResources: backButtonResource,
-                                   selector: #selector(closeMultipageScreen),
+                                   selector: #selector(closeScreen),
                                    position: .left,
                                    target: self)
             
@@ -49,25 +49,25 @@ extension GiniScreenAPICoordinator: MultipageReviewViewControllerDelegate {
             return vc
     }
     
-    @objc fileprivate func closeMultipageScreen() {
+    @objc fileprivate func closeScreen() {
         trackingDelegate?.onReviewScreenEvent(event: Event(type: .back))
         
         self.screenAPINavigationController.popViewController(animated: true)
     }
 
-    public func multipageReviewDidTapProcess(_ viewController: MultipageReviewViewController) {
+    public func reviewDidTapProcess(_ viewController: ReviewViewController) {
         showAnalysisScreen()
     }
     
-    func showMultipageReview() {
-        if !screenAPINavigationController.viewControllers.contains(multiPageReviewViewController) {
-            screenAPINavigationController.pushViewController(multiPageReviewViewController,
+    func showReview() {
+        if !screenAPINavigationController.viewControllers.contains(reviewViewController) {
+            screenAPINavigationController.pushViewController(reviewViewController,
                                                              animated: true)
         }
     }
     
-    func refreshMultipageReviewNextButton(with pages: [GiniCapturePage]) {
-        multiPageReviewViewController.navigationItem
+    func refreshReviewNextButton(with pages: [GiniCapturePage]) {
+        reviewViewController.navigationItem
             .rightBarButtonItem?
             .isEnabled = pages.allSatisfy { $0.isUploaded }
     }

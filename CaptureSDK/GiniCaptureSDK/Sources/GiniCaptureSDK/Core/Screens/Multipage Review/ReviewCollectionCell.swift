@@ -1,5 +1,5 @@
 //
-//  MultipageReviewMainCollectionCell.swift
+//  ReviewCollectionCell.swift
 //  GiniCapture
 //
 //  Created by Enrique del Pozo Gómez on 1/30/18.
@@ -7,20 +7,28 @@
 
 import UIKit
 
-final class MultipageReviewMainCollectionCell: UICollectionViewCell {
+final class ReviewCollectionCell: UICollectionViewCell {
     lazy var documentImage: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
-        imageView.layer.borderWidth = 2
-        imageView.layer.borderColor = UIColor.GiniCapture.accent1.cgColor
         imageView.accessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.review.documentImageTitle",
                                                                         comment: "Document")
         imageView.backgroundColor = GiniColor(light: UIColor.GiniCapture.light3,
                                               dark: UIColor.GiniCapture.dark3).uiColor()
         return imageView
     }()
+
+    var isActive: Bool = false {
+        didSet {
+            UIView.animate(withDuration: 0.3) { [weak self] in
+                guard let self = self else { return }
+                self.documentImage.layer.borderColor = self.isActive ? UIColor.GiniCapture.accent1.cgColor : UIColor.clear.cgColor
+                self.documentImage.layer.borderWidth = self.isActive ? 2 : 0
+            }
+        }
+    }
 
     lazy var errorView: NoticeView = {
         let noticeView = NoticeView(text: "",

@@ -1,5 +1,5 @@
 //
-//  MultipageReviewCollectionCellPresenter.swift
+//  ReviewCollectionCellPresenter.swift
 //  GiniCapture
 //
 //  Created by Enrique del Pozo Gómez on 12/28/18.
@@ -7,14 +7,14 @@
 
 import UIKit
 
-protocol MultipageReviewCollectionCellPresenterDelegate: AnyObject {
-    func multipage(_ reviewCollectionCellPresenter: MultipageReviewCollectionCellPresenter,
+protocol ReviewCollectionCellPresenterDelegate: AnyObject {
+    func multipage(_ reviewCollectionCellPresenter: ReviewCollectionCellPresenter,
                    didUpdateCellAt indexPath: IndexPath)
 }
 
-final class MultipageReviewCollectionCellPresenter {
+final class ReviewCollectionCellPresenter {
     
-    weak var delegate: MultipageReviewCollectionCellPresenterDelegate?
+    weak var delegate: ReviewCollectionCellPresenterDelegate?
     var thumbnails: [String: [ThumbnailType: UIImage]] = [:]
     fileprivate let giniConfiguration: GiniConfiguration
     fileprivate let thumbnailsQueue = DispatchQueue(label: "Thumbnails queue")
@@ -36,7 +36,7 @@ final class MultipageReviewCollectionCellPresenter {
         self.giniConfiguration = giniConfiguration
     }
     
-    func setUp(_ cell: MultipageReviewMainCollectionCell,
+    func setUp(_ cell: ReviewCollectionCell,
                with page: GiniCapturePage,
                at indexPath: IndexPath) -> UICollectionViewCell {
 
@@ -63,11 +63,11 @@ final class MultipageReviewCollectionCellPresenter {
 
 // MARK: - Cells setup
 
-fileprivate extension MultipageReviewCollectionCellPresenter {
+fileprivate extension ReviewCollectionCellPresenter {
     
-    // MARK: - MultipageReviewMainCollectionCell
+    // MARK: - ReviewCollectionCell
     
-    func setUpErrorView(in cell: MultipageReviewMainCollectionCell,
+    func setUpErrorView(in cell: ReviewCollectionCell,
                         with error: Error,
                         didTapErrorNoticeAction: @escaping (NoticeActionType) -> Void) {
         let buttonTitle: String
@@ -104,10 +104,10 @@ fileprivate extension MultipageReviewCollectionCellPresenter {
 
 // MARK: - Thumbnails
 
-fileprivate extension MultipageReviewCollectionCellPresenter {
+fileprivate extension ReviewCollectionCellPresenter {
     func fetchThumbnailImage(for page: GiniCapturePage,
                              of type: ThumbnailType,
-                             in cell: MultipageReviewMainCollectionCell,
+                             in cell: ReviewCollectionCell,
                              at indexPath: IndexPath) {
         thumbnailsQueue.async { [weak self] in
             guard let self = self else { return }
