@@ -42,7 +42,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
                     (error == .maxFilesPickedCountExceeded || error == .mixedDocumentsUnsupported) {
                     errorMessage = error.message
                     viewController.showErrorDialog(for: error) {
-                        self.showMultipageReview()
+                        self.showReview()
                     }
                 }
                 
@@ -73,8 +73,8 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         }
     }
     
-    public func cameraDidTapMultipageReviewButton(_ viewController: CameraViewController) {
-        showMultipageReview()
+    public func cameraDidTapReviewButton(_ viewController: CameraViewController) {
+        showReview()
     }
     
     func createCameraViewController() -> CameraViewController {
@@ -164,7 +164,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         if let documentsType = visionDocuments.type {
             switch documentsType {
             case .image:
-                showMultipageReview()
+                showReview()
             case .qrcode, .pdf:
                 showAnalysisScreen()
             }
@@ -201,7 +201,7 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
                         if self.pages.isNotEmpty {
                             positiveAction = {
                                 coordinator.dismissCurrentPicker {
-                                    self.showMultipageReview()
+                                    self.showReview()
                                 }
                             }
                         }

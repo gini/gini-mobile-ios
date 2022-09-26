@@ -1,5 +1,5 @@
 //
-//  MultipageReviewViewController.swift
+//  ReviewViewController.swift
 //  GiniCapture
 //
 //  Created by Enrique del Pozo Gómez on 1/26/18.
@@ -8,58 +8,58 @@
 import UIKit
 
 /**
- The MultipageReviewViewControllerDelegate protocol defines methods that allow you to handle user actions in the
- MultipageReviewViewControllerDelegate
- (rotate, reorder, tap add, delete...)
+ The ReviewViewControllerDelegate protocol defines methods that allow you to handle user actions in the
+ ReviewViewControllerDelegate
+ (tap add, delete...)
  
  - note: Component API only.
  */
-public protocol MultipageReviewViewControllerDelegate: AnyObject {
+public protocol ReviewViewControllerDelegate: AnyObject {
     /**
      Called when a user deletes one of the pages.
      
-     - parameter viewController: `MultipageReviewViewController` where the pages are reviewed.
+     - parameter viewController: `ReviewViewController` where the pages are reviewed.
      - parameter page: Page deleted.
      */
-    func multipageReview(_ viewController: MultipageReviewViewController,
+    func review(_ viewController: ReviewViewController,
                          didDelete page: GiniCapturePage)
     
     /**
      Called when a user taps on the error action when the errored page
      
-     - parameter viewController: `MultipageReviewViewController` where the pages are reviewed.
+     - parameter viewController: `ReviewViewController` where the pages are reviewed.
      - parameter errorAction: `NoticeActionType` selected.
      - parameter page: Page where the error action has been triggered
      */
-    func multipageReview(_ viewController: MultipageReviewViewController,
+    func review(_ viewController: ReviewViewController,
                          didTapRetryUploadFor page: GiniCapturePage)
     
     /**
      Called when a user taps on the add page button
      
-     - parameter viewController: `MultipageReviewViewController` where the pages are reviewed.
+     - parameter viewController: `ReviewViewController` where the pages are reviewed.
      */
-    func multipageReviewDidTapAddImage(_ viewController: MultipageReviewViewController)
+    func reviewDidTapAddImage(_ viewController: ReviewViewController)
     /**
      Called when a user taps on the process documents button
 
-     - parameter viewController: `MultipageReviewViewController` where the pages are reviewed.
+     - parameter viewController: `ReviewViewController` where the pages are reviewed.
      */
-    func multipageReviewDidTapProcess(_ viewController: MultipageReviewViewController)
+    func reviewDidTapProcess(_ viewController: ReviewViewController)
 }
 
 //swiftlint:disable file_length
-public final class MultipageReviewViewController: UIViewController {
+public final class ReviewViewController: UIViewController {
     
     /**
-     The object that acts as the delegate of the multipage review view controller.
+     The object that acts as the delegate of the review view controller.
      */
-    public weak var delegate: MultipageReviewViewControllerDelegate?
+    public weak var delegate: ReviewViewControllerDelegate?
     
     var pages: [GiniCapturePage]
     fileprivate let giniConfiguration: GiniConfiguration
-    fileprivate lazy var presenter: MultipageReviewCollectionCellPresenter = {
-        let presenter = MultipageReviewCollectionCellPresenter()
+    fileprivate lazy var presenter: ReviewCollectionCellPresenter = {
+        let presenter = ReviewCollectionCellPresenter()
         presenter.delegate = self
         return presenter
     }()
@@ -79,8 +79,8 @@ public final class MultipageReviewViewController: UIViewController {
         collection.dataSource = self
         collection.delegate = self
         collection.showsHorizontalScrollIndicator = false
-        collection.register(MultipageReviewMainCollectionCell.self,
-                            forCellWithReuseIdentifier: MultipageReviewMainCollectionCell.reuseIdentifier)
+        collection.register(ReviewCollectionCell.self,
+                            forCellWithReuseIdentifier: ReviewCollectionCell.reuseIdentifier)
         return collection
     }()
 
@@ -131,7 +131,8 @@ public final class MultipageReviewViewController: UIViewController {
         let height = width * 1.4142 // A4 aspect ratio
         return CGSize(width: width, height: height)
     }()
-    
+
+    private var currentPage: Int = 0
     // MARK: - Init
     
     public init(pages: [GiniCapturePage], giniConfiguration: GiniConfiguration) {
@@ -147,7 +148,7 @@ public final class MultipageReviewViewController: UIViewController {
 
 // MARK: - UIViewController
 
-extension MultipageReviewViewController {
+extension ReviewViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
 
@@ -203,7 +204,7 @@ extension MultipageReviewViewController {
 
 // MARK: - Private methods
 
-extension MultipageReviewViewController {
+extension ReviewViewController {
     fileprivate func barButtonItem(withImage image: UIImage?,
                                    insets: UIEdgeInsets,
                                    action: Selector) -> UIBarButtonItem {
@@ -262,30 +263,30 @@ extension MultipageReviewViewController {
 
     @objc
     private func didTapAddPagesButton() {
-        delegate?.multipageReviewDidTapAddImage(self)
+        delegate?.reviewDidTapAddImage(self)
     }
 
     @objc
     private func didTapProcessDocument() {
-        delegate?.multipageReviewDidTapProcess(self)
+        delegate?.reviewDidTapProcess(self)
     }
 }
 
 // MARK: - Toolbar actions
 
-extension MultipageReviewViewController {
+extension ReviewViewController {
     
     fileprivate func deleteItem(at indexPath: IndexPath) {
         let pageToDelete = pages[indexPath.row]
         pages.remove(at: indexPath.row)
         collectionView.deleteItems(at: [indexPath])
-        delegate?.multipageReview(self, didDelete: pageToDelete)
+        delegate?.review(self, didDelete: pageToDelete)
     }
 }
 
 // MARK: UICollectionViewDataSource
 
-extension MultipageReviewViewController: UICollectionViewDataSource {
+extension ReviewViewController: UICollectionViewDataSource {
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         pageControl.numberOfPages = pages.count
@@ -299,8 +300,8 @@ extension MultipageReviewViewController: UICollectionViewDataSource {
         let page = pages[indexPath.row]
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier:
-                                                        MultipageReviewMainCollectionCell.reuseIdentifier,
-                                 for: indexPath) as! MultipageReviewMainCollectionCell
+                                                        ReviewCollectionCell.reuseIdentifier,
+                                 for: indexPath) as! ReviewCollectionCell
 
         return presenter.setUp(cell, with: page, at: indexPath)
     }
@@ -310,24 +311,24 @@ extension MultipageReviewViewController: UICollectionViewDataSource {
             guard let self = self else { return }
             switch action {
             case .retry:
-                self.delegate?.multipageReview(self, didTapRetryUploadFor: page)
+                self.delegate?.review(self, didTapRetryUploadFor: page)
             case .retake:
                 self.deleteItem(at: indexPath)
-                self.delegate?.multipageReviewDidTapAddImage(self)
+                self.delegate?.reviewDidTapAddImage(self)
             }
         }
     }
 }
 
-// MARK: - MultipageReviewCollectionsAdapterDelegate
+// MARK: - ReviewCollectionsAdapterDelegate
 
-extension MultipageReviewViewController: MultipageReviewCollectionCellPresenterDelegate {
-    func multipage(_ reviewCollectionCellPresenter: MultipageReviewCollectionCellPresenter,
+extension ReviewViewController: ReviewCollectionCellPresenterDelegate {
+    func multipage(_ reviewCollectionCellPresenter: ReviewCollectionCellPresenter,
                    didUpdateCellAt indexPath: IndexPath) {
             collectionView.reloadItems(at: [indexPath])
     }
     
-    func multipage(_ reviewCollectionCellPresenter: MultipageReviewCollectionCellPresenter,
+    func multipage(_ reviewCollectionCellPresenter: ReviewCollectionCellPresenter,
                    didUpdateElementIn collectionView: UICollectionView,
                    at indexPath: IndexPath) {
         collectionView.reloadItems(at: [indexPath])
@@ -336,7 +337,7 @@ extension MultipageReviewViewController: MultipageReviewCollectionCellPresenterD
 
 // MARK: UICollectionViewDelegateFlowLayout
 
-extension MultipageReviewViewController: UICollectionViewDelegateFlowLayout {
+extension ReviewViewController: UICollectionViewDelegateFlowLayout {
 
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
@@ -356,6 +357,10 @@ extension MultipageReviewViewController: UICollectionViewDelegateFlowLayout {
         scrollView.setContentOffset(offset, animated: true)
     }
 
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        setCellStatus(for: currentPage, isActive: false)
+    }
+
     public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         guard !decelerate else { return }
         setCurrentPage(basedOn: scrollView)
@@ -369,8 +374,10 @@ extension MultipageReviewViewController: UICollectionViewDelegateFlowLayout {
         let offset = scrollView.contentOffset
         let cellWidthIncludingSpacing = cellSize.width + layout.minimumLineSpacing
         let index = (offset.x + scrollView.contentInset.left) / cellWidthIncludingSpacing
-        let roundedIndex = round(index)
-        self.pageControl.currentPage = Int(roundedIndex)
+        currentPage = Int(round(index))
+        self.pageControl.currentPage = currentPage
+
+        setCellStatus(for: currentPage, isActive: true)
     }
 
     private func calulateOffset(for scrollView: UIScrollView) -> CGPoint {
@@ -386,5 +393,10 @@ extension MultipageReviewViewController: UICollectionViewDelegateFlowLayout {
                          y: -scrollView.contentInset.top)
 
         return offset
+    }
+
+    private func setCellStatus(for index: Int, isActive: Bool) {
+        let cell = collectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? ReviewCollectionCell
+        cell?.isActive = isActive
     }
 }

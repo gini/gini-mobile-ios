@@ -45,11 +45,11 @@ import AVFoundation
     
     /**
      Called when a user taps the `MultipageReviewButton` (the one with the thumbnail of the images(s) taken).
-     Once this method is called, the `MultipageReviewViewController` should be presented.
+     Once this method is called, the `ReviewViewController` should be presented.
      
      - parameter viewController: Camera view controller where the button was tapped.
      */
-    @objc func cameraDidTapMultipageReviewButton(_ viewController: CameraViewController)
+    @objc func cameraDidTapReviewButton(_ viewController: CameraViewController)
 
 }
 
@@ -497,7 +497,7 @@ extension CameraViewController: CameraButtonsViewControllerDelegate {
             }
 
         case .imagesStack:
-            delegate?.cameraDidTapMultipageReviewButton(self)
+            delegate?.cameraDidTapReviewButton(self)
         }
     }
 }
