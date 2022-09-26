@@ -585,6 +585,11 @@ import UIKit
       * Set an adapter implementation to show a custom illustration on the "QR code" onboarding page.
       */
     public var onboardingQRCodeIllustrationAdapter: OnboardingIllustrationAdapter?
+
+    /**
+     * Set an adapter implementation to show a custom loading indicator on the document analysis screen.
+     */
+    public var analysisScreenLoadingIndicator: AnalysisScreenLoadingIndicatorAdapter?
     
     /**
      Sets the back button text in the navigation bar on the review screen. Use this if you only want to show the title.
