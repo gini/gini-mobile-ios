@@ -8,23 +8,23 @@
 
 import XCTest
 @testable import GiniCaptureSDK
-final class MultipageCollectionCellPresenterTests: XCTestCase {
+final class ReviewCollectionCellPresenterTests: XCTestCase {
     
-    var presenter: MultipageReviewCollectionCellPresenter!
+    var presenter: ReviewCollectionCellPresenter!
     var giniConfiguration: GiniConfiguration!
     var testPage = GiniCaptureTestsHelper.loadImagePage(named: "invoice")
     
-    var setUpMainCollectionCell: MultipageReviewMainCollectionCell {
-        let cell = presenter.setUp(MultipageReviewMainCollectionCell(frame: .zero),
+    var setUpMainCollectionCell: ReviewCollectionCell {
+        let cell = presenter.setUp(ReviewCollectionCell(frame: .zero),
                                    with: testPage, at: IndexPath(row: 0, section: 0))
-        as? MultipageReviewMainCollectionCell
+        as? ReviewCollectionCell
         return cell!
     }
 
     override func setUp() {
         super.setUp()
         giniConfiguration = GiniConfiguration()
-        presenter = MultipageReviewCollectionCellPresenter(giniConfiguration: giniConfiguration)
+        presenter = ReviewCollectionCellPresenter(giniConfiguration: giniConfiguration)
     }
     
     func testMainCollectionCellImage() {

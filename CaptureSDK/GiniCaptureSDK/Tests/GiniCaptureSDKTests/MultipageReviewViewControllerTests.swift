@@ -1,5 +1,5 @@
 //
-//  MultipageReviewViewControllerTests.swift
+//  ReviewViewControllerTests.swift
 //  GiniCapture_Tests
 //
 //  Created by Enrique del Pozo Gómez on 1/30/18.
@@ -8,12 +8,12 @@
 
 import XCTest
 @testable import GiniCaptureSDK
-final class MultipageReviewViewControllerTests: XCTestCase {
+final class ReviewViewControllerTests: XCTestCase {
     
     let giniConfiguration = GiniConfiguration.shared
-    lazy var multipageReviewViewController: MultipageReviewViewController = {
-        let vc = MultipageReviewViewController(pages: self.imagePages,
-                                               giniConfiguration: self.giniConfiguration)
+    lazy var reviewViewController: ReviewViewController = {
+        let vc = ReviewViewController(pages: self.imagePages,
+                                      giniConfiguration: self.giniConfiguration)
         _ = vc.view
         return vc
     }()
@@ -25,21 +25,21 @@ final class MultipageReviewViewControllerTests: XCTestCase {
     ]
     
     func testCollectionsItemsCount() {
-        XCTAssertEqual(multipageReviewViewController.collectionView.numberOfItems(inSection: 0), 3,
+        XCTAssertEqual(reviewViewController.collectionView.numberOfItems(inSection: 0), 3,
                        "main collection items count should be 3")
     }
     
     func testMainCollectionCellSize() {
-        multipageReviewViewController.view.setNeedsLayout()
-        multipageReviewViewController.view.layoutIfNeeded()
+        reviewViewController.view.setNeedsLayout()
+        reviewViewController.view.layoutIfNeeded()
         
         let firstCellIndexPath = IndexPath(row: 0, section: 0)
-        let cellSize = multipageReviewViewController.collectionView(multipageReviewViewController.collectionView,
-                                         layout: multipageReviewViewController.collectionView.collectionViewLayout,
+        let cellSize = reviewViewController.collectionView(reviewViewController.collectionView,
+                                         layout: reviewViewController.collectionView.collectionViewLayout,
                                          sizeForItemAt: firstCellIndexPath)
 
         let itemSize: CGSize = {
-            let width = multipageReviewViewController.view.bounds.width - 64
+            let width = reviewViewController.view.bounds.width - 64
             let height = width * 1.4142 // A4 aspect ratio
             return CGSize(width: width, height: height)
         }()
@@ -49,9 +49,9 @@ final class MultipageReviewViewControllerTests: XCTestCase {
     }
     
     func testMainCollectionInsets() {
-        let collectionInsets = multipageReviewViewController
-            .collectionView(multipageReviewViewController.collectionView,
-                            layout: multipageReviewViewController.collectionView.collectionViewLayout,
+        let collectionInsets = reviewViewController
+            .collectionView(reviewViewController.collectionView,
+                            layout: reviewViewController.collectionView.collectionViewLayout,
                             insetForSectionAt: 0)
         
         XCTAssertEqual(collectionInsets, UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 32),
@@ -61,7 +61,7 @@ final class MultipageReviewViewControllerTests: XCTestCase {
 // MARK: - Fix the test with tap event simulation
 
 //    func testDatasourceOnDelete() {
-//        let vc = MultipageReviewViewController(pages: imagePages,
+//        let vc = ReviewViewController(pages: imagePages,
 //                                               giniConfiguration: giniConfiguration)
 //        _ = vc.view
 //        vc.view.setNeedsLayout()

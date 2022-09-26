@@ -58,8 +58,8 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
         
         XCTAssertNotNil(screenNavigator?.viewControllers.first as? CameraViewController,
                         "first view controller is not a CameraViewController")
-        XCTAssertNotNil(screenNavigator?.viewControllers.last as? MultipageReviewViewController,
-                        "last view controller is not a MultipageReviewController")
+        XCTAssertNotNil(screenNavigator?.viewControllers.last as? ReviewViewController,
+                        "last view controller is not a ReviewController")
     }
     
     func testNavControllerCountAfterStartWithAPDF() {
@@ -91,7 +91,7 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
         _ = rootViewController.view
         let screenNavigator = rootViewController.children.first as? UINavigationController
         
-        XCTAssertNotNil(screenNavigator?.viewControllers.last as? MultipageReviewViewController,
+        XCTAssertNotNil(screenNavigator?.viewControllers.last as? ReviewViewController,
                         "first view controller is not a ReviewViewController")
     }
 
@@ -99,8 +99,8 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
         let capturedImageDocument = GiniCaptureTestsHelper.loadImagePage(named: "invoice")
         coordinator.addToDocuments(new: [capturedImageDocument])
         
-        coordinator.multipageReview(coordinator.multiPageReviewViewController,
-                                    didDelete: coordinator.multiPageReviewViewController.pages[0])
+        coordinator.review(coordinator.reviewViewController,
+                                    didDelete: coordinator.reviewViewController.pages[0])
         XCTAssertTrue(coordinator.pages.isEmpty,
                       "vision documents collection should be empty after delete " +
             "the image in the multipage review view controller")
