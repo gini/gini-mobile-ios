@@ -27,8 +27,8 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
     @IBOutlet weak var cameraFocusImageView: UIImageView!
     @IBOutlet weak var cameraPane: CameraPane!
-    private var cameraButtonsViewModel = CameraButtonsViewModel()
-    private var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
+    private let cameraButtonsViewModel: CameraButtonsViewModel
+    private var navigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
 
     @IBOutlet weak var bottomButtonsConstraints: NSLayoutConstraint!
     @IBOutlet weak var bottomPaneConstraint: NSLayoutConstraint!
@@ -48,6 +48,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         viewModel: CameraButtonsViewModel
     ) {
         self.giniConfiguration = giniConfiguration
+        self.cameraButtonsViewModel = viewModel
         if UIDevice.current.isIphone {
             super.init(nibName: "CameraPhone", bundle: giniCaptureBundle())
         } else {
@@ -107,20 +108,33 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         cameraPane.configureView(giniConfiguration: giniConfiguration)
         configureButtons()
         configureBottomNavigation()
+        setupInitialState()
+    }
+
+    private func setupInitialState() {
+        cameraPane.thumbnailView.isHidden = true
+        navigationBarBottomAdapter?.showButtons(navigationButtons: [.help])
+    }
+
+    private func setupNotEmptyState() {
+        cameraPane.thumbnailView.isHidden = false
+        navigationBarBottomAdapter?.showButtons(navigationButtons: [.help, .back])
     }
 
     private func configureBottomNavigation() {
         if giniConfiguration.bottomNavigationBarEnabled {
-            if let customBottomNavigationBar = giniConfiguration.onboardingNavigationBarBottomAdapter {
-                navigationBarBottomAdapter = customBottomNavigationBar
+            navigationItem.leftBarButtonItem = nil
+            navigationItem.rightBarButtonItem = nil
+            if let bottomBar = giniConfiguration.cameraNavigationBarBottomAdapter {
+                navigationBarBottomAdapter = bottomBar
             } else {
-                navigationBarBottomAdapter = DefaultOnboardingNavigationBarBottomAdapter()
+                navigationBarBottomAdapter = DefaultCameraBottomNavigationBarAdapter()
             }
-            navigationBarBottomAdapter?.setNextButtonClickedActionCallback {
-                self.nextPage()
+            navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
+                self?.cameraButtonsViewModel.helpPressed?()
             }
-            navigationBarBottomAdapter?.setSkipButtonClickedActionCallback {
-                self.skip()
+            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
+                self?.cameraButtonsViewModel.backButtonPressed?()
             }
 
             if let navigationBar =
@@ -167,7 +181,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     }
 
     // MARK: - Bottom Navigation Bar Actions
-    
+
     private func nextPage() {
     }
 
@@ -176,7 +190,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
     @objc func close() {
     }
-    
+
     func configureButtons() {
         configureLeftButtons()
         cameraButtonsViewModel.captureAction = { [weak self] in
@@ -192,6 +206,11 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                     self.didPick(image)
                 }
                 self.cameraPane.toggleCaptureButtonActivation(state: true)
+            }
+        }
+        cameraButtonsViewModel.backButtonPressed = { [weak self] in
+            if let strongSelf = self {
+                self?.delegate?.cameraDidTapMultipageReviewButton(strongSelf)
             }
         }
         cameraPane.captureButton.addTarget(
@@ -269,6 +288,9 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     public func replaceCapturedStackImages(with images: [UIImage]) {
         if cameraPane != nil, giniConfiguration.multipageEnabled {
             cameraPane.thumbnailView.replaceStackImages(with: images)
+            if images.count > 0 {
+                setupNotEmptyState()
+            }
         }
     }
 
