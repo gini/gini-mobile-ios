@@ -14,7 +14,7 @@
             <connections>
                 <outlet property="bottomButtonsConstraints" destination="h0v-6y-Xer" id="RbT-MB-uE6"/>
                 <outlet property="bottomPaneConstraint" destination="XnW-wu-lup" id="A43-Li-iA3"/>
-                <outlet property="cameraFocusImageView" destination="2eO-4o-6WG" id="uax-Xr-Cwi"/>
+                <outlet property="cameraFrameImageView" destination="2eO-4o-6WG" id="Koc-qM-Cqx"/>
                 <outlet property="cameraPane" destination="qey-Uj-2J2" id="fnE-94-RbB"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Rqx-4l-iKM"/>
             </connections>

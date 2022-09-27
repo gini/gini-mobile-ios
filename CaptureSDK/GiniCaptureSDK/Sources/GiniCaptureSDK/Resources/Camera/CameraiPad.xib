@@ -11,9 +11,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Camera2ViewController" customModule="GiniCaptureSDK">
             <connections>
-                <outlet property="cameraFocusImageView" destination="FMH-fq-Dwo" id="54z-Jl-gCl"/>
+                <outlet property="cameraFrameImageView" destination="FMH-fq-Dwo" id="b2j-JX-pIe"/>
                 <outlet property="cameraPane" destination="13s-Zb-nTw" id="kgw-sM-jQj"/>
-                <outlet property="iPadCameraFocusBottomConstraint" destination="jeG-Yr-Ic4" id="2O2-9b-rlp"/>
+                <outlet property="iPadCameraFrameBottomConstraint" destination="jeG-Yr-Ic4" id="pzq-QK-gAd"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Kff-Gp-d1h"/>
             </connections>
         </placeholder>
@@ -74,7 +74,7 @@
                     </connections>
                 </view>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cameraFocus" translatesAutoresizingMaskIntoConstraints="NO" id="FMH-fq-Dwo">
-                    <rect key="frame" x="16" y="24" width="868" height="1322"/>
+                    <rect key="frame" x="16" y="40" width="868" height="1290"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </imageView>
@@ -82,9 +82,9 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="FMH-fq-Dwo" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="44H-BP-ZmH"/>
+                <constraint firstItem="FMH-fq-Dwo" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="44H-BP-ZmH"/>
                 <constraint firstItem="FMH-fq-Dwo" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="Mh3-Wg-fbV"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="FMH-fq-Dwo" secondAttribute="bottom" id="jeG-Yr-Ic4"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="FMH-fq-Dwo" secondAttribute="bottom" constant="16" id="jeG-Yr-Ic4"/>
                 <constraint firstItem="13s-Zb-nTw" firstAttribute="leading" secondItem="FMH-fq-Dwo" secondAttribute="trailing" constant="16" id="kCZ-xe-dM6"/>
                 <constraint firstAttribute="bottom" secondItem="13s-Zb-nTw" secondAttribute="bottom" id="mY8-4T-W5K"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="13s-Zb-nTw" secondAttribute="trailing" id="nDS-Tf-anT"/>
