@@ -32,6 +32,6 @@ struct ResolvedPaymentRequestLinks: Codable {
 
     enum CodingKeys: String, CodingKey {
         case linksSelf = "self"
-        case payment,sourceDocumentLocation
+        case payment, sourceDocumentLocation
     }
 }

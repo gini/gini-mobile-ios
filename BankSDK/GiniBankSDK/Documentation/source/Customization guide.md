@@ -16,7 +16,16 @@ If you plan to use a custom name for localizable strings, you need to set it in 
 - [Gallery album screen](#gallery-album-screen)
 - [Onboarding screens](#onboarding-screens)
 - [Help screen](#help-screen)
-
+- [No results screen](#no-results-screen)
+- [Albums screen](#albums-screen)
+- [Return assistant](#return-assistant)
+  - [Onboarding screen](#onboarding-screen)
+  - [Info screen](#info-screen)
+  - [Info box](#info-box)
+  - [Digital invoice screen](#digital-invoice-screen)
+  - [Return reason action sheet](#return-reason-action-sheet)
+  - [Edit line item screen](#edit-line-item-screen)
+  
 ## Supporting dark mode
 
 Some background and text colors use the `GiniColor` type with which you can set colors for dark and light modes. Please make sure to set contrasting images to the background colors in your `.xcassets` for the Gini Bank SDK images you override (e.g. `onboardingPage1`). The text colors should also be set in contrast to the background colors.
@@ -67,16 +76,22 @@ Some background and text colors use the `GiniColor` type with which you can set 
   - With title only
 	  -  Title &#8594; `GiniBankConfiguration.navigationBarCameraTitleCloseButton`
 - Help button
-	- Image &#8594; <span style="color:#009EDF">*navigationCameraHelp*</span> image asset
-	- Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.camera.help*</span> localized string
+  - With image and title
+	  - Image &#8594; <span style="color:#009EDF">*navigationCameraHelp*</span> image asset
+	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.camera.help*</span> localized string
+     - With title only
+      -  Title &#8594; `GiniBankConfiguration.navigationBarCameraTitleHelpButton`   
 
 ##### 2. Camera preview
+- Preview frame color &#8594;  `GiniBankConfiguration.cameraPreviewFrameColor`
 - Guides color &#8594;  `GiniBankConfiguration.cameraPreviewCornerGuidesColor`
 - Focus large image &#8594; <span style="color:#009EDF">*cameraFocusLarge*</span> image asset
 - Focus large small &#8594; <span style="color:#009EDF">*cameraFocusSmall*</span> image asset
 - Opaque view style (when tool tip is shown)  &#8594;  `GiniBankConfiguration.toolTipOpaqueBackgroundStyle`
 
 ##### 3. Camera buttons container
+- Background color &#8594;  `GiniBankConfiguration.cameraButtonsViewBackgroundColor`
+- Container view background color under the home indicator  &#8594;  `GiniBankConfiguration.cameraContainerViewBackgroundColor` 
 - Capture button
   - Image &#8594; <span style="color:#009EDF">*cameraCaptureButton*</span> image asset
 - Import button
@@ -146,6 +161,12 @@ Some background and text colors use the `GiniColor` type with which you can set 
 - Opaque view style (when tool tip is shown)  &#8594;  `GiniBankConfiguration.multipageToolTipOpaqueBackgroundStyle`
 
 ##### 3. Page item
+- Page upload state icon
+  - Successful upload &#8594; <span style="color:#009EDF">*successfullUploadIcon*</span> image asset
+  - Failed upload &#8594; <span style="color:#009EDF">*failureUploadIcon*</span> image asset
+- Page upload state icon background color
+  - Successful upload &#8594; `GiniBankConfiguration.multipagePageSuccessfullUploadIconBackgroundColor`
+  - Failed upload &#8594; `GiniBankConfiguration.multipagePageFailureUploadIconBackgroundColor`
 - Page circle indicator color &#8594; `GiniBankConfiguration.indicatorCircleColor` using `GiniColor` with dark mode and light mode colors
 - Page indicator color &#8594; `GiniBankConfiguration.multipagePageIndicatorColor` 
 - Page background color &#8594; `GiniBankConfiguration.multipagePageBackgroundColor` using `GiniColor` with dark mode and light mode colors
@@ -194,7 +215,9 @@ Some background and text colors use the `GiniColor` type with which you can set 
 	  - Title &#8594; `GiniBankConfiguration.navigationBarHelpScreenTitleBackToMenuButton`
 
 ##### 1. Supported format cells
+- Supported fortmats icon &#8594; <span style="color:#009EDF">*supportedFormatsIcon*</span> image asset
 - Supported formats icon color &#8594; `GiniBankConfiguration.supportedFormatsIconColor`
+- Non supported fortmats icon &#8594; <span style="color:#009EDF">*nonSupportedFormatsIcon*</span> image asset
 - Non supported formats icon color &#8594; `GiniBankConfiguration.nonSupportedFormatsIconColor`
 
 ## Open with tutorial screen
@@ -233,19 +256,31 @@ Some background and text colors use the `GiniColor` type with which you can set 
 ## Capturing tips screen
 
 <br>
-<center><img src="img/Customization guide/No results.jpg" height="500"/></center>
+<center><img src="img/Customization guide/Tips for photos.png" height="500"/></center>
 </br>
 
-##### 1. Capturing tip images
+##### 1. Navigation bar
+- Title &#8594; <span style="color:#009EDF">*ginicapture.noresults.title*</span> localized string
+
+##### 2. Header container
+- Text &#8594; <span style="color:#009EDF">*ginicapture.noresults.warningHelpMenu*</span> localized string
+
+##### 3. Capturing tip images
 - Tip 1 image &#8594; <span style="color:#009EDF">*captureSuggestion1*</span> image asset
 - Tip 2 image &#8594; <span style="color:#009EDF">*captureSuggestion2*</span> image asset
 - Tip 3 image &#8594; <span style="color:#009EDF">*captureSuggestion3*</span> image asset
 - Tip 4 image &#8594; <span style="color:#009EDF">*captureSuggestion4*</span> image asset
 - Tip 5 image &#8594; <span style="color:#009EDF">*captureSuggestion5*</span> image asset
 
-##### 2. Go to camera button
+##### 4. Go to camera button
 - Background color &#8594; `GiniBankConfiguration.noResultsBottomButtonColor`
-
+- Text color &#8594; `GiniBankConfiguration.noResultsBottomButtonTextColor`
+- Corner radius &#8594; `GiniBankConfiguration.noResultsBottomButtonCornerRadius`
+- Back button
+  - With image and title
+      - Image &#8594; <span style="color:#009EDF">*cameraIcon*</span> image asset
+      - Title &#8594; <span style="color:#009EDF">*ginicapture.noresults.gotocamera*</span> localized string
+      
 ## Gallery album screen
 
 <br>
@@ -285,7 +320,6 @@ Some background and text colors use the `GiniColor` type with which you can set 
 </br>
 
 ##### 1. Navigation bar
-
 - Back button
   - With image and title
 	  - Image &#8594; <span style="color:#009EDF">*navigationHelpBack*</span> image asset
@@ -294,13 +328,324 @@ Some background and text colors use the `GiniColor` type with which you can set 
 	  - Title &#8594; `GiniBankConfiguration.navigationBarHelpMenuTitleBackToCameraButton`
 
 ##### 2. Table View Cells
-
 - Background color &#8594; `GiniBankConfiguration.helpScreenCellsBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
 ##### 3. Background
-
 - Background color &#8594; `GiniBankConfiguration.helpScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
 ##### 4. Additional help menu items
-
 - Custom help menu items &#8594; `GiniBankConfiguration.customMenuItems` an array of `HelpMenuViewController.Item` objects
+
+## No results screen
+
+<br>
+<center><img src="img/Customization guide/No results.png" height="500"/></center>
+</br>
+
+##### 1. Warning container
+- Background color &#8594; `GiniBankConfiguration.noResultsWarningContainerIconColor`
+- Image &#8594; <span style="color:#009EDF">*warningNoResults*</span> image asset
+- Title &#8594; <span style="color:#009EDF">*ginicapture.noresults.warning*</span> localized string
+
+##### 2. Tips for photo collection
+- Header title &#8594; <span style="color:#009EDF">*ginicapture.noresults.collection.header*</span> localized string
+
+Overriding tips images below will lead to the changes on the [Capturing tips screen](#capturing-tips-screen).
+
+- Tip 1 image &#8594; <span style="color:#009EDF">*captureSuggestion1*</span> image asset
+- Tip 2 image &#8594; <span style="color:#009EDF">*captureSuggestion2*</span> image asset
+- Tip 3 image &#8594; <span style="color:#009EDF">*captureSuggestion3*</span> image asset
+- Tip 4 image &#8594; <span style="color:#009EDF">*captureSuggestion4*</span> image asset
+- Tip 5 image &#8594; <span style="color:#009EDF">*captureSuggestion5*</span> image asset
+
+##### 3. Back to camera button
+- Background color &#8594; `GiniBankConfiguration.noResultsBottomButtonColor`
+- Text color &#8594; `GiniBankConfiguration.noResultsBottomButtonTextColor`
+- Corner radius &#8594; `GiniBankConfiguration.noResultsBottomButtonCornerRadius`
+- Back button
+  - With image and title
+      - Image &#8594; <span style="color:#009EDF">*cameraIcon*</span> image asset
+      - Title &#8594; <span style="color:#009EDF">*ginicapture.noresults.gotocamera*</span> localized string
+
+## Albums screen
+
+<br>
+<center><img src="img/Customization guide/Albums screen.png" height="500"/></center>
+</br>
+
+##### 1. Select more photos button
+- Text color &#8594; `GiniBankConfiguration.albumsScreenSelectMorePhotosTextColor` using `GiniColor` with dark mode and light mode colors
+- Title &#8594; <span style="color:#009EDF">*ginicapture.albums.selectMorePhotosButton*</span> localized string
+
+## Return assistant
+
+### Onboarding screen
+
+<br>
+<center><img src="img/Customization guide/Digital Invoice Onboarding Screen.jpg" height="500"/></center>
+</br>
+
+##### 1. Background
+- Color &#8594; `GiniBankConfiguration.digitalInvoiceBackgroundColor`
+
+##### 2. Title
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.onboarding.text1*</span> localized string
+- Font &#8594;  `GiniBankConfiguration.digitalInvoiceOnboardingFirstLabelTextFont` 
+- Color &#8594; `GiniBankConfiguration.digitalInvoiceOnboardingTextColor`
+
+##### 3. Illustration
+- Image &#8594; <span style="color:#009EDF">*digital_invoice_onboarding_icon*</span> image asset
+
+##### 4. Message
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.onboarding.text2*</span> localized string
+- Font &#8594;  `GiniBankConfiguration.digitalInvoiceOnboardingSecondLabelTextFont`
+- Color &#8594; `GiniBankConfiguration.digitalInvoiceOnboardingTextColor`
+
+##### 5. "Done" button
+- Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.onboarding.donebutton*</span> localized string
+- Background color &#8594; `GiniBankConfiguration.digitalInvoiceOnboardingDoneButtonBackgroundColor`
+- Text color &#8594; `GiniBankConfiguration.digitalInvoiceOnboardingDoneButtonTextColor`
+- Font &#8594;  `GiniBankConfiguration.digitalInvoiceOnboardingDoneButtonTextFont`
+
+##### 6. "Don't Show Again" button
+- Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.onboarding.hidebutton*</span> localized string
+- Text color &#8594; `GiniBankConfiguration.digitalInvoiceOnboardingHideButtonTextColor`
+- Font &#8594;  `GiniBankConfiguration.digitalInvoiceOnboardingHideButtonTextFont`
+
+### Info screen
+
+<br>
+<center><img src="img/Customization guide/Digital Invoice Info Screen.jpg" height="500"/></center>
+</br>
+
+##### 1. Title
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.info.text1*</span> localized string
+
+##### 2. Illustration
+- Image &#8594; <span style="color:#009EDF">*digital_invoice_onboarding_icon*</span> image asset
+
+##### 3. Message
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.info.text2*</span> localized string
+
+##### 4. "Close" button
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.info.hidebutton*</span> localized string
+
+### Info box
+
+<br>
+<center><img src="img/Customization guide/Digital Invoice Check Items Info Box.jpg" height="500"/></center>
+</br>
+
+##### 1. Background
+- Color &#8594; `GiniBankConfiguration.digitalInvoiceInfoViewBackgroundColor`
+
+##### 2. Title and message
+- Title
+  - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.warningtoptitle*</span> localized string
+  - Font &#8594;  `GiniBankConfiguration.digitalInvoiceInfoViewTopLabelFont` 
+  - Color &#8594; `GiniBankConfiguration.digitalInvoiceInfoViewWarningLabelsTextColor`
+- Message
+  - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.warningmiddletext*</span> localized string
+  - Font &#8594;  `GiniBankConfiguration.digitalInvoiceInfoViewMiddleLabelFont` 
+  - Color &#8594; `GiniBankConfiguration.digitalInvoiceInfoViewWarningLabelsTextColor`
+
+##### 3. Expand/collapse button
+- Image &#8594; <span style="color:#009EDF">*chevron-up-icon*</span> image asset
+- Tint color &#8594; `GiniBankConfiguration.digitalInvoiceInfoViewChevronImageViewTintColor`
+
+##### 4. Illustration
+- Image &#8594; <span style="color:#009EDF">*ra-warning-illustration*</span> image asset
+
+##### 5. Bottom message
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.warningbottomtext*</span> localized string
+- Font &#8594;  `GiniBankConfiguration.digitalInvoiceInfoViewBottomLabelFont` 
+- Color &#8594; `GiniBankConfiguration.digitalInvoiceInfoViewWarningLabelsTextColor`
+
+##### 6. "OK" button
+- Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.warningleftbuttontitle*</span> localized string
+- Background color &#8594; `GiniBankConfiguration.digitalInvoiceInfoViewLeftButtonBackgroundColor`
+- Border color &#8594; `GiniBankConfiguration.digitalInvoiceInfoViewLeftButtonBorderColor`
+- Text color &#8594; `GiniBankConfiguration.digitalInvoiceInfoViewLeftkButtonTitleColor`
+- Font &#8594;  `GiniBankConfiguration.digitalInvoiceInfoViewButtonsFont`
+
+##### 7. "Skip" button
+- Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.warningrightbuttontitle*</span> localized string
+- Background color &#8594; `GiniBankConfiguration.digitalInvoiceInfoViewRightButtonBackgroundColor`
+- Border color &#8594; `GiniBankConfiguration.digitalInvoiceInfoViewRightButtonBorderColor`
+- Text color &#8594; `GiniBankConfiguration.digitalInvoiceInfoViewRightButtonTitleColor`
+- Font &#8594;  `GiniBankConfiguration.digitalInvoiceInfoViewButtonsFont`
+
+### Digital invoice screen
+
+<br>
+<center><img src="img/Customization guide/Digital Invoice Screen.jpg" height="500"/></center>
+</br>
+
+##### 1. Navigation bar
+- Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.screentitle*</span> localized string
+- Help button image &#8594; <span style="color:#009EDF">*infoIcon*</span> image asset
+- Back button title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.backbutton*</span> localized string
+- Back button image &#8594; <span style="color:#009EDF">*arrowBack*</span> image asset
+
+##### 2. Background
+- Color &#8594; `GiniBankConfiguration.digitalInvoiceBackgroundColor`
+
+##### 3. Line item index
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.items*</span> localized string.  
+  Please include two decimal format arguments:
+  1. Current index: `%d`
+  2. Total count: `%d`
+- Accessibility label &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.items.accessibilitylabel*</span> localized string.  
+  Please include two decimal format arguments:
+  1. Current index: `%d`
+  2. Total count: `%d`
+- Font &#8594;  `GiniBankConfiguration.lineItemCountLabelFont`
+- Color &#8594; `GiniBankConfiguration.lineItemCountLabelColor`
+
+##### 4. Line item edit button
+- Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.editbutton*</span> localized string
+- Icon &#8594; <span style="color:#009EDF">*editIcon*</span> image asset
+- Tint color &#8594; `GiniBankConfiguration.digitalInvoiceLineItemEditButtonTintColor`
+- Font &#8594;  `GiniBankConfiguration.digitalInvoiceLineItemEditButtonTitleFont`
+
+##### 5. Line item card
+- Background
+  - Color &#8594; `GiniBankConfiguration.digitalInvoiceLineItemsBackgroundColor`
+- Border
+  - Color &#8594; `GiniBankConfiguration.lineItemBorderColor`
+- Toggle switch
+  - Color &#8594; `GiniBankConfiguration.digitalInvoiceLineItemToggleSwitchTintColor`
+- Item name
+  - Font &#8594;  `GiniBankConfiguration.digitalInvoiceLineItemNameFont`
+  - Color &#8594; `GiniBankConfiguration.digitalInvoiceLineItemNameColor`
+- Quantity
+  - Font &#8594;  `GiniBankConfiguration.digitalInvoiceLineItemQuantityFont`
+  - Color &#8594; `GiniBankConfiguration.digitalInvoiceLineItemQuantityColor`
+- Price
+  - Main unit
+    - Font &#8594;  `GiniBankConfiguration.digitalInvoiceLineItemPriceMainUnitFont`
+    - Color &#8594; `GiniBankConfiguration.digitalInvoiceLineItemPriceColor`
+  - Fractional unit
+    - Font &#8594;  `GiniBankConfiguration.digitalInvoiceLineItemPriceFractionalUnitFont`
+    - Color &#8594; `GiniBankConfiguration.digitalInvoiceLineItemPriceColor`
+  - Accessibility label &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.total.accessibilitylabel*</span> localized string
+- Delete button (shown only for manually added line items)
+  - Icon &#8594; <span style="color:#009EDF">*garbage-bin-icon*</span> image asset
+  - Tint color &#8594; `GiniBankConfiguration.digitalInvoiceLineItemDeleteButtonTintColor`
+- Disabled state
+  - Color &#8594; `GiniBankConfiguration.digitalInvoiceLineItemsDisabledColor`
+
+##### 6. Additional costs
+- Label
+  - Font &#8594; `GiniBankConfiguration.digitalInvoiceAddonLabelFont`
+  - Color &#8594; `GiniBankConfiguration.digitalInvoiceAddonLabelColor`
+- Price
+  - Color &#8594; `GiniBankConfiguration.digitalInvoiceAddonPriceColor`
+  - Main unit font &#8594;  `GiniBankConfiguration.digitalInvoiceAddonPriceMainUnitFont`
+  - Fractional unit font &#8594;  `GiniBankConfiguration.digitalInvoiceAddonPriceFractionalUnitFont`
+
+##### 7. "Add article" button
+- Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.total.addArticleButtonTitle*</span> localized string
+- Icon &#8594; <span style="color:#009EDF">*plus-icon*</span> image asset
+- Text color &#8594; `GiniBankConfiguration.digitalInvoiceFooterAddArticleButtonTintColor`
+- Font &#8594; `GiniBankConfiguration.digitalInvoiceFooterAddArticleButtonTitleFont`
+
+##### 8. Total price
+- Caption 
+  - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.totalcaptionlabeltext*</span> localized string
+  - Color &#8594; `GiniBankConfiguration.digitalInvoiceTotalCaptionLabelTextColor`
+  - Font &#8594; `GiniBankConfiguration.digitalInvoiceTotalCaptionLabelFont`
+- Explanation 
+  - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.totalexplanationlabeltext*</span> localized string
+  - Color &#8594; `GiniBankConfiguration.digitalInvoiceTotalExplanationLabelTextColor`
+  - Font &#8594; `GiniBankConfiguration.digitalInvoiceTotalExplanationLabelFont`
+- Price
+  - Color &#8594; `GiniBankConfiguration.digitalInvoiceTotalPriceColor`
+  - Main unit font &#8594;  `GiniBankConfiguration.digitalInvoiceTotalPriceMainUnitFont`
+  - Fractional unit font &#8594;  `GiniBankConfiguration.digitalInvoiceTotalPriceFractionalUnitFont`
+  - Accessibility label &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.total.accessibilitylabel*</span> localized string
+
+##### 9. Footer message
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.footermessage*</span> localized string
+- Text color &#8594; `GiniBankConfiguration.digitalInvoiceFooterMessageTextColor`
+- Font &#8594; `GiniBankConfiguration.digitalInvoiceFooterMessageTextFont`
+
+##### 10. "Pay" button
+- Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.paybuttontitle*</span> localized string.  
+  Please include two decimal format arguments:
+  1. Selected items count: `%d`
+  2. Total count: `%d`
+- The “othercharges” title is used when items are not selected but there are other charges to pay &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.paybuttontitle.othercharges*</span> localized string.  
+- The “disabled” title is used when the pay button is disabled &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.paybuttontitle.disabled*</span> localized string.  
+- Accessibility label &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.paybuttontitle.accessibilitylabel*</span> localized string.  
+  Please include two decimal format arguments:
+  1. Selected items count: `%d`
+  2. Total count: `%d`
+- Background color &#8594;  `GiniBankConfiguration.payButtonBackgroundColor`
+- Title color &#8594; `GiniBankConfiguration.payButtonTitleTextColor`
+- Font &#8594;  `GiniBankConfiguration.payButtonTitleFont`
+
+##### 11. "Skip" Button
+- Title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.skipbuttontitle*</span> localized string
+- Background color &#8594;  `GiniBankConfiguration.skipButtonBackgroundColor`
+- Border color &#8594;  `GiniBankConfiguration.skipButtonBorderColor`
+- Title color &#8594; `GiniBankConfiguration.skipButtonTitleTextColor`
+- Font &#8594;  `GiniBankConfiguration.skipButtonTitleFont`
+
+### Return reason action sheet
+
+<br>
+<center><img src="img/Customization guide/Digital Invoice Return Reason Picker.jpg" height="500"/></center>
+</br>
+
+##### 1. Title
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.deselectreasonactionsheet.message*</span> localized string
+
+##### 2. "Cancel" button
+- Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel*</span> localized string
+
+### Edit line item screen
+
+<br>
+<center><img src="img/Customization guide/Digital Invoice Edit Line Item.jpg" height="500"/></center>
+</br>
+
+##### 1. Navigation bar
+- Save button title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.savebutton*</span> localized string
+
+##### 2. Background
+- Color &#8594; `GiniBankConfiguration.lineItemDetailsBackgroundColor`
+
+##### 3. Checkmark
+- Color &#8594; `GiniBankConfiguration.digitalInvoiceLineItemToggleSwitchTintColor`
+- Label text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.checkmark.label*</span> [plural](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPInternational/StringsdictFileFormat/StringsdictFileFormat.html) localized string.  
+  Please include a decimal format argument for the quantity integer (e.g. `%d Artikel ausgewählt`).
+- Accessibility label
+    - Select &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.checkmarkbutton.select.accessibilitylabel*</span> localized string
+    - Deselect &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.checkmarkbutton.deselect.accessibilitylabel*</span> localized string
+
+##### 4. 5. 6. Text fields: name, quantity, price
+- Item name field title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.itemnametextfieldtitle*</span> localized string
+- Quantity field title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.quantitytextfieldtitle*</span> localized string
+- Price field title &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.pricetextfieldtitle*</span> localized string
+- Field title
+  - Color &#8594; `GiniBankConfiguration.lineItemDetailsDescriptionLabelFont`
+  - Font &#8594; `GiniBankConfiguration.lineItemDetailsDescriptionLabelColor`
+- Field content
+  - Color &#8594; `GiniBankConfiguration.lineItemDetailsContentLabelColor`
+  - Font &#8594; `GiniBankConfiguration.lineItemDetailsContentLabelFont`
+- Field highlighted color &#8594; `GiniBankConfiguration.lineItemDetailsContentHighlightedColor`
+
+##### 7. Total price, Vat title
+- Tax title
+  - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.includevattitle*</span> localized
+  - Color &#8594; `GiniBankConfiguration.lineItemDetailsDescriptionLabelColor`
+  - Font &#8594; `GiniBankConfiguration.lineItemDetailsDescriptionLabelFont` 
+- Label
+  - Text &#8594; <span style="color:#009EDF">*ginibank.digitalinvoice.lineitem.totalpricetitle*</span> localized string
+  - Color &#8594; `GiniBankConfiguration.lineItemDetailsContentLabelColor`
+  - Font &#8594; `GiniBankConfiguration.lineItemDetailsDescriptionLabelFont`
+- Price
+  - Color &#8594; `GiniBankConfiguration.lineItemDetailsContentLabelColor`
+  - Main unit font &#8594;  `GiniBankConfiguration.lineItemDetailsTotalPriceMainUnitFont`
+  - Fractional unit font &#8594;  `GiniBankConfiguration.lineItemDetailsTotalPriceFractionalUnitFont`

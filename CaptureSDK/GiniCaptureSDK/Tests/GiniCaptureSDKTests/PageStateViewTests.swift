@@ -37,7 +37,7 @@ final class PageStateViewTests: XCTestCase {
     
     func testFailureState() {
         statusView.update(to: .failed)
-        XCTAssertEqual(statusView.backgroundColor, Colors.Gini.crimson, "background color should be red")
+        XCTAssertEqual(statusView.backgroundColor, Colors.Gini.springGreen, "background color should be green")
         XCTAssertEqual(statusView.icon.image,
                        UIImage(named: "failureUploadIcon",
                                in: giniCaptureBundle(),

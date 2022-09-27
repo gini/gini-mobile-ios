@@ -35,20 +35,35 @@ struct DigitalLineItemViewModel {
         case .selected:
             return UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceLineItemQuantityColor)
         case .deselected:
-            if #available(iOS 13.0, *) {
-                return .secondaryLabel
-            } else {
-                return .gray
-            }
+            return returnAssistantConfiguration.digitalInvoiceLineItemsDisabledColor
         }
     }
     
-    var outilneViewColor: UIColor {
+    var nameLabelColor: UIColor {
         switch lineItem.selectedState {
         case .selected:
-            return returnAssistantConfiguration.lineItemTintColor
+            return UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceLineItemNameColor)
         case .deselected:
-            return UIColor.gray
+            return returnAssistantConfiguration.digitalInvoiceLineItemsDisabledColor
+        }
+    }
+    
+    var priceLabelColor: UIColor {
+        switch lineItem.selectedState {
+        case .selected:
+            return UIColor.from(giniColor: returnAssistantConfiguration.digitalInvoiceLineItemPriceColor)
+        case .deselected:
+            return returnAssistantConfiguration.digitalInvoiceLineItemsDisabledColor
+        }
+    }
+    
+    var outlineViewColor: UIColor {
+        switch lineItem.selectedState {
+        case .selected:
+            return returnAssistantConfiguration.lineItemBorderColor
+            ?? returnAssistantConfiguration.lineItemTintColor
+        case .deselected:
+            return returnAssistantConfiguration.digitalInvoiceLineItemsDisabledColor
         }
     }
     
@@ -68,46 +83,28 @@ struct DigitalLineItemViewModel {
         
         switch lineItem.selectedState {
         case .selected:
-            return returnAssistantConfiguration.lineItemTintColor
+            return returnAssistantConfiguration.digitalInvoiceLineItemToggleSwitchTintColor
+            ?? returnAssistantConfiguration.lineItemTintColor
         case .deselected:
-            return .white
+            return returnAssistantConfiguration.digitalInvoiceLineItemsDisabledColor
         }
     }
     
     var editButtonTintColor: UIColor {
         switch lineItem.selectedState {
         case .selected:
-            return returnAssistantConfiguration.lineItemTintColor
+            return returnAssistantConfiguration.digitalInvoiceLineItemEditButtonTintColor
+            ?? returnAssistantConfiguration.lineItemTintColor
         case .deselected:
-            if #available(iOS 13.0, *) {
-                return .secondaryLabel
-            } else {
-                return .gray
-            }
+            return returnAssistantConfiguration.digitalInvoiceLineItemsDisabledColor
         }
     }
     
-    var deleButtonTintColor: UIColor {
-        return returnAssistantConfiguration.lineItemTintColor
+    var deleteButtonTintColor: UIColor {
+        return returnAssistantConfiguration.digitalInvoiceLineItemDeleteButtonTintColor
+        ?? returnAssistantConfiguration.lineItemTintColor
     }
-    
-    var primaryTextColor: UIColor {
-        switch lineItem.selectedState {
-        case .selected:
-            if #available(iOS 13.0, *) {
-                return .label
-            } else {
-                return .black
-            }
-        case .deselected:
-            if #available(iOS 13.0, *) {
-                return .secondaryLabel
-            } else {
-                return .gray
-            }
-        }
-    }
-    
+        
     var priceMainUnitFont: UIFont {
         return returnAssistantConfiguration.digitalInvoiceLineItemPriceMainUnitFont
     }
@@ -133,18 +130,6 @@ struct DigitalLineItemViewModel {
         }
     }
     
-    var cellBorderColor: UIColor {
-        switch lineItem.selectedState {
-        case .selected:
-            return returnAssistantConfiguration.lineItemTintColor
-        case .deselected:
-            if #available(iOS 13.0, *) {
-                return .secondaryLabel
-            } else {
-                return .gray
-            }
-        }
-    }
 }
 
 protocol DigitalLineItemTableViewCellDelegate: AnyObject {
@@ -173,16 +158,16 @@ class DigitalLineItemTableViewCell: UITableViewCell {
             quantityLabel.font = viewModel?.quantityFont
             
             quantityLabel.textColor = viewModel?.quantityColor
-            outilneView.layer.borderColor = viewModel?.outilneViewColor.cgColor
+            outilneView.layer.borderColor = viewModel?.outlineViewColor.cgColor
 
             if let viewModel = viewModel, let priceString = viewModel.totalPriceString {
                 
                 let attributedString =
                     NSMutableAttributedString(string: priceString,
-                                              attributes: [NSAttributedString.Key.foregroundColor: viewModel.primaryTextColor,
+                                              attributes: [NSAttributedString.Key.foregroundColor: viewModel.priceLabelColor,
                                                            NSAttributedString.Key.font: viewModel.priceMainUnitFont])
                 
-                attributedString.setAttributes([NSAttributedString.Key.foregroundColor: viewModel.primaryTextColor,
+                attributedString.setAttributes([NSAttributedString.Key.foregroundColor: viewModel.priceLabelColor,
                                                 NSAttributedString.Key.baselineOffset: 6,
                                                 NSAttributedString.Key.font: viewModel.priceFractionalUnitFont],
                                                range: NSRange(location: priceString.count - 3, length: 3))
@@ -199,7 +184,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
                 countLabel.textColor = viewModel.countLabelColor
                 modeSwitch.isHidden = viewModel.lineItem.isUserInitiated
                 deleteButton.isHidden = !viewModel.lineItem.isUserInitiated
-                deleteButton.tintColor = viewModel.deleButtonTintColor
+                deleteButton.tintColor = viewModel.deleteButtonTintColor
             }
             
             modeSwitch.addTarget(self, action: #selector(modeSwitchValueChange(sender:)), for: .valueChanged)
@@ -211,7 +196,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
             
             editButton.setTitle(.ginibankLocalized(resource: DigitalInvoiceStrings.lineItemEditButtonTitle), for: .normal)
             
-            nameLabel.textColor = viewModel?.primaryTextColor
+            nameLabel.textColor = viewModel?.nameLabelColor
 
             nameLabel.font = viewModel?.nameLabelFont
             

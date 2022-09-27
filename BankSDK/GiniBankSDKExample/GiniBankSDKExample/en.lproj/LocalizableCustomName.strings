@@ -1,16 +1,16 @@
-/* 
+/*
   Localizable.strings
-  GiniCapture
+  GiniBankExample
 
-  Created by Peter Pult on 16/06/16.
-  Copyright © 2016 Gini. All rights reserved.
+  Created by Nadzeya Karaban on 02/11/21.
+  Copyright © 2021 Gini. All rights reserved.
 */
 
 /*
- Gini Capture SDK
+ Gini Bank SDK
  ===================
  
- To easily customize texts in the Gini Capture SDK overwrite keys by your own definitions.
+ To easily customize texts in the Gini Bank SDK overwrite keys by your own definitions.
  For example to change the title of the camera add:
  ```
  "ginicapture.navigationbar.camera.title" = "Fotoüberweisung";
@@ -20,10 +20,59 @@
  or on [Github](https://github.com/gini/gini-capture-sdk-ios/blob/master/GiniCapture/Assets/Localizable.strings).
 */
 
-"next" = "Weiter";
-"close" = "Close";
-"newDocument" = "New document";
-"help" = "Help";
-"analysisFailedErrorMessage" = "Dokumentanalyse fehlgeschlagen. Möchten Sie es erneut versuchen?";
-"ginicapture.navigationbar.camera.title"        = "Make a picture";
+//"ginicapture.analysis.error.analysis" = "CM An error occurred while parsing the document.";
+//"ginicapture.camera.popupTitleImportPDF" = "CM Import PDF";
+//"ginicapture.camera.popupOptionPhotos" = "CM Gallery";
+//"ginicapture.camera.popupOptionFiles" = "CM Documents";
+//"ginicapture.camera.popupTitleImportPDForPhotos" = "CM Import Photos or PDF files";
+//"ginicapture.camera.popupCancel" = "CM Cancel";
+//"ginicapture.camera.capturedImagesStackLabel" = "CM Captured documents";
 
+//"ginicapture.imagepicker.openbutton" = "CM Open";
+
+//"ginicapture.multipagereview.addButtonLabel" = "CM Add a page";
+//"ginicapture.multipagereview.title" = "CM %d of %d";
+//"ginicapture.multipagereview.reorderContainerTooltipMessage" = "CM The pages must be in the right order. You can sort them here.";
+//"ginicapture.multipagereview.dragAndDropTip" = "CM Drag & Drop to sort";
+//"ginicapture.multipagereview.error.retakeAction" = "CM Retake";
+//"ginicapture.multipagereview.error.retryAction" = "CM Retry";
+//
+//"ginicapture.images.openWithTutorialStep1" = "openWithTutorialStep1_en";
+//"ginicapture.images.openWithTutorialStep2" = "openWithTutorialStep2_en";
+//"ginicapture.images.openWithTutorialStep3" = "openWithTutorialStep3_en";
+//
+//"ginicapture.albums.title" = "CM Albums";
+
+//"ginicapture.noresults.collection.header" = " CM Tips for best results:";
+//"ginicapture.noresults.warning" = "CM No information could be extracted. Please take a new photo.";
+//"ginicapture.noresults.gotocamera" = "CM Back to the camera";
+//"ginicapture.noresults.title" = "CM Tips for photos";
+//"ginicapture.noresults.warningHelpMenu" = "CM For best extraction results, please apply the following tips for photos:";
+
+//"ginicapture.help.supportedFormats.title" = "CM Supported formats";
+//"ginicapture.help.supportedFormats.section.1.title" = "CM The following formats are supported:";
+//"ginicapture.help.supportedFormats.section.1.item.1" = "CM Computer-generated invoices and remittance slips";
+//"ginicapture.help.supportedFormats.section.1.item.2" = "CM 1-sided photos of format jpeg, png or gif";
+//"ginicapture.help.supportedFormats.section.1.item.3" = "CM PDF documents of up to 10 pages";
+//"ginicapture.help.supportedFormats.section.1.item.4" = "CM QR Codes";
+//"ginicapture.help.supportedFormats.section.2.title" = "CM What is not supported:";
+//"ginicapture.help.supportedFormats.section.2.item.1" = "CM Handwriting";
+//"ginicapture.help.supportedFormats.section.2.item.2" = "CM Photos of monitors or screens";
+//
+//"ginicapture.help.menu.title" = "CM Help";
+//"ginicapture.help.menu.firstItem" = "CM Tips for best results from photos";
+//"ginicapture.help.menu.secondItem" = "CM Open document from other apps";
+//"ginicapture.help.menu.thirdItem" = "CM Supported formats";
+//
+//"ginibank.digitalinvoice.info.text1" = "CM What is it?";
+//"ginibank.digitalinvoice.info.text2" = "CM We extracted the articles from your invoice. Simply deselect articles if you want to return them. The new total will be calculated for you.";
+//"ginibank.digitalinvoice.info.hidebutton" = "CM Close";
+//
+//"ginicapture.help.openWithTutorial.title" = "CM Open documents from other apps";
+"close" = "Close";
+//
+//"ginibank.digitalinvoice.backbutton" = "CM Back";
+//"ginibank.digitalinvoice.paybuttontitle.disabled" = "CM Pay";
+//"ginibank.digitalinvoice.paybuttontitle.othercharges" = "CM Pay";
+//"ginibank.digitalinvoice.paybuttontitle" = "CM Pay %d/%d";
+"results.sendfeedback.button.title" = "Send feedback and close";

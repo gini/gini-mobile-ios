@@ -34,12 +34,7 @@ enum MultipageReviewStrings: LocalizableStringResource {
     }
     
     var isCustomizable: Bool {
-        switch self {
-        case .retakeActionButton, .retryActionButton, .reorderContainerTooltipMessage, .dragAndDropTipMessage:
-            return true
-        case .addButtonLabel, .titleMessage:
-            return false
-        }
+        return true
     }
     
     var fallbackTableEntry: String {

@@ -11,7 +11,7 @@ import AVFoundation
 
 final class CameraPreviewView: UIView {
     
-    let frameColor = UIColor(white: 0.0, alpha: 0.7)
+    let frameColor = UIColor.from(giniColor: GiniConfiguration.shared.cameraPreviewFrameColor)
     let guideLineLength: CGFloat = 50.0
     let guideLineWidth: CGFloat = 2.0
     /// the size of the guides compared to the size of the whole view

@@ -10,6 +10,7 @@
 "ginihealth.reviewscreen.amount.placeholder" = "0,00 €";
 "ginihealth.reviewscreen.usage.placeholder" = "Verwendungszweck";
 "ginihealth.reviewscreen.infobar.message" = "Bitte prüfe die vorausgefüllten Daten";
+"ginihealth.reviewscreen.next.button.title" = "Weiter";
 "ginihealth.errors.no.banking.app.installed" = "Leider unterstützt deine Banking App diese Funktion noch nicht. Probier doch mal die ING App.";
 "ginihealth.errors.default" = "Oh da ist was schief gelaufen. Probiere es noch einmal.";
 "ginihealth.errors.failed.payment.request.creation" = "Oh da ist was schief gelaufen. Probiere es noch einmal.";

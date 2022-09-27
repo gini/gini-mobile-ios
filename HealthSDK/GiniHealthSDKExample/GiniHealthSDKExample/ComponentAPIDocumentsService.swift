@@ -24,13 +24,16 @@ final class ComponentAPIDocumentsService: ComponentAPIDocumentServiceProtocol {
         let configuration = GiniHealthConfiguration()
         // Font configuration
         let regularFont = UIFont(name: "Avenir", size: 15) ?? UIFont.systemFont(ofSize: 15)
-        configuration.customFont = GiniFont(regular: regularFont, bold: regularFont, light: regularFont, thin: regularFont)
+        let boldFont = UIFont(name: "Avenir Heavy", size: 14) ?? UIFont.systemFont(ofSize: 15)
+        configuration.customFont = GiniFont(regular: regularFont, bold: boldFont, light: regularFont, thin: regularFont)
         // Pay button configuration
-        configuration.payButtonTextColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
+        configuration.payButtonTitleFont = boldFont
+        configuration.payButtonDisabledTextColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
         
         // Page indicator color configuration
         configuration.currentPageIndicatorTintColor = GiniColor(lightModeColor: .systemBlue, darkModeColor: .systemBlue)
         configuration.pageIndicatorTintColor = GiniColor(lightModeColor: .darkGray, darkModeColor: .darkGray)
+        configuration.paymentReviewStatusBarStyle = .lightContent
         return configuration
     }()
     

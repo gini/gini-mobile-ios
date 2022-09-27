@@ -7,6 +7,8 @@ on:
 jobs:
   check:
     uses: gini/gini-mobile-ios/.github/workflows/capture-sdk.check.yml@main
+    secrets:
+      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
 
   release:
     needs: check
@@ -33,7 +35,7 @@ jobs:
           { 
             "project_folder": "CaptureSDK",
             "package_folder": "GiniCaptureSDK",
-            "version_file_path": "CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDKVersion.swift",
+            "version_file_path": "CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/GiniCaptureSDKVersion.swift",
             "git_tag": "${{ github.ref }}", 
             "repo_url": "https://github.com/gini/capture-sdk-ios.git", 
             "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
@@ -49,10 +51,17 @@ jobs:
           { 
             "project_folder": "CaptureSDK",
             "package_folder": "GiniCaptureSDKPinning",
-            "version_file_path": "CaptureSDK/GiniCaptureSDKPinning/Sources/GiniCaptureSDKPinningVersion.swift",
+            "version_file_path": "CaptureSDK/GiniCaptureSDKPinning/Sources/GiniCaptureSDKPinning/GiniCaptureSDKPinningVersion.swift",
             "git_tag": "${{ github.ref }}", 
             "repo_url": "https://github.com/gini/capture-sdk-pinning-ios.git", 
             "repo_user": "${{ secrets.RELEASE_GITHUB_USER }}",
             "repo_password": "${{ secrets.RELEASE_GITHUB_PASSWORD }}",
             "ci": "true"
           }      
+
+  release-documentation:
+    needs: release
+    uses: gini/gini-mobile-ios/.github/workflows/capture-sdk.publish.docs.yml@main
+    secrets:
+      RELEASE_GITHUB_USER: ${{ secrets.RELEASE_GITHUB_USER }}
+      RELEASE_GITHUB_PASSWORD: ${{ secrets.RELEASE_GITHUB_PASSWORD }}

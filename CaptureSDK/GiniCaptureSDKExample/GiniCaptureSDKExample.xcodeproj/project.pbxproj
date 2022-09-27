@@ -48,6 +48,13 @@
 		F4BB7CEE2695D66C003FD77E /* CustomMenuItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BB7CED2695D66C003FD77E /* CustomMenuItemViewController.swift */; };
 		F4BB7CF02695D96B003FD77E /* CustomMenuItems.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4BB7CEF2695D96B003FD77E /* CustomMenuItems.storyboard */; };
 		F4E561552686315100415EE8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4E561572686315100415EE8 /* Localizable.strings */; };
+		F4F1A77227EB479D0004FF42 /* ExtractionFeedbackIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F1A77027EB479D0004FF42 /* ExtractionFeedbackIntegrationTest.swift */; };
+		F4F1A77727EB47CA0004FF42 /* result_Gini_invoice_example.json in Resources */ = {isa = PBXBuildFile; fileRef = F4F1A77427EB47CA0004FF42 /* result_Gini_invoice_example.json */; };
+		F4F1A77827EB47CA0004FF42 /* result_Gini_invoice_example.json in Resources */ = {isa = PBXBuildFile; fileRef = F4F1A77427EB47CA0004FF42 /* result_Gini_invoice_example.json */; };
+		F4F1A77927EB47CA0004FF42 /* Gini_invoice_example.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4F1A77527EB47CA0004FF42 /* Gini_invoice_example.pdf */; };
+		F4F1A77A27EB47CA0004FF42 /* Gini_invoice_example.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4F1A77527EB47CA0004FF42 /* Gini_invoice_example.pdf */; };
+		F4F1A77B27EB47CA0004FF42 /* result_Gini_invoice_example_after_feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = F4F1A77627EB47CA0004FF42 /* result_Gini_invoice_example_after_feedback.json */; };
+		F4F1A77C27EB47CA0004FF42 /* result_Gini_invoice_example_after_feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = F4F1A77627EB47CA0004FF42 /* result_Gini_invoice_example_after_feedback.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -119,6 +126,10 @@
 		F4BB7CEF2695D96B003FD77E /* CustomMenuItems.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CustomMenuItems.storyboard; sourceTree = "<group>"; };
 		F4E561562686315100415EE8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F4E561582686315300415EE8 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F4F1A77027EB479D0004FF42 /* ExtractionFeedbackIntegrationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtractionFeedbackIntegrationTest.swift; sourceTree = "<group>"; };
+		F4F1A77427EB47CA0004FF42 /* result_Gini_invoice_example.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example.json; sourceTree = "<group>"; };
+		F4F1A77527EB47CA0004FF42 /* Gini_invoice_example.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example.pdf; sourceTree = "<group>"; };
+		F4F1A77627EB47CA0004FF42 /* result_Gini_invoice_example_after_feedback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_after_feedback.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,6 +270,7 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				F4F1A77027EB479D0004FF42 /* ExtractionFeedbackIntegrationTest.swift */,
 				1F9411871FB9F4AE0019DECD /* ComponentAPICoordinatorTests.swift */,
 				F42F028026D660B3003A3695 /* AlbumsPickerViewControllerDelegateTests.swift */,
 				F42F027E26D66029003A3695 /* GalleryCoordinatorDelegateTests.swift */,
@@ -267,6 +279,7 @@
 				1F578E121FBD81A300C17F62 /* SettingsViewControllerTests.swift */,
 				F42F027A26D65F67003A3695 /* GalleryCoordinatorTests.swift */,
 				F42F027C26D65FC0003A3695 /* GalleryManagerTests.swift */,
+				F4F1A77327EB47CA0004FF42 /* Resources */,
 				1FF3A41B20C6B9F300081A32 /* Helpers */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
@@ -276,7 +289,6 @@
 		607FACE91AFB9204008FA782 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				1FEED2931F6AC0440068E8AB /* testPDF.pdf */,
 				607FACEA1AFB9204008FA782 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -296,6 +308,17 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F4F1A77327EB47CA0004FF42 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F4F1A77427EB47CA0004FF42 /* result_Gini_invoice_example.json */,
+				F4F1A77527EB47CA0004FF42 /* Gini_invoice_example.pdf */,
+				F4F1A77627EB47CA0004FF42 /* result_Gini_invoice_example_after_feedback.json */,
+				1FEED2931F6AC0440068E8AB /* testPDF.pdf */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -432,9 +455,12 @@
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				F4E561552686315100415EE8 /* Localizable.strings in Resources */,
 				F4BB7CF02695D96B003FD77E /* CustomMenuItems.storyboard in Resources */,
+				F4F1A77727EB47CA0004FF42 /* result_Gini_invoice_example.json in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 				1FEED2941F6AC0440068E8AB /* testPDF.pdf in Resources */,
+				F4F1A77927EB47CA0004FF42 /* Gini_invoice_example.pdf in Resources */,
+				F4F1A77B27EB47CA0004FF42 /* result_Gini_invoice_example_after_feedback.json in Resources */,
 				0A5DDCA61D9E6A5300EBDDCD /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -443,7 +469,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4F1A77C27EB47CA0004FF42 /* result_Gini_invoice_example_after_feedback.json in Resources */,
+				F4F1A77827EB47CA0004FF42 /* result_Gini_invoice_example.json in Resources */,
 				1F5F53321F5DB2E300D4BF06 /* Images.xcassets in Resources */,
+				F4F1A77A27EB47CA0004FF42 /* Gini_invoice_example.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -462,7 +491,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -506,6 +535,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4F1A77227EB479D0004FF42 /* ExtractionFeedbackIntegrationTest.swift in Sources */,
 				F42F028126D660B3003A3695 /* AlbumsPickerViewControllerDelegateTests.swift in Sources */,
 				F42F027D26D65FC0003A3695 /* GalleryManagerTests.swift in Sources */,
 				1F9411881FB9F4AE0019DECD /* ComponentAPICoordinatorTests.swift in Sources */,
@@ -597,6 +627,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -749,6 +780,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -808,6 +840,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

@@ -30,12 +30,7 @@ enum GalleryStrings: LocalizableStringResource {
     }
     
     var isCustomizable: Bool {
-        switch self {
-        case .albumsTitle:
-            return true
-        case .imagePickerOpenButton:
-            return false
-        }
+        return true
     }
     
     var fallbackTableEntry: String {

@@ -23,14 +23,12 @@ final class SupportedFormatsViewController: UITableViewController {
         var sections: [SupportedFormatCollectionSection] =  [
             (.localized(resource: HelpStrings.supportedFormatsSection1Title),
              [.localized(resource: HelpStrings.supportedFormatsSection1Item1Text)],
-             UIImage(named: "supportedFormatsIcon",
-                     in: giniCaptureBundle(),
-                     compatibleWith: nil),
+             UIImageNamedPreferred(named: "supportedFormatsIcon"),
              GiniConfiguration.shared.supportedFormatsIconColor),
             (.localized(resource: HelpStrings.supportedFormatsSection2Title),
              [.localized(resource: HelpStrings.supportedFormatsSection2Item1Text),
               .localized(resource: HelpStrings.supportedFormatsSection2Item2Text)],
-             UIImage(named: "nonSupportedFormatsIcon", in: giniCaptureBundle(), compatibleWith: nil),
+             UIImageNamedPreferred(named: "nonSupportedFormatsIcon"),
              GiniConfiguration.shared.nonSupportedFormatsIconColor)
         ]
         
