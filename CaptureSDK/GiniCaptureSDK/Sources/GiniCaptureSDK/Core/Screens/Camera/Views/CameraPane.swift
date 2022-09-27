@@ -13,10 +13,14 @@ final class CameraPane: UIView {
     @IBOutlet weak var fileUploadButton: BottomLabelButton!
     @IBOutlet weak var flashButton: BottomLabelButton!
     @IBOutlet weak var thumbnailView: ThumbnailView!
-    var giniConfiguration: GiniConfiguration! = nil
 
-    func configureView(giniConfiguration: GiniConfiguration) {
-        self.giniConfiguration = giniConfiguration
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        setupView()
+    }
+
+    func setupView() {
+        let giniConfiguration = GiniConfiguration.shared
         backgroundColor = GiniColor(
             light: UIColor.GiniCapture.dark1,
             dark: UIColor.GiniCapture.dark1).uiColor().withAlphaComponent(0.4)
@@ -43,16 +47,26 @@ final class CameraPane: UIView {
             dark: UIColor.GiniCapture.light1).uiColor()
         fileUploadButton.actionLabel.font = giniConfiguration.textStyleFonts[.caption1]
         if cameraTitleLabel != nil {
-            cameraTitleLabel.adjustsFontForContentSizeCategory = true
-            cameraTitleLabel.font = giniConfiguration.textStyleFonts[.footnote]
-            cameraTitleLabel.textColor = GiniColor(
-                light: UIColor.GiniCapture.light1,
-                dark: UIColor.GiniCapture.light1).uiColor()
+            configureTitle(giniConfiguration: giniConfiguration)
         }
         captureButton.accessibilityLabel = ""
         captureButton.accessibilityValue =  NSLocalizedStringPreferredFormat(
             "ginicapture.camera.capturebutton",
             comment: "Capture")
+    }
+
+    private func configureTitle(giniConfiguration: GiniConfiguration) {
+        cameraTitleLabel.text = NSLocalizedStringPreferredFormat(
+            "ginicapture.camera.infoLabel",
+            comment: "Info label")
+        cameraTitleLabel.adjustsFontForContentSizeCategory = true
+        cameraTitleLabel.adjustsFontSizeToFitWidth = true
+        cameraTitleLabel.numberOfLines = 1
+        cameraTitleLabel.minimumScaleFactor = 5/UIFont.labelFontSize
+        cameraTitleLabel.font = giniConfiguration.textStyleFonts[.footnote]
+        cameraTitleLabel.textColor = GiniColor(
+            light: UIColor.GiniCapture.light1,
+            dark: UIColor.GiniCapture.light1).uiColor()
     }
 
     func setupFlashButton(state: Bool) {

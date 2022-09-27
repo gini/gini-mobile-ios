@@ -41,9 +41,18 @@ final class CameraNotAuthorizedView: UIView {
             NSLocalizedStringPreferredFormat(
                 "ginicapture.camera.notAuthorizedButton", comment: "Grant permission"),
             for: .normal)
-        button.setTitleColor(GiniColor(light: UIColor.GiniCapture.accent1, dark: UIColor.GiniCapture.accent1).uiColor(), for: .normal)
-        button.setTitleColor(GiniColor(light: UIColor.GiniCapture.accent1, dark: UIColor.GiniCapture.accent1).uiColor().withAlphaComponent(0.8),
-                             for: .highlighted)
+        button.setTitleColor(
+            GiniColor(
+                light: UIColor.GiniCapture.accent1,
+                dark: UIColor.GiniCapture.accent1
+            ).uiColor(),
+            for: .normal)
+        button.setTitleColor(
+            GiniColor(
+                light: UIColor.GiniCapture.accent1,
+                dark: UIColor.GiniCapture.accent1
+            ).uiColor().withAlphaComponent(0.8),
+            for: .highlighted)
         button.titleLabel?.font = giniConfiguration.textStyleFonts[.subheadline]
 
         button.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
