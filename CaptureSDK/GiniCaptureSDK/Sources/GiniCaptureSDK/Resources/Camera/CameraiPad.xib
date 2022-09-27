@@ -74,7 +74,7 @@
                     </connections>
                 </view>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cameraFocus" translatesAutoresizingMaskIntoConstraints="NO" id="FMH-fq-Dwo">
-                    <rect key="frame" x="0.0" y="24" width="900" height="1322"/>
+                    <rect key="frame" x="16" y="24" width="868" height="1322"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </imageView>
@@ -83,9 +83,9 @@
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="FMH-fq-Dwo" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="44H-BP-ZmH"/>
-                <constraint firstItem="FMH-fq-Dwo" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Mh3-Wg-fbV"/>
+                <constraint firstItem="FMH-fq-Dwo" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="Mh3-Wg-fbV"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="FMH-fq-Dwo" secondAttribute="bottom" id="jeG-Yr-Ic4"/>
-                <constraint firstItem="13s-Zb-nTw" firstAttribute="leading" secondItem="FMH-fq-Dwo" secondAttribute="trailing" id="kCZ-xe-dM6"/>
+                <constraint firstItem="13s-Zb-nTw" firstAttribute="leading" secondItem="FMH-fq-Dwo" secondAttribute="trailing" constant="16" id="kCZ-xe-dM6"/>
                 <constraint firstAttribute="bottom" secondItem="13s-Zb-nTw" secondAttribute="bottom" id="mY8-4T-W5K"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="13s-Zb-nTw" secondAttribute="trailing" id="nDS-Tf-anT"/>
                 <constraint firstItem="13s-Zb-nTw" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="pNX-vt-Y8o"/>
