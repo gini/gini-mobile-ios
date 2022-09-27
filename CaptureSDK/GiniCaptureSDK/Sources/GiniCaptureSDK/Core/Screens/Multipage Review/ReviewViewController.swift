@@ -169,6 +169,19 @@ extension ReviewViewController {
 
         addConstraints()
     }
+
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            self.setCellStatus(for: 0, isActive: true)
+        }
+    }
+
+    public override func viewWillDisappear(_ animated: Bool) {
+        setCellStatus(for: currentPage, isActive: false)
+        super.viewWillDisappear(animated)
+    }
     
     /**
      Updates the collections with the given pages.
@@ -179,6 +192,13 @@ extension ReviewViewController {
     public func updateCollections(with pages: [GiniCapturePage]) {
         self.pages = pages
         collectionView.reloadData()
+
+        // Update cell status only if pages not empty and view is visible
+        if pages.isNotEmpty && viewIfLoaded?.window != nil {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                self.setCellStatus(for: self.currentPage, isActive: true)
+            }
+        }
     }
 
     
