@@ -11,7 +11,6 @@ final class FileImportButtonView: UIView {
     
     var didTapButton: (() -> Void)?
 
-    fileprivate let giniConfiguration: GiniConfiguration
     fileprivate var documentImportButtonImage: UIImage? {
         return UIImageNamedPreferred(named: "documentImportButton")
     }
@@ -30,7 +29,7 @@ final class FileImportButtonView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = .localized(resource: CameraStrings.importFileButtonLabel)
-        label.font = giniConfiguration.customFont.with(weight: .regular, size: 12, style: .footnote)
+        //label.font = giniConfiguration.customFont.with(weight: .regular, size: 12, style: .footnote)
         label.textAlignment = .center
         label.textColor = .white
         label.minimumScaleFactor = 10 / label.font.pointSize
@@ -40,7 +39,11 @@ final class FileImportButtonView: UIView {
     }()
     
     init(giniConfiguration: GiniConfiguration = .shared) {
-        self.giniConfiguration = giniConfiguration
+        super.init(frame: .zero)
+
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
         super.init(frame: .zero)
         addSubview(importFileButton)
         addSubview(importFileSubtitleLabel)
@@ -56,11 +59,6 @@ final class FileImportButtonView: UIView {
         importFileSubtitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         importFileSubtitleLabel.topAnchor.constraint(equalTo: importFileButton.bottomAnchor,
                                                      constant: 0).isActive = true
-
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     @objc fileprivate func showImportFileSheet(_ sender: UIButton) {
