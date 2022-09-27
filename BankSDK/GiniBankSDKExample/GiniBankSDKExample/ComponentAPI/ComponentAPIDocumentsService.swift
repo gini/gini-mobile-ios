@@ -63,14 +63,26 @@ final class ComponentAPIDocumentsService: ComponentAPIDocumentServiceProtocol {
         partialDocuments[imageDocument.id]?.info.rotationDelta = imageDocument.rotationDelta
     }
     
-    func sendFeedback(with updatedExtractions: [Extraction]) {
+    func sendFeedback(with updatedExtractions: [Extraction], updatedCompoundExtractions: [String : [[Extraction]]]?) {
         guard let document = document else { return }
-        documentService.submitFeedback(for: document, with: updatedExtractions) { result in
-            switch result {
-            case .success:
-                print("🚀 Feedback sent with \(updatedExtractions.count) extractions")
-            case .failure(let error):
-                print("❌ Error sending feedback for document with id: \(document.id) error: \(error)")
+        if let updatedCompoundExtractions = updatedCompoundExtractions {
+            documentService.submitFeedback(for: document, with: updatedExtractions, and: updatedCompoundExtractions) { result in
+                switch result {
+                case .success:
+                    print("🚀 Feedback sent with \(updatedExtractions.count) extractions and \(updatedCompoundExtractions.count) compound extractions")
+                case .failure(let error):
+                    print("❌ Error sending feedback for document with id: \(document.id) error: \(error)")
+                }
+            }
+            
+        } else {
+            documentService.submitFeedback(for: document, with: updatedExtractions) { result in
+                switch result {
+                case .success:
+                    print("🚀 Feedback sent with \(updatedExtractions.count) extractions")
+                case .failure(let error):
+                    print("❌ Error sending feedback for document with id: \(document.id) error: \(error)")
+                }
             }
         }
     }
@@ -158,6 +170,7 @@ extension ComponentAPIDocumentsService {
                                 case .success(let createdDocument):
                                     print("🔎 Starting analysis for composite document with id \(createdDocument.id)")
                                     
+                                    self.document = createdDocument
                                     self.analysisCancellationToken = CancellationToken()
                                     self.documentService
                                         .extractions(for: createdDocument,

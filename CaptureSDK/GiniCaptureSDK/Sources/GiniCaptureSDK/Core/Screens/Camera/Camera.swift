@@ -303,25 +303,6 @@ extension Camera: AVCaptureMetadataOutputObjectsDelegate {
 // MARK: - AVCapturePhotoCaptureDelegate
 
 extension Camera: AVCapturePhotoCaptureDelegate {
-    //swiftlint:disable function_parameter_count
-    func photoOutput(_ output: AVCapturePhotoOutput,
-                     didFinishProcessingPhoto photoSampleBuffer: CMSampleBuffer?,
-                     previewPhoto previewPhotoSampleBuffer: CMSampleBuffer?,
-                     resolvedSettings: AVCaptureResolvedPhotoSettings,
-                     bracketSettings: AVCaptureBracketedStillImageSettings?,
-                     error: Error?) {
-        guard let buffer = photoSampleBuffer,
-            let imageData = AVCapturePhotoOutput
-                .jpegPhotoDataRepresentation(forJPEGSampleBuffer: buffer,
-                                             previewPhotoSampleBuffer: previewPhotoSampleBuffer),
-            error == nil else {
-                didCaptureImageHandler?(nil, .captureFailed)
-                return
-        }
-        
-        didCaptureImageHandler?(imageData, nil)
-    }
-    
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?){
         if error != nil {
             didCaptureImageHandler?(nil, .captureFailed)

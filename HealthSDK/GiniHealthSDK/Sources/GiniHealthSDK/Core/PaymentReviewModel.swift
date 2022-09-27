@@ -97,7 +97,7 @@ public class PaymentReviewModel: NSObject {
     }
 
     func sendFeedback(updatedExtractions: [Extraction]) {
-        healthSDK.documentService.submitFeedback(for: document, with: updatedExtractions) { result in
+        healthSDK.documentService.submitFeedback(for: document, with: [], and: ["payment": [updatedExtractions]]){ result in
             switch result {
             case .success: break
             case .failure: break

@@ -66,16 +66,22 @@ Some background and text colors use the `GiniColor` type with which you can set 
   - With title only
 	  -  Title &#8594; `GiniConfiguration.navigationBarCameraTitleCloseButton`
 - Help button
-	- Image &#8594; <span style="color:#009EDF">*navigationCameraHelp*</span> image asset
-	- Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.camera.help*</span> localized string
-
+ - With image and title
+	  - Image &#8594; <span style="color:#009EDF">*navigationCameraHelp*</span> image asset
+	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.camera.help*</span> localized string
+  - With title only
+	  -  Title &#8594; `GiniConfiguration.navigationBarCameraTitleHelpButton`
+      
 ##### 2. Camera preview
+- Preview frame color &#8594;  `GiniConfiguration.cameraPreviewFrameColor`
 - Guides color &#8594;  `GiniConfiguration.cameraPreviewCornerGuidesColor`
 - Focus large image &#8594; <span style="color:#009EDF">*cameraFocusLarge*</span> image asset
 - Focus large small &#8594; <span style="color:#009EDF">*cameraFocusSmall*</span> image asset
 - Opaque view style (when tool tip is shown)  &#8594;  `GiniConfiguration.toolTipOpaqueBackgroundStyle`
 
 ##### 3. Camera buttons container
+- Background color &#8594;  `GiniConfiguration.cameraButtonsViewBackgroundColor`
+- Container view background color under the home indicator  &#8594;  `GiniConfiguration.cameraContainerViewBackgroundColor` 
 - Capture button
   - Image &#8594; <span style="color:#009EDF">*cameraCaptureButton*</span> image asset
 - Import button
@@ -145,6 +151,12 @@ Some background and text colors use the `GiniColor` type with which you can set 
 - Opaque view style (when tool tip is shown)  &#8594;  `GiniConfiguration.multipageToolTipOpaqueBackgroundStyle`
 
 ##### 3. Page item
+- Page upload state icon
+  - Successful upload &#8594; <span style="color:#009EDF">*successfullUploadIcon*</span> image asset
+  - Failed upload &#8594; <span style="color:#009EDF">*failureUploadIcon*</span> image asset
+- Page upload state icon background color
+  - Successful upload &#8594; `GiniConfiguration.multipagePageSuccessfullUploadIconBackgroundColor`
+  - Failed upload &#8594; `GiniConfiguration.multipagePageFailureUploadIconBackgroundColor`
 - Page circle indicator color &#8594; `GiniConfiguration.indicatorCircleColor` using `GiniColor` with dark mode and light mode colors
 - Page indicator color &#8594; `GiniConfiguration.multipagePageIndicatorColor` 
 - Page background color &#8594; `GiniConfiguration.multipagePageBackgroundColor` using `GiniColor` with dark mode and light mode colors
@@ -193,7 +205,9 @@ Some background and text colors use the `GiniColor` type with which you can set 
 	  - Title &#8594; `GiniConfiguration.navigationBarHelpScreenTitleBackToMenuButton`
 
 ##### 1. Supported format cells
+- Supported fortmats icon &#8594; <span style="color:#009EDF">*supportedFormatsIcon*</span> image asset
 - Supported formats icon color &#8594; `GiniConfiguration.supportedFormatsIconColor`
+- Non supported fortmats icon &#8594; <span style="color:#009EDF">*nonSupportedFormatsIcon*</span> image asset
 - Non supported formats icon color &#8594; `GiniConfiguration.nonSupportedFormatsIconColor`
 
 ## Open with tutorial screen
@@ -244,6 +258,8 @@ Some background and text colors use the `GiniColor` type with which you can set 
 
 ##### 2. Go to camera button
 - Background color &#8594; `GiniConfiguration.noResultsBottomButtonColor`
+- Text color &#8594; `GiniConfiguration.noResultsBottomButtonTextColor`
+- Corner radius &#8594; `GiniConfiguration.noResultsBottomButtonCornerRadius`
 
 ## Gallery album screen
 

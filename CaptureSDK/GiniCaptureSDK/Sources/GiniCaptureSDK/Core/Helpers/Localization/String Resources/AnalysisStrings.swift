@@ -47,16 +47,9 @@ public enum AnalysisStrings: LocalizableStringResource {
             return ("defaultPdfDokumentTitle", "Default PDF document title")
         }
     }
-    
+
     public var isCustomizable: Bool {
-        switch self {
-        case .cancelledMessage, .documentCreationErrorMessage, .loadingText, .pdfPages, .defaultPdfDokumentTitle,
-             .suggestion1Text, .suggestion2Text, .suggestion3Text, .suggestion4Text, .suggestion5Text,
-             .suggestionHeader:
-            return true
-        case .analysisErrorMessage:
-            return false
-        }
+        return true
     }
     
     public var fallbackTableEntry: String {

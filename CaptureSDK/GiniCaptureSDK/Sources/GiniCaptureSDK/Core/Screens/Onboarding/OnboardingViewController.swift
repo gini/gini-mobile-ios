@@ -110,6 +110,11 @@ import UIKit
         addConstraints()
     }
     
+    public override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        scrollView.contentInsetAdjustmentBehavior = .never
+    }
+    
     /**
      Scrolls the scroll view to the next page.
      

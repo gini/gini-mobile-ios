@@ -46,25 +46,25 @@ public final class GiniHealthConfiguration: NSObject {
     @objc public var inputFieldsContainerBackgroundColor = GiniColor(lightModeColor: UIColor.white, darkModeColor: UIColor.white)
     
     /**
-     Sets the backgroundColor on the payment review screen for pay button
-     */
-    @objc public var payButtonBackgroundColor = GiniColor(lightModeColor: UIColor.from(hex:0xFF6800), darkModeColor: UIColor.from(hex:0xFF6800))
-    
-    /**
      Sets the backgroundColor on the payment review screen for pay button when it's disabled
      */
     @objc public var payButtonDisabledBackgroundColor = GiniColor(lightModeColor: UIColor.from(hex:0xCCCFDB), darkModeColor: UIColor.from(hex:0xCCCFDB))
     
     /**
-     Sets the text color of the pay button on the payment review screen
+     Sets the textColor on the payment review screen for pay button when it's disabled
      */
-    @objc public var payButtonTextColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
+    @objc public var payButtonDisabledTextColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
     
     /**
      Sets the corner radius of the pay button on the payment review screen
      */
     @objc public var payButtonCornerRadius: CGFloat = 6.0
     
+    /**
+     Sets the font of the pay button title on the payment review screen
+     */
+    @objc public var payButtonTitleFont: UIFont = UIFont.systemFont(ofSize: 14,
+                                                                    weight: .bold)
     /**
      Sets the corner radius of the payment input fields on the payment review screen
      */
@@ -159,6 +159,11 @@ public final class GiniHealthConfiguration: NSObject {
      Set to `true` to show a close button on the payment review screen.
      */
     @objc public var showPaymentReviewCloseButton = false
+    
+    /**
+     Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in info.plist.
+     */
+    @objc public var paymentReviewStatusBarStyle: UIStatusBarStyle = .default
     
     // MARK: - Bank selection screen
     

@@ -107,16 +107,16 @@ public final class DocumentService: DocumentServiceProtocol {
         partialDocuments[imageDocument.id]?.info.rotationDelta = imageDocument.rotationDelta
     }
     
-    public func sendFeedback(with updatedExtractions: [Extraction]) {
+    public func sendFeedback(with updatedExtractions: [Extraction], updatedCompoundExtractions: [String: [[Extraction]]]?) {
         Log(message: "Sending feedback", event: "💬")
         guard let document = document else {
             Log(message: "Cannot send feedback: no document", event: .error)
             return
         }
-        captureNetworkService.sendFeedback(document: document, updatedExtractions: updatedExtractions) { result in
+        captureNetworkService.sendFeedback(document: document, updatedExtractions: updatedExtractions, updatedCompoundExtractions: updatedCompoundExtractions) { result in
             switch result {
             case .success:
-                Log(message: "Feedback sent with \(updatedExtractions.count) extractions",
+                Log(message: "Feedback sent with \(updatedExtractions.count) extractions and \(updatedCompoundExtractions?.count ?? 0) compound extractions",
                     event: "🚀")
             case .failure(let error):
                 let message = "Error sending feedback for document with id: \(document.id) error: \(error)"

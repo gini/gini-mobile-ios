@@ -21,6 +21,8 @@ final class ResultTableViewController: UITableViewController {
             result.sort(by: { $0.name! < $1.name! })
         }
     }
+    
+    var lineItems: [[Extraction]]? = nil
 }
 
 extension ResultTableViewController {

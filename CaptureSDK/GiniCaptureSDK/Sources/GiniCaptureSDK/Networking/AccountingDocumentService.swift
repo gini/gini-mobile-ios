@@ -40,7 +40,7 @@ public final class AccountingDocumentService: DocumentServiceProtocol {
         document = nil
     }
     
-    public func sendFeedback(with updatedExtractions: [Extraction]) {
+    public func sendFeedback(with updatedExtractions: [Extraction], updatedCompoundExtractions: [String : [[Extraction]]]?) {
         guard let document = document else { return }
         documentService.submitFeedback(for: document, with: updatedExtractions) { result in
             switch result {

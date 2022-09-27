@@ -6,9 +6,9 @@
 
 # Please fill out the template above according to these conventions:
 # * <type>: the type of the commit is one of the following:
-#   * feat: new features.
+#   * feat: new or modified features including UI and public API changes.
 #   * fix: bug fixes.
-#   * refactor: code changes without introducing new features.
+#   * refactor: code changes without introducing public breaking changes (public API or UI was not modified).
 #   * chore: any changes like dependency updates, fixing warnings, 
 #     linter errors, etc.
 #   * docs: documentation changes.

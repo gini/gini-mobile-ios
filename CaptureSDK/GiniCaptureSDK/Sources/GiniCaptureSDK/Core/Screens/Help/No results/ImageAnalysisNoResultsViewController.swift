@@ -27,11 +27,17 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
         bottomButton.translatesAutoresizingMaskIntoConstraints = false
         bottomButton.setTitle(self.bottomButtonText, for: .normal)
         bottomButton.titleLabel?.font = giniConfiguration.customFont.with(weight: .bold, size: 14, style: .caption1)
-        bottomButton.setTitleColor(UIColor.white.withAlphaComponent(0.5), for: .highlighted)
+        let bottomButtonTextColor = UIColor.from(giniColor: giniConfiguration.noResultsBottomButtonTextColor)
+        bottomButton.setTitleColor(bottomButtonTextColor, for: .normal)
+        bottomButton.setTitleColor(bottomButtonTextColor.withAlphaComponent(0.5), for: .highlighted)
         bottomButton.setImage(self.bottomButtonIconImage, for: .normal)
+        if let highlightedImage = self.bottomButtonIconImage?.tintedImageWithColor(bottomButtonTextColor.withAlphaComponent(0.5)){
+            bottomButton.setImage(highlightedImage, for: .highlighted)
+        }
         bottomButton.addTarget(self, action: #selector(didTapBottomButtonAction), for: .touchUpInside)
         bottomButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
-        bottomButton.backgroundColor = GiniConfiguration.shared.noResultsBottomButtonColor
+        bottomButton.backgroundColor = giniConfiguration.noResultsBottomButtonColor
+        bottomButton.layer.cornerRadius = giniConfiguration.noResultsBottomButtonCornerRadius
         return bottomButton
     }()
     
@@ -64,24 +70,12 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
     public var didTapBottomButton: (() -> Void) = { }
     
     public convenience init(title: String? = nil,
-                            subHeaderText: String? = NSLocalizedString("ginicapture.noresults.collection.header",
-                                                                       bundle: giniCaptureBundle(),
-                                                                       comment: "no results suggestions collection " +
-        "header title"),
-                            topViewText: String = NSLocalizedString("ginicapture.noresults.warning",
-                                                                    bundle: giniCaptureBundle(),
-                                                                    comment: "Warning text that indicates that there " +
-        "was any result for this photo analysis"),
-                            topViewIcon: UIImage? = UIImage(named: "warningNoResults",
-                                                            in: giniCaptureBundle(),
-                                                            compatibleWith: nil)?.withRenderingMode(.alwaysTemplate),
-                            bottomButtonText: String? = NSLocalizedString("ginicapture.noresults.gotocamera",
-                                                                          bundle: giniCaptureBundle(),
-                                                                          comment: "bottom button title (go to camera" +
-        " button)"),
-                            bottomButtonIcon: UIImage? = UIImage(named: "cameraIcon",
-                                                                 in: giniCaptureBundle(),
-                                                                 compatibleWith: nil)) {
+                            subHeaderText: String? = NSLocalizedStringPreferredFormat("ginicapture.noresults.collection.header", comment: "no results suggestions collection header title"),
+                            topViewText: String = NSLocalizedStringPreferredFormat("ginicapture.noresults.warning", comment: "Warning text that indicates that there " +
+                                "was any result for this photo analysis"),
+                            topViewIcon: UIImage? = UIImageNamedPreferred(named: "warningNoResults"),
+                            bottomButtonText: String? = NSLocalizedStringPreferredFormat("ginicapture.noresults.gotocamera", comment: "bottom button title (go to camera button)"),
+                            bottomButtonIcon: UIImage? = UIImageNamedPreferred(named: "cameraIcon")) {
         self.init(title: title,
                   subHeaderText: subHeaderText,
                   topViewText: topViewText,
@@ -103,7 +97,9 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
         self.title = title
         self.subHeaderTitle = subHeaderText
         self.topViewText = topViewText
-        self.topViewIcon = topViewIcon
+        if let topViewIcon = topViewIcon {
+            self.topViewIcon = topViewIcon.tintedImageWithColor(giniConfiguration.noResultsWarningContainerIconColor)
+        }
         self.bottomButtonText = bottomButtonText
         self.bottomButtonIconImage = bottomButtonIcon
     }

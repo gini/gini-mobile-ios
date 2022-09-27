@@ -285,7 +285,7 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
      If there is an error retrieving the version the returned value will be an empty string.
      */
     @objc public static var versionString: String {
-        return "GiniCapture"
+        return GiniCaptureSDKVersion
     }
     
     /**

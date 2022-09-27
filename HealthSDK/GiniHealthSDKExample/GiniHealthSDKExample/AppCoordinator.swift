@@ -147,24 +147,38 @@ final class AppCoordinator: Coordinator {
         let configuration = GiniHealthConfiguration()
         // Font configuration
         let regularFont = UIFont(name: "Avenir", size: 15) ?? UIFont.systemFont(ofSize: 15)
-        configuration.customFont = GiniFont(regular: regularFont, bold: regularFont, light: regularFont, thin: regularFont)
+        let boldFont = UIFont(name: "Avenir Heavy", size: 14) ?? UIFont.systemFont(ofSize: 15)
+        configuration.customFont = GiniFont(regular: regularFont, bold: boldFont, light: regularFont, thin: regularFont)
         // Pay button configuration
-        configuration.payButtonTextColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
-        
+        configuration.payButtonTitleFont = boldFont
+        // Uncomment to test disabled state
+        //configuration.payButtonDisabledTextColor = GiniColor(lightModeColor: .yellow, darkModeColor: .yellow)
+        //configuration.payButtonDisabledBackgroundColor =  GiniColor(lightModeColor: .red, darkModeColor: .red)
         // Page indicator color configuration
         configuration.currentPageIndicatorTintColor = GiniColor(lightModeColor: .systemBlue, darkModeColor: .systemBlue)
         configuration.pageIndicatorTintColor = GiniColor(lightModeColor: .darkGray, darkModeColor: .darkGray)
         
         // Show the close button to dismiss the payment review screen
         configuration.showPaymentReviewCloseButton = true
+        configuration.paymentReviewStatusBarStyle = .lightContent
+        
         health.delegate = self
         health.setConfiguration(configuration)
         
         checkIfAnyBankingAppsInstalled(from: self.rootViewController) {
-            if let document = self.testDocument, let extractions = self.testDocumentExtractions {
-                // Show the payment review screen
-                let vc = PaymentReviewViewController.instantiate(with: self.health, document: document, extractions: extractions, trackingDelegate: self)
-                self.rootViewController.present(vc, animated: true)
+            if let document = self.testDocument {
+                self.selectAPIViewController.showActivityIndicator()
+                
+                self.health.fetchDataForReview(documentId: document.id) { result in
+                    switch result {
+                    case .success(let data):
+                        let vc = PaymentReviewViewController.instantiate(with: self.health, data: data, trackingDelegate: self)
+                        self.rootViewController.present(vc, animated: true)
+                    case .failure(let error):
+                        print("❌ Document data fetching failed: \(String(describing: error))")
+                    }
+                    self.selectAPIViewController.hideActivityIndicator()
+                }
             } else {
                 // Upload the test document image
                 let testDocumentImage = UIImage(named: "testDocument")!
@@ -310,13 +324,13 @@ extension AppCoordinator: GiniHealthTrackingDelegate {
     func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {
         switch event.type {
         case .onNextButtonClicked:
-            print("📝 Next button was tapped")
+            print("📝 Next button was tapped,\(String(describing: event.info))")
         case .onCloseButtonClicked:
             print("📝 Close screen was triggered")
         case .onCloseKeyboardButtonClicked:
             print("📝 Close keyboard was triggered")
         case .onBankSelectionButtonClicked:
-            print("📝 Bank selection button was tapped")
+            print("📝 Bank selection button was tapped,\(String(describing: event.info))")
         }
     }
 }

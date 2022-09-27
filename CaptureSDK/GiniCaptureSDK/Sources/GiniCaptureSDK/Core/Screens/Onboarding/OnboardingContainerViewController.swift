@@ -48,7 +48,7 @@ final class OnboardingContainerViewController: UIViewController, ContainerViewCo
        let pageControl = UIPageControl()
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.currentPage = 0
-        pageControl.numberOfPages = self.giniConfiguration.onboardingPages.count + 1 // Empty page at the end
+        pageControl.numberOfPages = self.giniConfiguration.onboardingPages.count
         pageControl.currentPageIndicatorTintColor = UIColor.from(giniColor: giniConfiguration.onboardingCurrentPageIndicatorColor).withAlphaComponent(giniConfiguration.onboardingCurrentPageIndicatorAlpha)
         pageControl.pageIndicatorTintColor = UIColor.from(giniColor: giniConfiguration.onboardingPageIndicatorColor)
         pageControl.isUserInteractionEnabled = false
@@ -188,7 +188,7 @@ extension OnboardingContainerViewController: UIScrollViewDelegate {
         // Update fixed elements position
         let pageWidth = scrollView.frame.size.width
         let contentOffsetX = scrollView.contentOffset.x
-        var frameOffsetX = contentOffsetX - pageWidth * CGFloat(pageControl.numberOfPages - 2)
+        var frameOffsetX = contentOffsetX - pageWidth * CGFloat(pageControl.numberOfPages - 1)
         let fixedFrame = view.frame
         frameOffsetX = max(-frameOffsetX, -fixedFrame.width)
         frameOffsetX = min(frameOffsetX, 0)
