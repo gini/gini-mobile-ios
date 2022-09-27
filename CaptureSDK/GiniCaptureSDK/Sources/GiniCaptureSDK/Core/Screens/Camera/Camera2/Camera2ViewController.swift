@@ -103,7 +103,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                 comment: "Info label")
         }
         configureButtons()
-        configureBottomNavigation()
+        configureBottomNavigationBar()
         setupInitialState()
     }
 
@@ -117,20 +117,30 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         navigationBarBottomAdapter?.showButtons(navigationButtons: [.help, .back])
     }
 
-    private func configureBottomNavigation() {
+    private func configureCustomTopNavigationBar() {
+        navigationItem.leftBarButtonItem = nil
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: NSLocalizedStringPreferredFormat(
+                "ginicapture.camera.popupCancel",
+                comment: "Cancel button"),
+            style: .plain,
+            target: cameraButtonsViewModel,
+            action: #selector(cameraButtonsViewModel.cancelPressed))
+    }
+
+    private func configureBottomNavigationBar() {
         if giniConfiguration.bottomNavigationBarEnabled {
-            navigationItem.leftBarButtonItem = nil
-            navigationItem.rightBarButtonItem = nil
+            configureCustomTopNavigationBar()
             if let bottomBar = giniConfiguration.cameraNavigationBarBottomAdapter {
                 navigationBarBottomAdapter = bottomBar
             } else {
                 navigationBarBottomAdapter = DefaultCameraBottomNavigationBarAdapter()
             }
             navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
-                self?.cameraButtonsViewModel.helpPressed?()
+                self?.cameraButtonsViewModel.helpAction?()
             }
             navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
-                self?.cameraButtonsViewModel.backButtonPressed?()
+                self?.cameraButtonsViewModel.backButtonAction?()
             }
 
             if let navigationBar =
@@ -138,12 +148,6 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                 view.addSubview(navigationBar)
                 layoutBottomNavigationBar(navigationBar)
             }
-        } else {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(
-                title: "Skip",
-                style: .plain,
-                target: self,
-                action: #selector(close))
         }
     }
 
@@ -151,7 +155,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         if UIDevice.current.isIpad {
             view.removeConstraints([iPadCameraFocusBottomConstraint])
             navigationBar.translatesAutoresizingMaskIntoConstraints = false
-            self.view.addSubview(navigationBar)
+            view.addSubview(navigationBar)
             NSLayoutConstraint.activate([
                 navigationBar.topAnchor.constraint(equalTo: cameraFocusImageView.bottomAnchor),
                 navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -162,7 +166,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         } else {
             view.removeConstraints([bottomPaneConstraint, bottomButtonsConstraints])
             navigationBar.translatesAutoresizingMaskIntoConstraints = false
-            self.view.addSubview(navigationBar)
+            view.addSubview(navigationBar)
             NSLayoutConstraint.activate([
                 navigationBar.topAnchor.constraint(equalTo: cameraPane.bottomAnchor),
                 navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -204,7 +208,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                 self.cameraPane.toggleCaptureButtonActivation(state: true)
             }
         }
-        cameraButtonsViewModel.backButtonPressed = { [weak self] in
+        cameraButtonsViewModel.backButtonAction = { [weak self] in
             if let strongSelf = self {
                 self?.delegate?.cameraDidTapMultipageReviewButton(strongSelf)
             }
@@ -286,6 +290,8 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             cameraPane.thumbnailView.replaceStackImages(with: images)
             if images.count > 0 {
                 setupNotEmptyState()
+            } else {
+                setupInitialState()
             }
         }
     }
