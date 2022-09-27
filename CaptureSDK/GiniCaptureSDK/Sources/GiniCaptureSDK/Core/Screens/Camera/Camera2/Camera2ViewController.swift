@@ -13,11 +13,11 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     /**
      The object that acts as the delegate of the camera view controller.
     */
-    var opaqueView: UIView?
+    private var opaqueView: UIView?
     let giniConfiguration: GiniConfiguration
     var detectedQRCodeDocument: GiniQRCodeDocument?
     var currentQRCodePopup: QRCodeDetectedPopupView?
-    var shouldShowQRCodeNext = false
+    private var shouldShowQRCodeNext = false
     lazy var cameraPreviewViewController: CameraPreviewViewController = {
        let cameraPreviewViewController = CameraPreviewViewController()
        cameraPreviewViewController.delegate = self
@@ -25,15 +25,14 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     }()
     public weak var delegate: CameraViewControllerDelegate?
 
-    @IBOutlet weak var cameraFocusImageView: UIImageView!
+    @IBOutlet weak var cameraFrameImageView: UIImageView!
     @IBOutlet weak var cameraPane: CameraPane!
     private let cameraButtonsViewModel: CameraButtonsViewModel
     private var navigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
 
     @IBOutlet weak var bottomButtonsConstraints: NSLayoutConstraint!
     @IBOutlet weak var bottomPaneConstraint: NSLayoutConstraint!
-
-    @IBOutlet weak var iPadCameraFocusBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var iPadCameraFrameBottomConstraint: NSLayoutConstraint!
     /**
      Designated initializer for the `CameraViewController` which allows
      to set the `GiniConfiguration for the camera screen`.
@@ -153,11 +152,11 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         if UIDevice.current.isIpad {
-            view.removeConstraints([iPadCameraFocusBottomConstraint])
+            view.removeConstraints([iPadCameraFrameBottomConstraint])
             navigationBar.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(navigationBar)
             NSLayoutConstraint.activate([
-                navigationBar.topAnchor.constraint(equalTo: cameraFocusImageView.bottomAnchor),
+                navigationBar.topAnchor.constraint(equalTo: cameraFrameImageView.bottomAnchor),
                 navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
                 navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -178,17 +177,6 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         }
         view.bringSubviewToFront(navigationBar)
         view.layoutSubviews()
-    }
-
-    // MARK: - Bottom Navigation Bar Actions
-
-    private func nextPage() {
-    }
-
-    private func skip() {
-    }
-
-    @objc func close() {
     }
 
     func configureButtons() {
@@ -336,7 +324,7 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol) {
         cameraPane.setupAuthorization(isHidden: false)
-        cameraFocusImageView.isHidden = false
+        cameraFrameImageView.isHidden = false
         cameraPane.toggleCaptureButtonActivation(state: true)
         cameraPane.toggleFlashButtonActivation(
             state: camera.isFlashSupported && giniConfiguration.flashToggleEnabled)
@@ -357,6 +345,6 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 
     func notAuthorized() {
         cameraPane.setupAuthorization(isHidden: true)
-        cameraFocusImageView.isHidden = true
+        cameraFrameImageView.isHidden = true
     }
 }
