@@ -127,9 +127,19 @@ public final class ReviewViewController: UIViewController {
     private var addPagesButtonView: AddPageButtonView?
 
     private lazy var cellSize: CGSize = {
-        let width = self.view.bounds.width - 64
-        let height = width * 1.4142 // A4 aspect ratio
-        return CGSize(width: width, height: height)
+        let a4Ratio = 1.4142
+        if UIDevice.current.isIpad {
+            let height = self.view.bounds.height - 240
+            let width = height / a4Ratio
+            let cellSize = CGSize(width: width, height: height)
+            return cellSize
+        } else {
+            let width = self.view.bounds.width - 64
+            let height = width * a4Ratio
+            let cellSize = CGSize(width: width, height: height)
+            return cellSize
+        }
+
     }()
 
     private var currentPage: Int = 0
@@ -168,6 +178,8 @@ extension ReviewViewController {
         edgesForExtendedLayout = []
 
         addConstraints()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(handleOrientationChange), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
 
     public override func viewDidAppear(_ animated: Bool) {
@@ -205,7 +217,7 @@ extension ReviewViewController {
 // MARK: - Private methods
 
 extension ReviewViewController {
-    fileprivate func barButtonItem(withImage image: UIImage?,
+    private func barButtonItem(withImage image: UIImage?,
                                    insets: UIEdgeInsets,
                                    action: Selector) -> UIBarButtonItem {
         let button = UIButton(type: .custom)
@@ -228,7 +240,7 @@ extension ReviewViewController {
         return device.isIpad ? 300 : 224
     }
     
-    fileprivate func addConstraints() {
+    private func addConstraints() {
         NSLayoutConstraint.activate([
             tipLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             tipLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -269,6 +281,17 @@ extension ReviewViewController {
     @objc
     private func didTapProcessDocument() {
         delegate?.reviewDidTapProcess(self)
+    }
+
+    @objc
+    private func handleOrientationChange() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+            let a4Ratio = 1.4142
+            let height = self.view.bounds.height - 240
+            let width = height / a4Ratio
+            self.cellSize = CGSize(width: width, height: height)
+            self.collectionView.reloadData()
+        }
     }
 }
 
@@ -333,7 +356,12 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 32)
+        if UIDevice.current.isIpad {
+            let margin = (self.view.bounds.width - cellSize.width) / 2
+            return UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
+        } else {
+            return UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 32)
+        }
     }
 
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
