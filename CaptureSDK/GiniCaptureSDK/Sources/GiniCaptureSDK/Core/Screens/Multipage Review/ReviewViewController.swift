@@ -174,7 +174,7 @@ extension ReviewViewController {
         super.viewDidAppear(animated)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-            self.setCellStatus(for: 0, isActive: true)
+            self.setCellStatus(for: self.currentPage, isActive: true)
         }
     }
 
@@ -199,26 +199,6 @@ extension ReviewViewController {
                 self.setCellStatus(for: self.currentPage, isActive: true)
             }
         }
-    }
-
-    
-    private func reload(_ collection: UICollectionView,
-                        pages: [GiniCapturePage],
-                        indexPaths: (updated: [IndexPath], removed: [IndexPath], inserted: [IndexPath]),
-                        animated: Bool, completion: @escaping (Bool) -> Void) {
-        // When the collection has not been loaded before, the data should be reloaded
-        guard collection.numberOfItems(inSection: 0) > 0 else {
-            self.pages = pages
-            collection.reloadData()
-            return
-        }
-        
-        collection.performBatchUpdates(animated: animated, updates: {[weak self] in
-            self?.pages = pages
-            collection.reloadItems(at: indexPaths.updated)
-            collection.deleteItems(at: indexPaths.removed)
-            collection.insertItems(at: indexPaths.inserted)
-        }, completion: completion)
     }
 }
 
@@ -307,7 +287,6 @@ extension ReviewViewController {
 // MARK: UICollectionViewDataSource
 
 extension ReviewViewController: UICollectionViewDataSource {
-    
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         pageControl.numberOfPages = pages.count
         pageControl.isHidden = !(pages.count > 1)
@@ -318,25 +297,11 @@ extension ReviewViewController: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView,
                                cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let page = pages[indexPath.row]
-
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier:
                                                         ReviewCollectionCell.reuseIdentifier,
                                  for: indexPath) as! ReviewCollectionCell
-
+        cell.delegate = self
         return presenter.setUp(cell, with: page, at: indexPath)
-    }
-    
-    private func didFailUpload(page: GiniCapturePage, indexPath: IndexPath) -> ((NoticeActionType) -> Void) {
-        return {[weak self] action in
-            guard let self = self else { return }
-            switch action {
-            case .retry:
-                self.delegate?.review(self, didTapRetryUploadFor: page)
-            case .retake:
-                self.deleteItem(at: indexPath)
-                self.delegate?.reviewDidTapAddImage(self)
-            }
-        }
     }
 }
 
@@ -418,5 +383,16 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
     private func setCellStatus(for index: Int, isActive: Bool) {
         let cell = collectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? ReviewCollectionCell
         cell?.isActive = isActive
+    }
+}
+
+// MARK: ReviewCollectionViewDelegate
+
+extension ReviewViewController: ReviewCollectionViewDelegate {
+    func didTapDelete(on cell: ReviewCollectionCell) {
+        guard let indexpath = collectionView.indexPath(for: cell) else { return }
+        deleteItem(at: indexpath)
+
+        setCurrentPage(basedOn: collectionView)
     }
 }

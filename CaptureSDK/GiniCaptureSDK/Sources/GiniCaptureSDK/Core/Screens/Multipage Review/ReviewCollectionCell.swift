@@ -7,8 +7,14 @@
 
 import UIKit
 
+protocol ReviewCollectionViewDelegate: AnyObject {
+    func didTapDelete(on cell: ReviewCollectionCell)
+}
+
 final class ReviewCollectionCell: UICollectionViewCell {
-    lazy var documentImage: UIImageView = {
+    weak var delegate: ReviewCollectionViewDelegate?
+
+    lazy var documentImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
@@ -20,30 +26,31 @@ final class ReviewCollectionCell: UICollectionViewCell {
         return imageView
     }()
 
+    private lazy var deleteButton: UIButton = {
+        let deleteIcon = UIImageNamedPreferred(named: "delete_icon")
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(deleteIcon, for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.addTarget(self, action: #selector(didTapDelete), for: .touchUpInside)
+        return button
+    }()
+
     var isActive: Bool = false {
         didSet {
             UIView.animate(withDuration: 0.3) { [weak self] in
                 guard let self = self else { return }
-                self.documentImage.layer.borderColor = self.isActive ? UIColor.GiniCapture.accent1.cgColor : UIColor.clear.cgColor
-                self.documentImage.layer.borderWidth = self.isActive ? 2 : 0
+                self.documentImageView.layer.borderColor = self.isActive ? UIColor.GiniCapture.accent1.cgColor : UIColor.clear.cgColor
+                self.documentImageView.layer.borderWidth = self.isActive ? 2 : 0
             }
         }
     }
-
-    lazy var errorView: NoticeView = {
-        let noticeView = NoticeView(text: "",
-                                    type: .error,
-                                    noticeAction: NoticeAction(title: "", action: {}))
-        noticeView.translatesAutoresizingMaskIntoConstraints = false
-
-        noticeView.hide(false, completion: nil)
-        return noticeView
-    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(documentImage)
-        addSubview(errorView)
+        addSubview(documentImageView)
+        addSubview(deleteButton)
+        bringSubviewToFront(deleteButton)
 
         addConstraints()
     }
@@ -53,8 +60,21 @@ final class ReviewCollectionCell: UICollectionViewCell {
     }
     
     private func addConstraints() {
-        Constraints.pin(view: documentImage, toSuperView: self)
-        Constraints.pin(view: errorView, toSuperView: self, positions: [.top, .left, .right])
-        Constraints.center(view: documentImage, with: self)
+        NSLayoutConstraint.activate([
+            documentImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            documentImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            documentImageView.topAnchor.constraint(equalTo: topAnchor),
+            documentImageView.bottomAnchor.constraint(equalTo: bottomAnchor),
+
+            deleteButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            deleteButton.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            deleteButton.heightAnchor.constraint(equalToConstant: 44),
+            deleteButton.widthAnchor.constraint(equalToConstant: 44)
+        ])
+    }
+
+    @objc
+    private func didTapDelete() {
+        delegate?.didTapDelete(on: self)
     }
 }

@@ -41,9 +41,9 @@ final class ReviewCollectionCellPresenter {
                at indexPath: IndexPath) -> UICollectionViewCell {
 
         if let thumbnail = self.thumbnails[page.document.id, default: [:]][.big] {
-            cell.documentImage.image = thumbnail
+            cell.documentImageView.image = thumbnail
         } else {
-            cell.documentImage.image = nil
+            cell.documentImageView.image = nil
             fetchThumbnailImage(for: page, of: .big, in: cell, at: indexPath)
         }
 
@@ -70,35 +70,35 @@ fileprivate extension ReviewCollectionCellPresenter {
     func setUpErrorView(in cell: ReviewCollectionCell,
                         with error: Error,
                         didTapErrorNoticeAction: @escaping (NoticeActionType) -> Void) {
-        let buttonTitle: String
-        let action: NoticeActionType
+//        let buttonTitle: String
+//        let action: NoticeActionType
+//        
+//        switch error {
+//        case is AnalysisError:
+//            buttonTitle = .localized(resource: MultipageReviewStrings.retryActionButton)
+//            action = .retry
+//        default:
+//            buttonTitle = .localized(resource: MultipageReviewStrings.retakeActionButton)
+//            action = .retake
+//        }
+//        
+//        let message: String
+//        
+//        switch error {
+//        case let error as GiniCaptureError:
+//            message = error.message
+//        case let error as CustomDocumentValidationError:
+//            message = error.message
+//        default:
+//            message = DocumentValidationError.unknown.message
+//        }
         
-        switch error {
-        case is AnalysisError:
-            buttonTitle = .localized(resource: MultipageReviewStrings.retryActionButton)
-            action = .retry
-        default:
-            buttonTitle = .localized(resource: MultipageReviewStrings.retakeActionButton)
-            action = .retake
-        }
-        
-        let message: String
-        
-        switch error {
-        case let error as GiniCaptureError:
-            message = error.message
-        case let error as CustomDocumentValidationError:
-            message = error.message
-        default:
-            message = DocumentValidationError.unknown.message
-        }
-        
-        cell.errorView.textLabel.text = message
-        cell.errorView.actionButton.setTitle(buttonTitle, for: .normal)
-        cell.errorView.userAction = NoticeAction(title: buttonTitle) {
-            didTapErrorNoticeAction(action)
-        }
-        cell.errorView.layoutIfNeeded()
+//        cell.errorView.textLabel.text = message
+//        cell.errorView.actionButton.setTitle(buttonTitle, for: .normal)
+//        cell.errorView.userAction = NoticeAction(title: buttonTitle) {
+//            didTapErrorNoticeAction(action)
+//        }
+//        cell.errorView.layoutIfNeeded()
     }
 }
 
