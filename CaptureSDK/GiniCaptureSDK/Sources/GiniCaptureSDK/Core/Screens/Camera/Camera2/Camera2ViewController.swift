@@ -88,9 +88,6 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         view.sendSubviewToBack(cameraPreviewViewController.view)
         configureConstraints()
         if UIDevice.current.isIphone {
-            cameraPane.cameraTitleLabel.text = NSLocalizedStringPreferredFormat(
-                "ginicapture.camera.infoLabel",
-                comment: "Info label")
             self.title = NSLocalizedStringPreferredFormat(
                 "ginicapture.navigationbar.camera.title",
                 comment: "Info label")
@@ -99,7 +96,6 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                 "ginicapture.camera.infoLabel",
                 comment: "Info label")
         }
-        cameraPane.configureView(giniConfiguration: giniConfiguration)
         configureButtons()
     }
 
