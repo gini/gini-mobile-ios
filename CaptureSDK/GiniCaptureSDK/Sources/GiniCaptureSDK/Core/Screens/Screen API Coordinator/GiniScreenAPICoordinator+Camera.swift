@@ -75,8 +75,11 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         let cameraButtonsViewModel = CameraButtonsViewModel(
             trackingDelegate: trackingDelegate
         )
-        cameraButtonsViewModel.helpPressed = { [weak self] in
+        cameraButtonsViewModel.helpAction = { [weak self] in
             self?.showHelpMenuScreen()
+        }
+        cameraButtonsViewModel.cancelAction = { [weak self] in
+            self?.back()
         }
         let cameraViewController = Camera2ViewController(
             giniConfiguration: giniConfiguration,

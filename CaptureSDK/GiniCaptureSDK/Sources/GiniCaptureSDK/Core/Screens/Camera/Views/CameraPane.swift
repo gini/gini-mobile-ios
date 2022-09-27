@@ -15,7 +15,7 @@ final class CameraPane: UIView {
     @IBOutlet weak var thumbnailView: ThumbnailView!
     var giniConfiguration: GiniConfiguration! = nil
     @IBOutlet weak var leftButtonsStack: UIView!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
