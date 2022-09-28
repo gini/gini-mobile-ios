@@ -33,6 +33,7 @@ final class ReviewCollectionCell: UICollectionViewCell {
         button.setImage(deleteIcon, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(didTapDelete), for: .touchUpInside)
+        button.isHidden = true
         return button
     }()
 
@@ -42,6 +43,8 @@ final class ReviewCollectionCell: UICollectionViewCell {
                 guard let self = self else { return }
                 self.documentImageView.layer.borderColor = self.isActive ? UIColor.GiniCapture.accent1.cgColor : UIColor.clear.cgColor
                 self.documentImageView.layer.borderWidth = self.isActive ? 2 : 0
+
+                self.deleteButton.isHidden = !self.isActive
             }
         }
     }
@@ -60,6 +63,7 @@ final class ReviewCollectionCell: UICollectionViewCell {
     }
     
     private func addConstraints() {
+        
         NSLayoutConstraint.activate([
             documentImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             documentImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
