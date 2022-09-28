@@ -93,7 +93,8 @@ public final class ReviewViewController: UIViewController {
         tipLabel.textColor = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
         tipLabel.isAccessibilityElement = true
         tipLabel.numberOfLines = 0
-        tipLabel.text = "Make sure the payment details are visible"
+        tipLabel.text = NSLocalizedStringPreferredFormat("ginicapture.multipagereview.description",
+                                                         comment: "Tip on review screen")
 
         return tipLabel
     }()
@@ -120,7 +121,8 @@ public final class ReviewViewController: UIViewController {
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.layer.cornerRadius = 16
         button.backgroundColor = UIColor.GiniCapture.accent1
-        button.setTitle("Process documents", for: .normal)
+        button.setTitle(NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle",
+                                                         comment: "Process button title"), for: .normal)
         button.addTarget(self, action: #selector(didTapProcessDocument), for: .touchUpInside)
         return button
     }()
@@ -151,6 +153,8 @@ extension ReviewViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
 
+        title = NSLocalizedStringPreferredFormat("ginicapture.multipagereview.title",
+                                                 comment: "Screen title")
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         view.addSubview(tipLabel)
         view.addSubview(collectionView)
@@ -264,9 +268,16 @@ extension ReviewViewController {
             let width = height / a4Ratio
             return CGSize(width: width, height: height)
         } else {
-            let width = self.view.bounds.width - 64
-            let height = width * a4Ratio
+//            let width = self.view.bounds.width - 64
+//            let height = width * a4Ratio
+
+            let height = self.view.bounds.height * 0.58
+            let width = height / a4Ratio
+
             let cellSize = CGSize(width: width, height: height)
+
+            print("X: cellHeight  : \(height)")
+            print("X: screenHeight: \(self.view.bounds.height)")
             return cellSize
         }
     }

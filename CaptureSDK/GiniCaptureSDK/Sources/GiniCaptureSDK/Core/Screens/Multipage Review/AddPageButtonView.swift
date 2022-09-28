@@ -22,7 +22,8 @@ final class AddPageButtonView: UIView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.titleLabel?.text = "Pages"
+        self.titleLabel?.text = NSLocalizedStringPreferredFormat("ginicapture.multipagereview.secondaryButtonTitle",
+                                                                 comment: "Add pages button title")
         self.imageView?.image = UIImageNamedPreferred(named: "plus_icon")
         let configuration = GiniConfiguration.shared
         titleLabel?.font = configuration.textStyleFonts[.footnote]
