@@ -93,9 +93,9 @@ final class HelpMenuViewControllerTests: XCTestCase {
         let itemText = helpMenuViewController.dataSource.items[indexPath.row].title
         let cellAccesoryType = UITableViewCell.AccessoryType.disclosureIndicator
         
-        let cell = helpMenuViewController.dataSource.tableView(helpMenuViewController.tableView, cellForRowAt: indexPath)
+        let cell = helpMenuViewController.dataSource.tableView(helpMenuViewController.tableView, cellForRowAt: indexPath) as! HelpMenuCell
         
-        XCTAssertEqual(itemText, cell.textLabel?.text,
+        XCTAssertEqual(itemText, cell.titleLabel.text,
                        "cell text in the first row should be the same as the first item text")
         
         XCTAssertEqual(cellAccesoryType,
