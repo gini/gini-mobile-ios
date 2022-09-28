@@ -33,7 +33,7 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
         let rootViewController = coordinator.start(withDocuments: nil)
         _ = rootViewController.view
         let screenNavigator = rootViewController.children.first as? UINavigationController
-        XCTAssertNotNil(screenNavigator?.viewControllers.first as? CameraViewController,
+        XCTAssertNotNil(screenNavigator?.viewControllers.first as? CameraScreen,
                         "first view controller is not a CameraViewController")
     }
     
@@ -56,7 +56,7 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
         _ = rootViewController.view
         let screenNavigator = rootViewController.children.first as? UINavigationController
         
-        XCTAssertNotNil(screenNavigator?.viewControllers.first as? CameraViewController,
+        XCTAssertNotNil(screenNavigator?.viewControllers.first as? CameraScreen,
                         "first view controller is not a CameraViewController")
         XCTAssertNotNil(screenNavigator?.viewControllers.last as? ReviewViewController,
                         "last view controller is not a ReviewController")

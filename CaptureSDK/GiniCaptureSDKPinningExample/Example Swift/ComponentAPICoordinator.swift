@@ -85,7 +85,7 @@ final class ComponentAPICoordinator: NSObject, Coordinator {
     }()
 
     fileprivate(set) var analysisScreen: AnalysisViewController?
-    fileprivate(set) var cameraScreen: CameraViewController?
+    fileprivate(set) var cameraScreen: CameraScreen?
     fileprivate(set) var resultsScreen: ResultTableViewController?
     fileprivate(set) lazy var documentPickerCoordinator =
         DocumentPickerCoordinator(giniConfiguration: giniConfiguration)
@@ -122,7 +122,12 @@ final class ComponentAPICoordinator: NSObject, Coordinator {
 
 extension ComponentAPICoordinator {
     fileprivate func showCameraScreen() {
-        cameraScreen = CameraViewController(giniConfiguration: giniConfiguration)
+        let cameraButtonsViewModel = CameraButtonsViewModel()
+        cameraScreen = Camera2ViewController(
+            giniConfiguration: giniConfiguration,
+            viewModel: cameraButtonsViewModel
+        )
+        
         cameraScreen?.delegate = self
         cameraScreen?.navigationItem
             .leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("close",
@@ -415,7 +420,7 @@ extension ComponentAPICoordinator: UINavigationControllerDelegate {
             closeComponentAPI()
         }
 
-        if let cameraViewController = toVC as? CameraViewController, fromVC is ReviewViewController {
+        if let cameraViewController = toVC as? CameraScreen, fromVC is ReviewViewController {
             cameraViewController
                 .replaceCapturedStackImages(with: pages.compactMap { $0.document.previewImage })
         }
@@ -427,21 +432,15 @@ extension ComponentAPICoordinator: UINavigationControllerDelegate {
 // MARK: - CameraViewControllerDelegate
 
 extension ComponentAPICoordinator: CameraViewControllerDelegate {
-    func camera(_ viewController: CameraViewController, didCapture document: GiniCaptureDocument) {
+    
+    func camera(_ viewController: CameraScreen, didCapture document: GiniCaptureDocument) {
         validate([document]) { result in
             switch result {
             case let .success(validatedPages):
                 guard let validatedPage = validatedPages.first else { return }
                 self.pages.append(contentsOf: validatedPages)
                 self.process(captured: validatedPage)
-
-                // In case that there is more than one image already captured, an animation is shown instead of
-                // going to next screen
-                if let imageDocument = document as? GiniImageDocument, self.pages.count > 1 {
-                    viewController.animateToControlsView(imageDocument: imageDocument)
-                } else {
-                    self.showNextScreenAfterPicking()
-                }
+                self.showNextScreenAfterPicking()
             case let .failure(error):
                 if let error = error as? FilePickerError,
                    error == .maxFilesPickedCountExceeded || error == .mixedDocumentsUnsupported {
@@ -453,7 +452,7 @@ extension ComponentAPICoordinator: CameraViewControllerDelegate {
         }
     }
 
-    func cameraDidAppear(_ viewController: CameraViewController) {
+    func cameraDidAppear(_ viewController: CameraScreen) {
         // Here you can show the Onboarding screen in case that you decide
         // to launch it once the camera screen appears.
 
@@ -461,11 +460,11 @@ extension ComponentAPICoordinator: CameraViewControllerDelegate {
         viewController.setupCamera()
     }
 
-    func cameraDidTapReviewButton(_ viewController: CameraViewController) {
+    func cameraDidTapMultipageReviewButton(_ viewController: CameraScreen) {
         showReviewScreen()
     }
 
-    func camera(_ viewController: CameraViewController, didSelect documentPicker: DocumentPickerType) {
+    func camera(_ viewController: CameraScreen, didSelect documentPicker: DocumentPickerType) {
         switch documentPicker {
         case .gallery:
             documentPickerCoordinator.showGalleryPicker(from: viewController)

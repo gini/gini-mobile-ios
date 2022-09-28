@@ -20,6 +20,9 @@ included:
   - ../GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Utils.swift
   - ../GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Analysis
   - ../GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Onboarding
+  - ../GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Camera2
+  - ../GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Protocols
+  - ../GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Views
 
 cyclomatic_complexity:
   ignores_case_statements: true
