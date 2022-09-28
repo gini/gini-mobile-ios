@@ -10,7 +10,7 @@ import UIKit
 
 @objc public enum NoticeActionType: Int {
     case retry, retake
-    
+
     var title: String {
         switch self {
         case .retry:
@@ -38,7 +38,7 @@ enum NoticeType {
 }
 
 final class NoticeView: UIView {
-    
+
     // User interface
     lazy var textLabel: UILabel = {
         let label = UILabel()
@@ -49,10 +49,10 @@ final class NoticeView: UIView {
         label.minimumScaleFactor = 12 / 14
         label.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: .horizontal)
         label.font = giniConfiguration.customFont.with(weight: .regular, size: 14, style: .body)
-        
+
         return label
     }()
-    
+
     lazy var actionButton: UIButton = {
         let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -63,7 +63,7 @@ final class NoticeView: UIView {
         button.addTarget(self, action: #selector(self.didTapActionButton), for: .touchUpInside)
         return button
     }()
-    
+
     // Properties
     fileprivate let giniConfiguration: GiniConfiguration
     var userAction: NoticeAction? {
@@ -71,14 +71,14 @@ final class NoticeView: UIView {
             actionButton.setTitle(userAction?.title, for: .normal)
         }
     }
-    
+
     init(text: String,
          type: NoticeType = .information,
          giniConfiguration: GiniConfiguration = .shared,
          noticeAction: NoticeAction? = nil) {
         self.giniConfiguration = giniConfiguration
         super.init(frame: CGRect.zero)
-        
+
         let textColor: UIColor
         switch type {
         case .information:
@@ -98,20 +98,19 @@ final class NoticeView: UIView {
             actionButton.titleLabel?.textColor = textColor
             addSubview(actionButton)
         }
-        
+
         textLabel.text = text
         textLabel.textColor = textColor
         addSubview(textLabel)
-        
         addConstraints()
         alpha = 0.0
     }
-    
+
     @objc func didTapActionButton() {
         UIImpactFeedbackGenerator().impactOccurred()
         self.userAction?.action()
     }
-    
+
     /**
      Returns an object initialized from data in a given unarchiver.
      
@@ -120,7 +119,7 @@ final class NoticeView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     fileprivate func addConstraints() {
         Constraints.active(item: self, attr: .height, relatedBy: .equal, to: nil, attr: .notAnAttribute,
                            constant: 70)
@@ -129,7 +128,7 @@ final class NoticeView: UIView {
         Constraints.active(item: textLabel, attr: .bottom, relatedBy: .equal, to: self, attr: .bottom, constant: -16)
         Constraints.active(item: textLabel, attr: .leading, relatedBy: .equal, to: self, attr: .leading, constant: 20,
                            priority: 999)
-        
+
         if userAction != nil {
             Constraints.active(item: actionButton, attr: .leading, relatedBy: .equal, to: textLabel, attr: .trailing,
                                constant: 16)
@@ -142,7 +141,6 @@ final class NoticeView: UIView {
                                constant: -16)
         }
     }
-    
 }
 
 // MARK: - Toggle options
@@ -157,7 +155,7 @@ extension NoticeView {
             self.alpha = 1.0
         }
     }
-    
+
     func hide(_ animated: Bool = true, completion: (() -> Void)?) {
         if animated {
             UIView.animate(withDuration: 0.5, animations: {
@@ -169,6 +167,5 @@ extension NoticeView {
             self.alpha = 0.0
             completion?()
         }
-        
     }
 }
