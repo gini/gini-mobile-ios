@@ -16,7 +16,7 @@ public class HelpMenuCell: UITableViewCell, HelpCell {
         super.awakeFromNib()
         setupView()
     }
-    
+
     func setupView() {
         let separator = UIView()
         separator.translatesAutoresizingMaskIntoConstraints = false
@@ -24,7 +24,7 @@ public class HelpMenuCell: UITableViewCell, HelpCell {
         separatorView = separator
         configureConstraints()
     }
-    
+
     private func configureConstraints() {
         if let separatorView {
             NSLayoutConstraint.activate([
@@ -34,6 +34,5 @@ public class HelpMenuCell: UITableViewCell, HelpCell {
                 separatorView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1)
             ])
         }
-        
     }
 }

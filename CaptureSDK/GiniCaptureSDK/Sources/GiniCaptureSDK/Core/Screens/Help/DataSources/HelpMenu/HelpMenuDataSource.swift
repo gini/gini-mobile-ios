@@ -47,15 +47,15 @@ final public class HelpMenuDataSource: HelpRoundedCornersDataSource<HelpMenuItem
         cell.titleLabel.adjustsFontForContentSizeCategory = true
         cell.accessoryType = .disclosureIndicator
         cell.selectionStyle = .none
+        cell.separatorView.backgroundColor = GiniColor(
+            light: UIColor.GiniCapture.light3,
+            dark: UIColor.GiniCapture.dark4
+        ).uiColor()
         if indexPath.row == self.items.count - 1 {
             cell.separatorView.isHidden = true
         } else {
             cell.separatorView.isHidden = false
         }
-        cell.separatorView.backgroundColor = GiniColor(
-            light: UIColor.GiniCapture.light3,
-            dark: UIColor.GiniCapture.dark4
-        ).uiColor()
     }
 
     // MARK: - UITableViewDelegate
@@ -67,5 +67,5 @@ final public class HelpMenuDataSource: HelpRoundedCornersDataSource<HelpMenuItem
     public override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0
     }
-    
+
 }

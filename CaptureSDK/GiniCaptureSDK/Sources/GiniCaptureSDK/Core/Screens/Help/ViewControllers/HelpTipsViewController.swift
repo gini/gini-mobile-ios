@@ -43,6 +43,7 @@ public final class HelpTipsViewController: UIViewController {
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: GiniMargins.margin, right: 0)
+        tableView.reloadData()
     }
 
     private func setupView() {
