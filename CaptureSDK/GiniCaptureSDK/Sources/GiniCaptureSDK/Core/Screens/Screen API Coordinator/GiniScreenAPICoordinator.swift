@@ -30,7 +30,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     
     // Screens
     var analysisViewController: AnalysisViewController?
-    var cameraViewController: CameraViewController?
+    var cameraViewController: CameraScreen?
     var imageAnalysisNoResultsViewController: NoResultScreenViewController?
     lazy var reviewViewController: ReviewViewController = {
         return self.createReviewScreenContainer(with: [])
@@ -305,8 +305,8 @@ extension GiniScreenAPICoordinator: UINavigationControllerDelegate {
             // collection should be cleared, since the document processed in that cases is not going to be reused
             clearDocuments()
         }
-                
-        if fromVC is ReviewViewController, let cameraVC = toVC as? CameraViewController {
+
+        if fromVC is ReviewViewController, let cameraVC = toVC as? CameraScreen {
             cameraVC.replaceCapturedStackImages(with: pages.compactMap { $0.document.previewImage })
         }
                 
