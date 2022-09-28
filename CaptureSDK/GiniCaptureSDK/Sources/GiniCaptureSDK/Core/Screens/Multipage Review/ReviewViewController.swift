@@ -268,16 +268,9 @@ extension ReviewViewController {
             let width = height / a4Ratio
             return CGSize(width: width, height: height)
         } else {
-//            let width = self.view.bounds.width - 64
-//            let height = width * a4Ratio
-
             let height = self.view.bounds.height * 0.58
             let width = height / a4Ratio
-
             let cellSize = CGSize(width: width, height: height)
-
-            print("X: cellHeight  : \(height)")
-            print("X: screenHeight: \(self.view.bounds.height)")
             return cellSize
         }
     }
