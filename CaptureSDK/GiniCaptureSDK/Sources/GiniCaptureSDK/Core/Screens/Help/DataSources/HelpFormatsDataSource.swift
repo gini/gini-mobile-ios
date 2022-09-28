@@ -154,9 +154,12 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
         } else {
             if indexPath.row == 0 {
                 cell.round(corners: [.topLeft, .topRight], withRadius: RoundedCorners.cornerRadius)
-            }
-            if indexPath.row == items[indexPath.section].formats.count - 1 {
+            } else {
+                if indexPath.row == items[indexPath.section].formats.count - 1 {
                     cell.round(corners: [.bottomLeft, .bottomRight], withRadius: RoundedCorners.cornerRadius)
+                } else {
+                    cell.reset()
+                }
             }
         }
     }
