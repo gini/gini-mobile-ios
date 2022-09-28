@@ -121,25 +121,14 @@ public final class ReviewViewController: UIViewController {
         button.layer.cornerRadius = 16
         button.backgroundColor = UIColor.GiniCapture.accent1
         button.setTitle("Process documents", for: .normal)
+        button.addTarget(self, action: #selector(didTapProcessDocument), for: .touchUpInside)
         return button
     }()
 
     private var addPagesButtonView: AddPageButtonView?
 
     private lazy var cellSize: CGSize = {
-        let a4Ratio = 1.4142
-        if UIDevice.current.isIpad {
-            let height = self.view.bounds.height - 240
-            let width = height / a4Ratio
-            let cellSize = CGSize(width: width, height: height)
-            return cellSize
-        } else {
-            let width = self.view.bounds.width - 64
-            let height = width * a4Ratio
-            let cellSize = CGSize(width: width, height: height)
-            return cellSize
-        }
-
+        return calculatedCellSize()
     }()
 
     private var currentPage: Int = 0
@@ -168,7 +157,6 @@ extension ReviewViewController {
         view.addSubview(pageControl)
         view.addSubview(processButton)
 
-        processButton.addTarget(self, action: #selector(didTapProcessDocument), for: .touchUpInside)
         addPagesButtonView = AddPageButtonView().loadNib() as? AddPageButtonView
         addPagesButtonView?.translatesAutoresizingMaskIntoConstraints = false
         addPagesButtonView?.isHidden = !giniConfiguration.multipageEnabled
@@ -178,8 +166,6 @@ extension ReviewViewController {
         edgesForExtendedLayout = []
 
         addConstraints()
-
-        NotificationCenter.default.addObserver(self, selector: #selector(handleOrientationChange), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
 
     public override func viewDidAppear(_ animated: Bool) {
@@ -193,6 +179,17 @@ extension ReviewViewController {
     public override func viewWillDisappear(_ animated: Bool) {
         setCellStatus(for: currentPage, isActive: false)
         super.viewWillDisappear(animated)
+    }
+
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        // cellSize needs to be updated when the screen is rotated
+        self.cellSize = calculatedCellSize()
+
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
     }
     
     /**
@@ -217,29 +214,6 @@ extension ReviewViewController {
 // MARK: - Private methods
 
 extension ReviewViewController {
-    private func barButtonItem(withImage image: UIImage?,
-                                   insets: UIEdgeInsets,
-                                   action: Selector) -> UIBarButtonItem {
-        let button = UIButton(type: .custom)
-        button.setImage(image, for: .normal)
-        button.addTarget(self, action: action, for: .touchUpInside)
-        button.imageEdgeInsets = insets
-        button.layer.cornerRadius = 5
-        button.tintColor = giniConfiguration.multipageToolbarItemsColor
-        
-        // This is needed since on iOS 9 and below,
-        // the buttons are not resized automatically when using autolayout
-        if let image = image {
-            button.frame = CGRect(origin: .zero, size: image.size)
-        }
-        
-        return UIBarButtonItem(customView: button)
-    }
-    
-    fileprivate func pagesCollectionMaxHeight(in device: UIDevice = UIDevice.current) -> CGFloat {
-        return device.isIpad ? 300 : 224
-    }
-    
     private func addConstraints() {
         NSLayoutConstraint.activate([
             tipLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
@@ -283,14 +257,17 @@ extension ReviewViewController {
         delegate?.reviewDidTapProcess(self)
     }
 
-    @objc
-    private func handleOrientationChange() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-            let a4Ratio = 1.4142
-            let height = self.view.bounds.height - 240
+    private func calculatedCellSize() -> CGSize {
+        let a4Ratio = 1.4142
+        if UIDevice.current.isIpad {
+            let height = self.view.bounds.height - 260
             let width = height / a4Ratio
-            self.cellSize = CGSize(width: width, height: height)
-            self.collectionView.reloadData()
+            return CGSize(width: width, height: height)
+        } else {
+            let width = self.view.bounds.width - 64
+            let height = width * a4Ratio
+            let cellSize = CGSize(width: width, height: height)
+            return cellSize
         }
     }
 }
@@ -298,8 +275,7 @@ extension ReviewViewController {
 // MARK: - Toolbar actions
 
 extension ReviewViewController {
-    
-    fileprivate func deleteItem(at indexPath: IndexPath) {
+    private func deleteItem(at indexPath: IndexPath) {
         let pageToDelete = pages[indexPath.row]
         pages.remove(at: indexPath.row)
         collectionView.deleteItems(at: [indexPath])
@@ -356,12 +332,8 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                insetForSectionAt section: Int) -> UIEdgeInsets {
-        if UIDevice.current.isIpad {
-            let margin = (self.view.bounds.width - cellSize.width) / 2
-            return UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
-        } else {
-            return UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 32)
-        }
+        let margin = (self.view.bounds.width - cellSize.width) / 2
+        return UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
     }
 
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {

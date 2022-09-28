@@ -23,8 +23,7 @@ final class AddPageButtonView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.titleLabel?.text = "Pages"
-        self.imageView?.image = UIImageNamedPreferred(named: "plus_icon")?.tintedImageWithColor(
-            GiniColor(light: UIColor.GiniCapture.dark2, dark: UIColor.GiniCapture.light2).uiColor())
+        self.imageView?.image = UIImageNamedPreferred(named: "plus_icon")
         let configuration = GiniConfiguration.shared
         titleLabel?.font = configuration.textStyleFonts[.footnote]
     }
