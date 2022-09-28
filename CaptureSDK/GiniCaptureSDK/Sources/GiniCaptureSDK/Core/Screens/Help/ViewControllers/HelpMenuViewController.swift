@@ -77,11 +77,13 @@ final public class HelpMenuViewController: UIViewController {
         tableView.separatorStyle = .none
     }
 
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.reloadData()
+    }
+
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        
-        tableView.reloadData()
-        
     }
 
     private func configureConstraints() {
