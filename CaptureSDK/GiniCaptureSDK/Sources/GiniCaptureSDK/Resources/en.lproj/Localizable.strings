@@ -41,7 +41,7 @@
 "ginicapture.camera.flashButtonLabel.Off.Voice.Over" = "Flash Off";
 "ginicapture.camera.flashButtonLabel.On" = "On";
 "ginicapture.camera.flashButtonLabel.Off" = "Off";
-"ginicapture.camera.thumbnail" = "Photo review";
+"ginicapture.camera.thumbnail.Voice.Over" = "Photo review";
 "ginicapture.camera.capturebutton" = "Take picture";
 "ginicapture.camera.infoLabel" = "Scan an invoice or a QR code";
 "ginicapture.camera.qrCodeTip" = "Have you checked out the QR code scan yet?";
