@@ -67,17 +67,21 @@ final public class HelpMenuViewController: UIViewController {
         tableView.tableHeaderView = UIView()
         tableView.tableFooterView = UIView()
         tableView.register(
-            HelpMenuCell.self, forCellReuseIdentifier: HelpMenuCell.reuseIdentifier)
+            UINib(
+                nibName: "HelpMenuCell",
+                bundle: giniCaptureBundle()),
+            forCellReuseIdentifier: HelpMenuCell.reuseIdentifier)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = tableRowHeight
         tableView.contentInsetAdjustmentBehavior = .never
-        tableView.separatorColor = GiniColor(light: UIColor.GiniCapture.light3,
-                                             dark: UIColor.GiniCapture.dark4).uiColor()
+        tableView.separatorStyle = .none
     }
 
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+        
         tableView.reloadData()
+        
     }
 
     private func configureConstraints() {
