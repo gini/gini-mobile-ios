@@ -31,6 +31,7 @@ final class AppCoordinator: Coordinator {
     lazy var giniConfiguration: GiniConfiguration = {
         let giniConfiguration = GiniConfiguration()
         giniConfiguration.debugModeOn = true
+        giniConfiguration.bottomNavigationBarEnabled = false
         giniConfiguration.fileImportSupportedTypes = .pdf_and_images
         giniConfiguration.openWithEnabled = true
         giniConfiguration.qrCodeScanningEnabled = true
