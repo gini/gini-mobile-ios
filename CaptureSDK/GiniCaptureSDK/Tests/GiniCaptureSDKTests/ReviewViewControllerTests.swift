@@ -39,9 +39,17 @@ final class ReviewViewControllerTests: XCTestCase {
                                          sizeForItemAt: firstCellIndexPath)
 
         let itemSize: CGSize = {
-            let width = reviewViewController.view.bounds.width - 64
-            let height = width * 1.4142 // A4 aspect ratio
-            return CGSize(width: width, height: height)
+            let a4Ratio = 1.4142
+            if UIDevice.current.isIpad {
+                let height = reviewViewController.view.bounds.height - 260
+                let width = height / a4Ratio
+                return CGSize(width: width, height: height)
+            } else {
+                let height = reviewViewController.view.bounds.height * 0.58
+                let width = height / a4Ratio
+                let cellSize = CGSize(width: width, height: height)
+                return cellSize
+            }
         }()
 
         XCTAssertEqual(cellSize, itemSize,
@@ -53,9 +61,24 @@ final class ReviewViewControllerTests: XCTestCase {
             .collectionView(reviewViewController.collectionView,
                             layout: reviewViewController.collectionView.collectionViewLayout,
                             insetForSectionAt: 0)
-        
-        XCTAssertEqual(collectionInsets, UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 32),
-                       "Main collection insets should be zero")
+
+        let itemSize: CGSize = {
+            let a4Ratio = 1.4142
+            if UIDevice.current.isIpad {
+                let height = reviewViewController.view.bounds.height - 260
+                let width = height / a4Ratio
+                return CGSize(width: width, height: height)
+            } else {
+                let height = reviewViewController.view.bounds.height * 0.58
+                let width = height / a4Ratio
+                let cellSize = CGSize(width: width, height: height)
+                return cellSize
+            }
+        }()
+
+        let margin = (reviewViewController.view.bounds.width - itemSize.width) / 2
+        let calculatedInset = UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
+        XCTAssertEqual(collectionInsets, calculatedInset, "Main collection insets should be zero")
     }
 
 // MARK: - Fix the test with tap event simulation

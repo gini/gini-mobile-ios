@@ -30,12 +30,12 @@ final class ReviewCollectionCellPresenterTests: XCTestCase {
     func testMainCollectionCellImage() {
         presenter.thumbnails[testPage.document.id, default: [:]][.big] = testPage.document.previewImage
         
-        XCTAssertEqual(setUpMainCollectionCell.documentImage.image, testPage.document.previewImage,
+        XCTAssertEqual(setUpMainCollectionCell.documentImageView.image, testPage.document.previewImage,
                        "Pages collection cells image content mode should match the one passed in the initializer")
     }
     
     func testMainCollectionCellImageContentMode() {
-        XCTAssertEqual(setUpMainCollectionCell.documentImage.contentMode, UIView.ContentMode.scaleAspectFit,
+        XCTAssertEqual(setUpMainCollectionCell.documentImageView.contentMode, UIView.ContentMode.scaleAspectFit,
                        "Main collection cells image content mode should match the one passed in the initializer")
     }
     
