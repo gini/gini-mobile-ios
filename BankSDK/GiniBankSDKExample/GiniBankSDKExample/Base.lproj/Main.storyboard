@@ -133,7 +133,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" name=".SFNS-Regular" family=".AppleSystemUIFont" pointSize="9"/>
                                 <state key="normal" title="GiniCaptureVersion">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="titleColor" systemColor="labelColor"/>
                                 </state>
                                 <connections>
                                     <action selector="launchSettings:" destination="Ggv-ZP-h5h" eventType="touchUpInside" id="Tfb-tc-51t"/>
