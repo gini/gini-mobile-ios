@@ -377,6 +377,11 @@ public final class GiniBankConfiguration: NSObject {
       * Set an adapter implementation to show a custom bottom navigation bar on the camera screen.
      */
     public var cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
+    
+    /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the onboarding screen.
+     */
+    public var onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
 
     /**
      Sets the back button text in the navigation bar on the review screen. Use this if you only want to show the title.
@@ -1323,6 +1328,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.onboardingShowAtFirstLaunch = self.onboardingShowAtFirstLaunch
         configuration.onboardingTextColor = self.onboardingTextColor
         configuration.onboardingScreenBackgroundColor = self.onboardingScreenBackgroundColor
+        configuration.onboardingNavigationBarBottomAdapter = self.onboardingNavigationBarBottomAdapter
         
         configuration.navigationBarReviewTitleBackButton = self.navigationBarReviewTitleBackButton
         configuration.navigationBarReviewTitleCloseButton = self.navigationBarReviewTitleCloseButton
