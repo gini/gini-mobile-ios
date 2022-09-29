@@ -487,7 +487,7 @@ extension ComponentAPICoordinator: CameraViewControllerDelegate {
         viewController.setupCamera()
     }
     
-    func cameraDidTapMultipageReviewButton(_ viewController: CameraScreen) {
+    func cameraDidTapReviewButton(_ viewController: CameraScreen) {
         showReviewScreen()
     }
     
