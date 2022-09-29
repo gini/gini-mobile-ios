@@ -371,7 +371,7 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Enable/disable the bottom navigation bar.
      */
-    public var bottomNavigationBarEnabled: Bool = true
+    public var bottomNavigationBarEnabled: Bool = false
     
     /**
       * Set an adapter implementation to show a custom bottom navigation bar on the camera screen.
@@ -1547,6 +1547,7 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.shouldShowSupportedFormatsScreen = configuration.shouldShowSupportedFormatsScreen
                                 
         giniBankConfiguration.shouldShowDragAndDropTutorial = configuration.shouldShowDragAndDropTutorial
+        giniBankConfiguration.bottomNavigationBarEnabled = configuration.bottomNavigationBarEnabled
     }
     
     /**
