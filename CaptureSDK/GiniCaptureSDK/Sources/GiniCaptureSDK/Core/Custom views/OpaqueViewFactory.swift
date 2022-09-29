@@ -13,7 +13,7 @@ public enum OpaqueViewStyle {
 }
 
 struct OpaqueViewFactory {
-    
+
     static func create(with style: OpaqueViewStyle) -> UIView {
         switch style {
         case .blurred(let blurStyle):
