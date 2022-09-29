@@ -24,10 +24,10 @@ final class ToolTipView: UIView {
     fileprivate var itemSeparation: CGFloat = 16
     fileprivate var minimunDistanceToRefView: UIEdgeInsets
     // swiftlint: disable: large_tuple
-    fileprivate var margin:(top: CGFloat, left: CGFloat, right: CGFloat, bottom: CGFloat) = (20, 20, 20, 20)
+    fileprivate var margin = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     fileprivate var maxWidth: CGFloat = 414
     // swiftlint:disable:large_tuple
-    fileprivate var padding:(top: CGFloat, left: CGFloat, right: CGFloat, bottom: CGFloat) = (16, 16, 16, 16)
+    fileprivate var padding = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
 
     fileprivate var textWidth: CGFloat {
         guard let superview = superview else { return 0 }
