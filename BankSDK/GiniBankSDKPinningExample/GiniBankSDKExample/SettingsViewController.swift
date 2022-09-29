@@ -79,7 +79,7 @@ final class SettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        cameraBottomBarSwitch.setOn(giniConfiguration.bottomNavigationBarEnabled, animated: false)
+        bottomBarSwitch.setOn(giniConfiguration.bottomNavigationBarEnabled, animated: false)
         openWithSwitch.setOn(giniConfiguration.openWithEnabled, animated: false)
         qrCodeScanningSwitch.setOn(giniConfiguration.qrCodeScanningEnabled, animated: false)
         multipageSwitch.setOn(giniConfiguration.multipageEnabled, animated: false)
