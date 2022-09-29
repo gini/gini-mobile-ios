@@ -365,8 +365,24 @@ public final class GiniBankConfiguration: NSObject {
             self.onboardingCustomPages = newValue
         }
     }
+    
     fileprivate var onboardingCustomPages: [UIView]?
     
+    /**
+     Enable/disable the bottom navigation bar.
+     */
+    public var bottomNavigationBarEnabled: Bool = false
+    
+    /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the camera screen.
+     */
+    public var cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
+    
+    /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the onboarding screen.
+     */
+    public var onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
+
     /**
      Sets the back button text in the navigation bar on the review screen. Use this if you only want to show the title.
      
@@ -1301,7 +1317,8 @@ public final class GiniBankConfiguration: NSObject {
         configuration.qrCodePopupButtonColor = self.qrCodePopupButtonColor
         configuration.qrCodePopupTextColor = self.qrCodePopupTextColor
         configuration.qrCodePopupBackgroundColor = self.qrCodePopupBackgroundColor
-        
+        configuration.bottomNavigationBarEnabled = self.bottomNavigationBarEnabled
+        configuration.cameraNavigationBarBottomAdapter = self.cameraNavigationBarBottomAdapter
         configuration.navigationBarOnboardingTitleContinueButton = self.navigationBarOnboardingTitleContinueButton
         
         configuration.onboardingPageIndicatorColor = self.onboardingPageIndicatorColor
@@ -1311,6 +1328,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.onboardingShowAtFirstLaunch = self.onboardingShowAtFirstLaunch
         configuration.onboardingTextColor = self.onboardingTextColor
         configuration.onboardingScreenBackgroundColor = self.onboardingScreenBackgroundColor
+        configuration.onboardingNavigationBarBottomAdapter = self.onboardingNavigationBarBottomAdapter
         
         configuration.navigationBarReviewTitleBackButton = self.navigationBarReviewTitleBackButton
         configuration.navigationBarReviewTitleCloseButton = self.navigationBarReviewTitleCloseButton
@@ -1478,7 +1496,6 @@ public final class GiniBankConfiguration: NSObject {
         configuration.digitalInvoiceAddonPriceColor = self.digitalInvoiceAddonPriceColor
         configuration.digitalInvoiceAddonLabelColor = self.digitalInvoiceAddonLabelColor
         configuration.digitalInvoiceTotalPriceColor = self.digitalInvoiceTotalPriceColor
-        
 
         configuration.digitalInvoiceTotalPriceMainUnitFont = self.digitalInvoiceTotalPriceMainUnitFont
         configuration.digitalInvoiceTotalPriceFractionalUnitFont = self.digitalInvoiceTotalPriceFractionalUnitFont
@@ -1536,6 +1553,7 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.shouldShowSupportedFormatsScreen = configuration.shouldShowSupportedFormatsScreen
                                 
         giniBankConfiguration.shouldShowDragAndDropTutorial = configuration.shouldShowDragAndDropTutorial
+        giniBankConfiguration.bottomNavigationBarEnabled = configuration.bottomNavigationBarEnabled
     }
     
     /**
