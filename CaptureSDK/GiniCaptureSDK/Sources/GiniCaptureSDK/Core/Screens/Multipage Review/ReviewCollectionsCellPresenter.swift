@@ -16,8 +16,8 @@ final class ReviewCollectionCellPresenter {
     
     weak var delegate: ReviewCollectionCellPresenterDelegate?
     var thumbnails: [String: [ThumbnailType: UIImage]] = [:]
-    fileprivate let giniConfiguration: GiniConfiguration
-    fileprivate let thumbnailsQueue = DispatchQueue(label: "Thumbnails queue")
+    private let giniConfiguration: GiniConfiguration
+    private let thumbnailsQueue = DispatchQueue(label: "Thumbnails queue")
 
     enum ThumbnailType {
         case big, small
@@ -49,63 +49,10 @@ final class ReviewCollectionCellPresenter {
 
         return cell
     }
-    
-    func rotateThumbnails(for page: GiniCapturePage) {
-        if let smallRotatedImage = thumbnails[page.document.id]?[.small]?.rotated90Degrees() {
-            thumbnails[page.document.id]![.small] = smallRotatedImage
-        }
-        
-        if let bigRotatedImage = thumbnails[page.document.id]?[.big]?.rotated90Degrees() {
-            thumbnails[page.document.id]![.big] = bigRotatedImage
-        }
-    }
-}
 
-// MARK: - Cells setup
+    // MARK: - Thumbnails
 
-fileprivate extension ReviewCollectionCellPresenter {
-    
-    // MARK: - ReviewCollectionCell
-    
-    func setUpErrorView(in cell: ReviewCollectionCell,
-                        with error: Error,
-                        didTapErrorNoticeAction: @escaping (NoticeActionType) -> Void) {
-//        let buttonTitle: String
-//        let action: NoticeActionType
-//        
-//        switch error {
-//        case is AnalysisError:
-//            buttonTitle = .localized(resource: MultipageReviewStrings.retryActionButton)
-//            action = .retry
-//        default:
-//            buttonTitle = .localized(resource: MultipageReviewStrings.retakeActionButton)
-//            action = .retake
-//        }
-//        
-//        let message: String
-//        
-//        switch error {
-//        case let error as GiniCaptureError:
-//            message = error.message
-//        case let error as CustomDocumentValidationError:
-//            message = error.message
-//        default:
-//            message = DocumentValidationError.unknown.message
-//        }
-        
-//        cell.errorView.textLabel.text = message
-//        cell.errorView.actionButton.setTitle(buttonTitle, for: .normal)
-//        cell.errorView.userAction = NoticeAction(title: buttonTitle) {
-//            didTapErrorNoticeAction(action)
-//        }
-//        cell.errorView.layoutIfNeeded()
-    }
-}
-
-// MARK: - Thumbnails
-
-fileprivate extension ReviewCollectionCellPresenter {
-    func fetchThumbnailImage(for page: GiniCapturePage,
+    private func fetchThumbnailImage(for page: GiniCapturePage,
                              of type: ThumbnailType,
                              in cell: ReviewCollectionCell,
                              at indexPath: IndexPath) {
@@ -122,7 +69,7 @@ fileprivate extension ReviewCollectionCellPresenter {
         }
     }
     
-    func targetThumbnailSize(from imageData: Data, screen: UIScreen = .main) -> CGSize {
+    private func targetThumbnailSize(from imageData: Data, screen: UIScreen = .main) -> CGSize {
         let imageSize = UIImage(data: imageData)?.size ?? .zero
         
         if imageSize.width > (screen.bounds.size.width * 2) {
