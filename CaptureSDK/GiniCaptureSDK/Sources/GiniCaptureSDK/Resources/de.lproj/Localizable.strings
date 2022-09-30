@@ -147,7 +147,7 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.imagepicker.openbutton" = "Öffnen";
 
 "ginicapture.multipagereview.title" = "Übersicht";
-"ginicapture.multipagereview.description" = "Sind alle Zahlungsinformationen gut suchtbar?";
+"ginicapture.multipagereview.description" = "Sind alle Zahlungsinformationen gut sichtbar?";
 "ginicapture.multipagereview.mainButtonTitle" = "Dokumente verarbeiten";
 "ginicapture.multipagereview.secondaryButtonTitle" = "Seite";
 "ginicapture.multipagereview.error.retakeAction" = "Wiederholung";
