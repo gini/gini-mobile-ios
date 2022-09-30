@@ -2,7 +2,7 @@
 //  ReviewViewController.swift
 //  GiniCapture
 //
-//  Created by Enrique del Pozo Gómez on 1/26/18.
+//  Created by Vizaknai David on 28.09.2022
 //
 
 import UIKit
