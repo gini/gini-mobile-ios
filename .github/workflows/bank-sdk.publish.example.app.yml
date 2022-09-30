@@ -1,19 +1,17 @@
 name: Publish GiniBankSDKExample to App Center
 on:
   push:
-    branches:
-      - PIA-3163_update_xcode
-    #paths:
-    #  - 'BankSDK/**'
-    #  - 'CaptureSDK/**'
+    paths:
+      - 'BankSDK/**'
+      - 'CaptureSDK/**'
 jobs:
-  #check:
-  #  uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@main
-  #  secrets:
-  #    GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
+  check:
+    uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@main
+    secrets:
+      GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
 
   upload-version:
-  #  needs: check
+    needs: check
     runs-on: macOS-12    
     steps:
       - name: Checkout repository
