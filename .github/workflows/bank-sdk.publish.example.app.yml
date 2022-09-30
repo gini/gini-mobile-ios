@@ -2,7 +2,7 @@ name: Publish GiniBankSDKExample to App Center
 on:
   push:
     branches:
-      - PIA-3148_release_candidate_updates
+      - PIA-3163_update_xcode
     #paths:
     #  - 'BankSDK/**'
     #  - 'CaptureSDK/**'
@@ -21,7 +21,7 @@ jobs:
 
       - uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: latest-stable
+          xcode-version: '14.0.1'
 
       - name: Setup provisioning profile
         env:
@@ -80,7 +80,9 @@ jobs:
             -destination generic/platform=iOS \
             CODE_SIGN_IDENTITY="Apple Distribution" \
             CODE_SIGNING_REQUIRED=NO \
-            ONLY_ACTIVE_ARCH=NO 
+            ONLY_ACTIVE_ARCH=NO \
+            CODE_SIGN_STYLE=Manual \
+            DEVELOPMENT_TEAM=BQY9KX4V88
     
       - name: Exporting .ipa
         run: |
@@ -91,7 +93,8 @@ jobs:
             -exportOptionsPlist ExportOptions.plist \
             -destination "generic/platform=iOS" \
             CODE_SIGNING_REQUIRED=YES \
-            ONLY_ACTIVE_ARCH=NO
+            ONLY_ACTIVE_ARCH=NO \
+            CODE_SIGN_STYLE=Manual
 
       - name: Check file existence
         uses: andstor/file-existence-action@v1
