@@ -133,7 +133,12 @@ public final class ReviewViewController: UIViewController {
         return calculatedCellSize()
     }()
 
-    private var currentPage: Int = 0
+    private var currentPage: Int = 0 {
+        didSet {
+            setCellStatus(for: currentPage, isActive: true)
+        }
+    }
+
     // MARK: - Init
     
     public init(pages: [GiniCapturePage], giniConfiguration: GiniConfiguration) {
@@ -180,11 +185,6 @@ extension ReviewViewController {
         }
     }
 
-    public override func viewWillDisappear(_ animated: Bool) {
-        setCellStatus(for: currentPage, isActive: false)
-        super.viewWillDisappear(animated)
-    }
-
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
@@ -205,13 +205,14 @@ extension ReviewViewController {
      */
 
     public func updateCollections(with pages: [GiniCapturePage]) {
+        setCellStatus(for: currentPage, isActive: false, animated: false)
         self.pages = pages
         collectionView.reloadData()
 
         // Update cell status only if pages not empty and view is visible
         if pages.isNotEmpty && viewIfLoaded?.window != nil {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                self.setCellStatus(for: self.currentPage, isActive: true)
+            DispatchQueue.main.async {
+                self.setCellStatus(for: self.currentPage, isActive: true, animated: false)
             }
         }
     }
@@ -253,7 +254,6 @@ extension ReviewViewController {
             guard let self = self else { return }
             self.setCellStatus(for: self.currentPage, isActive: false)
             self.currentPage = sender.currentPage
-            self.setCellStatus(for: sender.currentPage, isActive: true)
         })
     }
 
@@ -379,8 +379,6 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
         let index = (offset.x + scrollView.contentInset.left) / cellWidthIncludingSpacing
         currentPage = Int(round(index))
         self.pageControl.currentPage = currentPage
-
-        setCellStatus(for: currentPage, isActive: true)
     }
 
     private func calulateOffset(for scrollView: UIScrollView) -> CGPoint {
@@ -398,9 +396,9 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
         return offset
     }
 
-    private func setCellStatus(for index: Int, isActive: Bool) {
+    private func setCellStatus(for index: Int, isActive: Bool, animated: Bool = true) {
         let cell = collectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? ReviewCollectionCell
-        cell?.isActive = isActive
+        cell?.setActiveStatus(isActive, animated: animated)
     }
 }
 
