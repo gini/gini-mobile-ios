@@ -37,8 +37,9 @@ final class ReviewCollectionCell: UICollectionViewCell {
         return button
     }()
 
-    var isActive: Bool = false {
-        didSet {
+    func setActiveStatus(_ isActive: Bool, animated: Bool) {
+        self.isActive = isActive
+        if animated {
             UIView.animate(withDuration: 0.3) { [weak self] in
                 guard let self = self else { return }
                 self.documentImageView.layer.borderColor = self.isActive ? UIColor.GiniCapture.accent1.cgColor : UIColor.clear.cgColor
@@ -46,8 +47,15 @@ final class ReviewCollectionCell: UICollectionViewCell {
 
                 self.deleteButton.isHidden = !self.isActive
             }
+        } else {
+            documentImageView.layer.borderColor = isActive ? UIColor.GiniCapture.accent1.cgColor : UIColor.clear.cgColor
+            documentImageView.layer.borderWidth = isActive ? 2 : 0
+
+            deleteButton.isHidden = !isActive
         }
     }
+
+    private var isActive: Bool = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
