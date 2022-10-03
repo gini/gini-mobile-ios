@@ -188,6 +188,8 @@ extension ReviewViewController {
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
+        collectionView.contentInsetAdjustmentBehavior = .never
+
         // cellSize needs to be updated when the screen is rotated
         self.cellSize = calculatedCellSize()
 
@@ -233,7 +235,7 @@ extension ReviewViewController {
             pageControl.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 
             processButton.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: 32),
-            processButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
+            processButton.widthAnchor.constraint(equalToConstant: 204),
             processButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             processButton.heightAnchor.constraint(equalToConstant: 50),
             processButton.bottomAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
@@ -248,6 +250,10 @@ extension ReviewViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: { [weak self] in
             self?.collectionView.scrollToItem(at: IndexPath(row: sender.currentPage, section: 0),
                                               at: .centeredHorizontally, animated: true)
+            guard let self = self else { return }
+            self.setCellStatus(for: self.currentPage, isActive: false)
+            self.currentPage = sender.currentPage
+            self.setCellStatus(for: sender.currentPage, isActive: true)
         })
     }
 
@@ -268,10 +274,18 @@ extension ReviewViewController {
             let width = height / a4Ratio
             return CGSize(width: width, height: height)
         } else {
-            let height = self.view.bounds.height * 0.58
-            let width = height / a4Ratio
-            let cellSize = CGSize(width: width, height: height)
-            return cellSize
+            if view.safeAreaInsets.bottom > 0 {
+                let height = self.view.bounds.height * 0.6
+                let width = height / a4Ratio
+                let cellSize = CGSize(width: width, height: height)
+                return cellSize
+            } else {
+                let height = self.view.bounds.height * 0.5
+                let width = height / a4Ratio
+                let cellSize = CGSize(width: width, height: height)
+                return cellSize
+            }
+
         }
     }
 }
