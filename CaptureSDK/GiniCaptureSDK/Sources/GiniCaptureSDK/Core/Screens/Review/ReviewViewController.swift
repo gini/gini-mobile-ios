@@ -133,7 +133,10 @@ public final class ReviewViewController: UIViewController {
                         NSLocalizedStringPreferredFormat("ginicapture.multipagereview.secondaryButtonTitle",
                                                         comment: "Add pages button title"))
         addPagesButton.isHidden = !giniConfiguration.multipageEnabled
-        addPagesButton.addTarget(self, action: #selector(didTapAddPagesButton), for: .touchUpInside)
+        addPagesButton.didTapButton = { [weak self] in
+            guard let self = self else { return }
+            self.delegate?.reviewDidTapAddImage(self)
+        }
         return addPagesButton
     }()
 
