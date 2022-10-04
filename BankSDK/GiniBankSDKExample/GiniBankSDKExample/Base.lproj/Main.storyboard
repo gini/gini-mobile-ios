@@ -437,6 +437,38 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="kCustomResultCell" id="sQo-nx-i3D">
+                                <rect key="frame" x="0.0" y="94" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sQo-nx-i3D" id="BQy-bx-9wM">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aru-m8-c5S">
+                                            <rect key="frame" x="20" y="8" width="386" height="19.5"/>
+                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
+                                            <color key="textColor" red="0.21960783" green="0.48627454040000001" blue="0.67450982329999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AZb-zT-KVh">
+                                            <rect key="frame" x="20" y="30.5" width="386" height="9.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <color key="textColor" red="0.43529411759999997" green="0.64705884459999996" blue="0.75686275960000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="AZb-zT-KVh" firstAttribute="leading" secondItem="Aru-m8-c5S" secondAttribute="leading" id="37K-WR-Dd3"/>
+                                        <constraint firstItem="AZb-zT-KVh" firstAttribute="top" secondItem="Aru-m8-c5S" secondAttribute="bottom" constant="3" id="COo-Yf-JE9"/>
+                                        <constraint firstItem="Aru-m8-c5S" firstAttribute="top" secondItem="BQy-bx-9wM" secondAttribute="top" constant="8" id="Fam-Fc-zis"/>
+                                        <constraint firstAttribute="trailing" secondItem="Aru-m8-c5S" secondAttribute="trailing" constant="8" id="Usf-O1-oCy"/>
+                                        <constraint firstAttribute="trailing" secondItem="AZb-zT-KVh" secondAttribute="trailing" constant="8" id="fr4-xS-AJE"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="AZb-zT-KVh" secondAttribute="bottom" constant="4" id="qyL-S8-ENM"/>
+                                        <constraint firstItem="Aru-m8-c5S" firstAttribute="leading" secondItem="BQy-bx-9wM" secondAttribute="leading" constant="20" id="yEs-0D-tOG"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="QXp-IJ-1GQ" id="RN4-KG-ACu"/>
