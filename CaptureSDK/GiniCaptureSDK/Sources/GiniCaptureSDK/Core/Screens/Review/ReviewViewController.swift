@@ -125,7 +125,17 @@ public final class ReviewViewController: UIViewController {
         return button
     }()
 
-    private var addPagesButtonView: AddPageButtonView?
+    private lazy var addPagesButton: BottomLabelButton = {
+        let addPagesButton = BottomLabelButton()
+        addPagesButton.translatesAutoresizingMaskIntoConstraints = false
+        addPagesButton.configureButton(image: UIImageNamedPreferred(named: "plus_icon") ?? UIImage(),
+                                       name:
+                        NSLocalizedStringPreferredFormat("ginicapture.multipagereview.secondaryButtonTitle",
+                                                        comment: "Add pages button title"))
+        addPagesButton.isHidden = !giniConfiguration.multipageEnabled
+        addPagesButton.addTarget(self, action: #selector(didTapAddPagesButton), for: .touchUpInside)
+        return addPagesButton
+    }()
 
     private lazy var cellSize: CGSize = {
         return calculatedCellSize()
@@ -163,13 +173,7 @@ extension ReviewViewController {
         view.addSubview(collectionView)
         view.addSubview(pageControl)
         view.addSubview(processButton)
-
-        addPagesButtonView = AddPageButtonView().loadNib() as? AddPageButtonView
-        addPagesButtonView?.translatesAutoresizingMaskIntoConstraints = false
-        addPagesButtonView?.isHidden = !giniConfiguration.multipageEnabled
-        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapAddPagesButton))
-        addPagesButtonView?.addGestureRecognizer(gestureRecognizer)
-        view.addSubview(addPagesButtonView!)
+        view.addSubview(addPagesButton)
         edgesForExtendedLayout = []
 
         addConstraints()
@@ -240,8 +244,8 @@ extension ReviewViewController {
             processButton.bottomAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
                                                   constant: -50),
 
-            addPagesButtonView!.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
-            addPagesButtonView!.leadingAnchor.constraint(equalTo: processButton.trailingAnchor, constant: 8)
+            addPagesButton.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
+            addPagesButton.leadingAnchor.constraint(equalTo: processButton.trailingAnchor, constant: 8)
         ])
     }
 

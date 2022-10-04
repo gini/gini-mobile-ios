@@ -39,6 +39,10 @@ final class BottomLabelButton: UIButton {
     
     init() {
         super.init(frame: .zero)
+        addSubview(actionLabel)
+        addSubview(iconView)
+        addSubview(actionButton)
+        setupConstraints()
     }
     
     required init?(coder aDecoder: NSCoder) {
