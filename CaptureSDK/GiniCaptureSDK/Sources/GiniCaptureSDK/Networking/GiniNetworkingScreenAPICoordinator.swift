@@ -104,11 +104,6 @@ import GiniBankAPILibrary
         switch api {
         case .default, .gym, .custom:
             return DocumentService(lib: lib, metadata: documentMetadata)
-        case .accounting:
-            if giniConfiguration.multipageEnabled {
-                preconditionFailure("The accounting API does not support multipage")
-            }
-            return AccountingDocumentService(lib: lib, metadata: documentMetadata)
         }
     }
     
