@@ -22,9 +22,8 @@ public protocol ReviewViewControllerDelegate: AnyObject {
      - parameter viewController: `ReviewViewController` where the pages are reviewed.
      - parameter page: Page deleted.
      */
-    func review(_ viewController: ReviewViewController,
-                         didDelete page: GiniCapturePage)
-    
+    func review(_ viewController: ReviewViewController, didDelete page: GiniCapturePage)
+
     /**
      Called when a user taps on the error action when the errored page
      
@@ -32,9 +31,8 @@ public protocol ReviewViewControllerDelegate: AnyObject {
      - parameter errorAction: `NoticeActionType` selected.
      - parameter page: Page where the error action has been triggered
      */
-    func review(_ viewController: ReviewViewController,
-                         didTapRetryUploadFor page: GiniCapturePage)
-    
+    func review(_ viewController: ReviewViewController, didTapRetryUploadFor page: GiniCapturePage)
+
     /**
      Called when a user taps on the add page button
      
@@ -49,14 +47,13 @@ public protocol ReviewViewControllerDelegate: AnyObject {
     func reviewDidTapProcess(_ viewController: ReviewViewController)
 }
 
-//swiftlint:disable file_length
 public final class ReviewViewController: UIViewController {
-    
+
     /**
      The object that acts as the delegate of the review view controller.
      */
     public weak var delegate: ReviewViewControllerDelegate?
-    
+
     var pages: [GiniCapturePage]
     fileprivate let giniConfiguration: GiniConfiguration
     fileprivate lazy var presenter: ReviewCollectionCellPresenter = {
@@ -64,15 +61,15 @@ public final class ReviewViewController: UIViewController {
         presenter.delegate = self
         return presenter
     }()
-    
+
     // MARK: - UI initialization
-    
+
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 8
         layout.minimumInteritemSpacing = 1
-        
+
         var collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2,
@@ -141,13 +138,13 @@ public final class ReviewViewController: UIViewController {
     }
 
     // MARK: - Init
-    
+
     public init(pages: [GiniCapturePage], giniConfiguration: GiniConfiguration) {
         self.pages = pages
         self.giniConfiguration = giniConfiguration
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(imageDocuments:) has not been implemented")
     }
@@ -198,7 +195,7 @@ extension ReviewViewController {
             self.collectionView.reloadData()
         }
     }
-    
+
     /**
      Updates the collections with the given pages.
      
@@ -240,7 +237,8 @@ extension ReviewViewController {
             processButton.widthAnchor.constraint(equalToConstant: 204),
             processButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             processButton.heightAnchor.constraint(equalToConstant: 50),
-            processButton.bottomAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
+            processButton.bottomAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                  constant: -50),
 
             addPagesButtonView!.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
             addPagesButtonView!.leadingAnchor.constraint(equalTo: processButton.trailingAnchor, constant: 8)
@@ -248,7 +246,7 @@ extension ReviewViewController {
     }
 
     @objc
-    private func pageControlTapHandler(sender:UIPageControl) {
+    private func pageControlTapHandler(sender: UIPageControl) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: { [weak self] in
             self?.collectionView.scrollToItem(at: IndexPath(row: sender.currentPage, section: 0),
                                               at: .centeredHorizontally, animated: true)
@@ -311,15 +309,16 @@ extension ReviewViewController: UICollectionViewDataSource {
 
         return pages.count
     }
-    
+
     public func collectionView(_ collectionView: UICollectionView,
                                cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let page = pages[indexPath.row]
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier:
-                                                        ReviewCollectionCell.reuseIdentifier,
-                                 for: indexPath) as! ReviewCollectionCell
-        cell.delegate = self
-        return presenter.setUp(cell, with: page, at: indexPath)
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReviewCollectionCell.reuseIdentifier,
+                                                         for: indexPath) as? ReviewCollectionCell {
+            cell.delegate = self
+            return presenter.setUp(cell, with: page, at: indexPath)
+        }
+        fatalError("ReviewCollectionCell wasn't initialized")
     }
 }
 
@@ -330,7 +329,7 @@ extension ReviewViewController: ReviewCollectionCellPresenterDelegate {
                    didUpdateCellAt indexPath: IndexPath) {
             collectionView.reloadItems(at: [indexPath])
     }
-    
+
     func multipage(_ reviewCollectionCellPresenter: ReviewCollectionCellPresenter,
                    didUpdateElementIn collectionView: UICollectionView,
                    at indexPath: IndexPath) {
