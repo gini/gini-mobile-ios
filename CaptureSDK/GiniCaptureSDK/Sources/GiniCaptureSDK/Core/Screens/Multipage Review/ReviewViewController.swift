@@ -13,6 +13,7 @@ import UIKit
  (tap add, delete...)
  
  - note: Component API only.
+ - TODO:  - REMOVE Componen API
  */
 public protocol ReviewViewControllerDelegate: AnyObject {
     /**
