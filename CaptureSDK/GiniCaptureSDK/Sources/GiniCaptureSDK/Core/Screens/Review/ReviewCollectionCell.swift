@@ -42,7 +42,8 @@ final class ReviewCollectionCell: UICollectionViewCell {
         if animated {
             UIView.animate(withDuration: 0.3) { [weak self] in
                 guard let self = self else { return }
-                self.documentImageView.layer.borderColor = self.isActive ? UIColor.GiniCapture.accent1.cgColor : UIColor.clear.cgColor
+                self.documentImageView.layer.borderColor = self.isActive ?
+                UIColor.GiniCapture.accent1.cgColor : UIColor.clear.cgColor
                 self.documentImageView.layer.borderWidth = self.isActive ? 2 : 0
 
                 self.deleteButton.isHidden = !self.isActive
@@ -56,7 +57,7 @@ final class ReviewCollectionCell: UICollectionViewCell {
     }
 
     private var isActive: Bool = false
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(documentImageView)
@@ -65,13 +66,13 @@ final class ReviewCollectionCell: UICollectionViewCell {
 
         addConstraints()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(frame:) has not been implemented")
     }
-    
+
     private func addConstraints() {
-        
+
         NSLayoutConstraint.activate([
             documentImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             documentImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
