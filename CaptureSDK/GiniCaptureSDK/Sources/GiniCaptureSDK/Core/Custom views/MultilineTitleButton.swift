@@ -19,7 +19,7 @@ class MultilineTitleButton: UIButton {
         commonInit()
     }
 
-    func commonInit() -> Void {
+    func commonInit() {
         self.titleLabel?.numberOfLines = 0
         self.titleLabel?.textAlignment = .center
         self.setContentHuggingPriority(UILayoutPriority.defaultLow + 1, for: .vertical)
@@ -28,7 +28,9 @@ class MultilineTitleButton: UIButton {
 
     override var intrinsicContentSize: CGSize {
         let size = self.titleLabel!.intrinsicContentSize
-        return CGSize(width: size.width + contentEdgeInsets.left + contentEdgeInsets.right, height: size.height + contentEdgeInsets.top + contentEdgeInsets.bottom)
+        return CGSize(
+            width: size.width + contentEdgeInsets.left + contentEdgeInsets.right,
+            height: size.height + contentEdgeInsets.top + contentEdgeInsets.bottom)
     }
 
     override func layoutSubviews() {

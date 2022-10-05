@@ -41,7 +41,7 @@
 "ginicapture.camera.flashButtonLabel.Off.Voice.Over" = "Blitz aus";
 "ginicapture.camera.flashButtonLabel.On" = "An";
 "ginicapture.camera.flashButtonLabel.Off" = "Aus";
-"ginicapture.camera.thumbnail" = "TODO: Photo review";
+"ginicapture.camera.thumbnail.Voice.Over" = "TODO: Photo review";
 "ginicapture.camera.capturebutton" = "Bild Aufnehmen";
 "ginicapture.camera.infoLabel" = "Rechnung oder QR Code scannen";
 "ginicapture.camera.qrCodeTip" = "Haben Sie schon den QR-Codeleser ausprobiert?";
