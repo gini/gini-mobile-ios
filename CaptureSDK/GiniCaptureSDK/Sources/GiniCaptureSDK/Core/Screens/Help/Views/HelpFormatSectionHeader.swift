@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class HelpFormatSectionHeader: UITableViewHeaderFooterView {
+final class HelpFormatSectionHeader: UITableViewHeaderFooterView {
     @IBOutlet weak var titleLabel: UILabel!
     static var reuseIdentifier: String = "kHelpFormatSectionHeader"
 }

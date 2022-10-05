@@ -24,16 +24,16 @@ public protocol HelpMenuViewControllerDelegate: AnyObject {
  use the _Open with_ feature and which formats are supported by the Gini Capture SDK. 
  */
 
-final public class HelpMenuViewController: UIViewController {
+public final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewController {
 
     public weak var delegate: HelpMenuViewControllerDelegate?
     private (set) var dataSource: HelpMenuDataSource
     private let giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 44
-    private var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
-    private var bottomNavigationBar: HelpBottomNavigationBar?
+    public var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
+    public var bottomNavigationBar: HelpBottomNavigationBar?
     private var bottomConstraint: NSLayoutConstraint?
-    
+
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -59,44 +59,10 @@ final public class HelpMenuViewController: UIViewController {
     private func setupView() {
         configureMainView()
         configureTableView()
-        configureBottomNavigationBar()
         configureConstraints()
         edgesForExtendedLayout = []
     }
 
-    func configureCustomTopNavigationBar() {
-        
-    }
-    
-    private func configureBottomNavigationBar() {
-        if giniConfiguration.bottomNavigationBarEnabled {
-            configureCustomTopNavigationBar()
-            if let bottomBar = giniConfiguration.helpNavigationBarBottomAdapter {
-                navigationBarBottomAdapter = bottomBar
-            } else {
-                navigationBarBottomAdapter = DefaultHelpBottomNavigationBarAdapter()
-            }
-            
-            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
-                //self?.cameraButtonsViewModel.backButtonAction?()
-            }
-
-            if let navigationBar =
-                navigationBarBottomAdapter?.injectedView() as? HelpBottomNavigationBar {
-                bottomNavigationBar = navigationBar
-                layoutBottomNavigationBar(navigationBar)
-            }
-        }
-    }
-
-    
-    private func layoutBottomNavigationBar(_ navigationBar: UIView) {
-        navigationBar.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(navigationBar)
-        view.bringSubviewToFront(navigationBar)
-        view.layoutSubviews()
-    }
-    
     private func configureTableView() {
         tableView.dataSource = self.dataSource
         tableView.delegate = self.dataSource
@@ -124,22 +90,20 @@ final public class HelpMenuViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
     }
 
+    private func configureMainView() {
+        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
+        view.addSubview(tableView)
+        title = NSLocalizedStringPreferredFormat("ginicapture.help.menu.title", comment: "Help Import screen title")
+        view.layoutSubviews()
+        configureBottomNavigationBar(
+            configuration: giniConfiguration,
+            under: tableView)
+    }
+
     private func configureConstraints() {
-        if giniConfiguration.bottomNavigationBarEnabled {
-            guard let bottomNavigationBar = bottomNavigationBar else {
-                return
-            }
-            NSLayoutConstraint.activate([
-                bottomNavigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                bottomNavigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                bottomNavigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                bottomNavigationBar.heightAnchor.constraint(equalToConstant: bottomNavigationBar.frame.height),
-                tableView.bottomAnchor.constraint(equalTo: bottomNavigationBar.topAnchor)
-            ])
-        } else {
+        if giniConfiguration.bottomNavigationBarEnabled == false {
             NSLayoutConstraint.activate([tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
         }
-        
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin)
         ])
@@ -158,13 +122,6 @@ final public class HelpMenuViewController: UIViewController {
                     constant: -GiniMargins.margin)
             ])
         }
-        view.layoutSubviews()
-    }
-
-    private func configureMainView() {
-        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
-        view.addSubview(tableView)
-        title = NSLocalizedStringPreferredFormat("ginicapture.help.menu.title", comment: "Help Import screen title")
         view.layoutSubviews()
     }
 

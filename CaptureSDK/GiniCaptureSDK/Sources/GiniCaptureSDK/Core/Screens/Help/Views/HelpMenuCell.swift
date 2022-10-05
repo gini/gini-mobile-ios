@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class HelpMenuCell: UITableViewCell, HelpCell {
+public final class HelpMenuCell: UITableViewCell, HelpCell {
     public static var reuseIdentifier: String = "kHelpMenuCell"
     weak var separatorView: UIView!
     @IBOutlet weak var titleLabel: UILabel!

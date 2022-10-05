@@ -371,7 +371,12 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Enable/disable the bottom navigation bar.
      */
-    public var bottomNavigationBarEnabled: Bool = false
+    public var bottomNavigationBarEnabled: Bool = true
+    
+    /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the help screens.
+     */
+    public var helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
     
     /**
       * Set an adapter implementation to show a custom bottom navigation bar on the camera screen.
@@ -1319,6 +1324,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.qrCodePopupBackgroundColor = self.qrCodePopupBackgroundColor
         configuration.bottomNavigationBarEnabled = self.bottomNavigationBarEnabled
         configuration.cameraNavigationBarBottomAdapter = self.cameraNavigationBarBottomAdapter
+        configuration.helpNavigationBarBottomAdapter = self.helpNavigationBarBottomAdapter
         configuration.navigationBarOnboardingTitleContinueButton = self.navigationBarOnboardingTitleContinueButton
         
         configuration.onboardingPageIndicatorColor = self.onboardingPageIndicatorColor

@@ -549,7 +549,7 @@ import UIKit
     /**
      Enable/disable the bottom navigation bar.
      */
-    public var bottomNavigationBarEnabled: Bool = false
+    public var bottomNavigationBarEnabled: Bool = true
     
     /**
       * Set an adapter implementation to show a custom bottom navigation bar on the help screens.

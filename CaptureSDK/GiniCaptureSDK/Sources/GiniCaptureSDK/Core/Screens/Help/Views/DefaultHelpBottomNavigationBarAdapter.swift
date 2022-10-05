@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DefaultHelpBottomNavigationBarAdapter: HelpBottomNavigationBarAdapter {
+final class DefaultHelpBottomNavigationBarAdapter: HelpBottomNavigationBarAdapter {
     private var backButtonCallback: (() -> Void)?
 
     // Add the callback whenever the back button is clicked

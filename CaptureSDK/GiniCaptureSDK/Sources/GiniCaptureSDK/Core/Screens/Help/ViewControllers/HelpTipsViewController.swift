@@ -14,7 +14,10 @@ import UIKit
  suggestions when there is no results when analysing an image.
  */
 
-public final class HelpTipsViewController: UIViewController {
+public final class HelpTipsViewController: UIViewController, HelpBottomBarEnabledViewController {
+    public var bottomNavigationBar: HelpBottomNavigationBar?
+    public var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
+
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -57,6 +60,9 @@ public final class HelpTipsViewController: UIViewController {
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         edgesForExtendedLayout = []
         tableView.bounces = false
+        configureBottomNavigationBar(
+            configuration: giniConfiguration,
+            under: tableView)
     }
 
     private func configureTableView() {
@@ -82,10 +88,11 @@ public final class HelpTipsViewController: UIViewController {
     }
 
     private func configureConstraints() {
+        if giniConfiguration.bottomNavigationBarEnabled == false {
+            NSLayoutConstraint.activate([tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
+        }
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
-            tableView.bottomAnchor.constraint(
-                equalTo: view.bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin)
         ])
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
