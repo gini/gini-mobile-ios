@@ -18,6 +18,7 @@ import UIKit
 public protocol HelpMenuViewControllerDelegate: AnyObject {
     func help(_ menuViewController: HelpMenuViewController, didSelect item: HelpMenuItem)
 }
+
 /**
  The `HelpMenuViewController` provides explanations on how to take better pictures, how to
  use the _Open with_ feature and which formats are supported by the Gini Capture SDK. 
@@ -29,7 +30,10 @@ final public class HelpMenuViewController: UIViewController {
     private (set) var dataSource: HelpMenuDataSource
     private let giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 44
-
+    private var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
+    private var bottomNavigationBar: HelpBottomNavigationBar?
+    private var bottomConstraint: NSLayoutConstraint?
+    
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -55,10 +59,44 @@ final public class HelpMenuViewController: UIViewController {
     private func setupView() {
         configureMainView()
         configureTableView()
+        configureBottomNavigationBar()
         configureConstraints()
         edgesForExtendedLayout = []
     }
 
+    func configureCustomTopNavigationBar() {
+        
+    }
+    
+    private func configureBottomNavigationBar() {
+        if giniConfiguration.bottomNavigationBarEnabled {
+            configureCustomTopNavigationBar()
+            if let bottomBar = giniConfiguration.helpNavigationBarBottomAdapter {
+                navigationBarBottomAdapter = bottomBar
+            } else {
+                navigationBarBottomAdapter = DefaultHelpBottomNavigationBarAdapter()
+            }
+            
+            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
+                //self?.cameraButtonsViewModel.backButtonAction?()
+            }
+
+            if let navigationBar =
+                navigationBarBottomAdapter?.injectedView() as? HelpBottomNavigationBar {
+                bottomNavigationBar = navigationBar
+                layoutBottomNavigationBar(navigationBar)
+            }
+        }
+    }
+
+    
+    private func layoutBottomNavigationBar(_ navigationBar: UIView) {
+        navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(navigationBar)
+        view.bringSubviewToFront(navigationBar)
+        view.layoutSubviews()
+    }
+    
     private func configureTableView() {
         tableView.dataSource = self.dataSource
         tableView.delegate = self.dataSource
@@ -87,9 +125,23 @@ final public class HelpMenuViewController: UIViewController {
     }
 
     private func configureConstraints() {
+        if giniConfiguration.bottomNavigationBarEnabled {
+            guard let bottomNavigationBar = bottomNavigationBar else {
+                return
+            }
+            NSLayoutConstraint.activate([
+                bottomNavigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                bottomNavigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                bottomNavigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                bottomNavigationBar.heightAnchor.constraint(equalToConstant: bottomNavigationBar.frame.height),
+                tableView.bottomAnchor.constraint(equalTo: bottomNavigationBar.topAnchor)
+            ])
+        } else {
+            NSLayoutConstraint.activate([tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
+        }
+        
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin)
         ])
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
