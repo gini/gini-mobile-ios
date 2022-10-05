@@ -79,6 +79,17 @@ public final class ReviewViewController: UIViewController {
         collection.showsHorizontalScrollIndicator = false
         collection.register(ReviewCollectionCell.self,
                             forCellWithReuseIdentifier: ReviewCollectionCell.reuseIdentifier)
+
+        collection.isScrollEnabled = false
+        collection.contentInsetAdjustmentBehavior = .never
+
+        let swipeLeftRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeHandler(sender:)))
+        swipeLeftRecognizer.direction = .left
+        collection.addGestureRecognizer(swipeLeftRecognizer)
+
+        let swipeRightRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeHandler(sender:)))
+        swipeRightRecognizer.direction = .right
+        collection.addGestureRecognizer(swipeRightRecognizer)
         return collection
     }()
 
@@ -186,13 +197,13 @@ extension ReviewViewController {
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        collectionView.contentInsetAdjustmentBehavior = .never
+        if UIDevice.current.isIpad {
+            // cellSize needs to be updated when the screen is rotated
+            self.cellSize = calculatedCellSize()
 
-        // cellSize needs to be updated when the screen is rotated
-        self.cellSize = calculatedCellSize()
-
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
         }
     }
 
@@ -265,6 +276,26 @@ extension ReviewViewController {
     @objc
     private func didTapProcessDocument() {
         delegate?.reviewDidTapProcess(self)
+    }
+
+    @objc
+    private func swipeHandler(sender: UISwipeGestureRecognizer) {
+        guard pages.count > 1 else { return }
+        if sender.direction == .left {
+            guard currentPage < pages.count - 1 else { return }
+            setCellStatus(for: currentPage, isActive: false)
+            currentPage += 1
+            collectionView.scrollToItem(at: IndexPath(row: currentPage, section: 0),
+                                        at: .centeredHorizontally, animated: true)
+            pageControl.currentPage = currentPage
+        } else if sender.direction == .right {
+            guard currentPage > 0 else { return }
+            setCellStatus(for: currentPage, isActive: false)
+            currentPage -= 1
+            collectionView.scrollToItem(at: IndexPath(row: currentPage, section: 0),
+                                        at: .centeredHorizontally, animated: true)
+            pageControl.currentPage = currentPage
+        }
     }
 
     private func calculatedCellSize() -> CGSize {
@@ -355,23 +386,6 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
         return UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
     }
 
-    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        setCurrentPage(basedOn: scrollView)
-        let offset = calulateOffset(for: scrollView)
-        scrollView.setContentOffset(offset, animated: true)
-    }
-
-    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        setCellStatus(for: currentPage, isActive: false)
-    }
-
-    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        guard !decelerate else { return }
-        setCurrentPage(basedOn: scrollView)
-        let offset = calulateOffset(for: scrollView)
-        scrollView.setContentOffset(offset, animated: true)
-    }
-
     private func setCurrentPage(basedOn scrollView: UIScrollView) {
         guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
         else { return }
@@ -380,21 +394,6 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
         let index = (offset.x + scrollView.contentInset.left) / cellWidthIncludingSpacing
         currentPage = Int(round(index))
         self.pageControl.currentPage = currentPage
-    }
-
-    private func calulateOffset(for scrollView: UIScrollView) -> CGPoint {
-        guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
-        else { return CGPoint.zero }
-        let cellWidthIncludingSpacing = cellSize.width + layout.minimumLineSpacing
-
-        var offset = scrollView.contentOffset
-        let index = (offset.x + scrollView.contentInset.left) / cellWidthIncludingSpacing
-        let roundedIndex = round(index)
-
-        offset = CGPoint(x: roundedIndex * cellWidthIncludingSpacing - scrollView.contentInset.left,
-                         y: -scrollView.contentInset.top)
-
-        return offset
     }
 
     private func setCellStatus(for index: Int, isActive: Bool, animated: Bool = true) {

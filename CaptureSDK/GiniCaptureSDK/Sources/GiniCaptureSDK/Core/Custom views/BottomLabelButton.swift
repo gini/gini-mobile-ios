@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class BottomLabelButton: UIButton {
+final class BottomLabelButton: UIView {
     var didTapButton: (() -> Void)?
     
     lazy var actionButton: UIButton = {
