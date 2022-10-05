@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HelpImportCell: UITableViewCell {
+final class HelpImportCell: UITableViewCell {
     static var reuseIdentifier: String = "kHelpImportCell"
 
     @IBOutlet weak var headerLabel: UILabel!

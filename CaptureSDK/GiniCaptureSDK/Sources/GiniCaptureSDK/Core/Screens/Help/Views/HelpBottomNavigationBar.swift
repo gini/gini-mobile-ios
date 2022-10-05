@@ -7,17 +7,16 @@
 
 import UIKit
 
-class HelpBottomNavigationBar: UIView {
+public final class HelpBottomNavigationBar: UIView {
 
     @IBOutlet weak var backButton: UIButton!
 
-    override func awakeFromNib() {
+    public override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
     }
 
     func setupView() {
-        let configuration = GiniConfiguration.shared
         backButton.setTitle("", for: .normal)
         backButton.setImage(
             UIImageNamedPreferred(named: "arrowBack") ?? UIImage(),
