@@ -71,4 +71,9 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
             .rightBarButtonItem?
             .isEnabled = pages.allSatisfy { $0.isUploaded }
     }
+
+    public func review(_ viewController: ReviewViewController, didSelectPage page: GiniCapturePage) {
+        let viewController = ReviewZoomViewController(page: page)
+        self.screenAPINavigationController.present(viewController, animated: true)
+    }
 }
