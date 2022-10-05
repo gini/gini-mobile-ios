@@ -38,16 +38,23 @@ final public class HelpMenuDataSource: HelpRoundedCornersDataSource<HelpMenuItem
 
     public override func configureCell(cell: HelpMenuCell, indexPath: IndexPath) {
         cell.backgroundColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.dark3).uiColor()
-        cell.textLabel?.text = items[indexPath.row].title
-        cell.textLabel?.textColor = GiniColor(
+        cell.titleLabel.text = items[indexPath.row].title
+        cell.titleLabel.textColor = GiniColor(
             light: UIColor.GiniCapture.dark1,
             dark: UIColor.GiniCapture.light1).uiColor()
-        cell.textLabel?.numberOfLines = 0
-        cell.textLabel?.font = giniConfiguration.textStyleFonts[.body]
+        cell.titleLabel.numberOfLines = 0
+        cell.titleLabel.font = giniConfiguration.textStyleFonts[.body]
+        cell.titleLabel.adjustsFontForContentSizeCategory = true
         cell.accessoryType = .disclosureIndicator
         cell.selectionStyle = .none
+        cell.separatorView.backgroundColor = GiniColor(
+            light: UIColor.GiniCapture.light3,
+            dark: UIColor.GiniCapture.dark4
+        ).uiColor()
         if indexPath.row == self.items.count - 1 {
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+            cell.separatorView.isHidden = true
+        } else {
+            cell.separatorView.isHidden = false
         }
     }
 
@@ -60,4 +67,5 @@ final public class HelpMenuDataSource: HelpRoundedCornersDataSource<HelpMenuItem
     public override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0
     }
+
 }

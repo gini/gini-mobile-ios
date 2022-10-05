@@ -10,11 +10,17 @@ import Foundation
 import UIKit
 
 public final class CameraButtonsViewModel {
+    // Pane buttons
     var isFlashOn: Bool = false
     var flashAction: (( Bool) -> Void)?
     var importAction: (() -> Void)?
     var captureAction: (() -> Void)?
     var imageStackAction: (() -> Void)?
+
+    // NavigationBar buttons
+    var cancelAction: (() -> Void)?
+    var helpAction: (() -> Void)?
+    var backButtonAction: (() -> Void)?
 
     public weak var trackingDelegate: CameraScreenTrackingDelegate?
     public init(trackingDelegate: CameraScreenTrackingDelegate? = nil) {
@@ -32,6 +38,10 @@ public final class CameraButtonsViewModel {
 
     @objc func thumbnailPressed() {
         imageStackAction?()
+    }
+
+    @objc func cancelPressed() {
+        cancelAction?()
     }
 
     @objc func capturePressed() {

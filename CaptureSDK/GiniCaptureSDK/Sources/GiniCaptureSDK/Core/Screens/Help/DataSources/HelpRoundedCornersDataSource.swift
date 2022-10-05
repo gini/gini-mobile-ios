@@ -55,9 +55,12 @@ public class HelpRoundedCornersDataSource<Item, Cell>: NSObject, HelpDataSource 
         } else {
             if indexPath.row == 0 {
                 cell.round(corners: [.topLeft, .topRight], withRadius: RoundedCorners.cornerRadius)
-            }
-            if indexPath.row == items.count - 1 {
-                cell.round(corners: [.bottomLeft, .bottomRight], withRadius: RoundedCorners.cornerRadius)
+            } else {
+                if indexPath.row == items.count - 1 {
+                    cell.round(corners: [.bottomLeft, .bottomRight], withRadius: RoundedCorners.cornerRadius)
+                } else {
+                    cell.reset()
+                }
             }
         }
     }

@@ -13,11 +13,11 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     /**
      The object that acts as the delegate of the camera view controller.
     */
-    var opaqueView: UIView?
+    private var opaqueView: UIView?
     let giniConfiguration: GiniConfiguration
     var detectedQRCodeDocument: GiniQRCodeDocument?
     var currentQRCodePopup: QRCodeDetectedPopupView?
-    var shouldShowQRCodeNext = false
+    private var shouldShowQRCodeNext = false
     lazy var cameraPreviewViewController: CameraPreviewViewController = {
        let cameraPreviewViewController = CameraPreviewViewController()
        cameraPreviewViewController.delegate = self
@@ -25,10 +25,14 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     }()
     public weak var delegate: CameraViewControllerDelegate?
 
-    @IBOutlet weak var cameraFocusImageView: UIImageView!
+    @IBOutlet weak var cameraFrameImageView: UIImageView!
     @IBOutlet weak var cameraPane: CameraPane!
-    private var cameraButtonsViewModel = CameraButtonsViewModel()
+    private let cameraButtonsViewModel: CameraButtonsViewModel
+    private var navigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
 
+    @IBOutlet weak var bottomButtonsConstraints: NSLayoutConstraint!
+    @IBOutlet weak var bottomPaneConstraint: NSLayoutConstraint!
+    @IBOutlet weak var iPadCameraFrameBottomConstraint: NSLayoutConstraint!
     /**
      Designated initializer for the `CameraViewController` which allows
      to set the `GiniConfiguration for the camera screen`.
@@ -43,6 +47,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         viewModel: CameraButtonsViewModel
     ) {
         self.giniConfiguration = giniConfiguration
+        self.cameraButtonsViewModel = viewModel
         if UIDevice.current.isIphone {
             super.init(nibName: "CameraPhone", bundle: giniCaptureBundle())
         } else {
@@ -97,6 +102,81 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                 comment: "Info label")
         }
         configureButtons()
+        configureBottomNavigationBar()
+        setupInitialState()
+    }
+
+    private func setupInitialState() {
+        cameraPane.thumbnailView.isHidden = true
+        navigationBarBottomAdapter?.showButtons(navigationButtons: [.help])
+    }
+
+    private func setupNotEmptyState() {
+        cameraPane.thumbnailView.isHidden = false
+        navigationBarBottomAdapter?.showButtons(navigationButtons: [.help, .back])
+    }
+
+    private func configureCustomTopNavigationBar() {
+        navigationItem.leftBarButtonItem = nil
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: NSLocalizedStringPreferredFormat(
+                "ginicapture.camera.popupCancel",
+                comment: "Cancel button"),
+            style: .plain,
+            target: cameraButtonsViewModel,
+            action: #selector(cameraButtonsViewModel.cancelPressed))
+    }
+
+    private func configureBottomNavigationBar() {
+        if giniConfiguration.bottomNavigationBarEnabled {
+            configureCustomTopNavigationBar()
+            if let bottomBar = giniConfiguration.cameraNavigationBarBottomAdapter {
+                navigationBarBottomAdapter = bottomBar
+            } else {
+                navigationBarBottomAdapter = DefaultCameraBottomNavigationBarAdapter()
+            }
+            navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
+                self?.cameraButtonsViewModel.helpAction?()
+            }
+            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
+                self?.cameraButtonsViewModel.backButtonAction?()
+            }
+
+            if let navigationBar =
+                navigationBarBottomAdapter?.injectedView() {
+                view.addSubview(navigationBar)
+                layoutBottomNavigationBar(navigationBar)
+            }
+        }
+    }
+
+    private func layoutBottomNavigationBar(_ navigationBar: UIView) {
+        if UIDevice.current.isIpad {
+            view.removeConstraints([iPadCameraFrameBottomConstraint])
+            navigationBar.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(navigationBar)
+            NSLayoutConstraint.activate([
+                navigationBar.topAnchor.constraint(equalTo: cameraFrameImageView.bottomAnchor),
+                navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                navigationBar.heightAnchor.constraint(equalToConstant: navigationBar.frame.height)
+            ])
+        } else {
+            view.removeConstraints([bottomPaneConstraint, bottomButtonsConstraints])
+            navigationBar.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(navigationBar)
+            NSLayoutConstraint.activate([
+                navigationBar.topAnchor.constraint(equalTo: cameraPane.bottomAnchor),
+                navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                navigationBar.heightAnchor.constraint(equalToConstant: navigationBar.frame.height),
+                cameraPane.leftButtonsStack.bottomAnchor.constraint(equalTo: cameraPane.bottomAnchor)
+            ])
+        }
+        view.bringSubviewToFront(navigationBar)
+        view.layoutSubviews()
     }
 
     func configureButtons() {
@@ -114,6 +194,11 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                     self.didPick(image)
                 }
                 self.cameraPane.toggleCaptureButtonActivation(state: true)
+            }
+        }
+        cameraButtonsViewModel.backButtonAction = { [weak self] in
+            if let strongSelf = self {
+                self?.delegate?.cameraDidTapMultipageReviewButton(strongSelf)
             }
         }
         cameraPane.captureButton.addTarget(
@@ -191,6 +276,11 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     public func replaceCapturedStackImages(with images: [UIImage]) {
         if cameraPane != nil, giniConfiguration.multipageEnabled {
             cameraPane.thumbnailView.replaceStackImages(with: images)
+            if images.count > 0 {
+                setupNotEmptyState()
+            } else {
+                setupInitialState()
+            }
         }
     }
 
@@ -209,11 +299,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         })
         return blurredView
     }
-}
-
-// MARK: - Image capture
-
-extension Camera2ViewController {
+    // MARK: - Image capture
 
     private func previewCapturedImageView(with image: UIImage) -> UIImageView {
         let imageFrame = cameraPreviewViewController.view.frame
@@ -238,7 +324,7 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol) {
         cameraPane.setupAuthorization(isHidden: false)
-        cameraFocusImageView.isHidden = false
+        cameraFrameImageView.isHidden = false
         cameraPane.toggleCaptureButtonActivation(state: true)
         cameraPane.toggleFlashButtonActivation(
             state: camera.isFlashSupported && giniConfiguration.flashToggleEnabled)
@@ -259,6 +345,6 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 
     func notAuthorized() {
         cameraPane.setupAuthorization(isHidden: true)
-        cameraFocusImageView.isHidden = true
+        cameraFrameImageView.isHidden = true
     }
 }

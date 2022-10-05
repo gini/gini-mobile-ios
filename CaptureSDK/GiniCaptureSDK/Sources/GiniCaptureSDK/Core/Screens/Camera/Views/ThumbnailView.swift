@@ -103,14 +103,14 @@ final class ThumbnailView: UIView {
             thumbnailImageView.image = lastImage
             isHidden = false
             accessibilityValue = NSLocalizedStringPreferredFormat(
-                "ginicapture.camera.thumbnail",
+                "ginicapture.camera.thumbnail.Voice.Over",
                 comment: "Thumbnail button") + " \(count)"
         case .empty:
             imagesCount = 0
             thumbnailImageView.image = nil
             isHidden = true
             accessibilityValue = NSLocalizedStringPreferredFormat(
-                "ginicapture.camera.thumbnail",
+                "ginicapture.camera.thumbnail.Voice.Over",
                 comment: "Thumbnail button") + " 0"
         }
 
