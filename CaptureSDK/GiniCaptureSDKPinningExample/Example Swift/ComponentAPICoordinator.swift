@@ -561,6 +561,8 @@ extension ComponentAPICoordinator: ReviewViewControllerDelegate {
     func reviewDidTapAddImage(_ controller: ReviewViewController) {
         navigationController.popViewController(animated: true)
     }
+
+    func review(_ viewController: ReviewViewController, didSelectPage page: GiniCapturePage) {}
 }
 
 // MARK: NoResultsScreenDelegate
