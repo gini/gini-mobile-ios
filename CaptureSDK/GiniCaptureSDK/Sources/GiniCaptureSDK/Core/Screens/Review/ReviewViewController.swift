@@ -135,6 +135,7 @@ public final class ReviewViewController: UIViewController {
         addPagesButton.isHidden = !giniConfiguration.multipageEnabled
         addPagesButton.didTapButton = { [weak self] in
             guard let self = self else { return }
+            self.setCellStatus(for: self.currentPage, isActive: false)
             self.delegate?.reviewDidTapAddImage(self)
         }
         return addPagesButton
@@ -182,14 +183,6 @@ extension ReviewViewController {
         addConstraints()
     }
 
-    public override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-            self.setCellStatus(for: self.currentPage, isActive: true)
-        }
-    }
-
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
@@ -210,14 +203,20 @@ extension ReviewViewController {
      */
 
     public func updateCollections(with pages: [GiniCapturePage]) {
-        setCellStatus(for: currentPage, isActive: false, animated: false)
         self.pages = pages
         collectionView.reloadData()
 
         // Update cell status only if pages not empty and view is visible
         if pages.isNotEmpty && viewIfLoaded?.window != nil {
             DispatchQueue.main.async {
-                self.setCellStatus(for: self.currentPage, isActive: true, animated: false)
+                self.setCellStatus(for: self.currentPage, isActive: false, animated: false)
+
+                self.collectionView.scrollToItem(at: IndexPath(row: self.pages.count - 1, section: 0),
+                                                  at: .centeredHorizontally, animated: true)
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                    self.setCurrentPage(basedOn: self.collectionView)
+                }
             }
         }
     }
@@ -261,11 +260,6 @@ extension ReviewViewController {
             self.setCellStatus(for: self.currentPage, isActive: false)
             self.currentPage = sender.currentPage
         })
-    }
-
-    @objc
-    private func didTapAddPagesButton() {
-        delegate?.reviewDidTapAddImage(self)
     }
 
     @objc
