@@ -15,7 +15,7 @@ type_body_length:
 excluded: # paths to ignore during linting.
   
 included:
-  - .../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Help
+  - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Help
   - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Error
   - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Utils.swift
   - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Analysis
