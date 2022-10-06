@@ -226,10 +226,8 @@ import UIKit
     /**
      Sets the tint color of the navigation bar in all screens of the Gini Capture SDK to
      the globally specified color or to a default color.
-     
-     - note: Screen API only.
      */
-    @objc public var navigationBarTintColor = UINavigationBar.appearance().barTintColor ?? Colors.Gini.blue
+    @objc public var navigationBarTintColor = UINavigationBar.appearance().barTintColor ?? UINavigationBar.appearance().barTintColor ?? GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.dark2).uiColor()
     
     /**
      Sets the tint color of all navigation items in all screens of the Gini Capture SDK to
