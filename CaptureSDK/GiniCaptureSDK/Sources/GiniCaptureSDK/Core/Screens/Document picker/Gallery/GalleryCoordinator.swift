@@ -46,7 +46,9 @@ final class GalleryCoordinator: NSObject, Coordinator {
     
     lazy fileprivate(set) var galleryNavigator: UINavigationController = {
         let navController = UINavigationController(rootViewController: self.albumsController)
-        navController.applyStyle(withConfiguration: self.giniConfiguration)
+        if giniConfiguration.customNavigationController == nil {
+            navController.applyStyle(withConfiguration: self.giniConfiguration)
+        }
         navController.delegate = self
         return navController
     }()
