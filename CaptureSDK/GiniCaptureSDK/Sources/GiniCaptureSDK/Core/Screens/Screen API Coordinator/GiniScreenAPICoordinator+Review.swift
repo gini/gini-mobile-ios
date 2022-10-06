@@ -39,19 +39,17 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
                                    selector: #selector(closeScreen),
                                    position: .left,
                                    target: self)
-            
-            vc.setupNavigationItem(usingResources: nextButtonResource,
-                                   selector: #selector(showAnalysisScreen),
-                                   position: .right,
-                                   target: self)
-            
-            vc.navigationItem.rightBarButtonItem?.isEnabled = false
+
             return vc
     }
     
     @objc fileprivate func closeScreen() {
         trackingDelegate?.onReviewScreenEvent(event: Event(type: .back))
-        
+
+        if !giniConfiguration.multipageEnabled {
+            removeFromDocuments(document: pages.first!.document)
+        }
+
         self.screenAPINavigationController.popViewController(animated: true)
     }
 
@@ -64,11 +62,5 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
             screenAPINavigationController.pushViewController(reviewViewController,
                                                              animated: true)
         }
-    }
-    
-    func refreshReviewNextButton(with pages: [GiniCapturePage]) {
-        reviewViewController.navigationItem
-            .rightBarButtonItem?
-            .isEnabled = pages.allSatisfy { $0.isUploaded }
     }
 }
