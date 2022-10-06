@@ -1,5 +1,5 @@
 //
-//  HelpBottomNavigationBar.swift
+//  BackButtonBottomNavigationBar.swift
 //  
 //
 //  Created by Krzysztof Kryniecki on 04/10/2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-public final class HelpBottomNavigationBar: UIView {
+public final class BackButtonBottomNavigationBar: UIView {
 
     @IBOutlet weak var backButton: UIButton!
 
