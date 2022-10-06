@@ -31,7 +31,7 @@ public final class HelpMenuViewController: UIViewController, HelpBottomBarEnable
     private let giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 44
     public var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
-    public var bottomNavigationBar: HelpBottomNavigationBar?
+    public var bottomNavigationBar: BackButtonBottomNavigationBar?
     private var bottomConstraint: NSLayoutConstraint?
 
     lazy var tableView: UITableView = {

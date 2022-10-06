@@ -10,7 +10,7 @@ import UIKit
 
 final class HelpImportViewController: UIViewController, HelpBottomBarEnabledViewController {
 
-    public var bottomNavigationBar: HelpBottomNavigationBar?
+    public var bottomNavigationBar: BackButtonBottomNavigationBar?
     public var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
 
     private enum HelpImportCellType {
