@@ -59,6 +59,11 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var multipageEnabled = false
     
     /**
+     Sets the custom navigation view controller as a root view controller for Gini Bank SDK screens.
+    */
+    @objc public var customNavigationController : UINavigationController? = nil
+    
+    /**
      Sets the tint color of the navigation bar in all screens of the Gini Bank SDK to
      the globally specified color or to a default color.
      
@@ -1271,6 +1276,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.logger = self.logger
         
         configuration.multipageEnabled = self.multipageEnabled
+        configuration.customNavigationController = self.customNavigationController
 
         configuration.navigationBarTintColor = self.navigationBarTintColor
         configuration.navigationBarItemTintColor = self.navigationBarItemTintColor
