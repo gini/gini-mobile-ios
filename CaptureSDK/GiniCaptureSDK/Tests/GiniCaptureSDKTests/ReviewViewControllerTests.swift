@@ -45,10 +45,17 @@ final class ReviewViewControllerTests: XCTestCase {
                 let width = height / a4Ratio
                 return CGSize(width: width, height: height)
             } else {
-                let height = reviewViewController.view.bounds.height * 0.58
-                let width = height / a4Ratio
-                let cellSize = CGSize(width: width, height: height)
-                return cellSize
+                if reviewViewController.view.safeAreaInsets.bottom > 0 {
+                    let height = reviewViewController.view.bounds.height * 0.6
+                    let width = height / a4Ratio
+                    let cellSize = CGSize(width: width, height: height)
+                    return cellSize
+                } else {
+                    let height = reviewViewController.view.bounds.height * 0.5
+                    let width = height / a4Ratio
+                    let cellSize = CGSize(width: width, height: height)
+                    return cellSize
+                }
             }
         }()
 
@@ -69,10 +76,17 @@ final class ReviewViewControllerTests: XCTestCase {
                 let width = height / a4Ratio
                 return CGSize(width: width, height: height)
             } else {
-                let height = reviewViewController.view.bounds.height * 0.58
-                let width = height / a4Ratio
-                let cellSize = CGSize(width: width, height: height)
-                return cellSize
+                if reviewViewController.view.safeAreaInsets.bottom > 0 {
+                    let height = reviewViewController.view.bounds.height * 0.6
+                    let width = height / a4Ratio
+                    let cellSize = CGSize(width: width, height: height)
+                    return cellSize
+                } else {
+                    let height = reviewViewController.view.bounds.height * 0.5
+                    let width = height / a4Ratio
+                    let cellSize = CGSize(width: width, height: height)
+                    return cellSize
+                }
             }
         }()
 
