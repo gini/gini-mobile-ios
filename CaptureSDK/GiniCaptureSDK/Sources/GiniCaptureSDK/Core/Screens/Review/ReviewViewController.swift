@@ -194,6 +194,13 @@ extension ReviewViewController {
         addConstraints()
     }
 
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !giniConfiguration.multipageEnabled {
+            setCellStatus(for: 0, isActive: true)
+        }
+    }
+
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
