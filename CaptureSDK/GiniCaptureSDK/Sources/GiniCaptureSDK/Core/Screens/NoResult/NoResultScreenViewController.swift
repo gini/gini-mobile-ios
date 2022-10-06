@@ -215,7 +215,15 @@ final public class NoResultScreenViewController: UIViewController {
             }
 
             navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
-                self?.navigationController?.popToRootViewController(animated: true)
+                guard let type = self?.type else {
+                    return
+                }
+                switch type {
+                case .pdf:
+                    self?.dismiss(animated: true)
+                default:
+                    self?.navigationController?.popToRootViewController(animated: true)
+                }
             }
 
             if let bottomBar =
