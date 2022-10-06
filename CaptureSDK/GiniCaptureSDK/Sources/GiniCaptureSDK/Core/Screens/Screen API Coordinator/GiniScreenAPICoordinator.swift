@@ -19,9 +19,14 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     }
     
     public lazy var screenAPINavigationController: UINavigationController = {
-        let navigationController = UINavigationController()
+        var navigationController: UINavigationController
+        if let customNavigationController = giniConfiguration.customNavigationController {
+            navigationController = customNavigationController
+        } else {
+            navigationController = UINavigationController()
+            navigationController.applyStyle(withConfiguration: self.giniConfiguration)
+        }
         navigationController.delegate = self
-        navigationController.applyStyle(withConfiguration: self.giniConfiguration)
         return navigationController
     }()
     

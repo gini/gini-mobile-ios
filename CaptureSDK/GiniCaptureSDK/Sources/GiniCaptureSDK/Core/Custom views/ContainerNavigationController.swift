@@ -47,7 +47,7 @@ final class ContainerNavigationController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = rootViewController.navigationBar.backgroundColor
         addChild(rootViewController)
         view.addSubview(rootViewController.view)
         rootViewController.willMove(toParent: self)

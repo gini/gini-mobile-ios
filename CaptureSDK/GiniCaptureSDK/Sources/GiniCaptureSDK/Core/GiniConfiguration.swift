@@ -219,6 +219,11 @@ import UIKit
     @objc public var multipageEnabled = false
     
     /**
+     Sets the custom navigation view controller as a root view controller for Gini Capture SDK screens.
+    */
+    @objc public var customNavigationController : UINavigationController? = nil
+    
+    /**
      Sets the tint color of the navigation bar in all screens of the Gini Capture SDK to
      the globally specified color or to a default color.
      
