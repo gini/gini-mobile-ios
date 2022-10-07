@@ -77,9 +77,11 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
 
         DispatchQueue.main.async { [weak self] in
             if #available(iOS 15.0, *) {
-                let config = self?.visionConfiguration
-                self?.screenAPIViewController.applyStyle(withConfiguration: config ?? GiniConfiguration())
-            }
+                if let config = self?.visionConfiguration,
+                 config.customNavigationController == nil {
+                    self?.screenAPIViewController.applyStyle(withConfiguration: config)
+                }
+             }
             self?.screenAPIViewController.setNavigationBarHidden(false, animated: false)
             self?.screenAPIViewController.pushViewController(customResultsScreen, animated: true)
         }

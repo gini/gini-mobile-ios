@@ -59,6 +59,11 @@ final class AppCoordinator: Coordinator {
         // If you would like to pass us already scaled font.
 //        let customScaledFont = UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 28))
 //        giniConfiguration.updateFont(customScaledFont, for: .caption2)
+        // Custom navigation view controller
+//        let navigationViewController = UINavigationController()
+//        navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
+//        giniConfiguration.customNavigationController = navigationViewController
+
 
         return giniConfiguration
     }()
