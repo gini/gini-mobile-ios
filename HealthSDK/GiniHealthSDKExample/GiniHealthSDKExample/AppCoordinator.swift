@@ -36,7 +36,6 @@ final class AppCoordinator: Coordinator {
         giniConfiguration.qrCodeScanningEnabled = true
         giniConfiguration.multipageEnabled = true
         giniConfiguration.flashToggleEnabled = true
-        giniConfiguration.navigationBarItemTintColor = .white
         giniConfiguration.customDocumentValidations = { document in
             // As an example of custom document validation, we add a more strict check for file size
             let maxFileSize = 10 * 1024 * 1024
