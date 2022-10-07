@@ -10,7 +10,7 @@ import UIKit
 
 final public class NoResultScreenViewController: UIViewController {
 
-    var bottomNavigationBar: BackButtonBottomNavigationBar?
+    var bottomNavigationBar: UIView?
     var navigationBarBottomAdapter: NoResultBottomNavigationBarAdapter?
 
     public enum NoResultType {
@@ -226,8 +226,9 @@ final public class NoResultScreenViewController: UIViewController {
                 }
             }
 
-            if let bottomBar =
-                navigationBarBottomAdapter?.injectedView() as? BackButtonBottomNavigationBar {
+            if let adapter = navigationBarBottomAdapter {
+                let bottomBar =
+                    adapter.injectedView()
                 bottomNavigationBar = bottomBar
                 bottomBar.translatesAutoresizingMaskIntoConstraints = false
                 view.addSubview(bottomBar)
