@@ -87,8 +87,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
 //        let viewController = GiniBank.viewController(withDelegate: self, withConfiguration: configuration)
 
         screenAPIViewController = RootNavigationController(rootViewController: viewController)
-        screenAPIViewController.navigationBar.barTintColor = configuration.navigationBarTintColor
-        screenAPIViewController.navigationBar.tintColor = configuration.navigationBarTitleColor
         screenAPIViewController.setNavigationBarHidden(true, animated: false)
         screenAPIViewController.delegate = self
         screenAPIViewController.interactivePopGestureRecognizer?.delegate = nil
