@@ -10,6 +10,9 @@
 		4C84B5DD264ED55100853F33 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C84B5DC264ED55100853F33 /* Credentials.plist */; };
 		764E0AD228CF274A00F96503 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 764E0AD428CF274A00F96503 /* InfoPlist.strings */; };
 		768B017E28D1E54E009A2124 /* CustomLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768B017D28D1E54E009A2124 /* CustomLoadingIndicator.swift */; };
+		833652FD28F0308B00B5A1CE /* CustomHelpBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833652FC28F0308B00B5A1CE /* CustomHelpBottomNavigationBarAdapter.swift */; };
+		833652FF28F0330B00B5A1CE /* CustomHelpBottomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 833652FE28F0330B00B5A1CE /* CustomHelpBottomNavigationBar.xib */; };
+		8336530128F0334C00B5A1CE /* CustomHelpBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8336530028F0334C00B5A1CE /* CustomHelpBottomNavigationBar.swift */; };
 		F4083ED72735B0CB004DDD3B /* LocalizableCustomName.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4083ED92735B0CB004DDD3B /* LocalizableCustomName.strings */; };
 		F40E1436273C06AA00734A0E /* PartialDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40E1435273C06AA00734A0E /* PartialDocument.swift */; };
 		F414A56325EBB87F00D04A80 /* DocumentAnalysisHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */; };
@@ -87,6 +90,9 @@
 		764E0AD328CF274A00F96503 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		764E0AD528CF275000F96503 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		768B017D28D1E54E009A2124 /* CustomLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLoadingIndicator.swift; sourceTree = "<group>"; };
+		833652FC28F0308B00B5A1CE /* CustomHelpBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHelpBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
+		833652FE28F0330B00B5A1CE /* CustomHelpBottomNavigationBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomHelpBottomNavigationBar.xib; sourceTree = "<group>"; };
+		8336530028F0334C00B5A1CE /* CustomHelpBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHelpBottomNavigationBar.swift; sourceTree = "<group>"; };
 		F4083ED82735B0CB004DDD3B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F4083EDA2735B0CD004DDD3B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F40E1435273C06AA00734A0E /* PartialDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PartialDocument.swift; path = GiniBankSDKExample/PartialDocument.swift; sourceTree = SOURCE_ROOT; };
@@ -180,6 +186,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8336530228F0335A00B5A1CE /* HelpBottomNavigationBar */ = {
+			isa = PBXGroup;
+			children = (
+				833652FC28F0308B00B5A1CE /* CustomHelpBottomNavigationBarAdapter.swift */,
+				833652FE28F0330B00B5A1CE /* CustomHelpBottomNavigationBar.xib */,
+				8336530028F0334C00B5A1CE /* CustomHelpBottomNavigationBar.swift */,
+			);
+			path = HelpBottomNavigationBar;
+			sourceTree = "<group>";
+		};
 		F439C210273555B60010D77D /* Packages */ = {
 			isa = PBXGroup;
 			children = (
@@ -315,6 +331,7 @@
 		F490C7E325DE873900D8CA6F /* GiniBankSDKExample */ = {
 			isa = PBXGroup;
 			children = (
+				8336530228F0335A00B5A1CE /* HelpBottomNavigationBar */,
 				4C84B5DE2653FFF000853F33 /* Example Swift.entitlements */,
 				F441DC0025E51F4B00AAB09A /* ComponentAPI */,
 				F441DC9325E53A6F00AAB09A /* Extensions */,
@@ -468,6 +485,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F45D7F172800583300C73C63 /* result_Gini_invoice_example.json in Resources */,
+				833652FF28F0330B00B5A1CE /* CustomHelpBottomNavigationBar.xib in Resources */,
 				764E0AD228CF274A00F96503 /* InfoPlist.strings in Resources */,
 				F45D7F192800583800C73C63 /* Gini_invoice_example.pdf in Resources */,
 				F426ABF1289AB1D7007F4EB6 /* Colors.xcassets in Resources */,
@@ -552,9 +570,11 @@
 				F4DF824F25EFA8ED00A8D755 /* ScreenAPICoordinator.swift in Sources */,
 				F4AD00C225DED43200C34E15 /* SelectAPIViewController.swift in Sources */,
 				F4AD00CC25DFDB4E00C34E15 /* CredentialsManager.swift in Sources */,
+				8336530128F0334C00B5A1CE /* CustomHelpBottomNavigationBar.swift in Sources */,
 				F414A56325EBB87F00D04A80 /* DocumentAnalysisHelper.swift in Sources */,
 				F4BB7CF226984E5D003FD77E /* CustomMenuItemViewController.swift in Sources */,
 				F4AD00FE25DFDF4500C34E15 /* ComponentAPIOnboardingViewController.swift in Sources */,
+				833652FD28F0308B00B5A1CE /* CustomHelpBottomNavigationBarAdapter.swift in Sources */,
 				F4E0218827BD349A0042D000 /* Amount.swift in Sources */,
 				F4AD00D625DFDC8100C34E15 /* SettingsViewController.swift in Sources */,
 				F44AD25E25F2443200668B0C /* GiniButton.swift in Sources */,
