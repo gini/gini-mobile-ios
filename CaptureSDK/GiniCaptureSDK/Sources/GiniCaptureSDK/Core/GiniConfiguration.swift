@@ -224,50 +224,6 @@ import UIKit
     @objc public var customNavigationController : UINavigationController? = nil
     
     /**
-     Sets the tint color of the navigation bar in all screens of the Gini Capture SDK to
-     the globally specified color or to a default color.
-     */
-    @objc public var navigationBarTintColor = UINavigationBar.appearance().barTintColor ?? UINavigationBar.appearance().barTintColor ?? GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.dark2).uiColor()
-    
-    /**
-     Sets the tint color of all navigation items in all screens of the Gini Capture SDK to
-     the globally specified color.
-     
-     - note: Screen API only.
-     */
-    @objc public var navigationBarItemTintColor = UINavigationBar.appearance().tintColor
-    
-    /**
-     Sets the font of all navigation items in all screens of the Gini Capture SDK to
-     the globally specified font or a default font.
-     
-     - note: Screen API only.
-     */
-    @objc public var navigationBarItemFont = UIBarButtonItem.appearance()
-        .titleTextAttributes(for: .normal).dictionary?[NSAttributedString.Key.font.rawValue] as? UIFont ??
-        UIFont.systemFont(ofSize: 16, weight: .bold)
-    
-    /**
-     Sets the title color in the navigation bar in all screens of the Gini Capture SDK to
-     the globally specified color or to a default color.
-     
-     - note: Screen API only.
-     */
-    @objc public var navigationBarTitleColor = UINavigationBar
-        .appearance()
-        .titleTextAttributes?[NSAttributedString.Key.foregroundColor] as? UIColor ?? .white
-    
-    /**
-     Sets the title font in the navigation bar in all screens of the Gini Capture SDK to
-     the globally specified font or to a default font.
-
-     - note: Screen API only.
-     */
-    @objc public var navigationBarTitleFont = UINavigationBar
-        .appearance()
-        .titleTextAttributes?[NSAttributedString.Key.font] as? UIFont ?? UIFont.systemFont(ofSize: 16, weight: .regular)
-    
-    /**
      Sets the tint color of the UIDocumentPickerViewController navigation bar.
      
      - note: Use only if you have a custom `UIAppearance` for your UINavigationBar
