@@ -86,6 +86,10 @@ final class AppCoordinator: Coordinator {
         // Custom loading indicator customization example
 //        let customLoadingIndicator = CustomLoadingIndicator()
 //        configuration.analysisScreenLoadingIndicator = customLoadingIndicator
+        // Custom navigation view controller
+//        let navigationViewController = UINavigationController()
+//        navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
+//        configuration.customNavigationController = navigationViewController
         
        return configuration
     }()
