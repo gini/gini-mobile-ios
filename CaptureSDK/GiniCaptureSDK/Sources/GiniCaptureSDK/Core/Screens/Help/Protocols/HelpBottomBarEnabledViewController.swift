@@ -8,7 +8,7 @@
 import UIKit
 
 protocol HelpBottomBarEnabledViewController: UIViewController {
-    var bottomNavigationBar: HelpBottomNavigationBar? {get set}
+    var bottomNavigationBar: UIView? {get set}
     var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter? {get set}
 
     func configureBottomNavigationBar(
@@ -24,7 +24,7 @@ extension HelpBottomBarEnabledViewController {
     }
 
     private func configureBottomNavigationBarConstraints(
-        bottomNavigationBar: HelpBottomNavigationBar,
+        bottomNavigationBar: UIView,
         superView: UIView,
         under view: UIView
     ) {
@@ -45,6 +45,7 @@ extension HelpBottomBarEnabledViewController {
         configuration: GiniConfiguration,
         under underView: UIView) {
         if configuration.bottomNavigationBarEnabled {
+            
             configureCustomTopNavigationBar()
             if let bottomBarAdapter = configuration.helpNavigationBarBottomAdapter {
                 navigationBarBottomAdapter = bottomBarAdapter
@@ -55,17 +56,13 @@ extension HelpBottomBarEnabledViewController {
             navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
                 self?.navigationController?.popViewController(animated: true)
             }
-
-            if let bottomBar =
-                navigationBarBottomAdapter?.injectedView() as? HelpBottomNavigationBar {
-                bottomNavigationBar = bottomBar
-                guard let bottomNavigationBar = bottomNavigationBar else {
-                    return
-                }
+            if let adapter = navigationBarBottomAdapter {
+                let injectedView = adapter.injectedView()
                 configureBottomNavigationBarConstraints(
-                    bottomNavigationBar: bottomNavigationBar,
+                    bottomNavigationBar: injectedView,
                     superView: view,
                     under: underView)
+                bottomNavigationBar = injectedView
             }
         }
     }

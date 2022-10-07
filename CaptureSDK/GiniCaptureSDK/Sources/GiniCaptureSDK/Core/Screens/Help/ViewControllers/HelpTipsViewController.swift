@@ -15,7 +15,7 @@ import UIKit
  */
 
 public final class HelpTipsViewController: UIViewController, HelpBottomBarEnabledViewController {
-    public var bottomNavigationBar: HelpBottomNavigationBar?
+    public var bottomNavigationBar: UIView?
     public var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
 
     private lazy var tableView: UITableView = {
