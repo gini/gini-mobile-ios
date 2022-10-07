@@ -47,7 +47,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
             "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
             // new *.gini.net public key, active from around June 2020
             "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo="
-        ]],
+        ]]
     ]] as [String: Any]
 
     init(configuration: GiniConfiguration,
@@ -71,7 +71,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
                                                         documentMetadata: documentMetadata,
                                                         api: .default,
                                                         trackingDelegate: self)
-        
 // MARK: - Screen API with custom networking
 //        let viewController = GiniCapture.viewController(importedDocuments: visionDocuments,
 //                                                        configuration: visionConfiguration,
@@ -80,8 +79,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
 //                                                        trackingDelegate: trackingDelegate,
 //                                                        networkingService: self)
         screenAPIViewController = RootNavigationController(rootViewController: viewController)
-        screenAPIViewController.navigationBar.barTintColor = visionConfiguration.navigationBarTintColor
-        screenAPIViewController.navigationBar.tintColor = visionConfiguration.navigationBarTitleColor
         screenAPIViewController.setNavigationBarHidden(true, animated: false)
         screenAPIViewController.delegate = self
         screenAPIViewController.interactivePopGestureRecognizer?.delegate = nil
@@ -93,7 +90,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
         } else {
             print("❓ Showing results for unknown Gini Bank API document")
         }
-        
         let customResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "resultScreen") as? ResultTableViewController)!
         customResultsScreen.result = results
