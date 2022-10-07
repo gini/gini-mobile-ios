@@ -162,6 +162,9 @@ public final class ReviewViewController: UIViewController {
         }
     }
 
+    // This is needed in order to "catch" the screen rotation on the modally presented viewcontroller
+    private var previousScreenHeight: CGFloat = 0
+
     // MARK: - Init
 
     public init(pages: [GiniCapturePage], giniConfiguration: GiniConfiguration) {
@@ -209,7 +212,17 @@ extension ReviewViewController {
             self.cellSize = calculatedCellSize()
 
             DispatchQueue.main.async {
+                guard self.previousScreenHeight != UIScreen.main.bounds.height else { return }
+                self.setCellStatus(for: self.currentPage, isActive: false, animated: false)
                 self.collectionView.reloadData()
+
+                self.collectionView.scrollToItem(at: IndexPath(row: self.currentPage, section: 0),
+                                                  at: .centeredHorizontally, animated: true)
+
+                self.previousScreenHeight = UIScreen.main.bounds.height
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    self.setCellStatus(for: self.currentPage, isActive: true, animated: false)
+                }
             }
         }
     }
