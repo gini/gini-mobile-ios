@@ -257,6 +257,10 @@ extension ReviewViewController {
 
 extension ReviewViewController {
     private func addConstraints() {
+        let buttonLeadingConstraint = addPagesButton.leadingAnchor.constraint(equalTo: processButton.trailingAnchor,
+                                                                              constant: 13)
+        buttonLeadingConstraint.priority = UILayoutPriority.defaultLow
+
         NSLayoutConstraint.activate([
             tipLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             tipLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -278,7 +282,8 @@ extension ReviewViewController {
                                                   constant: -50),
 
             addPagesButton.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
-            addPagesButton.leadingAnchor.constraint(equalTo: processButton.trailingAnchor, constant: 8)
+            buttonLeadingConstraint,
+            addPagesButton.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -4)
         ])
     }
 
