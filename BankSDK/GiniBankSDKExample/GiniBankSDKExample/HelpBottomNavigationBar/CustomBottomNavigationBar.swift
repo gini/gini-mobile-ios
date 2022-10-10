@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CustomHelpBottomNavigationBar: UIView {
+class CustomBottomNavigationBar: UIView {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var backButton: UIButton!
