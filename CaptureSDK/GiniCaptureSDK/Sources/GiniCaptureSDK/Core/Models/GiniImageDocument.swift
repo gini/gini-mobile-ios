@@ -49,11 +49,17 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
                                                                   deviceOrientation: deviceOrientation,
                                                                   imageSource: imageSource,
                                                                   imageImportMethod: imageImportMethod)
-        
+
         if let dataWithMetadata = metaInformationManager.imageByAddingMetadata() {
             self.data = dataWithMetadata
         } else {
             self.data = data
+        }
+
+        super.init()
+        if let image = UIImage(data: data) {
+            let crop = cropImage(image: image)!
+            self.data = crop.jpegData(compressionQuality: 1)!
         }
         
     }
@@ -67,6 +73,20 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
         } else {
             self.previewImage = rotatedImage
         }
+    }
+
+    private func cropImage(image: UIImage) -> UIImage? {
+        guard let cgImage = image.cgImage else { return image }
+        var updatedRect: CGRect
+        if image.size.width < image.size.height {
+            updatedRect = CGRect(x: 250, y: 500, width: 2700, height: 2000)
+        } else {
+            updatedRect = CGRect(x: 500, y: 250, width: 2000, height: 2700)
+        }
+
+        guard let croppedCGImage = cgImage.cropping(to: updatedRect) else { return image }
+        let newImagew = UIImage(cgImage: croppedCGImage, scale: 1, orientation: image.imageOrientation)
+        return newImagew
     }
 }
 
