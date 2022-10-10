@@ -12,17 +12,20 @@ extension UINavigationController {
     public func applyStyle(withConfiguration configuration: GiniConfiguration) {
         let titleTextAttrubutes = [NSAttributedString.Key.font:
             configuration.textStyleFonts[.bodyBold] as Any, NSAttributedString.Key.foregroundColor: GiniColor(light: UIColor.GiniCapture.dark1, dark: UIColor.GiniCapture.light1).uiColor()]
-        if #available(iOS 15.0, *) {
+        let navigationBackgroundColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.dark2).uiColor()
+        if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.dark2).uiColor()
+            appearance.backgroundColor = navigationBackgroundColor
             appearance.titleTextAttributes = titleTextAttrubutes
+            appearance.shadowColor = navigationBackgroundColor
             navigationBar.standardAppearance = appearance
             navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
         } else {
-            self.navigationBar.barTintColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.dark2).uiColor()
-            self.navigationBar.titleTextAttributes = titleTextAttrubutes
+            navigationBar.barTintColor = navigationBackgroundColor
+            navigationBar.titleTextAttributes = titleTextAttrubutes
+            navigationBar.setValue(true, forKey: "hidesShadow")
         }
-        self.navigationBar.tintColor = UIColor.GiniCapture.accent1
+        navigationBar.tintColor = UIColor.GiniCapture.accent1
     }
 }
