@@ -48,8 +48,9 @@ final class AppCoordinator: Coordinator {
             }
             return CustomDocumentValidationResult.success()
         }
-//        configuration.bottomNavigationBarEnabled = true
-//        configuration.helpNavigationBarBottomAdapter = CustomHelpBottomNavigationBarAdapter()
+        //configuration.bottomNavigationBarEnabled = true
+        //configuration.noResultNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
+        //configuration.helpNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
 //        let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
 //        configuration.customMenuItems = [customMenuItem]
 //        configuration.albumsScreenSelectMorePhotosTextColor = GiniColor(lightModeColor: .systemBlue, darkModeColor: .systemBlue)
