@@ -59,8 +59,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
 //                                                        trackingDelegate: trackingDelegate,
 //                                                        networkingService: self)
         screenAPIViewController = RootNavigationController(rootViewController: viewController)
-        screenAPIViewController.navigationBar.barTintColor = visionConfiguration.navigationBarTintColor
-        screenAPIViewController.navigationBar.tintColor = visionConfiguration.navigationBarTitleColor
         screenAPIViewController.setNavigationBarHidden(true, animated: false)
         screenAPIViewController.delegate = self
         screenAPIViewController.interactivePopGestureRecognizer?.delegate = nil
@@ -79,9 +77,11 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
 
         DispatchQueue.main.async { [weak self] in
             if #available(iOS 15.0, *) {
-                let config = self?.visionConfiguration
-                self?.screenAPIViewController.applyStyle(withConfiguration: config ?? GiniConfiguration())
-            }
+                if let config = self?.visionConfiguration,
+                 config.customNavigationController == nil {
+                    self?.screenAPIViewController.applyStyle(withConfiguration: config)
+                }
+             }
             self?.screenAPIViewController.setNavigationBarHidden(false, animated: false)
             self?.screenAPIViewController.pushViewController(customResultsScreen, animated: true)
         }

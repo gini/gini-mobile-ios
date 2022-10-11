@@ -36,8 +36,6 @@ final class AppCoordinator: Coordinator {
         configuration.qrCodeScanningEnabled = true
         configuration.multipageEnabled = true
         configuration.flashToggleEnabled = true
-        configuration.navigationBarItemTintColor = .white
-        configuration.navigationBarTintColor = Colors.Gini.blue
         configuration.localizedStringsTableName = "LocalizableCustomName"
         configuration.customDocumentValidations = { document in
             // As an example of custom document validation, we add a more strict check for file size
@@ -89,6 +87,10 @@ final class AppCoordinator: Coordinator {
         // Custom loading indicator customization example
 //        let customLoadingIndicator = CustomLoadingIndicator()
 //        configuration.analysisScreenLoadingIndicator = customLoadingIndicator
+        // Custom navigation view controller
+//        let navigationViewController = UINavigationController()
+//        navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
+//        configuration.customNavigationController = navigationViewController
         
        return configuration
     }()
