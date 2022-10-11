@@ -552,6 +552,11 @@ import UIKit
     public var bottomNavigationBarEnabled: Bool = false
     
     /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the help screens.
+     */
+    public var helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
+    
+    /**
       * Set an adapter implementation to show a custom bottom navigation bar on the camera screen.
      */
     public var cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
