@@ -18,17 +18,21 @@ import UIKit
 public protocol HelpMenuViewControllerDelegate: AnyObject {
     func help(_ menuViewController: HelpMenuViewController, didSelect item: HelpMenuItem)
 }
+
 /**
  The `HelpMenuViewController` provides explanations on how to take better pictures, how to
  use the _Open with_ feature and which formats are supported by the Gini Capture SDK. 
  */
 
-final public class HelpMenuViewController: UIViewController {
+public final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewController {
 
     public weak var delegate: HelpMenuViewControllerDelegate?
     private (set) var dataSource: HelpMenuDataSource
     private let giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 44
+    public var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
+    public var bottomNavigationBar: UIView?
+    private var bottomConstraint: NSLayoutConstraint?
 
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -86,10 +90,22 @@ final public class HelpMenuViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
     }
 
+    private func configureMainView() {
+        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
+        view.addSubview(tableView)
+        title = NSLocalizedStringPreferredFormat("ginicapture.help.menu.title", comment: "Help Import screen title")
+        view.layoutSubviews()
+        configureBottomNavigationBar(
+            configuration: giniConfiguration,
+            under: tableView)
+    }
+
     private func configureConstraints() {
+        if giniConfiguration.bottomNavigationBarEnabled == false {
+            NSLayoutConstraint.activate([tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
+        }
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin)
         ])
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
@@ -106,13 +122,6 @@ final public class HelpMenuViewController: UIViewController {
                     constant: -GiniMargins.margin)
             ])
         }
-        view.layoutSubviews()
-    }
-
-    private func configureMainView() {
-        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
-        view.addSubview(tableView)
-        title = NSLocalizedStringPreferredFormat("ginicapture.help.menu.title", comment: "Help Import screen title")
         view.layoutSubviews()
     }
 
