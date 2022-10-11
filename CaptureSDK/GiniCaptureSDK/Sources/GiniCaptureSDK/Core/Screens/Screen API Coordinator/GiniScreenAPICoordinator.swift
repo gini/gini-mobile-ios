@@ -165,18 +165,13 @@ extension GiniScreenAPICoordinator {
     func addToDocuments(new pages: [GiniCapturePage]) {
         self.pages.append(contentsOf: pages)
         
-        if giniConfiguration.multipageEnabled, pages.type == .image {
-            refreshReviewNextButton(with: self.pages)
+        if pages.type == .image {
             reviewViewController.updateCollections(with: self.pages)
         }
     }
     
     func removeFromDocuments(document: GiniCaptureDocument) {
         pages.remove(document)
-        
-        if giniConfiguration.multipageEnabled, pages.type == .image {
-            refreshReviewNextButton(with: pages)
-        }
     }
     
     func updateDocument(for document: GiniCaptureDocument) {
@@ -192,7 +187,6 @@ extension GiniScreenAPICoordinator {
         }
         
         if giniConfiguration.multipageEnabled, pages.type == .image {
-            refreshReviewNextButton(with: pages)
             reviewViewController.updateCollections(with: pages)
         }
     }
