@@ -10,7 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="C2e-DR-fFB" customClass="HelpBottomNavigationBar" customModule="GiniCaptureSDK">
+        <view contentMode="scaleToFill" id="C2e-DR-fFB" customClass="BackButtonBottomNavigationBar" customModule="GiniCaptureSDK">
             <rect key="frame" x="0.0" y="0.0" width="458" height="114"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -28,7 +28,7 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="backButton" destination="vSv-hD-64s" id="UsX-qV-dc9"/>
+                <outlet property="backButton" destination="vSv-hD-64s" id="7uc-uR-7js"/>
             </connections>
             <point key="canvasLocation" x="86.153846153846146" y="-245.260663507109"/>
         </view>

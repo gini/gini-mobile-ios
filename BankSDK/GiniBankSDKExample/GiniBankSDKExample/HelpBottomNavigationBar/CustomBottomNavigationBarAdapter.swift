@@ -8,7 +8,7 @@
 import UIKit
 import GiniCaptureSDK
 
-final class CustomHelpBottomNavigationBarAdapter: HelpBottomNavigationBarAdapter {
+final class CustomBottomNavigationBarAdapter: NoResultBottomNavigationBarAdapter, HelpBottomNavigationBarAdapter {
     private var backButtonCallback: (() -> Void)?
 
     func setBackButtonClickedActionCallback(_ callback: @escaping () -> Void) {
@@ -16,11 +16,11 @@ final class CustomHelpBottomNavigationBarAdapter: HelpBottomNavigationBarAdapter
     }
 
     private func loadNib() -> UIView {
-        return Bundle(for: CustomHelpBottomNavigationBar.self).loadNibNamed(String(describing: CustomHelpBottomNavigationBar.self), owner: nil, options: nil)![0] as! CustomHelpBottomNavigationBar
+        return Bundle(for: CustomBottomNavigationBar.self).loadNibNamed(String(describing: CustomBottomNavigationBar.self), owner: nil, options: nil)![0] as! CustomBottomNavigationBar
     }
     
     func injectedView() -> UIView {
-        if let navigationBarView = loadNib() as? CustomHelpBottomNavigationBar {
+        if let navigationBarView = loadNib() as? CustomBottomNavigationBar {
             navigationBarView.backButton.addTarget(
                 self,
                 action: #selector(backButtonClicked),
