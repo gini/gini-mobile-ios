@@ -37,7 +37,6 @@ final class ReviewZoomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        modalPresentationStyle = .fullScreen
         setupView()
         setupLayout()
         setupImage(page.document.previewImage)
