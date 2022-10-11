@@ -88,10 +88,29 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         cameraViewController.delegate = self
         cameraViewController.title = .localized(resource: NavigationBarStrings.cameraTitle)
         
-        cameraViewController.setupNavigationItem(usingResources: closeButtonResource,
-                                                 selector: #selector(back),
-                                                 position: .left,
-                                                 target: self)
+        let cancel = GiniPreferredButtonResource(
+            image: nil, title: "ginicapture.navigationbar.analysis.back",
+                                    comment: "Button title in the navigation bar for the cancel button on the camera screen",
+                                    configEntry: self.giniConfiguration.navigationBarCameraTitleHelpButton)
+        
+        if pages.count > 0 {
+            let backToReviewMenuButtonResource =
+                GiniPreferredButtonResource(image: "arrowBack",
+                                            title: "ginicapture.navigationbar.analysis.backToReview",
+                                            comment: "Button title in the navigation bar for the back button on the camera screen when there are images selected",
+                                            configEntry: self.giniConfiguration.navigationBarHelpScreenTitleBackToMenuButton)
+            cameraViewController.setupNavigationItem(
+                usingResources: backToReviewMenuButtonResource,
+                selector: #selector(showReview),
+                position: .left,
+                target: self)
+        } else {
+            cameraViewController.setupNavigationItem(
+                usingResources: cancel,
+                selector: #selector(back),
+                position: .left,
+                target: self)
+        }
         
         cameraViewController.setupNavigationItem(usingResources: helpButtonResource,
                                                  selector: #selector(showHelpMenuScreen),

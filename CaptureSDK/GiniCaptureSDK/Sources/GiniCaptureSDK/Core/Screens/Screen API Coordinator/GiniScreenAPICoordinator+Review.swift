@@ -16,7 +16,7 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
         visionDelegate?.didCancelReview(for: page.document)
         
         if pages.isEmpty {
-            closeScreen()
+            backToCamera()
         }
     }
 
@@ -27,7 +27,7 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
     }
     
     public func reviewDidTapAddImage(_ controller: ReviewViewController) {
-        closeScreen()
+        backToCamera()
     }
 
     func createReviewScreenContainer(with pages: [GiniCapturePage])
@@ -35,8 +35,12 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
             let vc = ReviewViewController(pages: pages,
                                           giniConfiguration: giniConfiguration)
             vc.delegate = self
-            vc.setupNavigationItem(usingResources: backButtonResource,
-                                   selector: #selector(closeScreen),
+            let cancel = GiniPreferredButtonResource(
+                image: nil, title: "ginicapture.navigationbar.analysis.back",
+                                        comment: "Button title in the navigation bar for the cancel button on the review screen",
+                                        configEntry: self.giniConfiguration.navigationBarCameraTitleHelpButton)
+            vc.setupNavigationItem(usingResources: cancel,
+                                   selector: #selector(showReview),
                                    position: .left,
                                    target: self)
 
@@ -49,18 +53,15 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
         if !giniConfiguration.multipageEnabled {
             removeFromDocuments(document: pages.first!.document)
         }
-
-        self.screenAPINavigationController.popViewController(animated: true)
+        
+        screenAPINavigationController.dismiss(animated: true)
     }
 
     public func reviewDidTapProcess(_ viewController: ReviewViewController) {
         showAnalysisScreen()
     }
     
-    func showReview() {
-        if !screenAPINavigationController.viewControllers.contains(reviewViewController) {
-            screenAPINavigationController.pushViewController(reviewViewController,
-                                                             animated: true)
-        }
+    @objc func showReview() {
+        screenAPINavigationController.popToRootViewController(animated: true)
     }
 }

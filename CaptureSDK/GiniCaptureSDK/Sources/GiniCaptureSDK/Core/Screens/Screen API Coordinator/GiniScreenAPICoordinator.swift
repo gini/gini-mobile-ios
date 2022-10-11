@@ -98,7 +98,10 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
         super.init()
     }
     
-    public func start(withDocuments documents: [GiniCaptureDocument]?) -> UIViewController {
+    public func start(
+        withDocuments documents: [GiniCaptureDocument]?,
+        animated: Bool = false
+    ) -> UIViewController {
         var viewControllers: [UIViewController] = []
 
         if let documents = documents, !documents.isEmpty {
@@ -131,27 +134,30 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
                 fatalError(errorMessage)
             }
         } else {
-            self.cameraViewController = self.createCameraViewController()
-            viewControllers = [self.cameraViewController!]
+            let cameraViewController = createCameraViewController()
+            viewControllers = [reviewViewController, cameraViewController]
         }
 
-        self.screenAPINavigationController.setViewControllers(viewControllers, animated: false)
+        self.screenAPINavigationController.setViewControllers(viewControllers, animated: animated)
         return ContainerNavigationController(rootViewController: self.screenAPINavigationController,
                                              parent: self)
     }
     
     private func initialViewControllers(with pages: [GiniCapturePage]) -> [UIViewController] {
         if pages.type == .image {
-            self.cameraViewController = self.createCameraViewController()
+            cameraViewController = createCameraViewController()
+            guard let cameraViewController = cameraViewController else {
+                return []
+            }
             if giniConfiguration.multipageEnabled {
-                self.cameraViewController?
+                cameraViewController
                     .replaceCapturedStackImages(with: pages.compactMap { $0.document.previewImage })
             }
 
-            self.reviewViewController =
+            reviewViewController =
                 createReviewScreenContainer(with: pages)
 
-            return [self.cameraViewController!, self.reviewViewController]
+            return [reviewViewController, cameraViewController]
         } else {
             self.analysisViewController = createAnalysisScreen(withDocument: pages[0].document)
             return [self.analysisViewController!]
@@ -205,7 +211,6 @@ extension GiniScreenAPICoordinator {
 extension GiniScreenAPICoordinator {
     
     @objc func back() {
-        
         switch screenAPINavigationController.topViewController {
         case is CameraViewController:
             trackingDelegate?.onCameraScreenEvent(event: Event(type: .exit))
@@ -214,11 +219,10 @@ extension GiniScreenAPICoordinator {
         default:
             break
         }
-        
-        if self.screenAPINavigationController.viewControllers.count == 1 {
-            self.closeScreenApi()
-        } else {
+        if pages.count > 0 {
             self.screenAPINavigationController.popViewController(animated: true)
+        } else {
+            self.closeScreenApi()
         }
     }
     
@@ -272,9 +276,7 @@ extension GiniScreenAPICoordinator {
     }
     
     @objc func backToCamera() {
-        if let cameraViewController = cameraViewController {
-            screenAPINavigationController.popToViewController(cameraViewController, animated: true)
-        }
+        start(withDocuments: nil, animated: true)
     }
 }
 
