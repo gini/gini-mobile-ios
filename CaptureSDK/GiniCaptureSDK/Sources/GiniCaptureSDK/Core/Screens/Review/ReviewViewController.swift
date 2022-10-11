@@ -55,6 +55,15 @@ public protocol ReviewViewControllerDelegate: AnyObject {
     func review(_ viewController: ReviewViewController, didSelectPage page: GiniCapturePage)
 }
 
+/**
+  The `ReviewViewController` provides a custom review screen. The user has the option to check
+  for blurriness and document orientation. If the result is not satisfying, the user can return to the camera screen.
+  The photo should be uploaded to Gini’s backend immediately after having been taken as it is safe to assume that
+  in most cases the photo is good enough to be processed further.
+
+  - note: Component API only.
+  */
+
 public final class ReviewViewController: UIViewController {
 
     /**
@@ -170,6 +179,9 @@ public final class ReviewViewController: UIViewController {
         }
     }
 
+    // This is needed in order to "catch" the screen rotation on the modally presented viewcontroller
+    private var previousScreenHeight: CGFloat = 0
+
     // MARK: - Init
 
     public init(pages: [GiniCapturePage], giniConfiguration: GiniConfiguration) {
@@ -189,17 +201,20 @@ extension ReviewViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
 
-        title = NSLocalizedStringPreferredFormat("ginicapture.multipagereview.title",
-                                                 comment: "Screen title")
-        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
-        view.addSubview(tipLabel)
-        view.addSubview(collectionView)
-        view.addSubview(pageControl)
-        view.addSubview(processButton)
-        view.addSubview(addPagesButton)
-        edgesForExtendedLayout = []
-
+        setupView()
         addConstraints()
+    }
+
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !giniConfiguration.multipageEnabled || pages.count == 1 {
+            setCellStatus(for: 0, isActive: true)
+        }
+    }
+
+    public override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        collectionView.collectionViewLayout.invalidateLayout()
     }
 
     public override func viewDidLayoutSubviews() {
@@ -210,9 +225,31 @@ extension ReviewViewController {
             self.cellSize = calculatedCellSize()
 
             DispatchQueue.main.async {
+                guard self.previousScreenHeight != UIScreen.main.bounds.height else { return }
+                self.setCellStatus(for: self.currentPage, isActive: false, animated: false)
                 self.collectionView.reloadData()
+
+                self.collectionView.scrollToItem(at: IndexPath(row: self.currentPage, section: 0),
+                                                  at: .centeredHorizontally, animated: true)
+
+                self.previousScreenHeight = UIScreen.main.bounds.height
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    self.setCellStatus(for: self.currentPage, isActive: true, animated: false)
+                }
             }
         }
+    }
+
+    private func setupView() {
+        title = NSLocalizedStringPreferredFormat("ginicapture.multipagereview.title",
+                                                 comment: "Screen title")
+        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
+        view.addSubview(tipLabel)
+        view.addSubview(collectionView)
+        view.addSubview(pageControl)
+        view.addSubview(processButton)
+        view.addSubview(addPagesButton)
+        edgesForExtendedLayout = []
     }
 
     /**
@@ -227,6 +264,7 @@ extension ReviewViewController {
 
         // Update cell status only if pages not empty and view is visible
         if pages.isNotEmpty && viewIfLoaded?.window != nil {
+            guard pages.count > 1 else { return }
             DispatchQueue.main.async {
                 self.setCellStatus(for: self.currentPage, isActive: false, animated: false)
 
@@ -245,6 +283,10 @@ extension ReviewViewController {
 
 extension ReviewViewController {
     private func addConstraints() {
+        let buttonLeadingConstraint = addPagesButton.leadingAnchor.constraint(equalTo: processButton.trailingAnchor,
+                                                                              constant: 13)
+        buttonLeadingConstraint.priority = UILayoutPriority.defaultLow
+
         NSLayoutConstraint.activate([
             tipLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             tipLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -266,7 +308,8 @@ extension ReviewViewController {
                                                   constant: -50),
 
             addPagesButton.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
-            addPagesButton.leadingAnchor.constraint(equalTo: processButton.trailingAnchor, constant: 8)
+            buttonLeadingConstraint,
+            addPagesButton.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -4)
         ])
     }
 
