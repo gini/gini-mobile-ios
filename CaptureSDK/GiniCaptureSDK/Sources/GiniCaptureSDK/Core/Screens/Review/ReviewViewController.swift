@@ -47,6 +47,15 @@ public protocol ReviewViewControllerDelegate: AnyObject {
     func reviewDidTapProcess(_ viewController: ReviewViewController)
 }
 
+/**
+  The `ReviewViewController` provides a custom review screen. The user has the option to check
+  for blurriness and document orientation. If the result is not satisfying, the user can return to the camera screen.
+  The photo should be uploaded to Gini’s backend immediately after having been taken as it is safe to assume that
+  in most cases the photo is good enough to be processed further.
+
+  - note: Component API only.
+  */
+
 public final class ReviewViewController: UIViewController {
 
     /**
@@ -184,16 +193,7 @@ extension ReviewViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
 
-        title = NSLocalizedStringPreferredFormat("ginicapture.multipagereview.title",
-                                                 comment: "Screen title")
-        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
-        view.addSubview(tipLabel)
-        view.addSubview(collectionView)
-        view.addSubview(pageControl)
-        view.addSubview(processButton)
-        view.addSubview(addPagesButton)
-        edgesForExtendedLayout = []
-
+        setupView()
         addConstraints()
     }
 
@@ -202,6 +202,11 @@ extension ReviewViewController {
         if !giniConfiguration.multipageEnabled || pages.count == 1 {
             setCellStatus(for: 0, isActive: true)
         }
+    }
+
+    public override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        collectionView.collectionViewLayout.invalidateLayout()
     }
 
     public override func viewDidLayoutSubviews() {
@@ -225,6 +230,18 @@ extension ReviewViewController {
                 }
             }
         }
+    }
+
+    private func setupView() {
+        title = NSLocalizedStringPreferredFormat("ginicapture.multipagereview.title",
+                                                 comment: "Screen title")
+        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
+        view.addSubview(tipLabel)
+        view.addSubview(collectionView)
+        view.addSubview(pageControl)
+        view.addSubview(processButton)
+        view.addSubview(addPagesButton)
+        edgesForExtendedLayout = []
     }
 
     /**
