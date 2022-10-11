@@ -199,7 +199,7 @@ extension ReviewViewController {
 
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if !giniConfiguration.multipageEnabled {
+        if !giniConfiguration.multipageEnabled || pages.count == 1 {
             setCellStatus(for: 0, isActive: true)
         }
     }
@@ -239,6 +239,7 @@ extension ReviewViewController {
 
         // Update cell status only if pages not empty and view is visible
         if pages.isNotEmpty && viewIfLoaded?.window != nil {
+            guard pages.count > 1 else { return }
             DispatchQueue.main.async {
                 self.setCellStatus(for: self.currentPage, isActive: false, animated: false)
 
