@@ -199,7 +199,7 @@ extension ReviewViewController {
 
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if !giniConfiguration.multipageEnabled {
+        if !giniConfiguration.multipageEnabled || pages.count == 1 {
             setCellStatus(for: 0, isActive: true)
         }
     }
@@ -239,6 +239,7 @@ extension ReviewViewController {
 
         // Update cell status only if pages not empty and view is visible
         if pages.isNotEmpty && viewIfLoaded?.window != nil {
+            guard pages.count > 1 else { return }
             DispatchQueue.main.async {
                 self.setCellStatus(for: self.currentPage, isActive: false, animated: false)
 
@@ -257,6 +258,10 @@ extension ReviewViewController {
 
 extension ReviewViewController {
     private func addConstraints() {
+        let buttonLeadingConstraint = addPagesButton.leadingAnchor.constraint(equalTo: processButton.trailingAnchor,
+                                                                              constant: 13)
+        buttonLeadingConstraint.priority = UILayoutPriority.defaultLow
+
         NSLayoutConstraint.activate([
             tipLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             tipLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -278,7 +283,8 @@ extension ReviewViewController {
                                                   constant: -50),
 
             addPagesButton.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
-            addPagesButton.leadingAnchor.constraint(equalTo: processButton.trailingAnchor, constant: 8)
+            buttonLeadingConstraint,
+            addPagesButton.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -4)
         ])
     }
 
