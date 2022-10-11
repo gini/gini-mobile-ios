@@ -45,7 +45,6 @@ extension HelpBottomBarEnabledViewController {
         configuration: GiniConfiguration,
         under underView: UIView) {
         if configuration.bottomNavigationBarEnabled {
-            
             configureCustomTopNavigationBar()
             if let bottomBarAdapter = configuration.helpNavigationBarBottomAdapter {
                 navigationBarBottomAdapter = bottomBarAdapter
