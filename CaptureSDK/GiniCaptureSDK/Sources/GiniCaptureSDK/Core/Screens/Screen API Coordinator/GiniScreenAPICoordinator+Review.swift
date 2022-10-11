@@ -40,7 +40,7 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
                                         comment: "Button title in the navigation bar for the cancel button on the review screen",
                                         configEntry: self.giniConfiguration.navigationBarCameraTitleHelpButton)
             vc.setupNavigationItem(usingResources: cancel,
-                                   selector: #selector(showReview),
+                                   selector: #selector(closeScreen),
                                    position: .left,
                                    target: self)
 
@@ -49,11 +49,6 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
     
     @objc fileprivate func closeScreen() {
         trackingDelegate?.onReviewScreenEvent(event: Event(type: .back))
-
-        if !giniConfiguration.multipageEnabled {
-            removeFromDocuments(document: pages.first!.document)
-        }
-        
         screenAPINavigationController.dismiss(animated: true)
     }
 
