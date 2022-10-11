@@ -216,13 +216,18 @@ extension GiniScreenAPICoordinator {
             trackingDelegate?.onCameraScreenEvent(event: Event(type: .exit))
         case is AnalysisViewController:
             trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .cancel))
+            screenAPINavigationController.dismiss(animated: true)
         default:
             break
         }
         if pages.count > 0 {
-            self.screenAPINavigationController.popViewController(animated: true)
+            if screenAPINavigationController.viewControllers.count > 1 {
+                screenAPINavigationController.popViewController(animated: true)
+            } else {
+                screenAPINavigationController.dismiss(animated: true)
+            }
         } else {
-            self.closeScreenApi()
+            closeScreenApi()
         }
     }
     
