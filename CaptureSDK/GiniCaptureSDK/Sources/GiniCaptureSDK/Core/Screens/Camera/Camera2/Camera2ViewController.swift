@@ -180,6 +180,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     }
 
     func configureButtons() {
+        cameraPane.setupAuthorization(isHidden: false)
         configureLeftButtons()
         cameraButtonsViewModel.captureAction = { [weak self] in
             self?.cameraPane.toggleCaptureButtonActivation(state: false)
@@ -225,7 +226,10 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     }
 
     private func configureLeftButtons() {
+        cameraPane.toggleFlashButtonActivation(
+            state: cameraPreviewViewController.isFlashSupported)
         cameraButtonsViewModel.isFlashOn = cameraPreviewViewController.isFlashOn
+        cameraPane.setupFlashButton(state: cameraButtonsViewModel.isFlashOn)
         cameraPane.setupFlashButton(state: giniConfiguration.flashToggleEnabled)
         cameraButtonsViewModel.flashAction = { [weak self] isFlashOn in
             self?.cameraPreviewViewController.isFlashOn = isFlashOn
@@ -323,13 +327,9 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol) {
-        cameraPane.setupAuthorization(isHidden: false)
         cameraFrameImageView.isHidden = false
         cameraPane.toggleCaptureButtonActivation(state: true)
-        cameraPane.toggleFlashButtonActivation(
-            state: camera.isFlashSupported && giniConfiguration.flashToggleEnabled)
-        cameraButtonsViewModel.isFlashOn = camera.isFlashOn
-        cameraPane.setupFlashButton(state: cameraButtonsViewModel.isFlashOn)
+        
     }
 
     func cameraPreview(_ viewController: CameraPreviewViewController,
