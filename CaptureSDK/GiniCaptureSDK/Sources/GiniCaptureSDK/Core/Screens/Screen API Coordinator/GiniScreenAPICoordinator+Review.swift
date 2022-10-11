@@ -45,11 +45,6 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
     
     @objc fileprivate func closeScreen() {
         trackingDelegate?.onReviewScreenEvent(event: Event(type: .back))
-
-        if !giniConfiguration.multipageEnabled {
-            removeFromDocuments(document: pages.first!.document)
-        }
-
         self.screenAPINavigationController.popViewController(animated: true)
     }
 
