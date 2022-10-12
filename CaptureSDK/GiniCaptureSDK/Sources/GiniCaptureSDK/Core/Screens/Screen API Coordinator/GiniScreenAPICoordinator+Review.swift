@@ -7,25 +7,27 @@
 
 import UIKit
 
-// MARK: -  Review screen
+// MARK: - Review screen
 
 extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
-    public func review(_ controller: ReviewViewController,
-                         didDelete page: GiniCapturePage) {
+    public func review(
+        _ controller: ReviewViewController,
+        didDelete page: GiniCapturePage) {
         removeFromDocuments(document: page.document)
         visionDelegate?.didCancelReview(for: page.document)
-        
+
         if pages.isEmpty {
             backToCamera()
         }
     }
 
-    public func review(_ viewController: ReviewViewController,
-                         didTapRetryUploadFor page: GiniCapturePage) {
+    public func review(
+        _ viewController: ReviewViewController,
+        didTapRetryUploadFor page: GiniCapturePage) {
         update(page.document, withError: nil, isUploaded: false)
         visionDelegate?.didCapture(document: page.document, networkDelegate: self)
     }
-    
+
     public func reviewDidTapAddImage(_ controller: ReviewViewController) {
         backToCamera()
     }
@@ -42,7 +44,7 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
 
             return vc
     }
-    
+
     @objc fileprivate func closeScreen() {
         trackingDelegate?.onReviewScreenEvent(event: Event(type: .back))
         screenAPINavigationController.dismiss(animated: true)
@@ -51,7 +53,7 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
     public func reviewDidTapProcess(_ viewController: ReviewViewController) {
         showAnalysisScreen()
     }
-    
+
     @objc func showReview() {
         screenAPINavigationController.popToRootViewController(animated: true)
     }
