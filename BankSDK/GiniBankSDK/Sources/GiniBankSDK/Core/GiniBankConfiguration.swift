@@ -59,50 +59,9 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var multipageEnabled = false
     
     /**
-     Sets the tint color of the navigation bar in all screens of the Gini Bank SDK to
-     the globally specified color or to a default color.
-     
-     - note: Screen API only.
-     */
-    @objc public var navigationBarTintColor = UINavigationBar.appearance().barTintColor ?? Colors.Gini.raspberry
-    
-    /**
-     Sets the tint color of all navigation items in all screens of the Gini Bank SDK to
-     the globally specified color.
-     
-     - note: Screen API only.
-     */
-    @objc public var navigationBarItemTintColor = UINavigationBar.appearance().tintColor
-    
-    /**
-     Sets the font of all navigation items in all screens of the Gini Bank SDK to
-     the globally specified font or a default font.
-     
-     - note: Screen API only.
-     */
-    @objc public var navigationBarItemFont = UIBarButtonItem.appearance()
-        .titleTextAttributes(for: .normal).dictionary?[NSAttributedString.Key.font.rawValue] as? UIFont ??
-        UIFont.systemFont(ofSize: 16, weight: .bold)
-    
-    /**
-     Sets the title color in the navigation bar in all screens of the Gini Bank SDK to
-     the globally specified color or to a default color.
-     
-     - note: Screen API only.
-     */
-    @objc public var navigationBarTitleColor = UINavigationBar
-        .appearance()
-        .titleTextAttributes?[NSAttributedString.Key.foregroundColor] as? UIColor ?? .white
-    
-    /**
-     Sets the title font in the navigation bar in all screens of the Gini Bank SDK to
-     the globally specified font or to a default font.
-
-     - note: Screen API only.
-     */
-    @objc public var navigationBarTitleFont = UINavigationBar
-        .appearance()
-        .titleTextAttributes?[NSAttributedString.Key.font] as? UIFont ?? UIFont.systemFont(ofSize: 16, weight: .regular)
+     Sets the custom navigation view controller as a root view controller for Gini Bank SDK screens.
+    */
+    @objc public var customNavigationController : UINavigationController? = nil
     
     /**
      Sets the tint color of the UIDocumentPickerViewController navigation bar.
@@ -372,6 +331,16 @@ public final class GiniBankConfiguration: NSObject {
      Enable/disable the bottom navigation bar.
      */
     public var bottomNavigationBarEnabled: Bool = false
+    
+    /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the no result screens.
+     */
+    public var noResultNavigationBarBottomAdapter: NoResultBottomNavigationBarAdapter?
+    
+    /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the help screens.
+     */
+    public var helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
     
     /**
       * Set an adapter implementation to show a custom bottom navigation bar on the camera screen.
@@ -1271,12 +1240,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.logger = self.logger
         
         configuration.multipageEnabled = self.multipageEnabled
-
-        configuration.navigationBarTintColor = self.navigationBarTintColor
-        configuration.navigationBarItemTintColor = self.navigationBarItemTintColor
-        configuration.navigationBarItemFont = self.navigationBarItemFont
-        configuration.navigationBarTitleColor = self.navigationBarTitleColor
-        configuration.navigationBarTitleFont = self.navigationBarTitleFont
+        configuration.customNavigationController = self.customNavigationController
         
         configuration.documentPickerNavigationBarTintColor = self.documentPickerNavigationBarTintColor
 
@@ -1319,6 +1283,8 @@ public final class GiniBankConfiguration: NSObject {
         configuration.qrCodePopupBackgroundColor = self.qrCodePopupBackgroundColor
         configuration.bottomNavigationBarEnabled = self.bottomNavigationBarEnabled
         configuration.cameraNavigationBarBottomAdapter = self.cameraNavigationBarBottomAdapter
+        configuration.noResultNavigationBarBottomAdapter = self.noResultNavigationBarBottomAdapter
+        configuration.helpNavigationBarBottomAdapter = self.helpNavigationBarBottomAdapter
         configuration.navigationBarOnboardingTitleContinueButton = self.navigationBarOnboardingTitleContinueButton
         
         configuration.onboardingPageIndicatorColor = self.onboardingPageIndicatorColor

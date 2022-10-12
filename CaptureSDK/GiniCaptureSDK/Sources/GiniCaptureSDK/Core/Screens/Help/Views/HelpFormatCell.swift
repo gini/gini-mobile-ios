@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HelpFormatCell: UITableViewCell, HelpCell {
+final class HelpFormatCell: UITableViewCell, HelpCell {
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var descriptionLabel: UILabel!
 

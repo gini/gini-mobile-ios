@@ -167,7 +167,9 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
        
         
         let navigationController = UINavigationController(rootViewController: vc)
-        navigationController.applyStyle(withConfiguration: giniConfiguration)
+        if giniConfiguration.customNavigationController == nil {
+            navigationController.applyStyle(withConfiguration: giniConfiguration)
+        }
         navigationController.modalPresentationStyle = .overCurrentContext
         
         // Since the onboarding appears on startup, it could be the case where there are two consecutive 'coverVertical'
