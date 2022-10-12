@@ -198,7 +198,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         }
         cameraButtonsViewModel.backButtonAction = { [weak self] in
             if let strongSelf = self {
-                self?.delegate?.cameraDidTapMultipageReviewButton(strongSelf)
+                self?.delegate?.cameraDidTapReviewButton(strongSelf)
             }
         }
         cameraPane.captureButton.addTarget(
@@ -207,7 +207,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             for: .touchUpInside)
         cameraButtonsViewModel.imageStackAction = { [weak self] in
             if let strongSelf = self {
-                self?.delegate?.cameraDidTapMultipageReviewButton(strongSelf)
+                self?.delegate?.cameraDidTapReviewButton(strongSelf)
             }
         }
         cameraPane.thumbnailView.thumbnailButton.addTarget(

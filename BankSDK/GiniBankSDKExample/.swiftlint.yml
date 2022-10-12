@@ -25,7 +25,8 @@ included:
   - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Camera2
   - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Protocols
   - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Views
-  -  ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Custom views/
+  - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Review
+  - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Custom views/
 
 cyclomatic_complexity:
   ignores_case_statements: true

@@ -9,7 +9,7 @@ import Foundation
 
 enum MultipageReviewStrings: LocalizableStringResource {
     
-    case addButtonLabel, dragAndDropTipMessage, reorderContainerTooltipMessage, retakeActionButton, retryActionButton,
+    case retakeActionButton, retryActionButton,
     titleMessage
     
     var tableName: String {
@@ -18,12 +18,6 @@ enum MultipageReviewStrings: LocalizableStringResource {
     
     var tableEntry: LocalizationEntry {
         switch self {
-        case .addButtonLabel:
-            return ("addButtonLabel", "label shown below add button")
-        case .dragAndDropTipMessage:
-            return ("dragAndDropTip", "drag and drop tip shown below pages collection")
-        case .reorderContainerTooltipMessage:
-            return ("reorderContainerTooltipMessage", "reorder button tooltip message")
         case .retakeActionButton:
             return ("error.retakeAction", "button title for retake action")
         case .retryActionButton:

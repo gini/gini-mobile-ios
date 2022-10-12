@@ -36,7 +36,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
                     (error == .maxFilesPickedCountExceeded || error == .mixedDocumentsUnsupported) {
                     errorMessage = error.message
                     viewController.showErrorDialog(for: error) {
-                        self.showMultipageReview()
+                        self.showReview()
                     }
                 }
                 
@@ -67,8 +67,8 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         }
     }
     
-    public func cameraDidTapMultipageReviewButton(_ viewController: CameraScreen) {
-        showMultipageReview()
+    public func cameraDidTapReviewButton(_ viewController: CameraScreen) {
+        showReview()
     }
     
     func createCameraViewController() -> CameraScreen {
@@ -170,16 +170,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         if let documentsType = visionDocuments.type {
             switch documentsType {
             case .image:
-                if let imageDocuments = visionDocuments as? [GiniImageDocument],
-                    let lastDocument = imageDocuments.last {
-                    if self.giniConfiguration.multipageEnabled {
-                        showMultipageReview()
-                    } else {
-                        reviewViewController = createReviewScreen(withDocument: lastDocument)
-                        screenAPINavigationController.pushViewController(reviewViewController!,
-                                                                         animated: true)
-                    }
-                }
+                showReview()
             case .qrcode, .pdf:
                 showAnalysisScreen()
             }
@@ -216,7 +207,7 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
                         if self.pages.isNotEmpty {
                             positiveAction = {
                                 coordinator.dismissCurrentPicker {
-                                    self.showMultipageReview()
+                                    self.showReview()
                                 }
                             }
                         }
