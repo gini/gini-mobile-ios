@@ -35,11 +35,7 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
             let vc = ReviewViewController(pages: pages,
                                           giniConfiguration: giniConfiguration)
             vc.delegate = self
-            let cancel = GiniPreferredButtonResource(
-                image: nil, title: "ginicapture.navigationbar.analysis.back",
-                                        comment: "Button title in the navigation bar for the cancel button on the review screen",
-                                        configEntry: self.giniConfiguration.navigationBarCameraTitleHelpButton)
-            vc.setupNavigationItem(usingResources: cancel,
+            vc.setupNavigationItem(usingResources: cancelButtonResource,
                                    selector: #selector(closeScreen),
                                    position: .left,
                                    target: self)
