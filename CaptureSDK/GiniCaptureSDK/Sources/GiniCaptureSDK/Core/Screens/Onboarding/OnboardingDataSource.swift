@@ -70,7 +70,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
             }
         default: fatalError("Unhandled case \(indexPath.row)")
         }
-        
+
         cell.fullText.text = item.description
         cell.title.text = item.title
     }
@@ -120,8 +120,11 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
             return sections
         }
     }()
-    
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath) {
         let onboardingPageType = OnboadingPageType.init(rawValue: indexPath.row)
         if onboardingPageType == .alignCorners {
             if let adapter = giniConfiguration.onboardingAlignCornersIllustrationAdapter {
@@ -130,8 +133,11 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
             }
         }
     }
-    
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath) {
         let onboardingPageType = OnboadingPageType.init(rawValue: indexPath.row)
         if onboardingPageType == .alignCorners {
             if let adapter = giniConfiguration.onboardingAlignCornersIllustrationAdapter {
@@ -140,7 +146,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
             }
         }
     }
-    
+
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
     }

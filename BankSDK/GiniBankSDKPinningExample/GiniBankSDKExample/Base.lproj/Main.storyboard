@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ggv-ZP-h5h">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ggv-ZP-h5h">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -11,7 +11,7 @@
         <!--Help-->
         <scene sceneID="fjb-3f-tFA">
             <objects>
-                <viewController storyboardIdentifier="componentAPIOnboardingViewController" id="bdp-eQ-uaN" customClass="ComponentAPIOnboardingViewController" customModule="GiniBankSDKExample" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="componentAPIOnboardingViewController" id="bdp-eQ-uaN" customClass="ComponentAPIOnboardingViewController" customModule="GiniBankSDKPinningExample" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="fbF-Nt-pDT"/>
                         <viewControllerLayoutGuide type="bottom" id="Mpx-4F-QTB"/>
@@ -68,7 +68,7 @@
         <!--API Selection-->
         <scene sceneID="Cmn-ER-b8i">
             <objects>
-                <viewController storyboardIdentifier="selectAPIViewController" id="Ggv-ZP-h5h" userLabel="API Selection" customClass="SelectAPIViewController" customModule="GiniBankSDKExample" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="selectAPIViewController" id="Ggv-ZP-h5h" userLabel="API Selection" customClass="SelectAPIViewController" customModule="GiniBankSDKPinningExample" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="a3q-Yk-YSo"/>
                         <viewControllerLayoutGuide type="bottom" id="Z9y-Oh-GoV"/>
@@ -77,7 +77,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZlJ-hw-K1e" customClass="GiniButton" customModule="GiniBankSDKExample" customModuleProvider="target">
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZlJ-hw-K1e" customClass="GiniButton" customModule="GiniBankSDKPinningExample" customModuleProvider="target">
                                 <rect key="frame" x="91" y="375.5" width="232" height="40"/>
                                 <color key="backgroundColor" systemColor="quaternarySystemFillColor"/>
                                 <constraints>
@@ -102,7 +102,7 @@
                                     <action selector="launchScreenAPI:" destination="Ggv-ZP-h5h" eventType="touchUpInside" id="qq6-dF-m7w"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1gj-uu-hKJ" customClass="GiniButton" customModule="GiniBankSDKExample" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1gj-uu-hKJ" customClass="GiniButton" customModule="GiniBankSDKPinningExample" customModuleProvider="target">
                                 <rect key="frame" x="91" y="431.5" width="232" height="40"/>
                                 <color key="backgroundColor" systemColor="quaternarySystemFillColor"/>
                                 <constraints>
@@ -211,7 +211,7 @@
         <!--Settings View Controller-->
         <scene sceneID="Kzg-pN-qlA">
             <objects>
-                <viewController storyboardIdentifier="settingsViewController" id="jLX-Py-40o" customClass="SettingsViewController" customModule="GiniBankSDKExample" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="settingsViewController" id="jLX-Py-40o" customClass="SettingsViewController" customModule="GiniBankSDKPinningExample" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="kpE-ut-yIQ"/>
                         <viewControllerLayoutGuide type="bottom" id="LAk-oa-XC9"/>
@@ -227,7 +227,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Jl-Kr-1sd">
-                                            <rect key="frame" x="16" y="295.5" width="382" height="305"/>
+                                            <rect key="frame" x="16" y="279" width="382" height="338"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open with" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cVO-kR-liJ">
                                                     <rect key="frame" x="16" y="21" width="293" height="21"/>
@@ -288,7 +288,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nr0-nM-ziR">
-                                                    <rect key="frame" x="125" y="275" width="132" height="30"/>
+                                                    <rect key="frame" x="125" y="308" width="132" height="30"/>
                                                     <state key="normal" title="Reset user defaults">
                                                         <color key="titleColor" red="1" green="0.0" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
@@ -303,6 +303,18 @@
                                                         <action selector="flashToggleSwitch:" destination="jLX-Py-40o" eventType="valueChanged" id="GAb-uQ-8nE"/>
                                                     </connections>
                                                 </switch>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="752" text="Bottom Navigation Bar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5bJ-hn-jkx">
+                                                    <rect key="frame" x="16" y="275" width="293" height="17"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="oPe-8a-CCG">
+                                                    <rect key="frame" x="317" y="268" width="51" height="31"/>
+                                                    <color key="onTintColor" red="0.97003465889999996" green="0.0" blue="0.35686057809999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                    <connections>
+                                                        <action selector="bottomNavigationBarSwitched:" destination="jLX-Py-40o" eventType="valueChanged" id="Ecq-BQ-cKk"/>
+                                                    </connections>
+                                                </switch>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="nr0-nM-ziR" secondAttribute="bottom" id="04j-bz-ZBg"/>
@@ -313,32 +325,38 @@
                                                 <constraint firstItem="CRx-ac-e4V" firstAttribute="top" secondItem="Swa-DX-mwh" secondAttribute="bottom" constant="16" id="CxH-nK-bgc"/>
                                                 <constraint firstItem="3hb-V8-sDY" firstAttribute="top" secondItem="CRx-ac-e4V" secondAttribute="bottom" constant="8" id="DtB-YO-fZ5"/>
                                                 <constraint firstItem="Swa-DX-mwh" firstAttribute="leading" secondItem="9Jl-Kr-1sd" secondAttribute="leading" constant="16" id="E2T-N6-Jnp"/>
+                                                <constraint firstItem="5bJ-hn-jkx" firstAttribute="leading" secondItem="CRx-ac-e4V" secondAttribute="leading" id="Ec9-WW-q5Z"/>
                                                 <constraint firstItem="CRx-ac-e4V" firstAttribute="top" secondItem="xSF-P6-GTs" secondAttribute="bottom" constant="16" id="Hqg-Fe-1Jt"/>
                                                 <constraint firstItem="yit-Ul-7WY" firstAttribute="leading" secondItem="cVO-kR-liJ" secondAttribute="trailing" constant="8" id="KQz-Iq-Siy"/>
                                                 <constraint firstItem="iBn-2O-R5s" firstAttribute="leading" secondItem="CRx-ac-e4V" secondAttribute="trailing" constant="8" id="Kfq-5H-20E"/>
                                                 <constraint firstItem="nr0-nM-ziR" firstAttribute="centerX" secondItem="9Jl-Kr-1sd" secondAttribute="centerX" id="Lae-sA-rhh"/>
+                                                <constraint firstItem="5bJ-hn-jkx" firstAttribute="centerY" secondItem="oPe-8a-CCG" secondAttribute="centerY" id="Lgo-EC-hTa"/>
                                                 <constraint firstAttribute="trailing" secondItem="3hb-V8-sDY" secondAttribute="trailing" constant="16" id="MKo-Nq-01d"/>
                                                 <constraint firstItem="Swa-DX-mwh" firstAttribute="centerY" secondItem="Fe9-Mu-ich" secondAttribute="centerY" id="Ph7-Sf-xT2"/>
+                                                <constraint firstItem="oPe-8a-CCG" firstAttribute="trailing" secondItem="Fe9-Mu-ich" secondAttribute="trailing" id="QIh-bJ-Sq4"/>
                                                 <constraint firstItem="iBn-2O-R5s" firstAttribute="top" secondItem="yit-Ul-7WY" secondAttribute="bottom" constant="16" id="TqT-J7-oOp"/>
                                                 <constraint firstItem="iBn-2O-R5s" firstAttribute="leading" secondItem="Ja3-sk-DVs" secondAttribute="trailing" constant="8" id="VTz-b4-eIi"/>
                                                 <constraint firstAttribute="trailing" secondItem="Fe9-Mu-ich" secondAttribute="trailing" constant="16" id="Zbh-5r-gto"/>
+                                                <constraint firstItem="5bJ-hn-jkx" firstAttribute="top" secondItem="3hb-V8-sDY" secondAttribute="bottom" constant="16" id="ajZ-a8-EBb"/>
                                                 <constraint firstAttribute="trailing" secondItem="kKD-zg-kit" secondAttribute="trailing" constant="16" id="b0f-5Q-pJe"/>
+                                                <constraint firstItem="oPe-8a-CCG" firstAttribute="leading" secondItem="5bJ-hn-jkx" secondAttribute="trailing" constant="8" id="b5R-ej-Rd4"/>
                                                 <constraint firstItem="cVO-kR-liJ" firstAttribute="centerY" secondItem="yit-Ul-7WY" secondAttribute="centerY" id="b9X-0b-WAp"/>
                                                 <constraint firstItem="kKD-zg-kit" firstAttribute="leading" secondItem="xSF-P6-GTs" secondAttribute="trailing" constant="8" id="cYP-Ay-t3b"/>
+                                                <constraint firstItem="nr0-nM-ziR" firstAttribute="top" secondItem="5bJ-hn-jkx" secondAttribute="bottom" constant="16" id="d8A-Yj-fP4"/>
                                                 <constraint firstItem="3hb-V8-sDY" firstAttribute="leading" secondItem="9Jl-Kr-1sd" secondAttribute="leading" constant="16" id="fEo-NE-O16"/>
                                                 <constraint firstItem="Fe9-Mu-ich" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Swa-DX-mwh" secondAttribute="trailing" constant="8" symbolic="YES" id="mHK-Q5-7LG"/>
                                                 <constraint firstItem="Ja3-sk-DVs" firstAttribute="centerY" secondItem="iBn-2O-R5s" secondAttribute="centerY" id="oz7-eK-7mF"/>
                                                 <constraint firstAttribute="trailing" secondItem="iBn-2O-R5s" secondAttribute="trailing" constant="16" id="rXc-yw-U0I"/>
-                                                <constraint firstItem="nr0-nM-ziR" firstAttribute="top" secondItem="3hb-V8-sDY" secondAttribute="bottom" constant="16" id="tcw-ms-zcj"/>
                                                 <constraint firstItem="xSF-P6-GTs" firstAttribute="leading" secondItem="9Jl-Kr-1sd" secondAttribute="leading" constant="16" id="uHD-om-Q0O"/>
                                                 <constraint firstItem="CRx-ac-e4V" firstAttribute="leading" secondItem="9Jl-Kr-1sd" secondAttribute="leading" constant="16" id="uyT-tX-aXJ"/>
                                                 <constraint firstItem="kKD-zg-kit" firstAttribute="top" secondItem="iBn-2O-R5s" secondAttribute="bottom" constant="16" id="z2b-nT-YI4"/>
                                                 <constraint firstItem="Fe9-Mu-ich" firstAttribute="top" secondItem="kKD-zg-kit" secondAttribute="bottom" constant="16" id="zba-8J-dOj"/>
                                                 <constraint firstItem="yit-Ul-7WY" firstAttribute="top" secondItem="9Jl-Kr-1sd" secondAttribute="top" constant="16" id="ze0-jA-rir"/>
+                                                <constraint firstItem="oPe-8a-CCG" firstAttribute="centerY" secondItem="5bJ-hn-jkx" secondAttribute="centerY" id="zpj-Zf-xay"/>
                                             </constraints>
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="42r-Zq-01h">
-                                            <rect key="frame" x="16" y="616.5" width="382" height="30"/>
+                                            <rect key="frame" x="16" y="633" width="382" height="30"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                             <state key="normal" title="Close">
                                                 <color key="titleColor" red="0.97003465889999996" green="0.0" blue="0.35686057809999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -369,6 +387,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bottomBarSwitch" destination="oPe-8a-CCG" id="Nys-Lb-uLb"/>
                         <outlet property="fileImportControl" destination="3hb-V8-sDY" id="xvL-z9-5JK"/>
                         <outlet property="flashToggleSwitch" destination="Fe9-Mu-ich" id="UH4-kc-Rgf"/>
                         <outlet property="multipageSwitch" destination="kKD-zg-kit" id="d2K-z8-fF2"/>
@@ -383,7 +402,7 @@
         <!--Result Table View Controller-->
         <scene sceneID="dA0-59-wBc">
             <objects>
-                <tableViewController storyboardIdentifier="resultScreen" id="QXp-IJ-1GQ" customClass="ResultTableViewController" customModule="GiniBankSDKExample" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="resultScreen" id="QXp-IJ-1GQ" customClass="ResultTableViewController" customModule="GiniBankSDKPinningExample" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="cFL-Kk-4eP">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -392,7 +411,7 @@
                         <color key="sectionIndexBackgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="resultCell" textLabel="tqh-o9-sCn" detailTextLabel="QaN-K3-zRa" style="IBUITableViewCellStyleSubtitle" id="weQ-uh-Qns">
-                                <rect key="frame" x="0.0" y="28" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="50" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="weQ-uh-Qns" id="3Ue-zA-qTY">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
@@ -416,6 +435,36 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="kCustomResultCell" id="Fwj-nE-boP">
+                                <rect key="frame" x="0.0" y="94" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Fwj-nE-boP" id="AVe-Wh-xLH">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l7N-ZW-3Bs">
+                                            <rect key="frame" x="20" y="8" width="39" height="19.5"/>
+                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
+                                            <color key="textColor" red="0.21960783" green="0.48627454040000001" blue="0.67450982329999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bez-Ih-N3F">
+                                            <rect key="frame" x="20" y="30.5" width="28.5" height="9.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <color key="textColor" red="0.43529411764705883" green="0.64705884459999996" blue="0.75686275960000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Bez-Ih-N3F" firstAttribute="top" secondItem="l7N-ZW-3Bs" secondAttribute="bottom" constant="3" id="TfN-Zb-EhI"/>
+                                        <constraint firstItem="l7N-ZW-3Bs" firstAttribute="leading" secondItem="AVe-Wh-xLH" secondAttribute="leading" constant="20" id="ZYV-F1-eZv"/>
+                                        <constraint firstItem="l7N-ZW-3Bs" firstAttribute="top" secondItem="AVe-Wh-xLH" secondAttribute="top" constant="8" id="nXf-9a-fHH"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Bez-Ih-N3F" secondAttribute="bottom" constant="4" id="qNz-cN-5a4"/>
+                                        <constraint firstItem="Bez-Ih-N3F" firstAttribute="leading" secondItem="l7N-ZW-3Bs" secondAttribute="leading" id="sL9-T9-Zxb"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="QXp-IJ-1GQ" id="RN4-KG-ACu"/>
@@ -430,7 +479,7 @@
         <!--Ihre Überweisung-->
         <scene sceneID="hVm-Cc-8N0">
             <objects>
-                <viewController storyboardIdentifier="noResultScreen" hidesBottomBarWhenPushed="YES" id="pIn-fG-Rai" customClass="NoResultViewController" customModule="GiniBankSDKExample" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="noResultScreen" hidesBottomBarWhenPushed="YES" id="pIn-fG-Rai" customClass="NoResultViewController" customModule="GiniBankSDKPinningExample" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="JXc-eh-Te3"/>
                         <viewControllerLayoutGuide type="bottom" id="q1e-9E-wVG"/>
@@ -440,7 +489,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Es konnten keine Daten ausgelesen werden." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dq1-1G-cuV">
-                                <rect key="frame" x="20" y="89" width="374" height="21"/>
+                                <rect key="frame" x="20" y="93" width="374" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="FkV-Ri-EwD"/>
                                 </constraints>
@@ -449,7 +498,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bitte beachten Sie:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dWP-XX-MgH">
-                                <rect key="frame" x="20" y="150" width="374" height="21"/>
+                                <rect key="frame" x="20" y="154" width="374" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="FVY-pT-7qZ"/>
                                 </constraints>
@@ -475,7 +524,7 @@
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="reviewRotateButton" translatesAutoresizingMaskIntoConstraints="NO" id="g01-Yw-KKa">
-                                <rect key="frame" x="195" y="264" width="24" height="24"/>
+                                <rect key="frame" x="195" y="268" width="24" height="24"/>
                                 <color key="tintColor" systemColor="labelColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="24" id="FjC-iT-BH0"/>
@@ -483,7 +532,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3WR-c9-tM1">
-                                <rect key="frame" x="20" y="180" width="374" height="84"/>
+                                <rect key="frame" x="20" y="184" width="374" height="84"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="84" id="skS-lc-WKb"/>
                                 </constraints>
@@ -544,77 +593,77 @@
         <image name="tabBarItem:uMP-po-KgJ:image" width="12" height="25">
             <mutableData key="keyedArchiveRepresentation">
 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
-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
+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
-EiDAAACAA4ALWHsxMiwgMjV90hsPHB5aTlMub2JqZWN0c6EdgASACtIbDyAjoiEigAWABoAJ0iUPJidf
-EBROU1RJRkZSZXByZXNlbnRhdGlvboAHgAhPEQ1mTU0AKgAABLgAAAAAAAAAAA0FBA8yExQ1ZCUnaoQw
-MYx4LS2ARRwbSxIHBxUAAAAAAAAAAAAAAAAaBAMdeiQkgMs6OdXrOzf29jUx//UwLf/1Mi7/8Tc0/dA4
-NthpHh5vAwEBBQAAAABFBwdW7yMh//MbGv/uFBX/7hQV/+0UFv/pFRX/6RMV//AaGf/zKij/dRgYfQEA
-AAILAAATtw8Q3ugWFv/FExL4sBAQ5LYSEerZFhX/6BcX/+UWFv/rFxf/3R4c7UAIB0YAAAAAWAgIg1YH
-B4MbAgIzDAABGw8BAR9EBgVsxBMS8ecWF//jFxf/6BgY/44ODqIAAAAAAAAAAwAAAAAAAAAAAAAAAAAA
-AAAAAAAAdAoLluUXF//gFxf/5BgX/60PEMkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXQcIb+QX
-F//gFxf/4BcW/5oPDsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiw4OnecXF//eFhb/1RQU/mIJ
-CYYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAhBQQnzxsb594WFv/fFhX/qxAQ3hwAAiwAAAAAAAAAAAAA
-AAAAAAAAAAAAAAUBAAeYGRqr5Rsa/9kWFf/QFBP9TgcHdQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgT
-E3flIB//1hUU/9gVFP+DDQy5BQAADQAAAAAAAAAAAAAAAAAAAAAAAAAANAgHPNceH/PXFhX/1hQV/50O
-DtoXAgIrAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAGnRQUt90ZF//RFhX/uRES8y8EA04AAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAArBAQ2zhYW9s8UE//QFRP/cQoKpAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AABRBwdq1BUU/8wTE//FEBL7NgUFUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABhCAiD1hQU/9AU
-E/++EBH0IwECMQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABDBQVsmQ0N6JUODeiNDAzYGwECKgAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAHAwAADwEAAA4DAAAQAQAABAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAGAgIIRhcWUV0gIGoqDQ0yAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAkB
-AA6OGxqt2Cgm/9YmJP/JJiPxRAsLVwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEEGBVnLFhb/vBAQ/7kQ
-D//FExL/mREQyQkBAA4AAAAAAAAAAAAAAAAAAAAAAAAAAFMHB3zCERH/uRER/7kREf+9ERH/oA0N3xQB
-ASAAAAAAAAAAAAAAAAAAAAAAAAAAADMDBFW0ERD/uxER/7kREf++ERH/gAoLyAcAAA8AAAAAAAAAAAAA
-AAAAAAAAAAAAAAQAAAtcBwilpg0O/q0QEP+QCwzrKgMDUQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAACAAAIJgECWDkEBHsUAQExAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAEAAAMAAAABAAwAAAEBAAMAAAAB
-ABkAAAECAAMAAAAEAAAFfgEDAAMAAAABAAEAAAEGAAMAAAABAAIAAAEKAAMAAAABAAEAAAERAAQAAAAB
-AAAACAESAAMAAAABAAEAAAEVAAMAAAABAAQAAAEWAAMAAAABABkAAAEXAAQAAAABAAAEsAEcAAMAAAAB
-AAEAAAEoAAMAAAABAAIAAAFSAAMAAAABAAEAAAFTAAMAAAAEAAAFhodzAAcAAAfYAAAFjgAAAAAACAAI
-AAgACAABAAEAAQABAAAH2GFwcGwCIAAAbW50clJHQiBYWVogB9kAAgAZAAsAGgALYWNzcEFQUEwAAAAA
-YXBwbAAAAAAAAAAAAAAAAAAAAAAAAPbWAAEAAAAA0y1hcHBsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALZGVzYwAAAQgAAABvZHNjbQAAAXgAAAWcY3BydAAABxQAAAA4
-d3RwdAAAB0wAAAAUclhZWgAAB2AAAAAUZ1hZWgAAB3QAAAAUYlhZWgAAB4gAAAAUclRSQwAAB5wAAAAO
-Y2hhZAAAB6wAAAAsYlRSQwAAB5wAAAAOZ1RSQwAAB5wAAAAOZGVzYwAAAAAAAAAUR2VuZXJpYyBSR0Ig
-UHJvZmlsZQAAAAAAAAAAAAAAFEdlbmVyaWMgUkdCIFByb2ZpbGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG1sdWMAAAAAAAAAHwAAAAxza1NLAAAAKAAAAYRkYURL
-AAAALgAAAaxjYUVTAAAAJAAAAdp2aVZOAAAAJAAAAf5wdEJSAAAAJgAAAiJ1a1VBAAAAKgAAAkhmckZV
-AAAAKAAAAnJodUhVAAAAKAAAApp6aFRXAAAAFgAAAsJuYk5PAAAAJgAAAthjc0NaAAAAIgAAAv5oZUlM
-AAAAHgAAAyBpdElUAAAAKAAAAz5yb1JPAAAAJAAAA2ZkZURFAAAALAAAA4prb0tSAAAAFgAAA7ZzdlNF
-AAAAJgAAAth6aENOAAAAFgAAA8xqYUpQAAAAGgAAA+JlbEdSAAAAIgAAA/xwdFBPAAAAJgAABB5ubE5M
-AAAAKAAABERlc0VTAAAAJgAABB50aFRIAAAAJAAABGx0clRSAAAAIgAABJBmaUZJAAAAKAAABLJockhS
-AAAAKAAABNpwbFBMAAAALAAABQJydVJVAAAAIgAABS5hckVHAAAAJgAABVBlblVTAAAAJgAABXYAVgFh
-AGUAbwBiAGUAYwBuAP0AIABSAEcAQgAgAHAAcgBvAGYAaQBsAEcAZQBuAGUAcgBlAGwAIABSAEcAQgAt
-AGIAZQBzAGsAcgBpAHYAZQBsAHMAZQBQAGUAcgBmAGkAbAAgAFIARwBCACAAZwBlAG4A6AByAGkAYwBD
-HqUAdQAgAGgA7ABuAGgAIABSAEcAQgAgAEMAaAB1AG4AZwBQAGUAcgBmAGkAbAAgAFIARwBCACAARwBl
-AG4A6QByAGkAYwBvBBcEMAQzBDAEOwRMBD0EOAQ5ACAEPwRABD4ERAQwBDkEOwAgAFIARwBCAFAAcgBv
-AGYAaQBsACAAZwDpAG4A6QByAGkAcQB1AGUAIABSAFYAQgDBAGwAdABhAGwA4QBuAG8AcwAgAFIARwBC
-ACAAcAByAG8AZgBpAGyQGnUoACAAUgBHAEIAIIJyX2ljz4/wAEcAZQBuAGUAcgBpAHMAawAgAFIARwBC
-AC0AcAByAG8AZgBpAGwATwBiAGUAYwBuAP0AIABSAEcAQgAgAHAAcgBvAGYAaQBsBeQF6AXVBeQF2QXc
-ACAAUgBHAEIAIAXbBdwF3AXZAFAAcgBvAGYAaQBsAG8AIABSAEcAQgAgAGcAZQBuAGUAcgBpAGMAbwBQ
-AHIAbwBmAGkAbAAgAFIARwBCACAAZwBlAG4AZQByAGkAYwBBAGwAbABnAGUAbQBlAGkAbgBlAHMAIABS
-AEcAQgAtAFAAcgBvAGYAaQBsx3y8GAAgAFIARwBCACDVBLhc0wzHfGZukBoAIABSAEcAQgAgY8+P8GWH
-TvZOAIIsACAAUgBHAEIAIDDXMO0w1TChMKQw6wOTA7UDvQO5A7oDzAAgA8ADwQO/A8YDrwO7ACAAUgBH
-AEIAUABlAHIAZgBpAGwAIABSAEcAQgAgAGcAZQBuAOkAcgBpAGMAbwBBAGwAZwBlAG0AZQBlAG4AIABS
-AEcAQgAtAHAAcgBvAGYAaQBlAGwOQg4bDiMORA4fDiUOTAAgAFIARwBCACAOFw4xDkgOJw5EDhsARwBl
-AG4AZQBsACAAUgBHAEIAIABQAHIAbwBmAGkAbABpAFkAbABlAGkAbgBlAG4AIABSAEcAQgAtAHAAcgBv
-AGYAaQBpAGwAaQBHAGUAbgBlAHIAaQENAGsAaQAgAFIARwBCACAAcAByAG8AZgBpAGwAVQBuAGkAdwBl
-AHIAcwBhAGwAbgB5ACAAcAByAG8AZgBpAGwAIABSAEcAQgQeBDEESQQ4BDkAIAQ/BEAEPgREBDgEOwRM
-ACAAUgBHAEIGRQZEBkEAIAYqBjkGMQZKBkEAIABSAEcAQgAgBicGRAY5BicGRQBHAGUAbgBlAHIAaQBj
-ACAAUgBHAEIAIABQAHIAbwBmAGkAbABldGV4dAAAAABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBh
-bGwgcmlnaHRzIHJlc2VydmVkLgBYWVogAAAAAAAA81IAAQAAAAEWz1hZWiAAAAAAAAB0TQAAPe4AAAPQ
-WFlaIAAAAAAAAFp1AACscwAAFzRYWVogAAAAAAAAKBoAABWfAAC4NmN1cnYAAAAAAAAAAQHNAABzZjMy
-AAAAAAABDEIAAAXe///zJgAAB5IAAP2R///7ov///aMAAAPcAADAbNIqKywtWiRjbGFzc25hbWVYJGNs
-YXNzZXNfEBBOU0JpdG1hcEltYWdlUmVwoywuL1pOU0ltYWdlUmVwWE5TT2JqZWN00iorMTJXTlNBcnJh
-eaIxL9IqKzQ1Xk5TTXV0YWJsZUFycmF5ozQxL9M3OA85OjtXTlNXaGl0ZVxOU0NvbG9yU3BhY2VEMCAw
-ABADgAzSKis9PldOU0NvbG9yoj0v0iorQEFXTlNJbWFnZaJALwAIABEAGgAkACkAMgA3AEkATABRAFMA
-YgBoAHUAfACLAJIAnwCmAK4AsACyALQAuQC7AL0AxgDLANYA2ADaANwA4QDkAOYA6ADqAO8BBgEIAQoO
-dA55DoQOjQ6gDqQOrw64Dr0OxQ7IDs0O3A7gDucO7w78DwEPAw8FDwoPEg8VDxoPIgAAAAAAAAIBAAAA
-AAAAAEIAAAAAAAAAAAAAAAAAAA8lA
+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
+B5wAAAAOZGVzYwAAAAAAAAAUR2VuZXJpYyBSR0IgUHJvZmlsZQAAAAAAAAAAAAAAFEdlbmVyaWMgUkdC
+IFByb2ZpbGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG1s
+dWMAAAAAAAAAHwAAAAxza1NLAAAAKAAAAYRkYURLAAAALgAAAaxjYUVTAAAAJAAAAdp2aVZOAAAAJAAA
+Af5wdEJSAAAAJgAAAiJ1a1VBAAAAKgAAAkhmckZVAAAAKAAAAnJodUhVAAAAKAAAApp6aFRXAAAAFgAA
+AsJuYk5PAAAAJgAAAthjc0NaAAAAIgAAAv5oZUlMAAAAHgAAAyBpdElUAAAAKAAAAz5yb1JPAAAAJAAA
+A2ZkZURFAAAALAAAA4prb0tSAAAAFgAAA7ZzdlNFAAAAJgAAAth6aENOAAAAFgAAA8xqYUpQAAAAGgAA
+A+JlbEdSAAAAIgAAA/xwdFBPAAAAJgAABB5ubE5MAAAAKAAABERlc0VTAAAAJgAABB50aFRIAAAAJAAA
+BGx0clRSAAAAIgAABJBmaUZJAAAAKAAABLJockhSAAAAKAAABNpwbFBMAAAALAAABQJydVJVAAAAIgAA
+BS5hckVHAAAAJgAABVBlblVTAAAAJgAABXYAVgFhAGUAbwBiAGUAYwBuAP0AIABSAEcAQgAgAHAAcgBv
+AGYAaQBsAEcAZQBuAGUAcgBlAGwAIABSAEcAQgAtAGIAZQBzAGsAcgBpAHYAZQBsAHMAZQBQAGUAcgBm
+AGkAbAAgAFIARwBCACAAZwBlAG4A6AByAGkAYwBDHqUAdQAgAGgA7ABuAGgAIABSAEcAQgAgAEMAaAB1
+AG4AZwBQAGUAcgBmAGkAbAAgAFIARwBCACAARwBlAG4A6QByAGkAYwBvBBcEMAQzBDAEOwRMBD0EOAQ5
+ACAEPwRABD4ERAQwBDkEOwAgAFIARwBCAFAAcgBvAGYAaQBsACAAZwDpAG4A6QByAGkAcQB1AGUAIABS
+AFYAQgDBAGwAdABhAGwA4QBuAG8AcwAgAFIARwBCACAAcAByAG8AZgBpAGyQGnUoACAAUgBHAEIAIIJy
+X2ljz4/wAEcAZQBuAGUAcgBpAHMAawAgAFIARwBCAC0AcAByAG8AZgBpAGwATwBiAGUAYwBuAP0AIABS
+AEcAQgAgAHAAcgBvAGYAaQBsBeQF6AXVBeQF2QXcACAAUgBHAEIAIAXbBdwF3AXZAFAAcgBvAGYAaQBs
+AG8AIABSAEcAQgAgAGcAZQBuAGUAcgBpAGMAbwBQAHIAbwBmAGkAbAAgAFIARwBCACAAZwBlAG4AZQBy
+AGkAYwBBAGwAbABnAGUAbQBlAGkAbgBlAHMAIABSAEcAQgAtAFAAcgBvAGYAaQBsx3y8GAAgAFIARwBC
+ACDVBLhc0wzHfGZukBoAIABSAEcAQgAgY8+P8GWHTvZOAIIsACAAUgBHAEIAIDDXMO0w1TChMKQw6wOT
+A7UDvQO5A7oDzAAgA8ADwQO/A8YDrwO7ACAAUgBHAEIAUABlAHIAZgBpAGwAIABSAEcAQgAgAGcAZQBu
+AOkAcgBpAGMAbwBBAGwAZwBlAG0AZQBlAG4AIABSAEcAQgAtAHAAcgBvAGYAaQBlAGwOQg4bDiMORA4f
+DiUOTAAgAFIARwBCACAOFw4xDkgOJw5EDhsARwBlAG4AZQBsACAAUgBHAEIAIABQAHIAbwBmAGkAbABp
+AFkAbABlAGkAbgBlAG4AIABSAEcAQgAtAHAAcgBvAGYAaQBpAGwAaQBHAGUAbgBlAHIAaQENAGsAaQAg
+AFIARwBCACAAcAByAG8AZgBpAGwAVQBuAGkAdwBlAHIAcwBhAGwAbgB5ACAAcAByAG8AZgBpAGwAIABS
+AEcAQgQeBDEESQQ4BDkAIAQ/BEAEPgREBDgEOwRMACAAUgBHAEIGRQZEBkEAIAYqBjkGMQZKBkEAIABS
+AEcAQgAgBicGRAY5BicGRQBHAGUAbgBlAHIAaQBjACAAUgBHAEIAIABQAHIAbwBmAGkAbABldGV4dAAA
+AABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLgBYWVogAAAAAAAA
+81IAAQAAAAEWz1hZWiAAAAAAAAB0TQAAPe4AAAPQWFlaIAAAAAAAAFp1AACscwAAFzRYWVogAAAAAAAA
+KBoAABWfAAC4NmN1cnYAAAAAAAAAAQHNAABzZjMyAAAAAAABDEIAAAXe///zJgAAB5IAAP2R///7ov//
+/aMAAAPcAADAbNIrLC0uWiRjbGFzc25hbWVYJGNsYXNzZXNfEBBOU0JpdG1hcEltYWdlUmVwoy0vMFpO
+U0ltYWdlUmVwWE5TT2JqZWN00issMjNXTlNBcnJheaIyMNIrLDU2Xk5TTXV0YWJsZUFycmF5ozUyMNM4
+OQ86OzxXTlNXaGl0ZVxOU0NvbG9yU3BhY2VEMCAwABADgAzSKyw+P1dOU0NvbG9yoj4w0issQUJXTlNJ
+bWFnZaJBMAAIABEAGgAkACkAMgA3AEkATABRAFMAYgBoAHUAfACLAJIAnwCmAK4AsACyALQAuQC7AL0A
+xgDLANYA2ADaANwA4QDkAOYA6ADqAPEBCAEkASYBKA6SDpcOog6rDr4Owg7NDtYO2w7jDuYO6w76Dv4P
+BQ8NDxoPHw8hDyMPKA8wDzMPOA9AAAAAAAAAAgEAAAAAAAAAQwAAAAAAAAAAAAAAAAAAD0M
 </mutableData>
         </image>
         <systemColor name="labelColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="opaqueSeparatorColor">
             <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -629,7 +678,7 @@ AAAAAEIAAAAAAAAAAAAAAAAAAA8lA
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="tertiaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29803921568627451" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -6,7 +6,7 @@
   Copyright © 2016 Gini. All rights reserved.
 */
 
-"ginicapture.navigationbar.camera.title"        = "Dokument fotografieren";
+"ginicapture.navigationbar.camera.title"        = "Aufnahme";
 "ginicapture.navigationbar.onboarding.title"    = "Anleitung";
 "ginicapture.navigationbar.review.title"        = "Überprüfen";
 "ginicapture.navigationbar.analysis.title"      = "Etwas Geduld, analysiere Foto";
@@ -22,7 +22,7 @@
 
 
 "ginicapture.camera.captureButton" = "Auslösen";
-"ginicapture.camera.notAuthorized" = "Um gespeicherte Bilder zu analysieren, wird Zugriff auf Ihre Kamera benötigt";
+"ginicapture.camera.notAuthorized" = "Bitte gestatte den Zugriff auf deine Kamera, um Dokumente fotografieren zu können.";
 "ginicapture.camera.notAuthorizedButton" = "Zugriff erlauben";
 "ginicapture.camera.captureFailed" = "Bilderfassung fehlgeschlagen";
 "ginicapture.camera.filepicker.photoLibraryAccessDenied" = "Um gespeicherte Bilder zu analysieren, wird Zugriff auf Ihre Fotos benötigt.";
@@ -36,7 +36,14 @@
 "ginicapture.camera.documentValidationError.tooManyPages" = "Das Dokument darf nicht mehr als 10 Seiten haben";
 "ginicapture.camera.documentValidationError.wrongFormat" = "Nur Dateien vom Format jpg, tiff, png, gif oder pdf können analysiert werden";
 "ginicapture.camera.fileImportTip" = "Es können jetzt auch ganz einfach Dateien hochgeladen werden.";
-"ginicapture.camera.fileImportButtonLabel" = "Importieren";
+"ginicapture.camera.fileImportButtonLabel" = "Dateien";
+"ginicapture.camera.flashButtonLabel.On.Voice.Over" = "Blitz an";
+"ginicapture.camera.flashButtonLabel.Off.Voice.Over" = "Blitz aus";
+"ginicapture.camera.flashButtonLabel.On" = "An";
+"ginicapture.camera.flashButtonLabel.Off" = "Aus";
+"ginicapture.camera.thumbnail.Voice.Over" = "TODO: Photo review";
+"ginicapture.camera.capturebutton" = "Bild Aufnehmen";
+"ginicapture.camera.infoLabel" = "Rechnung oder QR Code scannen";
 "ginicapture.camera.qrCodeTip" = "Haben Sie schon den QR-Codeleser ausprobiert?";
 "ginicapture.camera.capturedImagesStackLabel" = "Erfasste Dokumente";
 "ginicapture.camera.qrCodeDetectedPopup.message" = "QR verwenden?";
@@ -50,8 +57,8 @@
 "ginicapture.camera.errorPopup.reviewPages" = "Seitenübersicht";
 "ginicapture.camera.unknownError" = "Auf dem Kamerabildschirm ist ein unbekannter Fehler aufgetreten";
 "ginicapture.camera.popupTitleImportPDF" = "PDF importieren";
-"ginicapture.camera.popupOptionPhotos" = "Fotos";
-"ginicapture.camera.popupOptionFiles" = "Dokumente";
+"ginicapture.camera.popupOptionPhotos" = "Fotos hochladen";
+"ginicapture.camera.popupOptionFiles" = "Dokument hochladen";
 "ginicapture.camera.popupTitleImportPDForPhotos" = "Fotos oder PDF importieren";
 "ginicapture.camera.popupCancel" = "Abbrechen";
 
@@ -77,7 +84,7 @@
 
 "ginicapture.analysis.screenTitle" = "Übersicht";
 "ginicapture.analysis.loadingText" = "Dokument wird analysiert";
-"ginicapture.analysis.loadingText.pdf" = "%@ wird analysiert";
+"ginicapture.analysis.loadingText.pdf" = "%@\nwird analysiert";
 "ginicapture.analysis.section.header" = "Nützliche Tipps";
 "ginicapture.analysis.suggestion.header" = "Um schneller Ergebnisse zu erhalten, bitte:";
 "ginicapture.analysis.suggestion.1" = "Gute Lichtverhältnisse";
@@ -147,10 +154,10 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.albums.title" = "Alben";
 "ginicapture.imagepicker.openbutton" = "Öffnen";
 
-"ginicapture.multipagereview.reorderContainerTooltipMessage" = "Die Seiten müssen in der richtigen Reihenfolge sein. Hier können Sie sie sortieren.";
-"ginicapture.multipagereview.addButtonLabel" = "Seiten hinzufügen";
-"ginicapture.multipagereview.dragAndDropTip" = "Drag & Drop zum Sortieren";
-"ginicapture.multipagereview.title" = "%d von %d";
+"ginicapture.multipagereview.title" = "Übersicht";
+"ginicapture.multipagereview.description" = "Sind alle Zahlungsinformationen gut sichtbar?";
+"ginicapture.multipagereview.mainButtonTitle" = "Dokumente verarbeiten";
+"ginicapture.multipagereview.secondaryButtonTitle" = "Seite";
 "ginicapture.multipagereview.error.retakeAction" = "Wiederholung";
 "ginicapture.multipagereview.error.retryAction" = "Wiederholen";
 

@@ -27,7 +27,7 @@ class OnboardingImageView: UIView {
     }
     var icon: UIImage? {
         didSet {
-            //Remove the previous container with an illustration because we dequeue reusable cells
+            // Remove the previous container with an illustration because we dequeue reusable cells
             setupView()
         }
     }
@@ -56,5 +56,3 @@ class OnboardingImageView: UIView {
         }
     }
 }
-
-

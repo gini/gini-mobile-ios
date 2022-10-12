@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class HelpTipCell: UITableViewCell, HelpCell {
+public final class HelpTipCell: UITableViewCell, HelpCell {
     @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var headerLabel: UILabel!

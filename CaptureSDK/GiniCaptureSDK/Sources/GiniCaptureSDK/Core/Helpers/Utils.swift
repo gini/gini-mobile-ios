@@ -10,14 +10,24 @@ import UIKit
 extension UITableViewCell {
     func round(corners: UIRectCorner, withRadius radius: CGFloat) {
         let mask = UIBezierPath(
-            roundedRect: self.bounds,
+            roundedRect: bounds,
             byRoundingCorners: corners,
             cornerRadii: CGSize(width: radius, height: radius))
         let shape = CAShapeLayer()
-        shape.frame = self.bounds
+        shape.frame = bounds
         shape.path = mask.cgPath
-        self.layer.mask = shape
-        self.clipsToBounds = true
+        layer.mask = shape
+        clipsToBounds = true
+    }
+
+    func reset() {
+        layer.mask = nil
+        clipsToBounds = true
+    }
+
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.mask?.frame = bounds
     }
 }
 

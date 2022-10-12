@@ -98,7 +98,8 @@ import UIKit
 
     private lazy var overlayView: UIView = {
         let overlayView = UIView()
-        overlayView.backgroundColor = GiniColor(light: .GiniCapture.light1, dark: .GiniCapture.dark1).uiColor().withAlphaComponent(0.6)
+        overlayView.backgroundColor = GiniColor(light: .GiniCapture.light1,
+                                                dark: .GiniCapture.dark1).uiColor().withAlphaComponent(0.6)
         return overlayView
     }()
 
@@ -161,14 +162,22 @@ import UIKit
      Displays a loading activity indicator. Should be called when document analysis is started.
      */
     public func showAnimation() {
-        loadingIndicatorView.startAnimating()
+        if let loadingIndicator = giniConfiguration.analysisScreenLoadingIndicator {
+            loadingIndicator.startAnimation()
+        } else {
+            loadingIndicatorView.startAnimating()
+        }
     }
 
     /**
      Hides the loading activity indicator. Should be called when document analysis is finished.
      */
     public func hideAnimation() {
-        loadingIndicatorView.stopAnimating()
+        if let loadingIndicator = giniConfiguration.analysisScreenLoadingIndicator {
+            loadingIndicator.stopAnimation()
+        } else {
+            loadingIndicatorView.stopAnimating()
+        }
     }
 
     /**
@@ -185,10 +194,7 @@ import UIKit
             imageView.image = document.previewImage
         }
 
-        addLoadingContainer()
-        loadingIndicatorView.color = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
-        addLoadingView()
-        addLoadingText()
+        configureLoadingIndicator()
         addOverlay()
 
         if document is GiniImageDocument {
@@ -223,19 +229,19 @@ import UIKit
     }
 
     private func addImageView() {
-        self.view.addSubview(imageView)
+        view.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
 
         Constraints.active(item: imageView, attr: .top, relatedBy: .equal, to: view.safeAreaLayoutGuide, attr: .top,
                           priority: 999)
         Constraints.active(item: imageView, attr: .bottom, relatedBy: .equal, to: view.safeAreaLayoutGuide,
                            attr: .bottom, priority: 999)
-        Constraints.active(item: imageView, attr: .trailing, relatedBy: .equal, to: self.view, attr: .trailing)
-        Constraints.active(item: imageView, attr: .leading, relatedBy: .equal, to: self.view, attr: .leading)
+        Constraints.active(item: imageView, attr: .centerX, relatedBy: .equal, to: view, attr: .centerX)
+        Constraints.active(item: imageView, attr: .width, relatedBy: .equal, to: view, attr: .width, multiplier: 0.9)
     }
 
     private func addOverlay() {
-        self.view.insertSubview(overlayView, aboveSubview: imageView)
+        view.insertSubview(overlayView, aboveSubview: imageView)
         overlayView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([overlayView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -244,35 +250,74 @@ import UIKit
                                      overlayView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
     }
 
-    private func addLoadingContainer() {
-        loadingIndicatorContainer.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(loadingIndicatorContainer)
-        NSLayoutConstraint.activate([
-            loadingIndicatorContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            loadingIndicatorContainer.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
-            loadingIndicatorContainer.topAnchor.constraint(greaterThanOrEqualTo: self.view.topAnchor),
-            loadingIndicatorContainer.leadingAnchor.constraint(greaterThanOrEqualTo: self.view.leadingAnchor,
-                                                               constant: 16)])
+    private func configureLoadingIndicator() {
+        loadingIndicatorView.color = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
+
+        addLoadingContainer()
+        addLoadingView(intoContainer: loadingIndicatorContainer)
+
+        if let loadingIndicator = giniConfiguration.analysisScreenLoadingIndicator {
+            addLoadingText(below: loadingIndicator.injectedView())
+            loadingIndicator.startAnimation()
+        } else {
+            addLoadingText(below: loadingIndicatorView)
+            loadingIndicatorView.startAnimating()
+        }
     }
 
-    private func addLoadingView() {
-        loadingIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        loadingIndicatorContainer.addSubview(loadingIndicatorView)
-
-        NSLayoutConstraint.activate([
-            loadingIndicatorView.centerXAnchor.constraint(equalTo: loadingIndicatorContainer.centerXAnchor),
-            loadingIndicatorView.topAnchor.constraint(equalTo: loadingIndicatorContainer.topAnchor)])
-    }
-
-    private func addLoadingText() {
+    private func addLoadingText(below loadingIndicator: UIView) {
         loadingIndicatorContainer.addSubview(loadingIndicatorText)
         loadingIndicatorText.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            loadingIndicatorText.topAnchor.constraint(equalTo: loadingIndicatorView.bottomAnchor, constant: 16),
-            loadingIndicatorText.leadingAnchor.constraint(equalTo: loadingIndicatorContainer.leadingAnchor),
-            loadingIndicatorText.centerXAnchor.constraint(equalTo: loadingIndicatorContainer.centerXAnchor),
-            loadingIndicatorText.bottomAnchor.constraint(equalTo: loadingIndicatorContainer.bottomAnchor)])
+            loadingIndicatorText.topAnchor.constraint(equalTo: loadingIndicator.bottomAnchor, constant: 16),
+            loadingIndicatorText.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            loadingIndicatorText.centerXAnchor.constraint(equalTo: imageView.centerXAnchor)])
+    }
+
+    private func addLoadingView(intoContainer container: UIView? = nil) {
+        let loadingIndicator: UIView
+
+        if let customLoadingIndicator = giniConfiguration.analysisScreenLoadingIndicator?.injectedView() {
+            loadingIndicator = customLoadingIndicator
+        } else {
+            loadingIndicator = loadingIndicatorView
+        }
+
+        if let container = container {
+            container.translatesAutoresizingMaskIntoConstraints = false
+            loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(container)
+            container.addSubview(loadingIndicator)
+
+            NSLayoutConstraint.activate([
+                container.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                container.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                container.heightAnchor.constraint(equalToConstant:
+                                                    AnalysisViewController.loadingIndicatorContainerHeight),
+                container.widthAnchor.constraint(equalTo: container.heightAnchor),
+                loadingIndicator.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+                loadingIndicator.centerYAnchor.constraint(equalTo: container.centerYAnchor)
+            ])
+        } else {
+            view.addSubview(loadingIndicatorView)
+
+            NSLayoutConstraint.activate([
+                loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            ])
+        }
+    }
+
+    private func addLoadingContainer() {
+        loadingIndicatorContainer.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(loadingIndicatorContainer)
+        NSLayoutConstraint.activate([
+            loadingIndicatorContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loadingIndicatorContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            loadingIndicatorContainer.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor),
+            loadingIndicatorContainer.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
+                                                               constant: 16)])
     }
 
     private func addErrorView() {
@@ -283,7 +328,7 @@ import UIKit
     }
 
     private func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {
-        let captureSuggestions = CaptureSuggestionsView(superView: self.view,
+        let captureSuggestions = CaptureSuggestionsView(superView: view,
                                                         bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
         captureSuggestions.start()
     }

@@ -36,8 +36,6 @@ final class ComponentAPICoordinatorTests: XCTestCase {
         
         XCTAssertNil(componentAPICoordinator?.analysisScreen,
                      "analysis screen should be nil when no document is imported")
-        XCTAssertNil(componentAPICoordinator?.reviewScreen,
-                     "review screen should be nil when no document is imported")
         XCTAssertNotNil(componentAPICoordinator?.cameraScreen,
                         "camera screen should not be nil when no document is imported")
 
@@ -55,14 +53,8 @@ final class ComponentAPICoordinatorTests: XCTestCase {
         
         XCTAssertNil(componentAPICoordinator?.analysisScreen,
                      "analysis screen should be nil when no document is imported")
-        XCTAssertNotNil(componentAPICoordinator?.reviewScreen,
-                        "review screen should not be nil when a image is imported")
         XCTAssertNil(componentAPICoordinator?.cameraScreen,
                      "camera screen should be nil when a image is imported")
-        
-        XCTAssertEqual(componentAPICoordinator?.reviewScreen?.navigationItem.leftBarButtonItem?.title,
-                      "Close")
-        
     }
     
     func testInitializationWhenPDFImported() {
@@ -75,8 +67,6 @@ final class ComponentAPICoordinatorTests: XCTestCase {
         
         XCTAssertNotNil(componentAPICoordinator?.analysisScreen,
                         "analysis screen should not be nil when a pdf is imported")
-        XCTAssertNil(componentAPICoordinator?.reviewScreen,
-                     "review screen should be nil when a pdf is imported")
         XCTAssertNil(componentAPICoordinator?.cameraScreen,
                      "camera screen should be nil when a pdfpdf is imported")
         
