@@ -286,7 +286,7 @@ extension GiniScreenAPICoordinator {
     }
     
     @objc func backToCamera() {
-        start(withDocuments: nil, animated: true)
+        _ = start(withDocuments: nil, animated: true)
     }
 }
 
