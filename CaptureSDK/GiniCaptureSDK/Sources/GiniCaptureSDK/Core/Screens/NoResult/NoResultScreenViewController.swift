@@ -9,6 +9,10 @@
 import UIKit
 
 final public class NoResultScreenViewController: UIViewController {
+
+    var bottomNavigationBar: UIView?
+    var navigationBarBottomAdapter: NoResultBottomNavigationBarAdapter?
+
     public enum NoResultType {
         case image
         case pdf
@@ -77,7 +81,6 @@ final public class NoResultScreenViewController: UIViewController {
     }()
 
     lazy var header: NoResultHeader = {
-        
         if let header = NoResultHeader().loadNib() as? NoResultHeader {
             header.headerLabel.adjustsFontForContentSizeCategory = true
             header.headerLabel.adjustsFontSizeToFitWidth = true
@@ -123,7 +126,7 @@ final public class NoResultScreenViewController: UIViewController {
         super.viewDidLoad()
         self.setupView()
     }
-    
+
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         var numberOfButtons: CGFloat = 0
@@ -134,23 +137,36 @@ final public class NoResultScreenViewController: UIViewController {
             numberOfButtons += 1
         }
         if numberOfButtons > 0 {
-            tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: buttonsView.bounds.size.height + numberOfButtons * GiniMargins.margin, right: 0)
+            tableView.contentInset = UIEdgeInsets(
+                top: 0,
+                left: 0,
+                bottom: buttonsView.bounds.size.height + numberOfButtons * GiniMargins.margin,
+                right: 0)
         } else {
-            tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom:  GiniMargins.margin, right: 0)
+            tableView.contentInset = UIEdgeInsets(
+                top: 0,
+                left: 0,
+                bottom: GiniMargins.margin,
+                right: 0)
         }
     }
-    
+
     public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: buttonsView.bounds.size.height + GiniMargins.margin, right: 0)
+        tableView.contentInset = UIEdgeInsets(
+            top: 0,
+            left: 0,
+            bottom: buttonsView.bounds.size.height + GiniMargins.margin,
+            right: 0)
         configureButtonsColors()
     }
-    
+
     private func setupView() {
         configureMainView()
         configureTableView()
         configureConstraints()
         configureButtons()
+        configureCustomTopNavigationBar()
         edgesForExtendedLayout = []
     }
 
@@ -163,12 +179,62 @@ final public class NoResultScreenViewController: UIViewController {
             comment: "No result screen title")
         header.headerLabel.text = type.description
         header.headerLabel.font = giniConfiguration.textStyleFonts[.subheadline]
-        header.headerLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark1, dark: UIColor.GiniCapture.light1).uiColor()
+        header.headerLabel.textColor = GiniColor(
+            light: UIColor.GiniCapture.dark1,
+            dark: UIColor.GiniCapture.light1
+        ).uiColor()
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         view.addSubview(header)
         view.addSubview(tableView)
         view.addSubview(buttonsView)
-        header.backgroundColor = GiniColor(light: UIColor.GiniCapture.error4, dark: UIColor.GiniCapture.error1).uiColor()
+        header.backgroundColor = GiniColor(
+            light: UIColor.GiniCapture.error4,
+            dark: UIColor.GiniCapture.error1
+        ).uiColor()
+        configureBottomNavigationBar()
+    }
+
+    private func configureCustomTopNavigationBar() {
+        if giniConfiguration.bottomNavigationBarEnabled {
+            navigationItem.leftBarButtonItem = nil
+            navigationItem.setHidesBackButton(true, animated: true)
+        } else {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .cancel,
+                target: viewModel,
+                action: #selector(viewModel.didPressCancell))
+        }
+    }
+
+    private func configureBottomNavigationBar() {
+        if giniConfiguration.bottomNavigationBarEnabled {
+            if let bottomBarAdapter = giniConfiguration.noResultNavigationBarBottomAdapter {
+                navigationBarBottomAdapter = bottomBarAdapter
+            } else {
+                navigationBarBottomAdapter = DefaultNoResultBottomNavigationBarAdapter()
+            }
+
+            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
+                guard let type = self?.type else {
+                    return
+                }
+                switch type {
+                case .pdf:
+                    self?.dismiss(animated: true)
+                default:
+                    self?.navigationController?.popToRootViewController(animated: true)
+                }
+            }
+
+            if let adapter = navigationBarBottomAdapter {
+                let bottomBar =
+                    adapter.injectedView()
+                bottomNavigationBar = bottomBar
+                bottomBar.translatesAutoresizingMaskIntoConstraints = false
+                view.addSubview(bottomBar)
+                view.bringSubviewToFront(bottomBar)
+            }
+        }
     }
 
     private func configureTableView() {
@@ -250,7 +316,7 @@ final public class NoResultScreenViewController: UIViewController {
         retakeButton.layer.borderWidth = giniConfiguration.primaryButtonBorderWidth
         retakeButton.layer.shadowRadius = giniConfiguration.primaryButtonShadowRadius
         retakeButton.layer.shadowColor = giniConfiguration.primaryButtonShadowColor.uiColor().cgColor
-        
+
         enterButton.backgroundColor = giniConfiguration.outlineButtonBackground.uiColor()
         enterButton.layer.cornerRadius = giniConfiguration.outlineButtonCornerRadius
         enterButton.layer.borderWidth = giniConfiguration.outlineButtonBorderWidth
@@ -259,38 +325,51 @@ final public class NoResultScreenViewController: UIViewController {
         enterButton.layer.shadowColor = giniConfiguration.outlineButtonShadowColor.uiColor().cgColor
         enterButton.setTitleColor(giniConfiguration.outlineButtonTitleColor.uiColor(), for: .normal)
     }
-    
+
     private func configureButtons() {
         configureButtonsColors()
         addBlurEffect(button: enterButton, cornerRadius: 14)
         enterButton.addTarget(viewModel, action: #selector(viewModel.didPressEnterManually), for: .touchUpInside)
         retakeButton.addTarget(viewModel, action: #selector(viewModel.didPressRetake), for: .touchUpInside)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .cancel,
-            target: viewModel,
-            action: #selector(viewModel.didPressCancell))
     }
-    
+
+    private func configureBottomBarConstraints() {
+        guard let bottomNavigationBar = bottomNavigationBar else {
+            return
+        }
+        NSLayoutConstraint.activate([
+            bottomNavigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            bottomNavigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bottomNavigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bottomNavigationBar.heightAnchor.constraint(equalToConstant: bottomNavigationBar.frame.height),
+            tableView.bottomAnchor.constraint(equalTo: bottomNavigationBar.topAnchor)
+        ])
+    }
+
     private func configureConstraints() {
         header.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
         header.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         tableView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
-        
+        if giniConfiguration.bottomNavigationBarEnabled == false {
+            NSLayoutConstraint.activate([
+            buttonsView.bottomAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                constant: -GiniMargins.margin)
+            ])
+        } else {
+            configureBottomBarConstraints()
+        }
         NSLayoutConstraint.activate([
             tableView.heightAnchor.constraint(greaterThanOrEqualToConstant: view.bounds.size.height * 0.6),
             header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             header.heightAnchor.constraint(greaterThanOrEqualToConstant: 62),
-            
             tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 13),
             tableView.bottomAnchor.constraint(
-                equalTo: view.bottomAnchor
+                equalTo: buttonsView.bottomAnchor,
+                constant: 16
             ),
-            
-            buttonsView.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                constant: -GiniMargins.margin),
             buttonsView.heightAnchor.constraint(greaterThanOrEqualToConstant: 112)
         ])
         if UIDevice.current.isIpad {
@@ -300,7 +379,6 @@ final public class NoResultScreenViewController: UIViewController {
                 buttonsView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 buttonsView.widthAnchor.constraint(equalToConstant: 280)
             ])
-            
         } else {
             NSLayoutConstraint.activate([
                 tableView.leadingAnchor.constraint(
@@ -310,7 +388,7 @@ final public class NoResultScreenViewController: UIViewController {
                     equalTo: view.trailingAnchor,
                     constant: -GiniMargins.margin),
                 buttonsView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
-                buttonsView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
+                buttonsView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor)
             ])
         }
         view.layoutSubviews()

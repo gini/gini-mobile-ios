@@ -10,50 +10,6 @@ import UIKit
 import AVFoundation
 
 /**
- The CameraViewControllerDelegate protocol defines methods that allow you to handle captured images and user
- actions.
- 
- - note: Component API only.
- */
-@objc public protocol CameraViewControllerDelegate: AnyObject {
-    /**
-     Called when a user takes a picture, imports a PDF/QRCode or imports one or several images.
-     Once the method has been implemented, it is necessary to check if the number of
-     documents accumulated doesn't exceed the minimun (`GiniImageDocument.maxPagesCount`).
-     
-     - parameter viewController: `CameraViewController` where the documents were taken.
-     - parameter document: One or several documents either captured or imported in
-     the `CameraViewController`. They can contain an error produced in the validation process.
-     */
-    @objc func camera(_ viewController: CameraViewController,
-                      didCapture document: GiniCaptureDocument)
-    
-    /**
-     Called when a user selects a picker from the picker selector sheet.
-     
-     - parameter viewController: `CameraViewController` where the documents were taken.
-     - parameter documentPicker: `DocumentPickerType` selected in the sheet.
-     */
-    @objc func camera(_ viewController: CameraViewController, didSelect documentPicker: DocumentPickerType)
-    
-    /**
-     Called when the `CameraViewController` appears.
-     
-     - parameter viewController: Camera view controller that appears.
-     */
-    @objc func cameraDidAppear(_ viewController: CameraViewController)
-    
-    /**
-     Called when a user taps the `MultipageReviewButton` (the one with the thumbnail of the images(s) taken).
-     Once this method is called, the `MultipageReviewViewController` should be presented.
-     
-     - parameter viewController: Camera view controller where the button was tapped.
-     */
-    @objc func cameraDidTapMultipageReviewButton(_ viewController: CameraViewController)
-
-}
-
-/**
  The `CameraViewController` provides a custom camera screen which enables the user to take a
  photo of a document to be analyzed. The user can focus the camera manually if the auto focus does not work.
   
@@ -61,7 +17,7 @@ import AVFoundation
  */
 //swiftlint:disable file_length
 
-@objcMembers public final class CameraViewController: UIViewController {
+@objcMembers public final class CameraViewController: UIViewController, CameraScreen {
     
     /**
      The object that acts as the delegate of the camera view controller.
@@ -103,6 +59,7 @@ import AVFoundation
         self.giniConfiguration = giniConfiguration
         self.currentDevice = .current
         super.init(nibName: nil, bundle: nil)
+        self.cameraPreviewViewController.previewView.guidesEnabled = true
     }
     
     /**
@@ -245,9 +202,9 @@ extension CameraViewController {
      Show the fileImportTip. Should be called when onboarding is dismissed.
      */
     public func showFileImportTip() {
-        self.configureCameraButtonsForFileImportTip()
+        configureCameraButtonsForFileImportTip()
         createFileImportTip(giniConfiguration: giniConfiguration)
-        self.fileImportToolTipView?.show {
+        fileImportToolTipView?.show {
             self.opaqueView?.alpha = 1
         }
         ToolTipView.shouldShowFileImportToolTip = false
@@ -308,7 +265,7 @@ extension CameraViewController {
      - parameter completion: Completion block.
      
      */
-    public func animateToControlsView(imageDocument: GiniImageDocument, completion: (() -> Void)? = nil) {
+    public func animateToControlsView(imageDocument: GiniImageDocument, completion: (() -> Void)?) {
         guard let documentImage = imageDocument.previewImage else { return }
         let previewImageView = previewCapturedImageView(with: documentImage)
         view.addSubview(previewImageView)
@@ -462,6 +419,10 @@ extension CameraViewController: CameraPreviewViewControllerDelegate {
             }
         }
     }
+    
+    func notAuthorized() {
+        
+    }
 }
 
 // MARK: - CameraButtonsViewControllerDelegate
@@ -497,7 +458,7 @@ extension CameraViewController: CameraButtonsViewControllerDelegate {
             }
 
         case .imagesStack:
-            delegate?.cameraDidTapMultipageReviewButton(self)
+            delegate?.cameraDidTapReviewButton(self)
         }
     }
 }
@@ -505,7 +466,7 @@ extension CameraViewController: CameraButtonsViewControllerDelegate {
 // MARK: - Document import
 
 extension CameraViewController {
-    func addValidationLoadingView() -> UIView {
+    public func addValidationLoadingView() -> UIView {
         let loadingIndicator = UIActivityIndicatorView(style: .whiteLarge)
         let blurredView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
         blurredView.alpha = 0

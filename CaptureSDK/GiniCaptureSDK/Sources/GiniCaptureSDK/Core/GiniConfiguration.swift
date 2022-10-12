@@ -219,50 +219,9 @@ import UIKit
     @objc public var multipageEnabled = false
     
     /**
-     Sets the tint color of the navigation bar in all screens of the Gini Capture SDK to
-     the globally specified color or to a default color.
-     
-     - note: Screen API only.
-     */
-    @objc public var navigationBarTintColor = UINavigationBar.appearance().barTintColor ?? Colors.Gini.blue
-    
-    /**
-     Sets the tint color of all navigation items in all screens of the Gini Capture SDK to
-     the globally specified color.
-     
-     - note: Screen API only.
-     */
-    @objc public var navigationBarItemTintColor = UINavigationBar.appearance().tintColor
-    
-    /**
-     Sets the font of all navigation items in all screens of the Gini Capture SDK to
-     the globally specified font or a default font.
-     
-     - note: Screen API only.
-     */
-    @objc public var navigationBarItemFont = UIBarButtonItem.appearance()
-        .titleTextAttributes(for: .normal).dictionary?[NSAttributedString.Key.font.rawValue] as? UIFont ??
-        UIFont.systemFont(ofSize: 16, weight: .bold)
-    
-    /**
-     Sets the title color in the navigation bar in all screens of the Gini Capture SDK to
-     the globally specified color or to a default color.
-     
-     - note: Screen API only.
-     */
-    @objc public var navigationBarTitleColor = UINavigationBar
-        .appearance()
-        .titleTextAttributes?[NSAttributedString.Key.foregroundColor] as? UIColor ?? .white
-    
-    /**
-     Sets the title font in the navigation bar in all screens of the Gini Capture SDK to
-     the globally specified font or to a default font.
-
-     - note: Screen API only.
-     */
-    @objc public var navigationBarTitleFont = UINavigationBar
-        .appearance()
-        .titleTextAttributes?[NSAttributedString.Key.font] as? UIFont ?? UIFont.systemFont(ofSize: 16, weight: .regular)
+     Sets the custom navigation view controller as a root view controller for Gini Capture SDK screens.
+    */
+    @objc public var customNavigationController : UINavigationController? = nil
     
     /**
      Sets the tint color of the UIDocumentPickerViewController navigation bar.
@@ -317,17 +276,7 @@ import UIKit
     @objc public var statusBarStyle = UIStatusBarStyle.lightContent
     
     // MARK: Camera options
-    
-    /**
-     Sets the text color of the descriptional text when camera access was denied.
-     */
-    @objc public var cameraNotAuthorizedTextColor = UIColor.white
-    
-    /**
-     Sets the text color of the button title when camera access was denied.
-     */
-    @objc public var cameraNotAuthorizedButtonTitleColor = UIColor.white
-    
+
     /**
      Sets the color of the loading indicator on the camera screen to the specified color.
      */
@@ -564,7 +513,22 @@ import UIKit
     /**
      Enable/disable the bottom navigation bar.
      */
-    public var bottomNavigationBarEnabled: Bool = true
+    public var bottomNavigationBarEnabled: Bool = false
+    
+    /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the no result screens.
+     */
+    public var noResultNavigationBarBottomAdapter: NoResultBottomNavigationBarAdapter?
+    
+    /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the help screens.
+     */
+    public var helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
+    
+    /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the camera screen.
+     */
+    public var cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
     
     /**
       * Set an adapter implementation to show a custom bottom navigation bar on the onboarding screen.
@@ -590,6 +554,11 @@ import UIKit
       * Set an adapter implementation to show a custom illustration on the "QR code" onboarding page.
       */
     public var onboardingQRCodeIllustrationAdapter: OnboardingIllustrationAdapter?
+
+    /**
+     * Set an adapter implementation to show a custom loading indicator on the document analysis screen.
+     */
+    public var analysisScreenLoadingIndicator: AnalysisScreenLoadingIndicatorAdapter?
     
     /**
      Sets the back button text in the navigation bar on the review screen. Use this if you only want to show the title.

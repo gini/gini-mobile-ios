@@ -33,7 +33,7 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
         let rootViewController = coordinator.start(withDocuments: nil)
         _ = rootViewController.view
         let screenNavigator = rootViewController.children.first as? UINavigationController
-        XCTAssertNotNil(screenNavigator?.viewControllers.first as? CameraViewController,
+        XCTAssertNotNil(screenNavigator?.viewControllers.first as? CameraScreen,
                         "first view controller is not a CameraViewController")
     }
     
@@ -56,10 +56,10 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
         _ = rootViewController.view
         let screenNavigator = rootViewController.children.first as? UINavigationController
         
-        XCTAssertNotNil(screenNavigator?.viewControllers.first as? CameraViewController,
+        XCTAssertNotNil(screenNavigator?.viewControllers.first as? CameraScreen,
                         "first view controller is not a CameraViewController")
-        XCTAssertNotNil(screenNavigator?.viewControllers.last as? MultipageReviewViewController,
-                        "last view controller is not a MultipageReviewController")
+        XCTAssertNotNil(screenNavigator?.viewControllers.last as? ReviewViewController,
+                        "last view controller is not a ReviewController")
     }
     
     func testNavControllerCountAfterStartWithAPDF() {
@@ -94,46 +94,15 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
         XCTAssertNotNil(screenNavigator?.viewControllers.last as? ReviewViewController,
                         "first view controller is not a ReviewViewController")
     }
-    
-    func testDocumentCollectionAfterRotateImageInMultipage() {
-        let capturedImageDocument = GiniCaptureTestsHelper.loadImagePage(named: "invoice")
-        coordinator.addToDocuments(new: [capturedImageDocument])
-        
-        (coordinator.multiPageReviewViewController
-            .pages[0]
-            .document as? GiniImageDocument)?
-            .rotatePreviewImage90Degrees()
-        coordinator.multipageReview(coordinator.multiPageReviewViewController,
-                                    didRotate: coordinator.multiPageReviewViewController.pages[0])
 
-        let imageDocument = coordinator.pages[0].document as? GiniImageDocument
-        XCTAssertEqual(imageDocument?.rotationDelta, 90,
-                       "the image document rotation delta should have been updated after rotation")
-    }
-    
     func testDocumentCollectionAfterRemoveImageInMultipage() {
         let capturedImageDocument = GiniCaptureTestsHelper.loadImagePage(named: "invoice")
         coordinator.addToDocuments(new: [capturedImageDocument])
         
-        coordinator.multipageReview(coordinator.multiPageReviewViewController,
-                                    didDelete: coordinator.multiPageReviewViewController.pages[0])
+        coordinator.review(coordinator.reviewViewController,
+                                    didDelete: coordinator.reviewViewController.pages[0])
         XCTAssertTrue(coordinator.pages.isEmpty,
                       "vision documents collection should be empty after delete " +
             "the image in the multipage review view controller")
-    }
-    
-    func testMultipageImageDocumentWhenSortingDocuments() {
-        let capturedImageDocument = [GiniCaptureTestsHelper.loadImagePage(named: "invoice"),
-                                     GiniCaptureTestsHelper.loadImagePage(named: "invoice")]
-        let firstItemId = capturedImageDocument.first?.document.id
-        coordinator.addToDocuments(new: capturedImageDocument)
-        
-        var reorderedItems = capturedImageDocument
-        reorderedItems.swapAt(0, 1)
-        
-        coordinator.multipageReview(coordinator.multiPageReviewViewController, didReorder: reorderedItems)
-        
-        XCTAssertTrue(coordinator.pages.last?.document.id == firstItemId, "last items should be the one moved")
-        
     }
 }

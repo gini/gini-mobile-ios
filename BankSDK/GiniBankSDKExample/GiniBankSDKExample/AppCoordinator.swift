@@ -36,8 +36,6 @@ final class AppCoordinator: Coordinator {
         configuration.qrCodeScanningEnabled = true
         configuration.multipageEnabled = true
         configuration.flashToggleEnabled = true
-        configuration.navigationBarItemTintColor = .white
-        configuration.navigationBarTintColor = Colors.Gini.blue
         configuration.localizedStringsTableName = "LocalizableCustomName"
         configuration.customDocumentValidations = { document in
             // As an example of custom document validation, we add a more strict check for file size
@@ -48,6 +46,9 @@ final class AppCoordinator: Coordinator {
             }
             return CustomDocumentValidationResult.success()
         }
+        //configuration.bottomNavigationBarEnabled = true
+        //configuration.noResultNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
+        //configuration.helpNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
 //        let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
 //        configuration.customMenuItems = [customMenuItem]
 //        configuration.albumsScreenSelectMorePhotosTextColor = GiniColor(lightModeColor: .systemBlue, darkModeColor: .systemBlue)
@@ -84,6 +85,15 @@ final class AppCoordinator: Coordinator {
 //    configuration.primaryButtonCornerRadius = 10
 //    configuration.customOnboardingPages = [OnboardingPageNew(imageName: "captureSuggestion1", title: "Page 1", description: "Description for page 1")]
         configuration.onboardingAlignCornersIllustrationAdapter = CustomOnboardingIllustrationAdapter()
+
+        // Custom loading indicator customization example
+//        let customLoadingIndicator = CustomLoadingIndicator()
+//        configuration.analysisScreenLoadingIndicator = customLoadingIndicator
+        // Custom navigation view controller
+//        let navigationViewController = UINavigationController()
+//        navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
+//        configuration.customNavigationController = navigationViewController
+        
        return configuration
     }()
     

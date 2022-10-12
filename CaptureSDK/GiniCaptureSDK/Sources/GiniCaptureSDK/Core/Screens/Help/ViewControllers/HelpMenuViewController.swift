@@ -18,17 +18,21 @@ import UIKit
 public protocol HelpMenuViewControllerDelegate: AnyObject {
     func help(_ menuViewController: HelpMenuViewController, didSelect item: HelpMenuItem)
 }
+
 /**
  The `HelpMenuViewController` provides explanations on how to take better pictures, how to
  use the _Open with_ feature and which formats are supported by the Gini Capture SDK. 
  */
 
-final public class HelpMenuViewController: UIViewController {
+public final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewController {
 
     public weak var delegate: HelpMenuViewControllerDelegate?
     private (set) var dataSource: HelpMenuDataSource
     private let giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 44
+    public var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
+    public var bottomNavigationBar: UIView?
+    private var bottomConstraint: NSLayoutConstraint?
 
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -67,23 +71,41 @@ final public class HelpMenuViewController: UIViewController {
         tableView.tableHeaderView = UIView()
         tableView.tableFooterView = UIView()
         tableView.register(
-            HelpMenuCell.self, forCellReuseIdentifier: HelpMenuCell.reuseIdentifier)
+            UINib(
+                nibName: "HelpMenuCell",
+                bundle: giniCaptureBundle()),
+            forCellReuseIdentifier: HelpMenuCell.reuseIdentifier)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = tableRowHeight
         tableView.contentInsetAdjustmentBehavior = .never
-        tableView.separatorColor = GiniColor(light: UIColor.GiniCapture.light3,
-                                             dark: UIColor.GiniCapture.dark4).uiColor()
+        tableView.separatorStyle = .none
+    }
+
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.reloadData()
     }
 
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        tableView.reloadData()
+    }
+
+    private func configureMainView() {
+        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
+        view.addSubview(tableView)
+        title = NSLocalizedStringPreferredFormat("ginicapture.help.menu.title", comment: "Help Import screen title")
+        view.layoutSubviews()
+        configureBottomNavigationBar(
+            configuration: giniConfiguration,
+            under: tableView)
     }
 
     private func configureConstraints() {
+        if giniConfiguration.bottomNavigationBarEnabled == false {
+            NSLayoutConstraint.activate([tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
+        }
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin)
         ])
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
@@ -100,13 +122,6 @@ final public class HelpMenuViewController: UIViewController {
                     constant: -GiniMargins.margin)
             ])
         }
-        view.layoutSubviews()
-    }
-
-    private func configureMainView() {
-        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
-        view.addSubview(tableView)
-        title = NSLocalizedStringPreferredFormat("ginicapture.help.menu.title", comment: "Help Import screen title")
         view.layoutSubviews()
     }
 

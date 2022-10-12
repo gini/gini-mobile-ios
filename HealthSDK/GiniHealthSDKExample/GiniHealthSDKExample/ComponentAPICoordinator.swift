@@ -56,17 +56,17 @@ final class ComponentAPICoordinator: NSObject, Coordinator {
         return tabBarViewController
     }()
     
-    fileprivate(set) lazy var multipageReviewScreen: MultipageReviewViewController = {
-        let multipageReviewScreen = MultipageReviewViewController(pages: pages,
+    fileprivate(set) lazy var multipageReviewScreen: ReviewViewController = {
+        let reviewScreen = ReviewViewController(pages: pages,
                                                                   giniConfiguration: giniConfiguration)
-        multipageReviewScreen.delegate = self
+        reviewScreen.delegate = self
         addCloseButtonIfNeeded(onViewController: multipageReviewScreen)
         let weiterBarButton = UIBarButtonItem(title: NSLocalizedString("next", comment: "weiter button text"),
                                               style: .plain,
                                               target: self,
                                               action: #selector(showAnalysisScreen))
         weiterBarButton.isEnabled = false
-        multipageReviewScreen.navigationItem.rightBarButtonItem = weiterBarButton
+        reviewScreen.navigationItem.rightBarButtonItem = weiterBarButton
         return multipageReviewScreen
     }()
     
@@ -98,12 +98,7 @@ final class ComponentAPICoordinator: NSObject, Coordinator {
             showCameraScreen()
         } else {
             if pages.type == .image {
-                if giniConfiguration.multipageEnabled {
-                    showMultipageReviewScreen()
-                } else {
-                    showReviewScreen()
-                }
-                
+                showReviewScreen()
                 pages.forEach { process(captured: $0)}
             } else {
                 showAnalysisScreen()
@@ -138,25 +133,10 @@ extension ComponentAPICoordinator {
         navigationController.pushViewController(cameraScreen!, animated: true)
     }
     
-    fileprivate func showMultipageReviewScreen() {
+    fileprivate func showReviewScreen() {
         navigationController.pushViewController(multipageReviewScreen, animated: true)
     }
-    
-    fileprivate func showReviewScreen() {
-        guard let document = pages.first?.document else { return }
-        reviewScreen = ReviewViewController(document: document, giniConfiguration: giniConfiguration)
-        reviewScreen?.delegate = self
-        addCloseButtonIfNeeded(onViewController: reviewScreen!)
-        reviewScreen?.navigationItem
-            .rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("next",
-                                                                           comment: "close button text"),
-                                                  style: .plain,
-                                                  target: self,
-                                                  action: #selector(showAnalysisScreen))
-        
-        navigationController.pushViewController(reviewScreen!, animated: true)
-    }
-    
+
     @objc fileprivate func showAnalysisScreen() {
         guard let page = pages.first else { return }
         
@@ -189,10 +169,8 @@ extension ComponentAPICoordinator {
             case .image:                
                 if giniConfiguration.multipageEnabled {
                     refreshMultipageReview(with: self.pages)
-                    showMultipageReviewScreen()
-                } else {
-                    showReviewScreen()
                 }
+                showReviewScreen()
             case .qrcode, .pdf:
                 showAnalysisScreen()
             }
@@ -386,7 +364,7 @@ extension ComponentAPICoordinator: UINavigationControllerDelegate {
             documentService?.resetToInitialState()
         }
         
-        if let cameraViewController = toVC as? CameraViewController, fromVC is MultipageReviewViewController {
+        if let cameraViewController = toVC as? CameraViewController, fromVC is ReviewViewController {
             cameraViewController
                 .replaceCapturedStackImages(with: pages.compactMap { $0.document.previewImage })
         }
@@ -399,7 +377,7 @@ extension ComponentAPICoordinator: UINavigationControllerDelegate {
 
 extension ComponentAPICoordinator: CameraViewControllerDelegate {
     
-    func cameraDidAppear(_ viewController: CameraViewController) {
+    func cameraDidAppear(_ viewController: CameraScreen) {
         // Here you can show the Onboarding screen in case that you decide
         // to launch it once the camera screen appears.
         
@@ -407,11 +385,11 @@ extension ComponentAPICoordinator: CameraViewControllerDelegate {
         viewController.setupCamera()
     }
     
-    func cameraDidTapMultipageReviewButton(_ viewController: CameraViewController) {
-        showMultipageReviewScreen()
+    func cameraDidTapReviewButton(_ viewController: CameraScreen) {
+        showReviewScreen()
     }
     
-    func camera(_ viewController: CameraViewController, didSelect documentPicker: DocumentPickerType) {
+    func camera(_ viewController: CameraScreen, didSelect documentPicker: DocumentPickerType) {
         switch documentPicker {
         case .gallery:
             documentPickerCoordinator.showGalleryPicker(from: viewController)
@@ -422,7 +400,7 @@ extension ComponentAPICoordinator: CameraViewControllerDelegate {
     }
     
     
-    func camera(_ viewController: CameraViewController, didCapture document: GiniCaptureDocument) {
+    func camera(_ viewController: CameraScreen, didCapture document: GiniCaptureDocument) {
         validate([document]) { result in
             switch result {
             case .success(let validatedPages):
@@ -432,8 +410,10 @@ extension ComponentAPICoordinator: CameraViewControllerDelegate {
                 
                 // In case that there is more than one image already captured, an animation is shown instead of
                 // going to next screen
-                if let imageDocument = document as? GiniImageDocument, self.pages.count > 1 {
-                    viewController.animateToControlsView(imageDocument: imageDocument)
+                if let imageDocument = document as? GiniImageDocument,
+                   self.pages.count > 1,
+                   let cameraController = viewController as? CameraViewController {
+                    cameraController.animateToControlsView(imageDocument: imageDocument, completion: nil)
                 } else {
                     self.showNextScreenAfterPicking()
                 }
@@ -441,7 +421,7 @@ extension ComponentAPICoordinator: CameraViewControllerDelegate {
                 if let error = error as? FilePickerError,
                     (error == .maxFilesPickedCountExceeded || error == .mixedDocumentsUnsupported) {
                     viewController.showErrorDialog(for: error) {
-                        self.showMultipageReviewScreen()
+                        self.showReviewScreen()
                     }
                 }
             }
@@ -484,11 +464,7 @@ extension ComponentAPICoordinator: DocumentPickerCoordinatorDelegate {
                         if !self.pages.isEmpty {
                             positiveAction = {
                                 coordinator.dismissCurrentPicker {
-                                    if self.giniConfiguration.multipageEnabled {
-                                        self.showMultipageReviewScreen()
-                                    } else {
-                                        self.showReviewScreen()
-                                    }
+                                    self.showReviewScreen()
                                 }
                             }
                         }
@@ -513,26 +489,14 @@ extension ComponentAPICoordinator: DocumentPickerCoordinatorDelegate {
     }    
 }
 
-// MARK: - ReviewViewControllerDelegate
+// MARK: ReviewViewControllerDelegate
 
 extension ComponentAPICoordinator: ReviewViewControllerDelegate {
-    
-    func review(_ viewController: ReviewViewController, didReview document: GiniCaptureDocument) {
-        if let index = pages.index(of: document) {
-            pages[index].document = document
-        }
-        
-        if let imageDocument = document as? GiniImageDocument {
-            documentService?.update(imageDocument: imageDocument)
-        }
+    func reviewDidTapProcess(_ viewController: ReviewViewController) {
+        showAnalysisScreen()
     }
-}
 
-// MARK: MultipageReviewViewControllerDelegate
-
-extension ComponentAPICoordinator: MultipageReviewViewControllerDelegate {
-    
-    func multipageReview(_ viewController: MultipageReviewViewController,
+    func review(_ viewController: ReviewViewController,
                          didTapRetryUploadFor page: GiniCapturePage) {
         if let index = pages.index(of: page.document) {
             pages[index].error = nil
@@ -545,25 +509,7 @@ extension ComponentAPICoordinator: MultipageReviewViewControllerDelegate {
         }
     }
     
-    func multipageReview(_ controller: MultipageReviewViewController, didReorder pages: [GiniCapturePage]) {
-        self.pages = pages
-        
-        if giniConfiguration.multipageEnabled {
-            documentService?.sortDocuments(withSameOrderAs: self.pages.map { $0.document })
-        }
-    }
-    
-    func multipageReview(_ controller: MultipageReviewViewController, didRotate page: GiniCapturePage) {
-        if let index = pages.index(of: page.document) {
-            pages[index].document = page.document
-        }
-        
-        if let imageDocument = page.document as? GiniImageDocument {
-            documentService?.update(imageDocument: imageDocument)
-        }
-    }
-    
-    func multipageReview(_ controller: MultipageReviewViewController, didDelete page: GiniCapturePage) {
+    func review(_ controller: ReviewViewController, didDelete page: GiniCapturePage) {
         documentService?.remove(document: page.document)
         pages.remove(page.document)
         
@@ -572,7 +518,7 @@ extension ComponentAPICoordinator: MultipageReviewViewControllerDelegate {
         }
     }
     
-    func multipageReviewDidTapAddImage(_ controller: MultipageReviewViewController) {
+    func reviewDidTapAddImage(_ controller: ReviewViewController) {
         navigationController.popViewController(animated: true)
     }
 }

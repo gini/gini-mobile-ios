@@ -19,9 +19,14 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     }
     
     public lazy var screenAPINavigationController: UINavigationController = {
-        let navigationController = UINavigationController()
+        var navigationController: UINavigationController
+        if let customNavigationController = giniConfiguration.customNavigationController {
+            navigationController = customNavigationController
+        } else {
+            navigationController = UINavigationController()
+            navigationController.applyStyle(withConfiguration: self.giniConfiguration)
+        }
         navigationController.delegate = self
-        navigationController.applyStyle(withConfiguration: self.giniConfiguration)
         return navigationController
     }()
     
@@ -30,11 +35,10 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     
     // Screens
     var analysisViewController: AnalysisViewController?
-    var cameraViewController: CameraViewController?
+    var cameraViewController: CameraScreen?
     var imageAnalysisNoResultsViewController: NoResultScreenViewController?
-    var reviewViewController: ReviewViewController?
-    lazy var multiPageReviewViewController: MultipageReviewViewController = {
-        return self.createMultipageReviewScreenContainer(with: [])
+    lazy var reviewViewController: ReviewViewController = {
+        return self.createReviewScreenContainer(with: [])
     }()
     lazy var documentPickerCoordinator: DocumentPickerCoordinator = {
         return DocumentPickerCoordinator(giniConfiguration: giniConfiguration)
@@ -143,20 +147,16 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     
     private func initialViewControllers(with pages: [GiniCapturePage]) -> [UIViewController] {
         if pages.type == .image {
+            self.cameraViewController = self.createCameraViewController()
             if giniConfiguration.multipageEnabled {
-                self.cameraViewController = self.createCameraViewController()
                 self.cameraViewController?
                     .replaceCapturedStackImages(with: pages.compactMap { $0.document.previewImage })
-                
-                self.multiPageReviewViewController =
-                    createMultipageReviewScreenContainer(with: pages)
-                
-                return [self.cameraViewController!, self.multiPageReviewViewController]
-            } else {
-                self.cameraViewController = self.createCameraViewController()
-                self.reviewViewController = self.createReviewScreen(withDocument: pages[0].document)
-                return [self.cameraViewController!, self.reviewViewController!]
             }
+
+            self.reviewViewController =
+                createReviewScreenContainer(with: pages)
+
+            return [self.cameraViewController!, self.reviewViewController]
         } else {
             self.analysisViewController = createAnalysisScreen(withDocument: pages[0].document)
             return [self.analysisViewController!]
@@ -170,18 +170,13 @@ extension GiniScreenAPICoordinator {
     func addToDocuments(new pages: [GiniCapturePage]) {
         self.pages.append(contentsOf: pages)
         
-        if giniConfiguration.multipageEnabled, pages.type == .image {
-            refreshMultipageReviewNextButton(with: self.pages)
-            multiPageReviewViewController.updateCollections(with: self.pages)
+        if pages.type == .image {
+            reviewViewController.updateCollections(with: self.pages)
         }
     }
     
     func removeFromDocuments(document: GiniCaptureDocument) {
         pages.remove(document)
-        
-        if giniConfiguration.multipageEnabled, pages.type == .image {
-            refreshMultipageReviewNextButton(with: pages)
-        }
     }
     
     func updateDocument(for document: GiniCaptureDocument) {
@@ -197,8 +192,7 @@ extension GiniScreenAPICoordinator {
         }
         
         if giniConfiguration.multipageEnabled, pages.type == .image {
-            refreshMultipageReviewNextButton(with: pages)
-            multiPageReviewViewController.updateCollections(with: pages)
+            reviewViewController.updateCollections(with: pages)
         }
     }
     
@@ -261,8 +255,7 @@ extension GiniScreenAPICoordinator {
     }
     
     @objc func showAnalysisScreen() {
-        if screenAPINavigationController.topViewController is MultipageReviewViewController ||
-        screenAPINavigationController.topViewController is ReviewViewController {
+        if screenAPINavigationController.topViewController is ReviewViewController {
             trackingDelegate?.onReviewScreenEvent(event: Event(type: .next))
         }
         
@@ -304,23 +297,15 @@ extension GiniScreenAPICoordinator: UINavigationControllerDelegate {
             }
         }
         
-        if fromVC is ReviewViewController && operation == .pop {
-            reviewViewController = nil            
-            if let firstDocument = pages.first?.document {
-                visionDelegate?.didCancelReview(for: firstDocument)
-            }
-        }
-        
         if toVC is CameraViewController &&
-            (fromVC is ReviewViewController ||
-                fromVC is AnalysisViewController ||
-                fromVC is NoResultScreenViewController) {
+            (fromVC is AnalysisViewController ||
+             fromVC is NoResultScreenViewController) {
             // When going directly from the analysis or from the single page review screen to the camera the pages
             // collection should be cleared, since the document processed in that cases is not going to be reused
             clearDocuments()
         }
-                
-        if fromVC is MultipageReviewViewController, let cameraVC = toVC as? CameraViewController {
+
+        if fromVC is ReviewViewController, let cameraVC = toVC as? CameraScreen {
             cameraVC.replaceCapturedStackImages(with: pages.compactMap { $0.document.previewImage })
         }
                 

@@ -6,7 +6,7 @@
   Copyright © 2016 Gini. All rights reserved.
 */
 
-"ginicapture.navigationbar.camera.title"        = "Photograph document";
+"ginicapture.navigationbar.camera.title"        = "Scan";
 "ginicapture.navigationbar.onboarding.title"    = "Instructions";
 "ginicapture.navigationbar.review.title"        = "Check photo quality";
 "ginicapture.navigationbar.analysis.title"      = "Be patient, analysing photo";
@@ -36,7 +36,14 @@
 "ginicapture.camera.documentValidationError.tooManyPages" = "The document can only have a maximum of 10 pages.";
 "ginicapture.camera.documentValidationError.wrongFormat" = "Only files of the formats jpg, png, gif or pdf can be analysed";
 "ginicapture.camera.fileImportTip" = "Now documents can be conveniently uploaded for analysis.";
-"ginicapture.camera.fileImportButtonLabel" = "Import";
+"ginicapture.camera.fileImportButtonLabel" = "Files";
+"ginicapture.camera.flashButtonLabel.On.Voice.Over" = "Flash On";
+"ginicapture.camera.flashButtonLabel.Off.Voice.Over" = "Flash Off";
+"ginicapture.camera.flashButtonLabel.On" = "On";
+"ginicapture.camera.flashButtonLabel.Off" = "Off";
+"ginicapture.camera.thumbnail.Voice.Over" = "Photo review";
+"ginicapture.camera.capturebutton" = "Take picture";
+"ginicapture.camera.infoLabel" = "Scan an invoice or a QR code";
 "ginicapture.camera.qrCodeTip" = "Have you checked out the QR code scan yet?";
 "ginicapture.camera.capturedImagesStackLabel" = "Captured documents";
 "ginicapture.camera.qrCodeDetectedPopup.message" = "Use QR code?";
@@ -50,9 +57,9 @@
 "ginicapture.camera.errorPopup.reviewPages" = "Review pages";
 "ginicapture.camera.unknownError" = "An unknown error has occurred on the camera screen";
 "ginicapture.camera.popupTitleImportPDF" = "Import PDF";
-"ginicapture.camera.popupOptionPhotos" = "Gallery";
-"ginicapture.camera.popupOptionFiles" = "Documents";
-"ginicapture.camera.popupTitleImportPDForPhotos" = "Import Photos or PDF files";
+"ginicapture.camera.popupOptionPhotos" = "Upload photo";
+"ginicapture.camera.popupOptionFiles" = "Upload PDF";
+"ginicapture.camera.popupTitleImportPDForPhotos" = "";
 "ginicapture.camera.popupCancel" = "Cancel";
 
 "ginicapture.onboarding.firstPage"  = "Hold device parallel over the page";
@@ -78,7 +85,7 @@ are also supported";
 
 "ginicapture.analysis.screenTitle" = "Review";
 "ginicapture.analysis.loadingText" = "Analyzing documents";
-"ginicapture.analysis.loadingText.pdf" = "Analyzing %@";
+"ginicapture.analysis.loadingText.pdf" = "Analyzing\n%@";
 "ginicapture.analysis.suggestion.header" = "For faster results, please:";
 "ginicapture.analysis.suggestion.1" = "Good lightning";
 "ginicapture.analysis.suggestion.1.details" = "Proper lighting leads to better results than flash";
@@ -141,12 +148,13 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.albums.title" = "Albums";
 "ginicapture.imagepicker.openbutton" = "Open";
 
-"ginicapture.multipagereview.reorderContainerTooltipMessage" = "The pages must be in the right order. You can sort them here.";
-"ginicapture.multipagereview.addButtonLabel" = "Add a page";
-"ginicapture.multipagereview.dragAndDropTip" = "Drag & Drop to sort";
-"ginicapture.multipagereview.title" = "%d of %d";
+"ginicapture.multipagereview.title" = "Review";
+"ginicapture.multipagereview.description" = "Make sure the payment details are visible";
+"ginicapture.multipagereview.mainButtonTitle" = "Process documents";
+"ginicapture.multipagereview.secondaryButtonTitle" = "Pages";
 "ginicapture.multipagereview.error.retakeAction" = "Retake";
 "ginicapture.multipagereview.error.retryAction" = "Retry";
+
 "ginicapture.noresult.enterManually" = "Enter manually";
 "ginicapture.noresult.retakeImages" = "Retake images";
 "ginicapture.noresult.title" = "No results";

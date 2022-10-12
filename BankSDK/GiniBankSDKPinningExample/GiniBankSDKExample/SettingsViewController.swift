@@ -25,6 +25,8 @@ final class SettingsViewController: UIViewController {
     @IBOutlet weak var qrCodeScanningSwitch: UISwitch!
     @IBOutlet weak var multipageSwitch: UISwitch!
     @IBOutlet weak var flashToggleSwitch: UISwitch!
+    @IBOutlet weak var bottomBarSwitch: UISwitch!
+    
     @IBAction func fileImportOptions(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
         case 0:
@@ -38,6 +40,13 @@ final class SettingsViewController: UIViewController {
         
         delegate?.settings(settingViewController: self, didChangeConfiguration: giniConfiguration)
     }
+    
+    
+    @IBAction func bottomNavigationBarSwitched(_ sender: UISwitch) {
+        giniConfiguration.bottomNavigationBarEnabled = sender.isOn
+        delegate?.settings(settingViewController: self, didChangeConfiguration: giniConfiguration)
+    }
+    
     
     @IBAction func closeButton(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
@@ -70,6 +79,7 @@ final class SettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        bottomBarSwitch.setOn(giniConfiguration.bottomNavigationBarEnabled, animated: false)
         openWithSwitch.setOn(giniConfiguration.openWithEnabled, animated: false)
         qrCodeScanningSwitch.setOn(giniConfiguration.qrCodeScanningEnabled, animated: false)
         multipageSwitch.setOn(giniConfiguration.multipageEnabled, animated: false)

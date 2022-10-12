@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_0" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="fPC-k4-VJ1" customClass="CameraBottomNavigationBar" customModule="GiniCaptureSDK">
+            <rect key="frame" x="0.0" y="0.0" width="458" height="114"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eF1-Xh-kaw">
+                    <rect key="frame" x="9.9999999999999964" y="0.0" width="53.666666666666657" height="114"/>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="Left"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uqH-1E-R8A">
+                    <rect key="frame" x="388.66666666666669" y="0.0" width="59.333333333333314" height="114"/>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="Help"/>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="dXr-WQ-fgv"/>
+            <constraints>
+                <constraint firstItem="dXr-WQ-fgv" firstAttribute="trailing" secondItem="uqH-1E-R8A" secondAttribute="trailing" constant="10" id="EUO-wl-i2i"/>
+                <constraint firstAttribute="bottom" secondItem="uqH-1E-R8A" secondAttribute="bottom" id="IGB-Sg-qTm"/>
+                <constraint firstItem="uqH-1E-R8A" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="eF1-Xh-kaw" secondAttribute="trailing" id="Nwa-um-AIe"/>
+                <constraint firstItem="uqH-1E-R8A" firstAttribute="top" secondItem="fPC-k4-VJ1" secondAttribute="top" id="Qrh-0t-U1h"/>
+                <constraint firstAttribute="bottom" secondItem="eF1-Xh-kaw" secondAttribute="bottom" id="RqV-kz-SV8"/>
+                <constraint firstItem="eF1-Xh-kaw" firstAttribute="leading" secondItem="dXr-WQ-fgv" secondAttribute="leading" constant="10" id="dx4-6Z-p9q"/>
+                <constraint firstItem="eF1-Xh-kaw" firstAttribute="top" secondItem="fPC-k4-VJ1" secondAttribute="top" id="rmY-NG-Xos"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="leftButton" destination="eF1-Xh-kaw" id="F1C-Bp-HKs"/>
+                <outlet property="rightButton" destination="uqH-1E-R8A" id="oUr-K5-CoA"/>
+            </connections>
+            <point key="canvasLocation" x="86.153846153846146" y="-245.260663507109"/>
+        </view>
+    </objects>
+</document>
