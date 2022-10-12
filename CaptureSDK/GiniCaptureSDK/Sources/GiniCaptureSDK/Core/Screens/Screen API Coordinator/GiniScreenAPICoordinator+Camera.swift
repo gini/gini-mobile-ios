@@ -87,18 +87,13 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         )
         cameraViewController.delegate = self
         cameraViewController.title = .localized(resource: NavigationBarStrings.cameraTitle)
-        
-        let cancel = GiniPreferredButtonResource(
-            image: nil, title: "ginicapture.navigationbar.analysis.back",
-                                    comment: "Button title in the navigation bar for the cancel button on the camera screen",
-                                    configEntry: self.giniConfiguration.navigationBarCameraTitleHelpButton)
-        
+
         if pages.count > 0 {
             let backToReviewMenuButtonResource =
                 GiniPreferredButtonResource(image: "arrowBack",
                                             title: "ginicapture.navigationbar.analysis.backToReview",
                                             comment: "Button title in the navigation bar for the back button on the camera screen when there are images selected",
-                                            configEntry: self.giniConfiguration.navigationBarHelpScreenTitleBackToMenuButton)
+                                            configEntry: giniConfiguration.navigationBarHelpScreenTitleBackToMenuButton)
             cameraViewController.setupNavigationItem(
                 usingResources: backToReviewMenuButtonResource,
                 selector: #selector(showReview),
@@ -106,7 +101,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
                 target: self)
         } else {
             cameraViewController.setupNavigationItem(
-                usingResources: cancel,
+                usingResources: cancelButtonResource,
                 selector: #selector(back),
                 position: .left,
                 target: self)
