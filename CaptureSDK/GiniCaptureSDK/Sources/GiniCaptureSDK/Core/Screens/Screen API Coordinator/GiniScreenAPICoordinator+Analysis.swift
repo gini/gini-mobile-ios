@@ -23,7 +23,9 @@ extension GiniScreenAPICoordinator {
 // MARK: - ImageAnalysisNoResults screen
 
 extension GiniScreenAPICoordinator {
-    func createImageAnalysisNoResultsScreen(type: NoResultScreenViewController.NoResultType) -> NoResultScreenViewController {
+    func createImageAnalysisNoResultsScreen(
+        type: NoResultScreenViewController.NoResultType
+    ) -> NoResultScreenViewController {
         let viewModel: NoResultScreenViewModel
         let viewController: NoResultScreenViewController
         let isCameraViewControllerLoaded: Bool = {
@@ -32,24 +34,27 @@ extension GiniScreenAPICoordinator {
             }
             return screenAPINavigationController.viewControllers.contains(cameraViewController)
         }()
-        
+
         if isCameraViewControllerLoaded {
             viewModel = NoResultScreenViewModel { [weak self] in
                 self?.backToCamera()
             } manuallyPressed: { [weak self] in
-                //TODO: the same as cancel
+                // TODO: the same as cancel
                 self?.closeScreenApi()
             } cancelPressed: { [weak self] in
                 self?.backToCamera()
             }
-            
+
         } else {
             viewModel = NoResultScreenViewModel( cancelPressed: { [weak self] in
                 self?.closeScreenApi()
             })
         }
-        viewController = NoResultScreenViewController(giniConfiguration: giniConfiguration, type: type, viewModel: viewModel)
-        
+        viewController = NoResultScreenViewController(
+            giniConfiguration: giniConfiguration,
+            type: type,
+            viewModel: viewModel)
+
         return viewController
     }
 }
@@ -62,7 +67,7 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
             guard let self = self,
                 let message = message,
                 let action = action else { return }
-            
+
             if let analysisViewController = self.analysisViewController {
                 analysisViewController.showError(with: message, action: { [weak self] in
                     guard let self = self else { return }
@@ -75,7 +80,7 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
 
         }
     }
-    
+
     public func tryDisplayNoResultsScreen() -> Bool {
         if pages.type == .image {
             DispatchQueue.main.async { [weak self] in
@@ -84,19 +89,19 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
                 self.screenAPINavigationController.pushViewController(self.imageAnalysisNoResultsViewController!,
                                                                       animated: true)
             }
-            
+
             return true
         } else if pages.type == .pdf {
-            //TODO: no results for pdf
+            // TODO: no results for pdf
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.imageAnalysisNoResultsViewController = self.createImageAnalysisNoResultsScreen(type: .pdf)
-                self.screenAPINavigationController.pushViewController(self.imageAnalysisNoResultsViewController!,
+                self.screenAPINavigationController.pushViewController(
+                    self.imageAnalysisNoResultsViewController!,
                                                                       animated: true)
-                
             }
             return true
         }
         return false
-    }    
+    }
 }
