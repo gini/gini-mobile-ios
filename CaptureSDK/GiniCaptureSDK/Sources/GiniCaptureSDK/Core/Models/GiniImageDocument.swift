@@ -79,9 +79,9 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
         guard let cgImage = image.cgImage else { return image }
         var updatedRect: CGRect
         if image.size.width < image.size.height {
-            updatedRect = CGRect(x: 250, y: 500, width: 2700, height: 2000)
+            updatedRect = CGRect(x: 120, y: 500, width: 2700, height: 2000)
         } else {
-            updatedRect = CGRect(x: 500, y: 250, width: 2000, height: 2700)
+            updatedRect = CGRect(x: 500, y: 120, width: 2000, height: 2700)
         }
 
         guard let croppedCGImage = cgImage.cropping(to: updatedRect) else { return image }
