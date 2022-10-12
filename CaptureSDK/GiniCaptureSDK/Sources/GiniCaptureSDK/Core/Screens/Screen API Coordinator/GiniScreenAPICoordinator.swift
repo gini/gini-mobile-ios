@@ -178,7 +178,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
             reviewViewController =
                 createReviewScreenContainer(with: pages)
 
-            return [reviewViewController, cameraViewController]
+            return [reviewViewController]
         } else {
             self.analysisViewController = createAnalysisScreen(withDocument: pages[0].document)
             return [self.analysisViewController!]
