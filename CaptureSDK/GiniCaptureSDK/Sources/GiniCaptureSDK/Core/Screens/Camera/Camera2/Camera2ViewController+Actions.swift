@@ -45,7 +45,7 @@ extension Camera2ViewController {
      */
     fileprivate func configureCameraButtonsForFileImportTip() {
         cameraPane.captureButton.isEnabled = false
-        cameraPane.flashButton.isEnabled = false
+        cameraPane.flashButton.isUserInteractionEnabled = false
     }
 
     public func setupCamera() {

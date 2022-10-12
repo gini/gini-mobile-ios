@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class BottomLabelButton: UIButton {
+final class BottomLabelButton: UIView {
     var didTapButton: (() -> Void)?
 
     lazy var actionButton: UIButton = {
@@ -39,6 +39,10 @@ final class BottomLabelButton: UIButton {
 
     init() {
         super.init(frame: .zero)
+        addSubview(actionLabel)
+        addSubview(iconView)
+        addSubview(actionButton)
+        setupConstraints()
     }
 
     required init?(coder aDecoder: NSCoder) {

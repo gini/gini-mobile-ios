@@ -49,6 +49,6 @@ import UIKit
      
      - parameter viewController: Camera view controller where the button was tapped.
      */
-    @objc func cameraDidTapMultipageReviewButton(_ viewController: CameraScreen)
+    @objc func cameraDidTapReviewButton(_ viewController: CameraScreen)
 
 }

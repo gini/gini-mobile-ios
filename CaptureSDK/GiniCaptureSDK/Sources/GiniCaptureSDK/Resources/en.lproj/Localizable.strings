@@ -139,12 +139,13 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.albums.title" = "Albums";
 "ginicapture.imagepicker.openbutton" = "Open";
 
-"ginicapture.multipagereview.reorderContainerTooltipMessage" = "The pages must be in the right order. You can sort them here.";
-"ginicapture.multipagereview.addButtonLabel" = "Add a page";
-"ginicapture.multipagereview.dragAndDropTip" = "Drag & Drop to sort";
-"ginicapture.multipagereview.title" = "%d of %d";
+"ginicapture.multipagereview.title" = "Review";
+"ginicapture.multipagereview.description" = "Make sure the payment details are visible";
+"ginicapture.multipagereview.mainButtonTitle" = "Process documents";
+"ginicapture.multipagereview.secondaryButtonTitle" = "Pages";
 "ginicapture.multipagereview.error.retakeAction" = "Retake";
 "ginicapture.multipagereview.error.retryAction" = "Retry";
+
 "ginicapture.noresult.enterManually" = "Enter manually";
 "ginicapture.noresult.retakeImages" = "Retake images";
 "ginicapture.noresult.title" = "No results";
