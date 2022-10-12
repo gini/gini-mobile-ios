@@ -81,7 +81,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         opaqueView?.frame = cameraPreviewViewController.view.frame
     }
 
-    func setupView() {
+    private func setupView() {
         self.title = NSLocalizedStringPreferredFormat(
             "ginicapture.camera.infoLabel",
             comment: "Info label")
@@ -179,7 +179,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         view.layoutSubviews()
     }
 
-    func configureButtons() {
+    private func configureButtons() {
         cameraPane.setupAuthorization(isHidden: false)
         configureLeftButtons()
         cameraButtonsViewModel.captureAction = { [weak self] in
@@ -217,7 +217,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             for: .touchUpInside)
     }
 
-    func showUploadButton() {
+    private func showUploadButton() {
         if giniConfiguration.fileImportSupportedTypes != .none {
             cameraPane.fileUploadButton.isHidden = false
         } else {
@@ -249,7 +249,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             for: .touchUpInside)
     }
 
-    func configureConstraints() {
+    private func configureConstraints() {
         NSLayoutConstraint.activate([
             cameraPreviewViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
             cameraPreviewViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
