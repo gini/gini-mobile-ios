@@ -98,7 +98,7 @@ final class CameraPreviewViewController: UIViewController {
         previewView.drawGuides(withColor: giniConfiguration.cameraPreviewCornerGuidesColor)
         
         view.insertSubview(previewView, at: 0)
-        Constraints.pin(view: previewView, toSuperView: view)
+
         addLoadingIndicator()
     }
 
@@ -108,6 +108,21 @@ final class CameraPreviewViewController: UIViewController {
         startLoadingIndicator()
         updatePreviewViewOrientation() // Video orientation should be updated once the view has been loaded
         
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        setupConstraints()
+    }
+
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            previewView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            previewView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            previewView.topAnchor.constraint(equalTo: view.topAnchor),
+            previewView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
     }
     
     public override func viewWillDisappear(_ animated: Bool) {

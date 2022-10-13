@@ -86,14 +86,25 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
         guard let cgImage = image.cgImage else { return image }
         var updatedRect: CGRect
 
-        print("X: image.size.width \(image.size.width) image.size.height \(image.size.height)")
-
-
         if image.size.width < image.size.height {
-//            updatedRect = CGRect(x: 500, y: 20, width: 2000, height: 2800)
-            updatedRect = CGRect(x: 20, y: 500, width: 2800, height: 2000)
+            if UIDevice.current.isIpad {
+                updatedRect = CGRect(x: 350, y: 350, width: 2400, height: 3300)
+            } else {
+                updatedRect = CGRect(x: 20, y: 500, width: 2800, height: 2000)
+            }
         } else {
-            updatedRect = CGRect(x: 500, y: 20, width: 2000, height: 2800)
+            if UIDevice.current.isIpad {
+                if image.imageOrientation == .up {
+                    updatedRect = CGRect(x: 700, y: 50, width: 2100, height: 2900)
+                } else if image.imageOrientation == .down {
+                    updatedRect = CGRect(x: 1200, y: 50, width: 2100, height: 2900)
+                } else {
+                    // This should not happen since it is in landscape mode.
+                    updatedRect = CGRect(x: 0, y: 0, width: 4032, height: 3024)
+                }
+            } else {
+                updatedRect = CGRect(x: 500, y: 20, width: 2000, height: 2800)
+            }
         }
 
         guard let croppedCGImage = cgImage.cropping(to: updatedRect) else { return image }

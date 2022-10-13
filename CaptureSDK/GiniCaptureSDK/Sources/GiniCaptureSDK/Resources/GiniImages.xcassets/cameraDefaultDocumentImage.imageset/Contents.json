@@ -2,18 +2,28 @@
   "images" : [
     {
       "filename" : "test.jpg",
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "scale" : "1x"
     },
     {
       "filename" : "test-1.jpg",
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "scale" : "2x"
     },
     {
       "filename" : "test-2.jpg",
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "scale" : "3x"
+    },
+    {
+      "filename" : "cameraDefaultDocuemntImage.jpg",
+      "idiom" : "ipad",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "cameraDefaultDocuemntImage-1.jpg",
+      "idiom" : "ipad",
+      "scale" : "2x"
     }
   ],
   "info" : {
