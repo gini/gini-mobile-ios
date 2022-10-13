@@ -7,16 +7,16 @@
 
 import Foundation
 import UIKit
-protocol BaseTableViewDataSource: UITableViewDelegate, UITableViewDataSource {
+
+protocol BaseCollectionViewDataSource: UICollectionViewDelegate,
+    UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     init(
         configuration: GiniConfiguration
     )
 }
 
-protocol BaseCollectionViewDataSource: UICollectionViewDelegate, UICollectionViewDataSource {
-    init(
-        configuration: GiniConfiguration
-    )
+protocol OnboardingScreen: AnyObject {
+    func didScroll(page: Int)
 }
 
 class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
@@ -29,12 +29,16 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
     var currentPage: Int?
     var items: [OnboardingPageNew] = []
     let giniConfiguration: GiniConfiguration
+    weak var delegate: OnboardingScreen?
+
     required init(configuration: GiniConfiguration) {
         giniConfiguration = configuration
     }
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         itemSections.count
     }
+
     private func configureCell(cell: OnboardingPageCell, indexPath: IndexPath) {
         let item = itemSections[indexPath.row]
         let image = UIImageNamedPreferred(named: item.imageName)
@@ -147,7 +151,20 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         }
     }
 
+    // MARK: - For Display the page number in page controll of collection view Cell
+
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
+        let page = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
+        currentPage = page
+        delegate?.didScroll(page: page)
+    }
+
+    // MARK: - UICollectionViewDelegateFlowLayout
+    public func collectionView(_ collectionView: UICollectionView,
+                               layout collectionViewLayout: UICollectionViewLayout,
+                               sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let height = collectionView.frame.height
+        let width = collectionView.frame.width
+        return CGSize(width: width, height: height)
     }
 }
