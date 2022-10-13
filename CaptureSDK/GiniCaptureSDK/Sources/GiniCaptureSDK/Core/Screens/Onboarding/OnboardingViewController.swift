@@ -8,8 +8,7 @@
 import Foundation
 import UIKit
 
-class OnboardingViewController: UIViewController,
-                                UICollectionViewDelegateFlowLayout {
+class OnboardingViewController: UIViewController {
     @IBOutlet weak var pagesCollection: UICollectionView!
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var nextButton: UIButton!
@@ -32,8 +31,10 @@ class OnboardingViewController: UIViewController,
         pagesCollection.setNeedsLayout()
         pagesCollection.layoutIfNeeded()
         pagesCollection.reloadData()
+        pagesCollection.isPagingEnabled = true
         pagesCollection.dataSource = dataSource
         pagesCollection.delegate = dataSource
+        dataSource.delegate = self
     }
     private func configurePageControl() {
         pageControl.numberOfPages = dataSource.itemSections.count
@@ -101,20 +102,11 @@ class OnboardingViewController: UIViewController,
     private func skip() {
         close()
     }
+}
 
-    // MARK: - UICollectionViewDelegateFlowLayout
-    public func collectionView(_ collectionView: UICollectionView,
-                               layout collectionViewLayout: UICollectionViewLayout,
-                               sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let height = collectionView.frame.height
-        let width = collectionView.frame.width
-        return CGSize(width: width, height: height)
-    }
-
-    // MARK: - For Display the page number in page controll of collection view Cell
-
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        pageControl.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
+extension OnboardingViewController: OnboardingScreen {
+    func didScroll(page: Int) {
+        pageControl.currentPage = page
     }
 }
 
