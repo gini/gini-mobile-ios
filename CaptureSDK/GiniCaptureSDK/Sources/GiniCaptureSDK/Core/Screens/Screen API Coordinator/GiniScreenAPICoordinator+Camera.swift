@@ -113,9 +113,6 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             if documentPickerCoordinator.isGalleryPermissionGranted {
                 documentPickerCoordinator.startCaching()
             }
-            if #available(iOS 11.0, *) {
-                documentPickerCoordinator.setupDragAndDrop(in: cameraViewController.view)
-            }
         }
         return cameraViewController
     }
