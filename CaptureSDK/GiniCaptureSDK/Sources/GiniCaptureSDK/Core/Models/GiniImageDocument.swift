@@ -58,8 +58,15 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
 
         super.init()
         if let image = UIImage(data: data) {
-            let crop = cropImage(image: image)!
-            self.data = crop.jpegData(compressionQuality: 1)!
+            #if targetEnvironment(simulator)
+            let rotatedImage = UIImage(cgImage: image.cgImage!, scale: image.scale, orientation: .right)
+            let croppedImage = cropImage(image: rotatedImage)!
+            let finalImage = UIImage(cgImage: croppedImage.cgImage!, scale: croppedImage.scale, orientation: .up)
+            self.data = finalImage.jpegData(compressionQuality: 1)!
+            return
+            #endif
+
+            self.data = cropImage(image: image)!.jpegData(compressionQuality: 1)!
         }
         
     }
@@ -78,10 +85,15 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
     private func cropImage(image: UIImage) -> UIImage? {
         guard let cgImage = image.cgImage else { return image }
         var updatedRect: CGRect
+
+        print("X: image.size.width \(image.size.width) image.size.height \(image.size.height)")
+
+
         if image.size.width < image.size.height {
-            updatedRect = CGRect(x: 120, y: 500, width: 2700, height: 2000)
+//            updatedRect = CGRect(x: 500, y: 20, width: 2000, height: 2800)
+            updatedRect = CGRect(x: 20, y: 500, width: 2800, height: 2000)
         } else {
-            updatedRect = CGRect(x: 500, y: 120, width: 2000, height: 2700)
+            updatedRect = CGRect(x: 500, y: 20, width: 2000, height: 2800)
         }
 
         guard let croppedCGImage = cgImage.cropping(to: updatedRect) else { return image }

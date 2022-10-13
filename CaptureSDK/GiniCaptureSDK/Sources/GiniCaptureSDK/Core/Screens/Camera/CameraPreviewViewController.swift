@@ -251,10 +251,12 @@ extension CameraPreviewViewController {
     
     /// Adds a default image to the canvas when no camera is available (DEBUG mode only)
     fileprivate func addDefaultImage() {
+        guard let defaultImage = defaultImage else { return }
+
         defaultImageView = UIImageView(image: defaultImage)
         guard let defaultImageView = defaultImageView else { return }
         
-        defaultImageView.contentMode = .scaleAspectFit
+        defaultImageView.contentMode = .scaleAspectFill
         previewView.addSubview(defaultImageView)
         
         defaultImageView.translatesAutoresizingMaskIntoConstraints = false
