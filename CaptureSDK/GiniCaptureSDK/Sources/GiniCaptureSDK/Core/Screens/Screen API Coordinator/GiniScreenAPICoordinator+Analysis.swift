@@ -24,28 +24,20 @@ extension GiniScreenAPICoordinator {
 
 extension GiniScreenAPICoordinator {
     func createImageAnalysisNoResultsScreen(
-        type: NoResultScreenViewController.NoResultType
-    ) -> NoResultScreenViewController {
+            type: NoResultScreenViewController.NoResultType
+        ) -> NoResultScreenViewController {
         let viewModel: NoResultScreenViewModel
         let viewController: NoResultScreenViewController
-        let isCameraViewControllerLoaded: Bool = {
-            guard let cameraViewController = cameraViewController else {
-                return false
-            }
-            return screenAPINavigationController.viewControllers.contains(cameraViewController)
-        }()
-
-        if isCameraViewControllerLoaded {
+        switch type {
+        case .image:
             viewModel = NoResultScreenViewModel { [weak self] in
                 self?.backToCamera()
             } manuallyPressed: { [weak self] in
-                // TODO: the same as cancel
-                self?.closeScreenApi()
+                self?.screenAPINavigationController.dismiss(animated: true)
             } cancelPressed: { [weak self] in
                 self?.backToCamera()
             }
-
-        } else {
+        default:
             viewModel = NoResultScreenViewModel( cancelPressed: { [weak self] in
                 self?.closeScreenApi()
             })
