@@ -66,7 +66,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
     }
 
     public func cameraDidTapReviewButton(_ viewController: CameraScreen) {
-        showReview()
+        popBackToReview()
     }
 
     private func createCameraButtonsViewModel() -> CameraButtonsViewModel {
@@ -94,7 +94,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         if pages.count > 0 {
             cameraViewController.setupNavigationItem(
                 usingResources: backToReviewMenuButtonResource,
-                selector: #selector(showReview),
+                selector: #selector(popBackToReview),
                 position: .left,
                 target: self)
         } else {
