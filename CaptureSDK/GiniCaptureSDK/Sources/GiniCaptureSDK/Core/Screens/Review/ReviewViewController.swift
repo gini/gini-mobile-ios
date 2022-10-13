@@ -64,6 +64,7 @@ public final class ReviewViewController: UIViewController {
     public weak var delegate: ReviewViewControllerDelegate?
 
     var pages: [GiniCapturePage]
+    var resetToEnd = false
     fileprivate let giniConfiguration: GiniConfiguration
     fileprivate lazy var presenter: ReviewCollectionCellPresenter = {
         let presenter = ReviewCollectionCellPresenter()
@@ -201,6 +202,11 @@ extension ReviewViewController {
         super.viewDidAppear(animated)
         if !giniConfiguration.multipageEnabled || pages.count == 1 {
             setCellStatus(for: 0, isActive: true)
+        } else {
+            if resetToEnd {
+                resetToEnd = false
+                setCellStatus(for: pages.count - 1, isActive: true)
+            }
         }
     }
 

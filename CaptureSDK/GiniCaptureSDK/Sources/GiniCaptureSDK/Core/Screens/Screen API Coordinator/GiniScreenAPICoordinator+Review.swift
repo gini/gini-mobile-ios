@@ -54,6 +54,13 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
         showAnalysisScreen()
     }
 
+    @objc func popBackToReview() {
+        if let reviewVC = screenAPINavigationController.viewControllers.first as? ReviewViewController {
+            reviewVC.resetToEnd = true
+        }
+        showReview()
+    }
+
     @objc func showReview() {
         screenAPINavigationController.popToRootViewController(animated: true)
     }
