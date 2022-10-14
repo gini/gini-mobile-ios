@@ -23,7 +23,6 @@ final class ToolTipView: UIView {
     fileprivate var closeButtonHeight: CGFloat = 20
     fileprivate var itemSeparation: CGFloat = 16
     fileprivate var minimunDistanceToRefView: UIEdgeInsets
-    // swiftlint: disable: large_tuple
     fileprivate var margin = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     fileprivate var maxWidth: CGFloat = 414
     // swiftlint:disable:large_tuple

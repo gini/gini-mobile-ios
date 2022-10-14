@@ -20,14 +20,15 @@ class MultilineTitleButton: UIButton {
     }
 
     func commonInit() {
-        self.titleLabel?.numberOfLines = 0
-        self.titleLabel?.textAlignment = .center
-        self.setContentHuggingPriority(UILayoutPriority.defaultLow + 1, for: .vertical)
-        self.setContentHuggingPriority(UILayoutPriority.defaultLow + 1, for: .horizontal)
+        titleLabel?.adjustsFontForContentSizeCategory = true
+        titleLabel?.numberOfLines = 0
+        titleLabel?.textAlignment = .center
+        setContentHuggingPriority(UILayoutPriority.defaultLow + 1, for: .vertical)
+        setContentHuggingPriority(UILayoutPriority.defaultLow + 1, for: .horizontal)
     }
 
     override var intrinsicContentSize: CGSize {
-        let size = self.titleLabel!.intrinsicContentSize
+        let size = titleLabel!.intrinsicContentSize
         return CGSize(
             width: size.width + contentEdgeInsets.left + contentEdgeInsets.right,
             height: size.height + contentEdgeInsets.top + contentEdgeInsets.bottom)

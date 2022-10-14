@@ -7,27 +7,29 @@
 
 import UIKit
 
-// MARK: -  Review screen
+// MARK: - Review screen
 
 extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
-    public func review(_ controller: ReviewViewController,
-                         didDelete page: GiniCapturePage) {
+    public func review(
+        _ controller: ReviewViewController,
+        didDelete page: GiniCapturePage) {
         removeFromDocuments(document: page.document)
         visionDelegate?.didCancelReview(for: page.document)
-        
+
         if pages.isEmpty {
-            closeScreen()
+            backToCamera()
         }
     }
 
-    public func review(_ viewController: ReviewViewController,
-                         didTapRetryUploadFor page: GiniCapturePage) {
+    public func review(
+        _ viewController: ReviewViewController,
+        didTapRetryUploadFor page: GiniCapturePage) {
         update(page.document, withError: nil, isUploaded: false)
         visionDelegate?.didCapture(document: page.document, networkDelegate: self)
     }
-    
+
     public func reviewDidTapAddImage(_ controller: ReviewViewController) {
-        closeScreen()
+        backToCamera()
     }
 
     func createReviewScreenContainer(with pages: [GiniCapturePage])
@@ -35,28 +37,32 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
             let vc = ReviewViewController(pages: pages,
                                           giniConfiguration: giniConfiguration)
             vc.delegate = self
-            vc.setupNavigationItem(usingResources: backButtonResource,
+            vc.setupNavigationItem(usingResources: cancelButtonResource,
                                    selector: #selector(closeScreen),
                                    position: .left,
                                    target: self)
 
             return vc
     }
-    
+
     @objc fileprivate func closeScreen() {
         trackingDelegate?.onReviewScreenEvent(event: Event(type: .back))
-        self.screenAPINavigationController.popViewController(animated: true)
+        screenAPINavigationController.dismiss(animated: true)
     }
 
     public func reviewDidTapProcess(_ viewController: ReviewViewController) {
         showAnalysisScreen()
     }
-    
-    func showReview() {
-        if !screenAPINavigationController.viewControllers.contains(reviewViewController) {
-            screenAPINavigationController.pushViewController(reviewViewController,
-                                                             animated: true)
+
+    @objc func popBackToReview() {
+        if let reviewVC = screenAPINavigationController.viewControllers.first as? ReviewViewController {
+            reviewVC.resetToEnd = true
         }
+        showReview()
+    }
+
+    @objc func showReview() {
+        screenAPINavigationController.popToRootViewController(animated: true)
     }
 
     public func review(_ viewController: ReviewViewController, didSelectPage page: GiniCapturePage) {
