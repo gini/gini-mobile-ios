@@ -15,4 +15,8 @@ extension UIApplication {
             self.open(settingsUrl, options: [:], completionHandler: nil)
         }
     }
+
+    var hasNotch: Bool {
+        UIApplication.shared.delegate?.window??.safeAreaInsets.top ?? 0 > 20
+    }
 }
