@@ -58,4 +58,9 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
                                                              animated: true)
         }
     }
+
+    public func review(_ viewController: ReviewViewController, didSelectPage page: GiniCapturePage) {
+        let viewController = ReviewZoomViewController(page: page)
+        self.screenAPINavigationController.present(viewController, animated: true)
+    }
 }
