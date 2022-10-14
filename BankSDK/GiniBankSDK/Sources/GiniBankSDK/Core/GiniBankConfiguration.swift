@@ -1321,6 +1321,11 @@ public final class GiniBankConfiguration: NSObject {
         configuration.onboardingScreenBackgroundColor = self.onboardingScreenBackgroundColor
         configuration.customOnboardingPages = self.customOnboardingPages
         configuration.onboardingAlignCornersIllustrationAdapter = self.onboardingAlignCornersIllustrationAdapter
+    
+        configuration.onboardingLightingIllustrationAdapter = self.onboardingLightingIllustrationAdapter
+        configuration.onboardingQRCodeIllustrationAdapter = self.onboardingQRCodeIllustrationAdapter
+        configuration.onboardingMultiPageIllustrationAdapter = self.onboardingMultiPageIllustrationAdapter
+    
         configuration.onboardingNavigationBarBottomAdapter = self.onboardingNavigationBarBottomAdapter
         
         configuration.navigationBarReviewTitleBackButton = self.navigationBarReviewTitleBackButton

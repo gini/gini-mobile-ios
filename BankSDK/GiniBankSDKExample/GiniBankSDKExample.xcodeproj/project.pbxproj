@@ -10,6 +10,9 @@
 		4C84B5DD264ED55100853F33 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C84B5DC264ED55100853F33 /* Credentials.plist */; };
 		764E0AD228CF274A00F96503 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 764E0AD428CF274A00F96503 /* InfoPlist.strings */; };
 		768B017E28D1E54E009A2124 /* CustomLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768B017D28D1E54E009A2124 /* CustomLoadingIndicator.swift */; };
+		8303F4ED28F9AD7000285599 /* cameraAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8303F4EC28F9AD7000285599 /* cameraAnimation.json */; };
+		8303F4EF28F9AD7700285599 /* magicAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8303F4EE28F9AD7700285599 /* magicAnimation.json */; };
+		8303F4F128F9AD7C00285599 /* uploadAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8303F4F028F9AD7C00285599 /* uploadAnimation.json */; };
 		833652FD28F0308B00B5A1CE /* CustomBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833652FC28F0308B00B5A1CE /* CustomBottomNavigationBarAdapter.swift */; };
 		833652FF28F0330B00B5A1CE /* CustomBottomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 833652FE28F0330B00B5A1CE /* CustomBottomNavigationBar.xib */; };
 		8336530128F0334C00B5A1CE /* CustomBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8336530028F0334C00B5A1CE /* CustomBottomNavigationBar.swift */; };
@@ -93,6 +96,9 @@
 		764E0AD328CF274A00F96503 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		764E0AD528CF275000F96503 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		768B017D28D1E54E009A2124 /* CustomLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLoadingIndicator.swift; sourceTree = "<group>"; };
+		8303F4EC28F9AD7000285599 /* cameraAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cameraAnimation.json; sourceTree = "<group>"; };
+		8303F4EE28F9AD7700285599 /* magicAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = magicAnimation.json; sourceTree = "<group>"; };
+		8303F4F028F9AD7C00285599 /* uploadAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = uploadAnimation.json; sourceTree = "<group>"; };
 		833652FC28F0308B00B5A1CE /* CustomBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
 		833652FE28F0330B00B5A1CE /* CustomBottomNavigationBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomBottomNavigationBar.xib; sourceTree = "<group>"; };
 		8336530028F0334C00B5A1CE /* CustomBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomNavigationBar.swift; sourceTree = "<group>"; };
@@ -232,6 +238,9 @@
 		F441DC3725E5283300AAB09A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8303F4F028F9AD7C00285599 /* uploadAnimation.json */,
+				8303F4EE28F9AD7700285599 /* magicAnimation.json */,
+				8303F4EC28F9AD7000285599 /* cameraAnimation.json */,
 				F4AD00F725DFDF4400C34E15 /* Images.xcassets */,
 				F44AD01D28D4BBE7002BAD98 /* page1Animation.json */,
 				F426ABF0289AB1D7007F4EB6 /* Colors.xcassets */,
@@ -500,10 +509,13 @@
 				F45D7F172800583300C73C63 /* result_Gini_invoice_example.json in Resources */,
 				833652FF28F0330B00B5A1CE /* CustomBottomNavigationBar.xib in Resources */,
 				764E0AD228CF274A00F96503 /* InfoPlist.strings in Resources */,
+				8303F4EF28F9AD7700285599 /* magicAnimation.json in Resources */,
 				F45D7F192800583800C73C63 /* Gini_invoice_example.pdf in Resources */,
 				F426ABF1289AB1D7007F4EB6 /* Colors.xcassets in Resources */,
 				F45D7F1A2800583B00C73C63 /* result_Gini_invoice_example_after_feedback.json in Resources */,
+				8303F4ED28F9AD7000285599 /* cameraAnimation.json in Resources */,
 				F441DCBD25E5694600AAB09A /* Settings.bundle in Resources */,
+				8303F4F128F9AD7C00285599 /* uploadAnimation.json in Resources */,
 				F4AD010125DFDF4500C34E15 /* Images.xcassets in Resources */,
 				F441DCB625E568C400AAB09A /* LaunchScreen.strings in Resources */,
 				F441DCC325E56BF800AAB09A /* LaunchScreen.xib in Resources */,

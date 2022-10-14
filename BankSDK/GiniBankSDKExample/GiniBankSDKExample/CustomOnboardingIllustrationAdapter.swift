@@ -10,7 +10,13 @@ import GiniCaptureSDK
 import Lottie
 import UIKit
 class CustomOnboardingIllustrationAdapter: OnboardingIllustrationAdapter {
-    private var animatedOnboardingPage1: AnimationView?
+    private var animatedOnboarding: AnimationView?
+    
+    init(animationName: String? = nil, backgroundColor: UIColor) {
+        self.animatedOnboarding = AnimationView(name: animationName ?? "")
+        self.animatedOnboarding?.backgroundColor = backgroundColor
+    }
+    
     func pageDidAppear() {
        // animatedOnboardingPage1?.play()
     }
@@ -20,12 +26,14 @@ class CustomOnboardingIllustrationAdapter: OnboardingIllustrationAdapter {
     }
     
     func injectedView() -> UIView {
-        let animatedOnboardingPage1 = AnimationView(name: "page1Animation")
-        animatedOnboardingPage1.backgroundColor = .blue
-        animatedOnboardingPage1.contentMode = .scaleAspectFit
-        animatedOnboardingPage1.loopMode = .loop
-        animatedOnboardingPage1.play()
-        return animatedOnboardingPage1
+        //animatedOnboarding?.stop()
+        animatedOnboarding?.contentMode = .scaleAspectFit
+        animatedOnboarding?.loopMode = .loop
+        animatedOnboarding?.play()
+        if let animation = animatedOnboarding {
+            return animation
+        }
+        return UIView()
     }
     
     func onDeinit() {

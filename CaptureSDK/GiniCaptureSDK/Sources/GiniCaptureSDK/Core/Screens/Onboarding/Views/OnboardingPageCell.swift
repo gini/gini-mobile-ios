@@ -21,8 +21,9 @@ class OnboardingPageCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        iconView.icon = nil
         iconView.illustrationAdapter = nil
+        iconView.icon = nil
+        iconView.subviews.forEach({ $0.removeFromSuperview() })
         title.text = ""
         fullText.text = ""
     }

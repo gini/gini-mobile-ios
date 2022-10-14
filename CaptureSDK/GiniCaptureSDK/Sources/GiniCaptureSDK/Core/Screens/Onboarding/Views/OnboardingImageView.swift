@@ -24,17 +24,14 @@ class ImageOnboardingIllustrationAdapter: OnboardingIllustrationAdapter {
 }
 
 class OnboardingImageView: UIView {
-    var illustrationAdapter: OnboardingIllustrationAdapter? {
-        didSet {
-            setupView()
-        }
-    }
+    var illustrationAdapter: OnboardingIllustrationAdapter?
     var icon: UIImage? {
         didSet {
             // Remove the previous container with an illustration because we dequeue reusable cells
             setupView()
         }
     }
+    private let injectedViewTag = 1010
 
 // MARK: - Initializers
     override init(frame: CGRect) {
@@ -44,13 +41,12 @@ class OnboardingImageView: UIView {
         super.init(coder: aDecoder)
     }
 
-// MARK: - Private Helper Methods
-    private func setupView() {
-        self.subviews.forEach({ $0.removeFromSuperview() })
-        if let containerView = illustrationAdapter?.injectedView() {
+    func setupView() {
+        if viewWithTag(injectedViewTag) == nil, let containerView = illustrationAdapter?.injectedView() {
             if let imageView = containerView as? UIImageView {
                 imageView.image = icon
             }
+            containerView.tag = injectedViewTag
             containerView.fixInView(self)
         }
     }

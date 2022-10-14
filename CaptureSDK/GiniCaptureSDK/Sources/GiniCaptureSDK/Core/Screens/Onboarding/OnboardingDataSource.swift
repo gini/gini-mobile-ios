@@ -20,7 +20,7 @@ protocol OnboardingScreen: AnyObject {
 }
 
 class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
-    private enum OnboadingPageType: Int, CaseIterable {
+    private enum OnboadingPageType: Int {
         case alignCorners = 0
         case lightning = 1
         case multipage = 2
@@ -34,6 +34,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
 
     required init(configuration: GiniConfiguration) {
         giniConfiguration = configuration
+
         adapters = [
             .alignCorners: giniConfiguration.onboardingAlignCornersIllustrationAdapter,
             .lightning: giniConfiguration.onboardingLightingIllustrationAdapter,
@@ -58,6 +59,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
             cell.iconView.illustrationAdapter = ImageOnboardingIllustrationAdapter()
             cell.iconView.icon = image
         }
+        cell.iconView.setupView()
 
         cell.fullText.text = item.description
         cell.title.text = item.title
