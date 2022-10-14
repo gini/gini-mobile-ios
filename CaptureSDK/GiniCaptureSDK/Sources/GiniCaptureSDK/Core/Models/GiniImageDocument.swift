@@ -88,18 +88,36 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
 
         if image.size.width < image.size.height {
             if UIDevice.current.isIpad {
-                updatedRect = CGRect(x: 350, y: 350, width: 2400, height: 3300)
+                if image.imageOrientation == .right {
+                    print("X: right")
+                    updatedRect = CGRect(x: 200, y: 50, width: 1900, height: 2500)
+                } else if image.imageOrientation == .left {
+                    print("X: left")
+                    updatedRect = CGRect(x: 1200, y: 50, width: 2100, height: 2900)
+                } else {
+                    print("X: error 1")
+                    // This should not happen since it is in portrait orientation.
+                    updatedRect = CGRect(x: 0, y: 0, width: 4032, height: 3024)
+                }
+
             } else {
-                updatedRect = CGRect(x: 20, y: 500, width: 2800, height: 2000)
+                if UIApplication.shared.hasNotch {
+                    updatedRect = CGRect(x: 20, y: 500, width: 2900, height: 2000)
+                } else {
+                    updatedRect = CGRect(x: 50, y: 400, width: 3100, height: 2200)
+                }
             }
         } else {
             if UIDevice.current.isIpad {
                 if image.imageOrientation == .up {
+                    print("X: up")
                     updatedRect = CGRect(x: 700, y: 50, width: 2100, height: 2900)
                 } else if image.imageOrientation == .down {
+                    print("X: down")
                     updatedRect = CGRect(x: 1200, y: 50, width: 2100, height: 2900)
                 } else {
-                    // This should not happen since it is in landscape mode.
+                    print("X: error 2")
+                    // This should not happen since it is in landscape orientation.
                     updatedRect = CGRect(x: 0, y: 0, width: 4032, height: 3024)
                 }
             } else {
