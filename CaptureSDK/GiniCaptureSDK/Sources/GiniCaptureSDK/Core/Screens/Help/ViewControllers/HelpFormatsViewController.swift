@@ -8,7 +8,11 @@
 
 import UIKit
 
-final class HelpFormatsViewController: UIViewController {
+public final class HelpFormatsViewController: UIViewController, HelpBottomBarEnabledViewController {
+
+    public var bottomNavigationBar: UIView?
+    public var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
+
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -29,7 +33,7 @@ final class HelpFormatsViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
     }
@@ -53,8 +57,9 @@ final class HelpFormatsViewController: UIViewController {
             comment: "Supported formats screen title")
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         view.addSubview(tableView)
-
-        view.layoutSubviews()
+        configureBottomNavigationBar(
+            configuration: giniConfiguration,
+            under: tableView)
     }
 
     private func configureTableView() {
@@ -93,9 +98,12 @@ final class HelpFormatsViewController: UIViewController {
     }
 
     private func configureConstraints() {
+        if giniConfiguration.bottomNavigationBarEnabled == false {
+            NSLayoutConstraint.activate([tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
+        }
+
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: GiniMargins.margin)
         ])
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([

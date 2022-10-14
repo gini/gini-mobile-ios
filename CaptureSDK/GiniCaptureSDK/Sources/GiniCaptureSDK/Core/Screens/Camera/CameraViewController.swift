@@ -458,7 +458,7 @@ extension CameraViewController: CameraButtonsViewControllerDelegate {
             }
 
         case .imagesStack:
-            delegate?.cameraDidTapMultipageReviewButton(self)
+            delegate?.cameraDidTapReviewButton(self)
         }
     }
 }

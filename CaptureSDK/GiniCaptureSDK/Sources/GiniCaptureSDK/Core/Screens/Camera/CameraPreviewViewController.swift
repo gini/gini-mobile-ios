@@ -28,6 +28,10 @@ final class CameraPreviewViewController: UIViewController {
         }
     }
     
+    var isFlashSupported: Bool {
+        return camera.isFlashSupported && giniConfiguration.flashToggleEnabled
+    }
+    
     private lazy var spinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: .whiteLarge)
         spinner.color = self.giniConfiguration.cameraSetupLoadingIndicatorColor

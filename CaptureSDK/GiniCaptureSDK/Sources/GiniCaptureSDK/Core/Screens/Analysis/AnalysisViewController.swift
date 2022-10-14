@@ -236,8 +236,8 @@ import UIKit
                           priority: 999)
         Constraints.active(item: imageView, attr: .bottom, relatedBy: .equal, to: view.safeAreaLayoutGuide,
                            attr: .bottom, priority: 999)
-        Constraints.active(item: imageView, attr: .trailing, relatedBy: .equal, to: view, attr: .trailing)
-        Constraints.active(item: imageView, attr: .leading, relatedBy: .equal, to: view, attr: .leading)
+        Constraints.active(item: imageView, attr: .centerX, relatedBy: .equal, to: view, attr: .centerX)
+        Constraints.active(item: imageView, attr: .width, relatedBy: .equal, to: view, attr: .width, multiplier: 0.9)
     }
 
     private func addOverlay() {

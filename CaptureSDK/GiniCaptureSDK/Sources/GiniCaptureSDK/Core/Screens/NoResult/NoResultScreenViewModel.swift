@@ -33,11 +33,11 @@ public final class NoResultScreenViewModel {
     @objc func didPressCancell() {
         cancelPressed()
     }
-    
+
     func isEnterManuallyHidden() -> Bool {
         return enterManuallyPressed == nil
     }
-    
+
     func isRetakePressedHidden() -> Bool {
         return retakePressed == nil
     }

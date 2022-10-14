@@ -25,7 +25,6 @@ class ScreenAPICoordinator___UI_Only: XCTestCase {
         configuration.qrCodeScanningEnabled = true
         configuration.multipageEnabled = true
         configuration.flashToggleEnabled = true
-        configuration.navigationBarItemTintColor = .white
        return configuration
     }()
 
@@ -39,7 +38,6 @@ class ScreenAPICoordinator___UI_Only: XCTestCase {
         XCTAssertEqual(bankConfiguration.multipageEnabled, captureConfiguration.multipageEnabled)
         XCTAssertEqual(bankConfiguration.openWithEnabled, captureConfiguration.openWithEnabled)
         XCTAssertEqual(bankConfiguration.flashToggleEnabled, captureConfiguration.flashToggleEnabled)
-        XCTAssertEqual(bankConfiguration.navigationBarItemTintColor, captureConfiguration.navigationBarItemTintColor)
     }
     
     func testInitializationWithTrackingDelegate() {
@@ -52,7 +50,6 @@ class ScreenAPICoordinator___UI_Only: XCTestCase {
         XCTAssertEqual(bankConfiguration.multipageEnabled, captureConfiguration.multipageEnabled)
         XCTAssertEqual(bankConfiguration.openWithEnabled, captureConfiguration.openWithEnabled)
         XCTAssertEqual(bankConfiguration.flashToggleEnabled, captureConfiguration.flashToggleEnabled)
-        XCTAssertEqual(bankConfiguration.navigationBarItemTintColor, captureConfiguration.navigationBarItemTintColor)
     }
     
     func testSetConfiguration() {
@@ -65,7 +62,6 @@ class ScreenAPICoordinator___UI_Only: XCTestCase {
         XCTAssertEqual(bankConfiguration.multipageEnabled, captureConfiguration.multipageEnabled)
         XCTAssertEqual(bankConfiguration.openWithEnabled, captureConfiguration.openWithEnabled)
         XCTAssertEqual(bankConfiguration.flashToggleEnabled, captureConfiguration.flashToggleEnabled)
-        XCTAssertEqual(bankConfiguration.navigationBarItemTintColor, captureConfiguration.navigationBarItemTintColor)
     }
     
     class ScreenAPIUIOnlyCoordinator: GiniCaptureDelegate, GiniCaptureTrackingDelegate {
