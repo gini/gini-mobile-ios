@@ -87,15 +87,16 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
         var updatedRect: CGRect
 
         if image.size.width < image.size.height {
+            let normalImageSize = CGSize(width: 3024, height: 4032)
+            let widthScale = image.size.width / normalImageSize.width
             if UIDevice.current.isIpad {
                 if image.imageOrientation == .right {
-                    print("X: right")
-                    updatedRect = CGRect(x: 200, y: 50, width: 1900, height: 2500)
+                    updatedRect = CGRect(x: widthScale * 400, y: widthScale * 600,
+                                         width: widthScale * 3393, height: widthScale * 2400)
                 } else if image.imageOrientation == .left {
-                    print("X: left")
-                    updatedRect = CGRect(x: 1200, y: 50, width: 2100, height: 2900)
+                    updatedRect = CGRect(x: widthScale * 300, y: 0,
+                                         width: widthScale * 3393, height: widthScale * 2400)
                 } else {
-                    print("X: error 1")
                     // This should not happen since it is in portrait orientation.
                     updatedRect = CGRect(x: 0, y: 0, width: 4032, height: 3024)
                 }
@@ -108,15 +109,16 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
                 }
             }
         } else {
+            let normalImageSize = CGSize(width: 4032, height: 3024)
+            let widthScale = image.size.width / normalImageSize.width
             if UIDevice.current.isIpad {
                 if image.imageOrientation == .up {
-                    print("X: up")
-                    updatedRect = CGRect(x: 700, y: 50, width: 2100, height: 2900)
+                    updatedRect = CGRect(x: widthScale * 700, y: widthScale * 50,
+                                         width: widthScale * 2100, height: widthScale * 2900)
                 } else if image.imageOrientation == .down {
-                    print("X: down")
-                    updatedRect = CGRect(x: 1200, y: 50, width: 2100, height: 2900)
+                    updatedRect = CGRect(x: widthScale * 1200, y: widthScale * 50,
+                                         width: widthScale * 2100, height: widthScale * 2900)
                 } else {
-                    print("X: error 2")
                     // This should not happen since it is in landscape orientation.
                     updatedRect = CGRect(x: 0, y: 0, width: 4032, height: 3024)
                 }
