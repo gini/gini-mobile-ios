@@ -10,7 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OnboardingViewController" customModule="GiniCaptureSDK"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" restorationIdentifier="onboardingPageCellIdentifier" id="iN0-l3-epB" customClass="OnboardingPageCell" customModule="GiniCaptureSDK">
+        <view contentMode="scaleToFill" restorationIdentifier="OnboardingPageCell" id="iN0-l3-epB" customClass="OnboardingPageCell" customModule="GiniCaptureSDK">
             <rect key="frame" x="0.0" y="0.0" width="390" height="500"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>

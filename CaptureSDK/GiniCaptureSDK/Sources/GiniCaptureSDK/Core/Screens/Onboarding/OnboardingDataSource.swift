@@ -20,12 +20,13 @@ protocol OnboardingScreen: AnyObject {
 }
 
 class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
-    private enum OnboadingPageType: Int {
+    private enum OnboadingPageType: Int, CaseIterable {
         case alignCorners = 0
         case lightning = 1
         case multipage = 2
         case qrcode = 3
     }
+    private var adapters: [OnboadingPageType: OnboardingIllustrationAdapter?] = [:]
     var currentPage: Int?
     var items: [OnboardingPageNew] = []
     let giniConfiguration: GiniConfiguration
@@ -33,6 +34,12 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
 
     required init(configuration: GiniConfiguration) {
         giniConfiguration = configuration
+        adapters = [
+            .alignCorners: giniConfiguration.onboardingAlignCornersIllustrationAdapter,
+            .lightning: giniConfiguration.onboardingLightingIllustrationAdapter,
+            .multipage: giniConfiguration.onboardingMultiPageIllustrationAdapter,
+            .qrcode: giniConfiguration.onboardingQRCodeIllustrationAdapter
+        ]
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -42,51 +49,31 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
     private func configureCell(cell: OnboardingPageCell, indexPath: IndexPath) {
         let item = itemSections[indexPath.row]
         let image = UIImageNamedPreferred(named: item.imageName)
-        let onboardingPageType = OnboadingPageType.init(rawValue: indexPath.row)
-        switch onboardingPageType {
-        case .alignCorners:
-            if let adapter = giniConfiguration.onboardingAlignCornersIllustrationAdapter {
-                cell.iconView.illustrationAdapter = adapter
-            } else {
-                cell.iconView.illustrationAdapter = ImageOnboardingIllustrationAdapter()
-                cell.iconView.icon = image
-            }
-        case .lightning:
-            if let adapter = giniConfiguration.onboardingLightingIllustrationAdapter {
-                cell.iconView.illustrationAdapter = adapter
-            } else {
-                cell.iconView.illustrationAdapter = ImageOnboardingIllustrationAdapter()
-                cell.iconView.icon = image
-            }
-        case .multipage:
-            if let adapter = giniConfiguration.onboardingMultiPageIllustrationAdapter {
-                cell.iconView.illustrationAdapter = adapter
-            } else {
-                cell.iconView.illustrationAdapter = ImageOnboardingIllustrationAdapter()
-                cell.iconView.icon = image
-            }
-        case .qrcode:
-            if let adapter = giniConfiguration.onboardingQRCodeIllustrationAdapter {
-                cell.iconView.illustrationAdapter = adapter
-            } else {
-                cell.iconView.illustrationAdapter = ImageOnboardingIllustrationAdapter()
-                cell.iconView.icon = image
-            }
-        default: fatalError("Unhandled case \(indexPath.row)")
+        guard let onboardingPageType = OnboadingPageType.init(rawValue: indexPath.row) else {
+            return
+        }
+        if let adapter = adapters[onboardingPageType], adapter != nil {
+            cell.iconView.illustrationAdapter = adapter
+        } else {
+            cell.iconView.illustrationAdapter = ImageOnboardingIllustrationAdapter()
+            cell.iconView.icon = image
         }
 
         cell.fullText.text = item.description
         cell.title.text = item.title
     }
+
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OnboardingPageCell.identifier,
-                                                         for: indexPath) as? OnboardingPageCell {
+        if let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: OnboardingPageCell.reuseIdentifier,
+            for: indexPath) as? OnboardingPageCell {
             configureCell(cell: cell, indexPath: indexPath)
             return cell
         }
         fatalError("OnboardingPageCell wasn't initialized")
     }
+
     lazy var itemSections: [OnboardingPageNew] = {
         if let customPages = giniConfiguration.customOnboardingPages {
             return customPages
@@ -112,6 +99,8 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
                                       description: NSLocalizedStringPreferredFormat(
                                         "ginicapture.onboarding.multiPages.description",
                                         comment: "onboarding multi pages description")))
+            } else {
+                adapters[.multipage] = nil
             }
             if giniConfiguration.qrCodeScanningEnabled {
                 sections.append(
@@ -120,6 +109,8 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
                         comment: "onboarding qrcode title"), description: NSLocalizedStringPreferredFormat(
                             "ginicapture.onboarding.qrCode.description",
                             comment: "onboarding qrcode description")))
+            } else {
+                adapters[.qrcode] = nil
             }
             return sections
         }
@@ -129,12 +120,9 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         _ collectionView: UICollectionView,
         willDisplay cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath) {
-        let onboardingPageType = OnboadingPageType.init(rawValue: indexPath.row)
-        if onboardingPageType == .alignCorners {
-            if let adapter = giniConfiguration.onboardingAlignCornersIllustrationAdapter {
-                    adapter.pageDidAppear()
-                    print("pageDidAppear")
-            }
+        if let onboardingPageType = OnboadingPageType.init(rawValue: indexPath.row),
+           let adapter = adapters[onboardingPageType] {
+            adapter?.pageDidAppear()
         }
     }
 
@@ -142,12 +130,9 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         _ collectionView: UICollectionView,
         didEndDisplaying cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath) {
-        let onboardingPageType = OnboadingPageType.init(rawValue: indexPath.row)
-        if onboardingPageType == .alignCorners {
-            if let adapter = giniConfiguration.onboardingAlignCornersIllustrationAdapter {
-                adapter.pageDidDisappear()
-                print("pageDidDisappear")
-            }
+        if let onboardingPageType = OnboadingPageType.init(rawValue: indexPath.row),
+           let adapter = adapters[onboardingPageType] {
+            adapter?.pageDidDisappear()
         }
     }
 
