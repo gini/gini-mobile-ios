@@ -9,12 +9,16 @@ import UIKit
 class ImageOnboardingIllustrationAdapter: OnboardingIllustrationAdapter {
     func pageDidAppear() {
     }
+
     func pageDidDisappear() {
     }
+
     func injectedView() -> UIView {
-        let containerView = UIView()
-        return containerView
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        return imageView
     }
+
     func onDeinit() {
     }
 }
@@ -39,20 +43,15 @@ class OnboardingImageView: UIView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+
 // MARK: - Private Helper Methods
     private func setupView() {
         self.subviews.forEach({ $0.removeFromSuperview() })
-        if let image = icon {
-            let imageView = UIImageView()
-            imageView.image = image
-            imageView.contentMode = .scaleAspectFit
-            imageView.fixInView(self)
-        } else {
-            if let containerView = illustrationAdapter?.injectedView() {
-                containerView.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
-                containerView.backgroundColor = .purple
-                self.addSubview(containerView)
+        if let containerView = illustrationAdapter?.injectedView() {
+            if let imageView = containerView as? UIImageView {
+                imageView.image = icon
             }
+            containerView.fixInView(self)
         }
     }
 }

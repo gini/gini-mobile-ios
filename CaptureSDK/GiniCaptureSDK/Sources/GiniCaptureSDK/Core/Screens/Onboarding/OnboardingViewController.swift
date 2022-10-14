@@ -27,7 +27,7 @@ class OnboardingViewController: UIViewController {
     private func configureCollectionView() {
         pagesCollection.register(
             UINib(nibName: "OnboardingPageCell", bundle: giniCaptureBundle()),
-            forCellWithReuseIdentifier: "onboardingPageCellIdentifier")
+            forCellWithReuseIdentifier: OnboardingPageCell.reuseIdentifier)
         pagesCollection.setNeedsLayout()
         pagesCollection.layoutIfNeeded()
         pagesCollection.reloadData()
@@ -36,18 +36,22 @@ class OnboardingViewController: UIViewController {
         pagesCollection.delegate = dataSource
         dataSource.delegate = self
     }
+
     private func configurePageControl() {
         pageControl.numberOfPages = dataSource.itemSections.count
     }
+
     private func setupView() {
         configureCollectionView()
         configureBottomNavigation()
         configurePageControl()
     }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
     }
+
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
         let horizontalConstraint = navigationBar.centerXAnchor.constraint(equalTo: view.centerXAnchor)
@@ -61,6 +65,7 @@ class OnboardingViewController: UIViewController {
                                      widthConstraint,
                                      bottomConstraint])
     }
+
     private func configureBottomNavigation() {
         if configuration.bottomNavigationBarEnabled {
             removeButtons()
@@ -93,12 +98,14 @@ class OnboardingViewController: UIViewController {
         nextButton.removeFromSuperview()
         containerView.removeArrangedSubview(nextButton)
     }
+
     @objc private func close() {
         dismiss(animated: true)
     }
 
     private func nextPage() {
     }
+
     private func skip() {
         close()
     }
