@@ -19,7 +19,7 @@
 "ginicapture.navigationbar.analysis.back"       = "Abbrechen";
 "ginicapture.navigationbar.help.backToCamera"   = "";
 "ginicapture.navigationbar.help.backToMenu"     = "Hilfe";
-"ginicapture.navigationbar.analysis.backToReview" = "TODO Review";
+"ginicapture.navigationbar.analysis.backToReview" = "Übersicht";
 
 
 "ginicapture.camera.captureButton" = "Auslösen";
