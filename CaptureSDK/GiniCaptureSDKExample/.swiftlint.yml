@@ -10,12 +10,14 @@ disabled_rules:
   - empty_enum_arguments
   - multiple_closures_with_trailing_closure
   - todo
+  - type_name
 type_body_length:
   - 300 #warning
 excluded: # paths to ignore during linting.
   - Pods
 included:
   - ../GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Help
+  - ../GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/NoResult
   - ../GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Error
   - ../GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Utils.swift
   - ../GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Analysis
@@ -24,7 +26,8 @@ included:
   - ../GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Protocols
   - ../GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Views
   - ../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Custom views/
-
+  - ../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator
+  
 cyclomatic_complexity:
   ignores_case_statements: true
 line_length:

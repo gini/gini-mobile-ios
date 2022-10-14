@@ -10,12 +10,14 @@ disabled_rules:
   - empty_enum_arguments
   - multiple_closures_with_trailing_closure
   - todo
+  - type_name
 type_body_length:
   - 300 #warning
 excluded: # paths to ignore during linting.
   
 included:
-  - .../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Help
+  - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Help
+  - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/NoResult
   - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Error
   - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Utils.swift
   - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Analysis
@@ -23,8 +25,10 @@ included:
   - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Camera2
   - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Protocols
   - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Views
-  -  ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Custom views/
-
+  - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Review
+  - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Custom views/
+  - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator
+  
 cyclomatic_complexity:
   ignores_case_statements: true
 line_length:

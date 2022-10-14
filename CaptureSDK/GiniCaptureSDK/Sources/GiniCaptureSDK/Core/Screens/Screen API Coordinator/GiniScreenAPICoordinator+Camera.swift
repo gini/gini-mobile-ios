@@ -17,10 +17,10 @@ import UIKit
 }
 
 extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
-    
+
     public func camera(_ viewController: CameraScreen, didCapture document: GiniCaptureDocument) {
         let loadingView = viewController.addValidationLoadingView()
-        
+
         validate([document]) { result in
             loadingView.removeFromSuperview()
             switch result {
@@ -36,16 +36,15 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
                     (error == .maxFilesPickedCountExceeded || error == .mixedDocumentsUnsupported) {
                     errorMessage = error.message
                     viewController.showErrorDialog(for: error) {
-                        self.showMultipageReview()
+                        self.showReview()
                     }
                 }
-                
                 let errorLog = ErrorLog(description: errorMessage, error: error)
                 self.giniConfiguration.errorLogger.handleErrorLog(error: errorLog)
             }
         }
     }
-    
+
     public func camera(_ viewController: CameraScreen, didSelect documentPicker: DocumentPickerType) {
         switch documentPicker {
         case .gallery:
@@ -55,9 +54,8 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             documentPickerCoordinator.showDocumentPicker(from: viewController)
         }
     }
-    
+
     public func cameraDidAppear(_ viewController: CameraScreen) {
-                
         if shouldShowOnBoarding() {
             showOnboardingScreen {
                 viewController.setupCamera()
@@ -66,12 +64,12 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             viewController.setupCamera()
         }
     }
-    
-    public func cameraDidTapMultipageReviewButton(_ viewController: CameraScreen) {
-        showMultipageReview()
+
+    public func cameraDidTapReviewButton(_ viewController: CameraScreen) {
+        popBackToReview()
     }
-    
-    func createCameraViewController() -> CameraScreen {
+
+    private func createCameraButtonsViewModel() -> CameraButtonsViewModel {
         let cameraButtonsViewModel = CameraButtonsViewModel(
             trackingDelegate: trackingDelegate
         )
@@ -81,42 +79,48 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         cameraButtonsViewModel.cancelAction = { [weak self] in
             self?.back()
         }
+        return cameraButtonsViewModel
+    }
+
+    func createCameraViewController() -> CameraScreen {
+        let cameraButtonsViewModel = createCameraButtonsViewModel()
         let cameraViewController = Camera2ViewController(
             giniConfiguration: giniConfiguration,
             viewModel: cameraButtonsViewModel
         )
         cameraViewController.delegate = self
         cameraViewController.title = .localized(resource: NavigationBarStrings.cameraTitle)
-        
-        cameraViewController.setupNavigationItem(usingResources: closeButtonResource,
-                                                 selector: #selector(back),
-                                                 position: .left,
-                                                 target: self)
-        
+
+        if pages.count > 0 {
+            cameraViewController.setupNavigationItem(
+                usingResources: backToReviewMenuButtonResource,
+                selector: #selector(popBackToReview),
+                position: .left,
+                target: self)
+        } else {
+            cameraViewController.setupNavigationItem(
+                usingResources: cancelButtonResource,
+                selector: #selector(back),
+                position: .left,
+                target: self)
+        }
         cameraViewController.setupNavigationItem(usingResources: helpButtonResource,
                                                  selector: #selector(showHelpMenuScreen),
                                                  position: .right,
                                                  target: self)
-        
         if giniConfiguration.fileImportSupportedTypes != .none {
             documentPickerCoordinator.delegate = self
-            
             if documentPickerCoordinator.isGalleryPermissionGranted {
                 documentPickerCoordinator.startCaching()
             }
-            
-            if #available(iOS 11.0, *) {
-                documentPickerCoordinator.setupDragAndDrop(in: cameraViewController.view)
-            }
         }
-        
         return cameraViewController
     }
-    
+
     fileprivate func didCaptureAndValidate(_ document: GiniCaptureDocument) {
         visionDelegate?.didCapture(document: document, networkDelegate: self)
     }
-    
+
     private func shouldShowOnBoarding() -> Bool {
         if giniConfiguration.onboardingShowAtFirstLaunch &&
             !UserDefaults.standard.bool(forKey: "ginicapture.defaults.onboardingShowed") {
@@ -125,32 +129,32 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         } else if giniConfiguration.onboardingShowAtLaunch {
             return true
         }
-        
+
         return false
     }
-    
+
     private func showOnboardingScreen(completion: @escaping () -> Void) {
-        
         cameraViewController?.hideCameraOverlay()
         cameraViewController?.hideCaptureButton()
-        
+
         let vc = OnboardingViewController(nibName: "OnboardingViewController", bundle: giniCaptureBundle())
             guard let cameraViewController = self.cameraViewController else { return }
             cameraViewController.showCameraOverlay()
             cameraViewController.showCaptureButton()
                 if giniConfiguration.fileImportSupportedTypes != GiniConfiguration.GiniCaptureImportFileTypes.none {
-                    //TODO: remove cameraViewController.showFileImportTip()
+                    // TODO: remove cameraViewController.showFileImportTip()
                 } else if giniConfiguration.qrCodeScanningEnabled {
-                    //TODO: removecameraViewController.showQrCodeTip()
+                    // TODO: removecameraViewController.showQrCodeTip()
                 }
-            
+
             completion()
-       
-        
+
         let navigationController = UINavigationController(rootViewController: vc)
-        navigationController.applyStyle(withConfiguration: giniConfiguration)
+        if giniConfiguration.customNavigationController == nil {
+            navigationController.applyStyle(withConfiguration: giniConfiguration)
+        }
         navigationController.modalPresentationStyle = .overCurrentContext
-        
+
         // Since the onboarding appears on startup, it could be the case where there are two consecutive 'coverVertical'
         // modal transitions. When the Screen API is embedded in a UINavigationController, it still has that
         // transition but it's not used.
@@ -159,40 +163,31 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             !(rootContainerViewController.parent is UINavigationController) {
             navigationController.modalTransitionStyle = .crossDissolve
         }
-        
+
         screenAPINavigationController.present(navigationController, animated: true, completion: nil)
     }
-    
+
     func showNextScreenAfterPicking(pages: [GiniCapturePage]) {
         let visionDocuments = pages.map { $0.document }
         if let documentsType = visionDocuments.type {
             switch documentsType {
             case .image:
-                if let imageDocuments = visionDocuments as? [GiniImageDocument],
-                    let lastDocument = imageDocuments.last {
-                    if self.giniConfiguration.multipageEnabled {
-                        showMultipageReview()
-                    } else {
-                        reviewViewController = createReviewScreen(withDocument: lastDocument)
-                        screenAPINavigationController.pushViewController(reviewViewController!,
-                                                                         animated: true)
-                    }
-                }
+                showReview()
             case .qrcode, .pdf:
                 showAnalysisScreen()
             }
         }
     }
-    
 }
 
 // MARK: - DocumentPickerCoordinatorDelegate
 
 extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
-    
-    public func documentPicker(_ coordinator: DocumentPickerCoordinator,
-                        didPick documents: [GiniCaptureDocument]) {
-        
+
+    public func documentPicker(
+        _ coordinator: DocumentPickerCoordinator,
+        didPick documents: [GiniCaptureDocument]) {
+
         self.validate(documents) { result in
             switch result {
             case .success(let validatedDocuments):
@@ -207,23 +202,21 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
                 }
             case .failure(let error):
                 var positiveAction: (() -> Void)?
-                
+
                 if let error = error as? FilePickerError {
                     switch error {
                     case .maxFilesPickedCountExceeded, .mixedDocumentsUnsupported:
                         if self.pages.isNotEmpty {
                             positiveAction = {
                                 coordinator.dismissCurrentPicker {
-                                    self.showMultipageReview()
+                                    self.showReview()
                                 }
                             }
                         }
-                        
                     case .photoLibraryAccessDenied, .failedToOpenDocument:
                         break
                     }
                 }
-                
                 if coordinator.currentPickerDismissesAutomatically {
                     self.cameraViewController?.showErrorDialog(for: error,
                                                                positiveAction: positiveAction)
@@ -232,10 +225,9 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
                                                                              positiveAction: positiveAction)
                 }
             }
-            
         }
     }
-    
+
     public func documentPicker(_ coordinator: DocumentPickerCoordinator, failedToPickDocumentsAt urls: [URL]) {
         let error = FilePickerError.failedToOpenDocument
         if coordinator.currentPickerDismissesAutomatically {
@@ -246,30 +238,28 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
                                                                      positiveAction: nil)
         }
     }
-    
+
     fileprivate func addDropInteraction(forView view: UIView, with delegate: UIDropInteractionDelegate) {
         let dropInteraction = UIDropInteraction(delegate: delegate)
         view.addInteraction(dropInteraction)
     }
 }
 
-
 // MARK: - Validation
 
 extension GiniScreenAPICoordinator {
+
     fileprivate func validate(_ documents: [GiniCaptureDocument],
                               completion: @escaping (Result<[GiniCapturePage], Error>) -> Void) {
-        
+
         guard !(documents + pages.map {$0.document}).containsDifferentTypes else {
             completion(.failure(FilePickerError.mixedDocumentsUnsupported))
             return
         }
-        
         guard (documents.count + pages.count) <= GiniCaptureDocumentValidator.maxPagesCount else {
             completion(.failure(FilePickerError.maxFilesPickedCountExceeded))
             return
         }
-        
         self.validate(importedDocuments: documents) { validatedDocuments in
             let elementsWithError = validatedDocuments.filter { $0.error != nil }
             if let firstElement = elementsWithError.first,
@@ -281,7 +271,7 @@ extension GiniScreenAPICoordinator {
             }
         }
     }
-    
+
     private func validate(importedDocuments documents: [GiniCaptureDocument],
                           completion: @escaping ([GiniCapturePage]) -> Void) {
         DispatchQueue.global().async {
@@ -296,7 +286,7 @@ extension GiniScreenAPICoordinator {
                 }
                 pages.append(GiniCapturePage(document: document, error: documentError))
             }
-            
+
             DispatchQueue.main.async {
                 completion(pages)
             }
@@ -313,15 +303,14 @@ extension GiniScreenAPICoordinator: UploadDelegate {
             self.update(document, withError: nil, isUploaded: true)
         }
     }
-    
+
     public func uploadDidFail(for document: GiniCaptureDocument, with error: Error) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             self.update(document, withError: error, isUploaded: false)
-            
+
             if document.type != .image || !self.giniConfiguration.multipageEnabled {
                 var errorMessage = String(describing: error)
-                
                 if let error = error as? GiniCaptureError {
                     errorMessage = error.message
                     self.displayError(withMessage: error.message, andAction: { [weak self] in
@@ -329,7 +318,7 @@ extension GiniScreenAPICoordinator: UploadDelegate {
                         self.didCaptureAndValidate(document)
                     })
                 }
-                
+
                 let errorLog = ErrorLog(description: errorMessage, error: error)
                 self.giniConfiguration.errorLogger.handleErrorLog(error: errorLog)
             }

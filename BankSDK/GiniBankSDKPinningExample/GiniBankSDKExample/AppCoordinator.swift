@@ -29,14 +29,13 @@ final class AppCoordinator: Coordinator {
     }()
 
     lazy var configuration: GiniBankConfiguration = {
-        let configuration = GiniBankConfiguration()
+        let configuration = GiniBankConfiguration.shared
         configuration.debugModeOn = true
         configuration.fileImportSupportedTypes = .pdf_and_images
         configuration.openWithEnabled = true
         configuration.qrCodeScanningEnabled = true
         configuration.multipageEnabled = true
         configuration.flashToggleEnabled = true
-        configuration.navigationBarItemTintColor = .white
         configuration.localizedStringsTableName = "LocalizableCustomName"
         configuration.customDocumentValidations = { document in
             // As an example of custom document validation, we add a more strict check for file size

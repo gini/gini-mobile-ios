@@ -8,7 +8,11 @@
 
 import UIKit
 
-class HelpImportViewController: UIViewController {
+final class HelpImportViewController: UIViewController, HelpBottomBarEnabledViewController {
+
+    public var bottomNavigationBar: UIView?
+    public var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
+
     private enum HelpImportCellType {
         case selectInvoice
         case importToApp
@@ -60,6 +64,9 @@ class HelpImportViewController: UIViewController {
         view.addSubview(tableView)
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         edgesForExtendedLayout = []
+        configureBottomNavigationBar(
+            configuration: giniConfiguration,
+            under: tableView)
     }
 
     private func configureTableView() {
@@ -79,9 +86,11 @@ class HelpImportViewController: UIViewController {
     }
 
     private func configureConstraints() {
+        if giniConfiguration.bottomNavigationBarEnabled == false {
+            NSLayoutConstraint.activate([tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
+        }
         view.addConstraints([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: view.topAnchor)
         ])
         if UIDevice.current.isIpad {
             view.addConstraints([
