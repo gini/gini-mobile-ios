@@ -93,21 +93,21 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
             let widthScale = image.size.width / normalImageSize.width
             if UIDevice.current.isIpad {
                 if image.imageOrientation == .right {
-                    updatedRect = CGRect(x: widthScale * 400, y: widthScale * 500,
-                                         width: widthScale * 3393, height: widthScale * 2400)
+                    updatedRect = CGRect(x: 300, y: 500,
+                                         width: 3393, height: 2400).scaled(for: widthScale)
                 } else if image.imageOrientation == .left {
-                    updatedRect = CGRect(x: widthScale * 300, y: 0,
-                                         width: widthScale * 3393, height: widthScale * 2400)
+                    updatedRect = CGRect(x: 300, y: 0,
+                                         width: 3393, height: 2400).scaled(for: widthScale)
                 } else {
                     // This should not happen since it is in portrait orientation.
-                    updatedRect = CGRect(x: 0, y: 0, width: 4032, height: 3024)
+                    updatedRect = CGRect(x: 0, y: 0, width: 4032, height: 3024).scaled(for: widthScale)
                 }
 
             } else {
                 if UIApplication.shared.hasNotch {
-                    updatedRect = CGRect(x: 20, y: 500, width: 2900, height: 2000)
+                    updatedRect = CGRect(x: 20, y: 500, width: 2900, height: 2000).scaled(for: widthScale)
                 } else {
-                    updatedRect = CGRect(x: 50, y: 400, width: 3100, height: 2200)
+                    updatedRect = CGRect(x: 50, y: 400, width: 3110, height: 2200).scaled(for: widthScale)
                 }
             }
         } else {
@@ -115,17 +115,17 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
             let widthScale = image.size.width / normalImageSize.width
             if UIDevice.current.isIpad {
                 if image.imageOrientation == .up {
-                    updatedRect = CGRect(x: widthScale * 700, y: widthScale * 50,
-                                         width: widthScale * 2100, height: widthScale * 2900)
+                    updatedRect = CGRect(x: 700, y: 50,
+                                         width: 2100, height: 2900).scaled(for: widthScale)
                 } else if image.imageOrientation == .down {
-                    updatedRect = CGRect(x: widthScale * 1200, y: widthScale * 50,
-                                         width: widthScale * 2100, height: widthScale * 2900)
+                    updatedRect = CGRect(x: 1200, y: 50,
+                                         width: 2100, height: 2900).scaled(for: widthScale)
                 } else {
                     // This should not happen since it is in landscape orientation.
-                    updatedRect = CGRect(x: 0, y: 0, width: 4032, height: 3024)
+                    updatedRect = CGRect(x: 0, y: 0, width: 4032, height: 3024).scaled(for: widthScale)
                 }
             } else {
-                updatedRect = CGRect(x: 500, y: 20, width: 2000, height: 2800)
+                updatedRect = CGRect(x: 500, y: 20, width: 2000, height: 2800).scaled(for: widthScale)
             }
         }
 
