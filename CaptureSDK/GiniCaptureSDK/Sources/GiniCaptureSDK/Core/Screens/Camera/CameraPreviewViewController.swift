@@ -274,8 +274,14 @@ extension CameraPreviewViewController {
 
         defaultImageView = UIImageView(image: defaultImage)
         guard let defaultImageView = defaultImageView else { return }
-        
-        defaultImageView.contentMode = .scaleAspectFill
+
+        if UIDevice.current.isIpad {
+            defaultImageView.contentMode = .scaleAspectFit
+        } else {
+            defaultImageView.contentMode = .scaleAspectFill
+        }
+
+        defaultImageView.alpha = 0.5
         previewView.addSubview(defaultImageView)
         
         defaultImageView.translatesAutoresizingMaskIntoConstraints = false

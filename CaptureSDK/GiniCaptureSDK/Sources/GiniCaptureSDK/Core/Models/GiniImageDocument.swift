@@ -66,9 +66,10 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
             return
             #endif
 
-            let croppedImage = cropImage(image: image)!
-            self.data = croppedImage.jpegData(compressionQuality: 1)!
-            self.previewImage = croppedImage
+            if let croppedImage = cropImage(image: image) {
+                self.data = croppedImage.jpegData(compressionQuality: 1)!
+                self.previewImage = croppedImage
+            }
         }
         
     }
