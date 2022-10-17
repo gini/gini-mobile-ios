@@ -66,7 +66,9 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
             return
             #endif
 
-            self.data = cropImage(image: image)!.jpegData(compressionQuality: 1)!
+            let croppedImage = cropImage(image: image)!
+            self.data = croppedImage.jpegData(compressionQuality: 1)!
+            self.previewImage = croppedImage
         }
         
     }
@@ -91,7 +93,7 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
             let widthScale = image.size.width / normalImageSize.width
             if UIDevice.current.isIpad {
                 if image.imageOrientation == .right {
-                    updatedRect = CGRect(x: widthScale * 400, y: widthScale * 600,
+                    updatedRect = CGRect(x: widthScale * 400, y: widthScale * 500,
                                          width: widthScale * 3393, height: widthScale * 2400)
                 } else if image.imageOrientation == .left {
                     updatedRect = CGRect(x: widthScale * 300, y: 0,
