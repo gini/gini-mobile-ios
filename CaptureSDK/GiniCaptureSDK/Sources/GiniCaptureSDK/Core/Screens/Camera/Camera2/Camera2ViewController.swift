@@ -81,7 +81,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         opaqueView?.frame = cameraPreviewViewController.view.frame
     }
 
-    func setupView() {
+    private func setupView() {
         self.title = NSLocalizedStringPreferredFormat(
             "ginicapture.camera.infoLabel",
             comment: "Info label")
@@ -179,7 +179,8 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         view.layoutSubviews()
     }
 
-    func configureButtons() {
+    private func configureButtons() {
+        cameraPane.setupAuthorization(isHidden: false)
         configureLeftButtons()
         cameraButtonsViewModel.captureAction = { [weak self] in
             self?.cameraPane.toggleCaptureButtonActivation(state: false)
@@ -216,7 +217,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             for: .touchUpInside)
     }
 
-    func showUploadButton() {
+    private func showUploadButton() {
         if giniConfiguration.fileImportSupportedTypes != .none {
             cameraPane.fileUploadButton.isHidden = false
         } else {
@@ -225,7 +226,10 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     }
 
     private func configureLeftButtons() {
+        cameraPane.toggleFlashButtonActivation(
+            state: cameraPreviewViewController.isFlashSupported)
         cameraButtonsViewModel.isFlashOn = cameraPreviewViewController.isFlashOn
+        cameraPane.setupFlashButton(state: cameraButtonsViewModel.isFlashOn)
         cameraPane.setupFlashButton(state: giniConfiguration.flashToggleEnabled)
         cameraButtonsViewModel.flashAction = { [weak self] isFlashOn in
             self?.cameraPreviewViewController.isFlashOn = isFlashOn
@@ -245,7 +249,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             for: .touchUpInside)
     }
 
-    func configureConstraints() {
+    private func configureConstraints() {
         NSLayoutConstraint.activate([
             cameraPreviewViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
             cameraPreviewViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -323,13 +327,8 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol) {
-        cameraPane.setupAuthorization(isHidden: false)
         cameraFrameImageView.isHidden = false
         cameraPane.toggleCaptureButtonActivation(state: true)
-        cameraPane.toggleFlashButtonActivation(
-            state: camera.isFlashSupported && giniConfiguration.flashToggleEnabled)
-        cameraButtonsViewModel.isFlashOn = camera.isFlashOn
-        cameraPane.setupFlashButton(state: cameraButtonsViewModel.isFlashOn)
     }
 
     func cameraPreview(_ viewController: CameraPreviewViewController,

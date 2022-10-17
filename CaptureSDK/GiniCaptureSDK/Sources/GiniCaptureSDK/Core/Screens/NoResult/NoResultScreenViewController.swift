@@ -44,7 +44,6 @@ final public class NoResultScreenViewController: UIViewController {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.setTitle(NSLocalizedStringPreferredFormat(
                 "ginicapture.noresult.enterManually",
                 comment: "Enter manually"),

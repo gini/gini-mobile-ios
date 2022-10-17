@@ -25,16 +25,16 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
         let rootViewController = coordinator.start(withDocuments: nil)
         _ = rootViewController.view
         let screenNavigator = rootViewController.children.first as? UINavigationController
-        XCTAssertEqual(screenNavigator?.viewControllers.count, 1,
-                       "there should be only one view controller in the nav stack")
+        XCTAssertEqual(screenNavigator?.viewControllers.count, 2,
+                       "there should be two view controllers in the nav stack, Review and Camera screens")
     }
     
     func testNavControllerTypesAfterStartWithoutDocuments() {
         let rootViewController = coordinator.start(withDocuments: nil)
         _ = rootViewController.view
         let screenNavigator = rootViewController.children.first as? UINavigationController
-        XCTAssertNotNil(screenNavigator?.viewControllers.first as? CameraScreen,
-                        "first view controller is not a CameraViewController")
+        XCTAssertNotNil(screenNavigator?.viewControllers.first as? ReviewViewController,
+                        "first view controller is not a ReviewViewController")
     }
     
     func testNavControllerCountAfterStartWithImages() {
@@ -44,7 +44,7 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
         let rootViewController = coordinator.start(withDocuments: capturedImages)
         _ = rootViewController.view
         let screenNavigator = rootViewController.children.first as? UINavigationController
-        XCTAssertEqual(screenNavigator?.viewControllers.count, 2,
+        XCTAssertEqual(screenNavigator?.viewControllers.count, 1,
                        "there should be 2 view controllers in the nav stack")
     }
     
@@ -56,10 +56,11 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
         _ = rootViewController.view
         let screenNavigator = rootViewController.children.first as? UINavigationController
         
-        XCTAssertNotNil(screenNavigator?.viewControllers.first as? CameraScreen,
-                        "first view controller is not a CameraViewController")
         XCTAssertNotNil(screenNavigator?.viewControllers.last as? ReviewViewController,
-                        "last view controller is not a ReviewController")
+                        "first view controller is not a ReviewViewController")
+        XCTAssertEqual(screenNavigator?.viewControllers.count, 1,
+                       "there should be only one view controller in the nav stack")
+        
     }
     
     func testNavControllerCountAfterStartWithAPDF() {
@@ -90,7 +91,6 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
         let rootViewController = coordinator.start(withDocuments: capturedImages)
         _ = rootViewController.view
         let screenNavigator = rootViewController.children.first as? UINavigationController
-        
         XCTAssertNotNil(screenNavigator?.viewControllers.last as? ReviewViewController,
                         "first view controller is not a ReviewViewController")
     }
