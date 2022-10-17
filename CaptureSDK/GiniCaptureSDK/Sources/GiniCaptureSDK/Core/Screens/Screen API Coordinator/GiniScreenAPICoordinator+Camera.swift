@@ -57,9 +57,9 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
 
     public func cameraDidAppear(_ viewController: CameraScreen) {
         if shouldShowOnBoarding() {
-            showOnboardingScreen {
+            showOnboardingScreen(cameraViewController: viewController, completion: {
                 viewController.setupCamera()
-            }
+            }) 
         } else {
             viewController.setupCamera()
         }
@@ -114,6 +114,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
                 documentPickerCoordinator.startCaching()
             }
         }
+        self.cameraScreen = cameraViewController
         return cameraViewController
     }
 
@@ -133,22 +134,21 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         return false
     }
 
-    private func showOnboardingScreen(completion: @escaping () -> Void) {
-        cameraViewController?.hideCameraOverlay()
-        cameraViewController?.hideCaptureButton()
-        
+    private func showOnboardingScreen(
+        cameraViewController: CameraScreen,
+        completion: @escaping () -> Void) {
+        cameraViewController.hideCameraOverlay()
+        cameraViewController.hideCaptureButton()
+
         let vc = OnboardingViewController.init()
-            guard let cameraViewController = self.cameraViewController else { return }
-            cameraViewController.showCameraOverlay()
-            cameraViewController.showCaptureButton()
-                if giniConfiguration.fileImportSupportedTypes != GiniConfiguration.GiniCaptureImportFileTypes.none {
-                    // TODO: remove cameraViewController.showFileImportTip()
-                } else if giniConfiguration.qrCodeScanningEnabled {
-                    // TODO: removecameraViewController.showQrCodeTip()
-                }
-
-            completion()
-
+        cameraViewController.showCameraOverlay()
+        cameraViewController.showCaptureButton()
+        if giniConfiguration.fileImportSupportedTypes != GiniConfiguration.GiniCaptureImportFileTypes.none {
+            // TODO: remove cameraViewController.showFileImportTip()
+        } else if giniConfiguration.qrCodeScanningEnabled {
+            // TODO: removecameraViewController.showQrCodeTip()
+        }
+        completion()
         let navigationController = UINavigationController(rootViewController: vc)
         if giniConfiguration.customNavigationController == nil {
             navigationController.applyStyle(withConfiguration: giniConfiguration)
@@ -218,7 +218,7 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
                     }
                 }
                 if coordinator.currentPickerDismissesAutomatically {
-                    self.cameraViewController?.showErrorDialog(for: error,
+                    self.cameraScreen?.showErrorDialog(for: error,
                                                                positiveAction: positiveAction)
                 } else {
                     coordinator.currentPickerViewController?.showErrorDialog(for: error,
@@ -231,7 +231,7 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
     public func documentPicker(_ coordinator: DocumentPickerCoordinator, failedToPickDocumentsAt urls: [URL]) {
         let error = FilePickerError.failedToOpenDocument
         if coordinator.currentPickerDismissesAutomatically {
-            self.cameraViewController?.showErrorDialog(for: error,
+            self.cameraScreen?.showErrorDialog(for: error,
                                                        positiveAction: nil)
         } else {
             coordinator.currentPickerViewController?.showErrorDialog(for: error,
