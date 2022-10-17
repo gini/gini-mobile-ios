@@ -600,6 +600,8 @@ extension ComponentAPICoordinator: ReviewViewControllerDelegate {
     }
 
     func reviewDidTapProcess(_ viewController: ReviewViewController) {}
+
+    func review(_ viewController: ReviewViewController, didSelectPage page: GiniCapturePage) {}
 }
 
 // MARK: NoResultsScreenDelegate

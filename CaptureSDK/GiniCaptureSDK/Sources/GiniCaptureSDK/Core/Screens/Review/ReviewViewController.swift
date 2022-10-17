@@ -45,6 +45,14 @@ public protocol ReviewViewControllerDelegate: AnyObject {
      - parameter viewController: `ReviewViewController` where the pages are reviewed.
      */
     func reviewDidTapProcess(_ viewController: ReviewViewController)
+
+    /**
+     Called when a user taps on a page
+
+     - parameter viewController: `ReviewViewController` where the pages are reviewed.
+     - parameter page: Page that the user selected
+     */
+    func review(_ viewController: ReviewViewController, didSelectPage page: GiniCapturePage)
 }
 
 /**
@@ -64,6 +72,7 @@ public final class ReviewViewController: UIViewController {
     public weak var delegate: ReviewViewControllerDelegate?
 
     var pages: [GiniCapturePage]
+    var resetToEnd = false
     fileprivate let giniConfiguration: GiniConfiguration
     fileprivate lazy var presenter: ReviewCollectionCellPresenter = {
         let presenter = ReviewCollectionCellPresenter()
@@ -201,6 +210,11 @@ extension ReviewViewController {
         super.viewDidAppear(animated)
         if !giniConfiguration.multipageEnabled || pages.count == 1 {
             setCellStatus(for: 0, isActive: true)
+        } else {
+            if resetToEnd {
+                resetToEnd = false
+                setCellStatus(for: pages.count - 1, isActive: true)
+            }
         }
     }
 
@@ -415,7 +429,6 @@ extension ReviewViewController: ReviewCollectionCellPresenterDelegate {
 // MARK: UICollectionViewDelegateFlowLayout
 
 extension ReviewViewController: UICollectionViewDelegateFlowLayout {
-
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -427,6 +440,11 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
                                insetForSectionAt section: Int) -> UIEdgeInsets {
         let margin = (self.view.bounds.width - cellSize.width) / 2
         return UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
+    }
+
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let page = pages[indexPath.row]
+        delegate?.review(self, didSelectPage: page)
     }
 
     private func setCurrentPage(basedOn scrollView: UIScrollView) {

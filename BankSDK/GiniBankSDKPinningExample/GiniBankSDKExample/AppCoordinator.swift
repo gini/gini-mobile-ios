@@ -29,7 +29,7 @@ final class AppCoordinator: Coordinator {
     }()
 
     lazy var configuration: GiniBankConfiguration = {
-        let configuration = GiniBankConfiguration()
+        let configuration = GiniBankConfiguration.shared
         configuration.debugModeOn = true
         configuration.fileImportSupportedTypes = .pdf_and_images
         configuration.openWithEnabled = true
