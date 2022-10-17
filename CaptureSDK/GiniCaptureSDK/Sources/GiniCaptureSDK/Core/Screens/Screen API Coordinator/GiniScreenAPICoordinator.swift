@@ -35,7 +35,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
 
     // Screens
     var analysisViewController: AnalysisViewController?
-    var cameraViewController: CameraScreen?
+    weak var cameraScreen: CameraScreen?
     var imageAnalysisNoResultsViewController: NoResultScreenViewController?
     lazy var reviewViewController: ReviewViewController = {
         return self.createReviewScreenContainer(with: [])
@@ -156,6 +156,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
             }
         } else {
             let cameraViewController = createCameraViewController()
+            cameraScreen = cameraViewController
             viewControllers = [reviewViewController, cameraViewController]
         }
 
@@ -166,15 +167,6 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
 
     private func initialViewControllers(with pages: [GiniCapturePage]) -> [UIViewController] {
         if pages.type == .image {
-            cameraViewController = createCameraViewController()
-            guard let cameraViewController = cameraViewController else {
-                return []
-            }
-            if giniConfiguration.multipageEnabled {
-                cameraViewController
-                    .replaceCapturedStackImages(with: pages.compactMap { $0.document.previewImage })
-            }
-
             reviewViewController =
                 createReviewScreenContainer(with: pages)
 
