@@ -170,6 +170,13 @@ public final class ReviewViewController: UIViewController {
         return addPagesButton
     }()
 
+    private var loadingIndicatorView: UIActivityIndicatorView = {
+        let indicatorView = UIActivityIndicatorView()
+        indicatorView.hidesWhenStopped = true
+        indicatorView.style = .white
+        return indicatorView
+    }()
+
     private lazy var cellSize: CGSize = {
         return calculatedCellSize()
     }()
@@ -204,6 +211,8 @@ extension ReviewViewController {
 
         setupView()
         addConstraints()
+        addLoadingView()
+        showAnimation()
     }
 
     public override func viewDidAppear(_ animated: Bool) {
@@ -258,18 +267,71 @@ extension ReviewViewController {
         edgesForExtendedLayout = []
     }
 
+    // MARK: - Loading indicator
+
+    private func addLoadingView() {
+        let loadingIndicator: UIView
+
+        if let customLoadingIndicator = giniConfiguration.analysisScreenLoadingIndicator?.injectedView() {
+            loadingIndicator = customLoadingIndicator
+        } else {
+            loadingIndicator = loadingIndicatorView
+        }
+
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(loadingIndicator)
+        view.bringSubviewToFront(loadingIndicator)
+
+        NSLayoutConstraint.activate([
+            loadingIndicator.centerXAnchor.constraint(equalTo: processButton.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
+            loadingIndicator.widthAnchor.constraint(equalToConstant: 30),
+            loadingIndicator.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+
+    private func showAnimation() {
+        if let loadingIndicator = giniConfiguration.analysisScreenLoadingIndicator {
+            loadingIndicator.startAnimation()
+        } else {
+            loadingIndicatorView.startAnimating()
+        }
+    }
+
+    private func hideAnimation() {
+        if let loadingIndicator = giniConfiguration.analysisScreenLoadingIndicator {
+            loadingIndicator.stopAnimation()
+        } else {
+            loadingIndicatorView.stopAnimating()
+        }
+    }
+
     /**
      Updates the collections with the given pages.
      
      - parameter pages: Pages to be used in the collections.
      */
 
-    public func updateCollections(with pages: [GiniCapturePage]) {
+    public func updateCollections(with pages: [GiniCapturePage], finishedUpload: Bool = true) {
+        if finishedUpload {
+            DispatchQueue.main.async {
+                self.processButton.alpha = 1
+                self.processButton.isEnabled = true
+                self.hideAnimation()
+            }
+            return
+        }
+
+        DispatchQueue.main.async {
+            self.processButton.alpha = 0.3
+            self.processButton.isEnabled = false
+            self.showAnimation()
+        }
         self.pages = pages
         collectionView.reloadData()
 
-        // Update cell status only if pages not empty and view is visible
-        if pages.isNotEmpty && viewIfLoaded?.window != nil {
+        // Update cell status only if pages not empty
+        if pages.isNotEmpty {
             guard pages.count > 1 else { return }
             DispatchQueue.main.async {
                 self.setCellStatus(for: self.currentPage, isActive: false, animated: false)
