@@ -5,7 +5,8 @@
 //  Created by Nadya Karaban on 15.09.22.
 //
 
-import UIKit
+import Foundation
+
 public struct OnboardingPageNew {
     let imageName: String
     let title: String

@@ -18,18 +18,17 @@ class CustomOnboardingIllustrationAdapter: OnboardingIllustrationAdapter {
     }
     
     func pageDidAppear() {
-       // animatedOnboardingPage1?.play()
+        animatedOnboarding?.play()
     }
     
     func pageDidDisappear() {
-       // animatedOnboardingPage1?.stop()
+        animatedOnboarding?.stop()
     }
     
     func injectedView() -> UIView {
-        //animatedOnboarding?.stop()
         animatedOnboarding?.contentMode = .scaleAspectFit
         animatedOnboarding?.loopMode = .loop
-        animatedOnboarding?.play()
+        
         if let animation = animatedOnboarding {
             return animation
         }
