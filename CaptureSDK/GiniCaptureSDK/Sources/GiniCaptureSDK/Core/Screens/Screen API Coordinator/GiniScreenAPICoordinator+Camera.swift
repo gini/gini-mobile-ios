@@ -140,7 +140,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         cameraViewController.hideCameraOverlay()
         cameraViewController.hideCaptureButton()
 
-        let vc = OnboardingViewController.init()
+        let vc = OnboardingViewController()
         cameraViewController.showCameraOverlay()
         cameraViewController.showCaptureButton()
         if giniConfiguration.fileImportSupportedTypes != GiniConfiguration.GiniCaptureImportFileTypes.none {

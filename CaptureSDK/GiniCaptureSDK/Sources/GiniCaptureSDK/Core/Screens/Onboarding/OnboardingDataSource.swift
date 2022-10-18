@@ -27,10 +27,50 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         case qrcode = 3
     }
     private var adapters: [OnboadingPageType: OnboardingIllustrationAdapter?] = [:]
-    var currentPage: Int?
-    var items: [OnboardingPageNew] = []
-    let giniConfiguration: GiniConfiguration
+    private let giniConfiguration: GiniConfiguration
     weak var delegate: OnboardingScreen?
+
+    lazy var itemSections: [OnboardingPageNew] = {
+        if let customPages = giniConfiguration.customOnboardingPages {
+            return customPages
+        } else {
+            var sections: [OnboardingPageNew] =
+            [
+                OnboardingPageNew(imageName: "onboardingFlatPaper", title: NSLocalizedStringPreferredFormat(
+                    "ginicapture.onboarding.flatPaper.title",
+                    comment: "onboarding flat paper title"), description: NSLocalizedStringPreferredFormat(
+                        "ginicapture.onboarding.flatPaper.description",
+                        comment: "onboarding flat paper description")),
+                OnboardingPageNew(imageName: "onboardingGoodLightning", title: NSLocalizedStringPreferredFormat(
+                    "ginicapture.onboarding.goodLightning.title",
+                    comment: "onboarding good lightning title"), description: NSLocalizedStringPreferredFormat(
+                        "ginicapture.onboarding.goodLightning.description",
+                        comment: "onboarding good lightning description"))
+            ]
+            if giniConfiguration.multipageEnabled {
+                sections.append(
+                    OnboardingPageNew(imageName: "onboardingMultiPages", title: NSLocalizedStringPreferredFormat(
+                        "ginicapture.onboarding.multiPages.title",
+                        comment: "onboarding multi pages title"),
+                                      description: NSLocalizedStringPreferredFormat(
+                                        "ginicapture.onboarding.multiPages.description",
+                                        comment: "onboarding multi pages description")))
+            } else {
+                adapters[.multipage] = nil
+            }
+            if giniConfiguration.qrCodeScanningEnabled {
+                sections.append(
+                    OnboardingPageNew(imageName: "onboardingQRCode", title: NSLocalizedStringPreferredFormat(
+                        "ginicapture.onboarding.qrCode.title",
+                        comment: "onboarding qrcode title"), description: NSLocalizedStringPreferredFormat(
+                            "ginicapture.onboarding.qrCode.description",
+                            comment: "onboarding qrcode description")))
+            } else {
+                adapters[.qrcode] = nil
+            }
+            return sections
+        }
+    }()
 
     required init(configuration: GiniConfiguration) {
         giniConfiguration = configuration
@@ -76,48 +116,6 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         fatalError("OnboardingPageCell wasn't initialized")
     }
 
-    lazy var itemSections: [OnboardingPageNew] = {
-        if let customPages = giniConfiguration.customOnboardingPages {
-            return customPages
-        } else {
-            var sections: [OnboardingPageNew] =
-            [
-                OnboardingPageNew(imageName: "onboardingFlatPaper", title: NSLocalizedStringPreferredFormat(
-                    "ginicapture.onboarding.flatPaper.title",
-                    comment: "onboarding flat paper title"), description: NSLocalizedStringPreferredFormat(
-                        "ginicapture.onboarding.flatPaper.description",
-                        comment: "onboarding flat paper description")),
-                OnboardingPageNew(imageName: "onboardingGoodLightning", title: NSLocalizedStringPreferredFormat(
-                    "ginicapture.onboarding.goodLightning.title",
-                    comment: "onboarding good lightning title"), description: NSLocalizedStringPreferredFormat(
-                        "ginicapture.onboarding.goodLightning.description",
-                        comment: "onboarding good lightning description"))
-            ]
-            if giniConfiguration.multipageEnabled {
-                sections.append(
-                    OnboardingPageNew(imageName: "onboardingMultiPages", title: NSLocalizedStringPreferredFormat(
-                        "ginicapture.onboarding.multiPages.title",
-                        comment: "onboarding multi pages title"),
-                                      description: NSLocalizedStringPreferredFormat(
-                                        "ginicapture.onboarding.multiPages.description",
-                                        comment: "onboarding multi pages description")))
-            } else {
-                adapters[.multipage] = nil
-            }
-            if giniConfiguration.qrCodeScanningEnabled {
-                sections.append(
-                    OnboardingPageNew(imageName: "onboardingQRCode", title: NSLocalizedStringPreferredFormat(
-                        "ginicapture.onboarding.qrCode.title",
-                        comment: "onboarding qrcode title"), description: NSLocalizedStringPreferredFormat(
-                            "ginicapture.onboarding.qrCode.description",
-                            comment: "onboarding qrcode description")))
-            } else {
-                adapters[.qrcode] = nil
-            }
-            return sections
-        }
-    }()
-
     func collectionView(
         _ collectionView: UICollectionView,
         willDisplay cell: UICollectionViewCell,
@@ -138,11 +136,10 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         }
     }
 
-    // MARK: - For Display the page number in page controll of collection view Cell
+    // MARK: - Display the page number in page controll of collection view Cell
 
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let page = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
-        currentPage = page
         delegate?.didScroll(page: page)
     }
 

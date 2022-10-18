@@ -27,12 +27,11 @@ extension UIView {
 
     func fixInView(_ container: UIView!) {
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.frame = container.frame
         container.addSubview(self)
-        let leadingConstraint = self.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 0)
-        let trailingConstraint = self.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: 0)
-        let topConstraint = self.topAnchor.constraint(equalTo: container.topAnchor, constant: 0)
-        let bottomConstraint = self.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: 0)
+        let leadingConstraint = self.leadingAnchor.constraint(equalTo: container.leadingAnchor)
+        let trailingConstraint = self.trailingAnchor.constraint(equalTo: container.trailingAnchor)
+        let topConstraint = self.topAnchor.constraint(equalTo: container.topAnchor)
+        let bottomConstraint = self.bottomAnchor.constraint(equalTo: container.bottomAnchor)
         NSLayoutConstraint.activate([leadingConstraint, trailingConstraint, topConstraint, bottomConstraint])
     }
 }

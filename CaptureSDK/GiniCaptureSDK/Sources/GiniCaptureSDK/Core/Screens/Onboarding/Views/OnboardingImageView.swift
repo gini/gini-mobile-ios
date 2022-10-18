@@ -27,7 +27,6 @@ class OnboardingImageView: UIView {
     var illustrationAdapter: OnboardingIllustrationAdapter?
     var icon: UIImage? {
         didSet {
-            // Remove the previous container with an illustration because we dequeue reusable cells
             setupView()
         }
     }
@@ -42,6 +41,7 @@ class OnboardingImageView: UIView {
     }
 
     func setupView() {
+        // add injected view if it wasn't already there
         if viewWithTag(injectedViewTag) == nil, let containerView = illustrationAdapter?.injectedView() {
             if let imageView = containerView as? UIImageView {
                 imageView.image = icon
