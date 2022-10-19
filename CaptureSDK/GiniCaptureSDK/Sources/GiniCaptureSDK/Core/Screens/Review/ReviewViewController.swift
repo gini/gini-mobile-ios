@@ -173,7 +173,8 @@ public final class ReviewViewController: UIViewController {
     private var loadingIndicatorView: UIActivityIndicatorView = {
         let indicatorView = UIActivityIndicatorView()
         indicatorView.hidesWhenStopped = true
-        indicatorView.style = .white
+        indicatorView.style = .whiteLarge
+        indicatorView.color = GiniColor(light: UIColor.GiniCapture.dark3, dark: UIColor.GiniCapture.light3).uiColor()
         return indicatorView
     }()
 
@@ -272,7 +273,7 @@ extension ReviewViewController {
     private func addLoadingView() {
         let loadingIndicator: UIView
 
-        if let customLoadingIndicator = giniConfiguration.analysisScreenLoadingIndicator?.injectedView() {
+        if let customLoadingIndicator = giniConfiguration.onButtonLoadingIndicator?.injectedView() {
             loadingIndicator = customLoadingIndicator
         } else {
             loadingIndicator = loadingIndicatorView
@@ -285,13 +286,13 @@ extension ReviewViewController {
         NSLayoutConstraint.activate([
             loadingIndicator.centerXAnchor.constraint(equalTo: processButton.centerXAnchor),
             loadingIndicator.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
-            loadingIndicator.widthAnchor.constraint(equalToConstant: 30),
-            loadingIndicator.heightAnchor.constraint(equalToConstant: 30)
+            loadingIndicator.widthAnchor.constraint(equalToConstant: 45),
+            loadingIndicator.heightAnchor.constraint(equalToConstant: 45)
         ])
     }
 
     private func showAnimation() {
-        if let loadingIndicator = giniConfiguration.analysisScreenLoadingIndicator {
+        if let loadingIndicator = giniConfiguration.onButtonLoadingIndicator {
             loadingIndicator.startAnimation()
         } else {
             loadingIndicatorView.startAnimating()
@@ -299,7 +300,7 @@ extension ReviewViewController {
     }
 
     private func hideAnimation() {
-        if let loadingIndicator = giniConfiguration.analysisScreenLoadingIndicator {
+        if let loadingIndicator = giniConfiguration.onButtonLoadingIndicator {
             loadingIndicator.stopAnimation()
         } else {
             loadingIndicatorView.stopAnimating()
