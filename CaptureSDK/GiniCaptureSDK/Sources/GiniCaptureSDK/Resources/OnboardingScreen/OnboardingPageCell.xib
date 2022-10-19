@@ -73,6 +73,7 @@
                         </constraints>
                     </view>
                 </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="79Q-UV-WoH" firstAttribute="top" secondItem="3EI-sg-mtc" secondAttribute="top" id="5zD-Il-r3g"/>
                     <constraint firstAttribute="bottom" secondItem="79Q-UV-WoH" secondAttribute="bottom" id="J92-P3-xqW"/>
@@ -80,6 +81,7 @@
                     <constraint firstAttribute="trailing" secondItem="79Q-UV-WoH" secondAttribute="trailing" id="nrR-5u-5RE"/>
                 </constraints>
             </collectionViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <size key="customSize" width="411" height="641"/>
             <connections>
                 <outlet property="fullText" destination="1HY-bp-k5Q" id="61X-XG-M6n"/>
