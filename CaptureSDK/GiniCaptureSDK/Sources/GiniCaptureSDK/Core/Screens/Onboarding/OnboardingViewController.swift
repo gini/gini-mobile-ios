@@ -120,6 +120,7 @@ extension OnboardingViewController: OnboardingScreen {
 class CollectionFlowLayout: UICollectionViewFlowLayout {
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         invalidateLayout(with: invalidationContext(forBoundsChange: newBounds))
+        collectionView?.reloadData()
         return super.shouldInvalidateLayout(forBoundsChange: newBounds)
     }
 }
