@@ -21,20 +21,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="411" height="641"/>
                         <subviews>
                             <view clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" placeholderIntrinsicWidth="100" placeholderIntrinsicHeight="200" translatesAutoresizingMaskIntoConstraints="NO" id="SQ0-nC-yBn" customClass="OnboardingImageView" customModule="GiniCaptureSDK">
-                                <rect key="frame" x="95.666666666666686" y="140.66666666666663" width="220" height="260"/>
+                                <rect key="frame" x="95.666666666666686" y="170.66666666666663" width="220" height="200"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="220" id="KM2-xY-L8g">
                                         <variation key="widthClass=compact" constant="220"/>
                                         <variation key="heightClass=regular-widthClass=regular" constant="346"/>
                                     </constraint>
-                                    <constraint firstAttribute="height" constant="260" id="OmP-lO-Z68">
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="260" id="OmP-lO-Z68">
                                         <variation key="widthClass=compact" constant="260"/>
                                         <variation key="heightClass=regular-widthClass=regular" constant="408"/>
                                     </constraint>
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="yk8-vJ-MWn">
-                                <rect key="frame" x="62.333333333333343" y="420.66666666666669" width="286.33333333333326" height="93.000000000000057"/>
+                                <rect key="frame" x="62.333333333333343" y="390.66666666666669" width="286.33333333333326" height="93"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flat paper within the frame" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4m8-UH-fux">
                                         <rect key="frame" x="0.0" y="0.0" width="286.33333333333331" height="52.333333333333336"/>
@@ -45,7 +45,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="Ensure that the document is flat, and positioned within the frame" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1HY-bp-k5Q">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" text="Ensure that the document is flat, and positioned within the frame" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1HY-bp-k5Q">
                                         <rect key="frame" x="0.0" y="52.333333333333314" width="286.33333333333331" height="40.666666666666657"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="lessThanOrEqual" constant="300" id="UGX-BO-8Bg"/>
@@ -66,6 +66,7 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="yk8-vJ-MWn" secondAttribute="bottom" id="0fG-xa-Fkl"/>
                             <constraint firstItem="yk8-vJ-MWn" firstAttribute="top" secondItem="SQ0-nC-yBn" secondAttribute="bottom" constant="20" id="0mP-NE-PjX"/>
                             <constraint firstItem="yk8-vJ-MWn" firstAttribute="centerX" secondItem="SQ0-nC-yBn" secondAttribute="centerX" id="S9t-El-Yi9"/>
                             <constraint firstItem="SQ0-nC-yBn" firstAttribute="centerX" secondItem="79Q-UV-WoH" secondAttribute="centerX" id="aoh-R1-6wo"/>

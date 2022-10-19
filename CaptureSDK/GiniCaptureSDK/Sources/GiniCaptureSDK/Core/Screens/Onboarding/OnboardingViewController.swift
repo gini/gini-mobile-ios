@@ -135,7 +135,17 @@ class OnboardingViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        view.layoutSubviews()
+        if #available(iOS 13, *) {
+            view.layoutSubviews()
+        } else {
+            let offsetX = CGFloat(max(dataSource.currentPage, 0)) * size.width
+            pagesCollection.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
+        }
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        pagesCollection.collectionViewLayout.invalidateLayout()
     }
 }
 
@@ -153,6 +163,7 @@ extension OnboardingViewController: OnboardingScreen {
 class CollectionFlowLayout: UICollectionViewFlowLayout {
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         invalidateLayout(with: invalidationContext(forBoundsChange: newBounds))
+        collectionView?.reloadData()
         return true
     }
 }
