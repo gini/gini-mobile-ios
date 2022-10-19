@@ -554,6 +554,11 @@ import UIKit
      * Set an adapter implementation to show a custom loading indicator on the document analysis screen.
      */
     public var analysisScreenLoadingIndicator: AnalysisScreenLoadingIndicatorAdapter?
+
+    /**
+     * Set an adapter implementation to show a custom loading indicator on the buttons which support loading.
+     */
+    public var onButtonLoadingIndicator: OnButtonLoadingIndicatorAdapter?
     
     /**
      Sets the back button text in the navigation bar on the review screen. Use this if you only want to show the title.
