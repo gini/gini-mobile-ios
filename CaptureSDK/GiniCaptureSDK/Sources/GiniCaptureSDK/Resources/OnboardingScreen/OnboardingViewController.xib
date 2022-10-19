@@ -25,10 +25,10 @@
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="dlG-Cg-KwM">
-                    <rect key="frame" x="0.0" y="47" width="390" height="694"/>
+                    <rect key="frame" x="0.0" y="47" width="390" height="664"/>
                     <subviews>
                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="r9F-HC-Y7G">
-                            <rect key="frame" x="0.0" y="0.0" width="390" height="644"/>
+                            <rect key="frame" x="0.0" y="0.0" width="390" height="614"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Ohp-ah-9Sw" customClass="CollectionFlowLayout" customModule="GiniCaptureSDK">
                                 <size key="itemSize" width="390" height="500"/>
@@ -38,7 +38,7 @@
                             </collectionViewFlowLayout>
                         </collectionView>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="SS6-Vf-h3i">
-                            <rect key="frame" x="110" y="644" width="170" height="50"/>
+                            <rect key="frame" x="110" y="614" width="170" height="50"/>
                             <subviews>
                                 <pageControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fzW-pg-Fy6">
                                     <rect key="frame" x="0.0" y="0.0" width="170" height="20"/>
@@ -81,7 +81,9 @@
                 <constraint firstItem="dlG-Cg-KwM" firstAttribute="centerX" secondItem="Nfe-ie-kjh" secondAttribute="centerX" id="2Wu-wK-cPj"/>
                 <constraint firstItem="kfv-ta-e1r" firstAttribute="trailing" secondItem="dlG-Cg-KwM" secondAttribute="trailing" id="3RR-hJ-mvb"/>
                 <constraint firstItem="r9F-HC-Y7G" firstAttribute="width" secondItem="Nfe-ie-kjh" secondAttribute="width" priority="750" id="B6B-d4-2BN"/>
-                <constraint firstItem="kfv-ta-e1r" firstAttribute="bottom" secondItem="dlG-Cg-KwM" secondAttribute="bottom" priority="992" constant="20" id="FBB-c5-haW"/>
+                <constraint firstItem="kfv-ta-e1r" firstAttribute="bottom" secondItem="dlG-Cg-KwM" secondAttribute="bottom" priority="992" constant="50" id="FBB-c5-haW">
+                    <variation key="heightClass=regular-widthClass=regular" constant="94"/>
+                </constraint>
                 <constraint firstItem="dlG-Cg-KwM" firstAttribute="top" secondItem="kfv-ta-e1r" secondAttribute="top" id="a3c-MG-nQH"/>
                 <constraint firstItem="dlG-Cg-KwM" firstAttribute="width" secondItem="Nfe-ie-kjh" secondAttribute="width" id="e99-yQ-0Uc"/>
             </constraints>
