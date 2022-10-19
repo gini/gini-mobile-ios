@@ -29,6 +29,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
     private var adapters: [OnboadingPageType: OnboardingIllustrationAdapter?] = [:]
     private let giniConfiguration: GiniConfiguration
     weak var delegate: OnboardingScreen?
+    var currentPage = 0
 
     lazy var itemSections: [OnboardingPageNew] = {
         if let customPages = giniConfiguration.customOnboardingPages {
@@ -140,6 +141,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
 
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let page = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
+        currentPage = page
         delegate?.didScroll(page: page)
     }
 

@@ -102,7 +102,11 @@ class OnboardingViewController: UIViewController {
         } else {
             nextButton.layer.cornerRadius = 14
             nextButton.setTitle("Next", for: .normal)
-            nextButton.backgroundColor = GiniColor(light: UIColor.GiniCapture.accent1, dark: UIColor.GiniCapture.accent1).uiColor()
+            nextButton.backgroundColor = GiniColor(
+                light: UIColor.GiniCapture.accent1,
+                dark: UIColor.GiniCapture.accent1
+            ).uiColor()
+            nextButton.addTarget(self, action: #selector(nextPage), for: .touchUpInside)
             navigationItem.rightBarButtonItem = skipButton
         }
     }
@@ -116,11 +120,22 @@ class OnboardingViewController: UIViewController {
         dismiss(animated: true)
     }
 
-    private func nextPage() {
+    @objc private func nextPage() {
+        if dataSource.currentPage < dataSource.itemSections.count - 1 {
+            let index = IndexPath(item: dataSource.currentPage + 1, section: 0)
+            pagesCollection.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
+        } else {
+            close()
+        }
     }
 
     private func skip() {
         close()
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        view.layoutSubviews()
     }
 }
 
@@ -138,7 +153,6 @@ extension OnboardingViewController: OnboardingScreen {
 class CollectionFlowLayout: UICollectionViewFlowLayout {
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         invalidateLayout(with: invalidationContext(forBoundsChange: newBounds))
-        collectionView?.reloadData()
-        return super.shouldInvalidateLayout(forBoundsChange: newBounds)
+        return true
     }
 }
