@@ -17,6 +17,10 @@ class OnboardingViewController: UIViewController {
     private var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
     private (set) var dataSource: OnboardingDataSource
     private let configuration = GiniConfiguration.shared
+    lazy var skipButton = UIBarButtonItem(title: "Skip",
+                                          style: .plain,
+                              target: self,
+                              action: #selector(close))
     init() {
         dataSource = OnboardingDataSource(configuration: configuration)
         super.init(nibName: "OnboardingViewController", bundle: giniCaptureBundle())
@@ -87,10 +91,7 @@ class OnboardingViewController: UIViewController {
                 layoutBottomNavigationBar(navigationBar)
             }
         } else {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Skip",
-                                                                style: .plain,
-                                                                target: self,
-                                                                action: #selector(close))
+            navigationItem.rightBarButtonItem = skipButton
         }
     }
 
@@ -113,6 +114,11 @@ class OnboardingViewController: UIViewController {
 
 extension OnboardingViewController: OnboardingScreen {
     func didScroll(page: Int) {
+        if page == dataSource.itemSections.count - 1 {
+            navigationItem.rightBarButtonItem = nil
+        } else {
+            navigationItem.rightBarButtonItem = skipButton
+        }
         pageControl.currentPage = page
     }
 }
