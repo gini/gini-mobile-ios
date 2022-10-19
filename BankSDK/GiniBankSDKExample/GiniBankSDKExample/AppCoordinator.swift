@@ -84,9 +84,14 @@ final class AppCoordinator: Coordinator {
 //    configuration.primaryButtonShadowOpacity = 0.7
 //    configuration.primaryButtonCornerRadius = 10
 
-        // Custom loading indicator customization example
+//       //  Custom loading indicator customization example for the analysis screen
 //        let customLoadingIndicator = CustomLoadingIndicator()
 //        configuration.analysisScreenLoadingIndicator = customLoadingIndicator
+
+//      // Custom loading indicator customization example for the on button laoding indicator
+//        let customButtonLoadingIndicator = OnButtonLoading()
+//        configuration.onButtonLoadingIndicator = customButtonLoadingIndicator
+        
         // Custom navigation view controller
 //        let navigationViewController = UINavigationController()
 //        navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
