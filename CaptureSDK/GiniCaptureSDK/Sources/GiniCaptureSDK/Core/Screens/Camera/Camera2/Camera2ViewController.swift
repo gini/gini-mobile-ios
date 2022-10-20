@@ -101,18 +101,16 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                 "ginicapture.camera.infoLabel",
                 comment: "Info label")
         }
+        setupInitialState()
         configureButtons()
         configureBottomNavigationBar()
-        setupInitialState()
     }
 
     private func setupInitialState() {
-        cameraPane.thumbnailView.isHidden = true
         navigationBarBottomAdapter?.showButtons(navigationButtons: [.help])
     }
 
     private func setupNotEmptyState() {
-        cameraPane.thumbnailView.isHidden = false
         navigationBarBottomAdapter?.showButtons(navigationButtons: [.help, .back])
     }
 
@@ -211,6 +209,14 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                 self?.delegate?.cameraDidTapReviewButton(strongSelf)
             }
         }
+        cameraButtonsViewModel.imagesUpdated = { [weak self] images in
+            if let lastImage = images.last {
+                self?.cameraPane.thumbnailView.updateStackStatus(to: .filled(count: images.count, lastImage: lastImage))
+            } else {
+                self?.cameraPane.thumbnailView.updateStackStatus(to: ThumbnailView.State.empty)
+            }
+        }
+        cameraButtonsViewModel.imagesUpdated?(cameraButtonsViewModel.images)
         cameraPane.thumbnailView.thumbnailButton.addTarget(
             cameraButtonsViewModel,
             action: #selector(cameraButtonsViewModel.thumbnailPressed),
@@ -278,13 +284,8 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
      - parameter images: New images to be shown in the stack. (Last image will be shown on top)
      */
     public func replaceCapturedStackImages(with images: [UIImage]) {
-        if cameraPane != nil, giniConfiguration.multipageEnabled {
-            cameraPane.thumbnailView.replaceStackImages(with: images)
-            if images.count > 0 {
-                setupNotEmptyState()
-            } else {
-                setupInitialState()
-            }
+        if giniConfiguration.multipageEnabled {
+            cameraButtonsViewModel.images = images
         }
     }
 
