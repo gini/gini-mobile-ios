@@ -138,8 +138,15 @@ class OnboardingViewController: UIViewController {
         if #available(iOS 13, *) {
             view.layoutSubviews()
         } else {
-            let offsetX = CGFloat(max(dataSource.currentPage, 0)) * size.width
-            pagesCollection.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
+            let offsetX = CGFloat(max(dataSource.currentPage, 0)) * (size.width)
+            coordinator.animate(
+                    alongsideTransition: { _ in self.pagesCollection.collectionViewLayout.invalidateLayout()
+                    },
+                    completion: { _ in
+                    self.pagesCollection.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
+                        self.pagesCollection.reloadData()
+                }
+            )
         }
     }
 
@@ -153,8 +160,10 @@ extension OnboardingViewController: OnboardingScreen {
     func didScroll(page: Int) {
         if page == dataSource.itemSections.count - 1 {
             navigationItem.rightBarButtonItem = nil
+            nextButton.setTitle("Get Started", for: .normal)
         } else {
             navigationItem.rightBarButtonItem = skipButton
+            nextButton.setTitle("Next", for: .normal)
         }
         pageControl.currentPage = page
     }
@@ -163,7 +172,6 @@ extension OnboardingViewController: OnboardingScreen {
 class CollectionFlowLayout: UICollectionViewFlowLayout {
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         invalidateLayout(with: invalidationContext(forBoundsChange: newBounds))
-        collectionView?.reloadData()
         return true
     }
 }
