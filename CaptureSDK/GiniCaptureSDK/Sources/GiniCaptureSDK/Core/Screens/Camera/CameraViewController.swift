@@ -367,15 +367,14 @@ extension CameraViewController {
                 self?.currentQRCodePopup = nil
             }
             
-            if qrDocument.qrCodeFormat == nil ||
-                qrDocument.extractedParameters.isEmpty ||
-                qrDocument.extractedParameters["iban"] == nil {
-                self.configurePopupViewForUnsupportedQR(newQRCodePopup, dismissCompletion: didDismiss)
-            } else {
+            do {
+                try GiniCaptureDocumentValidator.validate(qrDocument, withConfig: self.giniConfiguration)
                 newQRCodePopup.didTapDone = { [weak self] in
                     didTapDone()
                     self?.currentQRCodePopup?.hide(after: 0.0, completion: didDismiss)
                 }
+            } catch {
+                self.configurePopupViewForUnsupportedQR(newQRCodePopup, dismissCompletion: didDismiss)
             }
             
             if self.currentQRCodePopup != nil {
