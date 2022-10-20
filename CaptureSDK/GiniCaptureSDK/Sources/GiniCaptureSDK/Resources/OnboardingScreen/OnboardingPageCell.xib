@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_0" orientation="portrait" appearance="light"/>
+    <device id="ipad12_9rounded" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
@@ -17,27 +17,17 @@
                 <rect key="frame" x="0.0" y="0.0" width="411" height="641"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="79Q-UV-WoH">
+                    <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="79Q-UV-WoH">
                         <rect key="frame" x="0.0" y="0.0" width="411" height="641"/>
                         <subviews>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" placeholderIntrinsicWidth="100" placeholderIntrinsicHeight="200" translatesAutoresizingMaskIntoConstraints="NO" id="SQ0-nC-yBn" customClass="OnboardingImageView" customModule="GiniCaptureSDK">
-                                <rect key="frame" x="95.666666666666686" y="170.66666666666663" width="220" height="200"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="220" id="KM2-xY-L8g">
-                                        <variation key="widthClass=compact" constant="220"/>
-                                        <variation key="heightClass=regular-widthClass=regular" constant="346"/>
-                                    </constraint>
-                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="260" id="OmP-lO-Z68">
-                                        <variation key="widthClass=compact" constant="260"/>
-                                        <variation key="heightClass=regular-widthClass=regular" constant="408"/>
-                                    </constraint>
-                                </constraints>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="SQ0-nC-yBn" customClass="OnboardingImageView" customModule="GiniCaptureSDK">
+                                <rect key="frame" x="105" y="142.5" width="201" height="256"/>
                             </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="yk8-vJ-MWn">
-                                <rect key="frame" x="62.333333333333343" y="390.66666666666669" width="286.33333333333326" height="93"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="yk8-vJ-MWn">
+                                <rect key="frame" x="62.5" y="418.5" width="286.5" height="84"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flat paper within the frame" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4m8-UH-fux">
-                                        <rect key="frame" x="0.0" y="0.0" width="286.33333333333331" height="52.333333333333336"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="286.5" height="33"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="33" id="gYd-cQ-4Xr"/>
                                         </constraints>
@@ -46,9 +36,9 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" text="Ensure that the document is flat, and positioned within the frame" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1HY-bp-k5Q">
-                                        <rect key="frame" x="0.0" y="52.333333333333314" width="286.33333333333331" height="40.666666666666657"/>
+                                        <rect key="frame" x="0.0" y="43" width="286.5" height="41"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="300" id="UGX-BO-8Bg"/>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="320" id="cMz-tW-jPe"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -57,9 +47,6 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="1HY-bp-k5Q" firstAttribute="centerX" secondItem="yk8-vJ-MWn" secondAttribute="centerX" id="LgL-rR-gcc"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="93" id="WOK-Sa-rSK">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="120"/>
-                                    </constraint>
                                     <constraint firstItem="4m8-UH-fux" firstAttribute="centerX" secondItem="yk8-vJ-MWn" secondAttribute="centerX" id="eS8-qj-KCB"/>
                                 </constraints>
                             </stackView>
@@ -68,15 +55,21 @@
                         <constraints>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="yk8-vJ-MWn" secondAttribute="bottom" id="0fG-xa-Fkl"/>
                             <constraint firstItem="yk8-vJ-MWn" firstAttribute="top" secondItem="SQ0-nC-yBn" secondAttribute="bottom" constant="20" id="0mP-NE-PjX"/>
+                            <constraint firstItem="yk8-vJ-MWn" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="79Q-UV-WoH" secondAttribute="leading" constant="38" id="Ovf-e4-RBb"/>
                             <constraint firstItem="yk8-vJ-MWn" firstAttribute="centerX" secondItem="SQ0-nC-yBn" secondAttribute="centerX" id="S9t-El-Yi9"/>
                             <constraint firstItem="SQ0-nC-yBn" firstAttribute="centerX" secondItem="79Q-UV-WoH" secondAttribute="centerX" id="aoh-R1-6wo"/>
                             <constraint firstItem="SQ0-nC-yBn" firstAttribute="centerY" secondItem="79Q-UV-WoH" secondAttribute="centerY" constant="-50" id="dgw-Ok-104"/>
+                            <constraint firstItem="SQ0-nC-yBn" firstAttribute="leading" secondItem="79Q-UV-WoH" secondAttribute="leading" constant="105" id="ysJ-xn-Kju">
+                                <variation key="widthClass=compact" constant="70"/>
+                                <variation key="heightClass=regular-widthClass=regular" constant="105"/>
+                            </constraint>
                         </constraints>
                     </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="79Q-UV-WoH" firstAttribute="top" secondItem="3EI-sg-mtc" secondAttribute="top" id="5zD-Il-r3g"/>
+                    <constraint firstItem="SQ0-nC-yBn" firstAttribute="height" secondItem="3EI-sg-mtc" secondAttribute="height" multiplier="0.4" id="8Jx-3F-mfP"/>
                     <constraint firstAttribute="bottom" secondItem="79Q-UV-WoH" secondAttribute="bottom" id="J92-P3-xqW"/>
                     <constraint firstItem="79Q-UV-WoH" firstAttribute="leading" secondItem="3EI-sg-mtc" secondAttribute="leading" id="ZrQ-ls-IrK"/>
                     <constraint firstAttribute="trailing" secondItem="79Q-UV-WoH" secondAttribute="trailing" id="nrR-5u-5RE"/>
