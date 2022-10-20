@@ -53,7 +53,7 @@ class OnboardingViewController: UIViewController {
         pageControl.addTarget(
             self,
             action: #selector(self.pageControlSelectionAction(_:)),
-            for: .touchUpInside)
+            for: .valueChanged)
         pageControl.numberOfPages = dataSource.itemSections.count
     }
 
