@@ -66,7 +66,7 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
             return
             #endif
 
-            if let croppedImage = cropImage(image: image) {
+            if let croppedImage = cropImage(image: image.fixOrientation()) {
                 self.data = croppedImage.jpegData(compressionQuality: 1)!
                 self.previewImage = croppedImage
             }
@@ -89,44 +89,37 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
         guard let cgImage = image.cgImage else { return image }
         var updatedRect: CGRect
 
+        // Portarit image
         if image.size.width < image.size.height {
             let normalImageSize = CGSize(width: 3024, height: 4032)
             let widthScale = image.size.width / normalImageSize.width
             if UIDevice.current.isIpad {
-                if image.imageOrientation == .right {
-                    updatedRect = CGRect(x: 300, y: 500,
-                                         width: 3393, height: 2400).scaled(for: widthScale)
-                } else if image.imageOrientation == .left {
-                    updatedRect = CGRect(x: 300, y: 0,
-                                         width: 3393, height: 2400).scaled(for: widthScale)
-                } else {
-                    // This should not happen since it is in portrait orientation.
-                    updatedRect = CGRect(x: 0, y: 0, width: 4032, height: 3024).scaled(for: widthScale)
-                }
+                let imageHeight: CGFloat = 2400
 
+                let yCoord = (normalImageSize.width - imageHeight) / 2
+                updatedRect = CGRect(x: 20, y: yCoord,
+                                     width: imageHeight, height: imageHeight * 1.414).scaled(for: widthScale)
             } else {
-                if UIApplication.shared.hasNotch {
-                    updatedRect = CGRect(x: 20, y: 500, width: 2900, height: 2000).scaled(for: widthScale)
-                } else {
-                    updatedRect = CGRect(x: 50, y: 400, width: 3110, height: 2200).scaled(for: widthScale)
-                }
+                let xCoordinate: CGFloat = UIApplication.shared.hasNotch ? 20 : 50
+                let imageHeight: CGFloat = GiniConfiguration.shared.bottomNavigationBarEnabled ? 1800 : 2000
+
+                let yCoord = (normalImageSize.width - imageHeight) / 2
+                updatedRect = CGRect(x: xCoordinate, y: yCoord,
+                                     width: imageHeight * 1.414, height: imageHeight).scaled(for: widthScale)
             }
+        // Landscape image
         } else {
             let normalImageSize = CGSize(width: 4032, height: 3024)
             let widthScale = image.size.width / normalImageSize.width
             if UIDevice.current.isIpad {
-                if image.imageOrientation == .up {
-                    updatedRect = CGRect(x: 700, y: 50,
-                                         width: 2100, height: 2900).scaled(for: widthScale)
-                } else if image.imageOrientation == .down {
-                    updatedRect = CGRect(x: 1200, y: 50,
-                                         width: 2100, height: 2900).scaled(for: widthScale)
-                } else {
-                    // This should not happen since it is in landscape orientation.
-                    updatedRect = CGRect(x: 0, y: 0, width: 4032, height: 3024).scaled(for: widthScale)
-                }
+                let imageWidth: CGFloat = GiniConfiguration.shared.bottomNavigationBarEnabled ? 1800 : 2200
+                let cameraPaneWidth: CGFloat = 124
+                let xCoordinate = (normalImageSize.width - imageWidth) / 2 - 2 * cameraPaneWidth
+                updatedRect = CGRect(x: xCoordinate, y: 00,
+                                     width: imageWidth, height: imageWidth * 1.414).scaled(for: widthScale)
             } else {
-                updatedRect = CGRect(x: 500, y: 20, width: 2000, height: 2800).scaled(for: widthScale)
+                // This should not happen as phone is forced to portrait
+                updatedRect = CGRect(x: 0, y: 0, width: 4032, height: 3024).scaled(for: widthScale)
             }
         }
 
