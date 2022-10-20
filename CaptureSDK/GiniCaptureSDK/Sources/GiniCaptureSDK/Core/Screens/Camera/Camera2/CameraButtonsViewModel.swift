@@ -21,9 +21,18 @@ public final class CameraButtonsViewModel {
     var cancelAction: (() -> Void)?
     var helpAction: (() -> Void)?
     var backButtonAction: (() -> Void)?
+    var imagesUpdated: (([UIImage]) -> Void)?
+
+    var images: [UIImage] = [] {
+        didSet {
+            imagesUpdated?(images)
+        }
+    }
 
     public weak var trackingDelegate: CameraScreenTrackingDelegate?
-    public init(trackingDelegate: CameraScreenTrackingDelegate? = nil) {
+    public init(
+        trackingDelegate: CameraScreenTrackingDelegate? = nil
+    ) {
         self.trackingDelegate = trackingDelegate
     }
 
