@@ -326,6 +326,31 @@ public final class GiniBankConfiguration: NSObject {
     }
     
     fileprivate var onboardingCustomPages: [UIView]?
+    /**
+     Set custom onboarding pages
+     - note: For your convenience we provide the `OnboardingPageNew` struct.
+     */
+    public var customOnboardingPages: [OnboardingPageNew]?
+    
+    /**
+      * Set an adapter implementation to show a custom illustration on the "align corners" onboarding page.
+     */
+    public var onboardingAlignCornersIllustrationAdapter: OnboardingIllustrationAdapter?
+
+     /**
+       * Set an adapter implementation to show a custom illustration on the "lighting" onboarding page.
+      */
+    public var onboardingLightingIllustrationAdapter: OnboardingIllustrationAdapter?
+
+     /**
+      * Set an adapter implementation to show a custom illustration on the "multi-page" onboarding page.
+      */
+    public var onboardingMultiPageIllustrationAdapter: OnboardingIllustrationAdapter?
+
+     /**
+      * Set an adapter implementation to show a custom illustration on the "QR code" onboarding page.
+      */
+    public var onboardingQRCodeIllustrationAdapter: OnboardingIllustrationAdapter?
     
     /**
      Enable/disable the bottom navigation bar.
@@ -1294,6 +1319,13 @@ public final class GiniBankConfiguration: NSObject {
         configuration.onboardingShowAtFirstLaunch = self.onboardingShowAtFirstLaunch
         configuration.onboardingTextColor = self.onboardingTextColor
         configuration.onboardingScreenBackgroundColor = self.onboardingScreenBackgroundColor
+        configuration.customOnboardingPages = self.customOnboardingPages
+        configuration.onboardingAlignCornersIllustrationAdapter = self.onboardingAlignCornersIllustrationAdapter
+    
+        configuration.onboardingLightingIllustrationAdapter = self.onboardingLightingIllustrationAdapter
+        configuration.onboardingQRCodeIllustrationAdapter = self.onboardingQRCodeIllustrationAdapter
+        configuration.onboardingMultiPageIllustrationAdapter = self.onboardingMultiPageIllustrationAdapter
+    
         configuration.onboardingNavigationBarBottomAdapter = self.onboardingNavigationBarBottomAdapter
         
         configuration.navigationBarReviewTitleBackButton = self.navigationBarReviewTitleBackButton
@@ -1382,6 +1414,7 @@ public final class GiniBankConfiguration: NSObject {
         // Set onboarding pages after setting the GiniCapture's configuration
         // because the onboarding page initialisers need the configuration
         configuration.onboardingPages = self.onboardingPages
+        configuration.onboardingAlignCornersIllustrationAdapter = self.onboardingAlignCornersIllustrationAdapter
         
         return configuration
     }
