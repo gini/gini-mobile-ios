@@ -50,6 +50,10 @@ class OnboardingViewController: UIViewController {
             light: UIColor.GiniCapture.dark1,
             dark: UIColor.GiniCapture.light1
         ).uiColor()
+        pageControl.addTarget(
+            self,
+            action: #selector(self.pageControlSelectionAction(_:)),
+            for: .touchUpInside)
         pageControl.numberOfPages = dataSource.itemSections.count
     }
 
@@ -118,6 +122,11 @@ class OnboardingViewController: UIViewController {
 
     @objc private func close() {
         dismiss(animated: true)
+    }
+
+    @objc private func pageControlSelectionAction(_ sender: UIPageControl) {
+        let index = IndexPath(item: sender.currentPage, section: 0)
+        pagesCollection.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
     }
 
     @objc private func nextPage() {
