@@ -15,10 +15,5 @@ final class OnboardingBottomNavigationBar: UIView {
     @IBOutlet weak var getStarted: UIButton!
     override func awakeFromNib() {
         super.awakeFromNib()
-        configureView()
-    }
-
-    fileprivate func configureView() {
-        let configuration = GiniConfiguration.shared
     }
 }

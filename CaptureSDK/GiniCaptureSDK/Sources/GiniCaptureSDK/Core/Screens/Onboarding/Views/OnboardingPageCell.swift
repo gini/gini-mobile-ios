@@ -8,14 +8,23 @@ import Foundation
 import UIKit
 
 class OnboardingPageCell: UICollectionViewCell {
-    static var identifier: String = "onboardingPageCellIdentifier"
 
     @IBOutlet weak var iconView: OnboardingImageView!
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var fullText: UILabel!
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
+
     func configureCell() {}
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        iconView.illustrationAdapter = nil
+        iconView.icon = nil
+        iconView.subviews.forEach({ $0.removeFromSuperview() })
+        title.text = ""
+        fullText.text = ""
+    }
 }

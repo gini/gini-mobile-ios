@@ -84,19 +84,11 @@ final class ThumbnailView: UIView {
         self.giniConfiguration = giniConfiguration
     }
 
-    func replaceStackImages(with images: [UIImage]) {
-        if let lastImage = images.last {
-            updateStackStatus(to: .filled(count: images.count, lastImage: lastImage))
-        } else {
-            updateStackStatus(to: .empty)
-        }
-    }
-
     func addImageToStack(image: UIImage) {
         updateStackStatus(to: .filled(count: imagesCount + 1, lastImage: image))
     }
 
-    private func updateStackStatus(to status: State) {
+    func updateStackStatus(to status: State) {
         switch status {
         case .filled(let count, let lastImage):
             imagesCount = count
