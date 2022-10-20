@@ -367,7 +367,9 @@ extension CameraViewController {
                 self?.currentQRCodePopup = nil
             }
             
-            if qrDocument.qrCodeFormat == nil {
+            if qrDocument.qrCodeFormat == nil ||
+                qrDocument.extractedParameters.isEmpty ||
+                qrDocument.extractedParameters["iban"] == nil {
                 self.configurePopupViewForUnsupportedQR(newQRCodePopup, dismissCompletion: didDismiss)
             } else {
                 newQRCodePopup.didTapDone = { [weak self] in
