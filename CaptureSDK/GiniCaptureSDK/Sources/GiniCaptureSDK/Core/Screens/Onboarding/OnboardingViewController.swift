@@ -36,6 +36,7 @@ class OnboardingViewController: UIViewController {
         pagesCollection.layoutIfNeeded()
         pagesCollection.reloadData()
         pagesCollection.isPagingEnabled = true
+        pagesCollection.showsHorizontalScrollIndicator = false
         pagesCollection.dataSource = dataSource
         pagesCollection.delegate = dataSource
         dataSource.delegate = self

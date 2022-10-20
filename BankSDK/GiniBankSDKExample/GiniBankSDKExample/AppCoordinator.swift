@@ -84,10 +84,10 @@ final class AppCoordinator: Coordinator {
 //    configuration.primaryButtonShadowOpacity = 0.7
 //    configuration.primaryButtonCornerRadius = 10
 //    configuration.customOnboardingPages = [OnboardingPageNew(imageName: "captureSuggestion1", title: "Page 1", description: "Description for page 1")]
-        configuration.onboardingAlignCornersIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "page1Animation", backgroundColor: UIColor.red)
+        //configuration.onboardingAlignCornersIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "page1Animation", backgroundColor: UIColor.red)
         //configuration.onboardingLightingIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "cameraAnimation", backgroundColor: UIColor.yellow)
         //configuration.onboardingMultiPageIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "uploadAnimation", backgroundColor: UIColor.green)
-        configuration.onboardingQRCodeIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "magicAnimation", backgroundColor: UIColor.blue)
+        //configuration.onboardingQRCodeIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "magicAnimation", backgroundColor: UIColor.blue)
 
         // Custom loading indicator customization example
 //        let customLoadingIndicator = CustomLoadingIndicator()
