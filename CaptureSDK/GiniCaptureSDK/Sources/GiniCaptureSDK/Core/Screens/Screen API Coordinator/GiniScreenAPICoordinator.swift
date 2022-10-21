@@ -213,8 +213,11 @@ extension GiniScreenAPICoordinator {
             pages[index].error = error
         }
 
-        if giniConfiguration.multipageEnabled, pages.type == .image {
-            reviewViewController.updateCollections(with: self.pages, finishedUpload: true)
+        if pages.type == .image {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                self.reviewViewController.updateCollections(with: self.pages, finishedUpload: true)
+            })
+
         }
     }
 
