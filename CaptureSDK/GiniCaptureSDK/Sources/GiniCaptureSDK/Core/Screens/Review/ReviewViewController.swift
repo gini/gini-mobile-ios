@@ -213,7 +213,6 @@ extension ReviewViewController {
         setupView()
         addConstraints()
         addLoadingView()
-        showAnimation()
     }
 
     public override func viewDidAppear(_ animated: Bool) {
@@ -314,19 +313,21 @@ extension ReviewViewController {
      */
 
     public func updateCollections(with pages: [GiniCapturePage], finishedUpload: Bool = true) {
-        if finishedUpload {
-            DispatchQueue.main.async {
-                self.processButton.alpha = 1
-                self.processButton.isEnabled = true
-                self.hideAnimation()
+        if giniConfiguration.multipageEnabled {
+            if finishedUpload {
+                DispatchQueue.main.async {
+                    self.processButton.alpha = 1
+                    self.processButton.isEnabled = true
+                    self.hideAnimation()
+                }
+                return
             }
-            return
-        }
 
-        DispatchQueue.main.async {
-            self.processButton.alpha = 0.3
-            self.processButton.isEnabled = false
-            self.showAnimation()
+            DispatchQueue.main.async {
+                self.processButton.alpha = 0.3
+                self.processButton.isEnabled = false
+                self.showAnimation()
+            }
         }
         self.pages = pages
         collectionView.reloadData()
