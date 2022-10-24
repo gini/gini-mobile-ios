@@ -267,6 +267,18 @@ extension ReviewViewController {
         edgesForExtendedLayout = []
     }
 
+    private func updateButtonTitle() {
+        if pages.count > 1 {
+            processButton.setTitle(
+                NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle.plural",
+                                                 comment: "Process button title"), for: .normal)
+        } else {
+            processButton.setTitle(
+                NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle.singular",
+                                                 comment: "Process button title"), for: .normal)
+        }
+    }
+
     // MARK: - Loading indicator
 
     private func addLoadingView() {
@@ -313,22 +325,23 @@ extension ReviewViewController {
      */
 
     public func updateCollections(with pages: [GiniCapturePage], finishedUpload: Bool = true) {
-        if giniConfiguration.multipageEnabled {
-            if finishedUpload {
-                DispatchQueue.main.async {
+        DispatchQueue.main.async {
+            self.updateButtonTitle()
+
+            if self.giniConfiguration.multipageEnabled {
+                if finishedUpload {
                     self.processButton.alpha = 1
                     self.processButton.isEnabled = true
                     self.hideAnimation()
+                    return
                 }
-                return
-            }
 
-            DispatchQueue.main.async {
                 self.processButton.alpha = 0.3
                 self.processButton.isEnabled = false
                 self.showAnimation()
             }
         }
+
         self.pages = pages
         collectionView.reloadData()
 
@@ -449,6 +462,7 @@ extension ReviewViewController {
         let pageToDelete = pages[indexPath.row]
         pages.remove(at: indexPath.row)
         collectionView.deleteItems(at: [indexPath])
+        updateButtonTitle()
         delegate?.review(self, didDelete: pageToDelete)
     }
 }

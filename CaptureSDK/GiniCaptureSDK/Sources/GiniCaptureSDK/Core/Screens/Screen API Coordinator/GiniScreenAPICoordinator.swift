@@ -214,10 +214,7 @@ extension GiniScreenAPICoordinator {
         }
 
         if pages.type == .image {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                self.reviewViewController.updateCollections(with: self.pages, finishedUpload: true)
-            })
-
+            reviewViewController.updateCollections(with: self.pages, finishedUpload: true)
         }
     }
 
