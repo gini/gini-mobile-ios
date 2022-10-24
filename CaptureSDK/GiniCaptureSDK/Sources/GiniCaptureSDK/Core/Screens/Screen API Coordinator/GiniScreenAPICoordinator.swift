@@ -240,12 +240,11 @@ extension GiniScreenAPICoordinator {
             trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .cancel))
             screenAPINavigationController.dismiss(animated: true)
         default:
-            break
-        }
-        if screenAPINavigationController.viewControllers.count > 1 {
-            screenAPINavigationController.popViewController(animated: true)
-        } else {
-            screenAPINavigationController.dismiss(animated: true)
+            if screenAPINavigationController.viewControllers.count > 1 {
+                screenAPINavigationController.popViewController(animated: true)
+            } else {
+                screenAPINavigationController.dismiss(animated: true)
+            }
         }
     }
 
