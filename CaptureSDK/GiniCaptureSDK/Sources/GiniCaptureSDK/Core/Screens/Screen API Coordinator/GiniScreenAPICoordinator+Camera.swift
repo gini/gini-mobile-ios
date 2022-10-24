@@ -77,7 +77,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             self?.showHelpMenuScreen()
         }
         cameraButtonsViewModel.cancelAction = { [weak self] in
-            self?.back()
+            self?.closeScreenApi()
         }
         return cameraButtonsViewModel
     }
@@ -90,6 +90,15 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         )
         cameraViewController.delegate = self
         cameraViewController.title = .localized(resource: NavigationBarStrings.cameraTitle)
+        cameraButtonsViewModel.backButtonAction = { [weak cameraViewController, weak self] in
+            if let strongSelf = self, strongSelf.pages.count > 0 {
+                if let cameraViewController = cameraViewController {
+                    self?.cameraDidTapReviewButton(cameraViewController)
+                }
+            } else {
+                self?.closeScreenApi()
+            }
+        }
 
         if pages.count > 0 {
             cameraViewController.setupNavigationItem(
