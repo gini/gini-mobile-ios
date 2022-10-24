@@ -8,7 +8,6 @@
 import UIKit
 
 class DefaultReviewBottomNavigationBarAdapter: ReviewScreenBottomNavigationBarAdapter {
-
     private var mainButtonCallback: (() -> Void)?
     private var secondaryButtonCallback: (() -> Void)?
     var view: ReviewBottomNavigationBar?

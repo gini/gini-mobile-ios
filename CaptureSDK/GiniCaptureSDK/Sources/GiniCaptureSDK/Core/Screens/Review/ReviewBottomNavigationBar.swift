@@ -13,10 +13,11 @@ protocol ReviewBottomNavigationBarDelegate: AnyObject {
 }
 
 final class ReviewBottomNavigationBar: UIView {
+    private let configuration = GiniConfiguration.shared
     lazy var mainButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = GiniConfiguration.shared.textStyleFonts[.bodyBold]
+        button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.layer.cornerRadius = 16
         button.backgroundColor = UIColor.GiniCapture.accent1
@@ -33,7 +34,7 @@ final class ReviewBottomNavigationBar: UIView {
                                        name:
                         NSLocalizedStringPreferredFormat("ginicapture.multipagereview.secondaryButtonTitle",
                                                         comment: "Add pages button title"))
-        addPagesButton.isHidden = !GiniConfiguration.shared.multipageEnabled
+        addPagesButton.isHidden = !configuration.multipageEnabled
         if #available(iOS 13.0, *) {
             addPagesButton.iconView.tintColor = .GiniCapture.light1
             addPagesButton.iconView.image = addPagesButton.iconView.image?.withTintColor(.GiniCapture.light1,
