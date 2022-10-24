@@ -370,8 +370,8 @@ extension ReviewViewController {
             ])
         } else {
             NSLayoutConstraint.activate([
-                pageControl.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor, constant: -114),
-                collectionView.heightAnchor.constraint(greaterThanOrEqualToConstant: calculatedCellSize().height + 32)
+                pageControl.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -130),
+                collectionView.bottomAnchor.constraint(greaterThanOrEqualTo: pageControl.topAnchor, constant: -32)
             ])
         }
     }
