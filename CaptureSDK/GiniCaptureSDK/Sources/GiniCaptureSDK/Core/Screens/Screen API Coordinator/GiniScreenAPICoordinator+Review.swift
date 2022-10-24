@@ -37,11 +37,19 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
             let vc = ReviewViewController(pages: pages,
                                           giniConfiguration: giniConfiguration)
             vc.delegate = self
-            vc.setupNavigationItem(usingResources: cancelButtonResource,
-                                   selector: #selector(closeScreen),
-                                   position: .left,
-                                   target: self)
+            if giniConfiguration.bottomNavigationBarEnabled {
+                vc.setupNavigationItem(usingResources: cancelButtonResource,
+                                       selector: #selector(closeScreen),
+                                       position: .right,
+                                       target: self)
 
+            } else {
+                vc.setupNavigationItem(usingResources: cancelButtonResource,
+                                       selector: #selector(closeScreen),
+                                       position: .left,
+                                       target: self)
+
+            }
             return vc
     }
 
