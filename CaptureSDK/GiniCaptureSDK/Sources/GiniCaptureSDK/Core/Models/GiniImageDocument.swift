@@ -88,24 +88,24 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
     private func cropImage(image: UIImage) -> UIImage? {
         guard let cgImage = image.cgImage else { return image }
         var updatedRect: CGRect
-
+        let cameraPaneWidth: CGFloat = 124
         // Portarit image
         if image.size.width < image.size.height {
             let normalImageSize = CGSize(width: 3024, height: 4032)
             let widthScale = image.size.width / normalImageSize.width
             if UIDevice.current.isIpad {
-                let imageHeight: CGFloat = 2400
+                let imageWidth: CGFloat = GiniConfiguration.shared.bottomNavigationBarEnabled ? 2400 : 2600
 
-                let yCoord = (normalImageSize.width - imageHeight) / 2
+                let yCoord = (normalImageSize.width - imageWidth) / 2 - 2 * cameraPaneWidth
                 updatedRect = CGRect(x: 20, y: yCoord,
-                                     width: imageHeight, height: imageHeight * 1.414).scaled(for: widthScale)
+                                     width: imageWidth, height: imageWidth * 1.414).scaled(for: widthScale)
             } else {
-                let xCoordinate: CGFloat = UIApplication.shared.hasNotch ? 20 : 50
-                let imageHeight: CGFloat = GiniConfiguration.shared.bottomNavigationBarEnabled ? 1800 : 2000
+                let YCoordinate: CGFloat = UIApplication.shared.hasNotch ? 20 : 50
+                let imageWidth: CGFloat = GiniConfiguration.shared.bottomNavigationBarEnabled ? 1800 : 2000
 
-                let yCoord = (normalImageSize.width - imageHeight) / 2
-                updatedRect = CGRect(x: xCoordinate, y: yCoord,
-                                     width: imageHeight * 1.414, height: imageHeight).scaled(for: widthScale)
+                let xCoordinate = (normalImageSize.width - imageWidth) / 2
+                updatedRect = CGRect(x: xCoordinate, y: YCoordinate,
+                                     width: imageWidth, height: imageWidth * 1.414).scaled(for: widthScale)
             }
         // Landscape image
         } else {
@@ -113,9 +113,8 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
             let widthScale = image.size.width / normalImageSize.width
             if UIDevice.current.isIpad {
                 let imageWidth: CGFloat = GiniConfiguration.shared.bottomNavigationBarEnabled ? 1800 : 2200
-                let cameraPaneWidth: CGFloat = 124
                 let xCoordinate = (normalImageSize.width - imageWidth) / 2 - 2 * cameraPaneWidth
-                updatedRect = CGRect(x: xCoordinate, y: 00,
+                updatedRect = CGRect(x: xCoordinate, y: 0,
                                      width: imageWidth, height: imageWidth * 1.414).scaled(for: widthScale)
             } else {
                 // This should not happen as phone is forced to portrait
