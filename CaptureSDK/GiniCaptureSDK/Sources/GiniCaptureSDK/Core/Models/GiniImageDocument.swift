@@ -86,6 +86,10 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
     }
 
     private func cropImage(image: UIImage) -> UIImage? {
+        /* The way this function works is that it calculates an overlaying rectangle on the original image,
+        and crops the image to that rectanlge. The calculations that are made are determining the origin of the
+         new image. It is roughly the white rectangle of the camera screen, but because that is not of fixed size
+         related to the screen size, calculations are made do determine a bigger area of the image*/
         guard let cgImage = image.cgImage else { return image }
         var updatedRect: CGRect
         let cameraPaneWidth: CGFloat = 124
@@ -94,15 +98,20 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
             let normalImageSize = CGSize(width: 3024, height: 4032)
             let widthScale = image.size.width / normalImageSize.width
             if UIDevice.current.isIpad {
+                // Bottom navigation makes the preview smaller, so a smaller portion needs to be cropped
                 let imageWidth: CGFloat = GiniConfiguration.shared.bottomNavigationBarEnabled ? 2400 : 2600
 
+                // Calculates the Y coordinate of the new image
                 let yCoord = (normalImageSize.width - imageWidth) / 2 - 2 * cameraPaneWidth
                 updatedRect = CGRect(x: 20, y: yCoord,
                                      width: imageWidth, height: imageWidth * 1.414).scaled(for: widthScale)
             } else {
+                // Calculates the Y coordinate of the new image
                 let YCoordinate: CGFloat = UIApplication.shared.hasNotch ? 20 : 50
+                // Bottom navigation makes the preview smaller, so a smaller portion needs to be cropped
                 let imageWidth: CGFloat = GiniConfiguration.shared.bottomNavigationBarEnabled ? 1800 : 2000
 
+                // Calculates the X coordinate of the new image
                 let xCoordinate = (normalImageSize.width - imageWidth) / 2
                 updatedRect = CGRect(x: xCoordinate, y: YCoordinate,
                                      width: imageWidth, height: imageWidth * 1.414).scaled(for: widthScale)
@@ -112,7 +121,9 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
             let normalImageSize = CGSize(width: 4032, height: 3024)
             let widthScale = image.size.width / normalImageSize.width
             if UIDevice.current.isIpad {
+                // Bottom navigation makes the preview smaller, so a smaller portion needs to be cropped
                 let imageWidth: CGFloat = GiniConfiguration.shared.bottomNavigationBarEnabled ? 1800 : 2200
+                // Calculates the X coordinate of the new image taking into consideration the camera pane width
                 let xCoordinate = (normalImageSize.width - imageWidth) / 2 - 2 * cameraPaneWidth
                 updatedRect = CGRect(x: xCoordinate, y: 0,
                                      width: imageWidth, height: imageWidth * 1.414).scaled(for: widthScale)
@@ -122,6 +133,7 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
             }
         }
 
+        // Cropping the original image to the updated rectangle
         guard let croppedCGImage = cgImage.cropping(to: updatedRect) else { return image }
         let newImagew = UIImage(cgImage: croppedCGImage, scale: 1, orientation: image.imageOrientation)
         return newImagew
