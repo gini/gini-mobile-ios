@@ -80,6 +80,8 @@ public final class ReviewViewController: UIViewController {
         return presenter
     }()
 
+    private var navigationBarBottomAdapter: ReviewScreenBottomNavigationBarAdapter?
+
     // MARK: - UI initialization
 
     lazy var collectionView: UICollectionView = {
@@ -196,6 +198,49 @@ public final class ReviewViewController: UIViewController {
     }
 }
 
+// MARK: - BottomNavigation
+
+extension ReviewViewController {
+    private func configureBottomNavigationBar() {
+        if giniConfiguration.bottomNavigationBarEnabled {
+            if let bottomBar = giniConfiguration.reviewNavigationBarBottomAdapter {
+                navigationBarBottomAdapter = bottomBar
+            } else {
+                navigationBarBottomAdapter = DefaultReviewBottomNavigationBarAdapter()
+            }
+            navigationBarBottomAdapter?.setMainButtonClickedActionCallback { [weak self] in
+                guard let self = self else { return }
+                self.delegate?.reviewDidTapProcess(self)
+            }
+            navigationBarBottomAdapter?.setSecondaryButtonClickedActionCallback { [weak self] in
+                guard let self = self else { return }
+                self.setCellStatus(for: self.currentPage, isActive: false)
+                self.delegate?.reviewDidTapAddImage(self)
+            }
+
+            if let navigationBar =
+                navigationBarBottomAdapter?.injectedView() {
+                view.addSubview(navigationBar)
+                layoutBottomNavigationBar(navigationBar)
+            }
+        }
+    }
+
+    private func layoutBottomNavigationBar(_ navigationBar: UIView) {
+        navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(navigationBar)
+        NSLayoutConstraint.activate([
+            navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBar.heightAnchor.constraint(equalToConstant: 114)
+        ])
+        view.bringSubviewToFront(navigationBar)
+        view.layoutSubviews()
+    }
+
+}
+
 // MARK: - UIViewController
 
 extension ReviewViewController {
@@ -204,6 +249,7 @@ extension ReviewViewController {
 
         setupView()
         addConstraints()
+        configureBottomNavigationBar()
     }
 
     public override func viewDidAppear(_ animated: Bool) {
@@ -253,8 +299,10 @@ extension ReviewViewController {
         view.addSubview(tipLabel)
         view.addSubview(collectionView)
         view.addSubview(pageControl)
-        view.addSubview(processButton)
-        view.addSubview(addPagesButton)
+        if !giniConfiguration.bottomNavigationBarEnabled {
+            view.addSubview(processButton)
+            view.addSubview(addPagesButton)
+        }
         edgesForExtendedLayout = []
     }
 
@@ -304,19 +352,28 @@ extension ReviewViewController {
 
             pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 32),
             pageControl.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            pageControl.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-
-            processButton.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: 32),
-            processButton.widthAnchor.constraint(equalToConstant: 204),
-            processButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            processButton.heightAnchor.constraint(equalToConstant: 50),
-            processButton.bottomAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                  constant: -50),
-
-            addPagesButton.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
-            buttonLeadingConstraint,
-            addPagesButton.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -4)
+            pageControl.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+
+        if !giniConfiguration.bottomNavigationBarEnabled {
+            NSLayoutConstraint.activate([
+                processButton.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: 32),
+                processButton.widthAnchor.constraint(equalToConstant: 204),
+                processButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                processButton.heightAnchor.constraint(equalToConstant: 50),
+                processButton.bottomAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                      constant: -50),
+
+                addPagesButton.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
+                buttonLeadingConstraint,
+                addPagesButton.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -4)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                pageControl.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor, constant: -114),
+                collectionView.heightAnchor.constraint(greaterThanOrEqualToConstant: calculatedCellSize().height + 32)
+            ])
+        }
     }
 
     @objc
