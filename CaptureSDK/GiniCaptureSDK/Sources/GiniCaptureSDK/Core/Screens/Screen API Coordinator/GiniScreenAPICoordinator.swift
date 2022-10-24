@@ -225,22 +225,27 @@ extension GiniScreenAPICoordinator {
 
     @objc func back() {
         switch screenAPINavigationController.topViewController {
-        case is CameraViewController:
+        case is CameraScreen:
             trackingDelegate?.onCameraScreenEvent(event: Event(type: .exit))
+            if pages.count > 0 {
+                if screenAPINavigationController.viewControllers.count > 1 {
+                    screenAPINavigationController.popViewController(animated: true)
+                } else {
+                    screenAPINavigationController.dismiss(animated: true)
+                }
+            } else {
+                closeScreenApi()
+            }
         case is AnalysisViewController:
             trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .cancel))
             screenAPINavigationController.dismiss(animated: true)
         default:
             break
         }
-        if pages.count > 0 {
-            if screenAPINavigationController.viewControllers.count > 1 {
-                screenAPINavigationController.popViewController(animated: true)
-            } else {
-                screenAPINavigationController.dismiss(animated: true)
-            }
+        if screenAPINavigationController.viewControllers.count > 1 {
+            screenAPINavigationController.popViewController(animated: true)
         } else {
-            closeScreenApi()
+            screenAPINavigationController.dismiss(animated: true)
         }
     }
 
@@ -314,7 +319,7 @@ extension GiniScreenAPICoordinator: UINavigationControllerDelegate {
             }
         }
 
-        if toVC is CameraViewController &&
+        if toVC is CameraScreen &&
             (fromVC is AnalysisViewController ||
              fromVC is NoResultScreenViewController) {
             // When going directly from the analysis or from the single page review screen to the camera the pages
