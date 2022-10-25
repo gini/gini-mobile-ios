@@ -14,6 +14,7 @@ protocol CameraProtocol: AnyObject {
     var session: AVCaptureSession { get }
     var videoDeviceInput: AVCaptureDeviceInput? { get }
     var didDetectQR: ((GiniQRCodeDocument) -> Void)? { get set }
+    var didDetectInvalidQR: ((GiniQRCodeDocument) -> Void)? { get set }
     var isFlashSupported: Bool { get }
     var isFlashOn: Bool { get set }
 
@@ -32,6 +33,7 @@ final class Camera: NSObject, CameraProtocol {
     
     // Callbacks
     var didDetectQR: ((GiniQRCodeDocument) -> Void)?
+    var didDetectInvalidQR: ((GiniQRCodeDocument) -> Void)?
     var didCaptureImageHandler: ((Data?, CameraError?) -> Void)?
     
     // Session management
@@ -293,7 +295,7 @@ extension Camera: AVCaptureMetadataOutputObjectsDelegate {
                 }
             } catch DocumentValidationError.qrCodeFormatNotValid {
                 DispatchQueue.main.async { [weak self] in
-                    self?.didDetectQR?(qrDocument)
+                    self?.didDetectInvalidQR?(qrDocument)
                 }
             } catch {}
         }
