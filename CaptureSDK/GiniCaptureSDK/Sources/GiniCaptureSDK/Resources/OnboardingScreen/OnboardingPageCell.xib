@@ -21,12 +21,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="411" height="641"/>
                         <subviews>
                             <view clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="SQ0-nC-yBn" customClass="OnboardingImageView" customModule="GiniCaptureSDK">
-                                <rect key="frame" x="105" y="142.5" width="201" height="256"/>
+                                <rect key="frame" x="105" y="150" width="201" height="256.5"/>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="yk8-vJ-MWn">
-                                <rect key="frame" x="62.5" y="418.5" width="286.5" height="84"/>
+                                <rect key="frame" x="62.5" y="426.5" width="286.5" height="84"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flat paper within the frame" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4m8-UH-fux">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flat paper within the frame" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4m8-UH-fux">
                                         <rect key="frame" x="0.0" y="0.0" width="286.5" height="33"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="33" id="gYd-cQ-4Xr"/>
@@ -55,10 +55,12 @@
                         <constraints>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="yk8-vJ-MWn" secondAttribute="bottom" id="0fG-xa-Fkl"/>
                             <constraint firstItem="yk8-vJ-MWn" firstAttribute="top" secondItem="SQ0-nC-yBn" secondAttribute="bottom" constant="20" id="0mP-NE-PjX"/>
-                            <constraint firstItem="yk8-vJ-MWn" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="79Q-UV-WoH" secondAttribute="leading" constant="38" id="Ovf-e4-RBb"/>
+                            <constraint firstItem="yk8-vJ-MWn" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="79Q-UV-WoH" secondAttribute="leading" constant="50" id="Ovf-e4-RBb"/>
                             <constraint firstItem="yk8-vJ-MWn" firstAttribute="centerX" secondItem="SQ0-nC-yBn" secondAttribute="centerX" id="S9t-El-Yi9"/>
+                            <constraint firstItem="SQ0-nC-yBn" firstAttribute="top" secondItem="79Q-UV-WoH" secondAttribute="top" constant="70" id="UWe-eJ-PnH">
+                                <variation key="heightClass=regular-widthClass=regular" constant="150"/>
+                            </constraint>
                             <constraint firstItem="SQ0-nC-yBn" firstAttribute="centerX" secondItem="79Q-UV-WoH" secondAttribute="centerX" id="aoh-R1-6wo"/>
-                            <constraint firstItem="SQ0-nC-yBn" firstAttribute="centerY" secondItem="79Q-UV-WoH" secondAttribute="centerY" constant="-50" id="dgw-Ok-104"/>
                             <constraint firstItem="SQ0-nC-yBn" firstAttribute="leading" secondItem="79Q-UV-WoH" secondAttribute="leading" constant="105" id="ysJ-xn-Kju">
                                 <variation key="widthClass=compact" constant="70"/>
                                 <variation key="heightClass=regular-widthClass=regular" constant="105"/>
