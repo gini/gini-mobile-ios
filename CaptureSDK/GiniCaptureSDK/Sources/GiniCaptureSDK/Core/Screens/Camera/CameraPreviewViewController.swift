@@ -110,8 +110,6 @@ final class CameraPreviewViewController: UIViewController {
         super.viewWillAppear(animated)
         camera.start()
         startLoadingIndicator()
-        updatePreviewViewOrientation() // Video orientation should be updated once the view has been loaded
-        
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
@@ -216,12 +214,6 @@ final class CameraPreviewViewController: UIViewController {
         spinner.stopAnimating()
     }
 
-}
-
-// MARK: - Fileprivate
-
-fileprivate extension CameraPreviewViewController {
-    
     func updatePreviewViewOrientation() {
         let orientation: AVCaptureVideoOrientation
         if UIDevice.current.isIpad {
@@ -229,7 +221,9 @@ fileprivate extension CameraPreviewViewController {
         } else {
             orientation = .portrait
         }
-        (previewView.layer as? AVCaptureVideoPreviewLayer)?.connection?.videoOrientation = orientation
+        if let cameraLayer = previewView.layer as? AVCaptureVideoPreviewLayer {
+            cameraLayer.connection?.videoOrientation = orientation
+        }
     }
 }
 
