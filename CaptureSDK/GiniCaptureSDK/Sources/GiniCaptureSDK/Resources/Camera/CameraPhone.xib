@@ -48,19 +48,25 @@
                             <color key="textColor" name="systemWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="zFz-gY-AMg">
-                            <rect key="frame" x="8" y="44.333333333333378" width="156" height="125.66666666666669"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="zFz-gY-AMg">
+                            <rect key="frame" x="8" y="44.333333333333378" width="134" height="125.66666666666669"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oxa-p6-f53" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
-                                    <rect key="frame" x="0.0" y="0.0" width="75.666666666666671" height="125.66666666666667"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="49" height="125.66666666666667"/>
                                     <color key="backgroundColor" systemColor="systemOrangeColor"/>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wph-4w-azi" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
-                                    <rect key="frame" x="80.666666666666686" y="0.0" width="75.333333333333314" height="125.66666666666667"/>
+                                    <rect key="frame" x="54" y="0.0" width="80" height="125.66666666666667"/>
                                     <color key="backgroundColor" systemColor="systemGreenColor"/>
                                     <color key="tintColor" systemColor="tintColor"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="80" id="v8t-h2-zft"/>
+                                    </constraints>
                                 </view>
                             </subviews>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="wph-4w-azi" secondAttribute="trailing" id="Ioe-Y1-Rx7"/>
+                            </constraints>
                         </stackView>
                         <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Yg-3y-VKg" customClass="ThumbnailView" customModule="GiniCaptureSDK">
                             <rect key="frame" x="272" y="81" width="44" height="52"/>
@@ -80,7 +86,7 @@
                         <constraint firstItem="zFz-gY-AMg" firstAttribute="top" secondItem="lfm-sA-fAL" secondAttribute="bottom" constant="16" id="IV7-fG-9A2"/>
                         <constraint firstItem="0Yg-3y-VKg" firstAttribute="leading" secondItem="dQe-NY-Bi9" secondAttribute="trailing" constant="30" id="PbW-4h-wFh"/>
                         <constraint firstItem="lfm-sA-fAL" firstAttribute="centerX" secondItem="qey-Uj-2J2" secondAttribute="centerX" id="Z4u-Mw-edC"/>
-                        <constraint firstItem="dQe-NY-Bi9" firstAttribute="leading" secondItem="zFz-gY-AMg" secondAttribute="trailing" constant="8" id="ea5-vT-sWG"/>
+                        <constraint firstItem="dQe-NY-Bi9" firstAttribute="leading" secondItem="zFz-gY-AMg" secondAttribute="trailing" constant="30" id="ea5-vT-sWG"/>
                         <constraint firstItem="lfm-sA-fAL" firstAttribute="top" secondItem="qey-Uj-2J2" secondAttribute="top" constant="8" id="f4b-FG-Wzh"/>
                         <constraint firstItem="dQe-NY-Bi9" firstAttribute="centerX" secondItem="qey-Uj-2J2" secondAttribute="centerX" id="iMg-DB-LrQ"/>
                         <constraint firstItem="dQe-NY-Bi9" firstAttribute="centerY" secondItem="zFz-gY-AMg" secondAttribute="centerY" id="jIy-hN-jDT"/>
