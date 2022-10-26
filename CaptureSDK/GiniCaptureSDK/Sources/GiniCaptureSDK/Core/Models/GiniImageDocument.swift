@@ -59,84 +59,14 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
         super.init()
         if let image = UIImage(data: data) {
             #if targetEnvironment(simulator)
-            let rotatedImage = UIImage(cgImage: image.cgImage!, scale: image.scale, orientation: .right)
-            let croppedImage = cropImage(image: rotatedImage)!
-            let finalImage = UIImage(cgImage: croppedImage.cgImage!, scale: croppedImage.scale, orientation: .up)
-            self.data = finalImage.jpegData(compressionQuality: 1)!
+            self.data = image.jpegData(compressionQuality: 1)!
             return
             #endif
 
-            if let croppedImage = cropImage(image: image.fixOrientation()) {
-                self.data = croppedImage.jpegData(compressionQuality: 1)!
-                self.previewImage = croppedImage
-            }
+            self.data = image.jpegData(compressionQuality: 1)!
+            self.previewImage = image
         }
         
-    }
-    
-    func rotatePreviewImage90Degrees() {
-        guard let rotatedImage = self.previewImage?.rotated90Degrees() else { return }
-        metaInformationManager.rotate(degrees: 90, imageOrientation: rotatedImage.imageOrientation)
-        
-        if let data = metaInformationManager.imageByAddingMetadata() {
-            self.previewImage = UIImage(data: data)
-        } else {
-            self.previewImage = rotatedImage
-        }
-    }
-
-    private func cropImage(image: UIImage) -> UIImage? {
-        /* The way this function works is that it calculates an overlaying rectangle on the original image,
-        and crops the image to that rectanlge. The calculations that are made are determining the origin of the
-         new image. It is roughly the white rectangle of the camera screen, but because that is not of fixed size
-         related to the screen size, calculations are made do determine a bigger area of the image*/
-        guard let cgImage = image.cgImage else { return image }
-        var updatedRect: CGRect
-        let cameraPaneWidth: CGFloat = 124
-        // Portarit image
-        if image.size.width < image.size.height {
-            let normalImageSize = CGSize(width: 3024, height: 4032)
-            let widthScale = image.size.width / normalImageSize.width
-            if UIDevice.current.isIpad {
-                // Bottom navigation makes the preview smaller, so a smaller portion needs to be cropped
-                let imageWidth: CGFloat = GiniConfiguration.shared.bottomNavigationBarEnabled ? 2400 : 2600
-
-                // Calculates the Y coordinate of the new image
-                let yCoord = (normalImageSize.width - imageWidth) / 2 - 2 * cameraPaneWidth
-                updatedRect = CGRect(x: 20, y: yCoord,
-                                     width: imageWidth, height: imageWidth * 1.414).scaled(for: widthScale)
-            } else {
-                // Calculates the Y coordinate of the new image
-                let YCoordinate: CGFloat = UIApplication.shared.hasNotch ? 20 : 50
-                // Bottom navigation makes the preview smaller, so a smaller portion needs to be cropped
-                let imageWidth: CGFloat = GiniConfiguration.shared.bottomNavigationBarEnabled ? 1800 : 2000
-
-                // Calculates the X coordinate of the new image
-                let xCoordinate = (normalImageSize.width - imageWidth) / 2
-                updatedRect = CGRect(x: xCoordinate, y: YCoordinate,
-                                     width: imageWidth, height: imageWidth * 1.414).scaled(for: widthScale)
-            }
-        // Landscape image
-        } else {
-            let normalImageSize = CGSize(width: 4032, height: 3024)
-            let widthScale = image.size.width / normalImageSize.width
-            if UIDevice.current.isIpad {
-                // Bottom navigation makes the preview smaller, so a smaller portion needs to be cropped
-                let imageWidth: CGFloat = GiniConfiguration.shared.bottomNavigationBarEnabled ? 1800 : 2200
-                // Calculates the X coordinate of the new image taking into consideration the camera pane width
-                let xCoordinate = (normalImageSize.width - imageWidth) / 2 - 2 * cameraPaneWidth
-                updatedRect = CGRect(x: xCoordinate, y: 0,
-                                     width: imageWidth, height: imageWidth * 1.414).scaled(for: widthScale)
-            } else {
-                // This should not happen as phone is forced to portrait
-                updatedRect = CGRect(x: 0, y: 0, width: 4032, height: 3024).scaled(for: widthScale)
-            }
-        }
-
-        // Cropping the original image to the updated rectangle
-        guard let croppedCGImage = cgImage.cropping(to: updatedRect) else { return image }
-        let newImagew = UIImage(cgImage: croppedCGImage, scale: 1, orientation: image.imageOrientation)
-        return newImagew
     }
 }
 
