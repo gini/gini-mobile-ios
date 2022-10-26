@@ -334,15 +334,13 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
     // swiftlint:disable line_length
     private func crop(image: UIImage) -> UIImage {
-        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-
         let standardImageAspectRatio: CGFloat = 0.75 // Standard aspect ratio of a 3/4 image
         let screenAspectRatio = self.cameraPreviewViewController.view.frame.height / self.cameraPreviewViewController.view.frame.width
+        var scale: CGFloat
+        var cameraPreviewRect: CGRect
 
         if image.size.width > image.size.height {
             // Landscape orientation
-            var cameraPreviewRect: CGRect
-            var scale: CGFloat
 
             // Calculate the scale based on the part of the image which is fully shown on the screen
             if screenAspectRatio > standardImageAspectRatio {
@@ -352,41 +350,37 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                 // In this case the preview shows the full width of the camera preview
                 scale = image.size.width / self.cameraPreviewViewController.view.frame.width
             }
-
-            // Calculate the rectangle for the displayed image on the full size captured image
-            let widthDisplacement = (image.size.width - (self.cameraPreviewViewController.view.frame.width) * scale) / 2
-            let heightDisplacement = (image.size.height - (self.cameraPreviewViewController.view.frame.height) * scale) / 2
-
-            cameraPreviewRect = self.cameraPreviewViewController.view.frame.scaled(for: scale)
-            cameraPreviewRect = CGRect(x: widthDisplacement, y: heightDisplacement, width: cameraPreviewRect.width, height: cameraPreviewRect.height)
-
-            // First crop the full image to the image that is shown on the screen
-            guard let cgImage = image.cgImage else { return image }
-            guard let croppedCGImage = cgImage.cropping(to: cameraPreviewRect) else { return image }
-            let displayedImage = UIImage(cgImage: croppedCGImage, scale: 1, orientation: .up)
-
-            // Crop the displayed image to the A4 rect
-            let a4FrameRect = self.cameraPreviewViewController.cameraFrameImageView.frame.scaled(for: scale)
-            guard let cgDisplayedImage = displayedImage.cgImage else { return image }
-            guard let croppedA4CGImage = cgDisplayedImage.cropping(to: a4FrameRect) else { return image }
-            let finalImage = UIImage(cgImage: croppedA4CGImage, scale: 1, orientation: .up)
-            return finalImage
         } else {
             // Portrait image
-            let scale = image.size.height / self.cameraPreviewViewController.view.frame.height
-            let cameraPaneWidth = UIDevice.current.isIpad ? self.cameraPane.frame.width : 0
 
-            // Calculate the rectangle for the displayed image on the full size captured image
-            let widthDisplacement = (image.size.width - (self.cameraFrameImageView.frame.width + cameraPaneWidth) * scale) / 2
-            var updatedRect = self.cameraPreviewViewController.cameraFrameImageView.frame.scaled(for: scale)
-            updatedRect = CGRect(x: widthDisplacement, y: updatedRect.minY, width: updatedRect.width, height: updatedRect.height)
-
-            // Crop the displayed image to the A4 rect
-            guard let cgImage = image.cgImage else { return image }
-            guard let croppedCGImage = cgImage.cropping(to: updatedRect) else { return image }
-            let newImagew = UIImage(cgImage: croppedCGImage, scale: 1, orientation: .up)
-            return newImagew
+            // Calculate the scale based on the part of the image which is fully shown on the screen
+            if screenAspectRatio < standardImageAspectRatio {
+                // In this case the preview shows the full height of the camera preview
+                scale = image.size.height / self.cameraPreviewViewController.view.frame.height
+            } else {
+                // In this case the preview shows the full width of the camera preview
+                scale = image.size.width / self.cameraPreviewViewController.view.frame.width
+            }
         }
+
+        // Calculate the rectangle for the displayed image on the full size captured image
+        let widthDisplacement = (image.size.width - (self.cameraPreviewViewController.view.frame.width) * scale) / 2
+        let heightDisplacement = (image.size.height - (self.cameraPreviewViewController.view.frame.height) * scale) / 2
+
+        cameraPreviewRect = self.cameraPreviewViewController.view.frame.scaled(for: scale)
+        cameraPreviewRect = CGRect(x: widthDisplacement, y: heightDisplacement, width: cameraPreviewRect.width, height: cameraPreviewRect.height)
+
+        // First crop the full image to the image that is shown on the screen
+        guard let cgImage = image.cgImage else { return image }
+        guard let croppedCGImage = cgImage.cropping(to: cameraPreviewRect) else { return image }
+        let displayedImage = UIImage(cgImage: croppedCGImage, scale: 1, orientation: .up)
+
+        // Crop the displayed image to the A4 rect
+        let a4FrameRect = self.cameraPreviewViewController.cameraFrameImageView.frame.scaled(for: scale)
+        guard let cgDisplayedImage = displayedImage.cgImage else { return image }
+        guard let croppedA4CGImage = cgDisplayedImage.cropping(to: a4FrameRect) else { return image }
+        let finalImage = UIImage(cgImage: croppedA4CGImage, scale: 1, orientation: .up)
+        return finalImage
     }
     // swiftlint:enable line_length
 }
