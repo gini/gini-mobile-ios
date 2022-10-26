@@ -143,14 +143,19 @@ final class CameraPane: UIView {
     ) {
         if UIDevice.current.isIphone {
             let numberOfButtons = numberOfVisibleButtons()
+            let screenWidth = UIScreen.main.bounds.size.width
             if numberOfButtons == 0 || numberOfButtons == 2 {
-                let flashWidth = (flashButton.iconView.image?.size.width ?? 0 ) * 0.5
-                let buttonWidth = leftButtonsStack.bounds.size.width * 0.5 - 2.5
-                thumbnailConstraint.constant = 30 + buttonWidth * 0.5 - flashWidth
-                leftStackViewMargin.constant = 30
+                let flashWidth = (flashButton.iconView.image?.size.width ?? 0 )
+                // margin between left buttons and capture button
+                let margin: CGFloat = 30
+                // calculate the distance of flash button to capture button,
+                let leftButtonWidth = (screenWidth * 0.5  - margin - captureButton.bounds.size.width * 0.5) * 0.5
+                thumbnailConstraint.constant = leftButtonWidth * 0.5 - flashWidth * 0.5 + margin
+                leftStackViewMargin.constant = margin
             } else {
                 leftStackViewMargin.constant = 0
-                let rightSide = UIScreen.main.bounds.size.width * 0.5 - captureButton.bounds.size.width * 0.5
+                // center between capture button
+                let rightSide = screenWidth * 0.5 - captureButton.bounds.size.width * 0.5
                 thumbnailConstraint.constant = rightSide * 0.5 - thumbnailView.bounds.size.width * 0.5
             }
             layoutSubviews()
