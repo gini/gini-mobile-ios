@@ -131,16 +131,38 @@ final class CameraPreviewViewController: UIViewController {
     private func setupConstraints() {
         let cameraPaneWidth: CGFloat = UIDevice.current.isIpad ? 124 : 0
         cameraFrameImageView.translatesAutoresizingMaskIntoConstraints = false
-        let constraint = cameraFrameImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -cameraPaneWidth-16)
-        constraint.priority = .defaultHigh
+
+        if UIDevice.current.isIpad {
+            let constraint = cameraFrameImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                                            constant: -cameraPaneWidth-16)
+            constraint.priority = .defaultHigh
+            NSLayoutConstraint.activate([
+                cameraFrameImageView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: 16),
+                cameraFrameImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                cameraFrameImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+                constraint,
+                cameraFrameImageView.heightAnchor.constraint(equalTo: cameraFrameImageView.widthAnchor,
+                                                             multiplier: 1.414)
+            ])
+        } else {
+            // The height of the bottom controls
+            let bottomControlHeight = view.frame.height * 0.23 +
+                                      (giniConfiguration.bottomNavigationBarEnabled ? 114 : 0)
+            let constraint = cameraFrameImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor,
+                                                                          constant: -bottomControlHeight)
+            constraint.priority = .defaultHigh
+            NSLayoutConstraint.activate([
+                cameraFrameImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
+                cameraFrameImageView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
+                                                              constant: 16),
+                cameraFrameImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                constraint,
+                cameraFrameImageView.widthAnchor.constraint(equalTo: cameraFrameImageView.heightAnchor,
+                                                            multiplier: 1 / 1.414)
+                ])
+        }
 
         NSLayoutConstraint.activate([
-            cameraFrameImageView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: 16),
-            cameraFrameImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            cameraFrameImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            constraint,
-            cameraFrameImageView.heightAnchor.constraint(equalTo: cameraFrameImageView.widthAnchor, multiplier: 1.414),
-
             previewView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             previewView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             previewView.topAnchor.constraint(equalTo: view.topAnchor),
