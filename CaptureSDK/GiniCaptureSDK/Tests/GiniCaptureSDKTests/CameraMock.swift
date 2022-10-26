@@ -10,6 +10,7 @@ import AVFoundation
 @testable import GiniCaptureSDK
 
 final class CameraMock: CameraProtocol {
+    var didDetectInvalidQR: ((GiniCaptureSDK.GiniQRCodeDocument) -> Void)?
     
     enum CameraAuthState {
         case authorized
