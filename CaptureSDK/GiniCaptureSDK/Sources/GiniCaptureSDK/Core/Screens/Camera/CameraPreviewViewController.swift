@@ -38,6 +38,12 @@ final class CameraPreviewViewController: UIViewController {
         spinner.hidesWhenStopped = true
         return spinner
     }()
+
+    lazy var cameraFrameImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = .red.withAlphaComponent(0.3)
+        return imageView
+    }()
     
     fileprivate let giniConfiguration: GiniConfiguration
     fileprivate typealias FocusIndicator = UIImageView
@@ -103,6 +109,8 @@ final class CameraPreviewViewController: UIViewController {
         
         view.insertSubview(previewView, at: 0)
 
+        view.addSubview(cameraFrameImageView)
+
         addLoadingIndicator()
     }
 
@@ -121,7 +129,18 @@ final class CameraPreviewViewController: UIViewController {
     }
 
     private func setupConstraints() {
+        let cameraPaneWidth: CGFloat = UIDevice.current.isIpad ? 124 : 0
+        cameraFrameImageView.translatesAutoresizingMaskIntoConstraints = false
+        let constraint = cameraFrameImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -cameraPaneWidth-16)
+        constraint.priority = .defaultHigh
+
         NSLayoutConstraint.activate([
+            cameraFrameImageView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: 16),
+            cameraFrameImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            cameraFrameImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            constraint,
+            cameraFrameImageView.heightAnchor.constraint(equalTo: cameraFrameImageView.widthAnchor, multiplier: 1.414),
+
             previewView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             previewView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             previewView.topAnchor.constraint(equalTo: view.topAnchor),
