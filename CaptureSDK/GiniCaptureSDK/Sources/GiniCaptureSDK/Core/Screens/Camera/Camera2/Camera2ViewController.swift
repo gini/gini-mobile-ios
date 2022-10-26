@@ -150,7 +150,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         if UIDevice.current.isIpad {
-            view.removeConstraints([iPadCameraFrameBottomConstraint])
+            view.removeConstraints([iPadCameraFrameBottomConstraint, cameraPreviewBottomContraint])
             navigationBar.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(navigationBar)
             NSLayoutConstraint.activate([
@@ -158,7 +158,8 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                 navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
                 navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                navigationBar.heightAnchor.constraint(equalToConstant: navigationBar.frame.height)
+                navigationBar.heightAnchor.constraint(equalToConstant: navigationBar.frame.height),
+                cameraPreviewViewController.view.bottomAnchor.constraint(equalTo: navigationBar.topAnchor)
             ])
         } else {
             view.removeConstraints([bottomPaneConstraint, bottomButtonsConstraints])
@@ -263,12 +264,15 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             for: .touchUpInside)
     }
 
+    private lazy var cameraPreviewBottomContraint: NSLayoutConstraint =
+            cameraPreviewViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+
     private func configureConstraints() {
         NSLayoutConstraint.activate([
             cameraPreviewViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
             cameraPreviewViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             cameraPreviewViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            cameraPreviewViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            cameraPreviewBottomContraint
             ]
         )
     }
@@ -330,11 +334,13 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
     // swiftlint:disable line_length
     private func crop(image: UIImage) -> UIImage {
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+
+        let standardImageAspectRatio: CGFloat = 0.75 // Standard aspect ratio of a 3/4 image
+        let screenAspectRatio = self.cameraPreviewViewController.view.frame.height / self.cameraPreviewViewController.view.frame.width
+
         if image.size.width > image.size.height {
             // Landscape orientation
-            let standardImageAspectRatio: CGFloat = 0.75 // Standard aspect ratio of a 3/4 image
-            let screenAspectRatio = self.cameraPreviewViewController.view.frame.height / self.cameraPreviewViewController.view.frame.width
-
             var cameraPreviewRect: CGRect
             var scale: CGFloat
 
@@ -360,7 +366,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             let displayedImage = UIImage(cgImage: croppedCGImage, scale: 1, orientation: .up)
 
             // Crop the displayed image to the A4 rect
-            let a4FrameRect = self.cameraFrameImageView.frame.scaled(for: scale)
+            let a4FrameRect = self.cameraPreviewViewController.cameraFrameImageView.frame.scaled(for: scale)
             guard let cgDisplayedImage = displayedImage.cgImage else { return image }
             guard let croppedA4CGImage = cgDisplayedImage.cropping(to: a4FrameRect) else { return image }
             let finalImage = UIImage(cgImage: croppedA4CGImage, scale: 1, orientation: .up)
@@ -372,7 +378,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
             // Calculate the rectangle for the displayed image on the full size captured image
             let widthDisplacement = (image.size.width - (self.cameraFrameImageView.frame.width + cameraPaneWidth) * scale) / 2
-            var updatedRect = self.cameraFrameImageView.frame.scaled(for: scale)
+            var updatedRect = self.cameraPreviewViewController.cameraFrameImageView.frame.scaled(for: scale)
             updatedRect = CGRect(x: widthDisplacement, y: updatedRect.minY, width: updatedRect.width, height: updatedRect.height)
 
             // Crop the displayed image to the A4 rect
