@@ -39,10 +39,11 @@ final class CameraPreviewViewController: UIViewController {
         return spinner
     }()
 
-    lazy var cameraFrameImageView: UIImageView = {
-        let imageView = UIImageView()
+    lazy var cameraFrameView: UIView = {
+        let imageView = UIView()
         imageView.layer.borderColor = UIColor.white.cgColor
         imageView.layer.borderWidth = 3
+
         return imageView
     }()
     
@@ -110,7 +111,7 @@ final class CameraPreviewViewController: UIViewController {
         
         view.insertSubview(previewView, at: 0)
 
-        view.addSubview(cameraFrameImageView)
+        view.addSubview(cameraFrameView)
 
         addLoadingIndicator()
     }
@@ -120,7 +121,7 @@ final class CameraPreviewViewController: UIViewController {
         camera.start()
         startLoadingIndicator()
         updatePreviewViewOrientation() // Video orientation should be updated once the view has been loaded
-        
+
     }
 
     override func viewDidLoad() {
@@ -129,36 +130,42 @@ final class CameraPreviewViewController: UIViewController {
         setupConstraints()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        maskFrameView()
+    }
+
     private func setupConstraints() {
         let cameraPaneWidth: CGFloat = UIDevice.current.isIpad ? 124 : 0
-        cameraFrameImageView.translatesAutoresizingMaskIntoConstraints = false
+        cameraFrameView.translatesAutoresizingMaskIntoConstraints = false
 
         if UIDevice.current.isIpad {
-            let constraint = cameraFrameImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+            let constraint = cameraFrameView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
                                                                             constant: -cameraPaneWidth-16)
             constraint.priority = .defaultHigh
             NSLayoutConstraint.activate([
-                cameraFrameImageView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: 16),
-                cameraFrameImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-                cameraFrameImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+                cameraFrameView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: 16),
+                cameraFrameView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                cameraFrameView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
                 constraint,
-                cameraFrameImageView.heightAnchor.constraint(equalTo: cameraFrameImageView.widthAnchor,
+                cameraFrameView.heightAnchor.constraint(equalTo: cameraFrameView.widthAnchor,
                                                              multiplier: 1.414)
             ])
         } else {
             // The height of the bottom controls
             let bottomControlHeight = view.frame.height * 0.23 +
                                       (giniConfiguration.bottomNavigationBarEnabled ? 114 : 0)
-            let constraint = cameraFrameImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor,
+            let constraint = cameraFrameView.bottomAnchor.constraint(equalTo: view.bottomAnchor,
                                                                           constant: -bottomControlHeight)
             constraint.priority = .defaultHigh
             NSLayoutConstraint.activate([
-                cameraFrameImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
-                cameraFrameImageView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
+                cameraFrameView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
+                cameraFrameView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
                                                               constant: 16),
-                cameraFrameImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                cameraFrameView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 constraint,
-                cameraFrameImageView.widthAnchor.constraint(equalTo: cameraFrameImageView.heightAnchor,
+                cameraFrameView.widthAnchor.constraint(equalTo: cameraFrameView.heightAnchor,
                                                             multiplier: 1 / 1.414)
                 ])
         }
@@ -169,6 +176,39 @@ final class CameraPreviewViewController: UIViewController {
             previewView.topAnchor.constraint(equalTo: view.topAnchor),
             previewView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
+    }
+
+    private func maskFrameView() {
+        // masks out the 4 corners from the border of the view
+        let frameWidth = view.frame.width * 0.16
+        let mutablePath = CGMutablePath()
+        let upperLeftRect = CGRect(x: cameraFrameView.bounds.origin.x,
+                                   y: cameraFrameView.bounds.origin.y,
+                                   width: frameWidth,
+                                   height: frameWidth)
+        mutablePath.addRect(upperLeftRect)
+
+        let upperRightRect = CGRect(x: cameraFrameView.bounds.maxX-frameWidth,
+                                    y: cameraFrameView.bounds.minY,
+                                    width: frameWidth,
+                                    height: frameWidth)
+        mutablePath.addRect(upperRightRect)
+
+        let lowerLeftRect = CGRect(x: cameraFrameView.bounds.origin.x,
+                                   y: cameraFrameView.bounds.maxY - frameWidth,
+                                   width: frameWidth,
+                                   height: frameWidth)
+        mutablePath.addRect(lowerLeftRect)
+
+        let lowerRightRect = CGRect(x: cameraFrameView.bounds.maxX-frameWidth,
+                                    y: cameraFrameView.bounds.maxY-frameWidth,
+                                    width: frameWidth,
+                                    height: frameWidth)
+        mutablePath.addRect(lowerRightRect)
+
+        let mask = CAShapeLayer()
+        mask.path = mutablePath
+        cameraFrameView.layer.mask = mask
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
