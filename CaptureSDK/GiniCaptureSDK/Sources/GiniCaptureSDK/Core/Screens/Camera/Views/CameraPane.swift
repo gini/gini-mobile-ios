@@ -150,8 +150,8 @@ final class CameraPane: UIView {
                 leftStackViewMargin.constant = 30
             } else {
                 leftStackViewMargin.constant = 0
-                thumbnailConstraint.constant = (bounds.size.width * 0.5 - captureButton.bounds.size.width * 0.5) * 0.5
-                - thumbnailView.bounds.size.width * 0.5
+                let rightSide = UIScreen.main.bounds.size.width * 0.5 - captureButton.bounds.size.width * 0.5
+                thumbnailConstraint.constant = rightSide * 0.5 - thumbnailView.bounds.size.width * 0.5
             }
             layoutSubviews()
         }
