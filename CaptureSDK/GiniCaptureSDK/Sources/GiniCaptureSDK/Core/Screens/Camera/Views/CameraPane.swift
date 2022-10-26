@@ -15,7 +15,7 @@ final class CameraPane: UIView {
     @IBOutlet weak var thumbnailView: ThumbnailView!
     @IBOutlet weak var leftButtonsStack: UIView!
     @IBOutlet weak var thumbnailConstraint: NSLayoutConstraint!
-
+    @IBOutlet weak var leftStackViewMargin: NSLayoutConstraint!
     override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
@@ -132,15 +132,26 @@ final class CameraPane: UIView {
         return number
     }
 
+    private func onlyLeftVisibleButtonImgWidth() -> CGFloat {
+        if flashButton.isHidden == false {
+            return flashButton.iconView.image?.size.width ?? 0
+        }
+        return fileUploadButton.iconView.image?.size.width ?? 0
+    }
+
     func updateThumbnailConstraint(
     ) {
         if UIDevice.current.isIphone {
             let numberOfButtons = numberOfVisibleButtons()
             if numberOfButtons == 0 || numberOfButtons == 2 {
-                thumbnailConstraint.constant = 30
+                let flashWidth = (flashButton.iconView.image?.size.width ?? 0 ) * 0.5
+                let buttonWidth = leftButtonsStack.bounds.size.width * 0.5 - 2.5
+                thumbnailConstraint.constant = 30 + buttonWidth * 0.5 - flashWidth
+                leftStackViewMargin.constant = 30
             } else {
-                let leftMargin: CGFloat = 30
-                thumbnailConstraint.constant = leftButtonsStack.bounds.size.width * 0.5 + leftMargin  - (24.0) * 0.5
+                leftStackViewMargin.constant = 0
+                thumbnailConstraint.constant = leftButtonsStack.bounds.size.width * 0.5 +
+                    onlyLeftVisibleButtonImgWidth() * 0.5
             }
             layoutSubviews()
         }
