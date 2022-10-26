@@ -377,7 +377,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         let displayedImage = UIImage(cgImage: croppedCGImage, scale: 1, orientation: .up)
 
         // Crop the displayed image to the A4 rect
-        let a4FrameRect = self.cameraPreviewViewController.cameraFrameImageView.frame.scaled(for: scale)
+        let a4FrameRect = self.cameraPreviewViewController.cameraFrameView.frame.scaled(for: scale)
         guard let cgDisplayedImage = displayedImage.cgImage else { return image }
         guard let croppedA4CGImage = cgDisplayedImage.cropping(to: a4FrameRect) else { return image }
         let finalImage = UIImage(cgImage: croppedA4CGImage, scale: 1, orientation: .up)
@@ -392,7 +392,7 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol) {
-        cameraPreviewViewController.cameraFrameImageView.isHidden = false
+        cameraPreviewViewController.cameraFrameView.isHidden = false
         cameraPane.toggleCaptureButtonActivation(state: true)
     }
 
@@ -409,6 +409,6 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 
     func notAuthorized() {
         cameraPane.setupAuthorization(isHidden: true)
-        cameraPreviewViewController.cameraFrameImageView.isHidden = true
+        cameraPreviewViewController.cameraFrameView.isHidden = true
     }
 }
