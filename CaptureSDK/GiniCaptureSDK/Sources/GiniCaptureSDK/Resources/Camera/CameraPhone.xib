@@ -61,9 +61,6 @@
                                     <color key="tintColor" systemColor="tintColor"/>
                                 </view>
                             </subviews>
-                            <constraints>
-                                <constraint firstAttribute="trailing" secondItem="wph-4w-azi" secondAttribute="trailing" id="Ioe-Y1-Rx7"/>
-                            </constraints>
                         </stackView>
                         <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Yg-3y-VKg" customClass="ThumbnailView" customModule="GiniCaptureSDK">
                             <rect key="frame" x="272" y="82" width="44" height="52"/>
