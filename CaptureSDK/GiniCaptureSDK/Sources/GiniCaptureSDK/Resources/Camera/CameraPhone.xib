@@ -99,6 +99,7 @@
                         <outlet property="fileUploadButton" destination="Oxa-p6-f53" id="Tmd-jU-HTo"/>
                         <outlet property="flashButton" destination="wph-4w-azi" id="fl1-4A-KQs"/>
                         <outlet property="leftButtonsStack" destination="zFz-gY-AMg" id="k86-d8-9QT"/>
+                        <outlet property="thumbnailConstraint" destination="PbW-4h-wFh" id="BJZ-kg-bSh"/>
                         <outlet property="thumbnailView" destination="0Yg-3y-VKg" id="6JD-sz-z55"/>
                     </connections>
                 </view>

@@ -13,8 +13,8 @@ final class CameraPane: UIView {
     @IBOutlet weak var fileUploadButton: BottomLabelButton!
     @IBOutlet weak var flashButton: BottomLabelButton!
     @IBOutlet weak var thumbnailView: ThumbnailView!
-    var giniConfiguration: GiniConfiguration! = nil
     @IBOutlet weak var leftButtonsStack: UIView!
+    @IBOutlet weak var thumbnailConstraint: NSLayoutConstraint!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -55,6 +55,7 @@ final class CameraPane: UIView {
         captureButton.accessibilityValue =  NSLocalizedStringPreferredFormat(
             "ginicapture.camera.capturebutton",
             comment: "Capture")
+        updateThumbnailConstraint()
     }
 
     private func configureTitle(giniConfiguration: GiniConfiguration) {
@@ -95,6 +96,7 @@ final class CameraPane: UIView {
 
     func toggleFlashButtonActivation(state: Bool) {
         flashButton.isHidden = !state
+        updateThumbnailConstraint()
     }
 
     func toggleCaptureButtonActivation(state: Bool) {
@@ -103,15 +105,42 @@ final class CameraPane: UIView {
     }
 
     func setupAuthorization(isHidden: Bool) {
+        let giniConfiguration = GiniConfiguration.shared
         self.isHidden = isHidden
         captureButton.isHidden = isHidden
         flashButton.isHidden = isHidden
         if cameraTitleLabel != nil {
             cameraTitleLabel.isHidden = isHidden
         }
-        fileUploadButton.isHidden = isHidden
+        if giniConfiguration.fileImportSupportedTypes != .none {
+            fileUploadButton.isHidden = isHidden
+        }
         if thumbnailView.thumbnailImageView.image != nil {
             thumbnailView.isHidden = isHidden
         }
+        updateThumbnailConstraint()
+    }
+
+    private func numberOfVisibleButtons() -> Int {
+        var number = 2
+        if flashButton.isHidden {
+            number -= 1
+        }
+        if fileUploadButton.isHidden {
+            number -= 1
+        }
+        return number
+    }
+
+    func updateThumbnailConstraint(
+    ) {
+        let numberOfButtons = numberOfVisibleButtons()
+        if numberOfButtons == 0 || numberOfButtons == 2 {
+            thumbnailConstraint.constant = 30
+        } else {
+            let leftMargin: CGFloat = 30
+            thumbnailConstraint.constant = leftButtonsStack.bounds.size.width * 0.5 + leftMargin  - (24.0) * 0.5
+        }
+        layoutSubviews()
     }
 }
