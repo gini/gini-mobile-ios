@@ -185,7 +185,7 @@ extension GiniScreenAPICoordinator {
         self.pages.append(contentsOf: pages)
 
         if pages.type == .image {
-            reviewViewController.updateCollections(with: self.pages)
+            reviewViewController.updateCollections(with: self.pages, finishedUpload: false)
         }
     }
 
@@ -205,8 +205,8 @@ extension GiniScreenAPICoordinator {
             pages[index].error = error
         }
 
-        if giniConfiguration.multipageEnabled, pages.type == .image {
-            reviewViewController.updateCollections(with: pages)
+        if pages.type == .image {
+            reviewViewController.updateCollections(with: self.pages, finishedUpload: true)
         }
     }
 
