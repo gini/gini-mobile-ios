@@ -24,11 +24,11 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qey-Uj-2J2" customClass="CameraPane" customModule="GiniCaptureSDK">
+                <view contentMode="scaleToFill" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" translatesAutoresizingMaskIntoConstraints="NO" id="qey-Uj-2J2" customClass="CameraPane" customModule="GiniCaptureSDK">
                     <rect key="frame" x="0.0" y="690" width="385" height="206"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dQe-NY-Bi9">
-                            <rect key="frame" x="166" y="72" width="70" height="70"/>
+                            <rect key="frame" x="165" y="73" width="70" height="70"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="70" id="Flv-NK-4aP"/>
                                 <constraint firstAttribute="width" constant="70" id="gVb-eK-08y"/>
@@ -49,14 +49,14 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="zFz-gY-AMg">
-                            <rect key="frame" x="1" y="44.333333333333378" width="165" height="125.66666666666669"/>
+                            <rect key="frame" x="0.0" y="44.333333333333378" width="165" height="127.66666666666669"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oxa-p6-f53" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
-                                    <rect key="frame" x="0.0" y="0.0" width="80" height="125.66666666666667"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="80" height="127.66666666666667"/>
                                     <color key="backgroundColor" systemColor="systemOrangeColor"/>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wph-4w-azi" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
-                                    <rect key="frame" x="85" y="0.0" width="80" height="125.66666666666667"/>
+                                    <rect key="frame" x="85" y="0.0" width="80" height="127.66666666666667"/>
                                     <color key="backgroundColor" systemColor="systemGreenColor"/>
                                     <color key="tintColor" systemColor="tintColor"/>
                                     <constraints>
@@ -69,7 +69,7 @@
                             </constraints>
                         </stackView>
                         <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Yg-3y-VKg" customClass="ThumbnailView" customModule="GiniCaptureSDK">
-                            <rect key="frame" x="266" y="81" width="44" height="52"/>
+                            <rect key="frame" x="265" y="82" width="44" height="52"/>
                             <color key="backgroundColor" systemColor="systemOrangeColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="52" id="aV8-ZL-Eg8"/>
@@ -79,7 +79,7 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="zFz-gY-AMg" firstAttribute="leading" secondItem="qey-Uj-2J2" secondAttribute="leading" constant="1" id="2MR-qQ-nQt"/>
+                        <constraint firstItem="zFz-gY-AMg" firstAttribute="leading" secondItem="qey-Uj-2J2" secondAttribute="leading" id="2MR-qQ-nQt"/>
                         <constraint firstItem="0Yg-3y-VKg" firstAttribute="centerY" secondItem="dQe-NY-Bi9" secondAttribute="centerY" id="6E5-zb-nf7"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="0Yg-3y-VKg" secondAttribute="trailing" constant="8" id="EwU-7f-8dm"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="lfm-sA-fAL" secondAttribute="trailing" constant="8" id="HXc-3E-u8X"/>
@@ -114,12 +114,12 @@
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="qey-Uj-2J2" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.23" id="5pL-4z-ODy"/>
-                <constraint firstAttribute="trailing" secondItem="qey-Uj-2J2" secondAttribute="trailing" id="DJb-3E-lB1"/>
                 <constraint firstItem="qey-Uj-2J2" firstAttribute="top" secondItem="2eO-4o-6WG" secondAttribute="bottom" id="MfE-7l-XLm"/>
                 <constraint firstItem="2eO-4o-6WG" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="Qft-ST-Zj6"/>
                 <constraint firstAttribute="bottom" secondItem="qey-Uj-2J2" secondAttribute="bottom" id="XnW-wu-lup"/>
                 <constraint firstAttribute="trailing" secondItem="2eO-4o-6WG" secondAttribute="trailing" constant="16" id="eJa-hf-dLk"/>
-                <constraint firstItem="zFz-gY-AMg" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" constant="-2" id="h0v-6y-Xer"/>
+                <constraint firstAttribute="trailing" secondItem="qey-Uj-2J2" secondAttribute="trailing" id="f3h-fH-BYP"/>
+                <constraint firstItem="zFz-gY-AMg" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="h0v-6y-Xer"/>
                 <constraint firstItem="2eO-4o-6WG" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="kY4-CT-J8e"/>
                 <constraint firstItem="qey-Uj-2J2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ujq-KI-fiR"/>
             </constraints>
