@@ -32,3 +32,27 @@ public final class CustomLoadingIndicator: UIActivityIndicatorView, AnalysisScre
 
     }
 }
+
+public final class OnButtonLoading: UIActivityIndicatorView, OnButtonLoadingIndicatorAdapter {
+    public func startAnimation() {
+        self.startAnimating()
+    }
+
+    public func stopAnimation() {
+        self.stopAnimating()
+    }
+
+    public func injectedView() -> UIView {
+        if #available(iOS 13.0, *) {
+            self.style = .large
+        }
+        self.color = .red
+        self.startAnimating()
+
+        return self
+    }
+
+    public func onDeinit() {
+
+    }
+}
