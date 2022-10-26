@@ -354,12 +354,16 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             // Portrait image
 
             // Calculate the scale based on the part of the image which is fully shown on the screen
-            if screenAspectRatio < standardImageAspectRatio {
-                // In this case the preview shows the full height of the camera preview
-                scale = image.size.height / self.cameraPreviewViewController.view.frame.height
+            if UIDevice.current.isIpad {
+                if screenAspectRatio < standardImageAspectRatio {
+                    // In this case the preview shows the full height of the camera preview
+                    scale = image.size.height / self.cameraPreviewViewController.view.frame.height
+                } else {
+                    // In this case the preview shows the full width of the camera preview
+                    scale = image.size.width / self.cameraPreviewViewController.view.frame.width
+                }
             } else {
-                // In this case the preview shows the full width of the camera preview
-                scale = image.size.width / self.cameraPreviewViewController.view.frame.width
+                scale = image.size.height / self.cameraPreviewViewController.view.frame.height
             }
         }
 
