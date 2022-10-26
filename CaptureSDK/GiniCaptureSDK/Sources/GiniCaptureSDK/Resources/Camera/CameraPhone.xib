@@ -25,10 +25,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" translatesAutoresizingMaskIntoConstraints="NO" id="qey-Uj-2J2" customClass="CameraPane" customModule="GiniCaptureSDK">
-                    <rect key="frame" x="0.0" y="690" width="385" height="206"/>
+                    <rect key="frame" x="0.0" y="690" width="414" height="206"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dQe-NY-Bi9">
-                            <rect key="frame" x="160" y="73" width="70" height="70"/>
+                            <rect key="frame" x="172" y="73" width="70" height="70"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="70" id="Flv-NK-4aP"/>
                                 <constraint firstAttribute="width" constant="70" id="gVb-eK-08y"/>
@@ -40,7 +40,7 @@
                             </buttonConfiguration>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="253" horizontalCompressionResistancePriority="755" verticalCompressionResistancePriority="800" text="Scan an invoice or a QR code" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="lfm-sA-fAL">
-                            <rect key="frame" x="81.666666666666671" y="7.9999999999999982" width="221.66666666666663" height="20.333333333333329"/>
+                            <rect key="frame" x="96.333333333333329" y="7.9999999999999982" width="221.66666666666669" height="20.333333333333329"/>
                             <constraints>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="Q1y-Qr-XQo"/>
                             </constraints>
@@ -49,19 +49,16 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="zFz-gY-AMg">
-                            <rect key="frame" x="0.0" y="44.333333333333378" width="160" height="127.66666666666669"/>
+                            <rect key="frame" x="0.0" y="44.333333333333378" width="172" height="127.66666666666669"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oxa-p6-f53" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
-                                    <rect key="frame" x="0.0" y="0.0" width="80" height="127.66666666666667"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="86" height="127.66666666666667"/>
                                     <color key="backgroundColor" systemColor="systemOrangeColor"/>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wph-4w-azi" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
-                                    <rect key="frame" x="80" y="0.0" width="80" height="127.66666666666667"/>
+                                    <rect key="frame" x="86" y="0.0" width="86" height="127.66666666666667"/>
                                     <color key="backgroundColor" systemColor="systemGreenColor"/>
                                     <color key="tintColor" systemColor="tintColor"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="80" id="v8t-h2-zft"/>
-                                    </constraints>
                                 </view>
                             </subviews>
                             <constraints>
@@ -69,7 +66,7 @@
                             </constraints>
                         </stackView>
                         <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Yg-3y-VKg" customClass="ThumbnailView" customModule="GiniCaptureSDK">
-                            <rect key="frame" x="260" y="82" width="44" height="52"/>
+                            <rect key="frame" x="272" y="82" width="44" height="52"/>
                             <color key="backgroundColor" systemColor="systemOrangeColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="52" id="aV8-ZL-Eg8"/>
@@ -105,7 +102,7 @@
                     </connections>
                 </view>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cameraFocus" translatesAutoresizingMaskIntoConstraints="NO" id="2eO-4o-6WG">
-                    <rect key="frame" x="16" y="60" width="353" height="630"/>
+                    <rect key="frame" x="16" y="60" width="382" height="630"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </imageView>
