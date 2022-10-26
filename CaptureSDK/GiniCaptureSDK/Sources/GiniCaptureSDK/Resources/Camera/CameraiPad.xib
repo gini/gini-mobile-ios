@@ -11,9 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Camera2ViewController" customModule="GiniCaptureSDK">
             <connections>
-                <outlet property="cameraFrameImageView" destination="FMH-fq-Dwo" id="b2j-JX-pIe"/>
                 <outlet property="cameraPane" destination="13s-Zb-nTw" id="kgw-sM-jQj"/>
-                <outlet property="iPadCameraFrameBottomConstraint" destination="jeG-Yr-Ic4" id="pzq-QK-gAd"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Kff-Gp-d1h"/>
             </connections>
         </placeholder>
@@ -73,23 +71,10 @@
                         <outlet property="thumbnailView" destination="UDD-dX-FJV" id="3mt-Az-b9p"/>
                     </connections>
                 </view>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cameraFocus" translatesAutoresizingMaskIntoConstraints="NO" id="FMH-fq-Dwo">
-                    <rect key="frame" x="16" y="40" width="667.5" height="944"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="width" secondItem="FMH-fq-Dwo" secondAttribute="height" multiplier="0.707" id="SnJ-Ro-gcE"/>
-                    </constraints>
-                </imageView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="FMH-fq-Dwo" firstAttribute="top" relation="greaterThanOrEqual" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="44H-BP-ZmH"/>
-                <constraint firstItem="FMH-fq-Dwo" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="Mh3-Wg-fbV"/>
-                <constraint firstItem="FMH-fq-Dwo" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="iy7-NR-OI0"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="FMH-fq-Dwo" secondAttribute="bottom" priority="750" constant="16" id="jeG-Yr-Ic4"/>
-                <constraint firstItem="13s-Zb-nTw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="FMH-fq-Dwo" secondAttribute="trailing" constant="16" id="kCZ-xe-dM6"/>
                 <constraint firstAttribute="bottom" secondItem="13s-Zb-nTw" secondAttribute="bottom" id="mY8-4T-W5K"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="13s-Zb-nTw" secondAttribute="trailing" id="nDS-Tf-anT"/>
                 <constraint firstItem="13s-Zb-nTw" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="pNX-vt-Y8o"/>
@@ -99,7 +84,6 @@
     </objects>
     <resources>
         <image name="cameraCaptureButton" width="70" height="70"/>
-        <image name="cameraFocus" width="719" height="1015"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -41,7 +41,8 @@ final class CameraPreviewViewController: UIViewController {
 
     lazy var cameraFrameImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .red.withAlphaComponent(0.3)
+        imageView.layer.borderColor = UIColor.white.cgColor
+        imageView.layer.borderWidth = 3
         return imageView
     }()
     
