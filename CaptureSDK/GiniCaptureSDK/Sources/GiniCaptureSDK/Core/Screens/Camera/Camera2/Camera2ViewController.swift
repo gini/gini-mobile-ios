@@ -25,14 +25,12 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     }()
     public weak var delegate: CameraViewControllerDelegate?
 
-    @IBOutlet weak var cameraFrameImageView: UIImageView!
     @IBOutlet weak var cameraPane: CameraPane!
     private let cameraButtonsViewModel: CameraButtonsViewModel
     private var navigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
 
     @IBOutlet weak var bottomButtonsConstraints: NSLayoutConstraint!
     @IBOutlet weak var bottomPaneConstraint: NSLayoutConstraint!
-    @IBOutlet weak var iPadCameraFrameBottomConstraint: NSLayoutConstraint!
     /**
      Designated initializer for the `CameraViewController` which allows
      to set the `GiniConfiguration for the camera screen`.
@@ -150,11 +148,10 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         if UIDevice.current.isIpad {
-            view.removeConstraints([iPadCameraFrameBottomConstraint, cameraPreviewBottomContraint])
+            view.removeConstraints([cameraPreviewBottomContraint])
             navigationBar.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(navigationBar)
             NSLayoutConstraint.activate([
-                navigationBar.topAnchor.constraint(equalTo: cameraFrameImageView.bottomAnchor),
                 navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
                 navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -395,7 +392,7 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol) {
-        cameraFrameImageView.isHidden = false
+        cameraPreviewViewController.cameraFrameImageView.isHidden = false
         cameraPane.toggleCaptureButtonActivation(state: true)
     }
 
@@ -412,6 +409,6 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 
     func notAuthorized() {
         cameraPane.setupAuthorization(isHidden: true)
-        cameraFrameImageView.isHidden = true
+        cameraPreviewViewController.cameraFrameImageView.isHidden = true
     }
 }
