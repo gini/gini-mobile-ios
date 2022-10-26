@@ -134,13 +134,15 @@ final class CameraPane: UIView {
 
     func updateThumbnailConstraint(
     ) {
-        let numberOfButtons = numberOfVisibleButtons()
-        if numberOfButtons == 0 || numberOfButtons == 2 {
-            thumbnailConstraint.constant = 30
-        } else {
-            let leftMargin: CGFloat = 30
-            thumbnailConstraint.constant = leftButtonsStack.bounds.size.width * 0.5 + leftMargin  - (24.0) * 0.5
+        if UIDevice.current.isIphone {
+            let numberOfButtons = numberOfVisibleButtons()
+            if numberOfButtons == 0 || numberOfButtons == 2 {
+                thumbnailConstraint.constant = 30
+            } else {
+                let leftMargin: CGFloat = 30
+                thumbnailConstraint.constant = leftButtonsStack.bounds.size.width * 0.5 + leftMargin  - (24.0) * 0.5
+            }
+            layoutSubviews()
         }
-        layoutSubviews()
     }
 }

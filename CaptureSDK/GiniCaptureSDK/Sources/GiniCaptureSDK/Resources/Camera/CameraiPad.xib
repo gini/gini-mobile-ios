@@ -39,20 +39,23 @@
                             </constraints>
                         </view>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="41" translatesAutoresizingMaskIntoConstraints="NO" id="jYB-R4-Jjg">
-                            <rect key="frame" x="0.0" y="754" width="124" height="145"/>
+                            <rect key="frame" x="2" y="771" width="120" height="145"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MKr-w2-Lou" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
-                                    <rect key="frame" x="0.0" y="0.0" width="124" height="52"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="120" height="52"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="52" id="3K8-zn-O8j"/>
+                                    </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fXR-zD-tfI" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
-                                    <rect key="frame" x="0.0" y="93" width="124" height="52"/>
+                                    <rect key="frame" x="0.0" y="93" width="120" height="52"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="52" id="e5k-rv-7Iu"/>
+                                    </constraints>
                                 </view>
                             </subviews>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="145" id="Vbb-oL-JGe"/>
-                            </constraints>
                         </stackView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -61,15 +64,17 @@
                         <constraint firstItem="hTe-DA-2qT" firstAttribute="top" secondItem="UDD-dX-FJV" secondAttribute="bottom" constant="46" id="5bk-7v-yh6"/>
                         <constraint firstAttribute="width" constant="124" id="Khx-qJ-aJy"/>
                         <constraint firstItem="hTe-DA-2qT" firstAttribute="centerX" secondItem="13s-Zb-nTw" secondAttribute="centerX" id="cRC-4H-3jT"/>
-                        <constraint firstItem="jYB-R4-Jjg" firstAttribute="leading" secondItem="13s-Zb-nTw" secondAttribute="leading" id="efa-xa-ebw"/>
-                        <constraint firstItem="jYB-R4-Jjg" firstAttribute="top" secondItem="hTe-DA-2qT" secondAttribute="bottom" constant="29" id="fa0-Ru-Wks"/>
-                        <constraint firstAttribute="trailing" secondItem="jYB-R4-Jjg" secondAttribute="trailing" id="oc7-x7-hM6"/>
+                        <constraint firstItem="jYB-R4-Jjg" firstAttribute="leading" secondItem="13s-Zb-nTw" secondAttribute="leading" constant="2" id="efa-xa-ebw"/>
+                        <constraint firstItem="jYB-R4-Jjg" firstAttribute="top" secondItem="hTe-DA-2qT" secondAttribute="bottom" constant="46" id="fa0-Ru-Wks"/>
+                        <constraint firstAttribute="trailing" secondItem="jYB-R4-Jjg" secondAttribute="trailing" constant="2" id="oc7-x7-hM6"/>
                         <constraint firstItem="hTe-DA-2qT" firstAttribute="centerY" secondItem="13s-Zb-nTw" secondAttribute="centerY" id="zsn-TD-QbB"/>
                     </constraints>
                     <connections>
                         <outlet property="captureButton" destination="hTe-DA-2qT" id="Te8-hA-q3L"/>
                         <outlet property="fileUploadButton" destination="fXR-zD-tfI" id="vOT-VU-27l"/>
                         <outlet property="flashButton" destination="MKr-w2-Lou" id="06K-R2-Qon"/>
+                        <outlet property="leftButtonsStack" destination="jYB-R4-Jjg" id="1Re-QX-4e5"/>
+                        <outlet property="thumbnailConstraint" destination="5bk-7v-yh6" id="TyV-i3-HYv"/>
                         <outlet property="thumbnailView" destination="UDD-dX-FJV" id="3mt-Az-b9p"/>
                     </connections>
                 </view>
