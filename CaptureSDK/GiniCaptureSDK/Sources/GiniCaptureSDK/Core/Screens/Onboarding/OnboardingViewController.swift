@@ -116,13 +116,18 @@ class OnboardingViewController: UIViewController {
             self?.nextPage()
         }
         navigationBarBottomAdapter?.setSkipButtonClickedActionCallback { [weak self] in
-            self?.skip()
+            self?.close()
         }
-
+        navigationBarBottomAdapter?.setGetStartedButtonClickedActionCallback { [weak self] in
+            self?.close()
+        }
         if let navigationBar = navigationBarBottomAdapter?.injectedView() {
             bottomNavigationBar = navigationBar
             view.addSubview(navigationBar)
             layoutBottomNavigationBar(navigationBar)
+            navigationBarBottomAdapter?.showButtons(
+                navigationButtons: [.skip, .next],
+                navigationBar: navigationBar)
         }
     }
 
@@ -147,10 +152,6 @@ class OnboardingViewController: UIViewController {
         } else {
             close()
         }
-    }
-
-    private func skip() {
-        close()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
