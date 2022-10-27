@@ -175,6 +175,10 @@ class OnboardingViewController: UIViewController {
         super.viewWillLayoutSubviews()
         pagesCollection.collectionViewLayout.invalidateLayout()
     }
+    
+    deinit {
+        navigationBarBottomAdapter?.onDeinit()
+    }
 }
 
 extension OnboardingViewController: OnboardingScreen {
