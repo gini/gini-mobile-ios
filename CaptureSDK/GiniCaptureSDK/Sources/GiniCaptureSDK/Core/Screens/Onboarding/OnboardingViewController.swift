@@ -13,10 +13,12 @@ class OnboardingViewController: UIViewController {
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var containerView: UIStackView!
-        @IBOutlet weak var viewContainer: UIStackView!
-    private var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
+    @IBOutlet weak var viewContainer: UIStackView!
     private (set) var dataSource: OnboardingDataSource
     private let configuration = GiniConfiguration.shared
+    private var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
+    private var bottomNavigationBar: UIView?
+
     lazy var skipButton = UIBarButtonItem(title: "Skip",
                                           style: .plain,
                               target: self,
@@ -24,10 +26,12 @@ class OnboardingViewController: UIViewController {
     init() {
         dataSource = OnboardingDataSource(configuration: configuration)
         super.init(nibName: "OnboardingViewController", bundle: giniCaptureBundle())
-      }
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
     private func configureCollectionView() {
         pagesCollection.register(
             UINib(nibName: "OnboardingPageCell", bundle: giniCaptureBundle()),
@@ -72,16 +76,13 @@ class OnboardingViewController: UIViewController {
 
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
-        let horizontalConstraint = navigationBar.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        let verticalConstraint = navigationBar.topAnchor.constraint(equalTo: pageControl.bottomAnchor)
-        let widthConstraint = navigationBar.widthAnchor.constraint(equalTo: view.widthAnchor)
-        let heightConstraint = navigationBar.heightAnchor.constraint(equalToConstant: navigationBar.frame.height)
-        let bottomConstraint = navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        NSLayoutConstraint.activate([horizontalConstraint,
-                                     verticalConstraint,
-                                     heightConstraint,
-                                     widthConstraint,
-                                     bottomConstraint])
+        NSLayoutConstraint.activate([
+            navigationBar.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 46),
+            navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            navigationBar.heightAnchor.constraint(equalToConstant: navigationBar.frame.height),
+            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
     }
 
     private func configureBottomNavigation() {
@@ -92,15 +93,16 @@ class OnboardingViewController: UIViewController {
             } else {
                 navigationBarBottomAdapter = DefaultOnboardingNavigationBarBottomAdapter()
             }
-            navigationBarBottomAdapter?.setNextButtonClickedActionCallback {
-                self.nextPage()
+            navigationBarBottomAdapter?.setNextButtonClickedActionCallback { [weak self] in
+                self?.nextPage()
             }
-            navigationBarBottomAdapter?.setSkipButtonClickedActionCallback {
-                self.skip()
+            navigationBarBottomAdapter?.setSkipButtonClickedActionCallback { [weak self] in
+                self?.skip()
             }
 
             if let navigationBar =
                 navigationBarBottomAdapter?.injectedView() {
+                bottomNavigationBar = navigationBar
                 view.addSubview(navigationBar)
                 layoutBottomNavigationBar(navigationBar)
             }
@@ -168,13 +170,32 @@ class OnboardingViewController: UIViewController {
 
 extension OnboardingViewController: OnboardingScreen {
     func didScroll(page: Int) {
-        if page == dataSource.itemSections.count - 1 {
-            navigationItem.rightBarButtonItem = nil
-            nextButton.setTitle("Get Started", for: .normal)
-        } else {
+        switch page {
+        case dataSource.itemSections.count - 1:
+            if configuration.bottomNavigationBarEnabled,
+                let bottomNavigationBar = bottomNavigationBar {
+                navigationBarBottomAdapter?.showButtons(
+                    navigationButtons: [.getStarted],
+                    navigationBar: bottomNavigationBar)
+            } else {
+                navigationItem.rightBarButtonItem = nil
+                if nextButton != nil {
+                    nextButton.setTitle("Get Started", for: .normal)
+                }
+            }
+        default:
+            if configuration.bottomNavigationBarEnabled,
+                let bottomNavigationBar = bottomNavigationBar {
+                navigationBarBottomAdapter?.showButtons(
+                    navigationButtons: [.skip, .next],
+                    navigationBar: bottomNavigationBar)
+            }
             navigationItem.rightBarButtonItem = skipButton
-            nextButton.setTitle("Next", for: .normal)
+            if nextButton != nil {
+                nextButton.setTitle("Next", for: .normal)
+            }
         }
+
         pageControl.currentPage = page
     }
 }
