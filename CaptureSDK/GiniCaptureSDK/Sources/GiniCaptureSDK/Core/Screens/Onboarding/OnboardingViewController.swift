@@ -65,7 +65,11 @@ class OnboardingViewController: UIViewController {
     private func setupView() {
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         configureCollectionView()
-        configureBottomNavigation()
+        if configuration.bottomNavigationBarEnabled {
+            configureBottomNavigation()
+        } else {
+            configureBasicNavigation()
+        }
         configurePageControl()
     }
 
@@ -85,36 +89,40 @@ class OnboardingViewController: UIViewController {
         ])
     }
 
-    private func configureBottomNavigation() {
-        if configuration.bottomNavigationBarEnabled {
-            removeButtons()
-            if let customBottomNavigationBar = configuration.onboardingNavigationBarBottomAdapter {
-                navigationBarBottomAdapter = customBottomNavigationBar
-            } else {
-                navigationBarBottomAdapter = DefaultOnboardingNavigationBarBottomAdapter()
-            }
-            navigationBarBottomAdapter?.setNextButtonClickedActionCallback { [weak self] in
-                self?.nextPage()
-            }
-            navigationBarBottomAdapter?.setSkipButtonClickedActionCallback { [weak self] in
-                self?.skip()
-            }
+    private func configureBasicNavigation() {
+        nextButton.layer.cornerRadius = 14
+        nextButton.setTitle("Next", for: .normal)
+        nextButton.backgroundColor = GiniColor(
+            light: UIColor.GiniCapture.accent1,
+            dark: UIColor.GiniCapture.accent1
+        ).uiColor()
+        nextButton.addTarget(self, action: #selector(nextPage), for: .touchUpInside)
+        navigationItem.rightBarButtonItem = skipButton
+    }
 
-            if let navigationBar =
-                navigationBarBottomAdapter?.injectedView() {
-                bottomNavigationBar = navigationBar
-                view.addSubview(navigationBar)
-                layoutBottomNavigationBar(navigationBar)
-            }
+    private func hideTopNavigation() {
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+
+    private func configureBottomNavigation() {
+        hideTopNavigation()
+        removeButtons()
+        if let customBottomNavigationBar = configuration.onboardingNavigationBarBottomAdapter {
+            navigationBarBottomAdapter = customBottomNavigationBar
         } else {
-            nextButton.layer.cornerRadius = 14
-            nextButton.setTitle("Next", for: .normal)
-            nextButton.backgroundColor = GiniColor(
-                light: UIColor.GiniCapture.accent1,
-                dark: UIColor.GiniCapture.accent1
-            ).uiColor()
-            nextButton.addTarget(self, action: #selector(nextPage), for: .touchUpInside)
-            navigationItem.rightBarButtonItem = skipButton
+            navigationBarBottomAdapter = DefaultOnboardingNavigationBarBottomAdapter()
+        }
+        navigationBarBottomAdapter?.setNextButtonClickedActionCallback { [weak self] in
+            self?.nextPage()
+        }
+        navigationBarBottomAdapter?.setSkipButtonClickedActionCallback { [weak self] in
+            self?.skip()
+        }
+
+        if let navigationBar = navigationBarBottomAdapter?.injectedView() {
+            bottomNavigationBar = navigationBar
+            view.addSubview(navigationBar)
+            layoutBottomNavigationBar(navigationBar)
         }
     }
 
@@ -189,10 +197,11 @@ extension OnboardingViewController: OnboardingScreen {
                 navigationBarBottomAdapter?.showButtons(
                     navigationButtons: [.skip, .next],
                     navigationBar: bottomNavigationBar)
-            }
-            navigationItem.rightBarButtonItem = skipButton
-            if nextButton != nil {
-                nextButton.setTitle("Next", for: .normal)
+            } else {
+                navigationItem.rightBarButtonItem = skipButton
+                if nextButton != nil {
+                    nextButton.setTitle("Next", for: .normal)
+                }
             }
         }
 
