@@ -175,7 +175,7 @@ class OnboardingViewController: UIViewController {
         super.viewWillLayoutSubviews()
         pagesCollection.collectionViewLayout.invalidateLayout()
     }
-    
+
     deinit {
         navigationBarBottomAdapter?.onDeinit()
     }
