@@ -114,6 +114,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
     private func configureCustomTopNavigationBar() {
         navigationItem.leftBarButtonItem = nil
+        navigationItem.hidesBackButton = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: NSLocalizedStringPreferredFormat(
                 "ginicapture.camera.popupCancel",
@@ -201,11 +202,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                 self.cameraPane.toggleCaptureButtonActivation(state: true)
             }
         }
-        cameraButtonsViewModel.backButtonAction = { [weak self] in
-            if let strongSelf = self {
-                self?.delegate?.cameraDidTapReviewButton(strongSelf)
-            }
-        }
+
         cameraPane.captureButton.addTarget(
             cameraButtonsViewModel,
             action: #selector(cameraButtonsViewModel.capturePressed),
@@ -394,6 +391,7 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
                         camera: CameraProtocol) {
         cameraPreviewViewController.cameraFrameView.isHidden = false
         cameraPane.toggleCaptureButtonActivation(state: true)
+        cameraPreviewViewController.updatePreviewViewOrientation()
     }
 
     func cameraPreview(_ viewController: CameraPreviewViewController,

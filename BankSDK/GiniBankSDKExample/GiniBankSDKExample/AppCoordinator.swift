@@ -89,9 +89,14 @@ final class AppCoordinator: Coordinator {
         configuration.onboardingMultiPageIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "uploadAnimation", backgroundColor: UIColor.green)
         configuration.onboardingQRCodeIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "magicAnimation", backgroundColor: UIColor.blue)
 
-        // Custom loading indicator customization example
+//       //  Custom loading indicator customization example for the analysis screen
 //        let customLoadingIndicator = CustomLoadingIndicator()
 //        configuration.analysisScreenLoadingIndicator = customLoadingIndicator
+
+//      // Custom loading indicator customization example for the on button laoding indicator
+//        let customButtonLoadingIndicator = OnButtonLoading()
+//        configuration.onButtonLoadingIndicator = customButtonLoadingIndicator
+        
         // Custom navigation view controller
 //        let navigationViewController = UINavigationController()
 //        navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
