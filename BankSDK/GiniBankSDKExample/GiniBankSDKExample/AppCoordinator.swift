@@ -46,6 +46,8 @@ final class AppCoordinator: Coordinator {
             }
             return CustomDocumentValidationResult.success()
         }
+        
+        //configuration.onboardingNavigationBarBottomAdapter = CustomOnboardingBottomNavigationBarAdapter()
         //configuration.bottomNavigationBarEnabled = true
         //configuration.noResultNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
         //configuration.helpNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
