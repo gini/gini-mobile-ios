@@ -87,8 +87,10 @@ extension UIImage {
 
         guard let cgImage = cgImage else { return self }
 
+        // If the image is already in '.up' orientation, just return
         if imageOrientation == .up { return self }
 
+        // Create a transform to apply on the image to redraw it in '.up' orientation
         var transform = CGAffineTransform.identity
 
         switch imageOrientation {
@@ -111,6 +113,7 @@ extension UIImage {
             break
         }
 
+        // For mirrored orientations, mirror the transform as well
         switch imageOrientation {
 
         case .upMirrored, .downMirrored:
@@ -127,10 +130,14 @@ extension UIImage {
             break
         }
 
-        if let ctx = CGContext(data: nil, width: Int(size.width), height: Int(size.height), bitsPerComponent: cgImage.bitsPerComponent, bytesPerRow: 0, space: cgImage.colorSpace!, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) {
+        // Create a context where the image will be drawn
+        if let ctx = CGContext(data: nil, width: Int(size.width), height: Int(size.height),
+                               bitsPerComponent: cgImage.bitsPerComponent, bytesPerRow: 0,
+                               space: cgImage.colorSpace!, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) {
 
             ctx.concatenate(transform)
 
+            // Draw the image in the rect defined above
             switch imageOrientation {
 
             case .left, .leftMirrored, .right, .rightMirrored:
@@ -140,12 +147,13 @@ extension UIImage {
                 ctx.draw(cgImage, in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
             }
 
+            // Return the redrawn image in '.up' orientation
             if let finalImage = ctx.makeImage() {
                 return (UIImage(cgImage: finalImage))
             }
         }
 
-        // something failed -- return original
+        // If something failed -- return original
         return self
     }
 }
