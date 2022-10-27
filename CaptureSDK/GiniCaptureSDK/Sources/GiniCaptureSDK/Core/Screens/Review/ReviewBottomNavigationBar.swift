@@ -35,12 +35,13 @@ final class ReviewBottomNavigationBar: UIView {
                         NSLocalizedStringPreferredFormat("ginicapture.multipagereview.secondaryButtonTitle",
                                                         comment: "Add pages button title"))
         addPagesButton.isHidden = !configuration.multipageEnabled
+        // The button's asset changes with light/dark mode but right now we don't support light mode on bottom navigation
         if #available(iOS 13.0, *) {
             addPagesButton.iconView.tintColor = .GiniCapture.light1
             addPagesButton.iconView.image = addPagesButton.iconView.image?.withTintColor(.GiniCapture.light1,
                                                                                          renderingMode: .alwaysTemplate)
         } else {
-            // Fallback on earlier versions
+            addPagesButton.iconView.image = addPagesButton.iconView.image?.tintedImageWithColor(.GiniCapture.light1)
         }
         addPagesButton.actionLabel.textColor = UIColor.GiniCapture.light1
         addPagesButton.didTapButton = { [weak self] in
