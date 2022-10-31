@@ -24,17 +24,16 @@ class OnboardingViewController: UIViewController {
     init() {
         dataSource = OnboardingDataSource(configuration: configuration)
         super.init(nibName: "OnboardingViewController", bundle: giniCaptureBundle())
-      }
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
     private func configureCollectionView() {
         pagesCollection.register(
             UINib(nibName: "OnboardingPageCell", bundle: giniCaptureBundle()),
             forCellWithReuseIdentifier: OnboardingPageCell.reuseIdentifier)
-        pagesCollection.setNeedsLayout()
-        pagesCollection.layoutIfNeeded()
-        pagesCollection.reloadData()
         pagesCollection.isPagingEnabled = true
         pagesCollection.showsHorizontalScrollIndicator = false
         pagesCollection.dataSource = dataSource
@@ -145,19 +144,12 @@ class OnboardingViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        if #available(iOS 13, *) {
-            view.layoutSubviews()
-        } else {
-            let offsetX = CGFloat(max(dataSource.currentPage, 0)) * (size.width)
-            coordinator.animate(
-                    alongsideTransition: { _ in self.pagesCollection.collectionViewLayout.invalidateLayout()
-                    },
-                    completion: { _ in
-                    self.pagesCollection.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
-                        self.pagesCollection.reloadData()
-                }
-            )
-        }
+        pagesCollection.collectionViewLayout.invalidateLayout()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        pagesCollection.scrollToItem(at: IndexPath.init(row: 0, section: 0), at: .centeredHorizontally, animated: true)
     }
 
     override func viewWillLayoutSubviews() {
@@ -181,7 +173,6 @@ extension OnboardingViewController: OnboardingScreen {
 
 class CollectionFlowLayout: UICollectionViewFlowLayout {
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
-        invalidateLayout(with: invalidationContext(forBoundsChange: newBounds))
         return true
     }
 }
