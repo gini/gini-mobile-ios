@@ -114,6 +114,10 @@ class OnboardingViewController: UIViewController {
                 light: UIColor.GiniCapture.accent1,
                 dark: UIColor.GiniCapture.accent1
             ).uiColor()
+            nextButton.titleLabel?.textColor = GiniColor(
+                light: UIColor.GiniCapture.light1,
+                dark: UIColor.GiniCapture.light1
+            ).uiColor()
             nextButton.addTarget(self, action: #selector(nextPage), for: .touchUpInside)
             navigationItem.rightBarButtonItem = skipButton
         }
