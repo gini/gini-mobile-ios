@@ -55,7 +55,6 @@ final class CameraPane: UIView {
         captureButton.accessibilityValue =  NSLocalizedStringPreferredFormat(
             "ginicapture.camera.capturebutton",
             comment: "Capture")
-        updateThumbnailConstraint()
     }
 
     private func configureTitle(giniConfiguration: GiniConfiguration) {
@@ -96,7 +95,6 @@ final class CameraPane: UIView {
 
     func toggleFlashButtonActivation(state: Bool) {
         flashButton.isHidden = !state
-        updateThumbnailConstraint()
     }
 
     func toggleCaptureButtonActivation(state: Bool) {
@@ -118,47 +116,6 @@ final class CameraPane: UIView {
         if thumbnailView.thumbnailImageView.image != nil {
             thumbnailView.isHidden = isHidden
         }
-        updateThumbnailConstraint()
     }
 
-    private func numberOfVisibleButtons() -> Int {
-        var number = 2
-        if flashButton.isHidden {
-            number -= 1
-        }
-        if fileUploadButton.isHidden {
-            number -= 1
-        }
-        return number
-    }
-
-    private func onlyLeftVisibleButtonImgWidth() -> CGFloat {
-        if flashButton.isHidden == false {
-            return flashButton.iconView.image?.size.width ?? 0
-        }
-        return fileUploadButton.iconView.image?.size.width ?? 0
-    }
-
-    func updateThumbnailConstraint(
-    ) {
-        if UIDevice.current.isIphone {
-            let numberOfButtons = numberOfVisibleButtons()
-            let screenWidth = UIScreen.main.bounds.size.width
-            if numberOfButtons == 0 || numberOfButtons == 2 {
-                let flashWidth = (flashButton.iconView.image?.size.width ?? 0 )
-                // margin between left buttons and capture button
-                let margin: CGFloat = 30
-                // calculate the distance of flash button to capture button,
-                let leftButtonWidth = (screenWidth * 0.5  - margin - captureButton.bounds.size.width * 0.5) * 0.5
-                thumbnailConstraint.constant = leftButtonWidth * 0.5 - flashWidth * 0.5 + margin
-                leftStackViewMargin.constant = margin
-            } else {
-                leftStackViewMargin.constant = 0
-                // center between capture button
-                let rightSide = screenWidth * 0.5 - captureButton.bounds.size.width * 0.5
-                thumbnailConstraint.constant = rightSide * 0.5 - thumbnailView.bounds.size.width * 0.5
-            }
-            layoutSubviews()
-        }
-    }
 }
