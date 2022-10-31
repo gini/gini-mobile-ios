@@ -53,5 +53,18 @@ final class OnboardingBottomNavigationBar: UIView {
         skipButton.layer.cornerRadius = cornerRadius
         nextButton.layer.cornerRadius = cornerRadius
         getStarted.layer.cornerRadius = cornerRadius
+        setupButtons()
+    }
+
+    private func setupButtons() {
+        skipButton.setTitle(NSLocalizedStringPreferredFormat(
+            "ginicapture.onboarding.skip",
+            comment: "Skip button"), for: .normal)
+        nextButton.setTitle(NSLocalizedStringPreferredFormat(
+            "ginicapture.onboarding.next",
+            comment: "Next button"), for: .normal)
+        getStarted.setTitle(NSLocalizedStringPreferredFormat(
+            "ginicapture.onboarding.getstarted",
+            comment: "Get Started button"), for: .normal)
     }
 }
