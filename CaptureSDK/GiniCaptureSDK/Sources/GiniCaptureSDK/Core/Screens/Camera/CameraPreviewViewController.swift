@@ -39,11 +39,10 @@ final class CameraPreviewViewController: UIViewController {
         return spinner
     }()
 
-    lazy var cameraFrameView: UIView = {
-        let imageView = UIView()
-        imageView.layer.borderColor = UIColor.white.cgColor
-        imageView.layer.borderWidth = 3
-
+    lazy var cameraFrameView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImageNamedPreferred(named: "cameraFocus")
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
@@ -81,6 +80,37 @@ final class CameraPreviewViewController: UIViewController {
         previewView.addGestureRecognizer(tapGesture)
         return previewView
     }()
+
+    private let iPadCameraPaneWidth: CGFloat = 124
+    private lazy var iPadLandscapeConstraints: [NSLayoutConstraint] = [
+        cameraFrameView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
+        cameraFrameView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        cameraFrameView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -iPadCameraPaneWidth/2),
+        cameraFrameView.heightAnchor.constraint(equalTo: cameraFrameView.widthAnchor,
+                                                     multiplier: 1.414)
+    ]
+
+    private lazy var iPadPortraitConstraints: [NSLayoutConstraint] = [
+        cameraFrameView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: 16),
+        cameraFrameView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        cameraFrameView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+        cameraFrameView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -iPadCameraPaneWidth-16),
+        cameraFrameView.heightAnchor.constraint(equalTo: cameraFrameView.widthAnchor,
+                                                     multiplier: 1.414)
+    ]
+
+    private func iPadConstraint() -> [NSLayoutConstraint] {
+        switch UIDevice.current.orientation {
+        case .landscapeLeft, .landscapeRight:
+            return iPadLandscapeConstraints
+        case .faceDown, .faceUp, .portrait, .portraitUpsideDown:
+            return iPadPortraitConstraints
+        case .unknown:
+            return iPadLandscapeConstraints
+        @unknown default:
+            return iPadLandscapeConstraints
+        }
+    }
     
     init(giniConfiguration: GiniConfiguration = .shared,
          camera: CameraProtocol = Camera(giniConfiguration: .shared)) {
@@ -128,35 +158,18 @@ final class CameraPreviewViewController: UIViewController {
         setupConstraints()
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        maskFrameView()
-    }
-
     private func setupConstraints() {
-        let cameraPaneWidth: CGFloat = UIDevice.current.isIpad ? 124 : 0
         cameraFrameView.translatesAutoresizingMaskIntoConstraints = false
 
         if UIDevice.current.isIpad {
-            let constraint = cameraFrameView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                                            constant: -cameraPaneWidth-16)
-            constraint.priority = .defaultHigh
-            NSLayoutConstraint.activate([
-                cameraFrameView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: 16),
-                cameraFrameView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-                cameraFrameView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                constraint,
-                cameraFrameView.heightAnchor.constraint(equalTo: cameraFrameView.widthAnchor,
-                                                             multiplier: 1.414)
-            ])
+            NSLayoutConstraint.activate(iPadConstraint())
         } else {
             // The height of the bottom controls
             let bottomControlHeight = view.frame.height * 0.23 +
                                       (giniConfiguration.bottomNavigationBarEnabled ? 114 : 0)
             let constraint = cameraFrameView.bottomAnchor.constraint(equalTo: view.bottomAnchor,
                                                                           constant: -bottomControlHeight)
-            constraint.priority = .defaultHigh
+
             NSLayoutConstraint.activate([
                 cameraFrameView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
                 cameraFrameView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
@@ -175,39 +188,6 @@ final class CameraPreviewViewController: UIViewController {
             previewView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
-
-    private func maskFrameView() {
-        // masks out the 4 corners from the border of the view
-        let frameWidth = view.frame.width * 0.16
-        let mutablePath = CGMutablePath()
-        let upperLeftRect = CGRect(x: cameraFrameView.bounds.origin.x,
-                                   y: cameraFrameView.bounds.origin.y,
-                                   width: frameWidth,
-                                   height: frameWidth)
-        mutablePath.addRect(upperLeftRect)
-
-        let upperRightRect = CGRect(x: cameraFrameView.bounds.maxX-frameWidth,
-                                    y: cameraFrameView.bounds.minY,
-                                    width: frameWidth,
-                                    height: frameWidth)
-        mutablePath.addRect(upperRightRect)
-
-        let lowerLeftRect = CGRect(x: cameraFrameView.bounds.origin.x,
-                                   y: cameraFrameView.bounds.maxY - frameWidth,
-                                   width: frameWidth,
-                                   height: frameWidth)
-        mutablePath.addRect(lowerLeftRect)
-
-        let lowerRightRect = CGRect(x: cameraFrameView.bounds.maxX-frameWidth,
-                                    y: cameraFrameView.bounds.maxY-frameWidth,
-                                    width: frameWidth,
-                                    height: frameWidth)
-        mutablePath.addRect(lowerRightRect)
-
-        let mask = CAShapeLayer()
-        mask.path = mutablePath
-        cameraFrameView.layer.mask = mask
-    }
     
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -216,7 +196,18 @@ final class CameraPreviewViewController: UIViewController {
     
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        
+
+        if UIDevice.current.isIpad {
+            // deactivate all constraints before rotation
+            NSLayoutConstraint.deactivate(iPadPortraitConstraints)
+            NSLayoutConstraint.deactivate(iPadLandscapeConstraints)
+
+            // activate constraints after rotation
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05, execute: {
+                NSLayoutConstraint.activate(self.iPadConstraint())
+            })
+        }
+
         coordinator.animate(alongsideTransition: { [weak self] _ in
             self?.updatePreviewViewOrientation()
         })
