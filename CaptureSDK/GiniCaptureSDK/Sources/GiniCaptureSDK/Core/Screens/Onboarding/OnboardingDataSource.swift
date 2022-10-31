@@ -137,6 +137,14 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         }
     }
 
+    func collectionView(
+        _ collectionView: UICollectionView,
+        targetContentOffsetForProposedContentOffset proposedContentOffset: CGPoint
+    ) -> CGPoint {
+        let index = IndexPath(row: currentPage, section: 0)
+        let attr = collectionView.layoutAttributesForItem(at: index)
+        return attr?.frame.origin ?? CGPoint.zero
+    }
     // MARK: - Display the page number in page controll of collection view Cell
 
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -149,8 +157,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let height = collectionView.frame.height
-        let width = collectionView.frame.width
-        return CGSize(width: width, height: height)
+        return collectionView.bounds.size
     }
+
 }
