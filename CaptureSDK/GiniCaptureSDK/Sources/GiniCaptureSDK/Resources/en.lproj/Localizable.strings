@@ -63,6 +63,9 @@
 "ginicapture.camera.popupTitleImportPDForPhotos" = "";
 "ginicapture.camera.popupCancel" = "Cancel";
 
+"ginicapture.onboarding.getstarted" = "Get Started";
+"ginicapture.onboarding.next" = "Next";
+"ginicapture.onboarding.skip"  = "Skip";
 "ginicapture.onboarding.firstPage"  = "Hold device parallel over the page";
 "ginicapture.onboarding.secondPage" = "Flatten the page";
 "ginicapture.onboarding.thirdPage"  = "Capture the entire page within the frame shown on the camera screen";

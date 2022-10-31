@@ -17,7 +17,9 @@ class OnboardingViewController: UIViewController {
     private var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
     private (set) var dataSource: OnboardingDataSource
     private let configuration = GiniConfiguration.shared
-    lazy var skipButton = UIBarButtonItem(title: "Skip",
+    lazy var skipButton = UIBarButtonItem(title: NSLocalizedStringPreferredFormat(
+        "ginicapture.onboarding.skip",
+        comment: "Skip button"),
                                           style: .plain,
                               target: self,
                               action: #selector(close))
@@ -105,7 +107,9 @@ class OnboardingViewController: UIViewController {
             }
         } else {
             nextButton.layer.cornerRadius = 14
-            nextButton.setTitle("Next", for: .normal)
+            nextButton.setTitle(NSLocalizedStringPreferredFormat(
+                "ginicapture.onboarding.next",
+                comment: "Next button"), for: .normal)
             nextButton.backgroundColor = GiniColor(
                 light: UIColor.GiniCapture.accent1,
                 dark: UIColor.GiniCapture.accent1
@@ -147,11 +151,6 @@ class OnboardingViewController: UIViewController {
         pagesCollection.collectionViewLayout.invalidateLayout()
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        pagesCollection.scrollToItem(at: IndexPath.init(row: 0, section: 0), at: .centeredHorizontally, animated: true)
-    }
-
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         pagesCollection.collectionViewLayout.invalidateLayout()
@@ -162,10 +161,16 @@ extension OnboardingViewController: OnboardingScreen {
     func didScroll(page: Int) {
         if page == dataSource.itemSections.count - 1 {
             navigationItem.rightBarButtonItem = nil
-            nextButton.setTitle("Get Started", for: .normal)
+            nextButton.setTitle(NSLocalizedStringPreferredFormat(
+                "ginicapture.onboarding.getstarted",
+                comment: "Get Started button"), for: .normal)
         } else {
             navigationItem.rightBarButtonItem = skipButton
-            nextButton.setTitle("Next", for: .normal)
+            nextButton.setTitle(
+                NSLocalizedStringPreferredFormat(
+                "ginicapture.onboarding.next",
+                comment: "Next button"),
+                for: .normal)
         }
         pageControl.currentPage = page
     }
