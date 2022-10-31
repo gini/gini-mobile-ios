@@ -15,6 +15,14 @@ class OnboardingPageCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        title.textColor = GiniColor(
+            light: UIColor.GiniCapture.accent1,
+            dark: UIColor.GiniCapture.accent1
+        ).uiColor()
+        fullText.textColor = GiniColor(
+            light: UIColor.GiniCapture.dark6,
+            dark: UIColor.GiniCapture.dark7
+        ).uiColor()
     }
 
     func configureCell() {}

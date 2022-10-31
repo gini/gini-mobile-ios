@@ -19,7 +19,9 @@ class OnboardingViewController: UIViewController {
     private var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
     private var bottomNavigationBar: UIView?
 
-    lazy var skipButton = UIBarButtonItem(title: "Skip",
+    lazy var skipButton = UIBarButtonItem(title: NSLocalizedStringPreferredFormat(
+        "ginicapture.onboarding.skip",
+        comment: "Skip button"),
                                           style: .plain,
                               target: self,
                               action: #selector(close))
@@ -36,9 +38,6 @@ class OnboardingViewController: UIViewController {
         pagesCollection.register(
             UINib(nibName: "OnboardingPageCell", bundle: giniCaptureBundle()),
             forCellWithReuseIdentifier: OnboardingPageCell.reuseIdentifier)
-        pagesCollection.setNeedsLayout()
-        pagesCollection.layoutIfNeeded()
-        pagesCollection.reloadData()
         pagesCollection.isPagingEnabled = true
         pagesCollection.showsHorizontalScrollIndicator = false
         pagesCollection.dataSource = dataSource
@@ -128,6 +127,20 @@ class OnboardingViewController: UIViewController {
             navigationBarBottomAdapter?.showButtons(
                 navigationButtons: [.skip, .next],
                 navigationBar: navigationBar)
+            nextButton.layer.cornerRadius = 14
+            nextButton.setTitle(NSLocalizedStringPreferredFormat(
+                "ginicapture.onboarding.next",
+                comment: "Next button"), for: .normal)
+            nextButton.backgroundColor = GiniColor(
+                light: UIColor.GiniCapture.accent1,
+                dark: UIColor.GiniCapture.accent1
+            ).uiColor()
+            nextButton.titleLabel?.textColor = GiniColor(
+                light: UIColor.GiniCapture.light1,
+                dark: UIColor.GiniCapture.light1
+            ).uiColor()
+            nextButton.addTarget(self, action: #selector(nextPage), for: .touchUpInside)
+            navigationItem.rightBarButtonItem = skipButton
         }
     }
 
@@ -156,19 +169,7 @@ class OnboardingViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        if #available(iOS 13, *) {
-            view.layoutSubviews()
-        } else {
-            let offsetX = CGFloat(max(dataSource.currentPage, 0)) * (size.width)
-            coordinator.animate(
-                    alongsideTransition: { _ in self.pagesCollection.collectionViewLayout.invalidateLayout()
-                    },
-                    completion: { _ in
-                    self.pagesCollection.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
-                        self.pagesCollection.reloadData()
-                }
-            )
-        }
+        pagesCollection.collectionViewLayout.invalidateLayout()
     }
 
     override func viewWillLayoutSubviews() {
@@ -186,37 +187,41 @@ extension OnboardingViewController: OnboardingScreen {
         switch page {
         case dataSource.itemSections.count - 1:
             if configuration.bottomNavigationBarEnabled,
-                let bottomNavigationBar = bottomNavigationBar {
+               let bottomNavigationBar = bottomNavigationBar {
                 navigationBarBottomAdapter?.showButtons(
                     navigationButtons: [.getStarted],
                     navigationBar: bottomNavigationBar)
             } else {
                 navigationItem.rightBarButtonItem = nil
                 if nextButton != nil {
-                    nextButton.setTitle("Get Started", for: .normal)
+                    nextButton.setTitle(NSLocalizedStringPreferredFormat(
+                        "ginicapture.onboarding.getstarted",
+                        comment: "Get Started button"), for: .normal)
                 }
             }
         default:
             if configuration.bottomNavigationBarEnabled,
-                let bottomNavigationBar = bottomNavigationBar {
+               let bottomNavigationBar = bottomNavigationBar {
                 navigationBarBottomAdapter?.showButtons(
                     navigationButtons: [.skip, .next],
                     navigationBar: bottomNavigationBar)
             } else {
                 navigationItem.rightBarButtonItem = skipButton
                 if nextButton != nil {
-                    nextButton.setTitle("Next", for: .normal)
+                    nextButton.setTitle(
+                        NSLocalizedStringPreferredFormat(
+                            "ginicapture.onboarding.next",
+                            comment: "Next button"),
+                        for: .normal)
                 }
             }
         }
-
         pageControl.currentPage = page
     }
 }
 
 class CollectionFlowLayout: UICollectionViewFlowLayout {
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
-        invalidateLayout(with: invalidationContext(forBoundsChange: newBounds))
         return true
     }
 }
