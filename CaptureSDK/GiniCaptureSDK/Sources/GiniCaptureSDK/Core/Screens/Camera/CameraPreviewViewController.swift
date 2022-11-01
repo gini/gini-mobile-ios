@@ -42,7 +42,7 @@ final class CameraPreviewViewController: UIViewController {
     lazy var cameraFrameView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImageNamedPreferred(named: "cameraFocus")
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
@@ -167,17 +167,16 @@ final class CameraPreviewViewController: UIViewController {
             // The height of the bottom controls
             let bottomControlHeight = view.frame.height * 0.23 +
                                       (giniConfiguration.bottomNavigationBarEnabled ? 114 : 0)
-            let constraint = cameraFrameView.bottomAnchor.constraint(equalTo: view.bottomAnchor,
-                                                                          constant: -bottomControlHeight)
 
             NSLayoutConstraint.activate([
                 cameraFrameView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
                 cameraFrameView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
-                                                              constant: 16),
+                                                         constant: 16),
                 cameraFrameView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                constraint,
+                cameraFrameView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor,
+                                                        constant: -bottomControlHeight),
                 cameraFrameView.widthAnchor.constraint(equalTo: cameraFrameView.heightAnchor,
-                                                            multiplier: 1 / 1.414)
+                                                       multiplier: 1 / 1.414)
                 ])
         }
 
