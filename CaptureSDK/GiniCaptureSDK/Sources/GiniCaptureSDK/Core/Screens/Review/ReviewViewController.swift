@@ -316,20 +316,26 @@ extension ReviewViewController {
     }
 
     private func updateButtonTitle() {
+        var title: String
         if pages.count > 1 {
-            processButton.setTitle(
-                NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle.plural",
-                                                 comment: "Process button title"), for: .normal)
+            title = NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle.plural",
+                                                 comment: "Process button title")
         } else {
-            processButton.setTitle(
-                NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle.singular",
-                                                 comment: "Process button title"), for: .normal)
+            title = NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle.singular",
+                                                 comment: "Process button title")
+        }
+
+        if giniConfiguration.bottomNavigationBarEnabled {
+            navigationBarBottomAdapter?.setMainButtonTitle(with: title)
+        } else {
+            processButton.setTitle(title, for: .normal)
         }
     }
 
     // MARK: - Loading indicator
 
     private func addLoadingView() {
+        guard !giniConfiguration.bottomNavigationBarEnabled else { return }
         let loadingIndicator: UIView
 
         if let customLoadingIndicator = giniConfiguration.onButtonLoadingIndicator?.injectedView() {
@@ -375,6 +381,10 @@ extension ReviewViewController {
     public func updateCollections(with pages: [GiniCapturePage], finishedUpload: Bool = true) {
         DispatchQueue.main.async {
             self.updateButtonTitle()
+
+            if self.giniConfiguration.bottomNavigationBarEnabled {
+                self.navigationBarBottomAdapter?.set(loadingState: !finishedUpload)
+            }
 
             if self.giniConfiguration.multipageEnabled {
                 if finishedUpload {

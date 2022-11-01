@@ -50,6 +50,14 @@ final class ReviewBottomNavigationBar: UIView {
         return addPagesButton
     }()
 
+    private var loadingIndicatorView: UIActivityIndicatorView = {
+        let indicatorView = UIActivityIndicatorView()
+        indicatorView.hidesWhenStopped = true
+        indicatorView.style = .whiteLarge
+        indicatorView.color = GiniColor(light: UIColor.GiniCapture.dark3, dark: UIColor.GiniCapture.light3).uiColor()
+        return indicatorView
+    }()
+
     weak var delegate: ReviewBottomNavigationBarDelegate?
 
     init() {
@@ -67,6 +75,7 @@ final class ReviewBottomNavigationBar: UIView {
 
         addSubview(mainButton)
         addSubview(secondaryButton)
+        addLoadingView()
     }
 
     private func addConstraints() {
@@ -88,6 +97,27 @@ final class ReviewBottomNavigationBar: UIView {
         ])
     }
 
+    private func addLoadingView() {
+        let loadingIndicator: UIView
+
+        if let customLoadingIndicator = configuration.onButtonLoadingIndicator?.injectedView() {
+            loadingIndicator = customLoadingIndicator
+        } else {
+            loadingIndicator = loadingIndicatorView
+        }
+
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(loadingIndicator)
+        bringSubviewToFront(loadingIndicator)
+
+        NSLayoutConstraint.activate([
+            loadingIndicator.centerXAnchor.constraint(equalTo: mainButton.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: mainButton.centerYAnchor),
+            loadingIndicator.widthAnchor.constraint(equalToConstant: 45),
+            loadingIndicator.heightAnchor.constraint(equalToConstant: 45)
+        ])
+    }
+
     @objc
     private func mainButtonClicked() {
         delegate?.didTapMainButton(on: self)
@@ -96,5 +126,40 @@ final class ReviewBottomNavigationBar: UIView {
     @objc
     private func secondaryButtonClicked() {
         delegate?.didTapSecondaryButton(on: self)
+    }
+
+    func setMainButtonTitle(with title: String) {
+        mainButton.setTitle(title, for: .normal)
+    }
+
+    func set(loadingState isLoading: Bool) {
+        if self.configuration.multipageEnabled {
+            if !isLoading {
+                self.mainButton.alpha = 1
+                self.mainButton.isEnabled = true
+                self.hideAnimation()
+                return
+            }
+
+            self.mainButton.alpha = 0.3
+            self.mainButton.isEnabled = false
+            self.showAnimation()
+        }
+    }
+
+    private func showAnimation() {
+        if let loadingIndicator = configuration.onButtonLoadingIndicator {
+            loadingIndicator.startAnimation()
+        } else {
+            loadingIndicatorView.startAnimating()
+        }
+    }
+
+    private func hideAnimation() {
+        if let loadingIndicator = configuration.onButtonLoadingIndicator {
+            loadingIndicator.stopAnimation()
+        } else {
+            loadingIndicatorView.stopAnimating()
+        }
     }
 }
