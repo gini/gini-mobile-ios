@@ -312,7 +312,7 @@ final class CameraPreviewViewController: UIViewController {
     }
 
     private func showQRCodeFeedback(for document: GiniQRCodeDocument) {
-        if !document.isReviewable {
+        if document.isReviewable {
             UIView.animate(withDuration: 0.3) {
                 self.qrCodeOverLay.isHidden = false
                 self.cameraFrameView.image = self.cameraFrameView.image?.tintedImageWithColor(.GiniCapture.success2)
@@ -340,9 +340,10 @@ final class CameraPreviewViewController: UIViewController {
     }
 
     func resetQRCodeScanning() {
-        detectedQRCodeDocument = nil
-        cameraFrameView.image = cameraFrameView.image?.tintedImageWithColor(.white)
-        qrCodeOverLay.isHidden = true
+        UIView.animate(withDuration: 0.3) {
+            self.cameraFrameView.image = self.cameraFrameView.image?.tintedImageWithColor(.white)
+            self.qrCodeOverLay.isHidden = true
+        }
     }
     
     func addLoadingIndicator(){
