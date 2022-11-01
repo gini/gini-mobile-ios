@@ -31,6 +31,8 @@ final class CameraPreviewViewController: UIViewController {
     var isFlashSupported: Bool {
         return camera.isFlashSupported && giniConfiguration.flashToggleEnabled
     }
+
+    private var detectedQRCodeDocument: GiniQRCodeDocument?
     
     private lazy var spinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: .whiteLarge)
@@ -71,6 +73,13 @@ final class CameraPreviewViewController: UIViewController {
     }
 
     var isAuthorized = false
+
+    private lazy var qrCodeOverLay: UIView = {
+        let view = QRCodeOverlay()
+        view.isHidden = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+       return view
+    }()
 
     lazy var previewView: CameraPreviewView = {
         let previewView = CameraPreviewView()
@@ -143,6 +152,8 @@ final class CameraPreviewViewController: UIViewController {
 
         view.addSubview(cameraFrameView)
 
+        view.addSubview(qrCodeOverLay)
+
         addLoadingIndicator()
     }
 
@@ -156,6 +167,7 @@ final class CameraPreviewViewController: UIViewController {
         super.viewDidLoad()
 
         setupConstraints()
+        (qrCodeOverLay as? QRCodeOverlay)?.layoutViews(centeringBy: cameraFrameView)
     }
 
     private func setupConstraints() {
@@ -181,6 +193,11 @@ final class CameraPreviewViewController: UIViewController {
         }
 
         NSLayoutConstraint.activate([
+            qrCodeOverLay.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            qrCodeOverLay.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            qrCodeOverLay.topAnchor.constraint(equalTo: view.topAnchor),
+            qrCodeOverLay.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+
             previewView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             previewView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             previewView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -284,9 +301,48 @@ final class CameraPreviewViewController: UIViewController {
         if giniConfiguration.qrCodeScanningEnabled {
             camera.didDetectQR = { [weak self] qrDocument in
                 guard let self = self else { return }
-                self.delegate?.cameraPreview(self, didDetect: qrDocument)
+
+                if self.detectedQRCodeDocument != qrDocument {
+                    self.detectedQRCodeDocument = qrDocument
+
+                    self.showQRCodeFeedback(for: qrDocument)
+                }
             }
         }
+    }
+
+    private func showQRCodeFeedback(for document: GiniQRCodeDocument) {
+        if !document.isReviewable {
+            UIView.animate(withDuration: 0.3) {
+                self.qrCodeOverLay.isHidden = false
+                self.cameraFrameView.image = self.cameraFrameView.image?.tintedImageWithColor(.GiniCapture.success2)
+            }
+
+            (qrCodeOverLay as? QRCodeOverlay)?.configureQrCodeOverlay(withCorrectQrCode: true)
+        } else {
+            UIView.animate(withDuration: 0.3) {
+                self.qrCodeOverLay.isHidden = false
+                self.cameraFrameView.image = self.cameraFrameView.image?.tintedImageWithColor(.GiniCapture.warning3)
+            }
+
+            (qrCodeOverLay as? QRCodeOverlay)?.configureQrCodeOverlay(withCorrectQrCode: false)
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+            self.resetQRCodeScanning()
+
+            if let QRDocument = self.detectedQRCodeDocument {
+                if QRDocument.isReviewable {
+                    self.delegate?.cameraPreview(self, didDetect: QRDocument)
+                }
+            }
+        })
+    }
+
+    func resetQRCodeScanning() {
+        detectedQRCodeDocument = nil
+        cameraFrameView.image = cameraFrameView.image?.tintedImageWithColor(.white)
+        qrCodeOverLay.isHidden = true
     }
     
     func addLoadingIndicator(){
