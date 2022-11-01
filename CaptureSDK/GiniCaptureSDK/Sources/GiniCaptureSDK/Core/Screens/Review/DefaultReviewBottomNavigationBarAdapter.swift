@@ -23,7 +23,16 @@ class DefaultReviewBottomNavigationBarAdapter: ReviewScreenBottomNavigationBarAd
     func injectedView() -> UIView {
         let view = ReviewBottomNavigationBar()
         view.delegate = self
+        self.view = view
         return view
+    }
+
+    func set(loadingState isLoading: Bool) {
+        view?.set(loadingState: isLoading)
+    }
+
+    func setMainButtonTitle(with title: String) {
+        view?.setMainButtonTitle(with: title)
     }
 
     @objc func mainButtonClicked() {
