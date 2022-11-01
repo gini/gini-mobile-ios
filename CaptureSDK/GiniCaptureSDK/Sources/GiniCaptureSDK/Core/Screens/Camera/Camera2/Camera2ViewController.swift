@@ -398,10 +398,8 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
                        didDetect qrCodeDocument: GiniQRCodeDocument) {
         if detectedQRCodeDocument != qrCodeDocument {
             detectedQRCodeDocument = qrCodeDocument
-            showPopup(forQRDetected: qrCodeDocument) { [weak self] in
-                guard let self = self else { return }
-                self.didPick(qrCodeDocument)
-            }
+
+            didPick(qrCodeDocument)
         }
     }
 
