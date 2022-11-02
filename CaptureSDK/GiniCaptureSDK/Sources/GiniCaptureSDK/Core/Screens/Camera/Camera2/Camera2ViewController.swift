@@ -22,6 +22,14 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
        cameraPreviewViewController.delegate = self
        return cameraPreviewViewController
     }()
+
+    private lazy var qrCodeOverLay: QRCodeOverlay = {
+        let view = QRCodeOverlay()
+        view.isHidden = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+       return view
+    }()
+
     public weak var delegate: CameraViewControllerDelegate?
 
     @IBOutlet weak var cameraPane: CameraPane!
@@ -88,6 +96,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         view.addSubview(cameraPreviewViewController.view)
         cameraPreviewViewController.didMove(toParent: self)
         view.sendSubviewToBack(cameraPreviewViewController.view)
+        view.addSubview(qrCodeOverLay)
         configureConstraints()
         if UIDevice.current.isIphone {
             self.title = NSLocalizedStringPreferredFormat(
@@ -261,7 +270,14 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             cameraPreviewViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
 
     private func configureConstraints() {
+        qrCodeOverLay.layoutViews(centeringBy: cameraPreviewViewController.cameraFrameView)
+
         NSLayoutConstraint.activate([
+            qrCodeOverLay.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            qrCodeOverLay.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            qrCodeOverLay.topAnchor.constraint(equalTo: view.topAnchor),
+            qrCodeOverLay.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+
             cameraPreviewViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
             cameraPreviewViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             cameraPreviewViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -380,6 +396,49 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         return finalImage
     }
     // swiftlint:enable line_length
+
+    private func showQRCodeFeedback(for document: GiniQRCodeDocument) {
+        if document.qrCodeFormat != nil {
+            cameraPane.isUserInteractionEnabled = false
+            UIView.animate(withDuration: 0.3) {
+                self.qrCodeOverLay.isHidden = false
+                self.cameraPreviewViewController.changeFrameColor(to: .GiniCapture.success2)
+            }
+
+            qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: true)
+        } else {
+            qrCodeOverLay.isUserInteractionEnabled = false
+            UIView.animate(withDuration: 0.3) {
+                self.qrCodeOverLay.isHidden = false
+                self.cameraPreviewViewController.changeFrameColor(to: .GiniCapture.warning3)
+            }
+
+            qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: false)
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+            self.resetQRCodeScanning()
+
+            if let QRDocument = self.detectedQRCodeDocument {
+                if QRDocument.qrCodeFormat != nil {
+                    self.didPick(QRDocument)
+                }
+            }
+        })
+    }
+
+    func resetQRCodeScanning() {
+        if detectedQRCodeDocument?.qrCodeFormat != nil {
+            cameraPreviewViewController.cameraFrameView.isHidden = true
+            qrCodeOverLay.hideCheckMark()
+        } else {
+            UIView.animate(withDuration: 0.3) {
+                self.cameraPreviewViewController.changeFrameColor(to: .GiniCapture.light1)
+                self.qrCodeOverLay.isHidden = true
+                self.cameraPane.isUserInteractionEnabled = true
+            }
+        }
+    }
 }
 
 // MARK: - CameraPreviewViewControllerDelegate
@@ -398,7 +457,7 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
         if detectedQRCodeDocument != qrCodeDocument {
             detectedQRCodeDocument = qrCodeDocument
 
-            didPick(qrCodeDocument)
+            showQRCodeFeedback(for: qrCodeDocument)
         }
     }
 

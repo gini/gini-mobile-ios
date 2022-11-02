@@ -28,6 +28,9 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
                 let validatedPage = validatedPages[0]
                 self.addToDocuments(new: [validatedPage])
                 self.didCaptureAndValidate(document)
+                if document.type == .qrcode {
+                    return
+                }
                 self.showNextScreenAfterPicking(pages: [validatedPage])
             case .failure(let error):
                 var errorMessage = String(describing: error)
