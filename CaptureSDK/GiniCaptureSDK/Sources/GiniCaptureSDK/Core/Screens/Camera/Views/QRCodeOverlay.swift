@@ -121,11 +121,30 @@ final class QRCodeOverlay: UIView {
         return imageView
     }()
 
+    private lazy var loadingIndicatorView: UIActivityIndicatorView = {
+        let indicatorView = UIActivityIndicatorView()
+        indicatorView.hidesWhenStopped = true
+        indicatorView.style = .whiteLarge
+        return indicatorView
+    }()
+
+    private lazy var loadingContainer: UIStackView = {
+        let textStackView = UIStackView()
+        textStackView.axis = .vertical
+        textStackView.distribution = .fillProportionally
+        textStackView.spacing = 5
+        textStackView.translatesAutoresizingMaskIntoConstraints = false
+        return textStackView
+    }()
+
+
     init() {
         super.init(frame: .zero)
         addSubview(correctQRFeedback)
         addSubview(checkMarkImageView)
         addSubview(incorrectQRFeedback)
+        addSubview(loadingContainer)
+        loadingContainer.addArrangedSubview(loadingIndicatorView)
     }
 
     required init?(coder: NSCoder) {
@@ -147,13 +166,18 @@ final class QRCodeOverlay: UIView {
             checkMarkImageView.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
             checkMarkImageView.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor),
             checkMarkImageView.heightAnchor.constraint(equalToConstant: 56),
-            checkMarkImageView.widthAnchor.constraint(equalToConstant: 56)
+            checkMarkImageView.widthAnchor.constraint(equalToConstant: 56),
+
+            loadingContainer.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
+            loadingContainer.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor),
+            loadingContainer.leadingAnchor.constraint(greaterThanOrEqualTo: cameraFrame.leadingAnchor),
+            loadingContainer.topAnchor.constraint(greaterThanOrEqualTo: cameraFrame.topAnchor)
         ])
     }
 
     func configureQrCodeOverlay(withCorrectQrCode isQrCodeCorrect: Bool) {
         if isQrCodeCorrect {
-            backgroundColor = .black.withAlphaComponent(0.7)
+            backgroundColor = .GiniCapture.dark3.withAlphaComponent(0.8)
             correctQRFeedback.isHidden = false
             checkMarkImageView.isHidden = false
             incorrectQRFeedback.isHidden = true
@@ -163,5 +187,10 @@ final class QRCodeOverlay: UIView {
             checkMarkImageView.isHidden = true
             incorrectQRFeedback.isHidden = false
         }
+    }
+
+    func hideCheckMark() {
+        checkMarkImageView.isHidden = true
+        loadingIndicatorView.startAnimating()
     }
 }
