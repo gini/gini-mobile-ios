@@ -312,7 +312,7 @@ final class CameraPreviewViewController: UIViewController {
     }
 
     private func showQRCodeFeedback(for document: GiniQRCodeDocument) {
-        if document.isReviewable {
+        if document.qrCodeFormat != nil {
             UIView.animate(withDuration: 0.3) {
                 self.qrCodeOverLay.isHidden = false
                 self.cameraFrameView.image = self.cameraFrameView.image?.tintedImageWithColor(.GiniCapture.success2)
@@ -328,11 +328,11 @@ final class CameraPreviewViewController: UIViewController {
             (qrCodeOverLay as? QRCodeOverlay)?.configureQrCodeOverlay(withCorrectQrCode: false)
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
             self.resetQRCodeScanning()
 
             if let QRDocument = self.detectedQRCodeDocument {
-                if QRDocument.isReviewable {
+                if QRDocument.qrCodeFormat != nil {
                     self.delegate?.cameraPreview(self, didDetect: QRDocument)
                 }
             }
