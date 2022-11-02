@@ -356,34 +356,56 @@ extension CameraViewController {
     fileprivate func showPopup(forQRDetected qrDocument: GiniQRCodeDocument, didTapDone: @escaping () -> Void) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
+
+            let newQRCodePopup = QRCodeDetectedPopupView(parent: self.view,
+                                                         refView: self.cameraPreviewViewController.view,
+                                                         document: qrDocument,
+                                                         giniConfiguration: self.giniConfiguration)
+
+            let didDismiss: () -> Void = { [weak self] in
+                self?.detectedQRCodeDocument = nil
+                self?.currentQRCodePopup = nil
+            }
+
+            newQRCodePopup.didTapDone = { [weak self] in
+                didTapDone()
+                self?.currentQRCodePopup?.hide(after: 0.0, completion: didDismiss)
+            }
+
+            self.showCurrentPopup(self, newQRCodePopup: newQRCodePopup) {
+                didDismiss()
+            }
+        }
+    }
+    
+    fileprivate func showCurrentPopup(_ self: CameraViewController, newQRCodePopup: QRCodeDetectedPopupView, didDismiss: @escaping () -> Void) {
+        if self.currentQRCodePopup != nil {
+            self.currentQRCodePopup?.hide { [weak self] in
+                self?.currentQRCodePopup = newQRCodePopup
+                self?.currentQRCodePopup?.show(didDismiss: didDismiss)
+            }
+        } else {
+            self.currentQRCodePopup = newQRCodePopup
+            self.currentQRCodePopup?.show(didDismiss: didDismiss)
+        }
+    }
+    
+    fileprivate func showPopup(forUnsupportedQR qrDocument: GiniQRCodeDocument) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
             
             let newQRCodePopup = QRCodeDetectedPopupView(parent: self.view,
                                                          refView: self.cameraPreviewViewController.view,
                                                          document: qrDocument,
                                                          giniConfiguration: self.giniConfiguration)
-            
             let didDismiss: () -> Void = { [weak self] in
                 self?.detectedQRCodeDocument = nil
                 self?.currentQRCodePopup = nil
             }
             
-            if qrDocument.qrCodeFormat == nil {
-                self.configurePopupViewForUnsupportedQR(newQRCodePopup, dismissCompletion: didDismiss)
-            } else {
-                newQRCodePopup.didTapDone = { [weak self] in
-                    didTapDone()
-                    self?.currentQRCodePopup?.hide(after: 0.0, completion: didDismiss)
-                }
-            }
-            
-            if self.currentQRCodePopup != nil {
-                self.currentQRCodePopup?.hide { [weak self] in
-                    self?.currentQRCodePopup = newQRCodePopup
-                    self?.currentQRCodePopup?.show(didDismiss: didDismiss)
-                }
-            } else {
-                self.currentQRCodePopup = newQRCodePopup
-                self.currentQRCodePopup?.show(didDismiss: didDismiss)
+            self.configurePopupViewForUnsupportedQR(newQRCodePopup, dismissCompletion: didDismiss)
+            self.showCurrentPopup(self, newQRCodePopup: newQRCodePopup) {
+                didDismiss()
             }
         }
     }
@@ -450,15 +472,27 @@ extension CameraViewController: CameraPreviewViewControllerDelegate {
     }
     
     func cameraPreview(_ viewController: CameraPreviewViewController, didDetect qrCodeDocument: GiniQRCodeDocument) {
-        if let tooltip = qrCodeToolTipView, !tooltip.isHidden {
-            qrCodeToolTipView?.dismiss()
-        }
+        dismissQRCodeTooltip()
         if detectedQRCodeDocument != qrCodeDocument {
             detectedQRCodeDocument = qrCodeDocument
             showPopup(forQRDetected: qrCodeDocument) { [weak self] in
                 guard let self = self else { return }
                 self.didPick(qrCodeDocument)
             }
+        }
+    }
+    
+    fileprivate func dismissQRCodeTooltip() {
+        if let tooltip = qrCodeToolTipView, !tooltip.isHidden {
+            qrCodeToolTipView?.dismiss()
+        }
+    }
+    
+    func cameraPreview(_ viewController: CameraPreviewViewController, didDetectInvalid qrCodeDocument: GiniQRCodeDocument) {
+        dismissQRCodeTooltip()
+        if detectedQRCodeDocument != qrCodeDocument {
+            detectedQRCodeDocument = qrCodeDocument
+            showPopup(forUnsupportedQR: qrCodeDocument)
         }
     }
 }
