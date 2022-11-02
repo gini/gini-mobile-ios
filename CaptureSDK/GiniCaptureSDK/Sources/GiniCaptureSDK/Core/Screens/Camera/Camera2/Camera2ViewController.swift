@@ -16,7 +16,6 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     private var opaqueView: UIView?
     let giniConfiguration: GiniConfiguration
     var detectedQRCodeDocument: GiniQRCodeDocument?
-    var currentQRCodePopup: QRCodeDetectedPopupView?
     private var shouldShowQRCodeNext = false
     lazy var cameraPreviewViewController: CameraPreviewViewController = {
        let cameraPreviewViewController = CameraPreviewViewController()
