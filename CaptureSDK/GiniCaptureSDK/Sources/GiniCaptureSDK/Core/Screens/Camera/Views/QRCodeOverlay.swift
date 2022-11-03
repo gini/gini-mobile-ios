@@ -128,27 +128,52 @@ final class QRCodeOverlay: UIView {
         return indicatorView
     }()
 
+    private lazy var loadingIndicatorText: UILabel = {
+        var loadingIndicatorText = UILabel()
+        loadingIndicatorText.font = configuration.textStyleFonts[.bodyBold]
+        loadingIndicatorText.textAlignment = .center
+        loadingIndicatorText.adjustsFontForContentSizeCategory = true
+        loadingIndicatorText.textColor = .GiniCapture.light1
+        loadingIndicatorText.isAccessibilityElement = true
+        loadingIndicatorText.text = "Retrieving invoice"
+        return loadingIndicatorText
+    }()
+
     private lazy var loadingContainer: UIStackView = {
         let textStackView = UIStackView()
         textStackView.axis = .vertical
         textStackView.distribution = .fillProportionally
-        textStackView.spacing = 5
+        textStackView.spacing = 16
         textStackView.translatesAutoresizingMaskIntoConstraints = false
+        textStackView.isHidden = true
         return textStackView
     }()
-
 
     init() {
         super.init(frame: .zero)
         addSubview(correctQRFeedback)
         addSubview(checkMarkImageView)
         addSubview(incorrectQRFeedback)
-        addSubview(loadingContainer)
-        loadingContainer.addArrangedSubview(loadingIndicatorView)
+
+        addLoadingView()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func addLoadingView() {
+        let loadingIndicator: UIView
+
+        if let customLoadingIndicator = configuration.analysisScreenLoadingIndicator?.injectedView() {
+            loadingIndicator = customLoadingIndicator
+        } else {
+            loadingIndicator = loadingIndicatorView
+        }
+
+        addSubview(loadingContainer)
+        loadingContainer.addArrangedSubview(loadingIndicator)
+        loadingContainer.addArrangedSubview(loadingIndicatorText)
     }
 
     func layoutViews(centeringBy cameraFrame: UIView) {
@@ -157,7 +182,7 @@ final class QRCodeOverlay: UIView {
             incorrectQRFeedback.leadingAnchor.constraint(equalTo: cameraFrame.leadingAnchor, constant: 8),
             incorrectQRFeedback.trailingAnchor.constraint(equalTo: cameraFrame.trailingAnchor, constant: -8),
 
-            correctQRFeedback.centerXAnchor.constraint(equalTo: centerXAnchor),
+            correctQRFeedback.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
             correctQRFeedback.centerYAnchor.constraint(equalTo: cameraFrame.topAnchor),
             correctQRFeedback.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 16),
             correctQRFeedback.widthAnchor.constraint(greaterThanOrEqualToConstant: 106),
@@ -170,7 +195,7 @@ final class QRCodeOverlay: UIView {
 
             loadingContainer.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
             loadingContainer.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor),
-            loadingContainer.leadingAnchor.constraint(greaterThanOrEqualTo: cameraFrame.leadingAnchor),
+            loadingContainer.leadingAnchor.constraint(equalTo: cameraFrame.leadingAnchor),
             loadingContainer.topAnchor.constraint(greaterThanOrEqualTo: cameraFrame.topAnchor)
         ])
     }
@@ -189,8 +214,36 @@ final class QRCodeOverlay: UIView {
         }
     }
 
-    func hideCheckMark() {
+    func viewWillDisappear() {
+        hideAnimation()
+    }
+
+    // MARK: Toggle animation
+    /**
+     Displays a loading activity indicator. Should be called when invoice retrieving is started.
+     */
+    public func showAnimation() {
         checkMarkImageView.isHidden = true
-        loadingIndicatorView.startAnimating()
+        loadingContainer.isHidden = false
+
+        if let loadingIndicator = configuration.analysisScreenLoadingIndicator {
+            loadingIndicator.startAnimation()
+        } else {
+            loadingIndicatorView.startAnimating()
+        }
+    }
+
+    /**
+     Hides the loading activity indicator. Should be called when invoice retrieving is finished.
+     */
+    public func hideAnimation() {
+        checkMarkImageView.isHidden = true
+        loadingContainer.isHidden = true
+
+        if let loadingIndicator = configuration.analysisScreenLoadingIndicator {
+            loadingIndicator.stopAnimation()
+        } else {
+            loadingIndicatorView.stopAnimating()
+        }
     }
 }
