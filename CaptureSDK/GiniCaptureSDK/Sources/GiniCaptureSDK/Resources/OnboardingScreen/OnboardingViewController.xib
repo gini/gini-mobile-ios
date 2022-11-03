@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_0" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="ipad7_9" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,89 +11,63 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OnboardingViewController" customModule="GiniCaptureSDK">
             <connections>
-                <outlet property="containerView" destination="SS6-Vf-h3i" id="fac-e7-159"/>
                 <outlet property="nextButton" destination="dqe-Kh-XtC" id="DN4-gq-JQi"/>
                 <outlet property="pageControl" destination="fzW-pg-Fy6" id="hrr-29-qQS"/>
                 <outlet property="pagesCollection" destination="r9F-HC-Y7G" id="hRS-Zh-TZf"/>
                 <outlet property="view" destination="Nfe-ie-kjh" id="pkh-VV-OAN"/>
-                <outlet property="viewContainer" destination="dlG-Cg-KwM" id="MiW-HK-a1J"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="Nfe-ie-kjh">
-            <rect key="frame" x="0.0" y="0.0" width="390" height="761"/>
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Nfe-ie-kjh">
+            <rect key="frame" x="0.0" y="0.0" width="744" height="1133"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="dlG-Cg-KwM">
-                    <rect key="frame" x="0.0" y="47" width="390" height="664"/>
-                    <subviews>
-                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="r9F-HC-Y7G">
-                            <rect key="frame" x="0.0" y="0.0" width="390" height="614"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Ohp-ah-9Sw" customClass="CollectionFlowLayout" customModule="GiniCaptureSDK">
-                                <size key="itemSize" width="390" height="500"/>
-                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            </collectionViewFlowLayout>
-                        </collectionView>
-                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="SS6-Vf-h3i">
-                            <rect key="frame" x="110" y="614" width="170" height="50"/>
-                            <subviews>
-                                <pageControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fzW-pg-Fy6">
-                                    <rect key="frame" x="0.0" y="0.0" width="170" height="20"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="20" id="VZ7-dq-CjU"/>
-                                    </constraints>
-                                </pageControl>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dqe-Kh-XtC">
-                                    <rect key="frame" x="0.0" y="0.0" width="170" height="50"/>
-                                    <color key="backgroundColor" red="0.058291204270000001" green="0.61419159170000004" blue="0.86277651789999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="170" id="HtE-go-UrU"/>
-                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="bUG-L5-vie"/>
-                                    </constraints>
-                                    <state key="normal" title="Button"/>
-                                    <buttonConfiguration key="configuration" style="plain" title="Button">
-                                        <color key="baseForegroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    </buttonConfiguration>
-                                </button>
-                            </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </stackView>
-                    </subviews>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="r9F-HC-Y7G">
+                    <rect key="frame" x="0.0" y="24" width="744" height="954"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Ohp-ah-9Sw" customClass="CollectionFlowLayout" customModule="GiniCaptureSDK">
+                        <size key="itemSize" width="390" height="500"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dqe-Kh-XtC">
+                    <rect key="frame" x="287" y="1033" width="170" height="50"/>
+                    <color key="backgroundColor" red="0.058291204270000001" green="0.61419159170000004" blue="0.86277651789999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <constraints>
-                        <constraint firstItem="SS6-Vf-h3i" firstAttribute="top" secondItem="r9F-HC-Y7G" secondAttribute="bottom" id="BFL-iS-IDu"/>
-                        <constraint firstItem="r9F-HC-Y7G" firstAttribute="leading" secondItem="dlG-Cg-KwM" secondAttribute="leading" id="CVn-F5-Y9p"/>
-                        <constraint firstItem="r9F-HC-Y7G" firstAttribute="centerX" secondItem="dlG-Cg-KwM" secondAttribute="centerX" id="EUT-Wr-U3A"/>
-                        <constraint firstAttribute="trailing" secondItem="r9F-HC-Y7G" secondAttribute="trailing" id="MvR-8O-sx2"/>
-                        <constraint firstItem="r9F-HC-Y7G" firstAttribute="top" secondItem="dlG-Cg-KwM" secondAttribute="top" id="UQ6-jQ-WGQ"/>
+                        <constraint firstAttribute="width" constant="170" id="HtE-go-UrU"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="bUG-L5-vie"/>
                     </constraints>
-                </stackView>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="Button">
+                        <color key="baseForegroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </buttonConfiguration>
+                </button>
+                <pageControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fzW-pg-Fy6">
+                    <rect key="frame" x="0.0" y="1003" width="744" height="0.0"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </pageControl>
             </subviews>
-            <viewLayoutGuide key="safeArea" id="kfv-ta-e1r"/>
-            <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
+            <viewLayoutGuide key="safeArea" id="FpJ-cd-hgL"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="r9F-HC-Y7G" firstAttribute="height" secondItem="Nfe-ie-kjh" secondAttribute="height" multiplier="0.871889" priority="750" id="0Mv-sJ-QL8"/>
-                <constraint firstItem="dlG-Cg-KwM" firstAttribute="leading" secondItem="kfv-ta-e1r" secondAttribute="leading" id="278-la-2Uf"/>
-                <constraint firstItem="dlG-Cg-KwM" firstAttribute="centerX" secondItem="Nfe-ie-kjh" secondAttribute="centerX" id="2Wu-wK-cPj"/>
-                <constraint firstItem="kfv-ta-e1r" firstAttribute="trailing" secondItem="dlG-Cg-KwM" secondAttribute="trailing" id="3RR-hJ-mvb"/>
-                <constraint firstItem="r9F-HC-Y7G" firstAttribute="width" secondItem="Nfe-ie-kjh" secondAttribute="width" priority="750" id="B6B-d4-2BN"/>
-                <constraint firstItem="kfv-ta-e1r" firstAttribute="bottom" secondItem="dlG-Cg-KwM" secondAttribute="bottom" priority="992" constant="50" id="FBB-c5-haW">
-                    <variation key="heightClass=regular-widthClass=regular" constant="94"/>
-                </constraint>
-                <constraint firstItem="dlG-Cg-KwM" firstAttribute="top" secondItem="kfv-ta-e1r" secondAttribute="top" id="a3c-MG-nQH"/>
-                <constraint firstItem="dlG-Cg-KwM" firstAttribute="width" secondItem="Nfe-ie-kjh" secondAttribute="width" id="e99-yQ-0Uc"/>
+                <constraint firstItem="r9F-HC-Y7G" firstAttribute="top" secondItem="FpJ-cd-hgL" secondAttribute="top" id="55g-vr-qIJ"/>
+                <constraint firstItem="fzW-pg-Fy6" firstAttribute="top" secondItem="r9F-HC-Y7G" secondAttribute="bottom" constant="25" id="5o3-NM-xxS"/>
+                <constraint firstItem="dqe-Kh-XtC" firstAttribute="centerX" secondItem="Nfe-ie-kjh" secondAttribute="centerX" id="ZTR-SX-gVU"/>
+                <constraint firstItem="dqe-Kh-XtC" firstAttribute="top" secondItem="fzW-pg-Fy6" secondAttribute="bottom" constant="30" id="icM-Ic-aSU"/>
+                <constraint firstItem="fzW-pg-Fy6" firstAttribute="leading" secondItem="Nfe-ie-kjh" secondAttribute="leading" id="k1L-Cz-ht8"/>
+                <constraint firstAttribute="trailing" secondItem="fzW-pg-Fy6" secondAttribute="trailing" id="nNa-Yj-GPz"/>
+                <constraint firstItem="r9F-HC-Y7G" firstAttribute="leading" secondItem="Nfe-ie-kjh" secondAttribute="leading" id="qgS-df-Pfj"/>
+                <constraint firstAttribute="trailing" secondItem="r9F-HC-Y7G" secondAttribute="trailing" id="rKq-1S-lwz"/>
+                <constraint firstAttribute="bottom" secondItem="dqe-Kh-XtC" secondAttribute="bottom" constant="50" id="tai-nW-c9d"/>
             </constraints>
-            <simulatedToolbarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
-            <point key="canvasLocation" x="-733.33333333333337" y="-1819.4196428571427"/>
+            <point key="canvasLocation" x="-733.84615384615381" y="-1819.905213270142"/>
         </view>
     </objects>
     <resources>
-        <systemColor name="opaqueSeparatorColor">
-            <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
     </resources>
 </document>
