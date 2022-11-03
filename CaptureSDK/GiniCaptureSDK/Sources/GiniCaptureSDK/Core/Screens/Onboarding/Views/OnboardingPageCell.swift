@@ -14,6 +14,12 @@ class OnboardingPageCell: UICollectionViewCell {
     @IBOutlet weak var fullText: UILabel!
 
     @IBOutlet weak var topConstraint: NSLayoutConstraint!
+
+    private enum Constants: CGFloat {
+        case topMargin = 85
+        case topIPadMargin = 150
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         title.textColor = GiniColor(
@@ -29,12 +35,12 @@ class OnboardingPageCell: UICollectionViewCell {
     override func layoutSubviews() {
         if UIDevice.current.isIpad {
             if UIApplication.shared.statusBarOrientation.isLandscape {
-                topConstraint.constant = 85
+                topConstraint.constant = Constants.topMargin.rawValue
             } else {
-                topConstraint.constant = 150
+                topConstraint.constant = Constants.topIPadMargin.rawValue
             }
         } else {
-            topConstraint.constant = 85
+            topConstraint.constant = Constants.topMargin.rawValue
         }
         super.layoutSubviews()
     }
