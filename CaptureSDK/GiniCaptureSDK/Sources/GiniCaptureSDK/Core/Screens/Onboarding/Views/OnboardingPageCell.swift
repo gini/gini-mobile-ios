@@ -15,6 +15,8 @@ class OnboardingPageCell: UICollectionViewCell {
 
     @IBOutlet weak var topConstraint: NSLayoutConstraint!
 
+    @IBOutlet weak var iconMargin: NSLayoutConstraint!
+
     private enum Constants: CGFloat {
         case topMargin = 85
         case topIPadMargin = 150
@@ -22,6 +24,10 @@ class OnboardingPageCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        setupView()
+    }
+
+    private func setupView() {
         title.textColor = GiniColor(
             light: UIColor.GiniCapture.dark1,
             dark: UIColor.GiniCapture.light1
@@ -30,6 +36,13 @@ class OnboardingPageCell: UICollectionViewCell {
             light: UIColor.GiniCapture.dark6,
             dark: UIColor.GiniCapture.dark7
         ).uiColor()
+        if UIDevice.current.isIpad {
+            iconMargin.constant = 66
+        } else {
+            let largestHeightDiff: CGFloat = 265 
+            let diff = (UIScreen.main.bounds.size.height - 667) / largestHeightDiff
+            iconMargin.constant = 40 + 26 * min(diff, 1) // 66 for iPhone Pro max,
+        }
     }
 
     override func layoutSubviews() {
