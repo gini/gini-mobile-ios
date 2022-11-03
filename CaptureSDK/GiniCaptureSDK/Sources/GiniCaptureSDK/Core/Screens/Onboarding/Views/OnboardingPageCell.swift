@@ -20,6 +20,8 @@ class OnboardingPageCell: UICollectionViewCell {
     private enum Constants: CGFloat {
         case topMargin = 85
         case topIPadMargin = 150
+        case iconMargin = 30
+        case maxIconMargin = 58
     }
 
     override func awakeFromNib() {
@@ -36,24 +38,27 @@ class OnboardingPageCell: UICollectionViewCell {
             light: UIColor.GiniCapture.dark6,
             dark: UIColor.GiniCapture.dark7
         ).uiColor()
-        if UIDevice.current.isIpad {
-            iconMargin.constant = 66
-        } else {
-            let largestHeightDiff: CGFloat = 265 
-            let diff = (UIScreen.main.bounds.size.height - 667) / largestHeightDiff
-            iconMargin.constant = 40 + 26 * min(diff, 1) // 66 for iPhone Pro max,
-        }
+    }
+
+    private func calculateIconMargin() -> CGFloat {
+        let largestHeightDiff: CGFloat = 265 // 932 PRO MAX - 667 SE
+        let scaleFactor = (UIScreen.main.bounds.size.height - 667) / largestHeightDiff
+        let diff = Constants.maxIconMargin.rawValue - Constants.iconMargin.rawValue
+        return Constants.iconMargin.rawValue + diff * min(scaleFactor, 1)
     }
 
     override func layoutSubviews() {
         if UIDevice.current.isIpad {
             if UIApplication.shared.statusBarOrientation.isLandscape {
                 topConstraint.constant = Constants.topMargin.rawValue
+                iconMargin.constant = calculateIconMargin()
             } else {
                 topConstraint.constant = Constants.topIPadMargin.rawValue
+                iconMargin.constant = Constants.maxIconMargin.rawValue
             }
         } else {
             topConstraint.constant = Constants.topMargin.rawValue
+            iconMargin.constant = calculateIconMargin()
         }
         super.layoutSubviews()
     }
