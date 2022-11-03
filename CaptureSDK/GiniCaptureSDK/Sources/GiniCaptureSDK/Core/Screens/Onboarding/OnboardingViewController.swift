@@ -12,8 +12,6 @@ class OnboardingViewController: UIViewController {
     @IBOutlet weak var pagesCollection: UICollectionView!
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var nextButton: UIButton!
-    @IBOutlet weak var containerView: UIStackView!
-    @IBOutlet weak var viewContainer: UIStackView!
     private (set) var dataSource: OnboardingDataSource
     private let configuration = GiniConfiguration.shared
     private var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
@@ -80,7 +78,7 @@ class OnboardingViewController: UIViewController {
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            navigationBar.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 46),
+            navigationBar.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: 46),
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.heightAnchor.constraint(equalToConstant: navigationBar.frame.height),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -146,7 +144,6 @@ class OnboardingViewController: UIViewController {
 
     private func removeButtons() {
         nextButton.removeFromSuperview()
-        containerView.removeArrangedSubview(nextButton)
     }
 
     @objc private func close() {

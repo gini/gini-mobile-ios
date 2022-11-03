@@ -13,11 +13,12 @@ class OnboardingPageCell: UICollectionViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var fullText: UILabel!
 
+    @IBOutlet weak var topConstraint: NSLayoutConstraint!
     override func awakeFromNib() {
         super.awakeFromNib()
         title.textColor = GiniColor(
-            light: UIColor.GiniCapture.accent1,
-            dark: UIColor.GiniCapture.accent1
+            light: UIColor.GiniCapture.dark1,
+            dark: UIColor.GiniCapture.light1
         ).uiColor()
         fullText.textColor = GiniColor(
             light: UIColor.GiniCapture.dark6,
@@ -25,7 +26,22 @@ class OnboardingPageCell: UICollectionViewCell {
         ).uiColor()
     }
 
-    func configureCell() {}
+    override func layoutSubviews() {
+        if UIDevice.current.isIpad {
+            if UIApplication.shared.statusBarOrientation.isLandscape {
+                topConstraint.constant = 85
+            } else {
+                topConstraint.constant = 150
+            }
+        } else {
+            topConstraint.constant = 85
+        }
+        super.layoutSubviews()
+    }
+
+    func configureCell() {
+
+    }
 
     override func prepareForReuse() {
         super.prepareForReuse()
