@@ -30,6 +30,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
        return view
     }()
 
+    private var validQRCodeProcessing: Bool = false
     public weak var delegate: CameraViewControllerDelegate?
 
     @IBOutlet weak var cameraPane: CameraPane!
@@ -78,6 +79,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        validQRCodeProcessing = false
         delegate?.cameraDidAppear(self)
     }
 
@@ -232,6 +234,12 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             cameraButtonsViewModel,
             action: #selector(cameraButtonsViewModel.thumbnailPressed),
             for: .touchUpInside)
+    }
+
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        qrCodeOverLay.viewWillDisappear()
     }
 
     private func showUploadButton() {
@@ -399,6 +407,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
     private func showQRCodeFeedback(for document: GiniQRCodeDocument) {
         if document.qrCodeFormat != nil {
+            validQRCodeProcessing = true
             cameraPane.isUserInteractionEnabled = false
             UIView.animate(withDuration: 0.3) {
                 self.qrCodeOverLay.isHidden = false
@@ -430,7 +439,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     func resetQRCodeScanning() {
         if detectedQRCodeDocument?.qrCodeFormat != nil {
             cameraPreviewViewController.cameraFrameView.isHidden = true
-            qrCodeOverLay.hideCheckMark()
+            qrCodeOverLay.showAnimation()
         } else {
             UIView.animate(withDuration: 0.3) {
                 self.cameraPreviewViewController.changeFrameColor(to: .GiniCapture.light1)
@@ -454,9 +463,9 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 
     func cameraPreview(_ viewController: CameraPreviewViewController,
                        didDetect qrCodeDocument: GiniQRCodeDocument) {
+        guard !validQRCodeProcessing else { return }
         if detectedQRCodeDocument != qrCodeDocument {
             detectedQRCodeDocument = qrCodeDocument
-
             showQRCodeFeedback(for: qrCodeDocument)
         }
     }
