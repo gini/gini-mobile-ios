@@ -175,7 +175,7 @@ final class CameraPreviewViewController: UIViewController {
                                                          constant: Constants.padding),
                 cameraFrameView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 cameraFrameView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor,
-                                                        constant: -bottomControlHeight-16),
+                                                        constant: -bottomControlHeight-Constants.padding),
                 cameraFrameView.widthAnchor.constraint(equalTo: cameraFrameView.heightAnchor,
                                                        multiplier: 1 / Constants.a4AspectRatio)
                 ])
