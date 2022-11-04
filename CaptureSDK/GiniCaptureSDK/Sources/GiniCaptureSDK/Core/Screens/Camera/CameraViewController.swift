@@ -460,6 +460,10 @@ extension CameraViewController {
 // MARK: - CameraPreviewViewControllerDelegate
 
 extension CameraViewController: CameraPreviewViewControllerDelegate {
+    func notAuthorized() {
+        
+    }
+    
     
     func cameraDidSetUp(_ viewController: CameraPreviewViewController, camera: CameraProtocol) {
         if let tooltip = fileImportToolTipView, tooltip.isHidden == false {
@@ -469,6 +473,7 @@ extension CameraViewController: CameraPreviewViewControllerDelegate {
         cameraButtonsViewController.isFlashSupported = camera.isFlashSupported
         cameraButtonsViewController.view.setNeedsLayout()
         cameraButtonsViewController.view.layoutIfNeeded()
+        cameraPreviewViewController.updatePreviewViewOrientation()
     }
     
     func cameraPreview(_ viewController: CameraPreviewViewController, didDetect qrCodeDocument: GiniQRCodeDocument) {

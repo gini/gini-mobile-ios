@@ -24,7 +24,7 @@ protocol CameraProtocol: AnyObject {
                atDevicePoint point: CGPoint,
                monitorSubjectAreaChange: Bool)
     func setup(completion: @escaping ((CameraError?) -> Void))
-    func setupQRScanningOutput()
+    func setupQRScanningOutput(completion: @escaping ((CameraError?) -> Void))
     func start()
     func stop()
 }
@@ -47,7 +47,10 @@ final class Camera: NSObject, CameraProtocol {
         #if targetEnvironment(simulator)
         return true
         #else
-        return videoDeviceInput?.device.hasFlash ?? false
+        return videoDeviceInput?.device.hasFlash ?? AVCaptureDevice.default(
+            .builtInWideAngleCamera,
+            for: .video,
+            position: .back)?.hasFlash == true
         #endif
     }()
     
@@ -62,14 +65,18 @@ final class Camera: NSObject, CameraProtocol {
         super.init()
     }
     
-    fileprivate func configureSession() {
+    fileprivate func configureSession(completion: @escaping ((CameraError?) -> Void)) {
         self.session.beginConfiguration()
         self.setupInput()
         self.setupPhotoCaptureOutput()
-        if giniConfiguration.qrCodeScanningEnabled {
-            self.setupQRScanningOutput()
-        }
         self.session.commitConfiguration()
+        if giniConfiguration.qrCodeScanningEnabled {
+            self.setupQRScanningOutput(completion: completion)
+        } else {
+            DispatchQueue.main.async {
+                completion(nil)
+            }
+        }
     }
     
     func setup(completion: @escaping ((CameraError?) -> Void)) {
@@ -92,10 +99,10 @@ final class Camera: NSObject, CameraProtocol {
                 }
                 
                 self.sessionQueue.async {
-                    self.configureSession()
+                    self.configureSession(completion: completion)
                 }
                 
-                completion(nil)
+                
             }
         }
     }
@@ -162,9 +169,12 @@ final class Camera: NSObject, CameraProtocol {
         }
     }
     
-    func setupQRScanningOutput() {
+    func setupQRScanningOutput(completion: @escaping ((CameraError?) -> Void)) {
         sessionQueue.async {
             self.configureQROutput()
+            DispatchQueue.main.async {
+                completion(nil)
+            }
         }
     }
 
