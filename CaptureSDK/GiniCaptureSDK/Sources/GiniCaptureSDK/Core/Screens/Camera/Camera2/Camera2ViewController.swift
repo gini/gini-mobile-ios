@@ -87,6 +87,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             comment: "Info label")
         edgesForExtendedLayout = []
         view.backgroundColor = giniConfiguration.cameraContainerViewBackgroundColor.uiColor()
+        cameraPreviewViewController.previewView.alpha = 0
         addChild(cameraPreviewViewController)
         view.addSubview(cameraPreviewViewController.view)
         cameraPreviewViewController.didMove(toParent: self)
@@ -328,6 +329,7 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
         cameraFrameImageView.isHidden = false
         cameraPane.toggleCaptureButtonActivation(state: true)
         cameraPreviewViewController.updatePreviewViewOrientation()
+        cameraPreviewViewController.previewView.alpha = 1
     }
 
     func cameraPreview(_ viewController: CameraPreviewViewController,
