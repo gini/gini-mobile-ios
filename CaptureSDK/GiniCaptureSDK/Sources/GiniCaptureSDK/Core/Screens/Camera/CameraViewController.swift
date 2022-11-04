@@ -461,7 +461,7 @@ extension CameraViewController {
 
 extension CameraViewController: CameraPreviewViewControllerDelegate {
     func notAuthorized() {
-        
+        cameraButtonsViewController.captureButton.isEnabled = false
     }
     
     
