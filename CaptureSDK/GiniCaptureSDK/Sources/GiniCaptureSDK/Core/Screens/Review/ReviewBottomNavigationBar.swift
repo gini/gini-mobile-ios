@@ -14,41 +14,48 @@ protocol ReviewBottomNavigationBarDelegate: AnyObject {
 
 final class ReviewBottomNavigationBar: UIView {
     private let configuration = GiniConfiguration.shared
-    lazy var mainButton: MultilineTitleButton = {
-        let button = MultilineTitleButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.layer.cornerRadius = 16
-        button.backgroundColor = UIColor.GiniCapture.accent1
-        button.setTitle(NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle",
-                                                         comment: "Process button title"), for: .normal)
-        button.addTarget(self, action: #selector(mainButtonClicked), for: .touchUpInside)
-        return button
-    }()
 
-    lazy var secondaryButton: BottomLabelButton = {
-        let addPagesButton = BottomLabelButton()
-        addPagesButton.translatesAutoresizingMaskIntoConstraints = false
-        addPagesButton.configureButton(image: UIImageNamedPreferred(named: "plus_icon") ?? UIImage(),
-                                       name:
-                        NSLocalizedStringPreferredFormat("ginicapture.multipagereview.secondaryButtonTitle",
-                                                        comment: "Add pages button title"))
-        addPagesButton.isHidden = !configuration.multipageEnabled
-        // The button's asset changes with light/dark mode but right now we don't support light mode on bottom navigation
-        if #available(iOS 13.0, *) {
-            addPagesButton.iconView.tintColor = .GiniCapture.light1
-            addPagesButton.iconView.image = addPagesButton.iconView.image?.withTintColor(.GiniCapture.light1,
-                                                                                         renderingMode: .alwaysTemplate)
-        } else {
-            addPagesButton.iconView.image = addPagesButton.iconView.image?.tintedImageWithColor(.GiniCapture.light1)
-        }
-        addPagesButton.actionLabel.textColor = UIColor.GiniCapture.light1
-        addPagesButton.didTapButton = { [weak self] in
+    @IBOutlet weak var mainButton: UIButton!
+    @IBOutlet weak var secondaryButton: BottomLabelButton!
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        setupView()
+    }
+
+    func setupView() {
+        let configuration = GiniConfiguration.shared
+        backgroundColor = GiniColor(light: UIColor.GiniCapture.dark2, dark: UIColor.GiniCapture.dark2).uiColor()
+
+        mainButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle",
+                                                             comment: "Process button title"), for: .normal)
+        mainButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
+        mainButton.layer.cornerRadius = 16
+        mainButton.backgroundColor = UIColor.GiniCapture.accent1
+        mainButton.setTitleColor(UIColor.GiniCapture.light1, for: .normal)
+        mainButton.addTarget(self, action: #selector(mainButtonClicked), for: .touchUpInside)
+
+        secondaryButton.translatesAutoresizingMaskIntoConstraints = false
+        secondaryButton.configureButton(image: UIImageNamedPreferred(named: "plus_icon") ?? UIImage(),
+                                        name: NSLocalizedStringPreferredFormat(
+                                            "ginicapture.multipagereview.secondaryButtonTitle",
+                                        comment: "Add pages button title"))
+        secondaryButton.isHidden = !configuration.multipageEnabled
+        secondaryButton.actionLabel.textColor = UIColor.GiniCapture.light1
+        secondaryButton.didTapButton = { [weak self] in
             self?.secondaryButtonClicked()
         }
-        return addPagesButton
-    }()
+        // The button's asset changes with light/dark mode but right now we don't support light mode on bottom navigation
+        if #available(iOS 13.0, *) {
+            secondaryButton.iconView.tintColor = .GiniCapture.light1
+            secondaryButton.iconView.image = secondaryButton.iconView.image?.withTintColor(.GiniCapture.light1,
+                                                                                         renderingMode: .alwaysTemplate)
+        } else {
+            secondaryButton.iconView.image = secondaryButton.iconView.image?.tintedImageWithColor(.GiniCapture.light1)
+        }
+
+        addLoadingView()
+    }
 
     private var loadingIndicatorView: UIActivityIndicatorView = {
         let indicatorView = UIActivityIndicatorView()
@@ -59,43 +66,6 @@ final class ReviewBottomNavigationBar: UIView {
     }()
 
     weak var delegate: ReviewBottomNavigationBarDelegate?
-
-    init() {
-        super.init(frame: .zero)
-        setupView()
-        addConstraints()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    private func setupView() {
-        backgroundColor = GiniColor(light: UIColor.GiniCapture.dark2, dark: UIColor.GiniCapture.dark2).uiColor()
-
-        addSubview(mainButton)
-        addSubview(secondaryButton)
-        addLoadingView()
-    }
-
-    private func addConstraints() {
-        let buttonLeadingConstraint = secondaryButton.leadingAnchor.constraint(equalTo: mainButton.trailingAnchor,
-                                                                              constant: 13)
-        buttonLeadingConstraint.priority = UILayoutPriority.defaultLow
-
-        NSLayoutConstraint.activate([
-            mainButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
-            mainButton.widthAnchor.constraint(equalToConstant: 204),
-            mainButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            mainButton.heightAnchor.constraint(equalToConstant: 50),
-            mainButton.bottomAnchor.constraint(greaterThanOrEqualTo: self.safeAreaLayoutGuide.bottomAnchor,
-                                                  constant: -50),
-
-            secondaryButton.centerYAnchor.constraint(equalTo: mainButton.centerYAnchor),
-            buttonLeadingConstraint,
-            secondaryButton.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: -4)
-        ])
-    }
 
     private func addLoadingView() {
         let loadingIndicator: UIView

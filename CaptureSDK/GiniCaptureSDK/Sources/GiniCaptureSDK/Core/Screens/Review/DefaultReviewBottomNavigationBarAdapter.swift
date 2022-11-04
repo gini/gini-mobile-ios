@@ -21,10 +21,13 @@ class DefaultReviewBottomNavigationBarAdapter: ReviewScreenBottomNavigationBarAd
     }
 
     func injectedView() -> UIView {
-        let view = ReviewBottomNavigationBar()
-        view.delegate = self
-        self.view = view
-        return view
+        if let navigationBarView = ReviewBottomNavigationBar().loadNib() as? ReviewBottomNavigationBar {
+            self.view = navigationBarView
+            self.view?.delegate = self
+            return navigationBarView
+        } else {
+            return UIView()
+        }
     }
 
     func set(loadingState isLoading: Bool) {
