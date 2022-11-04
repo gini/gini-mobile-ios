@@ -35,8 +35,8 @@ final class CorrectQRCodeTextContainer: UIView {
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            titleLabel.topAnchor.constraint(equalTo: topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor)
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.spacing / 2),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.spacing)
         ])
     }
 }
@@ -65,7 +65,7 @@ final class IncorrectQRCodeTextContainer: UIView {
         let textStackView = UIStackView()
         textStackView.axis = .vertical
         textStackView.distribution = .fillProportionally
-        textStackView.spacing = 5
+        textStackView.spacing = Constants.spacing
         textStackView.translatesAutoresizingMaskIntoConstraints = false
         return textStackView
     }()
@@ -88,8 +88,8 @@ final class IncorrectQRCodeTextContainer: UIView {
         NSLayoutConstraint.activate([
             textStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             textStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            textStackView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
-            textStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16)
+            textStackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.spacing * 2),
+            textStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.spacing * 2)
         ])
     }
 }
@@ -99,7 +99,7 @@ final class QRCodeOverlay: UIView {
 
     private lazy var correctQRFeedback: CorrectQRCodeTextContainer = {
         let view = CorrectQRCodeTextContainer()
-        view.layer.cornerRadius = 8
+        view.layer.cornerRadius = Constants.spacing
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isHidden = true
         return view
@@ -107,7 +107,7 @@ final class QRCodeOverlay: UIView {
 
     private lazy var incorrectQRFeedback: IncorrectQRCodeTextContainer = {
         let view = IncorrectQRCodeTextContainer()
-        view.layer.cornerRadius = 8
+        view.layer.cornerRadius = Constants.spacing
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isHidden = true
         return view
@@ -143,7 +143,7 @@ final class QRCodeOverlay: UIView {
         let textStackView = UIStackView()
         textStackView.axis = .vertical
         textStackView.distribution = .fillProportionally
-        textStackView.spacing = 16
+        textStackView.spacing = Constants.spacing * 2
         textStackView.translatesAutoresizingMaskIntoConstraints = false
         textStackView.isHidden = true
         return textStackView
@@ -178,15 +178,17 @@ final class QRCodeOverlay: UIView {
 
     func layoutViews(centeringBy cameraFrame: UIView) {
         NSLayoutConstraint.activate([
-            incorrectQRFeedback.topAnchor.constraint(equalTo: cameraFrame.topAnchor, constant: 8),
-            incorrectQRFeedback.leadingAnchor.constraint(equalTo: cameraFrame.leadingAnchor, constant: 8),
-            incorrectQRFeedback.trailingAnchor.constraint(equalTo: cameraFrame.trailingAnchor, constant: -8),
+            incorrectQRFeedback.topAnchor.constraint(equalTo: cameraFrame.topAnchor,
+                                                     constant: Constants.spacing),
+            incorrectQRFeedback.leadingAnchor.constraint(equalTo: cameraFrame.leadingAnchor,
+                                                         constant: Constants.spacing),
+            incorrectQRFeedback.trailingAnchor.constraint(equalTo: cameraFrame.trailingAnchor,
+                                                          constant: -Constants.spacing),
 
             correctQRFeedback.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
             correctQRFeedback.centerYAnchor.constraint(equalTo: cameraFrame.topAnchor),
-            correctQRFeedback.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 16),
-            correctQRFeedback.widthAnchor.constraint(greaterThanOrEqualToConstant: 106),
-            correctQRFeedback.heightAnchor.constraint(greaterThanOrEqualToConstant: 26),
+            correctQRFeedback.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor,
+                                                       constant: Constants.spacing * 2),
 
             checkMarkImageView.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
             checkMarkImageView.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor),
@@ -246,4 +248,8 @@ final class QRCodeOverlay: UIView {
             loadingIndicatorView.stopAnimating()
         }
     }
+}
+
+private enum Constants {
+    static let spacing: CGFloat = 8
 }
