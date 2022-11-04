@@ -329,7 +329,9 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
         cameraFrameImageView.isHidden = false
         cameraPane.toggleCaptureButtonActivation(state: true)
         cameraPreviewViewController.updatePreviewViewOrientation()
-        cameraPreviewViewController.previewView.alpha = 1
+        UIView.animate(withDuration: 1.0) {
+            self.cameraPreviewViewController.previewView.alpha = 1
+        }
     }
 
     func cameraPreview(_ viewController: CameraPreviewViewController,
