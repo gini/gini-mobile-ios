@@ -406,6 +406,16 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     // swiftlint:enable line_length
 
     private func showQRCodeFeedback(for document: GiniQRCodeDocument) {
+        hideTask = DispatchWorkItem(block: {
+            self.resetQRCodeScanning()
+
+            if let QRDocument = self.detectedQRCodeDocument {
+                if QRDocument.qrCodeFormat != nil {
+                    self.didPick(QRDocument)
+                }
+            }
+        })
+
         if document.qrCodeFormat != nil {
             validQRCodeProcessing = true
             cameraPane.isUserInteractionEnabled = false
@@ -425,18 +435,17 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: false)
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
-            self.resetQRCodeScanning()
-
-            if let QRDocument = self.detectedQRCodeDocument {
-                if QRDocument.qrCodeFormat != nil {
-                    self.didPick(QRDocument)
-                }
-            }
-        })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: hideTask!)
     }
 
+    private var resetTask: DispatchWorkItem?
+    private var hideTask: DispatchWorkItem?
+
     func resetQRCodeScanning() {
+        resetTask = DispatchWorkItem(block: {
+            self.detectedQRCodeDocument = nil
+        })
+
         if detectedQRCodeDocument?.qrCodeFormat != nil {
             cameraPreviewViewController.cameraFrameView.isHidden = true
             qrCodeOverLay.showAnimation()
@@ -446,6 +455,8 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                 self.qrCodeOverLay.isHidden = true
                 self.cameraPane.isUserInteractionEnabled = true
             }
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: resetTask!)
         }
     }
 }
@@ -465,6 +476,9 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
                        didDetect qrCodeDocument: GiniQRCodeDocument) {
         guard !validQRCodeProcessing else { return }
         if detectedQRCodeDocument != qrCodeDocument {
+            hideTask?.cancel()
+            resetTask?.cancel()
+
             detectedQRCodeDocument = qrCodeDocument
             showQRCodeFeedback(for: qrCodeDocument)
         }
