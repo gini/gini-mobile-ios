@@ -49,24 +49,24 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
                                                                   deviceOrientation: deviceOrientation,
                                                                   imageSource: imageSource,
                                                                   imageImportMethod: imageImportMethod)
-        
+
         if let dataWithMetadata = metaInformationManager.imageByAddingMetadata() {
             self.data = dataWithMetadata
         } else {
             self.data = data
         }
-        
-    }
-    
-    func rotatePreviewImage90Degrees() {
-        guard let rotatedImage = self.previewImage?.rotated90Degrees() else { return }
-        metaInformationManager.rotate(degrees: 90, imageOrientation: rotatedImage.imageOrientation)
-        
-        if let data = metaInformationManager.imageByAddingMetadata() {
-            self.previewImage = UIImage(data: data)
-        } else {
-            self.previewImage = rotatedImage
+
+        super.init()
+        if let image = UIImage(data: data) {
+            #if targetEnvironment(simulator)
+            self.data = image.jpegData(compressionQuality: 1)!
+            return
+            #endif
+
+            self.data = image.jpegData(compressionQuality: 1)!
+            self.previewImage = image
         }
+        
     }
 }
 
