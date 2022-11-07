@@ -81,5 +81,79 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return imageColored
     }
-    
+
+    /// Extension to fix orientation of an UIImage without EXIF
+    func fixOrientation() -> UIImage {
+
+        guard let cgImage = cgImage else { return self }
+
+        // If the image is already in '.up' orientation, just return
+        if imageOrientation == .up { return self }
+
+        // Create a transform to apply on the image to redraw it in '.up' orientation
+        var transform = CGAffineTransform.identity
+
+        switch imageOrientation {
+
+        case .down, .downMirrored:
+            transform = transform.translatedBy(x: size.width, y: size.height)
+            transform = transform.rotated(by: CGFloat(Double.pi))
+
+        case .left, .leftMirrored:
+            transform = transform.translatedBy(x: size.width, y: 0)
+            transform = transform.rotated(by: CGFloat(Double.pi / 2))
+
+        case .right, .rightMirrored:
+            transform = transform.translatedBy(x: 0, y: size.height)
+            transform = transform.rotated(by: CGFloat(-Double.pi / 2))
+
+        case .up, .upMirrored:
+            break
+        @unknown default:
+            break
+        }
+
+        // For mirrored orientations, mirror the transform as well
+        switch imageOrientation {
+
+        case .upMirrored, .downMirrored:
+            transform = transform.translatedBy(x: size.width, y: 0)
+            transform = transform.scaledBy(x: -1, y: 1)
+
+        case .leftMirrored, .rightMirrored:
+            transform = transform.translatedBy(x: size.height, y: 0)
+            transform = transform.scaledBy(x: -1, y: 1)
+
+        case .up, .down, .left, .right:
+            break
+        @unknown default:
+            break
+        }
+
+        // Create a context where the image will be drawn
+        if let ctx = CGContext(data: nil, width: Int(size.width), height: Int(size.height),
+                               bitsPerComponent: cgImage.bitsPerComponent, bytesPerRow: 0,
+                               space: cgImage.colorSpace!, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) {
+
+            ctx.concatenate(transform)
+
+            // Draw the image in the rect defined above
+            switch imageOrientation {
+
+            case .left, .leftMirrored, .right, .rightMirrored:
+                ctx.draw(cgImage, in: CGRect(x: 0, y: 0, width: size.height, height: size.width))
+
+            default:
+                ctx.draw(cgImage, in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+            }
+
+            // Return the redrawn image in '.up' orientation
+            if let finalImage = ctx.makeImage() {
+                return (UIImage(cgImage: finalImage))
+            }
+        }
+
+        // If something failed -- return original
+        return self
+    }
 }
