@@ -39,15 +39,30 @@ extension GiniScreenAPICoordinator {
         let viewController: NoResultScreenViewController
         switch type {
         case .image:
-            viewModel = NoResultScreenViewModel { [weak self] in
-                self?.backToCamera()
-            } manuallyPressed: { [weak self] in
-                self?.screenAPINavigationController.dismiss(animated: true)
-            } cancelPressed: { [weak self] in
-                self?.backToCamera()
+            if pages.contains(where: { $0.document.isImported == false }) {
+                // if there is a photo captured with camera
+                viewModel = NoResultScreenViewModel(
+                    retakeBlock: { [weak self] in
+                        self?.backToCamera()
+                    },
+                    manuallyPressed: { [weak self] in
+                        self?.screenAPINavigationController.dismiss(animated: true)
+                    }, cancelPressed: { [weak self] in
+                    self?.backToCamera()
+                })
+            } else {
+                viewModel = NoResultScreenViewModel(
+                    manuallyPressed: { [weak self] in
+                        self?.screenAPINavigationController.dismiss(animated: true)
+                    }, cancelPressed: { [weak self] in
+                    self?.backToCamera()
+                })
             }
         default:
-            viewModel = NoResultScreenViewModel( cancelPressed: { [weak self] in
+            viewModel = NoResultScreenViewModel(
+                manuallyPressed: { [weak self] in
+                    self?.screenAPINavigationController.dismiss(animated: true)
+                }, cancelPressed: { [weak self] in
                 self?.closeScreenApi()
             })
         }
