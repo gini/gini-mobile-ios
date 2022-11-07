@@ -88,13 +88,21 @@ final public class NoResultScreenViewController: UIViewController {
         }
         fatalError("No result header not found")
     }()
-
     private (set) var dataSource: HelpDataSource
     private var giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 44
     private let sectionHeight: CGFloat = 70
     private let type: NoResultType
     private let viewModel: NoResultScreenViewModel
+    private var buttonsHeightConstraint: NSLayoutConstraint?
+    private var numberOfButtons: Int {
+        return [
+            viewModel.isEnterManuallyHidden() == false,
+            viewModel.isRetakePressedHidden() == false
+        ].filter({
+            $0 == true
+        }).count
+    }
 
     public init(
         giniConfiguration: GiniConfiguration,
@@ -128,18 +136,11 @@ final public class NoResultScreenViewController: UIViewController {
 
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        var numberOfButtons: CGFloat = 0
-        if viewModel.isEnterManuallyHidden() == false {
-            numberOfButtons += 1
-        }
-        if viewModel.isRetakePressedHidden() == false {
-            numberOfButtons += 1
-        }
         if numberOfButtons > 0 {
             tableView.contentInset = UIEdgeInsets(
                 top: 0,
                 left: 0,
-                bottom: buttonsView.bounds.size.height + numberOfButtons * GiniMargins.margin,
+                bottom: buttonsView.bounds.size.height + CGFloat(numberOfButtons) * GiniMargins.margin,
                 right: 0)
         } else {
             tableView.contentInset = UIEdgeInsets(
@@ -202,6 +203,14 @@ final public class NoResultScreenViewController: UIViewController {
                 barButtonSystemItem: .cancel,
                 target: viewModel,
                 action: #selector(viewModel.didPressCancell))
+        }
+    }
+
+    private func getButtonsMinHeight(numberOfButtons: Int) -> CGFloat {
+        if numberOfButtons == 1 {
+            return 50
+        } else {
+            return 112
         }
     }
 
@@ -285,28 +294,6 @@ final public class NoResultScreenViewController: UIViewController {
         tableView.reloadData()
         view.layoutSubviews()
     }
-
-    private func addBlurEffect(button: UIButton, cornerRadius: CGFloat) {
-        button.backgroundColor = .clear
-        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
-        blurView.isUserInteractionEnabled = false
-        blurView.backgroundColor = .clear
-        if cornerRadius > 0 {
-            blurView.layer.cornerRadius = cornerRadius
-            blurView.layer.masksToBounds = true
-        }
-        button.insertSubview(blurView, at: 0)
-        blurView.translatesAutoresizingMaskIntoConstraints = false
-        button.leadingAnchor.constraint(equalTo: blurView.leadingAnchor).isActive = true
-        button.trailingAnchor.constraint(equalTo: blurView.trailingAnchor, constant: -0).isActive = true
-        button.topAnchor.constraint(equalTo: blurView.topAnchor).isActive = true
-        button.bottomAnchor.constraint(equalTo: blurView.bottomAnchor).isActive = true
-        if let imageView = button.imageView {
-            imageView.backgroundColor = .clear
-            button.bringSubviewToFront(imageView)
-        }
-    }
-
     private func configureButtonsColors() {
         retakeButton.setTitleColor(giniConfiguration.primaryButtonTitleColor.uiColor(), for: .normal)
         retakeButton.backgroundColor = giniConfiguration.primaryButtonBackgroundColor.uiColor()
@@ -327,7 +314,7 @@ final public class NoResultScreenViewController: UIViewController {
 
     private func configureButtons() {
         configureButtonsColors()
-        addBlurEffect(button: enterButton, cornerRadius: 14)
+        enterButton.addBlurEffect(cornerRadius: 14)
         enterButton.addTarget(viewModel, action: #selector(viewModel.didPressEnterManually), for: .touchUpInside)
         retakeButton.addTarget(viewModel, action: #selector(viewModel.didPressRetake), for: .touchUpInside)
     }
@@ -358,6 +345,10 @@ final public class NoResultScreenViewController: UIViewController {
         } else {
             configureBottomBarConstraints()
         }
+        let buttonsConstraint =  buttonsView.heightAnchor.constraint(
+            greaterThanOrEqualToConstant: getButtonsMinHeight(numberOfButtons: numberOfButtons)
+        )
+        buttonsHeightConstraint = buttonsConstraint
         NSLayoutConstraint.activate([
             tableView.heightAnchor.constraint(greaterThanOrEqualToConstant: view.bounds.size.height * 0.6),
             header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
@@ -369,8 +360,13 @@ final public class NoResultScreenViewController: UIViewController {
                 equalTo: buttonsView.bottomAnchor,
                 constant: 16
             ),
-            buttonsView.heightAnchor.constraint(greaterThanOrEqualToConstant: 112)
+            buttonsConstraint
         ])
+        configureHorizontalConstraints()
+        view.layoutSubviews()
+    }
+
+    private func configureHorizontalConstraints() {
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
                 tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -390,6 +386,10 @@ final public class NoResultScreenViewController: UIViewController {
                 buttonsView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor)
             ])
         }
-        view.layoutSubviews()
+    }
+
+    private enum Constants: CGFloat {
+        case singleButtonHeight = 50
+        case twoBUttonsHeight = 112
     }
 }
