@@ -14,6 +14,7 @@ protocol ReviewBottomNavigationBarDelegate: AnyObject {
 
 final class ReviewBottomNavigationBar: UIView {
     private let configuration = GiniConfiguration.shared
+    weak var delegate: ReviewBottomNavigationBarDelegate?
 
     @IBOutlet weak var mainButton: UIButton!
     @IBOutlet weak var secondaryButton: BottomLabelButton!
@@ -64,8 +65,6 @@ final class ReviewBottomNavigationBar: UIView {
         indicatorView.color = GiniColor(light: UIColor.GiniCapture.dark3, dark: UIColor.GiniCapture.light3).uiColor()
         return indicatorView
     }()
-
-    weak var delegate: ReviewBottomNavigationBarDelegate?
 
     private func addLoadingView() {
         let loadingIndicator: UIView
