@@ -81,22 +81,23 @@ final class CameraPreviewViewController: UIViewController {
         return previewView
     }()
 
-    private let iPadCameraPaneWidth: CGFloat = 124
     private lazy var iPadLandscapeConstraints: [NSLayoutConstraint] = [
-        cameraFrameView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
+        cameraFrameView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.padding),
         cameraFrameView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-        cameraFrameView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -iPadCameraPaneWidth/2),
+        cameraFrameView.centerXAnchor.constraint(equalTo: view.centerXAnchor,
+                                                 constant: -Constants.cameraPaneWidth/2),
         cameraFrameView.heightAnchor.constraint(equalTo: cameraFrameView.widthAnchor,
-                                                     multiplier: 1.414)
+                                                multiplier: Constants.a4AspectRatio)
     ]
 
     private lazy var iPadPortraitConstraints: [NSLayoutConstraint] = [
-        cameraFrameView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: 16),
+        cameraFrameView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: Constants.padding),
         cameraFrameView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-        cameraFrameView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-        cameraFrameView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -iPadCameraPaneWidth-16),
+        cameraFrameView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: Constants.padding),
+        cameraFrameView.centerXAnchor.constraint(equalTo: view.centerXAnchor,
+                                                 constant: -Constants.cameraPaneWidth/2),
         cameraFrameView.heightAnchor.constraint(equalTo: cameraFrameView.widthAnchor,
-                                                     multiplier: 1.414)
+                                                     multiplier: Constants.a4AspectRatio)
     ]
 
     private func iPadConstraint() -> [NSLayoutConstraint] {
@@ -166,17 +167,17 @@ final class CameraPreviewViewController: UIViewController {
         } else {
             // The height of the bottom controls
             let bottomControlHeight = view.frame.height * 0.23 +
-                                      (giniConfiguration.bottomNavigationBarEnabled ? 114 : 0)
+            (giniConfiguration.bottomNavigationBarEnabled ? Constants.bottomNavigationBarHeight : 0)
 
             NSLayoutConstraint.activate([
-                cameraFrameView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
+                cameraFrameView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.padding),
                 cameraFrameView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
-                                                         constant: 16),
+                                                         constant: Constants.padding),
                 cameraFrameView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 cameraFrameView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor,
-                                                        constant: -bottomControlHeight),
+                                                        constant: -bottomControlHeight-Constants.padding),
                 cameraFrameView.widthAnchor.constraint(equalTo: cameraFrameView.heightAnchor,
-                                                       multiplier: 1 / 1.414)
+                                                       multiplier: 1 / Constants.a4AspectRatio)
                 ])
         }
 
@@ -418,4 +419,13 @@ extension CameraPreviewViewController {
         showFocusIndicator(imageView)
     }
     
+}
+
+extension CameraPreviewViewController {
+    private enum Constants {
+        static let padding: CGFloat = 16
+        static let a4AspectRatio: CGFloat = 1.414
+        static let cameraPaneWidth: CGFloat = 124
+        static let bottomNavigationBarHeight: CGFloat = 114
+    }
 }
