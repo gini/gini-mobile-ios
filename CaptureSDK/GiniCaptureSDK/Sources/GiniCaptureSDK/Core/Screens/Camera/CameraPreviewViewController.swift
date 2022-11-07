@@ -31,8 +31,6 @@ final class CameraPreviewViewController: UIViewController {
     var isFlashSupported: Bool {
         return camera.isFlashSupported && giniConfiguration.flashToggleEnabled
     }
-
-    private var detectedQRCodeDocument: GiniQRCodeDocument?
     
     private lazy var spinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: .whiteLarge)
@@ -286,11 +284,7 @@ final class CameraPreviewViewController: UIViewController {
         if giniConfiguration.qrCodeScanningEnabled {
             camera.didDetectQR = { [weak self] qrDocument in
                 guard let self = self else { return }
-
-                if self.detectedQRCodeDocument != qrDocument {
-                    self.detectedQRCodeDocument = qrDocument
-                    self.delegate?.cameraPreview(self, didDetect: qrDocument)
-                }
+                self.delegate?.cameraPreview(self, didDetect: qrDocument)
             }
         }
     }

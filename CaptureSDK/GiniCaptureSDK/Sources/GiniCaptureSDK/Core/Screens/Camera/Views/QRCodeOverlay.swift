@@ -16,7 +16,8 @@ final class CorrectQRCodeTextContainer: UIView {
         label.font = configuration.textStyleFonts[.caption2]
         label.textAlignment = .center
         label.textColor = .GiniCapture.light1
-        label.text = "QR code detected"
+        label.text = NSLocalizedStringPreferredFormat("ginicapture.QRscanning.correct",
+                                                      comment: "QR Detected")
         return label
     }()
 
@@ -48,7 +49,8 @@ final class IncorrectQRCodeTextContainer: UIView {
         let label = UILabel()
         label.font = configuration.textStyleFonts[.footnoteBold]
         label.textColor = .GiniCapture.dark1
-        label.text = "Unkown QR code"
+        label.text = NSLocalizedStringPreferredFormat("ginicapture.QRscanning.incorrect.title",
+                                                      comment: "Unknown QR")
         return label
     }()
 
@@ -57,7 +59,8 @@ final class IncorrectQRCodeTextContainer: UIView {
         label.font = configuration.textStyleFonts[.footnote]
         label.textColor = .GiniCapture.dark1
         label.numberOfLines = 0
-        label.text = "This code does not carry any information that can be processed."
+        label.text = NSLocalizedStringPreferredFormat("ginicapture.QRscanning.incorrect.description",
+                                                      comment: "No content")
         return label
     }()
 
@@ -135,7 +138,8 @@ final class QRCodeOverlay: UIView {
         loadingIndicatorText.adjustsFontForContentSizeCategory = true
         loadingIndicatorText.textColor = .GiniCapture.light1
         loadingIndicatorText.isAccessibilityElement = true
-        loadingIndicatorText.text = "Retrieving invoice"
+        loadingIndicatorText.text = NSLocalizedStringPreferredFormat("ginicapture.QRscanning.loading",
+                                                                     comment: "Retrievenig invoice")
         return loadingIndicatorText
     }()
 
