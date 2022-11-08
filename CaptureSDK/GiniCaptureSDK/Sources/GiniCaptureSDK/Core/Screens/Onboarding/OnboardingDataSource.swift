@@ -29,6 +29,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
     private var adapters: [OnboadingPageType: OnboardingIllustrationAdapter?] = [:]
     private let giniConfiguration: GiniConfiguration
     weak var delegate: OnboardingScreen?
+    var currentPage = 0
 
     lazy var itemSections: [OnboardingPageNew] = {
         if let customPages = giniConfiguration.customOnboardingPages {
@@ -136,10 +137,19 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         }
     }
 
+    func collectionView(
+        _ collectionView: UICollectionView,
+        targetContentOffsetForProposedContentOffset proposedContentOffset: CGPoint
+    ) -> CGPoint {
+        let index = IndexPath(row: currentPage, section: 0)
+        let attr = collectionView.layoutAttributesForItem(at: index)
+        return attr?.frame.origin ?? CGPoint.zero
+    }
     // MARK: - Display the page number in page controll of collection view Cell
 
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let page = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
+        currentPage = page
         delegate?.didScroll(page: page)
     }
 
@@ -147,8 +157,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let height = collectionView.frame.height
-        let width = collectionView.frame.width
-        return CGSize(width: width, height: height)
+        return collectionView.bounds.size
     }
+
 }
