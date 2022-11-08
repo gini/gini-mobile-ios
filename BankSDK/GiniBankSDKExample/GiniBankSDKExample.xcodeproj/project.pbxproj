@@ -16,6 +16,10 @@
 		833652FD28F0308B00B5A1CE /* CustomBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833652FC28F0308B00B5A1CE /* CustomBottomNavigationBarAdapter.swift */; };
 		833652FF28F0330B00B5A1CE /* CustomBottomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 833652FE28F0330B00B5A1CE /* CustomBottomNavigationBar.xib */; };
 		8336530128F0334C00B5A1CE /* CustomBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8336530028F0334C00B5A1CE /* CustomBottomNavigationBar.swift */; };
+		83D02CD3290AC3AD00DA97F7 /* CustomOnboardingBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D02CD2290AC3AD00DA97F7 /* CustomOnboardingBottomNavigationBarAdapter.swift */; };
+		83D02CD7290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83D02CD6290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib */; };
+		83D02CD9290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D02CD8290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift */; };
+		83D02CDB290AC86300DA97F7 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D02CDA290AC86300DA97F7 /* UIView.swift */; };
 		F4083ED72735B0CB004DDD3B /* LocalizableCustomName.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4083ED92735B0CB004DDD3B /* LocalizableCustomName.strings */; };
 		F40E1436273C06AA00734A0E /* PartialDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40E1435273C06AA00734A0E /* PartialDocument.swift */; };
 		F414A56325EBB87F00D04A80 /* DocumentAnalysisHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */; };
@@ -102,6 +106,10 @@
 		833652FC28F0308B00B5A1CE /* CustomBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
 		833652FE28F0330B00B5A1CE /* CustomBottomNavigationBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomBottomNavigationBar.xib; sourceTree = "<group>"; };
 		8336530028F0334C00B5A1CE /* CustomBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomNavigationBar.swift; sourceTree = "<group>"; };
+		83D02CD2290AC3AD00DA97F7 /* CustomOnboardingBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOnboardingBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
+		83D02CD6290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomOnboardingBottomNavigationBar.xib; sourceTree = "<group>"; };
+		83D02CD8290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOnboardingBottomNavigationBar.swift; sourceTree = "<group>"; };
+		83D02CDA290AC86300DA97F7 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		F4083ED82735B0CB004DDD3B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F4083EDA2735B0CD004DDD3B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LocalizableCustomName.strings; sourceTree = "<group>"; };
 		F40E1435273C06AA00734A0E /* PartialDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PartialDocument.swift; path = GiniBankSDKExample/PartialDocument.swift; sourceTree = SOURCE_ROOT; };
@@ -208,6 +216,16 @@
 			path = HelpBottomNavigationBar;
 			sourceTree = "<group>";
 		};
+		83D02CD1290AC38D00DA97F7 /* OnboardingBottomNavigationBar */ = {
+			isa = PBXGroup;
+			children = (
+				83D02CD2290AC3AD00DA97F7 /* CustomOnboardingBottomNavigationBarAdapter.swift */,
+				83D02CD6290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib */,
+				83D02CD8290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift */,
+			);
+			path = OnboardingBottomNavigationBar;
+			sourceTree = "<group>";
+		};
 		F439C210273555B60010D77D /* Packages */ = {
 			isa = PBXGroup;
 			children = (
@@ -262,6 +280,7 @@
 			children = (
 				F4AD00F525DFDF4400C34E15 /* UIViewController.swift */,
 				F44AD25D25F2443200668B0C /* GiniButton.swift */,
+				83D02CDA290AC86300DA97F7 /* UIView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -347,6 +366,7 @@
 		F490C7E325DE873900D8CA6F /* GiniBankSDKExample */ = {
 			isa = PBXGroup;
 			children = (
+				83D02CD1290AC38D00DA97F7 /* OnboardingBottomNavigationBar */,
 				8336530228F0335A00B5A1CE /* HelpBottomNavigationBar */,
 				4C84B5DE2653FFF000853F33 /* Example Swift.entitlements */,
 				F441DC0025E51F4B00AAB09A /* ComponentAPI */,
@@ -510,6 +530,7 @@
 				833652FF28F0330B00B5A1CE /* CustomBottomNavigationBar.xib in Resources */,
 				764E0AD228CF274A00F96503 /* InfoPlist.strings in Resources */,
 				8303F4EF28F9AD7700285599 /* magicAnimation.json in Resources */,
+				83D02CD7290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib in Resources */,
 				F45D7F192800583800C73C63 /* Gini_invoice_example.pdf in Resources */,
 				F426ABF1289AB1D7007F4EB6 /* Colors.xcassets in Resources */,
 				F45D7F1A2800583B00C73C63 /* result_Gini_invoice_example_after_feedback.json in Resources */,
@@ -582,11 +603,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83D02CD3290AC3AD00DA97F7 /* CustomOnboardingBottomNavigationBarAdapter.swift in Sources */,
 				F4AD00FD25DFDF4500C34E15 /* ComponentAPIDocumentsService.swift in Sources */,
 				F4AD00B625DED1A000C34E15 /* AppCoordinator.swift in Sources */,
 				F490C7E925DE873900D8CA6F /* NoResultViewController.swift in Sources */,
 				768B017E28D1E54E009A2124 /* CustomLoadingIndicator.swift in Sources */,
+				83D02CD9290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift in Sources */,
 				F4AD00FB25DFDF4500C34E15 /* ComponentAPIDocumentServiceProtocol.swift in Sources */,
+				83D02CDB290AC86300DA97F7 /* UIView.swift in Sources */,
 				F4AD00EC25DFDE2000C34E15 /* RootNavigationController.swift in Sources */,
 				F44AD01528D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift in Sources */,
 				F4AD00BC25DED33300C34E15 /* Coordinator.swift in Sources */,
