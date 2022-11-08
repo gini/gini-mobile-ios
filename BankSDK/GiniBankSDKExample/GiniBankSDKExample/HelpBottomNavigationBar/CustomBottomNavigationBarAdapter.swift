@@ -15,12 +15,8 @@ final class CustomBottomNavigationBarAdapter: NoResultBottomNavigationBarAdapter
         backButtonCallback = callback
     }
 
-    private func loadNib() -> UIView {
-        return Bundle(for: CustomBottomNavigationBar.self).loadNibNamed(String(describing: CustomBottomNavigationBar.self), owner: nil, options: nil)![0] as! CustomBottomNavigationBar
-    }
-    
     func injectedView() -> UIView {
-        if let navigationBarView = loadNib() as? CustomBottomNavigationBar {
+        if let navigationBarView = CustomBottomNavigationBar().loadNib() as? CustomBottomNavigationBar {
             navigationBarView.backButton.addTarget(
                 self,
                 action: #selector(backButtonClicked),

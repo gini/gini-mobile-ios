@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="ipad12_9rounded" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,9 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Camera2ViewController" customModule="GiniCaptureSDK">
             <connections>
-                <outlet property="cameraFrameImageView" destination="FMH-fq-Dwo" id="b2j-JX-pIe"/>
                 <outlet property="cameraPane" destination="13s-Zb-nTw" id="kgw-sM-jQj"/>
-                <outlet property="iPadCameraFrameBottomConstraint" destination="jeG-Yr-Ic4" id="pzq-QK-gAd"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Kff-Gp-d1h"/>
             </connections>
         </placeholder>
@@ -78,19 +76,10 @@
                         <outlet property="thumbnailView" destination="UDD-dX-FJV" id="3mt-Az-b9p"/>
                     </connections>
                 </view>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cameraFocus" translatesAutoresizingMaskIntoConstraints="NO" id="FMH-fq-Dwo">
-                    <rect key="frame" x="16" y="40" width="868" height="1290"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                </imageView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="FMH-fq-Dwo" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="44H-BP-ZmH"/>
-                <constraint firstItem="FMH-fq-Dwo" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="Mh3-Wg-fbV"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="FMH-fq-Dwo" secondAttribute="bottom" constant="16" id="jeG-Yr-Ic4"/>
-                <constraint firstItem="13s-Zb-nTw" firstAttribute="leading" secondItem="FMH-fq-Dwo" secondAttribute="trailing" constant="16" id="kCZ-xe-dM6"/>
                 <constraint firstAttribute="bottom" secondItem="13s-Zb-nTw" secondAttribute="bottom" id="mY8-4T-W5K"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="13s-Zb-nTw" secondAttribute="trailing" id="nDS-Tf-anT"/>
                 <constraint firstItem="13s-Zb-nTw" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="pNX-vt-Y8o"/>
@@ -100,7 +89,6 @@
     </objects>
     <resources>
         <image name="cameraCaptureButton" width="70" height="70"/>
-        <image name="cameraFocus" width="353" height="495"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

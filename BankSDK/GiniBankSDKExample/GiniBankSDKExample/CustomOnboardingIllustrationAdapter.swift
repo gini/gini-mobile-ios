@@ -9,6 +9,7 @@ import Foundation
 import GiniCaptureSDK
 import Lottie
 import UIKit
+
 class CustomOnboardingIllustrationAdapter: OnboardingIllustrationAdapter {
     private var animatedOnboarding: AnimationView?
     

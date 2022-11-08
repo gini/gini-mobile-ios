@@ -25,14 +25,12 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     }()
     public weak var delegate: CameraViewControllerDelegate?
 
-    @IBOutlet weak var cameraFrameImageView: UIImageView!
     @IBOutlet weak var cameraPane: CameraPane!
     private let cameraButtonsViewModel: CameraButtonsViewModel
     private var navigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
 
     @IBOutlet weak var bottomButtonsConstraints: NSLayoutConstraint!
     @IBOutlet weak var bottomPaneConstraint: NSLayoutConstraint!
-    @IBOutlet weak var iPadCameraFrameBottomConstraint: NSLayoutConstraint!
     /**
      Designated initializer for the `CameraViewController` which allows
      to set the `GiniConfiguration for the camera screen`.
@@ -116,6 +114,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
     private func configureCustomTopNavigationBar() {
         navigationItem.leftBarButtonItem = nil
+        navigationItem.hidesBackButton = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: NSLocalizedStringPreferredFormat(
                 "ginicapture.camera.popupCancel",
@@ -150,15 +149,15 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         if UIDevice.current.isIpad {
-            view.removeConstraints([iPadCameraFrameBottomConstraint])
+            view.removeConstraints([cameraPreviewBottomContraint])
             navigationBar.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(navigationBar)
             NSLayoutConstraint.activate([
-                navigationBar.topAnchor.constraint(equalTo: cameraFrameImageView.bottomAnchor),
                 navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
                 navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                navigationBar.heightAnchor.constraint(equalToConstant: navigationBar.frame.height)
+                navigationBar.heightAnchor.constraint(equalToConstant: navigationBar.frame.height),
+                cameraPreviewViewController.view.bottomAnchor.constraint(equalTo: navigationBar.topAnchor)
             ])
         } else {
             view.removeConstraints([bottomPaneConstraint, bottomButtonsConstraints])
@@ -184,22 +183,26 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             self?.cameraPane.toggleCaptureButtonActivation(state: false)
             self?.cameraPreviewViewController.captureImage { [weak self] data, error in
                 guard let self = self else { return }
-                if let image = self.cameraButtonsViewModel.didCapture(
-                    imageData: data,
-                    error: error,
-                    orientation: UIApplication.shared.statusBarOrientation,
-                    giniConfiguration: self.giniConfiguration) {
+
+                var capturedData = data
+                if let imageData = data, let image = UIImage(data: imageData)?.fixOrientation() {
+                    let croppedImage = self.crop(image: image)
+                    capturedData = croppedImage.jpegData(compressionQuality: 1)
+                }
+
+                if let image = self.cameraButtonsViewModel.didCapture(imageData: capturedData,
+                                                                      error: error,
+                                                                      orientation:
+                                                                        UIApplication.shared.statusBarOrientation,
+                                                                      giniConfiguration: self.giniConfiguration) {
+
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                     self.didPick(image)
                 }
                 self.cameraPane.toggleCaptureButtonActivation(state: true)
             }
         }
-        cameraButtonsViewModel.backButtonAction = { [weak self] in
-            if let strongSelf = self {
-                self?.delegate?.cameraDidTapReviewButton(strongSelf)
-            }
-        }
+
         cameraPane.captureButton.addTarget(
             cameraButtonsViewModel,
             action: #selector(cameraButtonsViewModel.capturePressed),
@@ -255,12 +258,15 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             for: .touchUpInside)
     }
 
+    private lazy var cameraPreviewBottomContraint: NSLayoutConstraint =
+            cameraPreviewViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+
     private func configureConstraints() {
         NSLayoutConstraint.activate([
             cameraPreviewViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
             cameraPreviewViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             cameraPreviewViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            cameraPreviewViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            cameraPreviewBottomContraint
             ]
         )
     }
@@ -320,6 +326,61 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         return imageView
     }
 
+    // swiftlint:disable line_length
+    private func crop(image: UIImage) -> UIImage {
+        let standardImageAspectRatio: CGFloat = 0.75 // Standard aspect ratio of a 3/4 image
+        let screenAspectRatio = self.cameraPreviewViewController.view.frame.height / self.cameraPreviewViewController.view.frame.width
+        var scale: CGFloat
+        var cameraPreviewRect: CGRect
+
+        if image.size.width > image.size.height {
+            // Landscape orientation
+
+            // Calculate the scale based on the part of the image which is fully shown on the screen
+            if screenAspectRatio > standardImageAspectRatio {
+                // In this case the preview shows the full height of the camera preview
+                scale = image.size.height / self.cameraPreviewViewController.view.frame.height
+            } else {
+                // In this case the preview shows the full width of the camera preview
+                scale = image.size.width / self.cameraPreviewViewController.view.frame.width
+            }
+        } else {
+            // Portrait image
+
+            // Calculate the scale based on the part of the image which is fully shown on the screen
+            if UIDevice.current.isIpad {
+                if screenAspectRatio < standardImageAspectRatio {
+                    // In this case the preview shows the full height of the camera preview
+                    scale = image.size.height / self.cameraPreviewViewController.view.frame.height
+                } else {
+                    // In this case the preview shows the full width of the camera preview
+                    scale = image.size.width / self.cameraPreviewViewController.view.frame.width
+                }
+            } else {
+                scale = image.size.height / self.cameraPreviewViewController.view.frame.height
+            }
+        }
+
+        // Calculate the rectangle for the displayed image on the full size captured image
+        let widthDisplacement = (image.size.width - (self.cameraPreviewViewController.view.frame.width) * scale) / 2
+        let heightDisplacement = (image.size.height - (self.cameraPreviewViewController.view.frame.height) * scale) / 2
+
+        cameraPreviewRect = self.cameraPreviewViewController.view.frame.scaled(for: scale)
+        cameraPreviewRect = CGRect(x: widthDisplacement, y: heightDisplacement, width: cameraPreviewRect.width, height: cameraPreviewRect.height)
+
+        // First crop the full image to the image that is shown on the screen
+        guard let cgImage = image.cgImage else { return image }
+        guard let croppedCGImage = cgImage.cropping(to: cameraPreviewRect) else { return image }
+        let displayedImage = UIImage(cgImage: croppedCGImage, scale: 1, orientation: .up)
+
+        // Crop the displayed image to the A4 rect
+        let a4FrameRect = self.cameraPreviewViewController.cameraFrameView.frame.scaled(for: scale)
+        guard let cgDisplayedImage = displayedImage.cgImage else { return image }
+        guard let croppedA4CGImage = cgDisplayedImage.cropping(to: a4FrameRect) else { return image }
+        let finalImage = UIImage(cgImage: croppedA4CGImage, scale: 1, orientation: .up)
+        return finalImage
+    }
+    // swiftlint:enable line_length
 }
 
 // MARK: - CameraPreviewViewControllerDelegate
@@ -328,8 +389,9 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol) {
-        cameraFrameImageView.isHidden = false
+        cameraPreviewViewController.cameraFrameView.isHidden = false
         cameraPane.toggleCaptureButtonActivation(state: true)
+        cameraPreviewViewController.updatePreviewViewOrientation()
     }
 
     func cameraPreview(_ viewController: CameraPreviewViewController,
@@ -345,6 +407,6 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 
     func notAuthorized() {
         cameraPane.setupAuthorization(isHidden: true)
-        cameraFrameImageView.isHidden = true
+        cameraPreviewViewController.cameraFrameView.isHidden = true
     }
 }

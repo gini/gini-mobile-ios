@@ -94,9 +94,12 @@ final class Camera: NSObject, CameraProtocol {
                 
                 self.sessionQueue.async {
                     self.configureSession()
+                    DispatchQueue.main.async {
+                        completion(nil)
+                    }
                 }
                 
-                completion(nil)
+                
             }
         }
     }
