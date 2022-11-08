@@ -43,6 +43,7 @@ extension GiniScreenAPICoordinator {
                 // if there is a photo captured with camera
                 viewModel = NoResultScreenViewModel(
                     retakeBlock: { [weak self] in
+                        self?.pages = []
                         self?.backToCamera()
                     },
                     manuallyPressed: { [weak self] in
