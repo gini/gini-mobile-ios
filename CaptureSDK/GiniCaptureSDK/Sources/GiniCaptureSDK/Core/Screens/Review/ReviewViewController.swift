@@ -148,7 +148,7 @@ public final class ReviewViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = giniConfiguration.primaryButtonCornerRadius
         button.backgroundColor = UIColor.GiniCapture.accent1
         button.setTitle(NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle",
                                                          comment: "Process button title"), for: .normal)
