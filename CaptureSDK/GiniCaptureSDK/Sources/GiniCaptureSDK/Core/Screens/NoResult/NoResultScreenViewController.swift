@@ -210,7 +210,7 @@ final public class NoResultScreenViewController: UIViewController {
         if numberOfButtons == 1 {
             return Constants.singleButtonHeight.rawValue
         } else {
-            return Constants.twoBUttonsHeight.rawValue
+            return Constants.twoButtonsHeight.rawValue
         }
     }
 
@@ -314,7 +314,7 @@ final public class NoResultScreenViewController: UIViewController {
 
     private func configureButtons() {
         configureButtonsColors()
-        enterButton.addBlurEffect(cornerRadius: 14)
+        enterButton.addBlurEffect(cornerRadius: giniConfiguration.outlineButtonCornerRadius)
         enterButton.addTarget(viewModel, action: #selector(viewModel.didPressEnterManually), for: .touchUpInside)
         retakeButton.addTarget(viewModel, action: #selector(viewModel.didPressRetake), for: .touchUpInside)
     }
@@ -390,6 +390,6 @@ final public class NoResultScreenViewController: UIViewController {
 
     private enum Constants: CGFloat {
         case singleButtonHeight = 50
-        case twoBUttonsHeight = 112
+        case twoButtonsHeight = 112
     }
 }
