@@ -12,4 +12,11 @@ extension CGRect {
     var center: CGPoint {
         return CGPoint(x: midX, y: midY)
     }
+
+    func scaled(for scaleFactor: CGFloat) -> CGRect {
+        return CGRect(x: self.minX * scaleFactor,
+                      y: self.minY * scaleFactor,
+                      width: self.width * scaleFactor,
+                      height: self.height * scaleFactor)
+    }
 }

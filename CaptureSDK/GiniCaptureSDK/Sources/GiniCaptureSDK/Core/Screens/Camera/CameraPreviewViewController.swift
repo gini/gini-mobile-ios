@@ -38,6 +38,13 @@ final class CameraPreviewViewController: UIViewController {
         spinner.hidesWhenStopped = true
         return spinner
     }()
+
+    lazy var cameraFrameView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImageNamedPreferred(named: "cameraFocus")
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
     
     fileprivate let giniConfiguration: GiniConfiguration
     fileprivate typealias FocusIndicator = UIImageView
@@ -73,6 +80,38 @@ final class CameraPreviewViewController: UIViewController {
         previewView.addGestureRecognizer(tapGesture)
         return previewView
     }()
+
+    private lazy var iPadLandscapeConstraints: [NSLayoutConstraint] = [
+        cameraFrameView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.padding),
+        cameraFrameView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        cameraFrameView.centerXAnchor.constraint(equalTo: view.centerXAnchor,
+                                                 constant: -Constants.cameraPaneWidth/2),
+        cameraFrameView.heightAnchor.constraint(equalTo: cameraFrameView.widthAnchor,
+                                                multiplier: Constants.a4AspectRatio)
+    ]
+
+    private lazy var iPadPortraitConstraints: [NSLayoutConstraint] = [
+        cameraFrameView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: Constants.padding),
+        cameraFrameView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        cameraFrameView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: Constants.padding),
+        cameraFrameView.centerXAnchor.constraint(equalTo: view.centerXAnchor,
+                                                 constant: -Constants.cameraPaneWidth/2),
+        cameraFrameView.heightAnchor.constraint(equalTo: cameraFrameView.widthAnchor,
+                                                     multiplier: Constants.a4AspectRatio)
+    ]
+
+    private func iPadConstraint() -> [NSLayoutConstraint] {
+        switch UIDevice.current.orientation {
+        case .landscapeLeft, .landscapeRight:
+            return iPadLandscapeConstraints
+        case .faceDown, .faceUp, .portrait, .portraitUpsideDown:
+            return iPadPortraitConstraints
+        case .unknown:
+            return iPadLandscapeConstraints
+        @unknown default:
+            return iPadLandscapeConstraints
+        }
+    }
     
     init(giniConfiguration: GiniConfiguration = .shared,
          camera: CameraProtocol = Camera(giniConfiguration: .shared)) {
@@ -102,7 +141,9 @@ final class CameraPreviewViewController: UIViewController {
         previewView.drawGuides(withColor: giniConfiguration.cameraPreviewCornerGuidesColor)
         
         view.insertSubview(previewView, at: 0)
-        Constraints.pin(view: previewView, toSuperView: view)
+
+        view.addSubview(cameraFrameView)
+
         addLoadingIndicator()
     }
 
@@ -110,8 +151,42 @@ final class CameraPreviewViewController: UIViewController {
         super.viewWillAppear(animated)
         camera.start()
         startLoadingIndicator()
-        updatePreviewViewOrientation() // Video orientation should be updated once the view has been loaded
-        
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        setupConstraints()
+    }
+
+    private func setupConstraints() {
+        cameraFrameView.translatesAutoresizingMaskIntoConstraints = false
+
+        if UIDevice.current.isIpad {
+            NSLayoutConstraint.activate(iPadConstraint())
+        } else {
+            // The height of the bottom controls
+            let bottomControlHeight = view.frame.height * 0.23 +
+            (giniConfiguration.bottomNavigationBarEnabled ? Constants.bottomNavigationBarHeight : 0)
+
+            NSLayoutConstraint.activate([
+                cameraFrameView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.padding),
+                cameraFrameView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
+                                                         constant: Constants.padding),
+                cameraFrameView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                cameraFrameView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor,
+                                                        constant: -bottomControlHeight-Constants.padding),
+                cameraFrameView.widthAnchor.constraint(equalTo: cameraFrameView.heightAnchor,
+                                                       multiplier: 1 / Constants.a4AspectRatio)
+                ])
+        }
+
+        NSLayoutConstraint.activate([
+            previewView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            previewView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            previewView.topAnchor.constraint(equalTo: view.topAnchor),
+            previewView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
@@ -121,7 +196,18 @@ final class CameraPreviewViewController: UIViewController {
     
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        
+
+        if UIDevice.current.isIpad {
+            // deactivate all constraints before rotation
+            NSLayoutConstraint.deactivate(iPadPortraitConstraints)
+            NSLayoutConstraint.deactivate(iPadLandscapeConstraints)
+
+            // activate constraints after rotation
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05, execute: {
+                NSLayoutConstraint.activate(self.iPadConstraint())
+            })
+        }
+
         coordinator.animate(alongsideTransition: { [weak self] _ in
             self?.updatePreviewViewOrientation()
         })
@@ -216,12 +302,6 @@ final class CameraPreviewViewController: UIViewController {
         spinner.stopAnimating()
     }
 
-}
-
-// MARK: - Fileprivate
-
-fileprivate extension CameraPreviewViewController {
-    
     func updatePreviewViewOrientation() {
         let orientation: AVCaptureVideoOrientation
         if UIDevice.current.isIpad {
@@ -229,7 +309,9 @@ fileprivate extension CameraPreviewViewController {
         } else {
             orientation = .portrait
         }
-        (previewView.layer as? AVCaptureVideoPreviewLayer)?.connection?.videoOrientation = orientation
+        if let cameraLayer = previewView.layer as? AVCaptureVideoPreviewLayer {
+            cameraLayer.connection?.videoOrientation = orientation
+        }
     }
 }
 
@@ -255,10 +337,18 @@ extension CameraPreviewViewController {
     
     /// Adds a default image to the canvas when no camera is available (DEBUG mode only)
     fileprivate func addDefaultImage() {
+        guard let defaultImage = defaultImage else { return }
+
         defaultImageView = UIImageView(image: defaultImage)
         guard let defaultImageView = defaultImageView else { return }
-        
-        defaultImageView.contentMode = .scaleAspectFit
+
+        if UIDevice.current.isIpad {
+            defaultImageView.contentMode = .scaleAspectFit
+        } else {
+            defaultImageView.contentMode = .scaleAspectFill
+        }
+
+        defaultImageView.alpha = 0.5
         previewView.addSubview(defaultImageView)
         
         defaultImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -325,4 +415,13 @@ extension CameraPreviewViewController {
         showFocusIndicator(imageView)
     }
     
+}
+
+extension CameraPreviewViewController {
+    private enum Constants {
+        static let padding: CGFloat = 16
+        static let a4AspectRatio: CGFloat = 1.414
+        static let cameraPaneWidth: CGFloat = 124
+        static let bottomNavigationBarHeight: CGFloat = 114
+    }
 }

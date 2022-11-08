@@ -378,6 +378,11 @@ public final class GiniBankConfiguration: NSObject {
     public var onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
 
     /**
+     * Set an adapter implementation to show a custom loading indicator on the buttons which support loading.
+     */
+    public var onButtonLoadingIndicator: OnButtonLoadingIndicatorAdapter?
+
+    /**
      Sets the back button text in the navigation bar on the review screen. Use this if you only want to show the title.
      
      - note: Screen API only.
@@ -1327,6 +1332,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.onboardingMultiPageIllustrationAdapter = self.onboardingMultiPageIllustrationAdapter
     
         configuration.onboardingNavigationBarBottomAdapter = self.onboardingNavigationBarBottomAdapter
+        configuration.onButtonLoadingIndicator = self.onButtonLoadingIndicator
         
         configuration.navigationBarReviewTitleBackButton = self.navigationBarReviewTitleBackButton
         configuration.navigationBarReviewTitleCloseButton = self.navigationBarReviewTitleCloseButton

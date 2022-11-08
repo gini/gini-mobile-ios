@@ -15,6 +15,7 @@ class ImageOnboardingIllustrationAdapter: OnboardingIllustrationAdapter {
 
     func injectedView() -> UIView {
         let imageView = UIImageView()
+        imageView.backgroundColor = UIColor.clear
         imageView.contentMode = .scaleAspectFit
         return imageView
     }
