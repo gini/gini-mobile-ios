@@ -182,6 +182,9 @@ public final class ReviewViewController: UIViewController {
         return calculatedCellSize()
     }()
 
+    private lazy var collectionViewHeightConstraint = collectionView.heightAnchor.constraint(
+                                                      equalToConstant: view.frame.height * 0.5)
+
     private var currentPage: Int = 0 {
         didSet {
             setCellStatus(for: currentPage, isActive: true)
@@ -235,9 +238,11 @@ extension ReviewViewController {
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
+        let size = calculatedCellSize()
+        collectionViewHeightConstraint.constant = size.height
         if UIDevice.current.isIpad {
             // cellSize needs to be updated when the screen is rotated
-            self.cellSize = calculatedCellSize()
+            self.cellSize = size
 
             DispatchQueue.main.async {
                 guard self.previousScreenHeight != UIScreen.main.bounds.height else { return }
@@ -371,28 +376,31 @@ extension ReviewViewController {
         buttonLeadingConstraint.priority = UILayoutPriority.defaultLow
 
         NSLayoutConstraint.activate([
-            tipLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            tipLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.padding),
             tipLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tipLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tipLabel.heightAnchor.constraint(equalToConstant: Constants.titleHeight),
 
-            collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: 16),
+            collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: Constants.padding),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionViewHeightConstraint,
 
-            pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 32),
+            pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: Constants.padding * 2),
             pageControl.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             pageControl.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 
-            processButton.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: 32),
-            processButton.widthAnchor.constraint(equalToConstant: 204),
+            processButton.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: Constants.padding * 2),
+            processButton.widthAnchor.constraint(equalToConstant: Constants.buttonSize.width),
             processButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            processButton.heightAnchor.constraint(equalToConstant: 50),
+            processButton.heightAnchor.constraint(equalToConstant: Constants.buttonSize.height),
             processButton.bottomAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                  constant: -50),
+                                                  constant: -Constants.bottomPadding),
 
             addPagesButton.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
             buttonLeadingConstraint,
-            addPagesButton.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -4)
+            addPagesButton.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
+                                                     constant: -Constants.padding / 4)
         ])
     }
 
@@ -549,5 +557,16 @@ extension ReviewViewController: ReviewCollectionViewDelegate {
         deleteItem(at: indexpath)
 
         setCurrentPage(basedOn: collectionView)
+    }
+}
+
+// MARK: Constants
+
+extension ReviewViewController {
+    private enum Constants {
+        static let padding: CGFloat = 16
+        static let bottomPadding: CGFloat = 50
+        static let buttonSize: CGSize = CGSize(width: 204, height: 50)
+        static let titleHeight: CGFloat = 18
     }
 }
