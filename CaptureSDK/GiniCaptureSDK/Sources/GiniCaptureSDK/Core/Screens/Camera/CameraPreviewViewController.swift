@@ -306,21 +306,16 @@ extension CameraPreviewViewController {
 
         defaultImageView = UIImageView(image: defaultImage)
         guard let defaultImageView = defaultImageView else { return }
-
-        if UIDevice.current.isIpad {
-            defaultImageView.contentMode = .scaleAspectFit
-        } else {
-            defaultImageView.contentMode = .scaleAspectFill
-        }
-
         defaultImageView.alpha = 0.5
-        previewView.addSubview(defaultImageView)
+        cameraFrameView.addSubview(defaultImageView)
         
         defaultImageView.translatesAutoresizingMaskIntoConstraints = false
-        Constraints.active(item: defaultImageView, attr: .width, relatedBy: .equal, to: previewView, attr: .width)
-        Constraints.active(item: defaultImageView, attr: .height, relatedBy: .equal, to: previewView, attr: .height)
-        Constraints.active(item: defaultImageView, attr: .centerX, relatedBy: .equal, to: previewView, attr: .centerX)
-        Constraints.active(item: defaultImageView, attr: .centerY, relatedBy: .equal, to: previewView, attr: .centerY)
+        NSLayoutConstraint.activate([
+            defaultImageView.centerXAnchor.constraint(equalTo: cameraFrameView.centerXAnchor),
+            defaultImageView.centerYAnchor.constraint(equalTo: cameraFrameView.centerYAnchor),
+            defaultImageView.heightAnchor.constraint(equalTo: cameraFrameView.heightAnchor),
+            defaultImageView.widthAnchor.constraint(equalTo: cameraFrameView.widthAnchor)
+        ])
     }
 }
 
