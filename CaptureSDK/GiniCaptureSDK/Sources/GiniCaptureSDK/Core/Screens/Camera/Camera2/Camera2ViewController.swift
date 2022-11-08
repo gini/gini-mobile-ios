@@ -30,6 +30,8 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
        return view
     }()
 
+    private var resetTask: DispatchWorkItem?
+    private var hideTask: DispatchWorkItem?
     private var validQRCodeProcessing: Bool = false
     public weak var delegate: CameraViewControllerDelegate?
 
@@ -417,31 +419,36 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         })
 
         if document.qrCodeFormat != nil {
-            validQRCodeProcessing = true
-            cameraPane.isUserInteractionEnabled = false
-            UIView.animate(withDuration: 0.3) {
-                self.qrCodeOverLay.isHidden = false
-                self.cameraPreviewViewController.changeFrameColor(to: .GiniCapture.success2)
-            }
-
-            qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: true)
+            showValidQRCodeFeedback()
         } else {
-            qrCodeOverLay.isUserInteractionEnabled = false
-            UIView.animate(withDuration: 0.3) {
-                self.qrCodeOverLay.isHidden = false
-                self.cameraPreviewViewController.changeFrameColor(to: .GiniCapture.warning3)
-            }
-
-            qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: false)
+            showInvalidQRCodeFeedback()
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: hideTask!)
     }
 
-    private var resetTask: DispatchWorkItem?
-    private var hideTask: DispatchWorkItem?
+    private func showValidQRCodeFeedback() {
+        validQRCodeProcessing = true
+        cameraPane.isUserInteractionEnabled = false
+        UIView.animate(withDuration: 0.3) {
+            self.qrCodeOverLay.isHidden = false
+            self.cameraPreviewViewController.changeFrameColor(to: .GiniCapture.success2)
+        }
 
-    func resetQRCodeScanning() {
+        qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: true)
+    }
+
+    private func showInvalidQRCodeFeedback() {
+        qrCodeOverLay.isUserInteractionEnabled = false
+        UIView.animate(withDuration: 0.3) {
+            self.qrCodeOverLay.isHidden = false
+            self.cameraPreviewViewController.changeFrameColor(to: .GiniCapture.warning3)
+        }
+
+        qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: false)
+    }
+
+    private func resetQRCodeScanning() {
         resetTask = DispatchWorkItem(block: {
             self.detectedQRCodeDocument = nil
         })
