@@ -69,6 +69,9 @@
 "ginicapture.onboarding.fourthPage" = "Beim Abfotografieren der Rechnung oder des Überweisungsträgers auf gute Beleuchtung achten";
 "ginicapture.onboarding.fifthPage"  = "Jetzt ist es möglich, eine Rechnung mit mehreren Seiten zu analysieren";
 
+"ginicapture.onboarding.getstarted" = "Los geht’s";
+"ginicapture.onboarding.next" = "Weiter";
+"ginicapture.onboarding.skip"  = "Überspringen";
 "ginicapture.onboarding.flatPaper.title"  = "Dokument flach ausrichten";
 "ginicapture.onboarding.flatPaper.description"  = "Das Dokument sollte flach liegen und sich im Rahmen befinden";
 "ginicapture.onboarding.goodLightning.title" = "Gute Lichtverhältnisse";
