@@ -90,7 +90,7 @@ fileprivate extension GiniCaptureDocumentValidator {
         case .some(.bezahl), .some(.epc06912):
             if document.qrCodeFormat == nil ||
                 document.extractedParameters.isEmpty ||
-                document.extractedParameters["iban"] == nil {
+                document.extractedParameters["iban"] == nil || !IBANValidator().isValid(iban: document.extractedParameters["iban"] ?? "") {
                 throw DocumentValidationError.qrCodeFormatNotValid
             }
         case .some(.eps4mobile):

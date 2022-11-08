@@ -394,15 +394,35 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
         cameraPreviewViewController.updatePreviewViewOrientation()
     }
 
-    func cameraPreview(_ viewController: CameraPreviewViewController,
-                       didDetect qrCodeDocument: GiniQRCodeDocument) {
-        if detectedQRCodeDocument != qrCodeDocument {
-            detectedQRCodeDocument = qrCodeDocument
-            showPopup(forQRDetected: qrCodeDocument) { [weak self] in
-                guard let self = self else { return }
-                self.didPick(qrCodeDocument)
-            }
-        }
+    func cameraPreview(
+        _ viewController: CameraPreviewViewController,
+        didDetectInvalid qrCodeDocument: GiniQRCodeDocument) {
+        dismissQRCodeTooltip()
+        // TODO: handle it appriopriately within new version of camera screeen
+        // if detectedQRCodeDocument != qrCodeDocument {
+        //    detectedQRCodeDocument = qrCodeDocument
+        //    showPopup(forUnsupportedQR: qrCodeDocument)
+        // }
+    }
+
+    func cameraPreview(
+        _ viewController: CameraPreviewViewController,
+        didDetect qrCodeDocument: GiniQRCodeDocument) {
+            // TODO: handle it appriopriately within new version of camera screeen
+            // if detectedQRCodeDocument != qrCodeDocument {
+            //    detectedQRCodeDocument = qrCodeDocument
+            //    showPopup(forQRDetected: qrCodeDocument) { [weak self] in
+            //        guard let self = self else { return }
+            //        self.didPick(qrCodeDocument)
+            //    }
+            // }
+    }
+
+    fileprivate func dismissQRCodeTooltip() {
+        // TODO: handle it appriopriately within new version of camera screeen
+        // if let tooltip = qrCodeToolTipView, !tooltip.isHidden {
+        //    qrCodeToolTipView?.dismiss()
+        // }
     }
 
     func notAuthorized() {

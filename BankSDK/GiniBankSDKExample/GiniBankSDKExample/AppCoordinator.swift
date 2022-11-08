@@ -51,6 +51,7 @@ final class AppCoordinator: Coordinator {
         //configuration.bottomNavigationBarEnabled = true
         //configuration.noResultNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
         //configuration.helpNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
+//        configuration.noResultsWarningContainerIconColor = .cyan
 //        let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
 //        configuration.customMenuItems = [customMenuItem]
 //        configuration.albumsScreenSelectMorePhotosTextColor = GiniColor(lightModeColor: .systemBlue, darkModeColor: .systemBlue)
