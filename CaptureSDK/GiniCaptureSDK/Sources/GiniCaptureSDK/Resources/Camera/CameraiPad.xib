@@ -37,7 +37,7 @@
                             </constraints>
                         </view>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="41" translatesAutoresizingMaskIntoConstraints="NO" id="jYB-R4-Jjg">
-                            <rect key="frame" x="2" y="746" width="120" height="145"/>
+                            <rect key="frame" x="2" y="771" width="120" height="145"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MKr-w2-Lou" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
                                     <rect key="frame" x="0.0" y="0.0" width="120" height="52"/>
@@ -63,7 +63,7 @@
                         <constraint firstAttribute="width" constant="124" id="Khx-qJ-aJy"/>
                         <constraint firstItem="hTe-DA-2qT" firstAttribute="centerX" secondItem="13s-Zb-nTw" secondAttribute="centerX" id="cRC-4H-3jT"/>
                         <constraint firstItem="jYB-R4-Jjg" firstAttribute="leading" secondItem="13s-Zb-nTw" secondAttribute="leading" constant="2" id="efa-xa-ebw"/>
-                        <constraint firstItem="jYB-R4-Jjg" firstAttribute="top" secondItem="hTe-DA-2qT" secondAttribute="bottom" constant="21" id="fa0-Ru-Wks"/>
+                        <constraint firstItem="jYB-R4-Jjg" firstAttribute="top" secondItem="hTe-DA-2qT" secondAttribute="bottom" constant="46" id="fa0-Ru-Wks"/>
                         <constraint firstAttribute="trailing" secondItem="jYB-R4-Jjg" secondAttribute="trailing" constant="2" id="oc7-x7-hM6"/>
                         <constraint firstItem="hTe-DA-2qT" firstAttribute="centerY" secondItem="13s-Zb-nTw" secondAttribute="centerY" id="zsn-TD-QbB"/>
                     </constraints>
