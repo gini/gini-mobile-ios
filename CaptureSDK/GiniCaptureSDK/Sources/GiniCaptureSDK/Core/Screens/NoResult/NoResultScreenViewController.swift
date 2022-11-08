@@ -97,10 +97,10 @@ final public class NoResultScreenViewController: UIViewController {
     private var buttonsHeightConstraint: NSLayoutConstraint?
     private var numberOfButtons: Int {
         return [
-            viewModel.isEnterManuallyHidden() == false,
-            viewModel.isRetakePressedHidden() == false
+            viewModel.isEnterManuallyHidden(),
+            viewModel.isRetakePressedHidden()
         ].filter({
-            $0 == true
+            !$0
         }).count
     }
 
@@ -208,9 +208,9 @@ final public class NoResultScreenViewController: UIViewController {
 
     private func getButtonsMinHeight(numberOfButtons: Int) -> CGFloat {
         if numberOfButtons == 1 {
-            return 50
+            return Constants.singleButtonHeight.rawValue
         } else {
-            return 112
+            return Constants.twoBUttonsHeight.rawValue
         }
     }
 
