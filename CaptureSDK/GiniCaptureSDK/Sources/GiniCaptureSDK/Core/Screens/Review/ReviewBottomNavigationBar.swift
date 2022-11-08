@@ -31,7 +31,7 @@ final class ReviewBottomNavigationBar: UIView {
         mainButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle",
                                                              comment: "Process button title"), for: .normal)
         mainButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        mainButton.layer.cornerRadius = 16
+        mainButton.layer.cornerRadius = configuration.primaryButtonCornerRadius
         mainButton.backgroundColor = UIColor.GiniCapture.accent1
         mainButton.setTitleColor(UIColor.GiniCapture.light1, for: .normal)
         mainButton.addTarget(self, action: #selector(mainButtonClicked), for: .touchUpInside)
