@@ -313,6 +313,10 @@ final class CameraPreviewViewController: UIViewController {
             cameraLayer.connection?.videoOrientation = orientation
         }
     }
+
+    func changeFrameColor(to color: UIColor) {
+        cameraFrameView.image = cameraFrameView.image?.tintedImageWithColor(color)
+    }
 }
 
 // MARK: - Default and not authorized views
