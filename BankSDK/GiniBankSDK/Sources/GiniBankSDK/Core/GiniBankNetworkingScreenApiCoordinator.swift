@@ -202,7 +202,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                     }
             } else {
                 self.resultsDelegate?
-                    .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen())
+                    .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen(resultDelegate: self.resultsDelegate))
                 self.documentService.resetToInitialState()
             }
         }
@@ -241,7 +241,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
                     }
             } else {
                 self.resultsDelegate?
-                    .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen())
+                    .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen(resultDelegate: self.resultsDelegate))
                 self.documentService.resetToInitialState()
             }
         }
