@@ -13,9 +13,9 @@ final class CameraPane: UIView {
     @IBOutlet weak var fileUploadButton: BottomLabelButton!
     @IBOutlet weak var flashButton: BottomLabelButton!
     @IBOutlet weak var thumbnailView: ThumbnailView!
-    var giniConfiguration: GiniConfiguration! = nil
     @IBOutlet weak var leftButtonsStack: UIView!
-
+    @IBOutlet weak var thumbnailConstraint: NSLayoutConstraint!
+    @IBOutlet weak var leftStackViewMargin: NSLayoutConstraint!
     override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
@@ -103,15 +103,19 @@ final class CameraPane: UIView {
     }
 
     func setupAuthorization(isHidden: Bool) {
+        let giniConfiguration = GiniConfiguration.shared
         self.isHidden = isHidden
         captureButton.isHidden = isHidden
         flashButton.isHidden = isHidden
         if cameraTitleLabel != nil {
             cameraTitleLabel.isHidden = isHidden
         }
-        fileUploadButton.isHidden = isHidden
+        if giniConfiguration.fileImportSupportedTypes != .none {
+            fileUploadButton.isHidden = isHidden
+        }
         if thumbnailView.thumbnailImageView.image != nil {
             thumbnailView.isHidden = isHidden
         }
     }
+
 }
