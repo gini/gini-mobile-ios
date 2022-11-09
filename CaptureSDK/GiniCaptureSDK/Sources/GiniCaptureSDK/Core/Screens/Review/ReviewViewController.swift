@@ -194,6 +194,47 @@ public final class ReviewViewController: UIViewController {
     // This is needed in order to "catch" the screen rotation on the modally presented viewcontroller
     private var previousScreenHeight: CGFloat = 0
 
+    // MARK: - Constraints
+
+    private lazy var tipLabelConstraints: [NSLayoutConstraint] = [
+        tipLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.padding),
+        tipLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        tipLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        tipLabel.heightAnchor.constraint(equalToConstant: Constants.titleHeight)]
+
+    private lazy var collectionViewConstraints: [NSLayoutConstraint] = [
+        collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: Constants.padding),
+        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        collectionViewHeightConstraint]
+
+    private lazy var pageControlConstraints: [NSLayoutConstraint] = [
+        pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: Constants.padding * 2),
+        pageControl.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        pageControl.trailingAnchor.constraint(equalTo: view.trailingAnchor)]
+
+    private lazy var processButtonConstraints: [NSLayoutConstraint] = [
+        processButton.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: Constants.padding * 2),
+        processButton.widthAnchor.constraint(equalToConstant: Constants.buttonSize.width),
+        processButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        processButton.heightAnchor.constraint(equalToConstant: Constants.buttonSize.height),
+        processButton.bottomAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                              constant: -Constants.bottomPadding)]
+
+    private lazy var addPagesButtonConstraints: [NSLayoutConstraint] = {
+        let buttonLeadingConstraint = addPagesButton.leadingAnchor.constraint(equalTo: processButton.trailingAnchor,
+                                                                              constant: 13)
+        buttonLeadingConstraint.priority = UILayoutPriority.defaultLow
+
+        let constraints = [
+            addPagesButton.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
+            buttonLeadingConstraint,
+            addPagesButton.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
+                                                     constant: -Constants.padding / 4)]
+
+        return constraints
+    }()
+
     // MARK: - Init
 
     public init(pages: [GiniCapturePage], giniConfiguration: GiniConfiguration) {
@@ -237,9 +278,8 @@ extension ReviewViewController {
 
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
         let size = calculatedCellSize()
-        collectionViewHeightConstraint.constant = size.height
+        collectionViewHeightConstraint.constant = size.height + 4
         if UIDevice.current.isIpad {
             // cellSize needs to be updated when the screen is rotated
             self.cellSize = size
@@ -371,37 +411,11 @@ extension ReviewViewController {
 
 extension ReviewViewController {
     private func addConstraints() {
-        let buttonLeadingConstraint = addPagesButton.leadingAnchor.constraint(equalTo: processButton.trailingAnchor,
-                                                                              constant: 13)
-        buttonLeadingConstraint.priority = UILayoutPriority.defaultLow
-
-        NSLayoutConstraint.activate([
-            tipLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.padding),
-            tipLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tipLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tipLabel.heightAnchor.constraint(equalToConstant: Constants.titleHeight),
-
-            collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: Constants.padding),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionViewHeightConstraint,
-
-            pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: Constants.padding * 2),
-            pageControl.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            pageControl.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-
-            processButton.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: Constants.padding * 2),
-            processButton.widthAnchor.constraint(equalToConstant: Constants.buttonSize.width),
-            processButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            processButton.heightAnchor.constraint(equalToConstant: Constants.buttonSize.height),
-            processButton.bottomAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                  constant: -Constants.bottomPadding),
-
-            addPagesButton.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
-            buttonLeadingConstraint,
-            addPagesButton.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
-                                                     constant: -Constants.padding / 4)
-        ])
+        NSLayoutConstraint.activate(tipLabelConstraints)
+        NSLayoutConstraint.activate(collectionViewConstraints)
+        NSLayoutConstraint.activate(pageControlConstraints)
+        NSLayoutConstraint.activate(processButtonConstraints)
+        NSLayoutConstraint.activate(addPagesButtonConstraints)
     }
 
     @objc
