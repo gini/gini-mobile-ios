@@ -16,13 +16,23 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     private var opaqueView: UIView?
     let giniConfiguration: GiniConfiguration
     var detectedQRCodeDocument: GiniQRCodeDocument?
-    var currentQRCodePopup: QRCodeDetectedPopupView?
     private var shouldShowQRCodeNext = false
     lazy var cameraPreviewViewController: CameraPreviewViewController = {
        let cameraPreviewViewController = CameraPreviewViewController()
        cameraPreviewViewController.delegate = self
        return cameraPreviewViewController
     }()
+
+    private lazy var qrCodeOverLay: QRCodeOverlay = {
+        let view = QRCodeOverlay()
+        view.isHidden = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+       return view
+    }()
+
+    private var resetTask: DispatchWorkItem?
+    private var hideTask: DispatchWorkItem?
+    private var validQRCodeProcessing: Bool = false
     public weak var delegate: CameraViewControllerDelegate?
 
     @IBOutlet weak var cameraPane: CameraPane!
@@ -71,6 +81,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        validQRCodeProcessing = false
         delegate?.cameraDidAppear(self)
     }
 
@@ -85,10 +96,12 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             comment: "Info label")
         edgesForExtendedLayout = []
         view.backgroundColor = giniConfiguration.cameraContainerViewBackgroundColor.uiColor()
+        cameraPreviewViewController.previewView.alpha = 0
         addChild(cameraPreviewViewController)
         view.addSubview(cameraPreviewViewController.view)
         cameraPreviewViewController.didMove(toParent: self)
         view.sendSubviewToBack(cameraPreviewViewController.view)
+        view.addSubview(qrCodeOverLay)
         configureConstraints()
         if UIDevice.current.isIphone {
             self.title = NSLocalizedStringPreferredFormat(
@@ -226,6 +239,12 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             for: .touchUpInside)
     }
 
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        qrCodeOverLay.viewWillDisappear()
+    }
+
     private func showUploadButton() {
         if giniConfiguration.fileImportSupportedTypes != .none {
             cameraPane.fileUploadButton.isHidden = false
@@ -262,7 +281,14 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             cameraPreviewViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
 
     private func configureConstraints() {
+        qrCodeOverLay.layoutViews(centeringBy: cameraPreviewViewController.cameraFrameView)
+
         NSLayoutConstraint.activate([
+            qrCodeOverLay.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            qrCodeOverLay.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            qrCodeOverLay.topAnchor.constraint(equalTo: view.topAnchor),
+            qrCodeOverLay.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+
             cameraPreviewViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
             cameraPreviewViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             cameraPreviewViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -381,6 +407,73 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         return finalImage
     }
     // swiftlint:enable line_length
+
+    private func showQRCodeFeedback(for document: GiniQRCodeDocument, isValid: Bool) {
+        guard !validQRCodeProcessing else { return }
+        guard detectedQRCodeDocument != document else { return }
+
+        hideTask?.cancel()
+        resetTask?.cancel()
+        detectedQRCodeDocument = document
+
+        hideTask = DispatchWorkItem(block: {
+            self.resetQRCodeScanning(isValid: isValid)
+
+            if let QRDocument = self.detectedQRCodeDocument {
+                if isValid {
+                    self.didPick(QRDocument)
+                }
+            }
+        })
+
+        if isValid {
+            showValidQRCodeFeedback()
+        } else {
+            showInvalidQRCodeFeedback()
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: hideTask!)
+    }
+
+    private func showValidQRCodeFeedback() {
+        validQRCodeProcessing = true
+        cameraPane.isUserInteractionEnabled = false
+        UIView.animate(withDuration: 0.3) {
+            self.qrCodeOverLay.isHidden = false
+            self.cameraPreviewViewController.changeFrameColor(to: .GiniCapture.success2)
+        }
+
+        qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: true)
+    }
+
+    private func showInvalidQRCodeFeedback() {
+        qrCodeOverLay.isUserInteractionEnabled = false
+        UIView.animate(withDuration: 0.3) {
+            self.qrCodeOverLay.isHidden = false
+            self.cameraPreviewViewController.changeFrameColor(to: .GiniCapture.warning3)
+        }
+
+        qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: false)
+    }
+
+    private func resetQRCodeScanning(isValid: Bool) {
+        resetTask = DispatchWorkItem(block: {
+            self.detectedQRCodeDocument = nil
+        })
+
+        if isValid {
+            cameraPreviewViewController.cameraFrameView.isHidden = true
+            qrCodeOverLay.showAnimation()
+        } else {
+            UIView.animate(withDuration: 0.3) {
+                self.cameraPreviewViewController.changeFrameColor(to: .GiniCapture.light1)
+                self.qrCodeOverLay.isHidden = true
+                self.cameraPane.isUserInteractionEnabled = true
+            }
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: resetTask!)
+        }
+    }
 }
 
 // MARK: - CameraPreviewViewControllerDelegate
@@ -392,37 +485,21 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
         cameraPreviewViewController.cameraFrameView.isHidden = false
         cameraPane.toggleCaptureButtonActivation(state: true)
         cameraPreviewViewController.updatePreviewViewOrientation()
+        UIView.animate(withDuration: 1.0) {
+            self.cameraPreviewViewController.previewView.alpha = 1
+        }
     }
 
     func cameraPreview(
         _ viewController: CameraPreviewViewController,
         didDetectInvalid qrCodeDocument: GiniQRCodeDocument) {
-        dismissQRCodeTooltip()
-        // TODO: handle it appriopriately within new version of camera screeen
-        // if detectedQRCodeDocument != qrCodeDocument {
-        //    detectedQRCodeDocument = qrCodeDocument
-        //    showPopup(forUnsupportedQR: qrCodeDocument)
-        // }
+            showQRCodeFeedback(for: qrCodeDocument, isValid: false)
     }
 
     func cameraPreview(
         _ viewController: CameraPreviewViewController,
         didDetect qrCodeDocument: GiniQRCodeDocument) {
-            // TODO: handle it appriopriately within new version of camera screeen
-            // if detectedQRCodeDocument != qrCodeDocument {
-            //    detectedQRCodeDocument = qrCodeDocument
-            //    showPopup(forQRDetected: qrCodeDocument) { [weak self] in
-            //        guard let self = self else { return }
-            //        self.didPick(qrCodeDocument)
-            //    }
-            // }
-    }
-
-    fileprivate func dismissQRCodeTooltip() {
-        // TODO: handle it appriopriately within new version of camera screeen
-        // if let tooltip = qrCodeToolTipView, !tooltip.isHidden {
-        //    qrCodeToolTipView?.dismiss()
-        // }
+            showQRCodeFeedback(for: qrCodeDocument, isValid: true)
     }
 
     func notAuthorized() {
