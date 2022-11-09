@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'BankSDK/**'
+      - 'CaptureSDK/**'
 
 jobs:
   check:
