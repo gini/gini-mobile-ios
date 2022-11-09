@@ -33,6 +33,12 @@ import GiniBankAPILibrary
      Called when the analysis was cancelled.
      */
     func giniCaptureDidCancelAnalysis()
+    
+    
+    /**
+     Called when the 'Enter Manually' was pressed within No Result screen
+     */
+    func giniCaptureDidEnterManually()
 }
 
  public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
@@ -136,7 +142,7 @@ import GiniBankAPILibrary
                 }
             } else {
                 self.resultsDelegate?
-                    .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen())
+                    .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen(resultDelegate: self.resultsDelegate))
                 self.documentService.resetToInitialState()
             }
         }

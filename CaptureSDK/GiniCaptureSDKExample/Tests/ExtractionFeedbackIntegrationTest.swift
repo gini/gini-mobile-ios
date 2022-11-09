@@ -120,6 +120,9 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                 }
             }
         }
+
+        func giniCaptureDidEnterManually() {
+        }
         
         func giniCaptureAnalysisDidFinishWithoutResults(_ showingNoResultsScreen: Bool) {
         }
