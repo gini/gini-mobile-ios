@@ -201,6 +201,10 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
             }
         }
     }
+
+    public func didPressEnterManually() {
+        self.resultsDelegate?.giniCaptureDidEnterManually()
+    }
 }
 
 extension GiniBankNetworkingScreenApiCoordinator {
