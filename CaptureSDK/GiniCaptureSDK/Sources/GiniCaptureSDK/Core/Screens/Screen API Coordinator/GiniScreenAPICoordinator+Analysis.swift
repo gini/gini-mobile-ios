@@ -33,8 +33,7 @@ extension GiniScreenAPICoordinator {
 
 extension GiniScreenAPICoordinator {
     func createImageAnalysisNoResultsScreen(
-            type: NoResultScreenViewController.NoResultType,
-            resultDelegate: GiniCaptureResultsDelegate? = nil
+            type: NoResultScreenViewController.NoResultType
         ) -> NoResultScreenViewController {
         let viewModel: NoResultScreenViewModel
         let viewController: NoResultScreenViewController
@@ -47,9 +46,9 @@ extension GiniScreenAPICoordinator {
                         self?.pages = []
                         self?.backToCamera()
                     },
-                    manuallyPressed: { [weak self, weak resultDelegate] in
-                        if let delegate = resultDelegate {
-                            delegate.giniCaptureDidEnterManually()
+                    manuallyPressed: { [weak self] in
+                        if let delegate = self?.visionDelegate {
+                            delegate.didPressEnterManually()
                         } else {
                             self?.screenAPINavigationController.dismiss(animated: true)
                         }
@@ -58,9 +57,9 @@ extension GiniScreenAPICoordinator {
                 })
             } else {
                 viewModel = NoResultScreenViewModel(
-                    manuallyPressed: { [weak self, weak resultDelegate] in
-                        if let delegate = resultDelegate {
-                            delegate.giniCaptureDidEnterManually()
+                    manuallyPressed: { [weak self] in
+                        if let delegate = self?.visionDelegate {
+                            delegate.didPressEnterManually()
                         } else {
                             self?.screenAPINavigationController.dismiss(animated: true)
                         }
@@ -107,9 +106,7 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
         }
     }
 
-    public func tryDisplayNoResultsScreen(
-        resultDelegate: GiniCaptureResultsDelegate?
-    ) -> Bool {
+    public func tryDisplayNoResultsScreen() -> Bool {
         var shouldDisplay = false
         var noResultType: NoResultScreenViewController.NoResultType?
         switch pages.type {

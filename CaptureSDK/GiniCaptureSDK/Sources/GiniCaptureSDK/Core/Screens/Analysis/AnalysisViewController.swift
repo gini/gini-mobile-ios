@@ -28,12 +28,9 @@ import UIKit
      In case that the `GiniCaptureDocument` analysed is an image it will display a no results screen
      with some capture suggestions. It won't show any screen if it is not an image, return `false` in that case.
      
-     - parameter resultDelegate: The result delegate to handle manually pressed action
      - returns: `true` if the screen was shown or `false` if it wasn't.
      */
-    func tryDisplayNoResultsScreen(
-        resultDelegate: GiniCaptureResultsDelegate?
-    ) -> Bool
+    func tryDisplayNoResultsScreen() -> Bool
 }
 
 /**
