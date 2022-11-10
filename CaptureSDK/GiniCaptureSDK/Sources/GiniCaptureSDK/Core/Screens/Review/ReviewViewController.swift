@@ -184,6 +184,9 @@ public final class ReviewViewController: UIViewController {
         return calculatedCellSize()
     }()
 
+    private lazy var collectionViewHeightConstraint = collectionView.heightAnchor.constraint(
+                                                      equalToConstant: view.frame.height * 0.5)
+
     private var currentPage: Int = 0 {
         didSet {
             setCellStatus(for: currentPage, isActive: true)
@@ -192,6 +195,47 @@ public final class ReviewViewController: UIViewController {
 
     // This is needed in order to "catch" the screen rotation on the modally presented viewcontroller
     private var previousScreenHeight: CGFloat = 0
+
+    // MARK: - Constraints
+
+    private lazy var tipLabelConstraints: [NSLayoutConstraint] = [
+        tipLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.padding),
+        tipLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        tipLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        tipLabel.heightAnchor.constraint(equalToConstant: Constants.titleHeight)]
+
+    private lazy var collectionViewConstraints: [NSLayoutConstraint] = [
+        collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: Constants.padding),
+        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        collectionViewHeightConstraint]
+
+    private lazy var pageControlConstraints: [NSLayoutConstraint] = [
+        pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: Constants.padding * 2),
+        pageControl.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        pageControl.trailingAnchor.constraint(equalTo: view.trailingAnchor)]
+
+    private lazy var processButtonConstraints: [NSLayoutConstraint] = [
+        processButton.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: Constants.padding * 2),
+        processButton.widthAnchor.constraint(equalToConstant: Constants.buttonSize.width),
+        processButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        processButton.heightAnchor.constraint(equalToConstant: Constants.buttonSize.height),
+        processButton.bottomAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                              constant: -Constants.bottomPadding)]
+
+    private lazy var addPagesButtonConstraints: [NSLayoutConstraint] = {
+        let buttonLeadingConstraint = addPagesButton.leadingAnchor.constraint(equalTo: processButton.trailingAnchor,
+                                                                              constant: 13)
+        buttonLeadingConstraint.priority = UILayoutPriority.defaultLow
+
+        let constraints = [
+            addPagesButton.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
+            buttonLeadingConstraint,
+            addPagesButton.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
+                                                     constant: -Constants.padding / 4)]
+
+        return constraints
+    }()
 
     // MARK: - Init
 
@@ -280,10 +324,11 @@ extension ReviewViewController {
 
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
+        let size = calculatedCellSize()
+        collectionViewHeightConstraint.constant = size.height + 4
         if UIDevice.current.isIpad {
             // cellSize needs to be updated when the screen is rotated
-            self.cellSize = calculatedCellSize()
+            self.cellSize = size
 
             DispatchQueue.main.async {
                 guard self.previousScreenHeight != UIScreen.main.bounds.height else { return }
@@ -424,41 +469,19 @@ extension ReviewViewController {
 
 extension ReviewViewController {
     private func addConstraints() {
-        let buttonLeadingConstraint = addPagesButton.leadingAnchor.constraint(equalTo: processButton.trailingAnchor,
-                                                                              constant: 13)
-        buttonLeadingConstraint.priority = UILayoutPriority.defaultLow
-
-        NSLayoutConstraint.activate([
-            tipLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            tipLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tipLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-
-            collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: 16),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-
-            pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 32),
-            pageControl.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            pageControl.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
+        NSLayoutConstraint.activate(tipLabelConstraints)
+        NSLayoutConstraint.activate(collectionViewConstraints)
+        NSLayoutConstraint.activate(pageControlConstraints)
 
         if !giniConfiguration.bottomNavigationBarEnabled {
-            NSLayoutConstraint.activate([
-                processButton.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: 32),
-                processButton.widthAnchor.constraint(equalToConstant: 204),
-                processButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                processButton.heightAnchor.constraint(equalToConstant: 50),
-                processButton.bottomAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                      constant: -50),
-
-                addPagesButton.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
-                buttonLeadingConstraint,
-                addPagesButton.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -4)
-            ])
+            NSLayoutConstraint.activate(processButtonConstraints)
+            NSLayoutConstraint.activate(addPagesButtonConstraints)
         } else {
             NSLayoutConstraint.activate([
-                pageControl.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -130),
-                collectionView.bottomAnchor.constraint(greaterThanOrEqualTo: pageControl.topAnchor, constant: -32)
+                pageControl.bottomAnchor.constraint(equalTo: view.bottomAnchor,
+                                                    constant: -Constants.pageControlBottomPadding),
+                collectionView.bottomAnchor.constraint(greaterThanOrEqualTo: pageControl.topAnchor,
+                                                       constant: -Constants.padding * 2)
             ])
         }
     }
@@ -616,5 +639,17 @@ extension ReviewViewController: ReviewCollectionViewDelegate {
         deleteItem(at: indexpath)
 
         setCurrentPage(basedOn: collectionView)
+    }
+}
+
+// MARK: Constants
+
+extension ReviewViewController {
+    private enum Constants {
+        static let padding: CGFloat = 16
+        static let bottomPadding: CGFloat = 50
+        static let pageControlBottomPadding: CGFloat = 130
+        static let buttonSize: CGSize = CGSize(width: 204, height: 50)
+        static let titleHeight: CGFloat = 18
     }
 }
