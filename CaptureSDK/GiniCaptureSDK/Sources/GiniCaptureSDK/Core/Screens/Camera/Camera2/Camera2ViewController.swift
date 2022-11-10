@@ -8,6 +8,7 @@
 
 import UIKit
 
+// swiftlint:disable type_body_length
 public final class Camera2ViewController: UIViewController, CameraScreen {
 
     /**
@@ -38,6 +39,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     @IBOutlet weak var cameraPane: CameraPane!
     private let cameraButtonsViewModel: CameraButtonsViewModel
     private var navigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
+    private var bottomNavigationBar: UIView?
 
     @IBOutlet weak var bottomButtonsConstraints: NSLayoutConstraint!
     @IBOutlet weak var bottomPaneConstraint: NSLayoutConstraint!
@@ -112,36 +114,46 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                 "ginicapture.camera.infoLabel",
                 comment: "Info label")
         }
-        setupInitialState()
         configureButtons()
         configureBottomNavigationBar()
     }
 
-    private func setupInitialState() {
-        navigationBarBottomAdapter?.showButtons(navigationButtons: [.help])
-    }
-
-    private func setupNotEmptyState() {
-        navigationBarBottomAdapter?.showButtons(navigationButtons: [.help, .back])
-    }
-
-    private func configureCustomTopNavigationBar() {
+    private func configureCustomTopNavigationBar(containsImage: Bool) {
         navigationItem.leftBarButtonItem = nil
         navigationItem.hidesBackButton = true
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: NSLocalizedStringPreferredFormat(
-                "ginicapture.camera.popupCancel",
-                comment: "Cancel button"),
-            style: .plain,
-            target: cameraButtonsViewModel,
-            action: #selector(cameraButtonsViewModel.cancelPressed))
+        if !containsImage {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                title: NSLocalizedStringPreferredFormat(
+                    "ginicapture.camera.popupCancel",
+                    comment: "Cancel button"),
+                style: .plain,
+                target: cameraButtonsViewModel,
+                action: #selector(cameraButtonsViewModel.cancelPressed))
+        } else {
+            navigationItem.rightBarButtonItem = nil
+        }
+    }
+
+    private func updateCustomNavigationBars(containsImage: Bool) {
+        guard let bottomNavigationBar = bottomNavigationBar else {
+            return
+        }
+        configureCustomTopNavigationBar(containsImage: containsImage)
+        if containsImage {
+            navigationBarBottomAdapter?.showButtons(
+                navigationBar: bottomNavigationBar,
+                navigationButtons: [.help, .back])
+        } else {
+            navigationBarBottomAdapter?.showButtons(
+                navigationBar: bottomNavigationBar,
+                navigationButtons: [.help])
+        }
     }
 
     private func configureBottomNavigationBar() {
         if giniConfiguration.bottomNavigationBarEnabled {
-            configureCustomTopNavigationBar()
-            if let bottomBar = giniConfiguration.cameraNavigationBarBottomAdapter {
-                navigationBarBottomAdapter = bottomBar
+            if let bottomBarAdapter = giniConfiguration.cameraNavigationBarBottomAdapter {
+                navigationBarBottomAdapter = bottomBarAdapter
             } else {
                 navigationBarBottomAdapter = DefaultCameraBottomNavigationBarAdapter()
             }
@@ -152,11 +164,14 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                 self?.cameraButtonsViewModel.backButtonAction?()
             }
 
-            if let navigationBar =
+            if let bar =
                 navigationBarBottomAdapter?.injectedView() {
-                view.addSubview(navigationBar)
-                layoutBottomNavigationBar(navigationBar)
+                bottomNavigationBar = bar
+                view.addSubview(bar)
+                layoutBottomNavigationBar(bar)
             }
+            updateCustomNavigationBars(
+                containsImage: cameraButtonsViewModel.images.count > 0)
         }
     }
 
@@ -234,6 +249,9 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                 self?.cameraPane.thumbnailView.updateStackStatus(to: .filled(count: images.count, lastImage: lastImage))
             } else {
                 self?.cameraPane.thumbnailView.updateStackStatus(to: ThumbnailView.State.empty)
+            }
+            if self?.giniConfiguration.bottomNavigationBarEnabled == true {
+                self?.updateCustomNavigationBars(containsImage: images.last != nil)
             }
         }
         cameraButtonsViewModel.imagesUpdated?(cameraButtonsViewModel.images)

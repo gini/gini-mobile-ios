@@ -16,9 +16,12 @@ public protocol CameraBottomNavigationBarAdapter: InjectedViewAdapter {
     /**
      *  Called when the displayed buttons have to change. Show only the buttons that are in the list.
      *
+     * - Parameter navigationBar:              The navigation bar that holds buttons
      * - Parameter navigationButtons:          The list of buttons that have to be shown
      */
-    func showButtons(navigationButtons: [CameraNavigationBarBottomButton])
+    func showButtons(
+        navigationBar: UIView,
+        navigationButtons: [CameraNavigationBarBottomButton])
     /**
      *  Set the callback for the help button action.
      *
