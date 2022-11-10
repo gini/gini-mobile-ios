@@ -117,6 +117,11 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
      */
     func didCancelAnalysis()
     
+    /**
+     Called when the 'Enter Manually' was pressed within No Result screen
+     */
+    func didPressEnterManually()
+
 }
 
 /**

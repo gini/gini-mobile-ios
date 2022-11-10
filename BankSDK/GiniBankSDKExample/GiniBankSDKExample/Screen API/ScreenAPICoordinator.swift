@@ -217,6 +217,10 @@ extension ScreenAPICoordinator: GiniCaptureNetworkService {
 // MARK: Screen API - UI Only - GiniCaptureDelegate
 
 extension ScreenAPICoordinator: GiniCaptureDelegate {
+    func didPressEnterManually() {
+        // Add your  implementation
+    }
+    
     func didCapture(document: GiniCaptureDocument, networkDelegate: GiniCaptureNetworkDelegate) {
         // Add your  implementation
     }
@@ -236,4 +240,5 @@ extension ScreenAPICoordinator: GiniCaptureDelegate {
     func didCancelAnalysis() {
         // Add your  implementation
     }
+
 }

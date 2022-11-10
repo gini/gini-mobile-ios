@@ -154,10 +154,10 @@ extension ScreenAPICoordinator: NoResultsScreenDelegate {
 
 // MARK: - GiniCaptureResultsDelegate
 extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
-    
     func giniCaptureDidEnterManually() {
         screenAPIViewController.dismiss(animated: true)
     }
+    
     
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult,
                                          sendFeedbackBlock: @escaping ([String: Extraction]) -> Void) {
@@ -238,6 +238,10 @@ extension ScreenAPICoordinator: GiniCaptureNetworkService {
 // MARK: Screen API - UI Only - GiniCaptureDelegate
 
 extension ScreenAPICoordinator: GiniCaptureDelegate {
+    func didPressEnterManually() {
+        // Add your  implementation
+    }
+    
     func didCapture(document: GiniCaptureDocument, networkDelegate: GiniCaptureNetworkDelegate) {
         // Add your  implementation
     }

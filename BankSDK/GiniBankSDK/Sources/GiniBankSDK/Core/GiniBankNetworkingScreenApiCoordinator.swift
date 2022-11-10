@@ -202,10 +202,14 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                     }
             } else {
                 self.resultsDelegate?
-                    .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen(resultDelegate: self.resultsDelegate))
+                    .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen())
                 self.documentService.resetToInitialState()
             }
         }
+    }
+
+    public func didPressEnterManually() {
+        self.resultsDelegate?.giniCaptureDidEnterManually()
     }
 }
 
@@ -241,7 +245,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
                     }
             } else {
                 self.resultsDelegate?
-                    .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen(resultDelegate: self.resultsDelegate))
+                    .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen())
                 self.documentService.resetToInitialState()
             }
         }

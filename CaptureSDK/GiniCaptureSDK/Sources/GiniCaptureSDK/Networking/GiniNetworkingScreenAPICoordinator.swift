@@ -33,8 +33,7 @@ import GiniBankAPILibrary
      Called when the analysis was cancelled.
      */
     func giniCaptureDidCancelAnalysis()
-    
-    
+
     /**
      Called when the 'Enter Manually' was pressed within No Result screen
      */
@@ -142,7 +141,7 @@ import GiniBankAPILibrary
                 }
             } else {
                 self.resultsDelegate?
-                    .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen(resultDelegate: self.resultsDelegate))
+                    .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen())
                 self.documentService.resetToInitialState()
             }
         }
@@ -203,6 +202,11 @@ extension GiniNetworkingScreenAPICoordinator {
 // MARK: - GiniCaptureDelegate
 
 extension GiniNetworkingScreenAPICoordinator: GiniCaptureDelegate {
+    
+    public func didPressEnterManually() {
+        resultsDelegate?.giniCaptureDidEnterManually()
+    }
+    
     public func didCancelCapturing() {
         resultsDelegate?.giniCaptureDidCancelAnalysis()
     }
@@ -277,4 +281,5 @@ extension GiniNetworkingScreenAPICoordinator: GiniCaptureDelegate {
             documentService.resetToInitialState()
         }
     }
+
 }
