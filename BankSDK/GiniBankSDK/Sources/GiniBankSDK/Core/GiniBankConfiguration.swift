@@ -378,6 +378,11 @@ public final class GiniBankConfiguration: NSObject {
     public var onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
 
     /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the review screen.
+     */
+    public var reviewNavigationBarBottomAdapter: ReviewScreenBottomNavigationBarAdapter?
+
+    /**
      * Set an adapter implementation to show a custom loading indicator on the buttons which support loading.
      */
     public var onButtonLoadingIndicator: OnButtonLoadingIndicatorAdapter?
@@ -1316,6 +1321,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.cameraNavigationBarBottomAdapter = self.cameraNavigationBarBottomAdapter
         configuration.noResultNavigationBarBottomAdapter = self.noResultNavigationBarBottomAdapter
         configuration.helpNavigationBarBottomAdapter = self.helpNavigationBarBottomAdapter
+        configuration.reviewNavigationBarBottomAdapter = self.reviewNavigationBarBottomAdapter
         configuration.navigationBarOnboardingTitleContinueButton = self.navigationBarOnboardingTitleContinueButton
         
         configuration.onboardingPageIndicatorColor = self.onboardingPageIndicatorColor

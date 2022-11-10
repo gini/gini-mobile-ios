@@ -201,6 +201,10 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                 if let imageData = data, let image = UIImage(data: imageData)?.fixOrientation() {
                     let croppedImage = self.crop(image: image)
                     capturedData = croppedImage.jpegData(compressionQuality: 1)
+
+                    #if targetEnvironment(simulator)
+                    capturedData = imageData
+                    #endif
                 }
 
                 if let image = self.cameraButtonsViewModel.didCapture(imageData: capturedData,
