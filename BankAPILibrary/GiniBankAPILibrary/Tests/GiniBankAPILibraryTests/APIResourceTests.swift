@@ -106,17 +106,6 @@ final class APIResourceTests: XCTestCase {
             "/documents/", "path should match")
     }
     
-    func testDocumentCreationContentTypeV1() {
-        let resource = APIResource<[Document]>(method: .createDocument(fileName: nil,
-                                                                       docType: nil,
-                                                                       mimeSubType: "jpeg",
-                                                                       documentType: nil),
-                                               apiDomain: .accounting,
-                                               httpMethod: .post)
-        let contentType = resource.defaultHeaders["Content-Type"]!
-        XCTAssertEqual(contentType, "application/vnd.gini.v1+jpeg", "content type should match")
-    }
-    
     func testDocumentCreationContentTypeV2Partial() {
         let resource = APIResource<[Document]>(method: .createDocument(fileName: nil,
                                                                        docType: nil,

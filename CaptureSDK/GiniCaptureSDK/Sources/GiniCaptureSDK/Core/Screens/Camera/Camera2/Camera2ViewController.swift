@@ -374,6 +374,77 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         return imageView
     }
 
+    private func showQRCodeFeedback(for document: GiniQRCodeDocument, isValid: Bool) {
+        guard !validQRCodeProcessing else { return }
+        guard detectedQRCodeDocument != document else { return }
+
+        hideTask?.cancel()
+        resetTask?.cancel()
+        detectedQRCodeDocument = document
+
+        hideTask = DispatchWorkItem(block: {
+            self.resetQRCodeScanning(isValid: isValid)
+
+            if let QRDocument = self.detectedQRCodeDocument {
+                if isValid {
+                    self.didPick(QRDocument)
+                }
+            }
+        })
+
+        if isValid {
+            showValidQRCodeFeedback()
+        } else {
+            showInvalidQRCodeFeedback()
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: hideTask!)
+    }
+
+    private func showValidQRCodeFeedback() {
+        validQRCodeProcessing = true
+        cameraPane.isUserInteractionEnabled = false
+        UIView.animate(withDuration: 0.3) {
+            self.qrCodeOverLay.isHidden = false
+            self.cameraPreviewViewController.changeFrameColor(to: .GiniCapture.success2)
+        }
+
+        qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: true)
+    }
+
+    private func showInvalidQRCodeFeedback() {
+        qrCodeOverLay.isUserInteractionEnabled = false
+        UIView.animate(withDuration: 0.3) {
+            self.qrCodeOverLay.isHidden = false
+            self.cameraPreviewViewController.changeFrameColor(to: .GiniCapture.warning3)
+        }
+
+        qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: false)
+    }
+
+    private func resetQRCodeScanning(isValid: Bool) {
+        resetTask = DispatchWorkItem(block: {
+            self.detectedQRCodeDocument = nil
+        })
+
+        if isValid {
+            cameraPreviewViewController.cameraFrameView.isHidden = true
+            qrCodeOverLay.showAnimation()
+        } else {
+            UIView.animate(withDuration: 0.3) {
+                self.cameraPreviewViewController.changeFrameColor(to: .GiniCapture.light1)
+                self.qrCodeOverLay.isHidden = true
+                self.cameraPane.isUserInteractionEnabled = true
+            }
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: resetTask!)
+        }
+    }
+}
+
+// MARK: - Image Cropping
+
+extension Camera2ViewController {
     // swiftlint:disable line_length
     private func crop(image: UIImage) -> UIImage {
         let standardImageAspectRatio: CGFloat = 0.75 // Standard aspect ratio of a 3/4 image
@@ -429,66 +500,6 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         return finalImage
     }
     // swiftlint:enable line_length
-
-    private func showQRCodeFeedback(for document: GiniQRCodeDocument) {
-        hideTask = DispatchWorkItem(block: {
-            self.resetQRCodeScanning()
-
-            if let QRDocument = self.detectedQRCodeDocument {
-                if QRDocument.qrCodeFormat != nil {
-                    self.didPick(QRDocument)
-                }
-            }
-        })
-
-        if document.qrCodeFormat != nil {
-            showValidQRCodeFeedback()
-        } else {
-            showInvalidQRCodeFeedback()
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: hideTask!)
-    }
-
-    private func showValidQRCodeFeedback() {
-        validQRCodeProcessing = true
-        cameraPane.isUserInteractionEnabled = false
-        UIView.animate(withDuration: 0.3) {
-            self.qrCodeOverLay.isHidden = false
-            self.cameraPreviewViewController.changeFrameColor(to: .GiniCapture.success2)
-        }
-
-        qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: true)
-    }
-
-    private func showInvalidQRCodeFeedback() {
-        qrCodeOverLay.isUserInteractionEnabled = false
-        UIView.animate(withDuration: 0.3) {
-            self.qrCodeOverLay.isHidden = false
-            self.cameraPreviewViewController.changeFrameColor(to: .GiniCapture.warning3)
-        }
-
-        qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: false)
-    }
-
-    private func resetQRCodeScanning() {
-        resetTask = DispatchWorkItem(block: {
-            self.detectedQRCodeDocument = nil
-        })
-
-        if detectedQRCodeDocument?.qrCodeFormat != nil {
-            cameraPreviewViewController.cameraFrameView.isHidden = true
-            qrCodeOverLay.showAnimation()
-        } else {
-            UIView.animate(withDuration: 0.3) {
-                self.cameraPreviewViewController.changeFrameColor(to: .GiniCapture.light1)
-                self.qrCodeOverLay.isHidden = true
-                self.cameraPane.isUserInteractionEnabled = true
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: resetTask!)
-        }
-    }
 }
 
 // MARK: - CameraPreviewViewControllerDelegate
@@ -505,16 +516,16 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
         }
     }
 
-    func cameraPreview(_ viewController: CameraPreviewViewController,
-                       didDetect qrCodeDocument: GiniQRCodeDocument) {
-        guard !validQRCodeProcessing else { return }
-        if detectedQRCodeDocument != qrCodeDocument {
-            hideTask?.cancel()
-            resetTask?.cancel()
+    func cameraPreview(
+        _ viewController: CameraPreviewViewController,
+        didDetectInvalid qrCodeDocument: GiniQRCodeDocument) {
+            showQRCodeFeedback(for: qrCodeDocument, isValid: false)
+    }
 
-            detectedQRCodeDocument = qrCodeDocument
-            showQRCodeFeedback(for: qrCodeDocument)
-        }
+    func cameraPreview(
+        _ viewController: CameraPreviewViewController,
+        didDetect qrCodeDocument: GiniQRCodeDocument) {
+            showQRCodeFeedback(for: qrCodeDocument, isValid: true)
     }
 
     func notAuthorized() {

@@ -190,9 +190,8 @@ final class QRCodeOverlay: UIView {
         NSLayoutConstraint.activate([
             correctQRFeedback.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
             correctQRFeedback.centerYAnchor.constraint(equalTo: cameraFrame.topAnchor),
-            correctQRFeedback.leadingAnchor.constraint(
-                greaterThanOrEqualTo: leadingAnchor,
-                constant: Constants.spacing * 2),
+            correctQRFeedback.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor,
+                                                       constant: Constants.spacing * 2),
 
             checkMarkImageView.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
             checkMarkImageView.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor),
@@ -204,12 +203,10 @@ final class QRCodeOverlay: UIView {
     private func layoutIncorrectQRCode(centeringBy cameraFrame: UIView) {
         NSLayoutConstraint.activate([
             incorrectQRFeedback.topAnchor.constraint(equalTo: cameraFrame.topAnchor, constant: Constants.spacing),
-            incorrectQRFeedback.leadingAnchor.constraint(
-                equalTo: cameraFrame.leadingAnchor,
-                constant: Constants.spacing),
-            incorrectQRFeedback.trailingAnchor.constraint(
-                equalTo: cameraFrame.trailingAnchor,
-                constant: -Constants.spacing)
+            incorrectQRFeedback.leadingAnchor.constraint(equalTo: cameraFrame.leadingAnchor,
+                                                         constant: Constants.spacing),
+            incorrectQRFeedback.trailingAnchor.constraint(equalTo: cameraFrame.trailingAnchor,
+                                                          constant: -Constants.spacing)
         ])
     }
 
