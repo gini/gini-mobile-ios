@@ -16,6 +16,9 @@
 		833652FD28F0308B00B5A1CE /* CustomBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833652FC28F0308B00B5A1CE /* CustomBottomNavigationBarAdapter.swift */; };
 		833652FF28F0330B00B5A1CE /* CustomBottomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 833652FE28F0330B00B5A1CE /* CustomBottomNavigationBar.xib */; };
 		8336530128F0334C00B5A1CE /* CustomBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8336530028F0334C00B5A1CE /* CustomBottomNavigationBar.swift */; };
+		837EEFB1291D6A5400DB781F /* CustomCameraBottomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 837EEFB0291D6A5400DB781F /* CustomCameraBottomNavigationBar.xib */; };
+		837EEFB3291D6AAC00DB781F /* CustomCameraBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837EEFB2291D6AAC00DB781F /* CustomCameraBottomNavigationBar.swift */; };
+		837EEFB5291D6ABE00DB781F /* CustomCameraBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837EEFB4291D6ABE00DB781F /* CustomCameraBottomNavigationBarAdapter.swift */; };
 		83D02CD3290AC3AD00DA97F7 /* CustomOnboardingBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D02CD2290AC3AD00DA97F7 /* CustomOnboardingBottomNavigationBarAdapter.swift */; };
 		83D02CD7290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83D02CD6290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib */; };
 		83D02CD9290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D02CD8290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift */; };
@@ -106,6 +109,9 @@
 		833652FC28F0308B00B5A1CE /* CustomBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
 		833652FE28F0330B00B5A1CE /* CustomBottomNavigationBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomBottomNavigationBar.xib; sourceTree = "<group>"; };
 		8336530028F0334C00B5A1CE /* CustomBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomNavigationBar.swift; sourceTree = "<group>"; };
+		837EEFB0291D6A5400DB781F /* CustomCameraBottomNavigationBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomCameraBottomNavigationBar.xib; sourceTree = "<group>"; };
+		837EEFB2291D6AAC00DB781F /* CustomCameraBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCameraBottomNavigationBar.swift; sourceTree = "<group>"; };
+		837EEFB4291D6ABE00DB781F /* CustomCameraBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCameraBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
 		83D02CD2290AC3AD00DA97F7 /* CustomOnboardingBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOnboardingBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
 		83D02CD6290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomOnboardingBottomNavigationBar.xib; sourceTree = "<group>"; };
 		83D02CD8290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOnboardingBottomNavigationBar.swift; sourceTree = "<group>"; };
@@ -214,6 +220,16 @@
 				8336530028F0334C00B5A1CE /* CustomBottomNavigationBar.swift */,
 			);
 			path = HelpBottomNavigationBar;
+			sourceTree = "<group>";
+		};
+		837EEFAF291D692900DB781F /* CameraBottomNavigationBar */ = {
+			isa = PBXGroup;
+			children = (
+				837EEFB0291D6A5400DB781F /* CustomCameraBottomNavigationBar.xib */,
+				837EEFB2291D6AAC00DB781F /* CustomCameraBottomNavigationBar.swift */,
+				837EEFB4291D6ABE00DB781F /* CustomCameraBottomNavigationBarAdapter.swift */,
+			);
+			path = CameraBottomNavigationBar;
 			sourceTree = "<group>";
 		};
 		83D02CD1290AC38D00DA97F7 /* OnboardingBottomNavigationBar */ = {
@@ -366,6 +382,7 @@
 		F490C7E325DE873900D8CA6F /* GiniBankSDKExample */ = {
 			isa = PBXGroup;
 			children = (
+				837EEFAF291D692900DB781F /* CameraBottomNavigationBar */,
 				83D02CD1290AC38D00DA97F7 /* OnboardingBottomNavigationBar */,
 				8336530228F0335A00B5A1CE /* HelpBottomNavigationBar */,
 				4C84B5DE2653FFF000853F33 /* Example Swift.entitlements */,
@@ -528,6 +545,7 @@
 				F44AD01E28D4BBE7002BAD98 /* page1Animation.json in Resources */,
 				F45D7F172800583300C73C63 /* result_Gini_invoice_example.json in Resources */,
 				833652FF28F0330B00B5A1CE /* CustomBottomNavigationBar.xib in Resources */,
+				837EEFB1291D6A5400DB781F /* CustomCameraBottomNavigationBar.xib in Resources */,
 				764E0AD228CF274A00F96503 /* InfoPlist.strings in Resources */,
 				8303F4EF28F9AD7700285599 /* magicAnimation.json in Resources */,
 				83D02CD7290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib in Resources */,
@@ -619,11 +637,13 @@
 				F4AD00DC25DFDCE400C34E15 /* ResultTableViewController.swift in Sources */,
 				F4DF824F25EFA8ED00A8D755 /* ScreenAPICoordinator.swift in Sources */,
 				F4AD00C225DED43200C34E15 /* SelectAPIViewController.swift in Sources */,
+				837EEFB5291D6ABE00DB781F /* CustomCameraBottomNavigationBarAdapter.swift in Sources */,
 				F4AD00CC25DFDB4E00C34E15 /* CredentialsManager.swift in Sources */,
 				8336530128F0334C00B5A1CE /* CustomBottomNavigationBar.swift in Sources */,
 				F414A56325EBB87F00D04A80 /* DocumentAnalysisHelper.swift in Sources */,
 				F4BB7CF226984E5D003FD77E /* CustomMenuItemViewController.swift in Sources */,
 				F4AD00FE25DFDF4500C34E15 /* ComponentAPIOnboardingViewController.swift in Sources */,
+				837EEFB3291D6AAC00DB781F /* CustomCameraBottomNavigationBar.swift in Sources */,
 				833652FD28F0308B00B5A1CE /* CustomBottomNavigationBarAdapter.swift in Sources */,
 				F4E0218827BD349A0042D000 /* Amount.swift in Sources */,
 				F4AD00D625DFDC8100C34E15 /* SettingsViewController.swift in Sources */,
