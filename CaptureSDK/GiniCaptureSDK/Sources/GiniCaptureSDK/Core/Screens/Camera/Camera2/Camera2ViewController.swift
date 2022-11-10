@@ -356,18 +356,25 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         return imageView
     }
 
-    private func showQRCodeFeedback(for document: GiniQRCodeDocument) {
+    private func showQRCodeFeedback(for document: GiniQRCodeDocument, isValid: Bool) {
+        guard !validQRCodeProcessing else { return }
+        guard detectedQRCodeDocument != document else { return }
+
+        hideTask?.cancel()
+        resetTask?.cancel()
+        detectedQRCodeDocument = document
+
         hideTask = DispatchWorkItem(block: {
-            self.resetQRCodeScanning()
+            self.resetQRCodeScanning(isValid: isValid)
 
             if let QRDocument = self.detectedQRCodeDocument {
-                if QRDocument.qrCodeFormat != nil {
+                if isValid {
                     self.didPick(QRDocument)
                 }
             }
         })
 
-        if document.qrCodeFormat != nil {
+        if isValid {
             showValidQRCodeFeedback()
         } else {
             showInvalidQRCodeFeedback()
@@ -397,12 +404,12 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: false)
     }
 
-    private func resetQRCodeScanning() {
+    private func resetQRCodeScanning(isValid: Bool) {
         resetTask = DispatchWorkItem(block: {
             self.detectedQRCodeDocument = nil
         })
 
-        if detectedQRCodeDocument?.qrCodeFormat != nil {
+        if isValid {
             cameraPreviewViewController.cameraFrameView.isHidden = true
             qrCodeOverLay.showAnimation()
         } else {
@@ -491,16 +498,16 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
         }
     }
 
-    func cameraPreview(_ viewController: CameraPreviewViewController,
-                       didDetect qrCodeDocument: GiniQRCodeDocument) {
-        guard !validQRCodeProcessing else { return }
-        if detectedQRCodeDocument != qrCodeDocument {
-            hideTask?.cancel()
-            resetTask?.cancel()
+    func cameraPreview(
+        _ viewController: CameraPreviewViewController,
+        didDetectInvalid qrCodeDocument: GiniQRCodeDocument) {
+            showQRCodeFeedback(for: qrCodeDocument, isValid: false)
+    }
 
-            detectedQRCodeDocument = qrCodeDocument
-            showQRCodeFeedback(for: qrCodeDocument)
-        }
+    func cameraPreview(
+        _ viewController: CameraPreviewViewController,
+        didDetect qrCodeDocument: GiniQRCodeDocument) {
+            showQRCodeFeedback(for: qrCodeDocument, isValid: true)
     }
 
     func notAuthorized() {
