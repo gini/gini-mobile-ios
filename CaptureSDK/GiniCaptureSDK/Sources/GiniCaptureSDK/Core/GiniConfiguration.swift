@@ -529,6 +529,11 @@ import UIKit
       * Set an adapter implementation to show a custom bottom navigation bar on the camera screen.
      */
     public var cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
+
+    /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the review screen.
+     */
+    public var reviewNavigationBarBottomAdapter: ReviewScreenBottomNavigationBarAdapter?
     
     /**
       * Set an adapter implementation to show a custom bottom navigation bar on the onboarding screen.
@@ -823,6 +828,7 @@ import UIKit
     .callout: UIFontMetrics(forTextStyle: .callout).scaledFont(for: UIFont.systemFont(ofSize: 16)),
     .calloutBold: UIFontMetrics(forTextStyle: .callout).scaledFont(for: UIFont.boldSystemFont(ofSize: 16)),
     .footnote: UIFontMetrics(forTextStyle: .footnote).scaledFont(for: UIFont.systemFont(ofSize: 13)),
+    .footnoteBold: UIFontMetrics(forTextStyle: .footnote).scaledFont(for: UIFont.boldSystemFont(ofSize: 13)),
     ]
 
     /**
