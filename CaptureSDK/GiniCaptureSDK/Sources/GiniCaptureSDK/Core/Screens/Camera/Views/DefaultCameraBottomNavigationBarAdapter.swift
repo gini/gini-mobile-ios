@@ -16,10 +16,9 @@ class DefaultCameraBottomNavigationBarAdapter: CameraBottomNavigationBarAdapter 
 
     private var helpButtonCallback: (() -> Void)?
     private var backButtonCallback: (() -> Void)?
-    var view: CameraBottomNavigationBar?
 
-    func showButtons(navigationButtons: [CameraNavigationBarBottomButton]) {
-        if let navigationView = injectedView() as? CameraBottomNavigationBar {
+    func showButtons(navigationBar: UIView, navigationButtons: [CameraNavigationBarBottomButton]) {
+        if let navigationView = navigationBar as? CameraBottomNavigationBar {
             if navigationButtons.contains(.help) {
                 navigationView.rightButton.isHidden = false
             } else {
@@ -44,26 +43,20 @@ class DefaultCameraBottomNavigationBarAdapter: CameraBottomNavigationBarAdapter 
     }
 
     func injectedView() -> UIView {
-        if let navigationBarView = view {
+        if let navigationBarView =
+            CameraBottomNavigationBar().loadNib() as?
+            CameraBottomNavigationBar {
+            navigationBarView.rightButton.addTarget(
+                self,
+                action: #selector(helpButtonClicked),
+                for: .touchUpInside)
+            navigationBarView.leftButton.addTarget(
+                self,
+                action: #selector(backButtonClicked),
+                for: .touchUpInside)
             return navigationBarView
-        } else {
-            if let navigationBarView =
-                CameraBottomNavigationBar().loadNib() as?
-                CameraBottomNavigationBar {
-                navigationBarView.rightButton.addTarget(
-                    self,
-                    action: #selector(helpButtonClicked),
-                    for: .touchUpInside)
-                navigationBarView.leftButton.addTarget(
-                    self,
-                    action: #selector(backButtonClicked),
-                    for: .touchUpInside)
-                view = navigationBarView
-                return navigationBarView
-            } else {
-                return UIView()
-            }
         }
+        return UIView()
     }
 
     @objc func helpButtonClicked() {
