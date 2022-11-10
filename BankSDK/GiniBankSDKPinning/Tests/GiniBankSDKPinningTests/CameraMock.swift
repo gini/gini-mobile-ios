@@ -47,8 +47,8 @@ final class CameraMock: CameraProtocol {
         }
     }
     
-    func setupQRScanningOutput() {
-        
+    func setupQRScanningOutput(completion: @escaping ((GiniCaptureSDK.CameraError?) -> Void)) {
+
     }
     
     func start() {

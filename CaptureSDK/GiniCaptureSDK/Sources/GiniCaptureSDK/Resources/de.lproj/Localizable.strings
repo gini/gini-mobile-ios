@@ -171,3 +171,8 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.images.openWithTutorialStep3" = "openWithTutorialStep3";
 "ginicapture.albums.selectMorePhotosButton" = "Weitere Bilder auswählen";
 "ginicapture.albums.footer" = "Um weitere Fotos auszuwählen oder die Auswahl aufzuheben verwenden Sie \"Weitere Bilder auswählen\".";
+
+"ginicapture.QRscanning.correct" = "QR Code erkannt";
+"ginicapture.QRscanning.incorrect.title" = "Unbekannter QR code";
+"ginicapture.QRscanning.incorrect.description" = "Dieser Code enthält keine Zahlungsinformationen. Bitte anderen QR Code oder Rechnung abfotografieren.";
+"ginicapture.QRscanning.loading" = "Rechnung wird übermittelt";

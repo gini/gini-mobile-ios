@@ -80,6 +80,8 @@ public final class ReviewViewController: UIViewController {
         return presenter
     }()
 
+    private var navigationBarBottomAdapter: ReviewScreenBottomNavigationBarAdapter?
+
     // MARK: - UI initialization
 
     lazy var collectionView: UICollectionView = {
@@ -146,7 +148,7 @@ public final class ReviewViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = giniConfiguration.primaryButtonCornerRadius
         button.backgroundColor = UIColor.GiniCapture.accent1
         button.setTitle(NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle",
                                                          comment: "Process button title"), for: .normal)
@@ -248,6 +250,49 @@ public final class ReviewViewController: UIViewController {
     }
 }
 
+// MARK: - BottomNavigation
+
+extension ReviewViewController {
+    private func configureBottomNavigationBar() {
+        if giniConfiguration.bottomNavigationBarEnabled {
+            if let bottomBar = giniConfiguration.reviewNavigationBarBottomAdapter {
+                navigationBarBottomAdapter = bottomBar
+            } else {
+                navigationBarBottomAdapter = DefaultReviewBottomNavigationBarAdapter()
+            }
+            navigationBarBottomAdapter?.setMainButtonClickedActionCallback { [weak self] in
+                guard let self = self else { return }
+                self.delegate?.reviewDidTapProcess(self)
+            }
+            navigationBarBottomAdapter?.setSecondaryButtonClickedActionCallback { [weak self] in
+                guard let self = self else { return }
+                self.setCellStatus(for: self.currentPage, isActive: false)
+                self.delegate?.reviewDidTapAddImage(self)
+            }
+
+            if let navigationBar =
+                navigationBarBottomAdapter?.injectedView() {
+                view.addSubview(navigationBar)
+                layoutBottomNavigationBar(navigationBar)
+            }
+        }
+    }
+
+    private func layoutBottomNavigationBar(_ navigationBar: UIView) {
+        navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(navigationBar)
+        NSLayoutConstraint.activate([
+            navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBar.heightAnchor.constraint(equalToConstant: 114)
+        ])
+        view.bringSubviewToFront(navigationBar)
+        view.layoutSubviews()
+    }
+
+}
+
 // MARK: - UIViewController
 
 extension ReviewViewController {
@@ -256,6 +301,7 @@ extension ReviewViewController {
 
         setupView()
         addConstraints()
+        configureBottomNavigationBar()
         addLoadingView()
     }
 
@@ -307,26 +353,34 @@ extension ReviewViewController {
         view.addSubview(tipLabel)
         view.addSubview(collectionView)
         view.addSubview(pageControl)
-        view.addSubview(processButton)
-        view.addSubview(addPagesButton)
+        if !giniConfiguration.bottomNavigationBarEnabled {
+            view.addSubview(processButton)
+            view.addSubview(addPagesButton)
+        }
         edgesForExtendedLayout = []
     }
 
     private func updateButtonTitle() {
+        var title: String
         if pages.count > 1 {
-            processButton.setTitle(
-                NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle.plural",
-                                                 comment: "Process button title"), for: .normal)
+            title = NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle.plural",
+                                                 comment: "Process button title")
         } else {
-            processButton.setTitle(
-                NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle.singular",
-                                                 comment: "Process button title"), for: .normal)
+            title = NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle.singular",
+                                                 comment: "Process button title")
+        }
+
+        if giniConfiguration.bottomNavigationBarEnabled {
+            navigationBarBottomAdapter?.setMainButtonTitle(with: title)
+        } else {
+            processButton.setTitle(title, for: .normal)
         }
     }
 
     // MARK: - Loading indicator
 
     private func addLoadingView() {
+        guard !giniConfiguration.bottomNavigationBarEnabled else { return }
         let loadingIndicator: UIView
 
         if let customLoadingIndicator = giniConfiguration.onButtonLoadingIndicator?.injectedView() {
@@ -373,6 +427,10 @@ extension ReviewViewController {
         DispatchQueue.main.async {
             self.updateButtonTitle()
 
+            if self.giniConfiguration.bottomNavigationBarEnabled {
+                self.navigationBarBottomAdapter?.set(loadingState: !finishedUpload)
+            }
+
             if self.giniConfiguration.multipageEnabled {
                 if finishedUpload {
                     self.processButton.alpha = 1
@@ -414,8 +472,18 @@ extension ReviewViewController {
         NSLayoutConstraint.activate(tipLabelConstraints)
         NSLayoutConstraint.activate(collectionViewConstraints)
         NSLayoutConstraint.activate(pageControlConstraints)
-        NSLayoutConstraint.activate(processButtonConstraints)
-        NSLayoutConstraint.activate(addPagesButtonConstraints)
+
+        if !giniConfiguration.bottomNavigationBarEnabled {
+            NSLayoutConstraint.activate(processButtonConstraints)
+            NSLayoutConstraint.activate(addPagesButtonConstraints)
+        } else {
+            NSLayoutConstraint.activate([
+                pageControl.bottomAnchor.constraint(equalTo: view.bottomAnchor,
+                                                    constant: -Constants.pageControlBottomPadding),
+                collectionView.bottomAnchor.constraint(greaterThanOrEqualTo: pageControl.topAnchor,
+                                                       constant: -Constants.padding * 2)
+            ])
+        }
     }
 
     @objc
@@ -580,6 +648,7 @@ extension ReviewViewController {
     private enum Constants {
         static let padding: CGFloat = 16
         static let bottomPadding: CGFloat = 50
+        static let pageControlBottomPadding: CGFloat = 130
         static let buttonSize: CGSize = CGSize(width: 204, height: 50)
         static let titleHeight: CGFloat = 18
     }

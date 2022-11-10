@@ -378,6 +378,11 @@ public final class GiniBankConfiguration: NSObject {
     public var onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
 
     /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the review screen.
+     */
+    public var reviewNavigationBarBottomAdapter: ReviewScreenBottomNavigationBarAdapter?
+
+    /**
      * Set an adapter implementation to show a custom loading indicator on the buttons which support loading.
      */
     public var onButtonLoadingIndicator: OnButtonLoadingIndicatorAdapter?
@@ -1257,6 +1262,7 @@ public final class GiniBankConfiguration: NSObject {
     .callout: UIFontMetrics(forTextStyle: .callout).scaledFont(for: UIFont.systemFont(ofSize: 16)),
     .calloutBold: UIFontMetrics(forTextStyle: .callout).scaledFont(for: UIFont.boldSystemFont(ofSize: 16)),
     .footnote: UIFontMetrics(forTextStyle: .footnote).scaledFont(for: UIFont.systemFont(ofSize: 13)),
+    .footnoteBold: UIFontMetrics(forTextStyle: .footnote).scaledFont(for: UIFont.boldSystemFont(ofSize: 13))
     ]
     
     public func captureConfiguration() -> GiniConfiguration {
@@ -1315,6 +1321,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.cameraNavigationBarBottomAdapter = self.cameraNavigationBarBottomAdapter
         configuration.noResultNavigationBarBottomAdapter = self.noResultNavigationBarBottomAdapter
         configuration.helpNavigationBarBottomAdapter = self.helpNavigationBarBottomAdapter
+        configuration.reviewNavigationBarBottomAdapter = self.reviewNavigationBarBottomAdapter
         configuration.navigationBarOnboardingTitleContinueButton = self.navigationBarOnboardingTitleContinueButton
         
         configuration.onboardingPageIndicatorColor = self.onboardingPageIndicatorColor
