@@ -60,6 +60,8 @@ final class ReviewZoomViewController: UIViewController {
         scrollView.backgroundColor = view.backgroundColor
         scrollView.minimumZoomScale = 1.0
         scrollView.maximumZoomScale = 2.0
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.showsHorizontalScrollIndicator = false
         scrollView.delegate = self
         view.addSubview(scrollView)
 
