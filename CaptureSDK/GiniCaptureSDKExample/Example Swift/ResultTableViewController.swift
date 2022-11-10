@@ -9,6 +9,10 @@
 import GiniBankAPILibrary
 import UIKit
 
+fileprivate enum LabelType: Int {
+case textLabel = 100
+case detailTextLabel = 101
+}
 /**
  Presents a dictionary of results from the analysis process in a table view.
  Values from the dictionary will be used as the cells titles and keys as the cells subtitles.
@@ -34,9 +38,14 @@ extension ResultTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "resultCell", for: indexPath)
-        cell.textLabel?.text = result[indexPath.row].value
-        cell.detailTextLabel?.text = result[indexPath.row].name
+        let cell = tableView.dequeueReusableCell(withIdentifier: "kCustomResultCell", for: indexPath)
+        if let label = cell.viewWithTag(LabelType.textLabel.rawValue) as? UILabel {
+            label.text = result[indexPath.row].value
+        }
+        
+        if let label = cell.viewWithTag(LabelType.detailTextLabel.rawValue) as? UILabel {
+            label.text = result[indexPath.row].name
+        }
         return cell
     }
 }
