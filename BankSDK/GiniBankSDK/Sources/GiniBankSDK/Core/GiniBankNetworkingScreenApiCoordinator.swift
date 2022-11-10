@@ -162,15 +162,9 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                                         documentMetadata: Document.Metadata?,
                                         configuration: GiniBankConfiguration,
                                         for api: APIDomain) -> DocumentServiceProtocol {
-        let captureConfiguration = configuration.captureConfiguration()
         switch api {
         case .default, .gym, .custom:
             return DocumentService(lib: lib, metadata: documentMetadata)
-        case .accounting:
-            if captureConfiguration.multipageEnabled {
-                preconditionFailure("The accounting API does not support multipage")
-            }
-            return AccountingDocumentService(lib: lib, metadata: documentMetadata)
         }
     }
 

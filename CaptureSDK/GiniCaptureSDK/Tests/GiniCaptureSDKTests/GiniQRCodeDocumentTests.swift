@@ -66,4 +66,12 @@ final class GiniQRCodeDocumentTests: XCTestCase {
                                                                       withConfig: giniConfiguration),
                              "validation should throw a DocumentaValidationError")
     }
+    
+    func testGiroCodeQRWithInvalidIBAN(){
+        let scannedString = "BCD\n001\n1\nSCT\n\nMister Smith\nDE0212030000000020251\nEUR30\n\n\nTest"
+        let qrDocument = GiniQRCodeDocument(scannedString: scannedString)
+        XCTAssertThrowsError(try GiniCaptureDocumentValidator.validate(qrDocument,
+                                                                      withConfig: giniConfiguration),
+                             "validation should throw a DocumentaValidationError")
+    }
 }

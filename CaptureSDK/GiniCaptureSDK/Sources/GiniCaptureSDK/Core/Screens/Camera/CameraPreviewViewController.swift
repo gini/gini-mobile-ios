@@ -11,6 +11,8 @@ import AVFoundation
 protocol CameraPreviewViewControllerDelegate: AnyObject {
     func cameraPreview(_ viewController: CameraPreviewViewController,
                        didDetect qrCodeDocument: GiniQRCodeDocument)
+    func cameraPreview(_ viewController: CameraPreviewViewController,
+                       didDetectInvalid qrCodeDocument: GiniQRCodeDocument)
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol)
     func notAuthorized()
@@ -251,6 +253,10 @@ final class CameraPreviewViewController: UIViewController {
             camera.didDetectQR = { [weak self] qrDocument in
                 guard let self = self else { return }
                 self.delegate?.cameraPreview(self, didDetect: qrDocument)
+            }
+            camera.didDetectInvalidQR = { [weak self] qrDocument in
+                guard let self = self else { return }
+                self.delegate?.cameraPreview(self, didDetectInvalid: qrDocument)
             }
         }
     }
