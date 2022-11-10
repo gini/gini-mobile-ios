@@ -39,15 +39,39 @@ extension GiniScreenAPICoordinator {
         let viewController: NoResultScreenViewController
         switch type {
         case .image:
-            viewModel = NoResultScreenViewModel { [weak self] in
-                self?.backToCamera()
-            } manuallyPressed: { [weak self] in
-                self?.screenAPINavigationController.dismiss(animated: true)
-            } cancelPressed: { [weak self] in
-                self?.backToCamera()
+            if pages.contains(where: { $0.document.isImported == false }) {
+                // if there is a photo captured with camera
+                viewModel = NoResultScreenViewModel(
+                    retakeBlock: { [weak self] in
+                        self?.pages = []
+                        self?.backToCamera()
+                    },
+                    manuallyPressed: { [weak self] in
+                        if let delegate = self?.visionDelegate {
+                            delegate.didPressEnterManually()
+                        } else {
+                            self?.screenAPINavigationController.dismiss(animated: true)
+                        }
+                    }, cancelPressed: { [weak self] in
+                    self?.backToCamera()
+                })
+            } else {
+                viewModel = NoResultScreenViewModel(
+                    manuallyPressed: { [weak self] in
+                        if let delegate = self?.visionDelegate {
+                            delegate.didPressEnterManually()
+                        } else {
+                            self?.screenAPINavigationController.dismiss(animated: true)
+                        }
+                    }, cancelPressed: { [weak self] in
+                    self?.backToCamera()
+                })
             }
         default:
-            viewModel = NoResultScreenViewModel( cancelPressed: { [weak self] in
+            viewModel = NoResultScreenViewModel(
+                manuallyPressed: { [weak self] in
+                    self?.screenAPINavigationController.dismiss(animated: true)
+                }, cancelPressed: { [weak self] in
                 self?.closeScreenApi()
             })
         }
@@ -63,6 +87,7 @@ extension GiniScreenAPICoordinator {
 // MARK: - AnalysisDelegate
 
 extension GiniScreenAPICoordinator: AnalysisDelegate {
+
     public func displayError(withMessage message: String?, andAction action: (() -> Void)?) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self,
@@ -78,31 +103,31 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
             } else {
                 self.analysisErrorAndAction = (message, action)
             }
-
         }
     }
 
     public func tryDisplayNoResultsScreen() -> Bool {
-        if pages.type == .image {
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.imageAnalysisNoResultsViewController = self.createImageAnalysisNoResultsScreen(type: .image)
-                self.screenAPINavigationController.pushViewController(self.imageAnalysisNoResultsViewController!,
-                                                                      animated: true)
-            }
-
-            return true
-        } else if pages.type == .pdf {
-            // TODO: no results for pdf
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.imageAnalysisNoResultsViewController = self.createImageAnalysisNoResultsScreen(type: .pdf)
-                self.screenAPINavigationController.pushViewController(
-                    self.imageAnalysisNoResultsViewController!,
-                                                                      animated: true)
-            }
-            return true
+        var shouldDisplay = false
+        var noResultType: NoResultScreenViewController.NoResultType?
+        switch pages.type {
+        case .image:
+            noResultType = .image
+            shouldDisplay = true
+        case .pdf:
+            noResultType = .pdf
+            shouldDisplay = true
+        default:
+            shouldDisplay = false
         }
-        return false
+
+        if shouldDisplay, let type = noResultType {
+            let noResultsScreen = self.createImageAnalysisNoResultsScreen(type: type)
+            DispatchQueue.main.async {
+                self.imageAnalysisNoResultsViewController = noResultsScreen
+                self.screenAPINavigationController.pushViewController(
+                    noResultsScreen, animated: true)
+            }
+        }
+        return shouldDisplay
     }
 }
