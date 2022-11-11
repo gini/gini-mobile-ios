@@ -73,6 +73,8 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         super.viewDidLoad()
         showUploadButton()
         setupView()
+
+        cameraPane.isHidden = giniConfiguration.onlyQRCodeScanningEnabled
     }
 
     public override func viewWillAppear(_ animated: Bool) {
@@ -303,7 +305,11 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             cameraPreviewViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
 
     private func configureConstraints() {
-        qrCodeOverLay.layoutViews(centeringBy: cameraPreviewViewController.cameraFrameView)
+//        if giniConfiguration.onlyQRCodeScanningEnabled {
+//            qrCodeOverLay.layoutViews(centeringBy: cameraPreviewViewController.qrCodeFrameView)
+//        } else {
+            qrCodeOverLay.layoutViews(centeringBy: cameraPreviewViewController.cameraFrameView)
+//        }
 
         NSLayoutConstraint.activate([
             qrCodeOverLay.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -508,8 +514,11 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol) {
-        cameraPreviewViewController.cameraFrameView.isHidden = false
-        cameraPane.toggleCaptureButtonActivation(state: true)
+        if !giniConfiguration.onlyQRCodeScanningEnabled {
+            cameraPreviewViewController.cameraFrameView.isHidden = false
+            cameraPane.toggleCaptureButtonActivation(state: true)
+        }
+
         cameraPreviewViewController.updatePreviewViewOrientation()
         UIView.animate(withDuration: 1.0) {
             self.cameraPreviewViewController.previewView.alpha = 1

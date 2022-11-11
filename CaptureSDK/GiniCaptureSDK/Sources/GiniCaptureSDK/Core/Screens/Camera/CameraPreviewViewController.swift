@@ -45,6 +45,15 @@ final class CameraPreviewViewController: UIViewController {
         let imageView = UIImageView()
         imageView.image = UIImageNamedPreferred(named: "cameraFocus")
         imageView.contentMode = .scaleAspectFit
+        imageView.isHidden = giniConfiguration.onlyQRCodeScanningEnabled
+        return imageView
+    }()
+
+    lazy var qrCodeFrameView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImageNamedPreferred(named: "qrCodeFocus")
+        imageView.contentMode = .scaleAspectFit
+        imageView.isHidden = !giniConfiguration.onlyQRCodeScanningEnabled
         return imageView
     }()
     
@@ -112,6 +121,7 @@ final class CameraPreviewViewController: UIViewController {
         
         view.insertSubview(previewView, at: 0)
 
+        view.addSubview(qrCodeFrameView)
         view.addSubview(cameraFrameView)
 
         addLoadingIndicator()
@@ -131,6 +141,7 @@ final class CameraPreviewViewController: UIViewController {
 
     private func setupConstraints() {
         cameraFrameView.translatesAutoresizingMaskIntoConstraints = false
+        qrCodeFrameView.translatesAutoresizingMaskIntoConstraints = false
 
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
@@ -164,6 +175,11 @@ final class CameraPreviewViewController: UIViewController {
             previewView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             previewView.topAnchor.constraint(equalTo: view.topAnchor),
             previewView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
+            qrCodeFrameView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            qrCodeFrameView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            qrCodeFrameView.widthAnchor.constraint(equalToConstant: Constants.QRCodeScannerSize.width),
+            qrCodeFrameView.heightAnchor.constraint(equalToConstant: Constants.QRCodeScannerSize.height)
         ])
     }
     
@@ -393,5 +409,6 @@ extension CameraPreviewViewController {
         static let a4AspectRatio: CGFloat = 1.414
         static let cameraPaneWidth: CGFloat = 124
         static let bottomNavigationBarHeight: CGFloat = 114
+        static let QRCodeScannerSize = CGSize(width: 258, height: 258)
     }
 }
