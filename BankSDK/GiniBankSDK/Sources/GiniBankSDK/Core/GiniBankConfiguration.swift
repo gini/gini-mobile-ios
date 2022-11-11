@@ -105,6 +105,11 @@ public final class GiniBankConfiguration: NSObject {
      Indicates whether the QR Code scanning feature is enabled or not.
      */
     @objc public var qrCodeScanningEnabled = false
+
+    /**
+     Indicates whether only the QR Code scanning feature is enabled or not.
+     */
+    @objc public var onlyQRCodeScanningEnabled = false
     
     /**
      Indicates the status bar style in the Gini Bank SDK.
@@ -1289,6 +1294,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.openWithEnabled = self.openWithEnabled
         
         configuration.qrCodeScanningEnabled = self.qrCodeScanningEnabled
+        configuration.onlyQRCodeScanningEnabled = self.onlyQRCodeScanningEnabled
         
         configuration.statusBarStyle = self.statusBarStyle
         configuration.cameraPreviewCornerGuidesColor = self.cameraPreviewCornerGuidesColor
@@ -1554,6 +1560,8 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.openWithEnabled = configuration.openWithEnabled
         
         giniBankConfiguration.qrCodeScanningEnabled = configuration.qrCodeScanningEnabled
+
+        giniBankConfiguration.onlyQRCodeScanningEnabled = configuration.onlyQRCodeScanningEnabled
         
         giniBankConfiguration.fileImportSupportedTypes = configuration.fileImportSupportedTypes
         

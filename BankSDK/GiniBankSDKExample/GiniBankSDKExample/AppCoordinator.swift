@@ -47,6 +47,7 @@ final class AppCoordinator: Coordinator {
             return CustomDocumentValidationResult.success()
         }
 //        configuration.cameraNavigationBarBottomAdapter = CustomCameraBottomNavigationBarAdapter()
+//        configuration.onlyQRCodeScanningEnabled = true
 //        configuration.bottomNavigationBarEnabled = true
 //        configuration.noResultNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
 //        configuration.helpNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
