@@ -305,11 +305,11 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             cameraPreviewViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
 
     private func configureConstraints() {
-//        if giniConfiguration.onlyQRCodeScanningEnabled {
-//            qrCodeOverLay.layoutViews(centeringBy: cameraPreviewViewController.qrCodeFrameView)
-//        } else {
+        if giniConfiguration.onlyQRCodeScanningEnabled {
+            qrCodeOverLay.layoutViews(centeringBy: cameraPreviewViewController.qrCodeFrameView)
+        } else {
             qrCodeOverLay.layoutViews(centeringBy: cameraPreviewViewController.cameraFrameView)
-//        }
+        }
 
         NSLayoutConstraint.activate([
             qrCodeOverLay.centerYAnchor.constraint(equalTo: view.centerYAnchor),
