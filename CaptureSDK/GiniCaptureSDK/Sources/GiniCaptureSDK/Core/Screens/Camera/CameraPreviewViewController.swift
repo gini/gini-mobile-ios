@@ -303,6 +303,7 @@ final class CameraPreviewViewController: UIViewController {
 
     func changeFrameColor(to color: UIColor) {
         cameraFrameView.image = cameraFrameView.image?.tintedImageWithColor(color)
+        qrCodeFrameView.image = qrCodeFrameView.image?.tintedImageWithColor(color)
     }
 }
 
