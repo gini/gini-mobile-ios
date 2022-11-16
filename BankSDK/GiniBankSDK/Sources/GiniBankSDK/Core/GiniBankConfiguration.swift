@@ -1124,7 +1124,7 @@ public final class GiniBankConfiguration: NSObject {
     /**
      * Set an adapter implementation to show a custom loading indicator on the document analysis screen.
      */
-    public var analysisScreenLoadingIndicator: AnalysisScreenLoadingIndicatorAdapter?
+    public var customLoadingIndicator: CustomLoadingIndicatorAdapter?
     
     // MARK: - TODO DELETE
     /**
@@ -1390,7 +1390,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.customGiniErrorLoggerDelegate = self.customGiniErrorLoggerDelegate
         configuration.albumsScreenSelectMorePhotosTextColor = self.albumsScreenSelectMorePhotosTextColor
 
-        configuration.analysisScreenLoadingIndicator = self.analysisScreenLoadingIndicator
+        configuration.customLoadingIndicator = self.customLoadingIndicator
         
         // Undocumented--Xamarin only
         configuration.closeButtonResource = self.closeButtonResource
