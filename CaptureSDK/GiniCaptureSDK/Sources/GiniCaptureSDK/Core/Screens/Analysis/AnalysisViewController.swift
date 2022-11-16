@@ -162,7 +162,7 @@ import UIKit
      Displays a loading activity indicator. Should be called when document analysis is started.
      */
     public func showAnimation() {
-        if let loadingIndicator = giniConfiguration.analysisScreenLoadingIndicator {
+        if let loadingIndicator = giniConfiguration.customLoadingIndicator {
             loadingIndicator.startAnimation()
         } else {
             loadingIndicatorView.startAnimating()
@@ -173,7 +173,7 @@ import UIKit
      Hides the loading activity indicator. Should be called when document analysis is finished.
      */
     public func hideAnimation() {
-        if let loadingIndicator = giniConfiguration.analysisScreenLoadingIndicator {
+        if let loadingIndicator = giniConfiguration.customLoadingIndicator {
             loadingIndicator.stopAnimation()
         } else {
             loadingIndicatorView.stopAnimating()
@@ -256,7 +256,7 @@ import UIKit
         addLoadingContainer()
         addLoadingView(intoContainer: loadingIndicatorContainer)
 
-        if let loadingIndicator = giniConfiguration.analysisScreenLoadingIndicator {
+        if let loadingIndicator = giniConfiguration.customLoadingIndicator {
             addLoadingText(below: loadingIndicator.injectedView())
             loadingIndicator.startAnimation()
         } else {
@@ -278,7 +278,7 @@ import UIKit
     private func addLoadingView(intoContainer container: UIView? = nil) {
         let loadingIndicator: UIView
 
-        if let customLoadingIndicator = giniConfiguration.analysisScreenLoadingIndicator?.injectedView() {
+        if let customLoadingIndicator = giniConfiguration.customLoadingIndicator?.injectedView() {
             loadingIndicator = customLoadingIndicator
         } else {
             loadingIndicator = loadingIndicatorView
