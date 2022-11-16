@@ -96,7 +96,7 @@ final class AppCoordinator: Coordinator {
 
 //       //  Custom loading indicator customization example for the analysis screen
 //        let customLoadingIndicator = CustomLoadingIndicator()
-//        configuration.analysisScreenLoadingIndicator = customLoadingIndicator
+//        configuration.customLoadingIndicator = customLoadingIndicator
 
 //      // Custom loading indicator customization example for the on button laoding indicator
 //        let customButtonLoadingIndicator = OnButtonLoading()
