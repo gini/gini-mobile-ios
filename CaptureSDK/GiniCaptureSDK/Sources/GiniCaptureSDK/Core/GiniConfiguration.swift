@@ -563,7 +563,7 @@ import UIKit
     /**
      * Set an adapter implementation to show a custom loading indicator on the document analysis screen.
      */
-    public var analysisScreenLoadingIndicator: AnalysisScreenLoadingIndicatorAdapter?
+    public var customLoadingIndicator: CustomLoadingIndicatorAdapter?
 
     /**
      * Set an adapter implementation to show a custom loading indicator on the buttons which support loading.
