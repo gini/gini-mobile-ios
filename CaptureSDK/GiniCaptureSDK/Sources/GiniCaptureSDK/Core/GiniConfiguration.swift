@@ -265,6 +265,11 @@ import UIKit
      Indicates whether the QR Code scanning feature is enabled or not.
      */
     @objc public var qrCodeScanningEnabled = false
+
+    /**
+     Indicates whether only the QR Code scanning feature is enabled or not.
+     */
+    @objc public var onlyQRCodeScanningEnabled = false
     
     /**
      Indicates the status bar style in the Gini Capture SDK.
