@@ -635,7 +635,7 @@ extension ReviewViewController {
         static let padding: CGFloat = 16
         static let bottomPadding: CGFloat = 50
         static let pageControlBottomPadding: CGFloat = 130
-        static let buttonSize: CGSize = CGSize(width: 162, height: 50)
+        static let buttonSize: CGSize = CGSize(width: 126, height: 50)
         static let titleHeight: CGFloat = 18
     }
 }
