@@ -169,7 +169,7 @@ final class QRCodeOverlay: UIView {
     private func addLoadingView() {
         let loadingIndicator: UIView
 
-        if let customLoadingIndicator = configuration.analysisScreenLoadingIndicator?.injectedView() {
+        if let customLoadingIndicator = configuration.customLoadingIndicator?.injectedView() {
             loadingIndicator = customLoadingIndicator
         } else {
             loadingIndicator = loadingIndicatorView
@@ -245,7 +245,7 @@ final class QRCodeOverlay: UIView {
         checkMarkImageView.isHidden = true
         loadingContainer.isHidden = false
 
-        if let loadingIndicator = configuration.analysisScreenLoadingIndicator {
+        if let loadingIndicator = configuration.customLoadingIndicator {
             loadingIndicator.startAnimation()
         } else {
             loadingIndicatorView.startAnimating()
@@ -259,7 +259,7 @@ final class QRCodeOverlay: UIView {
         checkMarkImageView.isHidden = true
         loadingContainer.isHidden = true
 
-        if let loadingIndicator = configuration.analysisScreenLoadingIndicator {
+        if let loadingIndicator = configuration.customLoadingIndicator {
             loadingIndicator.stopAnimation()
         } else {
             loadingIndicatorView.stopAnimating()

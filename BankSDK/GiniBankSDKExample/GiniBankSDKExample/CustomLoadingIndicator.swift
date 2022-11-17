@@ -9,7 +9,7 @@
 import UIKit
 import GiniCaptureSDK
 
-public final class CustomLoadingIndicator: UIActivityIndicatorView, AnalysisScreenLoadingIndicatorAdapter {
+public final class CustomLoadingIndicator: UIActivityIndicatorView, CustomLoadingIndicatorAdapter {
     public func startAnimation() {
         self.startAnimating()
     }
