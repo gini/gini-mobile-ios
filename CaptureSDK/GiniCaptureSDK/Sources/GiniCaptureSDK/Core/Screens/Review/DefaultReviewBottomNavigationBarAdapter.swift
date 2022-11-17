@@ -34,10 +34,6 @@ class DefaultReviewBottomNavigationBarAdapter: ReviewScreenBottomNavigationBarAd
         view?.set(loadingState: isLoading)
     }
 
-    func setMainButtonTitle(with title: String) {
-        view?.setMainButtonTitle(with: title)
-    }
-
     @objc func mainButtonClicked() {
         mainButtonCallback?()
     }

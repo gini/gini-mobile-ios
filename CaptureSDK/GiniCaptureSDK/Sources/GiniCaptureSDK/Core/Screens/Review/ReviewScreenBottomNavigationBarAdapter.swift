@@ -25,12 +25,6 @@ public protocol ReviewScreenBottomNavigationBarAdapter: InjectedViewAdapter {
      * - Parameter callback: An  action callback, which should be retained and called in back button action method
      */
     func setSecondaryButtonClickedActionCallback(_ callback: @escaping () -> Void)
-    /**
-     *  Set the title for the 'Process documents' button.
-     *
-     * - Parameter title: The title of the main button's title
-     */
-    func setMainButtonTitle(with title: String)
 
     /**
      *  Set the loading indicator state on the 'Process documents' button when multipage upload is happening.
