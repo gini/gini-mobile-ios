@@ -8,7 +8,7 @@ The Gini Capture SDK components can be customized either through the `GiniConfig
 - [Review screen](#review-screen)
 - [Multipage Review screen](#multipage-review-screen)
 - [Analysis screen](#analysis-screen)
-- [Supported formats screen](#supported-formats-screen)
+- [Formats screen](#formats-screen)
 - [Open with tutorial screen](#open-with-tutorial-screen)
 - [Capturing tips screen](#capturing-tips-screen)
 - [Gallery album screen](#gallery-album-screen)
@@ -190,25 +190,9 @@ Some background and text colors use the `GiniColor` type with which you can set 
 - Indicator color &#8594; `GiniConfiguration.analysisLoadingIndicatorColor` (Only with PDFs)
 - Text &#8594; <span style="color:#009EDF">*ginicapture.analysis.loadingText*</span> localized string
 
-## Supported formats screen
+## Formats screen
 
-<br>
-<center><img src="img/Customization guide/Supported formats.jpg" height="500"/></center>
-</br>
-
-##### Navigation bar
-- Back button
-  - With image and title
-	  - Image &#8594; <span style="color:#009EDF">*arrowBack*</span> image asset
-	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.help.backToMenu*</span> localized string
-  - With title only
-	  - Title &#8594; `GiniConfiguration.navigationBarHelpScreenTitleBackToMenuButton`
-
-##### 1. Supported format cells
-- Supported fortmats icon &#8594; <span style="color:#009EDF">*supportedFormatsIcon*</span> image asset
-- Supported formats icon color &#8594; `GiniConfiguration.supportedFormatsIconColor`
-- Non supported fortmats icon &#8594; <span style="color:#009EDF">*nonSupportedFormatsIcon*</span> image asset
-- Non supported formats icon color &#8594; `GiniConfiguration.nonSupportedFormatsIconColor`
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FH4WFJ4xaw4YNU4VaJYWiQq%2FiOS-Gini-Capture-SDK-2.0.0-UI-Customisation%3Fnode-id%3D40%253A584%26t%3DwpenBBM8QsagJzOg-1" allowfullscreen></iframe>
 
 ## Open with tutorial screen
 
