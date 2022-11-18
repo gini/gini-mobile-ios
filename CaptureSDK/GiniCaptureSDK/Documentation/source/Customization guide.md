@@ -4,18 +4,55 @@ Customization guide
 The Gini Capture SDK components can be customized either through the `GiniConfiguration`, the `Localizable.string` file or through the assets. Here you can find a complete guide with the reference to every customizable item.
 
 - [Generic components](#generic-components)
+- [Onboarding screens](#onboarding-screens)
+- [No Authorized screen](#no-authorized-screen)
 - [Camera screen](#camera-screen)
+- [Gallery album screen](#gallery-album-screen)
 - [Review screen](#review-screen)
-- [Multipage Review screen](#multipage-review-screen)
 - [Analysis screen](#analysis-screen)
 - [Help screens](#help-screens)
-- [Gallery album screen](#gallery-album-screen)
-- [Onboarding screens](#onboarding-screens)
+- [No result screen](#no-result-screen)
+- [Error screens](#error-screens)
 
+## Colors
 
-## Supporting dark mode
+We are providing a global color palette `GiniColors.xcassets` which you are free to override. The custom colors will be then applied on all screens.
+You can find the names of the colors [https://github.com/gini/gini-mobile-ios/tree/new-ui/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/GiniColors.xcassets](https://github.com/gini/gini-mobile-ios/tree/new-ui/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/GiniColors.xcassets).
 
-Some background and text colors use the `GiniColor` type with which you can set colors for dark and light modes. Please make sure to set contrasting images to the background colors in your `.xcassets` for the Gini Capture SDK images you override (e.g. `onboardingPage1`). The text colors should also be set in contrast to the background colors.
+ You can view our color palette here:
+
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FH4WFJ4xaw4YNU4VaJYWiQq%2FiOS-Gini-Capture-SDK-2.0.0-UI-Customisation%3Fnode-id%3D14%253A355%26t%3DwpenBBM8QsagJzOg-1" allowfullscreen></iframe>
+
+## Typography
+
+We provide a global typography based on text appearance styles from `UIFont.TextStyle`. 
+
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FH4WFJ4xaw4YNU4VaJYWiQq%2FiOS-Gini-Capture-SDK-2.0.0-UI-Customisation%3Fnode-id%3D123%253A2326%26t%3DwpenBBM8QsagJzOg-1" allowfullscreen></iframe>
+
+To override them in your application please use `GiniConfiguration.updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle)`. For example:
+
+```swift
+
+    // If you need to scale your font please use our method `scaledFont()`. Please, find the example below.
+    let configuration = GiniBankConfiguration.shared
+    let customFontToBeScaled = UIFont.scaledFont(UIFont(name: "Avenir", size: 20) ?? UIFont.systemFont(ofSize: 7, weight: .regular), textStyle: .caption1)
+    configuration.updateFont(customFontToBeScaled, for: .caption1)
+
+    // If you would like to pass us already scaled font.
+    let customScaledFont = UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 28))
+    configuration.updateFont(customScaledFont, for: .caption2)
+
+```
+
+## Images
+
+Customizing of images is done via overriding of [GiniImages.xcassets](https://github.com/gini/gini-mobile-ios/tree/new-ui/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/GiniImages.xcassets) resources.
+
+## Text
+
+ Text customization is done via overriding of string resources.
+
+ You can find all the string resources in [Localizable.strings](https://github.com/gini/gini-mobile-ios/blob/new-ui/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/de.lproj/Localizable.strings).
 
 ## Generic components
 
@@ -127,7 +164,7 @@ Some background and text colors use the `GiniColor` type with which you can set 
 	- Text &#8594; <span style="color:#009EDF">*ginicapture.review.bottom*</span> localized string
 	- Text color &#8594; `GiniConfiguration.reviewTextBottomColor`
 
-## Multipage Review screen
+## Review screen
 
 <br>
 <center><img src="img/Customization guide/MultipageReview.jpg" height="500"/></center>
