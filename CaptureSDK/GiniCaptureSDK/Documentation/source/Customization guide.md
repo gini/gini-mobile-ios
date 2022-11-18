@@ -8,12 +8,9 @@ The Gini Capture SDK components can be customized either through the `GiniConfig
 - [Review screen](#review-screen)
 - [Multipage Review screen](#multipage-review-screen)
 - [Analysis screen](#analysis-screen)
-- [Formats screen](#formats-screen)
-- [Open with tutorial screen](#open-with-tutorial-screen)
-- [Capturing tips screen](#capturing-tips-screen)
+- [Help screens](#help-screens)
 - [Gallery album screen](#gallery-album-screen)
 - [Onboarding screens](#onboarding-screens)
-- [Help screen](#help-screen)
 
 
 ## Supporting dark mode
@@ -190,60 +187,9 @@ Some background and text colors use the `GiniColor` type with which you can set 
 - Indicator color &#8594; `GiniConfiguration.analysisLoadingIndicatorColor` (Only with PDFs)
 - Text &#8594; <span style="color:#009EDF">*ginicapture.analysis.loadingText*</span> localized string
 
-## Formats screen
+## Help screens
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FH4WFJ4xaw4YNU4VaJYWiQq%2FiOS-Gini-Capture-SDK-2.0.0-UI-Customisation%3Fnode-id%3D40%253A584%26t%3DwpenBBM8QsagJzOg-1" allowfullscreen></iframe>
-
-## Open with tutorial screen
-
-<br>
-<center><img src="img/Customization guide/Open with tutorial.jpg" height="500"/></center>
-</br>
-
-##### Navigation bar
-- Back button
-  - With image and title
-	  - Image &#8594; <span style="color:#009EDF">*arrowBack*</span> image asset
-	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.help.backToMenu*</span> localized string
-  - With title only
-	  - Title &#8594; `GiniConfiguration.navigationBarHelpScreenTitleBackToMenuButton`
-
-##### 1. Header
-- Text &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.collectionHeader*</span> localized string
-
-##### 2. Open with steps
-- App name &#8594; `GiniConfiguration.openWithAppNameForTexts`
-- Step indicator color &#8594; `GiniConfiguration.stepIndicatorColor`
-- Step 1
-	- Title &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.step1.title*</span> localized string
-	- Subtitle &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.step1.subtitle*</span> localized string
-	- Image &#8594; <span style="color:#009EDF">*openWithTutorialStep1* (German) and *openWithTutorialStep1_en* (English)</span> image assets
-- Step 2
-	- Title &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.step2.title*</span> localized string
-	- Subtitle &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.step2.subtitle*</span> localized string
-	- Image &#8594; <span style="color:#009EDF">*openWithTutorialStep2* (German) and *openWithTutorialStep2_en* (English)</span> image assets
-- Step 3
-	- Title &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.step3.title*</span> localized string
-	- Subtitle &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.step3.subtitle*</span> localized string
-	- Image &#8594; <span style="color:#009EDF">*openWithTutorialStep3* (German) and *openWithTutorialStep3_en* (English)</span> image assets
-
-## Capturing tips screen
-
-<br>
-<center><img src="img/Customization guide/No results.jpg" height="500"/></center>
-</br>
-
-##### 1. Capturing tip images
-- Tip 1 image &#8594; <span style="color:#009EDF">*captureSuggestion1*</span> image asset
-- Tip 2 image &#8594; <span style="color:#009EDF">*captureSuggestion2*</span> image asset
-- Tip 3 image &#8594; <span style="color:#009EDF">*captureSuggestion3*</span> image asset
-- Tip 4 image &#8594; <span style="color:#009EDF">*captureSuggestion4*</span> image asset
-- Tip 5 image &#8594; <span style="color:#009EDF">*captureSuggestion5*</span> image asset
-
-##### 2. Go to camera button
-- Background color &#8594; `GiniConfiguration.noResultsBottomButtonColor`
-- Text color &#8594; `GiniConfiguration.noResultsBottomButtonTextColor`
-- Corner radius &#8594; `GiniConfiguration.noResultsBottomButtonCornerRadius`
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FH4WFJ4xaw4YNU4VaJYWiQq%2FiOS-Gini-Capture-SDK-2.0.0-UI-Customisation%3Fnode-id%3D141%253A2328%26t%3DwpenBBM8QsagJzOg-1" allowfullscreen></iframe>
 
 ## Gallery album screen
 
