@@ -26,7 +26,6 @@
 "ginicapture.camera.notAuthorized.title" = "Camera access";
 "ginicapture.camera.notAuthorized.description" = "We need access to your camera to enable you to capture your invoices";
 "ginicapture.camera.notAuthorizedButton.noStatus" = "Give access";
-"ginicapture.camera.notAuthorizedButton.denied" = "Go to Settings";
 "ginicapture.camera.captureFailed" = "Image capture failed";
 "ginicapture.camera.filepicker.photoLibraryAccessDenied" = "Permission to access your photos gallery is required to analyse saved photos";
 "ginicapture.camera.filepicker.mixedDocumentsUnsupported" = "It is only possible to select one file type at the same time.";
