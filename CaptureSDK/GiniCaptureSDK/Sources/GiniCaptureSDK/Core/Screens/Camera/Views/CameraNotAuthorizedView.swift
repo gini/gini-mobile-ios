@@ -72,22 +72,6 @@ final class CameraNotAuthorizedView: UIView {
 
         // Add constraints
         addConstraints()
-
-        switch AVCaptureDevice.authorizationStatus(for: .video) {
-        case .authorized:
-            // This is not happening
-            break
-        case .notDetermined:
-            // Change button title
-            button.setTitle(NSLocalizedStringPreferredFormat("ginicapture.camera.notAuthorizedButton.noStatus",
-                                                             comment: "Give access"), for: .normal)
-        case .denied, .restricted:
-            // Change button title
-            button.setTitle(NSLocalizedStringPreferredFormat("ginicapture.camera.notAuthorizedButton.denied",
-                                                             comment: "Give access"), for: .normal)
-        @unknown default:
-            break
-        }
     }
 
     /**

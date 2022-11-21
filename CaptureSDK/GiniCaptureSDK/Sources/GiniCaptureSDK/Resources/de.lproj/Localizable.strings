@@ -26,7 +26,6 @@
 "ginicapture.camera.notAuthorized.title" = "Kamerazugriff";
 "ginicapture.camera.notAuthorized.description" = "Bitte gestatte Zugriff auf deine Kamera, um Dokumente fotografieren zu können";
 "ginicapture.camera.notAuthorizedButton.noStatus" = "Zugriff erlauben";
-"ginicapture.camera.notAuthorizedButton.denied" = "Zu Einstellungen";
 "ginicapture.camera.captureFailed" = "Bilderfassung fehlgeschlagen";
 "ginicapture.camera.filepicker.photoLibraryAccessDenied" = "Um gespeicherte Bilder zu analysieren, wird Zugriff auf Ihre Fotos benötigt.";
 "ginicapture.camera.filepicker.mixedDocumentsUnsupported" = "Es ist nur möglich einen Dateityp gleichzeitig auszuwählen.";
