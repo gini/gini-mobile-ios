@@ -14,29 +14,36 @@
             <rect key="frame" x="0.0" y="0.0" width="458" height="114"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eF1-Xh-kaw" customClass="MultilineTitleButton" customModule="GiniCaptureSDK">
-                    <rect key="frame" x="127" y="16" width="204" height="50"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WpJ-zJ-2SL">
+                    <rect key="frame" x="118" y="16" width="222" height="50"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" placeholderIntrinsicWidth="80" placeholderIntrinsicHeight="50" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="754-x6-maY" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
+                            <rect key="frame" x="142" y="0.0" width="80" height="50"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eF1-Xh-kaw" customClass="MultilineTitleButton" customModule="GiniCaptureSDK">
+                            <rect key="frame" x="0.0" y="0.0" width="126" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="126" id="JcJ-43-0FU"/>
+                            </constraints>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" title="MainButton"/>
+                        </button>
+                    </subviews>
                     <constraints>
-                        <constraint firstAttribute="height" constant="50" id="K1v-UO-yeA"/>
-                        <constraint firstAttribute="width" constant="204" id="yNO-4Z-yuM"/>
-                    </constraints>
-                    <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="plain" title="MainButton"/>
-                </button>
-                <view contentMode="scaleToFill" ambiguous="YES" placeholderIntrinsicWidth="80" placeholderIntrinsicHeight="50" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="754-x6-maY" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
-                    <rect key="frame" x="347" y="16" width="80" height="50"/>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="50" id="Vqt-ml-g31"/>
+                        <constraint firstAttribute="bottom" secondItem="754-x6-maY" secondAttribute="bottom" id="85p-up-fNJ"/>
+                        <constraint firstAttribute="bottom" secondItem="eF1-Xh-kaw" secondAttribute="bottom" id="EvD-4f-io4"/>
+                        <constraint firstItem="754-x6-maY" firstAttribute="top" secondItem="WpJ-zJ-2SL" secondAttribute="top" id="I4v-Fj-PQG"/>
+                        <constraint firstItem="eF1-Xh-kaw" firstAttribute="top" secondItem="WpJ-zJ-2SL" secondAttribute="top" id="Pnz-CM-V0y"/>
+                        <constraint firstItem="754-x6-maY" firstAttribute="leading" secondItem="eF1-Xh-kaw" secondAttribute="trailing" constant="16" id="VJi-XE-9iU"/>
+                        <constraint firstItem="eF1-Xh-kaw" firstAttribute="leading" secondItem="WpJ-zJ-2SL" secondAttribute="leading" id="WeH-cl-hxA"/>
+                        <constraint firstAttribute="trailing" secondItem="754-x6-maY" secondAttribute="trailing" id="wP4-i1-OGs"/>
                     </constraints>
                 </view>
             </subviews>
             <constraints>
-                <constraint firstItem="eF1-Xh-kaw" firstAttribute="centerX" secondItem="fPC-k4-VJ1" secondAttribute="centerX" id="Ds0-xS-s7Y"/>
-                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="754-x6-maY" secondAttribute="trailing" constant="4" id="Nej-ym-l2w"/>
-                <constraint firstItem="754-x6-maY" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="eF1-Xh-kaw" secondAttribute="trailing" priority="750" constant="13" id="RTn-Qd-4Lt"/>
-                <constraint firstItem="754-x6-maY" firstAttribute="centerY" secondItem="eF1-Xh-kaw" secondAttribute="centerY" id="dgC-wQ-t07"/>
-                <constraint firstItem="eF1-Xh-kaw" firstAttribute="top" secondItem="fPC-k4-VJ1" secondAttribute="top" constant="16" id="rmY-NG-Xos"/>
+                <constraint firstItem="WpJ-zJ-2SL" firstAttribute="top" secondItem="fPC-k4-VJ1" secondAttribute="top" constant="16" id="ZDF-in-Frh"/>
+                <constraint firstItem="WpJ-zJ-2SL" firstAttribute="centerX" secondItem="fPC-k4-VJ1" secondAttribute="centerX" id="zol-dS-Pag"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>

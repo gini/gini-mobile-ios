@@ -97,10 +97,6 @@ final class ReviewBottomNavigationBar: UIView {
         delegate?.didTapSecondaryButton(on: self)
     }
 
-    func setMainButtonTitle(with title: String) {
-        mainButton.setTitle(title, for: .normal)
-    }
-
     func set(loadingState isLoading: Bool) {
         if self.configuration.multipageEnabled {
             if !isLoading {
