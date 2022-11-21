@@ -151,7 +151,7 @@ public final class ReviewViewController: UIViewController {
         button.layer.cornerRadius = giniConfiguration.primaryButtonCornerRadius
         button.backgroundColor = UIColor.GiniCapture.accent1
         button.setTitle(NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle",
-                                                         comment: "Process button title"), for: .normal)
+                                                        comment: "Process button title"), for: .normal)
         button.addTarget(self, action: #selector(didTapProcessDocument), for: .touchUpInside)
         return button
     }()
@@ -170,6 +170,12 @@ public final class ReviewViewController: UIViewController {
             self.delegate?.reviewDidTapAddImage(self)
         }
         return addPagesButton
+    }()
+
+    private lazy var buttonContainer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
 
     private var loadingIndicatorView: UIActivityIndicatorView = {
@@ -216,26 +222,24 @@ public final class ReviewViewController: UIViewController {
         pageControl.trailingAnchor.constraint(equalTo: view.trailingAnchor)]
 
     private lazy var processButtonConstraints: [NSLayoutConstraint] = [
-        processButton.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: Constants.padding * 2),
+        processButton.topAnchor.constraint(equalTo: buttonContainer.topAnchor),
         processButton.widthAnchor.constraint(equalToConstant: Constants.buttonSize.width),
-        processButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        processButton.leadingAnchor.constraint(equalTo: buttonContainer.leadingAnchor),
         processButton.heightAnchor.constraint(equalToConstant: Constants.buttonSize.height),
-        processButton.bottomAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                              constant: -Constants.bottomPadding)]
+        processButton.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor)]
 
-    private lazy var addPagesButtonConstraints: [NSLayoutConstraint] = {
-        let buttonLeadingConstraint = addPagesButton.leadingAnchor.constraint(equalTo: processButton.trailingAnchor,
-                                                                              constant: 13)
-        buttonLeadingConstraint.priority = UILayoutPriority.defaultLow
-
-        let constraints = [
+    private lazy var addPagesButtonConstraints: [NSLayoutConstraint] =  [
             addPagesButton.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
-            buttonLeadingConstraint,
-            addPagesButton.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor,
-                                                     constant: -Constants.padding / 4)]
+            addPagesButton.leadingAnchor.constraint(equalTo: processButton.trailingAnchor,
+                                                    constant: Constants.padding),
+            addPagesButton.trailingAnchor.constraint(equalTo: buttonContainer.trailingAnchor)]
 
-        return constraints
-    }()
+    private lazy var buttonContainerConstraints: [NSLayoutConstraint] = [
+        buttonContainer.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: Constants.padding * 2),
+        buttonContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        buttonContainer.bottomAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                              constant: -Constants.bottomPadding)
+    ]
 
     // MARK: - Init
 
@@ -354,27 +358,11 @@ extension ReviewViewController {
         view.addSubview(collectionView)
         view.addSubview(pageControl)
         if !giniConfiguration.bottomNavigationBarEnabled {
-            view.addSubview(processButton)
-            view.addSubview(addPagesButton)
+            view.addSubview(buttonContainer)
+            buttonContainer.addSubview(processButton)
+            buttonContainer.addSubview(addPagesButton)
         }
         edgesForExtendedLayout = []
-    }
-
-    private func updateButtonTitle() {
-        var title: String
-        if pages.count > 1 {
-            title = NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle.plural",
-                                                 comment: "Process button title")
-        } else {
-            title = NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle.singular",
-                                                 comment: "Process button title")
-        }
-
-        if giniConfiguration.bottomNavigationBarEnabled {
-            navigationBarBottomAdapter?.setMainButtonTitle(with: title)
-        } else {
-            processButton.setTitle(title, for: .normal)
-        }
     }
 
     // MARK: - Loading indicator
@@ -425,8 +413,6 @@ extension ReviewViewController {
 
     public func updateCollections(with pages: [GiniCapturePage], finishedUpload: Bool = true) {
         DispatchQueue.main.async {
-            self.updateButtonTitle()
-
             if self.giniConfiguration.bottomNavigationBarEnabled {
                 self.navigationBarBottomAdapter?.set(loadingState: !finishedUpload)
             }
@@ -474,6 +460,7 @@ extension ReviewViewController {
         NSLayoutConstraint.activate(pageControlConstraints)
 
         if !giniConfiguration.bottomNavigationBarEnabled {
+            NSLayoutConstraint.activate(buttonContainerConstraints)
             NSLayoutConstraint.activate(processButtonConstraints)
             NSLayoutConstraint.activate(addPagesButtonConstraints)
         } else {
@@ -552,7 +539,6 @@ extension ReviewViewController {
         let pageToDelete = pages[indexPath.row]
         pages.remove(at: indexPath.row)
         collectionView.deleteItems(at: [indexPath])
-        updateButtonTitle()
         delegate?.review(self, didDelete: pageToDelete)
     }
 }
@@ -649,7 +635,7 @@ extension ReviewViewController {
         static let padding: CGFloat = 16
         static let bottomPadding: CGFloat = 50
         static let pageControlBottomPadding: CGFloat = 130
-        static let buttonSize: CGSize = CGSize(width: 204, height: 50)
+        static let buttonSize: CGSize = CGSize(width: 126, height: 50)
         static let titleHeight: CGFloat = 18
     }
 }
