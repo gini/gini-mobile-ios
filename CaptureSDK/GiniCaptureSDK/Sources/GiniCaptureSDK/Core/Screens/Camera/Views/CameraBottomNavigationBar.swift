@@ -23,14 +23,9 @@ class CameraBottomNavigationBar: UIView {
             "ginicapture.navigationbar.camera.help",
             comment: "Camera Help Button"), for: .normal)
         rightButton.titleLabel?.font = configuration.textStyleFonts[.body]
-        rightButton.setTitleColor(
-            GiniColor(
-                light: UIColor.GiniCapture.light1,
-                dark: UIColor.GiniCapture.light1
-            ).uiColor(),
-            for: .normal)
+        rightButton.setTitleColor(.GiniCapture.accent1, for: .normal)
         rightButton.tintColor = GiniColor(
-            light: UIColor.GiniCapture.light1,
+            light: UIColor.GiniCapture.dark1,
             dark: UIColor.GiniCapture.light1
         ).uiColor()
         leftButton.setTitle("", for: .normal)
@@ -38,8 +33,8 @@ class CameraBottomNavigationBar: UIView {
             UIImageNamedPreferred(named: "arrowBack") ?? UIImage(),
             for: .normal)
         backgroundColor = GiniColor(
-            light: UIColor.GiniCapture.dark2,
-            dark: UIColor.GiniCapture.dark2
+            light: UIColor.GiniCapture.light1,
+            dark: UIColor.GiniCapture.dark1
         ).uiColor()
     }
 }
