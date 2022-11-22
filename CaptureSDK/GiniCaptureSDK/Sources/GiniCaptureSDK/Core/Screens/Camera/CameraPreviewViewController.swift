@@ -56,7 +56,8 @@ final class CameraPreviewViewController: UIViewController {
         imageView.isHidden = !giniConfiguration.onlyQRCodeScanningEnabled
         return imageView
     }()
-    
+
+    private var notAuthorizedView: UIView?
     fileprivate let giniConfiguration: GiniConfiguration
     fileprivate typealias FocusIndicator = UIImageView
     fileprivate var camera: CameraProtocol
@@ -240,6 +241,13 @@ final class CameraPreviewViewController: UIViewController {
     }
     
     func setupCamera() {
+        if AVCaptureDevice.authorizationStatus(for: .video) != .authorized {
+            #if !targetEnvironment(simulator)
+            self.addNotAuthorizedView()
+            self.delegate?.notAuthorized()
+            #endif
+        }
+
         camera.setup { error in
             if let error = error {
                 switch error {
@@ -259,9 +267,10 @@ final class CameraPreviewViewController: UIViewController {
                 }
             } else {
                 self.isAuthorized = true
+                self.notAuthorizedView?.isHidden = true
                 self.delegate?.cameraDidSetUp(self, camera: self.camera)
             }
-            
+
             self.stopLoadingIndicator()
         }
 
@@ -311,18 +320,18 @@ final class CameraPreviewViewController: UIViewController {
 
 extension CameraPreviewViewController {
     fileprivate func addNotAuthorizedView() {
+        let notAuthorizedView = CameraNotAuthorizedView()
+        self.notAuthorizedView = notAuthorizedView
+        super.view.addSubview(notAuthorizedView)
         
-        // Add not authorized view
-        let view = CameraNotAuthorizedView()
-        super.view.addSubview(view)
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        Constraints.active(item: view, attr: .width, relatedBy: .equal, to: super.view, attr: .width)
-        Constraints.active(item: view, attr: .height, relatedBy: .equal, to: super.view, attr: .height)
-        Constraints.active(item: view, attr: .centerX, relatedBy: .equal, to: super.view, attr: .centerX)
-        Constraints.active(item: view, attr: .centerY, relatedBy: .equal, to: super.view, attr: .centerY)
-        
+        notAuthorizedView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            notAuthorizedView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            notAuthorizedView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            notAuthorizedView.topAnchor.constraint(equalTo: view.topAnchor),
+            notAuthorizedView.leadingAnchor.constraint(equalTo: view.leadingAnchor)])
+
         // Hide camera UI
         hideCameraOverlay()
     }
