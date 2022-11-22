@@ -27,7 +27,7 @@ class ErrorScreenViewController: UIViewController {
         fatalError("No result header not found")
     }()
 
-    lazy var buttonsView = {
+    lazy var buttonsView: ButtonsView = {
         let view = ButtonsView(
             firstTitle: NSLocalizedStringPreferredFormat(
                 "ginicapture.error.enterManually",
@@ -38,7 +38,7 @@ class ErrorScreenViewController: UIViewController {
         return view
     }()
 
-    lazy var errorContent = {
+    lazy var errorContent: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
@@ -91,7 +91,6 @@ class ErrorScreenViewController: UIViewController {
             dark: UIColor.GiniCapture.light1
         ).uiColor()
         errorContent.text = getErrorContent(type: errorType)
-        
         errorContent.textAlignment = .left
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         view.addSubview(errorHeader)
@@ -110,17 +109,23 @@ class ErrorScreenViewController: UIViewController {
     }
 
     private func configureButtons() {
-        buttonsView.enterButton.addTarget(viewModel, action: #selector(viewModel.didPressEnterManually), for: .touchUpInside)
-        buttonsView.retakeButton.addTarget(viewModel, action: #selector(viewModel.didPressRetake), for: .touchUpInside)
+        buttonsView.enterButton.addTarget(
+            viewModel,
+            action: #selector(viewModel.didPressEnterManually),
+            for: .touchUpInside)
+        buttonsView.retakeButton.addTarget(
+            viewModel,
+            action: #selector(viewModel.didPressRetake),
+            for: .touchUpInside)
     }
-    
+
     private func configureCustomTopNavigationBar() {
         navigationItem.leftBarButtonItem =  UIBarButtonItem(
             barButtonSystemItem: .cancel,
             target: viewModel,
             action: #selector(viewModel.didPressCancell))
     }
-    
+
     private func getButtonsMinHeight(numberOfButtons: Int) -> CGFloat {
         if numberOfButtons == 1 {
             return Constants.singleButtonHeight.rawValue
