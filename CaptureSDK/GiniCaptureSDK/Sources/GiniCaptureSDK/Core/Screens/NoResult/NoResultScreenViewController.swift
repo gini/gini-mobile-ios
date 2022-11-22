@@ -93,7 +93,7 @@ final public class NoResultScreenViewController: UIViewController {
     private let tableRowHeight: CGFloat = 44
     private let sectionHeight: CGFloat = 70
     private let type: NoResultType
-    private let viewModel: NoResultScreenViewModel
+    private let viewModel: BottomButtonsViewModel
     private var buttonsHeightConstraint: NSLayoutConstraint?
     private var numberOfButtons: Int {
         return [
@@ -107,7 +107,7 @@ final public class NoResultScreenViewController: UIViewController {
     public init(
         giniConfiguration: GiniConfiguration,
         type: NoResultType,
-        viewModel: NoResultScreenViewModel
+        viewModel: BottomButtonsViewModel
     ) {
         self.giniConfiguration = giniConfiguration
         self.type = type
