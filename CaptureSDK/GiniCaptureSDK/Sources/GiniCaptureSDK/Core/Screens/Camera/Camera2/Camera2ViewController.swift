@@ -521,6 +521,7 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 
         cameraPreviewViewController.updatePreviewViewOrientation()
         UIView.animate(withDuration: 1.0) {
+            self.cameraPane.setupAuthorization(isHidden: false)
             self.cameraPreviewViewController.previewView.alpha = 1
         }
     }
