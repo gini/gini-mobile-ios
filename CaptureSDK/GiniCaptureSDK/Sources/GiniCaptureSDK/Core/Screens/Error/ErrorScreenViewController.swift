@@ -12,6 +12,9 @@ class ErrorScreenViewController: UIViewController {
     enum ErrorType {
         case connection
         case uploadIssue
+        case serverError
+        case authentication
+        case unexpected
     }
     private var giniConfiguration: GiniConfiguration
     lazy var errorHeader: NoResultHeader = {
@@ -24,7 +27,17 @@ class ErrorScreenViewController: UIViewController {
         fatalError("No result header not found")
     }()
 
-    var buttonsView = ButtonsView(frame: CGRect.zero)
+    lazy var buttonsView = {
+        let view = ButtonsView(
+            firstTitle: NSLocalizedStringPreferredFormat(
+                "ginicapture.error.enterManually",
+                comment: "Enter manually"),
+            secondTitle: NSLocalizedStringPreferredFormat(
+                "ginicapture.error.backToCamera",
+                comment: "Enter manually"))
+        return view
+    }()
+
     lazy var errorContent = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -32,12 +45,13 @@ class ErrorScreenViewController: UIViewController {
         return label
     }()
 
-    let viewModel: NoResultScreenViewModel
+    let viewModel: BottomButtonsViewModel
+    private let errorType: ErrorType
     private var buttonsHeightConstraint: NSLayoutConstraint?
     private var numberOfButtons: Int {
         return [
-            true,//viewModel.isEnterManuallyHidden(),
-            true//viewModel.isRetakePressedHidden()
+            viewModel.isEnterManuallyHidden(),
+            viewModel.isRetakePressedHidden()
         ].filter({
             !$0
         }).count
@@ -46,10 +60,11 @@ class ErrorScreenViewController: UIViewController {
     public init(
         giniConfiguration: GiniConfiguration,
         type: ErrorType,
-        viewModel: NoResultScreenViewModel
+        viewModel: BottomButtonsViewModel
     ) {
         self.giniConfiguration = giniConfiguration
         self.viewModel = viewModel
+        self.errorType = type
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -64,17 +79,20 @@ class ErrorScreenViewController: UIViewController {
 
     func setupView() {
         title = NSLocalizedStringPreferredFormat(
-            "ginicapture.noresult.title",
-            comment: "No result screen title")
+            "ginicapture.error.title",
+            comment: "Error screen title")
         errorHeader.iconImageView.accessibilityLabel = NSLocalizedStringPreferredFormat(
-            "ginicapture.noresult.title",
-            comment: "No result screen title")
-        errorHeader.headerLabel.text = "Error Type"
+            "ginicapture.error.title",
+            comment: "Error screen title")
+        errorHeader.headerLabel.text = getErrorTitle(type: errorType)
         errorHeader.headerLabel.font = giniConfiguration.textStyleFonts[.subheadline]
         errorHeader.headerLabel.textColor = GiniColor(
             light: UIColor.GiniCapture.dark1,
             dark: UIColor.GiniCapture.light1
         ).uiColor()
+        errorContent.text = getErrorContent(type: errorType)
+        
+        errorContent.textAlignment = .left
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         view.addSubview(errorHeader)
         view.addSubview(errorContent)
@@ -84,9 +102,25 @@ class ErrorScreenViewController: UIViewController {
             light: UIColor.GiniCapture.error4,
             dark: UIColor.GiniCapture.error1
         ).uiColor()
+        configureButtons()
+        configureCustomTopNavigationBar()
         configureConstraints()
+        errorContent
+            .sizeToFit()
     }
 
+    private func configureButtons() {
+        buttonsView.enterButton.addTarget(viewModel, action: #selector(viewModel.didPressEnterManually), for: .touchUpInside)
+        buttonsView.retakeButton.addTarget(viewModel, action: #selector(viewModel.didPressRetake), for: .touchUpInside)
+    }
+    
+    private func configureCustomTopNavigationBar() {
+        navigationItem.leftBarButtonItem =  UIBarButtonItem(
+            barButtonSystemItem: .cancel,
+            target: viewModel,
+            action: #selector(viewModel.didPressCancell))
+    }
+    
     private func getButtonsMinHeight(numberOfButtons: Int) -> CGFloat {
         if numberOfButtons == 1 {
             return Constants.singleButtonHeight.rawValue
@@ -98,7 +132,9 @@ class ErrorScreenViewController: UIViewController {
     private func configureConstraints() {
         errorHeader.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
         errorHeader.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-        errorContent.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+
+        errorContent.setContentHuggingPriority(.required, for: .vertical)
+        errorContent.setContentCompressionResistancePriority(.required, for: .vertical)
         NSLayoutConstraint.activate([
         buttonsView.bottomAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.bottomAnchor,
@@ -115,10 +151,6 @@ class ErrorScreenViewController: UIViewController {
             errorHeader.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             errorHeader.heightAnchor.constraint(greaterThanOrEqualToConstant: 62),
             errorContent.topAnchor.constraint(equalTo: errorHeader.bottomAnchor, constant: 13),
-            errorContent.bottomAnchor.constraint(
-                equalTo: buttonsView.bottomAnchor,
-                constant: 16
-            ),
             buttonsConstraint
         ])
         configureHorizontalConstraints()
@@ -137,13 +169,63 @@ class ErrorScreenViewController: UIViewController {
             NSLayoutConstraint.activate([
                 errorContent.leadingAnchor.constraint(
                     equalTo: view.leadingAnchor,
-                    constant: GiniMargins.margin),
+                    constant: 24),
                 errorContent.trailingAnchor.constraint(
                     equalTo: view.trailingAnchor,
-                    constant: -GiniMargins.margin),
+                    constant: -24),
                 buttonsView.leadingAnchor.constraint(equalTo: errorContent.leadingAnchor),
                 buttonsView.trailingAnchor.constraint(equalTo: errorContent.trailingAnchor)
             ])
+        }
+    }
+
+    private func getErrorContent(type: ErrorType) -> String {
+        switch type {
+        case .connection:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.connection.content",
+                comment: "Connection error")
+        case .authentication:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.authentication.content",
+                comment: "Authentication error")
+        case .serverError:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.serverError.content",
+                comment: "Server error")
+        case .unexpected:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.unexpected.content",
+                comment: "Unexpected error")
+        case .uploadIssue:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.uploadIssue.content",
+                comment: "Upload error")
+        }
+    }
+
+    private func getErrorTitle(type: ErrorType) -> String {
+        switch type {
+        case .connection:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.connection.title",
+                comment: "Connection error")
+        case .authentication:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.authentication.title",
+                comment: "Authentication error")
+        case .serverError:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.serverError.title",
+                comment: "Server error")
+        case .unexpected:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.unexpected.title",
+                comment: "Unexpected error")
+        case .uploadIssue:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.uploadIssue.title",
+                comment: "Upload error")
         }
     }
 

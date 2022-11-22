@@ -13,9 +13,7 @@ class ButtonsView: UIView {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
-        button.setTitle(NSLocalizedStringPreferredFormat(
-                "ginicapture.noresult.enterManually",
-                comment: "Enter manually"),
+        button.setTitle(firstButtonTitle,
                              for: .normal)
         return button
     }()
@@ -25,9 +23,8 @@ class ButtonsView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.setTitle(NSLocalizedStringPreferredFormat(
-            "ginicapture.noresult.retakeImages",
-            comment: "Enter manually"),
+        //
+        button.setTitle(secondButtonTitle,
                               for: .normal)
         return button
     }()
@@ -43,8 +40,13 @@ class ButtonsView: UIView {
         return stackView
     }()
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    let firstButtonTitle: String
+    let secondButtonTitle: String
+
+    init(firstTitle: String, secondTitle: String) {
+        firstButtonTitle = firstTitle
+        secondButtonTitle = secondTitle
+        super.init(frame: CGRect.zero)
         addSubview(buttonsView)
         configureButtons()
         NSLayoutConstraint.activate([
