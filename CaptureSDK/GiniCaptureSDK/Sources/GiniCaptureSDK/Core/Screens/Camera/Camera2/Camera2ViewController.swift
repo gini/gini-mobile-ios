@@ -274,8 +274,6 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     private func configureUploadButton() {
         if giniConfiguration.fileImportSupportedTypes != .none {
             cameraPane.fileUploadButton.isHidden = false
-        } else {
-            cameraPane.fileUploadButton.isHidden = true
             cameraButtonsViewModel.importAction = { [weak self] in
                 self?.showImportFileSheet()
             }
@@ -283,6 +281,8 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                 cameraButtonsViewModel,
                 action: #selector(cameraButtonsViewModel.importPressed),
                 for: .touchUpInside)
+        } else {
+            cameraPane.fileUploadButton.isHidden = true
         }
     }
 
