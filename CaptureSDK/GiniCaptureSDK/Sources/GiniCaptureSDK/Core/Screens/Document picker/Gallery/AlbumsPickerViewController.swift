@@ -77,7 +77,7 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
         tableViewHeightAnchor.priority = .defaultHigh
 
         NSLayoutConstraint.activate([
-            albumsTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
+            albumsTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.padding * 2),
             albumsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.padding * 2),
             albumsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding * 2),
             albumsTableView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
