@@ -17,8 +17,8 @@ class ErrorScreenViewController: UIViewController {
         case unexpected
     }
     private var giniConfiguration: GiniConfiguration
-    lazy var errorHeader: NoResultHeader = {
-        if let header = NoResultHeader().loadNib() as? NoResultHeader {
+    lazy var errorHeader: IconHeader = {
+        if let header = IconHeader().loadNib() as? IconHeader {
             header.headerLabel.adjustsFontForContentSizeCategory = true
             header.headerLabel.adjustsFontSizeToFitWidth = true
             header.translatesAutoresizingMaskIntoConstraints = false
@@ -81,6 +81,22 @@ class ErrorScreenViewController: UIViewController {
         title = NSLocalizedStringPreferredFormat(
             "ginicapture.error.title",
             comment: "Error screen title")
+        setupErrorHeader()
+        errorContent.text = getErrorContent(type: errorType)
+        errorContent.font = giniConfiguration.textStyleFonts[.body]
+        errorContent.textColor = GiniColor(light: UIColor.GiniCapture.dark6, dark: UIColor.GiniCapture.dark7).uiColor()
+        errorContent.textAlignment = .left
+        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
+        view.addSubview(errorHeader)
+        view.addSubview(errorContent)
+        buttonsView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(buttonsView)
+        configureButtons()
+        configureCustomTopNavigationBar()
+        configureConstraints()
+    }
+
+    private func setupErrorHeader() {
         errorHeader.iconImageView.accessibilityLabel = NSLocalizedStringPreferredFormat(
             "ginicapture.error.title",
             comment: "Error screen title")
@@ -90,22 +106,11 @@ class ErrorScreenViewController: UIViewController {
             light: UIColor.GiniCapture.dark1,
             dark: UIColor.GiniCapture.light1
         ).uiColor()
-        errorContent.text = getErrorContent(type: errorType)
-        errorContent.textAlignment = .left
-        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
-        view.addSubview(errorHeader)
-        view.addSubview(errorContent)
-        buttonsView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(buttonsView)
         errorHeader.backgroundColor = GiniColor(
             light: UIColor.GiniCapture.error4,
             dark: UIColor.GiniCapture.error1
         ).uiColor()
-        configureButtons()
-        configureCustomTopNavigationBar()
-        configureConstraints()
-        errorContent
-            .sizeToFit()
+        errorHeader.iconImageView.image = UIImageNamedPreferred(named: iconForType(type: errorType))
     }
 
     private func configureButtons() {
@@ -181,6 +186,21 @@ class ErrorScreenViewController: UIViewController {
                 buttonsView.leadingAnchor.constraint(equalTo: errorContent.leadingAnchor),
                 buttonsView.trailingAnchor.constraint(equalTo: errorContent.trailingAnchor)
             ])
+        }
+    }
+
+    private func iconForType(type: ErrorType) -> String {
+        switch type {
+        case .connection:
+            return "errorCloud"
+        case .authentication:
+            return "errorAuth"
+        case .serverError:
+            return "errorGlobe"
+        case .unexpected:
+            return "alertTriangle"
+        case .uploadIssue:
+            return "errorUpload"
         }
     }
 
