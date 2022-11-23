@@ -22,6 +22,14 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
     fileprivate let footerHeight: CGFloat = 50.0
     fileprivate let headerIdentifier = "AlbumsHeaderView"
 
+    var tableViewContentHeight: CGFloat {
+        albumsTableView.layoutIfNeeded()
+
+        var height = albumsTableView.contentSize.height
+        height += Constants.padding * 2 // adding the content inset
+        return height
+    }
+
     // MARK: - Views
 
     lazy var albumsTableView: UITableView = {
@@ -29,14 +37,11 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
-
-        if #available(iOS 13.0, *) {
-            tableView.backgroundColor = Colors.Gini.dynamicPearl
-        } else {
-            tableView.backgroundColor = Colors.Gini.pearl
-        }
+        tableView.backgroundColor = GiniColor(light: .GiniCapture.light1, dark: .GiniCapture.dark1).uiColor()
         tableView.register(AlbumsPickerTableViewCell.self,
                            forCellReuseIdentifier: AlbumsPickerTableViewCell.identifier)
+        tableView.layer.cornerRadius = 16
+        tableView.contentInset = UIEdgeInsets(top: Constants.padding, left: 0, bottom: Constants.padding, right: 0)
         return tableView
     }()
 
@@ -57,16 +62,28 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
 
     override func loadView() {
         super.loadView()
-        title = .localized(resource: GalleryStrings.albumsTitle)
+        title = NSLocalizedStringPreferredFormat("ginicapture.albums.title", comment: "Albums")
+        view.backgroundColor = GiniColor(light: .GiniCapture.light2, dark: .GiniCapture.dark2).uiColor()
         setupTableView()
     }
 
+    private lazy var tableViewHeightAnchor = albumsTableView.heightAnchor.constraint(equalToConstant: tableViewContentHeight)
     func setupTableView() {
         if #available(iOS 15.0, *) {
              albumsTableView.sectionHeaderTopPadding = 0
          }
         view.addSubview(albumsTableView)
-        Constraints.pin(view: albumsTableView, toSuperView: view)
+
+        tableViewHeightAnchor.priority = .defaultHigh
+
+        NSLayoutConstraint.activate([
+            albumsTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
+            albumsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.padding * 2),
+            albumsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding * 2),
+            albumsTableView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                    constant: -Constants.padding * 2),
+            tableViewHeightAnchor
+        ])
     }
 
     func reloadAlbums() {
@@ -96,15 +113,20 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
                 albumsTableView.tableFooterView = footerView
             }
         }
+
+        edgesForExtendedLayout = []
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+
         if #available(iOS 14.0, *) {
             if galleryManager.isGalleryAccessLimited {
                 self.updateLayoutForFooter()
             }
         }
+        tableViewHeightAnchor.constant = tableViewContentHeight
+        view.layoutIfNeeded()
     }
     
     fileprivate func updateLayoutForFooter(){
@@ -193,5 +215,11 @@ extension AlbumsPickerViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return AlbumsPickerTableViewCell.height
+    }
+}
+
+extension AlbumsPickerViewController {
+    private enum Constants {
+        static let padding: CGFloat = 8
     }
 }

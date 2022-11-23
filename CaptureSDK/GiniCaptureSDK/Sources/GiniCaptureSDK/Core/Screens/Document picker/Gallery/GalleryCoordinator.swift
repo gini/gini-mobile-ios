@@ -56,7 +56,7 @@ final class GalleryCoordinator: NSObject, Coordinator {
     lazy fileprivate(set) var albumsController: AlbumsPickerViewController = {
         let albumsPickerVC = AlbumsPickerViewController(galleryManager: self.galleryManager)
         albumsPickerVC.delegate = self
-        albumsPickerVC.navigationItem.rightBarButtonItem = self.cancelButton
+        albumsPickerVC.navigationItem.leftBarButtonItem = self.cancelButton
         return albumsPickerVC
     }()
     
@@ -77,7 +77,8 @@ final class GalleryCoordinator: NSObject, Coordinator {
         let currentFont = button.titleLabel?.font
         let fontSize = currentFont?.pointSize ?? 18
         let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: fontSize)]
-        let openLocalizedString: String = .localized(resource: GalleryStrings.imagePickerOpenButton)
+        let openLocalizedString: String = NSLocalizedStringPreferredFormat("ginicapture.imagepicker.openbutton",
+                                                                           comment: "Open")
         let attributedString = NSMutableAttributedString(string: openLocalizedString,
                                                          attributes: attributes)
         button.setAttributedTitle(attributedString, for: .normal)
