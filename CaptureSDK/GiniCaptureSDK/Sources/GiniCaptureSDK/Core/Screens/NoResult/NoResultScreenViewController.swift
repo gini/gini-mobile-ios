@@ -79,8 +79,8 @@ final public class NoResultScreenViewController: UIViewController {
         return stackView
     }()
 
-    lazy var header: NoResultHeader = {
-        if let header = NoResultHeader().loadNib() as? NoResultHeader {
+    lazy var header: IconHeader = {
+        if let header = IconHeader().loadNib() as? IconHeader {
             header.headerLabel.adjustsFontForContentSizeCategory = true
             header.headerLabel.adjustsFontSizeToFitWidth = true
             header.translatesAutoresizingMaskIntoConstraints = false
