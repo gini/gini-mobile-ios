@@ -490,19 +490,20 @@ extension Camera2ViewController {
         let widthDisplacement = (image.size.width - (self.cameraPreviewViewController.view.frame.width) * scale) / 2
         let heightDisplacement = (image.size.height - (self.cameraPreviewViewController.view.frame.height) * scale) / 2
 
-        cameraPreviewRect = self.cameraPreviewViewController.view.frame.scaled(for: scale)
-        cameraPreviewRect = CGRect(x: widthDisplacement, y: heightDisplacement, width: cameraPreviewRect.width, height: cameraPreviewRect.height)
-
-        // First crop the full image to the image that is shown on the screen
-        guard let cgImage = image.cgImage else { return image }
-        guard let croppedCGImage = cgImage.cropping(to: cameraPreviewRect) else { return image }
-        let displayedImage = UIImage(cgImage: croppedCGImage, scale: 1, orientation: .up)
-
-        // Crop the displayed image to the A4 rect
+        // The frame of the A4 rect
         let a4FrameRect = self.cameraPreviewViewController.cameraFrameView.frame.scaled(for: scale)
-        guard let cgDisplayedImage = displayedImage.cgImage else { return image }
-        guard let croppedA4CGImage = cgDisplayedImage.cropping(to: a4FrameRect) else { return image }
-        let finalImage = UIImage(cgImage: croppedA4CGImage, scale: 1, orientation: .up)
+
+        // The origin of the cropping rect compared to the whole image
+        let cropRectX = widthDisplacement + a4FrameRect.origin.x
+        let cropRectY = heightDisplacement + a4FrameRect.origin.y
+
+        // The A4 rect position and size on the whole image
+        let cropRect = CGRect(x: cropRectX, y: cropRectY, width: a4FrameRect.width, height: a4FrameRect.height)
+
+        guard let cgImage = image.cgImage else { return image }
+        guard let croppedImage = cgImage.cropping(to: cropRect) else { return image }
+        let finalImage = UIImage(cgImage: croppedImage, scale: 1, orientation: .up)
+
         return finalImage
     }
     // swiftlint:enable line_length
