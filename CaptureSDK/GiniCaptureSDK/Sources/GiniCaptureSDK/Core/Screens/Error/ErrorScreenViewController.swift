@@ -57,6 +57,15 @@ class ErrorScreenViewController: UIViewController {
         }).count
     }
 
+    /**
+     Designated initializer for the `ErrorScreenViewController` which shows generic error screen
+     
+     - parameter giniConfiguration: `GiniConfiguration` instance.
+     - parameter type: `ErrorType` type of generic error.
+     - parameter viewModel: `BottomButtonsViewModel` provide actions for buttons .
+     
+     - returns: A view controller instance allowing the user to take a picture or pick a document.
+     */
     public init(
         giniConfiguration: GiniConfiguration,
         type: ErrorType,
@@ -125,6 +134,7 @@ class ErrorScreenViewController: UIViewController {
     }
 
     private func configureCustomTopNavigationBar() {
+        // TODO: add handloing bottom navigation bar
         navigationItem.leftBarButtonItem =  UIBarButtonItem(
             barButtonSystemItem: .cancel,
             target: viewModel,
@@ -156,11 +166,14 @@ class ErrorScreenViewController: UIViewController {
         )
         buttonsHeightConstraint = buttonsConstraint
         NSLayoutConstraint.activate([
-            errorHeader.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            errorHeader.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             errorHeader.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             errorHeader.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            errorHeader.heightAnchor.constraint(greaterThanOrEqualToConstant: 62),
-            errorContent.topAnchor.constraint(equalTo: errorHeader.bottomAnchor, constant: 13),
+            errorHeader.heightAnchor.constraint(
+                greaterThanOrEqualToConstant: Constants.errorHeaderMinHeight.rawValue),
+            errorContent.topAnchor.constraint(
+                equalTo: errorHeader.bottomAnchor,
+                constant: Constants.errorContentBottomMargin.rawValue),
             buttonsConstraint
         ])
         configureHorizontalConstraints()
@@ -171,18 +184,21 @@ class ErrorScreenViewController: UIViewController {
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
                 errorContent.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                errorContent.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7),
+                errorContent.widthAnchor.constraint(
+                    equalTo: view.widthAnchor,
+                    multiplier: Constants.iPadWidthMultiplier.rawValue),
                 buttonsView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                buttonsView.widthAnchor.constraint(equalToConstant: 280)
+                buttonsView.widthAnchor.constraint(
+                    equalToConstant: Constants.iPadButtonsWidth.rawValue)
             ])
         } else {
             NSLayoutConstraint.activate([
                 errorContent.leadingAnchor.constraint(
                     equalTo: view.leadingAnchor,
-                    constant: 24),
+                    constant: Constants.textContentMargin.rawValue),
                 errorContent.trailingAnchor.constraint(
                     equalTo: view.trailingAnchor,
-                    constant: -24),
+                    constant: -Constants.textContentMargin.rawValue),
                 buttonsView.leadingAnchor.constraint(equalTo: errorContent.leadingAnchor),
                 buttonsView.trailingAnchor.constraint(equalTo: errorContent.trailingAnchor)
             ])
@@ -257,5 +273,10 @@ class ErrorScreenViewController: UIViewController {
     private enum Constants: CGFloat {
         case singleButtonHeight = 50
         case twoButtonsHeight = 112
+        case textContentMargin = 24
+        case iPadButtonsWidth = 280
+        case errorHeaderMinHeight = 64
+        case errorContentBottomMargin = 13
+        case iPadWidthMultiplier = 0.7
     }
 }

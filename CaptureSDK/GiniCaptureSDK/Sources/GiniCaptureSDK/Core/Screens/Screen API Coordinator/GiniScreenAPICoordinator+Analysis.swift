@@ -91,7 +91,10 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
     public func displayError(withMessage message: String?, andAction action: (() -> Void)?) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            let errorScreen = ErrorScreenViewController(giniConfiguration: self.giniConfiguration, type: .connection, viewModel: BottomButtonsViewModel(retakeBlock: { [weak self] in
+            let errorScreen = ErrorScreenViewController(
+                giniConfiguration: self.giniConfiguration,
+                type: .connection,
+                viewModel: BottomButtonsViewModel(retakeBlock: { [weak self] in
                     self?.pages = []
                     self?.backToCamera()
             }, manuallyPressed: { [weak self] in
