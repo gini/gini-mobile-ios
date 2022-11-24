@@ -40,7 +40,7 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
         tableView.backgroundColor = GiniColor(light: .GiniCapture.light1, dark: .GiniCapture.dark1).uiColor()
         tableView.register(AlbumsPickerTableViewCell.self,
                            forCellReuseIdentifier: AlbumsPickerTableViewCell.identifier)
-        tableView.layer.cornerRadius = 16
+        tableView.layer.cornerRadius = Constants.cornerRadius
         tableView.contentInset = UIEdgeInsets(top: Constants.padding, left: 0, bottom: Constants.padding, right: 0)
         return tableView
     }()
@@ -221,5 +221,6 @@ extension AlbumsPickerViewController: UITableViewDelegate {
 extension AlbumsPickerViewController {
     private enum Constants {
         static let padding: CGFloat = 8
+        static let cornerRadius: CGFloat = 16
     }
 }

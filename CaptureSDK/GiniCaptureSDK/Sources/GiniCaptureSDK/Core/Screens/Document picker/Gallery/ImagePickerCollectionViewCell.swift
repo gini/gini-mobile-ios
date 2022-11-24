@@ -31,7 +31,7 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
         var view = UIView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.borderColor = UIColor.GiniCapture.accent1.cgColor
-        view.layer.borderWidth = 2
+        view.layer.borderWidth = Constants.borderWidth
         view.backgroundColor = .GiniCapture.accent1.withAlphaComponent(0.5)
         view.alpha = 0
         return view
@@ -97,10 +97,11 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
             selectedForegroundView.centerXAnchor.constraint(equalTo: centerXAnchor),
             selectedForegroundView.centerYAnchor.constraint(equalTo: centerYAnchor),
 
-            checkCircleBackground.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-            checkCircleBackground.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
-            checkCircleBackground.widthAnchor.constraint(equalToConstant: selectedCircleSize.width),
-            checkCircleBackground.heightAnchor.constraint(equalToConstant: selectedCircleSize.height),
+            checkCircleBackground.topAnchor.constraint(equalTo: topAnchor, constant: Constants.circlePadding),
+            checkCircleBackground.trailingAnchor.constraint(equalTo: trailingAnchor,
+                                                            constant: -Constants.circlePadding),
+            checkCircleBackground.widthAnchor.constraint(equalToConstant: Constants.selectedCircleSize.width),
+            checkCircleBackground.heightAnchor.constraint(equalToConstant: Constants.selectedCircleSize.height),
 
             checkImage.topAnchor.constraint(equalTo: checkCircleBackground.topAnchor),
             checkImage.leadingAnchor.constraint(equalTo: checkCircleBackground.leadingAnchor),
@@ -146,5 +147,13 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
     func changeCheckCircle(to selected: Bool, giniConfiguration: GiniConfiguration = .shared) {
         checkCircleBackground.isHidden = selected
         checkImage.isHidden = !selected
+    }
+}
+
+extension ImagePickerCollectionViewCell {
+    enum Constants {
+        static let borderWidth: CGFloat = 2
+        static let selectedCircleSize = CGSize(width: 25, height: 25)
+        static let circlePadding: CGFloat = 5
     }
 }
