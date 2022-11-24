@@ -206,19 +206,21 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         view.layoutSubviews()
     }
 
+    // swiftlint:disable function_body_length
     private func configureButtons() {
         cameraPane.setupAuthorization(isHidden: false)
         configureLeftButtons()
         cameraButtonsViewModel.captureAction = { [weak self] in
+            self?.cameraPreviewViewController.startLoadingIndicator()
             self?.cameraPane.toggleCaptureButtonActivation(state: false)
             self?.cameraPreviewViewController.captureImage { [weak self] data, error in
                 guard let self = self else { return }
-
                 var capturedData = data
                 if let imageData = data, let image = UIImage(data: imageData)?.fixOrientation() {
                     let croppedImage = self.crop(image: image)
-                    capturedData = croppedImage.jpegData(compressionQuality: 1)
 
+                    capturedData = croppedImage.jpegData(compressionQuality: 1)
+                    self.cameraPreviewViewController.stopLoadingIndicator()
                     #if targetEnvironment(simulator)
                     capturedData = imageData
                     #endif
@@ -262,6 +264,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             action: #selector(cameraButtonsViewModel.thumbnailPressed),
             for: .touchUpInside)
     }
+    // swiftlint:enable body_length
 
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -456,7 +459,6 @@ extension Camera2ViewController {
         let standardImageAspectRatio: CGFloat = 0.75 // Standard aspect ratio of a 3/4 image
         let screenAspectRatio = self.cameraPreviewViewController.view.frame.height / self.cameraPreviewViewController.view.frame.width
         var scale: CGFloat
-        var cameraPreviewRect: CGRect
 
         if image.size.width > image.size.height {
             // Landscape orientation
@@ -500,13 +502,48 @@ extension Camera2ViewController {
         // The A4 rect position and size on the whole image
         let cropRect = CGRect(x: cropRectX, y: cropRectY, width: a4FrameRect.width, height: a4FrameRect.height)
 
+        // Scaling up the rectangle 20%
+        let scaledSize = CGSize(width: cropRect.width * 1.2, height: cropRect.height * 1.2)
+
+        let scaledOriginX = cropRectX - cropRect.width * 0.1
+        let scaledOriginY = cropRectY - cropRect.height * 0.1
+
+        var scaledRect = CGRect(x: scaledOriginX, y: scaledOriginY, width: scaledSize.width, height: scaledSize.height)
+
+        if scaledRect.origin.x >= 0 && scaledRect.origin.y >= 0 {
+            // The area to be cropped is inside of the area of the image
+            return cut(image: image, to: scaledRect)
+        } else {
+            // The area to be cropped is outside of the area of the image
+            // Add image to background image
+            guard let backgroundImage = UIImageNamedPreferred(named: "blackBackground") else { return image }
+
+            // Calculate origin of the image compared to the canvas size
+            var drawOrigin: CGPoint = CGPoint.zero
+            if scaledOriginX < 0 {
+                drawOrigin.x = -scaledOriginX
+                scaledRect.origin.x = 0
+            }
+
+            if scaledOriginY < 0 {
+                drawOrigin.y = -scaledOriginY
+                scaledRect.origin.y = 0
+            }
+
+            // Merge the canvas and the image together
+            let mergedImage = backgroundImage.overlayWith(image: image, posX: drawOrigin.x, posY: drawOrigin.y)
+            return cut(image: mergedImage, to: scaledRect)
+        }
+    }
+    // swiftlint:enable line_length
+
+    private func cut(image: UIImage, to rect: CGRect) -> UIImage {
         guard let cgImage = image.cgImage else { return image }
-        guard let croppedImage = cgImage.cropping(to: cropRect) else { return image }
+        guard let croppedImage = cgImage.cropping(to: rect) else { return image }
         let finalImage = UIImage(cgImage: croppedImage, scale: 1, orientation: .up)
 
         return finalImage
     }
-    // swiftlint:enable line_length
 }
 
 // MARK: - CameraPreviewViewControllerDelegate
