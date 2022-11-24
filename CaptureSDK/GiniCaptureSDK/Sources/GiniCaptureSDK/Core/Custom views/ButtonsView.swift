@@ -23,7 +23,6 @@ class ButtonsView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         button.titleLabel?.adjustsFontForContentSizeCategory = true
-        //
         button.setTitle(secondButtonTitle,
                               for: .normal)
         return button
@@ -57,7 +56,7 @@ class ButtonsView: UIView {
         ])
     }
 
-    private func configureButtonsColors() {
+    func configureButtonsColors() {
         retakeButton.setTitleColor(giniConfiguration.primaryButtonTitleColor.uiColor(), for: .normal)
         retakeButton.backgroundColor = giniConfiguration.primaryButtonBackgroundColor.uiColor()
         retakeButton.layer.borderColor = giniConfiguration.primaryButtonBorderColor.uiColor().cgColor
