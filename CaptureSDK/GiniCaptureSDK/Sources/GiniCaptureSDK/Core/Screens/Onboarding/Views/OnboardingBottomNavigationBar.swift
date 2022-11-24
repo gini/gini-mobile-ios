@@ -22,7 +22,7 @@ final class OnboardingBottomNavigationBar: UIView {
 
     func setupView() {
         backgroundColor = GiniColor(light: .GiniCapture.light1, dark: .GiniCapture.dark1).uiColor()
-        skipButton.backgroundColor = GiniColor(light: .GiniCapture.light1, dark: .GiniCapture.dark1).uiColor()
+        skipButton.backgroundColor = .clear
         skipButton.setTitleColor(GiniColor(light: .GiniCapture.accent1, dark: .GiniCapture.accent1).uiColor(),
                                  for: .normal)
         nextButton.backgroundColor = GiniColor(light: .GiniCapture.accent1, dark: .GiniCapture.accent1).uiColor()
