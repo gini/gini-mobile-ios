@@ -9,13 +9,6 @@ import UIKit
 
 class ErrorScreenViewController: UIViewController {
 
-    enum ErrorType {
-        case connection
-        case uploadIssue
-        case serverError
-        case authentication
-        case unexpected
-    }
     private var giniConfiguration: GiniConfiguration
     lazy var errorHeader: IconHeader = {
         if let header = IconHeader().loadNib() as? IconHeader {
@@ -91,7 +84,7 @@ class ErrorScreenViewController: UIViewController {
             "ginicapture.error.title",
             comment: "Error screen title")
         setupErrorHeader()
-        errorContent.text = getErrorContent(type: errorType)
+        errorContent.text = errorType.content()
         errorContent.font = giniConfiguration.textStyleFonts[.body]
         errorContent.textColor = GiniColor(light: UIColor.GiniCapture.dark6, dark: UIColor.GiniCapture.dark7).uiColor()
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
@@ -108,7 +101,7 @@ class ErrorScreenViewController: UIViewController {
         errorHeader.iconImageView.accessibilityLabel = NSLocalizedStringPreferredFormat(
             "ginicapture.error.title",
             comment: "Error screen title")
-        errorHeader.headerLabel.text = getErrorTitle(type: errorType)
+        errorHeader.headerLabel.text = errorType.title()
         errorHeader.headerLabel.font = giniConfiguration.textStyleFonts[.subheadline]
         errorHeader.headerLabel.textColor = GiniColor(
             light: UIColor.GiniCapture.dark1,
@@ -118,7 +111,7 @@ class ErrorScreenViewController: UIViewController {
             light: UIColor.GiniCapture.error4,
             dark: UIColor.GiniCapture.error1
         ).uiColor()
-        errorHeader.iconImageView.image = UIImageNamedPreferred(named: iconForType(type: errorType))
+        errorHeader.iconImageView.image = UIImageNamedPreferred(named: errorType.iconName())
     }
 
     private func configureButtons() {
@@ -201,71 +194,6 @@ class ErrorScreenViewController: UIViewController {
                 buttonsView.leadingAnchor.constraint(equalTo: errorContent.leadingAnchor),
                 buttonsView.trailingAnchor.constraint(equalTo: errorContent.trailingAnchor)
             ])
-        }
-    }
-
-    private func iconForType(type: ErrorType) -> String {
-        switch type {
-        case .connection:
-            return "errorCloud"
-        case .authentication:
-            return "errorAuth"
-        case .serverError:
-            return "errorGlobe"
-        case .unexpected:
-            return "alertTriangle"
-        case .uploadIssue:
-            return "errorUpload"
-        }
-    }
-
-    private func getErrorContent(type: ErrorType) -> String {
-        switch type {
-        case .connection:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.connection.content",
-                comment: "Connection error")
-        case .authentication:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.authentication.content",
-                comment: "Authentication error")
-        case .serverError:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.serverError.content",
-                comment: "Server error")
-        case .unexpected:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.unexpected.content",
-                comment: "Unexpected error")
-        case .uploadIssue:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.uploadIssue.content",
-                comment: "Upload error")
-        }
-    }
-
-    private func getErrorTitle(type: ErrorType) -> String {
-        switch type {
-        case .connection:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.connection.title",
-                comment: "Connection error")
-        case .authentication:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.authentication.title",
-                comment: "Authentication error")
-        case .serverError:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.serverError.title",
-                comment: "Server error")
-        case .unexpected:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.unexpected.title",
-                comment: "Unexpected error")
-        case .uploadIssue:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.uploadIssue.title",
-                comment: "Upload error")
         }
     }
 
