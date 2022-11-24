@@ -73,17 +73,14 @@ final class GalleryCoordinator: NSObject, Coordinator {
         button.addTarget(self, action: #selector(openImages), for: .touchUpInside)
         button.frame.size = CGSize(width: 50, height: 20)
         button.titleLabel?.textColor = UIColor.GiniCapture.accent1
-        
-        let currentFont = button.titleLabel?.font
-        let fontSize = currentFont?.pointSize ?? 18
-        let attributes = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: fontSize)]
+
+        let attributes = [NSAttributedString.Key.font: giniConfiguration.textStyleFonts[.bodyBold] as Any]
         let openLocalizedString: String = NSLocalizedStringPreferredFormat("ginicapture.imagepicker.openbutton",
                                                                            comment: "Open")
         let attributedString = NSMutableAttributedString(string: openLocalizedString,
                                                          attributes: attributes)
         button.setAttributedTitle(attributedString, for: .normal)
         button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.titleLabel?.minimumScaleFactor = 14/fontSize
         
         return UIBarButtonItem(customView: button)
     }()
