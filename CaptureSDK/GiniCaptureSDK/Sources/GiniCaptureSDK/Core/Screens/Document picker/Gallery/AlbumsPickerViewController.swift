@@ -91,9 +91,6 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
     }
 
     func showLimitedLibraryPicker() {
-        if #available(iOS 14.0, *) {
-            library.presentLimitedLibraryPicker(from: self)
-        }
         if #available(iOS 15.0, *) {
             library.presentLimitedLibraryPicker(from: self) { _ in
                 DispatchQueue.main.async {
@@ -101,6 +98,11 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
                     self.reloadAlbums()
                 }
             }
+            return
+        }
+
+        if #available(iOS 14.0, *) {
+            library.presentLimitedLibraryPicker(from: self)
         }
     }
 
