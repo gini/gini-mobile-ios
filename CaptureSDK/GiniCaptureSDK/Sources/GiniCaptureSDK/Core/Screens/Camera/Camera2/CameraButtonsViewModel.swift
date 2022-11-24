@@ -60,11 +60,13 @@ public final class CameraButtonsViewModel {
 
     func didCapture(
         imageData: Data?,
+        processedImageData: Data?,
         error: CameraError?,
         orientation: UIInterfaceOrientation,
         giniConfiguration: GiniConfiguration
     ) -> GiniImageDocument? {
         guard let imageData = imageData,
+              let processedImageData = processedImageData,
             error == nil else {
             let errorMessage = error?.message ?? "Image data was nil"
             let errorLog = ErrorLog(
@@ -75,6 +77,7 @@ public final class CameraButtonsViewModel {
         }
         let imageDocument = GiniImageDocument(
             data: imageData,
+            processedImageData: processedImageData,
             imageSource: .camera,
             deviceOrientation: orientation)
         return imageDocument
