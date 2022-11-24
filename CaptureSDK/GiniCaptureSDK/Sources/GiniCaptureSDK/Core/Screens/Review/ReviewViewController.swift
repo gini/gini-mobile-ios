@@ -561,6 +561,7 @@ extension ReviewViewController: UICollectionViewDataSource {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReviewCollectionCell.reuseIdentifier,
                                                          for: indexPath) as? ReviewCollectionCell {
             cell.delegate = self
+            cell.isActive = currentPage == indexPath.row
             return presenter.setUp(cell, with: page, at: indexPath)
         }
         fatalError("ReviewCollectionCell wasn't initialized")

@@ -81,4 +81,9 @@ final class ReviewCollectionCell: UICollectionViewCell {
     private func didTapDelete() {
         delegate?.didTapDelete(on: self)
     }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        isActive = false
+    }
 }
