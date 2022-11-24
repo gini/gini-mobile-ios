@@ -51,6 +51,11 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
                                                                   imageSource: imageSource,
                                                                   imageImportMethod: imageImportMethod)
 
+        // The processed image data is assumed to be always in the correct orientation
+        if processedImageData != nil {
+            self.metaInformationManager.update(imageOrientation: .up)
+        }
+        
         if let dataWithMetadata = metaInformationManager.imageByAddingMetadata(to: processedImageData) {
             self.data = dataWithMetadata
         } else {
