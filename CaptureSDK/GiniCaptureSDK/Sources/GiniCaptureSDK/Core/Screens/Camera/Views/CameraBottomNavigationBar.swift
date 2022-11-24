@@ -30,7 +30,7 @@ class CameraBottomNavigationBar: UIView {
         ).uiColor()
         leftButton.setTitle("", for: .normal)
         leftButton.setImage(
-            UIImageNamedPreferred(named: "arrowBack") ?? UIImage(),
+            UIImageNamedPreferred(named: "arrowBack")?.tintedImageWithColor(.GiniCapture.accent1) ?? UIImage(),
             for: .normal)
         backgroundColor = GiniColor(
             light: UIColor.GiniCapture.light1,
