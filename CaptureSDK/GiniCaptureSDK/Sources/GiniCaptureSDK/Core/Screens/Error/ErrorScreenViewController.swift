@@ -94,7 +94,6 @@ class ErrorScreenViewController: UIViewController {
         errorContent.text = getErrorContent(type: errorType)
         errorContent.font = giniConfiguration.textStyleFonts[.body]
         errorContent.textColor = GiniColor(light: UIColor.GiniCapture.dark6, dark: UIColor.GiniCapture.dark7).uiColor()
-        errorContent.textAlignment = .left
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         view.addSubview(errorHeader)
         view.addSubview(errorContent)
