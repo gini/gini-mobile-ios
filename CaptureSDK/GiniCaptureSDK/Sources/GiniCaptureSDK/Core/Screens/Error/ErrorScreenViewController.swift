@@ -27,7 +27,7 @@ class ErrorScreenViewController: UIViewController {
                 comment: "Enter manually"),
             secondTitle: NSLocalizedStringPreferredFormat(
                 "ginicapture.error.backToCamera",
-                comment: "Enter manually"))
+                comment: "Back to camera"))
         return view
     }()
 
