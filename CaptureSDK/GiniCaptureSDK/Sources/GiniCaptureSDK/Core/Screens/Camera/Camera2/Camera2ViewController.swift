@@ -536,7 +536,7 @@ extension Camera2ViewController {
             }
 
             // Merge the canvas and the image together
-            let mergedImage = backgroundImage.overlayWith(image: image, posX: drawOrigin.x, posY: drawOrigin.y)
+            let mergedImage = backgroundImage.overlayWith(image: image, posX: drawOrigin.x, posY: drawOrigin.y, newSize: scaledSize)
             return cut(image: mergedImage, to: scaledRect)
         }
     }
