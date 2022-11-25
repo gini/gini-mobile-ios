@@ -38,10 +38,11 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
      */
     
     init(data: Data,
+         processedImageData: Data? = nil,
          imageSource: DocumentSource,
          imageImportMethod: DocumentImportMethod? = nil,
          deviceOrientation: UIInterfaceOrientation? = nil) {
-        self.previewImage = UIImage(data: data)
+        self.previewImage = UIImage(data: processedImageData ?? data)
         self.isReviewable = true
         self.id = UUID().uuidString
         self.isImported = imageSource != DocumentSource.camera
@@ -50,23 +51,16 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
                                                                   imageSource: imageSource,
                                                                   imageImportMethod: imageImportMethod)
 
-        if let dataWithMetadata = metaInformationManager.imageByAddingMetadata() {
+        // The processed image data is assumed to be always in the correct orientation
+        if processedImageData != nil {
+            self.metaInformationManager.update(imageOrientation: .up)
+        }
+        
+        if let dataWithMetadata = metaInformationManager.imageByAddingMetadata(to: processedImageData) {
             self.data = dataWithMetadata
         } else {
             self.data = data
-        }
-
-        super.init()
-        if let image = UIImage(data: data) {
-            #if targetEnvironment(simulator)
-            self.data = image.jpegData(compressionQuality: 1)!
-            return
-            #endif
-
-            self.data = image.jpegData(compressionQuality: 1)!
-            self.previewImage = image
-        }
-        
+        }        
     }
 }
 
