@@ -21,35 +21,16 @@ final class OnboardingBottomNavigationBar: UIView {
     }
 
     func setupView() {
-        backgroundColor = GiniColor(
-            light: UIColor.GiniCapture.dark2,
-            dark: UIColor.GiniCapture.dark2
-        ).uiColor()
-        skipButton.backgroundColor = GiniColor(light: UIColor.clear, dark: UIColor.clear).uiColor()
-        skipButton.setTitleColor(
-            GiniColor(
-                light: UIColor.GiniCapture.accent1,
-                dark: UIColor.GiniCapture.accent1
-            ).uiColor(),
-            for: .normal)
-        nextButton.backgroundColor = GiniColor(
-            light: UIColor.GiniCapture.accent1,
-            dark: UIColor.GiniCapture.accent1
-        ).uiColor()
-        nextButton.setTitleColor(
-            GiniColor(
-                light: UIColor.GiniCapture.labelWhite,
-                dark: UIColor.GiniCapture.labelWhite
-            ).uiColor(), for: .normal)
-        getStarted.backgroundColor = GiniColor(
-            light: UIColor.GiniCapture.accent1,
-            dark: UIColor.GiniCapture.accent1
-        ).uiColor()
-        getStarted.setTitleColor(
-            GiniColor(
-                light: UIColor.GiniCapture.labelWhite,
-                dark: UIColor.GiniCapture.labelWhite
-            ).uiColor(), for: .normal)
+        backgroundColor = GiniColor(light: .GiniCapture.light1, dark: .GiniCapture.dark1).uiColor()
+        skipButton.backgroundColor = .clear
+        skipButton.setTitleColor(GiniColor(light: .GiniCapture.accent1, dark: .GiniCapture.accent1).uiColor(),
+                                 for: .normal)
+        nextButton.backgroundColor = GiniColor(light: .GiniCapture.accent1, dark: .GiniCapture.accent1).uiColor()
+        nextButton.setTitleColor(GiniColor(light: .GiniCapture.labelWhite, dark: .GiniCapture.labelWhite).uiColor(),
+                                 for: .normal)
+        getStarted.backgroundColor = GiniColor(light: .GiniCapture.accent1, dark: .GiniCapture.accent1).uiColor()
+        getStarted.setTitleColor(GiniColor(light: .GiniCapture.labelWhite, dark: .GiniCapture.labelWhite).uiColor(),
+                                 for: .normal)
         skipButton.layer.cornerRadius = cornerRadius
         nextButton.layer.cornerRadius = cornerRadius
         getStarted.layer.cornerRadius = cornerRadius
