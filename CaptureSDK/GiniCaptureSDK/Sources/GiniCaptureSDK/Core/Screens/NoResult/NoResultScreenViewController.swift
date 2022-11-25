@@ -48,6 +48,7 @@ final public class NoResultScreenViewController: UIViewController {
             secondTitle: NSLocalizedStringPreferredFormat(
                 "ginicapture.noresult.retakeImages",
                 comment: "Retake images"))
+        view.translatesAutoresizingMaskIntoConstraints = false
         if viewModel.isEnterManuallyHidden() == false {
             view.enterButton.isHidden = false
         } else {
