@@ -30,16 +30,18 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
     fileprivate lazy var selectedForegroundView: UIView = {
         var view = UIView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.white.withAlphaComponent(0.5)
+        view.layer.borderColor = UIColor.GiniCapture.accent1.cgColor
+        view.layer.borderWidth = Constants.borderWidth
+        view.backgroundColor = .GiniCapture.accent1.withAlphaComponent(0.5)
         view.alpha = 0
         return view
     }()
     
     lazy var checkImage: UIImageView = {
-        let image = UIImageNamedPreferred(named: "supportedFormatsIcon")
+        let image = UIImageNamedPreferred(named: "checkMarkBlue")
         var imageView = UIImageView(image: image)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.alpha = 0
+        imageView.isHidden = true
         return imageView
     }()
     
@@ -51,7 +53,7 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
         circleView.layer.borderColor = UIColor.white.cgColor
         return circleView
     }()
-    
+
     var isProgramaticallySelected: Bool = false {
         didSet {
             selectedForegroundView.alpha = isProgramaticallySelected ? 1 : 0
@@ -71,25 +73,41 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
         addSubview(selectedForegroundView)
         addSubview(checkCircleBackground)
         addSubview(activityIndicator)
-        checkCircleBackground.addSubview(checkImage)
-        
-        Constraints.center(view: activityIndicator, with: self)
-        Constraints.pin(view: galleryImage, toSuperView: self)
-        Constraints.pin(view: selectedForegroundView, toSuperView: self)
-        Constraints.active(item: checkCircleBackground, attr: .bottom, relatedBy: .equal, to: self, attr: .bottom,
-                           constant: -5)
-        Constraints.active(item: checkCircleBackground, attr: .trailing, relatedBy: .equal, to: self, attr: .trailing,
-                           constant: -5)
-        Constraints.active(item: checkCircleBackground, attr: .height, relatedBy: .equal, to: nil,
-                           attr: .notAnAttribute, constant: selectedCircleSize.width)
-        Constraints.active(item: checkCircleBackground, attr: .width, relatedBy: .equal, to: nil, attr: .notAnAttribute,
-                           constant: selectedCircleSize.height)
-        Constraints.center(view: checkImage, with: checkCircleBackground)
-        
+        addSubview(checkImage)
+
+        setupConstraints()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor),
+
+            galleryImage.topAnchor.constraint(equalTo: topAnchor),
+            galleryImage.leadingAnchor.constraint(equalTo: leadingAnchor),
+            galleryImage.centerXAnchor.constraint(equalTo: centerXAnchor),
+            galleryImage.centerYAnchor.constraint(equalTo: centerYAnchor),
+
+            selectedForegroundView.topAnchor.constraint(equalTo: topAnchor),
+            selectedForegroundView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            selectedForegroundView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            selectedForegroundView.centerYAnchor.constraint(equalTo: centerYAnchor),
+
+            checkCircleBackground.topAnchor.constraint(equalTo: topAnchor, constant: Constants.circlePadding),
+            checkCircleBackground.trailingAnchor.constraint(equalTo: trailingAnchor,
+                                                            constant: -Constants.circlePadding),
+            checkCircleBackground.widthAnchor.constraint(equalToConstant: Constants.selectedCircleSize.width),
+            checkCircleBackground.heightAnchor.constraint(equalToConstant: Constants.selectedCircleSize.height),
+
+            checkImage.topAnchor.constraint(equalTo: checkCircleBackground.topAnchor),
+            checkImage.leadingAnchor.constraint(equalTo: checkCircleBackground.leadingAnchor),
+            checkImage.centerXAnchor.constraint(equalTo: checkCircleBackground.centerXAnchor),
+            checkImage.centerYAnchor.constraint(equalTo: checkCircleBackground.centerYAnchor),
+        ])
     }
     
     func fill(withAsset asset: Asset,
@@ -97,7 +115,7 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
               galleryManager: GalleryManagerProtocol,
               isDownloading: Bool,
               isSelected: Bool) {
-        checkCircleBackground.alpha = multipleSelectionEnabled && !isDownloading ? 1 : 0
+        checkCircleBackground.isHidden = !(multipleSelectionEnabled && !isDownloading)
         activityIndicator.alpha = isDownloading ? 1 : 0
         isProgramaticallySelected = isSelected
         selectedForegroundView.alpha = isSelected || isDownloading ? 1 : 0
@@ -127,15 +145,15 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
     }
     
     func changeCheckCircle(to selected: Bool, giniConfiguration: GiniConfiguration = .shared) {
-        if selected {
-            checkCircleBackground.layer.borderColor =
-                giniConfiguration.galleryPickerItemSelectedBackgroundCheckColor.cgColor
-            checkCircleBackground.backgroundColor = giniConfiguration.galleryPickerItemSelectedBackgroundCheckColor
-            checkImage.alpha = 1
-        } else {
-            checkCircleBackground.layer.borderColor = UIColor.white.cgColor
-            checkCircleBackground.backgroundColor = .clear
-            checkImage.alpha = 0
-        }
+        checkCircleBackground.isHidden = selected
+        checkImage.isHidden = !selected
+    }
+}
+
+extension ImagePickerCollectionViewCell {
+    enum Constants {
+        static let borderWidth: CGFloat = 2
+        static let selectedCircleSize = CGSize(width: 25, height: 25)
+        static let circlePadding: CGFloat = 5
     }
 }
