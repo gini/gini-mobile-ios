@@ -39,6 +39,13 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         // When an non reviewable document or an image in multipage mode is captured,
         // it has to be uploaded right away.
         if giniConfiguration.multipageEnabled || !document.isReviewable {
+            if document.isImported {
+                uploadAndStartAnalysisWithReturnAssistant(document: document, networkDelegate: networkDelegate, uploadDidFail: {
+                    self.didCapture(document: document, networkDelegate: networkDelegate)
+                })
+                return
+            }
+
             if !document.isReviewable {
                 uploadAndStartAnalysisWithReturnAssistant(document: document, networkDelegate: networkDelegate, uploadDidFail: {
                     self.didCapture(document: document, networkDelegate: networkDelegate)
