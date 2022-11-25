@@ -26,7 +26,7 @@ final class ReviewBottomNavigationBar: UIView {
 
     func setupView() {
         let configuration = GiniConfiguration.shared
-        backgroundColor = GiniColor(light: UIColor.GiniCapture.dark2, dark: UIColor.GiniCapture.dark2).uiColor()
+        backgroundColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.dark1).uiColor()
 
         mainButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle",
                                                              comment: "Process button title"), for: .normal)
@@ -42,17 +42,19 @@ final class ReviewBottomNavigationBar: UIView {
                                             "ginicapture.multipagereview.secondaryButtonTitle",
                                         comment: "Add pages button title"))
         secondaryButton.isHidden = !configuration.multipageEnabled
-        secondaryButton.actionLabel.textColor = UIColor.GiniCapture.light1
+        secondaryButton.actionLabel.textColor = GiniColor(light: .GiniCapture.dark2,
+                                                          dark: .GiniCapture.light2).uiColor()
         secondaryButton.didTapButton = { [weak self] in
             self?.secondaryButtonClicked()
         }
         // The button's asset changes with light/dark mode but right now we don't support light mode on bottom navigation
+        let tintColor = GiniColor(light: .GiniCapture.dark4, dark: .GiniCapture.light4).uiColor()
         if #available(iOS 13.0, *) {
-            secondaryButton.iconView.tintColor = .GiniCapture.light1
-            secondaryButton.iconView.image = secondaryButton.iconView.image?.withTintColor(.GiniCapture.light1,
+            secondaryButton.iconView.tintColor = tintColor
+            secondaryButton.iconView.image = secondaryButton.iconView.image?.withTintColor(tintColor,
                                                                                          renderingMode: .alwaysTemplate)
         } else {
-            secondaryButton.iconView.image = secondaryButton.iconView.image?.tintedImageWithColor(.GiniCapture.light1)
+            secondaryButton.iconView.image = secondaryButton.iconView.image?.tintedImageWithColor(tintColor)
         }
 
         addLoadingView()

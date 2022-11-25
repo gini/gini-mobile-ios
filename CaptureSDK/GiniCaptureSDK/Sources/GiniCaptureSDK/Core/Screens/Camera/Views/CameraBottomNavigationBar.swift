@@ -19,27 +19,25 @@ class CameraBottomNavigationBar: UIView {
 
     func setupView() {
         let configuration = GiniConfiguration.shared
+        let textColor = UIColor.GiniCapture.accent1
         rightButton.setTitle(NSLocalizedStringPreferredFormat(
             "ginicapture.navigationbar.camera.help",
             comment: "Camera Help Button"), for: .normal)
         rightButton.titleLabel?.font = configuration.textStyleFonts[.body]
-        rightButton.setTitleColor(
-            GiniColor(
-                light: UIColor.GiniCapture.light1,
-                dark: UIColor.GiniCapture.light1
-            ).uiColor(),
-            for: .normal)
-        rightButton.tintColor = GiniColor(
-            light: UIColor.GiniCapture.light1,
-            dark: UIColor.GiniCapture.light1
-        ).uiColor()
-        leftButton.setTitle("", for: .normal)
+        rightButton.setTitleColor(textColor, for: .normal)
+        rightButton.tintColor = GiniColor(light: UIColor.GiniCapture.dark1, dark: UIColor.GiniCapture.light1).uiColor()
+        leftButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.navigationbar.analysis.backToReview",
+                                                             comment: "Review screen title"), for: .normal)
+        leftButton.setTitleColor(textColor, for: .normal)
+        if #available(iOS 15.0, *) {
+            leftButton.configuration?.imagePadding = 4
+        } else {
+            leftButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 0)
+        }
+
         leftButton.setImage(
-            UIImageNamedPreferred(named: "arrowBack") ?? UIImage(),
+            UIImageNamedPreferred(named: "arrowBack")?.tintedImageWithColor(textColor) ?? UIImage(),
             for: .normal)
-        backgroundColor = GiniColor(
-            light: UIColor.GiniCapture.dark2,
-            dark: UIColor.GiniCapture.dark2
-        ).uiColor()
+        backgroundColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.dark1).uiColor()
     }
 }
