@@ -57,7 +57,7 @@ final public class NoResultScreenViewController: UIViewController {
         if viewModel.isRetakePressedHidden() == false {
             view.retakeButton.isHidden = false
         } else {
-            view.enterButton.isHidden = true
+            view.retakeButton.isHidden = true
         }
         return view
     }()
