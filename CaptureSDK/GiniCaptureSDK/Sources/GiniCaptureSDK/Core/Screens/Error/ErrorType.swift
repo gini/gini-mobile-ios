@@ -6,18 +6,50 @@
 //
 
 import Foundation
+import GiniBankAPILibrary
 
-enum ErrorType {
+@objc public enum ErrorType: Int {
     case connection
+    case request
     case uploadIssue
     case serverError
     case authentication
     case unexpected
+    case importError
+
+    public init(error: GiniError) {
+        switch error {
+        case .unauthorized(_, _), .invalidCredentials, .keychainError:
+            self = .authentication
+        case .noResponse:
+            self = .connection
+        case .notAcceptable(let response, _), .tooManyRequests(let response, _),
+                .parseError(_, let response, _), .badRequest(let response, _), .notFound(let response, _):
+            if let status = response?.statusCode {
+                switch status {
+                case 400, 402 ... 499:
+                    self = .request
+                case 401:
+                    self = .authentication
+                case let code where code >= 500:
+                    self = .serverError
+                default:
+                    self = .unexpected
+                }
+            } else {
+                self = .serverError
+            }
+        default:
+            self = .unexpected
+        }
+    }
 
     func iconName() -> String {
         switch self {
         case .connection:
             return "errorCloud"
+        case .request:
+            return "alertTriangle"
         case .authentication:
             return "errorAuth"
         case .serverError:
@@ -26,6 +58,8 @@ enum ErrorType {
             return "alertTriangle"
         case .uploadIssue:
             return "errorUpload"
+        case .importError:
+            return "alertTriangle"
         }
     }
 
@@ -35,6 +69,10 @@ enum ErrorType {
             return NSLocalizedStringPreferredFormat(
                 "ginicapture.error.connection.content",
                 comment: "Connection error")
+        case .request:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.request.content",
+                comment: "Request error")
         case .authentication:
             return NSLocalizedStringPreferredFormat(
                 "ginicapture.error.authentication.content",
@@ -51,6 +89,10 @@ enum ErrorType {
             return NSLocalizedStringPreferredFormat(
                 "ginicapture.error.uploadIssue.content",
                 comment: "Upload error")
+        case .importError:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.importError.content",
+                comment: "Import error")
         }
     }
 
@@ -75,6 +117,14 @@ enum ErrorType {
         case .uploadIssue:
             return NSLocalizedStringPreferredFormat(
                 "ginicapture.error.uploadIssue.title",
+                comment: "Upload error")
+        case .request:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.request.title",
+                comment: "Upload error")
+        case .importError:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.importError.title",
                 comment: "Upload error")
         }
     }

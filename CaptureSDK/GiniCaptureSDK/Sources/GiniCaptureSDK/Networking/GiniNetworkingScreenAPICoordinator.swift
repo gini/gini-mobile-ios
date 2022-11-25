@@ -152,13 +152,8 @@ extension GiniNetworkingScreenAPICoordinator {
             case .success(let extractions):
                 self.deliver(result: extractions, and: self.documentService.document, to: networkDelegate)
             case .failure(let error):
-
-                guard error != .requestCancelled else { return }
-                
-                networkDelegate.displayError(withMessage: .localized(resource: AnalysisStrings.analysisErrorMessage),
-                                             andAction: {
-                    self.startAnalysis(networkDelegate: networkDelegate)
-                })
+                guard error != .requestCancelled, let giniError = error as? GiniError else { return }
+                networkDelegate.displayError(errorType: ErrorType(error: giniError))
             }
         }
     }
@@ -176,20 +171,20 @@ extension GiniNetworkingScreenAPICoordinator {
         }
     }
 
-    fileprivate func uploadAndStartAnalysis(document: GiniCaptureDocument,
-                                            networkDelegate: GiniCaptureNetworkDelegate,
-                                            uploadDidFail: @escaping () -> Void) {
+    fileprivate func uploadAndStartAnalysis(
+        document: GiniCaptureDocument,
+        networkDelegate: GiniCaptureNetworkDelegate,
+        uploadDidFail: @escaping () -> Void) {
         self.upload(document: document, didComplete: { _ in
             self.startAnalysis(networkDelegate: networkDelegate)
         }, didFail: { _, error in
             let error = error as? GiniCaptureError ?? AnalysisError.documentCreation
 
             guard let analysisError = error as? AnalysisError, case analysisError = AnalysisError.cancelled else {
-                networkDelegate.displayError(withMessage: error.message, andAction: {
-                    uploadDidFail()
-                })
+                networkDelegate.displayError(errorType: .uploadIssue)
                 return
             }
+            networkDelegate.displayError(errorType: .uploadIssue)
         })
     }
 }

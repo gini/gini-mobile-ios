@@ -88,39 +88,58 @@ extension GiniScreenAPICoordinator {
 
 extension GiniScreenAPICoordinator: AnalysisDelegate {
 
-    public func displayError(withMessage message: String?, andAction action: (() -> Void)?) {
+    public func displayError(
+        errorType: ErrorType
+    ) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            let errorScreen = ErrorScreenViewController(
-                giniConfiguration: self.giniConfiguration,
-                type: .connection,
-                viewModel: BottomButtonsViewModel(retakeBlock: { [weak self] in
-                    self?.pages = []
-                    self?.backToCamera()
-            }, manuallyPressed: { [weak self] in
-                if let delegate = self?.visionDelegate {
-                    delegate.didPressEnterManually()
+            let viewModel: BottomButtonsViewModel
+            let viewController: ErrorScreenViewController
+            switch self.pages.type {
+            case .image:
+                if self.pages.contains(where: { $0.document.isImported == false }) {
+                    // if there is a photo captured with camera
+                    viewModel = BottomButtonsViewModel(
+                        retakeBlock: { [weak self] in
+                            self?.pages = []
+                            self?.backToCamera()
+                        },
+                        manuallyPressed: { [weak self] in
+                            if let delegate = self?.visionDelegate {
+                                delegate.didPressEnterManually()
+                            } else {
+                                self?.screenAPINavigationController.dismiss(animated: true)
+                            }
+                        }, cancelPressed: { [weak self] in
+                        self?.backToCamera()
+                    })
                 } else {
-                    self?.screenAPINavigationController.dismiss(animated: true)
+                    viewModel = BottomButtonsViewModel(
+                        manuallyPressed: { [weak self] in
+                            if let delegate = self?.visionDelegate {
+                                delegate.didPressEnterManually()
+                            } else {
+                                self?.screenAPINavigationController.dismiss(animated: true)
+                            }
+                        }, cancelPressed: { [weak self] in
+                        self?.backToCamera()
+                    })
                 }
-            }, cancelPressed: { [weak self] in
-                self?.backToCamera()
-            }))
-            self.screenAPINavigationController.pushViewController(errorScreen, animated: true)
-            /*
-            guard let message = message,
-                let action = action else { return }
-            
-            if let analysisViewController = self.analysisViewController {
-                analysisViewController.showError(with: message, action: { [weak self] in
-                    guard let self = self else { return }
-                    self.analysisErrorAndAction = nil
-                    action()
+            default:
+                viewModel = BottomButtonsViewModel(
+                    manuallyPressed: { [weak self] in
+                        self?.screenAPINavigationController.dismiss(animated: true)
+                    }, cancelPressed: { [weak self] in
+                    self?.closeScreenApi()
                 })
-            } else {
-                self.analysisErrorAndAction = (message, action)
             }
-             */
+            viewController = ErrorScreenViewController(
+                giniConfiguration: self.giniConfiguration,
+                type: errorType,
+                viewModel: viewModel)
+
+            self.screenAPINavigationController.pushViewController(
+                viewController, animated: true)
         }
     }
 
