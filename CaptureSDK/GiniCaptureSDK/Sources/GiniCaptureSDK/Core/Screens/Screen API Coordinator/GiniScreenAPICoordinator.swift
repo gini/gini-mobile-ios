@@ -166,6 +166,11 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     }
 
     private func initialViewControllers(with pages: [GiniCapturePage]) -> [UIViewController] {
+        if pages.filter({ $0.document.isImported }).isNotEmpty {
+            self.analysisViewController = createAnalysisScreen(withDocument: pages[0].document)
+            return [self.analysisViewController!]
+        }
+
         if pages.type == .image {
             reviewViewController =
                 createReviewScreenContainer(with: pages)
