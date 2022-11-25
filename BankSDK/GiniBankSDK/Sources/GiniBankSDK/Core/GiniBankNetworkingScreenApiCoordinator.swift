@@ -51,7 +51,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                     self.didCapture(document: document, networkDelegate: networkDelegate)
                 })
             } else if giniConfiguration.multipageEnabled {
-                // When multipage is enabled the document updload result should be communicated to the network delegate
+                // When multipage is enabled the document upload result should be communicated to the network delegate
                 uploadWithReturnAssistant(document: document,
                                           didComplete: networkDelegate.uploadDidComplete,
                                           didFail: networkDelegate.uploadDidFail)
