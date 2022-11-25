@@ -216,17 +216,18 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             self?.cameraPreviewViewController.captureImage { [weak self] data, error in
                 guard let self = self else { return }
 
-                var capturedData = data
+                var processedImageData = data
                 if let imageData = data, let image = UIImage(data: imageData)?.fixOrientation() {
                     let croppedImage = self.crop(image: image)
-                    capturedData = croppedImage.jpegData(compressionQuality: 1)
+                    processedImageData = croppedImage.jpegData(compressionQuality: 1)
 
                     #if targetEnvironment(simulator)
-                    capturedData = imageData
+                    processedImageData = imageData
                     #endif
                 }
 
-                if let image = self.cameraButtonsViewModel.didCapture(imageData: capturedData,
+                if let image = self.cameraButtonsViewModel.didCapture(imageData: data,
+                                                                      processedImageData: processedImageData,
                                                                       error: error,
                                                                       orientation:
                                                                         UIApplication.shared.statusBarOrientation,
