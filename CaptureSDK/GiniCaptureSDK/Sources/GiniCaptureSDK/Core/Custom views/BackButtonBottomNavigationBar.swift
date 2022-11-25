@@ -18,12 +18,13 @@ public final class BackButtonBottomNavigationBar: UIView {
 
     func setupView() {
         backButton.setTitle("", for: .normal)
+        let image = UIImageNamedPreferred(named: "arrowBack") ?? UIImage()
         backButton.setImage(
-            UIImageNamedPreferred(named: "arrowBack") ?? UIImage(),
+            image.tintedImageWithColor(.GiniCapture.accent1),
             for: .normal)
         backgroundColor = GiniColor(
-            light: UIColor.GiniCapture.dark2,
-            dark: UIColor.GiniCapture.dark2
+            light: UIColor.GiniCapture.light1,
+            dark: UIColor.GiniCapture.dark1
         ).uiColor()
     }
 }

@@ -71,10 +71,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        showUploadButton()
         setupView()
-
-        cameraPane.isHidden = giniConfiguration.onlyQRCodeScanningEnabled
     }
 
     public override func viewWillAppear(_ animated: Bool) {
@@ -94,19 +91,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         opaqueView?.frame = cameraPreviewViewController.view.frame
     }
 
-    private func setupView() {
-        self.title = NSLocalizedStringPreferredFormat(
-            "ginicapture.camera.infoLabel",
-            comment: "Info label")
-        edgesForExtendedLayout = []
-        view.backgroundColor = giniConfiguration.cameraContainerViewBackgroundColor.uiColor()
-        cameraPreviewViewController.previewView.alpha = 0
-        addChild(cameraPreviewViewController)
-        view.addSubview(cameraPreviewViewController.view)
-        cameraPreviewViewController.didMove(toParent: self)
-        view.sendSubviewToBack(cameraPreviewViewController.view)
-        view.addSubview(qrCodeOverLay)
-        configureConstraints()
+    fileprivate func configureTitle() {
         if UIDevice.current.isIphone {
             self.title = NSLocalizedStringPreferredFormat(
                 "ginicapture.navigationbar.camera.title",
@@ -116,7 +101,24 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                 "ginicapture.camera.infoLabel",
                 comment: "Info label")
         }
-        configureButtons()
+    }
+    
+    private func setupView() {
+        edgesForExtendedLayout = []
+        view.backgroundColor = giniConfiguration.cameraContainerViewBackgroundColor.uiColor()
+        cameraPreviewViewController.previewView.alpha = 0
+        addChild(cameraPreviewViewController)
+        view.addSubview(cameraPreviewViewController.view)
+        cameraPreviewViewController.didMove(toParent: self)
+        view.sendSubviewToBack(cameraPreviewViewController.view)
+        view.addSubview(qrCodeOverLay)
+        configureConstraints()
+        configureTitle()
+        if giniConfiguration.onlyQRCodeScanningEnabled {
+            cameraPane.isHidden = true
+        } else {
+            configureCameraPaneButtons()
+        }
         configureBottomNavigationBar()
     }
 
@@ -206,8 +208,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         view.layoutSubviews()
     }
 
-    // swiftlint:disable function_body_length
-    private func configureButtons() {
+    private func configureCameraPaneButtons() {
         cameraPane.setupAuthorization(isHidden: false)
         configureLeftButtons()
         cameraButtonsViewModel.captureAction = { [weak self] in
@@ -215,18 +216,19 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             self?.cameraPane.toggleCaptureButtonActivation(state: false)
             self?.cameraPreviewViewController.captureImage { [weak self] data, error in
                 guard let self = self else { return }
-                var capturedData = data
+
+                var processedImageData = data
                 if let imageData = data, let image = UIImage(data: imageData)?.fixOrientation() {
                     let croppedImage = self.crop(image: image)
+                    processedImageData = croppedImage.jpegData(compressionQuality: 1)
 
-                    capturedData = croppedImage.jpegData(compressionQuality: 1)
-                    self.cameraPreviewViewController.stopLoadingIndicator()
                     #if targetEnvironment(simulator)
-                    capturedData = imageData
+                    processedImageData = imageData
                     #endif
                 }
 
-                if let image = self.cameraButtonsViewModel.didCapture(imageData: capturedData,
+                if let image = self.cameraButtonsViewModel.didCapture(imageData: data,
+                                                                      processedImageData: processedImageData,
                                                                       error: error,
                                                                       orientation:
                                                                         UIApplication.shared.statusBarOrientation,
@@ -272,20 +274,26 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         qrCodeOverLay.viewWillDisappear()
     }
 
-    private func showUploadButton() {
+    private func configureUploadButton() {
         if giniConfiguration.fileImportSupportedTypes != .none {
             cameraPane.fileUploadButton.isHidden = false
+            cameraButtonsViewModel.importAction = { [weak self] in
+                self?.showImportFileSheet()
+            }
+            cameraPane.fileUploadButton.actionButton.addTarget(
+                cameraButtonsViewModel,
+                action: #selector(cameraButtonsViewModel.importPressed),
+                for: .touchUpInside)
         } else {
             cameraPane.fileUploadButton.isHidden = true
         }
     }
 
-    private func configureLeftButtons() {
+    private func configureFlashButton() {
         cameraPane.toggleFlashButtonActivation(
             state: cameraPreviewViewController.isFlashSupported)
         cameraButtonsViewModel.isFlashOn = cameraPreviewViewController.isFlashOn
         cameraPane.setupFlashButton(state: cameraButtonsViewModel.isFlashOn)
-        cameraPane.setupFlashButton(state: giniConfiguration.flashToggleEnabled)
         cameraButtonsViewModel.flashAction = { [weak self] isFlashOn in
             self?.cameraPreviewViewController.isFlashOn = isFlashOn
             self?.cameraPane.setupFlashButton(state: isFlashOn)
@@ -294,14 +302,11 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             cameraButtonsViewModel,
             action: #selector(cameraButtonsViewModel.toggleFlash),
             for: .touchUpInside)
-        cameraButtonsViewModel.importAction = { [weak self] in
-            self?.showImportFileSheet()
-        }
-
-        cameraPane.fileUploadButton.actionButton.addTarget(
-            cameraButtonsViewModel,
-            action: #selector(cameraButtonsViewModel.importPressed),
-            for: .touchUpInside)
+    }
+    
+    private func configureLeftButtons() {
+        configureUploadButton()
+        configureFlashButton()
     }
 
     private lazy var cameraPreviewBottomContraint: NSLayoutConstraint =

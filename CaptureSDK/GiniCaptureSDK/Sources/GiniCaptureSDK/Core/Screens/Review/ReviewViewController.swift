@@ -200,7 +200,7 @@ public final class ReviewViewController: UIViewController {
     }
 
     // This is needed in order to "catch" the screen rotation on the modally presented viewcontroller
-    private var previousScreenHeight: CGFloat = 0
+    private var previousScreenHeight: CGFloat = UIScreen.main.bounds.height
 
     // MARK: - Constraints
 
@@ -316,7 +316,7 @@ extension ReviewViewController {
         } else {
             if resetToEnd {
                 resetToEnd = false
-                setCellStatus(for: pages.count - 1, isActive: true)
+                setCellStatus(for: currentPage, isActive: true)
             }
         }
     }
@@ -336,7 +336,8 @@ extension ReviewViewController {
 
             DispatchQueue.main.async {
                 guard self.previousScreenHeight != UIScreen.main.bounds.height else { return }
-                self.setCellStatus(for: self.currentPage, isActive: false, animated: false)
+                guard self.pages.count > 1 else { return }
+                self.setCellStatus(for: self.currentPage, isActive: false)
                 self.collectionView.reloadData()
 
                 self.collectionView.scrollToItem(at: IndexPath(row: self.currentPage, section: 0),
@@ -344,7 +345,7 @@ extension ReviewViewController {
 
                 self.previousScreenHeight = UIScreen.main.bounds.height
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    self.setCellStatus(for: self.currentPage, isActive: true, animated: false)
+                    self.setCellStatus(for: self.currentPage, isActive: true)
                 }
             }
         }
@@ -432,13 +433,14 @@ extension ReviewViewController {
         }
 
         self.pages = pages
-        collectionView.reloadData()
+        guard !finishedUpload else { return }
 
+        collectionView.reloadData()
         // Update cell status only if pages not empty
         if pages.isNotEmpty {
             guard pages.count > 1 else { return }
             DispatchQueue.main.async {
-                self.setCellStatus(for: self.currentPage, isActive: false, animated: false)
+                self.setCellStatus(for: self.currentPage, isActive: false)
 
                 self.collectionView.scrollToItem(at: IndexPath(row: self.pages.count - 1, section: 0),
                                                   at: .centeredHorizontally, animated: true)
@@ -559,6 +561,7 @@ extension ReviewViewController: UICollectionViewDataSource {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReviewCollectionCell.reuseIdentifier,
                                                          for: indexPath) as? ReviewCollectionCell {
             cell.delegate = self
+            cell.isActive = currentPage == indexPath.row
             return presenter.setUp(cell, with: page, at: indexPath)
         }
         fatalError("ReviewCollectionCell wasn't initialized")
@@ -611,9 +614,9 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
         self.pageControl.currentPage = currentPage
     }
 
-    private func setCellStatus(for index: Int, isActive: Bool, animated: Bool = true) {
+    private func setCellStatus(for index: Int, isActive: Bool) {
         let cell = collectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? ReviewCollectionCell
-        cell?.setActiveStatus(isActive, animated: animated)
+        cell?.isActive = isActive
     }
 }
 

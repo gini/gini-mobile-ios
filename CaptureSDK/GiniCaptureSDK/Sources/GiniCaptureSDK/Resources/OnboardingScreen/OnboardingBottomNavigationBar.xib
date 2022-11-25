@@ -20,7 +20,6 @@
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xz2-Pu-vNR">
                             <rect key="frame" x="0.0" y="0.0" width="154" height="50"/>
-                            <color key="backgroundColor" name="Accent01"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="154" id="iH1-yO-U7A"/>
                             </constraints>
@@ -58,7 +57,6 @@
                 </stackView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fVi-VY-dFP"/>
-            <color key="backgroundColor" name="Dark01"/>
             <constraints>
                 <constraint firstItem="NIV-Jj-zXU" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="J37-9v-PKf"/>
                 <constraint firstItem="NIV-Jj-zXU" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="XXe-V2-g8w"/>
@@ -75,9 +73,6 @@
     <resources>
         <namedColor name="Accent01">
             <color red="0.039000000804662704" green="0.51800000667572021" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="Dark01">
-            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="systemBlue">
             <color red="0.20399999618530273" green="0.47200000286102295" blue="0.9649999737739563" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
