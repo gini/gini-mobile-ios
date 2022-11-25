@@ -326,11 +326,7 @@ extension GiniScreenAPICoordinator: UploadDelegate {
             if document.type != .image || !self.giniConfiguration.multipageEnabled {
                 var errorMessage = String(describing: error)
                 if let error = error as? GiniCaptureError {
-                    errorMessage = error.message
-                    self.displayError(withMessage: error.message, andAction: { [weak self] in
-                        guard let self = self else { return }
-                        self.didCaptureAndValidate(document)
-                    })
+                    self.displayError(errorType: .connection)
                 }
 
                 let errorLog = ErrorLog(description: errorMessage, error: error)

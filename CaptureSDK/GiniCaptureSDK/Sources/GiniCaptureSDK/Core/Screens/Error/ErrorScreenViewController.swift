@@ -28,6 +28,17 @@ class ErrorScreenViewController: UIViewController {
             secondTitle: NSLocalizedStringPreferredFormat(
                 "ginicapture.error.backToCamera",
                 comment: "Back to camera"))
+        view.translatesAutoresizingMaskIntoConstraints = false
+        if viewModel.isEnterManuallyHidden() == false {
+            view.enterButton.isHidden = false
+        } else {
+            view.enterButton.isHidden = true
+        }
+        if viewModel.isRetakePressedHidden() == false {
+            view.retakeButton.isHidden = false
+        } else {
+            view.retakeButton.isHidden = true
+        }
         return view
     }()
 

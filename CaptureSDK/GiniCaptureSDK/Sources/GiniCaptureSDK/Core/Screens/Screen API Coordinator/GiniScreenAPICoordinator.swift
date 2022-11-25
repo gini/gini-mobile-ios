@@ -292,10 +292,10 @@ extension GiniScreenAPICoordinator {
         analysisViewController?.trackingDelegate = trackingDelegate
 
         if let (message, action) = analysisErrorAndAction {
-            displayError(withMessage: message, andAction: action)
+            displayError(errorType: .connection)
+        } else {
+            self.screenAPINavigationController.pushViewController(analysisViewController!, animated: true)
         }
-
-        self.screenAPINavigationController.pushViewController(analysisViewController!, animated: true)
     }
 
     @objc func backToCamera() {
