@@ -49,8 +49,11 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
     }
     
     func testNavControllerTypesAfterStartWithImages() {
-        let capturedImages = [GiniCaptureTestsHelper.loadImageDocument(named: "invoice"),
-                              GiniCaptureTestsHelper.loadImageDocument(named: "invoice2")]
+        let document1 = GiniCaptureTestsHelper.loadImageDocument(named: "invoice")
+        document1.isImported = false
+        let document2 = GiniCaptureTestsHelper.loadImageDocument(named: "invoice2")
+        document2.isImported = false
+        let capturedImages = [document1, document2]
 
         let rootViewController = coordinator.start(withDocuments: capturedImages)
         _ = rootViewController.view
@@ -86,7 +89,9 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
     
     func testNavControllerTypesAfterStartWithImageAndMultipageDisabled() {
         giniConfiguration.multipageEnabled = false
-        let capturedImages = [GiniCaptureTestsHelper.loadImageDocument(named: "invoice")]
+        let document = GiniCaptureTestsHelper.loadImageDocument(named: "invoice")
+        document.isImported = false
+        let capturedImages = [document]
 
         let rootViewController = coordinator.start(withDocuments: capturedImages)
         _ = rootViewController.view
