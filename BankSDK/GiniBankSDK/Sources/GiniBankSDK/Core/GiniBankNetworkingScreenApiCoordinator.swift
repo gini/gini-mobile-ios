@@ -293,7 +293,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
     
     func uploadWithReturnAssistant(document: GiniCaptureDocument,
                       didComplete: @escaping (GiniCaptureDocument) -> Void,
-                      didFail: @escaping (GiniCaptureDocument, Error) -> Void) {
+                      didFail: @escaping (GiniCaptureDocument, GiniError) -> ()) {
         documentService.upload(document: document) { result in
             switch result {
             case .success:
@@ -310,20 +310,8 @@ extension GiniBankNetworkingScreenApiCoordinator {
         uploadWithReturnAssistant(document: document, didComplete: { _ in
             self.startAnalysisWithReturnAssistant(networkDelegate: networkDelegate)
         }, didFail: { _, error in
-            let error = error as? GiniCaptureError ?? AnalysisError.documentCreation
-
-            guard let analysisError = error as? AnalysisError, case analysisError = AnalysisError.cancelled else {
-                networkDelegate.displayError(errorType: .unexpected)
-                return
-            }
-            switch analysisError {
-            case .unknown:
-                networkDelegate.displayError(errorType: .unexpected)
-            case .documentCreation:
-                networkDelegate.displayError(errorType: .uploadIssue)
-            default:
-                networkDelegate.displayError(errorType: .unexpected)
-            }
+            guard error != .requestCancelled else { return }
+            networkDelegate.displayError(errorType: ErrorType(error: error))
         })
     }
 }

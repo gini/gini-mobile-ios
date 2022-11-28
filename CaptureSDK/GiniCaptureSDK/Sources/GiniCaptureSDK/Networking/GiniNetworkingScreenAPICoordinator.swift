@@ -152,8 +152,8 @@ extension GiniNetworkingScreenAPICoordinator {
             case .success(let extractions):
                 self.deliver(result: extractions, and: self.documentService.document, to: networkDelegate)
             case .failure(let error):
-                guard error != .requestCancelled, let giniError = error as? GiniError else { return }
-                networkDelegate.displayError(errorType: ErrorType(error: giniError))
+                guard error != .requestCancelled else { return }
+                networkDelegate.displayError(errorType: ErrorType(error: error))
             }
         }
     }
@@ -178,13 +178,8 @@ extension GiniNetworkingScreenAPICoordinator {
         self.upload(document: document, didComplete: { _ in
             self.startAnalysis(networkDelegate: networkDelegate)
         }, didFail: { _, error in
-            let error = error as? GiniCaptureError ?? AnalysisError.documentCreation
-
-            guard let analysisError = error as? AnalysisError, case analysisError = AnalysisError.cancelled else {
-                networkDelegate.displayError(errorType: .uploadIssue)
-                return
-            }
-            networkDelegate.displayError(errorType: .uploadIssue)
+            guard let giniError = error as? GiniError, giniError != .requestCancelled else { return }
+            networkDelegate.displayError(errorType: ErrorType(error: giniError))
         })
     }
 }
