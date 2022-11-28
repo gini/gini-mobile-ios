@@ -17,7 +17,7 @@
 "ginicapture.navigationbar.review.close"        = "";
 "ginicapture.navigationbar.review.continue"     = "Weiter";
 "ginicapture.navigationbar.analysis.back"       = "Abbrechen";
-"ginicapture.navigationbar.help.backToCamera"   = "";
+"ginicapture.navigationbar.help.backToCamera"   = "Kamera";
 "ginicapture.navigationbar.help.backToMenu"     = "Hilfe";
 "ginicapture.navigationbar.analysis.backToReview" = "Übersicht";
 
