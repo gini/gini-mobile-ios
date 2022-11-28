@@ -130,6 +130,22 @@
 "ginicapture.noresult.title" = "TODO Fehler";
 "ginicapture.noresult.header" = "Leider konnten keine Informationen aus dem Dokument ausgelesen werden";
 
+"ginicapture.error.enterManually" = "Manuell ausfüllen";
+"ginicapture.error.backToCamera" = "Neues Photo";
+"ginicapture.error.title" = "Error";
+"ginicapture.error.connection.content" = "Es konnte keine Verbindung zum Internet hergestellt werden. Bitte überprüfen Sie Ihre Netzwerkverbindung und wiederholen Sie den Vorgang.";
+"ginicapture.error.authentication.content" = "Upload des Dokuments ist fehlgeschlagen aufgrund eines Fehlers bei der Authentifizierung. Bitte versuchen Sie es später noch einmal.";
+"ginicapture.error.serverError.content" = "Upload des Dokuments ist fehlgeschlagen aufgrund eines Serverfehlers. Bitte versuchen Sie es später noch einmal.";
+"ginicapture.error.unexpected.content" = "Es scheint hier ist etwas schiefgelaufen. Bitte versuchen Sie es später noch einmal.";
+"ginicapture.error.uploadIssue.content" = "Ihre Datei konnte nicht geöffnet werden. Bitte versuchen sie es mit einer anderen Datei.";
+"ginicapture.error.connection.title" = "Überprüfen Sie Ihre Internetverbindung";
+"ginicapture.error.authentication.title" = "Authentifizierung fehlgeschlagen";
+"ginicapture.error.serverError.title" = "Dienst nicht verfügbar";
+"ginicapture.error.unexpected.title" = "Oh hier ist etwas schiefgelaufen";
+"ginicapture.error.uploadIssue.title" = "Upload des Dokuments fehlgeschlagen";
+"ginicapture.error.request.content" = "Das Dokument konnte nicht angenommen werden. Bitte überprüfen Sie, ob das Bild scharf ist, das Dokument Zahlungsinformationen enthält und im richtigen Dateiformat hochgeladen wird.";
+"ginicapture.error.request.title" = "Upload des Dokuments fehlgeschlagen";
+
 "ginicapture.help.import.title" = "Importieren";
 "ginicapture.help.import.selectInvoice.title" = "Rechnung auswählen";
 "ginicapture.help.import.selectInvoice.desc" = "Bitte die PDF-Rechnung in der Email-App, PDF-Ordner oder einer anderen App aus dem Handy auswählen. Um das Dokument nun an die Banking App zu senden, sollte die “Teilen mit” Funktion benutzt werden, welche mit einem Rechteck und Pfeil nach oben zeigend dargestellt ist.";
