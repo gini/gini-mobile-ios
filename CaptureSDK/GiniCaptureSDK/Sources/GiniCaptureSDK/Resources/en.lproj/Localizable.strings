@@ -60,7 +60,7 @@
 "ginicapture.camera.unknownError" = "An unknown error has occurred on the camera screen";
 "ginicapture.camera.popupTitleImportPDF" = "Import PDF";
 "ginicapture.camera.popupOptionPhotos" = "Upload photo";
-"ginicapture.camera.popupOptionFiles" = "Upload PDF";
+"ginicapture.camera.popupOptionFiles" = "Upload files";
 "ginicapture.camera.popupTitleImportPDForPhotos" = "";
 "ginicapture.camera.popupCancel" = "Cancel";
 
