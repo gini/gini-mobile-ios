@@ -62,7 +62,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
             configEntry: self.giniConfiguration.navigationBarReviewTitleBackButton)
     fileprivate(set) lazy var backToCameraFromHelpMenuButtonResource =
         GiniPreferredButtonResource(
-            image: "navigationHelpBack",
+            image: "arrowBack",
             title: "ginicapture.navigationbar.help.backToCamera",
             comment: "Button title in the navigation bar for the back button on the help screen",
             configEntry: giniConfiguration.navigationBarHelpMenuTitleBackToCameraButton)
