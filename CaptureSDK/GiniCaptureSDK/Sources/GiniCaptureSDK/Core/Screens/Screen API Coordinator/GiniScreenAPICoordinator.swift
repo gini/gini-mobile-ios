@@ -292,7 +292,8 @@ extension GiniScreenAPICoordinator {
         analysisViewController?.trackingDelegate = trackingDelegate
 
         if let (message, action) = analysisErrorAndAction {
-            displayError(errorType: .connection)
+            // TODO: check this
+            self.tryDisplayNoResultsScreen()
         } else {
             self.screenAPINavigationController.pushViewController(analysisViewController!, animated: true)
         }
