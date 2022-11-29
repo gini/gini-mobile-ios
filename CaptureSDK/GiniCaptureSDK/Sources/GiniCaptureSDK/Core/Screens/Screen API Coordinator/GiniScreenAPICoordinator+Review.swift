@@ -59,9 +59,7 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
     }
 
     public func reviewDidTapProcess(_ viewController: ReviewViewController) {
-        self.displayError(withMessage: nil) {
-        }
-        // TODO: bring back showAnalysisScreen()
+        showAnalysisScreen()
     }
 
     @objc func popBackToReview() {

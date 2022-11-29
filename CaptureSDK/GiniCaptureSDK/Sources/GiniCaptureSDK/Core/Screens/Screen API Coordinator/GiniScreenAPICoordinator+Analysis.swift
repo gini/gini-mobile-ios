@@ -91,26 +91,10 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
     public func displayError(withMessage message: String?, andAction action: (() -> Void)?) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            let errorScreen = ErrorScreenViewController(
-                giniConfiguration: self.giniConfiguration,
-                type: .connection,
-                viewModel: BottomButtonsViewModel(retakeBlock: { [weak self] in
-                    self?.pages = []
-                    self?.backToCamera()
-            }, manuallyPressed: { [weak self] in
-                if let delegate = self?.visionDelegate {
-                    delegate.didPressEnterManually()
-                } else {
-                    self?.screenAPINavigationController.dismiss(animated: true)
-                }
-            }, cancelPressed: { [weak self] in
-                self?.backToCamera()
-            }))
-            self.screenAPINavigationController.pushViewController(errorScreen, animated: true)
-            /*
+
             guard let message = message,
                 let action = action else { return }
-            
+
             if let analysisViewController = self.analysisViewController {
                 analysisViewController.showError(with: message, action: { [weak self] in
                     guard let self = self else { return }
@@ -120,7 +104,6 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
             } else {
                 self.analysisErrorAndAction = (message, action)
             }
-             */
         }
     }
 
