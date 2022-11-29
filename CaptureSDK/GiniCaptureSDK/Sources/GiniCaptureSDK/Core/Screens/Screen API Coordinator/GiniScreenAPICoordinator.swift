@@ -51,7 +51,6 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
 
     // When there was an error uploading a document or analyzing it and the analysis screen
     // had not been initialized yet, both the error message and action has to be saved to show in the analysis screen.
-    var analysisErrorAndAction: (message: String, action: () -> Void)?
 
     // Resources
     fileprivate(set) lazy var backButtonResource =
@@ -290,13 +289,8 @@ extension GiniScreenAPICoordinator {
         }
         analysisViewController = createAnalysisScreen(withDocument: firstDocument)
         analysisViewController?.trackingDelegate = trackingDelegate
-
-        if let (message, action) = analysisErrorAndAction {
-            // TODO: check this
-            self.tryDisplayNoResultsScreen()
-        } else {
-            self.screenAPINavigationController.pushViewController(analysisViewController!, animated: true)
-        }
+        self.screenAPINavigationController.pushViewController(analysisViewController!, animated: true)
+        
     }
 
     @objc func backToCamera() {
