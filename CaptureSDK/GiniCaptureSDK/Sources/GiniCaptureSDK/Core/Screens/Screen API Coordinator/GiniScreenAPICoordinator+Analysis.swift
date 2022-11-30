@@ -136,6 +136,7 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
             viewController = ErrorScreenViewController(
                 giniConfiguration: self.giniConfiguration,
                 type: errorType,
+                documentType: self.pages.type ?? .pdf,
                 viewModel: viewModel)
 
             self.screenAPINavigationController.pushViewController(
