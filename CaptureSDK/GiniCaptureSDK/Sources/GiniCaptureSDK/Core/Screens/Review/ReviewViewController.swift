@@ -84,7 +84,7 @@ public final class ReviewViewController: UIViewController {
 
     // MARK: - UI initialization
 
-    lazy var collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 8
@@ -242,6 +242,13 @@ public final class ReviewViewController: UIViewController {
     ]
 
     // MARK: - Init
+
+    /**
+     Called to initialize the Review viewcontroller
+
+     - parameter pages: the documents to be initalized with
+     - parameter giniConfiguration: The configuration of the SDK
+     */
 
     public init(pages: [GiniCapturePage], giniConfiguration: GiniConfiguration) {
         self.pages = pages
