@@ -9,6 +9,8 @@ import UIKit
 
 class ErrorScreenViewController: UIViewController {
 
+    var bottomNavigationBar: UIView?
+    var navigationBarBottomAdapter: ErrorBottomNavigationBarAdapter?
     private var giniConfiguration: GiniConfiguration
     lazy var errorHeader: IconHeader = {
         if let header = IconHeader().loadNib() as? IconHeader {
@@ -51,6 +53,7 @@ class ErrorScreenViewController: UIViewController {
 
     let viewModel: BottomButtonsViewModel
     private let errorType: ErrorType
+    private let documentType: GiniCaptureDocumentType
     private var buttonsHeightConstraint: NSLayoutConstraint?
     private var numberOfButtons: Int {
         return [
@@ -73,11 +76,13 @@ class ErrorScreenViewController: UIViewController {
     public init(
         giniConfiguration: GiniConfiguration,
         type: ErrorType,
+        documentType: GiniCaptureDocumentType,
         viewModel: BottomButtonsViewModel
     ) {
         self.giniConfiguration = giniConfiguration
         self.viewModel = viewModel
         self.errorType = type
+        self.documentType = documentType
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -104,6 +109,7 @@ class ErrorScreenViewController: UIViewController {
         buttonsView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(buttonsView)
         configureButtons()
+        configureBottomNavigationBar()
         configureCustomTopNavigationBar()
         configureConstraints()
     }
@@ -137,11 +143,45 @@ class ErrorScreenViewController: UIViewController {
     }
 
     private func configureCustomTopNavigationBar() {
-        // TODO: add handloing bottom navigation bar
-        navigationItem.leftBarButtonItem =  UIBarButtonItem(
-            barButtonSystemItem: .cancel,
-            target: viewModel,
-            action: #selector(viewModel.didPressCancell))
+        if giniConfiguration.bottomNavigationBarEnabled {
+            navigationItem.leftBarButtonItem = nil
+            navigationItem.setHidesBackButton(true, animated: true)
+        } else {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .cancel,
+                target: viewModel,
+                action: #selector(viewModel.didPressCancell))
+        }
+    }
+
+    private func configureBottomNavigationBar() {
+        if giniConfiguration.bottomNavigationBarEnabled {
+            if let bottomBarAdapter = giniConfiguration.errorNavigationBarBottomAdapter {
+                navigationBarBottomAdapter = bottomBarAdapter
+            } else {
+                navigationBarBottomAdapter = DefaultErrorBottomNavigationBarAdapter()
+            }
+
+            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
+
+                self?.viewModel.didPressCancell()
+                switch self?.documentType {
+                case .pdf:
+                    self?.dismiss(animated: true)
+                default:
+                    self?.navigationController?.popToRootViewController(animated: true)
+                }
+            }
+
+            if let adapter = navigationBarBottomAdapter {
+                let bottomBar =
+                    adapter.injectedView()
+                bottomNavigationBar = bottomBar
+                bottomBar.translatesAutoresizingMaskIntoConstraints = false
+                view.addSubview(bottomBar)
+                view.bringSubviewToFront(bottomBar)
+            }
+        }
     }
 
     private func getButtonsMinHeight(numberOfButtons: Int) -> CGFloat {
@@ -152,21 +192,41 @@ class ErrorScreenViewController: UIViewController {
         }
     }
 
+    private func configureBottomBarConstraints() {
+        guard let bottomNavigationBar = bottomNavigationBar else {
+            return
+        }
+        NSLayoutConstraint.activate([
+            buttonsView.bottomAnchor.constraint(
+                equalTo: bottomNavigationBar.topAnchor,
+                constant: -GiniMargins.margin
+            ),
+            bottomNavigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            bottomNavigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bottomNavigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bottomNavigationBar.heightAnchor.constraint(equalToConstant: bottomNavigationBar.frame.height)
+        ])
+    }
+
     private func configureConstraints() {
         errorHeader.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
         errorHeader.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
 
         errorContent.setContentHuggingPriority(.required, for: .vertical)
         errorContent.setContentCompressionResistancePriority(.required, for: .vertical)
-        NSLayoutConstraint.activate([
-        buttonsView.bottomAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-            constant: -GiniMargins.margin)
-        ])
 
         let buttonsConstraint =  buttonsView.heightAnchor.constraint(
             greaterThanOrEqualToConstant: getButtonsMinHeight(numberOfButtons: numberOfButtons)
         )
+        if giniConfiguration.bottomNavigationBarEnabled == false {
+            NSLayoutConstraint.activate([
+            buttonsView.bottomAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                constant: -GiniMargins.margin)
+            ])
+        } else {
+            configureBottomBarConstraints()
+        }
         buttonsHeightConstraint = buttonsConstraint
         NSLayoutConstraint.activate([
             errorHeader.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
