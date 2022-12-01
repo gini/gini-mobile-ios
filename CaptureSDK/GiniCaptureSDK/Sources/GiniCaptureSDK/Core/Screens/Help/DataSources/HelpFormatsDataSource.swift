@@ -105,9 +105,8 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
         header.titleLabel.font = giniConfiguration.textStyleFonts[.caption1]
         header.titleLabel.adjustsFontForContentSizeCategory = true
         header.titleLabel.numberOfLines = 0
-            header.titleLabel.textColor =  GiniColor(
-                light: UIColor.GiniCapture.dark7,
-                dark: UIColor.GiniCapture.dark7).uiColor()
+        header.titleLabel.textColor =  GiniColor(light: UIColor.GiniCapture.dark1,
+                                                 dark: UIColor.GiniCapture.light1).uiColor()
         header.titleLabel.text = items[section].title.uppercased()
         header.backgroundView?.backgroundColor = UIColor.clear
     }
