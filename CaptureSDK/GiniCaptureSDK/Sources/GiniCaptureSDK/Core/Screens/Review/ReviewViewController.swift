@@ -143,8 +143,9 @@ public final class ReviewViewController: UIViewController {
         return pageControl
     }()
 
-    private lazy var processButton: UIButton = {
-        let button = MultilineTitleButton().configure(with: ButtonType.primary.configuration())
+    private lazy var processButton: MultilineTitleButton = {
+        let button = MultilineTitleButton()
+        button.configure(with: giniConfiguration.primaryButtonConfiguration)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle",
                                                         comment: "Process button title"), for: .normal)

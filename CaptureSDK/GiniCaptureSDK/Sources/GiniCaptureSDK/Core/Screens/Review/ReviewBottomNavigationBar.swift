@@ -16,7 +16,7 @@ final class ReviewBottomNavigationBar: UIView {
     private let configuration = GiniConfiguration.shared
     weak var delegate: ReviewBottomNavigationBarDelegate?
 
-    @IBOutlet weak var mainButton: UIButton!
+    @IBOutlet weak var mainButton: MultilineTitleButton!
     @IBOutlet weak var secondaryButton: BottomLabelButton!
 
     override func awakeFromNib() {
@@ -28,13 +28,11 @@ final class ReviewBottomNavigationBar: UIView {
         let configuration = GiniConfiguration.shared
         backgroundColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.dark1).uiColor()
 
+        mainButton.configure(with: configuration.primaryButtonConfiguration)
         mainButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle",
                                                              comment: "Process button title"), for: .normal)
-        mainButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        mainButton.layer.cornerRadius = configuration.primaryButtonCornerRadius
-        mainButton.backgroundColor = UIColor.GiniCapture.accent1
-        mainButton.setTitleColor(UIColor.GiniCapture.light1, for: .normal)
         mainButton.addTarget(self, action: #selector(mainButtonClicked), for: .touchUpInside)
+
 
         secondaryButton.translatesAutoresizingMaskIntoConstraints = false
         secondaryButton.configureButton(image: UIImageNamedPreferred(named: "plus_icon") ?? UIImage(),

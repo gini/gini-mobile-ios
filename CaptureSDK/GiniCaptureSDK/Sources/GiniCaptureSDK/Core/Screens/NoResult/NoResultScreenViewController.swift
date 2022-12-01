@@ -40,8 +40,9 @@ final public class NoResultScreenViewController: UIViewController {
         return tableView
     }()
 
-    lazy var enterButton: UIButton = {
-        let button = MultilineTitleButton().configure(with: ButtonType.secondary.configuration())
+    lazy var enterButton: MultilineTitleButton = {
+        let button = MultilineTitleButton()
+        button.configure(with: giniConfiguration.outlineButtonConfiguration)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(NSLocalizedStringPreferredFormat(
                 "ginicapture.noresult.enterManually",
@@ -50,11 +51,10 @@ final public class NoResultScreenViewController: UIViewController {
         return button
     }()
 
-    private lazy var retakeButton: UIButton = {
-        let button = MultilineTitleButton().configure(with: ButtonType.primary.configuration())
+    private lazy var retakeButton: MultilineTitleButton = {
+        let button = MultilineTitleButton()
+        button.configure(with: giniConfiguration.primaryButtonConfiguration)
         button.translatesAutoresizingMaskIntoConstraints = false
-//        button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.setTitle(NSLocalizedStringPreferredFormat(
             "ginicapture.noresult.retakeImages",
             comment: "Enter manually"),
@@ -159,7 +159,6 @@ final public class NoResultScreenViewController: UIViewController {
             left: 0,
             bottom: buttonsView.bounds.size.height + GiniMargins.margin,
             right: 0)
-        configureButtonsColors()
     }
 
     private func setupView() {
@@ -295,27 +294,8 @@ final public class NoResultScreenViewController: UIViewController {
         tableView.reloadData()
         view.layoutSubviews()
     }
-    private func configureButtonsColors() {
-//        retakeButton.setTitleColor(giniConfiguration.primaryButtonTitleColor.uiColor(), for: .normal)
-//        retakeButton.backgroundColor = giniConfiguration.primaryButtonBackgroundColor.uiColor()
-//        retakeButton.layer.borderColor = giniConfiguration.primaryButtonBorderColor.uiColor().cgColor
-//        retakeButton.layer.cornerRadius = giniConfiguration.primaryButtonCornerRadius
-//        retakeButton.layer.borderWidth = giniConfiguration.primaryButtonBorderWidth
-//        retakeButton.layer.shadowRadius = giniConfiguration.primaryButtonShadowRadius
-//        retakeButton.layer.shadowColor = giniConfiguration.primaryButtonShadowColor.uiColor().cgColor
-
-//        enterButton.backgroundColor = giniConfiguration.outlineButtonBackground.uiColor()
-//        enterButton.layer.cornerRadius = giniConfiguration.outlineButtonCornerRadius
-        enterButton.layer.borderWidth = giniConfiguration.outlineButtonBorderWidth
-        enterButton.layer.borderColor = giniConfiguration.outlineButtonBorderColor.uiColor().cgColor
-//        enterButton.layer.shadowRadius = giniConfiguration.outlineButtonShadowRadius
-//        enterButton.layer.shadowColor = giniConfiguration.outlineButtonShadowColor.uiColor().cgColor
-//        enterButton.setTitleColor(giniConfiguration.outlineButtonTitleColor.uiColor(), for: .normal)
-    }
 
     private func configureButtons() {
-        configureButtonsColors()
-        enterButton.addBlurEffect(cornerRadius: giniConfiguration.outlineButtonCornerRadius)
         enterButton.addTarget(viewModel, action: #selector(viewModel.didPressEnterManually), for: .touchUpInside)
         retakeButton.addTarget(viewModel, action: #selector(viewModel.didPressRetake), for: .touchUpInside)
     }
