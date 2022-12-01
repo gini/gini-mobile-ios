@@ -40,10 +40,9 @@ final public class NoResultScreenViewController: UIViewController {
         return tableView
     }()
 
-    lazy var enterButton: MultilineTitleButton = {
-        let button = MultilineTitleButton()
+    lazy var enterButton: UIButton = {
+        let button = MultilineTitleButton().configure(with: ButtonType.secondary.configuration())
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         button.setTitle(NSLocalizedStringPreferredFormat(
                 "ginicapture.noresult.enterManually",
                 comment: "Enter manually"),
@@ -51,10 +50,10 @@ final public class NoResultScreenViewController: UIViewController {
         return button
     }()
 
-    lazy var retakeButton: MultilineTitleButton = {
-        let button = MultilineTitleButton()
+    private lazy var retakeButton: UIButton = {
+        let button = MultilineTitleButton().configure(with: ButtonType.primary.configuration())
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
+//        button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.setTitle(NSLocalizedStringPreferredFormat(
             "ginicapture.noresult.retakeImages",
@@ -63,12 +62,14 @@ final public class NoResultScreenViewController: UIViewController {
         return button
     }()
 
-    lazy var buttonsView: UIStackView = {
+    private lazy var buttonsView: UIStackView = {
         let stackView = UIStackView()
-        if viewModel.isEnterManuallyHidden() == false {
+        if !viewModel.isEnterManuallyHidden() {
+            print("X: stackView.addArrangedSubview(enterButton)")
             stackView.addArrangedSubview(enterButton)
         }
-        if viewModel.isRetakePressedHidden() == false {
+        if !viewModel.isRetakePressedHidden() {
+            print("X: stackView.addArrangedSubview(retakeButton)")
             stackView.addArrangedSubview(retakeButton)
         }
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -295,21 +296,21 @@ final public class NoResultScreenViewController: UIViewController {
         view.layoutSubviews()
     }
     private func configureButtonsColors() {
-        retakeButton.setTitleColor(giniConfiguration.primaryButtonTitleColor.uiColor(), for: .normal)
-        retakeButton.backgroundColor = giniConfiguration.primaryButtonBackgroundColor.uiColor()
-        retakeButton.layer.borderColor = giniConfiguration.primaryButtonBorderColor.uiColor().cgColor
-        retakeButton.layer.cornerRadius = giniConfiguration.primaryButtonCornerRadius
-        retakeButton.layer.borderWidth = giniConfiguration.primaryButtonBorderWidth
-        retakeButton.layer.shadowRadius = giniConfiguration.primaryButtonShadowRadius
-        retakeButton.layer.shadowColor = giniConfiguration.primaryButtonShadowColor.uiColor().cgColor
+//        retakeButton.setTitleColor(giniConfiguration.primaryButtonTitleColor.uiColor(), for: .normal)
+//        retakeButton.backgroundColor = giniConfiguration.primaryButtonBackgroundColor.uiColor()
+//        retakeButton.layer.borderColor = giniConfiguration.primaryButtonBorderColor.uiColor().cgColor
+//        retakeButton.layer.cornerRadius = giniConfiguration.primaryButtonCornerRadius
+//        retakeButton.layer.borderWidth = giniConfiguration.primaryButtonBorderWidth
+//        retakeButton.layer.shadowRadius = giniConfiguration.primaryButtonShadowRadius
+//        retakeButton.layer.shadowColor = giniConfiguration.primaryButtonShadowColor.uiColor().cgColor
 
-        enterButton.backgroundColor = giniConfiguration.outlineButtonBackground.uiColor()
-        enterButton.layer.cornerRadius = giniConfiguration.outlineButtonCornerRadius
+//        enterButton.backgroundColor = giniConfiguration.outlineButtonBackground.uiColor()
+//        enterButton.layer.cornerRadius = giniConfiguration.outlineButtonCornerRadius
         enterButton.layer.borderWidth = giniConfiguration.outlineButtonBorderWidth
         enterButton.layer.borderColor = giniConfiguration.outlineButtonBorderColor.uiColor().cgColor
-        enterButton.layer.shadowRadius = giniConfiguration.outlineButtonShadowRadius
-        enterButton.layer.shadowColor = giniConfiguration.outlineButtonShadowColor.uiColor().cgColor
-        enterButton.setTitleColor(giniConfiguration.outlineButtonTitleColor.uiColor(), for: .normal)
+//        enterButton.layer.shadowRadius = giniConfiguration.outlineButtonShadowRadius
+//        enterButton.layer.shadowColor = giniConfiguration.outlineButtonShadowColor.uiColor().cgColor
+//        enterButton.setTitleColor(giniConfiguration.outlineButtonTitleColor.uiColor(), for: .normal)
     }
 
     private func configureButtons() {
