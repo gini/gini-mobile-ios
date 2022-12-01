@@ -73,8 +73,6 @@ final public class NoResultScreenViewController: UIViewController {
     }()
     private (set) var dataSource: HelpDataSource
     private var giniConfiguration: GiniConfiguration
-    private let tableRowHeight: CGFloat = 44
-    private let sectionHeight: CGFloat = 70
     private let type: NoResultType
     private let viewModel: BottomButtonsViewModel
     private var buttonsHeightConstraint: NSLayoutConstraint?
@@ -232,11 +230,11 @@ final public class NoResultScreenViewController: UIViewController {
         registerCells()
         tableView.delegate = self.dataSource
         tableView.dataSource = self.dataSource
-        tableView.estimatedRowHeight = tableRowHeight
+        tableView.estimatedRowHeight = Constants.tableRowHeight.rawValue
         tableView.rowHeight = UITableView.automaticDimension
         tableView.tableFooterView = UIView()
         tableView.tableHeaderView = UIView()
-        tableView.sectionHeaderHeight = sectionHeight
+        tableView.sectionHeaderHeight = Constants.sectionHeight.rawValue
         tableView.allowsSelection = false
         tableView.backgroundColor = UIColor.clear
         tableView.alwaysBounceVertical = false
@@ -361,5 +359,7 @@ final public class NoResultScreenViewController: UIViewController {
     private enum Constants: CGFloat {
         case singleButtonHeight = 50
         case twoButtonsHeight = 112
+        case tableRowHeight = 44
+        case sectionHeight = 70
     }
 }
