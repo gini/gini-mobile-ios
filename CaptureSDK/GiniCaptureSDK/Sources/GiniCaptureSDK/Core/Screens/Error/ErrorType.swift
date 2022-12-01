@@ -11,7 +11,6 @@ import GiniBankAPILibrary
 @objc public enum ErrorType: Int {
     case connection
     case request
-    case uploadIssue
     case serverError
     case authentication
     case unexpected
@@ -19,7 +18,7 @@ import GiniBankAPILibrary
 
     public init(error: GiniError) {
         switch error {
-        case .unauthorized(_, _), .invalidCredentials, .keychainError:
+        case .unauthorized(_, _):
             self = .authentication
         case .noResponse:
             self = .connection
@@ -56,8 +55,6 @@ import GiniBankAPILibrary
             return "errorGlobe"
         case .unexpected:
             return "alertTriangle"
-        case .uploadIssue:
-            return "errorUpload"
         case .importError:
             return "alertTriangle"
         }
@@ -85,10 +82,6 @@ import GiniBankAPILibrary
             return NSLocalizedStringPreferredFormat(
                 "ginicapture.error.unexpected.content",
                 comment: "Unexpected error")
-        case .uploadIssue:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.uploadIssue.content",
-                comment: "Upload error")
         case .importError:
             return NSLocalizedStringPreferredFormat(
                 "ginicapture.error.importError.content",
@@ -114,10 +107,6 @@ import GiniBankAPILibrary
             return NSLocalizedStringPreferredFormat(
                 "ginicapture.error.unexpected.title",
                 comment: "Unexpected error")
-        case .uploadIssue:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.uploadIssue.title",
-                comment: "Upload error")
         case .request:
             return NSLocalizedStringPreferredFormat(
                 "ginicapture.error.request.title",

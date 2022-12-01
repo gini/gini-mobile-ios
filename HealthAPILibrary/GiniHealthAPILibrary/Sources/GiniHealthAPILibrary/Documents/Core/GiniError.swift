@@ -15,8 +15,6 @@ public protocol GiniErrorProtocol {
 
 public enum GiniError: Error, GiniErrorProtocol, Equatable {
     case badRequest(response: HTTPURLResponse? = nil, data: Data? = nil)
-    case invalidCredentials
-    case keychainError
     case notAcceptable(response: HTTPURLResponse? = nil, data: Data? = nil)
     case notFound(response: HTTPURLResponse? = nil, data: Data? = nil)
     case noResponse
@@ -30,10 +28,6 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
         switch self {
         case .badRequest:
             return "Bad request"
-        case .invalidCredentials:
-            return "Invalid credentials"
-        case .keychainError:
-            return "Keychain error"
         case .notAcceptable:
             return "Not acceptable"
         case .notFound:
