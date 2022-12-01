@@ -143,13 +143,9 @@ public final class ReviewViewController: UIViewController {
         return pageControl
     }()
 
-    private lazy var processButton: MultilineTitleButton = {
-        let button = MultilineTitleButton()
+    private lazy var processButton: UIButton = {
+        let button = MultilineTitleButton().configure(with: ButtonType.primary.configuration())
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.layer.cornerRadius = giniConfiguration.primaryButtonCornerRadius
-        button.backgroundColor = UIColor.GiniCapture.accent1
         button.setTitle(NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle",
                                                         comment: "Process button title"), for: .normal)
         button.addTarget(self, action: #selector(didTapProcessDocument), for: .touchUpInside)
