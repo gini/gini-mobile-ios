@@ -84,7 +84,7 @@ public final class ReviewViewController: UIViewController {
 
     // MARK: - UI initialization
 
-    private lazy var collectionView: UICollectionView = {
+    lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 8
