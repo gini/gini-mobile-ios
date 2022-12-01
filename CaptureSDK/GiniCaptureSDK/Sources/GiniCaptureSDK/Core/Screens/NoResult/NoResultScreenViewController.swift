@@ -65,11 +65,9 @@ final public class NoResultScreenViewController: UIViewController {
     private lazy var buttonsView: UIStackView = {
         let stackView = UIStackView()
         if !viewModel.isEnterManuallyHidden() {
-            print("X: stackView.addArrangedSubview(enterButton)")
             stackView.addArrangedSubview(enterButton)
         }
         if !viewModel.isRetakePressedHidden() {
-            print("X: stackView.addArrangedSubview(retakeButton)")
             stackView.addArrangedSubview(retakeButton)
         }
         stackView.translatesAutoresizingMaskIntoConstraints = false

@@ -21,6 +21,7 @@ public struct ButtonConfiguration {
 
     let withBlurEffect: Bool
 
+    // TODO: Document this
     public init(backgroundColor: UIColor, borderColor: UIColor, titleColor: UIColor, shadowColor: UIColor, titleFont: UIFont?, cornerRadius: CGFloat, borderWidth: CGFloat, shadowRadius: CGFloat, withBlurEffect: Bool) {
         self.backgroundColor = backgroundColor
         self.borderColor = borderColor
