@@ -19,7 +19,7 @@ class ErrorScreenViewController: UIViewController {
             header.translatesAutoresizingMaskIntoConstraints = false
         return header
         }
-        fatalError("No result header not found")
+        fatalError("Error header not found")
     }()
 
     lazy var buttonsView: ButtonsView = {
