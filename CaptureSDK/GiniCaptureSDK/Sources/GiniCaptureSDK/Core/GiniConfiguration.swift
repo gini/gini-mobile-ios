@@ -612,7 +612,43 @@ import UIKit
      Sets the color of the text appearing at the bottom of the review screen.
      */
     @objc public var reviewTextBottomColor = UIColor.white
-    
+
+    // MARK: Button configuration options
+
+    public lazy var primaryButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .GiniCapture.accent1,
+                                borderColor: .clear,
+                                titleColor: .GiniCapture.light1,
+                                shadowColor: .clear,
+                                titleFont: textStyleFonts[.bodyBold],
+                                cornerRadius: 16,
+                                borderWidth: 0,
+                                shadowRadius: 0,
+                                withBlurEffect: false)
+
+    public lazy var outlineButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .GiniCapture.dark4,
+                                borderColor: GiniColor(light: UIColor.GiniCapture.light6,
+                                                      dark: UIColor.clear).uiColor(),
+                                titleColor: .GiniCapture.accent1,
+                                shadowColor: .clear,
+                                titleFont: textStyleFonts[.bodyBold],
+                                cornerRadius: 16,
+                                borderWidth: 2,
+                                shadowRadius: 14,
+                                withBlurEffect: true)
+
+    public lazy var transparentButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .clear,
+                                borderColor: .clear,
+                                titleColor: .GiniCapture.accent1,
+                                shadowColor: .clear,
+                                titleFont: textStyleFonts[.bodyBold],
+                                cornerRadius: 16,
+                                borderWidth: 0,
+                                shadowRadius: 0,
+                                withBlurEffect: false)
+
     // MARK: Multipage options
     
     /**

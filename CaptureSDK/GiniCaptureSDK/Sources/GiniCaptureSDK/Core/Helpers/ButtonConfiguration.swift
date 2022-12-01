@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct ButtonConfiguration {
+public struct ButtonConfiguration {
     let backgroundColor: UIColor
     let borderColor: UIColor
     let titleColor: UIColor
@@ -18,39 +18,24 @@ struct ButtonConfiguration {
     let cornerRadius: CGFloat
     let borderWidth: CGFloat
     let shadowRadius: CGFloat
-}
 
-enum ButtonType {
-    case primary
-    case secondary
+    let withBlurEffect: Bool
 
-    func configuration() -> ButtonConfiguration {
-        switch self {
-        case .primary:
-            return ButtonConfiguration(backgroundColor: .red, // .GiniCapture.accent1,
-                                       borderColor: .clear,
-                                       titleColor: .GiniCapture.light1,
-                                       shadowColor: .clear,
-                                       titleFont: GiniConfiguration.shared.textStyleFonts[.bodyBold],
-                                       cornerRadius: 16,
-                                       borderWidth: 0,
-                                       shadowRadius: 0)
-        case .secondary:
-            return ButtonConfiguration(backgroundColor: .green, // .GiniCapture.dark4,
-                                       borderColor: .clear,
-                                       titleColor: .GiniCapture.accent1,
-                                       shadowColor: .clear,
-                                       titleFont: GiniConfiguration.shared.textStyleFonts[.bodyBold],
-                                       cornerRadius: 16,
-                                       borderWidth: 2,
-                                       shadowRadius: 0)
-
-        }
+    public init(backgroundColor: UIColor, borderColor: UIColor, titleColor: UIColor, shadowColor: UIColor, titleFont: UIFont?, cornerRadius: CGFloat, borderWidth: CGFloat, shadowRadius: CGFloat, withBlurEffect: Bool) {
+        self.backgroundColor = backgroundColor
+        self.borderColor = borderColor
+        self.titleColor = titleColor
+        self.shadowColor = shadowColor
+        self.titleFont = titleFont
+        self.cornerRadius = cornerRadius
+        self.borderWidth = borderWidth
+        self.shadowRadius = shadowRadius
+        self.withBlurEffect = withBlurEffect
     }
 }
 
 extension UIButton {
-    func configure(with configuration: ButtonConfiguration) -> UIButton {
+    func configure(with configuration: ButtonConfiguration) {
         self.backgroundColor = configuration.backgroundColor
         self.layer.borderColor = configuration.borderColor.cgColor
         self.layer.shadowColor = configuration.shadowColor.cgColor
@@ -64,6 +49,8 @@ extension UIButton {
         self.layer.borderWidth = configuration.borderWidth
         self.layer.shadowRadius = configuration.shadowRadius
 
-        return self
+        if configuration.withBlurEffect {
+            self.addBlurEffect(cornerRadius: configuration.cornerRadius)
+        }
     }
 }
