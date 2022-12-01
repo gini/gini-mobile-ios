@@ -1130,6 +1130,42 @@ public final class GiniBankConfiguration: NSObject {
      * Set an adapter implementation to show a custom loading indicator on the document analysis screen.
      */
     public var customLoadingIndicator: CustomLoadingIndicatorAdapter?
+
+    // MARK: Button configuration options
+
+    public lazy var primaryButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .GiniBank.accent1,
+                                borderColor: .clear,
+                                titleColor: .GiniBank.light1,
+                                shadowColor: .clear,
+                                titleFont: textStyleFonts[.bodyBold],
+                                cornerRadius: 16,
+                                borderWidth: 0,
+                                shadowRadius: 0,
+                                withBlurEffect: false)
+
+    public lazy var outlineButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .GiniBank.dark4,
+                                borderColor: GiniColor(light: UIColor.GiniBank.light6,
+                                                      dark: UIColor.clear).uiColor(),
+                                titleColor: .GiniBank.accent1,
+                                shadowColor: .clear,
+                                titleFont: textStyleFonts[.bodyBold],
+                                cornerRadius: 16,
+                                borderWidth: 2,
+                                shadowRadius: 14,
+                                withBlurEffect: true)
+
+    public lazy var transparentButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .clear,
+                                borderColor: .clear,
+                                titleColor: .GiniBank.accent1,
+                                shadowColor: .clear,
+                                titleFont: textStyleFonts[.bodyBold],
+                                cornerRadius: 16,
+                                borderWidth: 0,
+                                shadowRadius: 0,
+                                withBlurEffect: false)
     
     // MARK: - TODO DELETE
     /**
@@ -1412,6 +1448,10 @@ public final class GiniBankConfiguration: NSObject {
                 configuration.updateFont(newFont, for: textStyle)
             }
         }
+
+        configuration.primaryButtonConfiguration = self.primaryButtonConfiguration
+        configuration.outlineButtonConfiguration = self.outlineButtonConfiguration
+        configuration.transparentButtonConfiguration = self.transparentButtonConfiguration
 
         configuration.primaryButtonCornerRadius = self.primaryButtonCornerRadius
         configuration.primaryButtonBorderWidth = self.primaryButtonBorderWidth
