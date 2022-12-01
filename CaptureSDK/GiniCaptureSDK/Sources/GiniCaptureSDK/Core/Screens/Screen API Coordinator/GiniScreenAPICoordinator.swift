@@ -287,7 +287,6 @@ extension GiniScreenAPICoordinator {
         analysisViewController = createAnalysisScreen(withDocument: firstDocument)
         analysisViewController?.trackingDelegate = trackingDelegate
         self.screenAPINavigationController.pushViewController(analysisViewController!, animated: true)
-        
     }
 
     @objc func backToCamera() {
