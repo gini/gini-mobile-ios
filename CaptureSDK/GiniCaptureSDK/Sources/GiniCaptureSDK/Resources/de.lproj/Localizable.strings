@@ -32,10 +32,11 @@
 "ginicapture.camera.filepicker.errorPopup.cancelButton" = "Abbrechen";
 "ginicapture.camera.filepicker.errorPopup.confirmButton" = "OK";
 "ginicapture.camera.filepicker.errorPopup.grantAccessButton" = "Zugriff erteilen";
-"ginicapture.camera.documentValidationError.general" = "Leider kann diese Datei nicht bearbeitet werden";
+"ginicapture.camera.documentValidationError.general" = "Ihre Datei konnte nicht geöffnet werden. Bitte versuchen sie es mit einer anderenDatei.";
 "ginicapture.camera.documentValidationError.excedeedFileSize" = "Diese Datei ist leider zu groß";
-"ginicapture.camera.documentValidationError.tooManyPages" = "Das Dokument darf nicht mehr als 10 Seiten haben";
-"ginicapture.camera.documentValidationError.wrongFormat" = "Nur Dateien vom Format jpg, tiff, png, gif oder pdf können analysiert werden";
+"ginicapture.camera.documentValidationError.tooManyPages" = "Das Dokument darf nicht mehr als 10 Seiten haben.";
+"ginicapture.camera.documentValidationError.wrongFormat" = "Nur Dateien vom Format jpg, png, gif oder pdf können analysiert werden.";
+"ginicapture.camera.documentValidationError.pdfPasswordProtected" = "Passwortgeschützte Dokumente können nicht analysiert werden.";
 "ginicapture.camera.fileImportTip" = "Es können jetzt auch ganz einfach Dateien hochgeladen werden.";
 "ginicapture.camera.fileImportButtonLabel" = "Dateien";
 "ginicapture.camera.flashButtonLabel.On.Voice.Over" = "Blitz an";
