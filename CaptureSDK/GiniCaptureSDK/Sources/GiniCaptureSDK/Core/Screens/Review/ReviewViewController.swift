@@ -156,11 +156,12 @@ public final class ReviewViewController: UIViewController {
     private lazy var addPagesButton: BottomLabelButton = {
         let addPagesButton = BottomLabelButton()
         addPagesButton.translatesAutoresizingMaskIntoConstraints = false
-        addPagesButton.configureButton(image: UIImageNamedPreferred(named: "plus_icon") ?? UIImage(),
-                                       name:
-                        NSLocalizedStringPreferredFormat("ginicapture.multipagereview.secondaryButtonTitle",
-                                                        comment: "Add pages button title"))
+        addPagesButton.setupButton(with: UIImageNamedPreferred(named: "plus_icon") ?? UIImage(),
+                                   name: NSLocalizedStringPreferredFormat(
+                                    "ginicapture.multipagereview.secondaryButtonTitle",
+                                        comment: "Add pages button title"))
         addPagesButton.isHidden = !giniConfiguration.multipageEnabled
+        addPagesButton.configure(with: giniConfiguration.addPageButtonConfiguration)
         addPagesButton.didTapButton = { [weak self] in
             guard let self = self else { return }
             self.setCellStatus(for: self.currentPage, isActive: false)

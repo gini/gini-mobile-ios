@@ -21,7 +21,17 @@ public struct ButtonConfiguration {
 
     let withBlurEffect: Bool
 
-    // TODO: Document this
+    /// Button configuration initalizer
+    /// - Parameters:
+    ///   - backgroundColor: the button's background color
+    ///   - borderColor: the button's border color
+    ///   - titleColor: the button's title color
+    ///   - shadowColor: the button's color of the shadow
+    ///   - titleFont: the button's font
+    ///   - cornerRadius: the button's corner radius
+    ///   - borderWidth: the button's border width
+    ///   - shadowRadius: the button's shadow radius
+    ///   - withBlurEffect: adds a blur effect on the button ignoring the background color and making it translucent
     public init(backgroundColor: UIColor, borderColor: UIColor, titleColor: UIColor, shadowColor: UIColor, titleFont: UIFont?, cornerRadius: CGFloat, borderWidth: CGFloat, shadowRadius: CGFloat, withBlurEffect: Bool) {
         self.backgroundColor = backgroundColor
         self.borderColor = borderColor
@@ -32,6 +42,21 @@ public struct ButtonConfiguration {
         self.borderWidth = borderWidth
         self.shadowRadius = shadowRadius
         self.withBlurEffect = withBlurEffect
+    }
+}
+
+extension BottomLabelButton {
+    func configure(with configuration: ButtonConfiguration) {
+        self.backgroundColor = configuration.backgroundColor
+        self.layer.borderColor = configuration.borderColor.cgColor
+        self.layer.shadowColor = configuration.shadowColor.cgColor
+
+        self.actionLabel.textColor = configuration.titleColor
+        self.actionLabel.font = configuration.titleFont
+
+        self.layer.cornerRadius = configuration.cornerRadius
+        self.layer.borderWidth = configuration.borderWidth
+        self.layer.shadowRadius = configuration.shadowRadius
     }
 }
 
