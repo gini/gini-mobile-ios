@@ -40,46 +40,24 @@ final public class NoResultScreenViewController: UIViewController {
         return tableView
     }()
 
-    lazy var enterButton: MultilineTitleButton = {
-        let button = MultilineTitleButton()
-        button.configure(with: giniConfiguration.outlineButtonConfiguration)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(NSLocalizedStringPreferredFormat(
+    lazy var buttonsView: ButtonsView = {
+        let view = ButtonsView(
+            firstTitle: NSLocalizedStringPreferredFormat(
                 "ginicapture.noresult.enterManually",
                 comment: "Enter manually"),
-                             for: .normal)
-        return button
+            secondTitle: NSLocalizedStringPreferredFormat(
+                "ginicapture.noresult.retakeImages",
+                comment: "Retake images"))
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        view.enterButton.isHidden = viewModel.isEnterManuallyHidden()
+        view.retakeButton.isHidden = viewModel.isRetakePressedHidden()
+
+        return view
     }()
 
-    private lazy var retakeButton: MultilineTitleButton = {
-        let button = MultilineTitleButton()
-        button.configure(with: giniConfiguration.primaryButtonConfiguration)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(NSLocalizedStringPreferredFormat(
-            "ginicapture.noresult.retakeImages",
-            comment: "Enter manually"),
-                              for: .normal)
-        return button
-    }()
-
-    private lazy var buttonsView: UIStackView = {
-        let stackView = UIStackView()
-        if !viewModel.isEnterManuallyHidden() {
-            stackView.addArrangedSubview(enterButton)
-        }
-        if !viewModel.isRetakePressedHidden() {
-            stackView.addArrangedSubview(retakeButton)
-        }
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .fillEqually
-        stackView.axis = .vertical
-        stackView.spacing = 12
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
-
-    lazy var header: NoResultHeader = {
-        if let header = NoResultHeader().loadNib() as? NoResultHeader {
+    lazy var header: IconHeader = {
+        if let header = IconHeader().loadNib() as? IconHeader {
             header.headerLabel.adjustsFontForContentSizeCategory = true
             header.headerLabel.adjustsFontSizeToFitWidth = true
             header.translatesAutoresizingMaskIntoConstraints = false
@@ -92,7 +70,7 @@ final public class NoResultScreenViewController: UIViewController {
     private let tableRowHeight: CGFloat = 44
     private let sectionHeight: CGFloat = 70
     private let type: NoResultType
-    private let viewModel: NoResultScreenViewModel
+    private let viewModel: BottomButtonsViewModel
     private var buttonsHeightConstraint: NSLayoutConstraint?
     private var numberOfButtons: Int {
         return [
@@ -106,7 +84,7 @@ final public class NoResultScreenViewController: UIViewController {
     public init(
         giniConfiguration: GiniConfiguration,
         type: NoResultType,
-        viewModel: NoResultScreenViewModel
+        viewModel: BottomButtonsViewModel
     ) {
         self.giniConfiguration = giniConfiguration
         self.type = type
@@ -294,8 +272,14 @@ final public class NoResultScreenViewController: UIViewController {
     }
 
     private func configureButtons() {
-        enterButton.addTarget(viewModel, action: #selector(viewModel.didPressEnterManually), for: .touchUpInside)
-        retakeButton.addTarget(viewModel, action: #selector(viewModel.didPressRetake), for: .touchUpInside)
+        buttonsView.enterButton.addTarget(
+            viewModel,
+            action: #selector(viewModel.didPressEnterManually),
+            for: .touchUpInside)
+        buttonsView.retakeButton.addTarget(
+            viewModel,
+            action: #selector(viewModel.didPressRetake),
+            for: .touchUpInside)
     }
 
     private func configureBottomBarConstraints() {

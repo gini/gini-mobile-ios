@@ -21,8 +21,8 @@ final class ReviewCollectionCell: UICollectionViewCell {
         imageView.clipsToBounds = true
         imageView.accessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.review.documentImageTitle",
                                                                         comment: "Document")
-        imageView.backgroundColor = GiniColor(light: UIColor.GiniCapture.light3,
-                                              dark: UIColor.GiniCapture.dark3).uiColor()
+        imageView.backgroundColor = GiniColor(light: UIColor.GiniCapture.light1,
+                                              dark: UIColor.GiniCapture.dark1).uiColor()
         return imageView
     }()
 
