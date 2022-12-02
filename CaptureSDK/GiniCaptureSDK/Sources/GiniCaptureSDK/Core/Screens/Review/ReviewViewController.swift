@@ -247,7 +247,7 @@ public final class ReviewViewController: UIViewController {
      Called to initialize the Review viewcontroller
 
      - parameter pages: the documents to be initalized with
-     - parameter giniConfiguration: The configuration of the SDK
+     - parameter giniConfiguration: the configuration of the SDK
      */
 
     public init(pages: [GiniCapturePage], giniConfiguration: GiniConfiguration) {
