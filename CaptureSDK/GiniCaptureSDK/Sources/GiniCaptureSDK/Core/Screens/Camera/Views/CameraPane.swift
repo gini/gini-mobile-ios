@@ -28,26 +28,15 @@ final class CameraPane: UIView {
             dark: UIColor.GiniCapture.dark1).uiColor().withAlphaComponent(0.4)
         captureButton.setTitle("", for: .normal)
         thumbnailView.isHidden = true
-        fileUploadButton.configureButton(
-            image: UIImageNamedPreferred(
-                named: "folder") ?? UIImage(),
-            name: NSLocalizedStringPreferredFormat(
-            "ginicapture.camera.fileImportButtonLabel",
-            comment: "Import photo"))
-        flashButton.configureButton(
-            image: UIImageNamedPreferred(named: "flashOff") ?? UIImage(),
-            name: NSLocalizedStringPreferredFormat(
-            "ginicapture.camera.flashButtonLabel",
-            comment: "Flash button"))
-        flashButton.iconView.image = UIImageNamedPreferred(named: "flashOff")
-        flashButton.actionLabel.font = giniConfiguration.textStyleFonts[.caption1]
-        flashButton.actionLabel.textColor = GiniColor(
-            light: UIColor.GiniCapture.light1,
-            dark: UIColor.GiniCapture.light1).uiColor()
-        fileUploadButton.actionLabel.textColor = GiniColor(
-            light: UIColor.GiniCapture.light1,
-            dark: UIColor.GiniCapture.light1).uiColor()
-        fileUploadButton.actionLabel.font = giniConfiguration.textStyleFonts[.caption1]
+        fileUploadButton.setupButton(with: UIImageNamedPreferred(named: "folder") ?? UIImage(),
+                                     name: NSLocalizedStringPreferredFormat("ginicapture.camera.fileImportButtonLabel",
+                                                                            comment: "Import photo"))
+        flashButton.setupButton(with: UIImageNamedPreferred(named: "flashOff") ?? UIImage(),
+                                name: NSLocalizedStringPreferredFormat("ginicapture.camera.flashButtonLabel",
+                                                                       comment: "Flash button"))
+        flashButton.configure(with: giniConfiguration.cameraControlButtonConfiguration)
+        fileUploadButton.configure(with: giniConfiguration.cameraControlButtonConfiguration)
+
         if cameraTitleLabel != nil {
             configureTitle(giniConfiguration: giniConfiguration)
         }
@@ -73,20 +62,16 @@ final class CameraPane: UIView {
 
     func setupFlashButton(state: Bool) {
         if state {
-            flashButton.configureButton(
-                image: UIImageNamedPreferred(named: "flashOn") ?? UIImage(),
-                name: NSLocalizedStringPreferredFormat(
-                "ginicapture.camera.flashButtonLabel.On",
-                comment: "Flash button on voice over"))
+            flashButton.setupButton(with: UIImageNamedPreferred(named: "flashOn") ?? UIImage(),
+                                    name: NSLocalizedStringPreferredFormat("ginicapture.camera.flashButtonLabel.On",
+                                                                           comment: "Flash button on voice over"))
             flashButton.accessibilityValue = NSLocalizedStringPreferredFormat(
                 "ginicapture.camera.flashButtonLabel.On.Voice.Over",
                 comment: "Flash button voice over")
         } else {
-            flashButton.configureButton(
-                image: UIImageNamedPreferred(named: "flashOff") ?? UIImage(),
-                name: NSLocalizedStringPreferredFormat(
-                "ginicapture.camera.flashButtonLabel.Off",
-                comment: "Flash button"))
+            flashButton.setupButton(with: UIImageNamedPreferred(named: "flashOff") ?? UIImage(),
+                                    name: NSLocalizedStringPreferredFormat("ginicapture.camera.flashButtonLabel.Off",
+                                                                           comment: "Flash button"))
             flashButton.accessibilityValue = NSLocalizedStringPreferredFormat(
                 "ginicapture.camera.flashButtonLabel.Off.Voice.Over",
                 comment: "Flash button off voice over")
