@@ -1,5 +1,5 @@
 //
-//  NoResultViewModel.swift
+//  BottomButtonsViewModel.swift
 //  GiniCapture
 //
 //  Created by Krzysztof Kryniecki on 23/08/2022.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class NoResultScreenViewModel {
+public final class BottomButtonsViewModel {
     let retakePressed: (() -> Void)?
     let enterManuallyPressed: (() -> Void)?
     let cancelPressed: (() -> Void)

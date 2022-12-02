@@ -35,13 +35,13 @@ extension GiniScreenAPICoordinator {
     func createImageAnalysisNoResultsScreen(
             type: NoResultScreenViewController.NoResultType
         ) -> NoResultScreenViewController {
-        let viewModel: NoResultScreenViewModel
+        let viewModel: BottomButtonsViewModel
         let viewController: NoResultScreenViewController
         switch type {
         case .image:
             if pages.contains(where: { $0.document.isImported == false }) {
                 // if there is a photo captured with camera
-                viewModel = NoResultScreenViewModel(
+                viewModel = BottomButtonsViewModel(
                     retakeBlock: { [weak self] in
                         self?.pages = []
                         self?.backToCamera()
@@ -56,7 +56,7 @@ extension GiniScreenAPICoordinator {
                     self?.backToCamera()
                 })
             } else {
-                viewModel = NoResultScreenViewModel(
+                viewModel = BottomButtonsViewModel(
                     manuallyPressed: { [weak self] in
                         if let delegate = self?.visionDelegate {
                             delegate.didPressEnterManually()
@@ -68,7 +68,7 @@ extension GiniScreenAPICoordinator {
                 })
             }
         default:
-            viewModel = NoResultScreenViewModel(
+            viewModel = BottomButtonsViewModel(
                 manuallyPressed: { [weak self] in
                     self?.screenAPINavigationController.dismiss(animated: true)
                 }, cancelPressed: { [weak self] in
@@ -90,8 +90,9 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
 
     public func displayError(withMessage message: String?, andAction action: (() -> Void)?) {
         DispatchQueue.main.async { [weak self] in
-            guard let self = self,
-                let message = message,
+            guard let self = self else { return }
+
+            guard let message = message,
                 let action = action else { return }
 
             if let analysisViewController = self.analysisViewController {
