@@ -1182,91 +1182,6 @@ public final class GiniBankConfiguration: NSObject {
                                                                       isEnabled: false)
 
     /**
-     Indicates corner radius for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonCornerRadius: CGFloat = 14
-    
-    /**
-     Indicates border width for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonBorderWidth: CGFloat = 1
-    
-    /**
-     Indicates shadow corner radius for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonShadowRadius: CGFloat = 14
-    
-    /**
-     Indicates shadow color for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonShadowColor = GiniColor(light: UIColor.clear, dark: UIColor.clear)
-    
-    /**
-     Indicates border color for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonBorderColor = GiniColor(light: UIColor.clear, dark: UIColor.clear)
-    
-    /**
-     Indicates background color for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonBackgroundColor = GiniColor(light: UIColor.GiniBank.accent1, dark: UIColor.GiniBank.accent1)
-    
-    /**
-     Indicates title color for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonTitleColor = GiniColor(light: UIColor.GiniBank.light1, dark: UIColor.GiniBank.light1)
-    
-    
-    /**
-     Indicates corner radius for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonCornerRadius: CGFloat = 14
-    
-    /**
-     Indicates border width for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonBorderWidth: CGFloat = 1
-    
-    /**
-     Indicates shadow corner radius for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonShadowRadius: CGFloat = 14
-    
-    /**
-     Indicates shadow color for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonShadowColor = GiniColor(light: UIColor.clear, dark: UIColor.clear)
-    
-    /**
-     Indicates background color for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonBackground = GiniColor(light: UIColor.clear, dark: UIColor.clear)
-    
-    /**
-     Indicates border color for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonBorderColor = GiniColor(light: UIColor.GiniBank.light6, dark: UIColor.clear)
-    
-    /**
-     Indicates title color for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonTitleColor = GiniColor(light: UIColor.GiniBank.dark6, dark: UIColor.GiniBank.light1)
-    
-    /**
      Set an array of additional custom help menu items . Those items will be presented as table view cells on the help menu screen. By selecting the cell the user will be redirected to the page, which represented by viewController provided by customer during the  `HelpMenuViewController.Item` initialization.
     */
     public var customMenuItems: [HelpMenuItem] = []
@@ -1453,21 +1368,6 @@ public final class GiniBankConfiguration: NSObject {
         configuration.outlineButtonConfiguration = self.outlineButtonConfiguration
         configuration.transparentButtonConfiguration = self.transparentButtonConfiguration
 
-        configuration.primaryButtonCornerRadius = self.primaryButtonCornerRadius
-        configuration.primaryButtonBorderWidth = self.primaryButtonBorderWidth
-        configuration.primaryButtonBorderColor = self.primaryButtonBorderColor
-        configuration.primaryButtonShadowColor = self.primaryButtonShadowColor
-        configuration.primaryButtonShadowRadius = self.primaryButtonShadowRadius
-        configuration.primaryButtonBackgroundColor = self.primaryButtonBackgroundColor
-        configuration.primaryButtonTitleColor = self.primaryButtonTitleColor
-        
-        configuration.outlineButtonCornerRadius = self.outlineButtonCornerRadius
-        configuration.outlineButtonBorderColor = self.outlineButtonBorderColor
-        configuration.outlineButtonBorderWidth = self.outlineButtonBorderWidth
-        configuration.outlineButtonShadowColor = self.outlineButtonShadowColor
-        configuration.outlineButtonShadowRadius = self.outlineButtonShadowRadius
-        configuration.outlineButtonBackground = self.outlineButtonBackground
-        configuration.outlineButtonTitleColor = self.outlineButtonTitleColor
         GiniCapture.setConfiguration(configuration)
         
         // Set onboarding pages after setting the GiniCapture's configuration
