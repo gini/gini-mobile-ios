@@ -183,13 +183,11 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
 
     func showNextScreenAfterPicking(pages: [GiniCapturePage]) {
         let visionDocuments = pages.map { $0.document }
-        if let documentsType = visionDocuments.type {
-            switch documentsType {
-            case .image:
-                showReview()
-            case .qrcode, .pdf:
-                showAnalysisScreen()
-            }
+
+        if visionDocuments.filter({ $0.isImported }).isNotEmpty {
+            showAnalysisScreen()
+        } else {
+            showReview()
         }
     }
 }
