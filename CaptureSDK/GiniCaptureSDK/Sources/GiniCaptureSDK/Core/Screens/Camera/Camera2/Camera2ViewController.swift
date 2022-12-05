@@ -114,12 +114,16 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         view.addSubview(qrCodeOverLay)
         configureConstraints()
         configureTitle()
+
         if giniConfiguration.onlyQRCodeScanningEnabled {
-            cameraPane.isHidden = true
+            cameraPane.alpha = 0
+            if giniConfiguration.bottomNavigationBarEnabled {
+                configureCustomTopNavigationBar(containsImage: false)
+            }
         } else {
             configureCameraPaneButtons()
+            configureBottomNavigationBar()
         }
-        configureBottomNavigationBar()
     }
 
     private func configureCustomTopNavigationBar(containsImage: Bool) {
