@@ -244,10 +244,12 @@ public final class ReviewViewController: UIViewController {
     // MARK: - Init
 
     /**
-     Called to initialize the Review viewcontroller
+     Called to initialize the ReviewViewController
 
      - parameter pages: the documents to be initalized with
      - parameter giniConfiguration: the configuration of the SDK
+
+     - note: Internal usage only.
      */
 
     public init(pages: [GiniCapturePage], giniConfiguration: GiniConfiguration) {
