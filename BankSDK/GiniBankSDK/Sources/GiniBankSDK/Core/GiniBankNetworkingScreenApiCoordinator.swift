@@ -282,7 +282,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
             case let .failure(error):
                 DispatchQueue.main.async { [weak self] in
                     guard error != .requestCancelled else { return }
-                    self?.displayError(errorType: ErrorType(error: error))
+                    self?.displayError(errorType: ErrorType(error: error), animated: true)
                     
                 }
             }
@@ -311,7 +311,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
             self.startAnalysisWithReturnAssistant(networkDelegate: networkDelegate)
         }, didFail: { _, error in
             guard error != .requestCancelled else { return }
-            networkDelegate.displayError(errorType: ErrorType(error: error))
+            networkDelegate.displayError(errorType: ErrorType(error: error), animated: true)
         })
     }
 }

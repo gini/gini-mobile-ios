@@ -330,7 +330,7 @@ extension GiniScreenAPICoordinator: UploadDelegate {
                     error: error)
                 self.giniConfiguration.errorLogger.handleErrorLog(error: errorLog)
                 guard let giniError = error as? GiniError, giniError != .requestCancelled else { return }
-                self.displayError(errorType: ErrorType(error: giniError))
+                self.displayError(errorType: ErrorType(error: giniError), animated: true)
             }
         }
     }

@@ -89,59 +89,57 @@ extension GiniScreenAPICoordinator {
 extension GiniScreenAPICoordinator: AnalysisDelegate {
 
     public func displayError(
-        errorType: ErrorType
+        errorType: ErrorType,
+        animated: Bool
     ) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            let viewModel: BottomButtonsViewModel
-            let viewController: ErrorScreenViewController
-            switch self.pages.type {
-            case .image:
-                if self.pages.contains(where: { $0.document.isImported == false }) {
-                    // if there is a photo captured with camera
-                    viewModel = BottomButtonsViewModel(
-                        retakeBlock: { [weak self] in
-                            self?.pages = []
-                            self?.backToCamera()
-                        },
-                        manuallyPressed: { [weak self] in
-                            if let delegate = self?.visionDelegate {
-                                delegate.didPressEnterManually()
-                            } else {
-                                self?.screenAPINavigationController.dismiss(animated: true)
-                            }
-                        }, cancelPressed: { [weak self] in
+        let viewModel: BottomButtonsViewModel
+        let viewController: ErrorScreenViewController
+        switch pages.type {
+        case .image:
+            if self.pages.contains(where: { $0.document.isImported == false }) {
+                // if there is a photo captured with camera
+                viewModel = BottomButtonsViewModel(
+                    retakeBlock: { [weak self] in
+                        self?.pages = []
                         self?.backToCamera()
-                    })
-                } else {
-                    viewModel = BottomButtonsViewModel(
-                        manuallyPressed: { [weak self] in
-                            if let delegate = self?.visionDelegate {
-                                delegate.didPressEnterManually()
-                            } else {
-                                self?.screenAPINavigationController.dismiss(animated: true)
-                            }
-                        }, cancelPressed: { [weak self] in
-                        self?.backToCamera()
-                    })
-                }
-            default:
+                    },
+                    manuallyPressed: { [weak self] in
+                        if let delegate = self?.visionDelegate {
+                            delegate.didPressEnterManually()
+                        } else {
+                            self?.screenAPINavigationController.dismiss(animated: animated)
+                        }
+                    }, cancelPressed: { [weak self] in
+                    self?.backToCamera()
+                })
+            } else {
                 viewModel = BottomButtonsViewModel(
                     manuallyPressed: { [weak self] in
-                        self?.screenAPINavigationController.dismiss(animated: true)
+                        if let delegate = self?.visionDelegate {
+                            delegate.didPressEnterManually()
+                        } else {
+                            self?.screenAPINavigationController.dismiss(animated: animated)
+                        }
                     }, cancelPressed: { [weak self] in
-                    self?.closeScreenApi()
+                    self?.backToCamera()
                 })
             }
-            viewController = ErrorScreenViewController(
-                giniConfiguration: self.giniConfiguration,
-                type: errorType,
-                documentType: self.pages.type ?? .pdf,
-                viewModel: viewModel)
-
-            self.screenAPINavigationController.pushViewController(
-                viewController, animated: true)
+        default:
+            viewModel = BottomButtonsViewModel(
+                manuallyPressed: { [weak self] in
+                    self?.screenAPINavigationController.dismiss(animated: true)
+                }, cancelPressed: { [weak self] in
+                self?.closeScreenApi()
+            })
         }
+        viewController = ErrorScreenViewController(
+            giniConfiguration: giniConfiguration,
+            type: errorType,
+            documentType: pages.type ?? .pdf,
+            viewModel: viewModel)
+
+        screenAPINavigationController.pushViewController(
+            viewController, animated: animated)
     }
 
     public func tryDisplayNoResultsScreen() -> Bool {
