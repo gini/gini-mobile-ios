@@ -250,9 +250,12 @@ class ErrorScreenViewController: UIViewController {
                 errorContent.widthAnchor.constraint(
                     equalTo: view.widthAnchor,
                     multiplier: Constants.iPadWidthMultiplier.rawValue),
-                buttonsView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                buttonsView.widthAnchor.constraint(
-                    equalToConstant: Constants.iPadButtonsWidth.rawValue)
+                buttonsView.leadingAnchor.constraint(
+                    equalTo: view.leadingAnchor,
+                    constant: GiniMargins.margin),
+                buttonsView.trailingAnchor.constraint(
+                    equalTo: view.trailingAnchor,
+                    constant: -GiniMargins.margin)
             ])
         } else {
             NSLayoutConstraint.activate([
