@@ -339,8 +339,12 @@ final public class NoResultScreenViewController: UIViewController {
             NSLayoutConstraint.activate([
                 tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 tableView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7),
-                buttonsView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                buttonsView.widthAnchor.constraint(equalToConstant: 280)
+                buttonsView.leadingAnchor.constraint(
+                    equalTo: view.leadingAnchor,
+                    constant: GiniMargins.margin),
+                buttonsView.trailingAnchor.constraint(
+                    equalTo: view.trailingAnchor,
+                    constant: -GiniMargins.margin)
             ])
         } else {
             NSLayoutConstraint.activate([
