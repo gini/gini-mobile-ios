@@ -102,7 +102,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                 comment: "Info label")
         }
     }
-    
+
     private func setupView() {
         edgesForExtendedLayout = []
         view.backgroundColor = giniConfiguration.cameraContainerViewBackgroundColor.uiColor()
@@ -301,7 +301,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             action: #selector(cameraButtonsViewModel.toggleFlash),
             for: .touchUpInside)
     }
-    
+
     private func configureLeftButtons() {
         configureUploadButton()
         configureFlashButton()
