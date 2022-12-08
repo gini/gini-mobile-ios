@@ -120,7 +120,7 @@ final class AppCoordinator: Coordinator {
 //                                                                       shadowRadius: 0,
 //                                                                       withBlurEffect: false)
 //        configuration.transparentButtonConfiguration =
-//        configuration.outlineButtonConfiguration =
+//        configuration.secondaryButtonConfiguration =
 
        return configuration
     }()

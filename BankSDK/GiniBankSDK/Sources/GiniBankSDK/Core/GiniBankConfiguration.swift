@@ -1138,19 +1138,17 @@ public final class GiniBankConfiguration: NSObject {
                                 borderColor: .clear,
                                 titleColor: .GiniBank.light1,
                                 shadowColor: .clear,
-                                titleFont: textStyleFonts[.bodyBold],
                                 cornerRadius: 16,
                                 borderWidth: 0,
                                 shadowRadius: 0,
                                 withBlurEffect: false)
 
-    public lazy var outlineButtonConfiguration: ButtonConfiguration =
+    public lazy var secondaryButtonConfiguration: ButtonConfiguration =
             ButtonConfiguration(backgroundColor: .GiniBank.dark4,
                                 borderColor: GiniColor(light: UIColor.GiniBank.light6,
                                                       dark: UIColor.clear).uiColor(),
                                 titleColor: .GiniBank.accent1,
                                 shadowColor: .clear,
-                                titleFont: textStyleFonts[.bodyBold],
                                 cornerRadius: 16,
                                 borderWidth: 2,
                                 shadowRadius: 14,
@@ -1161,8 +1159,27 @@ public final class GiniBankConfiguration: NSObject {
                                 borderColor: .clear,
                                 titleColor: .GiniBank.accent1,
                                 shadowColor: .clear,
-                                titleFont: textStyleFonts[.bodyBold],
                                 cornerRadius: 16,
+                                borderWidth: 0,
+                                shadowRadius: 0,
+                                withBlurEffect: false)
+
+    public lazy var cameraControlButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .clear,
+                                borderColor: .clear,
+                                titleColor: .GiniBank.light1,
+                                shadowColor: .clear,
+                                cornerRadius: 0,
+                                borderWidth: 0,
+                                shadowRadius: 0,
+                                withBlurEffect: false)
+
+    public lazy var addPageButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .clear,
+                                borderColor: .clear,
+                                titleColor: GiniColor(light: .GiniBank.dark2, dark: .GiniBank.light2).uiColor(),
+                                shadowColor: .clear,
+                                cornerRadius: 0,
                                 borderWidth: 0,
                                 shadowRadius: 0,
                                 withBlurEffect: false)
@@ -1365,7 +1382,7 @@ public final class GiniBankConfiguration: NSObject {
         }
 
         configuration.primaryButtonConfiguration = self.primaryButtonConfiguration
-        configuration.outlineButtonConfiguration = self.outlineButtonConfiguration
+        configuration.secondaryButtonConfiguration = self.secondaryButtonConfiguration
         configuration.transparentButtonConfiguration = self.transparentButtonConfiguration
 
         GiniCapture.setConfiguration(configuration)
