@@ -397,18 +397,11 @@ extension CameraPreviewViewController {
     }
     
     @objc fileprivate func subjectAreaDidChange(_ notification: Notification) {
-        guard let previewLayer = previewView.layer as? AVCaptureVideoPreviewLayer else { return }
         let devicePoint = CGPoint(x: 0.5, y: 0.5)
-        
         camera.focus(withMode: .continuousAutoFocus,
                      exposeWithMode: .continuousAutoExposure,
                      atDevicePoint: devicePoint,
                      monitorSubjectAreaChange: false)
-        
-        let imageView =
-            createFocusIndicator(withImage: cameraFocusLarge,
-                                 atPoint: previewLayer.layerPointConverted(fromCaptureDevicePoint: devicePoint))
-        showFocusIndicator(imageView)
     }
     
 }
