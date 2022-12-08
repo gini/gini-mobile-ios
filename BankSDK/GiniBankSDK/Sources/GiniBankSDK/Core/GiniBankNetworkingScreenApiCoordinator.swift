@@ -283,7 +283,6 @@ extension GiniBankNetworkingScreenApiCoordinator {
                 DispatchQueue.main.async { [weak self] in
                     guard error != .requestCancelled else { return }
                     self?.displayError(errorType: ErrorType(error: error))
-                    
                 }
             }
         }
