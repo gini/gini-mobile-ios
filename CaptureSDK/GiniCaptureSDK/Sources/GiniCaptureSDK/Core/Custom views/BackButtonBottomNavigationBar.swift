@@ -21,8 +21,12 @@ public final class BackButtonBottomNavigationBar: UIView {
         backButton.setImage(
             UIImageNamedPreferred(named: "arrowBack") ?? UIImage(),
             for: .normal)
+        backButton.tintColor = GiniColor(
+            light: UIColor.GiniCapture.dark4,
+            dark: UIColor.GiniCapture.light1
+        ).uiColor()
         backgroundColor = GiniColor(
-            light: UIColor.GiniCapture.dark2,
+            light: UIColor.GiniCapture.light1,
             dark: UIColor.GiniCapture.dark2
         ).uiColor()
     }
