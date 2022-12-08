@@ -146,6 +146,7 @@ public final class ReviewViewController: UIViewController {
     private lazy var processButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
         button.configure(with: giniConfiguration.primaryButtonConfiguration)
+        button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle",
                                                         comment: "Process button title"), for: .normal)
@@ -161,6 +162,7 @@ public final class ReviewViewController: UIViewController {
                                     "ginicapture.multipagereview.secondaryButtonTitle",
                                         comment: "Add pages button title"))
         addPagesButton.isHidden = !giniConfiguration.multipageEnabled
+        addPagesButton.actionLabel.font = giniConfiguration.textStyleFonts[.bodyBold]
         addPagesButton.configure(with: giniConfiguration.addPageButtonConfiguration)
         addPagesButton.didTapButton = { [weak self] in
             guard let self = self else { return }
