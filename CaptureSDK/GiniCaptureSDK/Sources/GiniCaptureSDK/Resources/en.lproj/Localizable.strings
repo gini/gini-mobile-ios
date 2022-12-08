@@ -17,14 +17,15 @@
 "ginicapture.navigationbar.review.close"        = "";
 "ginicapture.navigationbar.review.continue"     = "Next";
 "ginicapture.navigationbar.analysis.back"       = "Cancel";
-"ginicapture.navigationbar.help.backToCamera"   = "";
+"ginicapture.navigationbar.help.backToCamera"   = "Camera";
 "ginicapture.navigationbar.help.backToMenu"     = "Help";
 "ginicapture.navigationbar.analysis.backToReview" = "Review";
 
 
 "ginicapture.camera.captureButton" = "Capture";
-"ginicapture.camera.notAuthorized" = "Permission to access the camera is required to analyse photos";
-"ginicapture.camera.notAuthorizedButton" = "Grant permission";
+"ginicapture.camera.notAuthorized.title" = "Camera access";
+"ginicapture.camera.notAuthorized.description" = "We need access to your camera to enable you to capture your invoices";
+"ginicapture.camera.notAuthorizedButton.noStatus" = "Give access";
 "ginicapture.camera.captureFailed" = "Image capture failed";
 "ginicapture.camera.filepicker.photoLibraryAccessDenied" = "Permission to access your photos gallery is required to analyse saved photos";
 "ginicapture.camera.filepicker.mixedDocumentsUnsupported" = "It is only possible to select one file type at the same time.";
@@ -60,7 +61,7 @@
 "ginicapture.camera.unknownError" = "An unknown error has occurred on the camera screen";
 "ginicapture.camera.popupTitleImportPDF" = "Import PDF";
 "ginicapture.camera.popupOptionPhotos" = "Upload photo";
-"ginicapture.camera.popupOptionFiles" = "Upload PDF";
+"ginicapture.camera.popupOptionFiles" = "Upload files";
 "ginicapture.camera.popupTitleImportPDForPhotos" = "";
 "ginicapture.camera.popupCancel" = "Cancel";
 
@@ -151,7 +152,7 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.help.menu.import" = "Import documents from other apps";
 
 "ginicapture.albums.title" = "Albums";
-"ginicapture.imagepicker.openbutton" = "Open";
+"ginicapture.imagepicker.openbutton" = "Done";
 
 "ginicapture.multipagereview.title" = "Review";
 "ginicapture.multipagereview.description" = "Make sure the payment details are visible";

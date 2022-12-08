@@ -11,7 +11,7 @@ final class AlbumsPickerTableViewCell: UITableViewCell {
     
     static let identifier = "AlbumsPickerTableViewCellIdentifier"
     static let height: CGFloat = 90.0
-    let padding = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+    let padding = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 10)
     
     lazy var albumThumbnailView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
@@ -23,6 +23,7 @@ final class AlbumsPickerTableViewCell: UITableViewCell {
         imageView.layer.shadowOpacity = 0.5
         imageView.layer.shadowOffset = CGSize(width: -2, height: 2)
         imageView.layer.shadowPath = UIBezierPath(rect: imageView.bounds).cgPath
+        imageView.layer.cornerRadius = 8
         
         return imageView
     }()
@@ -53,6 +54,8 @@ final class AlbumsPickerTableViewCell: UITableViewCell {
         addSubview(albumThumbnailView)
         addSubview(albumTitleLabel)
         addSubview(albumSubTitleLabel)
+
+        backgroundColor = .clear
         addConstraints()
     }
     
