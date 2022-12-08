@@ -17,10 +17,8 @@ import GiniBankAPILibrary
      Called when the analysis finished with results
      
      - parameter result: Contains the analysis result
-     - parameter sendFeedbackBlock: Block used to send feeback once the results have been corrected
      */
-    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult,
-                                         sendFeedbackBlock: @escaping ([String: Extraction]) -> Void)
+    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult)
     
     /**
      Called when the analysis finished without results.
@@ -130,10 +128,8 @@ import GiniBankAPILibrary
                 
                 let documentService = self.documentService
                 
-                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result) { updatedExtractions in
-                    documentService.sendFeedback(with: updatedExtractions.map { $0.value }, updatedCompoundExtractions: nil)
-                    documentService.resetToInitialState()
-                }
+                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
+                documentService.resetToInitialState()
             } else {
                 self.resultsDelegate?
                     .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen())
