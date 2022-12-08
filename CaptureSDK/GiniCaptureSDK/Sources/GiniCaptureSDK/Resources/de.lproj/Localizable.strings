@@ -17,14 +17,15 @@
 "ginicapture.navigationbar.review.close"        = "";
 "ginicapture.navigationbar.review.continue"     = "Weiter";
 "ginicapture.navigationbar.analysis.back"       = "Abbrechen";
-"ginicapture.navigationbar.help.backToCamera"   = "";
+"ginicapture.navigationbar.help.backToCamera"   = "Kamera";
 "ginicapture.navigationbar.help.backToMenu"     = "Hilfe";
 "ginicapture.navigationbar.analysis.backToReview" = "Übersicht";
 
 
 "ginicapture.camera.captureButton" = "Auslösen";
-"ginicapture.camera.notAuthorized" = "Bitte gestatte den Zugriff auf deine Kamera, um Dokumente fotografieren zu können.";
-"ginicapture.camera.notAuthorizedButton" = "Zugriff erlauben";
+"ginicapture.camera.notAuthorized.title" = "Kamerazugriff";
+"ginicapture.camera.notAuthorized.description" = "Bitte gestatte Zugriff auf deine Kamera, um Dokumente fotografieren zu können";
+"ginicapture.camera.notAuthorizedButton.noStatus" = "Zugriff erlauben";
 "ginicapture.camera.captureFailed" = "Bilderfassung fehlgeschlagen";
 "ginicapture.camera.filepicker.photoLibraryAccessDenied" = "Um gespeicherte Bilder zu analysieren, wird Zugriff auf Ihre Fotos benötigt.";
 "ginicapture.camera.filepicker.mixedDocumentsUnsupported" = "Es ist nur möglich einen Dateityp gleichzeitig auszuwählen.";
@@ -171,7 +172,7 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.help.menu.import" = "Dokumente von anderen Apps importieren";
 
 "ginicapture.albums.title" = "Alben";
-"ginicapture.imagepicker.openbutton" = "Öffnen";
+"ginicapture.imagepicker.openbutton" = "Fertig";
 
 "ginicapture.multipagereview.title" = "Übersicht";
 "ginicapture.multipagereview.description" = "Sind alle Zahlungsinformationen gut sichtbar?";
