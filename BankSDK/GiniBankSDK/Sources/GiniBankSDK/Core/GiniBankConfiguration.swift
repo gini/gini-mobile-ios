@@ -7,6 +7,7 @@
 
 import UIKit
 import GiniCaptureSDK
+import GiniBankAPILibrary
 
 public final class GiniBankConfiguration: NSObject {
     
@@ -28,7 +29,7 @@ public final class GiniBankConfiguration: NSObject {
      
      - returns: Instance of `GiniBankConfiguration`.
      */
-    public override init() {}
+    internal override init() {}
     
     // MARK: General options
     
@@ -1584,5 +1585,69 @@ public final class GiniBankConfiguration: NSObject {
     */
     public func updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle) {
         textStyleFonts[textStyle] = font
+    }
+
+    internal var documentService: DocumentServiceProtocol?
+    internal var lineItems: [[Extraction]]?
+
+    /// Function for clean up
+    /// - Parameters:
+    ///   - paymentRecipient: paymentRecipient description
+    ///   - paymentReference: paymentReference description
+    ///   - iban: iban description
+    ///   - bic: bic description
+    ///   - amountToPay: amountToPay description
+    public func cleanup(paymentRecipient: String, paymentReference: String, iban: String, bic: String, amountToPay: ExtractionAmount) {
+        guard let documentService = documentService else { return }
+
+        // Convert amount object to string
+        // Cut off decimals after the first 2
+        let divisor: Double = 100
+        let doubleValue = Double(truncating: amountToPay.value as NSNumber)
+        let doubleValueTruncated = (doubleValue * divisor).rounded(.towardZero) / divisor
+        let amountToPayString = "\(doubleValue)" + ":" + amountToPay.currency.rawValue
+
+        let paymentRecipientExtraction = Extraction(box: nil,
+                                                    candidates: nil,
+                                                    entity: "companyname",
+                                                    value: paymentRecipient,
+                                                    name: "paymentRecipient")
+        let paymentReferenceExtraction = Extraction(box: nil,
+                                                    candidates: nil,
+                                                    entity: "reference",
+                                                    value: paymentRecipient,
+                                                    name: "paymentReference")
+        let ibanExtraction = Extraction(box: nil,
+                                        candidates: nil,
+                                        entity: "iban",
+                                        value: iban,
+                                        name: "iban")
+        let bicExtraction = Extraction(box: nil,
+                                       candidates: nil,
+                                       entity: "bic",
+                                       value: iban,
+                                       name: "bic")
+        let amountExtraction = Extraction(box: nil,
+                                          candidates: nil,
+                                          entity: "amount",
+                                          value: amountToPayString,
+                                          name: "amountToPay")
+
+        let updatedExtractions: [Extraction] = [paymentRecipientExtraction,
+                                                paymentReferenceExtraction,
+                                                ibanExtraction,
+                                                bicExtraction,
+                                                amountExtraction]
+
+        if let lineItems = lineItems {
+            documentService.sendFeedback(with: updatedExtractions,
+                                         updatedCompoundExtractions: ["lineItems": lineItems])
+        } else {
+            documentService.sendFeedback(with: updatedExtractions,
+                                         updatedCompoundExtractions: nil)
+        }
+
+        self.documentService = nil
+        self.lineItems = nil
     }
 }

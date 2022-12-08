@@ -159,11 +159,9 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     }
     
     
-    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult,
-                                         sendFeedbackBlock: @escaping ([String: Extraction]) -> Void) {
+    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
         
         showResultsScreen(results: result.extractions.map { $0.value}, document: result.document)
-        self.sendFeedbackBlock = sendFeedbackBlock
     }
     
     func giniCaptureDidCancelAnalysis() {
