@@ -128,7 +128,7 @@
 
 "ginicapture.noresult.enterManually" = "Zahlungsdaten manuell eingeben";
 "ginicapture.noresult.retakeImages" = "Foto wiederholen";
-"ginicapture.noresult.title" = "TODO Fehler";
+"ginicapture.noresult.title" = "Keine Ergebnisse";
 "ginicapture.noresult.header" = "Leider konnten keine Informationen aus dem Dokument ausgelesen werden";
 
 "ginicapture.error.enterManually" = "Manuell ausfüllen";

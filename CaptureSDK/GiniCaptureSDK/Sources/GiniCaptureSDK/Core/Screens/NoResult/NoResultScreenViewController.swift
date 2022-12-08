@@ -44,21 +44,13 @@ final public class NoResultScreenViewController: UIViewController {
         let view = ButtonsView(
             firstTitle: NSLocalizedStringPreferredFormat(
                 "ginicapture.noresult.enterManually",
-                comment: "Enter manually"),
+                comment: "Enter manually button title"),
             secondTitle: NSLocalizedStringPreferredFormat(
                 "ginicapture.noresult.retakeImages",
-                comment: "Retake images"))
+                comment: "Retake images button title"))
         view.translatesAutoresizingMaskIntoConstraints = false
-        if viewModel.isEnterManuallyHidden() == false {
-            view.enterButton.isHidden = false
-        } else {
-            view.enterButton.isHidden = true
-        }
-        if viewModel.isRetakePressedHidden() == false {
-            view.retakeButton.isHidden = false
-        } else {
-            view.retakeButton.isHidden = true
-        }
+        view.enterButton.isHidden = viewModel.isEnterManuallyHidden()
+        view.retakeButton.isHidden = viewModel.isRetakePressedHidden()
         return view
     }()
 
