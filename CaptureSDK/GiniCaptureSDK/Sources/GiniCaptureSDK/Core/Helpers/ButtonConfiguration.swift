@@ -12,9 +12,6 @@ public struct ButtonConfiguration {
     let borderColor: UIColor
     let titleColor: UIColor
     let shadowColor: UIColor
-
-    let titleFont: UIFont?
-
     let cornerRadius: CGFloat
     let borderWidth: CGFloat
     let shadowRadius: CGFloat
@@ -27,17 +24,15 @@ public struct ButtonConfiguration {
     ///   - borderColor: the button's border color
     ///   - titleColor: the button's title color
     ///   - shadowColor: the button's color of the shadow
-    ///   - titleFont: the button's font
     ///   - cornerRadius: the button's corner radius
     ///   - borderWidth: the button's border width
     ///   - shadowRadius: the button's shadow radius
     ///   - withBlurEffect: adds a blur effect on the button ignoring the background color and making it translucent
-    public init(backgroundColor: UIColor, borderColor: UIColor, titleColor: UIColor, shadowColor: UIColor, titleFont: UIFont?, cornerRadius: CGFloat, borderWidth: CGFloat, shadowRadius: CGFloat, withBlurEffect: Bool) {
+    public init(backgroundColor: UIColor, borderColor: UIColor, titleColor: UIColor, shadowColor: UIColor, cornerRadius: CGFloat, borderWidth: CGFloat, shadowRadius: CGFloat, withBlurEffect: Bool) {
         self.backgroundColor = backgroundColor
         self.borderColor = borderColor
         self.titleColor = titleColor
         self.shadowColor = shadowColor
-        self.titleFont = titleFont
         self.cornerRadius = cornerRadius
         self.borderWidth = borderWidth
         self.shadowRadius = shadowRadius
@@ -52,7 +47,6 @@ extension BottomLabelButton {
         self.layer.shadowColor = configuration.shadowColor.cgColor
 
         self.actionLabel.textColor = configuration.titleColor
-        self.actionLabel.font = configuration.titleFont
 
         self.layer.cornerRadius = configuration.cornerRadius
         self.layer.borderWidth = configuration.borderWidth
@@ -68,8 +62,6 @@ extension UIButton {
         self.setTitleColor(configuration.titleColor, for: .normal)
         self.setTitleColor(configuration.titleColor, for: .highlighted)
         self.setTitleColor(configuration.titleColor, for: .selected)
-
-        self.titleLabel?.font = configuration.titleFont
 
         self.layer.cornerRadius = configuration.cornerRadius
         self.layer.borderWidth = configuration.borderWidth

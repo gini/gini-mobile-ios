@@ -29,6 +29,7 @@ final class ReviewBottomNavigationBar: UIView {
         backgroundColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.dark1).uiColor()
 
         mainButton.configure(with: configuration.primaryButtonConfiguration)
+        mainButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         mainButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle",
                                                              comment: "Process button title"), for: .normal)
         mainButton.addTarget(self, action: #selector(mainButtonClicked), for: .touchUpInside)
@@ -40,6 +41,7 @@ final class ReviewBottomNavigationBar: UIView {
                                             comment: "Add pages button title"))
         secondaryButton.isHidden = !configuration.multipageEnabled
 
+        secondaryButton.actionLabel.font = configuration.textStyleFonts[.bodyBold]
         secondaryButton.configure(with: configuration.addPageButtonConfiguration)
         secondaryButton.didTapButton = { [weak self] in
             self?.secondaryButtonClicked()

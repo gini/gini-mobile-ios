@@ -30,10 +30,14 @@ final class CameraPane: UIView {
         thumbnailView.isHidden = true
         fileUploadButton.setupButton(with: UIImageNamedPreferred(named: "folder") ?? UIImage(),
                                      name: NSLocalizedStringPreferredFormat("ginicapture.camera.fileImportButtonLabel",
-                                                                            comment: "Import photo"))
+                                                                            comment: "Upload file button title"))
         flashButton.setupButton(with: UIImageNamedPreferred(named: "flashOff") ?? UIImage(),
                                 name: NSLocalizedStringPreferredFormat("ginicapture.camera.flashButtonLabel",
-                                                                       comment: "Flash button"))
+                                                                       comment: "Flash button title"))
+
+        flashButton.actionLabel.font = giniConfiguration.textStyleFonts[.caption1]
+        fileUploadButton.actionLabel.font = giniConfiguration.textStyleFonts[.caption1]
+
         flashButton.configure(with: giniConfiguration.cameraControlButtonConfiguration)
         fileUploadButton.configure(with: giniConfiguration.cameraControlButtonConfiguration)
 
@@ -64,14 +68,14 @@ final class CameraPane: UIView {
         if state {
             flashButton.setupButton(with: UIImageNamedPreferred(named: "flashOn") ?? UIImage(),
                                     name: NSLocalizedStringPreferredFormat("ginicapture.camera.flashButtonLabel.On",
-                                                                           comment: "Flash button on voice over"))
+                                                                           comment: "Flash button on voice-over title"))
             flashButton.accessibilityValue = NSLocalizedStringPreferredFormat(
                 "ginicapture.camera.flashButtonLabel.On.Voice.Over",
                 comment: "Flash button voice over")
         } else {
             flashButton.setupButton(with: UIImageNamedPreferred(named: "flashOff") ?? UIImage(),
                                     name: NSLocalizedStringPreferredFormat("ginicapture.camera.flashButtonLabel.Off",
-                                                                           comment: "Flash button"))
+                                                                           comment: "Flash button title"))
             flashButton.accessibilityValue = NSLocalizedStringPreferredFormat(
                 "ginicapture.camera.flashButtonLabel.Off.Voice.Over",
                 comment: "Flash button off voice over")

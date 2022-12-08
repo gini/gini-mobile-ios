@@ -52,8 +52,10 @@ class ButtonsView: UIView {
     }
 
     private func configureButtons() {
+        retakeButton.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
         retakeButton.configure(with: giniConfiguration.primaryButtonConfiguration)
-        enterButton.configure(with: giniConfiguration.outlineButtonConfiguration)
+        enterButton.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
+        enterButton.configure(with: giniConfiguration.secondaryButtonConfiguration)
     }
 
     required init?(coder: NSCoder) {

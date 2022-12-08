@@ -26,8 +26,14 @@ final class OnboardingBottomNavigationBar: UIView {
 
     private func setupButtons() {
         let configuration = GiniConfiguration.shared
+
+        nextButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         nextButton.configure(with: configuration.primaryButtonConfiguration)
+
+        skipButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         skipButton.configure(with: configuration.transparentButtonConfiguration)
+
+        getStarted.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         getStarted.configure(with: configuration.primaryButtonConfiguration)
 
         skipButton.setTitle(NSLocalizedStringPreferredFormat(
