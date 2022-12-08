@@ -26,10 +26,10 @@ class ErrorScreenViewController: UIViewController {
         let view = ButtonsView(
             firstTitle: NSLocalizedStringPreferredFormat(
                 "ginicapture.error.enterManually",
-                comment: "Enter manually"),
+                comment: "Enter manually button title"),
             secondTitle: NSLocalizedStringPreferredFormat(
                 "ginicapture.error.backToCamera",
-                comment: "Back to camera"))
+                comment: "Back to camera button title"))
         view.translatesAutoresizingMaskIntoConstraints = false
         view.enterButton.isHidden = viewModel.isEnterManuallyHidden()
         view.retakeButton.isHidden = viewModel.isRetakePressedHidden()
@@ -91,10 +91,8 @@ class ErrorScreenViewController: UIViewController {
         title = NSLocalizedStringPreferredFormat(
             "ginicapture.error.title",
             comment: "Error screen title")
-        setupErrorHeader()
-        errorContent.text = errorType.content()
-        errorContent.font = giniConfiguration.textStyleFonts[.body]
-        errorContent.textColor = GiniColor(light: UIColor.GiniCapture.dark6, dark: UIColor.GiniCapture.dark7).uiColor()
+        configureErrorHeader()
+        configureErrorContent()
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         view.addSubview(errorHeader)
         view.addSubview(errorContent)
@@ -106,7 +104,7 @@ class ErrorScreenViewController: UIViewController {
         configureConstraints()
     }
 
-    private func setupErrorHeader() {
+    private func configureErrorHeader() {
         errorHeader.iconImageView.accessibilityLabel = NSLocalizedStringPreferredFormat(
             "ginicapture.error.title",
             comment: "Error screen title")
@@ -123,6 +121,12 @@ class ErrorScreenViewController: UIViewController {
         errorHeader.iconImageView.image = UIImageNamedPreferred(named: errorType.iconName())
     }
 
+    private func configureErrorContent() {
+        errorContent.text = errorType.content()
+        errorContent.font = giniConfiguration.textStyleFonts[.body]
+        errorContent.textColor = GiniColor(light: UIColor.GiniCapture.dark6, dark: UIColor.GiniCapture.dark7).uiColor()
+    }
+    
     private func configureButtons() {
         buttonsView.enterButton.addTarget(
             viewModel,
