@@ -166,7 +166,8 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     }
 
     private func initialViewControllers(with pages: [GiniCapturePage]) -> [UIViewController] {
-        if pages.filter({ $0.document.isImported }).isNotEmpty {
+        // Creating an array of GiniImageDocuments and filtering it for 'isFromOtherApp'
+        if pages.compactMap({ $0.document as? GiniImageDocument }).filter({ $0.isFromOtherApp }).isNotEmpty {
             self.analysisViewController = createAnalysisScreen(withDocument: pages[0].document)
             return [self.analysisViewController!]
         }
