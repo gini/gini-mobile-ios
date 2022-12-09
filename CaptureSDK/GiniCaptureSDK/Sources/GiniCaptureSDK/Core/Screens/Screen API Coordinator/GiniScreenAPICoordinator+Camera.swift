@@ -184,7 +184,8 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
     func showNextScreenAfterPicking(pages: [GiniCapturePage]) {
         let visionDocuments = pages.map { $0.document }
 
-        if visionDocuments.filter({ $0.isImported }).isNotEmpty {
+        // Creating an array of GiniImageDocuments and filtering it for 'isFromOtherApp'
+        if visionDocuments.compactMap({ $0 as? GiniImageDocument }).filter({ $0.isFromOtherApp }).isNotEmpty {
             showAnalysisScreen()
         } else {
             showReview()
