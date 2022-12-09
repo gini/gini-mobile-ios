@@ -1,5 +1,5 @@
 //
-//  Amount.swift
+//  ExtractionAmount.swift
 //  
 //
 //  Created by David Vizaknai on 08.12.2022.
