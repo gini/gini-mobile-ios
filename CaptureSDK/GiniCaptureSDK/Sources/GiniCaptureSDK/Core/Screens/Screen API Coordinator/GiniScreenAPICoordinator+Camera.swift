@@ -188,7 +188,14 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         if visionDocuments.compactMap({ $0 as? GiniImageDocument }).filter({ $0.isFromOtherApp }).isNotEmpty {
             showAnalysisScreen()
         } else {
-            showReview()
+            if let documentsType = visionDocuments.type {
+                switch documentsType {
+                case .image:
+                    showReview()
+                case .qrcode, .pdf:
+                    showAnalysisScreen()
+                }
+            }
         }
     }
 }
