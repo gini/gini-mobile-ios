@@ -1130,6 +1130,59 @@ public final class GiniBankConfiguration: NSObject {
      * Set an adapter implementation to show a custom loading indicator on the document analysis screen.
      */
     public var customLoadingIndicator: CustomLoadingIndicatorAdapter?
+
+    // MARK: Button configuration options
+
+    public lazy var primaryButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .GiniBank.accent1,
+                                borderColor: .clear,
+                                titleColor: .GiniBank.light1,
+                                shadowColor: .clear,
+                                cornerRadius: 16,
+                                borderWidth: 0,
+                                shadowRadius: 0,
+                                withBlurEffect: false)
+
+    public lazy var secondaryButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .GiniBank.dark4,
+                                borderColor: GiniColor(light: UIColor.GiniBank.light6,
+                                                      dark: UIColor.clear).uiColor(),
+                                titleColor: .GiniBank.accent1,
+                                shadowColor: .clear,
+                                cornerRadius: 16,
+                                borderWidth: 2,
+                                shadowRadius: 14,
+                                withBlurEffect: true)
+
+    public lazy var transparentButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .clear,
+                                borderColor: .clear,
+                                titleColor: .GiniBank.accent1,
+                                shadowColor: .clear,
+                                cornerRadius: 16,
+                                borderWidth: 0,
+                                shadowRadius: 0,
+                                withBlurEffect: false)
+
+    public lazy var cameraControlButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .clear,
+                                borderColor: .clear,
+                                titleColor: .GiniBank.light1,
+                                shadowColor: .clear,
+                                cornerRadius: 0,
+                                borderWidth: 0,
+                                shadowRadius: 0,
+                                withBlurEffect: false)
+
+    public lazy var addPageButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .clear,
+                                borderColor: .clear,
+                                titleColor: GiniColor(light: .GiniBank.dark2, dark: .GiniBank.light2).uiColor(),
+                                shadowColor: .clear,
+                                cornerRadius: 0,
+                                borderWidth: 0,
+                                shadowRadius: 0,
+                                withBlurEffect: false)
     
     // MARK: - TODO DELETE
     /**
@@ -1145,91 +1198,6 @@ public final class GiniBankConfiguration: NSObject {
                                                                                               weight: .thin),
                                                                       isEnabled: false)
 
-    /**
-     Indicates corner radius for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonCornerRadius: CGFloat = 14
-    
-    /**
-     Indicates border width for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonBorderWidth: CGFloat = 1
-    
-    /**
-     Indicates shadow corner radius for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonShadowRadius: CGFloat = 14
-    
-    /**
-     Indicates shadow color for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonShadowColor = GiniColor(light: UIColor.clear, dark: UIColor.clear)
-    
-    /**
-     Indicates border color for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonBorderColor = GiniColor(light: UIColor.clear, dark: UIColor.clear)
-    
-    /**
-     Indicates background color for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonBackgroundColor = GiniColor(light: UIColor.GiniBank.accent1, dark: UIColor.GiniBank.accent1)
-    
-    /**
-     Indicates title color for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonTitleColor = GiniColor(light: UIColor.GiniBank.light1, dark: UIColor.GiniBank.light1)
-    
-    
-    /**
-     Indicates corner radius for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonCornerRadius: CGFloat = 14
-    
-    /**
-     Indicates border width for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonBorderWidth: CGFloat = 1
-    
-    /**
-     Indicates shadow corner radius for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonShadowRadius: CGFloat = 14
-    
-    /**
-     Indicates shadow color for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonShadowColor = GiniColor(light: UIColor.clear, dark: UIColor.clear)
-    
-    /**
-     Indicates background color for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonBackground = GiniColor(light: UIColor.clear, dark: UIColor.clear)
-    
-    /**
-     Indicates border color for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonBorderColor = GiniColor(light: UIColor.GiniBank.light6, dark: UIColor.clear)
-    
-    /**
-     Indicates title color for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonTitleColor = GiniColor(light: UIColor.GiniBank.dark6, dark: UIColor.GiniBank.light1)
-    
     /**
      Set an array of additional custom help menu items . Those items will be presented as table view cells on the help menu screen. By selecting the cell the user will be redirected to the page, which represented by viewController provided by customer during the  `HelpMenuViewController.Item` initialization.
     */
@@ -1413,21 +1381,10 @@ public final class GiniBankConfiguration: NSObject {
             }
         }
 
-        configuration.primaryButtonCornerRadius = self.primaryButtonCornerRadius
-        configuration.primaryButtonBorderWidth = self.primaryButtonBorderWidth
-        configuration.primaryButtonBorderColor = self.primaryButtonBorderColor
-        configuration.primaryButtonShadowColor = self.primaryButtonShadowColor
-        configuration.primaryButtonShadowRadius = self.primaryButtonShadowRadius
-        configuration.primaryButtonBackgroundColor = self.primaryButtonBackgroundColor
-        configuration.primaryButtonTitleColor = self.primaryButtonTitleColor
-        
-        configuration.outlineButtonCornerRadius = self.outlineButtonCornerRadius
-        configuration.outlineButtonBorderColor = self.outlineButtonBorderColor
-        configuration.outlineButtonBorderWidth = self.outlineButtonBorderWidth
-        configuration.outlineButtonShadowColor = self.outlineButtonShadowColor
-        configuration.outlineButtonShadowRadius = self.outlineButtonShadowRadius
-        configuration.outlineButtonBackground = self.outlineButtonBackground
-        configuration.outlineButtonTitleColor = self.outlineButtonTitleColor
+        configuration.primaryButtonConfiguration = self.primaryButtonConfiguration
+        configuration.secondaryButtonConfiguration = self.secondaryButtonConfiguration
+        configuration.transparentButtonConfiguration = self.transparentButtonConfiguration
+
         GiniCapture.setConfiguration(configuration)
         
         // Set onboarding pages after setting the GiniCapture's configuration

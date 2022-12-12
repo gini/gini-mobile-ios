@@ -145,11 +145,9 @@ public final class ReviewViewController: UIViewController {
 
     private lazy var processButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
+        button.configure(with: giniConfiguration.primaryButtonConfiguration)
         button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.layer.cornerRadius = giniConfiguration.primaryButtonCornerRadius
-        button.backgroundColor = UIColor.GiniCapture.accent1
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle",
                                                         comment: "Process button title"), for: .normal)
         button.addTarget(self, action: #selector(didTapProcessDocument), for: .touchUpInside)
@@ -159,11 +157,13 @@ public final class ReviewViewController: UIViewController {
     private lazy var addPagesButton: BottomLabelButton = {
         let addPagesButton = BottomLabelButton()
         addPagesButton.translatesAutoresizingMaskIntoConstraints = false
-        addPagesButton.configureButton(image: UIImageNamedPreferred(named: "plus_icon") ?? UIImage(),
-                                       name:
-                        NSLocalizedStringPreferredFormat("ginicapture.multipagereview.secondaryButtonTitle",
-                                                        comment: "Add pages button title"))
+        addPagesButton.setupButton(with: UIImageNamedPreferred(named: "plus_icon") ?? UIImage(),
+                                   name: NSLocalizedStringPreferredFormat(
+                                    "ginicapture.multipagereview.secondaryButtonTitle",
+                                        comment: "Add pages button title"))
         addPagesButton.isHidden = !giniConfiguration.multipageEnabled
+        addPagesButton.actionLabel.font = giniConfiguration.textStyleFonts[.bodyBold]
+        addPagesButton.configure(with: giniConfiguration.addPageButtonConfiguration)
         addPagesButton.didTapButton = { [weak self] in
             guard let self = self else { return }
             self.setCellStatus(for: self.currentPage, isActive: false)

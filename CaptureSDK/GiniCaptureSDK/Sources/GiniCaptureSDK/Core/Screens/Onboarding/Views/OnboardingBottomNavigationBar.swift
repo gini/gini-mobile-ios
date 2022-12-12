@@ -13,7 +13,6 @@ final class OnboardingBottomNavigationBar: UIView {
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var skipButton: UIButton!
     @IBOutlet weak var getStarted: UIButton!
-    private let cornerRadius: CGFloat = 16
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -22,22 +21,21 @@ final class OnboardingBottomNavigationBar: UIView {
 
     func setupView() {
         backgroundColor = GiniColor(light: .GiniCapture.light1, dark: .GiniCapture.dark1).uiColor()
-        skipButton.backgroundColor = .clear
-        skipButton.setTitleColor(GiniColor(light: .GiniCapture.accent1, dark: .GiniCapture.accent1).uiColor(),
-                                 for: .normal)
-        nextButton.backgroundColor = GiniColor(light: .GiniCapture.accent1, dark: .GiniCapture.accent1).uiColor()
-        nextButton.setTitleColor(GiniColor(light: .GiniCapture.labelWhite, dark: .GiniCapture.labelWhite).uiColor(),
-                                 for: .normal)
-        getStarted.backgroundColor = GiniColor(light: .GiniCapture.accent1, dark: .GiniCapture.accent1).uiColor()
-        getStarted.setTitleColor(GiniColor(light: .GiniCapture.labelWhite, dark: .GiniCapture.labelWhite).uiColor(),
-                                 for: .normal)
-        skipButton.layer.cornerRadius = cornerRadius
-        nextButton.layer.cornerRadius = cornerRadius
-        getStarted.layer.cornerRadius = cornerRadius
         setupButtons()
     }
 
     private func setupButtons() {
+        let configuration = GiniConfiguration.shared
+
+        nextButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
+        nextButton.configure(with: configuration.primaryButtonConfiguration)
+
+        skipButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
+        skipButton.configure(with: configuration.transparentButtonConfiguration)
+
+        getStarted.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
+        getStarted.configure(with: configuration.primaryButtonConfiguration)
+
         skipButton.setTitle(NSLocalizedStringPreferredFormat(
             "ginicapture.onboarding.skip",
             comment: "Skip button"), for: .normal)

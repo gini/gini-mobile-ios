@@ -113,93 +113,7 @@ import UIKit
                                                                       thin: UIFont.systemFont(ofSize: 14,
                                                                                               weight: .thin),
                                                                       isEnabled: false)
-    
-    /**
-     Indicates corner radius for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonCornerRadius: CGFloat = 14
-    
-    /**
-     Indicates border width for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonBorderWidth: CGFloat = 1
-    
-    /**
-     Indicates shadow corner radius for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonShadowRadius: CGFloat = 14
-    
-    
-    /**
-     Indicates shadow color for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonShadowColor = GiniColor(light: UIColor.clear, dark: UIColor.clear)
-    
-    /**
-     Indicates border color for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonBorderColor = GiniColor(light: UIColor.clear, dark: UIColor.clear)
-    
-    /**
-     Indicates background color for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonBackgroundColor = GiniColor(light: UIColor.GiniCapture.accent1, dark: UIColor.GiniCapture.accent1)
-    
-    /**
-     Indicates title color for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonTitleColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.light1)
-    
-    
-    /**
-     Indicates corner radius for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonCornerRadius: CGFloat = 14
-    
-    /**
-     Indicates border width for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonBorderWidth: CGFloat = 1
-    
-    /**
-     Indicates shadow corner radius for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonShadowRadius: CGFloat = 14
-    
-    /**
-     Indicates shadow color for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonShadowColor = GiniColor(light: UIColor.clear, dark: UIColor.clear)
-    
-    /**
-     Indicates background color for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonBackground = GiniColor(light: UIColor.clear, dark: UIColor.clear)
-    
-    /**
-     Indicates border color for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonBorderColor = GiniColor(light: UIColor.GiniCapture.light6, dark: UIColor.clear)
-    
-    /**
-     Indicates title color for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonTitleColor = GiniColor(light: UIColor.GiniCapture.dark6, dark: UIColor.GiniCapture.light1)
-    
+
     /**
      Can be turned on during development to unlock extra information and to save captured images to camera roll.
      
@@ -612,7 +526,60 @@ import UIKit
      Sets the color of the text appearing at the bottom of the review screen.
      */
     @objc public var reviewTextBottomColor = UIColor.white
-    
+
+    // MARK: Button configuration options
+
+    public lazy var primaryButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .GiniCapture.accent1,
+                                borderColor: .clear,
+                                titleColor: .GiniCapture.light1,
+                                shadowColor: .clear,
+                                cornerRadius: 16,
+                                borderWidth: 0,
+                                shadowRadius: 0,
+                                withBlurEffect: false)
+
+    public lazy var secondaryButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .GiniCapture.dark4,
+                                borderColor: GiniColor(light: UIColor.GiniCapture.light6,
+                                                      dark: UIColor.clear).uiColor(),
+                                titleColor: .GiniCapture.accent1,
+                                shadowColor: .clear,
+                                cornerRadius: 14,
+                                borderWidth: 1,
+                                shadowRadius: 14,
+                                withBlurEffect: true)
+
+    public lazy var transparentButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .clear,
+                                borderColor: .clear,
+                                titleColor: .GiniCapture.accent1,
+                                shadowColor: .clear,
+                                cornerRadius: 16,
+                                borderWidth: 0,
+                                shadowRadius: 0,
+                                withBlurEffect: false)
+
+    public lazy var cameraControlButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .clear,
+                                borderColor: .clear,
+                                titleColor: .GiniCapture.light1,
+                                shadowColor: .clear,
+                                cornerRadius: 0,
+                                borderWidth: 0,
+                                shadowRadius: 0,
+                                withBlurEffect: false)
+
+    public lazy var addPageButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .clear,
+                                borderColor: .clear,
+                                titleColor: GiniColor(light: .GiniCapture.dark2, dark: .GiniCapture.light2).uiColor(),
+                                shadowColor: .clear,
+                                cornerRadius: 0,
+                                borderWidth: 0,
+                                shadowRadius: 0,
+                                withBlurEffect: false)
+
     // MARK: Multipage options
     
     /**
