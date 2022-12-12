@@ -107,7 +107,21 @@ final class AppCoordinator: Coordinator {
 //        let navigationViewController = UINavigationController()
 //        navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
 //        configuration.customNavigationController = navigationViewController
-        
+
+        // Custom button configuration example:
+//        configuration.primaryButtonConfiguration = ButtonConfiguration(backgroundColor: .yellow,
+//                                                                       borderColor: .red,
+//                                                                       titleColor: .green,
+//                                                                       shadowColor: .clear,
+//                                                                       titleFont: UIFont.systemFont(ofSize: 20,
+//                                                                                                    weight: .thin),
+//                                                                       cornerRadius: 22,
+//                                                                       borderWidth: 4,
+//                                                                       shadowRadius: 0,
+//                                                                       withBlurEffect: false)
+//        configuration.transparentButtonConfiguration =
+//        configuration.secondaryButtonConfiguration =
+
        return configuration
     }()
     

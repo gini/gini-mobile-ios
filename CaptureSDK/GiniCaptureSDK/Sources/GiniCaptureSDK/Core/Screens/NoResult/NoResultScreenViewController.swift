@@ -49,16 +49,10 @@ final public class NoResultScreenViewController: UIViewController {
                 "ginicapture.noresult.retakeImages",
                 comment: "Retake images"))
         view.translatesAutoresizingMaskIntoConstraints = false
-        if viewModel.isEnterManuallyHidden() == false {
-            view.enterButton.isHidden = false
-        } else {
-            view.enterButton.isHidden = true
-        }
-        if viewModel.isRetakePressedHidden() == false {
-            view.retakeButton.isHidden = false
-        } else {
-            view.retakeButton.isHidden = true
-        }
+
+        view.enterButton.isHidden = viewModel.isEnterManuallyHidden()
+        view.retakeButton.isHidden = viewModel.isRetakePressedHidden()
+
         return view
     }()
 
@@ -141,7 +135,6 @@ final public class NoResultScreenViewController: UIViewController {
             left: 0,
             bottom: buttonsView.bounds.size.height + GiniMargins.margin,
             right: 0)
-        buttonsView.configureButtonsColors()
     }
 
     private func setupView() {
