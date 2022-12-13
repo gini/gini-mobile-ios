@@ -10,9 +10,6 @@ import UIKit
 
 /**
  The `HelpMenuViewControllerDelegate` protocol defines methods that allow you to handle table item selection actions.
- 
- - note: Component API only.
- - TODO:  - REMOVE Componen API
  */
 
 public protocol HelpMenuViewControllerDelegate: AnyObject {

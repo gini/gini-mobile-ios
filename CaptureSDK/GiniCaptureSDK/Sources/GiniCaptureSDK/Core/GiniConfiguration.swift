@@ -472,42 +472,6 @@ import UIKit
      */
     @objc public var onboardingScreenBackgroundColor = GiniColor(light: .black, dark: .black)
     
-    /**
-     All onboarding pages which will be presented in a horizontal scroll view to the user.
-     By default the Gini Capture SDK comes with three pages advising the user to keep the
-     document flat, hold the device parallel and capture the whole document.
-     
-     - note: Any array of views can be passed, but for your convenience we provide the `GINIOnboardingPage` class.
-     */
-    @objc public var onboardingPages: [UIView] {
-        get {
-            if let pages = onboardingCustomPages {
-                return pages
-            }
-            guard let page1 = OnboardingPage(imageNamed: "onboardingPage1",
-                                             text: .localized(resource: OnboardingStrings.onboardingFirstPageText),
-                                             rotateImageInLandscape: true),
-                let page2 = OnboardingPage(imageNamed: "onboardingPage2",
-                                           text: .localized(resource: OnboardingStrings.onboardingSecondPageText)),
-                let page3 = OnboardingPage(imageNamed: "onboardingPage3",
-                                           text: .localized(resource: OnboardingStrings.onboardingThirdPageText)),
-                let page4 = OnboardingPage(imageNamed: "onboardingPage5",
-                                           text: .localized(resource: OnboardingStrings.onboardingFifthPageText)) else {
-                    return [UIView]()
-            }
-            
-            onboardingCustomPages = [page1, page2, page3, page4]
-            if let ipadTipPage = OnboardingPage(imageNamed: "onboardingPage4",
-                                                text: .localized(resource: OnboardingStrings.onboardingFourthPageText)),
-                UIDevice.current.isIpad {
-                onboardingCustomPages?.insert(ipadTipPage, at: 0)
-            }
-            return onboardingCustomPages!
-        }
-        set {
-            self.onboardingCustomPages = newValue
-        }
-    }
     fileprivate var onboardingCustomPages: [UIView]?
     /**
      Set custom onboarding pages
