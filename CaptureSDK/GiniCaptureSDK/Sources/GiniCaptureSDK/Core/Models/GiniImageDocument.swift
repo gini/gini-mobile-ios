@@ -26,7 +26,7 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
         return self.metaInformationManager.imageRotationDeltaDegrees()
     }
 
-    // A boolean to determine if the document is opened from another app or from the SDK
+    // A flag to determine if the document is opened from another app or from the SDK
     public var isFromOtherApp: Bool
     fileprivate let metaInformationManager: ImageMetaInformationManager
     
