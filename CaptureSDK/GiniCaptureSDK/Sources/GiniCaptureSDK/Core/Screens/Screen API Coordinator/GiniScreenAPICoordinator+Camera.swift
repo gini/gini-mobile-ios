@@ -278,8 +278,7 @@ extension GiniScreenAPICoordinator {
         self.validate(importedDocuments: documents) { validatedDocuments in
             let elementsWithError = validatedDocuments.filter { $0.error != nil }
             if let firstElement = elementsWithError.first,
-                let error = firstElement.error,
-                (!self.giniConfiguration.multipageEnabled || firstElement.document.type != .image) {
+                let error = firstElement.error {
                 completion(.failure(error))
             } else {
                 completion(.success(validatedDocuments))
