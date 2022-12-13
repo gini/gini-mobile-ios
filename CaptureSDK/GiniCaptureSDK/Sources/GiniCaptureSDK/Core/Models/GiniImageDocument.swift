@@ -25,7 +25,9 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
     public var rotationDelta: Int { // Should be normalized to be in [0, 360)
         return self.metaInformationManager.imageRotationDeltaDegrees()
     }
-    
+
+    // A flag to determine if the document is opened from another app or from the SDK
+    public var isFromOtherApp: Bool
     fileprivate let metaInformationManager: ImageMetaInformationManager
     
     /**
@@ -45,6 +47,14 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
         self.previewImage = UIImage(data: processedImageData ?? data)
         self.isReviewable = true
         self.id = UUID().uuidString
+
+        switch imageSource {
+        case .appName(name: _) :
+            isFromOtherApp = true
+        default:
+            isFromOtherApp = false
+        }
+
         self.isImported = imageSource != DocumentSource.camera
         self.metaInformationManager = ImageMetaInformationManager(imageData: data,
                                                                   deviceOrientation: deviceOrientation,
