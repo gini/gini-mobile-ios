@@ -51,7 +51,7 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Used to handle all the logging messages in order to log them in a different way.
      */
-    @objc public var logger: GiniLogger = GiniConfiguration().logger
+    @objc public var logger: GiniLogger = GiniConfiguration.shared.logger
     
     /**
      Indicates whether the multipage feature is enabled or not. In case of `true`,
@@ -1272,7 +1272,7 @@ public final class GiniBankConfiguration: NSObject {
     ]
     
     public func captureConfiguration() -> GiniConfiguration {
-     let configuration = GiniConfiguration()
+        let configuration = GiniConfiguration.shared
         configuration.customDocumentValidations = self.customDocumentValidations
         
         configuration.customFont = self.customFont
