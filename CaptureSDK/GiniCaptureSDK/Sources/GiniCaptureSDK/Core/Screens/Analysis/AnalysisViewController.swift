@@ -158,9 +158,8 @@ import UIKit
     }
 
     // MARK: Toggle animation
-    /**
-     Displays a loading activity indicator. Should be called when document analysis is started.
-     */
+
+    /// Displays a loading activity indicator. Should be called when document analysis is started.
     public func showAnimation() {
         if let loadingIndicator = giniConfiguration.customLoadingIndicator {
             loadingIndicator.startAnimation()
@@ -169,9 +168,7 @@ import UIKit
         }
     }
 
-    /**
-     Hides the loading activity indicator. Should be called when document analysis is finished.
-     */
+    /// Hides the loading activity indicator. Should be called when document analysis is finished.
     public func hideAnimation() {
         if let loadingIndicator = giniConfiguration.customLoadingIndicator {
             loadingIndicator.stopAnimation()
@@ -204,9 +201,11 @@ import UIKit
         addErrorView()
     }
 
-    /**
-     Shows an error when there was an error with either the analysis or document upload
-     */
+
+    /// Show error view on the screen
+    /// - Parameters:
+    ///   - message: description of the error
+    ///   - action: the action that should happen when the user interacts with the error view
     public func showError(with message: String, action: @escaping () -> Void ) {
         trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .error, info: ["message": message]))
 
@@ -220,9 +219,9 @@ import UIKit
         errorView.show()
     }
 
-    /**
-     Hide the error view
-     */
+
+    /// Hide the error view
+    /// - Parameter animated: a flag to hide the view with animation
     public func hideError(animated: Bool = false) {
         errorView.hide(animated, completion: nil)
         errorView.isHidden = true
