@@ -29,7 +29,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
     weak var analysisDelegate: AnalysisDelegate?
     var visionDocuments: [GiniCaptureDocument]?
     var visionConfiguration: GiniConfiguration
-    var sendFeedbackBlock: (([String: Extraction]) -> Void)?
 
     init(configuration: GiniConfiguration,
          importedDocuments documents: [GiniCaptureDocument]?,
@@ -102,13 +101,13 @@ extension ScreenAPICoordinator: UINavigationControllerDelegate {
             delegate?.screenAPI(coordinator: self, didFinish: ())
         }
 
-        if let fromVC = fromVC as? ResultTableViewController {
-            sendFeedbackBlock?(fromVC.result.reduce([:]) {
-                guard let name = $1.name else { return $0 }
-                var result = $0
-                result[name] = $1
-                return result
-            })
+        if fromVC is ResultTableViewController {
+            visionConfiguration.cleanup(paymentRecipient: "",
+                                        paymentReference: "",
+                                        paymentPurpose: "",
+                                        iban: "",
+                                        bic: "",
+                                        amountToPay: ExtractionAmount(value: 10.242, currency: .EUR))
             delegate?.screenAPI(coordinator: self, didFinish: ())
         }
 
@@ -133,14 +132,6 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
         showResultsScreen(results: result.extractions.map { $0.value }, document: result.document)
-
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-//            self.visionConfiguration.cleanup(paymentRecipient: "",
-//                                             paymentReference: "",
-//                                             iban: "",
-//                                             bic: "",
-//                                             amountToPay: ExtractionAmount(value: 10.242, currency: .EUR))
-//        })
     }
 
     func giniCaptureDidCancelAnalysis() {
