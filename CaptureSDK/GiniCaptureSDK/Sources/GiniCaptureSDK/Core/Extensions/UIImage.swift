@@ -156,18 +156,4 @@ extension UIImage {
         // If something failed -- return original
         return self
     }
-
-    // Used to merge the canvas for cropping with the original image
-    func overlayWith(image: UIImage, posX: CGFloat, posY: CGFloat, newSize: CGSize) -> UIImage {
-          let newWidth = size.width < posX + newSize.width ? posX + newSize.width : size.width
-          let newHeight = size.height < posY + newSize.height ? posY + newSize.height : size.height
-          let newSize = CGSize(width: newWidth, height: newHeight)
-
-          UIGraphicsBeginImageContextWithOptions(newSize, false, 1)
-          draw(in: CGRect(origin: CGPoint.zero, size: newSize))
-          image.draw(in: CGRect(origin: CGPoint(x: posX, y: posY), size: image.size))
-          let newImage = UIGraphicsGetImageFromCurrentImageContext()!
-          UIGraphicsEndImageContext()
-          return newImage
-    }
 }

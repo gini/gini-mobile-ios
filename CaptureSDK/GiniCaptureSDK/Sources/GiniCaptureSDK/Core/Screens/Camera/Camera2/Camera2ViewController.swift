@@ -507,11 +507,11 @@ extension Camera2ViewController {
         // The A4 rect position and size on the whole image
         let cropRect = CGRect(x: cropRectX, y: cropRectY, width: a4FrameRect.width, height: a4FrameRect.height)
 
-        // Scaling up the rectangle 20%
-        let scaledSize = CGSize(width: cropRect.width * 1.2, height: cropRect.height * 1.2)
+        // Scaling up the rectangle 15%
+        let scaledSize = CGSize(width: cropRect.width * 1.15, height: cropRect.height * 1.15)
 
-        let scaledOriginX = cropRectX - cropRect.width * 0.1
-        let scaledOriginY = cropRectY - cropRect.height * 0.1
+        let scaledOriginX = cropRectX - cropRect.width * 0.075
+        let scaledOriginY = cropRectY - cropRect.height * 0.075
 
         var scaledRect = CGRect(x: scaledOriginX, y: scaledOriginY, width: scaledSize.width, height: scaledSize.height)
 
@@ -520,24 +520,19 @@ extension Camera2ViewController {
             return cut(image: image, to: scaledRect)
         } else {
             // The area to be cropped is outside of the area of the image
-            // Add image to background image
-            guard let backgroundImage = UIImageNamedPreferred(named: "blackBackground") else { return image }
 
-            // Calculate origin of the image compared to the canvas size
-            var drawOrigin: CGPoint = CGPoint.zero
+            // If the area is bigger than the image, reset the origin and subtract the extra width/height that is not present
             if scaledOriginX < 0 {
-                drawOrigin.x = -scaledOriginX
+                scaledRect.size.width += scaledRect.origin.x
                 scaledRect.origin.x = 0
             }
 
             if scaledOriginY < 0 {
-                drawOrigin.y = -scaledOriginY
+                scaledRect.size.height += scaledRect.origin.y
                 scaledRect.origin.y = 0
             }
 
-            // Merge the canvas and the image together
-            let mergedImage = backgroundImage.overlayWith(image: image, posX: drawOrigin.x, posY: drawOrigin.y, newSize: scaledSize)
-            return cut(image: mergedImage, to: scaledRect)
+            return cut(image: image, to: scaledRect)
         }
     }
     // swiftlint:enable line_length
