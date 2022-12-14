@@ -122,7 +122,12 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     }
     
     @objc private func closeSreenAPIAndSendFeedback() {
-        configuration.cleanup(paymentRecipient: "", paymentReference: "", iban: "", bic: "", amountToPay: ExtractionAmount(value: 10.242, currency: .EUR))
+        configuration.cleanup(paymentRecipient: "",
+                              paymentReference: "",
+                              paymentPurpose: "",
+                              iban: "",
+                              bic: "",
+                              amountToPay: ExtractionAmount(value: 10.242, currency: .EUR))
         delegate?.screenAPI(coordinator: self, didFinish: ())
     }
 }
