@@ -326,9 +326,12 @@ extension CameraPreviewViewController {
         
         notAuthorizedView.translatesAutoresizingMaskIntoConstraints = false
 
+        let bottomPadding: CGFloat =
+            giniConfiguration.bottomNavigationBarEnabled ? Constants.bottomNavigationBarHeight : 0
+
         NSLayoutConstraint.activate([
             notAuthorizedView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            notAuthorizedView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            notAuthorizedView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -bottomPadding),
             notAuthorizedView.topAnchor.constraint(equalTo: view.topAnchor),
             notAuthorizedView.leadingAnchor.constraint(equalTo: view.leadingAnchor)])
 
