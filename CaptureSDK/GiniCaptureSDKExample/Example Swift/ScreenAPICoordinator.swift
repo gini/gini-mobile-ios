@@ -131,13 +131,16 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
         screenAPIViewController.dismiss(animated: true)
     }
     
-    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult,
-                                          sendFeedbackBlock: @escaping ([String: Extraction]) -> Void) {
+    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
         showResultsScreen(results: result.extractions.map { $0.value }, document: result.document)
-        self.sendFeedbackBlock = sendFeedbackBlock
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-            sendFeedbackBlock(result.extractions)
-        }
+
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+//            self.visionConfiguration.cleanup(paymentRecipient: "",
+//                                             paymentReference: "",
+//                                             iban: "",
+//                                             bic: "",
+//                                             amountToPay: ExtractionAmount(value: 10.242, currency: .EUR))
+//        })
     }
 
     func giniCaptureDidCancelAnalysis() {

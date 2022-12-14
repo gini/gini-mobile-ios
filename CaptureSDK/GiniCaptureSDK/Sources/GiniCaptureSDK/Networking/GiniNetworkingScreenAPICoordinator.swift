@@ -57,7 +57,8 @@ import GiniBankAPILibrary
                                                                                   for: api)
         super.init(withDelegate: nil,
                    giniConfiguration: giniConfiguration)
-        
+
+        self.giniConfiguration.documentService = documentService
         self.visionDelegate = self
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
@@ -73,7 +74,8 @@ import GiniBankAPILibrary
          
          super.init(withDelegate: nil,
                     giniConfiguration: giniConfiguration)
-         
+
+         self.giniConfiguration.documentService = documentService
          self.visionDelegate = self
          self.resultsDelegate = resultsDelegate
          self.trackingDelegate = trackingDelegate
@@ -125,11 +127,8 @@ import GiniBankAPILibrary
                 
                 
                 let result = AnalysisResult(extractions: extractions, lineItems: result.lineItems, images: images, document: document)
-                
-                let documentService = self.documentService
-                
+                                
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
-                documentService.resetToInitialState()
             } else {
                 self.resultsDelegate?
                     .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen())
