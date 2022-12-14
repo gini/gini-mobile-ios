@@ -856,7 +856,7 @@ import GiniBankAPILibrary
      ///   - iban: iban description
      ///   - bic: bic description
      ///   - amountToPay: amountToPay description
-     public func cleanup(paymentRecipient: String, paymentReference: String, iban: String, bic: String, amountToPay: ExtractionAmount) {
+    public func cleanup(paymentRecipient: String, paymentReference: String, paymentPurpose: String, iban: String, bic: String, amountToPay: ExtractionAmount) {
          guard let documentService = documentService else { return }
 
          // Convert amount object to string
@@ -874,6 +874,11 @@ import GiniBankAPILibrary
                                                      entity: "reference",
                                                      value: paymentRecipient,
                                                      name: "paymentReference")
+         let paymentPurposeExtraction = Extraction(box: nil,
+                                                   candidates: nil,
+                                                   entity: "text",
+                                                   value: paymentPurpose,
+                                                   name: "paymentPurpose")
          let ibanExtraction = Extraction(box: nil,
                                          candidates: nil,
                                          entity: "iban",
@@ -892,6 +897,7 @@ import GiniBankAPILibrary
 
          let updatedExtractions: [Extraction] = [paymentRecipientExtraction,
                                                  paymentReferenceExtraction,
+                                                 paymentPurposeExtraction,
                                                  ibanExtraction,
                                                  bicExtraction,
                                                  amountExtraction]

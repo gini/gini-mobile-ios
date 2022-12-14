@@ -163,23 +163,7 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                                                             lineItems: extractionResult.lineItems,
                                                             images: [],
                                                             document: self.giniCaptureSDKDocumentService?.document)
-                        
-                        let sendFeedbackBlock: (([String: Extraction]) -> Void) = { [self] updatedExtractions in
-                            let extractions = updatedExtractions.map {$0.1}
-                            
-                            self.feedbackSendingGroup.enter()
-                            
-                            self.giniBankAPIDocumentService.submitFeedback(for: self.giniCaptureSDKDocumentService!.document!,
-                                                                           with: extractions) { result in
-                                switch result {
-                                case .success():
-                                    self.feedbackSendingGroup.leave()
-                                case let .failure(error):
-                                    XCTFail(String(describing: error))
-                                }
-                            }
-                        }
-                        
+                                                
                         delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
                     case let .failure(error):
                         XCTFail(String(describing: error))
