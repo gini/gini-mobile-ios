@@ -29,7 +29,7 @@ public final class GiniBankConfiguration: NSObject {
      
      - returns: Instance of `GiniBankConfiguration`.
      */
-    internal override init() {}
+    override init() {}
     
     // MARK: General options
     
@@ -1587,8 +1587,8 @@ public final class GiniBankConfiguration: NSObject {
         textStyleFonts[textStyle] = font
     }
 
-    internal var documentService: DocumentServiceProtocol?
-    internal var lineItems: [[Extraction]]?
+    var documentService: DocumentServiceProtocol?
+    var lineItems: [[Extraction]]?
 
     /// Function for clean up
     /// - Parameters:
@@ -1602,10 +1602,8 @@ public final class GiniBankConfiguration: NSObject {
 
         // Convert amount object to string
         // Cut off decimals after the first 2
-        let divisor: Double = 100
-        let doubleValue = Double(truncating: amountToPay.value as NSNumber)
-        let doubleValueTruncated = (doubleValue * divisor).rounded(.towardZero) / divisor
-        let amountToPayString = "\(doubleValue)" + ":" + amountToPay.currency.rawValue
+        let truncatedAmountValue = amountToPay.value.convertToDouble(withDecimalPoint: 2)
+        let amountToPayString = "\(truncatedAmountValue)" + ":" + amountToPay.currency.rawValue
 
         let paymentRecipientExtraction = Extraction(box: nil,
                                                     candidates: nil,
@@ -1647,6 +1645,7 @@ public final class GiniBankConfiguration: NSObject {
                                          updatedCompoundExtractions: nil)
         }
 
+        documentService.resetToInitialState()
         self.documentService = nil
         self.lineItems = nil
     }

@@ -226,8 +226,6 @@ extension GiniBankNetworkingScreenApiCoordinator {
 
 
                 self.giniBankConfiguration.lineItems = result.lineItems
-
-                documentService.resetToInitialState()
             } else {
                 self.resultsDelegate?
                     .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen())
