@@ -206,7 +206,6 @@ import UIKit
     /// - Parameters:
     ///   - message: description of the error
     ///   - action: the action that should happen when the user interacts with the error view
-
     public func showError(with message: String, action: @escaping () -> Void ) {
         trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .error, info: ["message": message]))
 
