@@ -86,7 +86,7 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
             self.expect = expect
         }
 
-        func giniCaptureAnalysisDidFinishWith(result: AnalysisResult, sendFeedbackBlock: @escaping ([String : Extraction]) -> Void) {
+        func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
             // 1b. Received the extractions for the uploaded document
             let fixtureExtractionsJson = self.integrationTest.loadFile(withName: "result_Gini_invoice_example", ofType: "json")
 
@@ -113,7 +113,7 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
             if result.extractions["amountToPay"] != nil {
                 // 4. Send feedback for the extractions the user saw
                 //    with the final (user confirmed or updated) extraction values
-                sendFeedbackBlock(result.extractions)
+//                sendFeedbackBlock(result.extractions)
 
                 self.integrationTest.feedbackSendingGroup.notify(queue: DispatchQueue.main) {
                     // 5. Verify that the extractions were updated
@@ -186,23 +186,7 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                                                             images: [],
                                                             document: self.giniCaptureSDKDocumentService?.document)
 
-                        let sendFeedbackBlock: (([String: Extraction]) -> Void) = { [self] updatedExtractions in
-                            let extractions = updatedExtractions.map {$0.1}
-
-                            self.feedbackSendingGroup.enter()
-
-                            self.giniBankAPIDocumentService.submitFeedback(for: self.giniCaptureSDKDocumentService!.document!,
-                                                                           with: extractions) { result in
-                                switch result {
-                                case .success():
-                                    self.feedbackSendingGroup.leave()
-                                case let .failure(error):
-                                    XCTFail(String(describing: error))
-                                }
-                            }
-                        }
-
-                        delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult, sendFeedbackBlock: sendFeedbackBlock)
+                        delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
                     case let .failure(error):
                         XCTFail(String(describing: error))
                     }

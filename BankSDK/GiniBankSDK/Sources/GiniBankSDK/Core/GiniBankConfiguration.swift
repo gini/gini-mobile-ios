@@ -1597,7 +1597,7 @@ public final class GiniBankConfiguration: NSObject {
     ///   - iban: iban description
     ///   - bic: bic description
     ///   - amountToPay: amountToPay description
-    public func cleanup(paymentRecipient: String, paymentReference: String, iban: String, bic: String, amountToPay: ExtractionAmount) {
+    public func cleanup(paymentRecipient: String, paymentReference: String, paymentPurpose: String, iban: String, bic: String, amountToPay: ExtractionAmount) {
         guard let documentService = documentService else { return }
 
         // Convert amount object to string
@@ -1615,6 +1615,11 @@ public final class GiniBankConfiguration: NSObject {
                                                     entity: "reference",
                                                     value: paymentRecipient,
                                                     name: "paymentReference")
+        let paymentPurposeExtraction = Extraction(box: nil,
+                                                  candidates: nil,
+                                                  entity: "text",
+                                                  value: paymentPurpose,
+                                                  name: "paymentPurpose")
         let ibanExtraction = Extraction(box: nil,
                                         candidates: nil,
                                         entity: "iban",
@@ -1633,6 +1638,7 @@ public final class GiniBankConfiguration: NSObject {
 
         let updatedExtractions: [Extraction] = [paymentRecipientExtraction,
                                                 paymentReferenceExtraction,
+                                                paymentPurposeExtraction,
                                                 ibanExtraction,
                                                 bicExtraction,
                                                 amountExtraction]
