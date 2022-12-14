@@ -10,14 +10,14 @@ Once you have your Swift package set up, adding `GiniCaptureSDK` as a dependency
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/gini/capture-sdk-ios.git", .exact("2.0.0-beta07"))
+    .package(url: "https://github.com/gini/capture-sdk-ios.git", .exact("3.0.0-beta01"))
 ]
 ```
 
 In case that you want to use the certificate pinning in the library, add `GiniCaptureSDKPinning`:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/gini/capture-sdk-pinning-ios.git", .exact("2.0.0-beta07"))
+    .package(url: "https://github.com/gini/capture-sdk-pinning-ios.git", .exact("3.0.0-beta01"))
 ]
 ```
 
@@ -35,4 +35,4 @@ In case that you want to use the certificate pinning you need to add the followi
  - `GiniCaptureSDKPinning.xcframework`
  - `TrustKit.xcframework`
 
- The latest version of the frameworks is availiable on [github](https://github.com/gini/gini-mobile-ios/releases/tag/GiniBankSDK%3B1.11.2).
+ The latest version of the frameworks is availiable on [github](https://github.com/gini/gini-mobile-ios/releases/tag/GiniBankSDK%3B1.12.0).
