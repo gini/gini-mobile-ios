@@ -113,7 +113,6 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
             if result.extractions["amountToPay"] != nil {
                 // 4. Send feedback for the extractions the user saw
                 //    with the final (user confirmed or updated) extraction values
-//                sendFeedbackBlock(result.extractions)
 
                 self.integrationTest.feedbackSendingGroup.notify(queue: DispatchQueue.main) {
                     // 5. Verify that the extractions were updated
@@ -187,6 +186,13 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                                                             document: self.giniCaptureSDKDocumentService?.document)
 
                         delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
+
+                       GiniConfiguration.shared.cleanup(paymentRecipient: extractions["paymentRecipient"]?.value ?? "",
+                                                        paymentReference: extractions["paymentReference"]?.value ?? "",
+                                                        paymentPurpose: extractions["paymentPurpose"]?.value ?? "",
+                                                        iban: extractions["iban"]?.value ?? "",
+                                                        bic: extractions["bic"]?.value ?? "",
+                                                        amountToPay: ExtractionAmount(value: 950.00, currency: .EUR))
                     case let .failure(error):
                         XCTFail(String(describing: error))
                     }
