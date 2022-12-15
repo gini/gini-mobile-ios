@@ -131,7 +131,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         DispatchQueue.main.async { [weak self] in
             if #available(iOS 15.0, *) {
                 let config = self?.configuration.captureConfiguration()
-                 self?.screenAPIViewController.applyStyle(withConfiguration: config ?? GiniConfiguration())
+                self?.screenAPIViewController.applyStyle(withConfiguration: config ?? GiniConfiguration.shared)
              }
             self?.screenAPIViewController.setNavigationBarHidden(false, animated: false)
             
