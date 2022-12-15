@@ -37,6 +37,7 @@ class TrackingDelegate: GiniCaptureTrackingDelegate {
 }
 
 final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
+    var errorOccurred: Bool = false
     weak var resultsDelegate: GiniCaptureResultsDelegate?
     weak var delegate: ScreenAPICoordinatorDelegate?
     var childCoordinators: [Coordinator] = []
@@ -217,6 +218,7 @@ extension ScreenAPICoordinator: GiniCaptureNetworkService {
 // MARK: Screen API - UI Only - GiniCaptureDelegate
 
 extension ScreenAPICoordinator: GiniCaptureDelegate {
+
     func didPressEnterManually() {
         // Add your  implementation
     }
