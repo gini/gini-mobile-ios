@@ -310,8 +310,10 @@ extension GiniBankNetworkingScreenApiCoordinator {
         uploadWithReturnAssistant(document: document, didComplete: { _ in
             self.startAnalysisWithReturnAssistant(networkDelegate: networkDelegate)
         }, didFail: { _, error in
-            guard error != .requestCancelled else { return }
-            networkDelegate.displayError(errorType: ErrorType(error: error), animated: true)
+            DispatchQueue.main.async {
+                guard error != .requestCancelled else { return }
+                networkDelegate.displayError(errorType: ErrorType(error: error), animated: true)
+            }
         })
     }
 }

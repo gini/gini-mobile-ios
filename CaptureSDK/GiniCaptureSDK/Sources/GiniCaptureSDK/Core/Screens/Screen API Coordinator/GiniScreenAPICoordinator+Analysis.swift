@@ -93,7 +93,6 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
         animated: Bool
     ) {
         let viewModel: BottomButtonsViewModel
-        let viewController: ErrorScreenViewController
         switch pages.type {
         case .image:
             if self.pages.contains(where: { $0.document.isImported == false }) {
@@ -132,7 +131,7 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
                 self?.closeScreenApi()
             })
         }
-        viewController = ErrorScreenViewController(
+        let viewController = ErrorScreenViewController(
             giniConfiguration: giniConfiguration,
             type: errorType,
             documentType: pages.type ?? .pdf,
