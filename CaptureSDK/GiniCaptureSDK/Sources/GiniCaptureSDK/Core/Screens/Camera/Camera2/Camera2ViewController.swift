@@ -212,7 +212,6 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         cameraPane.setupAuthorization(isHidden: false)
         configureLeftButtons()
         cameraButtonsViewModel.captureAction = { [weak self] in
-            self?.cameraPreviewViewController.startLoadingIndicator()
             self?.cameraPane.toggleCaptureButtonActivation(state: false)
             self?.cameraPreviewViewController.captureImage { [weak self] data, error in
                 guard let self = self else { return }
