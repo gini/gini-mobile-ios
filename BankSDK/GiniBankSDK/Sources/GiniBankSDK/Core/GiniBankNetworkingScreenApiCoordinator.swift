@@ -15,6 +15,8 @@ protocol Coordinator: AnyObject {
 }
 
 open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, GiniCaptureDelegate {
+    public var errorOccurred: Bool = false
+    
     
     // MARK: - GiniCaptureDelegate
     
@@ -280,8 +282,13 @@ extension GiniBankNetworkingScreenApiCoordinator {
                 }
 
             case let .failure(error):
+                guard self.errorOccurred == false, error != .requestCancelled else {
+                    return
+                }
+
                 DispatchQueue.main.async { [weak self] in
                     guard error != .requestCancelled else { return }
+                    self?.errorOccurred = true
                     self?.displayError(errorType: ErrorType(error: error), animated: true)
                     
                 }
@@ -311,7 +318,8 @@ extension GiniBankNetworkingScreenApiCoordinator {
             self.startAnalysisWithReturnAssistant(networkDelegate: networkDelegate)
         }, didFail: { _, error in
             DispatchQueue.main.async {
-                guard error != .requestCancelled else { return }
+                guard self.errorOccurred == false,  error != .requestCancelled else { return }
+                self.errorOccurred = true
                 networkDelegate.displayError(errorType: ErrorType(error: error), animated: true)
             }
         })

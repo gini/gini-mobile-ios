@@ -41,10 +41,10 @@ import GiniBankAPILibrary
 }
 
  public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
-    
     public weak var resultsDelegate: GiniCaptureResultsDelegate?
     public let documentService: DocumentServiceProtocol
-    
+    public var errorOccurred: Bool = false
+
     public init(client: Client,
          resultsDelegate: GiniCaptureResultsDelegate,
          giniConfiguration: GiniConfiguration,
@@ -152,7 +152,8 @@ extension GiniNetworkingScreenAPICoordinator {
             case .success(let extractions):
                 self.deliver(result: extractions, and: self.documentService.document, to: networkDelegate)
             case .failure(let error):
-                guard error != .requestCancelled else { return }
+                guard self.visionDelegate?.errorOccurred == false, error != .requestCancelled else { return }
+                self.visionDelegate?.errorOccurred = true
                 networkDelegate.displayError(errorType: ErrorType(error: error), animated: true)
             }
         }

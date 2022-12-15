@@ -54,7 +54,8 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     var configuration: GiniBankConfiguration
     var sendFeedbackBlock: (([String: Extraction]) -> Void)?
     var manuallyCreatedDocument: Document?
-    
+    var errorOccurred: Bool = false
+
     init(configuration: GiniBankConfiguration,
          importedDocuments documents: [GiniCaptureDocument]?,
          client: Client,
@@ -238,6 +239,7 @@ extension ScreenAPICoordinator: GiniCaptureNetworkService {
 // MARK: Screen API - UI Only - GiniCaptureDelegate
 
 extension ScreenAPICoordinator: GiniCaptureDelegate {
+    
     func didPressEnterManually() {
         // Add your  implementation
     }
