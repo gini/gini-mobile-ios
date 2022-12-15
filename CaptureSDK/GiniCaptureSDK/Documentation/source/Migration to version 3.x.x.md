@@ -5,4 +5,4 @@ We've removed the Component API integration option
 
 Introduced centralized customization for the color pallete, typograhy.
 
-Please, find more details in [Installation](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/installation.html).
+Please, find more details in [Getting started](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/getting-started.html).
