@@ -37,12 +37,9 @@ custom_categories:
 
 - name: Classes
   children:
-  - AnalysisViewController
   - AnalysisResult
-  - CameraViewController
   - CustomDocumentValidationError
   - CustomDocumentValidationResult
-  - DocumentPickerCoordinator
   - GiniConfiguration
   - GiniImageDocument
   - GiniPDFDocument
@@ -50,11 +47,8 @@ custom_categories:
   - GiniCapture
   - GiniCaptureDocumentBuilder
   - GiniCaptureDocumentValidator
-  - HelpMenuViewController
-  - ImageAnalysisNoResultsViewController
   - OnboardingPage
-  - ReviewViewController
-
+  
 - name: Enums
   children:
   - AnalysisError
