@@ -887,7 +887,7 @@ import GiniBankAPILibrary
          let bicExtraction = Extraction(box: nil,
                                         candidates: nil,
                                         entity: "bic",
-                                        value: iban,
+                                        value: bic,
                                         name: "bic")
          let amountExtraction = Extraction(box: nil,
                                            candidates: nil,
