@@ -5,7 +5,6 @@ The Gini Capture SDK components can be customized either through the `GiniConfig
 
 - [Generic components](#generic-components)
 - [Onboarding screens](#onboarding-screens)
-- [No Authorized screen](#no-authorized-screen)
 - [Camera screen](#camera-screen)
 - [Gallery album screen](#gallery-album-screen)
 - [Review screen](#review-screen)
