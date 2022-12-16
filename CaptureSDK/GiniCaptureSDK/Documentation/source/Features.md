@@ -49,7 +49,7 @@ You can customize the onboarding in the following ways:
 
 * Force show the onboarding:
    If you wish to show the onboarding after the first run then pass `true` to
-   ``GiniConfiguration.shared.onboardingShowAtLaunch`.
+   `GiniConfiguration.shared.onboardingShowAtLaunch`.
 
 * Animate illustrations by injecting custom views:
    If you need to animate the illustrations on the onboarding pages implement the `OnboardingIllustrationAdapter`
