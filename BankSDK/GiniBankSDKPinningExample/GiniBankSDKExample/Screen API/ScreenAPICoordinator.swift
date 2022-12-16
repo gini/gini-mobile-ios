@@ -54,7 +54,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     var configuration: GiniBankConfiguration
     var sendFeedbackBlock: (([String: Extraction]) -> Void)?
     var manuallyCreatedDocument: Document?
-    var errorOccurred: Bool = false
 
     init(configuration: GiniBankConfiguration,
          importedDocuments documents: [GiniCaptureDocument]?,

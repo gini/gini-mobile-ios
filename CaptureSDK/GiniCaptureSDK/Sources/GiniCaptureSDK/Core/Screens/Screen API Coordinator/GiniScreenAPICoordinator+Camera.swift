@@ -208,7 +208,7 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
             case .success(let validatedDocuments):
                 coordinator.dismissCurrentPicker {
                     self.addToDocuments(new: validatedDocuments)
-                    self.visionDelegate?.errorOccurred = false
+                    errorOccurred = false
                     validatedDocuments.forEach { validatedDocument in
                         if validatedDocument.error == nil {
                             self.didCaptureAndValidate(validatedDocument.document)

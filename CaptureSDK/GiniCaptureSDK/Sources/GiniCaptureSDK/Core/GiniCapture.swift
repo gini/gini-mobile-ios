@@ -17,10 +17,7 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
  - note: Screen API only.
  */
 @objc public protocol GiniCaptureDelegate {
-    /**
-     Informs if error already occured while processing upload requests
-     */
-    var errorOccurred: Bool {get set}
+
     /**
      Called when the user has taken a picture or imported a file (image or PDF) from camera roll or document explorer
      

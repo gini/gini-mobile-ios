@@ -37,7 +37,6 @@ class TrackingDelegate: GiniCaptureTrackingDelegate {
 }
 
 final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
-    var errorOccurred: Bool = false
     weak var resultsDelegate: GiniCaptureResultsDelegate?
     weak var delegate: ScreenAPICoordinatorDelegate?
     var childCoordinators: [Coordinator] = []
