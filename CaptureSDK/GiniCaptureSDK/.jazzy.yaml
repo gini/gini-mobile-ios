@@ -21,6 +21,7 @@ custom_categories:
   children:
   - Getting started
   - Integration
+  - Features
   - Integration in a Xamarin Project
   - License
 
