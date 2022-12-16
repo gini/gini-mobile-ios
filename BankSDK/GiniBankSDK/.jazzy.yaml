@@ -20,6 +20,7 @@ custom_categories:
 - name: Documentation
   children:
   - Installation
+  - Features
   - Integration
   - Migration
   - License
