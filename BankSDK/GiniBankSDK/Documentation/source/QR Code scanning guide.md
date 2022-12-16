@@ -16,6 +16,16 @@ let giniBankConfiguration = GiniBankConfiguration.shared
 giniBankConfiguration.qrCodeScanningEnabled = true
 ```
 
+For allowing to scan only QR code without the ability to take images, you need to enable the flag for this in the `GiniBankConfiguration`, but also the QR scanning ability, like so: 
+```swift
+let giniBankConfiguration = GiniBankConfiguration.shared
+...
+...
+...        
+giniBankConfiguration.qrCodeScanningEnabled = true
+giniBankConfiguration.onlyQRCodeScanningEnabled = true
+```
+
 Handle and process the Payment Data
 ------------------------------------
 
@@ -29,9 +39,11 @@ It is possible to customize the text label, button and background colors with th
 - `GiniBankConfiguration.qrCodePopupButtonColor`
 - `GiniBankConfiguration.qrCodePopupTextColor`
 
-Additionally the text from both label and button can be customized through the following parameters in your `Localizable.strings` file:
-- _ginicapture.camera.qrCodeDetectedPopup.buttonTitle_
-- _ginicapture.camera.qrCodeDetectedPopup.message_
+Additionally the text from both correct, incorrect and loading label can be customized through the following parameters in your `Localizable.strings` file:
+- _ginicapture.QRscanning.incorrect.title_
+- _ginicapture.QRscanning.incorrect.description_
+- _ginicapture.QRscanning.correct_
+- _ginicapture.QRscanning.loading_
 
 
 Supported QR codes
