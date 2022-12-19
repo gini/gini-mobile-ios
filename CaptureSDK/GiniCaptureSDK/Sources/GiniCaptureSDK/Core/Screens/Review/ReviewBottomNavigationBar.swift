@@ -16,7 +16,7 @@ final class ReviewBottomNavigationBar: UIView {
     private let configuration = GiniConfiguration.shared
     weak var delegate: ReviewBottomNavigationBarDelegate?
 
-    @IBOutlet weak var mainButton: UIButton!
+    @IBOutlet weak var mainButton: MultilineTitleButton!
     @IBOutlet weak var secondaryButton: BottomLabelButton!
 
     override func awakeFromNib() {
@@ -28,35 +28,24 @@ final class ReviewBottomNavigationBar: UIView {
         let configuration = GiniConfiguration.shared
         backgroundColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.dark1).uiColor()
 
+        mainButton.configure(with: configuration.primaryButtonConfiguration)
+        mainButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         mainButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle",
                                                              comment: "Process button title"), for: .normal)
-        mainButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        mainButton.layer.cornerRadius = configuration.primaryButtonCornerRadius
-        mainButton.backgroundColor = UIColor.GiniCapture.accent1
-        mainButton.setTitleColor(UIColor.GiniCapture.light1, for: .normal)
         mainButton.addTarget(self, action: #selector(mainButtonClicked), for: .touchUpInside)
 
         secondaryButton.translatesAutoresizingMaskIntoConstraints = false
-        secondaryButton.configureButton(image: UIImageNamedPreferred(named: "plus_icon") ?? UIImage(),
-                                        name: NSLocalizedStringPreferredFormat(
-                                            "ginicapture.multipagereview.secondaryButtonTitle",
-                                        comment: "Add pages button title"))
+        secondaryButton.setupButton(with: UIImageNamedPreferred(named: "plus_icon") ?? UIImage(),
+                                    name: NSLocalizedStringPreferredFormat(
+                                        "ginicapture.multipagereview.secondaryButtonTitle",
+                                            comment: "Add pages button title"))
         secondaryButton.isHidden = !configuration.multipageEnabled
-        secondaryButton.actionLabel.textColor = GiniColor(light: .GiniCapture.dark2,
-                                                          dark: .GiniCapture.light2).uiColor()
+
+        secondaryButton.actionLabel.font = configuration.textStyleFonts[.bodyBold]
+        secondaryButton.configure(with: configuration.addPageButtonConfiguration)
         secondaryButton.didTapButton = { [weak self] in
             self?.secondaryButtonClicked()
         }
-        // The button's asset changes with light/dark mode but right now we don't support light mode on bottom navigation
-        let tintColor = GiniColor(light: .GiniCapture.dark4, dark: .GiniCapture.light4).uiColor()
-        if #available(iOS 13.0, *) {
-            secondaryButton.iconView.tintColor = tintColor
-            secondaryButton.iconView.image = secondaryButton.iconView.image?.withTintColor(tintColor,
-                                                                                         renderingMode: .alwaysTemplate)
-        } else {
-            secondaryButton.iconView.image = secondaryButton.iconView.image?.tintedImageWithColor(tintColor)
-        }
-
         addLoadingView()
     }
 
