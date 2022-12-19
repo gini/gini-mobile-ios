@@ -81,9 +81,7 @@ final class BottomLabelButton: UIView {
         ])
     }
 
-    func configureButton(
-        image: UIImage,
-        name: String) {
+    func setupButton(with image: UIImage, name: String) {
         iconView.image = image
         actionLabel.text = name
         accessibilityValue = name
