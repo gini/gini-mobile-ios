@@ -12,19 +12,14 @@ class ButtonsView: UIView {
     lazy var enterButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
-        button.setTitle(firstButtonTitle,
-                             for: .normal)
+        button.setTitle(firstButtonTitle, for: .normal)
         return button
     }()
 
     lazy var retakeButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.setTitle(secondButtonTitle,
-                              for: .normal)
+        button.setTitle(secondButtonTitle, for: .normal)
         return button
     }()
 
@@ -56,27 +51,11 @@ class ButtonsView: UIView {
         ])
     }
 
-    func configureButtonsColors() {
-        retakeButton.setTitleColor(giniConfiguration.primaryButtonTitleColor.uiColor(), for: .normal)
-        retakeButton.backgroundColor = giniConfiguration.primaryButtonBackgroundColor.uiColor()
-        retakeButton.layer.borderColor = giniConfiguration.primaryButtonBorderColor.uiColor().cgColor
-        retakeButton.layer.cornerRadius = giniConfiguration.primaryButtonCornerRadius
-        retakeButton.layer.borderWidth = giniConfiguration.primaryButtonBorderWidth
-        retakeButton.layer.shadowRadius = giniConfiguration.primaryButtonShadowRadius
-        retakeButton.layer.shadowColor = giniConfiguration.primaryButtonShadowColor.uiColor().cgColor
-
-        enterButton.backgroundColor = giniConfiguration.outlineButtonBackground.uiColor()
-        enterButton.layer.cornerRadius = giniConfiguration.outlineButtonCornerRadius
-        enterButton.layer.borderWidth = giniConfiguration.outlineButtonBorderWidth
-        enterButton.layer.borderColor = giniConfiguration.outlineButtonBorderColor.uiColor().cgColor
-        enterButton.layer.shadowRadius = giniConfiguration.outlineButtonShadowRadius
-        enterButton.layer.shadowColor = giniConfiguration.outlineButtonShadowColor.uiColor().cgColor
-        enterButton.setTitleColor(giniConfiguration.outlineButtonTitleColor.uiColor(), for: .normal)
-    }
-
     private func configureButtons() {
-        configureButtonsColors()
-        enterButton.addBlurEffect(cornerRadius: giniConfiguration.outlineButtonCornerRadius)
+        retakeButton.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
+        retakeButton.configure(with: giniConfiguration.primaryButtonConfiguration)
+        enterButton.titleLabel?.font = giniConfiguration.textStyleFonts[.bodyBold]
+        enterButton.configure(with: giniConfiguration.secondaryButtonConfiguration)
     }
 
     required init?(coder: NSCoder) {

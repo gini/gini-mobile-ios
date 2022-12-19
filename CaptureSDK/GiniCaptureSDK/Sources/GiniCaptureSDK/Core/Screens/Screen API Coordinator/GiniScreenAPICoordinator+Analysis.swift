@@ -64,7 +64,7 @@ extension GiniScreenAPICoordinator {
                             self?.screenAPINavigationController.dismiss(animated: true)
                         }
                     }, cancelPressed: { [weak self] in
-                    self?.backToCamera()
+                        self?.screenAPINavigationController.dismiss(animated: true)
                 })
             }
         default:
