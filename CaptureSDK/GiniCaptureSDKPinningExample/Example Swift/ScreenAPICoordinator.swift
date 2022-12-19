@@ -97,7 +97,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
         DispatchQueue.main.async { [weak self] in
             if #available(iOS 15.0, *) {
                 let config = self?.visionConfiguration
-                self?.screenAPIViewController.applyStyle(withConfiguration: config ?? GiniConfiguration())
+                self?.screenAPIViewController.applyStyle(withConfiguration: config ?? GiniConfiguration.shared)
             }
             self?.screenAPIViewController.setNavigationBarHidden(false, animated: false)
             self?.screenAPIViewController.pushViewController(customResultsScreen, animated: true)
@@ -149,13 +149,8 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
         screenAPIViewController.dismiss(animated: true)
     }
     
-    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult,
-                                          sendFeedbackBlock: @escaping ([String: Extraction]) -> Void) {
+    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
         showResultsScreen(results: result.extractions.map { $0.value }, document: result.document)
-        self.sendFeedbackBlock = sendFeedbackBlock
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-            sendFeedbackBlock(result.extractions)
-        }
     }
 
     func giniCaptureDidCancelAnalysis() {

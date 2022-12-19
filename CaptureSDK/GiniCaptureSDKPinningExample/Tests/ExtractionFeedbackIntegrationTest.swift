@@ -85,7 +85,7 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
             self.expect = expect
         }
         
-        func giniCaptureAnalysisDidFinishWith(result: AnalysisResult, sendFeedbackBlock: @escaping ([String : Extraction]) -> Void) {
+        func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
             // 1b. Received the extractions for the uploaded document
             let fixtureExtractionsJson = self.integrationTest.loadFile(withName: "result_Gini_invoice_example", ofType: "json")
             
@@ -112,7 +112,6 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
             if result.extractions["amountToPay"] != nil {
                 // 4. Send feedback for the extractions the user saw
                 //    with the final (user confirmed or updated) extraction values
-                sendFeedbackBlock(result.extractions)
                 
                 self.integrationTest.feedbackSendingGroup.notify(queue: DispatchQueue.main) {
                     // 5. Verify that the extractions were updated
@@ -165,7 +164,9 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
         let testDocumentData = self.loadFile(withName: "Gini_invoice_example", ofType: "pdf")
         let builder = GiniCaptureDocumentBuilder(documentSource: .appName(name: "GiniCaptureSDKExample"))
         let captureDocument = builder.build(with: testDocumentData)!
-        
+
+        GiniConfiguration.shared.documentService = giniCaptureSDKDocumentService
+
         // Upload a test document
         giniCaptureSDKDocumentService.upload(document: captureDocument) { result in
             switch result {
@@ -184,24 +185,15 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                                                             lineItems: extractionResult.lineItems,
                                                             images: [],
                                                             document: self.giniCaptureSDKDocumentService?.document)
-                        
-                        let sendFeedbackBlock: (([String: Extraction]) -> Void) = { [self] updatedExtractions in
-                            let extractions = updatedExtractions.map {$0.1}
-                            
-                            self.feedbackSendingGroup.enter()
-                            
-                            self.giniBankAPIDocumentService.submitFeedback(for: self.giniCaptureSDKDocumentService!.document!,
-                                                                           with: extractions) { result in
-                                switch result {
-                                case .success():
-                                    self.feedbackSendingGroup.leave()
-                                case let .failure(error):
-                                    XCTFail(String(describing: error))
-                                }
-                            }
-                        }
-                        
-                        delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult, sendFeedbackBlock: sendFeedbackBlock)
+
+                        delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
+                        GiniConfiguration.shared.cleanup(paymentRecipient: extractions["paymentRecipient"]?.value ?? "",
+                                                         paymentReference: extractions["paymentReference"]?.value ?? "",
+                                                         paymentPurpose: extractions["paymentPurpose"]?.value ?? "",
+                                                         iban: extractions["iban"]?.value ?? "",
+                                                         bic: extractions["bic"]?.value ?? "",
+                                                         amountToPay: ExtractionAmount(value: 950.00, currency: .EUR))
+
                     case let .failure(error):
                         XCTFail(String(describing: error))
                     }
@@ -217,7 +209,7 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
       * In your production code you should not call  any`GiniBankAPILibrary` methods.
       * Interaction with the network service is handled by the Capture SDK internally.
       */
-    private func getUpdatedExtractionsFromGiniCaptureSDK(for document: Document, completion: @escaping AnalysisCompletion){
+    private func getUpdatedExtractionsFromGiniCaptureSDK(for document: Document, completion: @escaping AnalysisCompletion) {
         self.giniBankAPIDocumentService.extractions(for: document,
                                                     cancellationToken: CancellationToken()) { result in
             switch result {

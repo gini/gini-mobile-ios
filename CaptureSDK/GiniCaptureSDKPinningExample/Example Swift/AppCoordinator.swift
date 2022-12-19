@@ -29,7 +29,7 @@ final class AppCoordinator: Coordinator {
     }()
 
     lazy var giniConfiguration: GiniConfiguration = {
-        let giniConfiguration = GiniConfiguration()
+        let giniConfiguration = GiniConfiguration.shared
         giniConfiguration.debugModeOn = true
         giniConfiguration.bottomNavigationBarEnabled = false
         giniConfiguration.fileImportSupportedTypes = .pdf_and_images

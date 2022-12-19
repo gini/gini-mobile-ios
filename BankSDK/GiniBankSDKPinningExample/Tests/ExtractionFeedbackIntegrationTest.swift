@@ -51,7 +51,7 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
         giniCaptureSDKDocumentService = DocumentService(lib: giniBankAPILib, metadata: nil)
 
         giniBankAPIDocumentService = giniBankAPILib.documentService()
-
+       GiniBankConfiguration.shared.documentService = giniCaptureSDKDocumentService
         feedbackSendingGroup = DispatchGroup()
     }
 
