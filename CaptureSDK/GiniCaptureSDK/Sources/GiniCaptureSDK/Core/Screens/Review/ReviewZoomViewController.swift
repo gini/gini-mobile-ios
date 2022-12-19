@@ -122,7 +122,7 @@ final class ReviewZoomViewController: UIViewController {
 
     // MARK: - Utilities
 
-    fileprivate func adjustContentSize() {
+    private func adjustContentSize() {
         guard let image = self.imageView.image else {
             imageView.frame = scrollView.bounds
             return
@@ -138,7 +138,7 @@ final class ReviewZoomViewController: UIViewController {
         adjustImageToCenter()
     }
 
-    fileprivate func adjustImageToCenter() {
+    private func adjustImageToCenter() {
         let scrollViewSize = scrollView.bounds.size
         var contentFrame = imageView.frame
 
