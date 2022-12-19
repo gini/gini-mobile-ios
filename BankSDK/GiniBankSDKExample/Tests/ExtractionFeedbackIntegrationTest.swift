@@ -93,12 +93,12 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                 // 4. Send feedback for the extractions the user saw
                 //    with the final (user confirmed or updated) extraction values
 
-                GiniConfiguration.shared.cleanup(paymentRecipient: result.extractions["paymentRecipient"]?.value ?? "",
-                                                 paymentReference: result.extractions["paymentReference"]?.value ?? "",
-                                                 paymentPurpose: result.extractions["paymentPurpose"]?.value ?? "",
-                                                 iban: result.extractions["iban"]?.value ?? "",
-                                                 bic: result.extractions["bic"]?.value ?? "",
-                                                 amountToPay: ExtractionAmount(value: 950.00, currency: .EUR))
+                GiniBankConfiguration.shared.cleanup(paymentRecipient: result.extractions["paymentRecipient"]?.value ?? "",
+                                                     paymentReference: result.extractions["paymentReference"]?.value ?? "",
+                                                     paymentPurpose: result.extractions["paymentPurpose"]?.value ?? "",
+                                                     iban: result.extractions["iban"]?.value ?? "",
+                                                     bic: result.extractions["bic"]?.value ?? "",
+                                                     amountToPay: ExtractionAmount(value: 950.00, currency: .EUR))
 
 
                 self.integrationTest.feedbackSendingGroup.notify(queue: DispatchQueue.main) {
@@ -152,6 +152,8 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
         let testDocumentData = self.loadFile(withName: "Gini_invoice_example", ofType: "pdf")
         let builder = GiniCaptureDocumentBuilder(documentSource: .appName(name: "GiniBankSDKExample"))
         let captureDocument = builder.build(with: testDocumentData)!
+
+        GiniBankConfiguration.shared.documentService = giniCaptureSDKDocumentService
 
         // Upload a test document
         giniCaptureSDKDocumentService.upload(document: captureDocument) { result in
