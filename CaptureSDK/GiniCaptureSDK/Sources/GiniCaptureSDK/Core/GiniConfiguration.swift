@@ -370,15 +370,11 @@ import UIKit
     
     /**
      Sets the close button text in the navigation bar on the camera screen.
-     
-     - note: Screen API only.
-     */
+          */
     @objc public var navigationBarCameraTitleCloseButton = ""
     
     /**
      Sets the help button text in the navigation bar on the camera screen.
-     
-     - note: Screen API only.
      */
     @objc public var navigationBarCameraTitleHelpButton = ""
     
@@ -471,15 +467,11 @@ import UIKit
     
     /**
      Sets the back button text in the navigation bar on the review screen. Use this if you only want to show the title.
-     
-     - note: Screen API only.
      */
     @objc public var navigationBarReviewTitleBackButton = ""
     
     /**
      Sets the close button text in the navigation bar on the review screen. Use this if you only want to show the title.
-     
-     - note: Screen API only.
      */
     @objc public var navigationBarReviewTitleCloseButton = ""
     
@@ -499,16 +491,12 @@ import UIKit
     
     /**
      Sets the back button text in the navigation bar on the help menu screen. Use this if you only want to show the title.
-     
-     - note: Screen API only.
      */
     @objc public var navigationBarHelpMenuTitleBackToCameraButton = ""
     
     /**
      Sets the back button text in the navigation bar on the help screen. Use this if you only want to show the title.
-     
-     - note: Screen API only.
-     */
+    */
     @objc public var navigationBarHelpScreenTitleBackToMenuButton = ""
     
     /**
