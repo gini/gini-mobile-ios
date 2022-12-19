@@ -269,6 +269,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             action: #selector(cameraButtonsViewModel.thumbnailPressed),
             for: .touchUpInside)
     }
+    // swiftlint:enable body_length
 
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -466,7 +467,6 @@ extension Camera2ViewController {
         let standardImageAspectRatio: CGFloat = 0.75 // Standard aspect ratio of a 3/4 image
         let screenAspectRatio = self.cameraPreviewViewController.view.frame.height / self.cameraPreviewViewController.view.frame.width
         var scale: CGFloat
-        var cameraPreviewRect: CGRect
 
         if image.size.width > image.size.height {
             // Landscape orientation
@@ -500,22 +500,53 @@ extension Camera2ViewController {
         let widthDisplacement = (image.size.width - (self.cameraPreviewViewController.view.frame.width) * scale) / 2
         let heightDisplacement = (image.size.height - (self.cameraPreviewViewController.view.frame.height) * scale) / 2
 
-        cameraPreviewRect = self.cameraPreviewViewController.view.frame.scaled(for: scale)
-        cameraPreviewRect = CGRect(x: widthDisplacement, y: heightDisplacement, width: cameraPreviewRect.width, height: cameraPreviewRect.height)
-
-        // First crop the full image to the image that is shown on the screen
-        guard let cgImage = image.cgImage else { return image }
-        guard let croppedCGImage = cgImage.cropping(to: cameraPreviewRect) else { return image }
-        let displayedImage = UIImage(cgImage: croppedCGImage, scale: 1, orientation: .up)
-
-        // Crop the displayed image to the A4 rect
+        // The frame of the A4 rect
         let a4FrameRect = self.cameraPreviewViewController.cameraFrameView.frame.scaled(for: scale)
-        guard let cgDisplayedImage = displayedImage.cgImage else { return image }
-        guard let croppedA4CGImage = cgDisplayedImage.cropping(to: a4FrameRect) else { return image }
-        let finalImage = UIImage(cgImage: croppedA4CGImage, scale: 1, orientation: .up)
-        return finalImage
+
+        // The origin of the cropping rect compared to the whole image
+        let cropRectX = widthDisplacement + a4FrameRect.origin.x
+        let cropRectY = heightDisplacement + a4FrameRect.origin.y
+
+        // The A4 rect position and size on the whole image
+        let cropRect = CGRect(x: cropRectX, y: cropRectY, width: a4FrameRect.width, height: a4FrameRect.height)
+
+        // Scaling up the rectangle 15%
+        let scaledSize = CGSize(width: cropRect.width * 1.15, height: cropRect.height * 1.15)
+
+        let scaledOriginX = cropRectX - cropRect.width * 0.075
+        let scaledOriginY = cropRectY - cropRect.height * 0.075
+
+        var scaledRect = CGRect(x: scaledOriginX, y: scaledOriginY, width: scaledSize.width, height: scaledSize.height)
+
+        if scaledRect.origin.x >= 0 && scaledRect.origin.y >= 0 {
+            // The area to be cropped is inside of the area of the image
+            return cut(image: image, to: scaledRect)
+        } else {
+            // The area to be cropped is outside of the area of the image
+
+            // If the area is bigger than the image, reset the origin and subtract the extra width/height that is not present
+            if scaledOriginX < 0 {
+                scaledRect.size.width += scaledRect.origin.x
+                scaledRect.origin.x = 0
+            }
+
+            if scaledOriginY < 0 {
+                scaledRect.size.height += scaledRect.origin.y
+                scaledRect.origin.y = 0
+            }
+
+            return cut(image: image, to: scaledRect)
+        }
     }
     // swiftlint:enable line_length
+
+    private func cut(image: UIImage, to rect: CGRect) -> UIImage {
+        guard let cgImage = image.cgImage else { return image }
+        guard let croppedImage = cgImage.cropping(to: rect) else { return image }
+        let finalImage = UIImage(cgImage: croppedImage, scale: 1, orientation: .up)
+
+        return finalImage
+    }
 }
 
 // MARK: - CameraPreviewViewControllerDelegate
