@@ -214,16 +214,12 @@ public final class GiniBankConfiguration: NSObject {
     
     /**
      Sets the close button text in the navigation bar on the camera screen.
-     
-     - note: Screen API only.
      */
     @objc public var navigationBarCameraTitleCloseButton = ""
     
     /**
      Sets the help button text in the navigation bar on the camera screen.
-     
-     - note: Screen API only.
-     */
+    */
     @objc public var navigationBarCameraTitleHelpButton = ""
     
     
@@ -340,8 +336,6 @@ public final class GiniBankConfiguration: NSObject {
 
     /**
      Sets the back button text in the navigation bar on the analysis screen. Use this if you only want to show the title.
-     
-     - note: Screen API only.
      */
     @objc public var navigationBarAnalysisTitleBackButton = ""
     
@@ -359,15 +353,11 @@ public final class GiniBankConfiguration: NSObject {
     
     /**
      Sets the back button text in the navigation bar on the help menu screen. Use this if you only want to show the title.
-     
-     - note: Screen API only.
      */
     @objc public var navigationBarHelpMenuTitleBackToCameraButton = ""
     
     /**
      Sets the back button text in the navigation bar on the help screen. Use this if you only want to show the title.
-     
-     - note: Screen API only.
      */
     @objc public var navigationBarHelpScreenTitleBackToMenuButton = ""
     
