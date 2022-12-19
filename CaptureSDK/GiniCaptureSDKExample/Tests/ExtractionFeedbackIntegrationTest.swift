@@ -64,62 +64,61 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
             self.expect = expect
         }
         
-        func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {}
-//            // 1b. Received the extractions for the uploaded document
-//            let fixtureExtractionsJson = self.integrationTest.loadFile(withName: "result_Gini_invoice_example", ofType: "json")
-//
-//            let fixtureExtractionsContainer = try! JSONDecoder().decode(ExtractionsContainer.self, from: fixtureExtractionsJson)
-//
-//            // 2. Verify we received the correct extractions for this test
-//            XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "iban" })?.value,
-//                           result.extractions["iban"]?.value)
-//            XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "paymentRecipient" })?.value,
-//                           result.extractions["paymentRecipient"]?.value)
-//            XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "paymentPurpose" })?.value,
-//                           result.extractions["paymentPurpose"]?.value)
-//            XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "bic" })?.value,
-//                           result.extractions["bic"]?.value)
-//            XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
-//                           result.extractions["amountToPay"]?.value)
-//
-//            // 3. Assuming the user saw the following extractions:
-//            //    amountToPay, iban, bic, paymentPurpose and paymentRecipient
-//            //    Supposing the user changed the amountToPay from "995.00:EUR" to "950.00:EUR"
-//            //    we need to update that extraction
-//            result.extractions["amountToPay"]?.value = "950.00:EUR"
-//
-//            if result.extractions["amountToPay"] != nil {
-//                // 4. Send feedback for the extractions the user saw
-//                //    with the final (user confirmed or updated) extraction values
-//                sendFeedbackBlock(result.extractions)
-//
-//                self.integrationTest.feedbackSendingGroup.notify(queue: DispatchQueue.main) {
-//                    // 5. Verify that the extractions were updated
-//                    self.integrationTest.getUpdatedExtractionsFromGiniCaptureSDK(for: result.document!) { result in
-//                        switch result {
-//                        case let .success(extractionResult):
-//                            let extractionsAfterFeedback = extractionResult.extractions
-//                            let fixtureExtractionsAfterFeedbackJson = self.integrationTest.loadFile(withName: "result_Gini_invoice_example_after_feedback", ofType: "json")
-//                            let fixtureExtractionsAfterFeedbackContainer = try! JSONDecoder().decode(ExtractionsContainer.self, from: fixtureExtractionsAfterFeedbackJson)
-//                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "iban" })?.value,
-//                                           extractionsAfterFeedback.first(where: { $0.name == "iban" })?.value)
-//                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "paymentRecipient" })?.value,
-//                                           extractionsAfterFeedback.first(where: { $0.name == "paymentRecipient" })?.value)
-//                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "paymentPurpose" })?.value,
-//                                           extractionsAfterFeedback.first(where: { $0.name == "paymentPurpose" })?.value)
-//                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "bic" })?.value,
-//                                           extractionsAfterFeedback.first(where: { $0.name == "bic" })?.value)
-//                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
-//                                           extractionsAfterFeedback.first(where: { $0.name == "amountToPay" })?.value)
-//
-//                            self.expect.fulfill()
-//                        case let .failure(error):
-//                            XCTFail(String(describing: error))
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
+            // 1b. Received the extractions for the uploaded document
+            let fixtureExtractionsJson = self.integrationTest.loadFile(withName: "result_Gini_invoice_example", ofType: "json")
+
+            let fixtureExtractionsContainer = try! JSONDecoder().decode(ExtractionsContainer.self, from: fixtureExtractionsJson)
+
+            // 2. Verify we received the correct extractions for this test
+            XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "iban" })?.value,
+                           result.extractions["iban"]?.value)
+            XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "paymentRecipient" })?.value,
+                           result.extractions["paymentRecipient"]?.value)
+            XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "paymentPurpose" })?.value,
+                           result.extractions["paymentPurpose"]?.value)
+            XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "bic" })?.value,
+                           result.extractions["bic"]?.value)
+            XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
+                           result.extractions["amountToPay"]?.value)
+
+            // 3. Assuming the user saw the following extractions:
+            //    amountToPay, iban, bic, paymentPurpose and paymentRecipient
+            //    Supposing the user changed the amountToPay from "995.00:EUR" to "950.00:EUR"
+            //    we need to update that extraction
+            result.extractions["amountToPay"]?.value = "950.00:EUR"
+
+            if result.extractions["amountToPay"] != nil {
+                // 4. Send feedback for the extractions the user saw
+                //    with the final (user confirmed or updated) extraction values
+
+                self.integrationTest.feedbackSendingGroup.notify(queue: DispatchQueue.main) {
+                    // 5. Verify that the extractions were updated
+                    self.integrationTest.getUpdatedExtractionsFromGiniCaptureSDK(for: result.document!) { result in
+                        switch result {
+                        case let .success(extractionResult):
+                            let extractionsAfterFeedback = extractionResult.extractions
+                            let fixtureExtractionsAfterFeedbackJson = self.integrationTest.loadFile(withName: "result_Gini_invoice_example_after_feedback", ofType: "json")
+                            let fixtureExtractionsAfterFeedbackContainer = try! JSONDecoder().decode(ExtractionsContainer.self, from: fixtureExtractionsAfterFeedbackJson)
+                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "iban" })?.value,
+                                           extractionsAfterFeedback.first(where: { $0.name == "iban" })?.value)
+                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "paymentRecipient" })?.value,
+                                           extractionsAfterFeedback.first(where: { $0.name == "paymentRecipient" })?.value)
+                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "paymentPurpose" })?.value,
+                                           extractionsAfterFeedback.first(where: { $0.name == "paymentPurpose" })?.value)
+                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "bic" })?.value,
+                                           extractionsAfterFeedback.first(where: { $0.name == "bic" })?.value)
+                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
+                                           extractionsAfterFeedback.first(where: { $0.name == "amountToPay" })?.value)
+
+                            self.expect.fulfill()
+                        case let .failure(error):
+                            XCTFail(String(describing: error))
+                        }
+                    }
+                }
+            }
+        }
 
         func giniCaptureDidEnterManually() {
         }
@@ -144,6 +143,8 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
         let testDocumentData = self.loadFile(withName: "Gini_invoice_example", ofType: "pdf")
         let builder = GiniCaptureDocumentBuilder(documentSource: .appName(name: "GiniCaptureSDKExample"))
         let captureDocument = builder.build(with: testDocumentData)!
+
+        GiniConfiguration.shared.documentService = giniCaptureSDKDocumentService
         
         // Upload a test document
         giniCaptureSDKDocumentService.upload(document: captureDocument) { result in
@@ -165,6 +166,13 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                                                             document: self.giniCaptureSDKDocumentService?.document)
                                                 
                         delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
+
+                        GiniConfiguration.shared.cleanup(paymentRecipient: extractions["paymentRecipient"]?.value ?? "",
+                                                         paymentReference: extractions["paymentReference"]?.value ?? "",
+                                                         paymentPurpose: extractions["paymentPurpose"]?.value ?? "",
+                                                         iban: extractions["iban"]?.value ?? "",
+                                                         bic: extractions["bic"]?.value ?? "",
+                                                         amountToPay: ExtractionAmount(value: 950.00, currency: .EUR))
                     case let .failure(error):
                         XCTFail(String(describing: error))
                     }
