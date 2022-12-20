@@ -45,7 +45,7 @@ final class CameraPreviewViewController: UIViewController {
         let imageView = UIImageView()
         imageView.image = UIImageNamedPreferred(named: "cameraFocus")
         imageView.contentMode = .scaleAspectFit
-        imageView.isHidden = giniConfiguration.onlyQRCodeScanningEnabled
+        imageView.isHidden = qrCodeScanningOnlyEnabled
         return imageView
     }()
 
@@ -53,8 +53,12 @@ final class CameraPreviewViewController: UIViewController {
         let imageView = UIImageView()
         imageView.image = UIImageNamedPreferred(named: "qrCodeFocus")
         imageView.contentMode = .scaleAspectFit
-        imageView.isHidden = !giniConfiguration.onlyQRCodeScanningEnabled
+        imageView.isHidden = !qrCodeScanningOnlyEnabled
         return imageView
+    }()
+
+    private lazy var qrCodeScanningOnlyEnabled: Bool = {
+        return giniConfiguration.qrCodeScanningEnabled && giniConfiguration.onlyQRCodeScanningEnabled
     }()
 
     private var notAuthorizedView: UIView?

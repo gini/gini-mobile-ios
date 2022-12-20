@@ -36,6 +36,10 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     private var validQRCodeProcessing: Bool = false
     public weak var delegate: CameraViewControllerDelegate?
 
+    private lazy var qrCodeScanningOnlyEnabled: Bool = {
+        return giniConfiguration.qrCodeScanningEnabled && giniConfiguration.onlyQRCodeScanningEnabled
+    }()
+
     @IBOutlet weak var cameraPane: CameraPane!
     private let cameraButtonsViewModel: CameraButtonsViewModel
     private var navigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
@@ -115,7 +119,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         configureConstraints()
         configureTitle()
 
-        if giniConfiguration.onlyQRCodeScanningEnabled {
+        if qrCodeScanningOnlyEnabled {
             cameraPane.alpha = 0
             if giniConfiguration.bottomNavigationBarEnabled {
                 configureCustomTopNavigationBar(containsImage: false)
@@ -316,7 +320,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             cameraPreviewViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
 
     private func configureConstraints() {
-        if giniConfiguration.onlyQRCodeScanningEnabled {
+        if qrCodeScanningOnlyEnabled {
             qrCodeOverLay.layoutViews(centeringBy: cameraPreviewViewController.qrCodeFrameView)
         } else {
             qrCodeOverLay.layoutViews(centeringBy: cameraPreviewViewController.cameraFrameView)
@@ -555,7 +559,7 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol) {
-        if !giniConfiguration.onlyQRCodeScanningEnabled {
+        if !qrCodeScanningOnlyEnabled {
             cameraPreviewViewController.cameraFrameView.isHidden = false
             cameraPane.toggleCaptureButtonActivation(state: true)
         }
