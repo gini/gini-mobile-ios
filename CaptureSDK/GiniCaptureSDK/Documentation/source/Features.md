@@ -31,7 +31,7 @@ The view from the custom navigation view controller will then be displayed on al
 You can opt to show a bottom navigation bar. To enable it pass `true` to
 `GiniConfiguration.shared.bottomNavigationBarEnabled`.
 
-**Note**:  The top navigation bar will still be used, but its    functionality will be limited to showing the screen's title and
+**Note**:  The top navigation bar will still be used, but its  functionality will be limited to showing the screen's title and
 an optional close button. Please inject a custom top navigation bar if your design requires it even if you have enabled the bottom navigation bar.
 
 ## Onboarding
