@@ -65,6 +65,7 @@ class ScreenAPICoordinator___UI_Only: XCTestCase {
     }
     
     class ScreenAPIUIOnlyCoordinator: GiniCaptureDelegate, GiniCaptureTrackingDelegate {
+        
         func didPressEnterManually() {
         }
         
