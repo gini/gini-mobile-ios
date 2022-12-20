@@ -89,11 +89,9 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
             result.extractions["amountToPay"]?.value = "950.00:EUR"
 
             if result.extractions["amountToPay"] != nil {
-                // 4. Send feedback for the extractions the user saw
-                //    with the final (user confirmed or updated) extraction values
-
-                self.integrationTest.feedbackSendingGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 4, execute: {
                     // 5. Verify that the extractions were updated
+
                     self.integrationTest.getUpdatedExtractionsFromGiniCaptureSDK(for: result.document!) { result in
                         switch result {
                         case let .success(extractionResult):
@@ -116,7 +114,7 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                             XCTFail(String(describing: error))
                         }
                     }
-                }
+                })
             }
         }
 
@@ -166,7 +164,8 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                                                             document: self.giniCaptureSDKDocumentService?.document)
                                                 
                         delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
-
+                        // 4. Send feedback for the extractions the user saw
+                        //    with the final (user confirmed or updated) extraction values
                         GiniConfiguration.shared.cleanup(paymentRecipient: extractions["paymentRecipient"]?.value ?? "",
                                                          paymentReference: extractions["paymentReference"]?.value ?? "",
                                                          paymentPurpose: extractions["paymentPurpose"]?.value ?? "",
