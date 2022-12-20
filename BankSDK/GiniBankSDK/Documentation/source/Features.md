@@ -59,7 +59,7 @@ You can customize the onboarding in the following ways:
 
 ## Single Page
 
-By default, the Gini Banks SDK is configured to capture single page documents. No further configuration is required for
+By default, the Gini Bank SDK is configured to capture single page documents. No further configuration is required for
 this.
 
 ## Multi-Page
