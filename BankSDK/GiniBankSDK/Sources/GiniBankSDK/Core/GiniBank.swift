@@ -107,9 +107,7 @@ import GiniCaptureSDK
     
     /**
      Returns a view controller which will handle the analysis process.
-     
-     - note: Screen API only.
-     
+          
      - parameter delegate: An instance conforming to the `GiniCaptureDelegate` protocol.
      - parameter importedDocuments: Documents that come from a source different than `CameraViewController`.
      There should be either images or one PDF, and they should be validated before calling this method.
@@ -127,9 +125,7 @@ import GiniCaptureSDK
     
     /**
      Returns a view controller which will handle the analysis process.
-     
-     - note: Screen API only.
-     
+          
      - parameter delegate: An instance conforming to the `GiniCaptureDelegate` protocol.
      - parameter importedDocuments: Documents that come from a source different than `CameraViewController`.
      There should be either images or one PDF, and they should be validated before calling this method.
@@ -149,8 +145,6 @@ import GiniCaptureSDK
     
     /**
      Returns a view controller which will handle the analysis process.
-
-     - note: Screen API only.
      
      - parameter delegate: An instance conforming to the `GiniCaptureDelegate` protocol.
      - parameter importedDocument: Documents that come from a source different than CameraViewController.
@@ -170,8 +164,6 @@ import GiniCaptureSDK
     
     /**
      Returns a view controller which will handle the analysis process.
-
-     - note: Screen API only.
      
      - parameter delegate: An instance conforming to the `GiniCaptureDelegate` protocol.
      - parameter importedDocument: Documents that come from a source different than CameraViewController.
@@ -194,9 +186,7 @@ import GiniCaptureSDK
     /**
      Returns a view controller which will handle the analysis process.
      Allows to set a custom configuration to change the look and feel of the  Gini Bank SDK.
-     
-     - note: Screen API only.
-     
+          
      - parameter delegate:      An instance conforming to the `GiniCaptureDelegate` protocol.
      - parameter configuration: The bank configuration to set.
      - parameter importedDocument: Documents that come from a source different than CameraViewController.
@@ -214,9 +204,7 @@ import GiniCaptureSDK
     /**
      Returns a view controller which will handle the analysis process.
      Allows to set a custom configuration to change the look and feel of the Gini Bank SDK.
-     
-     - note: Screen API only.
-     
+          
      - parameter delegate:      An instance conforming to the `GiniCaptureDelegate` protocol.
      - parameter configuration: The configuration to set.
      - parameter importedDocument: Documents that come from a source different than CameraViewController.
