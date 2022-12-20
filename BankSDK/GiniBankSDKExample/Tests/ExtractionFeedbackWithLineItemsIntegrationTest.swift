@@ -8,11 +8,10 @@
 
 // swiftlint:disable all
 
-import Foundation
-
+import XCTest
 @testable import GiniBankAPILibrary
 @testable import GiniCaptureSDK
-import XCTest
+@testable import GiniBankSDK
 
 class ExtractionFeedbackWithLineItemsIntegrationTest: XCTestCase {
     let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!
@@ -20,20 +19,18 @@ class ExtractionFeedbackWithLineItemsIntegrationTest: XCTestCase {
     var giniBankAPILib: GiniBankAPI!
     var giniCaptureSDKDocumentService: GiniCaptureSDK.DocumentService!
     var giniBankAPIDocumentService: GiniBankAPILibrary.DefaultDocumentService!
-    var feedbackSendingGroup: DispatchGroup!
 
     override func setUp() {
+        let client = Client(id: clientId,
+                            secret: clientSecret,
+                            domain: "bank-sdk-example")
         giniBankAPILib = GiniBankAPI
-            .Builder(client: Client(id: clientId,
-                                    secret: clientSecret,
-                                    domain: "capture-sdk-example"))
+            .Builder(client: client)
             .build()
 
         giniCaptureSDKDocumentService = DocumentService(lib: giniBankAPILib, metadata: nil)
 
         giniBankAPIDocumentService = giniBankAPILib.documentService()
-
-        feedbackSendingGroup = DispatchGroup()
     }
 
     func loadFile(withName name: String, ofType type: String) -> Data {
@@ -49,9 +46,9 @@ class ExtractionFeedbackWithLineItemsIntegrationTest: XCTestCase {
 
         // 1a. Getting the extractions for the uploaded document.
         // (subsequent steps are in CaptureResultsDelegateForExtractionsFeedbackTest)
-        self.getExtractionsFromGiniCaptureSDK(delegate: CaptureResultsDelegateForExtractionsFeedbackTest(integrationTest: self, expect: expect))
+        self.getExtractionsFromGiniBankSDK(delegate: CaptureResultsDelegateForExtractionsFeedbackTest(integrationTest: self, expect: expect))
 
-        wait(for: [expect], timeout: 60)
+        wait(for: [expect], timeout: 30)
     }
 
     /**
@@ -92,15 +89,18 @@ class ExtractionFeedbackWithLineItemsIntegrationTest: XCTestCase {
             result.extractions["amountToPay"]?.value = "950.00:EUR"
 
             if result.extractions["amountToPay"] != nil {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 4, execute: {
-                    // 5. Verify that the extractions were updated
 
-                    self.integrationTest.getUpdatedExtractionsFromGiniCaptureSDK(for: result.document!) { result in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: {
+                    // 5. Verify that the extractions were updated
+                    self.integrationTest.getUpdatedExtractionsFromGiniBankSDK(for: result.document!) { result in
                         switch result {
                         case let .success(extractionResult):
                             let extractionsAfterFeedback = extractionResult.extractions
+
+
                             let fixtureExtractionsAfterFeedbackJson = self.integrationTest.loadFile(withName: "result_Gini_invoice_example_payment_reference_after_feedback", ofType: "json")
                             let fixtureExtractionsAfterFeedbackContainer = try! JSONDecoder().decode(ExtractionsContainer.self, from: fixtureExtractionsAfterFeedbackJson)
+
                             XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "iban" })?.value,
                                            extractionsAfterFeedback.first(where: { $0.name == "iban" })?.value)
                             XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "paymentRecipient" })?.value,
@@ -111,6 +111,19 @@ class ExtractionFeedbackWithLineItemsIntegrationTest: XCTestCase {
                                            extractionsAfterFeedback.first(where: { $0.name == "bic" })?.value)
                             XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
                                            extractionsAfterFeedback.first(where: { $0.name == "amountToPay" })?.value)
+
+                            let fixtureLineItems = fixtureExtractionsAfterFeedbackContainer.compoundExtractions?["lineItems"]
+
+                            if let firstLineItemAfterFeedback = extractionResult.lineItems?.first, let fixtureLineItem = fixtureLineItems?.first {
+                                XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "baseGross" })?.value,
+                                               firstLineItemAfterFeedback.first(where: { $0.name == "baseGross" })?.value)
+                                XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "description" })?.value,
+                                               firstLineItemAfterFeedback.first(where: { $0.name == "description" })?.value)
+                                XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "quantity" })?.value,
+                                               firstLineItemAfterFeedback.first(where: { $0.name == "quantity" })?.value)
+                                XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "artNumber" })?.value,
+                                               firstLineItemAfterFeedback.first(where: { $0.name == "artNumber" })?.value)
+                            }
 
                             self.expect.fulfill()
                         case let .failure(error):
@@ -132,20 +145,20 @@ class ExtractionFeedbackWithLineItemsIntegrationTest: XCTestCase {
     }
 
     /**
-      * This method reproduces the document upload and analysis done by the Capture SDK.
+      * This method reproduces the document upload and analysis done by the Bank SDK.
       *
       * The intent of this method is to create extractions like the one your app
-      * receives after a user analysed a document with the Capture SDK.
+      * receives after a user analysed a document with the Bank SDK.
       *
       * In your production code you should not call `DocumentService` methods.
-      * Interaction with the network service is handled by the Capture SDK internally.
+      * Interaction with the network service is handled by the Bank SDK internally.
       */
-    private func getExtractionsFromGiniCaptureSDK(delegate: GiniCaptureResultsDelegate) {
+    private func getExtractionsFromGiniBankSDK(delegate: GiniCaptureResultsDelegate) {
         let testDocumentData = self.loadFile(withName: "Gini_invoice_example_payment_reference", ofType: "pdf")
-        let builder = GiniCaptureDocumentBuilder(documentSource: .appName(name: "GiniCaptureSDKExample"))
+        let builder = GiniCaptureDocumentBuilder(documentSource: .appName(name: "GiniBankSDKExample"))
         let captureDocument = builder.build(with: testDocumentData)!
 
-        GiniConfiguration.shared.documentService = giniCaptureSDKDocumentService
+        GiniBankConfiguration.shared.documentService = giniCaptureSDKDocumentService
 
         // Upload a test document
         giniCaptureSDKDocumentService.upload(document: captureDocument) { result in
@@ -167,14 +180,17 @@ class ExtractionFeedbackWithLineItemsIntegrationTest: XCTestCase {
                                                             document: self.giniCaptureSDKDocumentService?.document)
 
                         delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
+
+                        GiniBankConfiguration.shared.lineItems = extractionResult.lineItems
                         // 4. Send feedback for the extractions the user saw
                         //    with the final (user confirmed or updated) extraction values
-                        GiniConfiguration.shared.cleanup(paymentRecipient: extractions["paymentRecipient"]?.value ?? "",
-                                                         paymentReference: extractions["paymentReference"]?.value ?? "",
-                                                         paymentPurpose: extractions["paymentPurpose"]?.value ?? "",
-                                                         iban: extractions["iban"]?.value ?? "",
-                                                         bic: extractions["bic"]?.value ?? "",
-                                                         amountToPay: ExtractionAmount(value: 950.00, currency: .EUR))
+                        GiniBankConfiguration.shared.cleanup(paymentRecipient: extractions["paymentRecipient"]?.value ?? "",
+                                                             paymentReference: extractions["paymentReference"]?.value ?? "",
+                                                             paymentPurpose: extractions["paymentPurpose"]?.value ?? "",
+                                                             iban: extractions["iban"]?.value ?? "",
+                                                             bic: extractions["bic"]?.value ?? "",
+                                                             amountToPay: ExtractionAmount(value: 950.00, currency: .EUR))
+
                     case let .failure(error):
                         XCTFail(String(describing: error))
                     }
@@ -186,11 +202,11 @@ class ExtractionFeedbackWithLineItemsIntegrationTest: XCTestCase {
     }
 
     /**
-      * This method reproduces the getting extractions for the already known document by the Capture SDK.
+      * This method reproduces the getting extractions for the already known document by the Bank SDK.
       * In your production code you should not call  any`GiniBankAPILibrary` methods.
-      * Interaction with the network service is handled by the Capture SDK internally.
+      * Interaction with the network service is handled by the Bank SDK internally.
       */
-    private func getUpdatedExtractionsFromGiniCaptureSDK(for document: Document, completion: @escaping AnalysisCompletion){
+    private func getUpdatedExtractionsFromGiniBankSDK(for document: Document, completion: @escaping AnalysisCompletion){
         self.giniBankAPIDocumentService.extractions(for: document,
                                                     cancellationToken: CancellationToken()) { result in
             switch result {
