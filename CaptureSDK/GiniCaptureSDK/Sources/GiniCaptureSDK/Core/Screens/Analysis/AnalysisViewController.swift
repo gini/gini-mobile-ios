@@ -10,8 +10,6 @@ import UIKit
 
 /**
  Delegate which can be used to communicate back to the analysis screen allowing to display custom messages on screen.
- 
- - note: Screen API only.
  */
 @objc public protocol AnalysisDelegate {
 
