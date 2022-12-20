@@ -1198,6 +1198,8 @@ public final class GiniBankConfiguration: NSObject {
         configuration.primaryButtonConfiguration = self.primaryButtonConfiguration
         configuration.secondaryButtonConfiguration = self.secondaryButtonConfiguration
         configuration.transparentButtonConfiguration = self.transparentButtonConfiguration
+        configuration.addPageButtonConfiguration = self.addPageButtonConfiguration
+        configuration.cameraControlButtonConfiguration = self.cameraControlButtonConfiguration
 
         GiniCapture.setConfiguration(configuration)
         
