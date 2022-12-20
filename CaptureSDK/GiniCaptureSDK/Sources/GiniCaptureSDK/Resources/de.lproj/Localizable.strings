@@ -33,17 +33,18 @@
 "ginicapture.camera.filepicker.errorPopup.cancelButton" = "Abbrechen";
 "ginicapture.camera.filepicker.errorPopup.confirmButton" = "OK";
 "ginicapture.camera.filepicker.errorPopup.grantAccessButton" = "Zugriff erteilen";
-"ginicapture.camera.documentValidationError.general" = "Leider kann diese Datei nicht bearbeitet werden";
+"ginicapture.camera.documentValidationError.general" = "Ihre Datei konnte nicht geöffnet werden. Bitte versuchen sie es mit einer anderenDatei.";
 "ginicapture.camera.documentValidationError.excedeedFileSize" = "Diese Datei ist leider zu groß";
-"ginicapture.camera.documentValidationError.tooManyPages" = "Das Dokument darf nicht mehr als 10 Seiten haben";
-"ginicapture.camera.documentValidationError.wrongFormat" = "Nur Dateien vom Format jpg, tiff, png, gif oder pdf können analysiert werden";
+"ginicapture.camera.documentValidationError.tooManyPages" = "Das Dokument darf nicht mehr als 10 Seiten haben.";
+"ginicapture.camera.documentValidationError.wrongFormat" = "Nur Dateien vom Format jpg, png, gif oder pdf können analysiert werden.";
+"ginicapture.camera.documentValidationError.pdfPasswordProtected" = "Passwortgeschützte Dokumente können nicht analysiert werden.";
 "ginicapture.camera.fileImportTip" = "Es können jetzt auch ganz einfach Dateien hochgeladen werden.";
 "ginicapture.camera.fileImportButtonLabel" = "Dateien";
 "ginicapture.camera.flashButtonLabel.On.Voice.Over" = "Blitz an";
 "ginicapture.camera.flashButtonLabel.Off.Voice.Over" = "Blitz aus";
 "ginicapture.camera.flashButtonLabel.On" = "An";
 "ginicapture.camera.flashButtonLabel.Off" = "Aus";
-"ginicapture.camera.thumbnail.Voice.Over" = "TODO: Photo review";
+"ginicapture.camera.thumbnail.Voice.Over" = "Foto vorschaubild";
 "ginicapture.camera.capturebutton" = "Bild Aufnehmen";
 "ginicapture.camera.infoLabel" = "Rechnung oder QR Code scannen";
 "ginicapture.camera.qrCodeTip" = "Haben Sie schon den QR-Codeleser ausprobiert?";
@@ -128,17 +129,31 @@
 
 "ginicapture.noresult.enterManually" = "Zahlungsdaten manuell eingeben";
 "ginicapture.noresult.retakeImages" = "Foto wiederholen";
-"ginicapture.noresult.title" = "TODO Fehler";
+
+"ginicapture.noresult.title" = "Keine Ergebnisse";
 "ginicapture.noresult.header" = "Leider konnten keine Informationen aus dem Dokument ausgelesen werden";
+
+"ginicapture.error.enterManually" = "Manuell ausfüllen";
+"ginicapture.error.backToCamera" = "Neues Photo";
+"ginicapture.error.title" = "Error";
+"ginicapture.error.connection.content" = "Es konnte keine Verbindung zum Internet hergestellt werden. Bitte überprüfen Sie Ihre Netzwerkverbindung und wiederholen Sie den Vorgang.";
+"ginicapture.error.authentication.content" = "Upload des Dokuments ist fehlgeschlagen aufgrund eines Fehlers bei der Authentifizierung. Bitte versuchen Sie es später noch einmal.";
+"ginicapture.error.serverError.content" = "Upload des Dokuments ist fehlgeschlagen aufgrund eines Serverfehlers. Bitte versuchen Sie es später noch einmal.";
+"ginicapture.error.unexpected.content" = "Es scheint hier ist etwas schiefgelaufen. Bitte versuchen Sie es später noch einmal.";
+"ginicapture.error.connection.title" = "Überprüfen Sie Ihre Internetverbindung";
+"ginicapture.error.authentication.title" = "Authentifizierung fehlgeschlagen";
+"ginicapture.error.serverError.title" = "Dienst nicht verfügbar";
+"ginicapture.error.unexpected.title" = "Oh hier ist etwas schiefgelaufen";
+"ginicapture.error.request.content" = "Das Dokument konnte nicht angenommen werden. Bitte überprüfen Sie, ob das Bild scharf ist, das Dokument Zahlungsinformationen enthält und im richtigen Dateiformat hochgeladen wird.";
+"ginicapture.error.request.title" = "Upload des Dokuments fehlgeschlagen";
 
 "ginicapture.help.import.title" = "Importieren";
 "ginicapture.help.import.selectInvoice.title" = "Rechnung auswählen";
 "ginicapture.help.import.selectInvoice.desc" = "Bitte die PDF-Rechnung in der Email-App, PDF-Ordner oder einer anderen App aus dem Handy auswählen. Um das Dokument nun an die Banking App zu senden, sollte die “Teilen mit” Funktion benutzt werden, welche mit einem Rechteck und Pfeil nach oben zeigend dargestellt ist.";
 "ginicapture.help.import.importtoapp.title" = "Aus der App importieren";
 "ginicapture.help.import.importtoapp.desc" = "Nun die Banking App aus der Liste auswählen, um das Dokument zum Analysieren weiterzuleiten.";
-"ginicapture.help.import.draganddrop.title" = "TODO: Drag and drop on iPad";
-"ginicapture.help.import.draganddrop.desc" = "TODO: If your iPad is running iOS 12 or newer, you can
-conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to start a payment. To do this, open your Banking App and open the Files app as a second app on the screen. Select the desired invoice file in the Files app and drag this over to your Banking App.";
+"ginicapture.help.import.draganddrop.title" = "Drag & drop auf dem iPad";
+"ginicapture.help.import.draganddrop.desc" = "Auf dem iPad können Sie ab iOS 12 oder neuer PDFs oder Fotos bequem aus der Datei-Browser-App per “Drag and Drop” in die Banking App gezogen werden, um den Überweisungsprozess zu starten. Hierzu öffnen Sie zunächst Ihre Banking App und die Datei-Browser-App parallel auf Ihrem Bildschirm. Ziehen Sie dann die gewünschte Datei rüber in die Banking App.";
 
 "ginicapture.help.supportedFormats.title" = "Formate";
 "ginicapture.help.supportedFormats.section.1.title" = "Unterstützte Formate";
@@ -157,7 +172,7 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.help.menu.import" = "Dokumente von anderen Apps importieren";
 
 "ginicapture.albums.title" = "Alben";
-"ginicapture.imagepicker.openbutton" = "Fertig";
+"ginicapture.imagepicker.openbutton" = "Fertig";
 
 "ginicapture.multipagereview.title" = "Übersicht";
 "ginicapture.multipagereview.description" = "Sind alle Zahlungsinformationen gut sichtbar?";
