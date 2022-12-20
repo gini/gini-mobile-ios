@@ -90,6 +90,59 @@ import UIKit
     @objc public var customDocumentValidations: ((GiniCaptureDocument) -> CustomDocumentValidationResult) = { _ in
         return CustomDocumentValidationResult.success()
     }
+
+    // MARK: Button configuration options
+
+    public lazy var primaryButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .GiniCapture.accent1,
+                                borderColor: .clear,
+                                titleColor: .GiniCapture.light1,
+                                shadowColor: .clear,
+                                cornerRadius: 16,
+                                borderWidth: 0,
+                                shadowRadius: 0,
+                                withBlurEffect: false)
+
+    public lazy var secondaryButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .GiniCapture.dark4,
+                                borderColor: GiniColor(light: UIColor.GiniCapture.light6,
+                                                      dark: UIColor.clear).uiColor(),
+                                titleColor: .GiniCapture.accent1,
+                                shadowColor: .clear,
+                                cornerRadius: 16,
+                                borderWidth: 2,
+                                shadowRadius: 14,
+                                withBlurEffect: true)
+
+    public lazy var transparentButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .clear,
+                                borderColor: .clear,
+                                titleColor: .GiniCapture.accent1,
+                                shadowColor: .clear,
+                                cornerRadius: 16,
+                                borderWidth: 0,
+                                shadowRadius: 0,
+                                withBlurEffect: false)
+
+    public lazy var cameraControlButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .clear,
+                                borderColor: .clear,
+                                titleColor: .GiniCapture.light1,
+                                shadowColor: .clear,
+                                cornerRadius: 0,
+                                borderWidth: 0,
+                                shadowRadius: 0,
+                                withBlurEffect: false)
+
+    public lazy var addPageButtonConfiguration: ButtonConfiguration =
+            ButtonConfiguration(backgroundColor: .clear,
+                                borderColor: .clear,
+                                titleColor: GiniColor(light: .GiniCapture.dark2, dark: .GiniCapture.light2).uiColor(),
+                                shadowColor: .clear,
+                                cornerRadius: 0,
+                                borderWidth: 0,
+                                shadowRadius: 0,
+                                withBlurEffect: false)
     
     // MARK: - TODO DELETE
     /**
