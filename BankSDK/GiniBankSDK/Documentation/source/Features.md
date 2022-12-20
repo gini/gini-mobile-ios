@@ -1,7 +1,7 @@
 Features
 =========
 
-The Gini Capture SDK provides various features you can enable and configure. All the features are configured during
+The Gini Bank SDK provides various features you can enable and configure. All the features are configured during
 through `GiniBankConfiguration.shared` instance. Specifically the `GiniBankConfiguration` is used to configure the Gini
 Capture SDK.
 
