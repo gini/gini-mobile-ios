@@ -17,7 +17,6 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
     var giniBankAPILib: GiniBankAPI!
     var giniCaptureSDKDocumentService: GiniCaptureSDK.DocumentService!
     var giniBankAPIDocumentService: GiniBankAPILibrary.DefaultDocumentService!
-    var feedbackSendingGroup: DispatchGroup!
 
     override func setUp() {
         let client = Client(id: clientId,
@@ -30,8 +29,6 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
         giniCaptureSDKDocumentService = DocumentService(lib: giniBankAPILib, metadata: nil)
 
         giniBankAPIDocumentService = giniBankAPILib.documentService()
-
-        feedbackSendingGroup = DispatchGroup()
     }
 
     func loadFile(withName name: String, ofType type: String) -> Data {
@@ -90,18 +87,8 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
             result.extractions["amountToPay"]?.value = "950.00:EUR"
 
             if result.extractions["amountToPay"] != nil {
-                // 4. Send feedback for the extractions the user saw
-                //    with the final (user confirmed or updated) extraction values
 
-                GiniBankConfiguration.shared.cleanup(paymentRecipient: result.extractions["paymentRecipient"]?.value ?? "",
-                                                     paymentReference: result.extractions["paymentReference"]?.value ?? "",
-                                                     paymentPurpose: result.extractions["paymentPurpose"]?.value ?? "",
-                                                     iban: result.extractions["iban"]?.value ?? "",
-                                                     bic: result.extractions["bic"]?.value ?? "",
-                                                     amountToPay: ExtractionAmount(value: 950.00, currency: .EUR))
-
-
-                self.integrationTest.feedbackSendingGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 4, execute: {
                     // 5. Verify that the extractions were updated
                     self.integrationTest.getUpdatedExtractionsFromGiniBankSDK(for: result.document!) { result in
                         switch result {
@@ -125,7 +112,7 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                             XCTFail(String(describing: error))
                         }
                     }
-                }
+                })
             }
         }
 
@@ -175,6 +162,16 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                                                             document: self.giniCaptureSDKDocumentService?.document)
 
                         delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
+
+                        // 4. Send feedback for the extractions the user saw
+                        //    with the final (user confirmed or updated) extraction values
+                        GiniBankConfiguration.shared.cleanup(paymentRecipient: extractions["paymentRecipient"]?.value ?? "",
+                                                             paymentReference: extractions["paymentReference"]?.value ?? "",
+                                                             paymentPurpose: extractions["paymentPurpose"]?.value ?? "",
+                                                             iban: extractions["iban"]?.value ?? "",
+                                                             bic: extractions["bic"]?.value ?? "",
+                                                             amountToPay: ExtractionAmount(value: 950.00, currency: .EUR))
+
                     case let .failure(error):
                         XCTFail(String(describing: error))
                     }
