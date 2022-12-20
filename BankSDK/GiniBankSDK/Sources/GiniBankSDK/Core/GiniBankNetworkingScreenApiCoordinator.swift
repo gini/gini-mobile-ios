@@ -16,6 +16,7 @@ protocol Coordinator: AnyObject {
 
 open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, GiniCaptureDelegate {
     
+    
     // MARK: - GiniCaptureDelegate
     
     public func didCapture(document: GiniCaptureDocument, networkDelegate: GiniCaptureNetworkDelegate) {
@@ -287,22 +288,24 @@ extension GiniBankNetworkingScreenApiCoordinator {
                 }
 
             case let .failure(error):
+                guard error != .requestCancelled else {
+                    return
+                }
 
-                guard error != .requestCancelled else { return }
-
-                
-                networkDelegate.displayError(withMessage: .localized(resource: AnalysisStrings.analysisErrorMessage),
-                                             andAction: {
-                                                 self.startAnalysisWithReturnAssistant(networkDelegate: networkDelegate)
-                                             })
-                 
+                DispatchQueue.main.async { [weak self] in
+                    guard error != .requestCancelled else { return }
+                    self?.displayError(errorType: ErrorType(error: error), animated: true)
+                    
+                }
             }
         }
     }
-
+    
+    
+    
     func uploadWithReturnAssistant(document: GiniCaptureDocument,
                       didComplete: @escaping (GiniCaptureDocument) -> Void,
-                      didFail: @escaping (GiniCaptureDocument, Error) -> Void) {
+                      didFail: @escaping (GiniCaptureDocument, GiniError) -> ()) {
         documentService.upload(document: document) { result in
             switch result {
             case .success:
@@ -319,13 +322,9 @@ extension GiniBankNetworkingScreenApiCoordinator {
         uploadWithReturnAssistant(document: document, didComplete: { _ in
             self.startAnalysisWithReturnAssistant(networkDelegate: networkDelegate)
         }, didFail: { _, error in
-            let error = error as? GiniCaptureError ?? AnalysisError.documentCreation
-
-            guard let analysisError = error as? AnalysisError, case analysisError = AnalysisError.cancelled else {
-                networkDelegate.displayError(withMessage: error.message, andAction: {
-                    uploadDidFail()
-                })
-                return
+            DispatchQueue.main.async {
+                guard error != .requestCancelled else { return }
+                networkDelegate.displayError(errorType: ErrorType(error: error), animated: true)
             }
         })
     }
