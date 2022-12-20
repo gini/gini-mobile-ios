@@ -3,7 +3,7 @@ License
 
 ## Gini Capture SDK for iOS is licensed under a Private License.
 
-    Copyright (c) 2014-2021, Gini GmbH
+    Copyright (c) 2014-2023, Gini GmbH
     All rights reserved.
 
     The Gini Capture SDK is licensed through Gini GmbH ("Gini") and may not be
@@ -23,7 +23,7 @@ The Gini Capture SDK uses code from the following libraries:
 
     The MIT License (MIT)
 
-    Copyright (c) 2014 - 2021 Gini GmbH
+    Copyright (c) 2014 - 2023 Gini GmbH
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,7 @@ The Gini Capture SDK uses code from the following libraries:
 
 ## Gini Capture SDK Pinning for iOS is licensed under a Private License.
 
-    Copyright (c) 2014-2021, Gini GmbH
+    Copyright (c) 2014-2023, Gini GmbH
     All rights reserved.
 
     The Gini Capture SDK is licensed through Gini GmbH ("Gini") and may not be
@@ -65,7 +65,7 @@ The Gini Capture SDK Pinning uses code from the following libraries:
 
     The MIT License (MIT)
 
-    Copyright (c) 2014 - 2021 Gini GmbH
+    Copyright (c) 2014 - 2023 Gini GmbH
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal

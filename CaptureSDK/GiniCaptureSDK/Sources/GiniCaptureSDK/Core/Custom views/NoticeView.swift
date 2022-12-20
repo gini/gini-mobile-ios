@@ -24,9 +24,7 @@ import UIKit
 /**
  Block that will be executed when a notice is tapped. Can be used to restart a
  process or to give the user further guidance.
- 
- - note: Screen API only.
- */
+  */
 
 struct NoticeAction {
     let title: String
