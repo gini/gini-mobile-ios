@@ -133,25 +133,6 @@ final class AppCoordinator: Coordinator {
         rootViewController.present(screenAPICoordinator.rootViewController, animated: true, completion: nil)
     }
 
-    fileprivate func showComponentAPI(with pages: [GiniCapturePage]? = nil) {
-        let componentAPICoordinator = ComponentAPICoordinator(pages: pages ?? [],
-                                                              configuration: giniConfiguration,
-                                                              documentService: componentAPIDocumentService())
-        componentAPICoordinator.delegate = self
-        componentAPICoordinator.start()
-        add(childCoordinator: componentAPICoordinator)
-
-        rootViewController.present(componentAPICoordinator.rootViewController, animated: true, completion: nil)
-    }
-
-    fileprivate func componentAPIDocumentService() -> ComponentAPIDocumentServiceProtocol {
-        let lib = GiniBankAPI.Builder(client: client).build()
-
-        documentMetadata = Document.Metadata(branchId: documentMetadataBranchId,
-                                             additionalHeaders: [documentMetadataAppFlowKey: "ComponentAPI"])
-        return ComponentAPIDocumentsService(lib: lib, documentMetadata: documentMetadata)
-    }
-
     fileprivate func showSettings() {
         let settingsViewController = (UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "settingsViewController") as? SettingsViewController)!
@@ -166,14 +147,11 @@ final class AppCoordinator: Coordinator {
     fileprivate func showOpenWithSwitchDialog(for pages: [GiniCapturePage]) {
         let alertViewController = UIAlertController(title: "Importierte Datei",
                                                     message: "Möchten Sie die importierte Datei mit dem " +
-                                                        "ScreenAPI oder ComponentAPI verwenden?",
+                                                        "ScreenAPI verwenden?",
                                                     preferredStyle: .alert)
 
         alertViewController.addAction(UIAlertAction(title: "Screen API", style: .default) { [weak self] _ in
             self?.showScreenAPI(with: pages)
-        })
-        alertViewController.addAction(UIAlertAction(title: "Component API", style: .default) { [weak self] _ in
-            self?.showComponentAPI(with: pages)
         })
 
         rootViewController.present(alertViewController, animated: true, completion: nil)
@@ -206,8 +184,6 @@ extension AppCoordinator: SelectAPIViewControllerDelegate {
         switch api {
         case .screen:
             showScreenAPI()
-        case .component:
-            showComponentAPI()
         }
     }
 
@@ -227,15 +203,6 @@ extension AppCoordinator: SettingsViewControllerDelegate {
 
 extension AppCoordinator: ScreenAPICoordinatorDelegate {
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ()) {
-        coordinator.rootViewController.dismiss(animated: true, completion: nil)
-        remove(childCoordinator: coordinator)
-    }
-}
-
-// MARK: ComponentAPICoordinatorDelegate
-
-extension AppCoordinator: ComponentAPICoordinatorDelegate {
-    func componentAPI(coordinator: ComponentAPICoordinator, didFinish: ()) {
         coordinator.rootViewController.dismiss(animated: true, completion: nil)
         remove(childCoordinator: coordinator)
     }

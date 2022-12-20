@@ -33,10 +33,11 @@
 "ginicapture.camera.filepicker.errorPopup.cancelButton" = "Abbrechen";
 "ginicapture.camera.filepicker.errorPopup.confirmButton" = "OK";
 "ginicapture.camera.filepicker.errorPopup.grantAccessButton" = "Zugriff erteilen";
-"ginicapture.camera.documentValidationError.general" = "Leider kann diese Datei nicht bearbeitet werden";
+"ginicapture.camera.documentValidationError.general" = "Ihre Datei konnte nicht geöffnet werden. Bitte versuchen sie es mit einer anderenDatei.";
 "ginicapture.camera.documentValidationError.excedeedFileSize" = "Diese Datei ist leider zu groß";
-"ginicapture.camera.documentValidationError.tooManyPages" = "Das Dokument darf nicht mehr als 10 Seiten haben";
-"ginicapture.camera.documentValidationError.wrongFormat" = "Nur Dateien vom Format jpg, tiff, png, gif oder pdf können analysiert werden";
+"ginicapture.camera.documentValidationError.tooManyPages" = "Das Dokument darf nicht mehr als 10 Seiten haben.";
+"ginicapture.camera.documentValidationError.wrongFormat" = "Nur Dateien vom Format jpg, png, gif oder pdf können analysiert werden.";
+"ginicapture.camera.documentValidationError.pdfPasswordProtected" = "Passwortgeschützte Dokumente können nicht analysiert werden.";
 "ginicapture.camera.fileImportTip" = "Es können jetzt auch ganz einfach Dateien hochgeladen werden.";
 "ginicapture.camera.fileImportButtonLabel" = "Dateien";
 "ginicapture.camera.flashButtonLabel.On.Voice.Over" = "Blitz an";
@@ -128,8 +129,23 @@
 
 "ginicapture.noresult.enterManually" = "Zahlungsdaten manuell eingeben";
 "ginicapture.noresult.retakeImages" = "Foto wiederholen";
-"ginicapture.noresult.title" = "Keine Ergebnisse ";
+
+"ginicapture.noresult.title" = "Keine Ergebnisse";
 "ginicapture.noresult.header" = "Leider konnten keine Informationen aus dem Dokument ausgelesen werden";
+
+"ginicapture.error.enterManually" = "Manuell ausfüllen";
+"ginicapture.error.backToCamera" = "Neues Photo";
+"ginicapture.error.title" = "Error";
+"ginicapture.error.connection.content" = "Es konnte keine Verbindung zum Internet hergestellt werden. Bitte überprüfen Sie Ihre Netzwerkverbindung und wiederholen Sie den Vorgang.";
+"ginicapture.error.authentication.content" = "Upload des Dokuments ist fehlgeschlagen aufgrund eines Fehlers bei der Authentifizierung. Bitte versuchen Sie es später noch einmal.";
+"ginicapture.error.serverError.content" = "Upload des Dokuments ist fehlgeschlagen aufgrund eines Serverfehlers. Bitte versuchen Sie es später noch einmal.";
+"ginicapture.error.unexpected.content" = "Es scheint hier ist etwas schiefgelaufen. Bitte versuchen Sie es später noch einmal.";
+"ginicapture.error.connection.title" = "Überprüfen Sie Ihre Internetverbindung";
+"ginicapture.error.authentication.title" = "Authentifizierung fehlgeschlagen";
+"ginicapture.error.serverError.title" = "Dienst nicht verfügbar";
+"ginicapture.error.unexpected.title" = "Oh hier ist etwas schiefgelaufen";
+"ginicapture.error.request.content" = "Das Dokument konnte nicht angenommen werden. Bitte überprüfen Sie, ob das Bild scharf ist, das Dokument Zahlungsinformationen enthält und im richtigen Dateiformat hochgeladen wird.";
+"ginicapture.error.request.title" = "Upload des Dokuments fehlgeschlagen";
 
 "ginicapture.help.import.title" = "Importieren";
 "ginicapture.help.import.selectInvoice.title" = "Rechnung auswählen";
@@ -156,7 +172,7 @@
 "ginicapture.help.menu.import" = "Dokumente von anderen Apps importieren";
 
 "ginicapture.albums.title" = "Alben";
-"ginicapture.imagepicker.openbutton" = "Fertig";
+"ginicapture.imagepicker.openbutton" = "Fertig";
 
 "ginicapture.multipagereview.title" = "Übersicht";
 "ginicapture.multipagereview.description" = "Sind alle Zahlungsinformationen gut sichtbar?";

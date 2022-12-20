@@ -13,11 +13,9 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
 /**
  Delegate to inform the reveiver about the current status of the Gini Capture SDK.
  Makes use of callbacks for handling incoming data and to control view controller presentation.
- 
- - note: Screen API only.
  */
 @objc public protocol GiniCaptureDelegate {
-    
+
     /**
      Called when the user has taken a picture or imported a file (image or PDF) from camera roll or document explorer
      
@@ -101,9 +99,7 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
     
     /**
      Returns a view controller which will handle the analysis process.
-     
-     - note: Screen API only.
-     
+          
      - parameter delegate: An instance conforming to the `GiniCaptureDelegate` protocol.
      - parameter importedDocuments: Documents that come from a source different than `CameraViewController`.
      There should be either images or one PDF, and they should be validated before calling this method.
@@ -120,8 +116,6 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
     
     /**
      Returns a view controller which will handle the analysis process.
-     
-     - note: Screen API only.
      
      - parameter delegate: An instance conforming to the `GiniCaptureDelegate` protocol.
      - parameter importedDocuments: Documents that come from a source different than `CameraViewController`.
@@ -141,8 +135,6 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
     
     /**
      Returns a view controller which will handle the analysis process.
-
-     - note: Screen API only.
      
      - parameter delegate: An instance conforming to the `GiniCaptureDelegate` protocol.
      - parameter importedDocument: Documents that come from a source different than CameraViewController.
@@ -163,8 +155,6 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
     
     /**
      Returns a view controller which will handle the analysis process.
-
-     - note: Screen API only.
      
      - parameter delegate: An instance conforming to the `GiniCaptureDelegate` protocol.
      - parameter importedDocument: Documents that come from a source different than CameraViewController.
@@ -188,8 +178,6 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
      Returns a view controller which will handle the analysis process.
      Allows to set a custom configuration to change the look and feel of the Gini Capture SDK.
      
-     - note: Screen API only.
-     
      - parameter delegate:      An instance conforming to the `GiniCaptureDelegate` protocol.
      - parameter configuration: The configuration to set.
      - parameter importedDocument: Documents that come from a source different than CameraViewController.
@@ -207,8 +195,6 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
     /**
      Returns a view controller which will handle the analysis process.
      Allows to set a custom configuration to change the look and feel of the Gini Capture SDK.
-     
-     - note: Screen API only.
      
      - parameter delegate:      An instance conforming to the `GiniCaptureDelegate` protocol.
      - parameter configuration: The configuration to set.
