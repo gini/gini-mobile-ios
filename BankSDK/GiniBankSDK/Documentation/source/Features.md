@@ -3,7 +3,7 @@ Features
 
 The Gini Bank SDK provides various features you can enable and configure. All the features are configured during
 through `GiniBankConfiguration.shared` instance. Specifically the `GiniBankConfiguration` is used to configure the Gini
-Capture SDK.
+Bank SDK.
 
 **Note**: Some features require additional contractual agreements and may not be used without prior confirmation. Please get in touch with us in case you are not sure which features your contract includes.
 
@@ -11,7 +11,7 @@ The following sections list all the features along with the related configuratio
 
 # Document Capture
 
-This is the core feature of the Gini Capture SDK. It enables your app to capture documents with the camera and prepares
+This is the core feature of the Gini Bank SDK. It enables your app to capture documents with the camera and prepares
 them to be analyzed by the Gini Bank API.
 
 ## Custom UI Elements
@@ -55,11 +55,11 @@ You can customize the onboarding in the following ways:
    If you need to animate the illustrations on the onboarding pages implement the `OnboardingIllustrationAdapter`
    interface to inject a view that can animate images (e.g., `Lottie`) and
    pass it to the relevant onboarding illustration adapter setters (e.g.,
-   `onboardingAlignCornersIllustrationAdapter`,`onboardingLightingIllustrationAdapter`,`onboardingMultiPageIllustrationAdapter`,`onboardingQRCodeIllustrationAdapter`) when configuring the `GiniConfiguration.shared` instance.
+   `onboardingAlignCornersIllustrationAdapter`,`onboardingLightingIllustrationAdapter`,`onboardingMultiPageIllustrationAdapter`,`onboardingQRCodeIllustrationAdapter`) when configuring the `GiniBankConfiguration.shared` instance.
 
 ## Single Page
 
-By default, the Gini Capture SDK is configured to capture single page documents. No further configuration is required for
+By default, the Gini Bank SDK is configured to capture single page documents. No further configuration is required for
 this.
 
 ## Multi-Page
@@ -75,3 +75,18 @@ To enable this simply pass `true` to `GiniBankConfiguration.shared.multipageEnab
 
 * Turn off flash by default:
    Flash is on by default, and you can turn it off by passing `false` to `GiniBankConfiguration.shared.flashOnByDefault`.
+## Help Screen Customization
+
+You can show your own help screens in the Gini Bank SDK.
+You can pass the title and view controller for each screen to the
+`GiniBankConfiguration.shared.customMenuItems` using a list of `HelpMenuItem` structs:
+
+``` swift
+
+        let customMenuItem = HelpMenuItem.custom("Custom menu item", CustomMenuItemViewController())
+
+        configuration.customMenuItems = [customMenuItem]
+ ```           
+
+You can also disable the supported formats help screen by passing `false` to
+`GiniBankConfiguration.shared.shouldShowSupportedFormatsScreen`.

@@ -8,6 +8,7 @@ The SDK provides a custom `UIViewController` object, which can be presented moda
 Gini Capture SDK offers two different ways of the networking implementation:
 
 ### Default Networking (Recommended)
+
 Using this method you don't need to care about handling the analysis process with the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios), you only need to provide your API credentials and a delegate to get the analysis results.
 
 ```swift
@@ -27,7 +28,7 @@ import TrustKit
 
 let yourPublicPinningConfig = [
     kTSKPinnedDomains: [
-    "api.gini.net": [
+    "pay-api.gini.net": [
         kTSKPublicKeyHashes: [
         // old *.gini.net public key
         "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
@@ -66,6 +67,7 @@ will return the analyzed Gini Bank API document in its `document` property.
 When extractions were retrieved without using the Gini Bank API, then the `AnalysisResult.document` will be `nil`. For example when the extractions came from an EPS QR Code.
 
 ### Custom Networking
+
 You can also provide your own networking by implementing the `GiniCaptureNetworkService` and `GiniCaptureResultsDelegate` protocols. Pass your instances to the UIViewController initialiser of GiniCapture as shown below.
 
 ```swift
