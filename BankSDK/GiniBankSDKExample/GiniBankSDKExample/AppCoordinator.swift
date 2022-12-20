@@ -151,7 +151,6 @@ final class AppCoordinator: Coordinator {
         documentBuilder.importMethod = .openWith
         
         documentBuilder.build(with: url) { [weak self] (document) in
-            
             guard let self = self else { return }
             
             // When a document is imported with "Open with", a dialog allowing to choose between both APIs
@@ -163,9 +162,12 @@ final class AppCoordinator: Coordinator {
                 do {
                     try GiniCapture.validate(document,
                                              withConfig: captureConfiguration)
-                    self.showOpenWithSwitchDialog(for: [GiniCapturePage(document: document, error: nil)])
-                } catch {
-                    self.showExternalDocumentNotValidDialog()
+                    self.showOpenWithSwitchDialog(
+                        for: [GiniCapturePage(document: document, error: nil)])
+                } catch  {
+                    self.rootViewController.showErrorDialog(
+                        for: error,
+                        positiveAction: nil)
                 }
             }
         }
