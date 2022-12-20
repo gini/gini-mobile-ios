@@ -26,8 +26,6 @@ extension GiniBank {
      - parameter userApi: The Gini user backend API to use. Supply .custom("domain") in order to specify a custom domain.
      - parameter trackingDelegate: A delegate object to receive user events
 
-     - note: Screen API only.
-
      - returns: A presentable view controller.
      */
     public class func viewController(withClient client: Client,

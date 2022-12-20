@@ -19,7 +19,6 @@ protocol SelectAPIViewControllerDelegate: AnyObject {
  */
 enum GiniCaptureAPIType {
     case screen
-    case component
 }
 
 /**
@@ -46,10 +45,6 @@ final class SelectAPIViewController: UIViewController {
 
     @IBAction func launchScreenAPI(_ sender: Any) {
         delegate?.selectAPI(viewController: self, didSelectApi: .screen)
-    }
-
-    @IBAction func launchComponentAPI(_ sender: Any) {
-        delegate?.selectAPI(viewController: self, didSelectApi: .component)
     }
 
     @IBAction func launchSettings(_ sender: Any) {

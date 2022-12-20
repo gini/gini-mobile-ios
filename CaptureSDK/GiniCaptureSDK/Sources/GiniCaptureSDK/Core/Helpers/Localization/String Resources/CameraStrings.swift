@@ -11,11 +11,13 @@ enum CameraStrings: LocalizableStringResource {
     
     case captureButton, captureFailedMessage, capturedImagesStackSubtitleLabel, errorPopupCancelButton,
     errorPopupGrantAccessButton, errorPopupPickAnotherFileButton, errorPopupReviewPagesButton,
-    exceededFileSizeErrorMessage, documentValidationGeneralErrorMessage, fileImportTipLabel, importFileButtonLabel,qrCodeTipLabel,
+    fileImportTipLabel, importFileButtonLabel,qrCodeTipLabel,
+         tooManyPagesErrorMessage,
     mixedArraysPopupCancelButton, mixedArraysPopupUsePhotosButton, mixedDocumentsErrorMessage, notAuthorizedButton,
     notAuthorizedMessage, photoLibraryAccessDeniedMessage, qrCodeDetectedPopupMessage, qrCodeDetectedPopupButton,
-    tooManyPagesErrorMessage, unknownErrorMessage, wrongFormatErrorMessage, popupTitleImportPDF, popupOptionPhotos,
+    popupTitleImportPDF, popupOptionPhotos,
     popupOptionFiles, popupTitleImportPDForPhotos, popupCancel, unsupportedQrCodeDetectedPopupMessage,
+         unknownErrorMessage,
     failedToOpenDocumentErrorMessage
     
     var tableName: String {
@@ -39,12 +41,6 @@ enum CameraStrings: LocalizableStringResource {
             return ("errorPopup.pickAnotherFileButton", "pick another file button title")
         case .errorPopupReviewPagesButton:
             return ("errorPopup.reviewPages", "review pages button title")
-        case .exceededFileSizeErrorMessage:
-            return ("documentValidationError.excedeedFileSize",
-                    "Message text error shown in camera screen when a file size is higher than 10MB")
-        case .documentValidationGeneralErrorMessage:
-            return ("documentValidationError.general",
-                    "Message text of a general document validation error shown in camera screen")
         case .fileImportTipLabel:
             return ("fileImportTip", "tooltip text indicating new file import feature")
         case .mixedArraysPopupCancelButton:
@@ -67,16 +63,9 @@ enum CameraStrings: LocalizableStringResource {
             return ("qrCodeDetectedPopup.message", "Proceed button message")
         case .qrCodeDetectedPopupButton:
             return ("qrCodeDetectedPopup.buttonTitle", "Proceed button title")
-        case .tooManyPagesErrorMessage:
-            return ("documentValidationError.tooManyPages",
-                    "Message text error shown in camera screen when a pdf length is higher than 10 pages" )
         case .unknownErrorMessage:
             return ("unknownError", "This message is shown when" +
                 "there is an unknown error in the camera")
-        case .wrongFormatErrorMessage:
-            return ("documentValidationError.wrongFormat",
-                "Message text error shown in camera screen when a file " +
-                "has a wrong format (neither PDF, JPEG, GIF, TIFF or PNG)")
         case .popupTitleImportPDF:
             return ("popupTitleImportPDF", "File picker popup title for only PDFs")
         case .popupTitleImportPDForPhotos:
@@ -94,6 +83,10 @@ enum CameraStrings: LocalizableStringResource {
         case .failedToOpenDocumentErrorMessage:
             return ("filepicker.failedToOpenDocument",
                     "Error message when the the picked document couldn't be opened")
+        case .tooManyPagesErrorMessage:
+            return ("documentValidationError.tooManyPages",
+                    "Message text error shown in camera screen when a pdf length is higher than 10 pages" )
+
         }
     }
     

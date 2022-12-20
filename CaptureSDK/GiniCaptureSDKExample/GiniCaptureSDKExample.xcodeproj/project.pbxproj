@@ -14,30 +14,24 @@
 		0A82FAD21D59D78300D84632 /* GINIAnalysisUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A82FAD11D59D78300D84632 /* GINIAnalysisUITests.swift */; };
 		0AAE6D4A1D6B6BC500EE9EDD /* NoResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAE6D491D6B6BC500EE9EDD /* NoResultViewController.swift */; };
 		0AAE6D4C1D6B6C0B00EE9EDD /* ResultTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAE6D4B1D6B6C0B00EE9EDD /* ResultTableViewController.swift */; };
-		0AEACE0A1D6385F700052120 /* ComponentAPIDocumentServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEACE091D6385F700052120 /* ComponentAPIDocumentServiceProtocol.swift */; };
 		1F195A3320C7C69A008EE2A3 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1FF3A42020C6D20900081A32 /* Credentials.plist */; };
-		1F2E1A9D1FB4855000E1022A /* ComponentAPIOnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E1A9C1FB4855000E1022A /* ComponentAPIOnboardingViewController.swift */; };
 		1F2E1A9F1FB58E2200E1022A /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E1A9E1FB58E2200E1022A /* AppCoordinator.swift */; };
 		1F2E1AA11FB58EC900E1022A /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E1AA01FB58EC900E1022A /* Coordinator.swift */; };
 		1F2E1AA31FB5AD5D00E1022A /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E1AA21FB5AD5D00E1022A /* ScreenAPICoordinator.swift */; };
-		1F4ABF8E2153A2EE00020A3B /* DocumentServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF3A41C20C6C8E700081A32 /* DocumentServiceMock.swift */; };
 		1F53F5101FE967C5009E2677 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F53F50F1FE967C5009E2677 /* RootNavigationController.swift */; };
 		1F578E111FBD7C7D00C17F62 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F578E101FBD7C7D00C17F62 /* SettingsViewController.swift */; };
 		1F578E131FBD81A300C17F62 /* SettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F578E121FBD81A300C17F62 /* SettingsViewControllerTests.swift */; };
-		1F59756120A0A21A0012196B /* ComponentAPIDocumentsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F59756020A0A21A0012196B /* ComponentAPIDocumentsService.swift */; };
-		1F59756320A0A24A0012196B /* PartialDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F59756220A0A24A0012196B /* PartialDocument.swift */; };
 		1F59756820A1C5C00012196B /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F59756720A1C5C00012196B /* UIViewController.swift */; };
 		1F5F53321F5DB2E300D4BF06 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
-		1F9411881FB9F4AE0019DECD /* ComponentAPICoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9411871FB9F4AE0019DECD /* ComponentAPICoordinatorTests.swift */; };
 		1F94118B1FBAEB7D0019DECD /* ScreenAPICoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F94118A1FBAEB7D0019DECD /* ScreenAPICoordinatorTests.swift */; };
 		1F9466C5203702E600F52B40 /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9466C4203702E600F52B40 /* CredentialsManager.swift */; };
-		1FEEADA91F793F84005BA159 /* ComponentAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FEEADA81F793F84005BA159 /* ComponentAPICoordinator.swift */; };
 		1FEED2941F6AC0440068E8AB /* testPDF.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 1FEED2931F6AC0440068E8AB /* testPDF.pdf */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* SelectAPIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* SelectAPIViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
+		834735F72940F96300C3B5F3 /* CustomAnalysisError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834735F62940F96300C3B5F3 /* CustomAnalysisError.swift */; };
 		F426ABF3289ABAA8007F4EB6 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F426ABF2289ABAA8007F4EB6 /* Colors.xcassets */; };
 		F42F027926D65DF2003A3695 /* AlbumsPickerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42F027826D65DF2003A3695 /* AlbumsPickerViewControllerTests.swift */; };
 		F42F027B26D65F67003A3695 /* GalleryCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42F027A26D65F67003A3695 /* GalleryCoordinatorTests.swift */; };
@@ -85,28 +79,21 @@
 		0A82FAD11D59D78300D84632 /* GINIAnalysisUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GINIAnalysisUITests.swift; path = UITests/GINIAnalysisUITests.swift; sourceTree = SOURCE_ROOT; };
 		0AAE6D491D6B6BC500EE9EDD /* NoResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoResultViewController.swift; sourceTree = "<group>"; };
 		0AAE6D4B1D6B6C0B00EE9EDD /* ResultTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultTableViewController.swift; sourceTree = "<group>"; };
-		0AEACE091D6385F700052120 /* ComponentAPIDocumentServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentAPIDocumentServiceProtocol.swift; sourceTree = "<group>"; };
 		1F1B913621F9BB8600EC2E60 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		1F1B913721F9BB8600EC2E60 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
-		1F2E1A9C1FB4855000E1022A /* ComponentAPIOnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentAPIOnboardingViewController.swift; sourceTree = "<group>"; };
 		1F2E1A9E1FB58E2200E1022A /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		1F2E1AA01FB58EC900E1022A /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		1F2E1AA21FB5AD5D00E1022A /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
 		1F53F50F1FE967C5009E2677 /* RootNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
 		1F578E101FBD7C7D00C17F62 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		1F578E121FBD81A300C17F62 /* SettingsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewControllerTests.swift; sourceTree = "<group>"; };
-		1F59756020A0A21A0012196B /* ComponentAPIDocumentsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentAPIDocumentsService.swift; sourceTree = "<group>"; };
-		1F59756220A0A24A0012196B /* PartialDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialDocument.swift; sourceTree = "<group>"; };
 		1F59756720A1C5C00012196B /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
-		1F9411871FB9F4AE0019DECD /* ComponentAPICoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentAPICoordinatorTests.swift; sourceTree = "<group>"; };
 		1F94118A1FBAEB7D0019DECD /* ScreenAPICoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinatorTests.swift; sourceTree = "<group>"; };
 		1F9466C4203702E600F52B40 /* CredentialsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
 		1FA970372149409600B776B8 /* GiniCaptureSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniCaptureSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FA970392149409600B776B8 /* GiniCaptureSDKExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniCaptureSDKExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FA9703A2149409600B776B8 /* GiniCaptureSDKExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniCaptureSDKExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		1FEEADA81F793F84005BA159 /* ComponentAPICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentAPICoordinator.swift; sourceTree = "<group>"; };
 		1FEED2931F6AC0440068E8AB /* testPDF.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = testPDF.pdf; sourceTree = "<group>"; };
-		1FF3A41C20C6C8E700081A32 /* DocumentServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentServiceMock.swift; sourceTree = "<group>"; };
 		1FF3A42020C6D20900081A32 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = SOURCE_ROOT; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -115,6 +102,7 @@
 		607FACDC1AFB9204008FA782 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		834735F62940F96300C3B5F3 /* CustomAnalysisError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnalysisError.swift; sourceTree = "<group>"; };
 		F40B4064252C9CC700D04B6F /* Credentials.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
 		F426ABF2289ABAA8007F4EB6 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		F42F027826D65DF2003A3695 /* AlbumsPickerViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsPickerViewControllerTests.swift; sourceTree = "<group>"; };
@@ -189,18 +177,6 @@
 			name = Extensions;
 			sourceTree = "<group>";
 		};
-		1F577530203C4EB40074FD63 /* Component API */ = {
-			isa = PBXGroup;
-			children = (
-				1FEEADA81F793F84005BA159 /* ComponentAPICoordinator.swift */,
-				1F2E1A9C1FB4855000E1022A /* ComponentAPIOnboardingViewController.swift */,
-				0AEACE091D6385F700052120 /* ComponentAPIDocumentServiceProtocol.swift */,
-				1F59756020A0A21A0012196B /* ComponentAPIDocumentsService.swift */,
-				1F59756220A0A24A0012196B /* PartialDocument.swift */,
-			);
-			name = "Component API";
-			sourceTree = "<group>";
-		};
 		1F577531203C4EEE0074FD63 /* Screen API */ = {
 			isa = PBXGroup;
 			children = (
@@ -208,14 +184,6 @@
 				1F53F50F1FE967C5009E2677 /* RootNavigationController.swift */,
 			);
 			name = "Screen API";
-			sourceTree = "<group>";
-		};
-		1FF3A41B20C6B9F300081A32 /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-				1FF3A41C20C6C8E700081A32 /* DocumentServiceMock.swift */,
-			);
-			name = Helpers;
 			sourceTree = "<group>";
 		};
 		607FACC71AFB9204008FA782 = {
@@ -247,12 +215,12 @@
 				0AAE6D4B1D6B6C0B00EE9EDD /* ResultTableViewController.swift */,
 				607FACD71AFB9204008FA782 /* SelectAPIViewController.swift */,
 				1F578E101FBD7C7D00C17F62 /* SettingsViewController.swift */,
-				1F577530203C4EB40074FD63 /* Component API */,
 				1F1D3B0120A32EAC00F37632 /* Extensions */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				1F577531203C4EEE0074FD63 /* Screen API */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
+				834735F62940F96300C3B5F3 /* CustomAnalysisError.swift */,
 			);
 			path = "Example Swift";
 			sourceTree = "<group>";
@@ -274,7 +242,6 @@
 			isa = PBXGroup;
 			children = (
 				F4F1A77027EB479D0004FF42 /* ExtractionFeedbackIntegrationTest.swift */,
-				1F9411871FB9F4AE0019DECD /* ComponentAPICoordinatorTests.swift */,
 				F42F028026D660B3003A3695 /* AlbumsPickerViewControllerDelegateTests.swift */,
 				F42F027E26D66029003A3695 /* GalleryCoordinatorDelegateTests.swift */,
 				F42F027826D65DF2003A3695 /* AlbumsPickerViewControllerTests.swift */,
@@ -283,7 +250,6 @@
 				F42F027A26D65F67003A3695 /* GalleryCoordinatorTests.swift */,
 				F42F027C26D65FC0003A3695 /* GalleryManagerTests.swift */,
 				F4F1A77327EB47CA0004FF42 /* Resources */,
-				1FF3A41B20C6B9F300081A32 /* Helpers */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
 			path = Tests;
@@ -516,22 +482,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F59756320A0A24A0012196B /* PartialDocument.swift in Sources */,
 				1F53F5101FE967C5009E2677 /* RootNavigationController.swift in Sources */,
 				F4BB7CEE2695D66C003FD77E /* CustomMenuItemViewController.swift in Sources */,
 				1F59756820A1C5C00012196B /* UIViewController.swift in Sources */,
-				1F59756120A0A21A0012196B /* ComponentAPIDocumentsService.swift in Sources */,
 				1F2E1AA11FB58EC900E1022A /* Coordinator.swift in Sources */,
 				1F2E1AA31FB5AD5D00E1022A /* ScreenAPICoordinator.swift in Sources */,
 				1F9466C5203702E600F52B40 /* CredentialsManager.swift in Sources */,
-				0AEACE0A1D6385F700052120 /* ComponentAPIDocumentServiceProtocol.swift in Sources */,
 				607FACD81AFB9204008FA782 /* SelectAPIViewController.swift in Sources */,
 				1F2E1A9F1FB58E2200E1022A /* AppCoordinator.swift in Sources */,
 				1F578E111FBD7C7D00C17F62 /* SettingsViewController.swift in Sources */,
 				0AAE6D4A1D6B6BC500EE9EDD /* NoResultViewController.swift in Sources */,
 				0AAE6D4C1D6B6C0B00EE9EDD /* ResultTableViewController.swift in Sources */,
-				1F2E1A9D1FB4855000E1022A /* ComponentAPIOnboardingViewController.swift in Sources */,
-				1FEEADA91F793F84005BA159 /* ComponentAPICoordinator.swift in Sources */,
+				834735F72940F96300C3B5F3 /* CustomAnalysisError.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -543,12 +505,10 @@
 				F4F1A77227EB479D0004FF42 /* ExtractionFeedbackIntegrationTest.swift in Sources */,
 				F42F028126D660B3003A3695 /* AlbumsPickerViewControllerDelegateTests.swift in Sources */,
 				F42F027D26D65FC0003A3695 /* GalleryManagerTests.swift in Sources */,
-				1F9411881FB9F4AE0019DECD /* ComponentAPICoordinatorTests.swift in Sources */,
 				F42F027F26D66029003A3695 /* GalleryCoordinatorDelegateTests.swift in Sources */,
 				F42F027B26D65F67003A3695 /* GalleryCoordinatorTests.swift in Sources */,
 				1F94118B1FBAEB7D0019DECD /* ScreenAPICoordinatorTests.swift in Sources */,
 				F42F027926D65DF2003A3695 /* AlbumsPickerViewControllerTests.swift in Sources */,
-				1F4ABF8E2153A2EE00020A3B /* DocumentServiceMock.swift in Sources */,
 				1F578E131FBD81A300C17F62 /* SettingsViewControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

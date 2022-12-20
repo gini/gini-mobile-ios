@@ -33,10 +33,11 @@
 "ginicapture.camera.filepicker.errorPopup.cancelButton" = "Cancel";
 "ginicapture.camera.filepicker.errorPopup.confirmButton" = "OK";
 "ginicapture.camera.filepicker.errorPopup.grantAccessButton" = "Grant permission";
-"ginicapture.camera.documentValidationError.general" = "Unfortunately, this file can not be edited";
-"ginicapture.camera.documentValidationError.excedeedFileSize" = "Unfortunately, this file is too big";
+"ginicapture.camera.documentValidationError.general" = "The document could not be opened. Please try a different document.";
+"ginicapture.camera.documentValidationError.excedeedFileSize" = "This file is too large.";
 "ginicapture.camera.documentValidationError.tooManyPages" = "The document can only have a maximum of 10 pages.";
-"ginicapture.camera.documentValidationError.wrongFormat" = "Only files of the formats jpg, png, gif or pdf can be analysed";
+"ginicapture.camera.documentValidationError.wrongFormat" = "Only files of the formats jpg, png, gif or pdf can be analysed.";
+"ginicapture.camera.documentValidationError.pdfPasswordProtected" = "Password protected documents cannot be analysed.";
 "ginicapture.camera.fileImportTip" = "Now documents can be conveniently uploaded for analysis.";
 "ginicapture.camera.fileImportButtonLabel" = "Files";
 "ginicapture.camera.flashButtonLabel.On.Voice.Over" = "Flash On";
@@ -172,13 +173,12 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.error.authentication.content" = "Upload failed due to authentication error. Please try again later.";
 "ginicapture.error.serverError.content" = "Upload failed due to a server error. Please try again later.";
 "ginicapture.error.unexpected.content" = "It seems something went wrong. Please try again later.";
-"ginicapture.error.uploadIssue.content" = "The document couldn’t be accepted. Please check if the image is sharp, the document contains payment information and has the right file type.";
 "ginicapture.error.connection.title" = "There was a problem connecting to the internet";
 "ginicapture.error.authentication.title" = "There has been an authentication error";
 "ginicapture.error.serverError.title" = "Service unavailable";
 "ginicapture.error.unexpected.title" = "Oh something went wrong";
-"ginicapture.error.uploadIssue.title" = "There was a problem with the upload";
-
+"ginicapture.error.request.content" = "The document couldn’t be accepted. Please check if the image is sharp, the document contains payment information and has the right file type.";
+"ginicapture.error.request.title" = "There was a problem with the upload";
 
 "ginicapture.images.openWithTutorialStep1" = "openWithTutorialStep1_en";
 "ginicapture.images.openWithTutorialStep2" = "openWithTutorialStep2_en";
