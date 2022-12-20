@@ -8,12 +8,12 @@
 
 import UIKit
 
-final public class NoResultScreenViewController: UIViewController {
+final class NoResultScreenViewController: UIViewController {
 
     var bottomNavigationBar: UIView?
     var navigationBarBottomAdapter: NoResultBottomNavigationBarAdapter?
 
-    public enum NoResultType {
+    enum NoResultType {
         case image
         case pdf
         case custom(String)
@@ -104,12 +104,12 @@ final public class NoResultScreenViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         self.setupView()
     }
 
-    public override func viewDidLayoutSubviews() {
+    override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if numberOfButtons > 0 {
             tableView.contentInset = UIEdgeInsets(
@@ -126,7 +126,7 @@ final public class NoResultScreenViewController: UIViewController {
         }
     }
 
-    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         tableView.contentInset = UIEdgeInsets(
             top: 0,
@@ -263,7 +263,7 @@ final public class NoResultScreenViewController: UIViewController {
             forHeaderFooterViewReuseIdentifier: HelpFormatSectionHeader.reuseIdentifier)
     }
 
-    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         tableView.reloadData()
         view.layoutSubviews()
