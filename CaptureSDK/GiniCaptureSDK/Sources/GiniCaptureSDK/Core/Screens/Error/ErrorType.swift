@@ -1,0 +1,120 @@
+//
+//  ErrorType.swift
+//  
+//
+//  Created by Krzysztof Kryniecki on 24/11/2022.
+//
+
+import Foundation
+import GiniBankAPILibrary
+
+@objc public enum ErrorType: Int {
+    case connection
+    case request
+    case serverError
+    case authentication
+    case unexpected
+    case importError
+
+    public init(error: GiniError) {
+        switch error {
+        case .unauthorized(_, _):
+            self = .authentication
+        case .noResponse:
+            self = .connection
+        case .notAcceptable(let response, _), .tooManyRequests(let response, _),
+                .parseError(_, let response, _), .badRequest(let response, _), .notFound(let response, _):
+            if let status = response?.statusCode {
+                switch status {
+                case 400, 402 ... 499:
+                    self = .request
+                case 401:
+                    self = .authentication
+                case let code where code >= 500:
+                    self = .serverError
+                default:
+                    self = .unexpected
+                }
+            } else {
+                self = .serverError
+            }
+        default:
+            self = .unexpected
+        }
+    }
+
+    func iconName() -> String {
+        switch self {
+        case .connection:
+            return "errorCloud"
+        case .request:
+            return "alertTriangle"
+        case .authentication:
+            return "errorAuth"
+        case .serverError:
+            return "errorGlobe"
+        case .unexpected:
+            return "alertTriangle"
+        case .importError:
+            return "alertTriangle"
+        }
+    }
+
+    func content() -> String {
+        switch self {
+        case .connection:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.connection.content",
+                comment: "Connection error")
+        case .request:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.request.content",
+                comment: "Request error")
+        case .authentication:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.authentication.content",
+                comment: "Authentication error")
+        case .serverError:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.serverError.content",
+                comment: "Server error")
+        case .unexpected:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.unexpected.content",
+                comment: "Unexpected error")
+        case .importError:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.importError.content",
+                comment: "Import error")
+        }
+    }
+
+    func title() -> String {
+        switch self {
+        case .connection:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.connection.title",
+                comment: "Connection error")
+        case .authentication:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.authentication.title",
+                comment: "Authentication error")
+        case .serverError:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.serverError.title",
+                comment: "Server error")
+        case .unexpected:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.unexpected.title",
+                comment: "Unexpected error")
+        case .request:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.request.title",
+                comment: "Upload error")
+        case .importError:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.importError.title",
+                comment: "Upload error")
+        }
+    }
+}

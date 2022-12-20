@@ -15,7 +15,7 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
  Makes use of callbacks for handling incoming data and to control view controller presentation.
  */
 @objc public protocol GiniCaptureDelegate {
-    
+
     /**
      Called when the user has taken a picture or imported a file (image or PDF) from camera roll or document explorer
      

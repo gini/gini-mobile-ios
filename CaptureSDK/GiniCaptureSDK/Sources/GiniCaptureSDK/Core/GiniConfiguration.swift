@@ -104,93 +104,7 @@ import UIKit
                                                                       thin: UIFont.systemFont(ofSize: 14,
                                                                                               weight: .thin),
                                                                       isEnabled: false)
-    
-    /**
-     Indicates corner radius for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonCornerRadius: CGFloat = 14
-    
-    /**
-     Indicates border width for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonBorderWidth: CGFloat = 1
-    
-    /**
-     Indicates shadow corner radius for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonShadowRadius: CGFloat = 14
-    
-    
-    /**
-     Indicates shadow color for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonShadowColor = GiniColor(light: UIColor.clear, dark: UIColor.clear)
-    
-    /**
-     Indicates border color for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonBorderColor = GiniColor(light: UIColor.clear, dark: UIColor.clear)
-    
-    /**
-     Indicates background color for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonBackgroundColor = GiniColor(light: UIColor.GiniCapture.accent1, dark: UIColor.GiniCapture.accent1)
-    
-    /**
-     Indicates title color for primary buttons within the screens
-     */
-    
-    @objc public var primaryButtonTitleColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.light1)
-    
-    
-    /**
-     Indicates corner radius for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonCornerRadius: CGFloat = 14
-    
-    /**
-     Indicates border width for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonBorderWidth: CGFloat = 1
-    
-    /**
-     Indicates shadow corner radius for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonShadowRadius: CGFloat = 14
-    
-    /**
-     Indicates shadow color for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonShadowColor = GiniColor(light: UIColor.clear, dark: UIColor.clear)
-    
-    /**
-     Indicates background color for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonBackground = GiniColor(light: UIColor.clear, dark: UIColor.clear)
-    
-    /**
-     Indicates border color for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonBorderColor = GiniColor(light: UIColor.GiniCapture.light6, dark: UIColor.clear)
-    
-    /**
-     Indicates title color for outline buttons within the screens
-     */
-    
-    @objc public var outlineButtonTitleColor = GiniColor(light: UIColor.GiniCapture.dark6, dark: UIColor.GiniCapture.light1)
-    
+
     /**
      Can be turned on during development to unlock extra information and to save captured images to camera roll.
      
@@ -414,6 +328,11 @@ import UIKit
       * Set an adapter implementation to show a custom bottom navigation bar on the no result screens.
      */
     public var noResultNavigationBarBottomAdapter: NoResultBottomNavigationBarAdapter?
+    
+    /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the error screens.
+     */
+    public var errorNavigationBarBottomAdapter: ErrorBottomNavigationBarAdapter?
     
     /**
       * Set an adapter implementation to show a custom bottom navigation bar on the help screens.
