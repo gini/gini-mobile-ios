@@ -39,10 +39,9 @@ import GiniBankAPILibrary
 }
 
  public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
-    
     public weak var resultsDelegate: GiniCaptureResultsDelegate?
     public let documentService: DocumentServiceProtocol
-    
+
     public init(client: Client,
          resultsDelegate: GiniCaptureResultsDelegate,
          giniConfiguration: GiniConfiguration,
@@ -147,13 +146,8 @@ extension GiniNetworkingScreenAPICoordinator {
             case .success(let extractions):
                 self.deliver(result: extractions, and: self.documentService.document, to: networkDelegate)
             case .failure(let error):
-
                 guard error != .requestCancelled else { return }
-                
-                networkDelegate.displayError(withMessage: .localized(resource: AnalysisStrings.analysisErrorMessage),
-                                             andAction: {
-                    self.startAnalysis(networkDelegate: networkDelegate)
-                })
+                networkDelegate.displayError(errorType: ErrorType(error: error), animated: true)
             }
         }
     }
@@ -171,20 +165,15 @@ extension GiniNetworkingScreenAPICoordinator {
         }
     }
 
-    fileprivate func uploadAndStartAnalysis(document: GiniCaptureDocument,
-                                            networkDelegate: GiniCaptureNetworkDelegate,
-                                            uploadDidFail: @escaping () -> Void) {
+    fileprivate func uploadAndStartAnalysis(
+        document: GiniCaptureDocument,
+        networkDelegate: GiniCaptureNetworkDelegate,
+        uploadDidFail: @escaping () -> Void) {
         self.upload(document: document, didComplete: { _ in
             self.startAnalysis(networkDelegate: networkDelegate)
         }, didFail: { _, error in
-            let error = error as? GiniCaptureError ?? AnalysisError.documentCreation
-
-            guard let analysisError = error as? AnalysisError, case analysisError = AnalysisError.cancelled else {
-                networkDelegate.displayError(withMessage: error.message, andAction: {
-                    uploadDidFail()
-                })
-                return
-            }
+            guard let giniError = error as? GiniError, giniError != .requestCancelled else { return }
+            networkDelegate.displayError(errorType: ErrorType(error: giniError), animated: true)
         })
     }
 }

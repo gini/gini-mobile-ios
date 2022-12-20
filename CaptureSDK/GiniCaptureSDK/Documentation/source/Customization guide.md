@@ -5,7 +5,6 @@ The Gini Capture SDK components can be customized either through the `GiniConfig
 
 - [Generic components](#generic-components)
 - [Onboarding screens](#onboarding-screens)
-- [No Authorized screen](#no-authorized-screen)
 - [Camera screen](#camera-screen)
 - [Gallery album screen](#gallery-album-screen)
 - [Review screen](#review-screen)
@@ -46,7 +45,7 @@ To override them in your application please use `GiniConfiguration.updateFont(_ 
 
 ## Images
 
-Customizing of images is done via overriding of [GiniImages.xcassets](https://github.com/gini/gini-mobile-ios/tree/new-ui/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/GiniImages.xcassets) resources.
+Images customization is done via overriding of [GiniImages.xcassets](https://github.com/gini/gini-mobile-ios/tree/new-ui/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/GiniImages.xcassets) resources.
 
 ## Text
 

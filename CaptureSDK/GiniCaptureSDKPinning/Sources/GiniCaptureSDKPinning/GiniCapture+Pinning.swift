@@ -23,9 +23,7 @@ extension GiniCapture {
      There should be either images or one PDF, and they should be validated before calling this method.
      - parameter resultsDelegate: Results delegate object where you can get the results of the analysis.
      - parameter publicKeyPinningConfig: Public key pinning configuration.
-     
-     - note: Screen API only.
-     
+          
      - returns: A presentable view controller.
      */
     

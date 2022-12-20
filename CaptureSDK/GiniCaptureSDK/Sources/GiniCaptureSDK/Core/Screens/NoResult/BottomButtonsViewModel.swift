@@ -8,12 +8,12 @@
 
 import Foundation
 
-public final class BottomButtonsViewModel {
+final class BottomButtonsViewModel {
     let retakePressed: (() -> Void)?
     let enterManuallyPressed: (() -> Void)?
     let cancelPressed: (() -> Void)
 
-    public init(
+    init(
         retakeBlock: (() -> Void)? = nil,
         manuallyPressed: (() -> Void)? = nil,
         cancelPressed: @escaping(() -> Void)) {
