@@ -97,8 +97,18 @@ Please find more information in the [Open with guide](https://developer.gini.net
 # Help Screen Customization
 
 You can show your own help screens in the Gini Capture SDK.
+You can pass the title and view controller for each screen to the
+`GiniConfiguration.shared.customMenuItems` using a list of `HelpMenuItem` structs:
 
-TODO
+``` swift
+
+        let customMenuItem = HelpMenuItem.custom("Custom menu item", CustomMenuItemViewController())
+
+        configuration.customMenuItems = [customMenuItem]
+ ```           
+
+You can also disable the supported formats help screen by passing `false` to
+`GiniConfiguration.shared.shouldShowSupportedFormatsScreen`.
 
 # Event Tracking
 
