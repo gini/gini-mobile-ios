@@ -19,8 +19,9 @@ abstract: CaptureSDK/GiniCaptureSDK/Documentation/Sections/*.md
 custom_categories:
 - name: Documentation
   children:
-  - Installation
+  - Getting started
   - Integration
+  - Features
   - Integration in a Xamarin Project
   - License
 
@@ -33,15 +34,13 @@ custom_categories:
   - Event tracking guide
   - Error logging guide
   - Migration guide
+  - Migration to version 3.x.x
 
 - name: Classes
   children:
-  - AnalysisViewController
   - AnalysisResult
-  - CameraViewController
   - CustomDocumentValidationError
   - CustomDocumentValidationResult
-  - DocumentPickerCoordinator
   - GiniConfiguration
   - GiniImageDocument
   - GiniPDFDocument
@@ -49,13 +48,8 @@ custom_categories:
   - GiniCapture
   - GiniCaptureDocumentBuilder
   - GiniCaptureDocumentValidator
-  - HelpMenuViewController
-  - ImageAnalysisNoResultsViewController
-  - MultipageReviewViewController
   - OnboardingPage
-  - OnboardingViewController
-  - ReviewViewController
-
+  
 - name: Enums
   children:
   - AnalysisError
@@ -68,7 +62,6 @@ custom_categories:
   - GiniCaptureDocumentType
   - ImageAnalysisNoResultsStrings
   - ImageAssetsStrings
-  - NoticeActionType
   - OpaqueViewStyle
   - ReviewError
   - OnboardingScreenEventType
@@ -93,7 +86,6 @@ custom_categories:
   - GiniCaptureError
   - GiniCaptureResultsDelegate
   - HelpMenuViewControllerDelegate
-  - MultipageReviewViewControllerDelegate
   - ReviewViewControllerDelegate
   - UploadDelegate
   - GiniCaptureTrackingDelegate
