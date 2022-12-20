@@ -21,26 +21,25 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
     var giniBankAPILib: GiniBankAPI!
     var giniCaptureSDKDocumentService: GiniCaptureSDK.DocumentService!
     var giniBankAPIDocumentService: GiniBankAPILibrary.DefaultDocumentService!
-    var feedbackSendingGroup: DispatchGroup!
     
     override func setUp() {
         let yourPublicPinningConfig = [
             kTSKPinnedDomains: [
-            "pay-api.gini.net": [
-                kTSKPublicKeyHashes: [
-                // old *.gini.net public key
-                "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
-                // new *.gini.net public key, active from around June 2020
-                "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo="
-            ]],
-            "user.gini.net": [
-                kTSKPublicKeyHashes: [
-                // old *.gini.net public key
-                "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
-                // new *.gini.net public key, active from around June 2020
-                "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo="
-            ]],
-        ]] as [String: Any]
+                "pay-api.gini.net": [
+                    kTSKPublicKeyHashes: [
+                        // old *.gini.net public key
+                        "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+                        // new *.gini.net public key, active from around June 2020
+                        "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo="
+                    ]],
+                "user.gini.net": [
+                    kTSKPublicKeyHashes: [
+                        // old *.gini.net public key
+                        "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
+                        // new *.gini.net public key, active from around June 2020
+                        "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo="
+                    ]],
+            ]] as [String: Any]
         let client = Client(id: clientId,
                             secret: clientSecret,
                             domain: "capture-sdk-example")
@@ -50,8 +49,6 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
         giniCaptureSDKDocumentService = DocumentService(lib: giniBankAPILib, metadata: nil)
         
         giniBankAPIDocumentService = giniBankAPILib.documentService()
-        
-        feedbackSendingGroup = DispatchGroup()
     }
 
     func loadFile(withName name: String, ofType type: String) -> Data {
@@ -110,10 +107,7 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
             result.extractions["amountToPay"]?.value = "950.00:EUR"
             
             if result.extractions["amountToPay"] != nil {
-                // 4. Send feedback for the extractions the user saw
-                //    with the final (user confirmed or updated) extraction values
-                
-                self.integrationTest.feedbackSendingGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 4, execute: {
                     // 5. Verify that the extractions were updated
                     self.integrationTest.getUpdatedExtractionsFromGiniCaptureSDK(for: result.document!) { result in
                         switch result {
@@ -131,13 +125,13 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                                            extractionsAfterFeedback.first(where: { $0.name == "bic" })?.value)
                             XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
                                            extractionsAfterFeedback.first(where: { $0.name == "amountToPay" })?.value)
-                            
+
                             self.expect.fulfill()
                         case let .failure(error):
                             XCTFail(String(describing: error))
                         }
                     }
-                }
+                })
             }
         }
 
@@ -150,16 +144,16 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
         func giniCaptureDidCancelAnalysis() {
         }
     }
-        
+
     /**
-      * This method reproduces the document upload and analysis done by the Capture SDK.
-      *
-      * The intent of this method is to create extractions like the one your app
-      * receives after a user analysed a document with the Capture SDK.
-      *
-      * In your production code you should not call `DocumentService` methods.
-      * Interaction with the network service is handled by the Capture SDK internally.
-      */
+     * This method reproduces the document upload and analysis done by the Capture SDK.
+     *
+     * The intent of this method is to create extractions like the one your app
+     * receives after a user analysed a document with the Capture SDK.
+     *
+     * In your production code you should not call `DocumentService` methods.
+     * Interaction with the network service is handled by the Capture SDK internally.
+     */
     private func getExtractionsFromGiniCaptureSDK(delegate: GiniCaptureResultsDelegate) {
         let testDocumentData = self.loadFile(withName: "Gini_invoice_example", ofType: "pdf")
         let builder = GiniCaptureDocumentBuilder(documentSource: .appName(name: "GiniCaptureSDKExample"))
@@ -187,6 +181,8 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                                                             document: self.giniCaptureSDKDocumentService?.document)
 
                         delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
+                        // 4. Send feedback for the extractions the user saw
+                        //    with the final (user confirmed or updated) extraction values
                         GiniConfiguration.shared.cleanup(paymentRecipient: extractions["paymentRecipient"]?.value ?? "",
                                                          paymentReference: extractions["paymentReference"]?.value ?? "",
                                                          paymentPurpose: extractions["paymentPurpose"]?.value ?? "",
@@ -205,10 +201,10 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
     }
 
     /**
-      * This method reproduces the getting extractions for the already known document by the Capture SDK.
-      * In your production code you should not call  any`GiniBankAPILibrary` methods.
-      * Interaction with the network service is handled by the Capture SDK internally.
-      */
+     * This method reproduces the getting extractions for the already known document by the Capture SDK.
+     * In your production code you should not call  any`GiniBankAPILibrary` methods.
+     * Interaction with the network service is handled by the Capture SDK internally.
+     */
     private func getUpdatedExtractionsFromGiniCaptureSDK(for document: Document, completion: @escaping AnalysisCompletion) {
         self.giniBankAPIDocumentService.extractions(for: document,
                                                     cancellationToken: CancellationToken()) { result in
