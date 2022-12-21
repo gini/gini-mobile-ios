@@ -88,7 +88,7 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
 
             if result.extractions["amountToPay"] != nil {
 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 4, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 10, execute: {
                     // 5. Verify that the extractions were updated
                     self.integrationTest.getUpdatedExtractionsFromGiniBankSDK(for: result.document!) { result in
                         switch result {
