@@ -48,7 +48,7 @@ class ExtractionFeedbackWithLineItemsIntegrationTest: XCTestCase {
         // (subsequent steps are in CaptureResultsDelegateForExtractionsFeedbackTest)
         self.getExtractionsFromGiniBankSDK(delegate: CaptureResultsDelegateForExtractionsFeedbackTest(integrationTest: self, expect: expect))
 
-        wait(for: [expect], timeout: 30)
+        wait(for: [expect], timeout: 60)
     }
 
     /**
