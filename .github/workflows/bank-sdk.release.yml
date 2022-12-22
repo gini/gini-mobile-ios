@@ -3,6 +3,7 @@ on:
   push:
     tags:
       - 'GiniBankSDK;[0-9]+.[0-9]+.[0-9]+'
+      - 'GiniBankSDK;[0-9]+.[0-9]+.[0-9]+-beta[0-9][0-9]'
   
 jobs:
   check:
