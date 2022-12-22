@@ -6,7 +6,6 @@
 //
 
 import XCTest
-
 @testable import GiniBankAPILibrary
 @testable import GiniCaptureSDK
 @testable import GiniBankSDK
@@ -17,7 +16,6 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
     var giniBankAPILib: GiniBankAPI!
     var giniCaptureSDKDocumentService: GiniCaptureSDK.DocumentService!
     var giniBankAPIDocumentService: GiniBankAPILibrary.DefaultDocumentService!
-    var feedbackSendingGroup: DispatchGroup!
 
     override func setUp() {
         let client = Client(id: clientId,
@@ -30,8 +28,6 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
         giniCaptureSDKDocumentService = DocumentService(lib: giniBankAPILib, metadata: nil)
 
         giniBankAPIDocumentService = giniBankAPILib.documentService()
-
-        feedbackSendingGroup = DispatchGroup()
     }
 
     func loadFile(withName name: String, ofType type: String) -> Data {
@@ -49,7 +45,7 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
         // (subsequent steps are in CaptureResultsDelegateForExtractionsFeedbackTest)
         self.getExtractionsFromGiniBankSDK(delegate: CaptureResultsDelegateForExtractionsFeedbackTest(integrationTest: self, expect: expect))
 
-        wait(for: [expect], timeout: 30)
+        wait(for: [expect], timeout: 60)
     }
 
     /**
@@ -65,9 +61,9 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
             self.expect = expect
         }
 
-        func giniCaptureAnalysisDidFinishWith(result: AnalysisResult, sendFeedbackBlock: @escaping ([String : Extraction]) -> Void) {
+        func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
             // 1b. Received the extractions for the uploaded document
-            let fixtureExtractionsJson = self.integrationTest.loadFile(withName: "result_Gini_invoice_example", ofType: "json")
+            let fixtureExtractionsJson = self.integrationTest.loadFile(withName: "result_Gini_invoice_example_payment_reference", ofType: "json")
 
             let fixtureExtractionsContainer = try! JSONDecoder().decode(ExtractionsContainer.self, from: fixtureExtractionsJson)
 
@@ -90,18 +86,18 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
             result.extractions["amountToPay"]?.value = "950.00:EUR"
 
             if result.extractions["amountToPay"] != nil {
-                // 4. Send feedback for the extractions the user saw
-                //    with the final (user confirmed or updated) extraction values
-                sendFeedbackBlock(result.extractions)
 
-                self.integrationTest.feedbackSendingGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 10, execute: {
                     // 5. Verify that the extractions were updated
                     self.integrationTest.getUpdatedExtractionsFromGiniBankSDK(for: result.document!) { result in
                         switch result {
                         case let .success(extractionResult):
                             let extractionsAfterFeedback = extractionResult.extractions
-                            let fixtureExtractionsAfterFeedbackJson = self.integrationTest.loadFile(withName: "result_Gini_invoice_example_after_feedback", ofType: "json")
+
+
+                            let fixtureExtractionsAfterFeedbackJson = self.integrationTest.loadFile(withName: "result_Gini_invoice_example_payment_reference_after_feedback", ofType: "json")
                             let fixtureExtractionsAfterFeedbackContainer = try! JSONDecoder().decode(ExtractionsContainer.self, from: fixtureExtractionsAfterFeedbackJson)
+
                             XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "iban" })?.value,
                                            extractionsAfterFeedback.first(where: { $0.name == "iban" })?.value)
                             XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "paymentRecipient" })?.value,
@@ -113,18 +109,31 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                             XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
                                            extractionsAfterFeedback.first(where: { $0.name == "amountToPay" })?.value)
 
+                            let fixtureLineItems = fixtureExtractionsAfterFeedbackContainer.compoundExtractions?["lineItems"]
+
+                            if let firstLineItemAfterFeedback = extractionResult.lineItems?.first, let fixtureLineItem = fixtureLineItems?.first {
+                                XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "baseGross" })?.value,
+                                               firstLineItemAfterFeedback.first(where: { $0.name == "baseGross" })?.value)
+                                XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "description" })?.value,
+                                               firstLineItemAfterFeedback.first(where: { $0.name == "description" })?.value)
+                                XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "quantity" })?.value,
+                                               firstLineItemAfterFeedback.first(where: { $0.name == "quantity" })?.value)
+                                XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "artNumber" })?.value,
+                                               firstLineItemAfterFeedback.first(where: { $0.name == "artNumber" })?.value)
+                            }
+
                             self.expect.fulfill()
                         case let .failure(error):
                             XCTFail(String(describing: error))
                         }
                     }
-                }
+                })
             }
         }
 
         func giniCaptureDidEnterManually() {
         }
-        
+
         func giniCaptureAnalysisDidFinishWithoutResults(_ showingNoResultsScreen: Bool) {
         }
 
@@ -142,9 +151,11 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
       * Interaction with the network service is handled by the Bank SDK internally.
       */
     private func getExtractionsFromGiniBankSDK(delegate: GiniCaptureResultsDelegate) {
-        let testDocumentData = self.loadFile(withName: "Gini_invoice_example", ofType: "pdf")
+        let testDocumentData = self.loadFile(withName: "Gini_invoice_example_payment_reference", ofType: "pdf")
         let builder = GiniCaptureDocumentBuilder(documentSource: .appName(name: "GiniBankSDKExample"))
         let captureDocument = builder.build(with: testDocumentData)!
+
+        GiniBankConfiguration.shared.documentService = giniCaptureSDKDocumentService
 
         // Upload a test document
         giniCaptureSDKDocumentService.upload(document: captureDocument) { result in
@@ -165,23 +176,18 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                                                             images: [],
                                                             document: self.giniCaptureSDKDocumentService?.document)
 
-                        let sendFeedbackBlock: (([String: Extraction]) -> Void) = { [self] updatedExtractions in
-                            let extractions = updatedExtractions.map {$0.1}
+                        delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
 
-                            self.feedbackSendingGroup.enter()
+                        GiniBankConfiguration.shared.lineItems = extractionResult.lineItems
+                        // 4. Send feedback for the extractions the user saw
+                        //    with the final (user confirmed or updated) extraction values
+                        GiniBankConfiguration.shared.cleanup(paymentRecipient: extractions["paymentRecipient"]?.value ?? "",
+                                                             paymentReference: extractions["paymentReference"]?.value ?? "",
+                                                             paymentPurpose: extractions["paymentPurpose"]?.value ?? "",
+                                                             iban: extractions["iban"]?.value ?? "",
+                                                             bic: extractions["bic"]?.value ?? "",
+                                                             amountToPay: ExtractionAmount(value: 950.00, currency: .EUR))
 
-                            self.giniBankAPIDocumentService.submitFeedback(for: self.giniCaptureSDKDocumentService!.document!,
-                                                                           with: extractions) { result in
-                                switch result {
-                                case .success():
-                                    self.feedbackSendingGroup.leave()
-                                case let .failure(error):
-                                    XCTFail(String(describing: error))
-                                }
-                            }
-                        }
-
-                        delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult, sendFeedbackBlock: sendFeedbackBlock)
                     case let .failure(error):
                         XCTFail(String(describing: error))
                     }
@@ -210,3 +216,4 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
     }
 
 }
+

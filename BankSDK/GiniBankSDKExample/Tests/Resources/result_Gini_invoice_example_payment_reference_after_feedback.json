@@ -1,0 +1,354 @@
+{
+  "extractions": {
+    "other-charges-addon": {
+      "entity": "amount",
+      "value": "6.49:EUR"
+    },
+    "paymentRecipient": {
+      "entity": "companyname",
+      "value": "KLARNA",
+      "candidates": "paymentRecipients"
+    },
+    "amountsAreConsistent": {
+      "entity": "text",
+      "value": "true"
+    },
+    "paymentPurpose": {
+      "entity": "text",
+      "value": "3 941674010439",
+      "box": {
+        "top": 12415.9,
+        "left": 3394.0,
+        "width": 3100.0,
+        "height": 144.0,
+        "page": 1
+      }
+    },
+    "bic": {
+      "entity": "bic",
+      "value": "DEUTDEMM760",
+      "box": {
+        "top": 11225.1,
+        "left": 3377.0,
+        "width": 2637.0,
+        "height": 163.0,
+        "page": 1
+      },
+      "candidates": "bics"
+    },
+    "paymentReference": {
+      "entity": "text",
+      "value": "3941674010439",
+      "box": {
+        "top": 12415.9,
+        "left": 3394.0,
+        "width": 3100.0,
+        "height": 144.0,
+        "page": 1
+      }
+    },
+    "amountToPay": {
+      "entity": "amount",
+      "value": "950.00:EUR",
+      "candidates": "amounts"
+    },
+    "iban": {
+      "entity": "iban",
+      "value": "DE13760700120500154000",
+      "box": {
+        "top": 10810.0,
+        "left": 3371.0,
+        "width": 4238.0,
+        "height": 168.0,
+        "page": 1
+      },
+      "candidates": "ibans"
+    },
+    "docType": {
+      "entity": "doctype",
+      "value": "RemittanceSlip"
+    }
+  },
+  "compoundExtractions": {
+    "lineItems": [
+      {
+        "quantity": {
+          "entity": "numeric",
+          "value": "1",
+          "box": {
+            "top": 5049.85,
+            "left": 6036.0,
+            "width": 124.0,
+            "height": 111.0,
+            "page": 1
+          }
+        },
+        "artNumber": {
+          "entity": "text",
+          "value": "2003133437",
+          "box": {
+            "top": 5055.85,
+            "left": 662.0,
+            "width": 809.0,
+            "height": 111.0,
+            "page": 1
+          }
+        },
+        "description": {
+          "entity": "text",
+          "value": "Jeans mit Riss, geradem Beinschnitt ohne Tasche",
+          "box": {
+            "top": 5051.65,
+            "left": 2335.0,
+            "width": 2632.0,
+            "height": 256.35000000000036,
+            "page": 1
+          }
+        },
+        "baseGross": {
+          "entity": "amount",
+          "value": "19.00:EUR",
+          "box": {
+            "top": 5037.2,
+            "left": 6692.0,
+            "width": 407.0,
+            "height": 131.0,
+            "page": 1
+          }
+        }
+      },
+      {
+        "quantity": {
+          "entity": "numeric",
+          "value": "1",
+          "box": {
+            "top": 5371.4,
+            "left": 6024.0,
+            "width": 142.0,
+            "height": 123.0,
+            "page": 1
+          }
+        },
+        "artNumber": {
+          "entity": "text",
+          "value": "2003133436",
+          "box": {
+            "top": 5385.85,
+            "left": 668.0,
+            "width": 803.0,
+            "height": 111.0,
+            "page": 1
+          }
+        },
+        "description": {
+          "entity": "text",
+          "value": "T-Shirt mit gerollten Ärmeln und Buchstaben",
+          "box": {
+            "top": 5373.05,
+            "left": 2331.0,
+            "width": 2777.0,
+            "height": 130.0,
+            "page": 1
+          }
+        },
+        "baseGross": {
+          "entity": "amount",
+          "value": "5.99:EUR",
+          "box": {
+            "top": 5367.95,
+            "left": 6760.0,
+            "width": 339.0,
+            "height": 135.0,
+            "page": 1
+          }
+        }
+      }
+    ]
+  },
+  "returnReasons": [
+    {
+      "de": "Anders als im Bild",
+      "en": "Looks different from site image",
+      "id": "r1"
+    },
+    {
+      "de": "Schlechte Qualität",
+      "en": "Poor quality",
+      "id": "r2"
+    },
+    {
+      "de": "Defekt",
+      "en": "Defect",
+      "id": "r3"
+    },
+    {
+      "de": "Passt nicht richtig",
+      "en": "Doesn't suit me",
+      "id": "r4"
+    },
+    {
+      "de": "Falsches Produkt empfangen",
+      "en": "Received wrong item",
+      "id": "r5"
+    },
+    {
+      "de": "Paket wurde beschädigt",
+      "en": "Parcel was damaged",
+      "id": "r6"
+    },
+    {
+      "de": "Lieferung zu spät angekommen",
+      "en": "Arrived too late",
+      "id": "r7"
+    }
+  ],
+  "candidates": {
+    "paymentRecipients": [
+      {
+        "entity": "companyname",
+        "value": "KLARNA"
+      },
+      {
+        "entity": "companyname",
+        "value": "K L A R N A"
+      },
+      {
+        "entity": "companyname",
+        "value": "Klarna"
+      },
+      {
+        "entity": "companyname",
+        "value": "Deutsche Bank AG"
+      },
+      {
+        "entity": "companyname",
+        "value": "klarna"
+      },
+      {
+        "entity": "companyname",
+        "value": "Klama"
+      },
+      {
+        "entity": "companyname",
+        "value": "Klarna AB"
+      },
+      {
+        "entity": "companyname",
+        "value": "KLARNA AB"
+      },
+      {
+        "entity": "companyname",
+        "value": "KLAR N A"
+      },
+      {
+        "entity": "companyname",
+        "value": "baby-walz GmbH"
+      }
+    ],
+    "bics": [
+      {
+        "entity": "bic",
+        "value": "DEUTDEMM760",
+        "box": {
+          "top": 11225.1,
+          "left": 3377.0,
+          "width": 2637.0,
+          "height": 163.0,
+          "page": 1
+        }
+      },
+      {
+        "entity": "bic",
+        "value": "DEUTDEMM760",
+        "box": {
+          "top": 3079.5,
+          "left": 5467.0,
+          "width": 4234.0,
+          "height": 147.0,
+          "page": 1
+        }
+      },
+      {
+        "entity": "bic",
+        "value": "DEUTDEMM760",
+        "box": {
+          "top": 9028.0,
+          "left": 8010.0,
+          "width": 1041.0,
+          "height": 84.0,
+          "page": 1
+        }
+      }
+    ],
+    "amounts": [
+      {
+        "entity": "amount",
+        "value": "31.48:EUR",
+        "box": {
+          "top": 6453.3,
+          "left": 9266.0,
+          "width": 452.0,
+          "height": 127.0,
+          "page": 1
+        }
+      },
+      {
+        "entity": "amount",
+        "value": "31.48:EUR",
+        "box": {
+          "top": 3270.55,
+          "left": 8966.0,
+          "width": 412.0,
+          "height": 123.0,
+          "page": 1
+        }
+      }
+    ],
+    "ibans": [
+      {
+        "entity": "iban",
+        "value": "DE13760700120500154000",
+        "box": {
+          "top": 10810.0,
+          "left": 3371.0,
+          "width": 4238.0,
+          "height": 168.0,
+          "page": 1
+        }
+      },
+      {
+        "entity": "iban",
+        "value": "DE13760700120500154000",
+        "box": {
+          "top": 2903.1,
+          "left": 7914.0,
+          "width": 1782.0,
+          "height": 107.0,
+          "page": 1
+        }
+      },
+      {
+        "entity": "iban",
+        "value": "DE13760700120500154000",
+        "box": {
+          "top": 8916.55,
+          "left": 8324.0,
+          "width": 1332.0,
+          "height": 95.0,
+          "page": 1
+        }
+      },
+      {
+        "entity": "iban",
+        "value": "DE13760700120500154000",
+        "box": {
+          "top": 10810.0,
+          "left": 3371.0,
+          "width": 4238.0,
+          "height": 168.0,
+          "page": 1
+        }
+      }
+    ]
+  }
+}

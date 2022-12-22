@@ -7,6 +7,7 @@
 
 import UIKit
 import GiniCaptureSDK
+import GiniBankAPILibrary
 
 public final class GiniBankConfiguration: NSObject {
     
@@ -28,7 +29,7 @@ public final class GiniBankConfiguration: NSObject {
      
      - returns: Instance of `GiniBankConfiguration`.
      */
-    public override init() {}
+    override init() {}
     
     // MARK: General options
     
@@ -50,7 +51,7 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Used to handle all the logging messages in order to log them in a different way.
      */
-    @objc public var logger: GiniLogger = GiniConfiguration().logger
+    @objc public var logger: GiniLogger = GiniConfiguration.shared.logger
     
     /**
      Indicates whether the multipage feature is enabled or not. In case of `true`,
@@ -1079,7 +1080,7 @@ public final class GiniBankConfiguration: NSObject {
     ]
     
     public func captureConfiguration() -> GiniConfiguration {
-     let configuration = GiniConfiguration()
+        let configuration = GiniConfiguration.shared
         configuration.customDocumentValidations = self.customDocumentValidations
         
         configuration.customFont = self.customFont
@@ -1356,5 +1357,74 @@ public final class GiniBankConfiguration: NSObject {
     */
     public func updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle) {
         textStyleFonts[textStyle] = font
+    }
+
+    var documentService: DocumentServiceProtocol?
+    var lineItems: [[Extraction]]?
+
+    /// Function for clean up
+    /// - Parameters:
+    ///   - paymentRecipient: paymentRecipient description
+    ///   - paymentReference: paymentReference description
+    ///   - iban: iban description
+    ///   - bic: bic description
+    ///   - amountToPay: amountToPay description
+    public func cleanup(paymentRecipient: String, paymentReference: String, paymentPurpose: String, iban: String, bic: String, amountToPay: ExtractionAmount) {
+        guard let documentService = documentService else { return }
+
+        // Convert amount object to string
+        // Cut off decimals after the first 2
+        let truncatedAmountValue = amountToPay.value.convertToDouble(withDecimalPoint: 2)
+        let amountToPayString = "\(truncatedAmountValue)" + ":" + amountToPay.currency.rawValue
+
+        let paymentRecipientExtraction = Extraction(box: nil,
+                                                    candidates: nil,
+                                                    entity: "companyname",
+                                                    value: paymentRecipient,
+                                                    name: "paymentRecipient")
+        let paymentReferenceExtraction = Extraction(box: nil,
+                                                    candidates: nil,
+                                                    entity: "reference",
+                                                    value: paymentRecipient,
+                                                    name: "paymentReference")
+        let paymentPurposeExtraction = Extraction(box: nil,
+                                                  candidates: nil,
+                                                  entity: "text",
+                                                  value: paymentPurpose,
+                                                  name: "paymentPurpose")
+        let ibanExtraction = Extraction(box: nil,
+                                        candidates: nil,
+                                        entity: "iban",
+                                        value: iban,
+                                        name: "iban")
+        let bicExtraction = Extraction(box: nil,
+                                       candidates: nil,
+                                       entity: "bic",
+                                       value: bic,
+                                       name: "bic")
+        let amountExtraction = Extraction(box: nil,
+                                          candidates: nil,
+                                          entity: "amount",
+                                          value: amountToPayString,
+                                          name: "amountToPay")
+
+        let updatedExtractions: [Extraction] = [paymentRecipientExtraction,
+                                                paymentReferenceExtraction,
+                                                paymentPurposeExtraction,
+                                                ibanExtraction,
+                                                bicExtraction,
+                                                amountExtraction]
+
+        if let lineItems = lineItems {
+            documentService.sendFeedback(with: updatedExtractions,
+                                         updatedCompoundExtractions: ["lineItems": lineItems])
+        } else {
+            documentService.sendFeedback(with: updatedExtractions,
+                                         updatedCompoundExtractions: nil)
+        }
+
+        documentService.resetToInitialState()
+        self.documentService = nil
+        self.lineItems = nil
     }
 }
