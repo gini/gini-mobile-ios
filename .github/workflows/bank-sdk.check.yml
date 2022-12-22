@@ -64,7 +64,8 @@ jobs:
         -project BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj
         -scheme "GiniBankSDKExampleTests"
         -destination "${{ matrix.destination }}"
-        -skip-testing:GiniBankSDKExample/Tests/ExtractionFeedbackWithLineItemsIntegrationTest, GiniBankSDKExample/Tests/ExtractionFeedbackIntegrationTest
+        -skip-testing:GiniBankSDKExample/Tests/ExtractionFeedbackWithLineItemsIntegrationTest
+        -skip-testing:GiniBankSDKExample/Tests/ExtractionFeedbackIntegrationTest
         CODE_SIGN_IDENTITY=""
         CODE_SIGNING_REQUIRED=NO
         ONLY_ACTIVE_ARCH=NO
