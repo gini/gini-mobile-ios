@@ -17,10 +17,8 @@ import GiniBankAPILibrary
      Called when the analysis finished with results
      
      - parameter result: Contains the analysis result
-     - parameter sendFeedbackBlock: Block used to send feeback once the results have been corrected
      */
-    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult,
-                                         sendFeedbackBlock: @escaping ([String: Extraction]) -> Void)
+    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult)
     
     /**
      Called when the analysis finished without results.
@@ -58,7 +56,8 @@ import GiniBankAPILibrary
                                                                                   for: api)
         super.init(withDelegate: nil,
                    giniConfiguration: giniConfiguration)
-        
+
+        self.giniConfiguration.documentService = documentService
         self.visionDelegate = self
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
@@ -74,7 +73,8 @@ import GiniBankAPILibrary
          
          super.init(withDelegate: nil,
                     giniConfiguration: giniConfiguration)
-         
+
+         self.giniConfiguration.documentService = documentService
          self.visionDelegate = self
          self.resultsDelegate = resultsDelegate
          self.trackingDelegate = trackingDelegate
@@ -126,13 +126,8 @@ import GiniBankAPILibrary
                 
                 
                 let result = AnalysisResult(extractions: extractions, lineItems: result.lineItems, images: images, document: document)
-                
-                let documentService = self.documentService
-                
-                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result) { updatedExtractions in
-                    documentService.sendFeedback(with: updatedExtractions.map { $0.value }, updatedCompoundExtractions: nil)
-                    documentService.resetToInitialState()
-                }
+                                
+                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
             } else {
                 self.resultsDelegate?
                     .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen())

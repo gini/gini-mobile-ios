@@ -103,7 +103,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
     weak var resultsDelegate: GiniCaptureResultsDelegate?
     let documentService: DocumentServiceProtocol
-    var giniPayBankConfiguration = GiniBankConfiguration.shared
+    var giniBankConfiguration = GiniBankConfiguration.shared
     
     public init(client: Client,
          resultsDelegate: GiniCaptureResultsDelegate,
@@ -121,7 +121,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
         visionDelegate = self
         GiniBank.setConfiguration(configuration)
-        giniPayBankConfiguration = configuration
+        giniBankConfiguration = configuration
+        giniBankConfiguration.documentService = documentService
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
     }
@@ -138,7 +139,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
         super.init(withDelegate: nil,
                    giniConfiguration: captureConfiguration)
-        giniPayBankConfiguration = configuration
+        giniBankConfiguration = configuration
+        giniBankConfiguration.documentService = documentService
         GiniBank.setConfiguration(configuration)
 
         visionDelegate = self
@@ -193,15 +195,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
                 let documentService = self.documentService
 
-                self.resultsDelegate?
-                    .giniCaptureAnalysisDidFinishWith(result: result) { updatedExtractions in
-                        if let lineItems = result.lineItems {
-                            documentService.sendFeedback(with: updatedExtractions.map { $0.value }, updatedCompoundExtractions: ["lineItems": lineItems])
-                        } else {
-                            documentService.sendFeedback(with: updatedExtractions.map { $0.value }, updatedCompoundExtractions: nil)
-                        }
-                        documentService.resetToInitialState()
-                    }
+                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
+                documentService.resetToInitialState()
             } else {
                 self.resultsDelegate?
                     .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen())
@@ -230,21 +225,15 @@ extension GiniBankNetworkingScreenApiCoordinator {
                 })
                 
                 let documentService = self.documentService
-                
+
                 let result = AnalysisResult(extractions: extractions,
                                             lineItems: result.lineItems,
                                             images: images,
                                             document: documentService.document)
+                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
 
-                self.resultsDelegate?
-                    .giniCaptureAnalysisDidFinishWith(result: result) { updatedExtractions in
-                        if let lineItems = result.lineItems {
-                            documentService.sendFeedback(with: updatedExtractions.map { $0.value }, updatedCompoundExtractions: ["lineItems": lineItems])
-                        } else {
-                            documentService.sendFeedback(with: updatedExtractions.map { $0.value }, updatedCompoundExtractions: nil)
-                        }
-                        documentService.resetToInitialState()
-                    }
+
+                self.giniBankConfiguration.lineItems = result.lineItems
             } else {
                 self.resultsDelegate?
                     .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen())
@@ -255,7 +244,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
 
     public func showDigitalInvoiceScreen(digitalInvoice: DigitalInvoice, analysisDelegate: AnalysisDelegate) {
         let digitalInvoiceViewController = DigitalInvoiceViewController()
-        digitalInvoiceViewController.returnAssistantConfiguration = giniPayBankConfiguration.returnAssistantConfiguration()
+        digitalInvoiceViewController.returnAssistantConfiguration = giniBankConfiguration.returnAssistantConfiguration()
         digitalInvoiceViewController.invoice = digitalInvoice
         digitalInvoiceViewController.delegate = self
         digitalInvoiceViewController.analysisDelegate = analysisDelegate

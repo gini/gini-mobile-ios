@@ -10,6 +10,12 @@
 		4C84B5DD264ED55100853F33 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C84B5DC264ED55100853F33 /* Credentials.plist */; };
 		764E0AD228CF274A00F96503 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 764E0AD428CF274A00F96503 /* InfoPlist.strings */; };
 		768B017E28D1E54E009A2124 /* CustomLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768B017D28D1E54E009A2124 /* CustomLoadingIndicator.swift */; };
+		76D245CF295201D500C9681D /* result_Gini_invoice_example_payment_reference_after_feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = 76D245CC295201D400C9681D /* result_Gini_invoice_example_payment_reference_after_feedback.json */; };
+		76D245D0295201D500C9681D /* result_Gini_invoice_example_payment_reference_after_feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = 76D245CC295201D400C9681D /* result_Gini_invoice_example_payment_reference_after_feedback.json */; };
+		76D245D1295201D500C9681D /* result_Gini_invoice_example_payment_reference.json in Resources */ = {isa = PBXBuildFile; fileRef = 76D245CD295201D400C9681D /* result_Gini_invoice_example_payment_reference.json */; };
+		76D245D2295201D500C9681D /* result_Gini_invoice_example_payment_reference.json in Resources */ = {isa = PBXBuildFile; fileRef = 76D245CD295201D400C9681D /* result_Gini_invoice_example_payment_reference.json */; };
+		76D245D3295201D500C9681D /* Gini_invoice_example_payment_reference.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 76D245CE295201D500C9681D /* Gini_invoice_example_payment_reference.pdf */; };
+		76D245D4295201D500C9681D /* Gini_invoice_example_payment_reference.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 76D245CE295201D500C9681D /* Gini_invoice_example_payment_reference.pdf */; };
 		8303F4ED28F9AD7000285599 /* cameraAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8303F4EC28F9AD7000285599 /* cameraAnimation.json */; };
 		8303F4EF28F9AD7700285599 /* magicAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8303F4EE28F9AD7700285599 /* magicAnimation.json */; };
 		8303F4F128F9AD7C00285599 /* uploadAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8303F4F028F9AD7C00285599 /* uploadAnimation.json */; };
@@ -97,6 +103,9 @@
 		764E0AD328CF274A00F96503 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		764E0AD528CF275000F96503 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		768B017D28D1E54E009A2124 /* CustomLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLoadingIndicator.swift; sourceTree = "<group>"; };
+		76D245CC295201D400C9681D /* result_Gini_invoice_example_payment_reference_after_feedback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_payment_reference_after_feedback.json; sourceTree = "<group>"; };
+		76D245CD295201D400C9681D /* result_Gini_invoice_example_payment_reference.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_payment_reference.json; sourceTree = "<group>"; };
+		76D245CE295201D500C9681D /* Gini_invoice_example_payment_reference.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_payment_reference.pdf; sourceTree = "<group>"; };
 		8303F4EC28F9AD7000285599 /* cameraAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cameraAnimation.json; sourceTree = "<group>"; };
 		8303F4EE28F9AD7700285599 /* magicAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = magicAnimation.json; sourceTree = "<group>"; };
 		8303F4F028F9AD7C00285599 /* uploadAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = uploadAnimation.json; sourceTree = "<group>"; };
@@ -294,6 +303,9 @@
 			isa = PBXGroup;
 			children = (
 				F45D7F052800566900C73C63 /* result_Gini_invoice_example.json */,
+				76D245CC295201D400C9681D /* result_Gini_invoice_example_payment_reference_after_feedback.json */,
+				76D245CD295201D400C9681D /* result_Gini_invoice_example_payment_reference.json */,
+				76D245CE295201D500C9681D /* Gini_invoice_example_payment_reference.pdf */,
 				F45D7F062800566900C73C63 /* testPDF.pdf */,
 				F45D7F072800566900C73C63 /* Gini_invoice_example.pdf */,
 				F45D7F082800566900C73C63 /* result_Gini_invoice_example_after_feedback.json */,
@@ -519,8 +531,10 @@
 				F44AD01E28D4BBE7002BAD98 /* page1Animation.json in Resources */,
 				F45D7F172800583300C73C63 /* result_Gini_invoice_example.json in Resources */,
 				833652FF28F0330B00B5A1CE /* CustomBottomNavigationBar.xib in Resources */,
+				76D245D3295201D500C9681D /* Gini_invoice_example_payment_reference.pdf in Resources */,
 				837EEFB1291D6A5400DB781F /* CustomCameraBottomNavigationBar.xib in Resources */,
 				764E0AD228CF274A00F96503 /* InfoPlist.strings in Resources */,
+				76D245D1295201D500C9681D /* result_Gini_invoice_example_payment_reference.json in Resources */,
 				8303F4EF28F9AD7700285599 /* magicAnimation.json in Resources */,
 				83D02CD7290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib in Resources */,
 				F45D7F192800583800C73C63 /* Gini_invoice_example.pdf in Resources */,
@@ -529,6 +543,7 @@
 				8303F4ED28F9AD7000285599 /* cameraAnimation.json in Resources */,
 				F441DCBD25E5694600AAB09A /* Settings.bundle in Resources */,
 				8303F4F128F9AD7C00285599 /* uploadAnimation.json in Resources */,
+				76D245CF295201D500C9681D /* result_Gini_invoice_example_payment_reference_after_feedback.json in Resources */,
 				F4AD010125DFDF4500C34E15 /* Images.xcassets in Resources */,
 				F441DCB625E568C400AAB09A /* LaunchScreen.strings in Resources */,
 				F441DCC325E56BF800AAB09A /* LaunchScreen.xib in Resources */,
@@ -544,10 +559,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76D245D0295201D500C9681D /* result_Gini_invoice_example_payment_reference_after_feedback.json in Resources */,
 				F45D7F132800566900C73C63 /* result_Gini_invoice_example_after_feedback.json in Resources */,
 				F45D7F102800566900C73C63 /* result_Gini_invoice_example.json in Resources */,
+				76D245D4295201D500C9681D /* Gini_invoice_example_payment_reference.pdf in Resources */,
 				F45D7F112800566900C73C63 /* testPDF.pdf in Resources */,
 				F45D7F122800566900C73C63 /* Gini_invoice_example.pdf in Resources */,
+				76D245D2295201D500C9681D /* result_Gini_invoice_example_payment_reference.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import GiniBankAPILibrary
 /**
  The `GiniColor` class allows to customize color for the light and the dark modes.
  */
@@ -62,7 +63,7 @@ import UIKit
     /**
      Singleton to make configuration internally accessible in all classes of the Gini Capture SDK.
      */
-    static var shared = GiniConfiguration()
+    public static var shared = GiniConfiguration()
     
     /**
      Supported document types by Gini Capture SDK.
@@ -79,7 +80,7 @@ import UIKit
      
      - returns: Instance of `GiniConfiguration`.
      */
-    public override init() {}
+    override init() {}
     
     // MARK: General options
     
@@ -617,4 +618,65 @@ import UIKit
     public func updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle) {
         textStyleFonts[textStyle] = font
     }
+
+    var documentService: DocumentServiceProtocol?
+
+     /// Function for clean up
+     /// - Parameters:
+     ///   - paymentRecipient: paymentRecipient description
+     ///   - paymentReference: paymentReference description
+     ///   - iban: iban description
+     ///   - bic: bic description
+     ///   - amountToPay: amountToPay description
+    public func cleanup(paymentRecipient: String, paymentReference: String, paymentPurpose: String, iban: String, bic: String, amountToPay: ExtractionAmount) {
+         guard let documentService = documentService else { return }
+
+         // Convert amount object to string
+         // Cut off decimals after the first 2
+         let truncatedAmountValue = amountToPay.value.convertToDouble(withDecimalPoint: 2)
+         let amountToPayString = "\(truncatedAmountValue)" + ":" + amountToPay.currency.rawValue
+
+         let paymentRecipientExtraction = Extraction(box: nil,
+                                                     candidates: nil,
+                                                     entity: "companyname",
+                                                     value: paymentRecipient,
+                                                     name: "paymentRecipient")
+         let paymentReferenceExtraction = Extraction(box: nil,
+                                                     candidates: nil,
+                                                     entity: "reference",
+                                                     value: paymentRecipient,
+                                                     name: "paymentReference")
+         let paymentPurposeExtraction = Extraction(box: nil,
+                                                   candidates: nil,
+                                                   entity: "text",
+                                                   value: paymentPurpose,
+                                                   name: "paymentPurpose")
+         let ibanExtraction = Extraction(box: nil,
+                                         candidates: nil,
+                                         entity: "iban",
+                                         value: iban,
+                                         name: "iban")
+         let bicExtraction = Extraction(box: nil,
+                                        candidates: nil,
+                                        entity: "bic",
+                                        value: bic,
+                                        name: "bic")
+         let amountExtraction = Extraction(box: nil,
+                                           candidates: nil,
+                                           entity: "amount",
+                                           value: amountToPayString,
+                                           name: "amountToPay")
+
+         let updatedExtractions: [Extraction] = [paymentRecipientExtraction,
+                                                 paymentReferenceExtraction,
+                                                 paymentPurposeExtraction,
+                                                 ibanExtraction,
+                                                 bicExtraction,
+                                                 amountExtraction]
+
+        documentService.sendFeedback(with: updatedExtractions, updatedCompoundExtractions: nil)
+
+         documentService.resetToInitialState()
+         self.documentService = nil
+     }
 }
