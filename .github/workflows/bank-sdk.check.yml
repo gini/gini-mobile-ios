@@ -75,7 +75,18 @@ jobs:
         -project BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj
         -scheme "GiniBankSDKExampleTests"
         -destination "${{ matrix.destination }}"
-        -only-testing:GiniBankSDKExample/Tests/ExtractionFeedbackWithLineItemsIntegrationTest, GiniBankSDKExample/Tests/ExtractionFeedbackIntegrationTest
+        -only-testing:GiniBankSDKExample/Tests/ExtractionFeedbackIntegrationTest
+        CODE_SIGN_IDENTITY=""
+        CODE_SIGNING_REQUIRED=NO
+        ONLY_ACTIVE_ARCH=NO
+        CLIENT_ID="gini-mobile-test"
+        CLIENT_SECRET="${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}"
+        &&
+        xcodebuild clean test
+        -project BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj
+        -scheme "GiniBankSDKExampleTests"
+        -destination "${{ matrix.destination }}"
+        -only-testing:GiniBankSDKExample/Tests/ExtractionFeedbackWithLineItemsIntegrationTest
         CODE_SIGN_IDENTITY=""
         CODE_SIGNING_REQUIRED=NO
         ONLY_ACTIVE_ARCH=NO
