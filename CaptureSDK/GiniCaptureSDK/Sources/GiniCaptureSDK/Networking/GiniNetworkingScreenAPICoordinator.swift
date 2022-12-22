@@ -25,7 +25,7 @@ import GiniBankAPILibrary
     /**
      Called when the analysis finished without results.
      
-     - parameter showingNoResultsScreen: Indicated if the `ImageAnalysisNoResultsViewController` has been shown
+     - parameter showingNoResultsScreen: Indicated if the `NoResultsViewController` has been shown
      */
     func giniCaptureAnalysisDidFinishWithoutResults(_ showingNoResultsScreen: Bool)
     

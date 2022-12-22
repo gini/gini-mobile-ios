@@ -109,7 +109,6 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
     private func setupView() {
         edgesForExtendedLayout = []
-        view.backgroundColor = giniConfiguration.cameraContainerViewBackgroundColor.uiColor()
         cameraPreviewViewController.previewView.alpha = 0
         addChild(cameraPreviewViewController)
         view.addSubview(cameraPreviewViewController.view)

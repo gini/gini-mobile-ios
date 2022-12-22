@@ -152,11 +152,9 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
     private func showOnboardingScreen(
         cameraViewController: CameraScreen,
         completion: @escaping () -> Void) {
-        cameraViewController.hideCameraOverlay()
         cameraViewController.hideCaptureButton()
 
         let vc = OnboardingViewController()
-        cameraViewController.showCameraOverlay()
         cameraViewController.showCaptureButton()
         if giniConfiguration.fileImportSupportedTypes != GiniConfiguration.GiniCaptureImportFileTypes.none {
             // TODO: remove cameraViewController.showFileImportTip()
