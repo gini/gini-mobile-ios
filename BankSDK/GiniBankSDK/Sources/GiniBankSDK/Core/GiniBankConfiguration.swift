@@ -62,38 +62,7 @@ public final class GiniBankConfiguration: NSObject {
      Sets the custom navigation view controller as a root view controller for Gini Bank SDK screens.
     */
     @objc public var customNavigationController : UINavigationController? = nil
-    
-    /**
-     Sets the tint color of the UIDocumentPickerViewController navigation bar.
-     
-     - note: Use only if you have a custom `UIAppearance` for your UINavigationBar
-     */
-    @objc public var documentPickerNavigationBarTintColor: UIColor?
-    
-    /**
-     Sets the background color of an informal notice. Notices are small pieces of
-     information appearing underneath the navigation bar.
-     */
-    @objc public var noticeInformationBackgroundColor = UIColor.black
-    
-    /**
-     Sets the text color of an informal notice. Notices are small pieces of
-     information appearing underneath the navigation bar.
-     */
-    @objc public var noticeInformationTextColor = UIColor.white
-    
-    /**
-     Sets the background color of an error notice. Notices are small pieces of
-     information appearing underneath the navigation bar.
-     */
-    @objc public var noticeErrorBackgroundColor = UIColor.red
-    
-    /**
-     Sets the text color of an error notice. Notices are small pieces of
-     information appearing underneath the navigation bar.
-     */
-    @objc public var noticeErrorTextColor = UIColor.white
-    
+
     /**
      Indicates whether the open with feature is enabled or not. In case of `true`,
      a new option with the open with tutorial wil be shown in the Help menu.
@@ -122,80 +91,9 @@ public final class GiniBankConfiguration: NSObject {
     // MARK: Camera options
     
     /**
-     Sets the color of camera preview corner guides.
-     */
-    @objc public var cameraPreviewCornerGuidesColor = UIColor.white
-    
-    /**
-     Sets the background color of camera container view.
-     */
-    @objc public var cameraContainerViewBackgroundColor = GiniColor(light: .black, dark: .black)
-    
-    /**
-     Sets the color of camera preview frame.
-     */
-    @objc public var cameraPreviewFrameColor = GiniColor(light: UIColor(white: 0.0, alpha: 0.7), dark: UIColor(white: 0.0, alpha: 0.7))
-    
-    /**
-     Sets the background color of camera buttons view.
-     */
-    @objc public var cameraButtonsViewBackgroundColor = GiniColor(light: .black, dark: .black)
-    
-    /**
      Set the types supported by the file import feature. `GiniCaptureImportFileTypes.none` by default.
      */
     @objc public var fileImportSupportedTypes = GiniConfiguration.GiniCaptureImportFileTypes.none
-    
-    /**
-     Sets the background color of the new file import button hint.
-     */
-    @objc public var fileImportToolTipBackgroundColor = UIColor.white
-    
-    /**
-     Sets the text color of the new file import button hint.
-     */
-    @objc public var fileImportToolTipTextColor = UIColor.black
-    
-    /**
-     Sets the close button color of the new file import button hint.
-     */
-    @objc public var fileImportToolTipCloseButtonColor = Colors.Gini.grey
-    
-    /**
-     Sets the background style when the tooltip is shown.
-     */
-    public var toolTipOpaqueBackgroundStyle: OpaqueViewStyle {
-        
-        set {
-            _toolTipOpaqueBackgroundStyle = newValue
-        }
-        
-        get {
-            
-            if let setValue = _toolTipOpaqueBackgroundStyle {
-                return setValue
-            } else {
-                
-                if #available(iOS 13.0, *) {
-                    return .blurred(style: .regular)
-                } else {
-                    return .blurred(style: .dark)
-                }
-            }
-        }
-    }
-    
-    private var _toolTipOpaqueBackgroundStyle: OpaqueViewStyle?
-    
-    /**
-     Sets the text color of the item selected background check.
-     */
-    @objc public var galleryPickerItemSelectedBackgroundCheckColor = Colors.Gini.blue
-    
-    /**
-     Sets the background color for gallery screen.
-     */
-    @objc public var galleryScreenBackgroundColor = GiniColor(light: .black, dark: .black)
     
     /**
      Indicates whether the flash toggle should be shown in the camera screen.
@@ -206,11 +104,6 @@ public final class GiniBankConfiguration: NSObject {
      When the flash toggle is enabled, this flag indicates if the flash is on by default.
      */
     @objc public var flashOnByDefault = true
-    
-    /**
-     Sets the color of the captured images stack indicator label
-     */
-    @objc public var imagesStackIndicatorLabelTextcolor: UIColor = Colors.Gini.blue
     
     /**
      Sets the close button text in the navigation bar on the camera screen.
@@ -323,19 +216,6 @@ public final class GiniBankConfiguration: NSObject {
      Sets the continue button text in the navigation bar on the review screen.
      */
     @objc public var navigationBarReviewTitleContinueButton = ""
-        
-    /**
-     Sets the font of the text appearing at the bottom of the review screen.
-     */
-    @objc public var reviewTextBottomFont = UIFont.systemFont(ofSize: 12, weight: .thin)
-    
-    /**
-     Sets the color of the text appearing at the bottom of the review screen.
-     */
-    @objc public var reviewTextBottomColor = UIColor.white
-    
-    // MARK: Multipage options
-    
     
     // MARK: Analysis options
 
@@ -345,16 +225,6 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var navigationBarAnalysisTitleBackButton = ""
     
     // MARK: Help screens
-    
-    /**
-     Sets the background color for all help screens.
-     */
-    @objc public var helpScreenBackgroundColor =  GiniColor(light: Colors.Gini.pearl, dark: UIColor.from(hex: 0x1C1C1C))
-    
-    /**
-     Sets the background color for the cells on help screen.
-     */
-    @objc public var helpScreenCellsBackgroundColor =  GiniColor(light: Colors.Gini.pearl, dark: UIColor.from(hex: 0x1C1C1C))
     
     /**
      Sets the back button text in the navigation bar on the help menu screen. Use this if you only want to show the title.
@@ -372,53 +242,14 @@ public final class GiniBankConfiguration: NSObject {
      */
     @objc public var shouldShowSupportedFormatsScreen = true
     
-    // MARK: Supported formats
-    
-    /**
-     Sets the color of the unsupported formats icon background to the specified color.
-     */
-    @objc public var nonSupportedFormatsIconColor = Colors.Gini.crimson
-    
-    /**
-     Sets the color of the supported formats icon background to the specified color.
-     */
-    @objc public var supportedFormatsIconColor = Colors.Gini.paleGreen
-    
     // MARK: Open with tutorial options
     
     /**
      Sets the text of the app name for the Open with tutorial texts.
      */
     @objc public var openWithAppNameForTexts = Bundle.main.appName
-        
-    // MARK: No results options
-    
-    /**
-     Sets the color of the bottom button to the specified color.
-     */
-    @objc public var noResultsBottomButtonColor = Colors.Gini.blue
-    
-    /**
-     Sets the text color of the bottom button to the specified color.
-     */
-    @objc public var noResultsBottomButtonTextColor = GiniColor.init(light: .white, dark: .white)
-    
-    /**
-     Sets the corner radius of the bottom button.
-     */
-    @objc public var noResultsBottomButtonCornerRadius: CGFloat = 0.0
-    
-    /**
-     Sets the color of the warning container background to the specified color.
-     */
-    @objc public var noResultsWarningContainerIconColor = Colors.Gini.rose
     
     // MARK: Albums screen
-    
-    /**
-     Sets the text color for the select more photos button on the albums screen.
-     */
-    @objc public var albumsScreenSelectMorePhotosTextColor =  GiniColor(light: Colors.Gini.blue, dark: Colors.Gini.blue)
     
     /**
      Sets if the Drag&Drop step should be shown in the "Open with" tutorial.
@@ -432,53 +263,6 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var backToMenuButtonResource: PreferredButtonResource?
     @objc public var nextButtonResource: PreferredButtonResource?
     @objc public var cancelButtonResource: PreferredButtonResource?
-    
-    // MARK: Return Assistant
-    
-    /**
-     Sets the background color for the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenBackgroundColor =  GiniColor(light: .white, dark:.black)
-    
-    /**
-     Sets the text color for the section titles on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenSectionTitleColor =  GiniColor(light: Colors.Gini.blue, dark: Colors.Gini.blue)
-    
-    /**
-     Sets the font for the page title on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenPageTitleFont =  UIFont.systemFont(ofSize: 28, weight: .semibold)
-    
-    /**
-     Sets the font for the section titles on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenSectionTitleFont =  UIFont.systemFont(ofSize: 28, weight: .bold)
-    
-    /**
-     Sets the text color for the instructions on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenInstructionColor =  GiniColor(light: .black, dark:.white)
-    
-    /**
-     Sets the font for the instructions on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenInstructionFont =  UIFont.systemFont(ofSize: 18, weight: .regular)
-    
-    /**
-     Sets the background color for the back button on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenBackButtonColor =  Colors.Gini.blue
-
-    /**
-     Sets the title color for the back button on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenBackButtonTitleColor =  GiniColor(light: .white, dark:.black)
-    
-    /**
-     Sets the font for the back button title on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenBackButtonTitleFont =  UIFont.systemFont(ofSize: 18, weight: .regular)
 
         
     // MARK: Digital invoice
@@ -1091,39 +875,17 @@ public final class GiniBankConfiguration: NSObject {
         configuration.multipageEnabled = self.multipageEnabled
         configuration.customNavigationController = self.customNavigationController
         
-        configuration.documentPickerNavigationBarTintColor = self.documentPickerNavigationBarTintColor
-
-        configuration.noticeInformationBackgroundColor = self.noticeInformationBackgroundColor
-        
-        configuration.noticeInformationTextColor = self.noticeInformationTextColor
-        configuration.noticeErrorBackgroundColor = self.noticeErrorBackgroundColor
-        configuration.noticeErrorTextColor = self.noticeErrorTextColor
-        
         configuration.openWithEnabled = self.openWithEnabled
         
         configuration.qrCodeScanningEnabled = self.qrCodeScanningEnabled
         configuration.onlyQRCodeScanningEnabled = self.onlyQRCodeScanningEnabled
         
         configuration.statusBarStyle = self.statusBarStyle
-        configuration.cameraPreviewCornerGuidesColor = self.cameraPreviewCornerGuidesColor
-        configuration.cameraPreviewFrameColor = self.cameraPreviewFrameColor
-        configuration.cameraContainerViewBackgroundColor = self.cameraContainerViewBackgroundColor
-        configuration.cameraButtonsViewBackgroundColor = self.cameraButtonsViewBackgroundColor
         
         configuration.fileImportSupportedTypes = self.fileImportSupportedTypes
-        configuration.fileImportToolTipBackgroundColor = self.fileImportToolTipBackgroundColor
-        configuration.fileImportToolTipTextColor = self.fileImportToolTipTextColor
-        configuration.fileImportToolTipCloseButtonColor = self.fileImportToolTipCloseButtonColor
-        
-        configuration.toolTipOpaqueBackgroundStyle = self.toolTipOpaqueBackgroundStyle
-
-        configuration.galleryPickerItemSelectedBackgroundCheckColor = self.galleryPickerItemSelectedBackgroundCheckColor
-        configuration.galleryScreenBackgroundColor = self.galleryScreenBackgroundColor
         
         configuration.flashToggleEnabled = self.flashToggleEnabled
         configuration.flashOnByDefault = self.flashOnByDefault
-        
-        configuration.imagesStackIndicatorLabelTextcolor = self.imagesStackIndicatorLabelTextcolor
         
         configuration.navigationBarCameraTitleCloseButton = self.navigationBarCameraTitleCloseButton
         configuration.navigationBarCameraTitleHelpButton = self.navigationBarCameraTitleHelpButton
@@ -1156,19 +918,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.navigationBarHelpMenuTitleBackToCameraButton = self.navigationBarHelpMenuTitleBackToCameraButton
         configuration.navigationBarHelpScreenTitleBackToMenuButton = self.navigationBarHelpScreenTitleBackToMenuButton
         
-        configuration.shouldShowSupportedFormatsScreen = self.shouldShowSupportedFormatsScreen
-        
-        configuration.nonSupportedFormatsIconColor = self.nonSupportedFormatsIconColor
-        
-        configuration.supportedFormatsIconColor = self.supportedFormatsIconColor
-        
         configuration.openWithAppNameForTexts = self.openWithAppNameForTexts
-                
-        configuration.noResultsBottomButtonColor = self.noResultsBottomButtonColor
-        configuration.noResultsBottomButtonTextColor = self.noResultsBottomButtonTextColor
-        configuration.noResultsBottomButtonCornerRadius = self.noResultsBottomButtonCornerRadius
-        
-        configuration.noResultsWarningContainerIconColor = self.noResultsWarningContainerIconColor
         
         configuration.shouldShowDragAndDropTutorial = self.shouldShowDragAndDropTutorial
         
@@ -1176,7 +926,6 @@ public final class GiniBankConfiguration: NSObject {
         
         configuration.giniErrorLoggerIsOn = self.giniErrorLoggerIsOn
         configuration.customGiniErrorLoggerDelegate = self.customGiniErrorLoggerDelegate
-        configuration.albumsScreenSelectMorePhotosTextColor = self.albumsScreenSelectMorePhotosTextColor
 
         configuration.customLoadingIndicator = self.customLoadingIndicator
         
@@ -1212,22 +961,11 @@ public final class GiniBankConfiguration: NSObject {
     
     public func returnAssistantConfiguration() -> ReturnAssistantConfiguration {
      let configuration = ReturnAssistantConfiguration()
-        
-        configuration.helpReturnAssistantScreenBackgroundColor = self.helpReturnAssistantScreenBackgroundColor
-        configuration.helpReturnAssistantScreenSectionTitleColor = self.helpReturnAssistantScreenSectionTitleColor
-        configuration.helpReturnAssistantScreenPageTitleFont = self.helpReturnAssistantScreenPageTitleFont
-        configuration.helpReturnAssistantScreenSectionTitleFont = self.helpReturnAssistantScreenSectionTitleFont
-        configuration.helpReturnAssistantScreenInstructionColor = self.helpReturnAssistantScreenInstructionColor
-        configuration.helpReturnAssistantScreenInstructionFont = self.helpReturnAssistantScreenInstructionFont
-        configuration.helpReturnAssistantScreenBackButtonColor = self.helpReturnAssistantScreenBackButtonColor
-        configuration.helpReturnAssistantScreenBackButtonTitleColor = self.helpReturnAssistantScreenBackButtonTitleColor
-        configuration.helpReturnAssistantScreenBackButtonTitleFont = self.helpReturnAssistantScreenBackButtonTitleFont
-
         configuration.lineItemTintColor = self.lineItemTintColor
         configuration.lineItemCountLabelColor = self.lineItemCountLabelColor
         configuration.lineItemCountLabelFont = self.lineItemCountLabelFont
         configuration.lineItemBorderColor = self.lineItemBorderColor
-        
+
         configuration.digitalInvoiceLineItemNameFont = self.digitalInvoiceLineItemNameFont
         configuration.digitalInvoiceLineItemEditButtonTitleFont = self.digitalInvoiceLineItemEditButtonTitleFont
         configuration.digitalInvoiceLineItemEditButtonTintColor = self.digitalInvoiceLineItemEditButtonTintColor

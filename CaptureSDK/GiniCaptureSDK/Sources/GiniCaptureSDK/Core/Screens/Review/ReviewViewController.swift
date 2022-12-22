@@ -28,7 +28,6 @@ public protocol ReviewViewControllerDelegate: AnyObject {
      Called when a user taps on the error action when the errored page
      
      - parameter viewController: `ReviewViewController` where the pages are reviewed.
-     - parameter errorAction: `NoticeActionType` selected.
      - parameter page: Page where the error action has been triggered
      */
     func review(_ viewController: ReviewViewController, didTapRetryUploadFor page: GiniCapturePage)

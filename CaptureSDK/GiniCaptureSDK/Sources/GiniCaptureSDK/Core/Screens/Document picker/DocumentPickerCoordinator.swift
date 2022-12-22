@@ -182,19 +182,6 @@ public final class DocumentPickerCoordinator: NSObject {
 
         documentPicker.allowsMultipleSelection = giniConfiguration.multipageEnabled
 
-        if let tintColor = giniConfiguration.documentPickerNavigationBarTintColor {
-            // Starting with iOS 11.0, the UIDocumentPickerViewController navigation bar almost can't be customized,
-            // only being possible to customize the tint color. To avoid issues with custom UIAppearance styles,
-            // this is reset to default, saving the current state in order to restore it during dismissal.
-            saveCurrentNavBarAppearance()
-            applyDefaultNavBarAppearance()
-
-            UINavigationBar.appearance().tintColor = tintColor
-            UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self])
-                .setTitleTextAttributes([.foregroundColor: tintColor],
-                                        for: .normal)
-        }
-
         // This is needed since the UIDocumentPickerViewController on iPad is presented over the current view controller
         // without covering the previous screen. This causes that the `viewWillAppear` method is not being called
         // in the current view controller.
@@ -325,10 +312,6 @@ extension DocumentPickerCoordinator: UIDocumentPickerDelegate {
             return
         }
 
-        if #available(iOS 11.0, *), giniConfiguration.documentPickerNavigationBarTintColor != nil {
-            restoreSavedNavBarAppearance()
-        }
-
         delegate?.documentPicker(self, didPick: documents)
     }
 
@@ -337,10 +320,6 @@ extension DocumentPickerCoordinator: UIDocumentPickerDelegate {
     }
 
     public func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        if #available(iOS 11.0, *), giniConfiguration.documentPickerNavigationBarTintColor != nil {
-            restoreSavedNavBarAppearance()
-        }
-
         controller.dismiss(animated: false, completion: nil)
     }
 }

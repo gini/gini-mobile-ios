@@ -40,14 +40,7 @@ Some background and text colors use the `GiniColor` type with which you can set 
 - Item font &#8594;  `GiniBankConfiguration.navigationBarItemFont`
 - Title font &#8594;  `GiniBankConfiguration.navigationBarTitleFont`
 
-##### 2. Notice
-<center><img src="img/Customization guide/Notice.jpg" height="70"/></center>
-- Information background color &#8594;  `GiniBankConfiguration.noticeInformationBackgroundColor`
-- Information text color &#8594;  `GiniBankConfiguration.noticeInformationTextColor`
-- Error background &#8594;  `GiniBankConfiguration.noticeErrorBackgroundColor`
-- Error text color `GiniBankConfiguration.noticeErrorTextColor`
-
-##### 3. Tooltip
+##### 2. Tooltip
 <center><img src="img/Customization guide/Tooltip.jpg" height="120"/></center>
 - Background color &#8594;  `GiniBankConfiguration.fileImportToolTipBackgroundColor`
 - Text color &#8594;  `GiniBankConfiguration.fileImportToolTipTextColor`
@@ -57,7 +50,7 @@ Some background and text colors use the `GiniColor` type with which you can set 
 	- <span style="color:#009EDF">*ginicapture.camera.qrCodeTip*</span> localized string for qr code tooltip
 	- <span style="color:#009EDF">*ginicapture.multipagereview.reorderContainerTooltipMessage*</span> localized string for reorder tooltip
 
-##### 4. GVL font
+##### 3. GVL font
 
 - Font &#8594;  `GiniBankConfiguration.customFont`
 
@@ -83,20 +76,15 @@ Some background and text colors use the `GiniColor` type with which you can set 
       -  Title &#8594; `GiniBankConfiguration.navigationBarCameraTitleHelpButton`   
 
 ##### 2. Camera preview
-- Preview frame color &#8594;  `GiniBankConfiguration.cameraPreviewFrameColor`
-- Guides color &#8594;  `GiniBankConfiguration.cameraPreviewCornerGuidesColor`
 - Focus large image &#8594; <span style="color:#009EDF">*cameraFocusLarge*</span> image asset
 - Focus large small &#8594; <span style="color:#009EDF">*cameraFocusSmall*</span> image asset
 - Opaque view style (when tool tip is shown)  &#8594;  `GiniBankConfiguration.toolTipOpaqueBackgroundStyle`
 
-##### 3. Camera buttons container
-- Background color &#8594;  `GiniBankConfiguration.cameraButtonsViewBackgroundColor`
-- Container view background color under the home indicator  &#8594;  `GiniBankConfiguration.cameraContainerViewBackgroundColor` 
+##### 3. Camera buttons container 
 - Capture button
   - Image &#8594; <span style="color:#009EDF">*cameraCaptureButton*</span> image asset
 - Import button
 	- Image &#8594; <span style="color:#009EDF">*documentImportButton*</span> image asset
-- Captured images stack indicator color &#8594; `GiniBankConfiguration.imagesStackIndicatorLabelTextcolor`
 - Flash toggle can be enabled through &#8594; `GiniBankConfiguration.flashToggleEnabled`
 - Flash button
     - Image &#8594; <span style="color:#009EDF">*flashOn*</span> image asset
@@ -138,7 +126,6 @@ Some background and text colors use the `GiniColor` type with which you can set 
 - Rotation button image &#8594;  <span style="color:#009EDF">*reviewRotateButton*</span> image asset
 - Rotation message
 	- Text &#8594; <span style="color:#009EDF">*ginicapture.review.bottom*</span> localized string
-	- Text color &#8594; `GiniBankConfiguration.reviewTextBottomColor`
 
 ## Multipage Review screen
 
@@ -216,9 +203,7 @@ Some background and text colors use the `GiniColor` type with which you can set 
 
 ##### 1. Supported format cells
 - Supported fortmats icon &#8594; <span style="color:#009EDF">*supportedFormatsIcon*</span> image asset
-- Supported formats icon color &#8594; `GiniBankConfiguration.supportedFormatsIconColor`
 - Non supported fortmats icon &#8594; <span style="color:#009EDF">*nonSupportedFormatsIcon*</span> image asset
-- Non supported formats icon color &#8594; `GiniBankConfiguration.nonSupportedFormatsIconColor`
 
 ## Open with tutorial screen
 
@@ -273,9 +258,6 @@ Some background and text colors use the `GiniColor` type with which you can set 
 - Tip 5 image &#8594; <span style="color:#009EDF">*captureSuggestion5*</span> image asset
 
 ##### 4. Go to camera button
-- Background color &#8594; `GiniBankConfiguration.noResultsBottomButtonColor`
-- Text color &#8594; `GiniBankConfiguration.noResultsBottomButtonTextColor`
-- Corner radius &#8594; `GiniBankConfiguration.noResultsBottomButtonCornerRadius`
 - Back button
   - With image and title
       - Image &#8594; <span style="color:#009EDF">*cameraIcon*</span> image asset
@@ -287,9 +269,6 @@ Some background and text colors use the `GiniColor` type with which you can set 
 <center><img src="img/Customization guide/Gallery album.jpg" height="500"/></center>
 </br>
 
-##### 1. Selected image
-- Selected item check color &#8594; `GiniBankConfiguration.galleryPickerItemSelectedBackgroundCheckColor`
-- Background color &#8594; `GiniBankConfiguration.galleryScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
 ## Onboarding screens
 
@@ -327,13 +306,7 @@ Some background and text colors use the `GiniColor` type with which you can set 
   - With title only
 	  - Title &#8594; `GiniBankConfiguration.navigationBarHelpMenuTitleBackToCameraButton`
 
-##### 2. Table View Cells
-- Background color &#8594; `GiniBankConfiguration.helpScreenCellsBackgroundColor` using `GiniColor` with dark mode and light mode colors
-
-##### 3. Background
-- Background color &#8594; `GiniBankConfiguration.helpScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
-
-##### 4. Additional help menu items
+##### 2. Additional help menu items
 - Custom help menu items &#8594; `GiniBankConfiguration.customMenuItems` an array of `HelpMenuViewController.Item` objects
 
 ## No results screen
@@ -343,7 +316,6 @@ Some background and text colors use the `GiniColor` type with which you can set 
 </br>
 
 ##### 1. Warning container
-- Background color &#8594; `GiniBankConfiguration.noResultsWarningContainerIconColor`
 - Image &#8594; <span style="color:#009EDF">*warningNoResults*</span> image asset
 - Title &#8594; <span style="color:#009EDF">*ginicapture.noresults.warning*</span> localized string
 
@@ -359,9 +331,6 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 - Tip 5 image &#8594; <span style="color:#009EDF">*captureSuggestion5*</span> image asset
 
 ##### 3. Back to camera button
-- Background color &#8594; `GiniBankConfiguration.noResultsBottomButtonColor`
-- Text color &#8594; `GiniBankConfiguration.noResultsBottomButtonTextColor`
-- Corner radius &#8594; `GiniBankConfiguration.noResultsBottomButtonCornerRadius`
 - Back button
   - With image and title
       - Image &#8594; <span style="color:#009EDF">*cameraIcon*</span> image asset
@@ -374,7 +343,6 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 </br>
 
 ##### 1. Select more photos button
-- Text color &#8594; `GiniBankConfiguration.albumsScreenSelectMorePhotosTextColor` using `GiniColor` with dark mode and light mode colors
 - Title &#8594; <span style="color:#009EDF">*ginicapture.albums.selectMorePhotosButton*</span> localized string
 
 ## Return assistant

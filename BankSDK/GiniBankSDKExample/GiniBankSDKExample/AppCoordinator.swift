@@ -53,11 +53,10 @@ final class AppCoordinator: Coordinator {
 //        configuration.helpNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
 //        configuration.reviewNavigationBarBottomAdapter = CustomReviewScreenBottomNavigationBarAdapter()
 //        configuration.onboardingNavigationBarBottomAdapter = CustomOnboardingBottomNavigationBarAdapter()
-//        configuration.noResultsWarningContainerIconColor = .cyan
+
 
 //        let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
 //        configuration.customMenuItems = [customMenuItem]
-//        configuration.albumsScreenSelectMorePhotosTextColor = GiniColor(lightModeColor: .systemBlue, darkModeColor: .systemBlue)
         
         // A few return assistant customisation examples
 //        configuration.digitalInvoiceLineItemEditButtonTintColor = Colors.Gini.bluishGreen
@@ -69,9 +68,6 @@ final class AppCoordinator: Coordinator {
         // A few camera screen customisation examples
 //        configuration.navigationBarItemFont = UIFont.systemFont(ofSize: 20, weight: .bold)
 //        configuration.navigationBarCameraTitleHelpButton = "? Help"
-//        configuration.cameraPreviewFrameColor = .init(lightModeColor: UIColor.init(white: 0.5, alpha: 0.1), darkModeColor: UIColor.init(white: 0.5, alpha: 0.3))
-//        configuration.cameraButtonsViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
-//        configuration.cameraContainerViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
 //
 //        configuration.multipagePageSuccessfullUploadIconBackgroundColor = .systemGreen
 //        configuration.multipagePageFailureUploadIconBackgroundColor = .systemRed

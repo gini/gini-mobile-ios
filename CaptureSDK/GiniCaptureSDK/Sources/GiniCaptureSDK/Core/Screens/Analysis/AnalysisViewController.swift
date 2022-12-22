@@ -102,14 +102,6 @@ import UIKit
         return overlayView
     }()
 
-    private lazy var errorView: NoticeView = {
-        let errorView = NoticeView(text: "",
-                                   type: .error,
-                                   noticeAction: NoticeAction(title: "", action: {}))
-        errorView.translatesAutoresizingMaskIntoConstraints = false
-        return errorView
-    }()
-
     /**
      Designated intitializer for the `AnalysisViewController`.
      
@@ -196,34 +188,6 @@ import UIKit
         if document is GiniImageDocument {
             showCaptureSuggestions(giniConfiguration: giniConfiguration)
         }
-
-        addErrorView()
-    }
-
-
-    /// Show error view on the screen
-    /// - Parameters:
-    ///   - message: description of the error
-    ///   - action: the action that should happen when the user interacts with the error view
-    public func showError(with message: String, action: @escaping () -> Void ) {
-        trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .error, info: ["message": message]))
-
-        errorView.isHidden = false
-        errorView.textLabel.text = message
-        errorView.userAction = NoticeAction(title: NoticeActionType.retry.title, action: { [weak self] in
-            guard let self = self else { return }
-            self.trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .retry))
-            self.errorView.hide(true, completion: action)
-        })
-        errorView.show()
-    }
-
-
-    /// Hide the error view
-    /// - Parameter animated: a flag to hide the view with animation
-    public func hideError(animated: Bool = false) {
-        errorView.hide(animated, completion: nil)
-        errorView.isHidden = true
     }
 
     private func addImageView() {
@@ -316,13 +280,6 @@ import UIKit
             loadingIndicatorContainer.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor),
             loadingIndicatorContainer.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
                                                                constant: 16)])
-    }
-
-    private func addErrorView() {
-        view.addSubview(errorView)
-        errorView.isHidden = true
-
-        Constraints.pin(view: errorView, toSuperView: view, positions: [.left, .right, .top])
     }
 
     private func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {

@@ -27,20 +27,6 @@ extension Camera2ViewController {
     }
 
     /**
-     Show the camera overlay. Should be called when onboarding is dismissed.
-     */
-    public func showCameraOverlay() {
-        cameraPreviewViewController.showCameraOverlay()
-    }
-
-    /**
-     Hide the camera overlay. Should be called when onboarding is presented.
-     */
-    public func hideCameraOverlay() {
-        cameraPreviewViewController.hideCameraOverlay()
-    }
-
-    /**
      Disable captureButton and flashToggleButton.
      */
     fileprivate func configureCameraButtonsForFileImportTip() {

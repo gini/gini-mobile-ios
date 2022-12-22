@@ -36,7 +36,7 @@ final class CameraPreviewViewController: UIViewController {
     
     private lazy var spinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: .whiteLarge)
-        spinner.color = self.giniConfiguration.cameraSetupLoadingIndicatorColor
+        spinner.color = UIColor.GiniCapture.light1
         spinner.hidesWhenStopped = true
         return spinner
     }()
@@ -122,7 +122,6 @@ final class CameraPreviewViewController: UIViewController {
                                                name: NSNotification.Name.AVCaptureDeviceSubjectAreaDidChange,
                                                object: camera.videoDeviceInput?.device)
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.dark1, dark: UIColor.GiniCapture.dark1).uiColor()
-        previewView.drawGuides(withColor: giniConfiguration.cameraPreviewCornerGuidesColor)
         
         view.insertSubview(previewView, at: 0)
 
@@ -234,16 +233,6 @@ final class CameraPreviewViewController: UIViewController {
         })
     }
     
-    func showCameraOverlay() {
-        previewView.guidesLayer?.isHidden = false
-        previewView.frameLayer?.isHidden = false
-    }
-    
-    func hideCameraOverlay() {
-        previewView.guidesLayer?.isHidden = true
-        previewView.frameLayer?.isHidden = true
-    }
-    
     func setupCamera() {
         if AVCaptureDevice.authorizationStatus(for: .video) != .authorized {
             #if !targetEnvironment(simulator)
@@ -338,9 +327,6 @@ extension CameraPreviewViewController {
             notAuthorizedView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -bottomPadding),
             notAuthorizedView.topAnchor.constraint(equalTo: view.topAnchor),
             notAuthorizedView.leadingAnchor.constraint(equalTo: view.leadingAnchor)])
-
-        // Hide camera UI
-        hideCameraOverlay()
     }
     
     /// Adds a default image to the canvas when no camera is available (DEBUG mode only)

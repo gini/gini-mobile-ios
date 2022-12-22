@@ -22,53 +22,6 @@ public final class ReturnAssistantConfiguration: NSObject {
      - returns: Instance of `ReturnAssistantConfiguration`.
      */
     public override init() {}
-    // MARK: Return Assistant
-    
-    /**
-     Sets the background color for the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenBackgroundColor =  GiniColor(light: .white, dark:.black)
-    
-    /**
-     Sets the text color for the section titles on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenSectionTitleColor =  GiniColor(light: Colors.Gini.blue, dark: Colors.Gini.blue)
-    
-    /**
-     Sets the font for the page title on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenPageTitleFont =  UIFont.systemFont(ofSize: 28, weight: .semibold)
-    
-    /**
-     Sets the font for the section titles on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenSectionTitleFont =  UIFont.systemFont(ofSize: 28, weight: .bold)
-    
-    /**
-     Sets the text color for the instructions on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenInstructionColor =  GiniColor(light: .black, dark:.white)
-    
-    /**
-     Sets the font for the instructions on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenInstructionFont =  UIFont.systemFont(ofSize: 18, weight: .regular)
-    
-    /**
-     Sets the background color for the back button on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenBackButtonColor =  Colors.Gini.blue
-
-    /**
-     Sets the title color for the back button on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenBackButtonTitleColor =  GiniColor(light: .white, dark:.black)
-    
-    /**
-     Sets the font for the back button title on the return assistant help screen.
-     */
-    @objc public var helpReturnAssistantScreenBackButtonTitleFont =  UIFont.systemFont(ofSize: 18, weight: .regular)
-
         
     // MARK: Digital invoice
 
