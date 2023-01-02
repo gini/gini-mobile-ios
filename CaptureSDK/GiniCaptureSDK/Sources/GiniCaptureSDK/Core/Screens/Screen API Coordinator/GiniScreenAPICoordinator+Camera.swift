@@ -330,14 +330,12 @@ extension GiniScreenAPICoordinator: UploadDelegate {
             guard let self = self else { return }
             self.update(document, withError: error, isUploaded: false)
 
-            if document.type != .image || !self.giniConfiguration.multipageEnabled {
-                let errorLog = ErrorLog(
-                    description: String(describing: error),
-                    error: error)
-                self.giniConfiguration.errorLogger.handleErrorLog(error: errorLog)
-                guard let giniError = error as? GiniError, giniError != .requestCancelled else { return }
-                self.displayError(errorType: ErrorType(error: giniError), animated: true)
-            }
+            let errorLog = ErrorLog(
+                description: String(describing: error),
+                error: error)
+            self.giniConfiguration.errorLogger.handleErrorLog(error: errorLog)
+            guard let giniError = error as? GiniError, giniError != .requestCancelled else { return }
+            self.displayError(errorType: ErrorType(error: giniError), animated: true)
         }
     }
 }
