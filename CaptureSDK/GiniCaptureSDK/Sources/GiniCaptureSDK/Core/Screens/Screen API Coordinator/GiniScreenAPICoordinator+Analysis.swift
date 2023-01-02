@@ -120,7 +120,7 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
                             self?.screenAPINavigationController.dismiss(animated: animated)
                         }
                     }, cancelPressed: { [weak self] in
-                    self?.backToCamera()
+                    self?.closeScreenApi()
                 })
             }
         default:
