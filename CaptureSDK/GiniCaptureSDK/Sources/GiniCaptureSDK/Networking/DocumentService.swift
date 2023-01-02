@@ -51,7 +51,6 @@ public final class DocumentService: DocumentServiceProtocol {
                     guard errorOccurred == false else {
                         return
                     }
-                    errorOccurred = true
                     DispatchQueue.global().async {
                         completion?(.failure(error))
                     }
