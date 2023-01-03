@@ -47,6 +47,10 @@ final class AppCoordinator: Coordinator {
         }
         let customMenuItem = HelpMenuItem.custom("Custom menu item", CustomMenuItemViewController())
         giniConfiguration.customMenuItems = [customMenuItem]
+        giniConfiguration.cameraPreviewCornerGuidesColor = .white
+        giniConfiguration.cameraPreviewFrameColor = GiniColor(light: UIColor.init(white: 0.5, alpha: 0.1), dark: UIColor.init(white: 0.5, alpha: 0.3))
+        giniConfiguration.cameraButtonsViewBackgroundColor = GiniColor(light: UIColor.darkGray, dark: UIColor.darkGray)
+        giniConfiguration.cameraContainerViewBackgroundColor = GiniColor(light: UIColor.darkGray, dark: UIColor.darkGray)
         
         // If you need to scale your font please use our method `scaledFont()`. Please, find the example below.
 //        let customFontToBeScaled = UIFont.scaledFont(UIFont(name: "Avenir", size: 20) ?? UIFont.systemFont(ofSize: 7, weight: .regular), textStyle: .caption1)
