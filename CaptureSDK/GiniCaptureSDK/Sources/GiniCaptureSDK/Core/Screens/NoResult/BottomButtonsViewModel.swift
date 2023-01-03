@@ -23,14 +23,17 @@ final class BottomButtonsViewModel {
     }
 
     @objc func didPressRetake() {
+        errorOccurred = false
         retakePressed?()
     }
 
     @objc func didPressEnterManually() {
+        errorOccurred = false
         enterManuallyPressed?()
     }
 
     @objc func didPressCancell() {
+        errorOccurred = false
         cancelPressed()
     }
 

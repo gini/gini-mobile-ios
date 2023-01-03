@@ -53,7 +53,7 @@ extension GiniScreenAPICoordinator {
                             self?.screenAPINavigationController.dismiss(animated: true)
                         }
                     }, cancelPressed: { [weak self] in
-                    self?.backToCamera()
+                        self?.screenAPINavigationController.dismiss(animated: true)
                 })
             } else {
                 viewModel = BottomButtonsViewModel(
@@ -109,7 +109,7 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
                             self?.screenAPINavigationController.dismiss(animated: animated)
                         }
                     }, cancelPressed: { [weak self] in
-                    self?.backToCamera()
+                        self?.screenAPINavigationController.popToRootViewController(animated: true)
                 })
             } else {
                 viewModel = BottomButtonsViewModel(
@@ -131,14 +131,14 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
                 self?.closeScreenApi()
             })
         }
+
         let viewController = ErrorScreenViewController(
             giniConfiguration: giniConfiguration,
             type: errorType,
             documentType: pages.type ?? .pdf,
             viewModel: viewModel)
 
-        screenAPINavigationController.pushViewController(
-            viewController, animated: animated)
+        screenAPINavigationController.pushViewController(viewController, animated: animated)
     }
 
     public func tryDisplayNoResultsScreen() -> Bool {
