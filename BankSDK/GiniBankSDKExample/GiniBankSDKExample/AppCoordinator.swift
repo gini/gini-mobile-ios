@@ -53,7 +53,6 @@ final class AppCoordinator: Coordinator {
 //        configuration.helpNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
 //        configuration.reviewNavigationBarBottomAdapter = CustomReviewScreenBottomNavigationBarAdapter()
 //        configuration.onboardingNavigationBarBottomAdapter = CustomOnboardingBottomNavigationBarAdapter()
-//        configuration.noResultsWarningContainerIconColor = .cyan
 
 //        let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
 //        configuration.customMenuItems = [customMenuItem]

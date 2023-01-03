@@ -273,9 +273,6 @@ Some background and text colors use the `GiniColor` type with which you can set 
 - Tip 5 image &#8594; <span style="color:#009EDF">*captureSuggestion5*</span> image asset
 
 ##### 4. Go to camera button
-- Background color &#8594; `GiniBankConfiguration.noResultsBottomButtonColor`
-- Text color &#8594; `GiniBankConfiguration.noResultsBottomButtonTextColor`
-- Corner radius &#8594; `GiniBankConfiguration.noResultsBottomButtonCornerRadius`
 - Back button
   - With image and title
       - Image &#8594; <span style="color:#009EDF">*cameraIcon*</span> image asset
@@ -343,7 +340,6 @@ Some background and text colors use the `GiniColor` type with which you can set 
 </br>
 
 ##### 1. Warning container
-- Background color &#8594; `GiniBankConfiguration.noResultsWarningContainerIconColor`
 - Image &#8594; <span style="color:#009EDF">*warningNoResults*</span> image asset
 - Title &#8594; <span style="color:#009EDF">*ginicapture.noresults.warning*</span> localized string
 
@@ -359,9 +355,6 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 - Tip 5 image &#8594; <span style="color:#009EDF">*captureSuggestion5*</span> image asset
 
 ##### 3. Back to camera button
-- Background color &#8594; `GiniBankConfiguration.noResultsBottomButtonColor`
-- Text color &#8594; `GiniBankConfiguration.noResultsBottomButtonTextColor`
-- Corner radius &#8594; `GiniBankConfiguration.noResultsBottomButtonCornerRadius`
 - Back button
   - With image and title
       - Image &#8594; <span style="color:#009EDF">*cameraIcon*</span> image asset
