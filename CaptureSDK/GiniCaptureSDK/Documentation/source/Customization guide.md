@@ -63,7 +63,14 @@ Images customization is done via overriding of [GiniImages.xcassets](https://git
 - Item font &#8594;  `GiniConfiguration.navigationBarItemFont`
 - Title font &#8594;  `GiniConfiguration.navigationBarTitleFont`
 
-##### 2. Tooltip
+##### 2. Notice
+<center><img src="img/Customization guide/Notice.jpg" height="70"/></center>
+- Information background color &#8594;  `GiniConfiguration.noticeInformationBackgroundColor`
+- Information text color &#8594;  `GiniConfiguration.noticeInformationTextColor`
+- Error background &#8594;  `GiniConfiguration.noticeErrorBackgroundColor`
+- Error text color `GiniConfiguration.noticeErrorTextColor`
+
+##### 3. Tooltip
 <center><img src="img/Customization guide/Tooltip.jpg" height="120"/></center>
 - Background color &#8594;  `GiniConfiguration.fileImportToolTipBackgroundColor`
 - Text color &#8594;  `GiniConfiguration.fileImportToolTipTextColor`
@@ -73,7 +80,7 @@ Images customization is done via overriding of [GiniImages.xcassets](https://git
     - <span style="color:#009EDF">*ginicapture.camera.qrCodeTip*</span> localized string for qr code tooltip
     - <span style="color:#009EDF">*ginicapture.multipagereview.reorderContainerTooltipMessage*</span> localized string for reorder tooltip
 
-##### 3. Gini Capture font
+##### 4. Gini Capture font
 
 - Font &#8594;  `GiniConfiguration.customFont`
 
@@ -99,15 +106,20 @@ Images customization is done via overriding of [GiniImages.xcassets](https://git
 	  -  Title &#8594; `GiniConfiguration.navigationBarCameraTitleHelpButton`
       
 ##### 2. Camera preview
+- Preview frame color &#8594;  `GiniConfiguration.cameraPreviewFrameColor`
+- Guides color &#8594;  `GiniConfiguration.cameraPreviewCornerGuidesColor`
 - Focus large image &#8594; <span style="color:#009EDF">*cameraFocusLarge*</span> image asset
 - Focus large small &#8594; <span style="color:#009EDF">*cameraFocusSmall*</span> image asset
 - Opaque view style (when tool tip is shown)  &#8594;  `GiniConfiguration.toolTipOpaqueBackgroundStyle`
 
 ##### 3. Camera buttons container
+- Background color &#8594;  `GiniConfiguration.cameraButtonsViewBackgroundColor`
+- Container view background color under the home indicator  &#8594;  `GiniConfiguration.cameraContainerViewBackgroundColor` 
 - Capture button
   - Image &#8594; <span style="color:#009EDF">*cameraCaptureButton*</span> image asset
 - Import button
 	- Image &#8594; <span style="color:#009EDF">*documentImportButton*</span> image asset
+- Captured images stack indicator color &#8594; `GiniConfiguration.imagesStackIndicatorLabelTextcolor`
 - Flash toggle can be enabled through &#8594; `GiniConfiguration.flashToggleEnabled`
 - Flash button
     - Image &#8594; <span style="color:#009EDF">*flashOn*</span> image asset
@@ -149,6 +161,7 @@ Images customization is done via overriding of [GiniImages.xcassets](https://git
 - Rotation button image &#8594;  <span style="color:#009EDF">*reviewRotateButton*</span> image asset
 - Rotation message
 	- Text &#8594; <span style="color:#009EDF">*ginicapture.review.bottom*</span> localized string
+	- Text color &#8594; `GiniConfiguration.reviewTextBottomColor`
 
 ## Review screen
 
@@ -221,7 +234,8 @@ Images customization is done via overriding of [GiniImages.xcassets](https://git
 </br>
 
 ##### 1. Selected image
-
+- Selected item check color &#8594; `GiniConfiguration.galleryPickerItemSelectedBackgroundCheckColor`
+- Background color &#8594; `GiniConfiguration.galleryScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
 ## Onboarding screens
 
@@ -259,6 +273,14 @@ Images customization is done via overriding of [GiniImages.xcassets](https://git
 	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.help.backToCamera*</span> localized string
   - With title only
 	  - Title &#8594; `GiniConfiguration.navigationBarHelpMenuTitleBackToCameraButton`
+
+##### 2. Table View Cells
+
+- Background color &#8594; `GiniConfiguration.helpScreenCellsBackgroundColor` using `GiniColor` with dark mode and light mode colors
+
+##### 3. Background
+
+- Background color &#8594; `GiniConfiguration.helpScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
 ##### 4. Additional help menu items
 
