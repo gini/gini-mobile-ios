@@ -75,7 +75,6 @@ We provide a global typography based on text appearance styles from `UIFont.Text
 To override them in your application please use `GiniConfiguration.updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle)`. For example:
 
 ```swift
-
     // If you need to scale your font please use our method `scaledFont()`. Please, find the example below.
     let configuration = GiniBankConfiguration.shared
     let customFontToBeScaled = UIFont.scaledFont(UIFont(name: "Avenir", size: 20) ?? UIFont.systemFont(ofSize: 7, weight: .regular), textStyle: .caption1)
@@ -86,6 +85,7 @@ To override them in your application please use `GiniConfiguration.updateFont(_ 
     configuration.updateFont(customScaledFont, for: .caption2)
 
 ```
+
 ## Images
 
 Images customization is done via overriding of [GiniImages.xcassets](https://github.com/gini/gini-mobile-ios/tree/new-ui/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/GiniImages.xcassets) resources.
@@ -160,15 +160,14 @@ If you need to animate the illustrations on the onboarding pages implement the `
 The new help screen uses the global UI customization options. You can discard the old screen specific
 customizations.
 
-### New Features
-
-
 ### Breaking Changes
 
 String keys changed:
 `ginicapture.help.menu.firstItem` → `ginicapture.help.menu.tips`
 `ginicapture.help.menu.secondItem`→ `ginicapture.help.menu.formats`
 `ginicapture.help.menu.thirdItem` → `ginicapture.help.menu.import`
+
+### New Features
 
 #### Bottom navigation bar
 
