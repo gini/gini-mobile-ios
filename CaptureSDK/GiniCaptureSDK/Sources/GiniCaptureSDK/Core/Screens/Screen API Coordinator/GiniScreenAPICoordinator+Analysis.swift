@@ -53,7 +53,7 @@ extension GiniScreenAPICoordinator {
                             self?.screenAPINavigationController.dismiss(animated: true)
                         }
                     }, cancelPressed: { [weak self] in
-                        self?.screenAPINavigationController.dismiss(animated: true)
+                        self?.closeScreenApi()
                 })
             } else {
                 viewModel = BottomButtonsViewModel(
@@ -64,7 +64,7 @@ extension GiniScreenAPICoordinator {
                             self?.screenAPINavigationController.dismiss(animated: true)
                         }
                     }, cancelPressed: { [weak self] in
-                        self?.screenAPINavigationController.dismiss(animated: true)
+                        self?.closeScreenApi()
                 })
             }
         default:
@@ -109,7 +109,7 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
                             self?.screenAPINavigationController.dismiss(animated: animated)
                         }
                     }, cancelPressed: { [weak self] in
-                        self?.screenAPINavigationController.popToRootViewController(animated: true)
+                        self?.closeScreenApi()
                 })
             } else {
                 viewModel = BottomButtonsViewModel(
