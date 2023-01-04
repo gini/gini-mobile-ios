@@ -1,9 +1,9 @@
 Features
 =========
 
-The Gini Capture SDK provides various features you can enable and configure. All the features are configured during
-through `GiniConfiguration.shared` instance. Specifically the `GiniConfiguration` is used to configure the Gini
-Capture SDK.
+The Gini Capture SDK provides various features you can enable and configure.
+All the features are configured during through `GiniConfiguration.shared` instance.
+Specifically the `GiniConfiguration` is used to configure the Gini Capture SDK.
 
 **Note**: Some features require additional contractual agreements and may not be used without prior confirmation. Please get in touch with us in case you are not sure which features your contract includes.
 
@@ -111,6 +111,7 @@ You can pass the title and view controller for each screen to the
 
         configuration.customMenuItems = [customMenuItem]
  ```           
+The example implementation is availible [here](https://github.com/gini/gini-mobile-ios/tree/new-ui/CaptureSDK/GiniCaptureSDKExample/Example%20Swift).
 
 You can also disable the supported formats help screen by passing `false` to
 `GiniConfiguration.shared.shouldShowSupportedFormatsScreen`.

@@ -1,13 +1,18 @@
 Migrate from the Gini Capture SDK 1.x.x to 3.x.x
 =================================================
 
+# Breaking changes
+
 In version 3.0.0 we modernized our UI. In addition, we simplified how the UI
 is customized, introduced centralized customization for the color pallete, typograhy.
 We also removed the Component API integration option and unified the public API of the SDK and introduced an easier way to customize certain parts of the UI.
 
+`GiniConfiguration` is a singleton now.
+You don't need to create a new instance of `GiniConfiguration` just use `GiniConfiguration.shared` instead.
+
 Please, find more details in [Getting started](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/getting-started.html).
 
-# Migrate from Compomemt API
+# Migrate from Compoment API
 
 The Component API allowed more UI customization options at the cost of a more difficult integration and maintenance. It
 was based on the view controllers, and you had to manage navigation between them and also update the navigation whenever we introduced
