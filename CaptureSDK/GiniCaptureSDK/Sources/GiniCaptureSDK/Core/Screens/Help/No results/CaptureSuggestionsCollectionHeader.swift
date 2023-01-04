@@ -54,7 +54,7 @@ final class CaptureSuggestionsCollectionHeader: UICollectionReusableView {
         let icon = UIImageView()
         icon.translatesAutoresizingMaskIntoConstraints = false
         icon.contentMode = .scaleAspectFit
-        icon.tintColor = GiniConfiguration.shared.noResultsWarningContainerIconColor
+        icon.tintColor = UIColor.GiniCapture.warning1
         return icon
     }()
 

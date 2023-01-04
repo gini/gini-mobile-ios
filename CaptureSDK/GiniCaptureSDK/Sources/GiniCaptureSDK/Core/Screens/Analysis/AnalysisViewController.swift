@@ -200,7 +200,6 @@ import UIKit
         addErrorView()
     }
 
-
     /// Show error view on the screen
     /// - Parameters:
     ///   - message: description of the error
@@ -217,7 +216,6 @@ import UIKit
         })
         errorView.show()
     }
-
 
     /// Hide the error view
     /// - Parameter animated: a flag to hide the view with animation
