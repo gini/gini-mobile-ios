@@ -96,19 +96,19 @@ Images customization is done via overriding of [GiniImages.xcassets](https://git
 
  You can find all the string resources in [Localizable.strings](https://github.com/gini/gini-mobile-ios/blob/new-ui/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/de.lproj/Localizable.strings).
 
-## UI Elements
+# UI Elements
 
 Certain elements of the UI can now be fully customized via UI injection. It utilizes view adapter interfaces which you
 can implement and pass to `GiniConfiguration` when configuring the SDK. These interfaces declare the contract the injected
 view has to fulfill and allow the SDK to ask for your view instance when needed.
 
-### Top Navigation Bar
+## Top Navigation Bar
 
 To inject your own navigation bar view you need to pass your navigation view controller to 
 `GiniConfiguration.shared.customNavigationController`.
 The view from the custom navigation view controller will then be displayed on all screens as the top navigation bar.
 
-### Bottom Navigation Bar
+## Bottom Navigation Bar
 
 You can opt to show a bottom navigation bar. To enable it pass `true` to
 `GiniConfiguration.shared.bottomNavigationBarEnabled`.
@@ -116,49 +116,55 @@ You can opt to show a bottom navigation bar. To enable it pass `true` to
 **Note**:  The top navigation bar will still be used, but its  functionality will be limited to showing the screen's title and
 an optional close button. Please inject a custom top navigation bar if your design requires it even if you have enabled the bottom navigation bar.
 
-## Migrate to the new UI
+# Migrate to the new UI
 
-### Onboarding
+## Onboarding
 
 The new onboarding screen uses the global UI customization options. You can discard the old screen specific
 customizations.
 
 Images and text are onboarding page specific and need to be customized for each page.
 
-[Here](TODO) you can find the detailed description on how to customize this screen.
+[here][https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta01/features.html#onboarding] and [here](https://www.figma.com/file/H4WFJ4xaw4YNU4VaJYWiQq/iOS-Gini-Capture-SDK-2.0.0-UI-Customisation?node-id=243%3A3305&t=FF7Dsb8CgQO5OeDO-1).
 
-#### Breaking Changes:
+### Breaking Changes:
 
- - Setting Custom Onboarding Pages:
+#### Setting Custom Onboarding Pages:
 
 The `OnboardingPageNew` struct was changed to also allow setting a title for the page and inject a view for the
 illustration.
 
-You can use the `ImageOnboardingIllustrationAdapter` to display drawable resources.
-
-If you are setting custom onboarding pages, then you have to create the ``OnboardingPage`` as shown in the example
+If you are setting custom onboarding pages, then you have to create the `OnboardingPage` as shown in the example
 below:
-TODO
-#### New Features
 
-Custom Illustration Views
+```swift
+    configuration.customOnboardingPages = [OnboardingPageNew(imageName: "captureSuggestion1", title: "Page 1", description: "Description for page 1")]
+```
+
+### New Features
+
+#### Custom Illustration Views
 
 By implementing the `OnboardingIllustrationAdapter` interface and passing it to either `GiniCapture` or the
 `OnboardingPageNew` constructor you can inject any custom view for the illustration.
 
-If you need to animate the illustrations on the onboarding pages implement the `OnboardingIllustrationAdapter` interface to inject a view that can animate images (e.g., `Lottie`) and pass it to the relevant onboarding illustration adapter setters (e.g., `onboardingAlignCornersIllustrationAdapter`,`onboardingLightingIllustrationAdapter`,`onboardingMultiPageIllustrationAdapter`,`onboardingQRCodeIllustrationAdapter`) when configuring the `GiniConfiguration.shared` instance.
+If you need to animate the illustrations on the onboarding pages implement the `OnboardingIllustrationAdapter` interface to inject a view that can animate images (e.g., `Lottie`) and pass it to the relevant onboarding illustration adapter setters (e.g., 
+`onboardingAlignCornersIllustrationAdapter`,
+`onboardingLightingIllustrationAdapter`,
+`onboardingMultiPageIllustrationAdapter`,
+`onboardingQRCodeIllustrationAdapter`)
+ when configuring the `GiniConfiguration.shared` instance.
 
-### Help
+## Help
 
-The new help screen uses the global UI customization options.
+The new help screen uses the global UI customization options. You can discard the old screen specific
+customizations.
 
-#### New Features
+### New Features
 
-Bottom navigation bar
+#### Bottom navigation bar
 
-You can show a bottom navigation bar by passing true to ``GiniCapture`` ``setBottomNavigationBarEnabled``. There is a default implementation, but you can also use
-your own by implementing the ``HelpNavigationBarBottomAdapter`` interface and passing it to ``GiniCapture``.
+You can show a bottom navigation bar by passing true to `GiniConfiguration.shared.bottomNavigationBarEnabled`. There is a default implementation, but you can also use
+your own by implementing the `HelpBottomNavigationBarAdapter` interface and passing it to `GiniConfiguration.shared.helpNavigationBarBottomAdapter`.
 
-You can find more details `here <features.html#help-screen-customization>`_ and `here <features.html#bottom-navigation-bar>`_.
-
-TODO Keys
+You can find more details [here][https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta01/features.html#help-screen-customization] and [here](https://www.figma.com/file/H4WFJ4xaw4YNU4VaJYWiQq/iOS-Gini-Capture-SDK-2.0.0-UI-Customisation?node-id=40%3A584&t=LCqm8Cwfh9PGUM0E-1).

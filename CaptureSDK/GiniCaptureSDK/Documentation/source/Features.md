@@ -32,7 +32,8 @@ You can opt to show a bottom navigation bar. To enable it pass `true` to
 `GiniConfiguration.shared.bottomNavigationBarEnabled`.
 
 **Note**:  The top navigation bar will still be used, but its  functionality will be limited to showing the screen's title and
-an optional close button. Please inject a custom top navigation bar if your design requires it even if you have enabled the bottom navigation bar.
+an optional close button.
+Please inject a custom top navigation bar if your design requires it even if you have enabled the bottom navigation bar.
 
 ## Onboarding
 
@@ -52,12 +53,16 @@ You can customize the onboarding in the following ways:
    `GiniConfiguration.shared.onboardingShowAtLaunch`.
 
 * Animate illustrations by injecting custom views:
-   If you need to animate the illustrations on the onboarding pages implement the `OnboardingIllustrationAdapter` interface to inject a view that can animate images (e.g., `Lottie`) and pass it to the relevant onboarding illustration adapter setters (e.g., `onboardingAlignCornersIllustrationAdapter`,`onboardingLightingIllustrationAdapter`,`onboardingMultiPageIllustrationAdapter`,`onboardingQRCodeIllustrationAdapter`) when configuring the `GiniConfiguration.shared` instance.
+   If you need to animate the illustrations on the onboarding pages implement the `OnboardingIllustrationAdapter` interface to inject a view that can animate images (e.g., `Lottie`) and pass it to the relevant onboarding illustration adapter setters (e.g., `onboardingAlignCornersIllustrationAdapter`,
+   `onboardingLightingIllustrationAdapter`,
+   `onboardingMultiPageIllustrationAdapter`,
+   `onboardingQRCodeIllustrationAdapter`)
+    when configuring the `GiniConfiguration.shared` instance.
 
 ## Single Page
 
-By default, the Gini Capture SDK is configured to capture single page documents. No further configuration is required for
-this.
+By default, the Gini Capture SDK is configured to capture single page documents.
+No further configuration is required for this.
 
 ## Multi-Page
 
