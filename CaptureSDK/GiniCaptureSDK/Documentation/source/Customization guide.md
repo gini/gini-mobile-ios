@@ -40,7 +40,6 @@ To override them in your application please use `GiniConfiguration.updateFont(_ 
     // If you would like to pass us already scaled font.
     let customScaledFont = UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 28))
     configuration.updateFont(customScaledFont, for: .caption2)
-
 ```
 
 ## Images
@@ -55,85 +54,50 @@ Images customization is done via overriding of [GiniImages.xcassets](https://git
 
 ## Generic components
 
-##### 1. Navigation bar
-<center><img src="img/Customization guide/Navigation bar.jpg" height="70"/></center>
-- Tint color &#8594;  `GiniConfiguration.navigationBarTintColor`
-- Item tint color &#8594;  `GiniConfiguration.navigationBarItemTintColor`
-- Title color &#8594;  `GiniConfiguration.navigationBarTitleColor`
-- Item font &#8594;  `GiniConfiguration.navigationBarItemFont`
-- Title font &#8594;  `GiniConfiguration.navigationBarTitleFont`
+##### 1. Top Navigation bar
 
-##### 2. Notice
-<center><img src="img/Customization guide/Notice.jpg" height="70"/></center>
-- Information background color &#8594;  `GiniConfiguration.noticeInformationBackgroundColor`
-- Information text color &#8594;  `GiniConfiguration.noticeInformationTextColor`
-- Error background &#8594;  `GiniConfiguration.noticeErrorBackgroundColor`
-- Error text color `GiniConfiguration.noticeErrorTextColor`
+TODO
+##### 2. Top Navigation bar
 
-##### 3. Tooltip
-<center><img src="img/Customization guide/Tooltip.jpg" height="120"/></center>
-- Background color &#8594;  `GiniConfiguration.fileImportToolTipBackgroundColor`
-- Text color &#8594;  `GiniConfiguration.fileImportToolTipTextColor`
-- Close button color &#8594;  `GiniConfiguration.fileImportToolTipCloseButtonColor`
-- Text &#8594; 
-    - <span style="color:#009EDF">*ginicapture.camera.fileImportTip*</span> localized string for file import tooltip
-    - <span style="color:#009EDF">*ginicapture.camera.qrCodeTip*</span> localized string for qr code tooltip
-    - <span style="color:#009EDF">*ginicapture.multipagereview.reorderContainerTooltipMessage*</span> localized string for reorder tooltip
-
-##### 4. Gini Capture font
-
-- Font &#8594;  `GiniConfiguration.customFont`
+TODO
 
 ## Camera screen
 
-<br>
-<center><img src="img/Customization guide/Camera.jpg" height="500"/></center>
-</br>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FH4WFJ4xaw4YNU4VaJYWiQq%2FiOS-Gini-Capture-SDK-2.0.0-UI-Customisation%3Fnode-id%3D243%253A3306%26t%3DboRmrY5QfLYhGfPT-1" allowfullscreen></iframe>
 
-##### 1. Navigation bar
-- Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.camera.title*</span> localized string
-- Close button
-  - With image and title
-	  - Image &#8594; <span style="color:#009EDF">*navigationCameraClose*</span> image asset
-	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.camera.close*</span> localized string
-  - With title only
-	  -  Title &#8594; `GiniConfiguration.navigationBarCameraTitleCloseButton`
-- Help button
- - With image and title
-	  - Image &#8594; <span style="color:#009EDF">*navigationCameraHelp*</span> image asset
-	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.camera.help*</span> localized string
-  - With title only
-	  -  Title &#8594; `GiniConfiguration.navigationBarCameraTitleHelpButton`
-      
-##### 2. Camera preview
-- Preview frame color &#8594;  `GiniConfiguration.cameraPreviewFrameColor`
-- Guides color &#8594;  `GiniConfiguration.cameraPreviewCornerGuidesColor`
-- Focus large image &#8594; <span style="color:#009EDF">*cameraFocusLarge*</span> image asset
-- Focus large small &#8594; <span style="color:#009EDF">*cameraFocusSmall*</span> image asset
-- Opaque view style (when tool tip is shown)  &#8594;  `GiniConfiguration.toolTipOpaqueBackgroundStyle`
+### Single Page
 
-##### 3. Camera buttons container
-- Background color &#8594;  `GiniConfiguration.cameraButtonsViewBackgroundColor`
-- Container view background color under the home indicator  &#8594;  `GiniConfiguration.cameraContainerViewBackgroundColor` 
-- Capture button
-  - Image &#8594; <span style="color:#009EDF">*cameraCaptureButton*</span> image asset
-- Import button
-	- Image &#8594; <span style="color:#009EDF">*documentImportButton*</span> image asset
-- Captured images stack indicator color &#8594; `GiniConfiguration.imagesStackIndicatorLabelTextcolor`
-- Flash toggle can be enabled through &#8594; `GiniConfiguration.flashToggleEnabled`
-- Flash button
-    - Image &#8594; <span style="color:#009EDF">*flashOn*</span> image asset
-    - Image &#8594; <span style="color:#009EDF">*flashOff*</span> image asset
+By default, the Gini Capture SDK is configured to capture single page documents.
+No further configuration is required for this.
 
-##### 4. QR code popup
-<br>
-<center><img src="img/Customization guide/QR code popup.jpg" height="70"/></center>
-</br>
-- Background color &#8594;  `GiniConfiguration.qrCodePopupBackgroundColor` using `GiniColor` with dark mode and light mode colors
-- Button color &#8594;  `GiniConfiguration.qrCodePopupButtonColor`
-- Text color &#8594;  `GiniConfiguration.qrCodePopupTextColor` using `GiniColor` with dark mode and light mode colors
-- Title &#8594; <span style="color:#009EDF">*ginicapture.camera.qrCodeDetectedPopup.buttonTitle*</span> localized string
-- Message &#8594; <span style="color:#009EDF">*ginicapture.camera.qrCodeDetectedPopup.message*</span> localized string
+### Multi-Page
+
+The multi-page feature allows the SDK to capture documents with multiple pages.
+
+To enable this simply pass `true` to `GiniConfiguration.shared.multipageEnabled`.
+
+### Camera
+
+* Enable the flash toggle button:
+   To allow users toggle the camera flash pass `true` to `GiniConfiguration.shared.flashToggleEnabled`.
+
+* Turn off flash by default:
+   Flash is on by default, and you can turn it off by passing `false` to `GiniConfiguration.shared.flashOnByDefault`.
+
+ ### QR Code Scanning
+
+When a supported QR code is detected with valid payment data, the QR Code will be processed automatically without any further user interaction.
+The QR Code scanning maybe triggered directly without the need to analyze the document.
+
+If the QR code does not have a supported payment format then a popup informs the user that a QR code was detected, but it cannot be used.
+
+Please find more information in the [QR Code scanning guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/qr-code-scanning-guide.html).
+
+### Document Import
+
+This feature enables the Gini Capture SDK to import documents from the camera screen. When it's enabled an additional button is shown next to the camera trigger. Using this button allows the user to pick either an image or a pdf from the device.
+
+Please find more information in the [Import PDFs and images guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/import-pdfs-and-images-guide.html).
 
 ## Review screen
 
