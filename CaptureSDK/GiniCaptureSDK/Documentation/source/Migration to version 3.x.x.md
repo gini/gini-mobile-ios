@@ -127,9 +127,9 @@ Images and text are onboarding page specific and need to be customized for each 
 
 [here][https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta01/features.html#onboarding] and [here](https://www.figma.com/file/H4WFJ4xaw4YNU4VaJYWiQq/iOS-Gini-Capture-SDK-2.0.0-UI-Customisation?node-id=243%3A3305&t=FF7Dsb8CgQO5OeDO-1).
 
-### Breaking Changes:
+### Breaking Changes
 
-#### Setting Custom Onboarding Pages:
+#### Setting Custom Onboarding Pages
 
 The `OnboardingPageNew` struct was changed to also allow setting a title for the page and inject a view for the
 illustration.
@@ -161,6 +161,14 @@ The new help screen uses the global UI customization options. You can discard th
 customizations.
 
 ### New Features
+
+
+### Breaking Changes
+
+String keys changed:
+`ginicapture.help.menu.firstItem` → `ginicapture.help.menu.tips`
+`ginicapture.help.menu.secondItem`→ `ginicapture.help.menu.formats`
+`ginicapture.help.menu.thirdItem` → `ginicapture.help.menu.import`
 
 #### Bottom navigation bar
 
