@@ -496,28 +496,6 @@ import GiniBankAPILibrary
      Sets the text of the app name for the Open with tutorial texts.
     */
     @objc public var openWithAppNameForTexts = Bundle.main.appName
-        
-    // MARK: No results options
-    
-    /**
-     Sets the color of the bottom button to the specified color.
-     */
-    @objc public var noResultsBottomButtonColor = Colors.Gini.blue
-    
-    /**
-     Sets the text color of the bottom button to the specified color.
-     */
-    @objc public var noResultsBottomButtonTextColor = GiniColor(light: .white, dark: .white)
-    
-    /**
-     Sets the corner radius of the bottom button.
-     */
-    @objc public var noResultsBottomButtonCornerRadius: CGFloat = 0.0
-    
-    /**
-     Sets the color of the warning container background to the specified color.
-     */
-    @objc public var noResultsWarningContainerIconColor = Colors.Gini.rose
     
     /**
      Sets if the Drag&Drop step should be shown in the "Open with" tutorial.
