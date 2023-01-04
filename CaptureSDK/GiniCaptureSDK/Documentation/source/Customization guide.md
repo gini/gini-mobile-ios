@@ -227,6 +227,23 @@ Images customization is done via overriding of [GiniImages.xcassets](https://git
 
 <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FH4WFJ4xaw4YNU4VaJYWiQq%2FiOS-Gini-Capture-SDK-2.0.0-UI-Customisation%3Fnode-id%3D141%253A2328%26t%3DwpenBBM8QsagJzOg-1" allowfullscreen></iframe>
 
+You can show your own help screens in the Gini Capture SDK.
+You can pass the title and view controller for each screen to the
+`GiniConfiguration.shared.customMenuItems` using a list of `HelpMenuItem` structs:
+
+``` swift
+
+        let customMenuItem = HelpMenuItem.custom("Custom menu item", CustomMenuItemViewController())
+
+        configuration.customMenuItems = [customMenuItem]
+ ```           
+ 
+The example implementation is availible [here](https://github.com/gini/gini-mobile-ios/tree/new-ui/CaptureSDK/GiniCaptureSDKExample/Example%20Swift).
+
+You can also disable the supported formats help screen by passing `false` to
+`GiniConfiguration.shared.shouldShowSupportedFormatsScreen`.
+
+
 ## Gallery album screen
 
 <br>
