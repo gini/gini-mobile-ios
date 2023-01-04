@@ -391,29 +391,7 @@ public final class GiniBankConfiguration: NSObject {
      Sets the text of the app name for the Open with tutorial texts.
      */
     @objc public var openWithAppNameForTexts = Bundle.main.appName
-        
-    // MARK: No results options
-    
-    /**
-     Sets the color of the bottom button to the specified color.
-     */
-    @objc public var noResultsBottomButtonColor = Colors.Gini.blue
-    
-    /**
-     Sets the text color of the bottom button to the specified color.
-     */
-    @objc public var noResultsBottomButtonTextColor = GiniColor.init(light: .white, dark: .white)
-    
-    /**
-     Sets the corner radius of the bottom button.
-     */
-    @objc public var noResultsBottomButtonCornerRadius: CGFloat = 0.0
-    
-    /**
-     Sets the color of the warning container background to the specified color.
-     */
-    @objc public var noResultsWarningContainerIconColor = Colors.Gini.rose
-    
+
     // MARK: Albums screen
     
     /**
@@ -1164,12 +1142,6 @@ public final class GiniBankConfiguration: NSObject {
         configuration.supportedFormatsIconColor = self.supportedFormatsIconColor
         
         configuration.openWithAppNameForTexts = self.openWithAppNameForTexts
-                
-        configuration.noResultsBottomButtonColor = self.noResultsBottomButtonColor
-        configuration.noResultsBottomButtonTextColor = self.noResultsBottomButtonTextColor
-        configuration.noResultsBottomButtonCornerRadius = self.noResultsBottomButtonCornerRadius
-        
-        configuration.noResultsWarningContainerIconColor = self.noResultsWarningContainerIconColor
         
         configuration.shouldShowDragAndDropTutorial = self.shouldShowDragAndDropTutorial
         
