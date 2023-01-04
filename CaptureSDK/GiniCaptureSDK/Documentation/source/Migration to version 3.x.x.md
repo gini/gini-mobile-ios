@@ -123,7 +123,7 @@ an optional close button. Please inject a custom top navigation bar if your desi
 
 # Migrate to the new UI
 
-## Onboarding
+## Onboarding screens
 
 The new onboarding screen uses the global UI customization options. You can discard the old screen specific
 customizations.
@@ -160,9 +160,22 @@ If you need to animate the illustrations on the onboarding pages implement the `
 `onboardingQRCodeIllustrationAdapter`)
  when configuring the `GiniConfiguration.shared` instance.
 
-## Help
+## Camera screen
 
-The new help screen uses the global UI customization options. You can discard the old screen specific
+The new camera screen uses the global UI customization options. You can discard the old screen specific
+customizations.
+
+### New Features
+
+#### QR Code only
+
+During QR Code only mode the capture and import controls will be hidden from the camera screen.
+
+For enabling QR code only mode the both flags `GiniConfiguration.shared.qrCodeScanningEnabled` and `GiniConfiguration.shared.onlyQRCodeScanningEnabled` should be `true`.
+
+## Help screens
+
+The new help screens use the global UI customization options. You can discard the old screen specific
 customizations.
 
 ### Breaking Changes

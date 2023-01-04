@@ -87,6 +87,12 @@ If the QR code does not have a supported payment format then a popup informs the
 
 Please find more information in the [QR Code scanning guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/qr-code-scanning-guide.html).
 
+## QR Code Only
+
+During QR Code only mode the capture and import controls will be hidden from the camera screen.
+
+For enabling QR code only mode the both flags `GiniConfiguration.shared.qrCodeScanningEnabled` and `GiniConfiguration.shared.onlyQRCodeScanningEnabled` should be `true`.
+
 # Document Import
 
 This feature enables the Gini Capture SDK to import documents from the camera screen. When it's enabled an additional button is shown next to the camera trigger. Using this button allows the user to pick either an image or a pdf from the device.
