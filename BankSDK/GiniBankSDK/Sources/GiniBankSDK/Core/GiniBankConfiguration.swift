@@ -7,6 +7,7 @@
 
 import UIKit
 import GiniCaptureSDK
+import GiniBankAPILibrary
 
 public final class GiniBankConfiguration: NSObject {
     
@@ -28,7 +29,7 @@ public final class GiniBankConfiguration: NSObject {
      
      - returns: Instance of `GiniBankConfiguration`.
      */
-    public override init() {}
+    override init() {}
     
     // MARK: General options
     
@@ -50,7 +51,7 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Used to handle all the logging messages in order to log them in a different way.
      */
-    @objc public var logger: GiniLogger = GiniConfiguration().logger
+    @objc public var logger: GiniLogger = GiniConfiguration.shared.logger
     
     /**
      Indicates whether the multipage feature is enabled or not. In case of `true`,
@@ -67,7 +68,6 @@ public final class GiniBankConfiguration: NSObject {
      Sets the tint color of the UIDocumentPickerViewController navigation bar.
      
      - note: Use only if you have a custom `UIAppearance` for your UINavigationBar
-     - note: Only iOS >= 11.0
      */
     @objc public var documentPickerNavigationBarTintColor: UIColor?
     
@@ -215,61 +215,24 @@ public final class GiniBankConfiguration: NSObject {
     
     /**
      Sets the close button text in the navigation bar on the camera screen.
-     
-     - note: Screen API only.
      */
     @objc public var navigationBarCameraTitleCloseButton = ""
     
     /**
      Sets the help button text in the navigation bar on the camera screen.
-     
-     - note: Screen API only.
-     */
+    */
     @objc public var navigationBarCameraTitleHelpButton = ""
     
-    /**
-     Sets the text color of the QR Code popup button.
-     */
-    @objc public var qrCodePopupButtonColor = Colors.Gini.blue
-    
-    /**
-     Sets the text color of the QR Code popup label.
-     */
-    @objc public var qrCodePopupTextColor = GiniColor(light: .black, dark: .white)
-    
-    /**
-     Sets the text color of the QR Code popup background.
-     */
-    @objc public var qrCodePopupBackgroundColor = GiniColor(light: .white, dark: UIColor.from(hex: 0x1c1c1e))
     
     // MARK: Onboarding screens
 
     /**
      Sets the continue button text in the navigation bar on the onboarding screen.
-     
-     - note: Screen API only.
-     */
+    */
     @objc public var navigationBarOnboardingTitleContinueButton = ""
-    
-    /**
-     Sets the color of the page controller's page indicator items.
-     */
-    @objc public var onboardingPageIndicatorColor = GiniColor(light: .white, dark: .white)
-    
-    /**
-     Sets the color of the page controller's current page indicator item.
-     */
-    @objc public var onboardingCurrentPageIndicatorColor = GiniColor(light: .white, dark: .white)
-    
-    /**
-     Sets alpha to the color of the page controller's current page indicator item.
-     */
-    @objc public var onboardingCurrentPageIndicatorAlpha: CGFloat = 0.2
-    
+                
     /**
      Indicates whether the onboarding screen should be presented at each start of the Gini Bank SDK.
-     
-     - note: Screen API only.
      */
     @objc public var onboardingShowAtLaunch = false
     
@@ -278,59 +241,9 @@ public final class GiniBankConfiguration: NSObject {
      start of the Gini Bank SDK. It is advised to do so.
      
      - note: Overwrites `onboardingShowAtLaunch` for the first launch.
-     - note: Screen API only.
      */
     @objc public var onboardingShowAtFirstLaunch = true
-    
-    /**
-     Sets the color ot the text for all onboarding pages.
-     */
-    @objc public var onboardingTextColor = GiniColor(light: .white, dark: .white)
-    
-    /**
-     Sets the background color for all onboarding pages.
-     */
         
-    @objc public var onboardingScreenBackgroundColor = GiniColor(light: .black, dark: .black)
-    
-    /**
-     All onboarding pages which will be presented in a horizontal scroll view to the user.
-     By default the Gini Bank SDK comes with three pages advising the user to keep the
-     document flat, hold the device parallel and capture the whole document.
-     
-     - note: Any array of views can be passed, but for your convenience we provide the `GINIOnboardingPage` class.
-     */
-    @objc public var onboardingPages: [UIView] {
-        get {
-            if let pages = onboardingCustomPages {
-                return pages
-            }
-            guard let page1 = OnboardingPage(imageNamed: "onboardingPage1",
-                                             text: .localized(resource: OnboardingStrings.onboardingFirstPageText),
-                                             rotateImageInLandscape: true),
-                let page2 = OnboardingPage(imageNamed: "onboardingPage2",
-                                           text: .localized(resource: OnboardingStrings.onboardingSecondPageText)),
-                let page3 = OnboardingPage(imageNamed: "onboardingPage3",
-                                           text: .localized(resource: OnboardingStrings.onboardingThirdPageText)),
-                let page4 = OnboardingPage(imageNamed: "onboardingPage5",
-                                           text: .localized(resource: OnboardingStrings.onboardingFifthPageText)) else {
-                    return [UIView]()
-            }
-            
-            onboardingCustomPages = [page1, page2, page3, page4]
-            if let ipadTipPage = OnboardingPage(imageNamed: "onboardingPage4",
-                                                text: .localized(resource: OnboardingStrings.onboardingFourthPageText)),
-                UIDevice.current.isIpad {
-                onboardingCustomPages?.insert(ipadTipPage, at: 0)
-            }
-            return onboardingCustomPages!
-        }
-        set {
-            self.onboardingCustomPages = newValue
-        }
-    }
-    
-    fileprivate var onboardingCustomPages: [UIView]?
     /**
      Set custom onboarding pages
      - note: For your convenience we provide the `OnboardingPageNew` struct.
@@ -368,6 +281,11 @@ public final class GiniBankConfiguration: NSObject {
     public var noResultNavigationBarBottomAdapter: NoResultBottomNavigationBarAdapter?
     
     /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the error screens.
+     */
+    public var errorNavigationBarBottomAdapter: ErrorBottomNavigationBarAdapter?
+    
+    /**
       * Set an adapter implementation to show a custom bottom navigation bar on the help screens.
      */
     public var helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
@@ -394,32 +312,19 @@ public final class GiniBankConfiguration: NSObject {
 
     /**
      Sets the back button text in the navigation bar on the review screen. Use this if you only want to show the title.
-     
-     - note: Screen API only.
      */
     @objc public var navigationBarReviewTitleBackButton = ""
     
     /**
      Sets the close button text in the navigation bar on the review screen. Use this if you only want to show the title.
-     
-     - note: Screen API only.
      */
     @objc public var navigationBarReviewTitleCloseButton = ""
     
     /**
      Sets the continue button text in the navigation bar on the review screen.
-     
-     - note: Screen API only.
      */
     @objc public var navigationBarReviewTitleContinueButton = ""
-    
-    /**
-     Sets the background color of the bottom section on the review screen containing the rotation button.
-     
-     - note: Background will have a 20% transparency, to have enough space for the document image on smaller devices.
-     */
-    @objc public var reviewBottomViewBackgroundColor = UIColor.black
-    
+        
     /**
      Sets the font of the text appearing at the bottom of the review screen.
      */
@@ -432,66 +337,11 @@ public final class GiniBankConfiguration: NSObject {
     
     // MARK: Multipage options
     
-    /**
-     Sets the color of the pages container and toolbar.
-     */
-    @objc public var multipagePagesContainerAndToolBarColor = GiniColor(light: Colors.Gini.pearl, dark: UIColor.from(hex: 0x1c1c1c))
-    
-    @objc private var _multipagePagesContainerAndToolBarColor: UIColor?
-    
-    /**
-     Sets the color of the circle indicator.
-     */
-    @objc public var indicatorCircleColor = GiniColor(light: Colors.Gini.pearl, dark: .lightGray)
-    
-    /**
-     Sets the tint color of the toolbar items.
-     */
-    @objc public var multipageToolbarItemsColor = Colors.Gini.blue
-    
-    /**
-     Sets the tint color of the page indicator.
-     */
-    @objc public var multipagePageIndicatorColor = Colors.Gini.blue
-    
-    /**
-     Sets the background color of the page selected indicator.
-     */
-    @objc public var multipagePageSelectedIndicatorColor = Colors.Gini.blue
-    
-    /**
-     Sets the background color of the page background.
-     */
-    @objc public var multipagePageBackgroundColor = GiniColor(light: .white, dark: UIColor.from(hex: 0x1c1c1e))
-    
-    @objc private var _multipagePageBackgroundColor: UIColor?
-    
-    /**
-     Sets the tint color of the draggable icon in the page collection cell.
-     */
-    @objc public var multipageDraggableIconColor = Colors.Gini.veryLightGray
-
-    /**
-     Sets the background style when the tooltip is shown in the multipage screen.
-     */
-    public var multipageToolTipOpaqueBackgroundStyle: OpaqueViewStyle = .blurred(style: .light)
-    
-    /**
-     Sets the background color for the successfull upload icon.
-     */
-    public var multipagePageSuccessfullUploadIconBackgroundColor = Colors.Gini.springGreen
-    
-    /**
-     Sets the background color for the failed upload icon.
-     */
-    public var multipagePageFailureUploadIconBackgroundColor = Colors.Gini.springGreen
     
     // MARK: Analysis options
 
     /**
      Sets the back button text in the navigation bar on the analysis screen. Use this if you only want to show the title.
-     
-     - note: Screen API only.
      */
     @objc public var navigationBarAnalysisTitleBackButton = ""
     
@@ -509,15 +359,11 @@ public final class GiniBankConfiguration: NSObject {
     
     /**
      Sets the back button text in the navigation bar on the help menu screen. Use this if you only want to show the title.
-     
-     - note: Screen API only.
      */
     @objc public var navigationBarHelpMenuTitleBackToCameraButton = ""
     
     /**
      Sets the back button text in the navigation bar on the help screen. Use this if you only want to show the title.
-     
-     - note: Screen API only.
      */
     @objc public var navigationBarHelpScreenTitleBackToMenuButton = ""
     
@@ -545,34 +391,7 @@ public final class GiniBankConfiguration: NSObject {
      Sets the text of the app name for the Open with tutorial texts.
      */
     @objc public var openWithAppNameForTexts = Bundle.main.appName
-    
-    /**
-     Sets the color of the step indicator for the Open with tutorial.
-     */
-    @objc public var stepIndicatorColor = Colors.Gini.blue
-    
-    // MARK: No results options
-    
-    /**
-     Sets the color of the bottom button to the specified color.
-     */
-    @objc public var noResultsBottomButtonColor = Colors.Gini.blue
-    
-    /**
-     Sets the text color of the bottom button to the specified color.
-     */
-    @objc public var noResultsBottomButtonTextColor = GiniColor.init(light: .white, dark: .white)
-    
-    /**
-     Sets the corner radius of the bottom button.
-     */
-    @objc public var noResultsBottomButtonCornerRadius: CGFloat = 0.0
-    
-    /**
-     Sets the color of the warning container background to the specified color.
-     */
-    @objc public var noResultsWarningContainerIconColor = Colors.Gini.rose
-    
+
     // MARK: Albums screen
     
     /**
@@ -1239,7 +1058,7 @@ public final class GiniBankConfiguration: NSObject {
     ]
     
     public func captureConfiguration() -> GiniConfiguration {
-     let configuration = GiniConfiguration()
+        let configuration = GiniConfiguration.shared
         configuration.customDocumentValidations = self.customDocumentValidations
         
         configuration.customFont = self.customFont
@@ -1288,24 +1107,16 @@ public final class GiniBankConfiguration: NSObject {
         configuration.navigationBarCameraTitleCloseButton = self.navigationBarCameraTitleCloseButton
         configuration.navigationBarCameraTitleHelpButton = self.navigationBarCameraTitleHelpButton
         
-        configuration.qrCodePopupButtonColor = self.qrCodePopupButtonColor
-        configuration.qrCodePopupTextColor = self.qrCodePopupTextColor
-        configuration.qrCodePopupBackgroundColor = self.qrCodePopupBackgroundColor
         configuration.bottomNavigationBarEnabled = self.bottomNavigationBarEnabled
         configuration.cameraNavigationBarBottomAdapter = self.cameraNavigationBarBottomAdapter
         configuration.noResultNavigationBarBottomAdapter = self.noResultNavigationBarBottomAdapter
+        configuration.errorNavigationBarBottomAdapter = self.errorNavigationBarBottomAdapter
         configuration.helpNavigationBarBottomAdapter = self.helpNavigationBarBottomAdapter
         configuration.reviewNavigationBarBottomAdapter = self.reviewNavigationBarBottomAdapter
         configuration.navigationBarOnboardingTitleContinueButton = self.navigationBarOnboardingTitleContinueButton
         
-        configuration.onboardingPageIndicatorColor = self.onboardingPageIndicatorColor
-        configuration.onboardingCurrentPageIndicatorColor = self.onboardingCurrentPageIndicatorColor
-        configuration.onboardingCurrentPageIndicatorAlpha = self.onboardingCurrentPageIndicatorAlpha
         configuration.onboardingShowAtLaunch = self.onboardingShowAtLaunch
         configuration.onboardingShowAtFirstLaunch = self.onboardingShowAtFirstLaunch
-        configuration.onboardingTextColor = self.onboardingTextColor
-        configuration.onboardingScreenBackgroundColor = self.onboardingScreenBackgroundColor
-        configuration.customOnboardingPages = self.customOnboardingPages
         configuration.onboardingAlignCornersIllustrationAdapter = self.onboardingAlignCornersIllustrationAdapter
     
         configuration.onboardingLightingIllustrationAdapter = self.onboardingLightingIllustrationAdapter
@@ -1318,22 +1129,6 @@ public final class GiniBankConfiguration: NSObject {
         configuration.navigationBarReviewTitleBackButton = self.navigationBarReviewTitleBackButton
         configuration.navigationBarReviewTitleCloseButton = self.navigationBarReviewTitleCloseButton
         configuration.navigationBarReviewTitleContinueButton = self.navigationBarReviewTitleContinueButton
-        
-        configuration.reviewBottomViewBackgroundColor = self.reviewBottomViewBackgroundColor
-        configuration.reviewTextBottomFont = self.reviewTextBottomFont
-        configuration.reviewTextBottomColor = self.reviewTextBottomColor
-        
-        configuration.indicatorCircleColor = self.indicatorCircleColor
-        
-        configuration.multipagePagesContainerAndToolBarColor = self.multipagePagesContainerAndToolBarColor
-        configuration.multipageToolbarItemsColor = self.multipageToolbarItemsColor
-        configuration.multipagePageIndicatorColor = self.multipagePageIndicatorColor
-        configuration.multipagePageSelectedIndicatorColor = self.multipagePageSelectedIndicatorColor
-        configuration.multipagePageBackgroundColor = self.multipagePageBackgroundColor
-        configuration.multipageDraggableIconColor = self.multipageDraggableIconColor
-        configuration.multipageToolTipOpaqueBackgroundStyle = self.multipageToolTipOpaqueBackgroundStyle
-        configuration.multipagePageSuccessfullUploadIconBackgroundColor = self.multipagePageSuccessfullUploadIconBackgroundColor
-        configuration.multipagePageFailureUploadIconBackgroundColor = self.multipagePageFailureUploadIconBackgroundColor
 
         configuration.navigationBarAnalysisTitleBackButton = self.navigationBarAnalysisTitleBackButton
         
@@ -1347,14 +1142,6 @@ public final class GiniBankConfiguration: NSObject {
         configuration.supportedFormatsIconColor = self.supportedFormatsIconColor
         
         configuration.openWithAppNameForTexts = self.openWithAppNameForTexts
-        
-        configuration.stepIndicatorColor = self.stepIndicatorColor
-        
-        configuration.noResultsBottomButtonColor = self.noResultsBottomButtonColor
-        configuration.noResultsBottomButtonTextColor = self.noResultsBottomButtonTextColor
-        configuration.noResultsBottomButtonCornerRadius = self.noResultsBottomButtonCornerRadius
-        
-        configuration.noResultsWarningContainerIconColor = self.noResultsWarningContainerIconColor
         
         configuration.shouldShowDragAndDropTutorial = self.shouldShowDragAndDropTutorial
         
@@ -1384,12 +1171,13 @@ public final class GiniBankConfiguration: NSObject {
         configuration.primaryButtonConfiguration = self.primaryButtonConfiguration
         configuration.secondaryButtonConfiguration = self.secondaryButtonConfiguration
         configuration.transparentButtonConfiguration = self.transparentButtonConfiguration
+        configuration.addPageButtonConfiguration = self.addPageButtonConfiguration
+        configuration.cameraControlButtonConfiguration = self.cameraControlButtonConfiguration
 
         GiniCapture.setConfiguration(configuration)
         
         // Set onboarding pages after setting the GiniCapture's configuration
         // because the onboarding page initialisers need the configuration
-        configuration.onboardingPages = self.onboardingPages
         configuration.onboardingAlignCornersIllustrationAdapter = self.onboardingAlignCornersIllustrationAdapter
         
         return configuration
@@ -1541,5 +1329,74 @@ public final class GiniBankConfiguration: NSObject {
     */
     public func updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle) {
         textStyleFonts[textStyle] = font
+    }
+
+    var documentService: DocumentServiceProtocol?
+    var lineItems: [[Extraction]]?
+
+    /// Function for clean up
+    /// - Parameters:
+    ///   - paymentRecipient: paymentRecipient description
+    ///   - paymentReference: paymentReference description
+    ///   - iban: iban description
+    ///   - bic: bic description
+    ///   - amountToPay: amountToPay description
+    public func cleanup(paymentRecipient: String, paymentReference: String, paymentPurpose: String, iban: String, bic: String, amountToPay: ExtractionAmount) {
+        guard let documentService = documentService else { return }
+
+        // Convert amount object to string
+        // Cut off decimals after the first 2
+        let truncatedAmountValue = amountToPay.value.convertToDouble(withDecimalPoint: 2)
+        let amountToPayString = "\(truncatedAmountValue)" + ":" + amountToPay.currency.rawValue
+
+        let paymentRecipientExtraction = Extraction(box: nil,
+                                                    candidates: nil,
+                                                    entity: "companyname",
+                                                    value: paymentRecipient,
+                                                    name: "paymentRecipient")
+        let paymentReferenceExtraction = Extraction(box: nil,
+                                                    candidates: nil,
+                                                    entity: "reference",
+                                                    value: paymentRecipient,
+                                                    name: "paymentReference")
+        let paymentPurposeExtraction = Extraction(box: nil,
+                                                  candidates: nil,
+                                                  entity: "text",
+                                                  value: paymentPurpose,
+                                                  name: "paymentPurpose")
+        let ibanExtraction = Extraction(box: nil,
+                                        candidates: nil,
+                                        entity: "iban",
+                                        value: iban,
+                                        name: "iban")
+        let bicExtraction = Extraction(box: nil,
+                                       candidates: nil,
+                                       entity: "bic",
+                                       value: bic,
+                                       name: "bic")
+        let amountExtraction = Extraction(box: nil,
+                                          candidates: nil,
+                                          entity: "amount",
+                                          value: amountToPayString,
+                                          name: "amountToPay")
+
+        let updatedExtractions: [Extraction] = [paymentRecipientExtraction,
+                                                paymentReferenceExtraction,
+                                                paymentPurposeExtraction,
+                                                ibanExtraction,
+                                                bicExtraction,
+                                                amountExtraction]
+
+        if let lineItems = lineItems {
+            documentService.sendFeedback(with: updatedExtractions,
+                                         updatedCompoundExtractions: ["lineItems": lineItems])
+        } else {
+            documentService.sendFeedback(with: updatedExtractions,
+                                         updatedCompoundExtractions: nil)
+        }
+
+        documentService.resetToInitialState()
+        self.documentService = nil
+        self.lineItems = nil
     }
 }
