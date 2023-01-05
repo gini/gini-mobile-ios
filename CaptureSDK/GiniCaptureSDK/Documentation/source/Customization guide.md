@@ -56,10 +56,23 @@ Images customization is done via overriding of [GiniImages.xcassets](https://git
 
 ##### 1. Top Navigation bar
 
-TODO
+Colors, typography, texts can be customized as described above.
+
+To inject your own navigation bar view you need to pass your navigation view controller to 
+`GiniConfiguration.shared.customNavigationController`.
+The view from the custom navigation view controller will then be displayed on all screens as the top navigation bar.
+
 ##### 2. Bottom Navigation bar
 
-TODO
+You can opt to show a bottom navigation bar. To enable it pass `true` to
+`GiniConfiguration.shared.bottomNavigationBarEnabled`.
+
+**Note**:  The top navigation bar will still be used, but its  functionality will be limited to showing the screen's title and
+an optional close button.
+Please inject a custom top navigation bar if your design requires it even if you have enabled the bottom navigation bar.
+
+For each screen we provide a possibility to inject a custom bottom navigation bar.
+More details will be added below during the specific screen customization.
 
 ## Camera screen
 
@@ -74,7 +87,7 @@ No further configuration is required for this.
 
 The multi-page feature allows the SDK to capture documents with multiple pages.
 
-To enable this simply pass `true` to `GiniConfiguration.shared.multipageEnabled`.
+To enable this feature simply pass `true` to `GiniConfiguration.shared.multipageEnabled`.
 
 ### Camera
 
