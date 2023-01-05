@@ -226,7 +226,8 @@ public final class ReviewViewController: UIViewController {
         processButton.widthAnchor.constraint(equalToConstant: Constants.buttonSize.width),
         processButton.leadingAnchor.constraint(equalTo: buttonContainer.leadingAnchor),
         processButton.heightAnchor.constraint(equalToConstant: Constants.buttonSize.height),
-        processButton.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor)]
+        processButton.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor),
+        processButton.trailingAnchor.constraint(lessThanOrEqualTo: buttonContainer.trailingAnchor)]
 
     private lazy var addPagesButtonConstraints: [NSLayoutConstraint] =  [
             addPagesButton.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
@@ -370,7 +371,9 @@ extension ReviewViewController {
         if !giniConfiguration.bottomNavigationBarEnabled {
             view.addSubview(buttonContainer)
             buttonContainer.addSubview(processButton)
-            buttonContainer.addSubview(addPagesButton)
+            if giniConfiguration.multipageEnabled {
+                buttonContainer.addSubview(addPagesButton)
+            }
         }
         edgesForExtendedLayout = []
     }
@@ -473,7 +476,9 @@ extension ReviewViewController {
         if !giniConfiguration.bottomNavigationBarEnabled {
             NSLayoutConstraint.activate(buttonContainerConstraints)
             NSLayoutConstraint.activate(processButtonConstraints)
-            NSLayoutConstraint.activate(addPagesButtonConstraints)
+            if giniConfiguration.multipageEnabled {
+                NSLayoutConstraint.activate(addPagesButtonConstraints)
+            }
         } else {
             NSLayoutConstraint.activate([
                 pageControl.bottomAnchor.constraint(equalTo: view.bottomAnchor,
