@@ -57,7 +57,7 @@ Images customization is done via overriding of [GiniImages.xcassets](https://git
 ##### 1. Top Navigation bar
 
 TODO
-##### 2. Top Navigation bar
+##### 2. Bottom Navigation bar
 
 TODO
 
@@ -98,6 +98,8 @@ Please find more information in the [QR Code scanning guide](https://developer.g
 During QR Code only mode the capture and import controls will be hidden from the camera screen.
 
 For enabling QR code only mode the both flags `GiniConfiguration.shared.qrCodeScanningEnabled` and `GiniConfiguration.shared.onlyQRCodeScanningEnabled` should be `true`.
+
+More information about the customization is available [here](https://www.figma.com/file/H4WFJ4xaw4YNU4VaJYWiQq/iOS-Gini-Capture-SDK-2.0.0-UI-Customisation?node-id=243%3A3306&t=boRmrY5QfLYhGfPT-1)
 
 ### Document Import
 
