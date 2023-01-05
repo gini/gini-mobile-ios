@@ -10,19 +10,18 @@ import UIKit
 
 /**
  Delegate which can be used to communicate back to the analysis screen allowing to display custom messages on screen.
- 
- - note: Screen API only.
  */
 @objc public protocol AnalysisDelegate {
 
     /**
-     Will display an error view on the analysis screen with a custom message.
-     The provided action will be called, when the user taps on the error view.
+     Will display an error screen with predefined type.
      
-     - parameter message: The error message to be displayed.
-     - parameter action:  The action to be performed after the user tapped the error view.
+     - parameter message: The error type to be displayed.
      */
-    func displayError(withMessage message: String?, andAction action: (() -> Void)?)
+    func displayError(
+        errorType: ErrorType,
+        animated: Bool
+    )
 
     /**
      In case that the `GiniCaptureDocument` analysed is an image it will display a no results screen
@@ -201,7 +200,6 @@ import UIKit
         addErrorView()
     }
 
-
     /// Show error view on the screen
     /// - Parameters:
     ///   - message: description of the error
@@ -218,7 +216,6 @@ import UIKit
         })
         errorView.show()
     }
-
 
     /// Hide the error view
     /// - Parameter animated: a flag to hide the view with animation

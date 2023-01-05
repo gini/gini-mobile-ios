@@ -50,8 +50,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     weak var analysisDelegate: GiniBankAnalysisDelegate?
     var visionDocuments: [GiniCaptureDocument]?
     var configuration: GiniBankConfiguration
-    var sendFeedbackBlock: (([String: Extraction]) -> Void)?
-    var extractionsForFeedback: [String: Extraction]?
     var manuallyCreatedDocument: Document?
     
     init(configuration: GiniBankConfiguration,
@@ -124,12 +122,12 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     }
     
     @objc private func closeSreenAPIAndSendFeedback() {
-        if let sendFeedbackBlock = sendFeedbackBlock, let extractionsForFeedback = extractionsForFeedback {
-            print("💬 Sending extractions feedback")
-            sendFeedbackBlock(extractionsForFeedback)
-        } else {
-            print("❌ Extractions feedback was not sent")
-        }
+        configuration.cleanup(paymentRecipient: "",
+                              paymentReference: "",
+                              paymentPurpose: "",
+                              iban: "",
+                              bic: "",
+                              amountToPay: ExtractionAmount(value: 10.242, currency: .EUR))
         delegate?.screenAPI(coordinator: self, didFinish: ())
     }
 }
@@ -142,11 +140,8 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     }
     
     
-    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult,
-                                         sendFeedbackBlock: @escaping ([String: Extraction]) -> Void) {
+    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
         showResultsScreen(results: result.extractions.map { $0.value}, document: result.document)
-        self.extractionsForFeedback = result.extractions
-        self.sendFeedbackBlock = sendFeedbackBlock
     }
     
     func giniCaptureDidCancelAnalysis() {
@@ -217,6 +212,7 @@ extension ScreenAPICoordinator: GiniCaptureNetworkService {
 // MARK: Screen API - UI Only - GiniCaptureDelegate
 
 extension ScreenAPICoordinator: GiniCaptureDelegate {
+
     func didPressEnterManually() {
         // Add your  implementation
     }

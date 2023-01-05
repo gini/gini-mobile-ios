@@ -27,7 +27,7 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
         bottomButton.translatesAutoresizingMaskIntoConstraints = false
         bottomButton.setTitle(self.bottomButtonText, for: .normal)
         bottomButton.titleLabel?.font = giniConfiguration.customFont.with(weight: .bold, size: 14, style: .caption1)
-        let bottomButtonTextColor = giniConfiguration.noResultsBottomButtonTextColor.uiColor()
+        let bottomButtonTextColor = GiniColor(light: .GiniCapture.accent1, dark: .GiniCapture.accent1).uiColor()
         bottomButton.setTitleColor(bottomButtonTextColor, for: .normal)
         bottomButton.setTitleColor(bottomButtonTextColor.withAlphaComponent(0.5), for: .highlighted)
         bottomButton.setImage(self.bottomButtonIconImage, for: .normal)
@@ -37,8 +37,7 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
         }
         bottomButton.addTarget(self, action: #selector(didTapBottomButtonAction), for: .touchUpInside)
         bottomButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
-        bottomButton.backgroundColor = giniConfiguration.noResultsBottomButtonColor
-        bottomButton.layer.cornerRadius = giniConfiguration.noResultsBottomButtonCornerRadius
+        bottomButton.backgroundColor = bottomButtonTextColor
         return bottomButton
     }()
 
@@ -110,7 +109,7 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
         self.subHeaderTitle = subHeaderText
         self.topViewText = topViewText
         if let topViewIcon = topViewIcon {
-            self.topViewIcon = topViewIcon.tintedImageWithColor(giniConfiguration.noResultsWarningContainerIconColor)
+            self.topViewIcon = topViewIcon.tintedImageWithColor(UIColor.GiniCapture.warning1)
         }
         self.bottomButtonText = bottomButtonText
         self.bottomButtonIconImage = bottomButtonIcon
