@@ -244,12 +244,7 @@ import GiniBankAPILibrary
      Sets the color of the loading indicator on the camera screen to the specified color.
      */
     @objc public var cameraSetupLoadingIndicatorColor = UIColor.white
-    
-    /**
-     Sets the color of camera preview corner guides.
-     */
-    @objc public var cameraPreviewCornerGuidesColor = UIColor.white
-    
+
     /**
      Sets the background color of camera container view.
      */

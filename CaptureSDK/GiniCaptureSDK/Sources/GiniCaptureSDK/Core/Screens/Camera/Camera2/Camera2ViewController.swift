@@ -14,7 +14,6 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     /**
      The object that acts as the delegate of the camera view controller.
     */
-    private var opaqueView: UIView?
     let giniConfiguration: GiniConfiguration
     var detectedQRCodeDocument: GiniQRCodeDocument?
     private var shouldShowQRCodeNext = false
@@ -88,11 +87,6 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         super.viewDidAppear(animated)
         validQRCodeProcessing = false
         delegate?.cameraDidAppear(self)
-    }
-
-    public override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        opaqueView?.frame = cameraPreviewViewController.view.frame
     }
 
     fileprivate func configureTitle() {
@@ -378,21 +372,6 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             blurredView.alpha = 1
         })
         return blurredView
-    }
-    // MARK: - Image capture
-
-    private func previewCapturedImageView(with image: UIImage) -> UIImageView {
-        let imageFrame = cameraPreviewViewController.view.frame
-        let imageView = UIImageView(frame: imageFrame)
-        imageView.center = cameraPreviewViewController.view.center
-        imageView.image = image
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.shadowColor = UIColor.black.cgColor
-        imageView.layer.shadowOffset = CGSize(width: -2, height: 2)
-        imageView.layer.shadowRadius = 4
-        imageView.layer.shadowOpacity = 0.3
-        imageView.layer.shadowPath = UIBezierPath(rect: imageView.bounds).cgPath
-        return imageView
     }
 
     private func showQRCodeFeedback(for document: GiniQRCodeDocument, isValid: Bool) {
