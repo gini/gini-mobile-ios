@@ -17,8 +17,6 @@ import UIKit
 }
 
 @objc public protocol CameraTips {
-    func hideCameraOverlay()
     func hideCaptureButton()
-    func showCameraOverlay()
     func showCaptureButton()
 }

@@ -26,20 +26,6 @@ extension Camera2ViewController {
         cameraPane.captureButton.alpha = 0
     }
 
-    /**
-     Show the camera overlay. Should be called when onboarding is dismissed.
-     */
-    public func showCameraOverlay() {
-        cameraPreviewViewController.showCameraOverlay()
-    }
-
-    /**
-     Hide the camera overlay. Should be called when onboarding is presented.
-     */
-    public func hideCameraOverlay() {
-        cameraPreviewViewController.hideCameraOverlay()
-    }
-
     public func setupCamera() {
         cameraPreviewViewController.setupCamera()
     }
