@@ -40,14 +40,6 @@ extension Camera2ViewController {
         cameraPreviewViewController.hideCameraOverlay()
     }
 
-    /**
-     Disable captureButton and flashToggleButton.
-     */
-    fileprivate func configureCameraButtonsForFileImportTip() {
-        cameraPane.captureButton.isEnabled = false
-        cameraPane.flashButton.isUserInteractionEnabled = false
-    }
-
     public func setupCamera() {
         cameraPreviewViewController.setupCamera()
     }

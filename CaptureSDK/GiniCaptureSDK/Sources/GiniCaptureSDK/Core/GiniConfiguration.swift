@@ -269,48 +269,7 @@ import GiniBankAPILibrary
      Set the types supported by the file import feature. `GiniCaptureImportFileTypes.none` by default.
      */
     @objc public var fileImportSupportedTypes: GiniCaptureImportFileTypes = .none
-    
-    /**
-     Sets the background color of the new file import button hint.
-     */
-    @objc public var fileImportToolTipBackgroundColor = UIColor.white
-    
-    /**
-     Sets the text color of the new file import button hint.
-     */
-    @objc public var fileImportToolTipTextColor = UIColor.black
-    
-    /**
-     Sets the color of the close button for the file import button hint.
-     */
-    @objc public var fileImportToolTipCloseButtonColor = Colors.Gini.grey
-    
-    /**
-     Sets the background style when the tooltip is shown.
-     */
-    public var toolTipOpaqueBackgroundStyle: OpaqueViewStyle {
-        
-        set {
-            _toolTipOpaqueBackgroundStyle = newValue
-        }
-        
-        get {
-            
-            if let setValue = _toolTipOpaqueBackgroundStyle {
-                return setValue
-            } else {
-                
-                if #available(iOS 13.0, *) {
-                    return .blurred(style: .regular)
-                } else {
-                    return .blurred(style: .dark)
-                }
-            }
-        }
-    }
-    
-    private var _toolTipOpaqueBackgroundStyle: OpaqueViewStyle?
-    
+
     /**
      Sets the text color of the item selected background check.
      */
