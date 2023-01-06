@@ -146,48 +146,7 @@ public final class GiniBankConfiguration: NSObject {
      Set the types supported by the file import feature. `GiniCaptureImportFileTypes.none` by default.
      */
     @objc public var fileImportSupportedTypes = GiniConfiguration.GiniCaptureImportFileTypes.none
-    
-    /**
-     Sets the background color of the new file import button hint.
-     */
-    @objc public var fileImportToolTipBackgroundColor = UIColor.white
-    
-    /**
-     Sets the text color of the new file import button hint.
-     */
-    @objc public var fileImportToolTipTextColor = UIColor.black
-    
-    /**
-     Sets the close button color of the new file import button hint.
-     */
-    @objc public var fileImportToolTipCloseButtonColor = Colors.Gini.grey
-    
-    /**
-     Sets the background style when the tooltip is shown.
-     */
-    public var toolTipOpaqueBackgroundStyle: OpaqueViewStyle {
-        
-        set {
-            _toolTipOpaqueBackgroundStyle = newValue
-        }
-        
-        get {
-            
-            if let setValue = _toolTipOpaqueBackgroundStyle {
-                return setValue
-            } else {
-                
-                if #available(iOS 13.0, *) {
-                    return .blurred(style: .regular)
-                } else {
-                    return .blurred(style: .dark)
-                }
-            }
-        }
-    }
-    
-    private var _toolTipOpaqueBackgroundStyle: OpaqueViewStyle?
-    
+
     /**
      Sets the text color of the item selected background check.
      */
@@ -1090,11 +1049,6 @@ public final class GiniBankConfiguration: NSObject {
         configuration.cameraButtonsViewBackgroundColor = self.cameraButtonsViewBackgroundColor
         
         configuration.fileImportSupportedTypes = self.fileImportSupportedTypes
-        configuration.fileImportToolTipBackgroundColor = self.fileImportToolTipBackgroundColor
-        configuration.fileImportToolTipTextColor = self.fileImportToolTipTextColor
-        configuration.fileImportToolTipCloseButtonColor = self.fileImportToolTipCloseButtonColor
-        
-        configuration.toolTipOpaqueBackgroundStyle = self.toolTipOpaqueBackgroundStyle
 
         configuration.galleryPickerItemSelectedBackgroundCheckColor = self.galleryPickerItemSelectedBackgroundCheckColor
         configuration.galleryScreenBackgroundColor = self.galleryScreenBackgroundColor

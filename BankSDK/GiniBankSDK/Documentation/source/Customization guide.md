@@ -47,17 +47,7 @@ Some background and text colors use the `GiniColor` type with which you can set 
 - Error background &#8594;  `GiniBankConfiguration.noticeErrorBackgroundColor`
 - Error text color `GiniBankConfiguration.noticeErrorTextColor`
 
-##### 3. Tooltip
-<center><img src="img/Customization guide/Tooltip.jpg" height="120"/></center>
-- Background color &#8594;  `GiniBankConfiguration.fileImportToolTipBackgroundColor`
-- Text color &#8594;  `GiniBankConfiguration.fileImportToolTipTextColor`
-- Close button color &#8594;  `GiniBankConfiguration.fileImportToolTipCloseButtonColor`
-- Text &#8594; 
-	- <span style="color:#009EDF">*ginicapture.camera.fileImportTip*</span> localized string for file import tooltip
-	- <span style="color:#009EDF">*ginicapture.camera.qrCodeTip*</span> localized string for qr code tooltip
-	- <span style="color:#009EDF">*ginicapture.multipagereview.reorderContainerTooltipMessage*</span> localized string for reorder tooltip
-
-##### 4. GVL font
+##### 3. GVL font
 
 - Font &#8594;  `GiniBankConfiguration.customFont`
 
@@ -87,7 +77,6 @@ Some background and text colors use the `GiniColor` type with which you can set 
 - Guides color &#8594;  `GiniBankConfiguration.cameraPreviewCornerGuidesColor`
 - Focus large image &#8594; <span style="color:#009EDF">*cameraFocusLarge*</span> image asset
 - Focus large small &#8594; <span style="color:#009EDF">*cameraFocusSmall*</span> image asset
-- Opaque view style (when tool tip is shown)  &#8594;  `GiniBankConfiguration.toolTipOpaqueBackgroundStyle`
 
 ##### 3. Camera buttons container
 - Background color &#8594;  `GiniBankConfiguration.cameraButtonsViewBackgroundColor`
@@ -157,10 +146,7 @@ Some background and text colors use the `GiniColor` type with which you can set 
 	- Image &#8594; <span style="color:#009EDF">*navigationReviewContinue*</span> image asset
 	- Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.review.continue*</span> localized string
 
-##### 2. Main collection
-- Opaque view style (when tool tip is shown)  &#8594;  `GiniBankConfiguration.multipageToolTipOpaqueBackgroundStyle`
-
-##### 3. Page item
+##### 2. Page item
 - Page upload state icon
   - Successful upload &#8594; <span style="color:#009EDF">*successfullUploadIcon*</span> image asset
   - Failed upload &#8594; <span style="color:#009EDF">*failureUploadIcon*</span> image asset
@@ -173,7 +159,7 @@ Some background and text colors use the `GiniColor` type with which you can set 
 - Page selected indicator color &#8594; `GiniBankConfiguration.multipagePageSelectedIndicatorColor`
 - Page draggable icon tint color &#8594; `GiniBankConfiguration.multipageDraggableIconColor`
 
-##### 4. Bottom container
+##### 3. Bottom container
 - Background color &#8594; `GiniBankConfiguration.multipagePagesContainerAndToolBarColor` using `GiniColor` with dark mode and light mode colors
 - Rotation button image &#8594;  <span style="color:#009EDF">*rotateImageIcon*</span> image asset
 - Delete button image &#8594;  <span style="color:#009EDF">*trashIcon*</span> image asset
