@@ -16,7 +16,7 @@ let giniBankConfiguration = GiniBankConfiguration.shared
 giniBankConfiguration.qrCodeScanningEnabled = true
 ```
 
-For allowing to scan only QR code without the ability to take images, you need to enable the flag for this in the `GiniBankConfiguration`, but also the QR scanning ability, like so: 
+For activating QR code-only mode without the ability to take images, you need to enable the flag in the `GiniBankConfiguration`, but also the QR scanning ability, like so: 
 ```swift
 let giniBankConfiguration = GiniBankConfiguration.shared
 ...
