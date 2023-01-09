@@ -74,7 +74,7 @@ When extractions were retrieved without using the Gini Bank API, then the `Analy
 
 ### Custom Networking
 
-You can also provide your own networking by implementing the `GiniCaptureNetworkService` and `GiniCaptureResultsDelegate` protocols. Pass your instances to the `UIViewControlle`r initialiser of `GiniCapture` as shown below.
+You can also provide your own networking by implementing the `GiniCaptureNetworkService` and `GiniCaptureResultsDelegate` protocols. Pass your instances to the `UIViewController` initialiser of `GiniCapture` as shown below.
 
 ```swift
 let viewController = GiniCapture.viewController(importedDocuments: visionDocuments,
