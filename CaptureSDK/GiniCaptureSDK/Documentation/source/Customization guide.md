@@ -97,18 +97,14 @@ Images customization is done via overriding of [GiniImages.xcassets](https://git
       
 ##### 2. Camera preview
 - Preview frame color &#8594;  `GiniConfiguration.cameraPreviewFrameColor`
-- Guides color &#8594;  `GiniConfiguration.cameraPreviewCornerGuidesColor`
 - Focus large image &#8594; <span style="color:#009EDF">*cameraFocusLarge*</span> image asset
 - Focus large small &#8594; <span style="color:#009EDF">*cameraFocusSmall*</span> image asset
 
 ##### 3. Camera buttons container
-- Background color &#8594;  `GiniConfiguration.cameraButtonsViewBackgroundColor`
-- Container view background color under the home indicator  &#8594;  `GiniConfiguration.cameraContainerViewBackgroundColor` 
 - Capture button
   - Image &#8594; <span style="color:#009EDF">*cameraCaptureButton*</span> image asset
 - Import button
 	- Image &#8594; <span style="color:#009EDF">*documentImportButton*</span> image asset
-- Captured images stack indicator color &#8594; `GiniConfiguration.imagesStackIndicatorLabelTextcolor`
 - Flash toggle can be enabled through &#8594; `GiniConfiguration.flashToggleEnabled`
 - Flash button
     - Image &#8594; <span style="color:#009EDF">*flashOn*</span> image asset
@@ -218,10 +214,6 @@ Images customization is done via overriding of [GiniImages.xcassets](https://git
 <br>
 <center><img src="img/Customization guide/Gallery album.jpg" height="500"/></center>
 </br>
-
-##### 1. Selected image
-- Selected item check color &#8594; `GiniConfiguration.galleryPickerItemSelectedBackgroundCheckColor`
-- Background color &#8594; `GiniConfiguration.galleryScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
 ## Onboarding screens
 
