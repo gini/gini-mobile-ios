@@ -123,40 +123,10 @@ public final class GiniBankConfiguration: NSObject {
     // MARK: Camera options
     
     /**
-     Sets the color of camera preview corner guides.
-     */
-    @objc public var cameraPreviewCornerGuidesColor = UIColor.white
-    
-    /**
-     Sets the background color of camera container view.
-     */
-    @objc public var cameraContainerViewBackgroundColor = GiniColor(light: .black, dark: .black)
-    
-    /**
-     Sets the color of camera preview frame.
-     */
-    @objc public var cameraPreviewFrameColor = GiniColor(light: UIColor(white: 0.0, alpha: 0.7), dark: UIColor(white: 0.0, alpha: 0.7))
-    
-    /**
-     Sets the background color of camera buttons view.
-     */
-    @objc public var cameraButtonsViewBackgroundColor = GiniColor(light: .black, dark: .black)
-    
-    /**
      Set the types supported by the file import feature. `GiniCaptureImportFileTypes.none` by default.
      */
     @objc public var fileImportSupportedTypes = GiniConfiguration.GiniCaptureImportFileTypes.none
 
-    /**
-     Sets the text color of the item selected background check.
-     */
-    @objc public var galleryPickerItemSelectedBackgroundCheckColor = Colors.Gini.blue
-    
-    /**
-     Sets the background color for gallery screen.
-     */
-    @objc public var galleryScreenBackgroundColor = GiniColor(light: .black, dark: .black)
-    
     /**
      Indicates whether the flash toggle should be shown in the camera screen.
      */
@@ -166,11 +136,6 @@ public final class GiniBankConfiguration: NSObject {
      When the flash toggle is enabled, this flag indicates if the flash is on by default.
      */
     @objc public var flashOnByDefault = true
-    
-    /**
-     Sets the color of the captured images stack indicator label
-     */
-    @objc public var imagesStackIndicatorLabelTextcolor: UIColor = Colors.Gini.blue
     
     /**
      Sets the close button text in the navigation bar on the camera screen.
@@ -1043,20 +1008,11 @@ public final class GiniBankConfiguration: NSObject {
         configuration.onlyQRCodeScanningEnabled = self.onlyQRCodeScanningEnabled
         
         configuration.statusBarStyle = self.statusBarStyle
-        configuration.cameraPreviewCornerGuidesColor = self.cameraPreviewCornerGuidesColor
-        configuration.cameraPreviewFrameColor = self.cameraPreviewFrameColor
-        configuration.cameraContainerViewBackgroundColor = self.cameraContainerViewBackgroundColor
-        configuration.cameraButtonsViewBackgroundColor = self.cameraButtonsViewBackgroundColor
         
         configuration.fileImportSupportedTypes = self.fileImportSupportedTypes
-
-        configuration.galleryPickerItemSelectedBackgroundCheckColor = self.galleryPickerItemSelectedBackgroundCheckColor
-        configuration.galleryScreenBackgroundColor = self.galleryScreenBackgroundColor
         
         configuration.flashToggleEnabled = self.flashToggleEnabled
         configuration.flashOnByDefault = self.flashOnByDefault
-        
-        configuration.imagesStackIndicatorLabelTextcolor = self.imagesStackIndicatorLabelTextcolor
         
         configuration.navigationBarCameraTitleCloseButton = self.navigationBarCameraTitleCloseButton
         configuration.navigationBarCameraTitleHelpButton = self.navigationBarCameraTitleHelpButton

@@ -73,19 +73,14 @@ Some background and text colors use the `GiniColor` type with which you can set 
       -  Title &#8594; `GiniBankConfiguration.navigationBarCameraTitleHelpButton`   
 
 ##### 2. Camera preview
-- Preview frame color &#8594;  `GiniBankConfiguration.cameraPreviewFrameColor`
-- Guides color &#8594;  `GiniBankConfiguration.cameraPreviewCornerGuidesColor`
 - Focus large image &#8594; <span style="color:#009EDF">*cameraFocusLarge*</span> image asset
 - Focus large small &#8594; <span style="color:#009EDF">*cameraFocusSmall*</span> image asset
 
 ##### 3. Camera buttons container
-- Background color &#8594;  `GiniBankConfiguration.cameraButtonsViewBackgroundColor`
-- Container view background color under the home indicator  &#8594;  `GiniBankConfiguration.cameraContainerViewBackgroundColor` 
 - Capture button
   - Image &#8594; <span style="color:#009EDF">*cameraCaptureButton*</span> image asset
 - Import button
 	- Image &#8594; <span style="color:#009EDF">*documentImportButton*</span> image asset
-- Captured images stack indicator color &#8594; `GiniBankConfiguration.imagesStackIndicatorLabelTextcolor`
 - Flash toggle can be enabled through &#8594; `GiniBankConfiguration.flashToggleEnabled`
 - Flash button
     - Image &#8594; <span style="color:#009EDF">*flashOn*</span> image asset
@@ -269,10 +264,6 @@ Some background and text colors use the `GiniColor` type with which you can set 
 <br>
 <center><img src="img/Customization guide/Gallery album.jpg" height="500"/></center>
 </br>
-
-##### 1. Selected image
-- Selected item check color &#8594; `GiniBankConfiguration.galleryPickerItemSelectedBackgroundCheckColor`
-- Background color &#8594; `GiniBankConfiguration.galleryScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
 ## Onboarding screens
 
