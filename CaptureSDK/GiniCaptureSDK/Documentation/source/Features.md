@@ -81,7 +81,7 @@ To enable this simply pass `true` to `GiniConfiguration.shared.multipageEnabled`
  # QR Code Scanning
 
 When a supported QR code is detected with valid payment data, the QR Code will be processed automatically without any further user interaction.
-The QR Code scanning maybe triggered directly without the need to analyze the document.
+The QR Code scanning may be triggered directly without the need to analyze the document.
 
 If the QR code does not have a supported payment format then a popup informs the user that a QR code was detected, but it cannot be used.
 
