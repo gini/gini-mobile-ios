@@ -125,7 +125,7 @@
 "ginicapture.noresults.title" = "Tipps";
 "ginicapture.noresults.warningHelpMenu" = "Zur Erkennung aller Daten bitte folgende Tipps beim Abfotografieren beachten:";
 
-"ginicapture.noresult.enterManually" = "Zahlungsdaten manuell eingeben";
+"ginicapture.noresult.enterManually" = "Manuell ausfüllen";
 "ginicapture.noresult.retakeImages" = "Foto wiederholen";
 
 "ginicapture.noresult.title" = "Keine Ergebnisse";

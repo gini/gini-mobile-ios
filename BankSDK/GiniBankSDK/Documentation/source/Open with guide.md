@@ -60,7 +60,7 @@ In order to initiate `Open with` from your app’s Documents folder add [`UISupp
 In order to allow the Gini Bank SDK to handle files imported from other apps and to show the _Open With tutorial_ in the _Help_ menu, it is necessary to indicate it in the `GiniBankConfiguration`.
 
 ```swift
-        let giniBankConfiguration = GiniBankConfiguration()
+        let giniBankConfiguration = GiniBankConfiguration.shared
         ...
         ...
         giniBankConfiguration.openWithEnabled = true
