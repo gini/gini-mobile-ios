@@ -9,6 +9,6 @@
 import Foundation
 import UIKit
 
-public protocol HelpCell: UITableViewCell {
+protocol HelpCell: UITableViewCell {
     static var reuseIdentifier: String { get }
 }

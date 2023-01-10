@@ -41,7 +41,7 @@ extension HelpBottomBarEnabledViewController {
         superView.layoutSubviews()
     }
 
-    public func configureBottomNavigationBar(
+    func configureBottomNavigationBar(
         configuration: GiniConfiguration,
         under underView: UIView) {
         if configuration.bottomNavigationBarEnabled {

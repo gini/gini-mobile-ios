@@ -7,12 +7,12 @@
 
 import UIKit
 
-public final class HelpMenuCell: UITableViewCell, HelpCell {
-    public static var reuseIdentifier: String = "kHelpMenuCell"
+final class HelpMenuCell: UITableViewCell, HelpCell {
+    static var reuseIdentifier: String = "kHelpMenuCell"
     weak var separatorView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
 
-    public override func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
     }

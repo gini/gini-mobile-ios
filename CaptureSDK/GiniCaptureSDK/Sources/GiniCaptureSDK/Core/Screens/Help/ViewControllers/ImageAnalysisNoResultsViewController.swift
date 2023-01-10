@@ -9,12 +9,13 @@
 import Foundation
 import UIKit
 
+// This is unused and should be deleted!
 /**
  The `ImageAnalysisNoResultsViewController` provides a custom no results screen which shows some capture
  suggestions when there is no results when analysing an image.
  */
 
-public final class ImageAnalysisNoResultsViewController: UIViewController {
+final class ImageAnalysisNoResultsViewController: UIViewController {
 
     lazy var suggestionsCollectionView: CaptureSuggestionsCollectionView = {
         let collection = CaptureSuggestionsCollectionView()
@@ -72,9 +73,9 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
     fileprivate var bottomButtonIconImage: UIImage?
     fileprivate var giniConfiguration: GiniConfiguration
 
-    public var didTapBottomButton: (() -> Void) = { }
+    var didTapBottomButton: (() -> Void) = { }
 
-    public convenience init(title: String? = nil,
+    convenience init(title: String? = nil,
                             subHeaderText: String? = NSLocalizedStringPreferredFormat(
                                 "ginicapture.noresults.collection.header",
                                 comment: "no results suggestions collection header title"),
@@ -115,12 +116,12 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
         self.bottomButtonIconImage = bottomButtonIcon
     }
 
-    required public init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(title:subHeaderText:topViewText:topViewIcon:bottomButtonText:bottomButtonIcon:)" +
             "has not been implemented")
     }
 
-    public override func loadView() {
+    override func loadView() {
         super.loadView()
         edgesForExtendedLayout = []
 
@@ -141,7 +142,7 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
         suggestionsCollectionView.delegate = self
     }
 
-    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         coordinator.animate(alongsideTransition: { _ in
             self.suggestionsCollectionView.collectionViewLayout.invalidateLayout()
         }, completion: nil)
@@ -187,11 +188,11 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
 // MARK: UICollectionViewDataSource
 
 extension ImageAnalysisNoResultsViewController: UICollectionViewDataSource {
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return captureSuggestions.count
     }
 
-    public func collectionView(_ collectionView: UICollectionView,
+    func collectionView(_ collectionView: UICollectionView,
                                cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let identifier = CaptureSuggestionsCollectionView.captureSuggestionsCellIdentifier
         let cell = (collectionView.dequeueReusableCell(withReuseIdentifier: identifier,
@@ -202,7 +203,7 @@ extension ImageAnalysisNoResultsViewController: UICollectionViewDataSource {
         return cell
     }
 
-    public func numberOfSections(in collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
 }
@@ -210,19 +211,19 @@ extension ImageAnalysisNoResultsViewController: UICollectionViewDataSource {
 // MARK: UICollectionViewDelegateFlowLayout
 
 extension ImageAnalysisNoResultsViewController: UICollectionViewDelegateFlowLayout {
-    public func collectionView(_ collectionView: UICollectionView,
+    func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
         return suggestionsCollectionView.cellSize()
     }
 
-    public func collectionView(_ collectionView: UICollectionView,
+    func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                referenceSizeForHeaderInSection section: Int) -> CGSize {
         return suggestionsCollectionView.headerSize(withSubHeader: subHeaderTitle != nil)
     }
 
-    public func collectionView(_ collectionView: UICollectionView,
+    func collectionView(_ collectionView: UICollectionView,
                                viewForSupplementaryElementOfKind kind: String,
                                at indexPath: IndexPath) -> UICollectionReusableView {
         let identifier = CaptureSuggestionsCollectionView.captureSuggestionsHeaderIdentifier
