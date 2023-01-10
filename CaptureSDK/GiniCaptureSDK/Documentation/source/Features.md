@@ -46,7 +46,7 @@ You can customize the onboarding in the following ways:
    `GiniConfiguration.shared.onboardingShowAtFirstLaunch`.
 
 * Customize the onboarding pages:
-   If you wish to show different onboarding pages then pass a list of `OnboardingPageNew` structs to `GiniConfiguration.shared.customOnboardingPages`.
+   If you wish to show different onboarding pages then pass a list of `OnboardingPage` structs to `GiniConfiguration.shared.customOnboardingPages`.
 
 * Force show the onboarding:
    If you wish to show the onboarding after the first run then pass `true` to

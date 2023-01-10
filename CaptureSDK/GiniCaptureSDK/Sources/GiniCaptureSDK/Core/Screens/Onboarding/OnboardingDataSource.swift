@@ -31,18 +31,18 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
     weak var delegate: OnboardingScreen?
     var currentPage = 0
 
-    lazy var itemSections: [OnboardingPageNew] = {
+    lazy var itemSections: [OnboardingPage] = {
         if let customPages = giniConfiguration.customOnboardingPages {
             return customPages
         } else {
-            var sections: [OnboardingPageNew] =
+            var sections: [OnboardingPage] =
             [
-                OnboardingPageNew(imageName: "onboardingFlatPaper", title: NSLocalizedStringPreferredFormat(
+                OnboardingPage(imageName: "onboardingFlatPaper", title: NSLocalizedStringPreferredFormat(
                     "ginicapture.onboarding.flatPaper.title",
                     comment: "onboarding flat paper title"), description: NSLocalizedStringPreferredFormat(
                         "ginicapture.onboarding.flatPaper.description",
                         comment: "onboarding flat paper description")),
-                OnboardingPageNew(imageName: "onboardingGoodLightning", title: NSLocalizedStringPreferredFormat(
+                OnboardingPage(imageName: "onboardingGoodLightning", title: NSLocalizedStringPreferredFormat(
                     "ginicapture.onboarding.goodLightning.title",
                     comment: "onboarding good lightning title"), description: NSLocalizedStringPreferredFormat(
                         "ginicapture.onboarding.goodLightning.description",
@@ -50,7 +50,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
             ]
             if giniConfiguration.multipageEnabled {
                 sections.append(
-                    OnboardingPageNew(imageName: "onboardingMultiPages", title: NSLocalizedStringPreferredFormat(
+                    OnboardingPage(imageName: "onboardingMultiPages", title: NSLocalizedStringPreferredFormat(
                         "ginicapture.onboarding.multiPages.title",
                         comment: "onboarding multi pages title"),
                                       description: NSLocalizedStringPreferredFormat(
@@ -61,7 +61,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
             }
             if giniConfiguration.qrCodeScanningEnabled {
                 sections.append(
-                    OnboardingPageNew(imageName: "onboardingQRCode", title: NSLocalizedStringPreferredFormat(
+                    OnboardingPage(imageName: "onboardingQRCode", title: NSLocalizedStringPreferredFormat(
                         "ginicapture.onboarding.qrCode.title",
                         comment: "onboarding qrcode title"), description: NSLocalizedStringPreferredFormat(
                             "ginicapture.onboarding.qrCode.description",
