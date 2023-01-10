@@ -136,14 +136,14 @@ Images and text are onboarding page specific and need to be customized for each 
 
 #### Setting Custom Onboarding Pages
 
-The `OnboardingPageNew` struct was changed to also allow setting a title for the page and inject a view for the
+The `OnboardingPage` struct was changed to also allow setting a title for the page and inject a view for the
 illustration.
 
 If you are setting custom onboarding pages, then you have to create the `OnboardingPage` as shown in the example
 below:
 
 ```swift
-    configuration.customOnboardingPages = [OnboardingPageNew(imageName: "captureSuggestion1", title: "Page 1", description: "Description for page 1")]
+    configuration.customOnboardingPages = [OnboardingPage(imageName: "captureSuggestion1", title: "Page 1", description: "Description for page 1")]
 ```
 
 ### New Features
@@ -151,7 +151,7 @@ below:
 #### Custom Illustration Views
 
 By implementing the `OnboardingIllustrationAdapter` interface and passing it to either `GiniCapture` or the
-`OnboardingPageNew` constructor you can inject any custom view for the illustration.
+`OnboardingPage` constructor you can inject any custom view for the illustration.
 
 If you need to animate the illustrations on the onboarding pages implement the `OnboardingIllustrationAdapter` interface to inject a view that can animate images (e.g., `Lottie`) and pass it to the relevant onboarding illustration adapter setters (e.g., 
 `onboardingAlignCornersIllustrationAdapter`,
