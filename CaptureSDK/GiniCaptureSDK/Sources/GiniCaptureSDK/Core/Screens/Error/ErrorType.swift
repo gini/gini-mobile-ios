@@ -8,6 +8,17 @@
 import Foundation
 import GiniBankAPILibrary
 
+/**
+ Enum representing different types of errors that can occur.
+
+ - connection: Error related to establishing a connection.
+ - request: Error related to the request being made.
+ - serverError: Error returned by the server.
+ - authentication: Error related to authentication.
+ - unexpected: Unexpected error that is not covered by the other cases.
+ - importError: Error related to importing documents.
+ */
+
 @objc public enum ErrorType: Int {
     case connection
     case request
@@ -16,6 +27,12 @@ import GiniBankAPILibrary
     case unexpected
     case importError
 
+    /**
+     Initializes a new instance of the `ErrorType` enum based on the given `GiniError`.
+
+     - Parameters:
+        - error: The `GiniError` to base the `ErrorType` on.
+     */
     public init(error: GiniError) {
         switch error {
         case .unauthorized(_, _):
