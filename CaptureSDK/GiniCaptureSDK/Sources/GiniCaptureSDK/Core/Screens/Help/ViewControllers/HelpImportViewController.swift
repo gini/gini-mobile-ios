@@ -10,8 +10,8 @@ import UIKit
 
 final class HelpImportViewController: UIViewController, HelpBottomBarEnabledViewController {
 
-    public var bottomNavigationBar: UIView?
-    public var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
+    var bottomNavigationBar: UIView?
+    var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
 
     private enum HelpImportCellType {
         case selectInvoice
@@ -27,21 +27,21 @@ final class HelpImportViewController: UIViewController, HelpBottomBarEnabledView
     private var dataSource: [HelpImportCellType] = [.selectInvoice, .importToApp, .dragAndDrop]
     private var giniConfiguration: GiniConfiguration
 
-    public init(giniConfiguration: GiniConfiguration) {
+    init(giniConfiguration: GiniConfiguration) {
         self.giniConfiguration = giniConfiguration
         super.init(nibName: nil, bundle: nil)
     }
 
-    required public init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(giniConfiguration:) has not been implemented")
     }
 
-    override public func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
     }
 
-    public override func viewDidLayoutSubviews() {
+    override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: GiniMargins.margin, right: 0)
     }
@@ -57,7 +57,7 @@ final class HelpImportViewController: UIViewController, HelpBottomBarEnabledView
         configureConstraints()
     }
 
-    public func configureMainView() {
+    func configureMainView() {
         self.title = NSLocalizedStringPreferredFormat(
             "ginicapture.help.import.title",
             comment: "Help Import screen title")

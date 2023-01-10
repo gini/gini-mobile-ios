@@ -8,10 +8,10 @@
 
 import UIKit
 
-public final class HelpFormatsViewController: UIViewController, HelpBottomBarEnabledViewController {
+final class HelpFormatsViewController: UIViewController, HelpBottomBarEnabledViewController {
 
-    public var bottomNavigationBar: UIView?
-    public var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
+    var bottomNavigationBar: UIView?
+    var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
 
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -23,7 +23,7 @@ public final class HelpFormatsViewController: UIViewController, HelpBottomBarEna
     private let tableRowHeight: CGFloat = 44
     private let sectionHeight: CGFloat = 70
 
-    public init(giniConfiguration: GiniConfiguration) {
+    init(giniConfiguration: GiniConfiguration) {
         self.giniConfiguration = giniConfiguration
         self.dataSource = HelpFormatsDataSource(configuration: giniConfiguration)
         super.init(nibName: nil, bundle: nil)
@@ -33,12 +33,12 @@ public final class HelpFormatsViewController: UIViewController, HelpBottomBarEna
         fatalError("init(coder:) has not been implemented")
     }
 
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
     }
 
-    public override func viewDidLayoutSubviews() {
+    override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: GiniMargins.margin, right: 0)
         tableView.reloadData()
@@ -92,7 +92,7 @@ public final class HelpFormatsViewController: UIViewController, HelpBottomBarEna
         }
     }
 
-    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         tableView.reloadData()
     }
