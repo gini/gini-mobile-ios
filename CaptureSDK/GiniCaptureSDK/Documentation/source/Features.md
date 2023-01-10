@@ -81,11 +81,17 @@ To enable this simply pass `true` to `GiniConfiguration.shared.multipageEnabled`
  # QR Code Scanning
 
 When a supported QR code is detected with valid payment data, the QR Code will be processed automatically without any further user interaction.
-The QR Code scanning maybe triggered directly without the need to analyze the document.
+The QR Code scanning may be triggered directly without the need to analyze the document.
 
 If the QR code does not have a supported payment format then a popup informs the user that a QR code was detected, but it cannot be used.
 
 Please find more information in the [QR Code scanning guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/qr-code-scanning-guide.html).
+
+## QR Code Only
+
+During QR Code only mode the capture and import controls will be hidden from the camera screen.
+
+For enabling QR code only mode the both flags `GiniConfiguration.shared.qrCodeScanningEnabled` and `GiniConfiguration.shared.onlyQRCodeScanningEnabled` should be `true`.
 
 # Document Import
 
