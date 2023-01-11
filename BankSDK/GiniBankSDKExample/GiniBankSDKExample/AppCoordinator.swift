@@ -88,7 +88,7 @@ final class AppCoordinator: Coordinator {
 //    configuration.primaryButtonShadowRadius = 10
 //    configuration.primaryButtonShadowOpacity = 0.7
 //    configuration.primaryButtonCornerRadius = 10
-//    configuration.customOnboardingPages = [OnboardingPageNew(imageName: "captureSuggestion1", title: "Page 1", description: "Description for page 1")]
+//    configuration.customOnboardingPages = [OnboardingPage(imageName: "captureSuggestion1", title: "Page 1", description: "Description for page 1")]
         //configuration.onboardingAlignCornersIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "page1Animation", backgroundColor: UIColor.red)
         //configuration.onboardingLightingIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "cameraAnimation", backgroundColor: UIColor.yellow)
         //configuration.onboardingMultiPageIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "uploadAnimation", backgroundColor: UIColor.green)

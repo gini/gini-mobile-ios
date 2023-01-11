@@ -246,9 +246,9 @@ public final class GiniBankConfiguration: NSObject {
         
     /**
      Set custom onboarding pages
-     - note: For your convenience we provide the `OnboardingPageNew` struct.
+     - note: For your convenience we provide the `OnboardingPage` struct.
      */
-    public var customOnboardingPages: [OnboardingPageNew]?
+    public var customOnboardingPages: [OnboardingPage]?
     
     /**
       * Set an adapter implementation to show a custom illustration on the "align corners" onboarding page.
