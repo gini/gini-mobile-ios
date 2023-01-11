@@ -369,9 +369,9 @@ import GiniBankAPILibrary
         
     /**
      Set custom onboarding pages
-     - note: For your convenience we provide the `OnboardingPageNew` struct.
+     - note: For your convenience we provide the `OnboardingPage` struct.
      */
-    public var customOnboardingPages: [OnboardingPageNew]?
+    public var customOnboardingPages: [OnboardingPage]?
         
     /**
       * Enable/disable the bottom navigation bar.
