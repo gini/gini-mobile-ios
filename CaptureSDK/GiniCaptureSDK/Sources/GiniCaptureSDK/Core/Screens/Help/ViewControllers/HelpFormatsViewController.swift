@@ -14,7 +14,12 @@ final class HelpFormatsViewController: UIViewController, HelpBottomBarEnabledVie
     var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
 
     lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        var tableView: UITableView
+        if #available(iOS 13.0, *) {
+            tableView = UITableView(frame: .zero, style: .insetGrouped)
+        } else {
+            tableView = UITableView(frame: .zero, style: .grouped)
+        }
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
