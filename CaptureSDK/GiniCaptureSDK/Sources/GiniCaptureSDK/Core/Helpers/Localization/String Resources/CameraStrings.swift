@@ -10,15 +10,12 @@ import Foundation
 enum CameraStrings: LocalizableStringResource {
     
     case captureButton, captureFailedMessage, capturedImagesStackSubtitleLabel, errorPopupCancelButton,
-    errorPopupGrantAccessButton, errorPopupPickAnotherFileButton, errorPopupReviewPagesButton,
-    fileImportTipLabel, importFileButtonLabel,qrCodeTipLabel,
-         tooManyPagesErrorMessage,
-    mixedArraysPopupCancelButton, mixedArraysPopupUsePhotosButton, mixedDocumentsErrorMessage, notAuthorizedButton,
-    notAuthorizedMessage, photoLibraryAccessDeniedMessage, qrCodeDetectedPopupMessage, qrCodeDetectedPopupButton,
-    popupTitleImportPDF, popupOptionPhotos,
-    popupOptionFiles, popupTitleImportPDForPhotos, popupCancel, unsupportedQrCodeDetectedPopupMessage,
-         unknownErrorMessage,
-    failedToOpenDocumentErrorMessage
+         errorPopupGrantAccessButton, errorPopupPickAnotherFileButton, errorPopupReviewPagesButton,
+         importFileButtonLabel, tooManyPagesErrorMessage, mixedArraysPopupCancelButton,
+         mixedArraysPopupUsePhotosButton, mixedDocumentsErrorMessage, notAuthorizedButton,
+         notAuthorizedMessage, photoLibraryAccessDeniedMessage, qrCodeDetectedPopupMessage, qrCodeDetectedPopupButton,
+         popupTitleImportPDF, popupOptionPhotos, popupOptionFiles, popupTitleImportPDForPhotos, popupCancel,
+         unsupportedQrCodeDetectedPopupMessage, unknownErrorMessage, failedToOpenDocumentErrorMessage
     
     var tableName: String {
         return "camera"
@@ -41,8 +38,6 @@ enum CameraStrings: LocalizableStringResource {
             return ("errorPopup.pickAnotherFileButton", "pick another file button title")
         case .errorPopupReviewPagesButton:
             return ("errorPopup.reviewPages", "review pages button title")
-        case .fileImportTipLabel:
-            return ("fileImportTip", "tooltip text indicating new file import feature")
         case .mixedArraysPopupCancelButton:
             return ("mixedarrayspopup.cancel", "cancel button text for popup")
         case .mixedArraysPopupUsePhotosButton:
@@ -78,8 +73,6 @@ enum CameraStrings: LocalizableStringResource {
             return ("popupCancel", "File picker popup cancel option")
         case .unsupportedQrCodeDetectedPopupMessage:
             return ("unsupportedQrCodeDetectedPopup.message", "Popup message")
-        case .qrCodeTipLabel:
-            return ("qrCodeTip", "tooltip text indicating new qr code feature")
         case .failedToOpenDocumentErrorMessage:
             return ("filepicker.failedToOpenDocument",
                     "Error message when the the picked document couldn't be opened")
