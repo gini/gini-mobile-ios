@@ -38,7 +38,6 @@
 "ginicapture.camera.documentValidationError.tooManyPages" = "Das Dokument darf nicht mehr als 10 Seiten haben.";
 "ginicapture.camera.documentValidationError.wrongFormat" = "Nur Dateien vom Format jpg, png, gif oder pdf können analysiert werden.";
 "ginicapture.camera.documentValidationError.pdfPasswordProtected" = "Passwortgeschützte Dokumente können nicht analysiert werden.";
-"ginicapture.camera.fileImportTip" = "Es können jetzt auch ganz einfach Dateien hochgeladen werden.";
 "ginicapture.camera.fileImportButtonLabel" = "Dateien";
 "ginicapture.camera.flashButtonLabel.On.Voice.Over" = "Blitz an";
 "ginicapture.camera.flashButtonLabel.Off.Voice.Over" = "Blitz aus";
@@ -47,7 +46,6 @@
 "ginicapture.camera.thumbnail.Voice.Over" = "Foto vorschaubild";
 "ginicapture.camera.capturebutton" = "Bild Aufnehmen";
 "ginicapture.camera.infoLabel" = "Rechnung oder QR Code scannen";
-"ginicapture.camera.qrCodeTip" = "Haben Sie schon den QR-Codeleser ausprobiert?";
 "ginicapture.camera.capturedImagesStackLabel" = "Erfasste Dokumente";
 "ginicapture.camera.qrCodeDetectedPopup.message" = "QR verwenden?";
 "ginicapture.camera.unsupportedQrCodeDetectedPopup.message" = "Dieser QR-Code enthält keine Bezahlinformationen.";
