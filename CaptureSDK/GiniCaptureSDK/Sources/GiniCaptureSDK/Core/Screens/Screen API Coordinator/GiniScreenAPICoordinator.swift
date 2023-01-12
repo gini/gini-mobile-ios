@@ -335,7 +335,7 @@ extension GiniScreenAPICoordinator: UINavigationControllerDelegate {
 // MARK: - HelpMenuViewControllerDelegate
 
 extension GiniScreenAPICoordinator: HelpMenuViewControllerDelegate {
-    public func help(_ menuViewController: HelpMenuViewController, didSelect item: HelpMenuItem) {
+    func help(_ menuViewController: HelpMenuViewController, didSelect item: HelpMenuItem) {
         screenAPINavigationController.pushViewController(helpItemViewController(for: item),
                                                          animated: true)
     }

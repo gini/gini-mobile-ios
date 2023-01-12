@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class HelpRoundedCornersDataSource<Item, Cell>: NSObject, HelpDataSource where Cell: HelpCell {
+class HelpRoundedCornersDataSource<Item, Cell>: NSObject, HelpDataSource where Cell: HelpCell {
     var items: [Item] = []
     let giniConfiguration: GiniConfiguration
 
@@ -18,16 +18,16 @@ public class HelpRoundedCornersDataSource<Item, Cell>: NSObject, HelpDataSource 
         giniConfiguration = configuration
     }
 
-    public func configureCell(cell: Cell, indexPath: IndexPath) {
+    func configureCell(cell: Cell, indexPath: IndexPath) {
         fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - HelpMenuDataSourceDelegate
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
 
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: Cell.reuseIdentifier) as? Cell {
             self.configureCell(cell: cell, indexPath: indexPath)
             return cell
@@ -35,19 +35,19 @@ public class HelpRoundedCornersDataSource<Item, Cell>: NSObject, HelpDataSource 
         fatalError("undefined cell")
     }
 
-    public func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return nil
     }
 
-    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return UITableView.automaticDimension
     }
 
-    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if items.count == 1 {
             cell.round(
                 corners: [.bottomLeft, .bottomRight, .topLeft, .topRight],
@@ -65,7 +65,7 @@ public class HelpRoundedCornersDataSource<Item, Cell>: NSObject, HelpDataSource 
         }
     }
 
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         fatalError("tableView(tableView: didSelectRowAt:) has not been implemented")
     }
 }

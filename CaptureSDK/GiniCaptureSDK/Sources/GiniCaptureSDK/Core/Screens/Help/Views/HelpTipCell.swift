@@ -7,15 +7,15 @@
 
 import UIKit
 
-public final class HelpTipCell: UITableViewCell, HelpCell {
+final class HelpTipCell: UITableViewCell, HelpCell {
     @IBOutlet weak var separatorView: UIView!
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
 
-    public static var reuseIdentifier: String = "kHelpTipCell"
+    static var reuseIdentifier: String = "kHelpTipCell"
 
-    public override func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
         self.isAccessibilityElement = false
         self.iconImageView.isAccessibilityElement = true
