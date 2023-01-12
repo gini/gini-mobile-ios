@@ -51,9 +51,7 @@ final class ThumbnailView: UIView {
         view.frame.size = self.stackCountCircleSize
         view.layer.cornerRadius = stackCountCircleSize.height * 0.5
         view.layer.borderWidth = 1
-        view.layer.borderColor = GiniColor(
-            light: UIColor.GiniCapture.dark6,
-            dark: UIColor.GiniCapture.dark5).uiColor().cgColor
+        view.layer.borderColor = UIColor.GiniCapture.dark5.cgColor
         view.backgroundColor = GiniColor(
             light: UIColor.GiniCapture.accent1,
             dark: UIColor.GiniCapture.accent1).uiColor()

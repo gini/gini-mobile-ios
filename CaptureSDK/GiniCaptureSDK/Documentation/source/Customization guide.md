@@ -74,9 +74,13 @@ Please inject a custom top navigation bar if your design requires it even if you
 For each screen we provide a possibility to inject a custom bottom navigation bar.
 More details will be added below during the specific screen customization.
 
+## Onboarding screens
+
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F1985HMF83siAXmysSn3dC6%2FiOS-Gini-Capture-SDK-3.0.0-UI-Customisation%3Fnode-id%3D243%253A3305%26t%3DcRAvcUKVlwGtGpuh-1" allowfullscreen></iframe>
+
 ## Camera screen
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FH4WFJ4xaw4YNU4VaJYWiQq%2FiOS-Gini-Capture-SDK-2.0.0-UI-Customisation%3Fnode-id%3D243%253A3306%26t%3DboRmrY5QfLYhGfPT-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F1985HMF83siAXmysSn3dC6%2FiOS-Gini-Capture-SDK-3.0.0-UI-Customisation%3Fnode-id%3D243%253A3306%26t%3DcRAvcUKVlwGtGpuh-1" allowfullscreen></iframe>
 
 ### Single Page
 
@@ -97,10 +101,15 @@ To enable this feature simply pass `true` to `GiniConfiguration.shared.multipage
 * Turn off flash by default:
    Flash is on by default, and you can turn it off by passing `false` to `GiniConfiguration.shared.flashOnByDefault`.
 
+### Camera access TODO
+
  ### QR Code Scanning
 
 When a supported QR code is detected with valid payment data, the QR Code will be processed automatically without any further user interaction.
 The QR Code scanning may be triggered directly without the need to analyze the document.
+
+You can show a custom loading indicator with custom animation support.
+Your custom loading indicator should implement `CustomLoadingIndicatorAdapter` interface and be passed  to `GiniConfiguration.shared.customLoadingIndicator`.
 
 If the QR code does not have a supported payment format then a popup informs the user that a QR code was detected, but it cannot be used.
 
@@ -112,7 +121,7 @@ During QR Code only mode the capture and import controls will be hidden from the
 
 For enabling QR code only mode the both flags `GiniConfiguration.shared.qrCodeScanningEnabled` and `GiniConfiguration.shared.onlyQRCodeScanningEnabled` should be `true`.
 
-More information about the customization is available [here](https://www.figma.com/file/H4WFJ4xaw4YNU4VaJYWiQq/iOS-Gini-Capture-SDK-2.0.0-UI-Customisation?node-id=243%3A3306&t=boRmrY5QfLYhGfPT-1)
+More information about the customization is available [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=212%3A2331&t=cRAvcUKVlwGtGpuh-1)
 
 ### Document Import
 
@@ -120,96 +129,24 @@ This feature enables the Gini Capture SDK to import documents from the camera sc
 
 Please find more information in the [Import PDFs and images guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/import-pdfs-and-images-guide.html).
 
-## Review screen
+### Camera import error handling TODO
 
-<br>
-<center><img src="img/Customization guide/Review.jpg" height="500"/></center>
-</br>
+## Review screen TODO
 
-##### 1. Navigation bar
-- Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.review.title*</span> localized string
-- Back button
-  - With image and title
-	  - Image &#8594; <span style="color:#009EDF">*navigationReviewBack*</span> image asset
-	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.review.back*</span> localized string
-  - With title only
-	  -  Title &#8594; `GiniConfiguration.navigationBarReviewTitleBackButton`
-- Next button
-	- Image &#8594; <span style="color:#009EDF">*navigationReviewContinue*</span> image asset
-	- Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.review.continue*</span> localized string
-
-##### 2. Review top view
-- Title &#8594; <span style="color:#009EDF">*ginicapture.review.top*</span> localized string
-
-##### 3. Review bottom view
-- Background color &#8594; `GiniConfiguration.reviewBottomViewBackgroundColor`
-- Rotation button image &#8594;  <span style="color:#009EDF">*reviewRotateButton*</span> image asset
-- Rotation message
-	- Text &#8594; <span style="color:#009EDF">*ginicapture.review.bottom*</span> localized string
-
-## Review screen
-
-<br>
-<center><img src="img/Customization guide/MultipageReview.jpg" height="500"/></center>
-</br>
-
-##### 1. Navigation bar
-- Back button
-  - With image and title
-	  - Image &#8594; <span style="color:#009EDF">*navigationReviewBack*</span> image asset
-	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.review.back*</span> localized string
-  - With title only
-	  -  Title &#8594; `GiniConfiguration.navigationBarReviewTitleBackButton`
-- Next button
-	- Image &#8594; <span style="color:#009EDF">*navigationReviewContinue*</span> image asset
-	- Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.review.continue*</span> localized string
-
-##### 2. Main collection
-- Opaque view style (when tool tip is shown)  &#8594;  `GiniConfiguration.multipageToolTipOpaqueBackgroundStyle`
-
-##### 3. Page item
-- Page upload state icon
-  - Successful upload &#8594; <span style="color:#009EDF">*successfullUploadIcon*</span> image asset
-  - Failed upload &#8594; <span style="color:#009EDF">*failureUploadIcon*</span> image asset
-- Page upload state icon background color
-  - Successful upload &#8594; `GiniConfiguration.multipagePageSuccessfullUploadIconBackgroundColor`
-  - Failed upload &#8594; `GiniConfiguration.multipagePageFailureUploadIconBackgroundColor`
-- Page circle indicator color &#8594; `GiniConfiguration.indicatorCircleColor` using `GiniColor` with dark mode and light mode colors
-- Page indicator color &#8594; `GiniConfiguration.multipagePageIndicatorColor` 
-- Page background color &#8594; `GiniConfiguration.multipagePageBackgroundColor` using `GiniColor` with dark mode and light mode colors
-- Page selected indicator color &#8594; `GiniConfiguration.multipagePageSelectedIndicatorColor`
-- Page draggable icon tint color &#8594; `GiniConfiguration.multipageDraggableIconColor`
-
-##### 4. Bottom container
-- Background color &#8594; `GiniConfiguration.multipagePagesContainerAndToolBarColor` using `GiniColor` with dark mode and light mode colors
-- Rotation button image &#8594;  <span style="color:#009EDF">*rotateImageIcon*</span> image asset
-- Delete button image &#8594;  <span style="color:#009EDF">*trashIcon*</span> image asset
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F1985HMF83siAXmysSn3dC6%2FiOS-Gini-Capture-SDK-3.0.0-UI-Customisation%3Fnode-id%3D261%253A8256%26t%3DcRAvcUKVlwGtGpuh-1" allowfullscreen></iframe>
 
 ## Analysis screen
 
-<br>
-<center><img src="img/Customization guide/Analysis.jpg" height="500"/></center>
-</br>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F1985HMF83siAXmysSn3dC6%2FiOS-Gini-Capture-SDK-3.0.0-UI-Customisation%3Fnode-id%3D501%253A7494%26t%3DcRAvcUKVlwGtGpuh-1" allowfullscreen></iframe>
 
-##### 1. Navigation bar
-- Cancel button
-  - With image and title
-	  - Image &#8594; <span style="color:#009EDF">*navigationAnalysisBack*</span> image asset
-	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.analysis.back*</span> localized string
-  - With title only
-	  - Title &#8594; `GiniConfiguration.navigationBarAnalysisTitleBackButton`
+You can show a custom loading indicator with custom animation support.
+Your custom loading indicator should implement `CustomLoadingIndicatorAdapter` interface and be passed  to `GiniConfiguration.shared.customLoadingIndicator`.
 
-##### 2. PDF Information view
-- Text color &#8594; `GiniConfiguration.analysisPDFInformationTextColor`
-- Background color &#8594; `GiniConfiguration.analysisPDFInformationBackgroundColor`
-
-##### 3. Loading view
-- Indicator color &#8594; `GiniConfiguration.analysisLoadingIndicatorColor` (Only with PDFs)
-- Text &#8594; <span style="color:#009EDF">*ginicapture.analysis.loadingText*</span> localized string
+The example implementation is availible [here](https://github.com/gini/gini-mobile-ios/blob/7e18d704c15c8929a97c88226724836e3b477cf1/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift).
 
 ## Help screens
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FH4WFJ4xaw4YNU4VaJYWiQq%2FiOS-Gini-Capture-SDK-2.0.0-UI-Customisation%3Fnode-id%3D141%253A2328%26t%3DwpenBBM8QsagJzOg-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F1985HMF83siAXmysSn3dC6%2FiOS-Gini-Capture-SDK-3.0.0-UI-Customisation%3Fnode-id%3D141%253A2328%26t%3DcRAvcUKVlwGtGpuh-1" allowfullscreen></iframe>
 
 You can show your own help screens in the Gini Capture SDK.
 You can pass the title and view controller for each screen to the
@@ -227,35 +164,14 @@ The example implementation is availible [here](https://github.com/gini/gini-mobi
 You can also disable the supported formats help screen by passing `false` to
 `GiniConfiguration.shared.shouldShowSupportedFormatsScreen`.
 
+## Gallery album screen TODO
 
-## Gallery album screen
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F1985HMF83siAXmysSn3dC6%2FiOS-Gini-Capture-SDK-3.0.0-UI-Customisation%3Fnode-id%3D279%253A7588%26t%3DcRAvcUKVlwGtGpuh-1" allowfullscreen></iframe>
 
-<br>
-<center><img src="img/Customization guide/Gallery album.jpg" height="500"/></center>
-</br>
+## No result screen TODO
 
-##### 1. Selected image
-- Selected item check color &#8594; `GiniConfiguration.galleryPickerItemSelectedBackgroundCheckColor`
-- Background color &#8594; `GiniConfiguration.galleryScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F1985HMF83siAXmysSn3dC6%2FiOS-Gini-Capture-SDK-3.0.0-UI-Customisation%3Fnode-id%3D263%253A6989%26t%3DcRAvcUKVlwGtGpuh-1" allowfullscreen></iframe>
 
-## Onboarding screens
+# Error screen TODO
 
-<br>
-<center><img src="img/Customization guide/Onboarding.png" height="500"/></center>
-</br>
-
-##### 1. Background
-- Background Color &#8594; `GiniConfiguration.onboardingScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
-
-##### 2. Image
-- Page image &#8594; <span style="color:#009EDF">*onboardingPage**</span> image asset
-
-##### 3. Text
-- Color &#8594; `GiniConfiguration.onboardingTextColor` using `GiniColor` with dark mode and light mode colors
-
-##### 4. Page indicator
-- Color &#8594; `GiniConfiguration.onboardingPageIndicatorColor` using `GiniColor` with dark mode and light mode colors
-
-##### 5. Current page indicator
-- Color &#8594; `GiniConfiguration.onboardingCurrentPageIndicatorColor` using `GiniColor` with dark mode and light mode colors
-- Alpha &#8594; `GiniConfiguration.onboardingCurrentPageIndicatorAlpha` sets alpha to the `GiniConfiguration.onboardingCurrentPageIndicatorColor`
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F1985HMF83siAXmysSn3dC6%2FiOS-Gini-Capture-SDK-3.0.0-UI-Customisation%3Fnode-id%3D263%253A6858%26t%3DcRAvcUKVlwGtGpuh-1" allowfullscreen></iframe>
