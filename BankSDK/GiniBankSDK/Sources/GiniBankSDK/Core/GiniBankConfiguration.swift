@@ -248,19 +248,6 @@ public final class GiniBankConfiguration: NSObject {
      Sets the continue button text in the navigation bar on the review screen.
      */
     @objc public var navigationBarReviewTitleContinueButton = ""
-        
-    /**
-     Sets the font of the text appearing at the bottom of the review screen.
-     */
-    @objc public var reviewTextBottomFont = UIFont.systemFont(ofSize: 12, weight: .thin)
-    
-    /**
-     Sets the color of the text appearing at the bottom of the review screen.
-     */
-    @objc public var reviewTextBottomColor = UIColor.white
-    
-    // MARK: Multipage options
-    
     
     // MARK: Analysis options
 
