@@ -146,7 +146,6 @@ Please find more information in the [Import PDFs and images guide](https://devel
 - Rotation button image &#8594;  <span style="color:#009EDF">*reviewRotateButton*</span> image asset
 - Rotation message
 	- Text &#8594; <span style="color:#009EDF">*ginicapture.review.bottom*</span> localized string
-	- Text color &#8594; `GiniConfiguration.reviewTextBottomColor`
 
 ## Review screen
 
