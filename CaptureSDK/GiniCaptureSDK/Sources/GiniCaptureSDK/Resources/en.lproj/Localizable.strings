@@ -81,11 +81,7 @@
 "ginicapture.onboarding.qrCode.title"  = "QR codes supported";
 "ginicapture.onboarding.qrCode.description"  = "Besides invoices, QR codes
 are also supported";
-"ginicapture.review.top"                = "Is the document complete, in focus and in the correct orientation?";
-"ginicapture.review.bottom"             = "Double-tap to check the focus";
-"ginicapture.review.rotateButton"       = "Rotate document";
 "ginicapture.review.documentImageTitle" = "Document";
-"ginicapture.review.unknownError"       = "An unknown error has occurred on the review screen";
 
 "ginicapture.analysis.screenTitle" = "Review";
 "ginicapture.analysis.loadingText" = "Analyzing documents";

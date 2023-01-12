@@ -80,9 +80,6 @@
 "ginicapture.onboarding.multiPages.description"  = "Es ist möglich mehrer Seiten eines Dokuments zu Scannen";
 "ginicapture.onboarding.qrCode.title"  = "QR Codes scannen";
 "ginicapture.onboarding.qrCode.description"  = "QR Codes werden automatisch erkannt und analysiert";
-"ginicapture.review.top"                = "Dokument vollständig, scharf und in Leserichtung?";
-"ginicapture.review.bottom"             = "Doppeltippen um Schärfe zu prüfen";
-"ginicapture.review.rotateButton"       = "Dokument drehen";
 "ginicapture.review.documentImageTitle" = "Dokument";
 "ginicapture.review.unknownError"       = "Auf dem Überprüfungsbildschirm ist ein unbekannter Fehler aufgetreten";
 
