@@ -12,7 +12,7 @@ import UIKit
  The `HelpMenuViewControllerDelegate` protocol defines methods that allow you to handle table item selection actions.
  */
 
-public protocol HelpMenuViewControllerDelegate: AnyObject {
+protocol HelpMenuViewControllerDelegate: AnyObject {
     func help(_ menuViewController: HelpMenuViewController, didSelect item: HelpMenuItem)
 }
 
@@ -21,14 +21,14 @@ public protocol HelpMenuViewControllerDelegate: AnyObject {
  use the _Open with_ feature and which formats are supported by the Gini Capture SDK. 
  */
 
-public final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewController {
+final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewController {
 
-    public weak var delegate: HelpMenuViewControllerDelegate?
+    weak var delegate: HelpMenuViewControllerDelegate?
     private (set) var dataSource: HelpMenuDataSource
     private let giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 44
-    public var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
-    public var bottomNavigationBar: UIView?
+    var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
+    var bottomNavigationBar: UIView?
     private var bottomConstraint: NSLayoutConstraint?
 
     lazy var tableView: UITableView = {
@@ -37,17 +37,17 @@ public final class HelpMenuViewController: UIViewController, HelpBottomBarEnable
         return tableView
     }()
 
-    public init(giniConfiguration: GiniConfiguration) {
+    init(giniConfiguration: GiniConfiguration) {
         self.giniConfiguration = giniConfiguration
         self.dataSource = HelpMenuDataSource(configuration: giniConfiguration)
         super.init(nibName: nil, bundle: nil)
     }
 
-    required public init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(giniConfiguration:) has not been implemented")
     }
 
-    override public func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         self.dataSource.delegate = self
         setupView()
@@ -78,12 +78,12 @@ public final class HelpMenuViewController: UIViewController, HelpBottomBarEnable
         tableView.separatorStyle = .none
     }
 
-    public override func viewDidLayoutSubviews() {
+    override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.reloadData()
     }
 
-    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
     }
 

@@ -146,7 +146,6 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         return attr?.frame.origin ?? CGPoint.zero
     }
     // MARK: - Display the page number in page controll of collection view Cell
-
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let page = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
         currentPage = page

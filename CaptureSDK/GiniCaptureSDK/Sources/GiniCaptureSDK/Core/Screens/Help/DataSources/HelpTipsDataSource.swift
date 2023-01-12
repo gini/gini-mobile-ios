@@ -8,13 +8,13 @@
 
 import UIKit
 
-public struct HelpTipsItem {
+struct HelpTipsItem {
     let header: String
     let details: String
     let iconName: String
 }
 
-final public class HelpTipsDataSource: HelpRoundedCornersDataSource<HelpTipsItem, HelpTipCell> {
+final class HelpTipsDataSource: HelpRoundedCornersDataSource<HelpTipsItem, HelpTipCell> {
     // swiftlint:disable function_body_length
     required init(configuration: GiniConfiguration) {
         super.init(configuration: configuration)
@@ -90,7 +90,7 @@ final public class HelpTipsDataSource: HelpRoundedCornersDataSource<HelpTipsItem
 
     var showHeader = false
 
-    public override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if showHeader, let header = tableView.dequeueReusableHeaderFooterView(
             withIdentifier: HelpFormatSectionHeader.reuseIdentifier
         ) as? HelpFormatSectionHeader {
@@ -100,14 +100,14 @@ final public class HelpTipsDataSource: HelpRoundedCornersDataSource<HelpTipsItem
         return nil
     }
 
-    public override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if showHeader {
             return UITableView.automaticDimension
         }
         return 0
     }
 
-    public override func configureCell(cell: HelpTipCell, indexPath: IndexPath) {
+    override func configureCell(cell: HelpTipCell, indexPath: IndexPath) {
         let item = items[indexPath.row]
         cell.headerLabel.text = item.header
         cell.headerLabel.font = giniConfiguration.textStyleFonts[.calloutBold]

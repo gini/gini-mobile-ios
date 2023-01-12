@@ -14,9 +14,9 @@ import UIKit
  suggestions when there is no results when analysing an image.
  */
 
-public final class HelpTipsViewController: UIViewController, HelpBottomBarEnabledViewController {
-    public var bottomNavigationBar: UIView?
-    public var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
+final class HelpTipsViewController: UIViewController, HelpBottomBarEnabledViewController {
+    var bottomNavigationBar: UIView?
+    var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -27,23 +27,23 @@ public final class HelpTipsViewController: UIViewController, HelpBottomBarEnable
     private var giniConfiguration: GiniConfiguration
     private let tableRowHeight: CGFloat = 76
 
-    public init(giniConfiguration: GiniConfiguration) {
+    init(giniConfiguration: GiniConfiguration) {
         self.giniConfiguration = giniConfiguration
         self.dataSource = HelpTipsDataSource(configuration: giniConfiguration)
         super.init(nibName: nil, bundle: nil)
     }
 
-    required public init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(title:subHeaderText:topViewText:topViewIcon:bottomButtonText:bottomButtonIcon:)" +
             "has not been implemented")
     }
 
-    override public func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
     }
 
-    public override func viewDidLayoutSubviews() {
+    override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: GiniMargins.margin, right: 0)
         tableView.reloadData()
@@ -55,7 +55,7 @@ public final class HelpTipsViewController: UIViewController, HelpBottomBarEnable
         configureConstraints()
     }
 
-    public func configureMainView() {
+    func configureMainView() {
         view.addSubview(tableView)
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         edgesForExtendedLayout = []
@@ -82,7 +82,7 @@ public final class HelpTipsViewController: UIViewController, HelpBottomBarEnable
         tableView.allowsSelection = false
     }
 
-    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         tableView.reloadData()
     }
