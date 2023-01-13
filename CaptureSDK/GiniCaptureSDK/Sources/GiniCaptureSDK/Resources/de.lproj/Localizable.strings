@@ -90,7 +90,6 @@
 "ginicapture.analysis.loadingText" = "Dokument wird analysiert";
 "ginicapture.analysis.loadingText.pdf" = "%@\nwird analysiert";
 "ginicapture.analysis.section.header" = "Nützliche Tipps";
-"ginicapture.analysis.suggestion.header" = "Um schneller Ergebnisse zu erhalten, bitte:";
 "ginicapture.analysis.suggestion.1" = "Gute Lichtverhältnisse";
 "ginicapture.analysis.suggestion.1.details" = "Gutes Licht führt zu besseren Ergebnissen als mit Blitz";
 
