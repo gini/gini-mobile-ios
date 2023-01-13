@@ -326,6 +326,11 @@ import GiniBankAPILibrary
       * Set an adapter implementation to show a custom bottom navigation bar on the review screen.
      */
     public var reviewNavigationBarBottomAdapter: ReviewScreenBottomNavigationBarAdapter?
+
+    /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the image picker screen.
+     */
+    public var imagePickerNavigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter?
     
     /**
       * Set an adapter implementation to show a custom bottom navigation bar on the onboarding screen.
