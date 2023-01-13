@@ -193,3 +193,12 @@ You can show a bottom navigation bar by passing true to `GiniConfiguration.share
 your own by implementing the `HelpBottomNavigationBarAdapter` interface and passing it to `GiniConfiguration.shared.helpNavigationBarBottomAdapter`.
 
 You can find more details [here][https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta01/features.html#help-screen-customization] and [here](https://www.figma.com/file/H4WFJ4xaw4YNU4VaJYWiQq/iOS-Gini-Capture-SDK-2.0.0-UI-Customisation?node-id=40%3A584&t=LCqm8Cwfh9PGUM0E-1).
+
+## Analysis screen
+
+The new analysis screen uses the global UI customization options. You can discard the old screen specific
+customizations.
+
+`ginicapture.analysis.loadingText`
+`ginicapture.analysis.loadingText.pdf`
+`ginicapture.analysis.screenTitle`
