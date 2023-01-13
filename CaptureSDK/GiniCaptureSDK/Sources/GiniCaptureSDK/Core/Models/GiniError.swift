@@ -53,7 +53,7 @@ public protocol GiniCaptureError: Error {
     public var message: String {
         switch self {
         case .unknown:
-            return .localized(resource: ReviewStrings.unknownErrorMessage)
+            return NSLocalizedStringPreferredFormat("ginicapture.review.unknownError", comment: "Unknown error")
         }
     }
 }
