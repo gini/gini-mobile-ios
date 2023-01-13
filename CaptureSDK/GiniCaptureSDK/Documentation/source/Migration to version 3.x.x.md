@@ -215,4 +215,4 @@ String keys removed:
 
 You can show a custom loading indicator with custom animation support on the center of the screen.
 Your custom loading indicator should implement `CustomLoadingIndicatorAdapter` interface and be passed  to `GiniConfiguration.shared.customLoadingIndicator`.
-This loading indicator is also used on the `Review screen` on the `Process` button
+This loading indicator is also used on the `Camera screen` when loading data for a valid QR code
