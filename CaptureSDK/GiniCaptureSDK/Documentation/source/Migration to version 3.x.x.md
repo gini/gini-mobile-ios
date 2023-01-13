@@ -199,12 +199,20 @@ You can find more details [here][https://developer.gini.net/gini-mobile-ios/Gini
 The new analysis screen uses the global UI customization options. You can discard the old screen specific
 customizations.
 
-String keys removed:
-`ginicapture.analysis.suggestion.header`
-
 The following string keys now represent suggestion titles with new keys added for describing the tips.
 `ginicapture.analysis.suggestion.1`
 `ginicapture.analysis.suggestion.2`
 `ginicapture.analysis.suggestion.3`
 `ginicapture.analysis.suggestion.4`
 `ginicapture.analysis.suggestion.5`
+
+### Breaking Changes section
+
+String keys removed:
+`ginicapture.analysis.suggestion.header`
+
+### New Features
+
+You can show a custom loading indicator with custom animation support on the center of the screen.
+Your custom loading indicator should implement `CustomLoadingIndicatorAdapter` interface and be passed  to `GiniConfiguration.shared.customLoadingIndicator`.
+This loading indicator is also used on the `Review screen` on the `Process` button
