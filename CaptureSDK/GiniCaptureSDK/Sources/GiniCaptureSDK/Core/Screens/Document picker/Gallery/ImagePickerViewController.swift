@@ -94,15 +94,20 @@ final class ImagePickerViewController: UIViewController {
     }
 
     private func setupConstraints() {
-        Constraints.pin(view: collectionView, toSuperView: contentView)
-        let bottomConstraint = contentView.bottomAnchor.constraint(greaterThanOrEqualTo: view.bottomAnchor)
-        bottomConstraint.priority = .defaultLow
+        let contentViewBottomConstraint = contentView.bottomAnchor.constraint(
+                                            greaterThanOrEqualTo: view.bottomAnchor)
+        contentViewBottomConstraint.priority = .defaultLow
 
         NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+
             contentView.topAnchor.constraint(equalTo: view.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomConstraint
+            contentViewBottomConstraint
         ])
     }
 
