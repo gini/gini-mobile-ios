@@ -87,7 +87,6 @@ are also supported";
 "ginicapture.analysis.screenTitle" = "Review";
 "ginicapture.analysis.loadingText" = "Analyzing documents";
 "ginicapture.analysis.loadingText.pdf" = "Analyzing\n%@";
-"ginicapture.analysis.suggestion.header" = "For faster results, please:";
 "ginicapture.analysis.suggestion.1" = "Good lightning";
 "ginicapture.analysis.suggestion.1.details" = "Proper lighting leads to better results than flash";
 "ginicapture.analysis.suggestion.2" = "Flatten the page";
