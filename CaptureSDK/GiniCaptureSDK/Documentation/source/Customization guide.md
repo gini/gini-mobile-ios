@@ -139,7 +139,7 @@ You can show a custom loading indicator with custom animation support on the pro
 Your custom loading indicator should implement `OnButtonLoadingIndicatorAdapter` interface and be passed  to `GiniConfiguration.shared.onButtonLoadingIndicator`.
 onButtonLoadingIndicator: OnButtonLoadingIndicatorAdapter
 
-The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/7e18d704c15c8929a97c88226724836e3b477cf1/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift#L36).
+The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0-beta01/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift#L36).
 
 ## Analysis screen
 
