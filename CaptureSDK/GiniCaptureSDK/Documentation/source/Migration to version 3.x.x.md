@@ -193,3 +193,26 @@ You can show a bottom navigation bar by passing true to `GiniConfiguration.share
 your own by implementing the `HelpBottomNavigationBarAdapter` interface and passing it to `GiniConfiguration.shared.helpNavigationBarBottomAdapter`.
 
 You can find more details [here][https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta01/features.html#help-screen-customization] and [here](https://www.figma.com/file/H4WFJ4xaw4YNU4VaJYWiQq/iOS-Gini-Capture-SDK-2.0.0-UI-Customisation?node-id=40%3A584&t=LCqm8Cwfh9PGUM0E-1).
+
+## Analysis screen
+
+The new analysis screen uses the global UI customization options. You can discard the old screen specific
+customizations.
+
+### Breaking Changes section
+
+String keys removed:
+`ginicapture.analysis.suggestion.header`
+
+The following string keys now represent suggestion titles with new keys added for describing the tips.
+`ginicapture.analysis.suggestion.1`
+`ginicapture.analysis.suggestion.2`
+`ginicapture.analysis.suggestion.3`
+`ginicapture.analysis.suggestion.4`
+`ginicapture.analysis.suggestion.5`
+
+### New Features
+
+You can show a custom loading indicator with custom animation support on the center of the screen.
+Your custom loading indicator should implement `CustomLoadingIndicatorAdapter` interface and be passed  to `GiniConfiguration.shared.customLoadingIndicator`.
+This loading indicator is also used on the `Camera screen` when loading data for a valid QR code
