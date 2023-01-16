@@ -51,6 +51,7 @@ final class AppCoordinator: Coordinator {
 //        configuration.bottomNavigationBarEnabled = true
 //        configuration.noResultNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
 //        configuration.helpNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
+//        configuration.imagePickerNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
 //        configuration.reviewNavigationBarBottomAdapter = CustomReviewScreenBottomNavigationBarAdapter()
 //        configuration.onboardingNavigationBarBottomAdapter = CustomOnboardingBottomNavigationBarAdapter()
 
