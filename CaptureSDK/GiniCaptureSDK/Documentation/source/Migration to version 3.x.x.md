@@ -199,17 +199,17 @@ You can find more details [here][https://developer.gini.net/gini-mobile-ios/Gini
 The new analysis screen uses the global UI customization options. You can discard the old screen specific
 customizations.
 
+### Breaking Changes section
+
+String keys removed:
+`ginicapture.analysis.suggestion.header`
+
 The following string keys now represent suggestion titles with new keys added for describing the tips.
 `ginicapture.analysis.suggestion.1`
 `ginicapture.analysis.suggestion.2`
 `ginicapture.analysis.suggestion.3`
 `ginicapture.analysis.suggestion.4`
 `ginicapture.analysis.suggestion.5`
-
-### Breaking Changes section
-
-String keys removed:
-`ginicapture.analysis.suggestion.header`
 
 ### New Features
 
