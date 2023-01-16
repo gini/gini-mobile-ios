@@ -22,14 +22,14 @@ Once you have your Swift package set up, adding `GiniCaptureSDK` as a dependency
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/gini/capture-sdk-ios.git", .exact("3.0.0-beta01"))
+    .package(url: "https://github.com/gini/capture-sdk-ios.git", .exact("3.0.0-beta02"))
 ]
 ```
 
 In case that you want to use the certificate pinning in the library, add `GiniCaptureSDKPinning`:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/gini/capture-sdk-pinning-ios.git", .exact("3.0.0-beta01"))
+    .package(url: "https://github.com/gini/capture-sdk-pinning-ios.git", .exact("3.0.0-beta02"))
 ]
 ```
 
