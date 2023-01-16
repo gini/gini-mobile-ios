@@ -179,7 +179,7 @@ final class DocumentServicesTests: XCTestCase {
                                     osName: UIDevice.current.systemName,
                                     osVersion: UIDevice.current.systemVersion,
                                     captureSdkVersion: "Not available",
-                                    apiLibVersion: "3.0.0-beta01",
+                                    apiLibVersion: "3.0.0-beta02",
                                     description: "Error logging test",
                                     documentId: "1234",
                                     originalRequestId: "5678")
