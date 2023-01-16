@@ -8,7 +8,7 @@
 import UIKit
 import GiniCaptureSDK
 
-final class CustomBottomNavigationBarAdapter: NoResultBottomNavigationBarAdapter, HelpBottomNavigationBarAdapter {
+final class CustomBottomNavigationBarAdapter: NoResultBottomNavigationBarAdapter, HelpBottomNavigationBarAdapter, ImagePickerBottomNavigationBarAdapter {
     private var backButtonCallback: (() -> Void)?
 
     func setBackButtonClickedActionCallback(_ callback: @escaping () -> Void) {
