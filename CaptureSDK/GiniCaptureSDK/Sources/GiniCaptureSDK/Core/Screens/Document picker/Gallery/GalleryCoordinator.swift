@@ -232,8 +232,8 @@ extension GalleryCoordinator: UINavigationControllerDelegate {
                               to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if let imagePicker = fromVC as? ImagePickerViewController {
             galleryManager.stopCachingImages(for: imagePicker.currentAlbum)
-            selectedImageDocuments.removeAll()
             currentImagePickerViewController = nil
+            selectedImageDocuments.removeAll()
         }
         return nil
     }
