@@ -70,6 +70,8 @@ The multi-page feature allows the SDK to capture documents with multiple pages.
 
 To enable this simply pass `true` to `GiniConfiguration.shared.multipageEnabled`.
 
+`Add pages button` will be shown on the Review screen only if multi-page is enabled.
+
 ## Camera
 
 * Enable the flash toggle button:
