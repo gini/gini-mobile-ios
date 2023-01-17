@@ -199,7 +199,7 @@ You can find more details [here][https://developer.gini.net/gini-mobile-ios/Gini
 The new analysis screen uses the global UI customization options. You can discard the old screen specific
 customizations.
 
-### Breaking Changes section
+### Breaking Changes
 
 String keys removed:
 `ginicapture.analysis.suggestion.header`
@@ -213,8 +213,35 @@ The following string keys now represent suggestion titles with new keys added fo
 
 ### New Features
 
+#### Custom loading indicator
+
 You can show a custom loading indicator with custom animation support on the center of the screen.
 Your custom loading indicator should implement `CustomLoadingIndicatorAdapter` interface and be passed  to `GiniConfiguration.shared.customLoadingIndicator`.
 This loading indicator is also used on the `Camera screen` when loading data for a valid QR code.
 
 You can find more details [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=501%3A7494&t=6sAk7LGf1mi3zV9L-1).
+
+## Review screen
+
+The new review screen uses the global UI customization options. You can discard the old screen specific
+customizations.
+
+### Breaking Changes
+
+We unified UI for the single page and multi pages options.
+We removed rotation and reorder functionalities.
+Tips view was removed as well.
+
+### New Features
+
+#### Custom loading indicator
+
+You can show a custom loading indicator with custom animation support on the process button of the screen.
+Your custom loading indicator should implement `OnButtonLoadingIndicatorAdapter` interface and be passed  to `GiniConfiguration.shared.onButtonLoadingIndicator`.
+
+#### Bottom navigation bar
+
+You can show a bottom navigation bar by passing true to `GiniConfiguration.shared.bottomNavigationBarEnabled`. There is a default implementation, but you can also use
+your own by implementing the `ReviewScreenBottomNavigationBarAdapter` interface and passing it to `GiniConfiguration.shared.reviewNavigationBarBottomAdapter`.
+
+You can find more details [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=261%3A8256&t=6sAk7LGf1mi3zV9L-1).
