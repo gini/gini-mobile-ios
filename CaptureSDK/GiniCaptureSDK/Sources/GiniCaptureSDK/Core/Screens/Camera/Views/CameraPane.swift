@@ -16,6 +16,8 @@ final class CameraPane: UIView {
     @IBOutlet weak var leftButtonsStack: UIView!
     @IBOutlet weak var thumbnailConstraint: NSLayoutConstraint!
     @IBOutlet weak var leftStackViewMargin: NSLayoutConstraint!
+
+    private var shouldShowFlashButton: Bool = false
     override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
@@ -83,6 +85,7 @@ final class CameraPane: UIView {
     }
 
     func toggleFlashButtonActivation(state: Bool) {
+        shouldShowFlashButton = state
         flashButton.isHidden = !state
     }
 
@@ -94,8 +97,11 @@ final class CameraPane: UIView {
     func setupAuthorization(isHidden: Bool) {
         let giniConfiguration = GiniConfiguration.shared
         self.isHidden = isHidden
+
         captureButton.isHidden = isHidden
-        flashButton.isHidden = isHidden
+        if shouldShowFlashButton {
+            flashButton.isHidden = isHidden
+        }
         if cameraTitleLabel != nil {
             cameraTitleLabel.isHidden = isHidden
         }
