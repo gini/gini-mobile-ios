@@ -106,8 +106,8 @@ final class CaptureSuggestionsView: UIView {
 
         // Center on align to margins depending on device
         if UIDevice.current.isIpad {
-            Constraints.active(item: suggestionContainer, attr: .width, relatedBy: .lessThanOrEqual, to: self,
-                              attr: .width, multiplier: 0.9)
+            Constraints.active(item: suggestionContainer, attr: .width, relatedBy: .equal, to: self,
+                              attr: .width, multiplier: 0.7)
             Constraints.active(item: suggestionContainer, attr: .centerX, relatedBy: .equal, to: self, attr: .centerX)
         } else {
             Constraints.active(item: suggestionContainer, attr: .leading, relatedBy: .equal, to: self, attr: .leading,
