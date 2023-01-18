@@ -56,7 +56,11 @@ final class GalleryCoordinator: NSObject, Coordinator {
     lazy fileprivate(set) var albumsController: AlbumsPickerViewController = {
         let albumsPickerVC = AlbumsPickerViewController(galleryManager: self.galleryManager)
         albumsPickerVC.delegate = self
-        albumsPickerVC.navigationItem.leftBarButtonItem = self.cancelButton
+        if giniConfiguration.bottomNavigationBarEnabled {
+            albumsPickerVC.navigationItem.rightBarButtonItem = self.cancelButton
+        } else {
+            albumsPickerVC.navigationItem.leftBarButtonItem = self.cancelButton
+        }
         return albumsPickerVC
     }()
     
@@ -146,6 +150,9 @@ final class GalleryCoordinator: NSObject, Coordinator {
                                                                   giniConfiguration: giniConfiguration)
         imagePickerViewController.delegate = self
         imagePickerViewController.navigationItem.rightBarButtonItem = cancelButton
+        if giniConfiguration.bottomNavigationBarEnabled {
+            imagePickerViewController.navigationItem.setHidesBackButton(true, animated: false)
+        }
         return imagePickerViewController
     }
     
@@ -225,8 +232,8 @@ extension GalleryCoordinator: UINavigationControllerDelegate {
                               to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if let imagePicker = fromVC as? ImagePickerViewController {
             galleryManager.stopCachingImages(for: imagePicker.currentAlbum)
-            selectedImageDocuments.removeAll()
             currentImagePickerViewController = nil
+            selectedImageDocuments.removeAll()
         }
         return nil
     }

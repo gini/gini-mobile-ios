@@ -26,6 +26,8 @@ final class ImagePickerViewController: UIViewController {
     fileprivate let galleryManager: GalleryManagerProtocol
     fileprivate let giniConfiguration: GiniConfiguration
     private var isInitialized: Bool = false
+    private var isLayoutDone: Bool = false
+    private var navigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter?
     
     // MARK: - Views
     
@@ -43,6 +45,12 @@ final class ImagePickerViewController: UIViewController {
         collectionView.register(ImagePickerCollectionViewCell.self,
                                 forCellWithReuseIdentifier: ImagePickerCollectionViewCell.identifier)
         return collectionView
+    }()
+
+    private lazy var contentView: UIView = {
+        let contentView = UIView()
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        return contentView
     }()
     
     // MARK: - Initializers
@@ -62,23 +70,47 @@ final class ImagePickerViewController: UIViewController {
     
     // MARK: - UIViewController
     
-    override func loadView() {
-        super.loadView()
-        
-        title = currentAlbum.title
-        
-        view.backgroundColor = GiniColor(light: .GiniCapture.light2, dark: .GiniCapture.dark2).uiColor()
-        
-        view.addSubview(collectionView)
-        
-        Constraints.pin(view: collectionView, toSuperView: view)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        setupView()
+        configureBottomNavigationBar()
+        setupConstraints()
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+
         scrollToBottomOnStartup()
+        isLayoutDone = true
     }
-    
+
+    private func setupView() {
+        title = currentAlbum.title
+
+        view.backgroundColor = GiniColor(light: .GiniCapture.light2, dark: .GiniCapture.dark2).uiColor()
+        view.addSubview(contentView)
+        contentView.addSubview(collectionView)
+    }
+
+    private func setupConstraints() {
+        let contentViewBottomConstraint = contentView.bottomAnchor.constraint(
+                                            greaterThanOrEqualTo: view.bottomAnchor)
+        contentViewBottomConstraint.priority = .defaultLow
+
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+
+            contentView.topAnchor.constraint(equalTo: view.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            contentViewBottomConstraint
+        ])
+    }
+
     // MARK: - Others
     
     func addToDownloadingItems(index: IndexPath, needsReloading: Bool = true) {
@@ -118,6 +150,7 @@ final class ImagePickerViewController: UIViewController {
     }
  
     fileprivate func scrollToBottomOnStartup() {
+        guard isLayoutDone else { return }
         // This tweak is needed to fix an issue with the UICollectionView. UICollectionView doesn't
         // scroll to the bottom on `viewWillAppear`, which is right after `viewDidLayoutSubviews`.
         // Since this method can be called several times during the lifecycle, there should be
@@ -129,6 +162,42 @@ final class ImagePickerViewController: UIViewController {
                                         at: .bottom,
                                         animated: false)
         }
+    }
+
+    private func configureBottomNavigationBar() {
+        if giniConfiguration.bottomNavigationBarEnabled {
+            if let bottomBar = giniConfiguration.imagePickerNavigationBarBottomAdapter {
+                navigationBarBottomAdapter = bottomBar
+            } else {
+                navigationBarBottomAdapter = DefaultImagePickerBottomNavigationBarAdapter()
+            }
+
+            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            }
+
+            if let navigationBar =
+                navigationBarBottomAdapter?.injectedView() {
+                navigationBar.translatesAutoresizingMaskIntoConstraints = false
+                view.addSubview(navigationBar)
+
+                layoutBottomNavigationBar(navigationBar)
+            }
+        }
+    }
+
+    private func layoutBottomNavigationBar(_ navigationBar: UIView) {
+        navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(navigationBar)
+        NSLayoutConstraint.activate([
+            contentView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor),
+            navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBar.heightAnchor.constraint(equalToConstant: 114)
+        ])
+        view.bringSubviewToFront(navigationBar)
+        view.layoutSubviews()
     }
 }
 

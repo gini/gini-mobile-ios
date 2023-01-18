@@ -1,22 +1,22 @@
 //
-//  CustomHelpBottomNavigationBarAdapter.swift
-//  GiniBankSDKExample
+//  DefaultImagePickerBottomNavigationBarAdapter.swift
+//  
 //
-//  Created by Krzysztof Kryniecki on 07/10/2022.
+//  Created by David Vizaknai on 13.01.2023.
 //
 
 import UIKit
-import GiniCaptureSDK
 
-final class CustomBottomNavigationBarAdapter: NoResultBottomNavigationBarAdapter, HelpBottomNavigationBarAdapter, ImagePickerBottomNavigationBarAdapter {
+final class DefaultImagePickerBottomNavigationBarAdapter: ImagePickerBottomNavigationBarAdapter {
     private var backButtonCallback: (() -> Void)?
 
+    // Add the callback whenever the back button is clicked
     func setBackButtonClickedActionCallback(_ callback: @escaping () -> Void) {
         backButtonCallback = callback
     }
 
     func injectedView() -> UIView {
-        if let navigationBarView = CustomBottomNavigationBar().loadNib() as? CustomBottomNavigationBar {
+        if let navigationBarView = BackButtonBottomNavigationBar().loadNib() as? BackButtonBottomNavigationBar {
             navigationBarView.backButton.addTarget(
                 self,
                 action: #selector(backButtonClicked),
@@ -35,3 +35,4 @@ final class CustomBottomNavigationBarAdapter: NoResultBottomNavigationBarAdapter
         backButtonCallback = nil
     }
 }
+
