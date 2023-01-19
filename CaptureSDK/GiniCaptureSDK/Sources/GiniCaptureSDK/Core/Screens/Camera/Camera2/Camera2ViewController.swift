@@ -44,6 +44,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     private var navigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
     private var bottomNavigationBar: UIView?
 
+    @IBOutlet weak var iPadBottomPaneConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomButtonsConstraints: NSLayoutConstraint!
     @IBOutlet weak var bottomPaneConstraint: NSLayoutConstraint!
     /**
@@ -183,7 +184,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
     private func layoutBottomNavigationBar(_ navigationBar: UIView) {
         if UIDevice.current.isIpad {
-            view.removeConstraints([cameraPreviewBottomContraint])
+            view.removeConstraints([cameraPreviewBottomContraint, iPadBottomPaneConstraint])
             navigationBar.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(navigationBar)
             NSLayoutConstraint.activate([
@@ -191,6 +192,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                 navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                 navigationBar.heightAnchor.constraint(equalToConstant: navigationBar.frame.height),
+                cameraPane.bottomAnchor.constraint(equalTo: navigationBar.topAnchor),
                 cameraPreviewViewController.view.bottomAnchor.constraint(equalTo: navigationBar.topAnchor)
             ])
         } else {
