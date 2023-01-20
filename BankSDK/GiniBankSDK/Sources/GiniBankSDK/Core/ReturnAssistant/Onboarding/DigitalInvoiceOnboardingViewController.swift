@@ -19,7 +19,7 @@ class DigitalInvoiceOnboardingViewController: UIViewController {
     @IBOutlet var topImageView: UIImageView!
     @IBOutlet var firstLabel: UILabel!
     @IBOutlet var secondLabel: UILabel!
-    @IBOutlet var doneButton: UIButton!
+    @IBOutlet var doneButton: MultilineTitleButton!
     
     fileprivate var topImage: UIImage {
         return prefferedImage(named: "digital_invoice_onboarding_icon") ?? UIImage()
@@ -59,6 +59,8 @@ class DigitalInvoiceOnboardingViewController: UIViewController {
 
         doneButton.addTarget(self, action: #selector(doneAction(_:)), for: .touchUpInside)
         doneButton.setTitle(doneButtonTitle, for: .normal)
+        doneButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
+        doneButton.configure(with: configuration.primaryButtonConfiguration)
     }
     
     @objc func doneAction(_ sender: UIButton!) {
