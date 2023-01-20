@@ -195,8 +195,8 @@ public class DigitalInvoiceViewController: UIViewController {
     }
 
     @objc func whatIsThisTapped(source: UIButton) {
+        // Show the new help screen here
         let onbardingVC = getOnBoardingScreen()
-        onbardingVC.infoType = .info
         present(onbardingVC, animated: true)
     }
     
@@ -217,7 +217,6 @@ public class DigitalInvoiceViewController: UIViewController {
     fileprivate func showDigitalInvoiceOnboarding() {
         if onboardingWillBeShown && !didShowOnboardInCurrentSession {
             let onbardingVC = getOnBoardingScreen()
-            onbardingVC.infoType = .onboarding
             present(onbardingVC, animated: true)
             didShowOnboardInCurrentSession = true
         }
