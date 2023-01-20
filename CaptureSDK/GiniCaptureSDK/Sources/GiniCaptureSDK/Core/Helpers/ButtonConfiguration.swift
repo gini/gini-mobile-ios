@@ -54,7 +54,7 @@ extension BottomLabelButton {
     }
 }
 
-extension UIButton {
+public extension UIButton {
     func configure(with configuration: ButtonConfiguration) {
         self.backgroundColor = configuration.backgroundColor
         self.layer.borderColor = configuration.borderColor.cgColor
