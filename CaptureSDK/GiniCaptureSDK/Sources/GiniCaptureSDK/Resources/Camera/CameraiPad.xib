@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Camera2ViewController" customModule="GiniCaptureSDK">
             <connections>
                 <outlet property="cameraPane" destination="13s-Zb-nTw" id="kgw-sM-jQj"/>
+                <outlet property="iPadBottomPaneConstraint" destination="mY8-4T-W5K" id="wVw-76-a0x"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Kff-Gp-d1h"/>
             </connections>
         </placeholder>
@@ -61,6 +62,7 @@
                         <constraint firstItem="UDD-dX-FJV" firstAttribute="centerX" secondItem="13s-Zb-nTw" secondAttribute="centerX" id="3Kb-6P-cpG"/>
                         <constraint firstItem="hTe-DA-2qT" firstAttribute="top" secondItem="UDD-dX-FJV" secondAttribute="bottom" constant="46" id="5bk-7v-yh6"/>
                         <constraint firstAttribute="width" constant="124" id="Khx-qJ-aJy"/>
+                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="jYB-R4-Jjg" secondAttribute="bottom" constant="20" symbolic="YES" id="YQR-lD-HXg"/>
                         <constraint firstItem="hTe-DA-2qT" firstAttribute="centerX" secondItem="13s-Zb-nTw" secondAttribute="centerX" id="cRC-4H-3jT"/>
                         <constraint firstItem="jYB-R4-Jjg" firstAttribute="leading" secondItem="13s-Zb-nTw" secondAttribute="leading" constant="2" id="efa-xa-ebw"/>
                         <constraint firstItem="jYB-R4-Jjg" firstAttribute="top" secondItem="hTe-DA-2qT" secondAttribute="bottom" constant="46" id="fa0-Ru-Wks"/>
