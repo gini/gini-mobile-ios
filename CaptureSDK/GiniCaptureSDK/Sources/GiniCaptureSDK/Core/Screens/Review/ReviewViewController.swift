@@ -470,6 +470,8 @@ extension ReviewViewController {
 
 extension ReviewViewController {
     private func addConstraints() {
+        collectionViewHeightConstraint.priority = .defaultLow
+
         NSLayoutConstraint.activate(tipLabelConstraints)
         NSLayoutConstraint.activate(collectionViewConstraints)
         NSLayoutConstraint.activate(pageControlConstraints)
