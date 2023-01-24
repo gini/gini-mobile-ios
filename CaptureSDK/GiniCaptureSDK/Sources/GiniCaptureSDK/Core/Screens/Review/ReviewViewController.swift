@@ -326,9 +326,10 @@ extension ReviewViewController {
         } else {
             if resetToEnd {
                 resetToEnd = false
-                setCellStatus(for: currentPage, isActive: true)
             }
+            setCellStatus(for: currentPage, isActive: true)
         }
+        collectionView.reloadData()
     }
 
     public override func viewWillLayoutSubviews() {
