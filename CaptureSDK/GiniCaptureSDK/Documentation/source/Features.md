@@ -124,6 +124,22 @@ The example implementation is availible [here](https://github.com/gini/gini-mobi
 You can also disable the supported formats help screen by passing `false` to
 `GiniConfiguration.shared.shouldShowSupportedFormatsScreen`.
 
+## Error screen
+
+* The error screen shows different type of errors for the user. 
+    Check for the types of errors in `ErrorType` documentation.
+
+* The screen supports custom navigation bar by inserting a custom UINavigationController for the configuration file.  
+``` swift
+
+        let customNavigationController = UINavigationController()
+        GiniConfiguration.shared.customNavigationController = customNavigationController
+ ```      
+ 
+ * The screen supports custom bottom navigation bar by creating a custom navigation bar that conforms to `ErrorBottomNavigationBarAdapter`
+      
+
+
 # Event Tracking
 
 You have the possibility to track various events which occur during the usage of the Gini Capture SDK.
