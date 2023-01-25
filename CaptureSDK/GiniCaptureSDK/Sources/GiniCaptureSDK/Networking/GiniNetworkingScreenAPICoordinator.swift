@@ -33,7 +33,7 @@ import GiniBankAPILibrary
     func giniCaptureDidCancelAnalysis()
 
     /**
-     Called when the 'Enter Manually' was pressed within No Result screen
+     Called when the 'Enter Manually' was pressed within No Result/ Error screen
      */
     func giniCaptureDidEnterManually()
 }
