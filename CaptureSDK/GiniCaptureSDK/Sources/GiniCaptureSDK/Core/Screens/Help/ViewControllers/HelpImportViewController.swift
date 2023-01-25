@@ -144,7 +144,7 @@ extension HelpImportViewController: UITableViewDataSource {
 
             accessibilityDescription = NSLocalizedStringPreferredFormat(
                 "ginicapture.help.import.selectInvoice.accessibility",
-                comment: "Select an invoice header")
+                comment: "Select an invoice accessibility description")
         case .importToApp:
             headerTitle = "\(rowNumber). " + NSLocalizedStringPreferredFormat(
                 "ginicapture.help.import.importtoapp.title", comment: "Import to app header")
@@ -156,7 +156,7 @@ extension HelpImportViewController: UITableViewDataSource {
 
             accessibilityDescription = NSLocalizedStringPreferredFormat(
                 "ginicapture.help.import.importtoapp.accessibility",
-                comment: "Select an invoice header")
+                comment: "Import to app accessibility description")
         case .dragAndDrop:
             headerTitle = "\(rowNumber). " + NSLocalizedStringPreferredFormat(
                 "ginicapture.help.import.draganddrop.title", comment: "Drag and Drop header")
@@ -168,7 +168,7 @@ extension HelpImportViewController: UITableViewDataSource {
 
             accessibilityDescription = NSLocalizedStringPreferredFormat(
                 "ginicapture.help.import.draganddrop.accessibility",
-                comment: "Select an invoice header")
+                comment: "Drag and Drop accessibility description")
         }
         configureCellAccessibility(cell: cell, item: accessibilityDescription)
     }
