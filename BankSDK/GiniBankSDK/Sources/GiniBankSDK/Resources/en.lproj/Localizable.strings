@@ -70,9 +70,9 @@
 "ginibank.digitalinvoice.addonname.otherdiscounts" = "Other discounts";
 "ginibank.digitalinvoice.addonname.othercharges" = "Other charges";
 "ginibank.digitalinvoice.addonname.shipment" = "Shipment";
-"ginibank.digitalinvoice.onboarding.text1" = "Your new return assistant!";
-"ginibank.digitalinvoice.onboarding.text2" = "Deselect article that you want to return and pay only for what you keep!";
-"ginibank.digitalinvoice.onboarding.donebutton" = "Next";
+"ginibank.digitalinvoice.onboarding.text1" = "Digital invoice";
+"ginibank.digitalinvoice.onboarding.text2" = "Deselect the products you want to return and we will recalculate the price for you.";
+"ginibank.digitalinvoice.onboarding.donebutton" = "Continue";
 "ginibank.digitalinvoice.onboarding.hidebutton" = "Don’t show anymore";
 "ginibank.digitalinvoice.backbutton" = "Back";
 

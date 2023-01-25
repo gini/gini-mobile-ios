@@ -60,10 +60,9 @@
 "ginibank.digitalinvoice.addonname.otherdiscounts" = "Weitere Abzüge";
 "ginibank.digitalinvoice.addonname.othercharges" = "Weitere Kosten";
 "ginibank.digitalinvoice.addonname.shipment" = "Versandkosten";
-"ginibank.digitalinvoice.onboarding.text1" = "Dein neuer Retouren Assistent!";
-"ginibank.digitalinvoice.onboarding.text2" = "Du kannst jetzt Artikel abwählen, die du zurückschicken möchtest.
-Bezahle nur, was du behältst.";
-"ginibank.digitalinvoice.onboarding.donebutton" = "Weiter";
+"ginibank.digitalinvoice.onboarding.text1" = "Digitale Rechnung";
+"ginibank.digitalinvoice.onboarding.text2" = "Wählen Sie die Artikel ab, die Sie zurücksenden wollen, wir berechnen den neuen Preis für Sie.";
+"ginibank.digitalinvoice.onboarding.donebutton" = "Los geht’s";
 "ginibank.digitalinvoice.onboarding.hidebutton" = "Bitte nicht mehr anzeigen";
 "ginibank.digitalinvoice.backbutton" = "Zurück";
 
