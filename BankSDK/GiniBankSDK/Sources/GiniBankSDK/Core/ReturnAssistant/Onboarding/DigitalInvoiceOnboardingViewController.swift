@@ -61,6 +61,14 @@ class DigitalInvoiceOnboardingViewController: UIViewController {
         doneButton.setTitle(doneButtonTitle, for: .normal)
         doneButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         doneButton.configure(with: configuration.primaryButtonConfiguration)
+
+        if UIDevice.current.isIpad {
+            secondLabel.translatesAutoresizingMaskIntoConstraints = false
+
+            NSLayoutConstraint.activate(
+                [secondLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5)]
+            )
+        }
     }
     
     @objc func doneAction(_ sender: UIButton!) {
