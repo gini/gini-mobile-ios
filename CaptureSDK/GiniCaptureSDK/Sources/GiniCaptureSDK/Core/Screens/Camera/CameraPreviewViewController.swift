@@ -78,8 +78,14 @@ final class CameraPreviewViewController: UIViewController {
         return UIImageNamedPreferred(named: "cameraFocusSmall")
     }
 
+    // A flag to determine the default image when testing on simulator.
+    private var isReturnAssistantTesting = true
     fileprivate var defaultImage: UIImage? {
-        return UIImageNamedPreferred(named: "cameraDefaultDocumentImage")
+        if isReturnAssistantTesting {
+            return UIImageNamedPreferred(named: "CameraDefaultReturnAssistantDocument")
+        } else {
+            return UIImageNamedPreferred(named: "cameraDefaultDocumentImage")
+        }
     }
 
     var isAuthorized = false
