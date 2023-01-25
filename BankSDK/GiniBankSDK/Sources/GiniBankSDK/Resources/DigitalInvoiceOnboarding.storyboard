@@ -40,7 +40,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Deselect article that you want to return and pay only for what you keep!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="b5g-YZ-Ffz">
-                                        <rect key="frame" x="48" y="524.33333333333337" width="279" height="57.333333333333371"/>
+                                        <rect key="frame" x="63.333333333333329" y="524.33333333333337" width="248.33333333333337" height="57.333333333333371"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -48,13 +48,14 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="b5g-YZ-Ffz" firstAttribute="leading" secondItem="ySK-ra-mer" secondAttribute="leading" constant="48" id="6GP-iX-1VD"/>
-                                    <constraint firstAttribute="trailing" secondItem="b5g-YZ-Ffz" secondAttribute="trailing" constant="48" id="8g0-DW-fbi"/>
+                                    <constraint firstItem="b5g-YZ-Ffz" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ySK-ra-mer" secondAttribute="leading" constant="48" id="6GP-iX-1VD"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="b5g-YZ-Ffz" secondAttribute="trailing" constant="48" id="8g0-DW-fbi"/>
                                     <constraint firstAttribute="trailingMargin" secondItem="Wrk-c0-ekq" secondAttribute="trailing" constant="24" id="BAS-u8-o2S"/>
                                     <constraint firstItem="vN8-eg-TBS" firstAttribute="centerX" secondItem="ySK-ra-mer" secondAttribute="centerX" id="HRp-HJ-8Ro"/>
                                     <constraint firstItem="vN8-eg-TBS" firstAttribute="centerY" secondItem="ySK-ra-mer" secondAttribute="centerY" multiplier="0.6" id="RhS-AE-95n"/>
                                     <constraint firstItem="Wrk-c0-ekq" firstAttribute="leading" secondItem="ySK-ra-mer" secondAttribute="leadingMargin" constant="24" id="g6E-J0-wSL"/>
                                     <constraint firstItem="Wrk-c0-ekq" firstAttribute="top" secondItem="vN8-eg-TBS" secondAttribute="bottom" constant="60" id="glu-Cf-fTO"/>
+                                    <constraint firstItem="b5g-YZ-Ffz" firstAttribute="centerX" secondItem="ySK-ra-mer" secondAttribute="centerX" id="gn6-Yg-w8P"/>
                                     <constraint firstItem="Ydb-dv-dAn" firstAttribute="centerX" secondItem="ySK-ra-mer" secondAttribute="centerX" id="rPi-Au-hbT"/>
                                     <constraint firstItem="b5g-YZ-Ffz" firstAttribute="top" secondItem="Wrk-c0-ekq" secondAttribute="bottom" constant="16" id="vdg-WZ-Ejz"/>
                                     <constraint firstItem="Ydb-dv-dAn" firstAttribute="top" relation="greaterThanOrEqual" secondItem="b5g-YZ-Ffz" secondAttribute="bottom" constant="5" id="zHa-Cf-XgC"/>
