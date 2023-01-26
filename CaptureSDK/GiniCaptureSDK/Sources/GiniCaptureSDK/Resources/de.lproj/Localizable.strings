@@ -144,10 +144,13 @@
 "ginicapture.help.import.title" = "Importieren";
 "ginicapture.help.import.selectInvoice.title" = "Rechnung auswählen";
 "ginicapture.help.import.selectInvoice.desc" = "Bitte die PDF-Rechnung in der Email-App, PDF-Ordner oder einer anderen App aus dem Handy auswählen. Um das Dokument nun an die Banking App zu senden, sollte die “Teilen mit” Funktion benutzt werden, welche mit einem Rechteck und Pfeil nach oben zeigend dargestellt ist.";
+"ginicapture.help.import.selectInvoice.accessibility" = "Aktivieren Sie die Teilen-Funktion. Dazu wählen Sie eine Datei aus und verwenden anschließend die Teilen-Funktion, dargestellt als Viereck mit hoch-zeigendem Pfeil";
 "ginicapture.help.import.importtoapp.title" = "Aus der App importieren";
 "ginicapture.help.import.importtoapp.desc" = "Nun die Banking App aus der Liste auswählen, um das Dokument zum Analysieren weiterzuleiten.";
+"ginicapture.help.import.importtoapp.accessibility" = "Banking App auswählen. Wählen Sie nun die gewünschte App aus mit der das Dokument geteilt werden soll";
 "ginicapture.help.import.draganddrop.title" = "Drag & drop auf dem iPad";
 "ginicapture.help.import.draganddrop.desc" = "Auf dem iPad können Sie ab iOS 12 oder neuer PDFs oder Fotos bequem aus der Datei-Browser-App per “Drag and Drop” in die Banking App gezogen werden, um den Überweisungsprozess zu starten. Hierzu öffnen Sie zunächst Ihre Banking App und die Datei-Browser-App parallel auf Ihrem Bildschirm. Ziehen Sie dann die gewünschte Datei rüber in die Banking App.";
+"ginicapture.help.import.draganddrop.accessibility" = "Auf dem Tablet können Sie auch die zu teilende Datei mit Drag and Drop in die Banking App ziehen";
 
 "ginicapture.help.supportedFormats.title" = "Formate";
 "ginicapture.help.supportedFormats.section.1.title" = "Unterstützte Formate";

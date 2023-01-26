@@ -129,6 +129,8 @@ extension HelpImportViewController: UITableViewDataSource {
         itemType: HelpImportCellType,
         rowNumber: Int) {
         let headerTitle: String
+        let accessibilityDescription: String
+
         switch itemType {
         case .selectInvoice:
             headerTitle = "\(rowNumber). " + NSLocalizedStringPreferredFormat(
@@ -139,6 +141,10 @@ extension HelpImportViewController: UITableViewDataSource {
                 "ginicapture.help.import.selectInvoice.desc",
                 comment: "Select an invoice description")
             cell.importImageView.image = UIImageNamedPreferred(named: "helpImport1")
+
+            accessibilityDescription = NSLocalizedStringPreferredFormat(
+                "ginicapture.help.import.selectInvoice.accessibility",
+                comment: "Select an invoice accessibility description")
         case .importToApp:
             headerTitle = "\(rowNumber). " + NSLocalizedStringPreferredFormat(
                 "ginicapture.help.import.importtoapp.title", comment: "Import to app header")
@@ -147,6 +153,10 @@ extension HelpImportViewController: UITableViewDataSource {
                 "ginicapture.help.import.importtoapp.desc",
                 comment: "Import to app description")
             cell.importImageView.image = UIImageNamedPreferred(named: "helpImport2")
+
+            accessibilityDescription = NSLocalizedStringPreferredFormat(
+                "ginicapture.help.import.importtoapp.accessibility",
+                comment: "Import to app accessibility description")
         case .dragAndDrop:
             headerTitle = "\(rowNumber). " + NSLocalizedStringPreferredFormat(
                 "ginicapture.help.import.draganddrop.title", comment: "Drag and Drop header")
@@ -155,8 +165,12 @@ extension HelpImportViewController: UITableViewDataSource {
                 "ginicapture.help.import.draganddrop.desc",
                 comment: "Drag and Drop description")
             cell.importImageView.image = UIImageNamedPreferred(named: "helpImport3")
+
+            accessibilityDescription = NSLocalizedStringPreferredFormat(
+                "ginicapture.help.import.draganddrop.accessibility",
+                comment: "Drag and Drop accessibility description")
         }
-        configureCellAccessibility(cell: cell, item: headerTitle)
+        configureCellAccessibility(cell: cell, item: accessibilityDescription)
     }
 
     private func configureCell(cell: HelpImportCell, indexPath: IndexPath) {
