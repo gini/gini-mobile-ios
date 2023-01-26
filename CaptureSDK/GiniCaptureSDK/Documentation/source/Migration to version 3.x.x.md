@@ -195,7 +195,7 @@ You can find more details [here][https://developer.gini.net/gini-mobile-ios/Gini
 
 ## Analysis screen
 
-The new analysis screen uses the global UI customization options. You can discard the old screen specificcustomizations.
+The new analysis screen uses the global UI customization options. You can discard the old screen specific customizations.
 
 ### Breaking Changes
 
