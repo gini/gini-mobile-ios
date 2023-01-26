@@ -272,4 +272,9 @@ customizations.
 You can show a bottom navigation bar by passing true to `GiniConfiguration.shared.bottomNavigationBarEnabled`. There is a default implementation, but you can also use
 your own by implementing the `NoResultBottomNavigationBarAdapter` interface and passing it to `GiniConfiguration.shared.noResultNavigationBarBottomAdapter`.
 
-You can find more details [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=263%3A6989&t=7wXW9XyhTUcmp5sk-1).
+#### Option to enter details manually
+
+You can show your own UI for data input if an error occurred and the user clicks the "Enter manually" button on the error screen.
+For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
+
+You can find more details [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=263%3A6989&t=7wXW9XyhTUcmp5sk-1) and [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta02/customization-guide.html#error-screen).
