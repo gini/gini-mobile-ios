@@ -253,7 +253,7 @@ public final class ReviewViewController: UIViewController {
 
     private lazy var processButtonConstraints: [NSLayoutConstraint] = [
         processButton.topAnchor.constraint(equalTo: buttonContainer.topAnchor),
-        processButton.widthAnchor.constraint(equalToConstant: Constants.buttonSize.width),
+        processButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.width),
         processButton.leadingAnchor.constraint(equalTo: buttonContainer.leadingAnchor),
         processButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.height),
         processButton.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor),
@@ -329,7 +329,7 @@ extension ReviewViewController {
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBar.heightAnchor.constraint(equalToConstant: 114)
+            navigationBar.heightAnchor.constraint(equalToConstant: Constants.bottomNavigationBarHeight)
         ])
         view.bringSubviewToFront(navigationBar)
         view.layoutSubviews()
@@ -566,17 +566,29 @@ extension ReviewViewController {
     private func calculatedCellSize() -> CGSize {
         let a4Ratio = 1.4142
         if UIDevice.current.isIpad {
-            let height = self.view.bounds.height - 260
+            var height = self.view.bounds.height - 260
+            if giniConfiguration.bottomNavigationBarEnabled {
+                height -= Constants.bottomNavigationBarHeight
+                height -= Constants.padding
+            }
             let width = height / a4Ratio
             return CGSize(width: width, height: height)
         } else {
             if view.safeAreaInsets.bottom > 0 {
-                let height = self.view.bounds.height * 0.6
+                var height = self.view.bounds.height * 0.6
+                if giniConfiguration.bottomNavigationBarEnabled {
+                    height -= Constants.bottomNavigationBarHeight
+                    height -= Constants.padding
+                }
                 let width = height / a4Ratio
                 let cellSize = CGSize(width: width, height: height)
                 return cellSize
             } else {
-                let height = self.view.bounds.height * 0.5
+                var height = self.view.bounds.height * 0.5
+                if giniConfiguration.bottomNavigationBarEnabled {
+                    height -= Constants.bottomNavigationBarHeight
+                    height -= Constants.padding
+                }
                 let width = height / a4Ratio
                 let cellSize = CGSize(width: width, height: height)
                 return cellSize
@@ -692,5 +704,6 @@ extension ReviewViewController {
         static let pageControlBottomPadding: CGFloat = 130
         static let buttonSize: CGSize = CGSize(width: 126, height: 50)
         static let titleHeight: CGFloat = 18
+        static let bottomNavigationBarHeight: CGFloat = 114
     }
 }
