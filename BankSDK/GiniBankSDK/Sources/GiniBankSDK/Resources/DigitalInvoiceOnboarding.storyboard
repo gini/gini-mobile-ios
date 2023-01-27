@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,56 +18,47 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ySK-ra-mer" userLabel="Content View">
-                                <rect key="frame" x="0.0" y="44" width="375" height="768"/>
+                                <rect key="frame" x="0.0" y="47" width="375" height="765"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your new return assistant!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wrk-c0-ekq">
-                                        <rect key="frame" x="29" y="30.000000000000007" width="313" height="76.666666666666686"/>
-                                        <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="32"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="255" verticalHuggingPriority="255" horizontalCompressionResistancePriority="747" verticalCompressionResistancePriority="747" image="digital_invoice_onboarding_icon" translatesAutoresizingMaskIntoConstraints="NO" id="vN8-eg-TBS">
-                                        <rect key="frame" x="62.666666666666657" y="149.66666666666666" width="249.99999999999997" height="284.33333333333337"/>
+                                        <rect key="frame" x="62.666666666666657" y="87.333333333333343" width="249.99999999999997" height="284.33333333333326"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ydb-dv-dAn">
-                                        <rect key="frame" x="16" y="611" width="343" height="48"/>
+                                        <rect key="frame" x="102.66666666666669" y="643" width="170" height="48"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="48" id="C36-9G-Njd">
                                                 <variation key="heightClass=regular-widthClass=compact" constant="48"/>
                                             </constraint>
+                                            <constraint firstAttribute="width" constant="170" id="j5t-bv-B6h"/>
                                         </constraints>
                                         <state key="normal" title="Button"/>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sVR-qv-0Gz">
-                                        <rect key="frame" x="16" y="664" width="343" height="48"/>
-                                        <state key="normal" title="Button"/>
-                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your new return assistant!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wrk-c0-ekq">
+                                        <rect key="frame" x="32" y="431.66666666666669" width="311" height="76.666666666666686"/>
+                                        <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="32"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Deselect article that you want to return and pay only for what you keep!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="b5g-YZ-Ffz">
-                                        <rect key="frame" x="40" y="438" width="295" height="168"/>
+                                        <rect key="frame" x="63.333333333333329" y="524.33333333333337" width="248.33333333333337" height="57.333333333333371"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.0" green="0.61960784313725492" blue="0.86274509803921573" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="sVR-qv-0Gz" firstAttribute="top" secondItem="Ydb-dv-dAn" secondAttribute="bottom" constant="5" id="2fR-Ne-TzZ"/>
-                                    <constraint firstItem="Ydb-dv-dAn" firstAttribute="top" secondItem="b5g-YZ-Ffz" secondAttribute="bottom" constant="5" id="49c-VZ-uUK"/>
-                                    <constraint firstItem="b5g-YZ-Ffz" firstAttribute="leading" secondItem="ySK-ra-mer" secondAttribute="leading" constant="40" id="6GP-iX-1VD"/>
-                                    <constraint firstAttribute="trailing" secondItem="b5g-YZ-Ffz" secondAttribute="trailing" constant="40" id="8g0-DW-fbi"/>
-                                    <constraint firstAttribute="trailingMargin" secondItem="Wrk-c0-ekq" secondAttribute="trailing" constant="25" id="BAS-u8-o2S"/>
+                                    <constraint firstItem="b5g-YZ-Ffz" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ySK-ra-mer" secondAttribute="leading" constant="48" id="6GP-iX-1VD"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="b5g-YZ-Ffz" secondAttribute="trailing" constant="48" id="8g0-DW-fbi"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="Wrk-c0-ekq" secondAttribute="trailing" constant="24" id="BAS-u8-o2S"/>
                                     <constraint firstItem="vN8-eg-TBS" firstAttribute="centerX" secondItem="ySK-ra-mer" secondAttribute="centerX" id="HRp-HJ-8Ro"/>
-                                    <constraint firstItem="sVR-qv-0Gz" firstAttribute="height" secondItem="Ydb-dv-dAn" secondAttribute="height" id="MjZ-oq-Dhl"/>
-                                    <constraint firstItem="vN8-eg-TBS" firstAttribute="centerY" secondItem="ySK-ra-mer" secondAttribute="centerY" multiplier="0.76" id="RhS-AE-95n"/>
-                                    <constraint firstAttribute="trailing" secondItem="Ydb-dv-dAn" secondAttribute="trailing" constant="16" id="TaD-II-KDq"/>
-                                    <constraint firstItem="Wrk-c0-ekq" firstAttribute="top" secondItem="ySK-ra-mer" secondAttribute="top" constant="30" id="Wwu-Iz-7F9"/>
-                                    <constraint firstItem="sVR-qv-0Gz" firstAttribute="leading" secondItem="Ydb-dv-dAn" secondAttribute="leading" id="YF4-rT-bhD"/>
-                                    <constraint firstItem="sVR-qv-0Gz" firstAttribute="trailing" secondItem="Ydb-dv-dAn" secondAttribute="trailing" id="bOQ-Hb-an3"/>
-                                    <constraint firstItem="sVR-qv-0Gz" firstAttribute="centerX" secondItem="ySK-ra-mer" secondAttribute="centerX" id="bZd-eE-sMt"/>
-                                    <constraint firstItem="Ydb-dv-dAn" firstAttribute="leading" secondItem="ySK-ra-mer" secondAttribute="leading" constant="16" id="cTf-iM-2Nl"/>
-                                    <constraint firstItem="Wrk-c0-ekq" firstAttribute="leading" secondItem="ySK-ra-mer" secondAttribute="leadingMargin" constant="21" id="g6E-J0-wSL"/>
+                                    <constraint firstItem="vN8-eg-TBS" firstAttribute="centerY" secondItem="ySK-ra-mer" secondAttribute="centerY" multiplier="0.6" id="RhS-AE-95n"/>
+                                    <constraint firstItem="Wrk-c0-ekq" firstAttribute="leading" secondItem="ySK-ra-mer" secondAttribute="leadingMargin" constant="24" id="g6E-J0-wSL"/>
+                                    <constraint firstItem="Wrk-c0-ekq" firstAttribute="top" secondItem="vN8-eg-TBS" secondAttribute="bottom" constant="60" id="glu-Cf-fTO"/>
+                                    <constraint firstItem="b5g-YZ-Ffz" firstAttribute="centerX" secondItem="ySK-ra-mer" secondAttribute="centerX" id="gn6-Yg-w8P"/>
                                     <constraint firstItem="Ydb-dv-dAn" firstAttribute="centerX" secondItem="ySK-ra-mer" secondAttribute="centerX" id="rPi-Au-hbT"/>
-                                    <constraint firstItem="b5g-YZ-Ffz" firstAttribute="top" secondItem="vN8-eg-TBS" secondAttribute="bottom" constant="4" id="vdg-WZ-Ejz"/>
+                                    <constraint firstItem="b5g-YZ-Ffz" firstAttribute="top" secondItem="Wrk-c0-ekq" secondAttribute="bottom" constant="16" id="vdg-WZ-Ejz"/>
+                                    <constraint firstItem="Ydb-dv-dAn" firstAttribute="top" relation="greaterThanOrEqual" secondItem="b5g-YZ-Ffz" secondAttribute="bottom" constant="5" id="zHa-Cf-XgC"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -80,14 +71,13 @@
                             <constraint firstItem="3IY-Df-aw6" firstAttribute="trailing" secondItem="ySK-ra-mer" secondAttribute="trailing" id="V7X-1Q-pcj"/>
                             <constraint firstAttribute="bottom" secondItem="ySK-ra-mer" secondAttribute="bottom" id="a1m-GS-s53"/>
                             <constraint firstItem="ySK-ra-mer" firstAttribute="leading" secondItem="3IY-Df-aw6" secondAttribute="leading" id="ro5-DT-5Yn"/>
-                            <constraint firstItem="3IY-Df-aw6" firstAttribute="bottom" secondItem="Ydb-dv-dAn" secondAttribute="bottom" constant="75" id="tCq-I2-uAa"/>
+                            <constraint firstItem="3IY-Df-aw6" firstAttribute="bottom" secondItem="Ydb-dv-dAn" secondAttribute="bottom" constant="40" id="tCq-I2-uAa"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="contentView" destination="ySK-ra-mer" id="83i-tt-1rw"/>
                         <outlet property="doneButton" destination="Ydb-dv-dAn" id="2QP-AC-Kes"/>
                         <outlet property="firstLabel" destination="Wrk-c0-ekq" id="byp-IX-SJ7"/>
-                        <outlet property="hideButton" destination="sVR-qv-0Gz" id="ng7-kx-C82"/>
                         <outlet property="secondLabel" destination="b5g-YZ-Ffz" id="5UH-xp-kbc"/>
                         <outlet property="topImageView" destination="vN8-eg-TBS" id="YRJ-Sj-XKm"/>
                     </connections>
@@ -98,7 +88,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="digital_invoice_onboarding_icon" width="237" height="259"/>
+        <image name="digital_invoice_onboarding_icon" width="221" height="261"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

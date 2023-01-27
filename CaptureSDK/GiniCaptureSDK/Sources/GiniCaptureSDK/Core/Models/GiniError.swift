@@ -178,7 +178,7 @@ public protocol GiniCaptureError: Error {
     }
     
     public static func == (lhs: DocumentValidationError, rhs: DocumentValidationError) -> Bool {
-        return lhs.message == rhs.message
+        return lhs.rawValue == rhs.rawValue
     }
 }
 
