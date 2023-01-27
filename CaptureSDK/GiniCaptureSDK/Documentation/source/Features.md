@@ -124,6 +124,21 @@ The example implementation is availible [here](https://github.com/gini/gini-mobi
 You can also disable the supported formats help screen by passing `false` to
 `GiniConfiguration.shared.shouldShowSupportedFormatsScreen`.
 
+# No result screen customization
+
+You can show custom back navigation button on bottom navigation bar. You can pass your custom `NoResultBottomNavigationBarAdapter` implementation to
+ `GiniConfiguration.shared.errorNavigationBarBottomAdapter`:
+
+``` swift
+     let customNoResultNavigationBarBottomAdapter = CustomNoResultBottomNavigationBarAdapter()
+
+     GiniConfiguration.shared.noResultNavigationBarBottomAdapter = customNoResultNavigationBarBottomAdapter
+```
+
+You can show your own UI if an error occured and the user chooses to enter details manually. For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
+
+The buttom "Retake images" will be shown only if you took or imported images.
+
 # Error screen customization
 
  You can show custom back navigation button on bottom navigation bar. You can pass your custom `ErrorBottomNavigationBarAdapter` implementation to
@@ -135,7 +150,9 @@ You can also disable the supported formats help screen by passing `false` to
      GiniConfiguration.shared.errorNavigationBarBottomAdapter = customErrorNavigationBarBottomAdapter
 ```
 
- You can show your own UI if an error occured and the user chooses to enter details manually. For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
+You can show your own UI if an error occured and the user chooses to enter details manually. For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
+
+The buttom "Retake images" will be shown only if you took or imported images.
 
 # Event Tracking
 
@@ -146,4 +163,3 @@ Please find more information in the [Event tracking guide](https://developer.gin
 # Error Logging
 
 The SDK logs errors to the Gini Bank API when the default networking implementation is used (see the `Default networking` implementation in the [Integration](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/integration.html).
-
