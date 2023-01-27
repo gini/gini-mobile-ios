@@ -41,23 +41,23 @@ The onboarding feature presents essential information to the user on how to best
 
 You can customize the onboarding in the following ways:
 
-* Disable showing the onboarding at first run:
-   By default the onboarding is shown at first run. To disable this pass `false` to
-   `GiniConfiguration.shared.onboardingShowAtFirstLaunch`.
+- Disable showing the onboarding at first run:
+By default the onboarding is shown at first run. To disable this pass `false` to
+`GiniConfiguration.shared.onboardingShowAtFirstLaunch`.
 
-* Customize the onboarding pages:
-   If you wish to show different onboarding pages then pass a list of `OnboardingPage` structs to `GiniConfiguration.shared.customOnboardingPages`.
+- Customize the onboarding pages:
+If you wish to show different onboarding pages then pass a list of `OnboardingPage` structs to `GiniConfiguration.shared.customOnboardingPages`.
 
-* Force show the onboarding:
-   If you wish to show the onboarding after the first run then pass `true` to
-   `GiniConfiguration.shared.onboardingShowAtLaunch`.
+- Force show the onboarding:
+If you wish to show the onboarding after the first run then pass `true` to
+`GiniConfiguration.shared.onboardingShowAtLaunch`.
 
-* Animate illustrations by injecting custom views:
-   If you need to animate the illustrations on the onboarding pages implement the `OnboardingIllustrationAdapter` interface to inject a view that can animate images (e.g., `Lottie`) and pass it to the relevant onboarding illustration adapter setters (e.g., `onboardingAlignCornersIllustrationAdapter`,
-   `onboardingLightingIllustrationAdapter`,
-   `onboardingMultiPageIllustrationAdapter`,
-   `onboardingQRCodeIllustrationAdapter`)
-    when configuring the `GiniConfiguration.shared` instance.
+- Animate illustrations by injecting custom views:
+If you need to animate the illustrations on the onboarding pages implement the `OnboardingIllustrationAdapter` interface to inject a view that can animate images (e.g., `Lottie`) and pass it to the relevant onboarding illustration adapter setters (e.g., `onboardingAlignCornersIllustrationAdapter`,
+`onboardingLightingIllustrationAdapter`,
+`onboardingMultiPageIllustrationAdapter`,
+`onboardingQRCodeIllustrationAdapter`)
+   when configuring the `GiniConfiguration.shared` instance.
 
 ## Single Page
 
@@ -74,11 +74,11 @@ To enable this simply pass `true` to `GiniConfiguration.shared.multipageEnabled`
 
 ## Camera
 
-* Enable the flash toggle button:
-   To allow users toggle the camera flash pass `true` to `GiniConfiguration.shared.flashToggleEnabled`.
+- Enable the flash toggle button:
+To allow users toggle the camera flash pass `true` to `GiniConfiguration.shared.flashToggleEnabled`.
 
-* Turn off flash by default:
-   Flash is on by default, and you can turn it off by passing `false` to `GiniConfiguration.shared.flashOnByDefault`.
+- Turn off flash by default:
+Flash is on by default, and you can turn it off by passing `false` to `GiniConfiguration.shared.flashOnByDefault`.
 
  # QR Code Scanning
 
@@ -107,7 +107,7 @@ The `Open with` feature allows importing of files from other apps via iOS `share
 
 Please find more information in the [Open with guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/open-with-guide.html).
 
-# Help Screen Customization
+# Help screen Customization
 
 You can show your own help screens in the Gini Capture SDK.
 You can pass the title and view controller for each screen to the
@@ -123,6 +123,19 @@ The example implementation is availible [here](https://github.com/gini/gini-mobi
 
 You can also disable the supported formats help screen by passing `false` to
 `GiniConfiguration.shared.shouldShowSupportedFormatsScreen`.
+
+# Error screen customization
+
+ You can show custom back navigation button on bottom navigation bar. You can pass your custom `ErrorBottomNavigationBarAdapter` implementation to
+ `GiniConfiguration.shared.errorNavigationBarBottomAdapter`:
+
+``` swift
+     let customErrorNavigationBarBottomAdapter = CustomErrorNavigationBarBottomAdapter()
+
+     GiniConfiguration.shared.errorNavigationBarBottomAdapter = customErrorNavigationBarBottomAdapter
+```
+
+ You can show your own UI if an error occured and the user chooses to enter details manually. For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
 
 # Event Tracking
 
