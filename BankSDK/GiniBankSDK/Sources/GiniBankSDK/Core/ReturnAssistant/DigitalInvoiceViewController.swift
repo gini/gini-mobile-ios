@@ -184,7 +184,7 @@ public class DigitalInvoiceViewController: UIViewController {
         return .ginibankLocalized(resource: DigitalInvoiceStrings.skipButtonTitle)
     }
     
-    private func getOnBoardingScreen() -> DigitalInvoiceOnboardingViewController {
+    private func getOnboardingScreen() -> DigitalInvoiceOnboardingViewController {
         let bundle = giniBankBundle()
         let storyboard = UIStoryboard(name: "DigitalInvoiceOnboarding", bundle: bundle)
         let digitalInvoiceOnboardingViewController = storyboard.instantiateViewController(withIdentifier: "digitalInvoiceOnboardingViewController") as! DigitalInvoiceOnboardingViewController
@@ -195,9 +195,9 @@ public class DigitalInvoiceViewController: UIViewController {
     }
 
     @objc func whatIsThisTapped(source: UIButton) {
-        let onbardingVC = getOnBoardingScreen()
-        onbardingVC.infoType = .info
-        present(onbardingVC, animated: true)
+        //TODO: Show the new help screen here
+        let onboardingVC = getOnboardingScreen()
+        present(onboardingVC, animated: true)
     }
     
     @objc func closeReturnAssistantOverview(){
@@ -216,9 +216,8 @@ public class DigitalInvoiceViewController: UIViewController {
     
     fileprivate func showDigitalInvoiceOnboarding() {
         if onboardingWillBeShown && !didShowOnboardInCurrentSession {
-            let onbardingVC = getOnBoardingScreen()
-            onbardingVC.infoType = .onboarding
-            present(onbardingVC, animated: true)
+            let onboardingVC = getOnboardingScreen()
+            present(onboardingVC, animated: true)
             didShowOnboardInCurrentSession = true
         }
     }
