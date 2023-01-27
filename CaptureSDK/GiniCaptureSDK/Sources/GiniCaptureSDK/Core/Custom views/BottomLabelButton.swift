@@ -69,7 +69,7 @@ final class BottomLabelButton: UIView {
             actionButton.trailingAnchor.constraint(equalTo: trailingAnchor),
             actionButton.leadingAnchor.constraint(equalTo: leadingAnchor),
 
-            iconView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -10),
+            iconView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
             iconView.leadingAnchor.constraint(equalTo: leadingAnchor),
             iconView.trailingAnchor.constraint(equalTo: trailingAnchor),
             iconView.heightAnchor.constraint(equalToConstant: 20),
