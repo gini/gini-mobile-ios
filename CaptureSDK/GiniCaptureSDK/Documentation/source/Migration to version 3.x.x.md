@@ -175,8 +175,7 @@ For enabling QR code only mode the both flags `GiniConfiguration.shared.qrCodeSc
 
 ## Help screens
 
-The new help screens use the global UI customization options. You can discard the old screen specific
-customizations.
+The new help screens use the global UI customization options. You can discard the old screen specific customizations.
 
 ### Breaking Changes
 
@@ -196,8 +195,7 @@ You can find more details [here][https://developer.gini.net/gini-mobile-ios/Gini
 
 ## Analysis screen
 
-The new analysis screen uses the global UI customization options. You can discard the old screen specific
-customizations.
+The new analysis screen uses the global UI customization options. You can discard the old screen specific customizations.
 
 ### Breaking Changes
 
@@ -223,8 +221,7 @@ You can find more details [here](https://www.figma.com/file/1985HMF83siAXmysSn3d
 
 ## Review screen
 
-The new review screen uses the global UI customization options. You can discard the old screen specific
-customizations.
+The new review screen uses the global UI customization options. You can discard the old screen specific customizations.
 
 ### Breaking Changes
 
@@ -245,3 +242,30 @@ You can show a bottom navigation bar by passing true to `GiniConfiguration.share
 your own by implementing the `ReviewScreenBottomNavigationBarAdapter` interface and passing it to `GiniConfiguration.shared.reviewNavigationBarBottomAdapter`.
 
 You can find more details [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=261%3A8256&t=6sAk7LGf1mi3zV9L-1).
+
+## Error screen
+
+The new error screen uses the global UI customization options.
+
+### Breaking Changes
+
+Showing errors during usage of the SDK was changed from snackbar to a whole new screen.
+
+### New Features
+
+#### New UI
+
+The new error screen gives options to retake photos or enter details manually and displays errors with more detailed description.
+
+#### Bottom navigation bar
+
+You can show a bottom navigation bar by passing true to `GiniConfiguration.shared.bottomNavigationBarEnabled`. There is a default implementation, but you can also use
+your own by implementing the `ErrorBottomNavigationBarAdapter` interface and passing it to `GiniConfiguration.shared.errorNavigationBarBottomAdapter`.
+
+ You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta02/customization-guide.html#onboarding).
+
+ #### Option to enter details manually
+
+ You can show your own UI for data input if an error occured and the user clicks the "Enter manually" button on the error screen.
+
+ You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta02/features.html#error-screen-customization) and [here]((https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta02/customization-guide.html#error-screen).

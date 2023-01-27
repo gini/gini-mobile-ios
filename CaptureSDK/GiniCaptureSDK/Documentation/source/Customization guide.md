@@ -95,15 +95,15 @@ To enable this feature simply pass `true` to `GiniConfiguration.shared.multipage
 
 ### Camera
 
-* Enable the flash toggle button:
-   To allow users toggle the camera flash pass `true` to `GiniConfiguration.shared.flashToggleEnabled`.
+- Enable the flash toggle button:
+To allow users toggle the camera flash pass `true` to `GiniConfiguration.shared.flashToggleEnabled`.
 
-* Turn off flash by default:
-   Flash is on by default, and you can turn it off by passing `false` to `GiniConfiguration.shared.flashOnByDefault`.
+- Turn off flash by default:
+Flash is on by default, and you can turn it off by passing `false` to `GiniConfiguration.shared.flashOnByDefault`.
 
 ### Camera access TODO
 
- ### QR Code Scanning
+### QR Code Scanning
 
 When a supported QR code is detected with valid payment data, the QR Code will be processed automatically without any further user interaction.
 The QR Code scanning may be triggered directly without the need to analyze the document.
@@ -177,10 +177,6 @@ You can also disable the supported formats help screen by passing `false` to
 
 <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F1985HMF83siAXmysSn3dC6%2FiOS-Gini-Capture-SDK-3.0.0-UI-Customisation%3Fnode-id%3D263%253A6989%26t%3DcRAvcUKVlwGtGpuh-1" allowfullscreen></iframe>
 
-# Error screen
-
-Error screens can be customized only by the general customization options by overriding colors, assets and translations. 
-It also supports bottom navigation, where the default implementation has a simple back button. 
-More information in the [customization guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta02/customization-guide.html)
+## Error screen
 
 <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F1985HMF83siAXmysSn3dC6%2FiOS-Gini-Capture-SDK-3.0.0-UI-Customisation%3Fnode-id%3D263%253A6858%26t%3DcRAvcUKVlwGtGpuh-1" allowfullscreen></iframe>
