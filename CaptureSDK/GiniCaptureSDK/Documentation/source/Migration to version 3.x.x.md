@@ -295,7 +295,7 @@ The new error screen gives options to retake photos or enter details manually an
 You can show a bottom navigation bar by passing true to `GiniConfiguration.shared.bottomNavigationBarEnabled`. There is a default implementation, but you can also use
 your own by implementing the `ErrorBottomNavigationBarAdapter` interface and passing it to `GiniConfiguration.shared.errorNavigationBarBottomAdapter`.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta02/customization-guide.html#error-screen).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta03/customization-guide.html#error-screen).
 
 #### Option to enter details manually
 
