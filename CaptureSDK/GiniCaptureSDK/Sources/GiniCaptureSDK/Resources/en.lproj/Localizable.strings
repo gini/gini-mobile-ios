@@ -83,6 +83,7 @@
 are also supported";
 "ginicapture.review.documentImageTitle" = "Document";
 "ginicapture.review.unknownError"       = "An unknown error has occurred on the review screen";
+"ginicapture.review.delete"             = "Delete page";
 
 "ginicapture.analysis.screenTitle" = "Review";
 "ginicapture.analysis.loadingText" = "Analyzing documents";
