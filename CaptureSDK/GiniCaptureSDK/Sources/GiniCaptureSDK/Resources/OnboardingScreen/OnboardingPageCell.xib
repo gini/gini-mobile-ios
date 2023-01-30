@@ -26,7 +26,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="yk8-vJ-MWn">
                                 <rect key="frame" x="63.5" y="381.5" width="284" height="85.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flat paper within the frame" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4m8-UH-fux">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flat paper within the frame" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4m8-UH-fux">
                                         <rect key="frame" x="0.0" y="0.0" width="284" height="33"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="33" id="gYd-cQ-4Xr"/>
@@ -35,7 +35,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" text="Ensure that the document is flat, and positioned within the frame" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1HY-bp-k5Q">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" text="Ensure that the document is flat, and positioned within the frame" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1HY-bp-k5Q">
                                         <rect key="frame" x="0.0" y="43" width="284" height="42.5"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="lessThanOrEqual" constant="320" id="cMz-tW-jPe"/>
@@ -57,10 +57,11 @@
                             <constraint firstItem="yk8-vJ-MWn" firstAttribute="top" secondItem="SQ0-nC-yBn" secondAttribute="bottom" constant="40" id="0mP-NE-PjX"/>
                             <constraint firstItem="yk8-vJ-MWn" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="79Q-UV-WoH" secondAttribute="leading" constant="50" id="Ovf-e4-RBb"/>
                             <constraint firstItem="yk8-vJ-MWn" firstAttribute="centerX" secondItem="SQ0-nC-yBn" secondAttribute="centerX" id="S9t-El-Yi9"/>
-                            <constraint firstItem="SQ0-nC-yBn" firstAttribute="top" secondItem="79Q-UV-WoH" secondAttribute="top" constant="70" id="UWe-eJ-PnH">
+                            <constraint firstItem="SQ0-nC-yBn" firstAttribute="top" secondItem="79Q-UV-WoH" secondAttribute="top" priority="750" constant="70" id="UWe-eJ-PnH">
                                 <variation key="heightClass=regular-widthClass=regular" constant="85"/>
                             </constraint>
                             <constraint firstItem="SQ0-nC-yBn" firstAttribute="centerX" secondItem="79Q-UV-WoH" secondAttribute="centerX" id="aoh-R1-6wo"/>
+                            <constraint firstItem="SQ0-nC-yBn" firstAttribute="top" relation="greaterThanOrEqual" secondItem="79Q-UV-WoH" secondAttribute="top" constant="8" id="vwS-rf-k4I"/>
                             <constraint firstItem="SQ0-nC-yBn" firstAttribute="leading" secondItem="79Q-UV-WoH" secondAttribute="leading" constant="105" id="ysJ-xn-Kju">
                                 <variation key="widthClass=compact" constant="70"/>
                                 <variation key="heightClass=regular-widthClass=regular" constant="105"/>

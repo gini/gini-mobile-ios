@@ -10,8 +10,8 @@ import UIKit
 class OnboardingPageCell: UICollectionViewCell {
 
     @IBOutlet weak var iconView: OnboardingImageView!
-    @IBOutlet weak var title: UILabel!
-    @IBOutlet weak var fullText: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
 
     @IBOutlet weak var topConstraint: NSLayoutConstraint!
 
@@ -30,13 +30,15 @@ class OnboardingPageCell: UICollectionViewCell {
     }
 
     private func setupView() {
-        title.textColor = GiniColor(light: UIColor.GiniCapture.dark1,
-                                    dark: UIColor.GiniCapture.light1).uiColor()
-        title.font = GiniConfiguration.shared.textStyleFonts[.title2Bold]
+        titleLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark1,
+                                         dark: UIColor.GiniCapture.light1).uiColor()
+        titleLabel.font = GiniConfiguration.shared.textStyleFonts[.title2Bold]
+        titleLabel.isAccessibilityElement = true
 
-        fullText.textColor = GiniColor(light: UIColor.GiniCapture.dark6,
-                                       dark: UIColor.GiniCapture.dark7).uiColor()
-        fullText.font = GiniConfiguration.shared.textStyleFonts[.title2Bold]
+        descriptionLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark6,
+                                               dark: UIColor.GiniCapture.dark7).uiColor()
+        descriptionLabel.font = GiniConfiguration.shared.textStyleFonts[.title2Bold]
+        descriptionLabel.isAccessibilityElement = true
 
     }
 
@@ -72,7 +74,7 @@ class OnboardingPageCell: UICollectionViewCell {
         iconView.illustrationAdapter = nil
         iconView.icon = nil
         iconView.subviews.forEach({ $0.removeFromSuperview() })
-        title.text = ""
-        fullText.text = ""
+        titleLabel.text = ""
+        descriptionLabel.text = ""
     }
 }
