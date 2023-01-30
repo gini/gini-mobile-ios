@@ -30,14 +30,14 @@ class OnboardingPageCell: UICollectionViewCell {
     }
 
     private func setupView() {
-        title.textColor = GiniColor(
-            light: UIColor.GiniCapture.dark1,
-            dark: UIColor.GiniCapture.light1
-        ).uiColor()
-        fullText.textColor = GiniColor(
-            light: UIColor.GiniCapture.dark6,
-            dark: UIColor.GiniCapture.dark7
-        ).uiColor()
+        title.textColor = GiniColor(light: UIColor.GiniCapture.dark1,
+                                    dark: UIColor.GiniCapture.light1).uiColor()
+        title.font = GiniConfiguration.shared.textStyleFonts[.title2Bold]
+
+        fullText.textColor = GiniColor(light: UIColor.GiniCapture.dark6,
+                                       dark: UIColor.GiniCapture.dark7).uiColor()
+        fullText.font = GiniConfiguration.shared.textStyleFonts[.title2Bold]
+
     }
 
     private func calculateIconMargin() -> CGFloat {
