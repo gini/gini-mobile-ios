@@ -36,7 +36,7 @@
                     <rect key="frame" x="287" y="1033" width="170" height="50"/>
                     <color key="backgroundColor" red="0.058291204270000001" green="0.61419159170000004" blue="0.86277651789999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="170" id="HtE-go-UrU"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="170" id="HtE-go-UrU"/>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="bUG-L5-vie"/>
                     </constraints>
                     <state key="normal" title="Button"/>
@@ -60,6 +60,7 @@
                 <constraint firstAttribute="trailing" secondItem="fzW-pg-Fy6" secondAttribute="trailing" id="nNa-Yj-GPz"/>
                 <constraint firstItem="r9F-HC-Y7G" firstAttribute="leading" secondItem="Nfe-ie-kjh" secondAttribute="leading" id="qgS-df-Pfj"/>
                 <constraint firstAttribute="trailing" secondItem="r9F-HC-Y7G" secondAttribute="trailing" id="rKq-1S-lwz"/>
+                <constraint firstItem="dqe-Kh-XtC" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="FpJ-cd-hgL" secondAttribute="leading" constant="16" id="rdq-uq-m7p"/>
                 <constraint firstAttribute="bottom" secondItem="dqe-Kh-XtC" secondAttribute="bottom" constant="50" id="tai-nW-c9d"/>
             </constraints>
             <point key="canvasLocation" x="-733.84615384615381" y="-1819.905213270142"/>

@@ -14,15 +14,7 @@ class OnboardingPageCell: UICollectionViewCell {
     @IBOutlet weak var descriptionLabel: UILabel!
 
     @IBOutlet weak var topConstraint: NSLayoutConstraint!
-
-    @IBOutlet weak var iconMargin: NSLayoutConstraint!
-
-    private enum Constants: CGFloat {
-        case topMargin = 85
-        case topIPadMargin = 150
-        case iconMargin = 30
-        case maxIconMargin = 58
-    }
+    @IBOutlet weak var iconBottomConstraint: NSLayoutConstraint!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -45,22 +37,23 @@ class OnboardingPageCell: UICollectionViewCell {
     private func calculateIconMargin() -> CGFloat {
         let largestHeightDiff: CGFloat = 265 // 932 PRO MAX - 667 SE
         let scaleFactor = (UIScreen.main.bounds.size.height - 667) / largestHeightDiff
-        let diff = Constants.maxIconMargin.rawValue - Constants.iconMargin.rawValue
-        return Constants.iconMargin.rawValue + diff * min(scaleFactor, 1)
+        let diff = Constants.maxIconPadding - Constants.iconPadding
+
+        return Constants.iconPadding + diff * min(scaleFactor, 1)
     }
 
     override func layoutSubviews() {
         if UIDevice.current.isIpad {
             if UIApplication.shared.statusBarOrientation.isLandscape {
-                topConstraint.constant = Constants.topMargin.rawValue
-                iconMargin.constant = calculateIconMargin()
+                topConstraint.constant = Constants.compactTopPadding
+                iconBottomConstraint.constant = calculateIconMargin()
             } else {
-                topConstraint.constant = Constants.topIPadMargin.rawValue
-                iconMargin.constant = Constants.maxIconMargin.rawValue
+                topConstraint.constant = Constants.regularTopPadding
+                iconBottomConstraint.constant = Constants.maxIconPadding
             }
         } else {
-            topConstraint.constant = Constants.topMargin.rawValue
-            iconMargin.constant = calculateIconMargin()
+            topConstraint.constant = Constants.compactTopPadding
+            iconBottomConstraint.constant = calculateIconMargin()
         }
         super.layoutSubviews()
     }
@@ -76,5 +69,14 @@ class OnboardingPageCell: UICollectionViewCell {
         iconView.subviews.forEach({ $0.removeFromSuperview() })
         titleLabel.text = ""
         descriptionLabel.text = ""
+    }
+}
+
+private extension OnboardingPageCell {
+    enum Constants {
+        static let compactTopPadding: CGFloat = 85
+        static let regularTopPadding: CGFloat = 150
+        static let iconPadding: CGFloat = 30
+        static let maxIconPadding: CGFloat = 58
     }
 }

@@ -102,8 +102,8 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         }
         cell.iconView.setupView()
 
-        cell.fullText.text = item.description
-        cell.title.text = item.title
+        cell.descriptionLabel.text = item.description
+        cell.titleLabel.text = item.title
     }
 
     func collectionView(_ collectionView: UICollectionView,
