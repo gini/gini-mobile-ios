@@ -52,6 +52,7 @@ class OnboardingViewController: UIViewController {
                                                              ).uiColor()
         pageControl.addTarget(self, action: #selector(self.pageControlSelectionAction(_:)), for: .valueChanged)
         pageControl.numberOfPages = dataSource.itemSections.count
+        pageControl.isAccessibilityElement = true
     }
 
     private func setupView() {
@@ -83,6 +84,8 @@ class OnboardingViewController: UIViewController {
 
     private func configureBasicNavigation() {
         nextButton.titleLabel?.font = configuration.textStyleFonts[.subheadline]
+        nextButton.accessibilityValue = NSLocalizedStringPreferredFormat("ginicapture.onboarding.next",
+                                                                         comment: "Next button")
         nextButton.configure(with: GiniConfiguration.shared.primaryButtonConfiguration)
         nextButton.addTarget(self, action: #selector(nextPage), for: .touchUpInside)
         navigationItem.rightBarButtonItem = skipButton
@@ -176,6 +179,9 @@ extension OnboardingViewController: OnboardingScreen {
                     nextButton.setTitle(NSLocalizedStringPreferredFormat(
                         "ginicapture.onboarding.getstarted",
                         comment: "Get Started button"), for: .normal)
+                    nextButton.accessibilityValue = NSLocalizedStringPreferredFormat(
+                                                    "ginicapture.onboarding.getstarted",
+                                                    comment: "Get Started button")
                 }
             }
         default:
