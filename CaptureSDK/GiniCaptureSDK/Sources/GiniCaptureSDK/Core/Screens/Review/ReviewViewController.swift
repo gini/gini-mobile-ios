@@ -245,7 +245,8 @@ public final class ReviewViewController: UIViewController {
         tipLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
         tipLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
         tipLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-        tipLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.titleHeight)]
+        tipLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.titleHeight),
+        tipLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.maxTitleHeight)]
 
     private lazy var collectionViewConstraints: [NSLayoutConstraint] = [
         collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: Constants.padding),
@@ -263,7 +264,7 @@ public final class ReviewViewController: UIViewController {
         processButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.width),
         processButton.leadingAnchor.constraint(equalTo: buttonContainer.leadingAnchor),
         processButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.height),
-        processButton.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor),
+        processButton.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor, constant: -8),
         processButton.trailingAnchor.constraint(lessThanOrEqualTo: buttonContainer.trailingAnchor)]
 
     private lazy var addPagesButtonConstraints: [NSLayoutConstraint] =  [
@@ -275,8 +276,9 @@ public final class ReviewViewController: UIViewController {
     private lazy var buttonContainerConstraints: [NSLayoutConstraint] = [
         buttonContainer.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: Constants.padding * 2),
         buttonContainer.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-        buttonContainer.bottomAnchor.constraint(greaterThanOrEqualTo: contentView.bottomAnchor,
-                                              constant: -Constants.bottomPadding)
+        buttonContainer.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor,
+                                              constant: -Constants.bottomPadding),
+        buttonContainer.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor)
     ]
 
     // MARK: - Init
@@ -526,7 +528,7 @@ extension ReviewViewController {
             }
         } else {
             NSLayoutConstraint.activate([
-                pageControl.bottomAnchor.constraint(equalTo: view.bottomAnchor,
+                pageControl.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
                                                     constant: -Constants.pageControlBottomPadding),
                 collectionView.bottomAnchor.constraint(greaterThanOrEqualTo: pageControl.topAnchor,
                                                        constant: -Constants.padding * 2)
@@ -582,20 +584,12 @@ extension ReviewViewController {
             return CGSize(width: width, height: height)
         } else {
             if view.safeAreaInsets.bottom > 0 {
-                var height = self.view.bounds.height * 0.6
-                if giniConfiguration.bottomNavigationBarEnabled {
-                    height -= Constants.bottomNavigationBarHeight
-                    height -= Constants.padding
-                }
+                let height = self.view.bounds.height * 0.6
                 let width = height / a4Ratio
                 let cellSize = CGSize(width: width, height: height)
                 return cellSize
             } else {
-                var height = self.view.bounds.height * 0.5
-                if giniConfiguration.bottomNavigationBarEnabled {
-                    height -= Constants.bottomNavigationBarHeight
-                    height -= Constants.padding
-                }
+                let height = self.view.bounds.height * 0.5
                 let width = height / a4Ratio
                 let cellSize = CGSize(width: width, height: height)
                 return cellSize
@@ -711,6 +705,7 @@ extension ReviewViewController {
         static let pageControlBottomPadding: CGFloat = 130
         static let buttonSize: CGSize = CGSize(width: 126, height: 50)
         static let titleHeight: CGFloat = 18
+        static let maxTitleHeight: CGFloat = 100
         static let bottomNavigationBarHeight: CGFloat = 114
     }
 }
