@@ -18,7 +18,7 @@ jobs:
       - name: Setup swift-create-xcframework 
         run: |
           /usr/local/bin/brew install mint
-          /usr/local/bin/mint install unsignedapps/swift-create-xcframework@v2.2.0
+          /usr/local/bin/mint install unsignedapps/swift-create-xcframework@v2.3.0
 
       - name: GiniBankSDKPinning Project File
         run: |
