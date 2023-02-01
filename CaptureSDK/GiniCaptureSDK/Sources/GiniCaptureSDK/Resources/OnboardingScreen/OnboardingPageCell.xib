@@ -30,9 +30,10 @@
                                                 <rect key="frame" x="16" y="8" width="251" height="256.5"/>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flat paper within the frame" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4m8-UH-fux">
-                                                <rect key="frame" x="0.0" y="280.5" width="283" height="33"/>
+                                                <rect key="frame" x="40" y="280.5" width="203.5" height="33"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="33" id="gYd-cQ-4Xr"/>
+                                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="340" id="sYN-4q-OLf"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <nil key="textColor"/>
@@ -40,20 +41,25 @@
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" text="Ensure that the document is flat, and positioned within the frame" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1HY-bp-k5Q">
                                                 <rect key="frame" x="0.0" y="321.5" width="283" height="42.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="340" id="fuK-nP-Ydc"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="1HY-bp-k5Q" firstAttribute="leading" secondItem="3ap-VT-XGC" secondAttribute="leading" id="7RW-if-UrP"/>
+                                            <constraint firstItem="1HY-bp-k5Q" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="3ap-VT-XGC" secondAttribute="leading" id="7RW-if-UrP"/>
                                             <constraint firstItem="1HY-bp-k5Q" firstAttribute="top" secondItem="4m8-UH-fux" secondAttribute="bottom" constant="8" id="Odx-G5-cLP"/>
-                                            <constraint firstItem="4m8-UH-fux" firstAttribute="leading" secondItem="3ap-VT-XGC" secondAttribute="leading" id="VEN-A7-nd4"/>
+                                            <constraint firstItem="4m8-UH-fux" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="3ap-VT-XGC" secondAttribute="leading" id="VEN-A7-nd4"/>
                                             <constraint firstItem="SQ0-nC-yBn" firstAttribute="leading" secondItem="3ap-VT-XGC" secondAttribute="leading" constant="16" id="ZHW-JJ-G0R"/>
                                             <constraint firstAttribute="bottom" secondItem="1HY-bp-k5Q" secondAttribute="bottom" constant="16" id="cCk-BZ-vu9"/>
-                                            <constraint firstAttribute="trailing" secondItem="4m8-UH-fux" secondAttribute="trailing" id="e3a-QA-NTk"/>
-                                            <constraint firstAttribute="trailing" secondItem="1HY-bp-k5Q" secondAttribute="trailing" id="eU5-6N-ABL"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="4m8-UH-fux" secondAttribute="trailing" id="e3a-QA-NTk"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="1HY-bp-k5Q" secondAttribute="trailing" id="eU5-6N-ABL"/>
+                                            <constraint firstItem="4m8-UH-fux" firstAttribute="centerX" secondItem="3ap-VT-XGC" secondAttribute="centerX" id="fMf-IZ-F4T"/>
                                             <constraint firstItem="SQ0-nC-yBn" firstAttribute="top" secondItem="3ap-VT-XGC" secondAttribute="top" priority="250" id="jRA-tx-krK"/>
+                                            <constraint firstItem="1HY-bp-k5Q" firstAttribute="centerX" secondItem="3ap-VT-XGC" secondAttribute="centerX" id="l8g-z5-BCj"/>
                                             <constraint firstItem="SQ0-nC-yBn" firstAttribute="top" relation="greaterThanOrEqual" secondItem="3ap-VT-XGC" secondAttribute="top" constant="8" id="mL3-fS-QfV"/>
                                             <constraint firstItem="4m8-UH-fux" firstAttribute="top" secondItem="SQ0-nC-yBn" secondAttribute="bottom" constant="16" id="qse-KH-b5p"/>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="qv1-Zu-2Ad"/>
