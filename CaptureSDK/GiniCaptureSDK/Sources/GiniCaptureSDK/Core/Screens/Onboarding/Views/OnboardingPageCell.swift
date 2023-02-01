@@ -13,8 +13,8 @@ class OnboardingPageCell: UICollectionViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
 
-    @IBOutlet weak var topConstraint: NSLayoutConstraint!
     @IBOutlet weak var iconBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var topConstraint: NSLayoutConstraint!
 
     override func awakeFromNib() {
         super.awakeFromNib()
