@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>GiniBankNetworkingScreenApiCoordinator Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/GiniBankNetworkingScreenApiCoordinator" class="dashAnchor"></a>
+
+    <a title="GiniBankNetworkingScreenApiCoordinator Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+        <img class="logo-icon" src="../img/logo.png"/>
+    
+        </a>
+        
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/gini/gini-mobile-ios.git">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">GiniBankSDK Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      GiniBankNetworkingScreenApiCoordinator Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Documentation.html">Documentation</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../installation.html">Installation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../features.html">Features</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../integration.html">Integration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../license.html">License</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Guides.html">Other Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../customization-guide.html">Customization guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../error-logging-guide.html">Error logging guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../event-tracking-guide.html">Event tracking guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../import-pdfs-and-images-guide.html">Import PDFs and images guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../migration-from-gini-pay-bank-sdk.html">Migration from Gini Pay Bank SDK</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../migration-from-gini-vision-library.html">Migration from Gini Vision Library</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../open-with-guide.html">Open with guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../qr-code-scanning-guide.html">QR Code scanning guide</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DigitalInvoiceViewController.html">DigitalInvoiceViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniBank.html">GiniBank</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniBankConfiguration.html">GiniBankConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniBankNetworkingScreenApiCoordinator.html">GiniBankNetworkingScreenApiCoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ReturnAssistantConfiguration.html">ReturnAssistantConfiguration</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Global Variables.html">Other Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Global%20Variables.html#/s:11GiniBankSDK0aB10SDKVersionSSvp">GiniBankSDKVersion</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Enumerations.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniBankError.html">GiniBankError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UIFont.html">UIFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UIFont/TextStyle.html">– TextStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UITextField.html">UITextField</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Functions.html">Other Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Functions.html#/s:11GiniBankSDK23receivePaymentRequestId3url10completiony10Foundation3URLV_ys6ResultOySSAA0aB5ErrorOGctF">receivePaymentRequestId(url:completion:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DigitalInvoiceViewControllerDelegate.html">DigitalInvoiceViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Protocols.html#/s:11GiniBankSDK0aB16AnalysisDelegateP">GiniBankAnalysisDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Structures.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/DigitalInvoice.html">DigitalInvoice</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentInfo.html">PaymentInfo</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>GiniBankNetworkingScreenApiCoordinator</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">class</span> <span class="kt">GiniBankNetworkingScreenApiCoordinator</span> <span class="p">:</span> <span class="kt">GiniScreenAPICoordinator</span><span class="p">,</span> <span class="kt">GiniCaptureDelegate</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">GiniBankNetworkingScreenApiCoordinator</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DigitalInvoiceViewControllerDelegate.html">DigitalInvoiceViewControllerDelegate</a></span></code></pre>
+
+                </div>
+              </div>
+            <p>Undocumented</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/GiniCaptureDelegate"></a>
+                <a name="//apple_ref/swift/Section/GiniCaptureDelegate" class="dashAnchor"></a>
+                <a href="#/GiniCaptureDelegate">
+                  <h3 class="section-name">GiniCaptureDelegate</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCaptureWithDocument:networkDelegate:"></a>
+                    <a name="//apple_ref/swift/Method/didCapture(document:networkDelegate:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCaptureWithDocument:networkDelegate:">didCapture(document:networkDelegate:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didCapture</span><span class="p">(</span><span class="nv">document</span><span class="p">:</span> <span class="kt">GiniCaptureDocument</span><span class="p">,</span> <span class="nv">networkDelegate</span><span class="p">:</span> <span class="kt">GiniCaptureNetworkDelegate</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didReviewWithDocuments:networkDelegate:"></a>
+                    <a name="//apple_ref/swift/Method/didReview(documents:networkDelegate:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didReviewWithDocuments:networkDelegate:">didReview(documents:networkDelegate:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didReview</span><span class="p">(</span><span class="nv">documents</span><span class="p">:</span> <span class="p">[</span><span class="kt">GiniCaptureDocument</span><span class="p">],</span> <span class="nv">networkDelegate</span><span class="p">:</span> <span class="kt">GiniCaptureNetworkDelegate</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCancelCapturing"></a>
+                    <a name="//apple_ref/swift/Method/didCancelCapturing()" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCancelCapturing">didCancelCapturing()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didCancelCapturing</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCancelReviewFor:"></a>
+                    <a name="//apple_ref/swift/Method/didCancelReview(for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCancelReviewFor:">didCancelReview(for:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didCancelReview</span><span class="p">(</span><span class="k">for</span> <span class="nv">document</span><span class="p">:</span> <span class="kt">GiniCaptureDocument</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCancelAnalysis"></a>
+                    <a name="//apple_ref/swift/Method/didCancelAnalysis()" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didCancelAnalysis">didCancelAnalysis()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didCancelAnalysis</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11GiniBankSDK0aB30NetworkingScreenApiCoordinatorC6client15resultsDelegate13configuration16documentMetadata3api08trackingJ03libAC0aB10APILibrary6ClientV_0a7CaptureC00as7ResultsJ0_pAA0aB13ConfigurationCAK8DocumentV0M0VSgAK9APIDomainOAN0as8TrackingJ0_pSgAK0aB3APICtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(client:resultsDelegate:configuration:documentMetadata:api:trackingDelegate:lib:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11GiniBankSDK0aB30NetworkingScreenApiCoordinatorC6client15resultsDelegate13configuration16documentMetadata3api08trackingJ03libAC0aB10APILibrary6ClientV_0a7CaptureC00as7ResultsJ0_pAA0aB13ConfigurationCAK8DocumentV0M0VSgAK9APIDomainOAN0as8TrackingJ0_pSgAK0aB3APICtcfc">init(client:resultsDelegate:configuration:documentMetadata:api:trackingDelegate:lib:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="kt">Client</span><span class="p">,</span>
+     <span class="nv">resultsDelegate</span><span class="p">:</span> <span class="kt">GiniCaptureResultsDelegate</span><span class="p">,</span>
+     <span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniBankConfiguration.html">GiniBankConfiguration</a></span><span class="p">,</span>
+     <span class="nv">documentMetadata</span><span class="p">:</span> <span class="kt">Document</span><span class="o">.</span><span class="kt">Metadata</span><span class="p">?,</span>
+     <span class="nv">api</span><span class="p">:</span> <span class="kt">APIDomain</span><span class="p">,</span>
+     <span class="nv">trackingDelegate</span><span class="p">:</span> <span class="kt">GiniCaptureTrackingDelegate</span><span class="p">?,</span>
+     <span class="nv">lib</span><span class="p">:</span> <span class="kt">GiniBankAPI</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11GiniBankSDK0aB30NetworkingScreenApiCoordinatorC15resultsDelegate13configuration16documentMetadata08trackingI021captureNetworkServiceAC0a7CaptureC00aq7ResultsI0_p_AA0aB13ConfigurationC0aB10APILibrary8DocumentV0L0VSgAI0aq8TrackingI0_pSgAI0aqoP0_ptcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(resultsDelegate:configuration:documentMetadata:trackingDelegate:captureNetworkService:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11GiniBankSDK0aB30NetworkingScreenApiCoordinatorC15resultsDelegate13configuration16documentMetadata08trackingI021captureNetworkServiceAC0a7CaptureC00aq7ResultsI0_p_AA0aB13ConfigurationC0aB10APILibrary8DocumentV0L0VSgAI0aq8TrackingI0_pSgAI0aqoP0_ptcfc">init(resultsDelegate:configuration:documentMetadata:trackingDelegate:captureNetworkService:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">resultsDelegate</span><span class="p">:</span> <span class="kt">GiniCaptureResultsDelegate</span><span class="p">,</span>
+     <span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Classes/GiniBankConfiguration.html">GiniBankConfiguration</a></span><span class="p">,</span>
+     <span class="nv">documentMetadata</span><span class="p">:</span> <span class="kt">Document</span><span class="o">.</span><span class="kt">Metadata</span><span class="p">?,</span>
+     <span class="nv">trackingDelegate</span><span class="p">:</span> <span class="kt">GiniCaptureTrackingDelegate</span><span class="p">?,</span>
+     <span class="nv">captureNetworkService</span><span class="p">:</span> <span class="kt">GiniCaptureNetworkService</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didPressEnterManually"></a>
+                    <a name="//apple_ref/swift/Method/didPressEnterManually()" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureDelegate(im)didPressEnterManually">didPressEnterManually()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didPressEnterManually</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11GiniBankSDK0aB30NetworkingScreenApiCoordinatorC26deliverWithReturnAssistant6result16analysisDelegatey0aB10APILibrary16ExtractionResultC_0a7CaptureC008AnalysisN0_ptF"></a>
+                    <a name="//apple_ref/swift/Method/deliverWithReturnAssistant(result:analysisDelegate:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11GiniBankSDK0aB30NetworkingScreenApiCoordinatorC26deliverWithReturnAssistant6result16analysisDelegatey0aB10APILibrary16ExtractionResultC_0a7CaptureC008AnalysisN0_ptF">deliverWithReturnAssistant(result:analysisDelegate:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">deliverWithReturnAssistant</span><span class="p">(</span><span class="nv">result</span><span class="p">:</span> <span class="kt">ExtractionResult</span><span class="p">,</span> <span class="nv">analysisDelegate</span><span class="p">:</span> <span class="kt">AnalysisDelegate</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11GiniBankSDK0aB30NetworkingScreenApiCoordinatorC018showDigitalInvoiceE007digitalJ016analysisDelegateyAA0iJ0V_0a7CaptureC008AnalysisM0_ptF"></a>
+                    <a name="//apple_ref/swift/Method/showDigitalInvoiceScreen(digitalInvoice:analysisDelegate:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11GiniBankSDK0aB30NetworkingScreenApiCoordinatorC018showDigitalInvoiceE007digitalJ016analysisDelegateyAA0iJ0V_0a7CaptureC008AnalysisM0_ptF">showDigitalInvoiceScreen(digitalInvoice:analysisDelegate:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">showDigitalInvoiceScreen</span><span class="p">(</span><span class="nv">digitalInvoice</span><span class="p">:</span> <span class="kt"><a href="../Structs/DigitalInvoice.html">DigitalInvoice</a></span><span class="p">,</span> <span class="nv">analysisDelegate</span><span class="p">:</span> <span class="kt">AnalysisDelegate</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11GiniBankSDK0aB30NetworkingScreenApiCoordinatorC32startAnalysisWithReturnAssistant15networkDelegatey0a7CaptureC00iN0_AF06UploadN0p_tF"></a>
+                    <a name="//apple_ref/swift/Method/startAnalysisWithReturnAssistant(networkDelegate:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11GiniBankSDK0aB30NetworkingScreenApiCoordinatorC32startAnalysisWithReturnAssistant15networkDelegatey0a7CaptureC00iN0_AF06UploadN0p_tF">startAnalysisWithReturnAssistant(networkDelegate:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">startAnalysisWithReturnAssistant</span><span class="p">(</span><span class="nv">networkDelegate</span><span class="p">:</span> <span class="kt">GiniCaptureNetworkDelegate</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11GiniBankSDK36DigitalInvoiceViewControllerDelegateP9didFinish04viewG07invoiceyAA0defG0C_AA0dE0VtF"></a>
+                    <a name="//apple_ref/swift/Method/didFinish(viewController:invoice:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11GiniBankSDK36DigitalInvoiceViewControllerDelegateP9didFinish04viewG07invoiceyAA0defG0C_AA0dE0VtF">didFinish(viewController:invoice:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didFinish</span><span class="p">(</span><span class="nv">viewController</span><span class="p">:</span> <span class="kt"><a href="../Classes/DigitalInvoiceViewController.html">DigitalInvoiceViewController</a></span><span class="p">,</span> <span class="nv">invoice</span><span class="p">:</span> <span class="kt"><a href="../Structs/DigitalInvoice.html">DigitalInvoice</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2023 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2023-02-01)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>

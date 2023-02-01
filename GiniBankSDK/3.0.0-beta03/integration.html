@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Integration  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+    <script src="js/lunr.min.js" defer></script>
+    <script src="js/typeahead.jquery.js" defer></script>
+    <script src="js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+
+    <a title="Integration  Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="index.html">
+        <img class="logo-icon" src="img/logo.png"/>
+    
+        </a>
+        
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/gini/gini-mobile-ios.git">
+            <img class="header-icon" src="img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="index.html">GiniBankSDK Reference</a>
+      <img class="carat" src="img/carat.png" />
+      Integration  Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Documentation.html">Documentation</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="installation.html">Installation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="features.html">Features</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="integration.html">Integration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="license.html">License</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Guides.html">Other Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="customization-guide.html">Customization guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="error-logging-guide.html">Error logging guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="event-tracking-guide.html">Event tracking guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="import-pdfs-and-images-guide.html">Import PDFs and images guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="migration-from-gini-pay-bank-sdk.html">Migration from Gini Pay Bank SDK</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="migration-from-gini-vision-library.html">Migration from Gini Vision Library</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="open-with-guide.html">Open with guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="qr-code-scanning-guide.html">QR Code scanning guide</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DigitalInvoiceViewController.html">DigitalInvoiceViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniBank.html">GiniBank</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniBankConfiguration.html">GiniBankConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniBankNetworkingScreenApiCoordinator.html">GiniBankNetworkingScreenApiCoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/ReturnAssistantConfiguration.html">ReturnAssistantConfiguration</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Global Variables.html">Other Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Global%20Variables.html#/s:11GiniBankSDK0aB10SDKVersionSSvp">GiniBankSDKVersion</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Enumerations.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/GiniBankError.html">GiniBankError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UIFont.html">UIFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UIFont/TextStyle.html">– TextStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UITextField.html">UITextField</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Functions.html">Other Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Functions.html#/s:11GiniBankSDK23receivePaymentRequestId3url10completiony10Foundation3URLV_ys6ResultOySSAA0aB5ErrorOGctF">receivePaymentRequestId(url:completion:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/DigitalInvoiceViewControllerDelegate.html">DigitalInvoiceViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Protocols.html#/s:11GiniBankSDK0aB16AnalysisDelegateP">GiniBankAnalysisDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Structures.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/DigitalInvoice.html">DigitalInvoice</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/PaymentInfo.html">PaymentInfo</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            
+            <h1 id='integration' class='heading'>Integration</h1>
+
+<p>Gini Bank provides an information extraction system for analyzing health invoices and transfers them to the iOS banking app, where the payment process will be completed.</p>
+
+<p>The Gini Bank SDK for iOS provides functionality to upload the multipage documents with mobile phones, accurate line item extraction enables the user to to pay the invoice with prefferable payment provider. </p>
+<h1 id='payment-functionality' class='heading'>Payment functionality</h1>
+
+<p><strong>Note</strong> For supporting your banking app as a payment provider you need to register Gini Pay URL scheme in you  in your <code>Info.plist</code> file. Gini Pay URL schemes for specification will be provided by Gini.</p>
+
+<p><br>
+<center><img src="img/definingCustomUrl.png" height="200"/></center>
+</br></p>
+<h2 id='ginibankapi-initialization' class='heading'>GiniBankAPI initialization</h2>
+
+<p>If you want to use a transparent proxy with your own authentication you can specify your own domain and add <code>AlternativeTokenSource</code> protocol implementation:</p>
+<pre class="highlight swift"><code> <span class="k">let</span> <span class="nv">apiLib</span> <span class="o">=</span>  <span class="kt">GiniBankAPI</span><span class="o">.</span><span class="kt">Builder</span><span class="p">(</span><span class="nv">customApiDomain</span><span class="p">:</span> <span class="s">"api.custom.net"</span><span class="p">,</span>
+                                 <span class="nv">alternativeTokenSource</span><span class="p">:</span> <span class="kt">MyAlternativeTokenSource</span><span class="p">)</span>
+                                 <span class="o">.</span><span class="nf">build</span><span class="p">()</span>
+</code></pre>
+
+<p>The token your provide will be added as a bearer token to all api.custom.net requests.</p>
+
+<p>Optionally if you want to use <em>Certificate pinning</em>, provide metadata for the upload process, you can pass both your public key pinning configuration (see <a href="https://github.com/datatheorem/TrustKit">TrustKit repo</a> for more information)</p>
+<pre class="highlight swift"><code>    <span class="k">let</span> <span class="nv">giniApiLib</span> <span class="o">=</span> <span class="kt">GiniBankAPI</span>
+        <span class="o">.</span><span class="kt">Builder</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="kt">Client</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="s">"your-id"</span><span class="p">,</span>
+                                <span class="nv">secret</span><span class="p">:</span> <span class="s">"your-secret"</span><span class="p">,</span>
+                                <span class="nv">domain</span><span class="p">:</span> <span class="s">"your-domain"</span><span class="p">),</span>
+                 <span class="nv">api</span><span class="p">:</span> <span class="o">.</span><span class="k">default</span><span class="p">,</span>
+                 <span class="nv">pinningConfig</span><span class="p">:</span> <span class="n">yourPublicPinningConfig</span><span class="p">)</span>
+        <span class="o">.</span><span class="nf">build</span><span class="p">()</span>
+</code></pre>
+
+<blockquote>
+<p>⚠️  <strong>Important</strong></p>
+
+<ul>
+<li>The document metadata for the upload process is intended to be used for reporting.</li>
+</ul>
+</blockquote>
+<h2 id='ginibank-initialization' class='heading'>GiniBank initialization</h2>
+
+<p>Now that the <code>GiniBankAPI</code> has been initialized, you can initialize <code><a href="Classes/GiniBank.html">GiniBank</a></code></p>
+<pre class="highlight swift"><code> <span class="k">let</span> <span class="nv">bankSDK</span> <span class="o">=</span> <span class="kt">GiniBank</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">giniApiLib</span><span class="p">)</span>
+</code></pre>
+
+<p>and receive the payment requestID in <code>AppDelegate</code>. For handling incoming URL, please use the code snippet below.</p>
+<pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="n">_</span> <span class="nv">app</span><span class="p">:</span> <span class="kt">UIApplication</span><span class="p">,</span>
+                     <span class="kd">open</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span>
+                     <span class="nv">options</span><span class="p">:</span> <span class="p">[</span><span class="kt">UIApplication</span><span class="o">.</span><span class="kt">OpenURLOptionsKey</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[:])</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="p">{</span>
+        <span class="nf">receivePaymentRequestId</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span> <span class="p">{</span> <span class="n">result</span> <span class="k">in</span>
+            <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="kd">let</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="n">requestId</span><span class="p">):</span>
+                <span class="k">self</span><span class="o">.</span><span class="n">paymentRequestId</span> <span class="o">=</span> <span class="n">requestId</span>
+            <span class="k">case</span> <span class="o">.</span><span class="nv">failure</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="kc">true</span>
+    <span class="p">}</span>
+</code></pre>
+<h2 id='fetching-payment-information' class='heading'>Fetching payment information</h2>
+
+<p>After receiving the payment request id you can get fetch the payment information:</p>
+<pre class="highlight swift"><code>
+<span class="n">bankSDK</span><span class="o">.</span><span class="nf">receivePaymentRequest</span><span class="p">(</span><span class="nv">paymentRequestId</span><span class="p">:</span> <span class="n">appDelegate</span><span class="o">.</span><span class="n">paymentRequestId</span><span class="p">)</span>
+
+</code></pre>
+
+<p>The method above returns the completion block with the struct <code>PaymentRequest</code>, which includes recipient, iban, amount and purpose fields.</p>
+<h2 id='resolving-payment-request' class='heading'>Resolving payment request</h2>
+<pre class="highlight swift"><code>
+<span class="n">bankSDK</span><span class="o">.</span><span class="nf">resolvePaymentRequest</span><span class="p">(</span><span class="nv">paymentRequesId</span><span class="p">:</span> <span class="n">appDelegate</span><span class="o">.</span><span class="n">paymentRequestId</span><span class="p">,</span>
+                                 <span class="nv">paymentInfo</span><span class="p">:</span> <span class="n">paymentInfo</span><span class="p">)</span>
+
+</code></pre>
+
+<p>The method above returns the completion block with the struct <code>ResolvedPaymentRequest</code>, which includes <code>requesterUri</code> for redirecting back to the payment requester&rsquo;s app.</p>
+<h2 id='redirecting-back-to-the-payment-requester-app' class='heading'>Redirecting back to the payment requester app</h2>
+
+<p>If the payment request was successfully resolved you can allow the user redirect back to the payment requester app:</p>
+<pre class="highlight swift"><code><span class="n">bankSDK</span><span class="o">.</span><span class="nf">returnBackToBusinessAppHandler</span><span class="p">(</span><span class="nv">resolvedPaymentRequest</span><span class="p">:</span> <span class="n">resolvedPayment</span><span class="p">)</span>
+</code></pre>
+<h2 id='gini-bank-scheme-for-your-app' class='heading'>Gini Bank Scheme For Your App</h2>
+
+<p>In order for your banking app to be available as a payment provider and support the Gini Pay Connect functionality, you need to register a URL scheme for your app known by the Gini Bank API.</p>
+
+<p>You should already have a scheme and host from us. Please contact us in case you don&rsquo;t have them.</p>
+
+<p>The following is an example for the scheme ginipay-bank://
+<br>
+<center><img src="img/Integration guide/BankSchemeExample.png" height="200"/></center>
+</br></p>
+<h2 id='testing' class='heading'>Testing</h2>
+
+<p>An example health app is available under the <a href="https://github.com/gini/gini-mobile-ios/tree/main/HealthSDK/GiniHeathSDKExample">link</a>.</p>
+
+<p>In order to test using our example health app, you need to use development client credentials. This will make sure that the Gini Health SDK uses a payment provider which will open your development banking app.</p>
+
+<p>To inject your Gini Bank API credentials into the health example app you need to fill in your <a href="https://github.com/gini/gini-mobile-ios/blob/main/HealthSDK/GiniHeathSDKExample/HealthSDKExample/Credentials.plist">credentials</a></p>
+
+<p>You also need to replace the <code>ginipay-bank</code> URL scheme in the example health app&rsquo;s <code>LSApplicationQueriesSchemes</code> in the <code>Info.plist</code> with the Gini Pay URL scheme we provided for your banking app.</p>
+<h4 id='end-to-end-testing' class='heading'>End to end testing</h4>
+
+<p>After you&rsquo;ve set the client credentials in the example health app and installed it on your device you can start the payment flow with a document import or by taking a photo.</p>
+
+<p>After following the integration steps above your banking app will be launched and you&rsquo;ll be able to fetch the payment request, show the payment information and resolve the payment after the transaction has been confirmed. At this point, you may redirect back to the health app.</p>
+
+<p>With these steps completed you have verified that your app, the Gini Bank API, the Gini Health SDK and the Gini
+Bank SDK work together correctly.</p>
+<h4 id='testing-in-production' class='heading'>Testing in production</h4>
+
+<p>The steps are the same but instead of the development client credentials, you will need to use production client credentials. This will make sure the Gini Health SDK receives real payment providers including the one which opens your production banking app.</p>
+
+<p>For testing the flow using the example health app you will need to add your banking app&rsquo;s production Gini Pay URL scheme to <code>LSApplicationQueriesSchemes</code> in the example health app&rsquo;s <code>Info.plist</code>. Also please make sure that production client credentials are used before installing it.</p>
+
+<p>You can also test with a real health app. Please contact us in case you don&rsquo;t know which health app(s) to install for starting the payment flow.</p>
+<h1 id='photo-payment-functionality' class='heading'>Photo payment functionality</h1>
+
+<p>The Gini Bank SDK provides two integration options. A <a href="#screen-api">Screen API</a> that is easy to implement and a more complex, but also more flexible <a href="#component-api">Component API</a>. Both APIs can access the complete functionality of the SDK.</p>
+
+<p><strong>Note</strong>: You need to specify the <code>NSCameraUsageDescription</code> key in your <code>Info.plist</code> file. This key is mandatory for all apps since iOS 10 when using the <code>Camera</code> framework.
+Also if you&rsquo;re using the <a href="https://github.com/gini/bank-api-library-ios">Gini Bank API Library</a> you need to add support for &ldquo;Keychain Sharing&rdquo; in your entitlements by adding a <code>keychain-access-groups</code> value to your entitlements file. For more information see the <a href="https://developer.gini.net/gini-mobile-ios/GiniBankAPILibrary/getting-started.html">Integration Guide</a> of the Gini Bank API Library.</p>
+<h2 id='screen-api' class='heading'>Screen API</h2>
+
+<p>The Screen API provides a custom <code>UIViewController</code> object, which can be presented modally. It handles the complete process from showing the onboarding until providing a UI for the analysis.
+The Screen API, in turn, offers two different ways of implementation:</p>
+<h3 id='ui-with-default-networking-recommended' class='heading'>UI with Default Networking (Recommended)</h3>
+
+<p>Using this method you don&rsquo;t need to care about handling the analysis process with the <a href="https://github.com/gini/bank-api-library-ios">Gini Bank API Library</a>, you only need to provide your API credentials and a delegate to get the analysis results.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">GiniBank</span><span class="o">.</span><span class="nf">viewController</span><span class="p">(</span><span class="nv">withClient</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span>
+                                               <span class="nv">configuration</span><span class="p">:</span> <span class="n">giniBankConfiguration</span><span class="p">,</span>
+                                               <span class="nv">resultsDelegate</span><span class="p">:</span> <span class="n">giniCaptureResultsDelegate</span><span class="p">)</span>
+
+<span class="nf">present</span><span class="p">(</span><span class="n">viewController</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+</code></pre>
+
+<p>Optionally if you want to use <em>Certificate pinning</em>, provide metadata for the upload process, you can pass both your public key pinning configuration (see <a href="https://github.com/datatheorem/TrustKit">TrustKit repo</a> for more information), the metadata information and the <em>API type</em> (the <a href="https://pay-api.gini.net/documentation/#gini-pay-api-documentation-v1-0">Gini Pay API</a> is used by default) as follows:</p>
+<h4 id='certificate-pinning' class='heading'>Certificate Pinning</h4>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">TrustKit</span>
+
+<span class="k">let</span> <span class="nv">yourPublicPinningConfig</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="nv">kTSKPinnedDomains</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s">"pay-api.gini.net"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="nv">kTSKPublicKeyHashes</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// old *.gini.net public key</span>
+        <span class="s">"cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU="</span><span class="p">,</span>
+        <span class="c1">// new *.gini.net public key, active from around June 2020</span>
+        <span class="s">"zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo="</span>
+    <span class="p">]],</span>
+    <span class="s">"user.gini.net"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="nv">kTSKPublicKeyHashes</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// old *.gini.net public key</span>
+        <span class="s">"cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU="</span><span class="p">,</span>
+        <span class="c1">// new *.gini.net public key, active from around June 2020</span>
+        <span class="s">"zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo="</span>
+    <span class="p">]],</span>
+<span class="p">]]</span> <span class="k">as</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]</span>
+
+<span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">GiniBank</span><span class="o">.</span><span class="nf">viewController</span><span class="p">(</span><span class="nv">withClient</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span>
+                                               <span class="nv">configuration</span><span class="p">:</span> <span class="n">giniBankConfiguration</span><span class="p">,</span>
+                                               <span class="nv">resultsDelegate</span><span class="p">:</span> <span class="n">giniCaptureResultsDelegate</span><span class="p">,</span>
+                                               <span class="nv">publicKeyPinningConfig</span><span class="p">:</span> <span class="n">yourPublicPinningConfig</span><span class="p">,</span>
+                                               <span class="nv">documentMetadata</span><span class="p">:</span> <span class="n">documentMetadata</span><span class="p">,</span>
+                                               <span class="nv">api</span><span class="p">:</span> <span class="o">.</span><span class="k">default</span><span class="p">)</span>
+
+<span class="nf">present</span><span class="p">(</span><span class="n">viewController</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span><span class="kc">nil</span><span class="p">)</span>
+</code></pre>
+
+<blockquote>
+<p>⚠️  <strong>Important</strong></p>
+
+<ul>
+<li>The document metadata for the upload process is intended to be used for reporting.</li>
+<li>Certification pinning requires iOS 12.</li>
+</ul>
+</blockquote>
+<h4 id='retrieve-the-analyzed-document' class='heading'>Retrieve the Analyzed Document</h4>
+
+<p>The <code>AnalysisResult</code> returned in <code>GiniCaptureResultsDelegate.giniCaptureAnalysisDidFinishWith(result:, sendFeedbackBlock:)</code> 
+will return the analyzed Gini Bank API document in its <code>document</code> property.</p>
+
+<p>When extractions were retrieved without using the Gini Bank API, then the <code>AnalysisResult.document</code> will be <code>nil</code>. For example when the
+extractions came from an EPS QR Code.</p>
+<h3 id='ui-with-custom-networking' class='heading'>UI with Custom Networking</h3>
+
+<p>You can also provide your own networking by implementing the <code>GiniCaptureNetworkService</code> and <code>GiniCaptureResultsDelegate</code> protocols. Pass your instances to the <code>UIViewController</code> initialiser of GiniCapture as shown below:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">GiniBank</span><span class="o">.</span><span class="nf">viewController</span><span class="p">(</span><span class="nv">importedDocuments</span><span class="p">:</span> <span class="n">visionDocuments</span><span class="p">,</span>
+                                            <span class="nv">configuration</span><span class="p">:</span> <span class="n">giniBankConfiguration</span><span class="p">,</span>
+                                            <span class="nv">resultsDelegate</span><span class="p">:</span> <span class="n">resultsDelegate</span><span class="p">,</span>
+                                            <span class="nv">documentMetadata</span><span class="p">:</span> <span class="n">documentMetadata</span><span class="p">,</span>
+                                            <span class="nv">trackingDelegate</span><span class="p">:</span> <span class="n">trackingDelegate</span><span class="p">,</span>
+                                            <span class="nv">networkingService</span><span class="p">:</span> <span class="n">networkingService</span><span class="p">)</span>
+
+
+<span class="nf">present</span><span class="p">(</span><span class="n">viewController</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+</code></pre>
+
+<p>We provide an example implementation <a href="https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/GiniBankSDKExample/Screen%20API/ScreenAPICoordinator.swift#L162">here</a>.</p>
+
+<p>You may also use the <a href="https://github.com/gini/bank-api-library-ios">Gini Bank API Library</a> or implement communication with the Gini Bank API yourself.</p>
+<h3 id='return-assistant' class='heading'>Return Assistant</h3>
+
+<p>The return assistant feature allows your users to view and edit payable items in an invoice. The total amount is
+updated to be the sum of only those items which the user opts to pay.</p>
+
+<p>To enable this feature simply set <code>returnAssistantEnabled</code> to <code>true</code> in the <code><a href="Classes/GiniBankConfiguration.html">GiniBankConfiguration</a></code>: </p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">configuration</span> <span class="o">=</span> <span class="kt">GiniBankConfiguration</span><span class="p">()</span>
+<span class="n">configuration</span><span class="o">.</span><span class="n">returnAssistantEnabled</span> <span class="o">=</span> <span class="kc">true</span>
+</code></pre>
+
+<p>When integrating using the Screen API it is enough to enable the return assistant feature. The Gini Bank SDK will
+show the return assistant automatically if the invoice contained payable items and will update the extractions returned
+to your app according to the user&rsquo;s changes.</p>
+
+<p>The <code>amountToPay</code> extraction is updated to be the sum of the items the user decided to pay. It includes discounts and
+additional charges that might be present on the invoice.</p>
+
+<p>The extractions related to the return assistant are stored in the <code>lineItems</code> field of the <code>AnalysisResult</code>. See the
+Gini Bank API&rsquo;s <a href="https://pay-api.gini.net/documentation/#return-assistant-extractions">documentation</a> to learn about the
+return assistant&rsquo;s extractions.</p>
+<h2 id='component-api' class='heading'>Component API</h2>
+
+<p>The Component API provides a custom <code>UIViewController</code> for each screen. This allows a maximum of flexibility, as the screens can be presented modally, used in a container view or pushed to a navigation view controller. Make sure to add your own navigational elements around the provided views.</p>
+
+<p>For using the <code><a href="Classes/GiniBankConfiguration.html">GiniBankConfiguration</a></code> with the Component API:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">giniBankConfiguration</span> <span class="o">=</span> <span class="kt">GiniBankConfiguration</span><span class="p">()</span>
+<span class="o">.</span>
+<span class="o">.</span>
+<span class="o">.</span>
+<span class="kt">GiniCapture</span><span class="o">.</span><span class="nf">setConfiguration</span><span class="p">(</span><span class="n">giniBankConfiguration</span><span class="o">.</span><span class="nf">captureConfiguration</span><span class="p">())</span>
+</code></pre>
+
+<p>The components that can be found in the library are:</p>
+
+<ul>
+<li><strong>Camera</strong>: The actual camera screen to capture the image of the document, to import a PDF or an image or to scan a QR Code (<code>CameraViewController</code>).</li>
+<li><strong>Review</strong>: Allows to check the quality of one or several images and the ability to delete when multipage is enabled (<code>ReviewViewController</code>).</li>
+<li><strong>Analysis</strong>: Provides a UI for the analysis process of the document by showing the user capture tips when an image is analyzed or the document information when it is a PDF. In both cases an image preview of the document analyzed will be shown (<code>AnalysisViewController</code>).</li>
+<li><strong>Help</strong>: Helpful tutorials indicating how to use the open with feature, which are the supported file types and how to capture better photos for a good analysis (<code>HelpMenuViewController</code>).</li>
+<li><strong>No results</strong>: Shows some suggestions to capture better photos when there are no results after an analysis (<code>ImageAnalysisNoResultsViewController</code>).</li>
+<li><strong>Digital Invoice</strong>: Main screen of the return assistant feature. Allows your users to view and edit payable items in an invoice (<code><a href="Classes/DigitalInvoiceViewController.html">DigitalInvoiceViewController</a></code>).</li>
+</ul>
+<h2 id='sending-feedback' class='heading'>Sending Feedback</h2>
+
+<p>Your app should send feedback for the extractions the Gini Bank API delivered. Feedback should be sent only for the extractions the user has seen and accepted (or corrected).</p>
+
+<p>We provide a sample test case <a href="https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/Tests/ExtractionFeedbackIntegrationTest.swift">here</a> to verify that extraction feedback sending works. 
+You may use it along with the example pdf and json files as a starting point to write your own test case.</p>
+
+<p>The sample test case is based on the Bank API documentation&rsquo;s <a href="https://pay-api.gini.net/documentation/#test-example">recommended steps</a> for testing extraction feedback sending.</p>
+
+<p>For additional information about feedback see the <a href="https://pay-api.gini.net/documentation/#send-feedback-and-get-even-better-extractions-next-time">Gini Bank API documentation</a>.</p>
+<h3 id='default-implementation' class='heading'>Default Implementation</h3>
+
+<p>The example below shows how to correct extractions and send feedback using the default networking implementation:</p>
+
+<p>You should send feedback only for extractions the user has seen and accepted.</p>
+<pre class="highlight swift"><code><span class="k">var</span> <span class="nv">sendFeedbackBlock</span><span class="p">:</span> <span class="p">(([</span><span class="kt">String</span><span class="p">:</span> <span class="kt">Extraction</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span>
+<span class="k">var</span> <span class="nv">extractions</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">Extraction</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="kd">func</span> <span class="nf">giniCaptureAnalysisDidFinishWith</span><span class="p">(</span><span class="nv">result</span><span class="p">:</span> <span class="kt">AnalysisResult</span><span class="p">,</span>
+                           <span class="nv">sendFeedbackBlock</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">([</span><span class="kt">String</span><span class="p">:</span> <span class="kt">Extraction</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">){</span>
+
+    <span class="k">self</span><span class="o">.</span><span class="n">extractions</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">extractions</span>
+    <span class="k">self</span><span class="o">.</span><span class="n">sendFeedbackBlock</span> <span class="o">=</span> <span class="n">sendFeedbackBlock</span>
+    <span class="nf">showResultsScreen</span><span class="p">(</span><span class="nv">results</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">extractions</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="nv">$0</span><span class="o">.</span><span class="n">value</span> <span class="p">})</span>
+<span class="p">}</span>
+<span class="o">.</span>
+<span class="o">.</span>
+<span class="o">.</span>
+<span class="c1">// In this example only the amountToPay was wrong and we can reuse the other extractions.</span>
+<span class="k">let</span> <span class="nv">updatedExtractions</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="n">extractions</span>
+<span class="n">updatedExtractions</span><span class="o">.</span><span class="n">map</span><span class="p">{</span><span class="nv">$0</span><span class="o">.</span><span class="n">value</span><span class="p">}</span><span class="o">.</span><span class="nf">first</span><span class="p">(</span><span class="nv">where</span><span class="p">:</span> <span class="p">{</span><span class="nv">$0</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">"amountToPay"</span><span class="p">})?</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s">"31,25:EUR"</span>
+<span class="nf">sendFeedbackBlock</span><span class="p">(</span><span class="n">updatedExtractions</span><span class="p">)</span>
+
+</code></pre>
+<h3 id='custom-implementation' class='heading'>Custom Implementation</h3>
+
+<p>If you use your own networking implementation and directly communicate with the Gini Bank API then see <a href="https://pay-api.gini.net/documentation/#submitting-feedback-on-extractions">this section</a> in its documentation on how to send feedback.</p>
+
+<p>In case you use the <a href="https://github.com/gini/bank-api-library-ios">Gini Bank API Library</a> then see <a href="https://developer.gini.net/gini-mobile-ios/GiniBankAPILibrary/getting-started.html">this section</a> in its documentation for details.</p>
+
+          </div>
+        </section>
+
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2023 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2023-02-01)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
