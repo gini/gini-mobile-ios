@@ -680,7 +680,9 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
     }
 
     private func setCellStatus(for index: Int, isActive: Bool) {
-        let cell = collectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? ReviewCollectionCell
+        let indexToSet = min(index, pages.count - 1)
+
+        let cell = collectionView.cellForItem(at: IndexPath(row: indexToSet, section: 0)) as? ReviewCollectionCell
         cell?.isActive = isActive
     }
 }
