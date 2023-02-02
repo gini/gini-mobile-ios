@@ -20,15 +20,22 @@ class CameraBottomNavigationBar: UIView {
     func setupView() {
         let configuration = GiniConfiguration.shared
         let textColor = UIColor.GiniCapture.accent1
-        rightButton.setTitle(NSLocalizedStringPreferredFormat(
-            "ginicapture.navigationbar.camera.help",
-            comment: "Camera Help Button"), for: .normal)
-        rightButton.titleLabel?.font = configuration.textStyleFonts[.body]
-        rightButton.setTitleColor(textColor, for: .normal)
+        let font = configuration.textStyleFonts[.body] ?? UIFont.systemFont(ofSize: 20)
+        let rightButtonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.camera.help",
+                                                                comment: "Camera Help Button")
+        let rightAttributedString = NSAttributedString(string: rightButtonTitle,
+                                                       attributes: [NSAttributedString.Key.font: font,
+                                                                    NSAttributedString.Key.foregroundColor: textColor])
+        rightButton.setAttributedTitle(rightAttributedString, for: .normal)
         rightButton.tintColor = GiniColor(light: UIColor.GiniCapture.dark1, dark: UIColor.GiniCapture.light1).uiColor()
-        leftButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.navigationbar.analysis.backToReview",
-                                                             comment: "Review screen title"), for: .normal)
-        leftButton.setTitleColor(textColor, for: .normal)
+
+        let leftButtonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.analysis.backToReview",
+                                                               comment: "Review screen title")
+        let leftAttributedString = NSAttributedString(string: leftButtonTitle,
+                                                      attributes: [NSAttributedString.Key.font: font,
+                                                                   NSAttributedString.Key.foregroundColor: textColor])
+        leftButton.setAttributedTitle(leftAttributedString, for: .normal)
+
         if #available(iOS 15.0, *) {
             leftButton.configuration?.imagePadding = 4
         } else {
