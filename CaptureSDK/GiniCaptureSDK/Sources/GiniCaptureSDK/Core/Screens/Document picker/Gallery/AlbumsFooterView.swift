@@ -15,7 +15,7 @@ final class AlbumsFooterView: UIView {
         let configuration = GiniConfiguration.shared
         label.text = NSLocalizedStringPreferredFormat("ginicapture.albums.footer",
                                                       comment: "Albums footer message")
-        label.font = configuration.customFont.with(weight: .regular, size: 14, style: .footnote)
+        label.font = configuration.textStyleFonts[.footnote]
         label.textColor = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
         label.textAlignment = .center
         label.lineBreakMode = .byWordWrapping
