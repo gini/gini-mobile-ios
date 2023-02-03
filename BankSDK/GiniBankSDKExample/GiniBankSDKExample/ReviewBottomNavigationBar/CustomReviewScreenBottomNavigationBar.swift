@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GiniBankSDK
 
 protocol CustomReviewScreenBottomNavigationBarDelegate: AnyObject {
     func didTapMainButton(on navigationBar: CustomReviewScreenBottomNavigationBar)
@@ -27,7 +28,7 @@ final class CustomReviewScreenBottomNavigationBar: UIView {
         return indicatorView
     }()
 
-    private let configuration = GiniConfiguration.shared
+    private let configuration = GiniBankConfiguration.shared
 
     override func awakeFromNib() {
         super.awakeFromNib()
