@@ -42,6 +42,7 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
                            forCellReuseIdentifier: AlbumsPickerTableViewCell.identifier)
         tableView.layer.cornerRadius = Constants.cornerRadius
         tableView.contentInset = UIEdgeInsets(top: Constants.padding, left: 0, bottom: Constants.padding, right: 0)
+        tableView.separatorColor = GiniColor(light: .GiniCapture.light4, dark: .GiniCapture.dark6).uiColor()
         return tableView
     }()
 
