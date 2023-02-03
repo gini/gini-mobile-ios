@@ -72,9 +72,9 @@ public class GiniCaptureDocumentBuilder: NSObject {
      - Returns: A `GiniCaptureDocument` if `data` has a valid type or `nil` if it hasn't.
      
      */
-    public func build(with data: Data) -> GiniCaptureDocument? {
+    public func build(with data: Data, fileName: String?) -> GiniCaptureDocument? {
         if data.isPDF {
-            return GiniPDFDocument(data: data)
+            return GiniPDFDocument(data: data, fileName: fileName)
         } else if data.isImage {
             return GiniImageDocument(data: data,
                                      imageSource: documentSource,
@@ -100,7 +100,7 @@ public class GiniCaptureDocumentBuilder: NSObject {
                 return
             }
             
-            completion(self.build(with: data))
+            completion(self.build(with: data, fileName: openURL.lastPathComponent))
         }
     }
 }
