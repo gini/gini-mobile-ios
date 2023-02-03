@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GiniCaptureSDK
 
 final public class CustomReviewScreenBottomNavigationBarAdapter: ReviewScreenBottomNavigationBarAdapter {
     private var mainButtonCallback: (() -> Void)?
