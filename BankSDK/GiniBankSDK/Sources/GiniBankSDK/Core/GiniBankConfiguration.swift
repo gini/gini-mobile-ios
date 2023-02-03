@@ -307,13 +307,6 @@ public final class GiniBankConfiguration: NSObject {
      Sets the text of the app name for the Open with tutorial texts.
      */
     @objc public var openWithAppNameForTexts = Bundle.main.appName
-
-    // MARK: Albums screen
-    
-    /**
-     Sets the text color for the select more photos button on the albums screen.
-     */
-    @objc public var albumsScreenSelectMorePhotosTextColor =  GiniColor(light: Colors.Gini.blue, dark: Colors.Gini.blue)
     
     /**
      Sets if the Drag&Drop step should be shown in the "Open with" tutorial.
@@ -1054,7 +1047,6 @@ public final class GiniBankConfiguration: NSObject {
         
         configuration.giniErrorLoggerIsOn = self.giniErrorLoggerIsOn
         configuration.customGiniErrorLoggerDelegate = self.customGiniErrorLoggerDelegate
-        configuration.albumsScreenSelectMorePhotosTextColor = self.albumsScreenSelectMorePhotosTextColor
 
         configuration.customLoadingIndicator = self.customLoadingIndicator
         
