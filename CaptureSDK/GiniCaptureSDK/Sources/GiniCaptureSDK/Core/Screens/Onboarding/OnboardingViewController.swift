@@ -83,7 +83,7 @@ class OnboardingViewController: UIViewController {
     }
 
     private func configureBasicNavigation() {
-        nextButton.titleLabel?.font = configuration.textStyleFonts[.subheadline]
+        nextButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         nextButton.accessibilityValue = NSLocalizedStringPreferredFormat("ginicapture.onboarding.next",
                                                                          comment: "Next button")
         nextButton.configure(with: GiniConfiguration.shared.primaryButtonConfiguration)
