@@ -39,7 +39,7 @@ final class AlbumsPickerTableViewCell: UITableViewCell {
         let albumSubTitle = UILabel(frame: .zero)
         albumSubTitle.translatesAutoresizingMaskIntoConstraints = false
         
-        albumSubTitle.textColor = .GiniCapture.dark7
+        albumSubTitle.textColor = GiniColor(light: .GiniCapture.dark6, dark: .GiniCapture.light6).uiColor()
         
         return albumSubTitle
     }()
