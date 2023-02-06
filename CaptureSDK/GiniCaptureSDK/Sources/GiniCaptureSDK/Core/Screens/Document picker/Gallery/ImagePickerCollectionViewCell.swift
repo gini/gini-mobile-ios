@@ -50,7 +50,7 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
         circleView.translatesAutoresizingMaskIntoConstraints = false
         circleView.layer.borderWidth = 1
         circleView.layer.cornerRadius = self.selectedCircleSize.width / 2
-        circleView.layer.borderColor = UIColor.white.cgColor
+        circleView.layer.borderColor = UIColor.GiniCapture.light1.cgColor
         return circleView
     }()
 
