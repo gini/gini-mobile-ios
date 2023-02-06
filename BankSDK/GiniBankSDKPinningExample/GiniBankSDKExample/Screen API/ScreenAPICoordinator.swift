@@ -144,14 +144,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     }
 }
 
-
-// MARK: - NoResultsScreenDelegate
-extension ScreenAPICoordinator: NoResultsScreenDelegate {
-    func noResults(viewController: NoResultViewController, didTapRetry: ()) {
-        screenAPIViewController.popToRootViewController(animated: true)
-    }
-}
-
 // MARK: - GiniCaptureResultsDelegate
 extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     func giniCaptureDidEnterManually() {
@@ -160,22 +152,11 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     
     
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
-        
         showResultsScreen(results: result.extractions.map { $0.value}, document: result.document)
     }
     
     func giniCaptureDidCancelAnalysis() {
         delegate?.screenAPI(coordinator: self, didFinish: ())
-    }
-    
-    func giniCaptureAnalysisDidFinishWithoutResults(_ showingNoResultsScreen: Bool) {
-        if !showingNoResultsScreen {
-            let customNoResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
-                .instantiateViewController(withIdentifier: "noResultScreen") as? NoResultViewController)!
-            customNoResultsScreen.delegate = self
-            self.screenAPIViewController.setNavigationBarHidden(false, animated: false)
-            self.screenAPIViewController.pushViewController(customNoResultsScreen, animated: true)
-        }
     }
 }
 
