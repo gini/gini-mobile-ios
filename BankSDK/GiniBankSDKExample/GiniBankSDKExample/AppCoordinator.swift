@@ -259,16 +259,6 @@ extension AppCoordinator: SettingsViewControllerDelegate {
 // MARK: ScreenAPICoordinatorDelegate
 
 extension AppCoordinator: ScreenAPICoordinatorDelegate {
-    func screenAPIShowNoResults(coordinator: ScreenAPICoordinator) {
-        coordinator.rootViewController.dismiss(animated: true, completion: nil)
-        self.remove(childCoordinator: coordinator as Coordinator)
-        
-        let customNoResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
-            .instantiateViewController(withIdentifier: "noResultScreen") as? NoResultViewController)!
-        customNoResultsScreen.delegate = self
-        rootViewController.present(customNoResultsScreen, animated: true)
-    }
-    
     func screenAPIShouldRestart(coordinator: ScreenAPICoordinator) {
         coordinator.rootViewController.dismiss(animated: false, completion: nil)
         coordinator.start()
@@ -278,13 +268,5 @@ extension AppCoordinator: ScreenAPICoordinatorDelegate {
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ()) {
         coordinator.rootViewController.dismiss(animated: true, completion: nil)
         self.remove(childCoordinator: coordinator as Coordinator)
-    }
-}
-
-// MARK: - NoResultsScreenDelegate
-extension AppCoordinator: NoResultsScreenDelegate {
-    func noResults(viewController: NoResultViewController, didTapRetry: ()) {
-        viewController.dismiss(animated: true)
-        showScreenAPI()
     }
 }
