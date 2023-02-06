@@ -24,7 +24,7 @@ final public class CustomReviewScreenBottomNavigationBarAdapter: ReviewScreenBot
     }
 
     public func setMainButtonTitle(with title: String) {
-        view?.mainButton.setTitle(title, for: .normal)
+        view?.processButton.setTitle(title, for: .normal)
     }
 
     public func set(loadingState isLoading: Bool) {
