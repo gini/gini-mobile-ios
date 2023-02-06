@@ -46,8 +46,8 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="mainButton" destination="w2u-UC-F67" id="5fR-Hj-VkA"/>
-                <outlet property="secondaryButton" destination="aFb-hA-Tm6" id="aAQ-Z5-zcS"/>
+                <outlet property="addPagesButton" destination="aFb-hA-Tm6" id="VNh-Vn-mMd"/>
+                <outlet property="processButton" destination="w2u-UC-F67" id="BTc-Bq-MWG"/>
             </connections>
             <point key="canvasLocation" x="160.76923076923077" y="-253.79146919431278"/>
         </view>
