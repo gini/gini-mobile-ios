@@ -25,11 +25,10 @@ import UIKit
 
     /**
      In case that the `GiniCaptureDocument` analysed is an image it will display a no results screen
-     with some capture suggestions. It won't show any screen if it is not an image, return `false` in that case.
-     
-     - returns: `true` if the screen was shown or `false` if it wasn't.
+     with some capture suggestions.
+
      */
-    func tryDisplayNoResultsScreen() -> Bool
+    func tryDisplayNoResultsScreen()
 }
 
 /**
