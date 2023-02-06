@@ -70,14 +70,42 @@ To enable this simply pass `true` to `GiniBankConfiguration.shared.multipageEnab
 
 ## Camera
 
-* Enable the flash toggle button:
-   To allow users toggle the camera flash pass `true` to `GiniBankConfiguration.shared.flashToggleEnabled`.
+- Enable the flash toggle button:
+To allow users toggle the camera flash pass `true` to `GiniBankConfiguration.shared.flashToggleEnabled`.
 
-* Turn off flash by default:
-   Flash is on by default, and you can turn it off by passing `false` to `GiniBankConfiguration.shared.flashOnByDefault`.
-## Help Screen Customization
+- Turn off flash by default:
+Flash is on by default, and you can turn it off by passing `false` to `GiniBankConfiguration.shared.flashOnByDefault`.
 
-You can show your own help screens in the Gini Bank SDK.
+ # QR Code Scanning
+
+When a supported QR code is detected with valid payment data, the QR Code will be processed automatically without any further user interaction.
+The QR Code scanning may be triggered directly without the need to analyze the document.
+
+If the QR code does not have a supported payment format then a popup informs the user that a QR code was detected, but it cannot be used.
+
+Please find more information in the [QR Code scanning guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/qr-code-scanning-guide.html).
+
+## QR Code Only
+
+During QR Code only mode the capture and import controls will be hidden from the camera screen.
+
+For enabling QR code only mode the both flags `GiniBankConfiguration.shared.qrCodeScanningEnabled` and `GiniBankConfiguration.shared.onlyQRCodeScanningEnabled` should be `true`.
+
+# Document Import
+
+This feature enables the Gini Capture SDK to import documents from the camera screen. When it's enabled an additional button is shown next to the camera trigger. Using this button allows the user to pick either an image or a pdf from the device.
+
+Please find more information in the [Import PDFs and images guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/import-pdfs-and-images-guide.html).
+
+# Open with
+
+The `Open with` feature allows importing of files from other apps via iOS `share` functionality.
+
+Please find more information in the [Open with guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/open-with-guide.html).
+
+# Help screen customization
+
+You can show your own help screens in the Gini Capture SDK.
 You can pass the title and view controller for each screen to the
 `GiniBankConfiguration.shared.customMenuItems` using a list of `HelpMenuItem` structs:
 
@@ -87,6 +115,61 @@ You can pass the title and view controller for each screen to the
 
         configuration.customMenuItems = [customMenuItem]
  ```           
+The example implementation is availible [here](https://github.com/gini/gini-mobile-ios/tree/new-ui/CaptureSDK/GiniCaptureSDKExample/Example%20Swift).
 
 You can also disable the supported formats help screen by passing `false` to
 `GiniBankConfiguration.shared.shouldShowSupportedFormatsScreen`.
+
+# Review screen customization
+
+You can show a custom loading indicator with custom animation support on the process button.
+Your custom loading indicator should implement `OnButtonLoadingIndicatorAdapter` interface and be passed  to `GiniBankConfiguration.shared.onButtonLoadingIndicator`.
+
+The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0-beta03/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift#L36).
+
+# Analysis screen customization
+
+You can show a custom loading indicator with custom animation support.
+Your custom loading indicator should implement `CustomLoadingIndicatorAdapter` interface and be passed  to `GiniBankConfiguration.shared.customLoadingIndicator`.
+
+The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0-beta03/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift).
+
+# No result screen customization
+
+You can show custom back navigation button on bottom navigation bar. You can pass your custom `NoResultBottomNavigationBarAdapter` implementation to
+ `GiniBankConfiguration.shared.errorNavigationBarBottomAdapter`:
+
+``` swift
+     let customNoResultNavigationBarBottomAdapter = CustomNoResultBottomNavigationBarAdapter()
+
+     GiniBankConfiguration.shared.noResultNavigationBarBottomAdapter = customNoResultNavigationBarBottomAdapter
+```
+
+You can show your own UI if an error occured and the user chooses to enter details manually. For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
+
+The buttom "Retake images" will be shown only if you took or imported images.
+
+# Error screen customization
+
+ You can show custom back navigation button on bottom navigation bar. You can pass your custom `ErrorBottomNavigationBarAdapter` implementation to
+ `GiniBankConfiguration.shared.errorNavigationBarBottomAdapter`:
+
+``` swift
+     let customErrorNavigationBarBottomAdapter = CustomErrorNavigationBarBottomAdapter()
+
+     GiniBankConfiguration.shared.errorNavigationBarBottomAdapter = customErrorNavigationBarBottomAdapter
+```
+
+You can show your own UI if an error occured and the user chooses to enter details manually. For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
+
+The buttom "Retake images" will be shown only if you took or imported images.
+
+# Event Tracking
+
+You have the possibility to track various events which occur during the usage of the Gini Capture SDK.
+
+Please find more information in the [Event tracking guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/event-tracking-guide.html).
+
+# Error Logging
+
+The SDK logs errors to the Gini Bank API when the default networking implementation is used (see the `Default networking` implementation in the [Integration](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/integration.html).
