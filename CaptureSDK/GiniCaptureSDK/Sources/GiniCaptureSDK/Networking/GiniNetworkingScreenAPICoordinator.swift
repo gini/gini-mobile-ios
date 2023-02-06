@@ -19,14 +19,7 @@ import GiniBankAPILibrary
      - parameter result: Contains the analysis result
      */
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult)
-    
-    /**
-     Called when the analysis finished without results.
-     
-     - parameter showingNoResultsScreen: Indicated if the `ImageAnalysisNoResultsViewController` has been shown
-     */
-    func giniCaptureAnalysisDidFinishWithoutResults(_ showingNoResultsScreen: Bool)
-    
+
     /**
      Called when the analysis was cancelled.
      */
@@ -129,8 +122,7 @@ import GiniBankAPILibrary
                                 
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
             } else {
-                self.resultsDelegate?
-                    .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen())
+                analysisDelegate.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
             }
         }
