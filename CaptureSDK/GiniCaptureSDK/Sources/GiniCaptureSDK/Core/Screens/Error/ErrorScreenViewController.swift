@@ -273,8 +273,10 @@ class ErrorScreenViewController: UIViewController {
                 errorContent.trailingAnchor.constraint(equalTo: view.trailingAnchor,
                                                        constant: -Constants.textContentMargin.rawValue),
                 errorContent.bottomAnchor.constraint(greaterThanOrEqualTo: scrollView.bottomAnchor),
-                buttonsView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-                buttonsView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor)
+                buttonsView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                                     constant:  GiniMargins.margin),
+                buttonsView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor,
+                                                      constant: -GiniMargins.margin)
             ])
         }
     }
