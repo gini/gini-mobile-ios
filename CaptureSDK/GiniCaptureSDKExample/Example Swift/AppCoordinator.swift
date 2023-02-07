@@ -36,6 +36,7 @@ final class AppCoordinator: Coordinator {
         giniConfiguration.qrCodeScanningEnabled = true
         giniConfiguration.multipageEnabled = true
         giniConfiguration.flashToggleEnabled = true
+//        giniConfiguration.bottomNavigationBarEnabled = true
         giniConfiguration.customDocumentValidations = { document in
             // As an example of custom document validation, we add a more strict check for file size
             let maxFileSize = 5 * 1024 * 1024
@@ -60,6 +61,13 @@ final class AppCoordinator: Coordinator {
 //        navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
 //        giniConfiguration.customNavigationController = navigationViewController
 
+//        giniConfiguration.noResultNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
+//        giniConfiguration.errorNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
+//        giniConfiguration.helpNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
+//        giniConfiguration.imagePickerNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
+//        giniConfiguration.reviewNavigationBarBottomAdapter = CustomReviewScreenBottomNavigationBarAdapter()
+//        giniConfiguration.onboardingNavigationBarBottomAdapter = CustomOnboardingBottomNavigationBarAdapter()
+//        giniConfiguration.cameraNavigationBarBottomAdapter = CustomCameraBottomNavigationBarAdapter()
 
         return giniConfiguration
     }()
