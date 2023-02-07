@@ -141,7 +141,7 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
         screenAPINavigationController.pushViewController(viewController, animated: animated)
     }
 
-    public func tryDisplayNoResultsScreen() -> Bool {
+    public func tryDisplayNoResultsScreen() {
         var shouldDisplay = false
         var noResultType: NoResultScreenViewController.NoResultType?
         switch pages.type {
@@ -163,6 +163,5 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
                     noResultsScreen, animated: true)
             }
         }
-        return shouldDisplay
     }
 }

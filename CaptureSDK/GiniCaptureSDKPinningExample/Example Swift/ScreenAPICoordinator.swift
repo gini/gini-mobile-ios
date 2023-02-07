@@ -112,12 +112,8 @@ extension ScreenAPICoordinator: UINavigationControllerDelegate {
                               animationControllerFor operation: UINavigationController.Operation,
                               from fromVC: UIViewController,
                               to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        // Since the NoResultViewController and ResultTableViewController are in the navigation stack,
+        // Since the ResultTableViewController is in the navigation stack,
         // when it is necessary to go back, it dismiss the ScreenAPI so the Analysis screen is not shown again
-
-        if fromVC is NoResultViewController {
-            delegate?.screenAPI(coordinator: self, didFinish: ())
-        }
 
         if let fromVC = fromVC as? ResultTableViewController {
             sendFeedbackBlock?(fromVC.result.reduce([:]) {
@@ -130,14 +126,6 @@ extension ScreenAPICoordinator: UINavigationControllerDelegate {
         }
 
         return nil
-    }
-}
-
-// MARK: - NoResultsScreenDelegate
-
-extension ScreenAPICoordinator: NoResultsScreenDelegate {
-    func noResults(viewController: NoResultViewController, didTapRetry: ()) {
-        screenAPIViewController.popToRootViewController(animated: true)
     }
 }
 
@@ -155,16 +143,6 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
 
     func giniCaptureDidCancelAnalysis() {
         delegate?.screenAPI(coordinator: self, didFinish: ())
-    }
-
-    func giniCaptureAnalysisDidFinishWithoutResults(_ showingNoResultsScreen: Bool) {
-        if !showingNoResultsScreen {
-            let customNoResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
-                .instantiateViewController(withIdentifier: "noResultScreen") as? NoResultViewController)!
-            customNoResultsScreen.delegate = self
-            screenAPIViewController.setNavigationBarHidden(false, animated: false)
-            screenAPIViewController.pushViewController(customNoResultsScreen, animated: true)
-        }
     }
 }
 
