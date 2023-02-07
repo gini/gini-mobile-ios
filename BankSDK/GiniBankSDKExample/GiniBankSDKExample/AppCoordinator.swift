@@ -50,10 +50,12 @@ final class AppCoordinator: Coordinator {
 //        configuration.onlyQRCodeScanningEnabled = true
 //        configuration.bottomNavigationBarEnabled = true
 //        configuration.noResultNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
+//        configuration.errorNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
 //        configuration.helpNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
 //        configuration.imagePickerNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
 //        configuration.reviewNavigationBarBottomAdapter = CustomReviewScreenBottomNavigationBarAdapter()
 //        configuration.onboardingNavigationBarBottomAdapter = CustomOnboardingBottomNavigationBarAdapter()
+//        configuration.cameraNavigationBarBottomAdapter = CustomCameraBottomNavigationBarAdapter()
 
 //        let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
 //        configuration.customMenuItems = [customMenuItem]
