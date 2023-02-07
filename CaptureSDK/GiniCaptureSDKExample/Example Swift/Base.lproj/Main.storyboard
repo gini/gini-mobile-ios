@@ -296,108 +296,6 @@
             </objects>
             <point key="canvasLocation" x="2423.1999999999998" y="447.52623688155927"/>
         </scene>
-        <!--Ihre Überweisung-->
-        <scene sceneID="hVm-Cc-8N0">
-            <objects>
-                <viewController storyboardIdentifier="noResultScreen" hidesBottomBarWhenPushed="YES" id="pIn-fG-Rai" customClass="NoResultViewController" customModule="GiniCaptureSDKExample" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="JXc-eh-Te3"/>
-                        <viewControllerLayoutGuide type="bottom" id="q1e-9E-wVG"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="XDW-h4-mhd">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Es konnten keine Daten ausgelesen werden." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dq1-1G-cuV">
-                                <rect key="frame" x="20" y="93" width="374" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="FkV-Ri-EwD"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
-                                <color key="textColor" systemColor="tertiaryLabelColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bitte beachten Sie:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dWP-XX-MgH">
-                                <rect key="frame" x="20" y="154" width="374" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="FVY-pT-7qZ"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" systemColor="secondaryLabelColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rGF-nB-l7v">
-                                <rect key="frame" x="40" y="792" width="334" height="50"/>
-                                <color key="backgroundColor" red="0.0" green="0.61960784310000006" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="Cfq-Qa-xLm"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
-                                <state key="normal" title="Foto erneut aufnehmen">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <state key="disabled" title="Bankkonto verknüpfen">
-                                    <color key="titleColor" red="0.4549019608" green="0.81960784310000001" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="retry:" destination="pIn-fG-Rai" eventType="touchUpInside" id="QEw-yi-VNO"/>
-                                </connections>
-                            </button>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="reviewRotateButton" translatesAutoresizingMaskIntoConstraints="NO" id="g01-Yw-KKa">
-                                <rect key="frame" x="195" y="268" width="24" height="24"/>
-                                <color key="tintColor" systemColor="labelColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="24" id="FjC-iT-BH0"/>
-                                    <constraint firstAttribute="height" constant="24" id="QgK-6l-lOV"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3WR-c9-tM1">
-                                <rect key="frame" x="20" y="184" width="374" height="84"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="84" id="skS-lc-WKb"/>
-                                </constraints>
-                                <string key="text">Das Dokument muss in Leserichtung übertragen werden. Verwenden Sie das Symbol um das Dokument in die richtige Position zu bringen.
-</string>
-                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
-                                <color key="textColor" systemColor="tertiaryLabelColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="3WR-c9-tM1" firstAttribute="top" secondItem="dWP-XX-MgH" secondAttribute="bottom" constant="9" id="0yn-CO-Lh8"/>
-                            <constraint firstItem="g01-Yw-KKa" firstAttribute="top" secondItem="3WR-c9-tM1" secondAttribute="bottom" id="4lc-St-IVz"/>
-                            <constraint firstItem="dq1-1G-cuV" firstAttribute="top" secondItem="JXc-eh-Te3" secondAttribute="bottom" constant="45" id="7t3-rr-TIz"/>
-                            <constraint firstItem="dWP-XX-MgH" firstAttribute="leading" secondItem="XDW-h4-mhd" secondAttribute="leadingMargin" id="Bdl-dw-50R"/>
-                            <constraint firstItem="dq1-1G-cuV" firstAttribute="top" secondItem="JXc-eh-Te3" secondAttribute="bottom" constant="45" id="C7J-ln-V7n"/>
-                            <constraint firstItem="dWP-XX-MgH" firstAttribute="top" secondItem="dq1-1G-cuV" secondAttribute="bottom" constant="40" id="JNf-6x-3LR"/>
-                            <constraint firstItem="3WR-c9-tM1" firstAttribute="leading" secondItem="XDW-h4-mhd" secondAttribute="leading" constant="20" id="SDv-fZ-AoS"/>
-                            <constraint firstItem="dq1-1G-cuV" firstAttribute="leading" secondItem="XDW-h4-mhd" secondAttribute="leadingMargin" id="V6R-F1-H2r"/>
-                            <constraint firstItem="g01-Yw-KKa" firstAttribute="centerX" secondItem="XDW-h4-mhd" secondAttribute="centerX" id="VE8-p7-74B"/>
-                            <constraint firstItem="rGF-nB-l7v" firstAttribute="leading" secondItem="XDW-h4-mhd" secondAttribute="leadingMargin" constant="20" id="aKd-K0-EBe"/>
-                            <constraint firstItem="dWP-XX-MgH" firstAttribute="trailing" secondItem="XDW-h4-mhd" secondAttribute="trailingMargin" id="ima-uN-ztI"/>
-                            <constraint firstItem="dq1-1G-cuV" firstAttribute="trailing" secondItem="XDW-h4-mhd" secondAttribute="trailingMargin" id="lwI-f9-cIg"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="rGF-nB-l7v" secondAttribute="trailing" constant="20" id="o5J-cT-RfQ"/>
-                            <constraint firstItem="q1e-9E-wVG" firstAttribute="top" secondItem="rGF-nB-l7v" secondAttribute="bottom" constant="20" id="rRn-Dg-IAS"/>
-                            <constraint firstItem="dq1-1G-cuV" firstAttribute="top" secondItem="JXc-eh-Te3" secondAttribute="bottom" constant="45" id="y0j-Xb-Dl6"/>
-                            <constraint firstAttribute="trailing" secondItem="3WR-c9-tM1" secondAttribute="trailing" constant="20" id="zES-WY-bmV"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="7t3-rr-TIz"/>
-                                <exclude reference="y0j-Xb-Dl6"/>
-                            </mask>
-                        </variation>
-                    </view>
-                    <navigationItem key="navigationItem" title="Ihre Überweisung" id="kSy-mP-fPw"/>
-                    <connections>
-                        <outlet property="rotateImageView" destination="g01-Yw-KKa" id="Uyv-uw-w9I"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0zT-Jd-RrB" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5351" y="-255"/>
-        </scene>
         <!--Result Table View Controller-->
         <scene sceneID="sfT-SI-up6">
             <objects>
@@ -480,21 +378,14 @@
     </scenes>
     <resources>
         <image name="capture_logo" width="1168" height="392"/>
-        <image name="reviewRotateButton" width="24" height="24"/>
         <systemColor name="labelColor">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="opaqueSeparatorColor">
             <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
-        <systemColor name="secondaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="tertiaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29803921568627451" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

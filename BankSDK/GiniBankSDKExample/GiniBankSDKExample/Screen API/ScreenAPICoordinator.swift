@@ -13,7 +13,6 @@ import GiniCaptureSDK
 
 protocol ScreenAPICoordinatorDelegate: AnyObject {
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish:())
-    func screenAPIShowNoResults(coordinator: ScreenAPICoordinator)
 }
 
 class TrackingDelegate: GiniCaptureTrackingDelegate {
@@ -146,12 +145,6 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     
     func giniCaptureDidCancelAnalysis() {
         delegate?.screenAPI(coordinator: self, didFinish: ())
-    }
-    
-    func giniCaptureAnalysisDidFinishWithoutResults(_ showingNoResultsScreen: Bool) {
-        if !showingNoResultsScreen {
-            delegate?.screenAPIShowNoResults(coordinator: self)
-        }
     }
 }
 

@@ -198,8 +198,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
                 documentService.resetToInitialState()
             } else {
-                self.resultsDelegate?
-                    .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen())
+                analysisDelegate.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
             }
         }
@@ -235,8 +234,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
 
                 self.giniBankConfiguration.lineItems = result.lineItems
             } else {
-                self.resultsDelegate?
-                    .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen())
+                analysisDelegate.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
             }
         }
