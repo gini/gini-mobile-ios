@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CustomReviewScreenBottomNavigationBar" customModule="GiniCaptureSDK">
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CustomReviewScreenBottomNavigationBar" customModule="GiniBankSDKExample" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="421" height="134"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -46,8 +46,8 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="mainButton" destination="w2u-UC-F67" id="yM3-AG-PLe"/>
-                <outlet property="secondaryButton" destination="aFb-hA-Tm6" id="F0k-kI-KHH"/>
+                <outlet property="addPagesButton" destination="aFb-hA-Tm6" id="VNh-Vn-mMd"/>
+                <outlet property="processButton" destination="w2u-UC-F67" id="BTc-Bq-MWG"/>
             </connections>
             <point key="canvasLocation" x="160.76923076923077" y="-253.79146919431278"/>
         </view>

@@ -30,6 +30,19 @@
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
+		76610BFB298D631A004C1ECB /* CustomBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76610BEC298D631A004C1ECB /* CustomBottomNavigationBarAdapter.swift */; };
+		76610BFC298D631A004C1ECB /* CustomBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76610BED298D631A004C1ECB /* CustomBottomNavigationBar.swift */; };
+		76610BFD298D631A004C1ECB /* CustomBottomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76610BEE298D631A004C1ECB /* CustomBottomNavigationBar.xib */; };
+		76610BFE298D631A004C1ECB /* CustomCameraBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76610BF0298D631A004C1ECB /* CustomCameraBottomNavigationBar.swift */; };
+		76610BFF298D631A004C1ECB /* CustomCameraBottomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76610BF1298D631A004C1ECB /* CustomCameraBottomNavigationBar.xib */; };
+		76610C00298D631B004C1ECB /* CustomCameraBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76610BF2298D631A004C1ECB /* CustomCameraBottomNavigationBarAdapter.swift */; };
+		76610C04298D631B004C1ECB /* CustomOnboardingBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76610BF8298D631A004C1ECB /* CustomOnboardingBottomNavigationBar.swift */; };
+		76610C05298D631B004C1ECB /* CustomOnboardingBottomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76610BF9298D631A004C1ECB /* CustomOnboardingBottomNavigationBar.xib */; };
+		76610C06298D631B004C1ECB /* CustomOnboardingBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76610BFA298D631A004C1ECB /* CustomOnboardingBottomNavigationBarAdapter.swift */; };
+		76610C182990E7F9004C1ECB /* CustomReviewScreenBottomNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76610C152990E7F9004C1ECB /* CustomReviewScreenBottomNavigationBar.xib */; };
+		76610C192990E7F9004C1ECB /* CustomReviewScreenBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76610C162990E7F9004C1ECB /* CustomReviewScreenBottomNavigationBar.swift */; };
+		76610C1A2990E7F9004C1ECB /* CustomReviewScreenBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76610C172990E7F9004C1ECB /* CustomReviewScreenBottomNavigationBarAdapter.swift */; };
+		76610C1C2990EE11004C1ECB /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76610C1B2990EE11004C1ECB /* UIView.swift */; };
 		834735F72940F96300C3B5F3 /* CustomAnalysisError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834735F62940F96300C3B5F3 /* CustomAnalysisError.swift */; };
 		F426ABF3289ABAA8007F4EB6 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F426ABF2289ABAA8007F4EB6 /* Colors.xcassets */; };
 		F42F027926D65DF2003A3695 /* AlbumsPickerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42F027826D65DF2003A3695 /* AlbumsPickerViewControllerTests.swift */; };
@@ -100,6 +113,19 @@
 		607FACDC1AFB9204008FA782 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		76610BEC298D631A004C1ECB /* CustomBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
+		76610BED298D631A004C1ECB /* CustomBottomNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomBottomNavigationBar.swift; sourceTree = "<group>"; };
+		76610BEE298D631A004C1ECB /* CustomBottomNavigationBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomBottomNavigationBar.xib; sourceTree = "<group>"; };
+		76610BF0298D631A004C1ECB /* CustomCameraBottomNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCameraBottomNavigationBar.swift; sourceTree = "<group>"; };
+		76610BF1298D631A004C1ECB /* CustomCameraBottomNavigationBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomCameraBottomNavigationBar.xib; sourceTree = "<group>"; };
+		76610BF2298D631A004C1ECB /* CustomCameraBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCameraBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
+		76610BF8298D631A004C1ECB /* CustomOnboardingBottomNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomOnboardingBottomNavigationBar.swift; sourceTree = "<group>"; };
+		76610BF9298D631A004C1ECB /* CustomOnboardingBottomNavigationBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomOnboardingBottomNavigationBar.xib; sourceTree = "<group>"; };
+		76610BFA298D631A004C1ECB /* CustomOnboardingBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomOnboardingBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
+		76610C152990E7F9004C1ECB /* CustomReviewScreenBottomNavigationBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomReviewScreenBottomNavigationBar.xib; sourceTree = "<group>"; };
+		76610C162990E7F9004C1ECB /* CustomReviewScreenBottomNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomReviewScreenBottomNavigationBar.swift; sourceTree = "<group>"; };
+		76610C172990E7F9004C1ECB /* CustomReviewScreenBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomReviewScreenBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
+		76610C1B2990EE11004C1ECB /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		834735F62940F96300C3B5F3 /* CustomAnalysisError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnalysisError.swift; sourceTree = "<group>"; };
 		F40B4064252C9CC700D04B6F /* Credentials.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
 		F426ABF2289ABAA8007F4EB6 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
@@ -171,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				1F59756720A1C5C00012196B /* UIViewController.swift */,
+				76610C1B2990EE11004C1ECB /* UIView.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -203,6 +230,10 @@
 		607FACD21AFB9204008FA782 /* Example Swift */ = {
 			isa = PBXGroup;
 			children = (
+				76610BEF298D631A004C1ECB /* CameraBottomNavigationBar */,
+				76610BEB298D631A004C1ECB /* HelpBottomNavigationBar */,
+				76610BF7298D631A004C1ECB /* OnboardingBottomNavigationBar */,
+				76610BF3298D631A004C1ECB /* ReviewBottomNavigationBar */,
 				1F2E1A9E1FB58E2200E1022A /* AppCoordinator.swift */,
 				F4BB7CED2695D66C003FD77E /* CustomMenuItemViewController.swift */,
 				F4BB7CEF2695D96B003FD77E /* CustomMenuItems.storyboard */,
@@ -258,6 +289,46 @@
 				607FACEA1AFB9204008FA782 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		76610BEB298D631A004C1ECB /* HelpBottomNavigationBar */ = {
+			isa = PBXGroup;
+			children = (
+				76610BEC298D631A004C1ECB /* CustomBottomNavigationBarAdapter.swift */,
+				76610BED298D631A004C1ECB /* CustomBottomNavigationBar.swift */,
+				76610BEE298D631A004C1ECB /* CustomBottomNavigationBar.xib */,
+			);
+			path = HelpBottomNavigationBar;
+			sourceTree = "<group>";
+		};
+		76610BEF298D631A004C1ECB /* CameraBottomNavigationBar */ = {
+			isa = PBXGroup;
+			children = (
+				76610BF0298D631A004C1ECB /* CustomCameraBottomNavigationBar.swift */,
+				76610BF1298D631A004C1ECB /* CustomCameraBottomNavigationBar.xib */,
+				76610BF2298D631A004C1ECB /* CustomCameraBottomNavigationBarAdapter.swift */,
+			);
+			path = CameraBottomNavigationBar;
+			sourceTree = "<group>";
+		};
+		76610BF3298D631A004C1ECB /* ReviewBottomNavigationBar */ = {
+			isa = PBXGroup;
+			children = (
+				76610C162990E7F9004C1ECB /* CustomReviewScreenBottomNavigationBar.swift */,
+				76610C152990E7F9004C1ECB /* CustomReviewScreenBottomNavigationBar.xib */,
+				76610C172990E7F9004C1ECB /* CustomReviewScreenBottomNavigationBarAdapter.swift */,
+			);
+			path = ReviewBottomNavigationBar;
+			sourceTree = "<group>";
+		};
+		76610BF7298D631A004C1ECB /* OnboardingBottomNavigationBar */ = {
+			isa = PBXGroup;
+			children = (
+				76610BF8298D631A004C1ECB /* CustomOnboardingBottomNavigationBar.swift */,
+				76610BF9298D631A004C1ECB /* CustomOnboardingBottomNavigationBar.xib */,
+				76610BFA298D631A004C1ECB /* CustomOnboardingBottomNavigationBarAdapter.swift */,
+			);
+			path = OnboardingBottomNavigationBar;
 			sourceTree = "<group>";
 		};
 		F4B62C1D27314B2800C607D4 /* Packages */ = {
@@ -417,12 +488,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76610C05298D631B004C1ECB /* CustomOnboardingBottomNavigationBar.xib in Resources */,
+				76610C182990E7F9004C1ECB /* CustomReviewScreenBottomNavigationBar.xib in Resources */,
+				76610BFF298D631A004C1ECB /* CustomCameraBottomNavigationBar.xib in Resources */,
 				1F195A3320C7C69A008EE2A3 /* Credentials.plist in Resources */,
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				F4E561552686315100415EE8 /* Localizable.strings in Resources */,
 				F4BB7CF02695D96B003FD77E /* CustomMenuItems.storyboard in Resources */,
 				F4F1A77727EB47CA0004FF42 /* result_Gini_invoice_example.json in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
+				76610BFD298D631A004C1ECB /* CustomBottomNavigationBar.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 				1FEED2941F6AC0440068E8AB /* testPDF.pdf in Resources */,
 				F4F1A77927EB47CA0004FF42 /* Gini_invoice_example.pdf in Resources */,
@@ -481,16 +556,26 @@
 			files = (
 				1F53F5101FE967C5009E2677 /* RootNavigationController.swift in Sources */,
 				F4BB7CEE2695D66C003FD77E /* CustomMenuItemViewController.swift in Sources */,
+				76610C1C2990EE11004C1ECB /* UIView.swift in Sources */,
+				76610C06298D631B004C1ECB /* CustomOnboardingBottomNavigationBarAdapter.swift in Sources */,
 				1F59756820A1C5C00012196B /* UIViewController.swift in Sources */,
 				1F2E1AA11FB58EC900E1022A /* Coordinator.swift in Sources */,
+				76610C192990E7F9004C1ECB /* CustomReviewScreenBottomNavigationBar.swift in Sources */,
 				1F2E1AA31FB5AD5D00E1022A /* ScreenAPICoordinator.swift in Sources */,
 				1F9466C5203702E600F52B40 /* CredentialsManager.swift in Sources */,
 				607FACD81AFB9204008FA782 /* SelectAPIViewController.swift in Sources */,
+				76610BFB298D631A004C1ECB /* CustomBottomNavigationBarAdapter.swift in Sources */,
 				1F2E1A9F1FB58E2200E1022A /* AppCoordinator.swift in Sources */,
+				76610BFC298D631A004C1ECB /* CustomBottomNavigationBar.swift in Sources */,
 				1F578E111FBD7C7D00C17F62 /* SettingsViewController.swift in Sources */,
+				76610C00298D631B004C1ECB /* CustomCameraBottomNavigationBarAdapter.swift in Sources */,
+				0AAE6D4A1D6B6BC500EE9EDD /* NoResultViewController.swift in Sources */,
 				0AAE6D4C1D6B6C0B00EE9EDD /* ResultTableViewController.swift in Sources */,
+				76610C04298D631B004C1ECB /* CustomOnboardingBottomNavigationBar.swift in Sources */,
 				834735F72940F96300C3B5F3 /* CustomAnalysisError.swift in Sources */,
+				76610BFE298D631A004C1ECB /* CustomCameraBottomNavigationBar.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				76610C1A2990E7F9004C1ECB /* CustomReviewScreenBottomNavigationBarAdapter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

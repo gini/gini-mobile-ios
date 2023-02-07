@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GiniCaptureSDK
 
 final public class CustomReviewScreenBottomNavigationBarAdapter: ReviewScreenBottomNavigationBarAdapter {
     private var mainButtonCallback: (() -> Void)?
@@ -23,7 +24,7 @@ final public class CustomReviewScreenBottomNavigationBarAdapter: ReviewScreenBot
     }
 
     public func setMainButtonTitle(with title: String) {
-        view?.mainButton.setTitle(title, for: .normal)
+        view?.processButton.setTitle(title, for: .normal)
     }
 
     public func set(loadingState isLoading: Bool) {

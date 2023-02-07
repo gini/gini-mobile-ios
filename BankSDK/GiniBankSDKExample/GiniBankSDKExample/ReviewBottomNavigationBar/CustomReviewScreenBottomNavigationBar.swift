@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GiniBankSDK
 
 protocol CustomReviewScreenBottomNavigationBarDelegate: AnyObject {
     func didTapMainButton(on navigationBar: CustomReviewScreenBottomNavigationBar)
@@ -14,8 +15,8 @@ protocol CustomReviewScreenBottomNavigationBarDelegate: AnyObject {
 
 final class CustomReviewScreenBottomNavigationBar: UIView {
 
-    @IBOutlet weak var mainButton: UIButton!
-    @IBOutlet weak var secondaryButton: UIButton!
+    @IBOutlet weak var processButton: UIButton!
+    @IBOutlet weak var addPagesButton: UIButton!
 
     weak var delegate: CustomReviewScreenBottomNavigationBarDelegate?
 
@@ -27,7 +28,7 @@ final class CustomReviewScreenBottomNavigationBar: UIView {
         return indicatorView
     }()
 
-    private let configuration = GiniConfiguration.shared
+    private let configuration = GiniBankConfiguration.shared
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -36,22 +37,22 @@ final class CustomReviewScreenBottomNavigationBar: UIView {
     }
 
     private func setupView() {
-        mainButton.addTarget(self, action: #selector(mainButtonClicked), for: .touchUpInside)
-        secondaryButton.addTarget(self, action: #selector(secondaryButtonClicked), for: .touchUpInside)
+        processButton.addTarget(self, action: #selector(mainButtonClicked), for: .touchUpInside)
+        addPagesButton.addTarget(self, action: #selector(secondaryButtonClicked), for: .touchUpInside)
         addLoadingView()
     }
 
     func set(loadingState isLoading: Bool) {
         if self.configuration.multipageEnabled {
             if !isLoading {
-                self.mainButton.alpha = 1
-                self.mainButton.isEnabled = true
+                self.processButton.alpha = 1
+                self.processButton.isEnabled = true
                 self.hideAnimation()
                 return
             }
 
-            self.mainButton.alpha = 0.3
-            self.mainButton.isEnabled = false
+            self.processButton.alpha = 0.3
+            self.processButton.isEnabled = false
             self.showAnimation()
         }
     }
@@ -62,8 +63,8 @@ final class CustomReviewScreenBottomNavigationBar: UIView {
         bringSubviewToFront(loadingIndicatorView)
 
         NSLayoutConstraint.activate([
-            loadingIndicatorView.centerXAnchor.constraint(equalTo: mainButton.centerXAnchor),
-            loadingIndicatorView.centerYAnchor.constraint(equalTo: mainButton.centerYAnchor),
+            loadingIndicatorView.centerXAnchor.constraint(equalTo: processButton.centerXAnchor),
+            loadingIndicatorView.centerYAnchor.constraint(equalTo: processButton.centerYAnchor),
             loadingIndicatorView.widthAnchor.constraint(equalToConstant: 45),
             loadingIndicatorView.heightAnchor.constraint(equalToConstant: 45)
         ])
