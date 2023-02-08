@@ -13,6 +13,7 @@ class ButtonsView: UIView {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(firstButtonTitle, for: .normal)
+        button.accessibilityLabel = firstButtonTitle
         return button
     }()
 
@@ -20,6 +21,7 @@ class ButtonsView: UIView {
         let button = MultilineTitleButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(secondButtonTitle, for: .normal)
+        button.accessibilityLabel = secondButtonTitle
         return button
     }()
 
