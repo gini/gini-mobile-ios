@@ -10,8 +10,6 @@ import UIKit
 final class AlbumsPickerTableViewCell: UITableViewCell {
     
     static let identifier = "AlbumsPickerTableViewCellIdentifier"
-    static let height: CGFloat = 90.0
-    let padding = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 10)
     
     lazy var albumThumbnailView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
@@ -29,19 +27,21 @@ final class AlbumsPickerTableViewCell: UITableViewCell {
     }()
     
     lazy var albumTitleLabel: UILabel = {
-        let albumTitle = UILabel(frame: .zero)
-        albumTitle.translatesAutoresizingMaskIntoConstraints = false
-        albumTitle.textColor = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
-        return albumTitle
+        let albumTitleLabel = UILabel(frame: .zero)
+        albumTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        albumTitleLabel.textColor = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
+        albumTitleLabel.isAccessibilityElement = true
+        albumTitleLabel.adjustsFontForContentSizeCategory = true
+        return albumTitleLabel
     }()
     
     lazy var albumSubTitleLabel: UILabel = {
-        let albumSubTitle = UILabel(frame: .zero)
-        albumSubTitle.translatesAutoresizingMaskIntoConstraints = false
-        
-        albumSubTitle.textColor = GiniColor(light: .GiniCapture.dark6, dark: .GiniCapture.light6).uiColor()
-        
-        return albumSubTitle
+        let albumSubTitleLabel = UILabel(frame: .zero)
+        albumSubTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        albumSubTitleLabel.isAccessibilityElement = true
+        albumSubTitleLabel.adjustsFontForContentSizeCategory = true
+        albumSubTitleLabel.textColor = GiniColor(light: .GiniCapture.dark6, dark: .GiniCapture.light6).uiColor()
+        return albumSubTitleLabel
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -56,31 +56,26 @@ final class AlbumsPickerTableViewCell: UITableViewCell {
     }
     
     private func addConstraints() {
-        // albumThumbnailView
-        Constraints.active(item: albumThumbnailView, attr: .leading, relatedBy: .equal, to: self, attr: .leading,
-                           constant: padding.left)
-        Constraints.active(item: albumThumbnailView, attr: .top, relatedBy: .equal, to: self, attr: .top, constant:
-            padding.top)
-        Constraints.active(item: albumThumbnailView, attr: .bottom, relatedBy: .equal, to: self, attr: .bottom,
-                           constant: -padding.bottom)
-        Constraints.active(item: albumThumbnailView, attr: .trailing, relatedBy: .equal, to: albumTitleLabel,
-                           attr: .leading, constant: -20)
-        Constraints.active(item: albumThumbnailView, attr: .height, relatedBy: .equal, to: nil, attr: .notAnAttribute,
-                           constant: 70)
-        Constraints.active(item: albumThumbnailView, attr: .width, relatedBy: .equal, to: nil, attr: .notAnAttribute,
-                           constant: 70)
-        
-        // albumTitleLabel
-        Constraints.active(item: albumTitleLabel, attr: .centerY, relatedBy: .equal, to: self, attr: .centerY,
-                           constant: -padding.top)
-        Constraints.active(item: albumTitleLabel, attr: .bottom, relatedBy: .equal, to: albumSubTitleLabel,
-                           attr: .top, constant: -5)
-        
-        // albumSubTitleLabel
-        Constraints.active(item: albumSubTitleLabel, attr: .bottom, relatedBy: .lessThanOrEqual, to: self,
-                           attr: .bottom, constant: 0)
-        Constraints.active(item: albumSubTitleLabel, attr: .leading, relatedBy: .equal, to: albumTitleLabel,
-                           attr: .leading)
+
+        NSLayoutConstraint.activate([
+            albumThumbnailView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.paddingBig),
+            albumThumbnailView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: Constants.padding),
+            albumThumbnailView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -Constants.padding),
+            albumThumbnailView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            albumThumbnailView.heightAnchor.constraint(equalToConstant: Constants.imageSize.height),
+            albumThumbnailView.widthAnchor.constraint(equalTo: albumThumbnailView.heightAnchor),
+
+            albumTitleLabel.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: Constants.padding),
+            albumTitleLabel.leadingAnchor.constraint(equalTo: albumThumbnailView.trailingAnchor, constant: Constants.paddingBig),
+            albumTitleLabel.bottomAnchor.constraint(equalTo: centerYAnchor, constant: -Constants.paddingHalf),
+            albumTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.paddingBig),
+
+            albumSubTitleLabel.topAnchor.constraint(equalTo: centerYAnchor, constant: Constants.paddingHalf),
+            albumSubTitleLabel.leadingAnchor.constraint(equalTo: albumTitleLabel.leadingAnchor),
+            albumSubTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.paddingBig),
+            albumSubTitleLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -Constants.padding)
+
+        ])
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -90,6 +85,10 @@ final class AlbumsPickerTableViewCell: UITableViewCell {
     func setUp(with album: Album, giniConfiguration: GiniConfiguration, galleryManager: GalleryManagerProtocol) {
         albumTitleLabel.text = album.title
         albumSubTitleLabel.text = "\(album.count)"
+
+        albumTitleLabel.accessibilityValue = album.title
+        albumSubTitleLabel.accessibilityValue = "\(album.count)"
+
         albumTitleLabel.font = giniConfiguration.textStyleFonts[.headline]
         albumSubTitleLabel.font = giniConfiguration.textStyleFonts[.subheadline]
         
@@ -99,5 +98,14 @@ final class AlbumsPickerTableViewCell: UITableViewCell {
             guard let self = self else { return }
             self.albumThumbnailView.image = image
         }
+    }
+}
+
+extension AlbumsPickerTableViewCell {
+    private enum Constants {
+        static let imageSize: CGSize = CGSize(width: 70, height: 70)
+        static let paddingHalf: CGFloat = 4
+        static let padding: CGFloat = 8
+        static let paddingBig: CGFloat = 16
     }
 }
