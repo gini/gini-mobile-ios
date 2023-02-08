@@ -78,9 +78,12 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         setupView()
     }
 
+    public override var preferredStatusBarStyle: UIStatusBarStyle {
+        return giniConfiguration.statusBarStyle
+    }
+
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setStatusBarStyle(to: giniConfiguration.statusBarStyle)
         cameraPane.toggleCaptureButtonActivation(state: true)
     }
 

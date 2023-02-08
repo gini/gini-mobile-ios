@@ -37,7 +37,6 @@ final class ContainerNavigationController: UIViewController {
         self.rootViewController = rootViewController
         self.coordinator = parent
         self.giniConfiguration = giniConfiguration
-        setStatusBarStyle(to: giniConfiguration.statusBarStyle)
         super.init(nibName: nil, bundle: nil)
     }
 
