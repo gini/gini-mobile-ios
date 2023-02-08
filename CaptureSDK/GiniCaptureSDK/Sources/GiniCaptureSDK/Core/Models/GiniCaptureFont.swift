@@ -38,11 +38,7 @@ public class GiniCaptureFont: NSObject {
     }
     
     public func with(weight: UIFont.Weight, size: CGFloat, style: UIFont.TextStyle) -> UIFont {
-        if #available(iOS 11.0, *) {
-            return UIFontMetrics(forTextStyle: style).scaledFont(for: font(for: weight).withSize(size))
-        } else {
-            return font(for: weight).withSize(size)
-        }
+        return UIFontMetrics(forTextStyle: style).scaledFont(for: font(for: weight).withSize(size))
     }
     
     private func font(for weight: UIFont.Weight) -> UIFont {

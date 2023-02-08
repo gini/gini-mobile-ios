@@ -113,7 +113,7 @@ are also supported";
 "ginicapture.help.openWithTutorial.step2.title" = "Select the send function";
 "ginicapture.help.openWithTutorial.step2.subTitle" = "To redirect the file to %@, use the \"Share\" function, represented as a square with the arrow pointing up, and choose \"Open in ...\" or \"Share File\". Please select %@ from the list to start the analysis and transfer process.";
 "ginicapture.help.openWithTutorial.step3.title" = "On iPad you can also use \"Drag-and-drop\"";
-"ginicapture.help.openWithTutorial.step3.subTitle" = "If your iPad is running iOS 11 or newer, you can conveniently drag-and-drop PDFs from the iOS Files app to %@ to start a payment. To do this, open %@ and open the Files app as a second app on the screen. Select the desired invoice file in the Files app and drag this over to %@.";
+"ginicapture.help.openWithTutorial.step3.subTitle" = "If your iPad is running iOS 12 or newer, you can conveniently drag-and-drop PDFs from the iOS Files app to %@ to start a payment. To do this, open %@ and open the Files app as a second app on the screen. Select the desired invoice file in the Files app and drag this over to %@.";
 
 "ginicapture.noresults.warning" = "No information could be extracted. Please take a new photo.";
 "ginicapture.noresults.collection.header" = "Tips for best results:";
