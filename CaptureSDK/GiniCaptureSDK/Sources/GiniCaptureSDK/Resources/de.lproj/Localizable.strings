@@ -74,8 +74,8 @@
 "ginicapture.onboarding.skip"  = "Überspringen";
 "ginicapture.onboarding.flatPaper.title"  = "Dokument flach ausrichten";
 "ginicapture.onboarding.flatPaper.description"  = "Das Dokument sollte flach liegen und sich im Rahmen befinden";
-"ginicapture.onboarding.goodLightning.title" = "Gute Lichtverhältnisse";
-"ginicapture.onboarding.goodLightning.description" = "Gutes Licht führt zu besseren Ergebnisse als mit Blitz";
+"ginicapture.onboarding.goodLighting.title" = "Gute Lichtverhältnisse";
+"ginicapture.onboarding.goodLighting.description" = "Gutes Licht führt zu besseren Ergebnisse als mit Blitz";
 "ginicapture.onboarding.multiPages.title"  = "Mehrere Seiten";
 "ginicapture.onboarding.multiPages.description"  = "Es ist möglich mehrer Seiten eines Dokuments zu Scannen";
 "ginicapture.onboarding.qrCode.title"  = "QR Codes scannen";

@@ -74,8 +74,8 @@
 
 "ginicapture.onboarding.flatPaper.title"  = "Flat paper within the frame";
 "ginicapture.onboarding.flatPaper.description"  = "Ensure that the document is flat, and positioned within the frame";
-"ginicapture.onboarding.goodLightning.title" = "Good lighting";
-"ginicapture.onboarding.goodLightning.description" = "Proper lighting leads to better results than flash";
+"ginicapture.onboarding.goodLighting.title" = "Good lighting";
+"ginicapture.onboarding.goodLighting.description" = "Proper lighting leads to better results than flash";
 "ginicapture.onboarding.multiPages.title"  = "Add multiple pages";
 "ginicapture.onboarding.multiPages.description"  = "It’s now possible to analyse an invoice with multiple pages";
 "ginicapture.onboarding.qrCode.title"  = "QR codes supported";
@@ -88,7 +88,7 @@ are also supported";
 "ginicapture.analysis.screenTitle" = "Review";
 "ginicapture.analysis.loadingText" = "Analyzing documents";
 "ginicapture.analysis.loadingText.pdf" = "Analyzing\n%@";
-"ginicapture.analysis.suggestion.1" = "Good lightning";
+"ginicapture.analysis.suggestion.1" = "Good lighting";
 "ginicapture.analysis.suggestion.1.details" = "Proper lighting leads to better results than flash";
 "ginicapture.analysis.suggestion.2" = "Flatten the page";
 "ginicapture.analysis.suggestion.2.details" = "A flat paper helps to receive better results";

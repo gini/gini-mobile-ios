@@ -12,7 +12,7 @@ extension UINavigationController {
     public func applyStyle(withConfiguration configuration: GiniConfiguration) {
         let titleTextAttrubutes = [NSAttributedString.Key.font:
             configuration.textStyleFonts[.bodyBold] as Any, NSAttributedString.Key.foregroundColor: GiniColor(light: UIColor.GiniCapture.dark1, dark: UIColor.GiniCapture.light1).uiColor()]
-        let navigationBackgroundColor = GiniColor(light: UIColor.GiniCapture.light1, dark: UIColor.GiniCapture.dark2).uiColor()
+        let navigationBackgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()

@@ -22,7 +22,7 @@ protocol OnboardingScreen: AnyObject {
 class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
     private enum OnboadingPageType: Int {
         case alignCorners = 0
-        case lightning = 1
+        case lighting = 1
         case multipage = 2
         case qrcode = 3
     }
@@ -42,11 +42,11 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
                     comment: "onboarding flat paper title"), description: NSLocalizedStringPreferredFormat(
                         "ginicapture.onboarding.flatPaper.description",
                         comment: "onboarding flat paper description")),
-                OnboardingPage(imageName: "onboardingGoodLightning", title: NSLocalizedStringPreferredFormat(
-                    "ginicapture.onboarding.goodLightning.title",
-                    comment: "onboarding good lightning title"), description: NSLocalizedStringPreferredFormat(
-                        "ginicapture.onboarding.goodLightning.description",
-                        comment: "onboarding good lightning description"))
+                OnboardingPage(imageName: "onboardingGoodLighting", title: NSLocalizedStringPreferredFormat(
+                    "ginicapture.onboarding.goodLighting.title",
+                    comment: "onboarding good lighting title"), description: NSLocalizedStringPreferredFormat(
+                        "ginicapture.onboarding.goodLighting.description",
+                        comment: "onboarding good lighting description"))
             ]
             if giniConfiguration.multipageEnabled {
                 sections.append(
@@ -78,7 +78,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
 
         adapters = [
             .alignCorners: giniConfiguration.onboardingAlignCornersIllustrationAdapter,
-            .lightning: giniConfiguration.onboardingLightingIllustrationAdapter,
+            .lighting: giniConfiguration.onboardingLightingIllustrationAdapter,
             .multipage: giniConfiguration.onboardingMultiPageIllustrationAdapter,
             .qrcode: giniConfiguration.onboardingQRCodeIllustrationAdapter
         ]
