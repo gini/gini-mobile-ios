@@ -325,7 +325,7 @@ extension DocumentPickerCoordinator: UIDocumentPickerDelegate {
             return
         }
 
-        if #available(iOS 11.0, *), giniConfiguration.documentPickerNavigationBarTintColor != nil {
+        if #available(iOS 12.0, *), giniConfiguration.documentPickerNavigationBarTintColor != nil {
             restoreSavedNavBarAppearance()
         }
 
@@ -337,7 +337,7 @@ extension DocumentPickerCoordinator: UIDocumentPickerDelegate {
     }
 
     public func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        if #available(iOS 11.0, *), giniConfiguration.documentPickerNavigationBarTintColor != nil {
+        if #available(iOS 12.0, *), giniConfiguration.documentPickerNavigationBarTintColor != nil {
             restoreSavedNavBarAppearance()
         }
 
