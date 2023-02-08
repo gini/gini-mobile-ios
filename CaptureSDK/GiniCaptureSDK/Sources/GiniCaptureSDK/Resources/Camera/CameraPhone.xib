@@ -98,10 +98,11 @@
                         <constraint firstItem="zFz-gY-AMg" firstAttribute="top" secondItem="lfm-sA-fAL" secondAttribute="bottom" constant="16" id="IV7-fG-9A2"/>
                         <constraint firstItem="XkD-wl-s7a" firstAttribute="centerY" secondItem="dQe-NY-Bi9" secondAttribute="centerY" id="Sa7-iM-mp3"/>
                         <constraint firstItem="lfm-sA-fAL" firstAttribute="centerX" secondItem="qey-Uj-2J2" secondAttribute="centerX" id="Z4u-Mw-edC"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="120" id="dKX-Qz-rx3"/>
                         <constraint firstItem="lfm-sA-fAL" firstAttribute="top" secondItem="qey-Uj-2J2" secondAttribute="top" constant="8" id="f4b-FG-Wzh"/>
                         <constraint firstItem="dQe-NY-Bi9" firstAttribute="centerX" secondItem="qey-Uj-2J2" secondAttribute="centerX" id="iMg-DB-LrQ"/>
                         <constraint firstItem="dQe-NY-Bi9" firstAttribute="centerY" secondItem="zFz-gY-AMg" secondAttribute="centerY" id="jIy-hN-jDT"/>
-                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="dQe-NY-Bi9" secondAttribute="bottom" id="sMG-3O-5Hh"/>
+                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="dQe-NY-Bi9" secondAttribute="bottom" constant="8" id="sMG-3O-5Hh"/>
                         <constraint firstItem="lfm-sA-fAL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="qey-Uj-2J2" secondAttribute="leading" constant="8" id="stP-BC-ctT"/>
                         <constraint firstItem="dQe-NY-Bi9" firstAttribute="leading" secondItem="zFz-gY-AMg" secondAttribute="trailing" constant="26" id="z65-kh-Jec"/>
                     </constraints>
@@ -118,7 +119,7 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="qey-Uj-2J2" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.23" id="5pL-4z-ODy"/>
+                <constraint firstItem="qey-Uj-2J2" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.23" priority="999" id="5pL-4z-ODy"/>
                 <constraint firstAttribute="bottom" secondItem="qey-Uj-2J2" secondAttribute="bottom" id="XnW-wu-lup"/>
                 <constraint firstAttribute="trailing" secondItem="qey-Uj-2J2" secondAttribute="trailing" id="f3h-fH-BYP"/>
                 <constraint firstItem="zFz-gY-AMg" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="h0v-6y-Xer"/>
