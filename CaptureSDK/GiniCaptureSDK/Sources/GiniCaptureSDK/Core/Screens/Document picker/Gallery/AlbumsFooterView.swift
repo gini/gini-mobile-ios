@@ -13,12 +13,17 @@ final class AlbumsFooterView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         let configuration = GiniConfiguration.shared
-        label.text = NSLocalizedStringPreferredFormat("ginicapture.albums.footer",
-                                                      comment: "Albums footer message")
+        let titleString = NSLocalizedStringPreferredFormat("ginicapture.albums.footer",
+                                                           comment: "Albums footer message")
+
+        label.isAccessibilityElement = true
+        label.text = titleString
+        label.accessibilityValue = titleString
         label.font = configuration.textStyleFonts[.footnote]
         label.textColor = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
         label.textAlignment = .center
         label.lineBreakMode = .byWordWrapping
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
