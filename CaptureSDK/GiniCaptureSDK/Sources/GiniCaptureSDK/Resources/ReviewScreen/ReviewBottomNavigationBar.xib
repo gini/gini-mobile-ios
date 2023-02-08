@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -24,7 +24,8 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eF1-Xh-kaw" customClass="MultilineTitleButton" customModule="GiniCaptureSDK">
                             <rect key="frame" x="0.0" y="0.0" width="126" height="50"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="126" id="JcJ-43-0FU"/>
+                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="H98-Ts-Tdw"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="126" id="JcJ-43-0FU"/>
                             </constraints>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             <state key="normal" title="MainButton"/>
@@ -37,11 +38,14 @@
                         <constraint firstItem="eF1-Xh-kaw" firstAttribute="top" secondItem="WpJ-zJ-2SL" secondAttribute="top" id="Pnz-CM-V0y"/>
                         <constraint firstItem="754-x6-maY" firstAttribute="leading" secondItem="eF1-Xh-kaw" secondAttribute="trailing" constant="16" id="VJi-XE-9iU"/>
                         <constraint firstItem="eF1-Xh-kaw" firstAttribute="leading" secondItem="WpJ-zJ-2SL" secondAttribute="leading" id="WeH-cl-hxA"/>
+                        <constraint firstAttribute="bottom" secondItem="eF1-Xh-kaw" secondAttribute="bottom" id="fPa-hl-tea"/>
                         <constraint firstAttribute="trailing" secondItem="754-x6-maY" secondAttribute="trailing" id="wP4-i1-OGs"/>
                     </constraints>
                 </view>
             </subviews>
             <constraints>
+                <constraint firstItem="WpJ-zJ-2SL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fPC-k4-VJ1" secondAttribute="leading" constant="8" id="5NY-rn-jpH"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="WpJ-zJ-2SL" secondAttribute="bottom" constant="16" id="6GW-hr-ap7"/>
                 <constraint firstItem="WpJ-zJ-2SL" firstAttribute="top" secondItem="fPC-k4-VJ1" secondAttribute="top" constant="16" id="ZDF-in-Frh"/>
                 <constraint firstItem="WpJ-zJ-2SL" firstAttribute="centerX" secondItem="fPC-k4-VJ1" secondAttribute="centerX" id="zol-dS-Pag"/>
             </constraints>
