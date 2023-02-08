@@ -150,7 +150,8 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
     private func getExtractionsFromGiniBankSDK(delegate: GiniCaptureResultsDelegate) {
         let testDocumentData = self.loadFile(withName: "Gini_invoice_example_payment_reference", ofType: "pdf")
         let builder = GiniCaptureDocumentBuilder(documentSource: .appName(name: "GiniBankSDKExample"))
-        let captureDocument = builder.build(with: testDocumentData)!
+        let captureDocument = builder.build(with: testDocumentData,
+                                            fileName: "Gini_invoice_example_payment_reference.pdf")!
 
         GiniBankConfiguration.shared.documentService = giniCaptureSDKDocumentService
 

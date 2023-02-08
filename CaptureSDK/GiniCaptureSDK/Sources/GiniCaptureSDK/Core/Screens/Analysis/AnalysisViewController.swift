@@ -233,7 +233,8 @@ import UIKit
         NSLayoutConstraint.activate([
             loadingIndicatorText.topAnchor.constraint(equalTo: loadingIndicator.bottomAnchor, constant: 16),
             loadingIndicatorText.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
-            loadingIndicatorText.centerXAnchor.constraint(equalTo: imageView.centerXAnchor)])
+            loadingIndicatorText.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
+            loadingIndicatorText.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)])
     }
 
     private func addLoadingView(intoContainer container: UIView? = nil) {

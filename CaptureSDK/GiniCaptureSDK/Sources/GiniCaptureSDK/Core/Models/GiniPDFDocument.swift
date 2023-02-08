@@ -27,20 +27,27 @@ final public class GiniPDFDocument: NSObject, GiniCaptureDocument {
      Initializes a GiniPDFDocument with a preview image (from the first page)
      
      - Parameter data: PDF data
+     - Parameter fileName: PDF file name
      
      */
     
-    init(data: Data) {
+    init(data: Data, fileName: String?) {
         self.data = data
         self.isReviewable = false
         self.id = UUID().uuidString
         self.isImported = true
         super.init()
-        
+
         if let dataProvider = CGDataProvider(data: data as CFData), let pdfDocument = CGPDFDocument(dataProvider) {
             self.numberPages = pdfDocument.numberOfPages
             self.previewImage = renderFirstPage(fromPdf: pdfDocument)
-            self.pdfTitle = getKey("Title", from: pdfDocument)
+
+            if let fileName = fileName {
+                self.pdfTitle = fileName
+            } else {
+                self.pdfTitle = getKey("Title", from: pdfDocument)
+            }
+
         }
     }
     
@@ -114,7 +121,7 @@ extension GiniPDFDocument: NSItemProviderReading {
     }
     
     static public func object(withItemProviderData data: Data, typeIdentifier: String) throws -> Self {
-        return self.init(data: data)
+        return self.init(data: data, fileName: nil)
     }
     
 }
