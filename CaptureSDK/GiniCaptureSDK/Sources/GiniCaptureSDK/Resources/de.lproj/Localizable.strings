@@ -82,6 +82,7 @@
 "ginicapture.onboarding.qrCode.description"  = "QR Codes werden automatisch erkannt und analysiert";
 "ginicapture.review.documentImageTitle" = "Dokument";
 "ginicapture.review.unknownError"       = "Auf dem Überprüfungsbildschirm ist ein unbekannter Fehler aufgetreten";
+"ginicapture.review.delete"             = "Seite löschen";
 
 "ginicapture.analysis.screenTitle" = "Übersicht";
 "ginicapture.analysis.loadingText" = "Dokument wird analysiert";

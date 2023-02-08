@@ -84,6 +84,20 @@ public final class ReviewViewController: UIViewController {
 
     // MARK: - UI initialization
 
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+
+    private lazy var contentView: UIView = {
+        let contentView = UIView()
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        return contentView
+    }()
+
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -138,6 +152,7 @@ public final class ReviewViewController: UIViewController {
         pageControl.currentPageIndicatorTintColor = GiniColor(light: UIColor.GiniCapture.dark1,
                                                               dark: UIColor.GiniCapture.light1).uiColor()
         pageControl.translatesAutoresizingMaskIntoConstraints = false
+        pageControl.isAccessibilityElement = true
         pageControl.addTarget(self, action: #selector(pageControlTapHandler(sender:)), for: .touchUpInside)
 
         return pageControl
@@ -151,6 +166,9 @@ public final class ReviewViewController: UIViewController {
         button.setTitle(NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle",
                                                         comment: "Process button title"), for: .normal)
         button.addTarget(self, action: #selector(didTapProcessDocument), for: .touchUpInside)
+        button.isAccessibilityElement = true
+        button.accessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle",
+                                                                     comment: "Process button title")
         return button
     }()
 
@@ -169,6 +187,10 @@ public final class ReviewViewController: UIViewController {
             self.setCellStatus(for: self.currentPage, isActive: false)
             self.delegate?.reviewDidTapAddImage(self)
         }
+        addPagesButton.isAccessibilityElement = true
+        addPagesButton.accessibilityLabel = NSLocalizedStringPreferredFormat(
+                                                "ginicapture.multipagereview.secondaryButtonTitle",
+                                                comment: "Add pages button title")
         return addPagesButton
     }()
 
@@ -204,29 +226,45 @@ public final class ReviewViewController: UIViewController {
 
     // MARK: - Constraints
 
+    private lazy var scrollViewConstraints: [NSLayoutConstraint] = [
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+        scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+    ]
+
+    private lazy var contenViewConstraints: [NSLayoutConstraint] = [
+        contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+        contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        contentView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.heightAnchor),
+        contentView.bottomAnchor.constraint(greaterThanOrEqualTo: scrollView.bottomAnchor)
+    ]
+
     private lazy var tipLabelConstraints: [NSLayoutConstraint] = [
-        tipLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.padding),
-        tipLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-        tipLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        tipLabel.heightAnchor.constraint(equalToConstant: Constants.titleHeight)]
+        tipLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
+        tipLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+        tipLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+        tipLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.titleHeight),
+        tipLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.maxTitleHeight)]
 
     private lazy var collectionViewConstraints: [NSLayoutConstraint] = [
         collectionView.topAnchor.constraint(equalTo: tipLabel.bottomAnchor, constant: Constants.padding),
-        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+        collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         collectionViewHeightConstraint]
 
     private lazy var pageControlConstraints: [NSLayoutConstraint] = [
         pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: Constants.padding * 2),
-        pageControl.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-        pageControl.trailingAnchor.constraint(equalTo: view.trailingAnchor)]
+        pageControl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+        pageControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)]
 
     private lazy var processButtonConstraints: [NSLayoutConstraint] = [
         processButton.topAnchor.constraint(equalTo: buttonContainer.topAnchor),
-        processButton.widthAnchor.constraint(equalToConstant: Constants.buttonSize.width),
+        processButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.width),
         processButton.leadingAnchor.constraint(equalTo: buttonContainer.leadingAnchor),
-        processButton.heightAnchor.constraint(equalToConstant: Constants.buttonSize.height),
-        processButton.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor),
+        processButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.height),
+        processButton.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor, constant: -8),
         processButton.trailingAnchor.constraint(lessThanOrEqualTo: buttonContainer.trailingAnchor)]
 
     private lazy var addPagesButtonConstraints: [NSLayoutConstraint] =  [
@@ -237,9 +275,10 @@ public final class ReviewViewController: UIViewController {
 
     private lazy var buttonContainerConstraints: [NSLayoutConstraint] = [
         buttonContainer.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: Constants.padding * 2),
-        buttonContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        buttonContainer.bottomAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                              constant: -Constants.bottomPadding)
+        buttonContainer.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+        buttonContainer.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor,
+                                              constant: -Constants.bottomPadding),
+        buttonContainer.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor)
     ]
 
     // MARK: - Init
@@ -299,7 +338,7 @@ extension ReviewViewController {
             navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBar.heightAnchor.constraint(equalToConstant: 114)
+            navigationBar.heightAnchor.constraint(equalToConstant: Constants.bottomNavigationBarHeight)
         ])
         view.bringSubviewToFront(navigationBar)
         view.layoutSubviews()
@@ -366,11 +405,14 @@ extension ReviewViewController {
         title = NSLocalizedStringPreferredFormat("ginicapture.multipagereview.title",
                                                  comment: "Screen title")
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
-        view.addSubview(tipLabel)
-        view.addSubview(collectionView)
-        view.addSubview(pageControl)
+
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(tipLabel)
+        contentView.addSubview(collectionView)
+        contentView.addSubview(pageControl)
         if !giniConfiguration.bottomNavigationBarEnabled {
-            view.addSubview(buttonContainer)
+            contentView.addSubview(buttonContainer)
             buttonContainer.addSubview(processButton)
             if giniConfiguration.multipageEnabled {
                 buttonContainer.addSubview(addPagesButton)
@@ -472,6 +514,8 @@ extension ReviewViewController {
     private func addConstraints() {
         collectionViewHeightConstraint.priority = .defaultLow
 
+        NSLayoutConstraint.activate(scrollViewConstraints)
+        NSLayoutConstraint.activate(contenViewConstraints)
         NSLayoutConstraint.activate(tipLabelConstraints)
         NSLayoutConstraint.activate(collectionViewConstraints)
         NSLayoutConstraint.activate(pageControlConstraints)
@@ -484,7 +528,7 @@ extension ReviewViewController {
             }
         } else {
             NSLayoutConstraint.activate([
-                pageControl.bottomAnchor.constraint(equalTo: view.bottomAnchor,
+                pageControl.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
                                                     constant: -Constants.pageControlBottomPadding),
                 collectionView.bottomAnchor.constraint(greaterThanOrEqualTo: pageControl.topAnchor,
                                                        constant: -Constants.padding * 2)
@@ -531,7 +575,11 @@ extension ReviewViewController {
     private func calculatedCellSize() -> CGSize {
         let a4Ratio = 1.4142
         if UIDevice.current.isIpad {
-            let height = self.view.bounds.height - 260
+            var height = self.view.bounds.height - 260
+            if giniConfiguration.bottomNavigationBarEnabled {
+                height -= Constants.bottomNavigationBarHeight
+                height -= Constants.padding
+            }
             let width = height / a4Ratio
             return CGSize(width: width, height: height)
         } else {
@@ -632,7 +680,9 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
     }
 
     private func setCellStatus(for index: Int, isActive: Bool) {
-        let cell = collectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? ReviewCollectionCell
+        let indexToSet = min(index, pages.count - 1)
+
+        let cell = collectionView.cellForItem(at: IndexPath(row: indexToSet, section: 0)) as? ReviewCollectionCell
         cell?.isActive = isActive
     }
 }
@@ -657,5 +707,7 @@ extension ReviewViewController {
         static let pageControlBottomPadding: CGFloat = 130
         static let buttonSize: CGSize = CGSize(width: 126, height: 50)
         static let titleHeight: CGFloat = 18
+        static let maxTitleHeight: CGFloat = 100
+        static let bottomNavigationBarHeight: CGFloat = 114
     }
 }
