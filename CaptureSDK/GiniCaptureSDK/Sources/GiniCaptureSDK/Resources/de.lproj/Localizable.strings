@@ -114,7 +114,7 @@
 "ginicapture.help.openWithTutorial.step2.title" = "Aktivieren Sie die Teilen-Funktion";
 "ginicapture.help.openWithTutorial.step2.subTitle" = "Um die Datei an die %@ weiterzuleiten, verwenden Sie die Teilen-Funktion, dargestellt als ein Viereck mit hoch zeigendem Pfeil, und wählen Sie “Öffnen in...” oder “Datei freigeben”. Bitte wählen Sie dann die %@ aus der Liste aus, um den Analyse- und Überweisungsprozess zu starten.";
 "ginicapture.help.openWithTutorial.step3.title" = "Auf iPads können Sie auch “Drag-and-drop” nutzen";
-"ginicapture.help.openWithTutorial.step3.subTitle" = "Auf iPads können ab iOS 11 PDFs oder Fotos bequem aus der Datei-Browser-App per “Drag-and-drop” in die %@ gezogen werden, um den Überweisungsprozess zu starten. Hierfür öffnen Sie zunächst die %@ und bringen Sie die Datei-Browser-App als zweite App auf dem Screen an. Wählen Sie dann die gewünschte Datei aus und ziehen Sie diese zur %@ hinüber.";
+"ginicapture.help.openWithTutorial.step3.subTitle" = "Auf iPads können ab iOS 12 PDFs oder Fotos bequem aus der Datei-Browser-App per “Drag-and-drop” in die %@ gezogen werden, um den Überweisungsprozess zu starten. Hierfür öffnen Sie zunächst die %@ und bringen Sie die Datei-Browser-App als zweite App auf dem Screen an. Wählen Sie dann die gewünschte Datei aus und ziehen Sie diese zur %@ hinüber.";
 
 "ginicapture.noresults.warning" = "Es konnten keine Daten ausgelesen werden. Bitte Aufnahme wiederholen.";
 "ginicapture.noresults.collection.header" = "Tipps für beste Ergebnisse:";
