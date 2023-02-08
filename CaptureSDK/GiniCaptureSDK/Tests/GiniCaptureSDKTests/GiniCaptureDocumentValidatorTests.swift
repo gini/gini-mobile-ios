@@ -16,7 +16,7 @@ final class GiniCaptureDocumentValidatorTests: XCTestCase {
     func testExcedeedMaxFileSize() {
         let higherThan10MBData = generateFakeData(megaBytes: 12)
         
-        let pdfDocument = GiniPDFDocument(data: higherThan10MBData)
+        let pdfDocument = GiniPDFDocument(data: higherThan10MBData, fileName: nil)
         
         XCTAssertThrowsError(try GiniCaptureDocumentValidator.validate(pdfDocument,
                                                                       withConfig: giniConfiguration),
@@ -29,7 +29,7 @@ final class GiniCaptureDocumentValidatorTests: XCTestCase {
     func testNotExcedeedMaxFileSize() {
         let lowerThanOrEqualTo10MBData = generateFakeData(megaBytes: 10)
         
-        let pdfDocument = GiniPDFDocument(data: lowerThanOrEqualTo10MBData)
+        let pdfDocument = GiniPDFDocument(data: lowerThanOrEqualTo10MBData, fileName: nil)
         
         XCTAssertThrowsError(try GiniCaptureDocumentValidator.validate(pdfDocument,
                                                                       withConfig: giniConfiguration),
@@ -49,7 +49,7 @@ final class GiniCaptureDocumentValidatorTests: XCTestCase {
     }
     
     func testEmptyFileValidation() {
-        let pdfDocument = GiniPDFDocument(data: Data(count: 0))
+        let pdfDocument = GiniPDFDocument(data: Data(count: 0), fileName: nil)
 
         XCTAssertThrowsError(try GiniCaptureDocumentValidator.validate(pdfDocument,
                                                                       withConfig: giniConfiguration),
@@ -80,7 +80,7 @@ final class GiniCaptureDocumentValidatorTests: XCTestCase {
             XCTAssert(encryptedPDFDoc.isLocked == true)
             
             if let data = try? Data(contentsOf: encryptedFileURL) {
-                let pdfDocument = GiniPDFDocument(data: data)
+                let pdfDocument = GiniPDFDocument(data: data, fileName: nil)
                 XCTAssertThrowsError(
                     try GiniCaptureDocumentValidator.validate(
                         pdfDocument,

@@ -227,24 +227,25 @@ public final class DocumentPickerCoordinator: NSObject {
 // MARK: - Fileprivate methods
 
 fileprivate extension DocumentPickerCoordinator {
-    func createDocument(fromData data: Data) -> GiniCaptureDocument? {
+    func createDocument(fromData dataDictionary: (Data?, String?)) -> GiniCaptureDocument? {
+        guard let data = dataDictionary.0 else { return nil }
         let documentBuilder = GiniCaptureDocumentBuilder(documentSource: .external)
         documentBuilder.importMethod = .picker
 
-        return documentBuilder.build(with: data)
+        return documentBuilder.build(with: data, fileName: dataDictionary.1)
     }
 
-    func data(fromUrl url: URL) -> Data? {
+    func data(fromUrl url: URL) -> (Data?, String?) {
         do {
             _ = url.startAccessingSecurityScopedResource()
             let data = try Data(contentsOf: url)
             url.stopAccessingSecurityScopedResource()
-            return data
+            return (data, url.lastPathComponent)
         } catch {
             url.stopAccessingSecurityScopedResource()
         }
 
-        return nil
+        return (nil, nil)
     }
 
     func saveCurrentNavBarAppearance() {
