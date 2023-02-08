@@ -218,7 +218,7 @@ We provide an example implementation [here](https://github.com/gini/gini-mobile-
 
 You may also use the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios) or implement communication with the Gini Bank API yourself.
 
-### Return Assistant
+### Return Assistant TODO
 
 The return assistant feature allows your users to view and edit payable items in an invoice. The total amount is
 updated to be the sum of only those items which the user opts to pay.
@@ -241,29 +241,7 @@ The extractions related to the return assistant are stored in the ``lineItems`` 
 Gini Bank API's [documentation](https://pay-api.gini.net/documentation/#return-assistant-extractions) to learn about the
 return assistant's extractions.
 
-## Component API
-
-The Component API provides a custom `UIViewController` for each screen. This allows a maximum of flexibility, as the screens can be presented modally, used in a container view or pushed to a navigation view controller. Make sure to add your own navigational elements around the provided views.
-
-For using the `GiniBankConfiguration` with the Component API:
-
-```swift
-let giniBankConfiguration = GiniBankConfiguration()
-.
-.
-.
-GiniCapture.setConfiguration(giniBankConfiguration.captureConfiguration())
-```
-
-The components that can be found in the library are:
-* **Camera**: The actual camera screen to capture the image of the document, to import a PDF or an image or to scan a QR Code (`CameraViewController`).
-* **Review**: Allows to check the quality of one or several images and the ability to delete when multipage is enabled (`ReviewViewController`).
-* **Analysis**: Provides a UI for the analysis process of the document by showing the user capture tips when an image is analyzed or the document information when it is a PDF. In both cases an image preview of the document analyzed will be shown (`AnalysisViewController`).
-* **Help**: Helpful tutorials indicating how to use the open with feature, which are the supported file types and how to capture better photos for a good analysis (`HelpMenuViewController`).
-* **No results**: Shows some suggestions to capture better photos when there are no results after an analysis (`ImageAnalysisNoResultsViewController`).
-* **Digital Invoice**: Main screen of the return assistant feature. Allows your users to view and edit payable items in an invoice (`DigitalInvoiceViewController`).
-
-## Sending Feedback
+## Sending Feedback TODO
 
 Your app should send feedback for the extractions the Gini Bank API delivered. Feedback should be sent only for the extractions the user has seen and accepted (or corrected).
 
