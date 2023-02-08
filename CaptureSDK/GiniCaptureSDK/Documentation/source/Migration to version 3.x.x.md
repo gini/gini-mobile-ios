@@ -52,11 +52,11 @@ The following steps will help you migrate to the new public API:
 * Handling the analysis results and receiving the extracted information (error or cancellation) can be handled though `GiniCaptureResultsDelegate` protocol implementation.
 * You can also provide your own networking by implementing the `GiniCaptureNetworkService` and `GiniCaptureResultsDelegate` protocols. Pass your instances to the `UIViewController` initialiser of GiniCapture as shown below.
 * Remove all code related to interacting with the SDK's specific view controllers. From now on the entry point is the `UIViewController` and customization happens through `GiniConfiguration` and via overriding of images and color resources.
-* Use the new UI customization options and follow the [Customization guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta03/customization-guide.html) to adapt the look of the new UI.
+* Use the new UI customization options and follow the [Customization guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta04/customization-guide.html) to adapt the look of the new UI.
 
 # Migrate from Screen API
 
-The new public API is based on the Screen API, so you only need to use the new UI customization options and follow the [Customization guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta03/customization-guide.html) to adapt the look of the new UI.
+The new public API is based on the Screen API, so you only need to use the new UI customization options and follow the [Customization guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta04/customization-guide.html) to adapt the look of the new UI.
 
 # Overview of New UI Customization Options
 
@@ -130,7 +130,7 @@ customizations.
 
 Images and text are onboarding page specific and need to be customized for each page.
 
-[here][https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta03/features.html#onboarding] and [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=243%3A3305&t=6sAk7LGf1mi3zV9L-1).
+[here][https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta04/features.html#onboarding] and [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=243%3A3305&t=6sAk7LGf1mi3zV9L-1).
 
 ### Breaking Changes
 
@@ -191,7 +191,7 @@ String keys changed:
 You can show a bottom navigation bar by passing true to `GiniConfiguration.shared.bottomNavigationBarEnabled`. There is a default implementation, but you can also use
 your own by implementing the `HelpBottomNavigationBarAdapter` interface and passing it to `GiniConfiguration.shared.helpNavigationBarBottomAdapter`.
 
-You can find more details [here][https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta03/features.html#help-screen-customization] and [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=141%3A2328&t=6sAk7LGf1mi3zV9L-1).
+You can find more details [here][https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta04/features.html#help-screen-customization] and [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=141%3A2328&t=6sAk7LGf1mi3zV9L-1).
 
 ## Analysis screen
 
@@ -274,7 +274,7 @@ For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterMa
 You can show a bottom navigation bar by passing true to `GiniConfiguration.shared.bottomNavigationBarEnabled`. There is a default implementation, but you can also use
 your own by implementing the `NoResultBottomNavigationBarAdapter` interface and passing it to `GiniConfiguration.shared.noResultNavigationBarBottomAdapter`.
 
-You can find more details [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=263%3A6989&t=7wXW9XyhTUcmp5sk-1) and [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta03/customization-guide.html#no-result-screen).
+You can find more details [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=263%3A6989&t=7wXW9XyhTUcmp5sk-1) and [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta04/customization-guide.html#no-result-screen).
 
 ## Error screen
 
@@ -295,11 +295,11 @@ The new error screen gives options to retake photos or enter details manually an
 You can show a bottom navigation bar by passing true to `GiniConfiguration.shared.bottomNavigationBarEnabled`. There is a default implementation, but you can also use
 your own by implementing the `ErrorBottomNavigationBarAdapter` interface and passing it to `GiniConfiguration.shared.errorNavigationBarBottomAdapter`.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta03/customization-guide.html#error-screen).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta04/customization-guide.html#error-screen).
 
 #### Option to enter details manually
 
 You can show your own UI for data input if an error occured and the user clicks the "Enter manually" button on the error screen.
 For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta03/features.html#error-screen-customization) and [here]((https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta03/customization-guide.html#error-screen).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta04/features.html#error-screen-customization) and [here]((https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta04/customization-guide.html#error-screen).
