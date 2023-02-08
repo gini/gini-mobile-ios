@@ -29,21 +29,29 @@ final class OnboardingBottomNavigationBar: UIView {
 
         nextButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         nextButton.configure(with: configuration.primaryButtonConfiguration)
+        nextButton.isAccessibilityElement = true
 
         skipButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         skipButton.configure(with: configuration.transparentButtonConfiguration)
+        skipButton.isAccessibilityElement = true
 
         getStarted.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         getStarted.configure(with: configuration.primaryButtonConfiguration)
+        getStarted.isAccessibilityElement = true
 
-        skipButton.setTitle(NSLocalizedStringPreferredFormat(
-            "ginicapture.onboarding.skip",
-            comment: "Skip button"), for: .normal)
-        nextButton.setTitle(NSLocalizedStringPreferredFormat(
-            "ginicapture.onboarding.next",
-            comment: "Next button"), for: .normal)
-        getStarted.setTitle(NSLocalizedStringPreferredFormat(
-            "ginicapture.onboarding.getstarted",
-            comment: "Get Started button"), for: .normal)
+        skipButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.onboarding.skip",
+                                                             comment: "Skip button"), for: .normal)
+        skipButton.accessibilityValue = NSLocalizedStringPreferredFormat("ginicapture.onboarding.skip",
+                                                                         comment: "Skip button")
+
+        nextButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.onboarding.next",
+                                                             comment: "Next button"), for: .normal)
+        nextButton.accessibilityValue = NSLocalizedStringPreferredFormat("ginicapture.onboarding.next",
+                                                                         comment: "Next button")
+
+        getStarted.setTitle(NSLocalizedStringPreferredFormat("ginicapture.onboarding.getstarted",
+                                                             comment: "Get Started button"), for: .normal)
+        getStarted.accessibilityValue = NSLocalizedStringPreferredFormat("ginicapture.onboarding.getstarted",
+                                                                         comment: "Get Started button")
     }
 }

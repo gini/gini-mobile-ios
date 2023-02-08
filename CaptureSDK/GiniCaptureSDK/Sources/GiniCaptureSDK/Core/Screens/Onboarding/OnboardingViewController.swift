@@ -44,19 +44,15 @@ class OnboardingViewController: UIViewController {
     }
 
     private func configurePageControl() {
-        pageControl.pageIndicatorTintColor = GiniColor(
-            light: UIColor.GiniCapture.dark1,
-            dark: UIColor.GiniCapture.light1
-        ).uiColor().withAlphaComponent(0.3)
-        pageControl.currentPageIndicatorTintColor = GiniColor(
-            light: UIColor.GiniCapture.dark1,
-            dark: UIColor.GiniCapture.light1
-        ).uiColor()
-        pageControl.addTarget(
-            self,
-            action: #selector(self.pageControlSelectionAction(_:)),
-            for: .valueChanged)
+        pageControl.pageIndicatorTintColor = GiniColor(light: UIColor.GiniCapture.dark1,
+                                                       dark: UIColor.GiniCapture.light1
+                                                      ).uiColor().withAlphaComponent(0.3)
+        pageControl.currentPageIndicatorTintColor = GiniColor(light: UIColor.GiniCapture.dark1,
+                                                              dark: UIColor.GiniCapture.light1
+                                                             ).uiColor()
+        pageControl.addTarget(self, action: #selector(self.pageControlSelectionAction(_:)), for: .valueChanged)
         pageControl.numberOfPages = dataSource.itemSections.count
+        pageControl.isAccessibilityElement = true
     }
 
     private func setupView() {
@@ -87,12 +83,10 @@ class OnboardingViewController: UIViewController {
     }
 
     private func configureBasicNavigation() {
-        nextButton.layer.cornerRadius = 14
-        nextButton.setTitle("Next", for: .normal)
-        nextButton.backgroundColor = GiniColor(
-            light: UIColor.GiniCapture.accent1,
-            dark: UIColor.GiniCapture.accent1
-        ).uiColor()
+        nextButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
+        nextButton.accessibilityValue = NSLocalizedStringPreferredFormat("ginicapture.onboarding.next",
+                                                                         comment: "Next button")
+        nextButton.configure(with: GiniConfiguration.shared.primaryButtonConfiguration)
         nextButton.addTarget(self, action: #selector(nextPage), for: .touchUpInside)
         navigationItem.rightBarButtonItem = skipButton
     }
@@ -122,21 +116,12 @@ class OnboardingViewController: UIViewController {
             bottomNavigationBar = navigationBar
             view.addSubview(navigationBar)
             layoutBottomNavigationBar(navigationBar)
-            navigationBarBottomAdapter?.showButtons(
-                navigationButtons: [.skip, .next],
-                navigationBar: navigationBar)
-            nextButton.layer.cornerRadius = 14
+            navigationBarBottomAdapter?.showButtons(navigationButtons: [.skip, .next], navigationBar: navigationBar)
+
             nextButton.setTitle(NSLocalizedStringPreferredFormat(
                 "ginicapture.onboarding.next",
                 comment: "Next button"), for: .normal)
-            nextButton.backgroundColor = GiniColor(
-                light: UIColor.GiniCapture.accent1,
-                dark: UIColor.GiniCapture.accent1
-            ).uiColor()
-            nextButton.titleLabel?.textColor = GiniColor(
-                light: UIColor.GiniCapture.light1,
-                dark: UIColor.GiniCapture.light1
-            ).uiColor()
+
             nextButton.addTarget(self, action: #selector(nextPage), for: .touchUpInside)
             navigationItem.rightBarButtonItem = skipButton
         }
@@ -194,6 +179,9 @@ extension OnboardingViewController: OnboardingScreen {
                     nextButton.setTitle(NSLocalizedStringPreferredFormat(
                         "ginicapture.onboarding.getstarted",
                         comment: "Get Started button"), for: .normal)
+                    nextButton.accessibilityValue = NSLocalizedStringPreferredFormat(
+                                                    "ginicapture.onboarding.getstarted",
+                                                    comment: "Get Started button")
                 }
             }
         default:
