@@ -20,7 +20,6 @@
 		1F53F5101FE967C5009E2677 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F53F50F1FE967C5009E2677 /* RootNavigationController.swift */; };
 		1F578E111FBD7C7D00C17F62 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F578E101FBD7C7D00C17F62 /* SettingsViewController.swift */; };
 		1F578E131FBD81A300C17F62 /* SettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F578E121FBD81A300C17F62 /* SettingsViewControllerTests.swift */; };
-		1F59756820A1C5C00012196B /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F59756720A1C5C00012196B /* UIViewController.swift */; };
 		1F5F53321F5DB2E300D4BF06 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		1F94118B1FBAEB7D0019DECD /* ScreenAPICoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F94118A1FBAEB7D0019DECD /* ScreenAPICoordinatorTests.swift */; };
 		1F9466C5203702E600F52B40 /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9466C4203702E600F52B40 /* CredentialsManager.swift */; };
@@ -98,7 +97,6 @@
 		1F53F50F1FE967C5009E2677 /* RootNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
 		1F578E101FBD7C7D00C17F62 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		1F578E121FBD81A300C17F62 /* SettingsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewControllerTests.swift; sourceTree = "<group>"; };
-		1F59756720A1C5C00012196B /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		1F94118A1FBAEB7D0019DECD /* ScreenAPICoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinatorTests.swift; sourceTree = "<group>"; };
 		1F9466C4203702E600F52B40 /* CredentialsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
 		1FA970372149409600B776B8 /* GiniCaptureSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniCaptureSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -196,7 +194,6 @@
 		1F1D3B0120A32EAC00F37632 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				1F59756720A1C5C00012196B /* UIViewController.swift */,
 				76610C1B2990EE11004C1ECB /* UIView.swift */,
 			);
 			name = Extensions;
@@ -558,7 +555,6 @@
 				F4BB7CEE2695D66C003FD77E /* CustomMenuItemViewController.swift in Sources */,
 				76610C1C2990EE11004C1ECB /* UIView.swift in Sources */,
 				76610C06298D631B004C1ECB /* CustomOnboardingBottomNavigationBarAdapter.swift in Sources */,
-				1F59756820A1C5C00012196B /* UIViewController.swift in Sources */,
 				1F2E1AA11FB58EC900E1022A /* Coordinator.swift in Sources */,
 				76610C192990E7F9004C1ECB /* CustomReviewScreenBottomNavigationBar.swift in Sources */,
 				1F2E1AA31FB5AD5D00E1022A /* ScreenAPICoordinator.swift in Sources */,
@@ -569,7 +565,6 @@
 				76610BFC298D631A004C1ECB /* CustomBottomNavigationBar.swift in Sources */,
 				1F578E111FBD7C7D00C17F62 /* SettingsViewController.swift in Sources */,
 				76610C00298D631B004C1ECB /* CustomCameraBottomNavigationBarAdapter.swift in Sources */,
-				0AAE6D4A1D6B6BC500EE9EDD /* NoResultViewController.swift in Sources */,
 				0AAE6D4C1D6B6C0B00EE9EDD /* ResultTableViewController.swift in Sources */,
 				76610C04298D631B004C1ECB /* CustomOnboardingBottomNavigationBar.swift in Sources */,
 				834735F72940F96300C3B5F3 /* CustomAnalysisError.swift in Sources */,
