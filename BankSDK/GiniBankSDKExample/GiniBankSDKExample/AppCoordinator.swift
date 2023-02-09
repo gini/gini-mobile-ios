@@ -163,9 +163,7 @@ final class AppCoordinator: Coordinator {
                     self.showOpenWithSwitchDialog(
                         for: [GiniCapturePage(document: document, error: nil)])
                 } catch  {
-                    self.rootViewController.showErrorDialog(
-                        for: error,
-                        positiveAction: nil)
+                    self.rootViewController.showErrorDialog(for: error, positiveAction: nil)
                 }
             }
         }
