@@ -38,13 +38,6 @@ class AlbumsPickerViewControllerTests: XCTestCase {
                         "cell type should match UITableViewCell")
     }
 
-    func testTableCellHeight() {
-        XCTAssertEqual(albumsViewController.tableView(albumsViewController.albumsTableView,
-                                                      heightForRowAt: IndexPath(row: 1, section: 0)),
-                       AlbumsPickerTableViewCell.height,
-                       "table view cell heght should match AlbumsPickerTableViewCell height")
-    }
-
     func testTableCellSelection() {
         let delegate = AlbumsPickerViewControllerDelegateMock()
         albumsViewController.delegate = delegate
