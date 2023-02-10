@@ -22,20 +22,24 @@ class DigitalInvoiceOnboardingViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet var doneButton: MultilineTitleButton!
     @IBOutlet weak var scrollViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollViewBottomAnchor: NSLayoutConstraint!
 
-    fileprivate var topImage: UIImage {
+    private var navigationBarBottomAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter?
+    private var bottomNavigationBar: UIView?
+
+    private var topImage: UIImage {
         return prefferedImage(named: "digital_invoice_onboarding_icon") ?? UIImage()
     }
     
-    fileprivate var firstLabelText: String {
+    private var firstLabelText: String {
         return  NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.text1", comment: "title for the first label on the digital invoice onboarding screen")
     }
     
-    fileprivate var secondLabelText: String {
+    private var secondLabelText: String {
         return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.text2", comment: "title for the second label on the digital invoice onboarding screen")
     }
     
-    fileprivate var doneButtonTitle: String {
+    private var doneButtonTitle: String {
         return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.donebutton", comment: "title for the done button on the digital invoice onboarding screen")
     }
     
@@ -44,7 +48,7 @@ class DigitalInvoiceOnboardingViewController: UIViewController {
         configureUI()
     }
 
-    fileprivate func configureUI() {
+    private func configureUI() {
         let configuration = GiniBankConfiguration.shared
         title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
         view.backgroundColor = GiniColor(light: UIColor.GiniBank.light2, dark: UIColor.GiniBank.dark2).uiColor()
@@ -71,6 +75,37 @@ class DigitalInvoiceOnboardingViewController: UIViewController {
         doneButton.accessibilityValue = doneButtonTitle
         doneButton.configure(with: configuration.primaryButtonConfiguration)
 
+        if configuration.bottomNavigationBarEnabled {
+            doneButton.isHidden = true
+
+            NSLayoutConstraint.deactivate([scrollViewBottomAnchor])
+
+            if let bottomBarAdapter = configuration.digitalInvoiceOnboardingNavigationBarBottomAdapter {
+                navigationBarBottomAdapter = bottomBarAdapter
+            } else {
+                navigationBarBottomAdapter = DefaultDigitalInvoiceOnboardingNavigationBarBottomAdapter()
+            }
+
+            navigationBarBottomAdapter?.setContinueButtonClickedActionCallback { [weak self] in
+                self?.dismissViewController()
+            }
+
+            if let navigationBar = navigationBarBottomAdapter?.injectedView() {
+                bottomNavigationBar = navigationBar
+                view.addSubview(navigationBar)
+
+                navigationBar.translatesAutoresizingMaskIntoConstraints = false
+
+                NSLayoutConstraint.activate([
+                    navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                    navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                    navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                    navigationBar.heightAnchor.constraint(equalToConstant: 114),
+                    navigationBar.topAnchor.constraint(equalTo: scrollView.bottomAnchor)
+                ])
+            }
+        }
+
         configureConstraints()
     }
 
@@ -96,7 +131,7 @@ class DigitalInvoiceOnboardingViewController: UIViewController {
         dismissViewController()
     }
     
-    func dismissViewController() {
+    private func dismissViewController() {
         dismiss(animated: true) {
             self.delegate?.didDismissViewController()
         }

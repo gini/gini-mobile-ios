@@ -98,6 +98,7 @@
                         <outlet property="doneButton" destination="Ydb-dv-dAn" id="2QP-AC-Kes"/>
                         <outlet property="firstLabel" destination="Wrk-c0-ekq" id="byp-IX-SJ7"/>
                         <outlet property="scrollView" destination="EiW-yt-Ug3" id="cVH-s9-SPL"/>
+                        <outlet property="scrollViewBottomAnchor" destination="yge-kX-bNI" id="eNO-2v-Hy3"/>
                         <outlet property="scrollViewTopConstraint" destination="BaX-Vx-sDn" id="XDD-sI-FeE"/>
                         <outlet property="secondLabel" destination="b5g-YZ-Ffz" id="5UH-xp-kbc"/>
                         <outlet property="topImageView" destination="vN8-eg-TBS" id="YRJ-Sj-XKm"/>
