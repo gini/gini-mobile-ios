@@ -85,16 +85,7 @@ extension UIViewController {
                                  confirmActionTitle: String? = nil,
                                  confirmAction: (() -> Void)? = nil) -> UIAlertController {
         
-        let alertViewController = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
-
-
-        let messageAttributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 17,
-                                                                                 weight: UIFont.Weight.medium),
-                                 NSAttributedString.Key.foregroundColor : GiniColor(light: .GiniCapture.dark1,
-                                                                                    dark: .GiniCapture.light1).uiColor()]
-        alertViewController.setValue(NSAttributedString(string: message,
-                                                        attributes: messageAttributes),
-                                     forKey: "attributedMessage")
+        let alertViewController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
 
         alertViewController.view.tintColor = .GiniCapture.accent1
         
