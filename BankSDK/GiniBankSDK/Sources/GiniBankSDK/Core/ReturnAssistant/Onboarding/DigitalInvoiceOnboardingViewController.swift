@@ -19,8 +19,10 @@ class DigitalInvoiceOnboardingViewController: UIViewController {
     @IBOutlet var topImageView: UIImageView!
     @IBOutlet var firstLabel: UILabel!
     @IBOutlet var secondLabel: UILabel!
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet var doneButton: MultilineTitleButton!
-    
+    @IBOutlet weak var scrollViewTopConstraint: NSLayoutConstraint!
+
     fileprivate var topImage: UIImage {
         return prefferedImage(named: "digital_invoice_onboarding_icon") ?? UIImage()
     }
@@ -45,28 +47,42 @@ class DigitalInvoiceOnboardingViewController: UIViewController {
     fileprivate func configureUI() {
         let configuration = GiniBankConfiguration.shared
         title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
-        contentView.backgroundColor = GiniColor(light: UIColor.GiniBank.light2, dark: UIColor.GiniBank.dark2).uiColor()
+        view.backgroundColor = GiniColor(light: UIColor.GiniBank.light2, dark: UIColor.GiniBank.dark2).uiColor()
+        contentView.backgroundColor = .clear
         
         topImageView.image = topImage
         
         firstLabel.text = firstLabelText
         firstLabel.font = configuration.textStyleFonts[.title2Bold]
         firstLabel.textColor = GiniColor(light: UIColor.GiniBank.dark1, dark: UIColor.GiniBank.light1).uiColor()
+        firstLabel.adjustsFontForContentSizeCategory = true
+        firstLabel.accessibilityValue = firstLabelText
         
         secondLabel.text = secondLabelText
         secondLabel.font = configuration.textStyleFonts[.headline]
         secondLabel.textColor = GiniColor(light: UIColor.GiniBank.dark6, dark: UIColor.GiniBank.dark7).uiColor()
+        secondLabel.adjustsFontForContentSizeCategory = true
+        secondLabel.accessibilityValue = secondLabelText
 
         doneButton.addTarget(self, action: #selector(doneAction(_:)), for: .touchUpInside)
         doneButton.setTitle(doneButtonTitle, for: .normal)
         doneButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
+        doneButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        doneButton.accessibilityValue = doneButtonTitle
         doneButton.configure(with: configuration.primaryButtonConfiguration)
 
-        if UIDevice.current.isIpad {
-            secondLabel.translatesAutoresizingMaskIntoConstraints = false
+        configureConstraints()
+    }
 
+    private func configureConstraints() {
+        if UIDevice.current.isIpad {
+            scrollViewTopConstraint.constant = view.frame.width > view.frame.height ? 16 : 96
+
+            let multiplier: CGFloat = view.frame.width > view.frame.height ? 0.4 : 0.6
+
+            scrollView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate(
-                [secondLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5)]
+                [scrollView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: multiplier)]
             )
         }
     }
