@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>DigitalInvoiceViewController Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/DigitalInvoiceViewController" class="dashAnchor"></a>
+
+    <a title="DigitalInvoiceViewController Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+        <img class="logo-icon" src="../img/logo.png"/>
+    
+        </a>
+        
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/gini/gini-mobile-ios.git">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">GiniBankSDK Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      DigitalInvoiceViewController Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Documentation.html">Documentation</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../installation.html">Installation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../features.html">Features</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../integration.html">Integration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../license.html">License</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Guides.html">Other Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../customization-guide.html">Customization guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../error-logging-guide.html">Error logging guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../event-tracking-guide.html">Event tracking guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../import-pdfs-and-images-guide.html">Import PDFs and images guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../migration-from-gini-pay-bank-sdk.html">Migration from Gini Pay Bank SDK</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../migration-from-gini-vision-library.html">Migration from Gini Vision Library</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../migration-to-version-3xx.html">Migration to version 3.x.x</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../open-with-guide.html">Open with guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../qr-code-scanning-guide.html">QR Code scanning guide</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DigitalInvoiceViewController.html">DigitalInvoiceViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniBank.html">GiniBank</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniBankConfiguration.html">GiniBankConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GiniBankNetworkingScreenApiCoordinator.html">GiniBankNetworkingScreenApiCoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ReturnAssistantConfiguration.html">ReturnAssistantConfiguration</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Global Variables.html">Other Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Global%20Variables.html#/s:11GiniBankSDK0aB10SDKVersionSSvp">GiniBankSDKVersion</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Enumerations.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GiniBankError.html">GiniBankError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UIFont.html">UIFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UIFont/TextStyle.html">– TextStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UITextField.html">UITextField</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Functions.html">Other Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Functions.html#/s:11GiniBankSDK23receivePaymentRequestId3url10completiony10Foundation3URLV_ys6ResultOySSAA0aB5ErrorOGctF">receivePaymentRequestId(url:completion:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DigitalInvoiceViewControllerDelegate.html">DigitalInvoiceViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other%20Protocols.html#/s:11GiniBankSDK0aB16AnalysisDelegateP">GiniBankAnalysisDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Structures.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/DigitalInvoice.html">DigitalInvoice</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PaymentInfo.html">PaymentInfo</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>DigitalInvoiceViewController</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DigitalInvoiceViewController</span> <span class="p">:</span> <span class="kt">UIViewController</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">DigitalInvoiceViewController</span><span class="p">:</span> <span class="kt">UITableViewDelegate</span><span class="p">,</span> <span class="kt">UITableViewDataSource</span></code></pre>
+
+                </div>
+              </div>
+            <p>This class is a view controller that lets the user view their invoice
+together with the line items and total amount to pay. It will push the
+<code>LineItemDetailsViewController</code> onto the navigation stack when the user
+taps the &ldquo;Edit&rdquo; button on any of the line items.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11GiniBankSDK28DigitalInvoiceViewControllerC7invoiceAA0dE0VSgvp"></a>
+                    <a name="//apple_ref/swift/Property/invoice" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11GiniBankSDK28DigitalInvoiceViewControllerC7invoiceAA0dE0VSgvp">invoice</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The <code><a href="../Structs/DigitalInvoice.html">DigitalInvoice</a></code> to display and amend by the user.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">invoice</span><span class="p">:</span> <span class="kt"><a href="../Structs/DigitalInvoice.html">DigitalInvoice</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11GiniBankSDK28DigitalInvoiceViewControllerC8delegateAA0defG8Delegate_pSgvp"></a>
+                    <a name="//apple_ref/swift/Property/delegate" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11GiniBankSDK28DigitalInvoiceViewControllerC8delegateAA0defG8Delegate_pSgvp">delegate</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">weak</span> <span class="k">var</span> <span class="nv">delegate</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DigitalInvoiceViewControllerDelegate.html">DigitalInvoiceViewControllerDelegate</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11GiniBankSDK28DigitalInvoiceViewControllerC16analysisDelegate0a7CaptureC008AnalysisI0_pSgvp"></a>
+                    <a name="//apple_ref/swift/Property/analysisDelegate" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11GiniBankSDK28DigitalInvoiceViewControllerC16analysisDelegate0a7CaptureC008AnalysisI0_pSgvp">analysisDelegate</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">analysisDelegate</span><span class="p">:</span> <span class="kt">AnalysisDelegate</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11GiniBankSDK28DigitalInvoiceViewControllerC25closeReturnAssistantBlockyycvp"></a>
+                    <a name="//apple_ref/swift/Property/closeReturnAssistantBlock" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11GiniBankSDK28DigitalInvoiceViewControllerC25closeReturnAssistantBlockyycvp">closeReturnAssistantBlock</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handler will be called when back button was pressed.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">closeReturnAssistantBlock</span><span class="p">:</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11GiniBankSDK28DigitalInvoiceViewControllerC28returnAssistantConfigurationAA06ReturniJ0Cvp"></a>
+                    <a name="//apple_ref/swift/Property/returnAssistantConfiguration" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11GiniBankSDK28DigitalInvoiceViewControllerC28returnAssistantConfigurationAA06ReturniJ0Cvp">returnAssistantConfiguration</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The <code><a href="../Classes/ReturnAssistantConfiguration.html">ReturnAssistantConfiguration</a></code> instance used by this class to customise its appearance.
+By default the shared instance is used.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">returnAssistantConfiguration</span><span class="p">:</span> <span class="kt"><a href="../Classes/ReturnAssistantConfiguration.html">ReturnAssistantConfiguration</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)DigitalInvoiceViewController(im)viewDidLoad"></a>
+                    <a name="//apple_ref/swift/Method/viewDidLoad()" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)DigitalInvoiceViewController(im)viewDidLoad">viewDidLoad()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">override</span> <span class="kd">public</span> <span class="kd">func</span> <span class="nf">viewDidLoad</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)DigitalInvoiceViewController(im)viewWillAppear:"></a>
+                    <a name="//apple_ref/swift/Method/viewWillAppear(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)DigitalInvoiceViewController(im)viewWillAppear:">viewWillAppear(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">override</span> <span class="kd">public</span> <span class="kd">func</span> <span class="nf">viewWillAppear</span><span class="p">(</span><span class="n">_</span> <span class="nv">animated</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@GiniBankSDK@objc(cs)DigitalInvoiceViewController(im)viewDidAppear:"></a>
+                    <a name="//apple_ref/swift/Method/viewDidAppear(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@GiniBankSDK@objc(cs)DigitalInvoiceViewController(im)viewDidAppear:">viewDidAppear(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">override</span> <span class="kd">func</span> <span class="nf">viewDidAppear</span><span class="p">(</span><span class="n">_</span> <span class="nv">animated</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Table%20view%20data%20source"></a>
+                <a name="//apple_ref/swift/Section/Table view data source" class="dashAnchor"></a>
+                <a href="#/Table%20view%20data%20source">
+                  <h3 class="section-name">Table view data source</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@GiniBankSDK@objc(cs)DigitalInvoiceViewController(im)tableView:heightForRowAtIndexPath:"></a>
+                    <a name="//apple_ref/swift/Method/tableView(_:heightForRowAt:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@GiniBankSDK@objc(cs)DigitalInvoiceViewController(im)tableView:heightForRowAtIndexPath:">tableView(_:heightForRowAt:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">heightForRowAt</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">CGFloat</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@GiniBankSDK@objc(cs)DigitalInvoiceViewController(im)tableView:estimatedHeightForRowAtIndexPath:"></a>
+                    <a name="//apple_ref/swift/Method/tableView(_:estimatedHeightForRowAt:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@GiniBankSDK@objc(cs)DigitalInvoiceViewController(im)tableView:estimatedHeightForRowAtIndexPath:">tableView(_:estimatedHeightForRowAt:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">estimatedHeightForRowAt</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">CGFloat</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@GiniBankSDK@objc(cs)DigitalInvoiceViewController(im)numberOfSectionsInTableView:"></a>
+                    <a name="//apple_ref/swift/Method/numberOfSections(in:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@GiniBankSDK@objc(cs)DigitalInvoiceViewController(im)numberOfSectionsInTableView:">numberOfSections(in:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">numberOfSections</span><span class="p">(</span><span class="k">in</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@GiniBankSDK@objc(cs)DigitalInvoiceViewController(im)tableView:numberOfRowsInSection:"></a>
+                    <a name="//apple_ref/swift/Method/tableView(_:numberOfRowsInSection:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@GiniBankSDK@objc(cs)DigitalInvoiceViewController(im)tableView:numberOfRowsInSection:">tableView(_:numberOfRowsInSection:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">numberOfRowsInSection</span> <span class="nv">section</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@GiniBankSDK@objc(cs)DigitalInvoiceViewController(im)tableView:cellForRowAtIndexPath:"></a>
+                    <a name="//apple_ref/swift/Method/tableView(_:cellForRowAt:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@GiniBankSDK@objc(cs)DigitalInvoiceViewController(im)tableView:cellForRowAtIndexPath:">tableView(_:cellForRowAt:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">cellForRowAt</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UITableViewCell</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2023 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2023-02-13)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
