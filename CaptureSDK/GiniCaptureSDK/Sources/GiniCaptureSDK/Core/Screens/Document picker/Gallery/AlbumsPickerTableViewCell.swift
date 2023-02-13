@@ -47,33 +47,32 @@ final class AlbumsPickerTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         accessoryType = .disclosureIndicator
-        addSubview(albumThumbnailView)
-        addSubview(albumTitleLabel)
-        addSubview(albumSubTitleLabel)
+        contentView.addSubview(albumThumbnailView)
+        contentView.addSubview(albumTitleLabel)
+        contentView.addSubview(albumSubTitleLabel)
 
         backgroundColor = .clear
         addConstraints()
     }
     
     private func addConstraints() {
-
         NSLayoutConstraint.activate([
-            albumThumbnailView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.paddingBig),
-            albumThumbnailView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: Constants.padding),
-            albumThumbnailView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -Constants.padding),
-            albumThumbnailView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            albumThumbnailView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.paddingBig),
+            albumThumbnailView.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: Constants.padding),
+            albumThumbnailView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -Constants.padding),
+            albumThumbnailView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             albumThumbnailView.heightAnchor.constraint(equalToConstant: Constants.imageSize.height),
             albumThumbnailView.widthAnchor.constraint(equalTo: albumThumbnailView.heightAnchor),
 
-            albumTitleLabel.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: Constants.padding),
+            albumTitleLabel.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: Constants.padding),
             albumTitleLabel.leadingAnchor.constraint(equalTo: albumThumbnailView.trailingAnchor, constant: Constants.paddingBig),
-            albumTitleLabel.bottomAnchor.constraint(equalTo: centerYAnchor, constant: -Constants.paddingHalf),
-            albumTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.paddingBig),
+            albumTitleLabel.bottomAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -Constants.paddingHalf),
+            albumTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.paddingHalf),
 
-            albumSubTitleLabel.topAnchor.constraint(equalTo: centerYAnchor, constant: Constants.paddingHalf),
+            albumSubTitleLabel.topAnchor.constraint(equalTo: contentView.centerYAnchor, constant: Constants.paddingHalf),
             albumSubTitleLabel.leadingAnchor.constraint(equalTo: albumTitleLabel.leadingAnchor),
-            albumSubTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.paddingBig),
-            albumSubTitleLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -Constants.padding)
+            albumSubTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.paddingBig),
+            albumSubTitleLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -Constants.padding)
 
         ])
     }
