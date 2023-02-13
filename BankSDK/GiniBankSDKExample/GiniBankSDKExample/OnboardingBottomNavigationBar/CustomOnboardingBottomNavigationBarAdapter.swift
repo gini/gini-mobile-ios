@@ -52,6 +52,4 @@ class CustomOnboardingBottomNavigationBarAdapter: OnboardingNavigationBarBottomA
     func onDeinit() {
         buttonClicked = nil
     }
-    
-    
 }
