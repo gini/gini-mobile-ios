@@ -80,18 +80,16 @@ final class HelpTipsDataSource: HelpRoundedCornersDataSource<HelpTipsItem, HelpT
         header.titleLabel.adjustsFontForContentSizeCategory = true
         header.titleLabel.numberOfLines = 0
             header.titleLabel.textColor =  GiniColor(
-                light: UIColor.GiniCapture.dark7,
-                dark: UIColor.GiniCapture.dark7).uiColor()
+                light: UIColor.GiniCapture.dark1,
+                dark: UIColor.GiniCapture.light1).uiColor()
         header.titleLabel.text = NSLocalizedStringPreferredFormat(
             "ginicapture.analysis.section.header",
             comment: "Analysis section header").uppercased()
         header.backgroundView?.backgroundColor = UIColor.clear
     }
 
-    var showHeader = false
-
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if showHeader, let header = tableView.dequeueReusableHeaderFooterView(
+        if let header = tableView.dequeueReusableHeaderFooterView(
             withIdentifier: HelpFormatSectionHeader.reuseIdentifier
         ) as? HelpFormatSectionHeader {
             configureHeader(header: header, section: section)
@@ -101,10 +99,7 @@ final class HelpTipsDataSource: HelpRoundedCornersDataSource<HelpTipsItem, HelpT
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if showHeader {
-            return UITableView.automaticDimension
-        }
-        return 0
+        return UITableView.automaticDimension
     }
 
     override func configureCell(cell: HelpTipCell, indexPath: IndexPath) {
