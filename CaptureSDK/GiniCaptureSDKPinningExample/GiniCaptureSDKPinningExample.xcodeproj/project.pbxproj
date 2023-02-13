@@ -15,7 +15,6 @@
 		1F2E1AA31FB5AD5D00E1022A /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E1AA21FB5AD5D00E1022A /* ScreenAPICoordinator.swift */; };
 		1F53F5101FE967C5009E2677 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F53F50F1FE967C5009E2677 /* RootNavigationController.swift */; };
 		1F578E111FBD7C7D00C17F62 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F578E101FBD7C7D00C17F62 /* SettingsViewController.swift */; };
-		1F59756820A1C5C00012196B /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F59756720A1C5C00012196B /* UIViewController.swift */; };
 		1F9466C5203702E600F52B40 /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9466C4203702E600F52B40 /* CredentialsManager.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* SelectAPIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* SelectAPIViewController.swift */; };
@@ -69,7 +68,6 @@
 		1F2E1AA21FB5AD5D00E1022A /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
 		1F53F50F1FE967C5009E2677 /* RootNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
 		1F578E101FBD7C7D00C17F62 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		1F59756720A1C5C00012196B /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		1F9466C4203702E600F52B40 /* CredentialsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
 		1FA970372149409600B776B8 /* GiniCaptureSDKPinningExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniCaptureSDKPinningExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FF3A42020C6D20900081A32 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = SOURCE_ROOT; };
@@ -128,7 +126,6 @@
 		1F1D3B0120A32EAC00F37632 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				1F59756720A1C5C00012196B /* UIViewController.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -385,7 +382,6 @@
 			files = (
 				1F53F5101FE967C5009E2677 /* RootNavigationController.swift in Sources */,
 				F4BB7CEE2695D66C003FD77E /* CustomMenuItemViewController.swift in Sources */,
-				1F59756820A1C5C00012196B /* UIViewController.swift in Sources */,
 				1F2E1AA11FB58EC900E1022A /* Coordinator.swift in Sources */,
 				1F2E1AA31FB5AD5D00E1022A /* ScreenAPICoordinator.swift in Sources */,
 				1F9466C5203702E600F52B40 /* CredentialsManager.swift in Sources */,
