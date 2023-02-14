@@ -121,6 +121,8 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             cameraPane.alpha = 0
             if giniConfiguration.bottomNavigationBarEnabled {
                 configureCustomTopNavigationBar(containsImage: false)
+            } else {
+                navigationItem.rightBarButtonItem = nil
             }
         } else {
             configureCameraPaneButtons()
