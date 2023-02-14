@@ -42,7 +42,6 @@
 		F4AD00D625DFDC8100C34E15 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00D525DFDC8100C34E15 /* SettingsViewController.swift */; };
 		F4AD00DC25DFDCE400C34E15 /* ResultTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00DB25DFDCE400C34E15 /* ResultTableViewController.swift */; };
 		F4AD00EC25DFDE2000C34E15 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00EB25DFDE2000C34E15 /* RootNavigationController.swift */; };
-		F4AD00FF25DFDF4500C34E15 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AD00F525DFDF4400C34E15 /* UIViewController.swift */; };
 		F4AD010125DFDF4500C34E15 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4AD00F725DFDF4400C34E15 /* Images.xcassets */; };
 		F4BB7CF226984E5D003FD77E /* CustomMenuItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BB7CF126984E5D003FD77E /* CustomMenuItemViewController.swift */; };
 		F4CBE30128216DFE00B28220 /* GiniBankAPILibraryPinning in Frameworks */ = {isa = PBXBuildFile; productRef = F4CBE30028216DFE00B28220 /* GiniBankAPILibraryPinning */; };
@@ -116,7 +115,6 @@
 		F4AD00D525DFDC8100C34E15 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		F4AD00DB25DFDCE400C34E15 /* ResultTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultTableViewController.swift; sourceTree = "<group>"; };
 		F4AD00EB25DFDE2000C34E15 /* RootNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
-		F4AD00F525DFDF4400C34E15 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		F4AD00F725DFDF4400C34E15 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F4BB7CF126984E5D003FD77E /* CustomMenuItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMenuItemViewController.swift; sourceTree = "<group>"; };
 		F4CBE2FF2821611400B28220 /* GiniBankSDKPinning */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniBankSDKPinning; path = ../GiniBankSDKPinning; sourceTree = "<group>"; };
@@ -201,7 +199,6 @@
 		F441DC9325E53A6F00AAB09A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				F4AD00F525DFDF4400C34E15 /* UIViewController.swift */,
 				F44AD25D25F2443200668B0C /* GiniButton.swift */,
 			);
 			path = Extensions;
@@ -506,7 +503,6 @@
 				F4AD00D625DFDC8100C34E15 /* SettingsViewController.swift in Sources */,
 				834735F52940E88F00C3B5F3 /* CustomAnalysisError.swift in Sources */,
 				F44AD25E25F2443200668B0C /* GiniButton.swift in Sources */,
-				F4AD00FF25DFDF4500C34E15 /* UIViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
