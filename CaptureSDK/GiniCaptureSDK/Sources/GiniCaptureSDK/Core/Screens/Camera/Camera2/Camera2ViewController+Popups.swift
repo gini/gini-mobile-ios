@@ -26,6 +26,8 @@ extension Camera2ViewController {
             })
         }
 
+        alertViewController.view.tintColor = .GiniCapture.accent1
+
         alertViewController.addAction(UIAlertAction(title: NSLocalizedStringPreferredFormat(
             "ginicapture.camera.popupOptionFiles",
             comment: "files action"),

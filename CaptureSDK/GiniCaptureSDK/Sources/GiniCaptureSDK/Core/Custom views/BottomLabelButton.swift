@@ -37,18 +37,27 @@ final class BottomLabelButton: UIView {
         return image
     }()
 
+    private lazy var contentView: UIView = {
+        let contentView = UIView()
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+
+        return contentView
+    }()
+
     init() {
         super.init(frame: .zero)
-        addSubview(actionLabel)
-        addSubview(iconView)
+        addSubview(contentView)
+        contentView.addSubview(actionLabel)
+        contentView.addSubview(iconView)
         addSubview(actionButton)
         setupConstraints()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(frame: .zero)
-        addSubview(actionLabel)
-        addSubview(iconView)
+        addSubview(contentView)
+        contentView.addSubview(actionLabel)
+        contentView.addSubview(iconView)
         addSubview(actionButton)
     }
 
@@ -69,15 +78,21 @@ final class BottomLabelButton: UIView {
             actionButton.trailingAnchor.constraint(equalTo: trailingAnchor),
             actionButton.leadingAnchor.constraint(equalTo: leadingAnchor),
 
-            iconView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-            iconView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            iconView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            contentView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: 5),
+            contentView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -5),
+            contentView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
+
+            iconView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            iconView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            iconView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             iconView.heightAnchor.constraint(equalToConstant: 20),
 
             actionLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor, constant: 5),
-            actionLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            actionLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-            actionLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: 0)
+            actionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            actionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            actionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
 
