@@ -21,8 +21,11 @@ final class AlbumsHeaderView: UITableViewHeaderFooterView {
                                                            comment: "Title for select more photos button")
         selectPhotosButton.titleLabel?.font = configuration.textStyleFonts[.footnote]
         selectPhotosButton.setTitle(buttonTitle, for: .normal)
+        selectPhotosButton.titleLabel?.isAccessibilityElement = true
+        selectPhotosButton.titleLabel?.accessibilityValue = buttonTitle
         selectPhotosButton.setTitleColor(.GiniCapture.accent1, for: .normal)
         selectPhotosButton.sizeToFit()
+        selectPhotosButton.titleLabel?.adjustsFontForContentSizeCategory = true
     }
 
     override init(reuseIdentifier: String?) {
