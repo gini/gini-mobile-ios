@@ -88,8 +88,10 @@ final class HelpTipsDataSource: HelpRoundedCornersDataSource<HelpTipsItem, HelpT
         header.backgroundView?.backgroundColor = UIColor.clear
     }
 
+    var showHeader = false
+
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if let header = tableView.dequeueReusableHeaderFooterView(
+        if showHeader, let header = tableView.dequeueReusableHeaderFooterView(
             withIdentifier: HelpFormatSectionHeader.reuseIdentifier
         ) as? HelpFormatSectionHeader {
             configureHeader(header: header, section: section)
@@ -99,7 +101,11 @@ final class HelpTipsDataSource: HelpRoundedCornersDataSource<HelpTipsItem, HelpT
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return UITableView.automaticDimension
+        if showHeader {
+            return UITableView.automaticDimension
+        }
+        return 0
+
     }
 
     override func configureCell(cell: HelpTipCell, indexPath: IndexPath) {

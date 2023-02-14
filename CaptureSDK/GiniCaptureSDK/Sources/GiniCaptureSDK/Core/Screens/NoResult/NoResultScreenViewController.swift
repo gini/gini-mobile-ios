@@ -95,6 +95,7 @@ final class NoResultScreenViewController: UIViewController {
         switch type {
         case .image:
             let tipsDS = HelpTipsDataSource(configuration: giniConfiguration)
+            tipsDS.showHeader = true
             self.dataSource = tipsDS
         case .pdf:
             self.dataSource = HelpFormatsDataSource(configuration: giniConfiguration)
