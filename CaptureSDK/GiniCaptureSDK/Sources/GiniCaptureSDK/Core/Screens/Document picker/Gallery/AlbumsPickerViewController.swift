@@ -215,10 +215,6 @@ extension AlbumsPickerViewController: UITableViewDelegate {
         delegate?.albumsPicker(self, didSelectAlbum: galleryManager.albums[indexPath.row])
         tableView.deselectRow(at: indexPath, animated: true)
     }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return AlbumsPickerTableViewCell.height
-    }
 }
 
 extension AlbumsPickerViewController {
