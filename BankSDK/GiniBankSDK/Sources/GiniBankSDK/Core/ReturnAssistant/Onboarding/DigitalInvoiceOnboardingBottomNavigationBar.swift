@@ -10,7 +10,7 @@ import GiniCaptureSDK
 
 final class DigitalInvoiceOnboardingBottomNavigationBar: UIView {
 
-    lazy var continueButton: MultilineTitleButton = {
+    lazy var getStartedButton: MultilineTitleButton = {
         let button = MultilineTitleButton()
 
         return button
@@ -30,26 +30,26 @@ final class DigitalInvoiceOnboardingBottomNavigationBar: UIView {
     private func setupView() {
         let configuration = GiniBankConfiguration.shared
 
-        addSubview(continueButton)
+        addSubview(getStartedButton)
         backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark1).uiColor()
-        continueButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        continueButton.configure(with: configuration.primaryButtonConfiguration)
-        continueButton.isAccessibilityElement = true
-        continueButton.translatesAutoresizingMaskIntoConstraints = false
+        getStartedButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
+        getStartedButton.configure(with: configuration.primaryButtonConfiguration)
+        getStartedButton.isAccessibilityElement = true
+        getStartedButton.translatesAutoresizingMaskIntoConstraints = false
 
-        let continueButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.donebutton",
+        let getStartedButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.getStartedButton",
                                                                            comment: "title for the done button on the digital invoice onboarding screen")
-        continueButton.setTitle(continueButtonTitle, for: .normal)
-        continueButton.accessibilityValue = continueButtonTitle
+        getStartedButton.setTitle(getStartedButtonTitle, for: .normal)
+        getStartedButton.accessibilityValue = getStartedButtonTitle
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            continueButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            continueButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.width),
-            continueButton.heightAnchor.constraint(equalToConstant: Constants.buttonSize.height),
-            continueButton.topAnchor.constraint(equalTo: topAnchor, constant: Constants.verticalPadding),
-            continueButton.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: Constants.horizontalPadding)
+            getStartedButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            getStartedButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.width),
+            getStartedButton.heightAnchor.constraint(equalToConstant: Constants.buttonSize.height),
+            getStartedButton.topAnchor.constraint(equalTo: topAnchor, constant: Constants.verticalPadding),
+            getStartedButton.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: Constants.horizontalPadding)
         ])
     }
 }

@@ -9,7 +9,7 @@ import UIKit
 import GiniBankSDK
 
 class CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter {
-    func setContinueButtonClickedActionCallback(_ callback: @escaping () -> Void) {
+    func setGetStartedButtonClickedActionCallback(_ callback: @escaping () -> Void) {
         buttonClicked = callback
     }
 
@@ -21,7 +21,7 @@ class CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter: DigitalInvoiceOn
 
     func injectedView() -> UIView {
         let view = CustomDigitalInvoiceOnboardingBottomNavigationBar()
-        view.continueButton.addTarget(self, action: #selector(actionPressed), for: .touchUpInside)
+        view.getStartedButton.addTarget(self, action: #selector(actionPressed), for: .touchUpInside)
         return view
     }
 

@@ -8,24 +8,24 @@
 import UIKit
 
 class DefaultDigitalInvoiceOnboardingNavigationBarBottomAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter {
-    private var continueButtonCallback: (() -> Void)?
+    private var getStartedButtonCallback: (() -> Void)?
 
-    // Add the callback whenever the continue button is clicked
-    func setContinueButtonClickedActionCallback(_ callback: @escaping () -> Void) {
-        continueButtonCallback = callback
+    // Add the callback whenever the get started button is clicked
+    func setGetStartedButtonClickedActionCallback(_ callback: @escaping () -> Void) {
+        getStartedButtonCallback = callback
     }
 
     func injectedView() -> UIView {
         let navigationBar = DigitalInvoiceOnboardingBottomNavigationBar()
-        navigationBar.continueButton.addTarget(self, action: #selector(continueButtonClicked), for: .touchUpInside)
+        navigationBar.getStartedButton.addTarget(self, action: #selector(getStartedButtonClicked), for: .touchUpInside)
         return navigationBar
     }
 
-    @objc func continueButtonClicked() {
-        continueButtonCallback?()
+    @objc func getStartedButtonClicked() {
+        getStartedButtonCallback?()
     }
 
     func onDeinit() {
-        continueButtonCallback = nil
+        getStartedButtonCallback = nil
     }
 }
