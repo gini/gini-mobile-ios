@@ -80,8 +80,8 @@ final class HelpTipsDataSource: HelpRoundedCornersDataSource<HelpTipsItem, HelpT
         header.titleLabel.adjustsFontForContentSizeCategory = true
         header.titleLabel.numberOfLines = 0
             header.titleLabel.textColor =  GiniColor(
-                light: UIColor.GiniCapture.dark7,
-                dark: UIColor.GiniCapture.dark7).uiColor()
+                light: UIColor.GiniCapture.dark1,
+                dark: UIColor.GiniCapture.light1).uiColor()
         header.titleLabel.text = NSLocalizedStringPreferredFormat(
             "ginicapture.analysis.section.header",
             comment: "Analysis section header").uppercased()
@@ -105,6 +105,7 @@ final class HelpTipsDataSource: HelpRoundedCornersDataSource<HelpTipsItem, HelpT
             return UITableView.automaticDimension
         }
         return 0
+
     }
 
     override func configureCell(cell: HelpTipCell, indexPath: IndexPath) {
