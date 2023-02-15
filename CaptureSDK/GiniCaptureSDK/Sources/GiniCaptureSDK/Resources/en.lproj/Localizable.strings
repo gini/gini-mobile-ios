@@ -118,7 +118,7 @@ are also supported";
 "ginicapture.noresults.warning" = "No information could be extracted. Please take a new photo.";
 "ginicapture.noresults.collection.header" = "Tips for best results:";
 "ginicapture.noresults.gotocamera" = "Back to the camera";
-"ginicapture.noresults.title" = "Tips for photos";
+"ginicapture.noresults.title" = "Tips";
 "ginicapture.noresults.warningHelpMenu" = "For best extraction results, please apply the following tips for photos:";
 
 "ginicapture.help.import.title" = "How to import";
