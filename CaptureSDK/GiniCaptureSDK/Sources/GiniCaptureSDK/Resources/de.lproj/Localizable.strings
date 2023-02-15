@@ -138,7 +138,7 @@
 "ginicapture.error.connection.title" = "Überprüfen Sie Ihre Internetverbindung";
 "ginicapture.error.authentication.title" = "Authentifizierung fehlgeschlagen";
 "ginicapture.error.serverError.title" = "Dienst nicht verfügbar";
-"ginicapture.error.unexpected.title" = "Oh hier ist etwas schiefgelaufen";
+"ginicapture.error.unexpected.title" = "Ein unbekannter Fehler ist aufgetreten.";
 "ginicapture.error.request.content" = "Das Dokument konnte nicht angenommen werden. Bitte überprüfen Sie, ob das Bild scharf ist, das Dokument Zahlungsinformationen enthält und im richtigen Dateiformat hochgeladen wird.";
 "ginicapture.error.request.title" = "Upload des Dokuments fehlgeschlagen";
 

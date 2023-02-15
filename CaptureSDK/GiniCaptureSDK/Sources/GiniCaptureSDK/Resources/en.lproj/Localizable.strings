@@ -174,7 +174,7 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.error.connection.title" = "There was a problem connecting to the internet";
 "ginicapture.error.authentication.title" = "There has been an authentication error";
 "ginicapture.error.serverError.title" = "Service unavailable";
-"ginicapture.error.unexpected.title" = "Oh something went wrong";
+"ginicapture.error.unexpected.title" = "An unknown error occurred.";
 "ginicapture.error.request.content" = "The document couldn’t be accepted. Please check if the image is sharp, the document contains payment information and has the right file type.";
 "ginicapture.error.request.title" = "There was a problem with the upload";
 
