@@ -8,7 +8,7 @@
 import UIKit
 
 final class CustomDigitalInvoiceOnboardingBottomNavigationBar: UIView {
-    lazy var continueButton: UIButton = {
+    lazy var getStartedButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .red
         return button
@@ -26,23 +26,23 @@ final class CustomDigitalInvoiceOnboardingBottomNavigationBar: UIView {
     }
 
     private func setupView() {
-        addSubview(continueButton)
+        addSubview(getStartedButton)
         backgroundColor = .blue
-        continueButton.isAccessibilityElement = true
-        continueButton.translatesAutoresizingMaskIntoConstraints = false
+        getStartedButton.isAccessibilityElement = true
+        getStartedButton.translatesAutoresizingMaskIntoConstraints = false
 
-        let continueButtonTitle = "Continue"
-        continueButton.setTitle(continueButtonTitle, for: .normal)
-        continueButton.accessibilityValue = continueButtonTitle
+        let getStartedButtonTitle = "Get Started"
+        getStartedButton.setTitle(getStartedButtonTitle, for: .normal)
+        getStartedButton.accessibilityValue = getStartedButtonTitle
     }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            continueButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            continueButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.width),
-            continueButton.heightAnchor.constraint(equalToConstant: Constants.buttonSize.height),
-            continueButton.topAnchor.constraint(equalTo: topAnchor, constant: Constants.verticalPadding),
-            continueButton.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: Constants.horizontalPadding)
+            getStartedButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            getStartedButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.width),
+            getStartedButton.heightAnchor.constraint(equalToConstant: Constants.buttonSize.height),
+            getStartedButton.topAnchor.constraint(equalTo: topAnchor, constant: Constants.verticalPadding),
+            getStartedButton.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: Constants.horizontalPadding)
         ])
     }
 }

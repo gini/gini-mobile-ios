@@ -40,7 +40,7 @@ class DigitalInvoiceOnboardingViewController: UIViewController {
     }
     
     private var doneButtonTitle: String {
-        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.donebutton", comment: "title for the done button on the digital invoice onboarding screen")
+        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.getStartedButton", comment: "title for the done button on the digital invoice onboarding screen")
     }
     
     override public func viewDidLoad() {
@@ -86,7 +86,7 @@ class DigitalInvoiceOnboardingViewController: UIViewController {
                 navigationBarBottomAdapter = DefaultDigitalInvoiceOnboardingNavigationBarBottomAdapter()
             }
 
-            navigationBarBottomAdapter?.setContinueButtonClickedActionCallback { [weak self] in
+            navigationBarBottomAdapter?.setGetStartedButtonClickedActionCallback { [weak self] in
                 self?.dismissViewController()
             }
 
