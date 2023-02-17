@@ -71,7 +71,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ydb-dv-dAn">
                                 <rect key="frame" x="102.66666666666669" y="690" width="170" height="48"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="C36-9G-Njd">
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="48" id="C36-9G-Njd">
                                         <variation key="heightClass=regular-widthClass=compact" constant="48"/>
                                     </constraint>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="170" id="j5t-bv-B6h"/>
