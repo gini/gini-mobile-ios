@@ -19,7 +19,12 @@ final class HelpTipsViewController: UIViewController, HelpBottomBarEnabledViewCo
     var navigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
 
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        var tableView: UITableView
+        if #available(iOS 13.0, *) {
+            tableView = UITableView(frame: .zero, style: .insetGrouped)
+        } else {
+            tableView = UITableView(frame: .zero, style: .grouped)
+        }
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -75,6 +80,11 @@ final class HelpTipsViewController: UIViewController, HelpBottomBarEnabledViewCo
                 nibName: "HelpTipCell",
                 bundle: giniCaptureBundle()),
             forCellReuseIdentifier: HelpTipCell.reuseIdentifier)
+        tableView.register(
+            UINib(
+                nibName: "HelpFormatSectionHeader",
+                bundle: giniCaptureBundle()),
+            forHeaderFooterViewReuseIdentifier: HelpFormatSectionHeader.reuseIdentifier)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = tableRowHeight
         tableView.contentInsetAdjustmentBehavior = .never
