@@ -16,7 +16,7 @@ class DigitalInvoiceOnboardingViewController: UIViewController {
     weak var delegate: DigitalInvoiceOnboardingViewControllerDelegate?
     
     @IBOutlet var contentView: UIView!
-    @IBOutlet var topImageView: UIImageView!
+    @IBOutlet var topImageView: OnboardingImageView!
     @IBOutlet var firstLabel: UILabel!
     @IBOutlet var secondLabel: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -53,8 +53,15 @@ class DigitalInvoiceOnboardingViewController: UIViewController {
         title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
         view.backgroundColor = GiniColor(light: UIColor.GiniBank.light2, dark: UIColor.GiniBank.dark2).uiColor()
         contentView.backgroundColor = .clear
-        
-        topImageView.image = topImage
+
+        if let adapter = configuration.returnAssistantOnboardingIllustrationAdapter {
+            topImageView.illustrationAdapter = adapter
+        } else {
+            topImageView.illustrationAdapter = ImageOnboardingIllustrationAdapter()
+            topImageView.icon = topImage
+        }
+
+        topImageView.setupView()
         
         firstLabel.text = firstLabelText
         firstLabel.font = configuration.textStyleFonts[.title2Bold]
