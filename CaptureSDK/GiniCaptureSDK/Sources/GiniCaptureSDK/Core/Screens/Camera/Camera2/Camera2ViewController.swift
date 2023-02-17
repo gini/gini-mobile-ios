@@ -121,6 +121,8 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             cameraPane.alpha = 0
             if giniConfiguration.bottomNavigationBarEnabled {
                 configureCustomTopNavigationBar(containsImage: false)
+            } else {
+                navigationItem.rightBarButtonItem = nil
             }
         } else {
             configureCameraPaneButtons()
@@ -498,11 +500,11 @@ extension Camera2ViewController {
         // The A4 rect position and size on the whole image
         let cropRect = CGRect(x: cropRectX, y: cropRectY, width: a4FrameRect.width, height: a4FrameRect.height)
 
-        // Scaling up the rectangle 15%
-        let scaledSize = CGSize(width: cropRect.width * 1.15, height: cropRect.height * 1.15)
+        // Scaling up the rectangle 15% on each side
+        let scaledSize = CGSize(width: cropRect.width * 1.30, height: cropRect.height * 1.30)
 
-        let scaledOriginX = cropRectX - cropRect.width * 0.075
-        let scaledOriginY = cropRectY - cropRect.height * 0.075
+        let scaledOriginX = cropRectX - cropRect.width * 0.15
+        let scaledOriginY = cropRectY - cropRect.height * 0.15
 
         var scaledRect = CGRect(x: scaledOriginX, y: scaledOriginY, width: scaledSize.width, height: scaledSize.height)
 
