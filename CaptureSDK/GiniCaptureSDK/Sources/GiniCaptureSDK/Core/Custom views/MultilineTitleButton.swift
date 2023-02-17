@@ -35,6 +35,7 @@ public class MultilineTitleButton: UIButton {
     }
 
     private func commonInit() {
+        contentEdgeInsets = UIEdgeInsets(top: 2, left: 4, bottom: 2, right: 4)
         titleLabel?.adjustsFontForContentSizeCategory = true
         titleLabel?.numberOfLines = 0
         titleLabel?.textAlignment = .center

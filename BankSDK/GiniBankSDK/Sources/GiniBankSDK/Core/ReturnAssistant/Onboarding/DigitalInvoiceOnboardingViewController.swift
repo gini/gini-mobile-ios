@@ -19,22 +19,28 @@ class DigitalInvoiceOnboardingViewController: UIViewController {
     @IBOutlet var topImageView: UIImageView!
     @IBOutlet var firstLabel: UILabel!
     @IBOutlet var secondLabel: UILabel!
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet var doneButton: MultilineTitleButton!
-    
-    fileprivate var topImage: UIImage {
+    @IBOutlet weak var scrollViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollViewBottomAnchor: NSLayoutConstraint!
+
+    private var navigationBarBottomAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter?
+    private var bottomNavigationBar: UIView?
+
+    private var topImage: UIImage {
         return prefferedImage(named: "digital_invoice_onboarding_icon") ?? UIImage()
     }
     
-    fileprivate var firstLabelText: String {
+    private var firstLabelText: String {
         return  NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.text1", comment: "title for the first label on the digital invoice onboarding screen")
     }
     
-    fileprivate var secondLabelText: String {
+    private var secondLabelText: String {
         return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.text2", comment: "title for the second label on the digital invoice onboarding screen")
     }
     
-    fileprivate var doneButtonTitle: String {
-        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.donebutton", comment: "title for the done button on the digital invoice onboarding screen")
+    private var doneButtonTitle: String {
+        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.getStartedButton", comment: "title for the done button on the digital invoice onboarding screen")
     }
     
     override public func viewDidLoad() {
@@ -42,31 +48,76 @@ class DigitalInvoiceOnboardingViewController: UIViewController {
         configureUI()
     }
 
-    fileprivate func configureUI() {
+    private func configureUI() {
         let configuration = GiniBankConfiguration.shared
         title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
-        contentView.backgroundColor = GiniColor(light: UIColor.GiniBank.light2, dark: UIColor.GiniBank.dark2).uiColor()
+        view.backgroundColor = GiniColor(light: UIColor.GiniBank.light2, dark: UIColor.GiniBank.dark2).uiColor()
+        contentView.backgroundColor = .clear
         
         topImageView.image = topImage
         
         firstLabel.text = firstLabelText
         firstLabel.font = configuration.textStyleFonts[.title2Bold]
         firstLabel.textColor = GiniColor(light: UIColor.GiniBank.dark1, dark: UIColor.GiniBank.light1).uiColor()
+        firstLabel.adjustsFontForContentSizeCategory = true
+        firstLabel.accessibilityValue = firstLabelText
         
         secondLabel.text = secondLabelText
         secondLabel.font = configuration.textStyleFonts[.headline]
         secondLabel.textColor = GiniColor(light: UIColor.GiniBank.dark6, dark: UIColor.GiniBank.dark7).uiColor()
+        secondLabel.adjustsFontForContentSizeCategory = true
+        secondLabel.accessibilityValue = secondLabelText
 
         doneButton.addTarget(self, action: #selector(doneAction(_:)), for: .touchUpInside)
         doneButton.setTitle(doneButtonTitle, for: .normal)
         doneButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
+        doneButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        doneButton.accessibilityValue = doneButtonTitle
         doneButton.configure(with: configuration.primaryButtonConfiguration)
 
-        if UIDevice.current.isIpad {
-            secondLabel.translatesAutoresizingMaskIntoConstraints = false
+        if configuration.bottomNavigationBarEnabled {
+            doneButton.isHidden = true
 
+            NSLayoutConstraint.deactivate([scrollViewBottomAnchor])
+
+            if let bottomBarAdapter = configuration.digitalInvoiceOnboardingNavigationBarBottomAdapter {
+                navigationBarBottomAdapter = bottomBarAdapter
+            } else {
+                navigationBarBottomAdapter = DefaultDigitalInvoiceOnboardingNavigationBarBottomAdapter()
+            }
+
+            navigationBarBottomAdapter?.setGetStartedButtonClickedActionCallback { [weak self] in
+                self?.dismissViewController()
+            }
+
+            if let navigationBar = navigationBarBottomAdapter?.injectedView() {
+                bottomNavigationBar = navigationBar
+                view.addSubview(navigationBar)
+
+                navigationBar.translatesAutoresizingMaskIntoConstraints = false
+
+                NSLayoutConstraint.activate([
+                    navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                    navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                    navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                    navigationBar.heightAnchor.constraint(equalToConstant: 114),
+                    navigationBar.topAnchor.constraint(equalTo: scrollView.bottomAnchor)
+                ])
+            }
+        }
+
+        configureConstraints()
+    }
+
+    private func configureConstraints() {
+        if UIDevice.current.isIpad {
+            scrollViewTopConstraint.constant = view.frame.width > view.frame.height ? 16 : 96
+
+            let multiplier: CGFloat = view.frame.width > view.frame.height ? 0.4 : 0.6
+
+            scrollView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate(
-                [secondLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5)]
+                [scrollView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: multiplier)]
             )
         }
     }
@@ -80,7 +131,7 @@ class DigitalInvoiceOnboardingViewController: UIViewController {
         dismissViewController()
     }
     
-    func dismissViewController() {
+    private func dismissViewController() {
         dismiss(animated: true) {
             self.delegate?.didDismissViewController()
         }
