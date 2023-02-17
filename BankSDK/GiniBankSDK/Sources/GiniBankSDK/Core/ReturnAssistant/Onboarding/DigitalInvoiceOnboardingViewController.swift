@@ -48,13 +48,27 @@ class DigitalInvoiceOnboardingViewController: UIViewController {
         configureUI()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        let configuration = GiniBankConfiguration.shared
+        configuration.digitalInvoiceOnboardingIllustrationAdapter?.pageDidAppear()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        let configuration = GiniBankConfiguration.shared
+        configuration.digitalInvoiceOnboardingIllustrationAdapter?.pageDidDisappear()
+    }
+
     private func configureUI() {
         let configuration = GiniBankConfiguration.shared
         title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
         view.backgroundColor = GiniColor(light: UIColor.GiniBank.light2, dark: UIColor.GiniBank.dark2).uiColor()
         contentView.backgroundColor = .clear
 
-        if let adapter = configuration.returnAssistantOnboardingIllustrationAdapter {
+        if let adapter = configuration.digitalInvoiceOnboardingIllustrationAdapter {
             topImageView.illustrationAdapter = adapter
         } else {
             topImageView.illustrationAdapter = ImageOnboardingIllustrationAdapter()
