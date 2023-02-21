@@ -18,25 +18,25 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EiW-yt-Ug3">
-                                <rect key="frame" x="3.3333333333333428" y="0.0" width="368.33333333333326" height="626"/>
+                                <rect key="frame" x="15.333333333333343" y="0.0" width="344.33333333333326" height="626"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ySK-ra-mer" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="368.33333333333331" height="635"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="344.33333333333331" height="618"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="255" verticalHuggingPriority="255" horizontalCompressionResistancePriority="747" verticalCompressionResistancePriority="747" image="digital_invoice_onboarding_icon" translatesAutoresizingMaskIntoConstraints="NO" id="vN8-eg-TBS">
-                                                <rect key="frame" x="73.666666666666686" y="96" width="221" height="261"/>
+                                            <view clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="255" verticalHuggingPriority="255" horizontalCompressionResistancePriority="747" verticalCompressionResistancePriority="747" translatesAutoresizingMaskIntoConstraints="NO" id="vN8-eg-TBS" customClass="OnboardingImageView" customModule="GiniCaptureSDK">
+                                                <rect key="frame" x="69.000000000000014" y="96" width="206.33333333333337" height="244"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="vN8-eg-TBS" secondAttribute="height" multiplier="221:261" id="PI1-Sv-D4v"/>
                                                 </constraints>
-                                            </imageView>
+                                            </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Your new return assistant!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wrk-c0-ekq">
-                                                <rect key="frame" x="32" y="421" width="304.33333333333331" height="76.666666666666686"/>
+                                                <rect key="frame" x="32" y="404" width="280.33333333333331" height="76.666666666666686"/>
                                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="32"/>
                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Deselect article that you want to return and pay only for what you keep!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="b5g-YZ-Ffz">
-                                                <rect key="frame" x="60.000000000000014" y="513.66666666666663" width="248.33333333333337" height="57.333333333333371"/>
+                                                <rect key="frame" x="48.000000000000014" y="496.66666666666669" width="248.33333333333337" height="57.333333333333314"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -110,7 +110,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="digital_invoice_onboarding_icon" width="221" height="261"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
