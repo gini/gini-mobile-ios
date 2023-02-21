@@ -11,7 +11,8 @@ import GiniCaptureSDK
 protocol DigitalInvoiceOnboardingViewControllerDelegate: AnyObject {
     func didDismissViewController()
 }
-class DigitalInvoiceOnboardingViewController: UIViewController {
+
+final class DigitalInvoiceOnboardingViewController: UIViewController {
     var returnAssistantConfiguration = ReturnAssistantConfiguration()
     weak var delegate: DigitalInvoiceOnboardingViewControllerDelegate?
     
@@ -79,13 +80,13 @@ class DigitalInvoiceOnboardingViewController: UIViewController {
         
         firstLabel.text = firstLabelText
         firstLabel.font = configuration.textStyleFonts[.title2Bold]
-        firstLabel.textColor = GiniColor(light: UIColor.GiniBank.dark1, dark: UIColor.GiniBank.light1).uiColor()
+        firstLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         firstLabel.adjustsFontForContentSizeCategory = true
         firstLabel.accessibilityValue = firstLabelText
         
         secondLabel.text = secondLabelText
         secondLabel.font = configuration.textStyleFonts[.headline]
-        secondLabel.textColor = GiniColor(light: UIColor.GiniBank.dark6, dark: UIColor.GiniBank.dark7).uiColor()
+        secondLabel.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark7).uiColor()
         secondLabel.adjustsFontForContentSizeCategory = true
         secondLabel.accessibilityValue = secondLabelText
 
