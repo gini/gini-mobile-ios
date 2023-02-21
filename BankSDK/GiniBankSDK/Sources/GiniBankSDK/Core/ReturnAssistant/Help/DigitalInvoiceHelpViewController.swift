@@ -106,6 +106,8 @@ final class DigitalInvoiceHelpViewController: UIViewController {
                 self?.navigationController?.popViewController(animated: true)
             }
 
+            navigationItem.setHidesBackButton(true, animated: false)
+
             if let navigationBar =
                 navigationBarBottomAdapter?.injectedView() {
                 navigationBar.translatesAutoresizingMaskIntoConstraints = false
