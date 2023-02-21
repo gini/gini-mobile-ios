@@ -32,6 +32,10 @@ final class DigitalInvoiceHelpViewController: UIViewController {
         return stackView
     }()
 
+    private lazy var scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                                                     constant: -Constants.padding)
+    private var navigationBarBottomAdapter: DigitalInvoiceHelpBottomNavigationBarAdapter?
+
     private let viewModel: DigitalInvoiceHelpViewModel
 
     init(viewModel: DigitalInvoiceHelpViewModel) {
@@ -39,6 +43,7 @@ final class DigitalInvoiceHelpViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         setupViews()
         setupConstraints()
+        configureBottomNavigationBar()
     }
 
     required init?(coder: NSCoder) {
@@ -66,7 +71,7 @@ final class DigitalInvoiceHelpViewController: UIViewController {
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.padding),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.padding),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.padding),
+            scrollViewBottomConstraint,
 
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: Constants.padding),
@@ -86,6 +91,45 @@ final class DigitalInvoiceHelpViewController: UIViewController {
                 contentView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6)
             ])
         }
+    }
+
+    private func configureBottomNavigationBar() {
+        let configuration = GiniBankConfiguration.shared
+        if configuration.bottomNavigationBarEnabled {
+            if let bottomBar = configuration.digitalInvoiceHelpBottomNavigationBarAdapter {
+                navigationBarBottomAdapter = bottomBar
+            } else {
+                navigationBarBottomAdapter = DefaultDigitalInvoiceHelpBottomNavigationBarAdapter()
+            }
+
+            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            }
+
+            if let navigationBar =
+                navigationBarBottomAdapter?.injectedView() {
+                navigationBar.translatesAutoresizingMaskIntoConstraints = false
+                view.addSubview(navigationBar)
+
+                layoutBottomNavigationBar(navigationBar)
+            }
+        }
+    }
+
+    private func layoutBottomNavigationBar(_ navigationBar: UIView) {
+        navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(navigationBar)
+
+        scrollViewBottomConstraint.isActive = false
+        NSLayoutConstraint.activate([
+            scrollView.bottomAnchor.constraint(equalTo: navigationBar.topAnchor),
+            navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBar.heightAnchor.constraint(equalToConstant: 114)
+        ])
+        view.bringSubviewToFront(navigationBar)
+        view.layoutSubviews()
     }
 }
 
