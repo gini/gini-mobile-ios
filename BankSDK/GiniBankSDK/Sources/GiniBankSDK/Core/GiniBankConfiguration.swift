@@ -193,6 +193,11 @@ public final class GiniBankConfiguration: NSObject {
       * Set an adapter implementation to show a custom illustration on the "QR code" onboarding page.
       */
     public var onboardingQRCodeIllustrationAdapter: OnboardingIllustrationAdapter?
+
+    /**
+     * Set an adapter implementation to show a custom illustration on the return assistant onboarding page.
+     */
+   public var digitalInvoiceOnboardingIllustrationAdapter: OnboardingIllustrationAdapter?
     
     /**
      Enable/disable the bottom navigation bar.
@@ -238,6 +243,11 @@ public final class GiniBankConfiguration: NSObject {
       * Set an adapter implementation to show a custom bottom navigation bar on the digital invoice help screen
      */
     public var digitalInvoiceHelpBottomNavigationBarAdapter: DigitalInvoiceHelpBottomNavigationBarAdapter?
+
+    /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the onboarding of the digital invoice screen.
+     */
+    public var digitalInvoiceOnboardingNavigationBarBottomAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter?
 
     /**
      * Set an adapter implementation to show a custom loading indicator on the buttons which support loading.

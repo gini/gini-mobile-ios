@@ -63,13 +63,13 @@ import GiniBankAPILibrary
     func iconName() -> String {
         switch self {
         case .connection:
-            return "errorCloud"
+            return "errorGlobe"
         case .request:
-            return "alertTriangle"
+            return "errorUpload"
         case .authentication:
             return "errorAuth"
         case .serverError:
-            return "errorGlobe"
+            return "errorCloud"
         case .unexpected:
             return "alertTriangle"
         case .importError:
