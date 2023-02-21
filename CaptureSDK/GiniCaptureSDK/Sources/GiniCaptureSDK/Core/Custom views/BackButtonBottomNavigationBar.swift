@@ -7,9 +7,16 @@
 
 import UIKit
 
+/**
+A custom view that displays a back button on the bottom navigation bar.
+
+This class is a subclass of UIView.
+*/
+
 public final class BackButtonBottomNavigationBar: UIView {
 
-    @IBOutlet weak var backButton: UIButton!
+    /// The button that displays the back arrow icon.
+    @IBOutlet public weak var backButton: UIButton!
 
     public override func awakeFromNib() {
         super.awakeFromNib()
