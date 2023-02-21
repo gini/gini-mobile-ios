@@ -118,7 +118,7 @@ are also supported";
 "ginicapture.noresults.warning" = "No information could be extracted. Please take a new photo.";
 "ginicapture.noresults.collection.header" = "Tips for best results:";
 "ginicapture.noresults.gotocamera" = "Back to the camera";
-"ginicapture.noresults.title" = "Tips for photos";
+"ginicapture.noresults.title" = "Tips";
 "ginicapture.noresults.warningHelpMenu" = "For best extraction results, please apply the following tips for photos:";
 
 "ginicapture.help.import.title" = "How to import";
@@ -174,7 +174,7 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.error.connection.title" = "There was a problem connecting to the internet";
 "ginicapture.error.authentication.title" = "There has been an authentication error";
 "ginicapture.error.serverError.title" = "Service unavailable";
-"ginicapture.error.unexpected.title" = "Oh something went wrong";
+"ginicapture.error.unexpected.title" = "An unknown error occurred.";
 "ginicapture.error.request.content" = "The document couldn’t be accepted. Please check if the image is sharp, the document contains payment information and has the right file type.";
 "ginicapture.error.request.title" = "There was a problem with the upload";
 

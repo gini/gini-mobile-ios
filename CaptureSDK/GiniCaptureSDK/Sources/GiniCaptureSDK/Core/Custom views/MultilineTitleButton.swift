@@ -35,6 +35,7 @@ public class MultilineTitleButton: UIButton {
     }
 
     private func commonInit() {
+        contentEdgeInsets = UIEdgeInsets(top: 2, left: 4, bottom: 2, right: 4)
         titleLabel?.adjustsFontForContentSizeCategory = true
         titleLabel?.numberOfLines = 0
         titleLabel?.textAlignment = .center
@@ -52,7 +53,6 @@ public class MultilineTitleButton: UIButton {
             width: size.width + contentEdgeInsets.left + contentEdgeInsets.right,
             height: size.height + contentEdgeInsets.top + contentEdgeInsets.bottom)
     }
-
 
     /**
      It also overrides the `layoutSubviews()` function to set the preferred maximum
