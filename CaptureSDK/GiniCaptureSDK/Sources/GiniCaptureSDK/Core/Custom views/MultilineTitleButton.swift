@@ -54,7 +54,6 @@ public class MultilineTitleButton: UIButton {
             height: size.height + contentEdgeInsets.top + contentEdgeInsets.bottom)
     }
 
-
     /**
      It also overrides the `layoutSubviews()` function to set the preferred maximum
      layout width of the title label to the width of the button.
