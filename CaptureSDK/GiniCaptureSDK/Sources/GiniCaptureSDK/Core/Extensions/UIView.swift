@@ -6,7 +6,7 @@
 //
 
 import UIKit
-extension UIView {
+public extension UIView {
     /** Loads instance from nib with the same name. */
     func loadNib() -> UIView {
         let bundle = giniCaptureBundle()
