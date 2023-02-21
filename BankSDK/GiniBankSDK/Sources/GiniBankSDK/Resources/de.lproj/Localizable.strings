@@ -20,7 +20,7 @@
 "ginibank.help.menu.returnAssistant.section3.body" = "Sollte der Preis mal nicht perfekt ausgelesen worden sein, können Sie diesen einfach manuell korrigieren. Der Gesamtpreis aktualisiert sich automatisch.";
 "ginibank.help.menu.returnAssistant.backButton.title" = "Zurück";
 
-"ginibank.digitalinvoice.screentitle" = "Digitale rechnung";
+"ginibank.digitalinvoice.screentitle" = "Digitale Rechnung";
 "ginibank.digitalinvoice.paybuttontitle.disabled" = "Bezahlen";
 "ginibank.digitalinvoice.paybuttontitle.othercharges" = "Bezahlen";
 "ginibank.digitalinvoice.paybuttontitle" = "Bezahlen %d/%d";
