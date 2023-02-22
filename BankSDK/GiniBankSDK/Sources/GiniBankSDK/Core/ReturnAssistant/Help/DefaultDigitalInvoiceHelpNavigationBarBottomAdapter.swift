@@ -1,5 +1,5 @@
 //
-//  DefaultDigitalInvoiceHelpBottomNavigationBarAdapter.swift
+//  DefaultDigitalInvoiceHelpNavigationBarBottomAdapter.swift
 //  
 //
 //  Created by David Vizaknai on 17.02.2023.
@@ -8,7 +8,7 @@
 import UIKit
 import GiniCaptureSDK
 
-final class DefaultDigitalInvoiceHelpBottomNavigationBarAdapter: DigitalInvoiceHelpBottomNavigationBarAdapter {
+final class DefaultDigitalInvoiceHelpNavigationBarBottomAdapter: DigitalInvoiceHelpNavigationBarBottomAdapter {
     private var backButtonCallback: (() -> Void)?
 
     // Add the callback whenever the back button is clicked

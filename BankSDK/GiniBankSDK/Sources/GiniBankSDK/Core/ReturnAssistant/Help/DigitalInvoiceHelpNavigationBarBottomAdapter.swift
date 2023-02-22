@@ -1,5 +1,5 @@
 //
-//  DigitalInvoiceHelpBottomNavigationBarAdapter.swift
+//  DigitalInvoiceHelpNavigationBarBottomAdapter.swift
 //  
 //
 //  Created by David Vizaknai on 17.02.2023.
@@ -13,7 +13,7 @@ Protocol for injecting a custom bottom navigation bar on the no result screens.
 
 - note: Bottom navigation only.
 */
-public protocol DigitalInvoiceHelpBottomNavigationBarAdapter: InjectedViewAdapter {
+public protocol DigitalInvoiceHelpNavigationBarBottomAdapter: InjectedViewAdapter {
 
     /**
      *  Set the callback for the back button action.
