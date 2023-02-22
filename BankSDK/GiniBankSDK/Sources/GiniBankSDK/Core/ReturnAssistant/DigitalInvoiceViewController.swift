@@ -31,17 +31,6 @@ public protocol DigitalInvoiceViewControllerDelegate: AnyObject {
  */
 public class DigitalInvoiceViewController: UIViewController {
 
-    /**
-     The `DigitalInvoice` to display and amend by the user.
-     */
-    public var invoice: DigitalInvoice? {
-        didSet {
-            if tableView.superview != nil {
-                tableView.reloadData()
-            }
-        }
-    }
-    
     public weak var delegate: DigitalInvoiceViewControllerDelegate?
     
     // TODO: This is to cope with the screen coordinator being inadequate at this point to support the return assistant step and needing a refactor.
@@ -143,12 +132,12 @@ public class DigitalInvoiceViewController: UIViewController {
     }
     
     @objc func payButtonTapped() {
-        guard let invoice = invoice else { return }
+        guard let invoice = viewModel.invoice else { return }
         delegate?.didFinish(viewController: self, invoice: invoice)
     }
     
     private func payButtonTitle() -> String {
-        guard let invoice = invoice else {
+        guard let invoice = viewModel.invoice else {
             return .ginibankLocalized(resource: DigitalInvoiceStrings.disabledPayButtonTitle)
         }
         if invoice.numSelected == 0 {
@@ -160,7 +149,7 @@ public class DigitalInvoiceViewController: UIViewController {
     }
     
     private func payButtonAccessibilityLabel() -> String {
-        guard let invoice = invoice else {
+        guard let invoice = viewModel.invoice else {
             return .ginibankLocalized(resource: DigitalInvoiceStrings.disabledPayButtonTitle)
         }
         
@@ -228,8 +217,8 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Section(rawValue: section) {
         case .titleCell: return 1
-        case .lineItems: return invoice?.lineItems.count ?? 0
-        case .addons: return invoice?.addons.count ?? 0
+        case .lineItems: return viewModel.invoice?.lineItems.count ?? 0
+        case .addons: return viewModel.invoice?.addons.count ?? 0
         case .totalPrice: return 1
         default: fatalError()
         }
@@ -246,7 +235,7 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
             let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalLineItemTableViewCell",
                                                      for: indexPath) as! DigitalLineItemTableViewCell
             cell.index = indexPath.row
-            if let invoice = invoice {
+            if let invoice = viewModel.invoice {
                 cell.viewModel = DigitalLineItemViewModel(lineItem: invoice.lineItems[indexPath.row], returnAssistantConfiguration: returnAssistantConfiguration, index: indexPath.row, invoiceNumTotal: invoice.numTotal, invoiceLineItemsCount: invoice.lineItems.count)
             }
 
@@ -259,7 +248,7 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
             let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceAddonCell",
                                                      for: indexPath) as! DigitalInvoiceAddonCell
             cell.returnAssistantConfiguration = returnAssistantConfiguration
-            if let invoice = invoice {
+            if let invoice = viewModel.invoice {
                 let addon = invoice.addons[indexPath.row]
                 cell.addonPrice = addon.price
                 cell.addonName = addon.name
@@ -272,8 +261,8 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
             let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceTotalPriceCell",
                                                      for: indexPath) as! DigitalInvoiceTotalPriceCell
             cell.returnAssistantConfiguration = returnAssistantConfiguration
-            
-            cell.totalPrice = invoice?.total
+
+            cell.totalPrice = viewModel.invoice?.total
             
             cell.delegate = self
             
@@ -285,37 +274,39 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
 
 extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
     func deleteTapped(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemViewModel) {
-        invoice?.lineItems.remove(at: lineItemViewModel.index)
+        viewModel.invoice?.lineItems.remove(at: lineItemViewModel.index)
     }
     
 
     func modeSwitchValueChanged(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemViewModel) {
         
-        guard let invoice = invoice else { return }
+        guard let invoice = viewModel.invoice else { return }
         
         switch invoice.lineItems[lineItemViewModel.index].selectedState {
         
         case .selected:
             
-            if let returnReasons = self.invoice?.returnReasons, returnAssistantConfiguration.enableReturnReasons {
+            if let returnReasons = self.viewModel.invoice?.returnReasons, returnAssistantConfiguration.enableReturnReasons {
                 presentReturnReasonActionSheet(for: lineItemViewModel.index,
                                                source: cell.modeSwitch,
                                                with: returnReasons)
             } else {
-                self.invoice?.lineItems[lineItemViewModel.index].selectedState = .deselected(reason: nil)
+                self.viewModel.invoice?.lineItems[lineItemViewModel.index].selectedState = .deselected(reason: nil)
                 return
             }
             
         case .deselected:
-            self.invoice?.lineItems[lineItemViewModel.index].selectedState = .selected
+            self.viewModel.invoice?.lineItems[lineItemViewModel.index].selectedState = .selected
         }
+
+        tableView.reloadData()
     }
         
     func editTapped(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemViewModel) {
                 
         let viewController = LineItemDetailsViewController()
-        viewController.lineItem = invoice?.lineItems[lineItemViewModel.index]
-        viewController.returnReasons = invoice?.returnReasons
+        viewController.lineItem = viewModel.invoice?.lineItems[lineItemViewModel.index]
+        viewController.returnReasons = viewModel.invoice?.returnReasons
         viewController.lineItemIndex = lineItemViewModel.index
         viewController.returnAssistantConfiguration = returnAssistantConfiguration
         viewController.delegate = self
@@ -328,13 +319,17 @@ extension DigitalInvoiceViewController {
     
     private func presentReturnReasonActionSheet(for index: Int, source: UIView, with returnReasons: [ReturnReason]) {
         
-        DeselectLineItemActionSheet().present(from: self, source: source, returnReasons: returnReasons) { selectedState in
-            
+        DeselectLineItemActionSheet().present(from: self, source: source, returnReasons: returnReasons) { [weak self] selectedState in
+            guard let self = self else { return }
             switch selectedState {
             case .selected:
-                self.invoice?.lineItems[index].selectedState = .selected
+                self.viewModel.invoice?.lineItems[index].selectedState = .selected
             case .deselected(let reason):
-                self.invoice?.lineItems[index].selectedState = .deselected(reason: reason)
+                self.viewModel.invoice?.lineItems[index].selectedState = .deselected(reason: reason)
+            }
+
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
             }
         }
     }
@@ -346,26 +341,26 @@ extension DigitalInvoiceViewController: LineItemDetailsViewControllerDelegate {
         if shouldPopViewController {
             navigationController?.popViewController(animated: true)
         }
-        guard let invoice = invoice else { return }
+        guard let invoice = viewModel.invoice else { return }
         
         if invoice.lineItems.indices.contains(index) {
-            self.invoice?.lineItems[index] = lineItem
+            self.viewModel.invoice?.lineItems[index] = lineItem
         } else {
-            self.invoice?.lineItems.append(lineItem)
+            self.viewModel.invoice?.lineItems.append(lineItem)
         }
 
-        
+        tableView.reloadData()
     }
 }
 
 extension DigitalInvoiceViewController: DigitalInvoiceTotalPriceCellDelegate {
     func didTapAddArticleButton() {
-        guard let firstItem = invoice?.lineItems.first else { return }
+        guard let firstItem = viewModel.invoice?.lineItems.first else { return }
         let viewController = LineItemDetailsViewController()
         let price = Price(value: 0, currencyCode: firstItem.price.currencyCode)
         viewController.lineItem = DigitalInvoice.LineItem(name: "", quantity: 0, price: price, selectedState: .selected, isUserInitiated: true)
         viewController.returnAssistantConfiguration = returnAssistantConfiguration
-        viewController.lineItemIndex = invoice?.lineItems.count
+        viewController.lineItemIndex = viewModel.invoice?.lineItems.count
         viewController.delegate = self
         viewController.shouldEnableSaveButton = false
         
