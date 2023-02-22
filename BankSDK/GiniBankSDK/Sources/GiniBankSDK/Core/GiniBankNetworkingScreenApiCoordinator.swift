@@ -245,7 +245,6 @@ extension GiniBankNetworkingScreenApiCoordinator {
         let digitalInvoiceViewController = DigitalInvoiceViewController(viewModel: viewModel)
         digitalInvoiceViewController.returnAssistantConfiguration = giniBankConfiguration.returnAssistantConfiguration()
         digitalInvoiceViewController.delegate = self
-        digitalInvoiceViewController.invoice = digitalInvoice
         digitalInvoiceViewController.analysisDelegate = analysisDelegate
         digitalInvoiceViewController.closeReturnAssistantBlock = {
             self.resultsDelegate?.giniCaptureDidCancelAnalysis()
