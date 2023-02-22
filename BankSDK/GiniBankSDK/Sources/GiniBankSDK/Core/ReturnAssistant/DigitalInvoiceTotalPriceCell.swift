@@ -91,7 +91,7 @@ class DigitalInvoiceTotalPriceCell: UITableViewCell {
     private func setup() {
         
         selectionStyle = .none
-        backgroundColor = (returnAssistantConfiguration?.digitalInvoiceBackgroundColor ?? ReturnAssistantConfiguration.shared.digitalInvoiceBackgroundColor).uiColor()
+        backgroundColor = .yellow.withAlphaComponent(0.5) //(returnAssistantConfiguration?.digitalInvoiceBackgroundColor ?? ReturnAssistantConfiguration.shared.digitalInvoiceBackgroundColor).uiColor()
         
         contentView.addSubview(totalCaptionLabel)
         contentView.addSubview(totalPriceLabel)

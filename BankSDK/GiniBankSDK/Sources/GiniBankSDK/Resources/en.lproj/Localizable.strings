@@ -25,6 +25,7 @@
 "ginibank.digitalinvoice.paybuttontitle.othercharges" = "Pay";
 "ginibank.digitalinvoice.paybuttontitle" = "Pay %d/%d";
 "ginibank.digitalinvoice.paybuttontitle.accessibilitylabel" = "Pay %d out of %d";
+"ginibank.digitalinvoice.cancelButtonTitle" = "Cancel";
 
 "ginibank.digitalinvoice.skipbuttontitle" = "Skip feature";
 
@@ -50,6 +51,7 @@
 "ginibank.digitalinvoice.totalcaptionlabeltext" = "Total";
 "ginibank.digitalinvoice.totalexplanationlabeltext" = "Incl. shipping, discount and so on.";
 
+"ginibank.digitalinvoice.lineitem.title" = "Articles";
 "ginibank.digitalinvoice.lineitem.notitle" = "Additional";
 "ginibank.digitalinvoice.lineitem.savebutton" = "Save";
 "ginibank.digitalinvoice.lineitem.itemnametextfieldtitle" = "Item Name";

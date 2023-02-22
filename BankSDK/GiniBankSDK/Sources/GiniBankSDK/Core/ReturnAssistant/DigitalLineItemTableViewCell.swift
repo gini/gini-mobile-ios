@@ -133,9 +133,9 @@ struct DigitalLineItemViewModel {
 }
 
 protocol DigitalLineItemTableViewCellDelegate: AnyObject {
-    func modeSwitchValueChanged(cell: DigitalLineItemTableViewCell, viewModel: DigitalLineItemViewModel)
-    func editTapped(cell: DigitalLineItemTableViewCell, viewModel: DigitalLineItemViewModel)
-    func deleteTapped(cell: DigitalLineItemTableViewCell, viewModel: DigitalLineItemViewModel)
+    func modeSwitchValueChanged(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemViewModel)
+    func editTapped(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemViewModel)
+    func deleteTapped(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemViewModel)
 }
 
 class DigitalLineItemTableViewCell: UITableViewCell {
@@ -149,7 +149,8 @@ class DigitalLineItemTableViewCell: UITableViewCell {
     @IBOutlet weak var outilneView: UIView!
     @IBOutlet weak var countLabel: UILabel!
     @IBOutlet weak var deleteButton: UIButton!
-    
+
+    var index: Int?
     var viewModel: DigitalLineItemViewModel? {
         didSet {
             
@@ -233,32 +234,38 @@ class DigitalLineItemTableViewCell: UITableViewCell {
     }
     
     private func setup() {
-        backgroundColor = (viewModel?.returnAssistantConfiguration.digitalInvoiceBackgroundColor ?? ReturnAssistantConfiguration.shared.digitalInvoiceBackgroundColor).uiColor()
+        backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
         selectionStyle = .none
+
+        if index == 0 {
+            clipsToBounds = true
+            layer.cornerRadius = 8
+            layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        }
         
-        outilneView.layer.borderWidth = 2
-        outilneView.layer.cornerRadius = 5
+        outilneView.layer.borderWidth = 0
+        outilneView.layer.cornerRadius = 0
         
         shadowCastView.layer.backgroundColor = (viewModel?.returnAssistantConfiguration.digitalInvoiceLineItemsBackgroundColor ?? ReturnAssistantConfiguration.shared.digitalInvoiceLineItemsBackgroundColor).uiColor().cgColor
     }
     
     @objc func modeSwitchValueChange(sender: UISwitch) {
         if let viewModel = viewModel {
-            delegate?.modeSwitchValueChanged(cell: self, viewModel: viewModel)
+            delegate?.modeSwitchValueChanged(cell: self, lineItemViewModel: viewModel)
         }
     }
     
     @IBAction func deleteButtonTapped(_ sender: Any) {
         
         if let viewModel = viewModel {
-            delegate?.deleteTapped(cell: self, viewModel: viewModel)
+            delegate?.deleteTapped(cell: self, lineItemViewModel: viewModel)
         }
     }
     
     @IBAction func editButtonTapped(_ sender: Any) {
         
         if let viewModel = viewModel {
-            delegate?.editTapped(cell: self, viewModel: viewModel)
+            delegate?.editTapped(cell: self, lineItemViewModel: viewModel)
         }
     }
 }
