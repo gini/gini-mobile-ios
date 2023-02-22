@@ -37,10 +37,7 @@ public class DigitalInvoiceViewController: UIViewController {
     public var invoice: DigitalInvoice? {
         didSet {
             if tableView.superview != nil {
-                toggleUIChanges()
                 tableView.reloadData()
-            } else {
-                toggleUIUpdates = true
             }
         }
     }
@@ -63,13 +60,11 @@ public class DigitalInvoiceViewController: UIViewController {
     public var returnAssistantConfiguration = ReturnAssistantConfiguration.shared
     
     private let tableView = UITableView()
-    
-    private var infoView: InfoView?
+
     private var tableHeaderViewHeightConstraint: NSLayoutConstraint?
     
     private var didShowOnboardInCurrentSession = false
     private var didShowInfoViewInCurrentSession = false
-    private var toggleUIUpdates = false
     private let vm = DigitalInvoiceViewModel()
 
     fileprivate func configureTableView() {
@@ -103,7 +98,7 @@ public class DigitalInvoiceViewController: UIViewController {
         tableView.separatorStyle = .none
         
         tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
-        tableView.backgroundColor = returnAssistantConfiguration.digitalInvoiceBackgroundColor.uiColor()
+        tableView.backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark1).uiColor()
     }
     
     fileprivate func configureNavigationBar() {
@@ -125,17 +120,6 @@ public class DigitalInvoiceViewController: UIViewController {
         super.viewWillAppear(animated)
         showDigitalInvoiceOnboarding()
         
-    }
-    
-    public override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if !onboardingWillBeShown {
-            showFooterDemo()
-        }
-        if toggleUIUpdates {
-            toggleUIChanges()
-            toggleUIUpdates = false
-        }
     }
     
     @objc func payButtonTapped() {
@@ -166,16 +150,6 @@ public class DigitalInvoiceViewController: UIViewController {
                                                 invoice.numTotal)
     }
     
-    private func toggleUIChanges() {
-        guard let invoice = invoice else { return }
-        if !didShowInfoViewInCurrentSession,
-           invoice.inaccurateResults {
-            shouldShowInfoView()
-        }
-        let shouldEnableSkipButton = invoice.numSelected > 0
-        infoView?.enableSkipButton(shouldEnableSkipButton)
-    }
-    
     @objc func skipButtonTapped() {
         payButtonTapped()
     }
@@ -187,7 +161,7 @@ public class DigitalInvoiceViewController: UIViewController {
         navigationController?.pushViewController(digitalInvoiceHelpViewController, animated: true)
     }
     
-    @objc func closeReturnAssistantOverview(){
+    @objc func closeReturnAssistantOverview() {
         closeReturnAssistantBlock()
     }
     
@@ -196,70 +170,15 @@ public class DigitalInvoiceViewController: UIViewController {
         return UserDefaults.standard.object(forKey: key) == nil ? true : false
     }
     
-    fileprivate var footerDemoWillBeShown: Bool {
-        let key = "ginibank.defaults.digitalInvoiceFooterDemoShowed"
-        return UserDefaults.standard.object(forKey: key) == nil ? true : false
-    }
-    
     fileprivate func showDigitalInvoiceOnboarding() {
         if onboardingWillBeShown && !didShowOnboardInCurrentSession {
             let storyboard = UIStoryboard(name: "DigitalInvoiceOnboarding", bundle: giniBankBundle())
             let digitalInvoiceOnboardingViewController = storyboard.instantiateViewController(withIdentifier: "digitalInvoiceOnboardingViewController") as! DigitalInvoiceOnboardingViewController
 
-            digitalInvoiceOnboardingViewController.delegate = self
-            digitalInvoiceOnboardingViewController.returnAssistantConfiguration = returnAssistantConfiguration
-
             present(digitalInvoiceOnboardingViewController, animated: true)
             didShowOnboardInCurrentSession = true
         }
     }
-    
-    fileprivate func showFooterDemo() {
-        if footerDemoWillBeShown {
-            UIView.animate(withDuration: 0.8) {
-                self.tableView.setContentOffset(
-                    CGPoint(x: .zero, y: self.tableView.contentSize.height - self.tableView.bounds.size.height),
-                    animated: false)
-                self.view.layoutIfNeeded()
-            } completion: { (_) in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    UIView.animate(withDuration: 0.8) {
-                        self.tableView.setContentOffset(
-                            .zero,
-                            animated: false)
-                        self.view.layoutIfNeeded()
-                    }
-                }
-            }
-            UserDefaults.standard.set(true, forKey: "ginibank.defaults.digitalInvoiceFooterDemoShowed")
-        }
-    }
-    
-    fileprivate func shouldShowInfoView() {
-        infoView = InfoView()
-        
-        guard let headerView = infoView else {
-            return
-        }
-        headerView.delegate = self
-        headerView.returnAssistantConfiguration = returnAssistantConfiguration
-        
-        tableView.contentInset.top = 15
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-
-        self.tableView.tableHeaderView = headerView
-        headerView.centerXAnchor.constraint(equalTo: self.tableView.centerXAnchor).isActive = true
-        headerView.widthAnchor.constraint(equalTo: self.tableView.widthAnchor).isActive = true
-        headerView.topAnchor.constraint(equalTo: self.tableView.topAnchor).isActive = true
-        tableHeaderViewHeightConstraint = headerView.heightAnchor.constraint(equalToConstant: 80)
-        tableHeaderViewHeightConstraint?.isActive = true
-
-        self.tableView.tableHeaderView?.layoutIfNeeded()
-        self.tableView.tableHeaderView = self.tableView.tableHeaderView
-        self.didExpandButton(expanded: false)
-        didShowInfoViewInCurrentSession = true
-    }
-    
 }
 
 extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSource {
@@ -284,6 +203,8 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
     public func numberOfSections(in tableView: UITableView) -> Int {
         return Section.allCases.count
     }
+
+    // MARK: - UITableViewDataSource
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
@@ -445,32 +366,6 @@ extension DigitalInvoiceViewController: LineItemDetailsViewControllerDelegate {
         }
 
         
-    }
-}
-
-extension DigitalInvoiceViewController: InfoViewDelegate {
-    func didTapSkipButton() {
-        payButtonTapped()
-    }
-    
-    func didExpandButton(expanded: Bool) {
-        guard let infoView = infoView else { return }
-        let infoViewHeight: CGFloat = expanded ? 80: 430
-        tableHeaderViewHeightConstraint?.constant = infoViewHeight
-
-        self.tableView.layoutIfNeeded()
-        infoView.animate()
-
-        UIView.animate(withDuration: 0.4) {
-            self.tableView.beginUpdates()
-            self.tableView.endUpdates()
-        }
-    }
-}
-
-extension DigitalInvoiceViewController: DigitalInvoiceOnboardingViewControllerDelegate {
-    func didDismissViewController() {
-        showFooterDemo()
     }
 }
 

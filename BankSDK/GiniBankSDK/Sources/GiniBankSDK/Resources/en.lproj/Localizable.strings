@@ -26,12 +26,6 @@
 "ginibank.digitalinvoice.paybuttontitle" = "Pay %d/%d";
 "ginibank.digitalinvoice.paybuttontitle.accessibilitylabel" = "Pay %d out of %d";
 
-"ginibank.digitalinvoice.warningleftbuttontitle" = "OK";
-"ginibank.digitalinvoice.warningrightbuttontitle" = "Skip";
-"ginibank.digitalinvoice.warningtoptitle" = "Info";
-"ginibank.digitalinvoice.warningmiddletext" = "This new feature may contain some bugs. Please double check the articles and the total amount. If necessay you can edit them.";
-"ginibank.digitalinvoice.warningbottomtext" = "If you don’t like to use this feature, you can simply skip it.";
-
 "ginibank.digitalinvoice.skipbuttontitle" = "Skip feature";
 
 "ginibank.digitalinvoice.items" = "Article %d/%d";

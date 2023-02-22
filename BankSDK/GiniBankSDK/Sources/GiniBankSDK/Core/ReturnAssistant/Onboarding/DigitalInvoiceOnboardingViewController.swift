@@ -8,13 +8,7 @@
 import UIKit
 import GiniCaptureSDK
 
-protocol DigitalInvoiceOnboardingViewControllerDelegate: AnyObject {
-    func didDismissViewController()
-}
 class DigitalInvoiceOnboardingViewController: UIViewController {
-    var returnAssistantConfiguration = ReturnAssistantConfiguration()
-    weak var delegate: DigitalInvoiceOnboardingViewControllerDelegate?
-    
     @IBOutlet var contentView: UIView!
     @IBOutlet var topImageView: OnboardingImageView!
     @IBOutlet var firstLabel: UILabel!
@@ -153,8 +147,6 @@ class DigitalInvoiceOnboardingViewController: UIViewController {
     }
     
     private func dismissViewController() {
-        dismiss(animated: true) {
-            self.delegate?.didDismissViewController()
-        }
+        dismiss(animated: true)
     }
 }
