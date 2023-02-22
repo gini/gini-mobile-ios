@@ -25,6 +25,7 @@
 "ginibank.digitalinvoice.paybuttontitle.othercharges" = "Bezahlen";
 "ginibank.digitalinvoice.paybuttontitle" = "Bezahlen %d/%d";
 "ginibank.digitalinvoice.paybuttontitle.accessibilitylabel" = "Bezahlen %d von %d";
+"ginibank.digitalinvoice.cancelButtonTitle" = "Abbrechen";
 "ginibank.digitalinvoice.skipbuttontitle" = "Funktion überspringen";
 "ginibank.digitalinvoice.items" = "Artikel %d/%d";
 "ginibank.digitalinvoice.items.accessibilitylabel" = "%d von %d Artikel";
@@ -33,7 +34,7 @@
 "ginibank.digitalinvoice.checkmarkbutton.deselect.accessibilitylabel" = "Artikel abwählen";
 "ginibank.digitalinvoice.checkmarkbutton.select.accessibilitylabel" = "Artikel wählen";
 "ginibank.digitalinvoice.deselectreasonactionsheet.message" = "Der Grund der Rücksendung";
-"ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel" = "Cancel";
+"ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel" = "Abbrechen";
 "ginibank.digitalinvoice.headermessage.primary" = "Scan war erfolgreich!";
 "ginibank.digitalinvoice.headermessage.secondary" = "Du kannst nun die Artikel abwählen, die du zurückschicken willst.";
 "ginibank.digitalinvoice.total.addArticleButtonTitle" = "Artikel hinzufügen";
@@ -41,6 +42,7 @@
 "ginibank.digitalinvoice.footermessage" = "Bitte überprüfe vor der Zahlung, ob alles in Ordnung ist und füge eventuell fehlende Artikel hinzu.";
 "ginibank.digitalinvoice.totalcaptionlabeltext" = "Gesamt";
 "ginibank.digitalinvoice.totalexplanationlabeltext" = "Inkl. Versandkosten, Rabatt usw.";
+"ginibank.digitalinvoice.lineitem.title" = "Artikel";
 "ginibank.digitalinvoice.lineitem.notitle" = "Sonstiges";
 "ginibank.digitalinvoice.lineitem.savebutton" = "Speichern";
 "ginibank.digitalinvoice.lineitem.itemnametextfieldtitle" = "Artikelname";

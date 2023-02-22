@@ -59,67 +59,87 @@ public class DigitalInvoiceViewController: UIViewController {
      */
     public var returnAssistantConfiguration = ReturnAssistantConfiguration.shared
     
-    private let tableView = UITableView()
-
-    private var tableHeaderViewHeightConstraint: NSLayoutConstraint?
-    
-    private var didShowOnboardInCurrentSession = false
-    private var didShowInfoViewInCurrentSession = false
-    private let vm = DigitalInvoiceViewModel()
-
-    fileprivate func configureTableView() {
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(tableView)
-        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        
-        tableView.register(TextFieldTableViewCell.self,
-                           forCellReuseIdentifier: "TextFieldTableViewCell")
-        
-        tableView.register(UINib(nibName: "DigitalLineItemTableViewCell",
-                                 bundle: giniBankBundle()),
+        tableView.register(DigitalInvoiceTableViewTitleCell.self, forCellReuseIdentifier: "DigitalInvoiceTableViewTitleCell")
+        tableView.register(UINib(nibName: "DigitalLineItemTableViewCell", bundle: giniBankBundle()),
                            forCellReuseIdentifier: "DigitalLineItemTableViewCell")
-        
-        tableView.register(DigitalInvoiceAddonCell.self,
-                           forCellReuseIdentifier: "DigitalInvoiceAddonCell")
-        
-        tableView.register(DigitalInvoiceTotalPriceCell.self,
-                           forCellReuseIdentifier: "DigitalInvoiceTotalPriceCell")
-        
-        tableView.register(DigitalInvoiceFooterCell.self,
-                           forCellReuseIdentifier: "DigitalInvoiceFooterCell")
-        
+        tableView.register(DigitalInvoiceAddonCell.self, forCellReuseIdentifier: "DigitalInvoiceAddonCell")
+        tableView.register(DigitalInvoiceTotalPriceCell.self, forCellReuseIdentifier: "DigitalInvoiceTotalPriceCell")
         tableView.separatorStyle = .none
-        
-        tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
-        tableView.backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark1).uiColor()
+        tableView.backgroundColor = .clear
+        tableView.showsVerticalScrollIndicator = false
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
+    }()
+
+    private lazy var buttonContainerView: UIView = {
+        let containerView = UIView()
+        containerView.backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        return containerView
+    }()
+
+    private var didShowOnboardInCurrentSession = false
+    private let viewModel: DigitalInvoiceViewModel
+
+    public init(viewModel: DigitalInvoiceViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
     }
-    
-    fileprivate func configureNavigationBar() {
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupView() {
         title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: prefferedImage(named: "infoIcon"), style: .plain, target: self, action: #selector(whatIsThisTapped(source:)))
-        let leftBarButtonItemTitle = String.ginibankLocalized(resource: DigitalInvoiceStrings.backButtonTitle)
-        navigationItem.leftBarButtonItem = GiniBarButtonItem.init(image: prefferedImage(named: "arrowBack"), title: leftBarButtonItemTitle, style: .plain, target: self, action: #selector(closeReturnAssistantOverview))
+        edgesForExtendedLayout = []
+        view.backgroundColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2).uiColor()
+        let helpButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.help.screenTitle",
+                                                                       comment: "Help")
+        let cancelButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.cancelButtonTitle",
+                                                                         comment: "Cancel")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: helpButtonTitle,
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(helpButtonTapped(source:)))
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: cancelButtonTitle,
+                                                           style: .plain,
+                                                           target: self,
+                                                           action: #selector(closeReturnAssistantOverview))
+        view.addSubview(tableView)
+        view.addSubview(buttonContainerView)
     }
+
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tableView.bottomAnchor.constraint(equalTo: buttonContainerView.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+
+            buttonContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            buttonContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            buttonContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            buttonContainerView.heightAnchor.constraint(equalToConstant: 160)
+        ])
+    }
+
     
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        configureNavigationBar()
-        configureTableView()
+        setupView()
+        setupConstraints()
     }
     
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         showDigitalInvoiceOnboarding()
-        
     }
     
     @objc func payButtonTapped() {
@@ -140,7 +160,6 @@ public class DigitalInvoiceViewController: UIViewController {
     }
     
     private func payButtonAccessibilityLabel() -> String {
-        
         guard let invoice = invoice else {
             return .ginibankLocalized(resource: DigitalInvoiceStrings.disabledPayButtonTitle)
         }
@@ -154,7 +173,7 @@ public class DigitalInvoiceViewController: UIViewController {
         payButtonTapped()
     }
 
-    @objc func whatIsThisTapped(source: UIButton) {
+    @objc func helpButtonTapped(source: UIButton) {
         let digitalInvoiceHelViewModel = DigitalInvoiceHelpViewModel()
         let digitalInvoiceHelpViewController = DigitalInvoiceHelpViewController(viewModel: digitalInvoiceHelViewModel)
 
@@ -183,7 +202,7 @@ public class DigitalInvoiceViewController: UIViewController {
 
 extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSource {
 
-    // MARK: - Table view data source
+    // MARK: - UITableViewDelegate
 
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
@@ -194,10 +213,10 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
     }
     
     enum Section: Int, CaseIterable {
+        case titleCell
         case lineItems
         case addons
         case totalPrice
-        case footer
     }
     
     public func numberOfSections(in tableView: UITableView) -> Int {
@@ -207,27 +226,30 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
     // MARK: - UITableViewDataSource
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    
         switch Section(rawValue: section) {
+        case .titleCell: return 1
         case .lineItems: return invoice?.lineItems.count ?? 0
         case .addons: return invoice?.addons.count ?? 0
         case .totalPrice: return 1
-        case .footer: return 1
         default: fatalError()
         }
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         switch Section(rawValue: indexPath.section) {
+        case .titleCell:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceTableViewTitleCell",
+                                                     for: indexPath) as! DigitalInvoiceTableViewTitleCell
+            return cell
         case .lineItems:
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalLineItemTableViewCell",
                                                      for: indexPath) as! DigitalLineItemTableViewCell
+            cell.index = indexPath.row
             if let invoice = invoice {
                 cell.viewModel = DigitalLineItemViewModel(lineItem: invoice.lineItems[indexPath.row], returnAssistantConfiguration: returnAssistantConfiguration, index: indexPath.row, invoiceNumTotal: invoice.numTotal, invoiceLineItemsCount: invoice.lineItems.count)
             }
-            
+
             cell.delegate = self
             
             return cell
@@ -256,78 +278,45 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
             cell.delegate = self
             
             return cell
-            
-        case .footer:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceFooterCell",
-                                                     for: indexPath) as! DigitalInvoiceFooterCell
-            cell.returnAssistantConfiguration = returnAssistantConfiguration
-            cell.payButton.accessibilityLabel = payButtonAccessibilityLabel()
-            cell.payButton.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
-            if let invoice = invoice {
-                let total = invoice.total?.value ?? 0
-                let shouldEnablePayButton = vm.isPayButtonEnabled(total: total)
-                cell.enableButtons(shouldEnablePayButton)
-                let buttonTitle = vm.payButtonTitle(
-                    isEnabled: shouldEnablePayButton,
-                    numSelected: invoice.numSelected,
-                    numTotal: invoice.numTotal
-                )
-                cell.payButton.setTitle(
-                    buttonTitle,
-                    for: .normal)
-                cell.shouldSetUIForInaccurateResults(invoice.inaccurateResults)
-                cell.skipButton.setTitle(.ginibankLocalized(resource: DigitalInvoiceStrings.skipButtonTitle),
-                                         for: .normal)
-                cell.skipButton.addTarget(self, action: #selector(skipButtonTapped), for: .touchUpInside)
-            } else {
-                let buttonTitle = vm.payButtonTitle(
-                    isEnabled: false,
-                    numSelected: 0,
-                    numTotal: 0
-                )
-                cell.payButton.setTitle(buttonTitle, for: .normal)
-            }
-            return cell
-            
         default: fatalError()
         }
     }
 }
 
 extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
-    func deleteTapped(cell: DigitalLineItemTableViewCell, viewModel: DigitalLineItemViewModel) {
-        invoice?.lineItems.remove(at: viewModel.index)
+    func deleteTapped(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemViewModel) {
+        invoice?.lineItems.remove(at: lineItemViewModel.index)
     }
     
 
-    func modeSwitchValueChanged(cell: DigitalLineItemTableViewCell, viewModel: DigitalLineItemViewModel) {
+    func modeSwitchValueChanged(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemViewModel) {
         
         guard let invoice = invoice else { return }
         
-        switch invoice.lineItems[viewModel.index].selectedState {
+        switch invoice.lineItems[lineItemViewModel.index].selectedState {
         
         case .selected:
             
             if let returnReasons = self.invoice?.returnReasons, returnAssistantConfiguration.enableReturnReasons {
-                presentReturnReasonActionSheet(for: viewModel.index,
+                presentReturnReasonActionSheet(for: lineItemViewModel.index,
                                                source: cell.modeSwitch,
                                                with: returnReasons)
             } else {
-                self.invoice?.lineItems[viewModel.index].selectedState = .deselected(reason: nil)
+                self.invoice?.lineItems[lineItemViewModel.index].selectedState = .deselected(reason: nil)
                 return
             }
             
         case .deselected:
-            self.invoice?.lineItems[viewModel.index].selectedState = .selected
+            self.invoice?.lineItems[lineItemViewModel.index].selectedState = .selected
         }
     }
         
-    func editTapped(cell: DigitalLineItemTableViewCell, viewModel: DigitalLineItemViewModel) {
+    func editTapped(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemViewModel) {
                 
         let viewController = LineItemDetailsViewController()
-        viewController.lineItem = invoice?.lineItems[viewModel.index]
+        viewController.lineItem = invoice?.lineItems[lineItemViewModel.index]
         viewController.returnReasons = invoice?.returnReasons
-        viewController.lineItemIndex = viewModel.index
+        viewController.lineItemIndex = lineItemViewModel.index
         viewController.returnAssistantConfiguration = returnAssistantConfiguration
         viewController.delegate = self
         
