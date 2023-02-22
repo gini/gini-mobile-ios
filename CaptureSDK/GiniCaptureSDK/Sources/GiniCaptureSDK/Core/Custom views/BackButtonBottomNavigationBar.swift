@@ -13,7 +13,7 @@ A custom view that displays a back button on the bottom navigation bar.
 This class is a subclass of UIView.
 */
 
-public final class BackButtonBottomNavigationBar: UIView {
+final class BackButtonBottomNavigationBar: UIView {
 
     /// The button that displays the back arrow icon.
     @IBOutlet public weak var backButton: UIButton!
