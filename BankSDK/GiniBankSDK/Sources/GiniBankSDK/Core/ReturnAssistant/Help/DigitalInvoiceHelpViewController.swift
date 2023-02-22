@@ -34,7 +34,7 @@ final class DigitalInvoiceHelpViewController: UIViewController {
 
     private lazy var scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
                                                                                      constant: -Constants.padding)
-    private var navigationBarBottomAdapter: DigitalInvoiceHelpBottomNavigationBarAdapter?
+    private var navigationBarBottomAdapter: DigitalInvoiceHelpNavigationBarBottomAdapter?
 
     private let viewModel: DigitalInvoiceHelpViewModel
 
@@ -96,10 +96,10 @@ final class DigitalInvoiceHelpViewController: UIViewController {
     private func configureBottomNavigationBar() {
         let configuration = GiniBankConfiguration.shared
         if configuration.bottomNavigationBarEnabled {
-            if let bottomBar = configuration.digitalInvoiceHelpBottomNavigationBarAdapter {
+            if let bottomBar = configuration.digitalInvoiceHelpNavigationBarBottomAdapter {
                 navigationBarBottomAdapter = bottomBar
             } else {
-                navigationBarBottomAdapter = DefaultDigitalInvoiceHelpBottomNavigationBarAdapter()
+                navigationBarBottomAdapter = DefaultDigitalInvoiceHelpNavigationBarBottomAdapter()
             }
 
             navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
