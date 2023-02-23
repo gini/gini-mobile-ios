@@ -69,6 +69,8 @@ public extension UIButton {
 
         if configuration.withBlurEffect {
             self.addBlurEffect(cornerRadius: configuration.cornerRadius)
+        } else {
+            self.removeBlurEffect()
         }
     }
 }
