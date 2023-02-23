@@ -240,6 +240,11 @@ public final class GiniBankConfiguration: NSObject {
     public var imagePickerNavigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter?
 
     /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the digital invoice help screen
+     */
+    public var digitalInvoiceHelpNavigationBarBottomAdapter: DigitalInvoiceHelpNavigationBarBottomAdapter?
+
+    /**
       * Set an adapter implementation to show a custom bottom navigation bar on the onboarding of the digital invoice screen.
      */
     public var digitalInvoiceOnboardingNavigationBarBottomAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter?
