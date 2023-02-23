@@ -45,6 +45,7 @@
 "ginibank.digitalinvoice.lineitem.title" = "Artikel";
 "ginibank.digitalinvoice.lineitem.notitle" = "Sonstiges";
 "ginibank.digitalinvoice.lineitem.savebutton" = "Speichern";
+"ginibank.digitalinvoice.lineitem.unitTitle" = "pro Stück";
 "ginibank.digitalinvoice.lineitem.itemnametextfieldtitle" = "Artikelname";
 "ginibank.digitalinvoice.lineitem.quantitytextfieldtitle" = "Anzahl";
 "ginibank.digitalinvoice.lineitem.pricetextfieldtitle" = "Artikelpreis";
