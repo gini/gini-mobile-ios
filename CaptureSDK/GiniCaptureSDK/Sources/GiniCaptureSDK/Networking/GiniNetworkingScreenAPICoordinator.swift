@@ -121,7 +121,7 @@ import GiniBankAPILibrary
                 })
                 
                 
-                let result = AnalysisResult(extractions: extractions, lineItems: result.lineItems, images: images, document: document)
+                let result = AnalysisResult(extractions: extractions, lineItems: result.lineItems, images: images, document: document, candidates: result.candidates)
                 
                 let documentService = self.documentService
                 
@@ -208,7 +208,7 @@ extension GiniNetworkingScreenAPICoordinator: GiniCaptureDelegate {
                            value: $0.value,
                            name: QRCodesExtractor.epsCodeUrlKey)
                 }
-            let extractionResult = ExtractionResult(extractions: extractions, lineItems: [], returnReasons: [])
+            let extractionResult = ExtractionResult(extractions: extractions, lineItems: [], returnReasons: [], candidates: [:])
             
             self.deliver(result: extractionResult, to: networkDelegate)
             return
