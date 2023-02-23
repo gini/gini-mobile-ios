@@ -46,6 +46,8 @@
 "ginibank.digitalinvoice.lineitem.notitle" = "Sonstiges";
 "ginibank.digitalinvoice.lineitem.savebutton" = "Speichern";
 "ginibank.digitalinvoice.lineitem.unitTitle" = "pro Stück";
+"ginibank.digitalinvoice.lineitem.subTotalTitle" = "Zwischensumme (inkl. MwSt)";
+"ginibank.digitalinvoice.lineitem.addOnTitle" = "Weitere Kosten";
 "ginibank.digitalinvoice.lineitem.itemnametextfieldtitle" = "Artikelname";
 "ginibank.digitalinvoice.lineitem.quantitytextfieldtitle" = "Anzahl";
 "ginibank.digitalinvoice.lineitem.pricetextfieldtitle" = "Artikelpreis";
