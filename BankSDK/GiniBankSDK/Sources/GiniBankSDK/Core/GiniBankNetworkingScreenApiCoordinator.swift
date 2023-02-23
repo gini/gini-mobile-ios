@@ -30,7 +30,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                            value: $0.value,
                            name: QRCodesExtractor.epsCodeUrlKey)
             }
-            let extractionResult = ExtractionResult(extractions: extractions, lineItems: [], returnReasons: [])
+            let extractionResult = ExtractionResult(extractions: extractions, lineItems: [], returnReasons: [], candidates: [:])
 
             deliver(result: extractionResult, analysisDelegate: networkDelegate)
             return
@@ -181,7 +181,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                     return (name, $0)
                 })
 
-                let result = AnalysisResult(extractions: extractions, lineItems: result.lineItems, images: images)
+                let result = AnalysisResult(extractions: extractions, lineItems: result.lineItems, images: images, candidates: result.candidates)
 
                 let documentService = self.documentService
 
@@ -222,7 +222,8 @@ extension GiniBankNetworkingScreenApiCoordinator {
                 let result = AnalysisResult(extractions: extractions,
                                             lineItems: result.lineItems,
                                             images: images,
-                                            document: documentService.document)
+                                            document: documentService.document,
+                                            candidates: result.candidates)
 
                 self.resultsDelegate?
                     .giniCaptureAnalysisDidFinishWith(result: result) { updatedExtractions in
