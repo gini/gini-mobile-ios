@@ -21,7 +21,7 @@
 "ginibank.help.menu.returnAssistant.backButton.title" = "Zurück";
 
 "ginibank.digitalinvoice.screentitle" = "Digitale Rechnung";
-"ginibank.digitalinvoice.paybuttontitle.disabled" = "Bezahlen";
+"ginibank.digitalinvoice.paybutton.title" = "Weiter";
 "ginibank.digitalinvoice.paybuttontitle.othercharges" = "Bezahlen";
 "ginibank.digitalinvoice.paybuttontitle" = "Bezahlen %d/%d";
 "ginibank.digitalinvoice.paybuttontitle.accessibilitylabel" = "Bezahlen %d von %d";
@@ -46,8 +46,6 @@
 "ginibank.digitalinvoice.lineitem.notitle" = "Sonstiges";
 "ginibank.digitalinvoice.lineitem.savebutton" = "Speichern";
 "ginibank.digitalinvoice.lineitem.unitTitle" = "pro Stück";
-"ginibank.digitalinvoice.lineitem.subTotalTitle" = "Zwischensumme (inkl. MwSt)";
-"ginibank.digitalinvoice.lineitem.addOnTitle" = "Weitere Kosten";
 "ginibank.digitalinvoice.lineitem.itemnametextfieldtitle" = "Artikelname";
 "ginibank.digitalinvoice.lineitem.quantitytextfieldtitle" = "Anzahl";
 "ginibank.digitalinvoice.lineitem.pricetextfieldtitle" = "Artikelpreis";

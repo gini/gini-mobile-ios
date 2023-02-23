@@ -14,20 +14,11 @@ public final class DigitalInvoiceViewModel {
         self.invoice = invoice
     }
 
-    func isPayButtonEnabled(total: Decimal) -> Bool {
-        return total > 0
-    }
-    
-    func payButtonTitle(isEnabled: Bool = false, numSelected: Int, numTotal: Int) -> String {
-        if isEnabled && numSelected != 0 {
-            return String.localizedStringWithFormat(
-                DigitalInvoiceStrings.payButtonTitle.localizedGiniBankFormat,
-                numSelected,
-                numTotal)
+    func isPayButtonEnabled() -> Bool {
+        if let total = invoice?.total?.value {
+            return total > 0
         }
-        if numSelected == 0 {
-            return .ginibankLocalized(resource: DigitalInvoiceStrings.payButtonOtherCharges)
-        }
-        return .ginibankLocalized(resource: DigitalInvoiceStrings.disabledPayButtonTitle)
+        
+        return false
     }
 }
