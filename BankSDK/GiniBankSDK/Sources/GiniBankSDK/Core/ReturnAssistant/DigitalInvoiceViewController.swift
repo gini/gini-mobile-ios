@@ -41,12 +41,8 @@ public class DigitalInvoiceViewController: UIViewController {
      Handler will be called when back button was pressed.
      */
     public var closeReturnAssistantBlock: () -> Void = {}
-    
-    /**
-     The `ReturnAssistantConfiguration` instance used by this class to customise its appearance.
-     By default the shared instance is used.
-     */
-    public var returnAssistantConfiguration = ReturnAssistantConfiguration.shared
+
+    private lazy var configuration = GiniBankConfiguration.shared
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -55,7 +51,7 @@ public class DigitalInvoiceViewController: UIViewController {
         tableView.register(DigitalInvoiceTableViewTitleCell.self, forCellReuseIdentifier: "DigitalInvoiceTableViewTitleCell")
         tableView.register(UINib(nibName: "DigitalLineItemTableViewCell", bundle: giniBankBundle()),
                            forCellReuseIdentifier: "DigitalLineItemTableViewCell")
-        tableView.register(DigitalInvoiceSubTotalPriceCell.self, forCellReuseIdentifier: "DigitalInvoiceSubTotalPriceCell")
+        tableView.register(DigitalInvoiceAddOnListCell.self, forCellReuseIdentifier: "DigitalInvoiceAddOnListCell")
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
@@ -68,6 +64,39 @@ public class DigitalInvoiceViewController: UIViewController {
         containerView.backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
         containerView.translatesAutoresizingMaskIntoConstraints = false
         return containerView
+    }()
+
+    private lazy var payButton: MultilineTitleButton = {
+        let button = MultilineTitleButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.configure(with: configuration.primaryButtonConfiguration)
+        button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
+        button.setTitle(NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.paybutton.title",
+                                                                 comment: "Proceed"), for: .normal)
+        button.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
+        button.isEnabled = viewModel.isPayButtonEnabled()
+        return button
+    }()
+
+    private lazy var totalLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = configuration.textStyleFonts[.body]
+        label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
+        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.totalpricetitle",
+                                                              comment: "Total")
+
+        return label
+    }()
+
+    private lazy var totalValueLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .right
+        label.font = configuration.textStyleFonts[.title1Bold]
+        label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
+        label.text = viewModel.invoice?.total?.string
+        return label
     }()
 
     private var didShowOnboardInCurrentSession = false
@@ -101,6 +130,10 @@ public class DigitalInvoiceViewController: UIViewController {
                                                            action: #selector(closeReturnAssistantOverview))
         view.addSubview(tableView)
         view.addSubview(buttonContainerView)
+
+        buttonContainerView.addSubview(payButton)
+        buttonContainerView.addSubview(totalLabel)
+        buttonContainerView.addSubview(totalValueLabel)
     }
 
     private func setupConstraints() {
@@ -113,7 +146,20 @@ public class DigitalInvoiceViewController: UIViewController {
             buttonContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             buttonContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             buttonContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            buttonContainerView.heightAnchor.constraint(equalToConstant: 160)
+            buttonContainerView.heightAnchor.constraint(equalToConstant: 160),
+
+            payButton.bottomAnchor.constraint(equalTo: buttonContainerView.bottomAnchor, constant: -24),
+            payButton.centerXAnchor.constraint(equalTo: buttonContainerView.centerXAnchor),
+            payButton.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor, constant: 24),
+            payButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 50),
+
+            totalLabel.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor, constant: 24),
+            totalLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor, constant: 8),
+            totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: totalValueLabel.leadingAnchor, constant: 8),
+
+            totalValueLabel.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: -24),
+            totalValueLabel.trailingAnchor.constraint(equalTo: buttonContainerView.trailingAnchor, constant: -24),
+            totalValueLabel.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor)
         ])
     }
 
@@ -134,17 +180,18 @@ public class DigitalInvoiceViewController: UIViewController {
         guard let invoice = viewModel.invoice else { return }
         delegate?.didFinish(viewController: self, invoice: invoice)
     }
-    
-    private func payButtonTitle() -> String {
-        guard let invoice = viewModel.invoice else {
-            return .ginibankLocalized(resource: DigitalInvoiceStrings.disabledPayButtonTitle)
+
+    private func updateValues() {
+        tableView.reloadData()
+        totalValueLabel.text = viewModel.invoice?.total?.string
+
+        if viewModel.isPayButtonEnabled() {
+            payButton.isEnabled = true
+            payButton.configure(with: configuration.primaryButtonConfiguration)
+        } else {
+            payButton.isEnabled = false
+            payButton.configure(with: configuration.secondaryButtonConfiguration)
         }
-        if invoice.numSelected == 0 {
-            return .ginibankLocalized(resource: DigitalInvoiceStrings.payButtonOtherCharges)
-        }
-        return String.localizedStringWithFormat(DigitalInvoiceStrings.payButtonTitle.localizedGiniBankFormat,
-                                                invoice.numSelected,
-                                                invoice.numTotal)
     }
     
     private func payButtonAccessibilityLabel() -> String {
@@ -155,10 +202,6 @@ public class DigitalInvoiceViewController: UIViewController {
         return String.localizedStringWithFormat(DigitalInvoiceStrings.payButtonTitleAccessibilityLabel.localizedGiniBankFormat,
                                                 invoice.numSelected,
                                                 invoice.numTotal)
-    }
-    
-    @objc func skipButtonTapped() {
-        payButtonTapped()
     }
 
     @objc func helpButtonTapped(source: UIButton) {
@@ -244,9 +287,8 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
             
         case .totalPrice:
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceSubTotalPriceCell",
-                                                     for: indexPath) as! DigitalInvoiceSubTotalPriceCell
-            cell.totalPrice = viewModel.invoice?.total
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceAddOnListCell",
+                                                     for: indexPath) as! DigitalInvoiceAddOnListCell
             cell.addOns = viewModel.invoice?.addons
             
             return cell
@@ -269,7 +311,7 @@ extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
         
         case .selected:
             
-            if let returnReasons = self.viewModel.invoice?.returnReasons, returnAssistantConfiguration.enableReturnReasons {
+            if let returnReasons = self.viewModel.invoice?.returnReasons, configuration.enableReturnReasons {
                 presentReturnReasonActionSheet(for: lineItemViewModel.index,
                                                source: cell.modeSwitch,
                                                with: returnReasons)
@@ -282,7 +324,7 @@ extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
             self.viewModel.invoice?.lineItems[lineItemViewModel.index].selectedState = .selected
         }
 
-        tableView.reloadData()
+        updateValues()
     }
         
     func editTapped(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
@@ -291,7 +333,7 @@ extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
         viewController.lineItem = viewModel.invoice?.lineItems[lineItemViewModel.index]
         viewController.returnReasons = viewModel.invoice?.returnReasons
         viewController.lineItemIndex = lineItemViewModel.index
-        viewController.returnAssistantConfiguration = returnAssistantConfiguration
+        viewController.returnAssistantConfiguration = ReturnAssistantConfiguration.shared
         viewController.delegate = self
         
         navigationController?.pushViewController(viewController, animated: true)
@@ -312,7 +354,7 @@ extension DigitalInvoiceViewController {
             }
 
             DispatchQueue.main.async {
-                self.tableView.reloadData()
+                self.updateValues()
             }
         }
     }
@@ -332,6 +374,6 @@ extension DigitalInvoiceViewController: LineItemDetailsViewControllerDelegate {
             self.viewModel.invoice?.lineItems.append(lineItem)
         }
 
-        tableView.reloadData()
+        updateValues()
     }
 }

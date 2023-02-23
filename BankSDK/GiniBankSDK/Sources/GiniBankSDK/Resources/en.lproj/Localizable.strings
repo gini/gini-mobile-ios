@@ -21,7 +21,7 @@
 "ginibank.help.menu.returnAssistant.backButton.title" = "Back";
 
 "ginibank.digitalinvoice.screentitle" = "Digital invoice";
-"ginibank.digitalinvoice.paybuttontitle.disabled" = "Pay";
+"ginibank.digitalinvoice.paybutton.title" = "Proceed";
 "ginibank.digitalinvoice.paybuttontitle.othercharges" = "Pay";
 "ginibank.digitalinvoice.paybuttontitle" = "Pay %d/%d";
 "ginibank.digitalinvoice.paybuttontitle.accessibilitylabel" = "Pay %d out of %d";
@@ -55,8 +55,6 @@
 "ginibank.digitalinvoice.lineitem.notitle" = "Additional";
 "ginibank.digitalinvoice.lineitem.savebutton" = "Save";
 "ginibank.digitalinvoice.lineitem.unitTitle" = "per unit";
-"ginibank.digitalinvoice.lineitem.subTotalTitle" = "Subtotal (tax included)";
-"ginibank.digitalinvoice.lineitem.addOnTitle" = "Add-ons";
 "ginibank.digitalinvoice.lineitem.itemnametextfieldtitle" = "Item Name";
 "ginibank.digitalinvoice.lineitem.quantitytextfieldtitle" = "Quantity";
 "ginibank.digitalinvoice.lineitem.pricetextfieldtitle" = "Item Price";
