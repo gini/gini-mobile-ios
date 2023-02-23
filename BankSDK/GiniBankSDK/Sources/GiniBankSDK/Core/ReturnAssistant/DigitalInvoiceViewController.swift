@@ -55,8 +55,7 @@ public class DigitalInvoiceViewController: UIViewController {
         tableView.register(DigitalInvoiceTableViewTitleCell.self, forCellReuseIdentifier: "DigitalInvoiceTableViewTitleCell")
         tableView.register(UINib(nibName: "DigitalLineItemTableViewCell", bundle: giniBankBundle()),
                            forCellReuseIdentifier: "DigitalLineItemTableViewCell")
-        tableView.register(DigitalInvoiceAddonCell.self, forCellReuseIdentifier: "DigitalInvoiceAddonCell")
-        tableView.register(DigitalInvoiceTotalPriceCell.self, forCellReuseIdentifier: "DigitalInvoiceTotalPriceCell")
+        tableView.register(DigitalInvoiceSubTotalPriceCell.self, forCellReuseIdentifier: "DigitalInvoiceSubTotalPriceCell")
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
@@ -204,7 +203,6 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
     enum Section: Int, CaseIterable {
         case titleCell
         case lineItems
-        case addons
         case totalPrice
     }
     
@@ -218,7 +216,6 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
         switch Section(rawValue: section) {
         case .titleCell: return 1
         case .lineItems: return viewModel.invoice?.lineItems.count ?? 0
-        case .addons: return viewModel.invoice?.addons.count ?? 0
         case .totalPrice: return 1
         default: fatalError()
         }
@@ -245,28 +242,12 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
             
             return cell
             
-        case .addons:
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceAddonCell",
-                                                     for: indexPath) as! DigitalInvoiceAddonCell
-            cell.returnAssistantConfiguration = returnAssistantConfiguration
-            if let invoice = viewModel.invoice {
-                let addon = invoice.addons[indexPath.row]
-                cell.addonPrice = addon.price
-                cell.addonName = addon.name
-            }
-            
-            return cell
-            
         case .totalPrice:
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceTotalPriceCell",
-                                                     for: indexPath) as! DigitalInvoiceTotalPriceCell
-            cell.returnAssistantConfiguration = returnAssistantConfiguration
-
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceSubTotalPriceCell",
+                                                     for: indexPath) as! DigitalInvoiceSubTotalPriceCell
             cell.totalPrice = viewModel.invoice?.total
-            
-            cell.delegate = self
+            cell.addOns = viewModel.invoice?.addons
             
             return cell
         default: fatalError()
@@ -352,20 +333,5 @@ extension DigitalInvoiceViewController: LineItemDetailsViewControllerDelegate {
         }
 
         tableView.reloadData()
-    }
-}
-
-extension DigitalInvoiceViewController: DigitalInvoiceTotalPriceCellDelegate {
-    func didTapAddArticleButton() {
-        guard let firstItem = viewModel.invoice?.lineItems.first else { return }
-        let viewController = LineItemDetailsViewController()
-        let price = Price(value: 0, currencyCode: firstItem.price.currencyCode)
-        viewController.lineItem = DigitalInvoice.LineItem(name: "", quantity: 0, price: price, selectedState: .selected, isUserInitiated: true)
-        viewController.returnAssistantConfiguration = returnAssistantConfiguration
-        viewController.lineItemIndex = viewModel.invoice?.lineItems.count
-        viewController.delegate = self
-        viewController.shouldEnableSaveButton = false
-        
-        navigationController?.pushViewController(viewController, animated: true)
     }
 }
