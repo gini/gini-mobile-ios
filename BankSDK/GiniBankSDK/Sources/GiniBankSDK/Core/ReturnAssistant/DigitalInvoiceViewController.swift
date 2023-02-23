@@ -234,9 +234,11 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalLineItemTableViewCell",
                                                      for: indexPath) as! DigitalLineItemTableViewCell
-            cell.index = indexPath.row
             if let invoice = viewModel.invoice {
-                cell.viewModel = DigitalLineItemViewModel(lineItem: invoice.lineItems[indexPath.row], returnAssistantConfiguration: returnAssistantConfiguration, index: indexPath.row, invoiceNumTotal: invoice.numTotal, invoiceLineItemsCount: invoice.lineItems.count)
+                cell.viewModel = DigitalLineItemTableViewCellViewModel(lineItem: invoice.lineItems[indexPath.row],
+                                                                       index: indexPath.row,
+                                                                       invoiceNumTotal: invoice.numTotal,
+                                                                       invoiceLineItemsCount: invoice.lineItems.count)
             }
 
             cell.delegate = self
@@ -273,12 +275,12 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
 }
 
 extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
-    func deleteTapped(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemViewModel) {
+    func deleteTapped(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
         viewModel.invoice?.lineItems.remove(at: lineItemViewModel.index)
     }
     
 
-    func modeSwitchValueChanged(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemViewModel) {
+    func modeSwitchValueChanged(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
         
         guard let invoice = viewModel.invoice else { return }
         
@@ -302,7 +304,7 @@ extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
         tableView.reloadData()
     }
         
-    func editTapped(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemViewModel) {
+    func editTapped(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
                 
         let viewController = LineItemDetailsViewController()
         viewController.lineItem = viewModel.invoice?.lineItems[lineItemViewModel.index]
