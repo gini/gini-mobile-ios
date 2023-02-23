@@ -181,7 +181,8 @@ class ExtractionFeedbackIntegrationTest: XCTestCase {
                         let analysisResult = AnalysisResult(extractions: extractions,
                                                             lineItems: extractionResult.lineItems,
                                                             images: [],
-                                                            document: self.giniCaptureSDKDocumentService?.document)
+                                                            document: self.giniCaptureSDKDocumentService?.document,
+                                                            candidates: extractionResult.candidates)
 
                         let sendFeedbackBlock: (([String: Extraction]) -> Void) = { [self] updatedExtractions in
                             let extractions = updatedExtractions.map {$0.1}
