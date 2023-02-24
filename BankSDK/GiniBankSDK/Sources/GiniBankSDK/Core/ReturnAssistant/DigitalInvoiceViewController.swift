@@ -56,6 +56,7 @@ public class DigitalInvoiceViewController: UIViewController {
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 16, right: 0)
         return tableView
     }()
 
@@ -139,9 +140,7 @@ public class DigitalInvoiceViewController: UIViewController {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             tableView.bottomAnchor.constraint(equalTo: buttonContainerView.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
 
             buttonContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             buttonContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -150,17 +149,34 @@ public class DigitalInvoiceViewController: UIViewController {
 
             payButton.bottomAnchor.constraint(equalTo: buttonContainerView.bottomAnchor, constant: -24),
             payButton.centerXAnchor.constraint(equalTo: buttonContainerView.centerXAnchor),
-            payButton.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor, constant: 24),
+            payButton.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
             payButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 50),
 
-            totalLabel.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor, constant: 24),
             totalLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor, constant: 8),
             totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: totalValueLabel.leadingAnchor, constant: 8),
+            totalLabel.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
 
+            totalValueLabel.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
             totalValueLabel.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: -24),
-            totalValueLabel.trailingAnchor.constraint(equalTo: buttonContainerView.trailingAnchor, constant: -24),
             totalValueLabel.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor)
         ])
+
+        if UIDevice.current.isIpad {
+            NSLayoutConstraint.activate([
+                tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                tableView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7),
+
+
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+
+                totalLabel.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor, constant: 24),
+                totalValueLabel.trailingAnchor.constraint(equalTo: buttonContainerView.trailingAnchor, constant: -24),
+            ])
+        }
     }
 
     
