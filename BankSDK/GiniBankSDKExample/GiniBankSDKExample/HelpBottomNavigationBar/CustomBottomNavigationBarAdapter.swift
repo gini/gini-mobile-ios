@@ -7,15 +7,30 @@
 
 import UIKit
 import GiniCaptureSDK
+import GiniBankSDK
 
-final class CustomBottomNavigationBarAdapter: NoResultBottomNavigationBarAdapter, HelpBottomNavigationBarAdapter, ImagePickerBottomNavigationBarAdapter, ErrorBottomNavigationBarAdapter {
+/**
+The CustomBottomNavigationBarAdapter class is a composite adapter conforming to multiple adapter protocols for displaying a custom bottom navigation bar in various views. It also provides a back button callback functionality that can be customized to respond to user interaction.
+*/
+
+public final class CustomBottomNavigationBarAdapter: NoResultBottomNavigationBarAdapter, HelpBottomNavigationBarAdapter, ImagePickerBottomNavigationBarAdapter, ErrorBottomNavigationBarAdapter, DigitalInvoiceHelpNavigationBarBottomAdapter {
     private var backButtonCallback: (() -> Void)?
 
-    func setBackButtonClickedActionCallback(_ callback: @escaping () -> Void) {
+    /**
+     Sets the callback block to be executed when the back button on the custom navigation bar is clicked.
+
+     - Parameter callback: The block to be executed when the back button is clicked.
+     */
+    public func setBackButtonClickedActionCallback(_ callback: @escaping () -> Void) {
         backButtonCallback = callback
     }
 
-    func injectedView() -> UIView {
+    /**
+     Returns a CustomBottomNavigationBar instance to be used as the bottom navigation bar for the view.
+
+     - Returns: A CustomBottomNavigationBar instance.
+     */
+    public func injectedView() -> UIView {
         if let navigationBarView = CustomBottomNavigationBar().loadNib() as? CustomBottomNavigationBar {
             navigationBarView.backButton.addTarget(
                 self,
@@ -31,7 +46,11 @@ final class CustomBottomNavigationBarAdapter: NoResultBottomNavigationBarAdapter
         backButtonCallback?()
     }
 
-    func onDeinit() {
+    /**
+     Called when the CustomBottomNavigationBarAdapter object is deallocated.
+     */
+
+    public func onDeinit() {
         backButtonCallback = nil
     }
 }
