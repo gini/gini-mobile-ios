@@ -11,7 +11,6 @@ import GiniCaptureSDK
 protocol DigitalLineItemTableViewCellDelegate: AnyObject {
     func modeSwitchValueChanged(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemTableViewCellViewModel)
     func editTapped(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemTableViewCellViewModel)
-    func deleteTapped(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemTableViewCellViewModel)
 }
 
 class DigitalLineItemTableViewCell: UITableViewCell {
