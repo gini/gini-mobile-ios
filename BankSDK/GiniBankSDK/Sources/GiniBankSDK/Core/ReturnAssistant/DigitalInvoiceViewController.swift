@@ -56,7 +56,7 @@ public class DigitalInvoiceViewController: UIViewController {
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 16, right: 0)
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Constants.padding, right: 0)
         return tableView
     }()
 
@@ -139,42 +139,41 @@ public class DigitalInvoiceViewController: UIViewController {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.padding),
             tableView.bottomAnchor.constraint(equalTo: buttonContainerView.topAnchor),
 
             buttonContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             buttonContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             buttonContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            buttonContainerView.heightAnchor.constraint(equalToConstant: 160),
+            buttonContainerView.heightAnchor.constraint(equalToConstant: Constants.buttonContainerHeight),
 
-            payButton.bottomAnchor.constraint(equalTo: buttonContainerView.bottomAnchor, constant: -24),
+            payButton.bottomAnchor.constraint(equalTo: buttonContainerView.bottomAnchor, constant: -Constants.labelPadding),
             payButton.centerXAnchor.constraint(equalTo: buttonContainerView.centerXAnchor),
             payButton.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
-            payButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 50),
+            payButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.payButtonHeight),
 
-            totalLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor, constant: 8),
-            totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: totalValueLabel.leadingAnchor, constant: 8),
+            totalLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor, constant: Constants.padding),
+            totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: totalValueLabel.leadingAnchor, constant: Constants.padding),
             totalLabel.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
 
+            totalValueLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor, constant: Constants.padding),
             totalValueLabel.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
-            totalValueLabel.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: -24),
+            totalValueLabel.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: -Constants.labelPadding),
             totalValueLabel.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor)
         ])
 
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
                 tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                tableView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7),
-
-
+                tableView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: Constants.tabletWidthMultiplier),
             ])
         } else {
             NSLayoutConstraint.activate([
-                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding),
+                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.padding),
 
-                totalLabel.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor, constant: 24),
-                totalValueLabel.trailingAnchor.constraint(equalTo: buttonContainerView.trailingAnchor, constant: -24),
+                totalLabel.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor, constant: Constants.labelPadding),
+                totalValueLabel.trailingAnchor.constraint(equalTo: buttonContainerView.trailingAnchor, constant: -Constants.labelPadding),
             ])
         }
     }
@@ -391,5 +390,15 @@ extension DigitalInvoiceViewController: LineItemDetailsViewControllerDelegate {
         }
 
         updateValues()
+    }
+}
+
+private extension DigitalInvoiceViewController {
+    enum Constants {
+        static let padding: CGFloat = 16
+        static let labelPadding: CGFloat = 24
+        static let tabletWidthMultiplier: CGFloat = 0.7
+        static let buttonContainerHeight: CGFloat = 160
+        static let payButtonHeight: CGFloat = 50
     }
 }
