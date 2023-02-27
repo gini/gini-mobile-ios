@@ -15,7 +15,7 @@ enum CameraStrings: LocalizableStringResource {
          mixedArraysPopupUsePhotosButton, mixedDocumentsErrorMessage, notAuthorizedButton,
          notAuthorizedMessage, photoLibraryAccessDeniedMessage, qrCodeDetectedPopupMessage, qrCodeDetectedPopupButton,
          popupTitleImportPDF, popupOptionPhotos, popupOptionFiles, popupTitleImportPDForPhotos, popupCancel,
-         unsupportedQrCodeDetectedPopupMessage, unknownErrorMessage, failedToOpenDocumentErrorMessage
+         unsupportedQrCodeDetectedPopupMessage, unknownErrorMessage, failedToOpenDocumentErrorMessage, multiplePdfErrorMessage, errorConfirmButton
     
     var tableName: String {
         return "camera"
@@ -79,7 +79,11 @@ enum CameraStrings: LocalizableStringResource {
         case .tooManyPagesErrorMessage:
             return ("documentValidationError.tooManyPages",
                     "Message text error shown in camera screen when a pdf length is higher than 10 pages" )
-
+        case .multiplePdfErrorMessage:
+            return ("filepicker.multiplePdfErrorMessage",
+                    "Error message when the user selects multiple PDFs")
+        case .errorConfirmButton:
+            return ("filepicker.errorPopup.confirmButton", "Ok button title")
         }
     }
     
