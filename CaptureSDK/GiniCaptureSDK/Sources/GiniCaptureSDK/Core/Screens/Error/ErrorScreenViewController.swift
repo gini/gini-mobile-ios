@@ -10,7 +10,6 @@ import UIKit
 class ErrorScreenViewController: UIViewController {
 
     var bottomNavigationBar: UIView?
-    var navigationBarBottomAdapter: ErrorBottomNavigationBarAdapter?
     private var giniConfiguration: GiniConfiguration
     lazy var errorHeader: IconHeader = {
         if let header = IconHeader().loadNib() as? IconHeader {
@@ -109,7 +108,6 @@ class ErrorScreenViewController: UIViewController {
         buttonsView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(buttonsView)
         configureButtons()
-        configureBottomNavigationBar()
         configureCustomTopNavigationBar()
         configureConstraints()
     }
@@ -136,7 +134,7 @@ class ErrorScreenViewController: UIViewController {
         errorContent.font = giniConfiguration.textStyleFonts[.body]
         errorContent.textColor = GiniColor(light: UIColor.GiniCapture.dark6, dark: UIColor.GiniCapture.dark7).uiColor()
     }
-    
+
     private func configureButtons() {
         buttonsView.enterButton.addTarget(
             viewModel,
@@ -150,43 +148,17 @@ class ErrorScreenViewController: UIViewController {
 
     private func configureCustomTopNavigationBar() {
         if giniConfiguration.bottomNavigationBarEnabled {
-            navigationItem.leftBarButtonItem = nil
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .cancel,
+                target: viewModel,
+                action: #selector(viewModel.didPressCancell))
+
             navigationItem.setHidesBackButton(true, animated: true)
         } else {
             navigationItem.leftBarButtonItem = UIBarButtonItem(
                 barButtonSystemItem: .cancel,
                 target: viewModel,
                 action: #selector(viewModel.didPressCancell))
-        }
-    }
-
-    private func configureBottomNavigationBar() {
-        if giniConfiguration.bottomNavigationBarEnabled {
-            if let bottomBarAdapter = giniConfiguration.errorNavigationBarBottomAdapter {
-                navigationBarBottomAdapter = bottomBarAdapter
-            } else {
-                navigationBarBottomAdapter = DefaultErrorBottomNavigationBarAdapter()
-            }
-
-            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
-
-                self?.viewModel.didPressCancell()
-                switch self?.documentType {
-                case .pdf:
-                    self?.dismiss(animated: true)
-                default:
-                    self?.navigationController?.popToRootViewController(animated: true)
-                }
-            }
-
-            if let adapter = navigationBarBottomAdapter {
-                let bottomBar =
-                    adapter.injectedView()
-                bottomNavigationBar = bottomBar
-                bottomBar.translatesAutoresizingMaskIntoConstraints = false
-                view.addSubview(bottomBar)
-                view.bringSubviewToFront(bottomBar)
-            }
         }
     }
 
@@ -274,7 +246,7 @@ class ErrorScreenViewController: UIViewController {
                                                        constant: -Constants.textContentMargin.rawValue),
                 errorContent.bottomAnchor.constraint(greaterThanOrEqualTo: scrollView.bottomAnchor),
                 buttonsView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                     constant:  GiniMargins.margin),
+                                                     constant: GiniMargins.margin),
                 buttonsView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor,
                                                       constant: -GiniMargins.margin)
             ])
