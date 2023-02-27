@@ -8,8 +8,6 @@
 import UIKit
 
 class ErrorScreenViewController: UIViewController {
-
-    var bottomNavigationBar: UIView?
     private var giniConfiguration: GiniConfiguration
     lazy var errorHeader: IconHeader = {
         if let header = IconHeader().loadNib() as? IconHeader {
@@ -170,22 +168,6 @@ class ErrorScreenViewController: UIViewController {
         }
     }
 
-    private func configureBottomBarConstraints() {
-        guard let bottomNavigationBar = bottomNavigationBar else {
-            return
-        }
-        NSLayoutConstraint.activate([
-            buttonsView.bottomAnchor.constraint(
-                equalTo: bottomNavigationBar.topAnchor,
-                constant: -GiniMargins.margin
-            ),
-            bottomNavigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            bottomNavigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            bottomNavigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomNavigationBar.heightAnchor.constraint(equalToConstant: bottomNavigationBar.frame.height)
-        ])
-    }
-
     private func configureConstraints() {
         errorHeader.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
         errorHeader.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
@@ -196,15 +178,7 @@ class ErrorScreenViewController: UIViewController {
         let buttonsConstraint =  buttonsView.heightAnchor.constraint(
             greaterThanOrEqualToConstant: getButtonsMinHeight(numberOfButtons: numberOfButtons)
         )
-        if giniConfiguration.bottomNavigationBarEnabled == false {
-            NSLayoutConstraint.activate([
-            buttonsView.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                constant: -GiniMargins.margin)
-            ])
-        } else {
-            configureBottomBarConstraints()
-        }
+
         buttonsHeightConstraint = buttonsConstraint
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: errorHeader.bottomAnchor),
@@ -221,7 +195,9 @@ class ErrorScreenViewController: UIViewController {
                 lessThanOrEqualToConstant: Constants.errorHeaderMaxHeight.rawValue),
             errorContent.topAnchor.constraint(equalTo: scrollView.topAnchor,
                                               constant: Constants.errorContentBottomMargin.rawValue),
-            buttonsConstraint
+            buttonsConstraint,
+            buttonsView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                constant: -GiniMargins.margin)
         ])
         configureHorizontalConstraints()
         view.layoutSubviews()
