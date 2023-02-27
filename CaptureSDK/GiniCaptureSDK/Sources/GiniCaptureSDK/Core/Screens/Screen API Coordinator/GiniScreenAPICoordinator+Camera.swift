@@ -221,7 +221,7 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
 
                 if let error = error as? FilePickerError {
                     switch error {
-                    case .maxFilesPickedCountExceeded, .mixedDocumentsUnsupported:
+                    case .maxFilesPickedCountExceeded, .mixedDocumentsUnsupported, .multiplePdfsUnsupported:
                         if self.pages.isNotEmpty {
                             positiveAction = {
                                 coordinator.dismissCurrentPicker {
@@ -272,6 +272,13 @@ extension GiniScreenAPICoordinator {
             completion(.failure(FilePickerError.mixedDocumentsUnsupported))
             return
         }
+
+        guard (documents.filter({ $0.type == .pdf }) +
+               pages.map({ $0.document }).filter({ $0.type == .pdf })).count <= 1 else {
+            completion(.failure(FilePickerError.multiplePdfsUnsupported))
+            return
+        }
+
         guard (documents.count + pages.count) <= GiniCaptureDocumentValidator.maxPagesCount else {
             completion(.failure(FilePickerError.maxFilesPickedCountExceeded))
             return
