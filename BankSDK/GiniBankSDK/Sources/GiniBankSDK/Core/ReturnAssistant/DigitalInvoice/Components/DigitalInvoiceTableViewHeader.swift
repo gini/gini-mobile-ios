@@ -14,7 +14,7 @@ class DigitalInvoiceTableViewTitleCell: UITableViewCell {
         titleLabel.font = GiniBankConfiguration.shared.textStyleFonts[.caption1]
         titleLabel.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.title",
                                                                    comment: "Articles").uppercased()
-        titleLabel.textColor = GiniColor(light: .GiniBank.dark7, dark: .GiniBank.light1).uiColor()
+        titleLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.adjustsFontForContentSizeCategory = true
         return titleLabel
@@ -34,6 +34,7 @@ class DigitalInvoiceTableViewTitleCell: UITableViewCell {
 
     private func setup() {
         backgroundColor = .clear
+        selectionStyle = .none
 
         contentView.addSubview(titleLabel)
 
