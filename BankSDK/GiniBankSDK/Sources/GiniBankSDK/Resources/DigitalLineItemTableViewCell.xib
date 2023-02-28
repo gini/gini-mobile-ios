@@ -59,7 +59,7 @@
                                         <constraint firstAttribute="height" constant="1" id="w1f-up-Wj9"/>
                                     </constraints>
                                 </view>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" placeholderIntrinsicWidth="82" placeholderIntrinsicHeight="21" text="76 per unit" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gxv-Uq-3b2" userLabel="Unit Price Label">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" placeholderIntrinsicWidth="82" placeholderIntrinsicHeight="21" text="76 per unit" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gxv-Uq-3b2" userLabel="Unit Price Label">
                                     <rect key="frame" x="81" y="112" width="82" height="21"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                     <nil key="textColor"/>
