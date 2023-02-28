@@ -43,7 +43,7 @@ final class HelpImportViewController: UIViewController, HelpBottomBarEnabledView
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: GiniMargins.margin, right: 0)
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: GiniMargins.margin * 2, right: 0)
     }
 
     private func setupView() {
@@ -86,8 +86,9 @@ final class HelpImportViewController: UIViewController, HelpBottomBarEnabledView
     }
 
     private func configureConstraints() {
-        if giniConfiguration.bottomNavigationBarEnabled == false {
-            NSLayoutConstraint.activate([tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
+        if !giniConfiguration.bottomNavigationBarEnabled {
+            NSLayoutConstraint.activate([
+                tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)])
         }
         view.addConstraints([
             tableView.topAnchor.constraint(equalTo: view.topAnchor)
