@@ -23,10 +23,10 @@ jobs:
 
       - name: Setup provisioning profile
         env:
-          BUILD_CERTIFICATE_BASE64: ${{ secrets.GINI_DISTRIBUTION_UNIVERSAL_CERTIFICATE }}
-          P12_PASSWORD: ${{ secrets.IOS_CERTS_SECRET }}
-          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.GINI_BANK_SDK_EXAMPLE_PROVISION_PROFILE }}
-          KEYCHAIN_PASSWORD: ${{ secrets.IOS_CERTS_SECRET }}
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE }}
+          P12_PASSWORD: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE_SECRET }}
+          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.GINI_BANK_SDK_EXAMPLE_ADHOC_DISTRIBUTION_PROVISION_PROFILE }}
+          KEYCHAIN_PASSWORD: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE_SECRET }}
         run: |
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
           PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
@@ -61,9 +61,9 @@ jobs:
           options: >
             { 
               "project_path": "BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj",
-              "team_id": "BQY9KX4V88",
-              "bundle_identifier": "net.gini.ginipaybank.Example-Swift",
-              "profile_name": "Bank SDK Example Distribution", 
+              "team_id": "JA825X8F7Z",
+              "bundle_identifier": "net.gini.banksdk.example",
+              "profile_name": "Gini Bank SDK Example App Ad-Hoc Distribution", 
               "entitlements_file_path": "GiniBankSDKExample/Example Swift.entitlements", 
               "ci": "true"
             }   
@@ -80,7 +80,7 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             ONLY_ACTIVE_ARCH=NO \
             CODE_SIGN_STYLE=Manual \
-            DEVELOPMENT_TEAM=BQY9KX4V88
+            DEVELOPMENT_TEAM=JA825X8F7Z
     
       - name: Exporting .ipa
         run: |
