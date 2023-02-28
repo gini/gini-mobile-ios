@@ -141,7 +141,6 @@ public class DigitalInvoiceViewController: UIViewController {
 
             totalLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor, constant: Constants.padding),
             totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: totalValueLabel.leadingAnchor, constant: Constants.padding),
-            totalLabel.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
 
             totalValueLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor, constant: Constants.padding),
             totalValueLabel.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
@@ -153,14 +152,14 @@ public class DigitalInvoiceViewController: UIViewController {
             NSLayoutConstraint.activate([
                 tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 tableView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: Constants.tabletWidthMultiplier),
+                totalLabel.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
             ])
         } else {
             NSLayoutConstraint.activate([
                 tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding),
                 tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.padding),
 
-                totalLabel.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor, constant: Constants.labelPadding),
-                totalValueLabel.trailingAnchor.constraint(equalTo: buttonContainerView.trailingAnchor, constant: -Constants.labelPadding),
+                totalLabel.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor, constant: Constants.labelPadding)
             ])
         }
     }
