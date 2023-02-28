@@ -95,6 +95,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             viewModel: cameraButtonsViewModel
         )
         cameraViewController.delegate = self
+        documentPickerCoordinator.setupDragAndDrop(in: cameraViewController.view)
         cameraViewController.title = .localized(resource: NavigationBarStrings.cameraTitle)
         cameraButtonsViewModel.backButtonAction = { [weak cameraViewController, weak self] in
             if let strongSelf = self, strongSelf.pages.count > 0 {
