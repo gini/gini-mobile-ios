@@ -777,14 +777,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BQY9KX4V88;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
 				INFOPLIST_FILE = GiniBankSDKExampleBank/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.gini.ginipaybank.Bank.Bank;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.banksdk.example.bank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -797,14 +797,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BQY9KX4V88;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
 				INFOPLIST_FILE = GiniBankSDKExampleBank/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.gini.ginipaybank.Bank.Bank;
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.banksdk.example.bank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -945,14 +945,14 @@
 				CODE_SIGN_ENTITLEMENTS = "GiniBankSDKExample/Example Swift.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BQY9KX4V88;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
 				INFOPLIST_FILE = GiniBankSDKExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "net.gini.ginipaybank.Example-Swift";
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.banksdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -968,14 +968,14 @@
 				CODE_SIGN_ENTITLEMENTS = "GiniBankSDKExample/Example Swift.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BQY9KX4V88;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
 				INFOPLIST_FILE = GiniBankSDKExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "net.gini.ginipaybank.Example-Swift";
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.banksdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -988,7 +988,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BQY9KX4V88;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
 				INFOPLIST_FILE = Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -996,7 +996,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "net.gini.ginipaybank.Example-Tests";
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.banksdk.example.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1009,7 +1009,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BQY9KX4V88;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
 				INFOPLIST_FILE = Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1017,7 +1017,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "net.gini.ginipaybank.Example-Tests";
+				PRODUCT_BUNDLE_IDENTIFIER = net.gini.banksdk.example.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
