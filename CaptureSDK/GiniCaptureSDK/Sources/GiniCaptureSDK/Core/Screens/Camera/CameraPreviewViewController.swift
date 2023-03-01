@@ -143,6 +143,14 @@ final class CameraPreviewViewController: UIViewController {
         setupConstraints()
     }
 
+    private lazy var cameraFrameViewHeightAnchorPortrait =
+                        cameraFrameView.heightAnchor.constraint(equalTo: cameraFrameView.widthAnchor,
+                                                                multiplier: Constants.a4AspectRatio)
+
+    private lazy var cameraFrameViewHeightAnchorLandscape =
+                        cameraFrameView.heightAnchor.constraint(equalTo: cameraFrameView.widthAnchor,
+                                                                multiplier: 1 / Constants.a4AspectRatio)
+
     private func setupConstraints() {
         cameraFrameView.translatesAutoresizingMaskIntoConstraints = false
         qrCodeFrameView.translatesAutoresizingMaskIntoConstraints = false
@@ -155,8 +163,9 @@ final class CameraPreviewViewController: UIViewController {
                                                          constant: Constants.padding),
                 cameraFrameView.centerXAnchor.constraint(equalTo: view.centerXAnchor,
                                                          constant: -Constants.cameraPaneWidth/2),
-                cameraFrameView.heightAnchor.constraint(equalTo: cameraFrameView.widthAnchor,
-                                                        multiplier: Constants.a4AspectRatio)])
+                cameraFrameViewHeightAnchorPortrait])
+
+            updateFrameOrientation()
         } else {
             // The height of the bottom controls
             let bottomControlHeight = view.frame.height * 0.23 +
@@ -195,9 +204,26 @@ final class CameraPreviewViewController: UIViewController {
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
+        updateFrameOrientation()
         coordinator.animate(alongsideTransition: { [weak self] _ in
             self?.updatePreviewViewOrientation()
         })
+    }
+
+    private func updateFrameOrientation() {
+        if UIDevice.current.isIpad {
+            cameraFrameViewHeightAnchorPortrait.isActive = !UIDevice.current.orientation.isLandscape
+            cameraFrameViewHeightAnchorLandscape.isActive = UIDevice.current.orientation.isLandscape
+
+            if let image = cameraFrameView.image?.cgImage {
+                if UIDevice.current.orientation.isLandscape {
+                    cameraFrameView.image = UIImage(cgImage: image, scale: 1.0, orientation: .left)
+                } else {
+                    cameraFrameView.image = UIImage(cgImage: image, scale: 1.0, orientation: .up)
+                }
+
+            }
+        }
     }
     
     public override func viewWillLayoutSubviews() {
