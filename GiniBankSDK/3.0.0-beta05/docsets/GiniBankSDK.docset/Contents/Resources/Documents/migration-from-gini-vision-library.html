@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Migration from Gini Vision Library  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+    <script src="js/lunr.min.js" defer></script>
+    <script src="js/typeahead.jquery.js" defer></script>
+    <script src="js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+
+    <a title="Migration from Gini Vision Library  Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="index.html">
+        <img class="logo-icon" src="img/logo.png"/>
+    
+        </a>
+        
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/gini/gini-mobile-ios.git">
+            <img class="header-icon" src="img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="index.html">GiniBankSDK Reference</a>
+      <img class="carat" src="img/carat.png" />
+      Migration from Gini Vision Library  Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Documentation.html">Documentation</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="installation.html">Installation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="features.html">Features</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="integration.html">Integration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="license.html">License</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Guides.html">Other Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="customization-guide.html">Customization guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="error-logging-guide.html">Error logging guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="event-tracking-guide.html">Event tracking guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="import-pdfs-and-images-guide.html">Import PDFs and images guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="migration-from-gini-pay-bank-sdk.html">Migration from Gini Pay Bank SDK</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="migration-from-gini-vision-library.html">Migration from Gini Vision Library</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="migration-to-version-3xx.html">Migration to version 3.x.x</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="open-with-guide.html">Open with guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="qr-code-scanning-guide.html">QR Code scanning guide</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DigitalInvoiceViewController.html">DigitalInvoiceViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniBank.html">GiniBank</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniBankConfiguration.html">GiniBankConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniBankNetworkingScreenApiCoordinator.html">GiniBankNetworkingScreenApiCoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/ReturnAssistantConfiguration.html">ReturnAssistantConfiguration</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Global Variables.html">Other Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Global%20Variables.html#/s:11GiniBankSDK0aB10SDKVersionSSvp">GiniBankSDKVersion</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Enumerations.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/GiniBankError.html">GiniBankError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UIFont.html">UIFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UIFont/TextStyle.html">– TextStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UITextField.html">UITextField</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Functions.html">Other Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Functions.html#/s:11GiniBankSDK23receivePaymentRequestId3url10completiony10Foundation3URLV_ys6ResultOySSAA0aB5ErrorOGctF">receivePaymentRequestId(url:completion:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/DigitalInvoiceHelpNavigationBarBottomAdapter.html">DigitalInvoiceHelpNavigationBarBottomAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/DigitalInvoiceOnboardingNavigationBarBottomAdapter.html">DigitalInvoiceOnboardingNavigationBarBottomAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/DigitalInvoiceViewControllerDelegate.html">DigitalInvoiceViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Protocols.html#/s:11GiniBankSDK0aB16AnalysisDelegateP">GiniBankAnalysisDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Structures.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/DigitalInvoice.html">DigitalInvoice</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/PaymentInfo.html">PaymentInfo</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            
+            <h2 id='using-swift-package-manager-instead-of-cocoapods' class='heading'>Using Swift Package Manager instead of Cocoapods</h2>
+
+<p>The <a href="https://swift.org/package-manager/">Swift Package Manager</a>  is a tool for managing the distribution of Swift code.
+Once you have your Swift package set up, adding <code>GiniBankSDK</code> as a dependency is as easy as adding it to the dependencies value of your <code>Package.swift</code></p>
+<pre class="highlight plaintext"><code>dependencies: [
+    .package(url: "https://github.com/gini/bank-sdk-ios.git", .exact("1.0.0"))
+]
+</code></pre>
+
+<p><strong>Note: Availible from iOS 12</strong>
+In case that you want to use the certificate pinning in the library, add <code>GiniBankSDKPinning</code>:</p>
+<pre class="highlight plaintext"><code>dependencies: [
+    .package(url: "https://github.com/gini/bank-sdk-pinning-ios.git", .exact("1.0.0"))
+]
+</code></pre>
+<h1 id='migrate-from-gini-vision-library-to-gini-bank-sdk' class='heading'>Migrate from Gini Vision Library to Gini Bank SDK</h1>
+<h2 id='gini-capture-sdk' class='heading'>Gini Capture SDK</h2>
+
+<p>The <a href="https://github.com/gini/gini-capture-sdk-ios">Gini Capture SDK</a> provides components for capturing, reviewing and analyzing photos of invoices and remittance slips. 
+The Gini Capture SDK (<code>GiniCapture</code>) will be used in place of the Gini Vision Library (<code>GiniVision</code>). 
+The Gini Capture SDK used by the Gini Pay Bank SDK and therefore will be mentioned in the migration guide in a couple of places.</p>
+<h2 id='gini-bank-api-library' class='heading'>Gini Bank API Library</h2>
+
+<p>The <a href="https://github.com/gini/bank-api-library-ios">Gini Bank Api Library</a> (<code>GiniBankAPI</code>) provides ways to interact with the Gini Bank API and therefore, adds the possiblity to scan documents and extract information from them and support the payment functionality.
+The Gini Bank API Library will be used instead of the Gini iOS SDK.</p>
+<h2 id='configuration' class='heading'>Configuration</h2>
+
+<p>For customization the Gini Bank SDK uses <code><a href="Classes/GiniBankConfiguration.html">GiniBankConfiguration</a></code> class - extended version of <code>GiniConfiguration</code>. All settings from the <code>GiniConfiguration</code> are availible in <code><a href="Classes/GiniBankConfiguration.html">GiniBankConfiguration</a></code>.</p>
+<h2 id='screen-api' class='heading'>Screen API</h2>
+<h4 id='ui-with-networking-recommended' class='heading'>UI with Networking (Recommended)</h4>
+
+<p>In place of using <code>GiniVision</code>:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">GiniVision</span><span class="o">.</span><span class="nf">viewController</span><span class="p">(</span><span class="nv">withClient</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span>
+                                               <span class="nv">configuration</span><span class="p">:</span> <span class="n">giniConfiguration</span><span class="p">,</span>
+                                               <span class="nv">resultsDelegate</span><span class="p">:</span> <span class="n">resultsDelegate</span><span class="p">)</span>
+
+<span class="nf">present</span><span class="p">(</span><span class="n">viewController</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span><span class="kc">nil</span><span class="p">)</span>
+</code></pre>
+
+<p>Please use the snippet with <code><a href="Classes/GiniBank.html">GiniBank</a></code> method below:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">GiniBank</span><span class="o">.</span><span class="nf">viewController</span><span class="p">(</span><span class="nv">withClient</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span>
+                                               <span class="nv">configuration</span><span class="p">:</span> <span class="n">giniBankConfiguration</span><span class="p">,</span>
+                                               <span class="nv">resultsDelegate</span><span class="p">:</span> <span class="n">giniCaptureResultsDelegate</span><span class="p">)</span>
+
+<span class="nf">present</span><span class="p">(</span><span class="n">viewController</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+</code></pre>
+<h4 id='certificate-pinning' class='heading'>Certificate pinning</h4>
+
+<p>If you&rsquo;re using <em>Certificate pinning</em> and have the following lines in your code base:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">GiniVision</span><span class="o">.</span><span class="nf">viewController</span><span class="p">(</span><span class="nv">withClient</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span>
+                                               <span class="nv">configuration</span><span class="p">:</span> <span class="n">giniConfiguration</span><span class="p">,</span>
+                                               <span class="nv">resultsDelegate</span><span class="p">:</span> <span class="n">resultsDelegate</span><span class="p">,</span>
+                                               <span class="nv">publicKeyPinningConfig</span><span class="p">:</span> <span class="n">yourPublicPinningConfig</span><span class="p">,</span>
+                                               <span class="nv">documentMetadata</span><span class="p">:</span> <span class="n">documentMetadata</span><span class="p">,</span>
+                                               <span class="nv">api</span><span class="p">:</span> <span class="o">.</span><span class="n">accounting</span><span class="p">)</span>
+
+<span class="nf">present</span><span class="p">(</span><span class="n">viewController</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span><span class="kc">nil</span><span class="p">)</span>
+</code></pre>
+
+<p>It should now become:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">GiniBank</span><span class="o">.</span><span class="nf">viewController</span><span class="p">(</span><span class="nv">withClient</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span>
+                                               <span class="nv">configuration</span><span class="p">:</span> <span class="n">giniBankConfiguration</span><span class="p">,</span>
+                                               <span class="nv">resultsDelegate</span><span class="p">:</span> <span class="n">giniCaptureResultsDelegate</span><span class="p">,</span>
+                                               <span class="nv">publicKeyPinningConfig</span><span class="p">:</span> <span class="n">yourPublicPinningConfig</span><span class="p">,</span>
+                                               <span class="nv">documentMetadata</span><span class="p">:</span> <span class="n">documentMetadata</span><span class="p">,</span>
+                                               <span class="nv">api</span><span class="p">:</span> <span class="o">.</span><span class="k">default</span><span class="p">)</span>
+
+<span class="nf">present</span><span class="p">(</span><span class="n">viewController</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span><span class="kc">nil</span><span class="p">)</span>
+</code></pre>
+<h4 id='only-ui' class='heading'>Only UI</h4>
+
+<p>For using only the UI and the handling the analysis processes either was used <a href="https://github.com/gini/gini-ios">Gini API SDK</a> or your own implementation of the <a href="https://developer.gini.net/gini-api/html/index.html">Gini API</a>. The <code>UIViewController</code> initialization was following:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">GiniVision</span><span class="o">.</span><span class="nf">viewController</span><span class="p">(</span><span class="nv">withDelegate</span><span class="p">:</span> <span class="k">self</span><span class="p">,</span>
+                                               <span class="nv">withConfiguration</span><span class="p">:</span> <span class="n">giniConfiguration</span><span class="p">)</span>
+
+<span class="nf">present</span><span class="p">(</span><span class="n">viewController</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+</code></pre>
+
+<p>Now to handle all the analysis processes you should use the new <a href="https://github.com/gini/bank-api-library-ios">Gini Bank API Library</a> or your own implementation of the new <a href="https://bank-api.gini.net/documentation/#gini-bank-api-documentation-v1-0">Gini Bank API</a> and just get the <code>UIViewController</code> as follows:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">GiniBank</span><span class="o">.</span><span class="nf">viewController</span><span class="p">(</span><span class="nv">withDelegate</span><span class="p">:</span> <span class="k">self</span><span class="p">,</span>
+                                               <span class="nv">withConfiguration</span><span class="p">:</span> <span class="n">giniBankConfiguration</span><span class="p">)</span>
+
+<span class="nf">present</span><span class="p">(</span><span class="n">viewController</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+</code></pre>
+<h2 id='component-api' class='heading'>Component API</h2>
+
+<p>The Component API provides a custom <code>UIViewController</code> for each screen. For example :</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">giniConfiguration</span> <span class="o">=</span> <span class="kt">GiniConfiguration</span><span class="p">()</span>
+<span class="o">.</span>
+<span class="o">.</span>
+<span class="o">.</span>
+<span class="k">let</span> <span class="nv">cameraScreen</span> <span class="o">=</span> <span class="kt">CameraViewController</span><span class="p">(</span><span class="nv">giniConfiguration</span><span class="p">:</span> <span class="n">giniConfiguration</span><span class="p">)</span>
+<span class="n">cameraScreen</span><span class="p">?</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="k">self</span>
+<span class="nf">present</span><span class="p">(</span><span class="n">cameraScreen</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+</code></pre>
+
+<p>Now alternately of using <code>GiniConfiguration</code> in the Gini Bank SDK was introduced <code><a href="Classes/GiniBankConfiguration.html">GiniBankConfiguration</a></code>.
+The configuration for <code>GiniCapture</code> should be set explicitly as it&rsquo;s shown below:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">giniBankConfiguration</span> <span class="o">=</span> <span class="kt">GiniBankConfiguration</span><span class="p">()</span>
+<span class="o">.</span>
+<span class="o">.</span>
+<span class="o">.</span>
+<span class="k">let</span> <span class="nv">cameraScreen</span> <span class="o">=</span> <span class="kt">CameraViewController</span><span class="p">(</span><span class="nv">giniConfiguration</span><span class="p">:</span> <span class="n">giniBankConfiguration</span><span class="o">.</span><span class="nf">captureConfiguration</span><span class="p">())</span>
+<span class="kt">GiniCapture</span><span class="o">.</span><span class="nf">setConfiguration</span><span class="p">(</span><span class="n">giniBankConfiguration</span><span class="o">.</span><span class="nf">captureConfiguration</span><span class="p">())</span>
+</code></pre>
+<h2 id='open-with' class='heading'>Open With</h2>
+
+<p>In order to define that the file opened is valid (correct size, correct type and number of pages below the threshold on PDFs), it is necessary to validate it before using it. Previously you&rsquo;ve could validate the file:</p>
+<pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="n">_</span> <span class="nv">app</span><span class="p">:</span> <span class="kt">UIApplication</span><span class="p">,</span>
+                 <span class="kd">open</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span>
+                 <span class="nv">options</span><span class="p">:</span> <span class="p">[</span><span class="kt">UIApplicationOpenURLOptionsKey</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[:])</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="p">{</span>
+
+        <span class="c1">// 1. Build the document</span>
+        <span class="k">let</span> <span class="nv">documentBuilder</span> <span class="o">=</span> <span class="kt">GiniVisionDocumentBuilder</span><span class="p">(</span><span class="nv">documentSource</span><span class="p">:</span> <span class="o">.</span><span class="nf">appName</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="n">sourceApplication</span><span class="p">))</span>
+        <span class="n">documentBuilder</span><span class="o">.</span><span class="n">importMethod</span> <span class="o">=</span> <span class="o">.</span><span class="n">openWith</span>
+
+        <span class="n">documentBuilder</span><span class="o">.</span><span class="nf">build</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="n">document</span><span class="p">)</span> <span class="k">in</span>
+
+            <span class="k">guard</span> <span class="k">let</span> <span class="nv">self</span> <span class="o">=</span> <span class="k">self</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="p">}</span>
+
+            <span class="c1">// 2. Validate the document</span>
+            <span class="k">if</span> <span class="k">let</span> <span class="nv">document</span> <span class="o">=</span> <span class="n">document</span> <span class="p">{</span>
+                <span class="k">do</span> <span class="p">{</span>
+                    <span class="k">try</span> <span class="kt">GiniVision</span><span class="o">.</span><span class="nf">validate</span><span class="p">(</span><span class="n">document</span><span class="p">,</span>
+                                            <span class="nv">withConfig</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">giniConfiguration</span><span class="p">)</span>
+                    <span class="c1">// Load the GiniVision with the validated document</span>
+                <span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
+                    <span class="c1">// Show an error pointing out that the document is invalid</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="kc">true</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Now, using the Gini Bank SDK your code should be similar to:</p>
+<pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="n">_</span> <span class="nv">app</span><span class="p">:</span> <span class="kt">UIApplication</span><span class="p">,</span>
+                 <span class="kd">open</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span>
+                 <span class="nv">options</span><span class="p">:</span> <span class="p">[</span><span class="kt">UIApplicationOpenURLOptionsKey</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[:])</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="p">{</span>            
+
+        <span class="c1">// 1. Build the document</span>
+        <span class="k">let</span> <span class="nv">documentBuilder</span> <span class="o">=</span> <span class="kt">GiniCaptureDocumentBuilder</span><span class="p">(</span><span class="nv">documentSource</span><span class="p">:</span> <span class="o">.</span><span class="nf">appName</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="n">sourceApplication</span><span class="p">))</span>
+        <span class="n">documentBuilder</span><span class="o">.</span><span class="n">importMethod</span> <span class="o">=</span> <span class="o">.</span><span class="n">openWith</span>
+
+        <span class="n">documentBuilder</span><span class="o">.</span><span class="nf">build</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="n">document</span><span class="p">)</span> <span class="k">in</span>
+
+            <span class="k">guard</span> <span class="k">let</span> <span class="nv">self</span> <span class="o">=</span> <span class="k">self</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="p">}</span>
+
+            <span class="c1">// 2. Validate the document</span>
+            <span class="k">if</span> <span class="k">let</span> <span class="nv">document</span> <span class="o">=</span> <span class="n">document</span> <span class="p">{</span>
+                <span class="k">do</span> <span class="p">{</span>
+                    <span class="k">try</span> <span class="kt">GiniCapture</span><span class="o">.</span><span class="nf">validate</span><span class="p">(</span><span class="n">document</span><span class="p">,</span>
+                                             <span class="nv">withConfig</span><span class="p">:</span> <span class="n">giniBankConfiguration</span><span class="o">.</span><span class="nf">captureConfiguration</span><span class="p">())</span>
+                    <span class="c1">// Load the GiniCapture with the validated document</span>
+                <span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
+                    <span class="c1">// Show an error pointing out that the document is invalid</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="kc">true</span>
+<span class="p">}</span>
+</code></pre>
+<h2 id='event-tracking' class='heading'>Event Tracking</h2>
+
+<p>The version 5.2 of Gini Vision Library has introduces the ability to track user events. For receiving the events, you&rsquo;ve implemented the <code>GiniVisionTrackingDelegate</code> protocol and supplied the delegate when initializing GVL. For example:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">GiniVision</span><span class="o">.</span><span class="nf">viewController</span><span class="p">(</span><span class="nv">withClient</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span>
+                                               <span class="nv">importedDocuments</span><span class="p">:</span> <span class="n">visionDocuments</span><span class="p">,</span>
+                                               <span class="nv">configuration</span><span class="p">:</span> <span class="n">visionConfiguration</span><span class="p">,</span>
+                                               <span class="nv">resultsDelegate</span><span class="p">:</span> <span class="k">self</span><span class="p">,</span>
+                                               <span class="nv">documentMetadata</span><span class="p">:</span> <span class="n">documentMetadata</span><span class="p">,</span>
+                                               <span class="nv">trackingDelegate</span><span class="p">:</span> <span class="n">trackingDelegate</span><span class="p">)</span>
+
+<span class="c1">// Or when not using the default network implementation pod GiniVision/Networking:</span>
+<span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">GiniVision</span><span class="o">.</span><span class="nf">viewController</span><span class="p">(</span><span class="nv">withDelegate</span><span class="p">:</span> <span class="k">self</span><span class="p">,</span>
+                                               <span class="nv">withConfiguration</span><span class="p">:</span> <span class="n">visionConfiguration</span><span class="p">,</span>
+                                               <span class="nv">importedDocument</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span>
+                                               <span class="nv">trackingDelegate</span><span class="p">:</span> <span class="n">trackingDelegate</span><span class="p">)</span>
+</code></pre>
+
+<p>For receiving the events with the Gini Bank SDK, you need to import <code>GiniCapture</code> and implement the <code>GiniCaptureTrackingDelegate</code> protocol and supply the delegate when initializing <code><a href="Classes/GiniBank.html">GiniBank</a></code> like it&rsquo;s shown below:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">GiniBank</span><span class="o">.</span><span class="nf">viewController</span><span class="p">(</span><span class="nv">withClient</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span>
+                                               <span class="nv">importedDocuments</span><span class="p">:</span> <span class="n">captureDocuments</span><span class="p">,</span>
+                                               <span class="nv">configuration</span><span class="p">:</span> <span class="n">giniBankConfiguration</span><span class="p">,</span>
+                                               <span class="nv">resultsDelegate</span><span class="p">:</span> <span class="k">self</span><span class="p">,</span>
+                                               <span class="nv">documentMetadata</span><span class="p">:</span> <span class="n">documentMetadata</span><span class="p">,</span>
+                                               <span class="nv">trackingDelegate</span><span class="p">:</span> <span class="n">trackingDelegate</span><span class="p">)</span>
+
+<span class="c1">// Or when not using the default network:</span>
+<span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">GiniBank</span><span class="o">.</span><span class="nf">viewController</span><span class="p">(</span><span class="nv">withDelegate</span><span class="p">:</span> <span class="k">self</span><span class="p">,</span>
+                                               <span class="nv">withConfiguration</span><span class="p">:</span> <span class="n">giniBankConfiguration</span><span class="p">,</span>
+                                               <span class="nv">importedDocument</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span>
+                                               <span class="nv">trackingDelegate</span><span class="p">:</span> <span class="n">trackingDelegate</span><span class="p">)</span>
+</code></pre>
+<h2 id='customization' class='heading'>Customization</h2>
+
+<p>The Gini Vision Library components were customized either through the <code>GiniConfiguration</code>, the <code>Localizable.strings</code> file or through the assets.
+Тhe Gini Bank SDK components are customizable either through the <code><a href="Classes/GiniBankConfiguration.html">GiniBankConfiguration</a></code>, the <code>Localizable.strings</code> file or through the assets. The main change for Localizable.strings is that instead of the <code>ginivision</code> prefix for keys now used <code>ginicapture</code>. The names for images in the assets have stayed the same as before.</p>
+
+          </div>
+        </section>
+
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2023 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2023-03-01)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
