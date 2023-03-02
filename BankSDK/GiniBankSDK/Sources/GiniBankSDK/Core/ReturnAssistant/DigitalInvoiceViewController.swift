@@ -90,6 +90,9 @@ public class DigitalInvoiceViewController: UIViewController {
     private let viewModel: DigitalInvoiceViewModel
     private let configuration = GiniBankConfiguration.shared
 
+    private var navigationBarBottomAdapter: DigitalInvoiceOverviewNavigationBarBottomAdapter?
+    private var bottomNavigationBar: UIView?
+
     init(viewModel: DigitalInvoiceViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -107,21 +110,36 @@ public class DigitalInvoiceViewController: UIViewController {
                                                                        comment: "Help")
         let cancelButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.cancelButtonTitle",
                                                                          comment: "Cancel")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: helpButtonTitle,
-                                                            style: .plain,
-                                                            target: self,
-                                                            action: #selector(helpButtonTapped(source:)))
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: cancelButtonTitle,
-                                                           style: .plain,
-                                                           target: self,
-                                                           action: #selector(closeReturnAssistantOverview))
+        if configuration.bottomNavigationBarEnabled {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: cancelButtonTitle,
+                                                               style: .plain,
+                                                               target: self,
+                                                               action: #selector(closeReturnAssistantOverview))
+
+            navigationItem.hidesBackButton = true
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: helpButtonTitle,
+                                                                style: .plain,
+                                                                target: self,
+                                                                action: #selector(helpButtonTapped(source:)))
+
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: cancelButtonTitle,
+                                                               style: .plain,
+                                                               target: self,
+                                                               action: #selector(closeReturnAssistantOverview))
+        }
+
+
+
         view.addSubview(tableView)
         view.addSubview(buttonContainerView)
 
         buttonContainerView.addSubview(payButton)
         buttonContainerView.addSubview(totalLabel)
         buttonContainerView.addSubview(totalValueLabel)
+
+        setupBottomNavigationBar()
     }
 
     private func setupConstraints() {
@@ -164,6 +182,43 @@ public class DigitalInvoiceViewController: UIViewController {
         }
     }
 
+    private func setupBottomNavigationBar() {
+        if configuration.bottomNavigationBarEnabled {
+            if let bottomBarAdapter = configuration.digitalInvoiceOverviewNavigationBarBottomAdapter {
+                navigationBarBottomAdapter = bottomBarAdapter
+            } else {
+                navigationBarBottomAdapter = DefaultDigitalInvoiceOverviewNavigationBarBottomAdapter()
+            }
+
+            navigationBarBottomAdapter?.setProceedButtonClickedActionCallback { [weak self] in
+                self?.payButtonTapped()
+            }
+
+            navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
+                self?.viewModel.didTapHelp()
+            }
+
+            if let navigationBar = navigationBarBottomAdapter?.injectedView() {
+                bottomNavigationBar = navigationBar
+                view.addSubview(navigationBar)
+                navigationBarBottomAdapter?.setupViewsRelated(to: tableView)
+
+                navigationBar.translatesAutoresizingMaskIntoConstraints = false
+
+                NSLayoutConstraint.activate([
+                    navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                    navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                    navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                    navigationBar.heightAnchor.constraint(equalToConstant: 160),
+                    navigationBar.topAnchor.constraint(equalTo: tableView.bottomAnchor)
+                ])
+            }
+
+            buttonContainerView.isHidden = true
+            updateValues()
+        }
+    }
+
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -183,14 +238,20 @@ public class DigitalInvoiceViewController: UIViewController {
 
     func updateValues() {
         tableView.reloadData()
-        totalValueLabel.text = viewModel.invoice?.total?.string
 
-        if viewModel.isPayButtonEnabled() {
-            payButton.isEnabled = true
-            payButton.configure(with: configuration.primaryButtonConfiguration)
+        if configuration.bottomNavigationBarEnabled {
+            navigationBarBottomAdapter?.updateTotalPrice(with: viewModel.invoice?.total?.string)
+            navigationBarBottomAdapter?.updateButtonState(enalbed: viewModel.isPayButtonEnabled())
         } else {
-            payButton.isEnabled = false
-            payButton.configure(with: configuration.secondaryButtonConfiguration)
+            totalValueLabel.text = viewModel.invoice?.total?.string
+
+            if viewModel.isPayButtonEnabled() {
+                payButton.isEnabled = true
+                payButton.configure(with: configuration.primaryButtonConfiguration)
+            } else {
+                payButton.isEnabled = false
+                payButton.configure(with: configuration.secondaryButtonConfiguration)
+            }
         }
     }
     
