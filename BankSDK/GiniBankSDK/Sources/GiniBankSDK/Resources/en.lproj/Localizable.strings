@@ -21,16 +21,11 @@
 "ginibank.help.menu.returnAssistant.backButton.title" = "Back";
 
 "ginibank.digitalinvoice.screentitle" = "Digital invoice";
-"ginibank.digitalinvoice.paybuttontitle.disabled" = "Pay";
+"ginibank.digitalinvoice.paybutton.title" = "Proceed";
 "ginibank.digitalinvoice.paybuttontitle.othercharges" = "Pay";
 "ginibank.digitalinvoice.paybuttontitle" = "Pay %d/%d";
 "ginibank.digitalinvoice.paybuttontitle.accessibilitylabel" = "Pay %d out of %d";
-
-"ginibank.digitalinvoice.warningleftbuttontitle" = "OK";
-"ginibank.digitalinvoice.warningrightbuttontitle" = "Skip";
-"ginibank.digitalinvoice.warningtoptitle" = "Info";
-"ginibank.digitalinvoice.warningmiddletext" = "This new feature may contain some bugs. Please double check the articles and the total amount. If necessay you can edit them.";
-"ginibank.digitalinvoice.warningbottomtext" = "If you don’t like to use this feature, you can simply skip it.";
+"ginibank.digitalinvoice.cancelButtonTitle" = "Cancel";
 
 "ginibank.digitalinvoice.skipbuttontitle" = "Skip feature";
 
@@ -56,8 +51,10 @@
 "ginibank.digitalinvoice.totalcaptionlabeltext" = "Total";
 "ginibank.digitalinvoice.totalexplanationlabeltext" = "Incl. shipping, discount and so on.";
 
+"ginibank.digitalinvoice.lineitem.title" = "Articles";
 "ginibank.digitalinvoice.lineitem.notitle" = "Additional";
 "ginibank.digitalinvoice.lineitem.savebutton" = "Save";
+"ginibank.digitalinvoice.lineitem.unitTitle" = "per unit";
 "ginibank.digitalinvoice.lineitem.itemnametextfieldtitle" = "Item Name";
 "ginibank.digitalinvoice.lineitem.quantitytextfieldtitle" = "Quantity";
 "ginibank.digitalinvoice.lineitem.pricetextfieldtitle" = "Item Price";
