@@ -23,7 +23,8 @@ extension UIFont.TextStyle: CaseIterable {
           .calloutBold,
           .footnote,
           .footnoteBold,
-          .title2Bold
+          .title2Bold,
+          .title1Bold
         ]
     }
 }

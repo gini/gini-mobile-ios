@@ -12,10 +12,11 @@ import GiniBankAPILibrary
 
 protocol Coordinator: AnyObject {
     var rootViewController: UIViewController { get }
+    var childCoordinators: [Coordinator] { get set }
 }
 
 open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, GiniCaptureDelegate {
-    
+    var childCoordinators: [Coordinator] = []
     
     // MARK: - GiniCaptureDelegate
     
@@ -241,16 +242,12 @@ extension GiniBankNetworkingScreenApiCoordinator {
     }
 
     public func showDigitalInvoiceScreen(digitalInvoice: DigitalInvoice, analysisDelegate: AnalysisDelegate) {
-        let digitalInvoiceViewController = DigitalInvoiceViewController()
-        digitalInvoiceViewController.returnAssistantConfiguration = giniBankConfiguration.returnAssistantConfiguration()
-        digitalInvoiceViewController.invoice = digitalInvoice
-        digitalInvoiceViewController.delegate = self
-        digitalInvoiceViewController.analysisDelegate = analysisDelegate
-        digitalInvoiceViewController.closeReturnAssistantBlock = {
-            self.resultsDelegate?.giniCaptureDidCancelAnalysis()
-        }
-
-        screenAPINavigationController.pushViewController(digitalInvoiceViewController, animated: true)
+        let coordinator = DigitalInvoiceCoordinator(navigationController: screenAPINavigationController,
+                                                    digitalInvoice: digitalInvoice,
+                                                    analysisDelegate: analysisDelegate)
+        coordinator.delegate = self
+        childCoordinators.append(coordinator)
+        coordinator.start()
     }
 
     public func startAnalysisWithReturnAssistant(networkDelegate: GiniCaptureNetworkDelegate) {
@@ -314,5 +311,17 @@ extension GiniBankNetworkingScreenApiCoordinator {
                 networkDelegate.displayError(errorType: ErrorType(error: error), animated: true)
             }
         })
+    }
+}
+
+extension GiniBankNetworkingScreenApiCoordinator: DigitalInvoiceCoordinatorDelegate {
+    func didFinishAnalysis(_ coordinator: DigitalInvoiceCoordinator, invoice: DigitalInvoice?, analysisDelegate: GiniCaptureSDK.AnalysisDelegate) {
+        guard let invoice = invoice else { return }
+        deliverWithReturnAssistant(result: invoice.extractionResult, analysisDelegate: analysisDelegate)
+    }
+
+    func didCancelAnalysis(_ coordinator: DigitalInvoiceCoordinator) {
+        childCoordinators = childCoordinators.filter { $0 !== coordinator }
+        resultsDelegate?.giniCaptureDidCancelAnalysis()
     }
 }
