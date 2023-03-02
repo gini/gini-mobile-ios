@@ -66,6 +66,8 @@ extension UIViewController {
                 confirmActionTitle = .localized(resource: CameraStrings.mixedArraysPopupUsePhotosButton)
             case .failedToOpenDocument:
                 break
+            case .multiplePdfsUnsupported:
+                confirmActionTitle = .localized(resource: CameraStrings.errorConfirmButton)
             }
         default:
             message = DocumentValidationError.unknown.message

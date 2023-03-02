@@ -136,29 +136,11 @@ The example implementation is available [here](https://github.com/gini/gini-mobi
 
 # No result screen customization
 
-You can show custom back navigation button on bottom navigation bar. You can pass your custom `NoResultBottomNavigationBarAdapter` implementation to
- `GiniBankConfiguration.shared.errorNavigationBarBottomAdapter`:
-
-``` swift
-     let customNoResultNavigationBarBottomAdapter = CustomNoResultBottomNavigationBarAdapter()
-
-     GiniBankConfiguration.shared.noResultNavigationBarBottomAdapter = customNoResultNavigationBarBottomAdapter
-```
-
 You can show your own UI if an error occured and the user chooses to enter details manually. For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
 
 The buttom "Retake images" will be shown only if you took or imported images.
 
 # Error screen customization
-
- You can show custom back navigation button on bottom navigation bar. You can pass your custom `ErrorBottomNavigationBarAdapter` implementation to
- `GiniBankConfiguration.shared.errorNavigationBarBottomAdapter`:
-
-``` swift
-     let customErrorNavigationBarBottomAdapter = CustomErrorNavigationBarBottomAdapter()
-
-     GiniBankConfiguration.shared.errorNavigationBarBottomAdapter = customErrorNavigationBarBottomAdapter
-```
 
 You can show your own UI if an error occured and the user chooses to enter details manually. For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
 
