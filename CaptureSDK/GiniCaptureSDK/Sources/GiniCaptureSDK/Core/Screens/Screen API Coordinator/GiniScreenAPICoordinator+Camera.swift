@@ -95,6 +95,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             viewModel: cameraButtonsViewModel
         )
         cameraViewController.delegate = self
+        documentPickerCoordinator.setupDragAndDrop(in: cameraViewController.view)
         cameraViewController.title = .localized(resource: NavigationBarStrings.cameraTitle)
         cameraButtonsViewModel.backButtonAction = { [weak cameraViewController, weak self] in
             if let strongSelf = self, strongSelf.pages.count > 0 {
@@ -221,7 +222,7 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
 
                 if let error = error as? FilePickerError {
                     switch error {
-                    case .maxFilesPickedCountExceeded, .mixedDocumentsUnsupported:
+                    case .maxFilesPickedCountExceeded, .mixedDocumentsUnsupported, .multiplePdfsUnsupported:
                         if self.pages.isNotEmpty {
                             positiveAction = {
                                 coordinator.dismissCurrentPicker {
@@ -272,6 +273,13 @@ extension GiniScreenAPICoordinator {
             completion(.failure(FilePickerError.mixedDocumentsUnsupported))
             return
         }
+
+        guard (documents.filter({ $0.type == .pdf }) +
+               pages.map({ $0.document }).filter({ $0.type == .pdf })).count <= 1 else {
+            completion(.failure(FilePickerError.multiplePdfsUnsupported))
+            return
+        }
+
         guard (documents.count + pages.count) <= GiniCaptureDocumentValidator.maxPagesCount else {
             completion(.failure(FilePickerError.maxFilesPickedCountExceeded))
             return
