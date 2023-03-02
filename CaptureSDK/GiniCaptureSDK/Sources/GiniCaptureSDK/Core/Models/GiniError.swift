@@ -75,6 +75,9 @@ public protocol GiniCaptureError: Error {
     
     /// Could not open the document (data could not be read or unsupported file type or some other issue)
     case failedToOpenDocument
+
+    /// MultiplePDFs unsupported
+    case multiplePdfsUnsupported
     
     public var message: String {
         switch self {
@@ -86,6 +89,8 @@ public protocol GiniCaptureError: Error {
             return .localized(resource: CameraStrings.mixedDocumentsErrorMessage)
         case .failedToOpenDocument:
             return .localized(resource: CameraStrings.failedToOpenDocumentErrorMessage)
+        case .multiplePdfsUnsupported:
+            return .localized(resource: CameraStrings.multiplePdfErrorMessage)
         }
     }
 }
