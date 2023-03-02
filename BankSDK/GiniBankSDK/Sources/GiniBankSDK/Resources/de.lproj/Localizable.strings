@@ -21,15 +21,11 @@
 "ginibank.help.menu.returnAssistant.backButton.title" = "Zurück";
 
 "ginibank.digitalinvoice.screentitle" = "Digitale Rechnung";
-"ginibank.digitalinvoice.paybuttontitle.disabled" = "Bezahlen";
+"ginibank.digitalinvoice.paybutton.title" = "Weiter";
 "ginibank.digitalinvoice.paybuttontitle.othercharges" = "Bezahlen";
 "ginibank.digitalinvoice.paybuttontitle" = "Bezahlen %d/%d";
 "ginibank.digitalinvoice.paybuttontitle.accessibilitylabel" = "Bezahlen %d von %d";
-"ginibank.digitalinvoice.warningleftbuttontitle" = "OK";
-"ginibank.digitalinvoice.warningrightbuttontitle" = "Überspringen";
-"ginibank.digitalinvoice.warningtoptitle" = "Info";
-"ginibank.digitalinvoice.warningmiddletext" = "Diese neue Funktion kann Fehler enthalten. Bitte überprüfe noch einmal die Artikel und den Gesamtbetrag und bearbeite diese gegebenenfalls. ";
-"ginibank.digitalinvoice.warningbottomtext" = "Du kannst die neue Funktion jederzeit überspringen.";
+"ginibank.digitalinvoice.cancelButtonTitle" = "Abbrechen";
 "ginibank.digitalinvoice.skipbuttontitle" = "Funktion überspringen";
 "ginibank.digitalinvoice.items" = "Artikel %d/%d";
 "ginibank.digitalinvoice.items.accessibilitylabel" = "%d von %d Artikel";
@@ -38,7 +34,7 @@
 "ginibank.digitalinvoice.checkmarkbutton.deselect.accessibilitylabel" = "Artikel abwählen";
 "ginibank.digitalinvoice.checkmarkbutton.select.accessibilitylabel" = "Artikel wählen";
 "ginibank.digitalinvoice.deselectreasonactionsheet.message" = "Der Grund der Rücksendung";
-"ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel" = "Cancel";
+"ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel" = "Abbrechen";
 "ginibank.digitalinvoice.headermessage.primary" = "Scan war erfolgreich!";
 "ginibank.digitalinvoice.headermessage.secondary" = "Du kannst nun die Artikel abwählen, die du zurückschicken willst.";
 "ginibank.digitalinvoice.total.addArticleButtonTitle" = "Artikel hinzufügen";
@@ -46,8 +42,10 @@
 "ginibank.digitalinvoice.footermessage" = "Bitte überprüfe vor der Zahlung, ob alles in Ordnung ist und füge eventuell fehlende Artikel hinzu.";
 "ginibank.digitalinvoice.totalcaptionlabeltext" = "Gesamt";
 "ginibank.digitalinvoice.totalexplanationlabeltext" = "Inkl. Versandkosten, Rabatt usw.";
+"ginibank.digitalinvoice.lineitem.title" = "Artikel";
 "ginibank.digitalinvoice.lineitem.notitle" = "Sonstiges";
 "ginibank.digitalinvoice.lineitem.savebutton" = "Speichern";
+"ginibank.digitalinvoice.lineitem.unitTitle" = "pro Stück";
 "ginibank.digitalinvoice.lineitem.itemnametextfieldtitle" = "Artikelname";
 "ginibank.digitalinvoice.lineitem.quantitytextfieldtitle" = "Anzahl";
 "ginibank.digitalinvoice.lineitem.pricetextfieldtitle" = "Artikelpreis";

@@ -57,4 +57,9 @@ extension UIButton {
             bringSubviewToFront(imageView)
         }
     }
+
+    func removeBlurEffect() {
+        let effectView = self.subviews.first(where: { $0 is UIVisualEffectView })
+        effectView?.removeFromSuperview()
+    }
 }

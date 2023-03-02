@@ -12,7 +12,7 @@ extension DigitalInvoice {
     
     struct LineItem {
         
-        enum SelectedState {
+        enum SelectedState: Equatable {
             case selected
             case deselected(reason: ReturnReason?)
         }

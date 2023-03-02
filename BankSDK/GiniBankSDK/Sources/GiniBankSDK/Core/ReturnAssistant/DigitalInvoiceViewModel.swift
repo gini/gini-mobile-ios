@@ -7,26 +7,47 @@
 
 import Foundation
 
-final class DigitalInvoiceViewModel {
-    func isPayButtonEnabled(total: Decimal) -> Bool {
-        return total > 0
-    }
-    
-    func payButtonTitle(
-        isEnabled: Bool = false,
-        numSelected: Int,
-        numTotal: Int
-    ) -> String {
+protocol DigitalInvoiceViewModelDelagate: AnyObject {
+    func didTapHelp(on viewModel: DigitalInvoiceViewModel)
+    func didTapCancel(on viewModel: DigitalInvoiceViewModel)
+    func didTapPay(on viewModel: DigitalInvoiceViewModel)
+    func didTapEdit(on viewModel: DigitalInvoiceViewModel, lineItemViewModel: DigitalLineItemTableViewCellViewModel)
+    func shouldShowDigitalInvoiceOnboarding(on viewModel: DigitalInvoiceViewModel)
+}
 
-        if isEnabled && numSelected != 0 {
-            return String.localizedStringWithFormat(
-                DigitalInvoiceStrings.payButtonTitle.localizedGiniBankFormat,
-                numSelected,
-                numTotal)
+final class DigitalInvoiceViewModel {
+    weak var delegate: DigitalInvoiceViewModelDelagate?
+    var invoice: DigitalInvoice?
+
+    init(invoice: DigitalInvoice?) {
+        self.invoice = invoice
+    }
+
+    func isPayButtonEnabled() -> Bool {
+        if let total = invoice?.total?.value {
+            return total > 0
         }
-        if numSelected == 0 {
-            return .ginibankLocalized(resource: DigitalInvoiceStrings.payButtonOtherCharges)
-        }
-        return .ginibankLocalized(resource: DigitalInvoiceStrings.disabledPayButtonTitle)
+        
+        return false
+    }
+
+    func didTapHelp() {
+        delegate?.didTapHelp(on: self)
+    }
+
+    func didTapCancel() {
+        delegate?.didTapCancel(on: self)
+    }
+
+    func didTapPay() {
+        delegate?.didTapPay(on: self)
+    }
+
+    func didTapEdit(on lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
+        delegate?.didTapEdit(on: self, lineItemViewModel: lineItemViewModel)
+    }
+
+    func shouldShowOnboarding() {
+        delegate?.shouldShowDigitalInvoiceOnboarding(on: self)
     }
 }
