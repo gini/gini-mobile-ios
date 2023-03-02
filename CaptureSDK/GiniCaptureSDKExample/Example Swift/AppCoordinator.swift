@@ -62,7 +62,6 @@ final class AppCoordinator: Coordinator {
 //        giniConfiguration.customNavigationController = navigationViewController
 
 //        giniConfiguration.noResultNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
-//        giniConfiguration.errorNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
 //        giniConfiguration.helpNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
 //        giniConfiguration.imagePickerNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
 //        giniConfiguration.reviewNavigationBarBottomAdapter = CustomReviewScreenBottomNavigationBarAdapter()

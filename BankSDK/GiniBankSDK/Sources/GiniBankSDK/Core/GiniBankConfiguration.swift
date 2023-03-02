@@ -210,11 +210,6 @@ public final class GiniBankConfiguration: NSObject {
     public var noResultNavigationBarBottomAdapter: NoResultBottomNavigationBarAdapter?
     
     /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the error screens.
-     */
-    public var errorNavigationBarBottomAdapter: ErrorBottomNavigationBarAdapter?
-    
-    /**
       * Set an adapter implementation to show a custom bottom navigation bar on the help screens.
      */
     public var helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
@@ -1023,7 +1018,6 @@ public final class GiniBankConfiguration: NSObject {
         configuration.bottomNavigationBarEnabled = self.bottomNavigationBarEnabled
         configuration.cameraNavigationBarBottomAdapter = self.cameraNavigationBarBottomAdapter
         configuration.noResultNavigationBarBottomAdapter = self.noResultNavigationBarBottomAdapter
-        configuration.errorNavigationBarBottomAdapter = self.errorNavigationBarBottomAdapter
         configuration.helpNavigationBarBottomAdapter = self.helpNavigationBarBottomAdapter
         configuration.reviewNavigationBarBottomAdapter = self.reviewNavigationBarBottomAdapter
         configuration.imagePickerNavigationBarBottomAdapter = self.imagePickerNavigationBarBottomAdapter
