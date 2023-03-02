@@ -250,6 +250,11 @@ public final class GiniBankConfiguration: NSObject {
     public var digitalInvoiceOnboardingNavigationBarBottomAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter?
 
     /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the onboarding of the digital invoice screen.
+     */
+    public var digitalInvoiceOverviewNavigationBarBottomAdapter: DigitalInvoiceOverviewNavigationBarBottomAdapter?
+
+    /**
      * Set an adapter implementation to show a custom loading indicator on the buttons which support loading.
      */
     public var onButtonLoadingIndicator: OnButtonLoadingIndicatorAdapter?
