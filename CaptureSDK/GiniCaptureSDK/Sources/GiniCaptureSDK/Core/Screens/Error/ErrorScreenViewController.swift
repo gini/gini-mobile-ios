@@ -8,9 +8,6 @@
 import UIKit
 
 class ErrorScreenViewController: UIViewController {
-
-    var bottomNavigationBar: UIView?
-    var navigationBarBottomAdapter: ErrorBottomNavigationBarAdapter?
     private var giniConfiguration: GiniConfiguration
     lazy var errorHeader: IconHeader = {
         if let header = IconHeader().loadNib() as? IconHeader {
@@ -109,7 +106,6 @@ class ErrorScreenViewController: UIViewController {
         buttonsView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(buttonsView)
         configureButtons()
-        configureBottomNavigationBar()
         configureCustomTopNavigationBar()
         configureConstraints()
     }
@@ -136,7 +132,7 @@ class ErrorScreenViewController: UIViewController {
         errorContent.font = giniConfiguration.textStyleFonts[.body]
         errorContent.textColor = GiniColor(light: UIColor.GiniCapture.dark6, dark: UIColor.GiniCapture.dark7).uiColor()
     }
-    
+
     private func configureButtons() {
         buttonsView.enterButton.addTarget(
             viewModel,
@@ -150,7 +146,11 @@ class ErrorScreenViewController: UIViewController {
 
     private func configureCustomTopNavigationBar() {
         if giniConfiguration.bottomNavigationBarEnabled {
-            navigationItem.leftBarButtonItem = nil
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .cancel,
+                target: viewModel,
+                action: #selector(viewModel.didPressCancell))
+
             navigationItem.setHidesBackButton(true, animated: true)
         } else {
             navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -160,58 +160,12 @@ class ErrorScreenViewController: UIViewController {
         }
     }
 
-    private func configureBottomNavigationBar() {
-        if giniConfiguration.bottomNavigationBarEnabled {
-            if let bottomBarAdapter = giniConfiguration.errorNavigationBarBottomAdapter {
-                navigationBarBottomAdapter = bottomBarAdapter
-            } else {
-                navigationBarBottomAdapter = DefaultErrorBottomNavigationBarAdapter()
-            }
-
-            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
-
-                self?.viewModel.didPressCancell()
-                switch self?.documentType {
-                case .pdf:
-                    self?.dismiss(animated: true)
-                default:
-                    self?.navigationController?.popToRootViewController(animated: true)
-                }
-            }
-
-            if let adapter = navigationBarBottomAdapter {
-                let bottomBar =
-                    adapter.injectedView()
-                bottomNavigationBar = bottomBar
-                bottomBar.translatesAutoresizingMaskIntoConstraints = false
-                view.addSubview(bottomBar)
-                view.bringSubviewToFront(bottomBar)
-            }
-        }
-    }
-
     private func getButtonsMinHeight(numberOfButtons: Int) -> CGFloat {
         if numberOfButtons == 1 {
             return Constants.singleButtonHeight.rawValue
         } else {
             return Constants.twoButtonsHeight.rawValue
         }
-    }
-
-    private func configureBottomBarConstraints() {
-        guard let bottomNavigationBar = bottomNavigationBar else {
-            return
-        }
-        NSLayoutConstraint.activate([
-            buttonsView.bottomAnchor.constraint(
-                equalTo: bottomNavigationBar.topAnchor,
-                constant: -GiniMargins.margin
-            ),
-            bottomNavigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            bottomNavigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            bottomNavigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomNavigationBar.heightAnchor.constraint(equalToConstant: bottomNavigationBar.frame.height)
-        ])
     }
 
     private func configureConstraints() {
@@ -224,15 +178,7 @@ class ErrorScreenViewController: UIViewController {
         let buttonsConstraint =  buttonsView.heightAnchor.constraint(
             greaterThanOrEqualToConstant: getButtonsMinHeight(numberOfButtons: numberOfButtons)
         )
-        if giniConfiguration.bottomNavigationBarEnabled == false {
-            NSLayoutConstraint.activate([
-            buttonsView.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                constant: -GiniMargins.margin)
-            ])
-        } else {
-            configureBottomBarConstraints()
-        }
+
         buttonsHeightConstraint = buttonsConstraint
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: errorHeader.bottomAnchor),
@@ -249,7 +195,9 @@ class ErrorScreenViewController: UIViewController {
                 lessThanOrEqualToConstant: Constants.errorHeaderMaxHeight.rawValue),
             errorContent.topAnchor.constraint(equalTo: scrollView.topAnchor,
                                               constant: Constants.errorContentBottomMargin.rawValue),
-            buttonsConstraint
+            buttonsConstraint,
+            buttonsView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                constant: -GiniMargins.margin)
         ])
         configureHorizontalConstraints()
         view.layoutSubviews()
@@ -274,7 +222,7 @@ class ErrorScreenViewController: UIViewController {
                                                        constant: -Constants.textContentMargin.rawValue),
                 errorContent.bottomAnchor.constraint(greaterThanOrEqualTo: scrollView.bottomAnchor),
                 buttonsView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                     constant:  GiniMargins.margin),
+                                                     constant: GiniMargins.margin),
                 buttonsView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor,
                                                       constant: -GiniMargins.margin)
             ])
