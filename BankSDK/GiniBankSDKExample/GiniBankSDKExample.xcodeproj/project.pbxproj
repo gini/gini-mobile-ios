@@ -21,6 +21,8 @@
 		76D245D2295201D500C9681D /* result_Gini_invoice_example_payment_reference.json in Resources */ = {isa = PBXBuildFile; fileRef = 76D245CD295201D400C9681D /* result_Gini_invoice_example_payment_reference.json */; };
 		76D245D3295201D500C9681D /* Gini_invoice_example_payment_reference.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 76D245CE295201D500C9681D /* Gini_invoice_example_payment_reference.pdf */; };
 		76D245D4295201D500C9681D /* Gini_invoice_example_payment_reference.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 76D245CE295201D500C9681D /* Gini_invoice_example_payment_reference.pdf */; };
+		76EFD4D429B0C4EA00C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EFD4D329B0C4EA00C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBar.swift */; };
+		76EFD4D629B0C5F800C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBarAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EFD4D529B0C5F800C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBarAdapter.swift */; };
 		8303F4ED28F9AD7000285599 /* cameraAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8303F4EC28F9AD7000285599 /* cameraAnimation.json */; };
 		8303F4EF28F9AD7700285599 /* magicAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8303F4EE28F9AD7700285599 /* magicAnimation.json */; };
 		8303F4F128F9AD7C00285599 /* uploadAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8303F4F028F9AD7C00285599 /* uploadAnimation.json */; };
@@ -114,6 +116,8 @@
 		76D245CC295201D400C9681D /* result_Gini_invoice_example_payment_reference_after_feedback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_payment_reference_after_feedback.json; sourceTree = "<group>"; };
 		76D245CD295201D400C9681D /* result_Gini_invoice_example_payment_reference.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_payment_reference.json; sourceTree = "<group>"; };
 		76D245CE295201D500C9681D /* Gini_invoice_example_payment_reference.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_payment_reference.pdf; sourceTree = "<group>"; };
+		76EFD4D329B0C4EA00C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDigitalInvoiceOverviewBottomNavigationBar.swift; sourceTree = "<group>"; };
+		76EFD4D529B0C5F800C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDigitalInvoiceOverviewBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
 		8303F4EC28F9AD7000285599 /* cameraAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cameraAnimation.json; sourceTree = "<group>"; };
 		8303F4EE28F9AD7700285599 /* magicAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = magicAnimation.json; sourceTree = "<group>"; };
 		8303F4F028F9AD7C00285599 /* uploadAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = uploadAnimation.json; sourceTree = "<group>"; };
@@ -232,6 +236,15 @@
 				76810038299696A900C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBar.swift */,
 			);
 			path = DigitalInvoiceOnboardingBottomNavigationBar;
+			sourceTree = "<group>";
+		};
+		76EFD4D229B0C4B300C26279 /* DigitalInvoiceOverviewBottomNavigationBar */ = {
+			isa = PBXGroup;
+			children = (
+				76EFD4D329B0C4EA00C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBar.swift */,
+				76EFD4D529B0C5F800C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBarAdapter.swift */,
+			);
+			path = DigitalInvoiceOverviewBottomNavigationBar;
 			sourceTree = "<group>";
 		};
 		8336530228F0335A00B5A1CE /* HelpBottomNavigationBar */ = {
@@ -392,6 +405,7 @@
 		F490C7E325DE873900D8CA6F /* GiniBankSDKExample */ = {
 			isa = PBXGroup;
 			children = (
+				76EFD4D229B0C4B300C26279 /* DigitalInvoiceOverviewBottomNavigationBar */,
 				768100352996951E00C52F87 /* DigitalInvoiceOnboardingBottomNavigationBar */,
 				76610BE4298D5403004C1ECB /* ReviewBottomNavigationBar */,
 				837EEFAF291D692900DB781F /* CameraBottomNavigationBar */,
@@ -644,6 +658,7 @@
 				768B017E28D1E54E009A2124 /* CustomLoadingIndicator.swift in Sources */,
 				83D02CD9290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift in Sources */,
 				83D02CDB290AC86300DA97F7 /* UIView.swift in Sources */,
+				76EFD4D629B0C5F800C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBarAdapter.swift in Sources */,
 				76810039299696A900C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBar.swift in Sources */,
 				F4AD00EC25DFDE2000C34E15 /* RootNavigationController.swift in Sources */,
 				F44AD01528D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift in Sources */,
@@ -658,6 +673,7 @@
 				76610BE9298D5448004C1ECB /* CustomReviewScreenBottomNavigationBar.swift in Sources */,
 				F4AD00CC25DFDB4E00C34E15 /* CredentialsManager.swift in Sources */,
 				8336530128F0334C00B5A1CE /* CustomBottomNavigationBar.swift in Sources */,
+				76EFD4D429B0C4EA00C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBar.swift in Sources */,
 				F414A56325EBB87F00D04A80 /* DocumentAnalysisHelper.swift in Sources */,
 				F4BB7CF226984E5D003FD77E /* CustomMenuItemViewController.swift in Sources */,
 				837EEFB3291D6AAC00DB781F /* CustomCameraBottomNavigationBar.swift in Sources */,

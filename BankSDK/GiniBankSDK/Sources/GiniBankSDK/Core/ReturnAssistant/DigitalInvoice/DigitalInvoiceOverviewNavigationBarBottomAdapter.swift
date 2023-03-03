@@ -43,7 +43,7 @@ public protocol DigitalInvoiceOverviewNavigationBarBottomAdapter: InjectedViewAd
     func updateButtonState(enalbed: Bool)
 
     /**
-     *  Lays out the views based on the table view's position in the return assistant overview screen
+     *  Lays out the views based on the table view's position in the return assistant overview screen. Use this to align views with the table view
      *
      * - Parameter view: The tableview on the return assistant overview screen
      */
