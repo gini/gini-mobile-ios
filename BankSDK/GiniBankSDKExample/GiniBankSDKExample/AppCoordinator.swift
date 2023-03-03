@@ -58,6 +58,7 @@ final class AppCoordinator: Coordinator {
 //        configuration.cameraNavigationBarBottomAdapter = CustomCameraBottomNavigationBarAdapter()
 //        configuration.digitalInvoiceHelpNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
 //        configuration.digitalInvoiceOnboardingNavigationBarBottomAdapter = CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter()
+//        configuration.digitalInvoiceOverviewNavigationBarBottomAdapter = CustomDigitalInvoiceOverviewBottomNavigationBarAdapter()
 
 //        let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
 //        configuration.customMenuItems = [customMenuItem]
