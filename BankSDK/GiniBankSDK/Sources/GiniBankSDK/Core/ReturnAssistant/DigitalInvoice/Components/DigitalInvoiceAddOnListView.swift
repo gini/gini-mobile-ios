@@ -34,6 +34,8 @@ final class DigitalInvoiceAddOnListView: UIView {
 
         titleLabel.text = addOnTitle
         valueLabel.text = addOnPrice.string
+        titleLabel.accessibilityValue = addOnTitle
+        valueLabel.accessibilityValue = addOnPrice.string
         setupViews()
         setupConstraints()
     }
@@ -43,6 +45,7 @@ final class DigitalInvoiceAddOnListView: UIView {
     }
 
     private func setupViews() {
+        titleLabel.numberOfLines = 0
         addSubview(titleLabel)
         addSubview(valueLabel)
     }
