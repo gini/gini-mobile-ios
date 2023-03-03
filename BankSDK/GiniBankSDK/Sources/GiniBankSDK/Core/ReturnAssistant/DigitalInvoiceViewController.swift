@@ -58,8 +58,11 @@ public class DigitalInvoiceViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        button.setTitle(NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.paybutton.title",
-                                                                 comment: "Proceed"), for: .normal)
+        let buttonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.paybutton.title",
+                                                                   comment: "Proceed")
+        button.setTitle(buttonTitle, for: .normal)
+        button.accessibilityValue = buttonTitle
+
         button.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
         button.isEnabled = viewModel.isPayButtonEnabled()
         return button
@@ -70,8 +73,10 @@ public class DigitalInvoiceViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.body]
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
-        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.totalpricetitle",
-                                                              comment: "Total")
+        let labelTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.totalpricetitle",
+                                                                  comment: "Total")
+        label.text = labelTitle
+        label.accessibilityValue = labelTitle
         return label
     }()
 
@@ -82,6 +87,7 @@ public class DigitalInvoiceViewController: UIViewController {
         label.font = configuration.textStyleFonts[.title1Bold]
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         label.text = viewModel.invoice?.total?.string
+        label.accessibilityValue = viewModel.invoice?.total?.string
         return label
     }()
 
@@ -111,11 +117,13 @@ public class DigitalInvoiceViewController: UIViewController {
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(helpButtonTapped(source:)))
+        navigationItem.rightBarButtonItem?.accessibilityValue = helpButtonTitle
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: cancelButtonTitle,
                                                            style: .plain,
                                                            target: self,
                                                            action: #selector(closeReturnAssistantOverview))
+        navigationItem.leftBarButtonItem?.accessibilityValue = cancelButtonTitle
         view.addSubview(tableView)
         view.addSubview(buttonContainerView)
 
@@ -192,16 +200,6 @@ public class DigitalInvoiceViewController: UIViewController {
             payButton.isEnabled = false
             payButton.configure(with: configuration.secondaryButtonConfiguration)
         }
-    }
-    
-    private func payButtonAccessibilityLabel() -> String {
-        guard let invoice = viewModel.invoice else {
-            return .ginibankLocalized(resource: DigitalInvoiceStrings.disabledPayButtonTitle)
-        }
-        
-        return String.localizedStringWithFormat(DigitalInvoiceStrings.payButtonTitleAccessibilityLabel.localizedGiniBankFormat,
-                                                invoice.numSelected,
-                                                invoice.numTotal)
     }
 
     @objc func helpButtonTapped(source: UIButton) {
