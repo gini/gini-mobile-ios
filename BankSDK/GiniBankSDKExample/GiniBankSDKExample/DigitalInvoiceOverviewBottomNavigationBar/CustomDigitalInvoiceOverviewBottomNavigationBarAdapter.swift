@@ -1,5 +1,5 @@
 //
-//  CustomDigitalInvoiceOverviewBottomNavigationBarAdapter.swift
+//  CustomDigitalInvoiceBottomNavigationBarAdapter.swift
 //  GiniBankSDKExample
 //
 //  Created by David Vizaknai on 02.03.2023.
@@ -8,8 +8,8 @@
 import UIKit
 import GiniBankSDK
 
-class CustomDigitalInvoiceOverviewBottomNavigationBarAdapter: DigitalInvoiceOverviewNavigationBarBottomAdapter {
-    private var view: CustomDigitalInvoiceOverviewBottomNavigationBar?
+class CustomDigitalInvoiceBottomNavigationBarAdapter: DigitalInvoiceNavigationBarBottomAdapter {
+    private var view: CustomDigitalInvoiceBottomNavigationBar?
     private var proceedButtonCallback: (() -> Void)?
     private var helpButtonCallback: (() -> Void)?
 
@@ -21,11 +21,11 @@ class CustomDigitalInvoiceOverviewBottomNavigationBarAdapter: DigitalInvoiceOver
         helpButtonCallback = callback
     }
 
-    func updateButtonState(enalbed: Bool) {
-        view?.setProceedButtonState(enabled: enalbed)
+    func updateProceedButtonState(enabled: Bool) {
+        view?.setProceedButtonState(enabled: enabled)
     }
 
-    func updateTotalPrice(with price: String?) {
+    func updateTotalPrice(priceWithCurrencySymbol price: String?) {
         view?.updatePrice(with: price)
     }
 
@@ -34,7 +34,7 @@ class CustomDigitalInvoiceOverviewBottomNavigationBarAdapter: DigitalInvoiceOver
     }
 
     func injectedView() -> UIView {
-        let navigationBar = CustomDigitalInvoiceOverviewBottomNavigationBar()
+        let navigationBar = CustomDigitalInvoiceBottomNavigationBar()
         navigationBar.payButton.addTarget(self, action: #selector(proceedButtonClicked), for: .touchUpInside)
         navigationBar.helpButton.addTarget(self, action: #selector(helpButtonClicked), for: .touchUpInside)
         view = navigationBar

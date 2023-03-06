@@ -1,5 +1,5 @@
 //
-//  CustomDigitalInvoiceOverviewBottomNavigationBar.swift
+//  CustomDigitalInvoiceBottomNavigationBar.swift
 //  GiniBankSDKExample
 //
 //  Created by David Vizaknai on 02.03.2023.
@@ -8,7 +8,7 @@
 import UIKit
 import GiniBankSDK
 
-final class CustomDigitalInvoiceOverviewBottomNavigationBar: UIView {
+final class CustomDigitalInvoiceBottomNavigationBar: UIView {
 
     lazy var payButton: UIButton = {
         let button = UIButton()
