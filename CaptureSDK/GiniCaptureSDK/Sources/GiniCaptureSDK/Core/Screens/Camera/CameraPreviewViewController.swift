@@ -45,7 +45,7 @@ final class CameraPreviewViewController: UIViewController {
         let imageView = UIImageView()
         imageView.image = UIImageNamedPreferred(named: "cameraFocus")
         imageView.contentMode = .scaleAspectFit
-        imageView.isHidden = qrCodeScanningOnlyEnabled
+        imageView.isHidden = true
         return imageView
     }()
 
@@ -164,8 +164,6 @@ final class CameraPreviewViewController: UIViewController {
                 cameraFrameView.centerXAnchor.constraint(equalTo: view.centerXAnchor,
                                                          constant: -Constants.cameraPaneWidth/2),
                 cameraFrameViewHeightAnchorPortrait])
-
-            updateFrameOrientation()
         } else {
             // The height of the bottom controls
             let bottomControlHeight = view.frame.height * 0.23 +
@@ -204,19 +202,19 @@ final class CameraPreviewViewController: UIViewController {
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        updateFrameOrientation()
         coordinator.animate(alongsideTransition: { [weak self] _ in
             self?.updatePreviewViewOrientation()
         })
     }
 
-    private func updateFrameOrientation() {
+    private func updateFrameOrientation(with orientation: AVCaptureVideoOrientation) {
         if UIDevice.current.isIpad {
-            cameraFrameViewHeightAnchorPortrait.isActive = !UIDevice.current.orientation.isLandscape
-            cameraFrameViewHeightAnchorLandscape.isActive = UIDevice.current.orientation.isLandscape
+            let isLandscape = orientation == .landscapeRight || orientation == .landscapeLeft
+            cameraFrameViewHeightAnchorPortrait.isActive = !isLandscape
+            cameraFrameViewHeightAnchorLandscape.isActive = isLandscape
 
             if let image = cameraFrameView.image?.cgImage {
-                if UIDevice.current.orientation.isLandscape {
+                if isLandscape {
                     cameraFrameView.image = UIImage(cgImage: image, scale: 1.0, orientation: .left)
                 } else {
                     cameraFrameView.image = UIImage(cgImage: image, scale: 1.0, orientation: .up)
@@ -324,9 +322,11 @@ final class CameraPreviewViewController: UIViewController {
         } else {
             orientation = .portrait
         }
+
         if let cameraLayer = previewView.layer as? AVCaptureVideoPreviewLayer {
             cameraLayer.connection?.videoOrientation = orientation
         }
+        updateFrameOrientation(with: orientation)
     }
 
     func changeFrameColor(to color: UIColor) {
