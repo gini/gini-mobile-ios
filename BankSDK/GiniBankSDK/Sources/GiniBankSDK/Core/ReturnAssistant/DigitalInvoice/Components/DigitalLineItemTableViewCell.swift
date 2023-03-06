@@ -93,6 +93,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         }
 
         editButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        editButton.contentHorizontalAlignment = .left
         let editTitle: String = .ginibankLocalized(resource: DigitalInvoiceStrings.lineItemEditButtonTitle)
         editButton.setTitle(editTitle, for: .normal)
         editButton.accessibilityValue = editTitle
