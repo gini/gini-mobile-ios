@@ -90,7 +90,7 @@ public class DigitalInvoiceViewController: UIViewController {
     private let viewModel: DigitalInvoiceViewModel
     private let configuration = GiniBankConfiguration.shared
 
-    private var navigationBarBottomAdapter: DigitalInvoiceOverviewNavigationBarBottomAdapter?
+    private var navigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter?
     private var bottomNavigationBar: UIView?
 
     init(viewModel: DigitalInvoiceViewModel) {
@@ -184,10 +184,10 @@ public class DigitalInvoiceViewController: UIViewController {
 
     private func setupBottomNavigationBar() {
         if configuration.bottomNavigationBarEnabled {
-            if let bottomBarAdapter = configuration.digitalInvoiceOverviewNavigationBarBottomAdapter {
+            if let bottomBarAdapter = configuration.digitalInvoiceNavigationBarBottomAdapter {
                 navigationBarBottomAdapter = bottomBarAdapter
             } else {
-                navigationBarBottomAdapter = DefaultDigitalInvoiceOverviewNavigationBarBottomAdapter()
+                navigationBarBottomAdapter = DefaultDigitalInvoiceNavigationBarBottomAdapter()
             }
 
             navigationBarBottomAdapter?.setProceedButtonClickedActionCallback { [weak self] in
@@ -201,7 +201,6 @@ public class DigitalInvoiceViewController: UIViewController {
             if let navigationBar = navigationBarBottomAdapter?.injectedView() {
                 bottomNavigationBar = navigationBar
                 view.addSubview(navigationBar)
-                navigationBarBottomAdapter?.setupViewsRelated(to: tableView)
 
                 navigationBar.translatesAutoresizingMaskIntoConstraints = false
 
@@ -240,8 +239,8 @@ public class DigitalInvoiceViewController: UIViewController {
         tableView.reloadData()
 
         if configuration.bottomNavigationBarEnabled {
-            navigationBarBottomAdapter?.updateTotalPrice(with: viewModel.invoice?.total?.string)
-            navigationBarBottomAdapter?.updateButtonState(enalbed: viewModel.isPayButtonEnabled())
+            navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencySymbol: viewModel.invoice?.total?.string)
+            navigationBarBottomAdapter?.updateProceedButtonState(enabled: viewModel.isPayButtonEnabled())
         } else {
             totalValueLabel.text = viewModel.invoice?.total?.string
 

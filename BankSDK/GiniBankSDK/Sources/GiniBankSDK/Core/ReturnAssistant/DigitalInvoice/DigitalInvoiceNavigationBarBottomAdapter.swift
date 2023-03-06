@@ -1,5 +1,5 @@
 //
-//  DigitalInvoiceOverviewNavigationBarBottomAdapter.swift
+//  DigitalInvoiceNavigationBarBottomAdapter.swift
 //  
 //
 //  Created by David Vizaknai on 02.03.2023.
@@ -13,7 +13,7 @@ Protocol for injecting a custom bottom navigation bar on the overview screen for
 
 - note: Bottom navigation only.
 */
-public protocol DigitalInvoiceOverviewNavigationBarBottomAdapter: InjectedViewAdapter {
+public protocol DigitalInvoiceNavigationBarBottomAdapter: InjectedViewAdapter {
     /**
      *  Set the callback for the proceed button action.
      *
@@ -33,19 +33,12 @@ public protocol DigitalInvoiceOverviewNavigationBarBottomAdapter: InjectedViewAd
      *
      * - Parameter price: A string which contains the currency and the price
      */
-    func updateTotalPrice(with price: String?)
+    func updateTotalPrice(priceWithCurrencySymbol price: String?)
 
     /**
      *  Set the proceed button state. Called when state of the button should be changed
      *
      * - Parameter enabled: A bool value to reflect the state of the button
      */
-    func updateButtonState(enalbed: Bool)
-
-    /**
-     *  Lays out the views based on the table view's position in the return assistant overview screen. Use this to align views with the table view
-     *
-     * - Parameter view: The tableview on the return assistant overview screen
-     */
-    func setupViewsRelated(to view: UIView)
+    func updateProceedButtonState(enabled: Bool)
 }
