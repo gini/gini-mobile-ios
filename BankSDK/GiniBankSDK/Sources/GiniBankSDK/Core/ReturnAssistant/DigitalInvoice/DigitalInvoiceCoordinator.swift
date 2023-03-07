@@ -90,14 +90,18 @@ extension DigitalInvoiceCoordinator: DigitalInvoiceViewModelDelagate {
     }
 
     func didTapEdit(on viewModel: DigitalInvoiceViewModel, lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
-        let viewController = LineItemDetailsViewController()
-        viewController.lineItem = viewModel.invoice?.lineItems[lineItemViewModel.index]
-        viewController.returnReasons = viewModel.invoice?.returnReasons
-        viewController.lineItemIndex = lineItemViewModel.index
-        viewController.returnAssistantConfiguration = ReturnAssistantConfiguration.shared
-        viewController.delegate = self
+//        let viewController = LineItemDetailsViewController()
+//        viewController.lineItem = viewModel.invoice?.lineItems[lineItemViewModel.index]
+//        viewController.returnReasons = viewModel.invoice?.returnReasons
+//        viewController.lineItemIndex = lineItemViewModel.index
+//        viewController.returnAssistantConfiguration = ReturnAssistantConfiguration.shared
+//        viewController.delegate = self
+//
+//        navigationController.pushViewController(viewController, animated: true)
 
-        navigationController.pushViewController(viewController, animated: true)
+        let viewController = EditLineItemViewController()
+        viewController.modalPresentationStyle = .overCurrentContext
+        navigationController.present(viewController, animated: true)
     }
 }
 
