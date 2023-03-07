@@ -37,6 +37,14 @@ final class EditLineItemViewController: UIViewController {
     private var containerViewHeightConstraint: NSLayoutConstraint?
     private var containerViewBottomConstraint: NSLayoutConstraint?
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear),
+                                               name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear),
+                                               name: UIResponder.keyboardWillShowNotification, object: nil)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -204,6 +212,44 @@ final class EditLineItemViewController: UIViewController {
             self.containerViewBottomConstraint?.constant = -self.currentBottomPadding
             self.view.layoutIfNeeded()
         }
+    }
+
+    // MARK: - Handle keyboard appearance
+    @objc
+    private func keyboardWillAppear(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+
+            if UIDevice.current.isIpad {
+                if currentBottomPadding < keyboardHeight {
+                    UIView.animate(withDuration: Constants.animationDuration) {
+                        self.containerViewBottomConstraint?.constant = -keyboardHeight
+                        self.view.layoutIfNeeded()
+                    }
+                }
+            } else {
+                UIView.animate(withDuration: Constants.animationDuration) {
+                    self.containerViewHeightConstraint?.constant = Constants.defaultHeight + keyboardHeight
+                    self.view.layoutIfNeeded()
+                }
+                currentContainerHeight = Constants.defaultHeight + keyboardHeight
+            }
+        }
+    }
+
+    @objc
+    private func keyboardWillDisappear() {
+        if UIDevice.current.isIpad {
+            animateContainerToInitialPosition()
+        } else {
+            animateContainerToInitialHeight()
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
