@@ -205,11 +205,6 @@ public final class GiniBankConfiguration: NSObject {
     public var bottomNavigationBarEnabled: Bool = false
     
     /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the no result screens.
-     */
-    public var noResultNavigationBarBottomAdapter: NoResultBottomNavigationBarAdapter?
-    
-    /**
       * Set an adapter implementation to show a custom bottom navigation bar on the help screens.
      */
     public var helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
@@ -243,6 +238,11 @@ public final class GiniBankConfiguration: NSObject {
       * Set an adapter implementation to show a custom bottom navigation bar on the onboarding of the digital invoice screen.
      */
     public var digitalInvoiceOnboardingNavigationBarBottomAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter?
+
+    /**
+      * Set an adapter implementation to show a custom bottom navigation bar on the onboarding of the digital invoice screen.
+     */
+    public var digitalInvoiceNavigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter?
 
     /**
      * Set an adapter implementation to show a custom loading indicator on the buttons which support loading.
@@ -1017,7 +1017,6 @@ public final class GiniBankConfiguration: NSObject {
         
         configuration.bottomNavigationBarEnabled = self.bottomNavigationBarEnabled
         configuration.cameraNavigationBarBottomAdapter = self.cameraNavigationBarBottomAdapter
-        configuration.noResultNavigationBarBottomAdapter = self.noResultNavigationBarBottomAdapter
         configuration.helpNavigationBarBottomAdapter = self.helpNavigationBarBottomAdapter
         configuration.reviewNavigationBarBottomAdapter = self.reviewNavigationBarBottomAdapter
         configuration.imagePickerNavigationBarBottomAdapter = self.imagePickerNavigationBarBottomAdapter

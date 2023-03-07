@@ -96,6 +96,9 @@ public class DigitalInvoiceViewController: UIViewController {
     private let viewModel: DigitalInvoiceViewModel
     private let configuration = GiniBankConfiguration.shared
 
+    private var navigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter?
+    private var bottomNavigationBar: UIView?
+
     init(viewModel: DigitalInvoiceViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -113,23 +116,37 @@ public class DigitalInvoiceViewController: UIViewController {
                                                                        comment: "Help")
         let cancelButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.cancelButtonTitle",
                                                                          comment: "Cancel")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: helpButtonTitle,
-                                                            style: .plain,
-                                                            target: self,
-                                                            action: #selector(helpButtonTapped(source:)))
-        navigationItem.rightBarButtonItem?.accessibilityValue = helpButtonTitle
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: cancelButtonTitle,
-                                                           style: .plain,
-                                                           target: self,
-                                                           action: #selector(closeReturnAssistantOverview))
-        navigationItem.leftBarButtonItem?.accessibilityValue = cancelButtonTitle
+        if configuration.bottomNavigationBarEnabled {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: cancelButtonTitle,
+                                                               style: .plain,
+                                                               target: self,
+                                                               action: #selector(closeReturnAssistantOverview))
+            navigationItem.rightBarButtonItem?.accessibilityValue = cancelButtonTitle
+
+            navigationItem.hidesBackButton = true
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: helpButtonTitle,
+                                                                style: .plain,
+                                                                target: self,
+                                                                action: #selector(helpButtonTapped(source:)))
+            navigationItem.rightBarButtonItem?.accessibilityValue = helpButtonTitle
+
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: cancelButtonTitle,
+                                                               style: .plain,
+                                                               target: self,
+                                                               action: #selector(closeReturnAssistantOverview))
+            navigationItem.leftBarButtonItem?.accessibilityValue = cancelButtonTitle
+        }
+
         view.addSubview(tableView)
         view.addSubview(buttonContainerView)
 
         buttonContainerView.addSubview(payButton)
         buttonContainerView.addSubview(totalLabel)
         buttonContainerView.addSubview(totalValueLabel)
+
+        setupBottomNavigationBar()
     }
 
     private func setupConstraints() {
@@ -172,6 +189,42 @@ public class DigitalInvoiceViewController: UIViewController {
         }
     }
 
+    private func setupBottomNavigationBar() {
+        if configuration.bottomNavigationBarEnabled {
+            if let bottomBarAdapter = configuration.digitalInvoiceNavigationBarBottomAdapter {
+                navigationBarBottomAdapter = bottomBarAdapter
+            } else {
+                navigationBarBottomAdapter = DefaultDigitalInvoiceNavigationBarBottomAdapter()
+            }
+
+            navigationBarBottomAdapter?.setProceedButtonClickedActionCallback { [weak self] in
+                self?.payButtonTapped()
+            }
+
+            navigationBarBottomAdapter?.setHelpButtonClickedActionCallback { [weak self] in
+                self?.viewModel.didTapHelp()
+            }
+
+            if let navigationBar = navigationBarBottomAdapter?.injectedView() {
+                bottomNavigationBar = navigationBar
+                view.addSubview(navigationBar)
+
+                navigationBar.translatesAutoresizingMaskIntoConstraints = false
+
+                NSLayoutConstraint.activate([
+                    navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                    navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                    navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                    navigationBar.heightAnchor.constraint(equalToConstant: 160),
+                    navigationBar.topAnchor.constraint(equalTo: tableView.bottomAnchor)
+                ])
+            }
+
+            buttonContainerView.isHidden = true
+            updateValues()
+        }
+    }
+
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -191,14 +244,20 @@ public class DigitalInvoiceViewController: UIViewController {
 
     func updateValues() {
         tableView.reloadData()
-        totalValueLabel.text = viewModel.invoice?.total?.string
 
-        if viewModel.isPayButtonEnabled() {
-            payButton.isEnabled = true
-            payButton.configure(with: configuration.primaryButtonConfiguration)
+        if configuration.bottomNavigationBarEnabled {
+            navigationBarBottomAdapter?.updateTotalPrice(priceWithCurrencySymbol: viewModel.invoice?.total?.string)
+            navigationBarBottomAdapter?.updateProceedButtonState(enabled: viewModel.isPayButtonEnabled())
         } else {
-            payButton.isEnabled = false
-            payButton.configure(with: configuration.secondaryButtonConfiguration)
+            totalValueLabel.text = viewModel.invoice?.total?.string
+
+            if viewModel.isPayButtonEnabled() {
+                payButton.isEnabled = true
+                payButton.configure(with: configuration.primaryButtonConfiguration)
+            } else {
+                payButton.isEnabled = false
+                payButton.configure(with: configuration.secondaryButtonConfiguration)
+            }
         }
     }
 
