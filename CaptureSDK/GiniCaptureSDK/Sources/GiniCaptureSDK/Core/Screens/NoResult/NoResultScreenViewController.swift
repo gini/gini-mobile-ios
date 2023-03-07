@@ -9,10 +9,6 @@
 import UIKit
 
 final class NoResultScreenViewController: UIViewController {
-
-    var bottomNavigationBar: UIView?
-    var navigationBarBottomAdapter: NoResultBottomNavigationBarAdapter?
-
     enum NoResultType {
         case image
         case pdf
@@ -171,12 +167,14 @@ final class NoResultScreenViewController: UIViewController {
             light: UIColor.GiniCapture.error4,
             dark: UIColor.GiniCapture.error1
         ).uiColor()
-        configureBottomNavigationBar()
     }
 
     private func configureCustomTopNavigationBar() {
         if giniConfiguration.bottomNavigationBarEnabled {
-            navigationItem.leftBarButtonItem = nil
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .cancel,
+                target: viewModel,
+                action: #selector(viewModel.didPressCancell))
             navigationItem.setHidesBackButton(true, animated: true)
         } else {
             navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -191,37 +189,6 @@ final class NoResultScreenViewController: UIViewController {
             return Constants.singleButtonHeight.rawValue
         } else {
             return Constants.twoButtonsHeight.rawValue
-        }
-    }
-
-    private func configureBottomNavigationBar() {
-        if giniConfiguration.bottomNavigationBarEnabled {
-            if let bottomBarAdapter = giniConfiguration.noResultNavigationBarBottomAdapter {
-                navigationBarBottomAdapter = bottomBarAdapter
-            } else {
-                navigationBarBottomAdapter = DefaultNoResultBottomNavigationBarAdapter()
-            }
-
-            navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
-                guard let type = self?.type else {
-                    return
-                }
-                switch type {
-                case .pdf:
-                    self?.dismiss(animated: true)
-                default:
-                    self?.navigationController?.popToRootViewController(animated: true)
-                }
-            }
-
-            if let adapter = navigationBarBottomAdapter {
-                let bottomBar =
-                    adapter.injectedView()
-                bottomNavigationBar = bottomBar
-                bottomBar.translatesAutoresizingMaskIntoConstraints = false
-                view.addSubview(bottomBar)
-                view.bringSubviewToFront(bottomBar)
-            }
         }
     }
 
@@ -286,32 +253,10 @@ final class NoResultScreenViewController: UIViewController {
             for: .touchUpInside)
     }
 
-    private func configureBottomBarConstraints() {
-        guard let bottomNavigationBar = bottomNavigationBar else {
-            return
-        }
-        NSLayoutConstraint.activate([
-            bottomNavigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            bottomNavigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            bottomNavigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomNavigationBar.heightAnchor.constraint(equalToConstant: bottomNavigationBar.frame.height),
-            tableView.bottomAnchor.constraint(equalTo: bottomNavigationBar.topAnchor)
-        ])
-    }
-
     private func configureConstraints() {
         header.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
         header.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         tableView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
-        if giniConfiguration.bottomNavigationBarEnabled == false {
-            NSLayoutConstraint.activate([
-            buttonsView.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                constant: -GiniMargins.margin)
-            ])
-        } else {
-            configureBottomBarConstraints()
-        }
         let buttonsConstraint =  buttonsView.heightAnchor.constraint(
             greaterThanOrEqualToConstant: getButtonsMinHeight(numberOfButtons: numberOfButtons)
         )
@@ -323,10 +268,9 @@ final class NoResultScreenViewController: UIViewController {
             header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             header.heightAnchor.constraint(greaterThanOrEqualToConstant: 62),
             tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 13),
-            tableView.bottomAnchor.constraint(
-                equalTo: buttonsView.bottomAnchor,
-                constant: 16
-            ),
+            tableView.bottomAnchor.constraint(equalTo: buttonsView.bottomAnchor, constant: 16),
+            buttonsView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                constant: -GiniMargins.margin),
             buttonsConstraint
         ])
         configureHorizontalConstraints()
