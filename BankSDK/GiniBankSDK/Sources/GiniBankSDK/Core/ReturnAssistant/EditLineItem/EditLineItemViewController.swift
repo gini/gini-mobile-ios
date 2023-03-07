@@ -25,9 +25,8 @@ final class EditLineItemViewController: UIViewController {
         return view
     }()
 
-    private lazy var editLineItemView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .red
+    private lazy var editLineItemView: EditLineItemView = {
+        let view = EditLineItemView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -211,7 +210,7 @@ final class EditLineItemViewController: UIViewController {
 private extension EditLineItemViewController {
     enum Constants {
         static let maxDimmedAlpha: CGFloat = 0.6
-        static let defaultHeight: CGFloat = 300
+        static let defaultHeight: CGFloat = 340
         static let dismissibleHeight: CGFloat = 200
         static let maximumContainerHeight: CGFloat = UIScreen.main.bounds.height - 64
         static let tabletWidthMultiplier: CGFloat = 0.6
