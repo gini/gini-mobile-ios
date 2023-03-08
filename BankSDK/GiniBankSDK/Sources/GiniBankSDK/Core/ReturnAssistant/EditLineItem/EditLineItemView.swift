@@ -45,7 +45,7 @@ final class EditLineItemView: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.distribution = .fillEqually
         stackView.axis = .vertical
-        stackView.spacing = 8
+        stackView.spacing = Constants.stackViewSpacing
         return stackView
     }()
 
@@ -67,6 +67,13 @@ final class EditLineItemView: UIView {
         return view
     }()
 
+    var viewModel: EditLineItemViewModel? {
+        didSet {
+            guard let viewModel = viewModel else { return }
+            setupData(with: viewModel)
+        }
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -76,6 +83,13 @@ final class EditLineItemView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupData(with viewModel: EditLineItemViewModel) {
+        nameLabel.text = viewModel.name
+        priceLabel.priceValue = viewModel.price
+        priceLabel.currencyValue = viewModel.currency
+        quantityView.quantity = viewModel.quantity
     }
 
     private func setupView() {
@@ -110,7 +124,7 @@ final class EditLineItemView: UIView {
             saveButton.trailingAnchor.constraint(equalTo: trailingAnchor,
                                                  constant: -Constants.horizontalPadding),
 
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 72),
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.stackViewPadding),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.horizontalPadding),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.horizontalPadding),
             stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -Constants.horizontalPadding),
@@ -119,12 +133,15 @@ final class EditLineItemView: UIView {
 
     @objc
     private func didTapCancel() {
-
+        viewModel?.didTapCancel()
     }
 
     @objc
     private func didTapSave() {
-
+        viewModel?.didTapSave(name: nameLabel.text,
+                              price: priceLabel.priceValue,
+                              currency: priceLabel.currencyValue,
+                              quantity: quantityView.quantity)
     }
 }
 
@@ -132,7 +149,7 @@ private extension EditLineItemView {
     enum Constants {
         static let verticalPadding: CGFloat = 24
         static let horizontalPadding: CGFloat = 16
+        static let stackViewPadding: CGFloat = 72
+        static let stackViewSpacing: CGFloat = 8
     }
 }
-
-
