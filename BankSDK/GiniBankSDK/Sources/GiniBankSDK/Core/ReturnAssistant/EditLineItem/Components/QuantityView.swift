@@ -24,7 +24,7 @@ final class QuantityView: UIView {
         let textField = UITextField()
         textField.font = configuration.textStyleFonts[.body]
         textField.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
-        textField.text = "2"
+        textField.isUserInteractionEnabled = false
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -39,6 +39,7 @@ final class QuantityView: UIView {
     private lazy var minusButton: UIButton = {
         let button = UIButton()
         button.setImage(prefferedImage(named: "quantity_minus_icon"), for: .normal)
+        button.addTarget(self, action: #selector(decreaseQuantity), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -46,9 +47,20 @@ final class QuantityView: UIView {
     private lazy var plusButton: UIButton = {
         let button = UIButton()
         button.setImage(prefferedImage(named: "quantity_plus_icon"), for: .normal)
+        button.addTarget(self, action: #selector(increaseQuantity), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+
+    var quantity: Int {
+        get {
+            guard let value = quantityTextField.text else { return 0 }
+            return Int(value) ?? 0
+        }
+        set {
+            quantityTextField.text = "\(newValue)"
+        }
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -89,22 +101,39 @@ final class QuantityView: UIView {
             minusButton.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor),
             minusButton.topAnchor.constraint(equalTo: buttonContainerView.topAnchor),
             minusButton.bottomAnchor.constraint(equalTo: buttonContainerView.bottomAnchor),
-            minusButton.trailingAnchor.constraint(equalTo: plusButton.leadingAnchor, constant: -16),
-            minusButton.heightAnchor.constraint(equalToConstant: 24),
-            minusButton.widthAnchor.constraint(equalToConstant: 24),
+            minusButton.trailingAnchor.constraint(equalTo: plusButton.leadingAnchor, constant: -Constants.padding),
+            minusButton.heightAnchor.constraint(equalToConstant: Constants.buttonSize.height),
+            minusButton.widthAnchor.constraint(equalToConstant: Constants.buttonSize.width),
 
             plusButton.topAnchor.constraint(equalTo: buttonContainerView.topAnchor),
             plusButton.bottomAnchor.constraint(equalTo: buttonContainerView.bottomAnchor),
             plusButton.trailingAnchor.constraint(equalTo: buttonContainerView.trailingAnchor),
-            plusButton.heightAnchor.constraint(equalToConstant: 24),
-            plusButton.widthAnchor.constraint(equalToConstant: 24),
+            plusButton.heightAnchor.constraint(equalToConstant: Constants.buttonSize.height),
+            plusButton.widthAnchor.constraint(equalToConstant: Constants.buttonSize.width),
         ])
+    }
+
+    @objc
+    private func increaseQuantity() {
+        if quantity < Constants.maximumQuantity {
+            quantity += 1
+        }
+    }
+
+    @objc
+    private func decreaseQuantity() {
+        if quantity > Constants.minimumQuantity {
+            quantity -= 1
+        }
     }
 }
 
 private extension QuantityView {
     enum Constants {
+        static let minimumQuantity: Int = 1
+        static let maximumQuantity: Int = 999
         static let padding: CGFloat = 16
         static let labelPadding: CGFloat = 4
+        static let buttonSize = CGSize(width: 24, height: 24)
     }
 }

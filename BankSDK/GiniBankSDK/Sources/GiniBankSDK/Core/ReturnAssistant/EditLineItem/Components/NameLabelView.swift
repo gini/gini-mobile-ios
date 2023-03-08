@@ -11,6 +11,15 @@ import UIKit
 final class NameLabelView: UIView {
     private lazy var configuration = GiniBankConfiguration.shared
 
+    var text: String? {
+        get {
+            return nameTextField.text
+        }
+        set {
+            nameTextField.text = newValue
+        }
+    }
+
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -24,8 +33,8 @@ final class NameLabelView: UIView {
         let textField = UITextField()
         textField.font = configuration.textStyleFonts[.body]
         textField.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
-        textField.text = "Nike Core Backpack"
         textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.delegate = self
         return textField
     }()
 
@@ -55,11 +64,20 @@ final class NameLabelView: UIView {
 
             nameTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Constants.labelPadding),
             nameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-            nameTextField.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -Constants.padding),
+            nameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
             nameTextField.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.padding)
         ])
     }
 }
+
+// MARK: - UITextFieldDelegate
+extension NameLabelView: UITextFieldDelegate {
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
 
 private extension NameLabelView {
     enum Constants {

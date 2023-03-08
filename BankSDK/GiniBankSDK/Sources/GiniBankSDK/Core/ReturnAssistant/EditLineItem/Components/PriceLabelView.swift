@@ -24,8 +24,9 @@ final class PriceLabelView: UIView {
         let textField = UITextField()
         textField.font = configuration.textStyleFonts[.body]
         textField.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
-        textField.text = "76.90"
         textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.delegate = self
+        textField.keyboardType = .numberPad
         return textField
     }()
 
@@ -34,9 +35,27 @@ final class PriceLabelView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.body]
         label.textColor = .GiniBank.dark6
-        label.text = "EUR"
         return label
     }()
+
+    var priceValue: Decimal {
+        get {
+            guard let value = priceTextField.text, let decimal = decimal(from: value) else { return 0 }
+            return decimal
+        }
+        set {
+            priceTextField.text = "\(newValue)"
+        }
+    }
+
+    var currencyValue: String {
+        get {
+            return currencyLabel.text?.lowercased() ?? ""
+        }
+        set {
+            currencyLabel.text = newValue.uppercased()
+        }
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -65,13 +84,60 @@ final class PriceLabelView: UIView {
 
             priceTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Constants.labelPadding),
             priceTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-            priceTextField.trailingAnchor.constraint(lessThanOrEqualTo: currencyLabel.leadingAnchor, constant: -Constants.padding),
+            priceTextField.trailingAnchor.constraint(equalTo: currencyLabel.leadingAnchor, constant: -Constants.padding),
             priceTextField.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.padding),
 
             currencyLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.padding),
             currencyLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
             currencyLabel.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: Constants.padding)
         ])
+    }
+
+    private func decimal(from priceString: String) -> Decimal? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.currencySymbol = ""
+        return formatter.number(from: priceString)?.decimalValue
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension PriceLabelView: UITextFieldDelegate {
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if let text = textField.text, let textRange = Range(range, in: text) {
+            let updatedText = text.replacingCharacters(in: textRange, with: string)
+
+            // Limit length to 7 digits
+            let onlyDigits = String(updatedText
+                .trimmingCharacters(in: .whitespaces)
+                .filter { c in c != "," && c != "."}
+                .prefix(7))
+
+            if let decimal = Decimal(string: onlyDigits) {
+                let decimalWithFraction = decimal / 100
+
+                if let newAmount = Price.stringWithoutSymbol(from: decimalWithFraction)?.trimmingCharacters(in: .whitespaces) {
+                    // Save the selected text range to restore the cursor position after replacing the text
+                    let selectedRange = textField.selectedTextRange
+
+                    textField.text = newAmount
+
+                    // Move the cursor position after the inserted character
+                    if let selectedRange = selectedRange {
+                        let countDelta = newAmount.count - text.count
+                        let offset = countDelta == 0 ? 1 : countDelta
+                        textField.moveSelectedTextRange(from: selectedRange.start, to: offset)
+                    }
+                }
+            }
+            return false
+        }
+        return true
     }
 }
 

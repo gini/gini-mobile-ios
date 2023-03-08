@@ -37,6 +37,15 @@ final class EditLineItemViewController: UIViewController {
     private var containerViewHeightConstraint: NSLayoutConstraint?
     private var containerViewBottomConstraint: NSLayoutConstraint?
 
+    init(lineItemViewModel: EditLineItemViewModel) {
+        super.init(nibName: nil, bundle: nil)
+        self.editLineItemView.viewModel = lineItemViewModel
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear),
@@ -74,9 +83,6 @@ final class EditLineItemViewController: UIViewController {
             dimmedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             dimmedView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 
-            containerView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor),
-            containerView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor),
-
             editLineItemView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             editLineItemView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             editLineItemView.topAnchor.constraint(equalTo: containerView.topAnchor),
@@ -93,6 +99,11 @@ final class EditLineItemViewController: UIViewController {
                 containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
             containerViewBottomConstraint?.constant = Constants.defaultHeight
+        } else {
+            NSLayoutConstraint.activate([
+                containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            ])
         }
         containerViewHeightConstraint?.isActive = true
         containerViewBottomConstraint?.isActive = true
