@@ -22,7 +22,7 @@ import GiniBankAPILibrary
      *  it can also return the epsPaymentQRCodeUrl extraction, obtained from a EPS QR code.
      */
     public let extractions: [String: Extraction]
-
+    
     /**
      *  Line item compound extractions obtained in the analysis.
      */
@@ -36,10 +36,22 @@ import GiniBankAPILibrary
      */
     public let document: Document?
     
-    public init(extractions: [String: Extraction], lineItems: [[Extraction]]? = nil, images: [UIImage], document: Document? = nil) {
+    /*
+     *  Extraction candidates dictionary. To get the candidates for an extraction look for the
+     *  `Extraction.candidates` name in the dictionary. For example the IBAN extraction's `candidates` field
+     *  contains `"ibans"` and if you search for that in this dictionary, then you'll get all the IBAN candidates.
+     */
+    public let candidates: [String: [Extraction.Candidate]]
+    
+    public init(extractions: [String: Extraction],
+                lineItems: [[Extraction]]? = nil,
+                images: [UIImage],
+                document: Document? = nil,
+                candidates: [String: [Extraction.Candidate]]) {
         self.images = images
         self.extractions = extractions
         self.lineItems = lineItems
         self.document = document
+        self.candidates = candidates
     }
 }
