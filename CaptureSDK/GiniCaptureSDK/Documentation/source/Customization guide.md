@@ -16,7 +16,7 @@ The Gini Capture SDK components can be customized either through the `GiniConfig
 ## Colors
 
 We are providing a global color palette `GiniColors.xcassets` which you are free to override. The custom colors will be then applied on all screens.
-You can find the names of the colors in [GiniColors.xcassets](https://github.com/gini/gini-mobile-ios/tree/new-ui/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/GiniColors.xcassets).
+You can find the names of the colors in [GiniColors.xcassets](https://github.com/gini/gini-mobile-ios/tree/GiniCaptureSDK%3B3.0.0-beta05/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/GiniColors.xcassets).
 
  You can view our color palette here:
 
@@ -44,13 +44,13 @@ To override them in your application please use `GiniConfiguration.updateFont(_ 
 
 ## Images
 
-Images customization is done via overriding of [GiniImages.xcassets](https://github.com/gini/gini-mobile-ios/tree/new-ui/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/GiniImages.xcassets) resources.
+Images customization is done via overriding of [GiniImages.xcassets](https://github.com/gini/gini-mobile-ios/tree/GiniCaptureSDK%3B3.0.0-beta05/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/GiniImages.xcassets) resources.
 
 ## Text
 
  Text customization is done via overriding of string resources.
 
- You can find all the string resources in [Localizable.strings](https://github.com/gini/gini-mobile-ios/blob/new-ui/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/de.lproj/Localizable.strings).
+ You can find all the string resources in [Localizable.strings](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0-beta05/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/de.lproj/Localizable.strings).
 
 ## Generic components
 
@@ -168,7 +168,7 @@ You can pass the title and view controller for each screen to the
         configuration.customMenuItems = [customMenuItem]
  ```           
  
-The example implementation is availible [here](https://github.com/gini/gini-mobile-ios/tree/new-ui/CaptureSDK/GiniCaptureSDKExample/Example%20Swift).
+The example implementation is available [here](https://github.com/gini/gini-mobile-ios/tree/GiniCaptureSDK%3B3.0.0-beta05/CaptureSDK/GiniCaptureSDKExample/Example%20Swift).
 
 You can also disable the supported formats help screen by passing `false` to
 `GiniConfiguration.shared.shouldShowSupportedFormatsScreen`.
