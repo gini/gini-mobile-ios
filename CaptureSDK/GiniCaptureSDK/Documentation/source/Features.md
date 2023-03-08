@@ -119,7 +119,7 @@ You can pass the title and view controller for each screen to the
 
         configuration.customMenuItems = [customMenuItem]
  ```           
-The example implementation is availible [here](https://github.com/gini/gini-mobile-ios/tree/new-ui/CaptureSDK/GiniCaptureSDKExample/Example%20Swift).
+The example implementation is available [here](https://github.com/gini/gini-mobile-ios/tree/GiniCaptureSDK%3B3.0.0-beta05/CaptureSDK/GiniCaptureSDKExample/Example%20Swift).
 
 You can also disable the supported formats help screen by passing `false` to
 `GiniConfiguration.shared.shouldShowSupportedFormatsScreen`.
