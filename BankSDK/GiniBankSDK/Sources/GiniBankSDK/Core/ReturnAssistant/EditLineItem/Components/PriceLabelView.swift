@@ -16,7 +16,8 @@ final class PriceLabelView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnote]
         label.textColor = .GiniBank.dark6
-        label.text = "Unit price"
+        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.unitPrice",
+                                                              comment: "Unit price")
         return label
     }()
 
@@ -80,11 +81,13 @@ final class PriceLabelView: UIView {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.padding),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: currencyLabel.leadingAnchor, constant: -Constants.padding),
+            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: currencyLabel.leadingAnchor,
+                                                 constant: -Constants.padding),
 
             priceTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Constants.labelPadding),
             priceTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-            priceTextField.trailingAnchor.constraint(equalTo: currencyLabel.leadingAnchor, constant: -Constants.padding),
+            priceTextField.trailingAnchor.constraint(equalTo: currencyLabel.leadingAnchor,
+                                                     constant: -Constants.padding),
             priceTextField.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.padding),
 
             currencyLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.padding),
@@ -108,7 +111,10 @@ extension PriceLabelView: UITextFieldDelegate {
         return true
     }
 
-    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    public func textField(_ textField: UITextField,
+                          shouldChangeCharactersIn range: NSRange,
+                          replacementString string: String) -> Bool {
+
         if let text = textField.text, let textRange = Range(range, in: text) {
             let updatedText = text.replacingCharacters(in: textRange, with: string)
 

@@ -25,7 +25,7 @@ final class NameLabelView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnote]
         label.textColor = .GiniBank.dark6
-        label.text = "Name"
+        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.name", comment: "Name")
         return label
     }()
 
