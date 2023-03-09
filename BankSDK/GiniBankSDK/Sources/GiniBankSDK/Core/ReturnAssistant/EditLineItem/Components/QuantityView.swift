@@ -131,7 +131,7 @@ final class QuantityView: UIView {
 private extension QuantityView {
     enum Constants {
         static let minimumQuantity: Int = 1
-        static let maximumQuantity: Int = 999
+        static let maximumQuantity: Int = 1000
         static let padding: CGFloat = 16
         static let labelPadding: CGFloat = 4
         static let buttonSize = CGSize(width: 24, height: 24)
