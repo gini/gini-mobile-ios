@@ -60,6 +60,7 @@ final class EditLineItemView: UIView {
 
     private lazy var priceLabel: PriceLabelView = {
         let view = PriceLabelView()
+        view.delegate = self
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -67,6 +68,14 @@ final class EditLineItemView: UIView {
     private lazy var quantityView: QuantityView = {
         let view = QuantityView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    private lazy var currencyPicker: CurrencyPickerView = {
+        let view = CurrencyPickerView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.alpha = 0
+        view.delegate = self
         return view
     }()
 
@@ -93,6 +102,7 @@ final class EditLineItemView: UIView {
         priceLabel.priceValue = viewModel.price
         priceLabel.currencyValue = viewModel.currency
         quantityView.quantity = viewModel.quantity
+        currencyPicker.currentCurrency = viewModel.currency
     }
 
     private func setupView() {
@@ -139,12 +149,43 @@ final class EditLineItemView: UIView {
         viewModel?.didTapCancel()
     }
 
+    /*Use this when currency picker is disabled for saving the currency:
+     currency: priceLabel.currencyValue, */
     @objc
     private func didTapSave() {
         viewModel?.didTapSave(name: nameLabel.text,
                               price: priceLabel.priceValue,
-                              currency: priceLabel.currencyValue,
+                              currency: viewModel?.currency ?? "EUR", // Here
                               quantity: quantityView.quantity)
+    }
+}
+
+extension EditLineItemView: CurrencyPickerViewDelegate {
+    func currencyPickerDidPick(_ currency: String, on view: CurrencyPickerView) {
+        priceLabel.currencyValue = currency
+
+        UIView.animate(withDuration: 0.3) {
+            self.currencyPicker.alpha = 0
+        }
+
+        currencyPicker.removeFromSuperview()
+    }
+}
+
+extension EditLineItemView: PriceLabelViewDelegate {
+    func showCurrencyPicker(on view: UIView) {
+        addSubview(currencyPicker)
+
+        NSLayoutConstraint.activate([
+            currencyPicker.bottomAnchor.constraint(equalTo: view.topAnchor,
+                                                   constant: -Constants.currencyPickerPadding),
+            currencyPicker.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            currencyPicker.widthAnchor.constraint(equalToConstant: Constants.currencyPickerWidth)
+        ])
+
+        UIView.animate(withDuration: 0.3) {
+            self.currencyPicker.alpha = 1
+        }
     }
 }
 
@@ -154,5 +195,7 @@ private extension EditLineItemView {
         static let horizontalPadding: CGFloat = 16
         static let stackViewPadding: CGFloat = 72
         static let stackViewSpacing: CGFloat = 8
+        static let currencyPickerPadding: CGFloat = 8
+        static let currencyPickerWidth: CGFloat = 120
     }
 }

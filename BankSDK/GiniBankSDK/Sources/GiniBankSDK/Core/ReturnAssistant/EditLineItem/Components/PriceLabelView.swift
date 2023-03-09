@@ -8,6 +8,10 @@
 import GiniCaptureSDK
 import UIKit
 
+protocol PriceLabelViewDelegate: AnyObject {
+    func showCurrencyPicker(on view: UIView)
+}
+
 final class PriceLabelView: UIView {
     private lazy var configuration = GiniBankConfiguration.shared
 
@@ -35,7 +39,13 @@ final class PriceLabelView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.body]
-        label.textColor = .GiniBank.dark6
+        label.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6).uiColor()
+
+        if configuration.multipleCurrenciesEnabled {
+            let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(showCurrencyPicker))
+            label.addGestureRecognizer(tapRecognizer)
+            label.isUserInteractionEnabled = true
+        }
         return label
     }()
 
@@ -54,9 +64,15 @@ final class PriceLabelView: UIView {
             return currencyLabel.text?.lowercased() ?? ""
         }
         set {
-            currencyLabel.text = newValue.uppercased()
+            if configuration.multipleCurrenciesEnabled {
+                currencyLabel.text = newValue.uppercased() + " ▼"
+            } else {
+                currencyLabel.text = newValue.uppercased()
+            }
         }
     }
+
+    weak var delegate: PriceLabelViewDelegate?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -75,6 +91,11 @@ final class PriceLabelView: UIView {
         addSubview(titleLabel)
         addSubview(priceTextField)
         addSubview(currencyLabel)
+    }
+
+    @objc
+    private func showCurrencyPicker() {
+        delegate?.showCurrencyPicker(on: currencyLabel)
     }
 
     private func setupConstraints() {
