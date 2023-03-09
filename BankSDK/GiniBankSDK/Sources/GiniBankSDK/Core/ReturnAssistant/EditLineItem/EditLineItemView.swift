@@ -13,7 +13,8 @@ final class EditLineItemView: UIView {
 
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Cancel", for: .normal)
+        button.setTitle(NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.cancelButtonTitle",
+                                                                 comment: "Cancel"), for: .normal)
         button.addTarget(self, action: #selector(didTapCancel), for: .touchUpInside)
         button.titleLabel?.font = configuration.textStyleFonts[.body]
         button.setTitleColor(.GiniBank.accent1, for: .normal)
@@ -26,13 +27,15 @@ final class EditLineItemView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.bodyBold]
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
-        label.text = "Edit article"
+        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.title",
+                                                              comment: "Edit")
         return label
     }()
 
     private lazy var saveButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Save", for: .normal)
+        button.setTitle(NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.savebutton",
+                                                                 comment: "Save"), for: .normal)
         button.addTarget(self, action: #selector(didTapSave), for: .touchUpInside)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         button.setTitleColor(.GiniBank.accent1, for: .normal)

@@ -95,7 +95,8 @@ final class EditLineItemViewController: UIViewController {
 
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
-                containerView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: Constants.tabletWidthMultiplier),
+                containerView.widthAnchor.constraint(equalTo: view.widthAnchor,
+                                                     multiplier: Constants.tabletWidthMultiplier),
                 containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
             containerViewBottomConstraint?.constant = Constants.defaultHeight

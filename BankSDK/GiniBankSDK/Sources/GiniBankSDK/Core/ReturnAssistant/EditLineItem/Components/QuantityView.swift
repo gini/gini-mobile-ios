@@ -16,7 +16,8 @@ final class QuantityView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnote]
         label.textColor = .GiniBank.dark6
-        label.text = "Quantity"
+        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.quantity",
+                                                              comment: "Quantity")
         return label
     }()
 
@@ -87,11 +88,13 @@ final class QuantityView: UIView {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.padding),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: buttonContainerView.leadingAnchor, constant: -Constants.padding),
+            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: buttonContainerView.leadingAnchor,
+                                                 constant: -Constants.padding),
 
             quantityTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Constants.labelPadding),
             quantityTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-            quantityTextField.trailingAnchor.constraint(lessThanOrEqualTo: buttonContainerView.leadingAnchor, constant: -Constants.padding),
+            quantityTextField.trailingAnchor.constraint(lessThanOrEqualTo: buttonContainerView.leadingAnchor,
+                                                        constant: -Constants.padding),
             quantityTextField.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.padding),
 
             buttonContainerView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: Constants.padding),
