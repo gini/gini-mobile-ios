@@ -313,7 +313,7 @@
                                             </constraints>
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="42r-Zq-01h">
-                                            <rect key="frame" x="16" y="739.5" width="382" height="30"/>
+                                            <rect key="frame" x="16" y="689" width="382" height="30"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                             <state key="normal" title="Close">
                                                 <color key="titleColor" red="0.97003465889999996" green="0.0" blue="0.35686057809999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -327,7 +327,7 @@
                                         <constraint firstItem="9Jl-Kr-1sd" firstAttribute="leading" secondItem="eer-tI-Ukv" secondAttribute="leading" constant="16" id="DSt-uz-z4Y"/>
                                         <constraint firstItem="42r-Zq-01h" firstAttribute="trailing" secondItem="9Jl-Kr-1sd" secondAttribute="trailing" id="IxW-An-aRl"/>
                                         <constraint firstItem="42r-Zq-01h" firstAttribute="leading" secondItem="9Jl-Kr-1sd" secondAttribute="leading" id="cGA-NX-ws2"/>
-                                        <constraint firstItem="42r-Zq-01h" firstAttribute="top" secondItem="9Jl-Kr-1sd" secondAttribute="bottom" constant="74.5" id="eZp-k9-IQU"/>
+                                        <constraint firstItem="42r-Zq-01h" firstAttribute="top" secondItem="9Jl-Kr-1sd" secondAttribute="bottom" constant="24" id="eZp-k9-IQU"/>
                                         <constraint firstAttribute="trailing" secondItem="9Jl-Kr-1sd" secondAttribute="trailing" constant="16" id="kYl-fl-79x"/>
                                         <constraint firstItem="9Jl-Kr-1sd" firstAttribute="centerY" secondItem="eer-tI-Ukv" secondAttribute="centerY" id="s2i-RX-8Ib"/>
                                         <constraint firstItem="9Jl-Kr-1sd" firstAttribute="centerX" secondItem="eer-tI-Ukv" secondAttribute="centerX" id="yjd-sF-SkR"/>

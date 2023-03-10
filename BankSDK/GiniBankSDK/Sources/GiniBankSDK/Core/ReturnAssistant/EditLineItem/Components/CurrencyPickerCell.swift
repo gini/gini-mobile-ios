@@ -59,6 +59,9 @@ final class CurrencyPickerCell: UITableViewCell {
         backgroundColor = .clear
         selectionStyle = .none
         clipsToBounds = true
+        preservesSuperviewLayoutMargins = false
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
 
         contentView.addSubview(checkMarkIconView)
         contentView.addSubview(currencyLabel)
