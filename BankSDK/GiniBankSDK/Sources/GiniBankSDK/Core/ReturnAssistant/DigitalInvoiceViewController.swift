@@ -71,6 +71,7 @@ public class DigitalInvoiceViewController: UIViewController {
     private lazy var totalLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontForContentSizeCategory = true
         label.font = configuration.textStyleFonts[.body]
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         let labelTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.totalpricetitle",
@@ -88,6 +89,7 @@ public class DigitalInvoiceViewController: UIViewController {
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         label.text = viewModel.invoice?.total?.string
         label.accessibilityValue = viewModel.invoice?.total?.string
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
@@ -250,6 +252,7 @@ public class DigitalInvoiceViewController: UIViewController {
             navigationBarBottomAdapter?.updateProceedButtonState(enabled: viewModel.isPayButtonEnabled())
         } else {
             totalValueLabel.text = viewModel.invoice?.total?.string
+            totalValueLabel.accessibilityValue = viewModel.invoice?.total?.string
 
             if viewModel.isPayButtonEnabled() {
                 payButton.isEnabled = true
