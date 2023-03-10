@@ -44,6 +44,27 @@ def git_create_tag(tag)
 end
 
 ##
+# Returns 'true' if the release tag exists.
+#
+def git_has_release_tag(project_id, version)
+  git_has_tag("#{project_id};#{version}")
+end
+
+##
+# Returns 'true' if the tag exists.
+#
+def git_has_tag(tag)
+  sh("git rev-parse -q --verify '#{tag}'", log: false) do |status, result|
+    case status.exitstatus
+    when 0
+      true
+    else
+      false
+    end
+  end
+end
+
+##
 # Pushes the release tag of this format: `<project-id>;<version>`.
 #
 def git_push_release_tag(project_id, version)
