@@ -179,6 +179,12 @@ final class EditLineItemViewController: UIViewController {
                     // Resize the container based on the pan gesture
                     if newHeight < Constants.maximumContainerHeight {
                         containerViewHeightConstraint?.constant = newHeight
+                        if newHeight < Constants.defaultHeight {
+                            let alpha = newHeight / Constants.defaultHeight
+                            editLineItemView.alpha = alpha - 0.2
+                        } else {
+                            editLineItemView.alpha = 1
+                        }
                         view.layoutIfNeeded()
                     }
                 }
@@ -198,6 +204,7 @@ final class EditLineItemViewController: UIViewController {
                     if newHeight < Constants.dismissibleHeight {
                         animateDismissView()
                     } else {
+                        editLineItemView.alpha = 1
                         animateContainerToInitialHeight()
                     }
                 }
