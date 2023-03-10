@@ -186,10 +186,7 @@ You can also disable the supported formats help screen by passing `false` to
 You can show your own UI for data input if an error occurred and the user clicks the "Enter manually" button on the error screen.
 For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
 
-You can show a bottom navigation bar by passing true to `GiniBankConfiguration.shared.bottomNavigationBarEnabled`. There is a default implementation, but you can also use
-your own by implementing the `NoResultBottomNavigationBarAdapter` interface and passing it to `GiniBankConfiguration.shared.noResultNavigationBarBottomAdapter`.
-
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta05/features.html#no-result-screen-customization).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta04/features.html#no-result-screen-customization).
 
 ## Error screen
 

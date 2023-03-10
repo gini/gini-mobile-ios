@@ -13,7 +13,7 @@ import GiniBankSDK
 The CustomBottomNavigationBarAdapter class is a composite adapter conforming to multiple adapter protocols for displaying a custom bottom navigation bar in various views. It also provides a back button callback functionality that can be customized to respond to user interaction.
 */
 
-public final class CustomBottomNavigationBarAdapter: NoResultBottomNavigationBarAdapter, HelpBottomNavigationBarAdapter, ImagePickerBottomNavigationBarAdapter, DigitalInvoiceHelpNavigationBarBottomAdapter {
+public final class CustomBottomNavigationBarAdapter: HelpBottomNavigationBarAdapter, ImagePickerBottomNavigationBarAdapter, DigitalInvoiceHelpNavigationBarBottomAdapter {
     private var backButtonCallback: (() -> Void)?
 
     /**
