@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  CurrencyPickerCell.swift
 //  
 //
 //  Created by David Vizaknai on 09.03.2023.
@@ -10,6 +10,7 @@ import GiniCaptureSDK
 
 final class CurrencyPickerCell: UITableViewCell {
     private lazy var configuration = GiniBankConfiguration.shared
+    static let reuseIdentifier = "CurrencyPickerCell"
 
     private lazy var checkMarkIconView: UIImageView = {
         let imageView = UIImageView()
