@@ -3,20 +3,35 @@ Customization guide
 
 The Gini Capture SDK components can be customized either through the `GiniConfiguration`, the `Localizable.string` file or through the assets. Here you can find a complete guide with the reference to every customizable item.
 
-- [Generic components](#generic-components)
-- [Onboarding screens](#onboarding-screens)
-- [Camera screen](#camera-screen)
-- [Gallery album screen](#gallery-album-screen)
-- [Review screen](#review-screen)
-- [Analysis screen](#analysis-screen)
-- [Help screens](#help-screens)
-- [No result screen](#no-result-screen)
-- [Error screens](#error-screen)
+- [Customization guide](#customization-guide)
+  - [Colors](#colors)
+  - [Typography](#typography)
+  - [Images](#images)
+  - [Text](#text)
+  - [Generic components](#generic-components)
+        - [1. Top Navigation bar](#1-top-navigation-bar)
+        - [2. Bottom Navigation bar](#2-bottom-navigation-bar)
+  - [Onboarding screens](#onboarding-screens)
+  - [Camera screen](#camera-screen)
+    - [Single Page](#single-page)
+    - [Multi-Page](#multi-page)
+    - [Camera](#camera)
+    - [Camera access](#camera-access)
+    - [QR Code Scanning](#qr-code-scanning)
+    - [QR Code Only](#qr-code-only)
+    - [Document Import](#document-import)
+    - [Camera import error handling](#camera-import-error-handling)
+  - [Review screen](#review-screen)
+  - [Analysis screen](#analysis-screen)
+  - [Help screens](#help-screens)
+  - [Gallery album screen](#gallery-album-screen)
+  - [No result screen](#no-result-screen)
+  - [Error screen](#error-screen)
 
 ## Colors
 
 We are providing a global color palette `GiniColors.xcassets` which you are free to override. The custom colors will be then applied on all screens.
-You can find the names of the colors in [GiniColors.xcassets](https://github.com/gini/gini-mobile-ios/tree/new-ui/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/GiniColors.xcassets).
+You can find the names of the colors in [GiniColors.xcassets](https://github.com/gini/gini-mobile-ios/tree/GiniCaptureSDK%3B3.0.0-beta05/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/GiniColors.xcassets).
 
  You can view our color palette here:
 
@@ -44,13 +59,13 @@ To override them in your application please use `GiniConfiguration.updateFont(_ 
 
 ## Images
 
-Images customization is done via overriding of [GiniImages.xcassets](https://github.com/gini/gini-mobile-ios/tree/new-ui/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/GiniImages.xcassets) resources.
+Images customization is done via overriding of [GiniImages.xcassets](https://github.com/gini/gini-mobile-ios/tree/GiniCaptureSDK%3B3.0.0-beta05/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/GiniImages.xcassets) resources.
 
 ## Text
 
  Text customization is done via overriding of string resources.
 
- You can find all the string resources in [Localizable.strings](https://github.com/gini/gini-mobile-ios/blob/new-ui/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/de.lproj/Localizable.strings).
+ You can find all the string resources in [Localizable.strings](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0-beta05/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/de.lproj/Localizable.strings).
 
 ## Generic components
 
@@ -168,7 +183,7 @@ You can pass the title and view controller for each screen to the
         configuration.customMenuItems = [customMenuItem]
  ```           
  
-The example implementation is availible [here](https://github.com/gini/gini-mobile-ios/tree/new-ui/CaptureSDK/GiniCaptureSDKExample/Example%20Swift).
+The example implementation is available [here](https://github.com/gini/gini-mobile-ios/tree/GiniCaptureSDK%3B3.0.0-beta05/CaptureSDK/GiniCaptureSDKExample/Example%20Swift).
 
 You can also disable the supported formats help screen by passing `false` to
 `GiniConfiguration.shared.shouldShowSupportedFormatsScreen`.
