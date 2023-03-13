@@ -115,7 +115,7 @@ You can pass the title and view controller for each screen to the
 
         configuration.customMenuItems = [customMenuItem]
  ```           
-The example implementation is availible [here](https://github.com/gini/gini-mobile-ios/tree/new-ui/CaptureSDK/GiniCaptureSDKExample/Example%20Swift).
+The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta05/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomMenuItemViewController.swift).
 
 You can also disable the supported formats help screen by passing `false` to
 `GiniBankConfiguration.shared.shouldShowSupportedFormatsScreen`.
@@ -125,14 +125,14 @@ You can also disable the supported formats help screen by passing `false` to
 You can show a custom loading indicator with custom animation support on the process button.
 Your custom loading indicator should implement `OnButtonLoadingIndicatorAdapter` interface and be passed  to `GiniBankConfiguration.shared.onButtonLoadingIndicator`.
 
-The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0-beta05/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift#L36).
+The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta05/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift#L36).
 
 # Analysis screen customization
 
 You can show a custom loading indicator with custom animation support.
 Your custom loading indicator should implement `CustomLoadingIndicatorAdapter` interface and be passed  to `GiniBankConfiguration.shared.customLoadingIndicator`.
 
-The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0-beta05/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift).
+The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta05/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift).
 
 # No result screen customization
 
