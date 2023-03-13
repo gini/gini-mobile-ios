@@ -55,7 +55,12 @@ final class PriceLabelView: UIView {
             return decimal
         }
         set {
-            priceTextField.text = "\(newValue)"
+            var sign = ""
+            if (newValue < 0) {
+                sign = "- "
+            }
+            let string = sign + (Price.stringWithoutSymbol(from: abs(newValue)) ?? "")
+            priceTextField.text = string
         }
     }
 
