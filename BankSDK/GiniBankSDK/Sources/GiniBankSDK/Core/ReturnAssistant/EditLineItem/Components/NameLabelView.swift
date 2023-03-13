@@ -51,7 +51,7 @@ final class NameLabelView: UIView {
 
     private func setupView() {
         backgroundColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark4).uiColor()
-        layer.cornerRadius = 8
+        layer.cornerRadius = Constants.cornerRadius
         addSubview(titleLabel)
         addSubview(nameTextField)
     }
@@ -81,6 +81,7 @@ extension NameLabelView: UITextFieldDelegate {
 
 private extension NameLabelView {
     enum Constants {
+        static let cornerRadius: CGFloat = 8
         static let padding: CGFloat = 16
         static let labelPadding: CGFloat = 4
     }

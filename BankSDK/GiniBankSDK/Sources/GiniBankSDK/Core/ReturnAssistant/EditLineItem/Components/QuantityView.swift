@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  QuantityView.swift
 //  
 //
 //  Created by David Vizaknai on 07.03.2023.
@@ -76,7 +76,7 @@ final class QuantityView: UIView {
 
     private func setupView() {
         backgroundColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark4).uiColor()
-        layer.cornerRadius = 8
+        layer.cornerRadius = Constants.cornerRadius
         addSubview(titleLabel)
         addSubview(quantityTextField)
         addSubview(buttonContainerView)
@@ -133,6 +133,7 @@ final class QuantityView: UIView {
 
 private extension QuantityView {
     enum Constants {
+        static let cornerRadius: CGFloat = 8
         static let minimumQuantity: Int = 1
         static let maximumQuantity: Int = 1000
         static let padding: CGFloat = 16

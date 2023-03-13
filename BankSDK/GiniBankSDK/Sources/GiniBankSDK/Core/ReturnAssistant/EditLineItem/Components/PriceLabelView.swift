@@ -92,7 +92,7 @@ final class PriceLabelView: UIView {
 
     private func setupView() {
         backgroundColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark4).uiColor()
-        layer.cornerRadius = 8
+        layer.cornerRadius = Constants.cornerRadius
         addSubview(titleLabel)
         addSubview(priceTextField)
         addSubview(currencyLabel)
@@ -175,6 +175,7 @@ extension PriceLabelView: UITextFieldDelegate {
 
 private extension PriceLabelView {
     enum Constants {
+        static let cornerRadius: CGFloat = 8
         static let padding: CGFloat = 16
         static let labelPadding: CGFloat = 4
     }
