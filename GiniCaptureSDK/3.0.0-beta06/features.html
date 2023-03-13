@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Features  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+    <script src="js/lunr.min.js" defer></script>
+    <script src="js/typeahead.jquery.js" defer></script>
+    <script src="js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+
+    <a title="Features  Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="index.html">
+        <img class="logo-icon" src="img/logo.png"/>
+    
+        </a>
+        
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/gini/gini-mobile-ios.git">
+            <img class="header-icon" src="img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="index.html">GiniCaptureSDK Reference</a>
+      <img class="carat" src="img/carat.png" />
+      Features  Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Documentation.html">Documentation</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="getting-started.html">Getting started</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="integration.html">Integration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="features.html">Features</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="integration-in-a-xamarin-project.html">Integration in a Xamarin Project</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="license.html">License</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Guides.html">Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="customization-guide.html">Customization guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="open-with-guide.html">Open with guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="import-pdfs-and-images-guide.html">Import PDFs and images guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="qr-code-scanning-guide.html">QR Code scanning guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="event-tracking-guide.html">Event tracking guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="error-logging-guide.html">Error logging guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="migration-guide.html">Migration guide</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="migration-to-version-3xx.html">Migration to version 3.x.x</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/AnalysisResult.html">AnalysisResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/CustomDocumentValidationError.html">CustomDocumentValidationError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/CustomDocumentValidationResult.html">CustomDocumentValidationResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniConfiguration.html">GiniConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniConfiguration/GiniCaptureImportFileTypes.html">– GiniCaptureImportFileTypes</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniImageDocument.html">GiniImageDocument</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniPDFDocument.html">GiniPDFDocument</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniQRCodeDocument.html">GiniQRCodeDocument</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniCapture.html">GiniCapture</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniCaptureDocumentBuilder.html">GiniCaptureDocumentBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniCaptureDocumentValidator.html">GiniCaptureDocumentValidator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/OnboardingPage.html">OnboardingPage</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/AnalysisDelegate.html">AnalysisDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/CameraViewControllerDelegate.html">CameraViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/Diffable.html">Diffable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/DocumentPickerCoordinatorDelegate.html">DocumentPickerCoordinatorDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/GiniLogger.html">GiniLogger</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/GiniCaptureDelegate.html">GiniCaptureDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/GiniCaptureDocument.html">GiniCaptureDocument</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/GiniCaptureError.html">GiniCaptureError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/GiniCaptureResultsDelegate.html">GiniCaptureResultsDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/ReviewViewControllerDelegate.html">ReviewViewControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/UploadDelegate.html">UploadDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums.html#/s:14GiniCaptureSDK0aB16TrackingDelegateP">GiniCaptureTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/OnboardingScreenTrackingDelegate.html">OnboardingScreenTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/CameraScreenTrackingDelegate.html">CameraScreenTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/ReviewScreenTrackingDelegate.html">ReviewScreenTrackingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/AnalysisScreenTrackingDelegate.html">AnalysisScreenTrackingDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Structs.html">Structs</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniCaptureFont.html">GiniCaptureFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/GiniCapturePage.html">GiniCapturePage</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Event.html">Event</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Typealiases.html">Typealiases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Typealiases.html#/s:14GiniCaptureSDK0aB15NetworkDelegatea">GiniCaptureNetworkDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/AnalysisViewController.html">AnalysisViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/Camera2ViewController.html">Camera2ViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/CameraButtonsViewModel.html">CameraButtonsViewModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/Constraints.html">Constraints</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DefaultLogger.html">DefaultLogger</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DocumentPickerCoordinator.html">DocumentPickerCoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DocumentService.html">DocumentService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniBarButtonItem.html">GiniBarButtonItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniCaptureErrorLogger.html">GiniCaptureErrorLogger</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniColor.html">GiniColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniNetworkingScreenAPICoordinator.html">GiniNetworkingScreenAPICoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/GiniScreenAPICoordinator.html">GiniScreenAPICoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/ImageOnboardingIllustrationAdapter.html">ImageOnboardingIllustrationAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/MultilineTitleButton.html">MultilineTitleButton</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/OnboardingImageView.html">OnboardingImageView</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/QRCodesExtractor.html">QRCodesExtractor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/ReviewViewController.html">ReviewViewController</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Global Variables.html">Other Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Global%20Variables.html#/s:14GiniCaptureSDK0aB10SDKVersionSSvp">GiniCaptureSDKVersion</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Enumerations.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/AmountCurrency.html">AmountCurrency</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/AnalysisError.html">AnalysisError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/AnalysisScreenEventType.html">AnalysisScreenEventType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/AnalysisStrings.html">AnalysisStrings</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/CameraError.html">CameraError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/CameraNavigationBarBottomButton.html">CameraNavigationBarBottomButton</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/CameraScreenEventType.html">CameraScreenEventType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/DocumentImportMethod.html">DocumentImportMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/DocumentPickerType.html">DocumentPickerType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/DocumentSource.html">DocumentSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/DocumentValidationError.html">DocumentValidationError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/ErrorType.html">ErrorType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/FilePickerError.html">FilePickerError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/GiniCaptureDocumentType.html">GiniCaptureDocumentType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/HelpMenuItem.html">HelpMenuItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/ImageAnalysisNoResultsStrings.html">ImageAnalysisNoResultsStrings</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/ImageAssetsStrings.html">ImageAssetsStrings</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/OnboardingNavigationBarBottomButton.html">OnboardingNavigationBarBottomButton</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/OnboardingScreenEventType.html">OnboardingScreenEventType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/OnboardingStrings.html">OnboardingStrings</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/QRCodesFormat.html">QRCodesFormat</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/ReviewError.html">ReviewError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/ReviewScreenEventType.html">ReviewScreenEventType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/Bundle.html">Bundle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/Collection.html">Collection</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/Decimal.html">Decimal</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/Optional.html">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UIButton.html">UIButton</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Extensions.html#/c:objc(cs)UICollectionReusableView">UICollectionReusableView</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UIColor.html">UIColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UIDevice.html">UIDevice</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UIFont.html">UIFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UIFont/TextStyle.html">– TextStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UINavigationController.html">UINavigationController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UITableViewCell.html">UITableViewCell</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Extensions.html#/c:objc(cs)UITableViewHeaderFooterView">UITableViewHeaderFooterView</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UIViewController.html">UIViewController</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Functions.html">Other Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Functions.html#/s:14GiniCaptureSDK32NSLocalizedStringPreferredFormat_11fallbackKey7comment14isCustomizableS2S_S2SSbtF">NSLocalizedStringPreferredFormat(_:fallbackKey:comment:isCustomizable:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Functions.html#/s:14GiniCaptureSDK16UIColorPreferred5namedSo0D0CSS_tF">UIColorPreferred(named:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Functions.html#/s:14GiniCaptureSDK21UIImageNamedPreferred5namedSo0D0CSgSS_tF">UIImageNamedPreferred(named:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Functions.html#/s:14GiniCaptureSDK04giniB6BundleSo8NSBundleCyF">giniCaptureBundle()</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/CameraBottomNavigationBarAdapter.html">CameraBottomNavigationBarAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/CameraScreen.html">CameraScreen</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/CameraTips.html">CameraTips</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/CustomLoadingIndicatorAdapter.html">CustomLoadingIndicatorAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/DocumentServiceProtocol.html">DocumentServiceProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/GiniCaptureErrorLoggerDelegate.html">GiniCaptureErrorLoggerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/GiniCaptureNetworkService.html">GiniCaptureNetworkService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/HelpBottomNavigationBarAdapter.html">HelpBottomNavigationBarAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/ImagePickerBottomNavigationBarAdapter.html">ImagePickerBottomNavigationBarAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/InjectedViewAdapter.html">InjectedViewAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/LocalizableStringResource.html">LocalizableStringResource</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/OnButtonLoadingIndicatorAdapter.html">OnButtonLoadingIndicatorAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/OnboardingIllustrationAdapter.html">OnboardingIllustrationAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/OnboardingNavigationBarBottomAdapter.html">OnboardingNavigationBarBottomAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/PreferredButtonResource.html">PreferredButtonResource</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/Reusable.html">Reusable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/ReviewScreenBottomNavigationBarAdapter.html">ReviewScreenBottomNavigationBarAdapter</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Structures.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ButtonConfiguration.html">ButtonConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Colors.html">Colors</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Colors/Gini.html">– Gini</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ErrorLog.html">ErrorLog</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ExtractionAmount.html">ExtractionAmount</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/GiniMargins.html">GiniMargins</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Structs.html#/s:14GiniCaptureSDK14RoundedCornersV">RoundedCorners</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other Type Aliases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Typealiases.html#/s:14GiniCaptureSDK18AnalysisCompletiona">AnalysisCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Typealiases.html#/s:14GiniCaptureSDK17LocalizationEntrya">LocalizationEntry</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Typealiases.html#/s:14GiniCaptureSDK24UploadDocumentCompletiona">UploadDocumentCompletion</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            
+            <h1 id='features' class='heading'>Features</h1>
+
+<p>The Gini Capture SDK provides various features you can enable and configure.
+All the features are configured during through <code><a href="Classes/GiniConfiguration.html#/s:14GiniCaptureSDK0A13ConfigurationC6sharedACvpZ">GiniConfiguration.shared</a></code> instance.
+Specifically the <code><a href="Classes/GiniConfiguration.html">GiniConfiguration</a></code> is used to configure the Gini Capture SDK.</p>
+
+<p><strong>Note</strong>: Some features require additional contractual agreements and may not be used without prior confirmation. Please get in touch with us in case you are not sure which features your contract includes.</p>
+
+<p>The following sections list all the features along with the related configuration options.</p>
+<h1 id='document-capture' class='heading'>Document Capture</h1>
+
+<p>This is the core feature of the Gini Capture SDK. It enables your app to capture documents with the camera and prepares
+them to be analyzed by the Gini Bank API.</p>
+<h2 id='custom-ui-elements' class='heading'>Custom UI Elements</h2>
+
+<p>Certain elements of the UI can now be fully customized via UI injection. It utilizes view adapter interfaces which you
+can implement and pass to <code><a href="Classes/GiniConfiguration.html">GiniConfiguration</a></code> when configuring the SDK. These interfaces declare the contract the injected
+view has to fulfill and allow the SDK to ask for your view instance when needed.</p>
+<h3 id='top-navigation-bar' class='heading'>Top Navigation Bar</h3>
+
+<p>To inject your own navigation bar view you need to pass your navigation view controller to 
+<code>GiniConfiguration.shared.customNavigationController</code>.
+The view from the custom navigation view controller will then be displayed on all screens as the top navigation bar.</p>
+<h3 id='bottom-navigation-bar' class='heading'>Bottom Navigation Bar</h3>
+
+<p>You can opt to show a bottom navigation bar. To enable it pass <code>true</code> to
+<code>GiniConfiguration.shared.bottomNavigationBarEnabled</code>.</p>
+
+<p><strong>Note</strong>:  The top navigation bar will still be used, but its  functionality will be limited to showing the screen&rsquo;s title and
+an optional close button.
+Please inject a custom top navigation bar if your design requires it even if you have enabled the bottom navigation bar.</p>
+<h2 id='onboarding' class='heading'>Onboarding</h2>
+
+<p>The onboarding feature presents essential information to the user on how to best capture documents.</p>
+
+<p>You can customize the onboarding in the following ways:</p>
+
+<ul>
+<li><p>Disable showing the onboarding at first run:
+By default the onboarding is shown at first run. To disable this pass <code>false</code> to
+<code>GiniConfiguration.shared.onboardingShowAtFirstLaunch</code>.</p></li>
+<li><p>Customize the onboarding pages:
+If you wish to show different onboarding pages then pass a list of <code><a href="Structs/OnboardingPage.html">OnboardingPage</a></code> structs to <code>GiniConfiguration.shared.customOnboardingPages</code>.</p></li>
+<li><p>Force show the onboarding:
+If you wish to show the onboarding after the first run then pass <code>true</code> to
+<code>GiniConfiguration.shared.onboardingShowAtLaunch</code>.</p></li>
+<li><p>Animate illustrations by injecting custom views:
+If you need to animate the illustrations on the onboarding pages implement the <code><a href="Protocols/OnboardingIllustrationAdapter.html">OnboardingIllustrationAdapter</a></code> interface to inject a view that can animate images (e.g., <code>Lottie</code>) and pass it to the relevant onboarding illustration adapter setters (e.g., <code>onboardingAlignCornersIllustrationAdapter</code>,
+<code>onboardingLightingIllustrationAdapter</code>,
+<code>onboardingMultiPageIllustrationAdapter</code>,
+<code>onboardingQRCodeIllustrationAdapter</code>)
+when configuring the <code><a href="Classes/GiniConfiguration.html#/s:14GiniCaptureSDK0A13ConfigurationC6sharedACvpZ">GiniConfiguration.shared</a></code> instance.</p></li>
+</ul>
+<h2 id='single-page' class='heading'>Single Page</h2>
+
+<p>By default, the Gini Capture SDK is configured to capture single page documents.
+No further configuration is required for this.</p>
+<h2 id='multi-page' class='heading'>Multi-Page</h2>
+
+<p>The multi-page feature allows the SDK to capture documents with multiple pages.</p>
+
+<p>To enable this simply pass <code>true</code> to <code>GiniConfiguration.shared.multipageEnabled</code>.</p>
+
+<p><code>Add pages button</code> will be shown on the Review screen only if multi-page is enabled.</p>
+<h2 id='camera' class='heading'>Camera</h2>
+
+<ul>
+<li><p>Enable the flash toggle button:
+To allow users toggle the camera flash pass <code>true</code> to <code>GiniConfiguration.shared.flashToggleEnabled</code>.</p></li>
+<li><p>Turn off flash by default:
+Flash is on by default, and you can turn it off by passing <code>false</code> to <code>GiniConfiguration.shared.flashOnByDefault</code>.</p></li>
+</ul>
+
+<p># QR Code Scanning</p>
+
+<p>When a supported QR code is detected with valid payment data, the QR Code will be processed automatically without any further user interaction.
+The QR Code scanning may be triggered directly without the need to analyze the document.</p>
+
+<p>If the QR code does not have a supported payment format then a popup informs the user that a QR code was detected, but it cannot be used.</p>
+
+<p>Please find more information in the <a href="https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/qr-code-scanning-guide.html">QR Code scanning guide</a>.</p>
+<h2 id='qr-code-only' class='heading'>QR Code Only</h2>
+
+<p>During QR Code only mode the capture and import controls will be hidden from the camera screen.</p>
+
+<p>For enabling QR code only mode the both flags <code>GiniConfiguration.shared.qrCodeScanningEnabled</code> and <code>GiniConfiguration.shared.onlyQRCodeScanningEnabled</code> should be <code>true</code>.</p>
+<h1 id='document-import' class='heading'>Document Import</h1>
+
+<p>This feature enables the Gini Capture SDK to import documents from the camera screen. When it&rsquo;s enabled an additional button is shown next to the camera trigger. Using this button allows the user to pick either an image or a pdf from the device.</p>
+
+<p>Please find more information in the <a href="https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/import-pdfs-and-images-guide.html">Import PDFs and images guide</a>.</p>
+<h1 id='open-with' class='heading'>Open with</h1>
+
+<p>The <code>Open with</code> feature allows importing of files from other apps via iOS <code>share</code> functionality.</p>
+
+<p>Please find more information in the <a href="https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/open-with-guide.html">Open with guide</a>.</p>
+<h1 id='help-screen-customization' class='heading'>Help screen customization</h1>
+
+<p>You can show your own help screens in the Gini Capture SDK.
+You can pass the title and view controller for each screen to the
+<code>GiniConfiguration.shared.customMenuItems</code> using a list of <code><a href="Enums/HelpMenuItem.html">HelpMenuItem</a></code> structs:</p>
+<pre class="highlight swift"><code>
+        <span class="k">let</span> <span class="nv">customMenuItem</span> <span class="o">=</span> <span class="kt">HelpMenuItem</span><span class="o">.</span><span class="nf">custom</span><span class="p">(</span><span class="s">"Custom menu item"</span><span class="p">,</span> <span class="kt">CustomMenuItemViewController</span><span class="p">())</span>
+
+        <span class="n">configuration</span><span class="o">.</span><span class="n">customMenuItems</span> <span class="o">=</span> <span class="p">[</span><span class="n">customMenuItem</span><span class="p">]</span>
+</code></pre>
+
+<p>The example implementation is availible <a href="https://github.com/gini/gini-mobile-ios/tree/new-ui/CaptureSDK/GiniCaptureSDKExample/Example%20Swift">here</a>.</p>
+
+<p>You can also disable the supported formats help screen by passing <code>false</code> to
+<code>GiniConfiguration.shared.shouldShowSupportedFormatsScreen</code>.</p>
+<h1 id='review-screen-customization' class='heading'>Review screen customization</h1>
+
+<p>You can show a custom loading indicator with custom animation support on the process button.
+Your custom loading indicator should implement <code><a href="Protocols/OnButtonLoadingIndicatorAdapter.html">OnButtonLoadingIndicatorAdapter</a></code> interface and be passed  to <code>GiniConfiguration.shared.onButtonLoadingIndicator</code>.</p>
+
+<p>The example implementation is available <a href="https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0-beta06/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift#L36">here</a>.</p>
+<h1 id='analysis-screen-customization' class='heading'>Analysis screen customization</h1>
+
+<p>You can show a custom loading indicator with custom animation support.
+Your custom loading indicator should implement <code><a href="Protocols/CustomLoadingIndicatorAdapter.html">CustomLoadingIndicatorAdapter</a></code> interface and be passed  to <code>GiniConfiguration.shared.customLoadingIndicator</code>.</p>
+
+<p>The example implementation is available <a href="https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0-beta06/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift">here</a>.</p>
+<h1 id='no-result-screen-customization' class='heading'>No result screen customization</h1>
+
+<p>You can show your own UI if an error occured and the user chooses to enter details manually. For this you must to implement <code><a href="Protocols/GiniCaptureResultsDelegate.html#/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureResultsDelegate(im)giniCaptureDidEnterManually">GiniCaptureResultsDelegate.giniCaptureDidEnterManually()</a></code>.</p>
+
+<p>The buttom &ldquo;Retake images&rdquo; will be shown only if you took or imported images.</p>
+<h1 id='error-screen-customization' class='heading'>Error screen customization</h1>
+
+<p>You can show your own UI if an error occured and the user chooses to enter details manually. For this you must to implement <code><a href="Protocols/GiniCaptureResultsDelegate.html#/c:@M@GiniCaptureSDK@objc(pl)GiniCaptureResultsDelegate(im)giniCaptureDidEnterManually">GiniCaptureResultsDelegate.giniCaptureDidEnterManually()</a></code>.</p>
+
+<p>The buttom &ldquo;Retake images&rdquo; will be shown only if you took or imported images.</p>
+<h1 id='event-tracking' class='heading'>Event Tracking</h1>
+
+<p>You have the possibility to track various events which occur during the usage of the Gini Capture SDK.</p>
+
+<p>Please find more information in the <a href="https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/event-tracking-guide.html">Event tracking guide</a>.</p>
+<h1 id='error-logging' class='heading'>Error Logging</h1>
+
+<p>The SDK logs errors to the Gini Bank API when the default networking implementation is used (see the <code>Default networking</code> implementation in the <a href="https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/integration.html">Integration</a>.</p>
+
+          </div>
+        </section>
+
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2023 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2023-03-13)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
