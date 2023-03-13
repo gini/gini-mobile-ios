@@ -424,6 +424,10 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     }
 
     private func showInvalidQRCodeFeedback() {
+        // Haptic feedback
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.warning)
+
         qrCodeOverLay.isUserInteractionEnabled = false
         UIView.animate(withDuration: 0.3) {
             self.qrCodeOverLay.isHidden = false
