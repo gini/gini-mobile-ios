@@ -107,23 +107,27 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             }
         }
 
-        if pages.count > 0 {
-            cameraViewController.setupNavigationItem(
-                usingResources: backToReviewMenuButtonResource,
-                selector: #selector(popBackToReview),
-                position: .left,
-                target: self)
-        } else {
-            cameraViewController.setupNavigationItem(
-                usingResources: cancelButtonResource,
-                selector: #selector(back),
-                position: .left,
-                target: self)
+        if !giniConfiguration.bottomNavigationBarEnabled {
+            if pages.count > 0 {
+                cameraViewController.setupNavigationItem(
+                    usingResources: backToReviewMenuButtonResource,
+                    selector: #selector(popBackToReview),
+                    position: .left,
+                    target: self)
+            } else {
+                cameraViewController.setupNavigationItem(
+                    usingResources: cancelButtonResource,
+                    selector: #selector(back),
+                    position: .left,
+                    target: self)
+            }
+            cameraViewController.setupNavigationItem(usingResources: helpButtonResource,
+                                                     selector: #selector(showHelpMenuScreen),
+                                                     position: .right,
+                                                     target: self)
+
         }
-        cameraViewController.setupNavigationItem(usingResources: helpButtonResource,
-                                                 selector: #selector(showHelpMenuScreen),
-                                                 position: .right,
-                                                 target: self)
+
         if giniConfiguration.fileImportSupportedTypes != .none {
             documentPickerCoordinator.delegate = self
             if documentPickerCoordinator.isGalleryPermissionGranted {
