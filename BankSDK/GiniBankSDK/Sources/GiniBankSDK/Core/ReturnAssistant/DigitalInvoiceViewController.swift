@@ -8,36 +8,22 @@
 import UIKit
 import GiniBankAPILibrary
 import GiniCaptureSDK
-/**
- Delegate protocol for `DigitalInvoiceViewController`.
- */
-public protocol DigitalInvoiceViewControllerDelegate: AnyObject {
-    
-    /**
-     Called after the user taps the "Pay" button on the `DigitalInvoiceViewController`.
-     
-     - parameter viewController: The `DigitalInvoiceViewController` instance.
-     - parameter invoice: The `DigitalInvoice` as amended by the user.
-     */
-    func didFinish(viewController: DigitalInvoiceViewController,
-                   invoice: DigitalInvoice)
-}
 
 /**
  This class is a view controller that lets the user view their invoice
- together with the line items and total amount to pay. It will push the
- `LineItemDetailsViewController` onto the navigation stack when the user
+ together with the line items and total amount to pay. It will present the
+ `EditLineItemViewModel` onto the navigation stack when the user
  taps the "Edit" button on any of the line items.
  */
-public class DigitalInvoiceViewController: UIViewController {
+final class DigitalInvoiceViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(DigitalInvoiceTableViewTitleCell.self, forCellReuseIdentifier: "DigitalInvoiceTableViewTitleCell")
+        tableView.register(DigitalInvoiceTableViewTitleCell.self, forCellReuseIdentifier: DigitalInvoiceTableViewTitleCell.reuseIdentifier)
         tableView.register(UINib(nibName: "DigitalLineItemTableViewCell", bundle: giniBankBundle()),
-                           forCellReuseIdentifier: "DigitalLineItemTableViewCell")
-        tableView.register(DigitalInvoiceAddOnListCell.self, forCellReuseIdentifier: "DigitalInvoiceAddOnListCell")
+                           forCellReuseIdentifier: DigitalLineItemTableViewCell.reuseIdentifier)
+        tableView.register(DigitalInvoiceAddOnListCell.self, forCellReuseIdentifier: DigitalInvoiceAddOnListCell.reuseIdentifier)
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
@@ -84,8 +70,6 @@ public class DigitalInvoiceViewController: UIViewController {
         label.text = viewModel.invoice?.total?.string
         return label
     }()
-
-    public weak var delegate: DigitalInvoiceViewControllerDelegate?
 
     private let viewModel: DigitalInvoiceViewModel
     private let configuration = GiniBankConfiguration.shared
@@ -219,14 +203,14 @@ public class DigitalInvoiceViewController: UIViewController {
     }
 
     
-    override public func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         setupView()
         setupConstraints()
     }
     
-    override public func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.shouldShowOnboarding()
     }
@@ -281,13 +265,13 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
         case addOns
     }
 
-    public func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return Section.allCases.count
     }
 
     // MARK: - UITableViewDataSource
 
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Section(rawValue: section) {
         case .titleCell: return 1
         case .lineItems: return viewModel.invoice?.lineItems.count ?? 0
@@ -296,15 +280,15 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
         }
     }
     
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch Section(rawValue: indexPath.section) {
         case .titleCell:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceTableViewTitleCell",
+            let cell = tableView.dequeueReusableCell(withIdentifier: DigitalInvoiceTableViewTitleCell.reuseIdentifier,
                                                      for: indexPath) as! DigitalInvoiceTableViewTitleCell
             return cell
         case .lineItems:
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalLineItemTableViewCell",
+            let cell = tableView.dequeueReusableCell(withIdentifier: DigitalLineItemTableViewCell.reuseIdentifier,
                                                      for: indexPath) as! DigitalLineItemTableViewCell
             if let invoice = viewModel.invoice {
                 cell.viewModel = DigitalLineItemTableViewCellViewModel(lineItem: invoice.lineItems[indexPath.row],
@@ -316,7 +300,7 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
             return cell
             
         case .addOns:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceAddOnListCell",
+            let cell = tableView.dequeueReusableCell(withIdentifier: DigitalInvoiceAddOnListCell.reuseIdentifier,
                                                      for: indexPath) as! DigitalInvoiceAddOnListCell
             cell.addOns = viewModel.invoice?.addons
             return cell
