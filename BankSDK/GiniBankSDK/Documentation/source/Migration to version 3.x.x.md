@@ -65,7 +65,7 @@ To simplify UI customization we introduced global customization options. There i
 ## Colors
 
 We are providing a global color palette `GiniColors.xcassets` which you are free to override. The custom colors will be then applied on all screens.
-You can find the names of the colors in [GiniColors.xcassets](https://github.com/gini/gini-mobile-ios/tree/GiniBankSDK%3B3.0.0-beta05/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources/GiniColors.xcassets).
+You can find the names of the colors in [GiniColors.xcassets](https://github.com/gini/gini-mobile-ios/tree/GiniBankSDK%3B3.0.0-beta06/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources/GiniColors.xcassets).
 
  You can view our color palette here:
 
@@ -93,13 +93,13 @@ To override them in your application please use `GiniBankConfiguration.updateFon
 
 ## Images
 
-Images customization is done via overriding of [GiniImages.xcassets](https://github.com/gini/gini-mobile-ios/tree/GiniBankSDK%3B3.0.0-beta05/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources/GiniImages.xcassets) resources.
+Images customization is done via overriding of [GiniImages.xcassets](https://github.com/gini/gini-mobile-ios/tree/GiniBankSDK%3B3.0.0-beta06/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources/GiniImages.xcassets) resources.
 
 ## Text
 
  Text customization is done via overriding of string resources.
 
- You can find all the string resources in [Localizable.strings](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta05/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources/de.lproj/Localizable.strings).
+ You can find all the string resources in [Localizable.strings](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta06/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources/de.lproj/Localizable.strings).
 
 # UI Elements
 
