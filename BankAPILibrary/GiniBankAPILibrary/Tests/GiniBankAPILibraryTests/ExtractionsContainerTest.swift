@@ -65,7 +65,7 @@ final class ExtractionsContainerTest: XCTestCase {
                                              value: "123.93:EUR")
         
         XCTAssertEqual(container.candidates.count, 2)
-        XCTAssertTrue(container.candidates.contains(candidate))
+        XCTAssertEqual(container.candidates["amounts"]!.first, candidate)
         
         let returnReason = ReturnReason(id: "r1", localizedLabels: ["de" : "Anderes Aussehen als angeboten"])
         

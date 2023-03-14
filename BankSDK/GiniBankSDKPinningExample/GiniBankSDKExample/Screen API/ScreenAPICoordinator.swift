@@ -183,7 +183,7 @@ extension ScreenAPICoordinator: GiniCaptureNetworkService {
         let extractionQuantity = Extraction.init(box: nil, candidates: "", entity: "numeric", value: "1", name: "quantity")
 
         let lineItem = [extractionQuantity, extractionsBaseGross, extractionDescription, extractionArtNumber]
-        let extractionResult = ExtractionResult.init(extractions: [extractionPaymentPurpose,extractionAmountToPay,extractionIban,extractionPaymentRecipient], lineItems: [lineItem, lineItem] , returnReasons: [])
+        let extractionResult = ExtractionResult.init(extractions: [extractionPaymentPurpose,extractionAmountToPay,extractionIban,extractionPaymentRecipient], lineItems: [lineItem, lineItem] , returnReasons: [], candidates: [:])
         if let doc = self.manuallyCreatedDocument {
             let result = (document: doc, extractionResult: extractionResult)
             completion(.success(result))

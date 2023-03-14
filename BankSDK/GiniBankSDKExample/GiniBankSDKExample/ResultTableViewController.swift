@@ -7,6 +7,10 @@
 
 import UIKit
 import GiniBankAPILibrary
+fileprivate enum LabelType: Int {
+case textLabel = 100
+case detailTextLabel = 101
+}
 /**
  Presents a dictionary of results from the analysis process in a table view.
  Values from the dictionary will be used as the cells titles and keys as the cells subtitles.

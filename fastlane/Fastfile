@@ -258,6 +258,10 @@ platform :ios do
       # Create release tags for packages which have different versions than their latest release tag
       packages.each do |package|
         if package[:version] == get_latest_version_from_release_tags(package[:package_folder], UI)
+          # The current package version is the same as the one in the latest release tag
+          up_to_date.push package
+        elsif git_has_release_tag(package[:package_folder], package[:version])
+          # The current package version has already been released
           up_to_date.push package
         else
           to_be_released.push package
