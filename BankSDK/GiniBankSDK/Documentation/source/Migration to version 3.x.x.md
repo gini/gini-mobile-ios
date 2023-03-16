@@ -10,7 +10,7 @@ We also removed the Component API integration option and unified the public API 
 `GiniBankConfiguration` is a singleton now.
 You don't need to create a new instance of `GiniBankConfiguration` just use `GiniBankConfiguration.shared` instead.
 
-Please, find more details in [Getting started](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/getting-started.html).
+Please, find more details in [Getting started](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta06/getting-started.html).
 
 # Migrate from Compoment API
 
@@ -32,17 +32,17 @@ The following steps will help you migrate to the new public API:
 
 ```swift
 // MARK: - Default networking
-        let viewController = GiniCapture.viewController(withClient: client,
-                                                        importedDocuments: visionDocuments,
-                                                        configuration: visionConfiguration,
+        let viewController = GiniBank.viewController(withClient: client,
+                                                        importedDocuments: documents,
+                                                        configuration: bankConfiguration,
                                                         resultsDelegate: self,
                                                         documentMetadata: documentMetadata,
                                                         api: .default,
                                                         userApi: .default,
                                                         trackingDelegate: self)
 // MARK: - Custom networking
-        let viewController = GiniCapture.viewController(importedDocuments: visionDocuments,
-                                                        configuration: visionConfiguration,
+        let viewController = GiniBank.viewController(importedDocuments: documents,
+                                                        configuration: bankConfiguration,
                                                         resultsDelegate: self,
                                                         documentMetadata: documentMetadata,
                                                         trackingDelegate: trackingDelegate,
@@ -52,11 +52,11 @@ The following steps will help you migrate to the new public API:
 * Handling the analysis results and receiving the extracted information (error or cancellation) can be handled though `GiniCaptureResultsDelegate` protocol implementation.
 * You can also provide your own networking by implementing the `GiniCaptureNetworkService` and `GiniCaptureResultsDelegate` protocols. Pass your instances to the `UIViewController` initialiser of GiniCapture as shown below.
 * Remove all code related to interacting with the SDK's specific view controllers. From now on the entry point is the `UIViewController` and customization happens through `GiniBankConfiguration` and via overriding of images and color resources.
-* Use the new UI customization options and follow the [Customization guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta06/customization-guide.html) to adapt the look of the new UI.
+* Use the new UI customization options and follow the [Customization guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta06/customization-guide.html) to adapt the look of the new UI.
 
 # Migrate from Screen API
 
-The new public API is based on the Screen API, so you only need to use the new UI customization options and follow the [Customization guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta06/customization-guide.html) to adapt the look of the new UI.
+The new public API is based on the Screen API, so you only need to use the new UI customization options and follow the [Customization guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta06/customization-guide.html) to adapt the look of the new UI.
 
 # Overview of New UI Customization Options
 
@@ -130,7 +130,7 @@ customizations.
 
 Images and text are onboarding page specific and need to be customized for each page.
 
-[here][https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta06/features.html#onboarding] and [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=243%3A3305&t=6sAk7LGf1mi3zV9L-1).
+[here][https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta06/features.html#onboarding] and [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=243%3A3305&t=6sAk7LGf1mi3zV9L-1).
 
 ### Breaking Changes
 
@@ -150,7 +150,7 @@ below:
 
 #### Custom Illustration Views
 
-By implementing the `OnboardingIllustrationAdapter` interface and passing it to either `GiniCapture` or the
+By implementing the `OnboardingIllustrationAdapter` interface and passing it to either `GiniBankConfiguration` or the
 `OnboardingPage` constructor you can inject any custom view for the illustration.
 
 If you need to animate the illustrations on the onboarding pages implement the `OnboardingIllustrationAdapter` interface to inject a view that can animate images (e.g., `Lottie`) and pass it to the relevant onboarding illustration adapter setters (e.g., 
@@ -269,7 +269,7 @@ customizations.
 You can show your own UI for data input if an error occurred and the user clicks the "Enter manually" button on the error screen.
 For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
 
-You can find more details [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=263%3A6989&t=7wXW9XyhTUcmp5sk-1) and [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta06/customization-guide.html#no-result-screen).
+You can find more details [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=263%3A6989&t=7wXW9XyhTUcmp5sk-1) and [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta06/customization-guide.html#no-result-screen).
 
 ## Error screen
 
@@ -285,11 +285,11 @@ Showing errors during usage of the SDK was changed from snackbar to a whole new 
 
 The new error screen gives options to retake photos or enter details manually and displays errors with more detailed description.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta06/customization-guide.html#error-screen).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta06/customization-guide.html#error-screen).
 
 #### Option to enter details manually
 
 You can show your own UI for data input if an error occured and the user clicks the "Enter manually" button on the error screen.
 For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta06/features.html#error-screen-customization) and [here]((https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta06/customization-guide.html#error-screen).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta06/features.html#error-screen-customization) and [here]((https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta06/customization-guide.html#error-screen).
