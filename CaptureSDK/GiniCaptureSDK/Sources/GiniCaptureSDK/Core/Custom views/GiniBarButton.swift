@@ -86,7 +86,7 @@ public final class GiniBarButton {
         stackView.distribution = .fill
         stackView.axis = .horizontal
         stackView.spacing = Constants.spacing
-        stackView.backgroundColor = .yellow
+        stackView.backgroundColor = .clear
 
         imageView.contentMode = .scaleAspectFit
         titleLabel.textColor = .GiniCapture.accent1
