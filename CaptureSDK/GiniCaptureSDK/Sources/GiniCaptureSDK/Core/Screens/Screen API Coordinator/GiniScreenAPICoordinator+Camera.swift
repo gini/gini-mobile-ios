@@ -115,12 +115,11 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
                     position: .left,
                     target: self)
             } else {
-                cameraViewController.setupNavigationItem(
-                    usingResources: cancelButtonResource,
-                    selector: #selector(back),
-                    position: .left,
-                    target: self)
+                let button = GiniCancelBarButton()
+                button.addAction(self, #selector(back))
+                cameraViewController.navigationItem.leftBarButtonItem = button.barButton
             }
+
             cameraViewController.setupNavigationItem(usingResources: helpButtonResource,
                                                      selector: #selector(showHelpMenuScreen),
                                                      position: .right,
