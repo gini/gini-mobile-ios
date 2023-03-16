@@ -24,9 +24,11 @@ import UIKit
  - done: A done button. Used to open the selected images from the gallery picker.
  */
 public enum BarButtonType {
-    case cancel, help, back(title: String), done
+    case cancel
+    case help
+    case back(title: String)
+    case done
 }
-
 
 /**
  A custom navigation bar button that displays a stack of subviews.
