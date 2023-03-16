@@ -59,6 +59,11 @@ final class AppCoordinator: Coordinator {
 //        configuration.digitalInvoiceOnboardingNavigationBarBottomAdapter = CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter()
 //        configuration.digitalInvoiceNavigationBarBottomAdapter = CustomDigitalInvoiceBottomNavigationBarAdapter()
 
+//        configuration.giniNavigationBarBackButtonIcon = UIImage(named: "minus_icon")
+//        configuration.giniNavigationBarHelpButtonIcon = UIImage(named: "minus_icon")
+//        configuration.giniNavigationBarCancelButtonIcon = UIImage(named: "minus_icon")
+//        configuration.giniNavigationBarDoneButtonIcon = UIImage(named: "minus_icon")
+
 //        let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
 //        configuration.customMenuItems = [customMenuItem]
         
