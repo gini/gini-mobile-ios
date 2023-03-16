@@ -106,25 +106,20 @@ public class DigitalInvoiceViewController: UIViewController {
         title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
         edgesForExtendedLayout = []
         view.backgroundColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2).uiColor()
-        let helpButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.help.screenTitle",
-                                                                       comment: "Help")
         if configuration.bottomNavigationBarEnabled {
-            let barButton = GiniCancelBarButton()
-            barButton.addAction(self, #selector(closeReturnAssistantOverview))
-            navigationItem.rightBarButtonItem = barButton.barButton
+            let cancelButton = GiniBarButton(ofType: .cancel)
+            cancelButton.addAction(self, #selector(closeReturnAssistantOverview))
+            navigationItem.rightBarButtonItem = cancelButton.barButton
             navigationItem.hidesBackButton = true
         } else {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: helpButtonTitle,
-                                                                style: .plain,
-                                                                target: self,
-                                                                action: #selector(helpButtonTapped(source:)))
+            let helpButton = GiniBarButton(ofType: .help)
+            helpButton.addAction(self, #selector(helpButtonTapped(source:)))
+            navigationItem.rightBarButtonItem = helpButton.barButton
 
-            let barButton = GiniCancelBarButton()
-            barButton.addAction(self, #selector(closeReturnAssistantOverview))
-            navigationItem.leftBarButtonItem = barButton.barButton
+            let cancelButton = GiniBarButton(ofType: .cancel)
+            cancelButton.addAction(self, #selector(closeReturnAssistantOverview))
+            navigationItem.leftBarButtonItem = cancelButton.barButton
         }
-
-
 
         view.addSubview(tableView)
         view.addSubview(buttonContainerView)
