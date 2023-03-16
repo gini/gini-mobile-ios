@@ -151,22 +151,22 @@ import GiniBankAPILibrary
     /**
      Sets custom icon for the every Cancel button on the top navigation bar
      */
-    public var giniNavigationBarButtonCancelButtonIcon: UIImage?
+    public var giniNavigationBarCancelButtonIcon: UIImage?
 
     /**
      Sets custom icon for the every Help button on the top navigation bar
      */
-    public var giniNavigationBarButtonHelpButtonIcon: UIImage?
+    public var giniNavigationBarHelpButtonIcon: UIImage?
 
     /**
      Sets custom icon for the every Back button on the top navigation bar
      */
-    public var giniNavigationBarButtonBackButtonIcon: UIImage?
+    public var giniNavigationBarBackButtonIcon: UIImage?
 
     /**
      Sets custom icon for the every Done button on the top navigation bar
      */
-    public var giniNavigationBarButtonDoneButtonIcon: UIImage?
+    public var giniNavigationBarDoneButtonIcon: UIImage?
     
     // MARK: - TODO DELETE
     /**
