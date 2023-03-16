@@ -75,7 +75,7 @@ final class GalleryCoordinator: NSObject, Coordinator {
 
     lazy var openImagesButton: UIBarButtonItem = {
         let openButton = GiniBarButton(ofType: .done)
-        openButton.addAction(self, #selector(cancelAction))
+        openButton.addAction(self, #selector(openImages))
         return openButton.barButton
     }()
     
@@ -147,7 +147,7 @@ final class GalleryCoordinator: NSObject, Coordinator {
         imagePickerViewController.navigationItem.rightBarButtonItem = cancelButton
         imagePickerViewController.navigationItem.setHidesBackButton(true, animated: false)
         if !giniConfiguration.bottomNavigationBarEnabled {
-            let buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.albums.title", comment: "Albums")
+            let buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.images.backToAlbums", comment: "Albums")
             let backButton = GiniBarButton(ofType: .back(title: buttonTitle))
             backButton.addAction(self, #selector(backAction))
             imagePickerViewController.navigationItem.leftBarButtonItem = backButton.barButton
