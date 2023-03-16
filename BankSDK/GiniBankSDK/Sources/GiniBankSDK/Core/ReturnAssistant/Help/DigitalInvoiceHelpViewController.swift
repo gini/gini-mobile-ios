@@ -58,7 +58,9 @@ final class DigitalInvoiceHelpViewController: UIViewController {
         scrollView.addSubview(contentView)
         contentView.addSubview(stackView)
 
-        let backButton = GiniBarButton(ofType: .back(title: "Digitalinvoice+"))
+        let backButtonTitle = NSLocalizedStringPreferredFormat("ginibank.digitalinvoice.help.backToInvoice",
+                                                               comment: "Digital Invoice")
+        let backButton = GiniBarButton(ofType: .back(title: backButtonTitle))
         backButton.addAction(self, #selector(dismissViewController))
         navigationItem.leftBarButtonItem = backButton.barButton
 
