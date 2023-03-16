@@ -108,15 +108,10 @@ public class DigitalInvoiceViewController: UIViewController {
         view.backgroundColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2).uiColor()
         let helpButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.help.screenTitle",
                                                                        comment: "Help")
-        let cancelButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.cancelButtonTitle",
-                                                                         comment: "Cancel")
-
         if configuration.bottomNavigationBarEnabled {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: cancelButtonTitle,
-                                                               style: .plain,
-                                                               target: self,
-                                                               action: #selector(closeReturnAssistantOverview))
-
+            let barButton = GiniCancelBarButton()
+            barButton.addAction(self, #selector(closeReturnAssistantOverview))
+            navigationItem.rightBarButtonItem = barButton.barButton
             navigationItem.hidesBackButton = true
         } else {
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: helpButtonTitle,
@@ -124,10 +119,9 @@ public class DigitalInvoiceViewController: UIViewController {
                                                                 target: self,
                                                                 action: #selector(helpButtonTapped(source:)))
 
-            navigationItem.leftBarButtonItem = UIBarButtonItem(title: cancelButtonTitle,
-                                                               style: .plain,
-                                                               target: self,
-                                                               action: #selector(closeReturnAssistantOverview))
+            let barButton = GiniCancelBarButton()
+            barButton.addAction(self, #selector(closeReturnAssistantOverview))
+            navigationItem.leftBarButtonItem = barButton.barButton
         }
 
 
