@@ -10,7 +10,7 @@ We also removed the Component API integration option and unified the public API 
 `GiniConfiguration` is a singleton now.
 You don't need to create a new instance of `GiniConfiguration` just use `GiniConfiguration.shared` instead.
 
-Please, find more details in [Getting started](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/getting-started.html).
+Please, find more details in [Getting started](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta06/getting-started.html).
 
 # Migrate from Compoment API
 
@@ -150,7 +150,7 @@ below:
 
 #### Custom Illustration Views
 
-By implementing the `OnboardingIllustrationAdapter` interface and passing it to either `GiniCapture` or the
+By implementing the `OnboardingIllustrationAdapter` interface and passing it to either `GiniConfiguration` or the
 `OnboardingPage` constructor you can inject any custom view for the illustration.
 
 If you need to animate the illustrations on the onboarding pages implement the `OnboardingIllustrationAdapter` interface to inject a view that can animate images (e.g., `Lottie`) and pass it to the relevant onboarding illustration adapter setters (e.g., 
