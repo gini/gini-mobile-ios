@@ -3,30 +3,45 @@ Customization guide
 
 The Gini Bank SDK components can be customized either through the `GiniBankConfiguration`, the `Localizable.string` file or through the assets. Here you can find a complete guide with the reference to every customizable item.
 
-- [Generic components](#generic-components)
-- [Onboarding screens](#onboarding-screens)
-- [Camera screen](#camera-screen)
-- [Gallery album screen](#gallery-album-screen)
-- [Review screen](#review-screen)
-- [Analysis screen](#analysis-screen)
-- [Help screens](#help-screens)
-- [No result screen](#no-result-screen)
-- [Error screens](#error-screens)
+- [Customization guide](#customization-guide)
+  - [Colors](#colors)
+  - [Typography](#typography)
+  - [Images](#images)
+  - [Text](#text)
+  - [Generic components](#generic-components)
+        - [1. Top Navigation bar](#1-top-navigation-bar)
+        - [2. Bottom Navigation bar](#2-bottom-navigation-bar)
+  - [Onboarding screens](#onboarding-screens)
+  - [Camera screen](#camera-screen)
+    - [Single Page](#single-page)
+    - [Multi-Page](#multi-page)
+    - [Camera](#camera)
+    - [Camera access](#camera-access)
+    - [QR Code Scanning](#qr-code-scanning)
+    - [QR Code Only](#qr-code-only)
+    - [Document Import](#document-import)
+    - [Camera import error handling](#camera-import-error-handling)
+  - [Review screen](#review-screen)
+  - [Analysis screen](#analysis-screen)
+  - [Help screens](#help-screens)
+  - [Gallery album screen](#gallery-album-screen)
+  - [No result screen](#no-result-screen)
+  - [Error screen](#error-screen)
 
 ## Colors
 
 We are providing a global color palette `GiniColors.xcassets` which you are free to override. The custom colors will be then applied on all screens.
-You can find the names of the colors in [GiniColors.xcassets](https://github.com/gini/gini-mobile-ios/tree/new-ui/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/GiniColors.xcassets).
+You can find the names of the colors in [GiniColors.xcassets](https://github.com/gini/gini-mobile-ios/tree/GiniBankSDK%3B3.0.0-beta06/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources/GiniColors.xcassets).
 
  You can view our color palette here:
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FH4WFJ4xaw4YNU4VaJYWiQq%2FiOS-Gini-Capture-SDK-2.0.0-UI-Customisation%3Fnode-id%3D14%253A355%26t%3DwpenBBM8QsagJzOg-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F1985HMF83siAXmysSn3dC6%2FiOS-Gini-Capture-SDK-3.0.0-UI-Customisation%3Fnode-id%3D14%253A355%26t%3DgeuOKnl2Rht74w3Q-1" allowfullscreen></iframe>
 
 ## Typography
 
 We provide a global typography based on text appearance styles from `UIFont.TextStyle`. 
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FH4WFJ4xaw4YNU4VaJYWiQq%2FiOS-Gini-Capture-SDK-2.0.0-UI-Customisation%3Fnode-id%3D123%253A2326%26t%3DwpenBBM8QsagJzOg-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F1985HMF83siAXmysSn3dC6%2FiOS-Gini-Capture-SDK-3.0.0-UI-Customisation%3Fnode-id%3D1099%253A11147%26t%3DgeuOKnl2Rht74w3Q-1" allowfullscreen></iframe>
 
 To override them in your application please use `GiniBankConfiguration.updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle)`. For example:
 
@@ -44,7 +59,7 @@ To override them in your application please use `GiniBankConfiguration.updateFon
 
 ## Images
 
-Images customization is done via overriding of [GiniImages.xcassets](https://github.com/gini/gini-mobile-ios/tree/new-ui/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/GiniImages.xcassets) resources.
+Images customization is done via overriding of [GiniImages.xcassets](https://github.com/gini/gini-mobile-ios/tree/GiniBankSDK%3B3.0.0-beta06/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources/GiniImages.xcassets) resources.
 
 ## Text
 
@@ -52,7 +67,7 @@ Images customization is done via overriding of [GiniImages.xcassets](https://git
 
  If you plan to use a custom name for localizable strings, you need to set it in `GiniBankConfiguration.localizedStringsTableName`.
 
- You can find all the string resources in [Localizable.strings](https://github.com/gini/gini-mobile-ios/blob/new-ui/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/de.lproj/Localizable.strings).
+ You can find all the string resources in [Localizable.strings](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta06/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources/de.lproj/Localizable.strings).
 
 ## Generic components
 
@@ -144,7 +159,7 @@ Please find more information in the [Import PDFs and images guide](https://devel
 You can show a custom loading indicator with custom animation support on the process button.
 Your custom loading indicator should implement `OnButtonLoadingIndicatorAdapter` interface and be passed  to `GiniBankConfiguration.shared.onButtonLoadingIndicator`.
 
-The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0-beta05/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift#L36).
+The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta06/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift#L36).
 
 ## Analysis screen
 
@@ -153,7 +168,7 @@ The example implementation is available [here](https://github.com/gini/gini-mobi
 You can show a custom loading indicator with custom animation support.
 Your custom loading indicator should implement `CustomLoadingIndicatorAdapter` interface and be passed  to `GiniBankConfiguration.shared.customLoadingIndicator`.
 
-The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0-beta05/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift).
+The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta06/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift).
 
 ## Help screens
 
@@ -170,7 +185,7 @@ You can pass the title and view controller for each screen to the
         configuration.customMenuItems = [customMenuItem]
  ```           
  
-The example implementation is availible [here](https://github.com/gini/gini-mobile-ios/tree/new-ui/CaptureSDK/GiniCaptureSDKExample/Example%20Swift).
+The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta06/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomMenuItemViewController.swift).
 
 You can also disable the supported formats help screen by passing `false` to
 `GiniBankConfiguration.shared.shouldShowSupportedFormatsScreen`.
@@ -192,4 +207,4 @@ You can find more details [here](https://developer.gini.net/gini-mobile-ios/Gini
 
 <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F1985HMF83siAXmysSn3dC6%2FiOS-Gini-Capture-SDK-3.0.0-UI-Customisation%3Fnode-id%3D263%253A6858%26t%3DcRAvcUKVlwGtGpuh-1" allowfullscreen></iframe>
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta05/features.html#error-screen-customization).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta06/features.html#error-screen-customization).
