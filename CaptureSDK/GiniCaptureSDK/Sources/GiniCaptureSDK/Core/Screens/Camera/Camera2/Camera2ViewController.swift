@@ -134,7 +134,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         navigationItem.leftBarButtonItem = nil
         navigationItem.hidesBackButton = true
         if !containsImage {
-            let cancelBarButton = GiniCancelBarButton()
+            let cancelBarButton = GiniBarButton(ofType: .cancel)
             cancelBarButton.addAction(cameraButtonsViewModel, #selector(cameraButtonsViewModel.cancelPressed))
             navigationItem.rightBarButtonItem = cancelBarButton.barButton
         } else {

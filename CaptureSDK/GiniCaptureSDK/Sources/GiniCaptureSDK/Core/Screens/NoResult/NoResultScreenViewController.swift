@@ -170,7 +170,7 @@ final class NoResultScreenViewController: UIViewController {
     }
 
     private func configureCustomTopNavigationBar() {
-        let cancelButton = GiniCancelBarButton()
+        let cancelButton = GiniBarButton(ofType: .cancel)
         cancelButton.addAction(viewModel, #selector(viewModel.didPressCancell))
 
         if giniConfiguration.bottomNavigationBarEnabled {

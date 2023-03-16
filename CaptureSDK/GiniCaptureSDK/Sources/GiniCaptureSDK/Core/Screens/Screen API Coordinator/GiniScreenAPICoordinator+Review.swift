@@ -38,7 +38,7 @@ extension GiniScreenAPICoordinator: ReviewViewControllerDelegate {
                                           giniConfiguration: giniConfiguration)
             vc.delegate = self
 
-            let cancelButton = GiniCancelBarButton()
+            let cancelButton = GiniBarButton(ofType: .cancel)
             cancelButton.addAction(self, #selector(closeScreen))
 
             if giniConfiguration.bottomNavigationBarEnabled {

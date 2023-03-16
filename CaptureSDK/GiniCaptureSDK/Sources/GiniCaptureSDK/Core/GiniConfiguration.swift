@@ -145,6 +145,28 @@ import GiniBankAPILibrary
                                 borderWidth: 0,
                                 shadowRadius: 0,
                                 withBlurEffect: false)
+
+    // MARK: - Navigation Button Configuration
+
+    /**
+     Sets custom icon for the every Cancel button on the top navigation bar
+     */
+    public var giniNavigationBarButtonCancelButtonIcon: UIImage?
+
+    /**
+     Sets custom icon for the every Help button on the top navigation bar
+     */
+    public var giniNavigationBarButtonHelpButtonIcon: UIImage?
+
+    /**
+     Sets custom icon for the every Back button on the top navigation bar
+     */
+    public var giniNavigationBarButtonBackButtonIcon: UIImage?
+
+    /**
+     Sets custom icon for the every Done button on the top navigation bar
+     */
+    public var giniNavigationBarButtonDoneButtonIcon: UIImage?
     
     // MARK: - TODO DELETE
     /**
