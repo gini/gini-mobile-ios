@@ -28,15 +28,15 @@
                                     </constraints>
                                 </switch>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" placeholderIntrinsicWidth="248" placeholderIntrinsicHeight="36" insetsLayoutMarginsFromSafeArea="NO" text="Nike Sportswear Air Max 97 - Sneaker Low…" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.90000000000000002" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ci3-Xk-SLN">
-                                    <rect key="frame" x="81" y="16" width="251" height="36"/>
+                                    <rect key="frame" x="81" y="16" width="221" height="36"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" horizontalHuggingPriority="1000" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ogc-mD-pz6">
-                                    <rect key="frame" x="348" y="16" width="50" height="32"/>
+                                <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" horizontalHuggingPriority="1000" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ogc-mD-pz6">
+                                    <rect key="frame" x="318" y="16" width="80" height="32"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="kYO-Wq-hMQ"/>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="kYO-Wq-hMQ"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                     <color key="tintColor" systemColor="labelColor"/>
@@ -76,6 +76,7 @@
                                 <constraint firstItem="gxv-Uq-3b2" firstAttribute="leading" secondItem="CUJ-3d-daD" secondAttribute="trailing" constant="16" id="1em-Ut-DuO"/>
                                 <constraint firstAttribute="bottom" secondItem="gxv-Uq-3b2" secondAttribute="bottom" constant="16" id="3vh-hu-Phz"/>
                                 <constraint firstItem="6LC-kT-CZp" firstAttribute="top" secondItem="utZ-Ul-3Ih" secondAttribute="top" id="8SD-r7-sCI"/>
+                                <constraint firstItem="ogc-mD-pz6" firstAttribute="width" relation="greaterThanOrEqual" secondItem="GOU-G0-cKp" secondAttribute="width" id="Fr6-VB-cOu"/>
                                 <constraint firstAttribute="trailing" secondItem="GOU-G0-cKp" secondAttribute="trailing" constant="16" id="LOk-ya-d4E"/>
                                 <constraint firstItem="CUJ-3d-daD" firstAttribute="leading" secondItem="utZ-Ul-3Ih" secondAttribute="leading" constant="16" id="Qaw-sc-nhH"/>
                                 <constraint firstItem="ci3-Xk-SLN" firstAttribute="top" secondItem="utZ-Ul-3Ih" secondAttribute="top" constant="16" id="RUI-hM-caR"/>

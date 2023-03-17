@@ -169,7 +169,7 @@ public class DigitalInvoiceViewController: UIViewController {
             totalLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor, constant: Constants.padding),
             totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: totalValueLabel.leadingAnchor, constant: Constants.padding),
 
-            totalValueLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor, constant: Constants.padding),
+            totalValueLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor, constant: Constants.padding / 2),
             totalValueLabel.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
             totalValueLabel.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: -Constants.labelPadding),
             totalValueLabel.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor)
