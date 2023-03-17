@@ -119,8 +119,7 @@ final class GalleryCoordinator: NSObject, Coordinator {
     }
     
     // MARK: - Bar button actions
-    
-    @objc fileprivate func cancelAction() {
+    @objc func cancelAction() {
         selectedImageDocuments = []
         delegate?.gallery(self, didCancel: ())
     }
