@@ -110,12 +110,13 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
 
             payButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.payButtonHeight),
 
-            totalContainerView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: Constants.padding),
+            totalContainerView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: Constants.padding / 2),
             totalContainerView.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: -Constants.labelPadding),
 
-            totalLabel.topAnchor.constraint(equalTo: totalContainerView.topAnchor),
+            totalLabel.topAnchor.constraint(greaterThanOrEqualTo: totalContainerView.topAnchor),
             totalLabel.leadingAnchor.constraint(equalTo: totalContainerView.leadingAnchor),
-            totalLabel.bottomAnchor.constraint(equalTo: totalContainerView.bottomAnchor),
+            totalLabel.centerYAnchor.constraint(equalTo: totalContainerView.centerYAnchor),
+            totalLabel.bottomAnchor.constraint(lessThanOrEqualTo: totalContainerView.bottomAnchor),
             totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: totalValueLabel.leadingAnchor, constant: Constants.padding),
 
             totalValueLabel.topAnchor.constraint(equalTo: totalContainerView.topAnchor),
