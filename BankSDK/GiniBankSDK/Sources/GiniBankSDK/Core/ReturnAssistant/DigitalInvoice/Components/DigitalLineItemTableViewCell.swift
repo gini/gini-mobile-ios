@@ -14,7 +14,7 @@ protocol DigitalLineItemTableViewCellDelegate: AnyObject {
 }
 
 class DigitalLineItemTableViewCell: UITableViewCell {
-
+    static let reuseIdentifier = "DigitalLineItemTableViewCell"
     @IBOutlet weak var modeSwitch: UISwitch!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var editButton: UIButton!
