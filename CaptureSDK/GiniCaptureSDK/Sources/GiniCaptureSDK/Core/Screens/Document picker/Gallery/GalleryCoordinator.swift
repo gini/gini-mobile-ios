@@ -124,7 +124,7 @@ final class GalleryCoordinator: NSObject, Coordinator {
         delegate?.gallery(self, didCancel: ())
     }
     
-    @objc fileprivate func openImages() {
+    @objc func openImages() {
         DispatchQueue.main.async {
             let imageDocuments: [GiniImageDocument] = self.selectedImageDocuments.map { $0.imageDocument }
             self.delegate?.gallery(self, didSelectImageDocuments: imageDocuments)

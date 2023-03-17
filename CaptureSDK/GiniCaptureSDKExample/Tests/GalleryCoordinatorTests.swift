@@ -51,7 +51,7 @@ final class GalleryCoordinatorTests: XCTestCase {
         let delegate = GalleryCoordinatorDelegateMock()
         coordinator.delegate = delegate
         selectImage(at: IndexPath(row: 0, section: 0), in: galleryManager.albums[2]) { _ in
-            _ = self.coordinator.cancelButton.target?.perform(self.coordinator.cancelButton.action)
+            self.coordinator.cancelAction()
 
             XCTAssertTrue(delegate.didCancelGallery,
                           "gallery image picking should be cancel after tapping cancel button")
@@ -67,9 +67,7 @@ final class GalleryCoordinatorTests: XCTestCase {
         selectImage(at: IndexPath(row: 0, section: 0), in: galleryManager.albums[2]) { _ in
 
             self.selectImage(at: IndexPath(row: 1, section: 0), in: self.galleryManager.albums[2]) { _ in
-                if let innerButton = self.coordinator.openImagesButton.customView as? UIButton {
-                    innerButton.simulateEvent(.touchUpInside)
-                }
+                self.coordinator.openImages()
                 let expect = self.expectation(for: NSPredicate(value: true),
                                               evaluatedWith: delegate.didOpenImages,
                                               handler: nil)
