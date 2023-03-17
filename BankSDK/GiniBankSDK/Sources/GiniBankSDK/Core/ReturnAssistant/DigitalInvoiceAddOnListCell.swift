@@ -9,6 +9,7 @@ import GiniCaptureSDK
 import UIKit
 
 class DigitalInvoiceAddOnListCell: UITableViewCell {
+    static let reuseIdentifier = "DigitalInvoiceAddOnListCell"
     private lazy var addOnStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
