@@ -109,23 +109,18 @@ public final class GiniBarButton {
         case .cancel:
             buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.analysis.back",
                                                            comment: "Cancel")
-            icon = configuration.giniNavigationBarCancelButtonIcon
+            icon = UIImageNamedPreferred(named: "barButton_cancel")
         case .help:
             buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.camera.help",
                                                            comment: "Help")
-            icon = configuration.giniNavigationBarHelpButtonIcon
+            icon = UIImageNamedPreferred(named: "barButton_help")
         case .back(title: let title):
             buttonTitle = title
-
-            if let backIcon = configuration.giniNavigationBarBackButtonIcon {
-                icon = backIcon
-            } else {
-                icon = UIImageNamedPreferred(named: "arrowBack")
-            }
+            icon = UIImageNamedPreferred(named: "barButton_back")
         case .done:
             buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.imagepicker.openbutton",
                                                            comment: "Done")
-            icon = configuration.giniNavigationBarDoneButtonIcon
+            icon = UIImageNamedPreferred(named: "barButton_done")
         }
 
         let buttonTitleIsEmpty = buttonTitle == nil || buttonTitle!.isEmpty
