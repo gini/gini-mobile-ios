@@ -104,8 +104,7 @@ final class PriceLabelView: UIView {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.padding),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: currencyLabel.leadingAnchor,
-                                                 constant: -Constants.padding),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
 
             priceTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Constants.labelPadding),
             priceTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
