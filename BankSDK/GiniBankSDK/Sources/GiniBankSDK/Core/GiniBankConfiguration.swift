@@ -956,11 +956,6 @@ public final class GiniBankConfiguration: NSObject {
      Should be set if the default name "Localizable.strings" are not used.
      */
     public var localizedStringsTableName: String?
-
-    /**
-     Sets if multiple currencies are supported
-     */
-    public var multipleCurrenciesEnabled: Bool = false
     
     /**
      Set dictionary of fonts for available text styles. Used internally.
@@ -1078,8 +1073,6 @@ public final class GiniBankConfiguration: NSObject {
                 configuration.updateFont(newFont, for: textStyle)
             }
         }
-
-        configuration.multipleCurrenciesEnabled = multipleCurrenciesEnabled
 
         configuration.primaryButtonConfiguration = self.primaryButtonConfiguration
         configuration.secondaryButtonConfiguration = self.secondaryButtonConfiguration
@@ -1232,8 +1225,6 @@ public final class GiniBankConfiguration: NSObject {
                                 
         giniBankConfiguration.shouldShowDragAndDropTutorial = configuration.shouldShowDragAndDropTutorial
         giniBankConfiguration.bottomNavigationBarEnabled = configuration.bottomNavigationBarEnabled
-
-        giniBankConfiguration.multipleCurrenciesEnabled = configuration.multipleCurrenciesEnabled
     }
     
     /**

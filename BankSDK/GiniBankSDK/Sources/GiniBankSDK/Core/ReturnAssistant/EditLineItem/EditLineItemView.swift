@@ -149,13 +149,11 @@ final class EditLineItemView: UIView {
         viewModel?.didTapCancel()
     }
 
-    /*Use this when currency picker is disabled for saving the currency:
-     currency: priceLabel.currencyValue, */
     @objc
     private func didTapSave() {
         viewModel?.didTapSave(name: nameLabel.text,
                               price: priceLabel.priceValue,
-                              currency: viewModel?.currency ?? "EUR", // Here
+                              currency: priceLabel.currencyValue,
                               quantity: quantityView.quantity)
     }
 }
