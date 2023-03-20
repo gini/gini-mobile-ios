@@ -72,7 +72,7 @@ final class NameLabelView: UIView {
 
 // MARK: - UITextFieldDelegate
 extension NameLabelView: UITextFieldDelegate {
-    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
