@@ -49,6 +49,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
 
             [nameLabel, editButton, unitPriceLabel, priceLabel].forEach { view in
                 view.alpha = viewModel.lineItem.selectedState == .selected ? 1 : 0.5
+                editButton.isEnabled = viewModel.lineItem.selectedState == .selected
             }
 
             switch viewModel.lineItem.selectedState {

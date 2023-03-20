@@ -124,7 +124,6 @@ extension DigitalInvoice {
 }
 
 extension ReturnReason {
-    
     var labelInLocalLanguageOrGerman: String {
         get {
             localizedLabels[Locale.current.languageCode ?? "de"] ?? localizedLabels["de"] ?? ""
