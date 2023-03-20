@@ -68,11 +68,11 @@ final class CurrencyPickerView: UIView {
 extension CurrencyPickerView: UITableViewDelegate, UITableViewDataSource {
     // MARK: - UITableViewDataSource
 
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return currencies.count
     }
 
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CurrencyPickerCell.reuseIdentifier,
                                                  for: indexPath) as! CurrencyPickerCell
         cell.currency = currencies[indexPath.row].rawValue
