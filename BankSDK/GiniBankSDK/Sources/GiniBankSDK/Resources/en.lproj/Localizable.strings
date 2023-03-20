@@ -47,6 +47,11 @@
 "ginibank.digitalinvoice.total.addArticleButtonTitle" = "Add article";
 "ginibank.digitalinvoice.total.accessibilitylabel" = "Total: %@";
 
+"ginibank.digitalinvoice.edit.unitPrice" = "Unit price";
+"ginibank.digitalinvoice.edit.name" = "Name";
+"ginibank.digitalinvoice.edit.quantity" = "Quantity";
+"ginibank.digitalinvoice.edit.title" = "Edit article";
+
 "ginibank.digitalinvoice.footermessage" = "Please double check if the amount is correct and add further articles if necessary";
 "ginibank.digitalinvoice.totalcaptionlabeltext" = "Total";
 "ginibank.digitalinvoice.totalexplanationlabeltext" = "Incl. shipping, discount and so on.";
