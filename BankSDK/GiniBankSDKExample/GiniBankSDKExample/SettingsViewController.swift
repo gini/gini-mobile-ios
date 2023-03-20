@@ -27,7 +27,6 @@ final class SettingsViewController: UIViewController {
     @IBOutlet weak var flashToggleSwitch: UISwitch!
     @IBOutlet weak var bottomBarSwitch: UISwitch!
     @IBOutlet weak var onlyQRCodeScanningSwitch: UISwitch!
-    @IBOutlet weak var multipleCurrenciesSwitch: UISwitch!
 
     @IBAction func fileImportOptions(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
