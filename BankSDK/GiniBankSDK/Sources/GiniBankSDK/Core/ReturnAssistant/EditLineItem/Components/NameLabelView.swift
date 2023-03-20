@@ -17,6 +17,7 @@ final class NameLabelView: UIView {
         }
         set {
             nameTextField.text = newValue
+            nameTextField.accessibilityValue = newValue
         }
     }
 
@@ -25,7 +26,10 @@ final class NameLabelView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnote]
         label.textColor = .GiniBank.dark6
-        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.name", comment: "Name")
+        label.adjustsFontForContentSizeCategory = true
+        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.name", comment: "Name")
+        label.text = title
+        label.accessibilityValue = title
         return label
     }()
 
@@ -35,6 +39,7 @@ final class NameLabelView: UIView {
         textField.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
+        textField.adjustsFontForContentSizeCategory = true
         return textField
     }()
 

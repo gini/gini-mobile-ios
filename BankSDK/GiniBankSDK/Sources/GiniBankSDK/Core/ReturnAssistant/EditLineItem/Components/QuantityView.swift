@@ -16,8 +16,11 @@ final class QuantityView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnote]
         label.textColor = .GiniBank.dark6
-        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.quantity",
-                                                              comment: "Quantity")
+        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.quantity",
+                                                             comment: "Quantity")
+        label.text = title
+        label.accessibilityValue = title
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
@@ -27,6 +30,7 @@ final class QuantityView: UIView {
         textField.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         textField.isUserInteractionEnabled = false
         textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.adjustsFontForContentSizeCategory = true
         return textField
     }()
 
@@ -60,6 +64,7 @@ final class QuantityView: UIView {
         }
         set {
             quantityTextField.text = "\(newValue)"
+            quantityTextField.accessibilityValue = "\(newValue)"
         }
     }
 
@@ -104,7 +109,7 @@ final class QuantityView: UIView {
             minusButton.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor),
             minusButton.topAnchor.constraint(equalTo: buttonContainerView.topAnchor),
             minusButton.bottomAnchor.constraint(equalTo: buttonContainerView.bottomAnchor),
-            minusButton.trailingAnchor.constraint(equalTo: plusButton.leadingAnchor, constant: -Constants.padding),
+            minusButton.trailingAnchor.constraint(equalTo: plusButton.leadingAnchor, constant: -Constants.labelPadding),
             minusButton.heightAnchor.constraint(equalToConstant: Constants.buttonSize.height),
             minusButton.widthAnchor.constraint(equalToConstant: Constants.buttonSize.width),
 
@@ -138,6 +143,6 @@ private extension QuantityView {
         static let maximumQuantity: Int = 1000
         static let padding: CGFloat = 16
         static let labelPadding: CGFloat = 4
-        static let buttonSize = CGSize(width: 24, height: 24)
+        static let buttonSize = CGSize(width: 44, height: 44)
     }
 }
