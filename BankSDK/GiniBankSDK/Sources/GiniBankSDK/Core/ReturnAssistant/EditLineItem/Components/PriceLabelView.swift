@@ -41,11 +41,6 @@ final class PriceLabelView: UIView {
         label.font = configuration.textStyleFonts[.body]
         label.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6).uiColor()
 
-        if configuration.multipleCurrenciesEnabled {
-            let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(showCurrencyPicker))
-            label.addGestureRecognizer(tapRecognizer)
-            label.isUserInteractionEnabled = true
-        }
         return label
     }()
 
@@ -69,11 +64,7 @@ final class PriceLabelView: UIView {
             return currencyLabel.text?.lowercased() ?? ""
         }
         set {
-            if configuration.multipleCurrenciesEnabled {
-                currencyLabel.text = newValue.uppercased() + " ▼"
-            } else {
-                currencyLabel.text = newValue.uppercased()
-            }
+            currencyLabel.text = newValue.uppercased()
         }
     }
 

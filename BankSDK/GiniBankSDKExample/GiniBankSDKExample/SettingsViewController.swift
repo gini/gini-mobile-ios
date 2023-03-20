@@ -83,11 +83,6 @@ final class SettingsViewController: UIViewController {
         delegate?.settings(settingViewController: self, didChangeConfiguration: giniConfiguration)
     }
 
-    @IBAction func multipleCurrenciesSwitched(_ sender: UISwitch) {
-        giniConfiguration.multipleCurrenciesEnabled = sender.isOn
-        delegate?.settings(settingViewController: self, didChangeConfiguration: giniConfiguration)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         bottomBarSwitch.setOn(giniConfiguration.bottomNavigationBarEnabled, animated: false)
@@ -96,7 +91,6 @@ final class SettingsViewController: UIViewController {
         multipageSwitch.setOn(giniConfiguration.multipageEnabled, animated: false)
         flashToggleSwitch.setOn(giniConfiguration.flashToggleEnabled, animated: false)
         onlyQRCodeScanningSwitch.setOn(giniConfiguration.onlyQRCodeScanningEnabled, animated: false)
-        multipleCurrenciesSwitch.setOn(giniConfiguration.multipleCurrenciesEnabled, animated: false)
         flashToggleSwitch.isEnabled = isFlashTogglSettingEnabled()
         switch giniConfiguration.fileImportSupportedTypes {
         case .none:
