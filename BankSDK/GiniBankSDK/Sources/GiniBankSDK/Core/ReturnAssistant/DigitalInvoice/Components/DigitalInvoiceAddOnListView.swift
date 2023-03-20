@@ -12,6 +12,7 @@ final class DigitalInvoiceAddOnListView: UIView {
     private let configuration = GiniBankConfiguration.shared
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.body]
         label.textColor = .GiniBank.dark7
@@ -21,6 +22,7 @@ final class DigitalInvoiceAddOnListView: UIView {
 
     private lazy var valueLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .right
         label.font = configuration.textStyleFonts[.bodyBold]
@@ -34,6 +36,8 @@ final class DigitalInvoiceAddOnListView: UIView {
 
         titleLabel.text = addOnTitle
         valueLabel.text = addOnPrice.string
+        titleLabel.accessibilityValue = addOnTitle
+        valueLabel.accessibilityValue = addOnPrice.string
         setupViews()
         setupConstraints()
     }
@@ -43,6 +47,7 @@ final class DigitalInvoiceAddOnListView: UIView {
     }
 
     private func setupViews() {
+        titleLabel.numberOfLines = 0
         addSubview(titleLabel)
         addSubview(valueLabel)
     }
