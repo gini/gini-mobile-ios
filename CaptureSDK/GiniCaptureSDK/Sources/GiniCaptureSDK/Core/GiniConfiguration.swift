@@ -466,11 +466,6 @@ import GiniBankAPILibrary
             errorLogger.customErrorLogger = newValue
         }
     }
-
-    /**
-     Sets if multiple currencies are supported
-     */
-    public var multipleCurrenciesEnabled: Bool = false
     
     /**
      Should be set if the default name "Localizable.strings" are not used.
