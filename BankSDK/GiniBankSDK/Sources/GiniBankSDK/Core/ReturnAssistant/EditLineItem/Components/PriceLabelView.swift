@@ -20,8 +20,11 @@ final class PriceLabelView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.footnote]
         label.textColor = .GiniBank.dark6
-        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.unitPrice",
-                                                              comment: "Unit price")
+        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.unitPrice",
+                                                             comment: "Unit price")
+        label.text = title
+        label.accessibilityValue = title
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
@@ -32,6 +35,7 @@ final class PriceLabelView: UIView {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
         textField.keyboardType = .numberPad
+        textField.adjustsFontForContentSizeCategory = true
         return textField
     }()
 
@@ -40,7 +44,7 @@ final class PriceLabelView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.body]
         label.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.light6).uiColor()
-
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
@@ -56,6 +60,7 @@ final class PriceLabelView: UIView {
             }
             let string = sign + (Price.stringWithoutSymbol(from: abs(newValue)) ?? "")
             priceTextField.text = string
+            priceTextField.accessibilityValue = string
         }
     }
 
@@ -65,6 +70,7 @@ final class PriceLabelView: UIView {
         }
         set {
             currencyLabel.text = newValue.uppercased()
+            currencyLabel.accessibilityValue = newValue.uppercased()
         }
     }
 
