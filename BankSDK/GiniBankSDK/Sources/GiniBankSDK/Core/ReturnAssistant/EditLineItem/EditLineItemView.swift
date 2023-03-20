@@ -140,10 +140,10 @@ final class EditLineItemView: UIView {
                                               constant: Constants.verticalPadding),
 
             titleLabel.centerYAnchor.constraint(equalTo: cancelButton.centerYAnchor),
-            titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: cancelButton.leadingAnchor,
-                                                constant: Constants.horizontalPadding),
+            titleLabel.leadingAnchor.constraint(equalTo: cancelButton.trailingAnchor,
+                                                constant: Constants.titlePadding),
             titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: saveButton.leadingAnchor,
-                                                constant: -Constants.horizontalPadding),
+                                                constant: -Constants.titlePadding),
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
 
             saveButton.topAnchor.constraint(equalTo: topAnchor,
@@ -220,6 +220,7 @@ private extension EditLineItemView {
     enum Constants {
         static let verticalPadding: CGFloat = 24
         static let horizontalPadding: CGFloat = 16
+        static let titlePadding: CGFloat = 4
         static let stackViewPadding: CGFloat = 72
         static let stackViewSpacing: CGFloat = 8
         static let currencyPickerPadding: CGFloat = 8
