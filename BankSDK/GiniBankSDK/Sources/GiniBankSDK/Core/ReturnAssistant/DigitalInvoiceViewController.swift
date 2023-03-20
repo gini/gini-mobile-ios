@@ -44,8 +44,11 @@ final class DigitalInvoiceViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        button.setTitle(NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.paybutton.title",
-                                                                 comment: "Proceed"), for: .normal)
+        let buttonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.paybutton.title",
+                                                                   comment: "Proceed")
+        button.setTitle(buttonTitle, for: .normal)
+        button.accessibilityValue = buttonTitle
+
         button.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
         button.isEnabled = viewModel.isPayButtonEnabled()
         return button
@@ -54,10 +57,13 @@ final class DigitalInvoiceViewController: UIViewController {
     private lazy var totalLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontForContentSizeCategory = true
         label.font = configuration.textStyleFonts[.body]
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
-        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.totalpricetitle",
-                                                              comment: "Total")
+        let labelTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.totalpricetitle",
+                                                                  comment: "Total")
+        label.text = labelTitle
+        label.accessibilityValue = labelTitle
         return label
     }()
 
@@ -68,6 +74,8 @@ final class DigitalInvoiceViewController: UIViewController {
         label.font = configuration.textStyleFonts[.title1Bold]
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         label.text = viewModel.invoice?.total?.string
+        label.accessibilityValue = viewModel.invoice?.total?.string
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
@@ -100,6 +108,7 @@ final class DigitalInvoiceViewController: UIViewController {
                                                                style: .plain,
                                                                target: self,
                                                                action: #selector(closeReturnAssistantOverview))
+            navigationItem.rightBarButtonItem?.accessibilityValue = cancelButtonTitle
 
             navigationItem.hidesBackButton = true
         } else {
@@ -107,14 +116,14 @@ final class DigitalInvoiceViewController: UIViewController {
                                                                 style: .plain,
                                                                 target: self,
                                                                 action: #selector(helpButtonTapped(source:)))
+            navigationItem.rightBarButtonItem?.accessibilityValue = helpButtonTitle
 
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: cancelButtonTitle,
                                                                style: .plain,
                                                                target: self,
                                                                action: #selector(closeReturnAssistantOverview))
+            navigationItem.leftBarButtonItem?.accessibilityValue = cancelButtonTitle
         }
-
-
 
         view.addSubview(tableView)
         view.addSubview(buttonContainerView)
@@ -144,7 +153,7 @@ final class DigitalInvoiceViewController: UIViewController {
             totalLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor, constant: Constants.padding),
             totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: totalValueLabel.leadingAnchor, constant: Constants.padding),
 
-            totalValueLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor, constant: Constants.padding),
+            totalValueLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor, constant: Constants.padding / 2),
             totalValueLabel.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
             totalValueLabel.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: -Constants.labelPadding),
             totalValueLabel.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor)
@@ -227,6 +236,7 @@ final class DigitalInvoiceViewController: UIViewController {
             navigationBarBottomAdapter?.updateProceedButtonState(enabled: viewModel.isPayButtonEnabled())
         } else {
             totalValueLabel.text = viewModel.invoice?.total?.string
+            totalValueLabel.accessibilityValue = viewModel.invoice?.total?.string
 
             if viewModel.isPayButtonEnabled() {
                 payButton.isEnabled = true
@@ -236,16 +246,6 @@ final class DigitalInvoiceViewController: UIViewController {
                 payButton.configure(with: configuration.secondaryButtonConfiguration)
             }
         }
-    }
-    
-    private func payButtonAccessibilityLabel() -> String {
-        guard let invoice = viewModel.invoice else {
-            return .ginibankLocalized(resource: DigitalInvoiceStrings.disabledPayButtonTitle)
-        }
-        
-        return String.localizedStringWithFormat(DigitalInvoiceStrings.payButtonTitleAccessibilityLabel.localizedGiniBankFormat,
-                                                invoice.numSelected,
-                                                invoice.numTotal)
     }
 
     @objc func helpButtonTapped(source: UIButton) {
