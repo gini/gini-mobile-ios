@@ -39,6 +39,12 @@
 "ginibank.digitalinvoice.headermessage.secondary" = "Du kannst nun die Artikel abwählen, die du zurückschicken willst.";
 "ginibank.digitalinvoice.total.addArticleButtonTitle" = "Artikel hinzufügen";
 "ginibank.digitalinvoice.total.accessibilitylabel" = "Total: %@";
+
+"ginibank.digitalinvoice.edit.unitPrice" = "Einzelpreis";
+"ginibank.digitalinvoice.edit.name" = "Name";
+"ginibank.digitalinvoice.edit.quantity" = "Anzahl";
+"ginibank.digitalinvoice.edit.title" = "Artikel bearbeiten";
+
 "ginibank.digitalinvoice.footermessage" = "Bitte überprüfe vor der Zahlung, ob alles in Ordnung ist und füge eventuell fehlende Artikel hinzu.";
 "ginibank.digitalinvoice.totalcaptionlabeltext" = "Gesamt";
 "ginibank.digitalinvoice.totalexplanationlabeltext" = "Inkl. Versandkosten, Rabatt usw.";
