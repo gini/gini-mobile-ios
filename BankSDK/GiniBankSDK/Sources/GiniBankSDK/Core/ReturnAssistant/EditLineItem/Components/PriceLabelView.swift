@@ -123,12 +123,12 @@ final class PriceLabelView: UIView {
 
 // MARK: - UITextFieldDelegate
 extension PriceLabelView: UITextFieldDelegate {
-    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
 
-    public func textField(_ textField: UITextField,
+    func textField(_ textField: UITextField,
                           shouldChangeCharactersIn range: NSRange,
                           replacementString string: String) -> Bool {
 
