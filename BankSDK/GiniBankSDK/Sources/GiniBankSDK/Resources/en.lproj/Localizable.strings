@@ -79,6 +79,7 @@
 "ginibank.digitalinvoice.backbutton" = "Back";
 
 "ginibank.digitalinvoice.help.screenTitle" = "Help";
+"ginibank.digitalinvoice.help.backToInvoice" = "Digital invoice";
 "ginibank.digitalinvoice.help.title1" = "1. How does a digital invoice work?";
 "ginibank.digitalinvoice.help.description1" = "We extracted all articles from your invoice and listed them for you. In case you want to return an ordered article or just partly pay your invoice, you simply deselect the article and the new total will be calculated automatically. ";
 "ginibank.digitalinvoice.help.title2" = "2. How can I edit an article?";
