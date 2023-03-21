@@ -16,8 +16,10 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        button.setTitle(NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.paybutton.title",
-                                                                 comment: "Proceed"), for: .normal)
+        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.paybutton.title",
+                                                             comment: "Proceed")
+        button.setTitle(title, for: .normal)
+        button.accessibilityValue = title
         return button
     }()
 
@@ -30,6 +32,8 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
                                               left: Constants.helpButtonInset,
                                               bottom: Constants.helpButtonInset,
                                               right: Constants.helpButtonInset)
+        button.accessibilityValue = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.help.screenTitle",
+                                                                             comment: "Help")
         return button
     }()
 
@@ -38,8 +42,11 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = configuration.textStyleFonts[.body]
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
-        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.totalpricetitle",
-                                                              comment: "Total")
+        label.adjustsFontForContentSizeCategory = true
+        let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.totalpricetitle",
+                                                            comment: "Total")
+        label.text = text
+        label.accessibilityValue = text
         return label
     }()
 
@@ -47,6 +54,7 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .right
+        label.adjustsFontForContentSizeCategory = true
         label.font = configuration.textStyleFonts[.title1Bold]
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         return label
@@ -72,6 +80,7 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
 
     func updatePrice(with price: String?) {
         totalValueLabel.text = price
+        totalValueLabel.accessibilityValue = price
     }
 
     func setProceedButtonState(enabled: Bool) {
@@ -101,12 +110,13 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
 
             payButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.payButtonHeight),
 
-            totalContainerView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: Constants.padding),
+            totalContainerView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: Constants.padding / 2),
             totalContainerView.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: -Constants.labelPadding),
 
-            totalLabel.topAnchor.constraint(equalTo: totalContainerView.topAnchor),
+            totalLabel.topAnchor.constraint(greaterThanOrEqualTo: totalContainerView.topAnchor),
             totalLabel.leadingAnchor.constraint(equalTo: totalContainerView.leadingAnchor),
-            totalLabel.bottomAnchor.constraint(equalTo: totalContainerView.bottomAnchor),
+            totalLabel.centerYAnchor.constraint(equalTo: totalContainerView.centerYAnchor),
+            totalLabel.bottomAnchor.constraint(lessThanOrEqualTo: totalContainerView.bottomAnchor),
             totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: totalValueLabel.leadingAnchor, constant: Constants.padding),
 
             totalValueLabel.topAnchor.constraint(equalTo: totalContainerView.topAnchor),

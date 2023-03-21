@@ -14,7 +14,7 @@ protocol DigitalLineItemTableViewCellDelegate: AnyObject {
 }
 
 class DigitalLineItemTableViewCell: UITableViewCell {
-
+    static let reuseIdentifier = "DigitalLineItemTableViewCell"
     @IBOutlet weak var modeSwitch: UISwitch!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var editButton: UIButton!
@@ -30,15 +30,18 @@ class DigitalLineItemTableViewCell: UITableViewCell {
 
             if let nameLabelString = viewModel.nameLabelString {
                 nameLabel.text = nameLabelString
+                nameLabel.accessibilityValue = nameLabelString
             }
 
             if let priceString = viewModel.totalPriceString {
                 priceLabel.text = priceString
+                priceLabel.accessibilityValue = priceString
                 let format = DigitalInvoiceStrings.totalAccessibilityLabel.localizedGiniBankFormat
                 priceLabel.accessibilityLabel = String.localizedStringWithFormat(format, priceString)
             }
 
             unitPriceLabel.text = viewModel.unitPriceString
+            unitPriceLabel.accessibilityValue = viewModel.unitPriceString
 
             modeSwitch.addTarget(self, action: #selector(modeSwitchValueChange(sender:)), for: .valueChanged)
 
@@ -46,6 +49,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
 
             [nameLabel, editButton, unitPriceLabel, priceLabel].forEach { view in
                 view.alpha = viewModel.lineItem.selectedState == .selected ? 1 : 0.5
+                editButton.isEnabled = viewModel.lineItem.selectedState == .selected
             }
 
             switch viewModel.lineItem.selectedState {
@@ -89,7 +93,11 @@ class DigitalLineItemTableViewCell: UITableViewCell {
             separatorView.isHidden = true
         }
 
-        editButton.setTitle(.ginibankLocalized(resource: DigitalInvoiceStrings.lineItemEditButtonTitle), for: .normal)
+        editButton.contentHorizontalAlignment = .right
+        editButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        let editTitle: String = .ginibankLocalized(resource: DigitalInvoiceStrings.lineItemEditButtonTitle)
+        editButton.setTitle(editTitle, for: .normal)
+        editButton.accessibilityValue = editTitle
 
         separatorView.backgroundColor = GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4).uiColor()
         unitPriceLabel.textColor = .GiniBank.dark7

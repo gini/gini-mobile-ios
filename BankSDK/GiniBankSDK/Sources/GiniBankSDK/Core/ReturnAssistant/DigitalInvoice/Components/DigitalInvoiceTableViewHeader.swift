@@ -9,6 +9,7 @@ import UIKit
 import GiniCaptureSDK
 
 class DigitalInvoiceTableViewTitleCell: UITableViewCell {
+    static let reuseIdentifier = "DigitalInvoiceTableViewTitleCell"
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.font = GiniBankConfiguration.shared.textStyleFonts[.caption1]
