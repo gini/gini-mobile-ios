@@ -14,6 +14,7 @@ public final class GiniBarButtonItem: UIBarButtonItem {
         super.init()
 
         let button = UIButton(type: .system)
+        let maximumFontSize: CGFloat = 24
 
         if let image = image {
             button.setImage(image, for: .normal)
@@ -21,8 +22,17 @@ public final class GiniBarButtonItem: UIBarButtonItem {
 
         let navigationBarItemTintColor = UIColor.GiniCapture.accent1
         if let title = title {
-            let font = GiniConfiguration.shared.textStyleFonts[.bodyBold] as Any
-            let attributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: font]
+            var attributes: [NSAttributedString.Key: Any]
+            if let font = GiniConfiguration.shared.textStyleFonts[.bodyBold] {
+                if font.pointSize > maximumFontSize {
+                    attributes = [NSAttributedString.Key.font: font.withSize(maximumFontSize)]
+                } else {
+                    attributes = [NSAttributedString.Key.font: font]
+                }
+            } else {
+                let font = GiniConfiguration.shared.textStyleFonts[.bodyBold] as Any
+                attributes = [NSAttributedString.Key.font: font]
+            }
             button.setAttributedTitle(NSAttributedString(string: title, attributes: attributes), for: .normal)
         }
 
