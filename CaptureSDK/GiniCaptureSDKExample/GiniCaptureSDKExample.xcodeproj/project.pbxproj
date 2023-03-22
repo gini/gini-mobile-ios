@@ -24,6 +24,7 @@
 		1F94118B1FBAEB7D0019DECD /* ScreenAPICoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F94118A1FBAEB7D0019DECD /* ScreenAPICoordinatorTests.swift */; };
 		1F9466C5203702E600F52B40 /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9466C4203702E600F52B40 /* CredentialsManager.swift */; };
 		1FEED2941F6AC0440068E8AB /* testPDF.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 1FEED2931F6AC0440068E8AB /* testPDF.pdf */; };
+		3E498B4729CAE7090070D2B5 /* ResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E498B4629CAE6DA0070D2B5 /* ResultTableViewCell.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* SelectAPIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* SelectAPIViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
@@ -104,6 +105,7 @@
 		1FA9703A2149409600B776B8 /* GiniCaptureSDKExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniCaptureSDKExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FEED2931F6AC0440068E8AB /* testPDF.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = testPDF.pdf; sourceTree = "<group>"; };
 		1FF3A42020C6D20900081A32 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = SOURCE_ROOT; };
+		3E498B4629CAE6DA0070D2B5 /* ResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultTableViewCell.swift; sourceTree = "<group>"; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		607FACD71AFB9204008FA782 /* SelectAPIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAPIViewController.swift; sourceTree = "<group>"; };
@@ -211,41 +213,42 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
-				F4B62C1D27314B2800C607D4 /* Packages */,
 				F40B4064252C9CC700D04B6F /* Credentials.plist */,
-				0A5379301DF96DD300B0FFE9 /* GiniCapture_Example.entitlements */,
 				607FACD21AFB9204008FA782 /* Example Swift */,
-				607FACE81AFB9204008FA782 /* Tests */,
-				0A3B96531D478BF700BFEF05 /* UITests */,
+				F4B62C2027314B4C00C607D4 /* Frameworks */,
+				0A5379301DF96DD300B0FFE9 /* GiniCapture_Example.entitlements */,
 				1FA970372149409600B776B8 /* GiniCaptureSDKExample.app */,
 				1FA970392149409600B776B8 /* GiniCaptureSDKExampleTests.xctest */,
 				1FA9703A2149409600B776B8 /* GiniCaptureSDKExampleUITests.xctest */,
-				F4B62C2027314B4C00C607D4 /* Frameworks */,
+				F4B62C1D27314B2800C607D4 /* Packages */,
+				607FACE81AFB9204008FA782 /* Tests */,
+				0A3B96531D478BF700BFEF05 /* UITests */,
 			);
 			sourceTree = "<group>";
 		};
 		607FACD21AFB9204008FA782 /* Example Swift */ = {
 			isa = PBXGroup;
 			children = (
-				76610BEF298D631A004C1ECB /* CameraBottomNavigationBar */,
-				76610BEB298D631A004C1ECB /* HelpBottomNavigationBar */,
-				76610BF7298D631A004C1ECB /* OnboardingBottomNavigationBar */,
-				76610BF3298D631A004C1ECB /* ReviewBottomNavigationBar */,
 				1F2E1A9E1FB58E2200E1022A /* AppCoordinator.swift */,
-				F4BB7CED2695D66C003FD77E /* CustomMenuItemViewController.swift */,
-				F4BB7CEF2695D96B003FD77E /* CustomMenuItems.storyboard */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
+				76610BEF298D631A004C1ECB /* CameraBottomNavigationBar */,
 				1F2E1AA01FB58EC900E1022A /* Coordinator.swift */,
 				1F9466C4203702E600F52B40 /* CredentialsManager.swift */,
-				0AAE6D4B1D6B6C0B00EE9EDD /* ResultTableViewController.swift */,
-				607FACD71AFB9204008FA782 /* SelectAPIViewController.swift */,
-				1F578E101FBD7C7D00C17F62 /* SettingsViewController.swift */,
+				834735F62940F96300C3B5F3 /* CustomAnalysisError.swift */,
+				F4BB7CEF2695D96B003FD77E /* CustomMenuItems.storyboard */,
+				F4BB7CED2695D66C003FD77E /* CustomMenuItemViewController.swift */,
 				1F1D3B0120A32EAC00F37632 /* Extensions */,
+				76610BEB298D631A004C1ECB /* HelpBottomNavigationBar */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
+				76610BF7298D631A004C1ECB /* OnboardingBottomNavigationBar */,
+				3E498B4629CAE6DA0070D2B5 /* ResultTableViewCell.swift */,
+				0AAE6D4B1D6B6C0B00EE9EDD /* ResultTableViewController.swift */,
+				76610BF3298D631A004C1ECB /* ReviewBottomNavigationBar */,
 				1F577531203C4EEE0074FD63 /* Screen API */,
+				607FACD71AFB9204008FA782 /* SelectAPIViewController.swift */,
+				1F578E101FBD7C7D00C17F62 /* SettingsViewController.swift */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
-				834735F62940F96300C3B5F3 /* CustomAnalysisError.swift */,
 			);
 			path = "Example Swift";
 			sourceTree = "<group>";
@@ -566,6 +569,7 @@
 				76610C00298D631B004C1ECB /* CustomCameraBottomNavigationBarAdapter.swift in Sources */,
 				0AAE6D4C1D6B6C0B00EE9EDD /* ResultTableViewController.swift in Sources */,
 				76610C04298D631B004C1ECB /* CustomOnboardingBottomNavigationBar.swift in Sources */,
+				3E498B4729CAE7090070D2B5 /* ResultTableViewCell.swift in Sources */,
 				834735F72940F96300C3B5F3 /* CustomAnalysisError.swift in Sources */,
 				76610BFE298D631A004C1ECB /* CustomCameraBottomNavigationBar.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
