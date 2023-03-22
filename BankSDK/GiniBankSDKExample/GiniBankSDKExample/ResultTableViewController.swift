@@ -29,6 +29,8 @@ final class ResultTableViewController: UITableViewController, UITextFieldDelegat
     }
     
     var lineItems: [[Extraction]]? = nil
+	var enabledRows: [Int] = []
+	private let rowHeight: CGFloat = 65
 	
 	// {extraction name} : {entity name}
 	let editableSpecificExtractions = ["paymentRecipient" : "companyname", "paymentReference" : "reference", "paymentPurpose" : "text", "iban" : "iban", "bic" : "bic", "amountToPay" : "amount"]
@@ -52,13 +54,24 @@ extension ResultTableViewController {
 		cell.detailTextField.placeholder = result[indexPath.row].name
 		cell.detailTextField.tag = indexPath.row
 		cell.titleLabel.text = result[indexPath.row].name
-		cell.detailTextField.isEnabled = editableSpecificExtractions.keys.contains(result[indexPath.row].name ?? "")
+		if (editableSpecificExtractions.keys.contains(result[indexPath.row].name ?? "")) {
+			cell.detailTextField.isEnabled = true
+			cell.detailTextField.textColor = GiniColor(light: UIColor.black, dark: Colors.Gini.veryLightGray).uiColor()
+			cell.detailTextField.returnKeyType = indexPath.row == result.count - 1 ? .done : .next
+			
+			if (!enabledRows.contains(indexPath.row)) {
+				enabledRows.append(indexPath.row)
+			}
+		} else {
+			cell.detailTextField.isEnabled = false
+			cell.detailTextField.textColor = GiniColor(light: Colors.Gini.grey, dark: Colors.Gini.grey).uiColor()
+		}
 		
         return cell
     }
 	
 	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		return 60
+		return rowHeight
 	}
 	
 	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -66,6 +79,20 @@ extension ResultTableViewController {
 			result[textField.tag].value = text.replacingCharacters(in: range, with: string)
 		}
 		
+		return true
+	}
+	
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+		if (textField.returnKeyType == .done) {
+			textField.resignFirstResponder()
+			return true
+		}
+		
+		guard let rowIndex = enabledRows.firstIndex(of: textField.tag), enabledRows.count > rowIndex + 1, let visibleCell = tableView.cellForRow(at: IndexPath(row: enabledRows[rowIndex + 1], section: 0)) as? ResultTableViewCell else {
+			return true
+		}
+		
+		visibleCell.detailTextField.becomeFirstResponder()
 		return true
 	}
 }
