@@ -71,7 +71,6 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
         }
 
         topImageView.setupView()
-        topImageView.accessibilityValue = firstLabelText
         
         firstLabel.text = firstLabelText
         firstLabel.font = configuration.textStyleFonts[.title2Bold]
