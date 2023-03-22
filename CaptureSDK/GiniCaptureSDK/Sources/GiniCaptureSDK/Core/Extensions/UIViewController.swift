@@ -8,35 +8,6 @@
 import UIKit
 
 extension UIViewController {
-    
-    enum NavBarItemPosition {
-        case left, right
-    }
-    
-    func setupNavigationItem(usingResources preferredResources: PreferredButtonResource,
-                             selector: Selector,
-                             position: NavBarItemPosition,
-                             target: AnyObject?) {
-        
-        let buttonText = preferredResources.preferredText ?? ""
-        
-        if !buttonText.isEmpty || preferredResources.preferredImage != nil {
-            let navButton = GiniBarButtonItem(
-                image: preferredResources.preferredImage,
-                title: preferredResources.preferredText,
-                style: .plain,
-                target: target,
-                action: selector
-            )
-            switch position {
-            case .right:
-                navigationItem.setRightBarButton(navButton, animated: false)
-            case .left:
-                navigationItem.setLeftBarButton(navButton, animated: false)
-            }
-        }
-    }
-
     /**
      A UIViewcontroller extension that shows an alert based on the Error it gets as the parameter. It can also add an extra option as a closure to be executed.
      Use this when drag and dropping files into the SDK.

@@ -90,31 +90,29 @@ extension DigitalInvoiceCoordinator: DigitalInvoiceViewModelDelagate {
     }
 
     func didTapEdit(on viewModel: DigitalInvoiceViewModel, lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
-        let viewController = LineItemDetailsViewController()
-        viewController.lineItem = viewModel.invoice?.lineItems[lineItemViewModel.index]
-        viewController.returnReasons = viewModel.invoice?.returnReasons
-        viewController.lineItemIndex = lineItemViewModel.index
-        viewController.returnAssistantConfiguration = ReturnAssistantConfiguration.shared
-        viewController.delegate = self
-
-        navigationController.pushViewController(viewController, animated: true)
+        guard let lineItem = viewModel.invoice?.lineItems[lineItemViewModel.index] else { return }
+        let viewModel = EditLineItemViewModel(lineItem: lineItem, index: lineItemViewModel.index)
+        viewModel.delegate = self
+        let viewController = EditLineItemViewController(lineItemViewModel: viewModel)
+        viewController.modalPresentationStyle = .overCurrentContext
+        navigationController.present(viewController, animated: true)
     }
 }
 
-extension DigitalInvoiceCoordinator: LineItemDetailsViewControllerDelegate {
-    func didSaveLineItem(lineItemDetailsViewController: LineItemDetailsViewController, lineItem: DigitalInvoice.LineItem, index: Int, shouldPopViewController: Bool) {
-
-        if shouldPopViewController {
-            navigationController.popViewController(animated: true)
-        }
+extension DigitalInvoiceCoordinator: EditLineItemViewModelDelegate {
+    func didSave(lineItem: DigitalInvoice.LineItem, on viewModel: EditLineItemViewModel) {
         guard let invoice = digitalInvoiceViewModel?.invoice else { return }
 
-        if invoice.lineItems.indices.contains(index) {
-            self.digitalInvoiceViewModel?.invoice?.lineItems[index] = lineItem
-        } else {
-            self.digitalInvoiceViewModel?.invoice?.lineItems.append(lineItem)
+        if invoice.lineItems.indices.contains(viewModel.index) {
+            self.digitalInvoiceViewModel?.invoice?.lineItems[viewModel.index] = lineItem
         }
 
         digitalInvoiceViewController?.updateValues()
+
+        navigationController.dismiss(animated: true)
+    }
+
+    func didCancel(on viewModel: EditLineItemViewModel) {
+        navigationController.dismiss(animated: true)
     }
 }
