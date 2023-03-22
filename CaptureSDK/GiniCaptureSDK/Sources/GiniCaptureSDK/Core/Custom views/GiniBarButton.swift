@@ -70,6 +70,17 @@ public final class GiniBarButton {
     }
 
     /**
+     A computed property that returns a `UIView` with the `stackView` as its content.
+
+     Use the `buttonView` property to create a `UIView` with the `stackView` as its content. This allows you to customize the appearance and behavior of the button by adding and configuring subviews within the stack view.
+
+     - Returns: A `UIView` object with the `stackView` as its content.
+     */
+    public var buttonView: UIView {
+        return stackView
+    }
+
+    /**
      Initializes a new `GiniBarButton` object with the specified button type.
 
      Use the `init(ofType:)` initializer to create a new `GiniBarButton` object with the specified `BarButtonType`. The `BarButtonType` parameter determines the appearance and behavior of the button.
