@@ -140,7 +140,7 @@ final class EditLineItemView: UIView {
                                               constant: Constants.verticalPadding),
 
             titleLabel.centerYAnchor.constraint(equalTo: cancelButton.centerYAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: cancelButton.trailingAnchor,
+            titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: cancelButton.trailingAnchor,
                                                 constant: Constants.titlePadding),
             titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: saveButton.leadingAnchor,
                                                 constant: -Constants.titlePadding),
