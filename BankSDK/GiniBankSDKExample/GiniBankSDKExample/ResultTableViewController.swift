@@ -18,22 +18,14 @@ final class ResultTableViewController: UITableViewController, UITextFieldDelegat
      */
     var result: [Extraction] = [] {
         didSet {
-			for extraction in editableSpecificExtractions {
-				if (result.first(where: { $0.name == extraction.key }) == nil) {
-					result.append(Extraction(box: nil, candidates: nil, entity: extraction.value, value: "", name: extraction.key))
-				}
-			}
-			
             result.sort(by: { $0.name! < $1.name! })
         }
     }
     
+	var editableFields: [String : String] = [:]
     var lineItems: [[Extraction]]? = nil
 	var enabledRows: [Int] = []
 	private let rowHeight: CGFloat = 65
-	
-	// {extraction name} : {entity name}
-	let editableSpecificExtractions = ["paymentRecipient" : "companyname", "paymentReference" : "reference", "paymentPurpose" : "text", "iban" : "iban", "bic" : "bic", "amountToPay" : "amount"]
 }
 
 extension ResultTableViewController {
@@ -54,7 +46,7 @@ extension ResultTableViewController {
 		cell.detailTextField.placeholder = result[indexPath.row].name
 		cell.detailTextField.tag = indexPath.row
 		cell.titleLabel.text = result[indexPath.row].name
-		if (editableSpecificExtractions.keys.contains(result[indexPath.row].name ?? "")) {
+		if (editableFields.keys.contains(result[indexPath.row].name ?? "")) {
 			cell.detailTextField.isEnabled = true
 			cell.detailTextField.textColor = GiniColor(light: UIColor.black, dark: Colors.Gini.veryLightGray).uiColor()
 			cell.detailTextField.returnKeyType = indexPath.row == result.count - 1 ? .done : .next
