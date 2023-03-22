@@ -16,7 +16,8 @@ This class is a subclass of UIView.
 final class BackButtonBottomNavigationBar: UIView {
 
     /// The button that displays the back arrow icon.
-    @IBOutlet public weak var backButton: UIButton!
+    @IBOutlet weak var backButtonContainer: UIView!
+    let backButton = GiniBarButton(ofType: .back(title: "  "))
 
     public override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,14 +25,7 @@ final class BackButtonBottomNavigationBar: UIView {
     }
 
     func setupView() {
-        backButton.setTitle("", for: .normal)
-        let image = UIImageNamedPreferred(named: "arrowBack") ?? UIImage()
-        backButton.setImage(
-            image.tintedImageWithColor(.GiniCapture.accent1),
-            for: .normal)
-        backgroundColor = GiniColor(
-            light: UIColor.GiniCapture.light1,
-            dark: UIColor.GiniCapture.dark1
-        ).uiColor()
+        backgroundColor = GiniColor(light: .GiniCapture.light1, dark: .GiniCapture.dark1).uiColor()
+        backButton.buttonView.fixInView(backButtonContainer)
     }
 }
