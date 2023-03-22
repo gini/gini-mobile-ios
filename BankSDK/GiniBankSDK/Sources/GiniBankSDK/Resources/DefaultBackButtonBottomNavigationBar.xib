@@ -14,21 +14,20 @@
             <rect key="frame" x="0.0" y="0.0" width="458" height="114"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vSv-hD-64s">
-                    <rect key="frame" x="9.9999999999999964" y="0.0" width="53.666666666666657" height="114"/>
-                    <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="plain" title="Left"/>
-                </button>
+                <view contentMode="scaleToFill" placeholderIntrinsicWidth="75" placeholderIntrinsicHeight="114" translatesAutoresizingMaskIntoConstraints="NO" id="kUI-Ul-lqy">
+                    <rect key="frame" x="8" y="0.0" width="75" height="114"/>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="4wS-E7-91z"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="vSv-hD-64s" secondAttribute="bottom" id="XU9-Av-T5X"/>
-                <constraint firstItem="vSv-hD-64s" firstAttribute="leading" secondItem="4wS-E7-91z" secondAttribute="leading" constant="10" id="gQi-39-xtn"/>
-                <constraint firstItem="vSv-hD-64s" firstAttribute="top" secondItem="C2e-DR-fFB" secondAttribute="top" id="hnQ-9M-ICh"/>
+                <constraint firstItem="kUI-Ul-lqy" firstAttribute="top" secondItem="C2e-DR-fFB" secondAttribute="top" id="DOy-lm-dGX"/>
+                <constraint firstItem="kUI-Ul-lqy" firstAttribute="leading" secondItem="4wS-E7-91z" secondAttribute="leading" constant="8" id="iNI-o8-KdM"/>
+                <constraint firstAttribute="bottom" secondItem="kUI-Ul-lqy" secondAttribute="bottom" id="pRu-ph-grj"/>
+                <constraint firstItem="4wS-E7-91z" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="kUI-Ul-lqy" secondAttribute="trailing" id="twu-fv-f9T"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="backButton" destination="vSv-hD-64s" id="MRY-uJ-EU2"/>
+                <outlet property="backButtonContainerView" destination="kUI-Ul-lqy" id="cKE-lZ-Qtn"/>
             </connections>
             <point key="canvasLocation" x="86.153846153846146" y="-245.260663507109"/>
         </view>
