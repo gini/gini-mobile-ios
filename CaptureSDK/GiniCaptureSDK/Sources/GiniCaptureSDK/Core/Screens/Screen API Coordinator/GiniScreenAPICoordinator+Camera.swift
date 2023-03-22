@@ -109,23 +109,20 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
 
         if !giniConfiguration.bottomNavigationBarEnabled {
             if pages.count > 0 {
-                cameraViewController.setupNavigationItem(
-                    usingResources: backToReviewMenuButtonResource,
-                    selector: #selector(popBackToReview),
-                    position: .left,
-                    target: self)
+                let buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.analysis.backToReview",
+                                                                   comment: "Review")
+                let backButton = GiniBarButton(ofType: .back(title: buttonTitle))
+                backButton.addAction(self, #selector(popBackToReview))
+                cameraViewController.navigationItem.leftBarButtonItem = backButton.barButton
             } else {
-                cameraViewController.setupNavigationItem(
-                    usingResources: cancelButtonResource,
-                    selector: #selector(back),
-                    position: .left,
-                    target: self)
+                let cancelButton = GiniBarButton(ofType: .cancel)
+                cancelButton.addAction(self, #selector(back))
+                cameraViewController.navigationItem.leftBarButtonItem = cancelButton.barButton
             }
-            cameraViewController.setupNavigationItem(usingResources: helpButtonResource,
-                                                     selector: #selector(showHelpMenuScreen),
-                                                     position: .right,
-                                                     target: self)
 
+            let helpButton = GiniBarButton(ofType: .help)
+            helpButton.addAction(self, #selector(showHelpMenuScreen))
+            cameraViewController.navigationItem.rightBarButtonItem = helpButton.barButton
         }
 
         if giniConfiguration.fileImportSupportedTypes != .none {

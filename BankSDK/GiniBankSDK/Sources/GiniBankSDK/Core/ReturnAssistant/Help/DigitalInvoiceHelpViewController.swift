@@ -58,6 +58,12 @@ final class DigitalInvoiceHelpViewController: UIViewController {
         scrollView.addSubview(contentView)
         contentView.addSubview(stackView)
 
+        let backButtonTitle = NSLocalizedStringPreferredFormat("ginibank.digitalinvoice.help.backToInvoice",
+                                                               comment: "Digital Invoice")
+        let backButton = GiniBarButton(ofType: .back(title: backButtonTitle))
+        backButton.addAction(self, #selector(dismissViewController))
+        navigationItem.leftBarButtonItem = backButton.barButton
+
         viewModel.helpSections.forEach { [weak self] sectionContent in
             let view = DigitalInvoiceHelpSectionView(content: sectionContent)
             self?.stackView.addArrangedSubview(view)
@@ -103,10 +109,11 @@ final class DigitalInvoiceHelpViewController: UIViewController {
             }
 
             navigationBarBottomAdapter?.setBackButtonClickedActionCallback { [weak self] in
-                self?.navigationController?.popViewController(animated: true)
+                self?.dismissViewController()
             }
 
             navigationItem.setHidesBackButton(true, animated: false)
+            navigationItem.leftBarButtonItem = nil
 
             if let navigationBar =
                 navigationBarBottomAdapter?.injectedView() {
@@ -132,6 +139,11 @@ final class DigitalInvoiceHelpViewController: UIViewController {
         ])
         view.bringSubviewToFront(navigationBar)
         view.layoutSubviews()
+    }
+
+    @objc
+    private func dismissViewController() {
+        navigationController?.popViewController(animated: true)
     }
 }
 

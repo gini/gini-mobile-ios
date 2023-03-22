@@ -148,18 +148,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="42r-Zq-01h">
-                                            <rect key="frame" x="16" y="662.5" width="382" height="30"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                            <state key="normal" title="Close">
-                                                <color key="titleColor" red="0.97003465889999996" green="0.0" blue="0.35686057809999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="closeButton:" destination="jLX-Py-40o" eventType="touchUpInside" id="gWp-Sb-HSG"/>
-                                            </connections>
-                                        </button>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Jl-Kr-1sd">
-                                            <rect key="frame" x="16" y="249.5" width="382" height="397"/>
+                                            <rect key="frame" x="16" y="231" width="382" height="434"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open with" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cVO-kR-liJ">
                                                     <rect key="frame" x="16" y="21" width="293" height="21"/>
@@ -276,6 +266,7 @@
                                                 <constraint firstItem="iBn-2O-R5s" firstAttribute="leading" secondItem="CRx-ac-e4V" secondAttribute="trailing" constant="8" id="Kfq-5H-20E"/>
                                                 <constraint firstAttribute="trailing" secondItem="3hb-V8-sDY" secondAttribute="trailing" constant="16" id="MKo-Nq-01d"/>
                                                 <constraint firstItem="Swa-DX-mwh" firstAttribute="centerY" secondItem="Fe9-Mu-ich" secondAttribute="centerY" id="Ph7-Sf-xT2"/>
+                                                <constraint firstAttribute="bottom" secondItem="nr0-nM-ziR" secondAttribute="bottom" constant="45" id="PjT-cS-ush"/>
                                                 <constraint firstItem="8Qu-yZ-3st" firstAttribute="centerY" secondItem="a9K-uy-FIq" secondAttribute="centerY" id="RID-fy-nmV"/>
                                                 <constraint firstItem="iBn-2O-R5s" firstAttribute="top" secondItem="yit-Ul-7WY" secondAttribute="bottom" constant="16" id="TqT-J7-oOp"/>
                                                 <constraint firstAttribute="trailing" secondItem="qmQ-mT-MIV" secondAttribute="trailing" constant="16" id="UXD-rZ-xSl"/>
@@ -293,7 +284,6 @@
                                                 <constraint firstItem="Fe9-Mu-ich" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Swa-DX-mwh" secondAttribute="trailing" constant="8" symbolic="YES" id="mHK-Q5-7LG"/>
                                                 <constraint firstItem="Ja3-sk-DVs" firstAttribute="centerY" secondItem="iBn-2O-R5s" secondAttribute="centerY" id="oz7-eK-7mF"/>
                                                 <constraint firstAttribute="trailing" secondItem="iBn-2O-R5s" secondAttribute="trailing" constant="16" id="rXc-yw-U0I"/>
-                                                <constraint firstAttribute="bottom" secondItem="nr0-nM-ziR" secondAttribute="bottom" constant="8" id="rfC-yF-jae"/>
                                                 <constraint firstItem="a9K-uy-FIq" firstAttribute="leading" secondItem="CRx-ac-e4V" secondAttribute="leading" id="tnc-t7-gNV"/>
                                                 <constraint firstItem="a9K-uy-FIq" firstAttribute="centerY" secondItem="8Qu-yZ-3st" secondAttribute="centerY" id="uDw-lN-qeJ"/>
                                                 <constraint firstItem="xSF-P6-GTs" firstAttribute="leading" secondItem="9Jl-Kr-1sd" secondAttribute="leading" constant="16" id="uHD-om-Q0O"/>
@@ -305,13 +295,23 @@
                                                 <constraint firstItem="yit-Ul-7WY" firstAttribute="top" secondItem="9Jl-Kr-1sd" secondAttribute="top" constant="16" id="ze0-jA-rir"/>
                                             </constraints>
                                         </view>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="42r-Zq-01h">
+                                            <rect key="frame" x="16" y="689" width="382" height="30"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                            <state key="normal" title="Close">
+                                                <color key="titleColor" red="0.97003465889999996" green="0.0" blue="0.35686057809999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="closeButton:" destination="jLX-Py-40o" eventType="touchUpInside" id="gWp-Sb-HSG"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="9Jl-Kr-1sd" firstAttribute="leading" secondItem="eer-tI-Ukv" secondAttribute="leading" constant="16" id="DSt-uz-z4Y"/>
-                                        <constraint firstAttribute="trailing" secondItem="42r-Zq-01h" secondAttribute="trailing" constant="16" id="k9S-dK-djb"/>
+                                        <constraint firstItem="42r-Zq-01h" firstAttribute="trailing" secondItem="9Jl-Kr-1sd" secondAttribute="trailing" id="IxW-An-aRl"/>
+                                        <constraint firstItem="42r-Zq-01h" firstAttribute="leading" secondItem="9Jl-Kr-1sd" secondAttribute="leading" id="cGA-NX-ws2"/>
+                                        <constraint firstItem="42r-Zq-01h" firstAttribute="top" secondItem="9Jl-Kr-1sd" secondAttribute="bottom" constant="24" id="eZp-k9-IQU"/>
                                         <constraint firstAttribute="trailing" secondItem="9Jl-Kr-1sd" secondAttribute="trailing" constant="16" id="kYl-fl-79x"/>
-                                        <constraint firstItem="42r-Zq-01h" firstAttribute="leading" secondItem="eer-tI-Ukv" secondAttribute="leading" constant="16" id="okM-s6-3eW"/>
-                                        <constraint firstItem="42r-Zq-01h" firstAttribute="top" secondItem="9Jl-Kr-1sd" secondAttribute="bottom" constant="16" id="q5K-lu-fwJ"/>
                                         <constraint firstItem="9Jl-Kr-1sd" firstAttribute="centerY" secondItem="eer-tI-Ukv" secondAttribute="centerY" id="s2i-RX-8Ib"/>
                                         <constraint firstItem="9Jl-Kr-1sd" firstAttribute="centerX" secondItem="eer-tI-Ukv" secondAttribute="centerX" id="yjd-sF-SkR"/>
                                     </constraints>
