@@ -145,18 +145,15 @@ class ErrorScreenViewController: UIViewController {
     }
 
     private func configureCustomTopNavigationBar() {
+        let cancelButton = GiniBarButton(ofType: .cancel)
+        cancelButton.addAction(viewModel, #selector(viewModel.didPressCancell))
+
         if giniConfiguration.bottomNavigationBarEnabled {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(
-                barButtonSystemItem: .cancel,
-                target: viewModel,
-                action: #selector(viewModel.didPressCancell))
+            navigationItem.rightBarButtonItem = cancelButton.barButton
 
             navigationItem.setHidesBackButton(true, animated: true)
         } else {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(
-                barButtonSystemItem: .cancel,
-                target: viewModel,
-                action: #selector(viewModel.didPressCancell))
+            navigationItem.leftBarButtonItem = cancelButton.barButton
         }
     }
 

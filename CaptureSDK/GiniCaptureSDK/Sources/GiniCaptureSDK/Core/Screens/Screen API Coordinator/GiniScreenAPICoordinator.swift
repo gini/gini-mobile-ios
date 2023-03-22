@@ -50,18 +50,6 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     public weak var visionDelegate: GiniCaptureDelegate?
 
     // Resources
-    fileprivate(set) lazy var backButtonResource =
-        GiniPreferredButtonResource(
-            image: "navigationReviewBack",
-            title: "ginicapture.navigationbar.review.back",
-            comment: "Button title in the navigation bar for the back button on the review screen",
-            configEntry: self.giniConfiguration.navigationBarReviewTitleBackButton)
-    fileprivate(set) lazy var backToCameraFromHelpMenuButtonResource =
-        GiniPreferredButtonResource(
-            image: "arrowBack",
-            title: "ginicapture.navigationbar.help.backToCamera",
-            comment: "Button title in the navigation bar for the back button on the help screen",
-            configEntry: giniConfiguration.navigationBarHelpMenuTitleBackToCameraButton)
     fileprivate(set) lazy var cancelButtonResource =
         giniConfiguration.cancelButtonResource ??
             GiniPreferredButtonResource(image: "navigationAnalysisBack",
@@ -91,21 +79,6 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
                 comment: "Button title in the navigation bar for " +
                 "the continue button on the review screen",
                 configEntry: giniConfiguration.navigationBarReviewTitleContinueButton)
-    fileprivate(set) lazy var backToHelpMenuButtonResource =
-        GiniPreferredButtonResource(
-            image: "arrowBack",
-            title: "ginicapture.navigationbar.help.backToMenu",
-            comment: "Button title in the navigation bar for the back button on the help screen",
-            configEntry: giniConfiguration.navigationBarHelpScreenTitleBackToMenuButton)
-
-    fileprivate(set) lazy var backToReviewMenuButtonResource =
-    GiniPreferredButtonResource(
-        image: "arrowBack",
-        title: "ginicapture.navigationbar.analysis.backToReview",
-        comment: "Button title in the navigation bar" +
-        " for the back button on the camera screen" +
-        " when there are images selected",
-        configEntry: giniConfiguration.navigationBarHelpScreenTitleBackToMenuButton)
 
     public init(withDelegate delegate: GiniCaptureDelegate?,
                 giniConfiguration: GiniConfiguration) {
@@ -260,11 +233,12 @@ extension GiniScreenAPICoordinator {
         )
         helpMenuViewController.delegate = self
         trackingDelegate?.onCameraScreenEvent(event: Event(type: .help))
-        helpMenuViewController.setupNavigationItem(
-            usingResources: backToCameraFromHelpMenuButtonResource,
-            selector: #selector(back),
-            position: .left,
-            target: self)
+
+        let backButtonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.help.backToCamera",
+                                                               comment: "Camera")
+        let barButton = GiniBarButton(ofType: .back(title: backButtonTitle))
+        barButton.addAction(self, #selector(back))
+        helpMenuViewController.navigationItem.leftBarButtonItem = barButton.barButton
 
         // In case of 1 menu item it's better to show the item immediately without any selection
 
@@ -356,11 +330,11 @@ extension GiniScreenAPICoordinator: HelpMenuViewControllerDelegate {
             viewController = customViewController
         }
 
-        viewController.setupNavigationItem(usingResources: backToHelpMenuButtonResource,
-                                           selector: #selector(back),
-                                           position: .left,
-                                           target: self)
-
+        let backButtonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.help.backToMenu",
+                                                               comment: "Help")
+        let barButton = GiniBarButton(ofType: .back(title: backButtonTitle))
+        barButton.addAction(self, #selector(back))
+        viewController.navigationItem.leftBarButtonItem = barButton.barButton
         return viewController
     }
 }
