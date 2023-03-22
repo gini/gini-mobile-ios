@@ -98,31 +98,19 @@ final class DigitalInvoiceViewController: UIViewController {
         title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
         edgesForExtendedLayout = []
         view.backgroundColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2).uiColor()
-        let helpButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.help.screenTitle",
-                                                                       comment: "Help")
-        let cancelButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.cancelButtonTitle",
-                                                                         comment: "Cancel")
-
         if configuration.bottomNavigationBarEnabled {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: cancelButtonTitle,
-                                                               style: .plain,
-                                                               target: self,
-                                                               action: #selector(closeReturnAssistantOverview))
-            navigationItem.rightBarButtonItem?.accessibilityValue = cancelButtonTitle
-
+            let cancelButton = GiniBarButton(ofType: .cancel)
+            cancelButton.addAction(self, #selector(closeReturnAssistantOverview))
+            navigationItem.rightBarButtonItem = cancelButton.barButton
             navigationItem.hidesBackButton = true
         } else {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: helpButtonTitle,
-                                                                style: .plain,
-                                                                target: self,
-                                                                action: #selector(helpButtonTapped(source:)))
-            navigationItem.rightBarButtonItem?.accessibilityValue = helpButtonTitle
+            let helpButton = GiniBarButton(ofType: .help)
+            helpButton.addAction(self, #selector(helpButtonTapped(source:)))
+            navigationItem.rightBarButtonItem = helpButton.barButton
 
-            navigationItem.leftBarButtonItem = UIBarButtonItem(title: cancelButtonTitle,
-                                                               style: .plain,
-                                                               target: self,
-                                                               action: #selector(closeReturnAssistantOverview))
-            navigationItem.leftBarButtonItem?.accessibilityValue = cancelButtonTitle
+            let cancelButton = GiniBarButton(ofType: .cancel)
+            cancelButton.addAction(self, #selector(closeReturnAssistantOverview))
+            navigationItem.leftBarButtonItem = cancelButton.barButton
         }
 
         view.addSubview(tableView)
