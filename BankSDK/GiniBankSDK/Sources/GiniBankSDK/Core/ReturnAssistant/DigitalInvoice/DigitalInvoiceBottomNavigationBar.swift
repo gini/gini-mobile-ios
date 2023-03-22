@@ -23,18 +23,13 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
         return button
     }()
 
-    lazy var helpButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = configuration.textStyleFonts[.body]
-        button.setTitleColor(.GiniBank.accent1, for: .normal)
-        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.help.screenTitle",
-                                                             comment: "Help")
-        button.setTitle(title, for: .normal)
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.accessibilityValue = title
-        return button
-    }()
+    lazy var helpButton = GiniBarButton(ofType: .help)
+
+//    lazy var helpButtonContainer: UIView = {
+//        let containerView = UIView()
+//        containerView.translatesAutoresizingMaskIntoConstraints = false
+//        return containerView
+//    }()
 
     private lazy var totalLabel: UILabel = {
         let label = UILabel()
@@ -97,7 +92,8 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
         addSubview(totalContainerView)
         totalContainerView.addSubview(totalLabel)
         totalContainerView.addSubview(totalValueLabel)
-        addSubview(helpButton)
+        addSubview(helpButton.buttonView)
+        helpButton.buttonView.translatesAutoresizingMaskIntoConstraints = false
 
         backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark1).uiColor()
     }
@@ -123,9 +119,9 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
             totalValueLabel.bottomAnchor.constraint(equalTo: totalContainerView.bottomAnchor),
             totalValueLabel.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor),
 
-            helpButton.centerYAnchor.constraint(equalTo: payButton.centerYAnchor),
-            helpButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
-            helpButton.leadingAnchor.constraint(greaterThanOrEqualTo: payButton.trailingAnchor)
+            helpButton.buttonView.centerYAnchor.constraint(equalTo: payButton.centerYAnchor),
+            helpButton.buttonView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
+            helpButton.buttonView.leadingAnchor.constraint(greaterThanOrEqualTo: payButton.trailingAnchor)
         ])
 
         if UIDevice.current.isIpad {
