@@ -519,15 +519,18 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="kCustomResultCell" rowHeight="65" id="Ghi-wz-gGd" customClass="ResultTableViewCell" customModule="GiniBankSDKExample" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="88.5" width="414" height="65"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="kCustomResultCell" rowHeight="75" id="Ghi-wz-gGd" customClass="ResultTableViewCell" customModule="GiniBankSDKExample" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="88.5" width="414" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ghi-wz-gGd" id="wsz-aF-jtL">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="65"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="75"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textField opaque="NO" tag="100" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tBS-5h-5E8">
-                                            <rect key="frame" x="20" y="8" width="386" height="34"/>
+                                            <rect key="frame" x="20" y="8" width="386" height="44"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="44" id="ojR-hO-T2j"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                             <connections>
@@ -535,7 +538,7 @@
                                             </connections>
                                         </textField>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X4G-Zk-5iW">
-                                            <rect key="frame" x="20" y="45" width="386" height="15"/>
+                                            <rect key="frame" x="20" y="55" width="386" height="15"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="15" id="Lrq-XZ-Unn"/>
                                             </constraints>
