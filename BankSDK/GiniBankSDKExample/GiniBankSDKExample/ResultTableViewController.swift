@@ -13,7 +13,7 @@ import GiniCaptureSDK
  Presents a dictionary of results from the analysis process in a table view.
  Values from the dictionary will be used as the cells titles and keys as the cells subtitles.
  */
-final class ResultTableViewController: UITableViewController {
+final class ResultTableViewController: UITableViewController, UITextFieldDelegate {
     
     /**
      The result collection from the analysis process.
