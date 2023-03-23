@@ -145,6 +145,16 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult,
                                          sendFeedbackBlock: @escaping ([String: Extraction]) -> Void) {
+		
+		
+		extractedResults = result.extractions.map { $0.value}
+		for extraction in editableSpecificExtractions {
+			if (extractedResults.first(where: { $0.name == extraction.key }) == nil) {
+				extractedResults.append(Extraction(box: nil, candidates: nil, entity: extraction.value, value: "", name: extraction.key))
+				result.extractions[extraction.key] = Extraction(box: nil, candidates: nil, entity: extraction.value, value: "", name: extraction.key)
+			}
+		}
+
         showResultsScreen(results: result.extractions.map { $0.value}, document: result.document)
         self.extractionsForFeedback = result.extractions
         self.sendFeedbackBlock = sendFeedbackBlock
