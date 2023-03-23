@@ -53,6 +53,11 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     var sendFeedbackBlock: (([String: Extraction]) -> Void)?
     var extractionsForFeedback: [String: Extraction]?
     var manuallyCreatedDocument: Document?
+	private var extractedResults: [Extraction] = []
+	
+	// {extraction name} : {entity name}
+	private let editableSpecificExtractions = ["paymentRecipient" : "companyname", "paymentReference" : "reference", "paymentPurpose" : "text", "iban" : "iban", "bic" : "bic", "amountToPay" : "amount"]
+
     
     init(configuration: GiniBankConfiguration,
          importedDocuments documents: [GiniCaptureDocument]?,
@@ -104,6 +109,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         let customResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "resultScreen") as? ResultTableViewController)!
         customResultsScreen.result = results
+		customResultsScreen.editableFields = editableSpecificExtractions
         customResultsScreen.navigationItem.setHidesBackButton(true, animated: true)
         let title =
         NSLocalizedStringPreferredFormat("results.sendfeedback.button.title", fallbackKey: "Send feedback and close", comment: "title for send feedback button", isCustomizable: true)
