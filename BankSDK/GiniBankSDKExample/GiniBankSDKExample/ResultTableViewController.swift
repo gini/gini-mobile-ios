@@ -25,7 +25,7 @@ final class ResultTableViewController: UITableViewController, UITextFieldDelegat
 	var editableFields: [String : String] = [:]
     var lineItems: [[Extraction]]? = nil
 	var enabledRows: [Int] = []
-	private let rowHeight: CGFloat = 65
+	private let rowHeight: CGFloat = 75
 }
 
 extension ResultTableViewController {
