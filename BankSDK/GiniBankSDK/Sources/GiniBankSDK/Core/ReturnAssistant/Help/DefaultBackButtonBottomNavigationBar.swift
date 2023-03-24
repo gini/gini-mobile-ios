@@ -17,7 +17,8 @@ This class is a subclass of UIView.
 final class DefaultBackButtonBottomNavigationBar: UIView {
 
     @IBOutlet weak var backButtonContainerView: UIView!
-    let backButton = GiniBarButton(ofType: .back(title: "   "))
+    let backButton = GiniBarButton(ofType: .back(title: "    "),
+                                   isForBottomNavigation: true)
 
     override func awakeFromNib() {
         super.awakeFromNib()
