@@ -23,13 +23,8 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
         return button
     }()
 
-    lazy var helpButton = GiniBarButton(ofType: .help)
-
-//    lazy var helpButtonContainer: UIView = {
-//        let containerView = UIView()
-//        containerView.translatesAutoresizingMaskIntoConstraints = false
-//        return containerView
-//    }()
+    lazy var helpButton = GiniBarButton(ofType: .help,
+                                        isForBottomNavigation: true)
 
     private lazy var totalLabel: UILabel = {
         let label = UILabel()
