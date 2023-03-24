@@ -34,6 +34,8 @@ final class EditLineItemViewController: UIViewController {
     private var currentContainerHeight: CGFloat = 300
     private var currentBottomPadding: CGFloat = 0
 
+    private var defaultHeight: CGFloat = 340
+
     private var containerViewHeightConstraint: NSLayoutConstraint?
     private var containerViewBottomConstraint: NSLayoutConstraint?
 
@@ -56,6 +58,7 @@ final class EditLineItemViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        calculateContainerHeight()
         setupView()
         setupConstraints()
         setupPanGesture()
@@ -86,11 +89,11 @@ final class EditLineItemViewController: UIViewController {
             editLineItemView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             editLineItemView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             editLineItemView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            editLineItemView.heightAnchor.constraint(equalToConstant: Constants.defaultHeight),
+            editLineItemView.heightAnchor.constraint(equalToConstant: defaultHeight),
             editLineItemView.bottomAnchor.constraint(lessThanOrEqualTo: containerView.bottomAnchor)
         ])
 
-        containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: Constants.defaultHeight)
+        containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: defaultHeight)
         containerViewBottomConstraint = containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
 
         if UIDevice.current.isIpad {
@@ -99,7 +102,7 @@ final class EditLineItemViewController: UIViewController {
                                                      multiplier: Constants.tabletWidthMultiplier),
                 containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
-            containerViewBottomConstraint?.constant = Constants.defaultHeight
+            containerViewBottomConstraint?.constant = defaultHeight
         } else {
             NSLayoutConstraint.activate([
                 containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -110,10 +113,19 @@ final class EditLineItemViewController: UIViewController {
         containerViewBottomConstraint?.isActive = true
     }
 
+    private func calculateContainerHeight() {
+        let normalSize: CGFloat = 17 // size of the .body textstyle when the font is not set bigger in accessibility
+        if let pointSize = GiniBankConfiguration.shared.textStyleFonts[.body]?.pointSize {
+            let diff = pointSize - normalSize
+            let height = defaultHeight + 6 * diff //adding the extra difference for the 6 lines of the edit screen
+            defaultHeight = min(height, self.view.frame.height)
+        }
+    }
+
     private func animatePresentContainer() {
         var bottomPadding: CGFloat
         if UIDevice.current.isIpad {
-            bottomPadding = (view.bounds.height - Constants.defaultHeight) / 2
+            bottomPadding = (view.bounds.height - defaultHeight) / 2
             currentBottomPadding = bottomPadding
         } else {
             bottomPadding = 0
@@ -133,7 +145,7 @@ final class EditLineItemViewController: UIViewController {
 
     private func animateDismissView() {
         UIView.animate(withDuration: Constants.animationDuration) {
-            self.containerViewBottomConstraint?.constant = Constants.defaultHeight
+            self.containerViewBottomConstraint?.constant = self.defaultHeight
             self.view.layoutIfNeeded()
         }
 
@@ -179,8 +191,8 @@ final class EditLineItemViewController: UIViewController {
                     // Resize the container based on the pan gesture
                     if newHeight < Constants.maximumContainerHeight {
                         containerViewHeightConstraint?.constant = newHeight
-                        if newHeight < Constants.defaultHeight {
-                            let alpha = newHeight / Constants.defaultHeight
+                        if newHeight < defaultHeight {
+                            let alpha = newHeight / defaultHeight
                             editLineItemView.alpha = alpha - 0.2
                         } else {
                             editLineItemView.alpha = 1
@@ -220,10 +232,10 @@ final class EditLineItemViewController: UIViewController {
 
     private func animateContainerToInitialHeight() {
         UIView.animate(withDuration: Constants.animationDuration) {
-            self.containerViewHeightConstraint?.constant = Constants.defaultHeight
+            self.containerViewHeightConstraint?.constant = self.defaultHeight
             self.view.layoutIfNeeded()
         }
-        currentContainerHeight = Constants.defaultHeight
+        currentContainerHeight = defaultHeight
     }
 
     private func animateContainerToInitialPosition() {
@@ -248,11 +260,12 @@ final class EditLineItemViewController: UIViewController {
                     }
                 }
             } else {
+                let height = min(self.defaultHeight + keyboardHeight, self.view.frame.height)
                 UIView.animate(withDuration: Constants.animationDuration) {
-                    self.containerViewHeightConstraint?.constant = Constants.defaultHeight + keyboardHeight
+                    self.containerViewHeightConstraint?.constant = height
                     self.view.layoutIfNeeded()
                 }
-                currentContainerHeight = Constants.defaultHeight + keyboardHeight
+                currentContainerHeight = height
             }
         }
     }
@@ -275,7 +288,7 @@ final class EditLineItemViewController: UIViewController {
 private extension EditLineItemViewController {
     enum Constants {
         static let maxDimmedAlpha: CGFloat = 0.6
-        static let defaultHeight: CGFloat = 340
+        static let defaultHeight: CGFloat = 526
         static let dismissibleHeight: CGFloat = 200
         static let maximumContainerHeight: CGFloat = UIScreen.main.bounds.height - 64
         static let tabletWidthMultiplier: CGFloat = 0.6

@@ -44,6 +44,8 @@
 "ginibank.digitalinvoice.edit.name" = "Name";
 "ginibank.digitalinvoice.edit.quantity" = "Anzahl";
 "ginibank.digitalinvoice.edit.title" = "Artikel bearbeiten";
+"ginibank.digitalinvoice.edit.minus.button.accessibility" = "Anzahl verringern";
+"ginibank.digitalinvoice.edit.plus.button.accessibility" = "Anzahl erhöhen";
 
 "ginibank.digitalinvoice.footermessage" = "Bitte überprüfe vor der Zahlung, ob alles in Ordnung ist und füge eventuell fehlende Artikel hinzu.";
 "ginibank.digitalinvoice.totalcaptionlabeltext" = "Gesamt";
