@@ -6,6 +6,7 @@
 //  Copyright © 2022 Gini GmbH. All rights reserved.
 //
 
+import AVFoundation
 import UIKit
 
 // swiftlint:disable type_body_length
@@ -43,6 +44,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     private let cameraButtonsViewModel: CameraButtonsViewModel
     private var navigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
     private var bottomNavigationBar: UIView?
+    private let cameraLensSwitcherView: CameraLensSwitcherView
 
     @IBOutlet weak var iPadBottomPaneConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomButtonsConstraints: NSLayoutConstraint!
@@ -62,6 +64,10 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     ) {
         self.giniConfiguration = giniConfiguration
         self.cameraButtonsViewModel = viewModel
+
+        let availableLenses = Camera2ViewController.checkAvailableLenses()
+        self.cameraLensSwitcherView = CameraLensSwitcherView(availableLenses: availableLenses)
+
         if UIDevice.current.isIphone {
             super.init(nibName: "CameraPhone", bundle: giniCaptureBundle())
         } else {
@@ -114,6 +120,8 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         cameraPreviewViewController.didMove(toParent: self)
         view.sendSubviewToBack(cameraPreviewViewController.view)
         view.addSubview(qrCodeOverLay)
+        cameraLensSwitcherView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(cameraLensSwitcherView)
         configureConstraints()
         configureTitle()
 
@@ -128,6 +136,38 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             configureCameraPaneButtons()
             configureBottomNavigationBar()
         }
+    }
+
+    private static func checkAvailableLenses() -> [CameraLensesAvailable] {
+        var discoverySession: AVCaptureDevice.DiscoverySession
+        if #available(iOS 13.0, *) {
+            discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInUltraWideCamera,
+                                                                                  .builtInWideAngleCamera,
+                                                                                  .builtInTelephotoCamera],
+                                                                    mediaType: .video, position: .back)
+        } else {
+            discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera,
+                                                                                  .builtInTelephotoCamera],
+                                                                    mediaType: .video, position: .back)
+        }
+
+        var availableLenses: [CameraLensesAvailable] = []
+
+        let rawDeviceTypes = discoverySession.devices.map { $0.deviceType.rawValue }
+
+        if rawDeviceTypes.contains("AVCaptureDeviceTypeBuiltInUltraWideCamera") {
+            availableLenses.append(.ultraWide)
+        }
+
+        if rawDeviceTypes.contains("AVCaptureDeviceTypeBuiltInWideAngleCamera") {
+            availableLenses.append(.wide)
+        }
+
+        if rawDeviceTypes.contains("AVCaptureDeviceTypeBuiltInTelephotoCamera") {
+            availableLenses.append(.tele)
+        }
+
+        return availableLenses
     }
 
     private func configureCustomTopNavigationBar(containsImage: Bool) {
@@ -332,7 +372,13 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             cameraPreviewViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
             cameraPreviewViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             cameraPreviewViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            cameraPreviewBottomContraint
+            cameraPreviewBottomContraint,
+
+            cameraLensSwitcherView.bottomAnchor.constraint(equalTo: cameraPane.topAnchor, constant: -8),
+            cameraLensSwitcherView.leadingAnchor.constraint(greaterThanOrEqualTo: cameraPane.leadingAnchor),
+            cameraLensSwitcherView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            cameraLensSwitcherView.widthAnchor.constraint(equalToConstant: 124),
+            cameraLensSwitcherView.heightAnchor.constraint(equalToConstant: 36)
             ]
         )
     }
