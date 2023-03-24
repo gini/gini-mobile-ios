@@ -17,7 +17,8 @@ final class BackButtonBottomNavigationBar: UIView {
 
     /// The button that displays the back arrow icon.
     @IBOutlet weak var backButtonContainer: UIView!
-    let backButton = GiniBarButton(ofType: .back(title: "  "))
+    let backButton = GiniBarButton(ofType: .back(title: "    "),
+                                   isForBottomNavigation: true)
 
     public override func awakeFromNib() {
         super.awakeFromNib()

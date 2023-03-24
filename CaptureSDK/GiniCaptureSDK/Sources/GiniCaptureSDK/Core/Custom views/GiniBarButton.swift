@@ -41,6 +41,7 @@ public final class GiniBarButton {
     private let titleLabel = UILabel()
     private let imageView = UIImageView()
     private let stackView = UIStackView()
+    private let isForBottomNavigation: Bool
 
     // MARK: - Public methods
 
@@ -87,7 +88,8 @@ public final class GiniBarButton {
 
      - Parameter type: The `BarButtonType` that determines the appearance and behavior of the button.
      */
-    public init(ofType type: BarButtonType) {
+    public init(ofType type: BarButtonType, isForBottomNavigation isBottom: Bool = false) {
+        self.isForBottomNavigation = isBottom
         setupContent(basedOnType: type)
         setupViews()
     }
@@ -153,7 +155,8 @@ public final class GiniBarButton {
 
     private func textAttributes() -> [NSAttributedString.Key: Any] {
         var attributes: [NSAttributedString.Key: Any]
-        if let font = configuration.textStyleFonts[.bodyBold] {
+        let buttonFont = configuration.textStyleFonts[isForBottomNavigation ? .body : .bodyBold]
+        if let font = buttonFont {
             if font.pointSize > Constants.maximumFontSize {
                 attributes = [NSAttributedString.Key.font: font.withSize(Constants.maximumFontSize)]
             } else {

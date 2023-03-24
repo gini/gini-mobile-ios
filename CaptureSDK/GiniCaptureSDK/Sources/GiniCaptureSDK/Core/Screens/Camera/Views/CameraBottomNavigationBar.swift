@@ -14,8 +14,10 @@ class CameraBottomNavigationBar: UIView {
 
     private let leftButtonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.analysis.backToReview",
                                                                    comment: "Review")
-    lazy var leftBarButton = GiniBarButton(ofType: .back(title: leftButtonTitle))
-    lazy var rightBarButton = GiniBarButton(ofType: .help)
+    lazy var leftBarButton = GiniBarButton(ofType: .back(title: leftButtonTitle),
+                                           isForBottomNavigation: true)
+    lazy var rightBarButton = GiniBarButton(ofType: .help,
+                                            isForBottomNavigation: true)
 
     override func awakeFromNib() {
         super.awakeFromNib()
