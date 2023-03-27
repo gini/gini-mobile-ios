@@ -13,6 +13,10 @@ enum CameraLensesAvailable {
     case tele
 }
 
+protocol CameraLensSwitcherViewDelegate: AnyObject {
+    func cameraLensSwitcherDidSwitchTo(lens: CameraLensesAvailable, on: CameraLensSwitcherView)
+}
+
 final class CameraLensSwitcherView: UIView {
     private lazy var buttonContainerView: UIView = {
         let view = UIView()
@@ -44,7 +48,7 @@ final class CameraLensSwitcherView: UIView {
 
     private lazy var wideButton: UIButton = {
         let button = UIButton()
-        button.setTitleColor(.GiniCapture.warning1, for: .normal)
+        button.setTitleColor(.GiniCapture.light1, for: .normal)
         button.setTitle("1x", for: .normal)
         button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(0.3)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -65,6 +69,8 @@ final class CameraLensSwitcherView: UIView {
     private var selectedLens: CameraLensesAvailable = .wide
     private let availableLenses: [CameraLensesAvailable]
 
+    weak var delegate: CameraLensSwitcherViewDelegate?
+
     init(availableLenses: [CameraLensesAvailable]) {
         self.availableLenses = availableLenses
         super.init(frame: .zero)
@@ -83,14 +89,17 @@ final class CameraLensSwitcherView: UIView {
         buttonsStackView.addArrangedSubview(UIView())
 
         if availableLenses.contains(.ultraWide) {
+            ultraWideButton.addTarget(self, action: #selector(ultraWideButtonTapped), for: .touchUpInside)
             buttonsStackView.addArrangedSubview(ultraWideButton)
         }
 
         if availableLenses.contains(.wide) {
+            wideButton.addTarget(self, action: #selector(wideButtonTapped), for: .touchUpInside)
             buttonsStackView.addArrangedSubview(wideButton)
         }
 
         if availableLenses.contains(.tele) {
+            teleButton.addTarget(self, action: #selector(teleButtonTapped), for: .touchUpInside)
             buttonsStackView.addArrangedSubview(teleButton)
         }
 
@@ -113,5 +122,20 @@ final class CameraLensSwitcherView: UIView {
             buttonsStackView.bottomAnchor.constraint(equalTo: buttonContainerView.bottomAnchor),
             buttonsStackView.leadingAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.leadingAnchor)
         ])
+    }
+
+    @objc
+    private func ultraWideButtonTapped() {
+        delegate?.cameraLensSwitcherDidSwitchTo(lens: .ultraWide, on: self)
+    }
+
+    @objc
+    private func wideButtonTapped() {
+        delegate?.cameraLensSwitcherDidSwitchTo(lens: .wide, on: self)
+    }
+
+    @objc
+    private func teleButtonTapped() {
+        delegate?.cameraLensSwitcherDidSwitchTo(lens: .tele, on: self)
     }
 }

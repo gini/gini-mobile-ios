@@ -73,6 +73,8 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         } else {
             super.init(nibName: "CameraiPad", bundle: giniCaptureBundle())
         }
+
+        self.cameraLensSwitcherView.delegate = self
     }
 
     required init?(coder: NSCoder) {
@@ -622,5 +624,22 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
     func notAuthorized() {
         cameraPane.setupAuthorization(isHidden: true)
         cameraPreviewViewController.cameraFrameView.isHidden = true
+    }
+}
+
+// MARK: - CameraLensSwitcherViewDelegate
+
+extension Camera2ViewController: CameraLensSwitcherViewDelegate {
+    func cameraLensSwitcherDidSwitchTo(lens: CameraLensesAvailable, on: CameraLensSwitcherView) {
+        switch lens {
+        case .ultraWide:
+            if #available(iOS 13.0, *) {
+                cameraPreviewViewController.setupCamera(ofType: .builtInUltraWideCamera)
+            }
+        case .wide:
+            cameraPreviewViewController.setupCamera(ofType: .builtInWideAngleCamera)
+        case .tele:
+            cameraPreviewViewController.setupCamera(ofType: .builtInTelephotoCamera)
+        }
     }
 }

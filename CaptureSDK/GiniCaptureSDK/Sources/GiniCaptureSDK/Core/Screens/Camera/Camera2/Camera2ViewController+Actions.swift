@@ -6,6 +6,7 @@
 //  Copyright © 2022 Gini GmbH. All rights reserved.
 //
 
+import AVFoundation
 import UIKit
 
 // MARK: - Toggle UI elements
@@ -26,7 +27,7 @@ extension Camera2ViewController {
         cameraPane.captureButton.alpha = 0
     }
 
-    public func setupCamera() {
-        cameraPreviewViewController.setupCamera()
+    public func setupCamera(ofType type: AVCaptureDevice.DeviceType) {
+        cameraPreviewViewController.setupCamera(ofType: type)
     }
 }

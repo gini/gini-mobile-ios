@@ -257,7 +257,7 @@ final class CameraPreviewViewController: UIViewController {
         })
     }
 
-    func setupCamera() {
+    func setupCamera(ofType type: AVCaptureDevice.DeviceType) {
         if AVCaptureDevice.authorizationStatus(for: .video) != .authorized {
             #if !targetEnvironment(simulator)
             self.addNotAuthorizedView()
@@ -265,7 +265,7 @@ final class CameraPreviewViewController: UIViewController {
             #endif
         }
 
-        camera.setup { error in
+        camera.setup(ofType: type) { error in
             if let error = error {
                 switch error {
                 case .notAuthorizedToUseDevice:

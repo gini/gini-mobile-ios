@@ -23,7 +23,7 @@ protocol CameraProtocol: AnyObject {
                exposeWithMode exposureMode: AVCaptureDevice.ExposureMode,
                atDevicePoint point: CGPoint,
                monitorSubjectAreaChange: Bool)
-    func setup(completion: @escaping ((CameraError?) -> Void))
+    func setup(ofType type: AVCaptureDevice.DeviceType, completion: @escaping ((CameraError?) -> Void))
     func setupQRScanningOutput(completion: @escaping ((CameraError?) -> Void))
     func start()
     func stop()
@@ -79,9 +79,9 @@ final class Camera: NSObject, CameraProtocol {
         }
     }
     
-    func setup(completion: @escaping ((CameraError?) -> Void)) {
+    func setup(ofType type: AVCaptureDevice.DeviceType, completion: @escaping ((CameraError?) -> Void)) {
         
-        setupCaptureDevice { [weak self] result in
+        setupCaptureDevice(ofType: type) { [weak self] result in
             
             guard let self = self else { return }
             
@@ -219,9 +219,9 @@ fileprivate extension Camera {
         return captureSettings
     }
     
-    private func setupCaptureDevice(completion: @escaping (Result<AVCaptureDevice, CameraError>) -> Void) {
+    private func setupCaptureDevice(ofType type: AVCaptureDevice.DeviceType, completion: @escaping (Result<AVCaptureDevice, CameraError>) -> Void) {
         
-        guard let videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera,
+        guard let videoDevice = AVCaptureDevice.default(type,
                                                         for: .video,
                                                         position: .back) else {
                                                             
