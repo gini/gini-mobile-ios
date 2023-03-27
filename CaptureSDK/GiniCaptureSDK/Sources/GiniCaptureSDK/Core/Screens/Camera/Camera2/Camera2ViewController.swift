@@ -601,6 +601,8 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
             cameraPane.toggleCaptureButtonActivation(state: true)
         }
 
+        cameraLensSwitcherView.isHidden = false
+
         cameraPreviewViewController.updatePreviewViewOrientation()
         UIView.animate(withDuration: 1.0) {
             self.cameraPane.setupAuthorization(isHidden: false)
