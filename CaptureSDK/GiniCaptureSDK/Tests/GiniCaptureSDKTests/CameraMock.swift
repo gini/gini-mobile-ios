@@ -27,6 +27,10 @@ final class CameraMock: CameraProtocol {
     init(state: CameraAuthState) {
         self.state = state
     }
+
+    func switchTo(newVideoDevice: AVCaptureDevice) {
+
+    }
     
     func captureStillImage(completion: @escaping (Data?, CameraError?) -> Void) {
         
