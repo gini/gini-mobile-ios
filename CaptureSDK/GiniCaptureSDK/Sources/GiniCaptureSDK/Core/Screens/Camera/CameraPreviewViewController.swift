@@ -265,6 +265,7 @@ final class CameraPreviewViewController: UIViewController {
             #endif
         }
 
+        self.startLoadingIndicator()
         camera.setup(ofType: type) { error in
             if let error = error {
                 switch error {

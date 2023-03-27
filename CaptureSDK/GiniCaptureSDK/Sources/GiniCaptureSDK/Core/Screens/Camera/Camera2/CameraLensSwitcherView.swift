@@ -94,6 +94,7 @@ final class CameraLensSwitcherView: UIView {
         }
 
         if availableLenses.contains(.wide) {
+            setButtonState(for: wideButton)
             wideButton.addTarget(self, action: #selector(wideButtonTapped), for: .touchUpInside)
             buttonsStackView.addArrangedSubview(wideButton)
         }
@@ -124,18 +125,42 @@ final class CameraLensSwitcherView: UIView {
         ])
     }
 
+    private func setButtonState(for button: UIButton) {
+        button.setTitleColor(.yellow, for: .normal)
+        button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(0.8)
+    }
+
+    private func resetButtonsState() {
+        [ultraWideButton, wideButton, teleButton].forEach { button in
+            button.setTitleColor(.GiniCapture.light1, for: .normal)
+            button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(0.3)
+        }
+    }
+
     @objc
     private func ultraWideButtonTapped() {
+        guard selectedLens != .ultraWide else { return }
+        resetButtonsState()
+        selectedLens = .ultraWide
+        setButtonState(for: ultraWideButton)
         delegate?.cameraLensSwitcherDidSwitchTo(lens: .ultraWide, on: self)
     }
 
     @objc
     private func wideButtonTapped() {
+        guard selectedLens != .wide else { return }
+        resetButtonsState()
+        selectedLens = .wide
+        setButtonState(for: wideButton)
         delegate?.cameraLensSwitcherDidSwitchTo(lens: .wide, on: self)
     }
 
     @objc
     private func teleButtonTapped() {
+        guard selectedLens != .tele else { return }
+        resetButtonsState()
+        selectedLens = .tele
+        setButtonState(for: teleButton)
         delegate?.cameraLensSwitcherDidSwitchTo(lens: .tele, on: self)
     }
 }

@@ -624,6 +624,7 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
     func notAuthorized() {
         cameraPane.setupAuthorization(isHidden: true)
         cameraPreviewViewController.cameraFrameView.isHidden = true
+        cameraLensSwitcherView.isHidden = true
     }
 }
 
