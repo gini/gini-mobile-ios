@@ -373,15 +373,27 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             cameraPreviewViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
             cameraPreviewViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             cameraPreviewViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            cameraPreviewBottomContraint,
-
-            cameraLensSwitcherView.bottomAnchor.constraint(equalTo: cameraPane.topAnchor, constant: -8),
-            cameraLensSwitcherView.leadingAnchor.constraint(greaterThanOrEqualTo: cameraPane.leadingAnchor),
-            cameraLensSwitcherView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            cameraLensSwitcherView.widthAnchor.constraint(equalToConstant: 124),
-            cameraLensSwitcherView.heightAnchor.constraint(equalToConstant: 36)
-            ]
+            cameraPreviewBottomContraint]
         )
+
+        if UIDevice.current.isIpad {
+            NSLayoutConstraint.activate([
+                cameraLensSwitcherView.trailingAnchor.constraint(equalTo: cameraPane.leadingAnchor,
+                                                                 constant: -Constants.switcherPadding),
+                cameraLensSwitcherView.centerYAnchor.constraint(equalTo: cameraPane.captureButton.centerYAnchor),
+                cameraLensSwitcherView.widthAnchor.constraint(equalToConstant: Constants.tableSwitcherSize.width),
+                cameraLensSwitcherView.heightAnchor.constraint(equalToConstant: Constants.tableSwitcherSize.height)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                cameraLensSwitcherView.bottomAnchor.constraint(equalTo: cameraPane.topAnchor,
+                                                               constant: -Constants.switcherPadding),
+                cameraLensSwitcherView.leadingAnchor.constraint(greaterThanOrEqualTo: cameraPane.leadingAnchor),
+                cameraLensSwitcherView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                cameraLensSwitcherView.widthAnchor.constraint(equalToConstant: Constants.phoneSwitcherSize.width),
+                cameraLensSwitcherView.heightAnchor.constraint(equalToConstant: Constants.phoneSwitcherSize.height)
+            ])
+        }
     }
 
     fileprivate func didPick(_ document: GiniCaptureDocument) {
@@ -655,5 +667,13 @@ extension Camera2ViewController: CameraLensSwitcherViewDelegate {
 
             cameraPreviewViewController.changeCaptureDevice(withType: device)
         }
+    }
+}
+
+private extension Camera2ViewController {
+    enum Constants {
+        static let switcherPadding: CGFloat = 8
+        static let phoneSwitcherSize: CGSize = CGSize(width: 124, height: 36)
+        static let tableSwitcherSize: CGSize = CGSize(width: 36, height: 124)
     }
 }
