@@ -296,10 +296,6 @@ You can find more details [here](https://developer.gini.net/gini-mobile-ios/Gini
 
 # Migrate Return Assistant
 
-## Breaking Changes
-
-Info box was removed.
-
 ## Digital Invoice Onboarding screen
 
 The new Digital Invoice Onboarding screen uses the global UI customization options. You can discard the old screen specific customizations.
@@ -317,7 +313,11 @@ your own by implementing the `DigitalInvoiceOnboardingNavigationBarBottomAdapter
 
 If you need to animate the illustrations on the onboarding pages implement the `OnboardingIllustrationAdapter` interface to inject a view that can animate images (e.g., `Lottie`) and pass it to the `digitalInvoiceOnboardingIllustrationAdapter` when configuring the `GiniBankConfiguration.shared` instance.
 
-## TODO Digital invoice screen
+## Digital Invoice Overview Screen
+
+### Breaking Changes
+
+Info box was removed.
 
 ### New Features
 
