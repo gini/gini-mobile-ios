@@ -63,10 +63,10 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
     public func cameraDidAppear(_ viewController: CameraScreen) {
         if shouldShowOnBoarding() {
             showOnboardingScreen(cameraViewController: viewController, completion: {
-                viewController.setupCamera(ofType: .builtInWideAngleCamera)
+                viewController.setupCamera()
             })
         } else {
-            viewController.setupCamera(ofType: .builtInWideAngleCamera)
+            viewController.setupCamera()
         }
     }
 

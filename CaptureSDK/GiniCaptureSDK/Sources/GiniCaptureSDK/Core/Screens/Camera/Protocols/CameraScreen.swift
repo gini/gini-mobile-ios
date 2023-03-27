@@ -12,7 +12,7 @@ import UIKit
 
 @objc public protocol CameraScreen: CameraTips where Self: UIViewController {
     weak var delegate: CameraViewControllerDelegate? {get set}
-    func setupCamera(ofType type: AVCaptureDevice.DeviceType)
+    func setupCamera()
     func addValidationLoadingView() -> UIView
     func replaceCapturedStackImages(with images: [UIImage])
 }

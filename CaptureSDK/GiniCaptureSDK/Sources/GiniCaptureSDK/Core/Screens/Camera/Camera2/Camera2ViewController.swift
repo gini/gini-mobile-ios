@@ -11,7 +11,6 @@ import UIKit
 
 // swiftlint:disable type_body_length
 public final class Camera2ViewController: UIViewController, CameraScreen {
-
     /**
      The object that acts as the delegate of the camera view controller.
     */
@@ -635,12 +634,24 @@ extension Camera2ViewController: CameraLensSwitcherViewDelegate {
         switch lens {
         case .ultraWide:
             if #available(iOS 13.0, *) {
-                cameraPreviewViewController.setupCamera(ofType: .builtInUltraWideCamera)
+                guard let device = AVCaptureDevice.default(.builtInUltraWideCamera,
+                                                           for: .video,
+                                                           position: .back) else { return }
+
+                cameraPreviewViewController.changeCaptureDevice(withType: device)
             }
         case .wide:
-            cameraPreviewViewController.setupCamera(ofType: .builtInWideAngleCamera)
+            guard let device = AVCaptureDevice.default(.builtInWideAngleCamera,
+                                                       for: .video,
+                                                       position: .back) else { return }
+
+            cameraPreviewViewController.changeCaptureDevice(withType: device)
         case .tele:
-            cameraPreviewViewController.setupCamera(ofType: .builtInTelephotoCamera)
+            guard let device = AVCaptureDevice.default(.builtInTelephotoCamera,
+                                                       for: .video,
+                                                       position: .back) else { return }
+
+            cameraPreviewViewController.changeCaptureDevice(withType: device)
         }
     }
 }
