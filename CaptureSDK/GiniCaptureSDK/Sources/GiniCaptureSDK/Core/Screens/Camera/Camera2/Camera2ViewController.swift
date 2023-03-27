@@ -645,28 +645,21 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 
 extension Camera2ViewController: CameraLensSwitcherViewDelegate {
     func cameraLensSwitcherDidSwitchTo(lens: CameraLensesAvailable, on: CameraLensSwitcherView) {
+        var device: AVCaptureDevice?
+
         switch lens {
         case .ultraWide:
             if #available(iOS 13.0, *) {
-                guard let device = AVCaptureDevice.default(.builtInUltraWideCamera,
-                                                           for: .video,
-                                                           position: .back) else { return }
-
-                cameraPreviewViewController.changeCaptureDevice(withType: device)
+                device = AVCaptureDevice.default(.builtInUltraWideCamera, for: .video, position: .back)
             }
         case .wide:
-            guard let device = AVCaptureDevice.default(.builtInWideAngleCamera,
-                                                       for: .video,
-                                                       position: .back) else { return }
-
-            cameraPreviewViewController.changeCaptureDevice(withType: device)
+            device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
         case .tele:
-            guard let device = AVCaptureDevice.default(.builtInTelephotoCamera,
-                                                       for: .video,
-                                                       position: .back) else { return }
-
-            cameraPreviewViewController.changeCaptureDevice(withType: device)
+            device = AVCaptureDevice.default(.builtInTelephotoCamera, for: .video, position: .back)
         }
+
+        guard let device = device else { return }
+        cameraPreviewViewController.changeCaptureDevice(withType: device)
     }
 }
 
