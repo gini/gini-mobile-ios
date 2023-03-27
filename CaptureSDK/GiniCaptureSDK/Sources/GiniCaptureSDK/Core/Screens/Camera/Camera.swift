@@ -23,7 +23,8 @@ protocol CameraProtocol: AnyObject {
                exposeWithMode exposureMode: AVCaptureDevice.ExposureMode,
                atDevicePoint point: CGPoint,
                monitorSubjectAreaChange: Bool)
-    func setup(ofType type: AVCaptureDevice.DeviceType, completion: @escaping ((CameraError?) -> Void))
+    func setup(completion: @escaping ((CameraError?) -> Void))
+    func switchTo(newVideoDevice: AVCaptureDevice)
     func setupQRScanningOutput(completion: @escaping ((CameraError?) -> Void))
     func start()
     func stop()
@@ -56,7 +57,7 @@ final class Camera: NSObject, CameraProtocol {
     
     fileprivate let application: UIApplication
     fileprivate let sessionQueue = DispatchQueue(label: "session queue")
-    
+
     init(application: UIApplication = UIApplication.shared,
          giniConfiguration: GiniConfiguration) {
         self.application = application
@@ -78,10 +79,38 @@ final class Camera: NSObject, CameraProtocol {
             }
         }
     }
+
+    func switchTo(newVideoDevice: AVCaptureDevice) {
+        guard let videoInput = videoDeviceInput else { return }
+
+        sessionQueue.async { [weak self] in
+            guard let self else { return }
+            var newInput: AVCaptureDeviceInput
+
+            do {
+                newInput = try AVCaptureDeviceInput(device: newVideoDevice)
+            } catch {
+                return
+            }
+
+            self.session.beginConfiguration()
+            self.session.removeInput(videoInput)
+
+            if self.session.canAddInput(newInput) {
+                self.session.addInput(newInput)
+                self.videoDeviceInput = newInput
+            } else {
+                // Could not add the new input, so readding the old one.
+                self.session.addInput(videoInput)
+            }
+
+            self.session.commitConfiguration()
+        }
+    }
     
-    func setup(ofType type: AVCaptureDevice.DeviceType, completion: @escaping ((CameraError?) -> Void)) {
+    func setup(completion: @escaping ((CameraError?) -> Void)) {
         
-        setupCaptureDevice(ofType: type) { [weak self] result in
+        setupCaptureDevice() { [weak self] result in
             
             guard let self = self else { return }
             
@@ -219,9 +248,9 @@ fileprivate extension Camera {
         return captureSettings
     }
     
-    private func setupCaptureDevice(ofType type: AVCaptureDevice.DeviceType, completion: @escaping (Result<AVCaptureDevice, CameraError>) -> Void) {
+    private func setupCaptureDevice(completion: @escaping (Result<AVCaptureDevice, CameraError>) -> Void) {
         
-        guard let videoDevice = AVCaptureDevice.default(type,
+        guard let videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera,
                                                         for: .video,
                                                         position: .back) else {
                                                             

@@ -27,7 +27,7 @@ extension Camera2ViewController {
         cameraPane.captureButton.alpha = 0
     }
 
-    public func setupCamera(ofType type: AVCaptureDevice.DeviceType) {
-        cameraPreviewViewController.setupCamera(ofType: type)
+    public func setupCamera() {
+        cameraPreviewViewController.setupCamera()
     }
 }
