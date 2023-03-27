@@ -29,10 +29,10 @@ final class CameraLensSwitcherView: UIView {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.distribution = .fill
-        stackView.axis = .horizontal
-        stackView.spacing = 4
-        stackView.layer.cornerRadius = 12
-        stackView.backgroundColor = .GiniCapture.dark1.withAlphaComponent(0.3)
+        stackView.axis = UIDevice.current.isIpad ? .vertical : .horizontal
+        stackView.spacing = Constants.stackViewSpacing
+        stackView.layer.cornerRadius = Constants.cornerRadius
+        stackView.backgroundColor = .GiniCapture.dark1.withAlphaComponent(Constants.inactiveStateAlpha)
         return stackView
     }()
 
@@ -40,9 +40,9 @@ final class CameraLensSwitcherView: UIView {
         let button = UIButton()
         button.setTitleColor(.GiniCapture.light1, for: .normal)
         button.setTitle("0.5", for: .normal)
-        button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(0.3)
+        button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(Constants.inactiveStateAlpha)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 18
+        button.layer.cornerRadius = Constants.cornerRadius
         return button
     }()
 
@@ -50,9 +50,9 @@ final class CameraLensSwitcherView: UIView {
         let button = UIButton()
         button.setTitleColor(.GiniCapture.light1, for: .normal)
         button.setTitle("1x", for: .normal)
-        button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(0.3)
+        button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(Constants.inactiveStateAlpha)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 18
+        button.layer.cornerRadius = Constants.cornerRadius
         return button
     }()
 
@@ -60,9 +60,9 @@ final class CameraLensSwitcherView: UIView {
         let button = UIButton()
         button.setTitleColor(.GiniCapture.light1, for: .normal)
         button.setTitle("2x", for: .normal)
-        button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(0.3)
+        button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(Constants.inactiveStateAlpha)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 18
+        button.layer.cornerRadius = Constants.cornerRadius
         return button
     }()
 
@@ -74,6 +74,12 @@ final class CameraLensSwitcherView: UIView {
     init(availableLenses: [CameraLensesAvailable]) {
         self.availableLenses = availableLenses
         super.init(frame: .zero)
+
+        if availableLenses.count <= 1 {
+            isUserInteractionEnabled = false
+            isHidden = true
+            return
+        }
         setupView()
         setupConstraints()
     }
@@ -127,13 +133,13 @@ final class CameraLensSwitcherView: UIView {
 
     private func setButtonState(for button: UIButton) {
         button.setTitleColor(.yellow, for: .normal)
-        button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(0.8)
+        button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(Constants.activeStateAlpha)
     }
 
     private func resetButtonsState() {
         [ultraWideButton, wideButton, teleButton].forEach { button in
             button.setTitleColor(.GiniCapture.light1, for: .normal)
-            button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(0.3)
+            button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(Constants.inactiveStateAlpha)
         }
     }
 
@@ -162,5 +168,14 @@ final class CameraLensSwitcherView: UIView {
         selectedLens = .tele
         setButtonState(for: teleButton)
         delegate?.cameraLensSwitcherDidSwitchTo(lens: .tele, on: self)
+    }
+}
+
+private extension CameraLensSwitcherView {
+    enum Constants {
+        static let cornerRadius: CGFloat = 18
+        static let stackViewSpacing: CGFloat = 4
+        static let inactiveStateAlpha: CGFloat = 0.3
+        static let activeStateAlpha: CGFloat = 0.8
     }
 }
