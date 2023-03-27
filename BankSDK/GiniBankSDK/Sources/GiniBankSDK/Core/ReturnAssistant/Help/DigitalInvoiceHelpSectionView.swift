@@ -13,6 +13,7 @@ final class DigitalInvoiceHelpSectionView: UIView {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.isAccessibilityElement = true
+        imageView.accessibilityTraits = .none
         return imageView
     }()
 
