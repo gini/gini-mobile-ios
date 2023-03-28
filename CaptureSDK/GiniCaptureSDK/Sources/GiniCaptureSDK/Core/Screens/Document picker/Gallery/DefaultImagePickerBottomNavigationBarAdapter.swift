@@ -17,10 +17,7 @@ final class DefaultImagePickerBottomNavigationBarAdapter: ImagePickerBottomNavig
 
     func injectedView() -> UIView {
         if let navigationBarView = BackButtonBottomNavigationBar().loadNib() as? BackButtonBottomNavigationBar {
-            navigationBarView.backButton.addTarget(
-                self,
-                action: #selector(backButtonClicked),
-                for: .touchUpInside)
+            navigationBarView.backButton.addAction(self, #selector(backButtonClicked))
             return navigationBarView
         } else {
             return UIView()
