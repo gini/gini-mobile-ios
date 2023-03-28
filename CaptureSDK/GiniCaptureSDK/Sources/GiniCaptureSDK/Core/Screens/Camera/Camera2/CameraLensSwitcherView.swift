@@ -13,6 +13,13 @@ enum CameraLensesAvailable {
     case tele
 }
 
+enum LayoutPairs {
+    case single
+    case wideAndUltraWide
+    case wideAndTele
+    case triple
+}
+
 protocol CameraLensSwitcherViewDelegate: AnyObject {
     func cameraLensSwitcherDidSwitchTo(lens: CameraLensesAvailable, on: CameraLensSwitcherView)
 }
@@ -28,6 +35,7 @@ final class CameraLensSwitcherView: UIView {
 
     private lazy var ultraWideButton: UIButton = {
         let button = UIButton()
+        button.isHidden = true
         button.setTitleColor(.GiniCapture.light1, for: .normal)
         button.titleLabel?.font = GiniConfiguration.shared.textStyleFonts[.caption2]
         button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(Constants.inactiveStateAlpha)
@@ -37,6 +45,7 @@ final class CameraLensSwitcherView: UIView {
 
     private lazy var wideButton: UIButton = {
         let button = UIButton()
+        button.isHidden = true
         button.setTitleColor(.GiniCapture.light1, for: .normal)
         button.titleLabel?.font = GiniConfiguration.shared.textStyleFonts[.caption2]
         button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(Constants.inactiveStateAlpha)
@@ -46,6 +55,7 @@ final class CameraLensSwitcherView: UIView {
 
     private lazy var teleButton: UIButton = {
         let button = UIButton()
+        button.isHidden = true
         button.setTitleColor(.GiniCapture.light1, for: .normal)
         button.titleLabel?.font = GiniConfiguration.shared.textStyleFonts[.caption2]
         button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(Constants.inactiveStateAlpha)
@@ -62,14 +72,29 @@ final class CameraLensSwitcherView: UIView {
 
     private var selectedLens: CameraLensesAvailable = .wide
     private let availableLenses: [CameraLensesAvailable]
+    private var layout: LayoutPairs = .single
 
     weak var delegate: CameraLensSwitcherViewDelegate?
 
     init(availableLenses: [CameraLensesAvailable]) {
         self.availableLenses = availableLenses
+        switch availableLenses.count {
+        case 1:
+            self.layout = .single
+        case 2:
+            if availableLenses.contains(.ultraWide) {
+                self.layout = .wideAndUltraWide
+            } else if availableLenses.contains(.tele) {
+                self.layout = .wideAndTele
+            }
+        case 3:
+            self.layout = .triple
+        default:
+            self.layout = .single
+        }
         super.init(frame: .zero)
 
-        if availableLenses.count <= 1 {
+        if layout == .single {
             isUserInteractionEnabled = false
             isHidden = true
             return
@@ -84,20 +109,24 @@ final class CameraLensSwitcherView: UIView {
 
     private func setupView() {
         addSubview(buttonContainerView)
+        buttonContainerView.addSubview(ultraWideButton)
+        buttonContainerView.addSubview(wideButton)
+        buttonContainerView.addSubview(teleButton)
 
+        backgroundColor = .white
         if availableLenses.contains(.ultraWide) {
             ultraWideButton.addTarget(self, action: #selector(ultraWideButtonTapped), for: .touchUpInside)
-            buttonContainerView.addSubview(ultraWideButton)
+            ultraWideButton.isHidden = false
         }
 
         if availableLenses.contains(.wide) {
             wideButton.addTarget(self, action: #selector(wideButtonTapped), for: .touchUpInside)
-            buttonContainerView.addSubview(wideButton)
+            wideButton.isHidden = false
         }
 
         if availableLenses.contains(.tele) {
             teleButton.addTarget(self, action: #selector(teleButtonTapped), for: .touchUpInside)
-            buttonContainerView.addSubview(teleButton)
+            teleButton.isHidden = false
         }
 
         resetButtonsState()
@@ -111,40 +140,181 @@ final class CameraLensSwitcherView: UIView {
             teleButtonHeightConstraint,
             teleButton.widthAnchor.constraint(equalTo: teleButton.heightAnchor),
             ultraWideButton.widthAnchor.constraint(equalTo: ultraWideButton.heightAnchor),
-            wideButton.widthAnchor.constraint(equalTo: wideButton.heightAnchor),
-
-            ultraWideButton.centerYAnchor.constraint(equalTo: buttonContainerView.centerYAnchor),
-            ultraWideButton.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor,
-                                                     constant: Constants.interButtonSpacing),
-            ultraWideButton.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor,
-                                                 constant: Constants.buttonPadding),
-            ultraWideButton.bottomAnchor.constraint(lessThanOrEqualTo: buttonContainerView.bottomAnchor,
-                                                    constant: -Constants.buttonPadding),
-
-            wideButton.centerYAnchor.constraint(equalTo: buttonContainerView.centerYAnchor),
-            wideButton.leadingAnchor.constraint(equalTo: ultraWideButton.trailingAnchor,
-                                                constant: Constants.interButtonSpacing),
-            wideButton.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor,
-                                            constant: Constants.buttonPadding),
-            wideButton.bottomAnchor.constraint(lessThanOrEqualTo: buttonContainerView.bottomAnchor,
-                                               constant: -Constants.buttonPadding),
-
-            teleButton.centerYAnchor.constraint(equalTo: buttonContainerView.centerYAnchor),
-            teleButton.leadingAnchor.constraint(equalTo: wideButton.trailingAnchor,
-                                                constant: Constants.interButtonSpacing),
-            teleButton.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor,
-                                            constant: Constants.buttonPadding),
-            teleButton.bottomAnchor.constraint(lessThanOrEqualTo: buttonContainerView.bottomAnchor,
-                                               constant: -Constants.buttonPadding),
-            teleButton.trailingAnchor.constraint(equalTo: buttonContainerView.trailingAnchor,
-                                                 constant: -Constants.interButtonSpacing),
-
-            buttonContainerView.topAnchor.constraint(equalTo: topAnchor),
-            buttonContainerView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor),
-            buttonContainerView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
-            buttonContainerView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            wideButton.widthAnchor.constraint(equalTo: wideButton.heightAnchor)
         ])
+
+        if UIDevice.current.isIpad {
+            NSLayoutConstraint.activate([
+                buttonContainerView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
+                buttonContainerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+                buttonContainerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+                buttonContainerView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
+                buttonContainerView.centerYAnchor.constraint(equalTo: centerYAnchor)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                buttonContainerView.topAnchor.constraint(equalTo: topAnchor),
+                buttonContainerView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor),
+                buttonContainerView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
+                buttonContainerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+                buttonContainerView.centerXAnchor.constraint(equalTo: centerXAnchor)
+            ])
+        }
+
+        switch layout {
+        case .single:
+            break
+        case .wideAndUltraWide:
+            NSLayoutConstraint.activate(wideAndUltraWideLayoutButtonConstraints)
+        case .wideAndTele:
+            NSLayoutConstraint.activate(wideAndTeleLayoutButtonConstraints)
+        case .triple:
+            NSLayoutConstraint.activate(tripleLayoutButtonConstraints)
+        }
     }
+
+    // Constraints for the 3 buttons
+    private lazy var tripleLayoutButtonConstraints: [NSLayoutConstraint] = {
+        if UIDevice.current.isIpad {
+            return [ultraWideButton.centerXAnchor.constraint(equalTo: buttonContainerView.centerXAnchor),
+                    ultraWideButton.trailingAnchor.constraint(lessThanOrEqualTo: buttonContainerView.trailingAnchor,
+                                                              constant: -Constants.buttonPadding),
+                    ultraWideButton.topAnchor.constraint(equalTo: buttonContainerView.topAnchor,
+                                                         constant: Constants.interButtonSpacing),
+                    ultraWideButton.leadingAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.leadingAnchor,
+                                                             constant: Constants.buttonPadding),
+                    wideButton.centerXAnchor.constraint(equalTo: buttonContainerView.centerXAnchor),
+
+                    wideButton.trailingAnchor.constraint(lessThanOrEqualTo: buttonContainerView.trailingAnchor,
+                                                         constant: -Constants.buttonPadding),
+                    wideButton.leadingAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.leadingAnchor,
+                                                        constant: Constants.buttonPadding),
+                    wideButton.topAnchor.constraint(equalTo: ultraWideButton.bottomAnchor,
+                                                    constant: Constants.interButtonSpacing),
+                    teleButton.centerXAnchor.constraint(equalTo: buttonContainerView.centerXAnchor),
+
+                    teleButton.topAnchor.constraint(equalTo: wideButton.bottomAnchor,
+                                                    constant: Constants.interButtonSpacing),
+                    teleButton.trailingAnchor.constraint(lessThanOrEqualTo: buttonContainerView.trailingAnchor,
+                                                         constant: -Constants.buttonPadding),
+                    teleButton.leadingAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.leadingAnchor,
+                                                        constant: Constants.buttonPadding),
+                    teleButton.bottomAnchor.constraint(equalTo: buttonContainerView.bottomAnchor,
+                                                       constant: -Constants.interButtonSpacing)]
+        } else {
+            return [ultraWideButton.centerYAnchor.constraint(equalTo: buttonContainerView.centerYAnchor),
+                    ultraWideButton.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor,
+                                                             constant: Constants.interButtonSpacing),
+                    ultraWideButton.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor,
+                                                         constant: Constants.buttonPadding),
+                    ultraWideButton.bottomAnchor.constraint(lessThanOrEqualTo: buttonContainerView.bottomAnchor,
+                                                            constant: -Constants.buttonPadding),
+
+                    wideButton.centerYAnchor.constraint(equalTo: buttonContainerView.centerYAnchor),
+                    wideButton.leadingAnchor.constraint(equalTo: ultraWideButton.trailingAnchor,
+                                                        constant: Constants.interButtonSpacing),
+                    wideButton.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor,
+                                                    constant: Constants.buttonPadding),
+                    wideButton.bottomAnchor.constraint(lessThanOrEqualTo: buttonContainerView.bottomAnchor,
+                                                       constant: -Constants.buttonPadding),
+
+                    teleButton.centerYAnchor.constraint(equalTo: buttonContainerView.centerYAnchor),
+                    teleButton.leadingAnchor.constraint(equalTo: wideButton.trailingAnchor,
+                                                        constant: Constants.interButtonSpacing),
+                    teleButton.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor,
+                                                    constant: Constants.buttonPadding),
+                    teleButton.bottomAnchor.constraint(lessThanOrEqualTo: buttonContainerView.bottomAnchor,
+                                                       constant: -Constants.buttonPadding),
+                    teleButton.trailingAnchor.constraint(equalTo: buttonContainerView.trailingAnchor,
+                                                         constant: -Constants.interButtonSpacing)]
+        }
+    }()
+
+    // Constraints for wide and ultra wide button pair
+    private lazy var wideAndUltraWideLayoutButtonConstraints: [NSLayoutConstraint] = {
+        if UIDevice.current.isIpad {
+            return [ultraWideButton.centerXAnchor.constraint(equalTo: buttonContainerView.centerXAnchor),
+                    ultraWideButton.trailingAnchor.constraint(lessThanOrEqualTo: buttonContainerView.trailingAnchor,
+                                                              constant: -Constants.buttonPadding),
+                    ultraWideButton.topAnchor.constraint(equalTo: buttonContainerView.topAnchor,
+                                                         constant: Constants.interButtonSpacing),
+                    ultraWideButton.leadingAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.leadingAnchor,
+                                                             constant: Constants.buttonPadding),
+                    wideButton.centerXAnchor.constraint(equalTo: buttonContainerView.centerXAnchor),
+
+                    wideButton.trailingAnchor.constraint(lessThanOrEqualTo: buttonContainerView.trailingAnchor,
+                                                         constant: -Constants.buttonPadding),
+                    wideButton.leadingAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.leadingAnchor,
+                                                        constant: Constants.buttonPadding),
+                    wideButton.topAnchor.constraint(equalTo: ultraWideButton.bottomAnchor,
+                                                    constant: Constants.interButtonSpacing),
+                    wideButton.bottomAnchor.constraint(equalTo: buttonContainerView.bottomAnchor,
+                                                       constant: -Constants.interButtonSpacing)]
+        } else {
+            return [ultraWideButton.centerYAnchor.constraint(equalTo: buttonContainerView.centerYAnchor),
+                    ultraWideButton.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor,
+                                                             constant: Constants.interButtonSpacing),
+                    ultraWideButton.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor,
+                                                         constant: Constants.buttonPadding),
+                    ultraWideButton.bottomAnchor.constraint(lessThanOrEqualTo: buttonContainerView.bottomAnchor,
+                                                            constant: -Constants.buttonPadding),
+
+                    wideButton.centerYAnchor.constraint(equalTo: buttonContainerView.centerYAnchor),
+                    wideButton.leadingAnchor.constraint(equalTo: ultraWideButton.trailingAnchor,
+                                                        constant: Constants.interButtonSpacing),
+                    wideButton.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor,
+                                                    constant: Constants.buttonPadding),
+                    wideButton.bottomAnchor.constraint(lessThanOrEqualTo: buttonContainerView.bottomAnchor,
+                                                       constant: -Constants.buttonPadding),
+
+                    wideButton.trailingAnchor.constraint(equalTo: buttonContainerView.trailingAnchor,
+                                                         constant: -Constants.interButtonSpacing)]
+        }
+    }()
+
+    // Constraints for wide and tele button pair
+    private lazy var wideAndTeleLayoutButtonConstraints: [NSLayoutConstraint] = {
+        if UIDevice.current.isIpad {
+            return [wideButton.topAnchor.constraint(equalTo: buttonContainerView.topAnchor,
+                                                         constant: Constants.interButtonSpacing),
+                    wideButton.centerXAnchor.constraint(equalTo: buttonContainerView.centerXAnchor),
+
+                    wideButton.trailingAnchor.constraint(lessThanOrEqualTo: buttonContainerView.trailingAnchor,
+                                                         constant: -Constants.buttonPadding),
+                    wideButton.leadingAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.leadingAnchor,
+                                                        constant: Constants.buttonPadding),
+                    teleButton.centerXAnchor.constraint(equalTo: buttonContainerView.centerXAnchor),
+
+                    teleButton.topAnchor.constraint(equalTo: wideButton.bottomAnchor,
+                                                    constant: Constants.interButtonSpacing),
+                    teleButton.trailingAnchor.constraint(lessThanOrEqualTo: buttonContainerView.trailingAnchor,
+                                                         constant: -Constants.buttonPadding),
+                    teleButton.leadingAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.leadingAnchor,
+                                                        constant: Constants.buttonPadding),
+                    teleButton.bottomAnchor.constraint(equalTo: buttonContainerView.bottomAnchor,
+                                                       constant: -Constants.interButtonSpacing)]
+        } else {
+            return [wideButton.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor,
+                                                             constant: Constants.interButtonSpacing),
+                    wideButton.centerYAnchor.constraint(equalTo: buttonContainerView.centerYAnchor),
+                    wideButton.leadingAnchor.constraint(equalTo: ultraWideButton.trailingAnchor,
+                                                        constant: Constants.interButtonSpacing),
+                    wideButton.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor,
+                                                    constant: Constants.buttonPadding),
+                    wideButton.bottomAnchor.constraint(lessThanOrEqualTo: buttonContainerView.bottomAnchor,
+                                                       constant: -Constants.buttonPadding),
+
+                    teleButton.centerYAnchor.constraint(equalTo: buttonContainerView.centerYAnchor),
+                    teleButton.leadingAnchor.constraint(equalTo: wideButton.trailingAnchor,
+                                                        constant: Constants.interButtonSpacing),
+                    teleButton.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor,
+                                                    constant: Constants.buttonPadding),
+                    teleButton.bottomAnchor.constraint(lessThanOrEqualTo: buttonContainerView.bottomAnchor,
+                                                       constant: -Constants.buttonPadding),
+                    teleButton.trailingAnchor.constraint(equalTo: buttonContainerView.trailingAnchor,
+                                                         constant: -Constants.interButtonSpacing)]
+        }
+    }()
 
     private func setButtonState(for button: UIButton) {
         switch selectedLens {
