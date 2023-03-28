@@ -100,6 +100,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
             cell.iconView.illustrationAdapter = ImageOnboardingIllustrationAdapter()
             cell.iconView.icon = image
         }
+        cell.iconView.accessibilityValue = item.title
         cell.iconView.setupView()
 
         cell.descriptionLabel.text = item.description

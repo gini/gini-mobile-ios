@@ -14,51 +14,26 @@
             <rect key="frame" x="0.0" y="0.0" width="458" height="114"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="250" preservesSuperviewLayoutMargins="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eF1-Xh-kaw">
-                    <rect key="frame" x="10" y="0.0" width="93" height="114"/>
-                    <constraints>
-                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="AS5-bL-E2R"/>
-                    </constraints>
-                    <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="plain">
-                        <attributedString key="attributedTitle">
-                            <fragment content="Left but loing">
-                                <attributes>
-                                    <font key="NSFont" size="12" name="Helvetica"/>
-                                </attributes>
-                            </fragment>
-                        </attributedString>
-                    </buttonConfiguration>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uqH-1E-R8A">
-                    <rect key="frame" x="399" y="0.0" width="49" height="114"/>
-                    <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="plain">
-                        <attributedString key="attributedTitle">
-                            <fragment content="Help">
-                                <attributes>
-                                    <font key="NSFont" size="12" name="Helvetica"/>
-                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                </attributes>
-                            </fragment>
-                        </attributedString>
-                    </buttonConfiguration>
-                </button>
+                <view contentMode="scaleToFill" placeholderIntrinsicWidth="84" placeholderIntrinsicHeight="114" translatesAutoresizingMaskIntoConstraints="NO" id="Jgr-6C-Oxy">
+                    <rect key="frame" x="366" y="0.0" width="84" height="114"/>
+                </view>
+                <view contentMode="scaleToFill" placeholderIntrinsicWidth="87" placeholderIntrinsicHeight="114" translatesAutoresizingMaskIntoConstraints="NO" id="HTA-Ic-Gtd">
+                    <rect key="frame" x="8" y="0.0" width="87" height="114"/>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="dXr-WQ-fgv"/>
             <constraints>
-                <constraint firstItem="dXr-WQ-fgv" firstAttribute="trailing" secondItem="uqH-1E-R8A" secondAttribute="trailing" constant="10" id="EUO-wl-i2i"/>
-                <constraint firstAttribute="bottom" secondItem="uqH-1E-R8A" secondAttribute="bottom" id="IGB-Sg-qTm"/>
-                <constraint firstItem="uqH-1E-R8A" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="eF1-Xh-kaw" secondAttribute="trailing" id="Nwa-um-AIe"/>
-                <constraint firstItem="uqH-1E-R8A" firstAttribute="top" secondItem="fPC-k4-VJ1" secondAttribute="top" id="Qrh-0t-U1h"/>
-                <constraint firstAttribute="bottom" secondItem="eF1-Xh-kaw" secondAttribute="bottom" id="RqV-kz-SV8"/>
-                <constraint firstItem="eF1-Xh-kaw" firstAttribute="leading" secondItem="dXr-WQ-fgv" secondAttribute="leading" constant="10" id="dx4-6Z-p9q"/>
-                <constraint firstItem="eF1-Xh-kaw" firstAttribute="top" secondItem="fPC-k4-VJ1" secondAttribute="top" id="rmY-NG-Xos"/>
+                <constraint firstAttribute="bottom" secondItem="HTA-Ic-Gtd" secondAttribute="bottom" id="AtA-5Q-WJR"/>
+                <constraint firstAttribute="bottom" secondItem="Jgr-6C-Oxy" secondAttribute="bottom" id="LCa-xv-ciG"/>
+                <constraint firstItem="dXr-WQ-fgv" firstAttribute="trailing" secondItem="Jgr-6C-Oxy" secondAttribute="trailing" constant="8" id="U2V-BN-gwX"/>
+                <constraint firstItem="Jgr-6C-Oxy" firstAttribute="top" secondItem="fPC-k4-VJ1" secondAttribute="top" id="eXM-vw-mFr"/>
+                <constraint firstItem="HTA-Ic-Gtd" firstAttribute="top" secondItem="fPC-k4-VJ1" secondAttribute="top" id="krh-ur-7oc"/>
+                <constraint firstItem="HTA-Ic-Gtd" firstAttribute="leading" secondItem="dXr-WQ-fgv" secondAttribute="leading" constant="8" id="ksR-HU-1yc"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="leftButton" destination="eF1-Xh-kaw" id="F1C-Bp-HKs"/>
-                <outlet property="rightButton" destination="uqH-1E-R8A" id="oUr-K5-CoA"/>
+                <outlet property="leftButtonContainer" destination="HTA-Ic-Gtd" id="Mhw-Hs-QwI"/>
+                <outlet property="rightButtonContainer" destination="Jgr-6C-Oxy" id="A8O-yI-mgs"/>
             </connections>
             <point key="canvasLocation" x="86.153846153846146" y="-245.260663507109"/>
         </view>
