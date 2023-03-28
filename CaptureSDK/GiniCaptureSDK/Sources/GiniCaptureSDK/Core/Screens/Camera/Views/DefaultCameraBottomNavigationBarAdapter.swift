@@ -20,14 +20,14 @@ class DefaultCameraBottomNavigationBarAdapter: CameraBottomNavigationBarAdapter 
     func showButtons(navigationBar: UIView, navigationButtons: [CameraNavigationBarBottomButton]) {
         if let navigationView = navigationBar as? CameraBottomNavigationBar {
             if navigationButtons.contains(.help) {
-                navigationView.rightButton.isHidden = false
+                navigationView.rightButtonContainer.isHidden = false
             } else {
-                navigationView.rightButton.isHidden = true
+                navigationView.rightButtonContainer.isHidden = true
             }
             if navigationButtons.contains(.back) {
-                navigationView.leftButton.isHidden = false
+                navigationView.leftButtonContainer.isHidden = false
             } else {
-                navigationView.leftButton.isHidden = true
+                navigationView.leftButtonContainer.isHidden = true
             }
         }
     }
@@ -46,14 +46,8 @@ class DefaultCameraBottomNavigationBarAdapter: CameraBottomNavigationBarAdapter 
         if let navigationBarView =
             CameraBottomNavigationBar().loadNib() as?
             CameraBottomNavigationBar {
-            navigationBarView.rightButton.addTarget(
-                self,
-                action: #selector(helpButtonClicked),
-                for: .touchUpInside)
-            navigationBarView.leftButton.addTarget(
-                self,
-                action: #selector(backButtonClicked),
-                for: .touchUpInside)
+            navigationBarView.rightBarButton.addAction(self, #selector(helpButtonClicked))
+            navigationBarView.leftBarButton.addAction(self, #selector(backButtonClicked))
             return navigationBarView
         }
         return UIView()
