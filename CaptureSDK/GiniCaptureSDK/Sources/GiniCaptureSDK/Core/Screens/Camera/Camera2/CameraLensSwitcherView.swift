@@ -29,35 +29,36 @@ final class CameraLensSwitcherView: UIView {
     private lazy var ultraWideButton: UIButton = {
         let button = UIButton()
         button.setTitleColor(.GiniCapture.light1, for: .normal)
-        button.setTitle("0.5", for: .normal)
         button.titleLabel?.font = GiniConfiguration.shared.textStyleFonts[.caption2]
         button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(Constants.inactiveStateAlpha)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = Constants.cornerRadius
         return button
     }()
 
     private lazy var wideButton: UIButton = {
         let button = UIButton()
         button.setTitleColor(.GiniCapture.light1, for: .normal)
-        button.setTitle("1x", for: .normal)
         button.titleLabel?.font = GiniConfiguration.shared.textStyleFonts[.caption2]
         button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(Constants.inactiveStateAlpha)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 18
         return button
     }()
 
     private lazy var teleButton: UIButton = {
         let button = UIButton()
         button.setTitleColor(.GiniCapture.light1, for: .normal)
-        button.setTitle("2x", for: .normal)
         button.titleLabel?.font = GiniConfiguration.shared.textStyleFonts[.caption2]
         button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(Constants.inactiveStateAlpha)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = Constants.cornerRadius
         return button
     }()
+
+    private lazy var ultraWideButtonHeightConstraint = ultraWideButton.heightAnchor
+                                                        .constraint(equalToConstant: Constants.inactiveButtonHeight)
+    private lazy var wideButtonHeightConstraint = wideButton.heightAnchor
+                                                        .constraint(equalToConstant: Constants.inactiveButtonHeight)
+    private lazy var teleButtonHeightConstraint = teleButton.heightAnchor
+                                                        .constraint(equalToConstant: Constants.inactiveButtonHeight)
 
     private var selectedLens: CameraLensesAvailable = .wide
     private let availableLenses: [CameraLensesAvailable]
@@ -90,7 +91,6 @@ final class CameraLensSwitcherView: UIView {
         }
 
         if availableLenses.contains(.wide) {
-            setButtonState(for: wideButton)
             wideButton.addTarget(self, action: #selector(wideButtonTapped), for: .touchUpInside)
             buttonContainerView.addSubview(wideButton)
         }
@@ -99,11 +99,10 @@ final class CameraLensSwitcherView: UIView {
             teleButton.addTarget(self, action: #selector(teleButtonTapped), for: .touchUpInside)
             buttonContainerView.addSubview(teleButton)
         }
-    }
 
-    private lazy var ultraWideButtonHeightConstraint = ultraWideButton.heightAnchor.constraint(equalToConstant: 24)
-    private lazy var wideButtonHeightConstraint = wideButton.heightAnchor.constraint(equalToConstant: 24)
-    private lazy var teleButtonHeightConstraint = teleButton.heightAnchor.constraint(equalToConstant: 24)
+        resetButtonsState()
+        setButtonState(for: wideButton)
+    }
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
@@ -115,20 +114,30 @@ final class CameraLensSwitcherView: UIView {
             wideButton.widthAnchor.constraint(equalTo: wideButton.heightAnchor),
 
             ultraWideButton.centerYAnchor.constraint(equalTo: buttonContainerView.centerYAnchor),
-            ultraWideButton.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor, constant: 8),
-            ultraWideButton.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor, constant: 3),
-            ultraWideButton.bottomAnchor.constraint(lessThanOrEqualTo: buttonContainerView.bottomAnchor, constant: -3),
+            ultraWideButton.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor,
+                                                     constant: Constants.interButtonSpacing),
+            ultraWideButton.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor,
+                                                 constant: Constants.buttonPadding),
+            ultraWideButton.bottomAnchor.constraint(lessThanOrEqualTo: buttonContainerView.bottomAnchor,
+                                                    constant: -Constants.buttonPadding),
 
             wideButton.centerYAnchor.constraint(equalTo: buttonContainerView.centerYAnchor),
-            wideButton.leadingAnchor.constraint(equalTo: ultraWideButton.trailingAnchor, constant: 8),
-            wideButton.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor, constant: 3),
-            wideButton.bottomAnchor.constraint(lessThanOrEqualTo: buttonContainerView.bottomAnchor, constant: -3),
+            wideButton.leadingAnchor.constraint(equalTo: ultraWideButton.trailingAnchor,
+                                                constant: Constants.interButtonSpacing),
+            wideButton.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor,
+                                            constant: Constants.buttonPadding),
+            wideButton.bottomAnchor.constraint(lessThanOrEqualTo: buttonContainerView.bottomAnchor,
+                                               constant: -Constants.buttonPadding),
 
             teleButton.centerYAnchor.constraint(equalTo: buttonContainerView.centerYAnchor),
-            teleButton.leadingAnchor.constraint(equalTo: wideButton.trailingAnchor, constant: 8),
-            teleButton.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor, constant: 3),
-            teleButton.bottomAnchor.constraint(lessThanOrEqualTo: buttonContainerView.bottomAnchor, constant: -3),
-            teleButton.trailingAnchor.constraint(equalTo: buttonContainerView.trailingAnchor, constant: -8),
+            teleButton.leadingAnchor.constraint(equalTo: wideButton.trailingAnchor,
+                                                constant: Constants.interButtonSpacing),
+            teleButton.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor,
+                                            constant: Constants.buttonPadding),
+            teleButton.bottomAnchor.constraint(lessThanOrEqualTo: buttonContainerView.bottomAnchor,
+                                               constant: -Constants.buttonPadding),
+            teleButton.trailingAnchor.constraint(equalTo: buttonContainerView.trailingAnchor,
+                                                 constant: -Constants.interButtonSpacing),
 
             buttonContainerView.topAnchor.constraint(equalTo: topAnchor),
             buttonContainerView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor),
@@ -138,36 +147,16 @@ final class CameraLensSwitcherView: UIView {
     }
 
     private func setButtonState(for button: UIButton) {
-        NSLayoutConstraint.deactivate([
-            ultraWideButtonHeightConstraint,
-            wideButtonHeightConstraint,
-            teleButtonHeightConstraint
-        ])
-
-        ultraWideButtonHeightConstraint.constant = 24
-        wideButtonHeightConstraint.constant = 24
-        teleButtonHeightConstraint.constant = 24
-
-        ultraWideButton.setTitle("0.5", for: .normal)
-        wideButton.setTitle("1", for: .normal)
-        teleButton.setTitle("2", for: .normal)
-
-        UIViewPropertyAnimator(duration: 0.3, curve: .easeIn) { [weak self] in
-            self?.ultraWideButton.layer.cornerRadius = 12
-            self?.wideButton.layer.cornerRadius = 12
-            self?.teleButton.layer.cornerRadius = 12
-        }.startAnimation()
-
         switch selectedLens {
         case .ultraWide:
-            ultraWideButton.setTitle("0.5x", for: .normal)
-            ultraWideButtonHeightConstraint.constant = 34
+            ultraWideButton.setTitle("0,5x", for: .normal)
+            ultraWideButtonHeightConstraint.constant = Constants.activeButtonHeight
         case .wide:
             wideButton.setTitle("1x", for: .normal)
-            wideButtonHeightConstraint.constant = 34
+            wideButtonHeightConstraint.constant = Constants.activeButtonHeight
         case .tele:
             teleButton.setTitle("2x", for: .normal)
-            teleButtonHeightConstraint.constant = 34
+            teleButtonHeightConstraint.constant = Constants.activeButtonHeight
         }
 
         NSLayoutConstraint.activate([
@@ -176,14 +165,14 @@ final class CameraLensSwitcherView: UIView {
             teleButtonHeightConstraint
         ])
 
-        button.setTitleColor(.yellow, for: .normal)
+        button.setTitleColor(.GiniCapture.warning3, for: .normal)
         button.backgroundColor = .GiniCapture.dark1.withAlphaComponent(Constants.activeStateAlpha)
 
-        UIView.animate(withDuration: 0.3) { [weak self] in
+        UIView.animate(withDuration: Constants.animationDuration) { [weak self] in
             self?.layoutIfNeeded()
         }
-        UIViewPropertyAnimator(duration: 0.3, curve: .easeIn) {
-            button.layer.cornerRadius = 18
+        UIViewPropertyAnimator(duration: Constants.animationDuration, curve: .easeIn) {
+            button.layer.cornerRadius = Constants.activeButtonCornerRadius
         }.startAnimation()
     }
 
@@ -192,6 +181,26 @@ final class CameraLensSwitcherView: UIView {
             button.setTitleColor(.GiniCapture.light1, for: .normal)
             button.backgroundColor = .GiniCapture.dark1.withAlphaComponent(Constants.inactiveStateAlpha)
         }
+
+        NSLayoutConstraint.deactivate([
+            ultraWideButtonHeightConstraint,
+            wideButtonHeightConstraint,
+            teleButtonHeightConstraint
+        ])
+
+        ultraWideButtonHeightConstraint.constant = Constants.inactiveButtonHeight
+        wideButtonHeightConstraint.constant = Constants.inactiveButtonHeight
+        teleButtonHeightConstraint.constant = Constants.inactiveButtonHeight
+
+        ultraWideButton.setTitle("0,5", for: .normal)
+        wideButton.setTitle("1", for: .normal)
+        teleButton.setTitle("2", for: .normal)
+
+        UIViewPropertyAnimator(duration: Constants.animationDuration, curve: .easeIn) { [weak self] in
+            self?.ultraWideButton.layer.cornerRadius = Constants.inactiveButtonCornerRadius
+            self?.wideButton.layer.cornerRadius = Constants.inactiveButtonCornerRadius
+            self?.teleButton.layer.cornerRadius = Constants.inactiveButtonCornerRadius
+        }.startAnimation()
     }
 
     @objc
@@ -225,9 +234,14 @@ final class CameraLensSwitcherView: UIView {
 private extension CameraLensSwitcherView {
     enum Constants {
         static let containerRadius: CGFloat = 20
-        static let cornerRadius: CGFloat = 12
-        static let stackViewSpacing: CGFloat = 4
+        static let inactiveButtonCornerRadius: CGFloat = 12
+        static let activeButtonCornerRadius: CGFloat = 18
+        static let interButtonSpacing: CGFloat = 8
+        static let buttonPadding: CGFloat = 3
+        static let inactiveButtonHeight: CGFloat = 24
+        static let activeButtonHeight: CGFloat = 34
         static let inactiveStateAlpha: CGFloat = 0.24
-        static let activeStateAlpha: CGFloat = 0.8
+        static let activeStateAlpha: CGFloat = 0.54
+        static let animationDuration: CGFloat = 0.3
     }
 }
