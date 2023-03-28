@@ -12,6 +12,8 @@ final class DigitalInvoiceHelpSectionView: UIView {
     private lazy var iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.isAccessibilityElement = true
+        imageView.accessibilityTraits = .none
         return imageView
     }()
 
@@ -47,6 +49,7 @@ final class DigitalInvoiceHelpSectionView: UIView {
     private func setupView(with content: DigitalInvoiceHelpSection) {
         backgroundColor = .clear
         iconImageView.image = content.icon
+        iconImageView.accessibilityValue = content.title
         titleLabel.text = content.title
         titleLabel.accessibilityValue = content.title
         descriptionLabel.text = content.description
