@@ -13,7 +13,7 @@ enum CameraLensesAvailable {
     case tele
 }
 
-enum LayoutPairs {
+private enum LayoutPairs {
     case single
     case wideAndUltraWide
     case wideAndTele
@@ -113,7 +113,6 @@ final class CameraLensSwitcherView: UIView {
         buttonContainerView.addSubview(wideButton)
         buttonContainerView.addSubview(teleButton)
 
-        backgroundColor = .white
         if availableLenses.contains(.ultraWide) {
             ultraWideButton.addTarget(self, action: #selector(ultraWideButtonTapped), for: .touchUpInside)
             ultraWideButton.isHidden = false
