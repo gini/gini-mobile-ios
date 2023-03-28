@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -487,7 +488,7 @@
         <scene sceneID="HfV-Nz-woM">
             <objects>
                 <tableViewController storyboardIdentifier="resultScreen" id="MGP-qj-GlG" customClass="ResultTableViewController" customModule="GiniBankSDKExample" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="1AZ-Oy-Czm">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="1AZ-Oy-Czm">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -519,48 +520,45 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="kCustomResultCell" rowHeight="75" id="Ghi-wz-gGd" customClass="ResultTableViewCell" customModule="GiniBankSDKExample" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="kCustomResultCell" rowHeight="75" id="O68-1U-6Uc" customClass="ResultTableViewCell" customModule="GiniBankSDKExample" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="88.5" width="414" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ghi-wz-gGd" id="wsz-aF-jtL">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="O68-1U-6Uc" id="nD5-Od-b73">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="75"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textField opaque="NO" tag="100" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tBS-5h-5E8">
-                                            <rect key="frame" x="20" y="8" width="386" height="44"/>
+                                        <textField opaque="NO" tag="100" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BKR-Rl-dpy">
+                                            <rect key="frame" x="20" y="27" width="386" height="44"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="44" id="ojR-hO-T2j"/>
+                                                <constraint firstAttribute="height" constant="44" id="nAo-4z-Vtk"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" returnKeyType="next"/>
-                                            <connections>
-                                                <outlet property="delegate" destination="MGP-qj-GlG" id="fgI-Wv-Jqw"/>
-                                            </connections>
                                         </textField>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X4G-Zk-5iW">
-                                            <rect key="frame" x="20" y="55" width="386" height="15"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gPp-0V-pZD">
+                                            <rect key="frame" x="20" y="8" width="386" height="15"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="15" id="Lrq-XZ-Unn"/>
+                                                <constraint firstAttribute="height" constant="15" id="SL5-iU-yoB"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                            <color key="textColor" red="0.43529411759999997" green="0.64705884459999996" blue="0.75686275960000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <color key="textColor" name="AccentColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="tBS-5h-5E8" secondAttribute="trailing" constant="8" id="E4q-hS-zyE"/>
-                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="X4G-Zk-5iW" secondAttribute="bottom" constant="4" id="LGr-ew-IFK"/>
-                                        <constraint firstItem="X4G-Zk-5iW" firstAttribute="top" secondItem="tBS-5h-5E8" secondAttribute="bottom" constant="3" id="aTU-wR-3SF"/>
-                                        <constraint firstAttribute="trailing" secondItem="X4G-Zk-5iW" secondAttribute="trailing" constant="8" id="i1V-3j-ftm"/>
-                                        <constraint firstItem="tBS-5h-5E8" firstAttribute="top" secondItem="wsz-aF-jtL" secondAttribute="top" constant="8" id="pEH-1H-SjB"/>
-                                        <constraint firstItem="tBS-5h-5E8" firstAttribute="leading" secondItem="wsz-aF-jtL" secondAttribute="leading" constant="20" id="w6g-Ky-0N8"/>
-                                        <constraint firstItem="tBS-5h-5E8" firstAttribute="leading" secondItem="X4G-Zk-5iW" secondAttribute="leading" id="wV7-mP-uMA"/>
+                                        <constraint firstAttribute="bottom" secondItem="BKR-Rl-dpy" secondAttribute="bottom" constant="4" id="Brq-hN-XB1"/>
+                                        <constraint firstAttribute="trailing" secondItem="BKR-Rl-dpy" secondAttribute="trailing" constant="8" id="PYz-zq-3sJ"/>
+                                        <constraint firstItem="BKR-Rl-dpy" firstAttribute="leading" secondItem="gPp-0V-pZD" secondAttribute="leading" id="TlM-H0-Foa"/>
+                                        <constraint firstItem="BKR-Rl-dpy" firstAttribute="leading" secondItem="nD5-Od-b73" secondAttribute="leading" constant="20" id="aNM-Lb-ZQI"/>
+                                        <constraint firstItem="gPp-0V-pZD" firstAttribute="top" secondItem="nD5-Od-b73" secondAttribute="top" constant="8" id="xIY-ea-qbp"/>
+                                        <constraint firstAttribute="trailing" secondItem="gPp-0V-pZD" secondAttribute="trailing" constant="8" id="yQI-do-5ko"/>
+                                        <constraint firstItem="BKR-Rl-dpy" firstAttribute="top" secondItem="gPp-0V-pZD" secondAttribute="bottom" constant="4" id="zSb-Jo-N1O"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <connections>
-                                    <outlet property="detailTextField" destination="tBS-5h-5E8" id="m0y-Od-FCf"/>
-                                    <outlet property="titleLabel" destination="X4G-Zk-5iW" id="r8L-Bb-1Vr"/>
+                                    <outlet property="detailTextField" destination="BKR-Rl-dpy" id="ZRq-rm-U1g"/>
+                                    <outlet property="titleLabel" destination="gPp-0V-pZD" id="Wid-YR-TIB"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -658,6 +656,9 @@ xgDLANYA2ADaANwA4QDkAOYA6ADqAPEBCAEkASYBKA6SDpcOog6rDr4Owg7NDtYO2w7jDuYO6w76Dv4P
 BQ8NDxoPHw8hDyMPKA8wDzMPOA9AAAAAAAAAAgEAAAAAAAAAQwAAAAAAAAAAAAAAAAAAD0M
 </mutableData>
         </image>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

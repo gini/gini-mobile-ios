@@ -48,16 +48,19 @@ extension ResultTableViewController {
 		cell.detailTextField.placeholder = result[indexPath.row].name
 		cell.detailTextField.tag = indexPath.row
 		cell.titleLabel.text = result[indexPath.row].name
+		cell.detailTextField.textColor = UIColor.from(giniColor: GiniColor(lightModeColor: UIColor.black, darkModeColor: Colors.Gini.veryLightGray))
+		
 		if (editableFields.keys.contains(result[indexPath.row].name ?? "")) {
 			cell.detailTextField.isEnabled = true
-			cell.detailTextField.textColor = UIColor.from(giniColor: GiniColor(lightModeColor: UIColor.black, darkModeColor: Colors.Gini.veryLightGray))
 			cell.detailTextField.returnKeyType = indexPath.row == result.count - 1 ? .done : .next
+			cell.detailTextField.alpha = 1
+			
 			if (!enabledRows.contains(indexPath.row)) {
 				enabledRows.append(indexPath.row)
 			}
 		} else {
 			cell.detailTextField.isEnabled = false
-			cell.detailTextField.textColor = UIColor.from(giniColor: GiniColor(lightModeColor: Colors.Gini.grey, darkModeColor: Colors.Gini.grey))
+			cell.detailTextField.alpha = 0.7
 		}
 		
 		return cell
