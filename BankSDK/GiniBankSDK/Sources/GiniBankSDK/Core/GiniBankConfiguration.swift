@@ -235,12 +235,12 @@ public final class GiniBankConfiguration: NSObject {
     public var digitalInvoiceHelpNavigationBarBottomAdapter: DigitalInvoiceHelpNavigationBarBottomAdapter?
 
     /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the onboarding of the digital invoice screen.
+      * Set an adapter implementation to show a custom bottom navigation bar on the digital invoice onboarding screen.
      */
     public var digitalInvoiceOnboardingNavigationBarBottomAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter?
 
     /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the onboarding of the digital invoice screen.
+      * Set an adapter implementation to show a custom bottom navigation bar on the digital invoice overview screen.
      */
     public var digitalInvoiceNavigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter?
 
