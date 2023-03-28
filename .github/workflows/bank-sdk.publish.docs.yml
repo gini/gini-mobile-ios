@@ -3,6 +3,7 @@ on:
   push:
     tags:
       - 'GiniBankSDK;[0-9]+.[0-9]+.[0-9]+;doc**'
+      - 'GiniBankSDK;[0-9]+.[0-9]+.[0-9]+-beta[0-9][0-9];doc**'
   workflow_call:    
     secrets:
       RELEASE_GITHUB_USER:
