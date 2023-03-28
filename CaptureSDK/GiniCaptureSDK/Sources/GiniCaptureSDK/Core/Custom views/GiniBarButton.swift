@@ -70,6 +70,17 @@ public final class GiniBarButton {
     }
 
     /**
+     A computed property that returns a `UIView` with the `stackView` as its content.
+
+     Use the `buttonView` property to create a `UIView` with the `stackView` as its content. This allows you to customize the appearance and behavior of the button by adding and configuring subviews within the stack view.
+
+     - Returns: A `UIView` object with the `stackView` as its content.
+     */
+    public var buttonView: UIView {
+        return stackView
+    }
+
+    /**
      Initializes a new `GiniBarButton` object with the specified button type.
 
      Use the `init(ofType:)` initializer to create a new `GiniBarButton` object with the specified `BarButtonType`. The `BarButtonType` parameter determines the appearance and behavior of the button.
@@ -90,7 +101,6 @@ public final class GiniBarButton {
 
         imageView.contentMode = .scaleAspectFit
         titleLabel.textColor = .GiniCapture.accent1
-        titleLabel.adjustsFontForContentSizeCategory = true
 
         if imageView.image != nil {
             stackView.addArrangedSubview(imageView)
@@ -142,7 +152,8 @@ public final class GiniBarButton {
 
     private func textAttributes() -> [NSAttributedString.Key: Any] {
         var attributes: [NSAttributedString.Key: Any]
-        if let font = configuration.textStyleFonts[.bodyBold] {
+        let buttonFont = configuration.textStyleFonts[.body]
+        if let font = buttonFont {
             if font.pointSize > Constants.maximumFontSize {
                 attributes = [NSAttributedString.Key.font: font.withSize(Constants.maximumFontSize)]
             } else {

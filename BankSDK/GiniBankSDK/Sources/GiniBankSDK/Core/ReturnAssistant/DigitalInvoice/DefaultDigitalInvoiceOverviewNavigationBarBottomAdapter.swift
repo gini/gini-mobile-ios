@@ -32,7 +32,7 @@ final class DefaultDigitalInvoiceNavigationBarBottomAdapter: DigitalInvoiceNavig
     func injectedView() -> UIView {
         let navigationBar = DigitalInvoiceBottomNavigationBar()
         navigationBar.payButton.addTarget(self, action: #selector(proceedButtonClicked), for: .touchUpInside)
-        navigationBar.helpButton.addTarget(self, action: #selector(helpButtonClicked), for: .touchUpInside)
+        navigationBar.helpButton.addAction(self, #selector(helpButtonClicked))
         view = navigationBar
         return navigationBar
     }
