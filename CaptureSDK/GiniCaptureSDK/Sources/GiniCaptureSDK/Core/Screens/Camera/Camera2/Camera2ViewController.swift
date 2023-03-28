@@ -666,7 +666,7 @@ extension Camera2ViewController: CameraLensSwitcherViewDelegate {
 private extension Camera2ViewController {
     enum Constants {
         static let switcherPadding: CGFloat = 8
-        static let phoneSwitcherSize: CGSize = CGSize(width: 124, height: 36)
-        static let tableSwitcherSize: CGSize = CGSize(width: 36, height: 124)
+        static let phoneSwitcherSize: CGSize = CGSize(width: 124, height: 40)
+        static let tableSwitcherSize: CGSize = CGSize(width: 40, height: 124)
     }
 }
