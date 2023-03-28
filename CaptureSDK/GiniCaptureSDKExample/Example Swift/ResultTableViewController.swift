@@ -59,7 +59,7 @@ extension ResultTableViewController {
 			}
 		} else {
 			cell.detailTextField.isEnabled = false
-			cell.detailTextField.alpha = 0.7
+			cell.detailTextField.alpha = 0.5
 		}
 		
 		return cell
