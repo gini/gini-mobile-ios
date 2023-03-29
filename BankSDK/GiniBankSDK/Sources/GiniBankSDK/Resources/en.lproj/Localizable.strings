@@ -51,6 +51,8 @@
 "ginibank.digitalinvoice.edit.name" = "Name";
 "ginibank.digitalinvoice.edit.quantity" = "Quantity";
 "ginibank.digitalinvoice.edit.title" = "Edit article";
+"ginibank.digitalinvoice.edit.minus.button.accessibility" = "Decrease quantity";
+"ginibank.digitalinvoice.edit.plus.button.accessibility" = "Increase quantity";
 
 "ginibank.digitalinvoice.footermessage" = "Please double check if the amount is correct and add further articles if necessary";
 "ginibank.digitalinvoice.totalcaptionlabeltext" = "Total";

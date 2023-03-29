@@ -12,34 +12,43 @@ final class EditLineItemView: UIView {
     private lazy var configuration = GiniBankConfiguration.shared
 
     private lazy var cancelButton: UIButton = {
+        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.cancelButtonTitle",
+                                                             comment: "Cancel")
         let button = UIButton()
-        button.setTitle(NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.cancelButtonTitle",
-                                                                 comment: "Cancel"), for: .normal)
+        button.setAttributedTitle(NSAttributedString(string: title, attributes: textAttributes(for: .body)),
+                                  for: .normal)
+        button.setTitle(title, for: .normal)
         button.addTarget(self, action: #selector(didTapCancel), for: .touchUpInside)
-        button.titleLabel?.font = configuration.textStyleFonts[.body]
         button.setTitleColor(.GiniBank.accent1, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.accessibilityValue = title
         return button
     }()
 
     private lazy var titleLabel: UILabel = {
+        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.title",
+                                                             comment: "Edit")
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = configuration.textStyleFonts[.bodyBold]
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
-        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.title",
-                                                              comment: "Edit")
+        label.attributedText = NSAttributedString(string: title, attributes: textAttributes(for: .bodyBold))
+        label.adjustsFontForContentSizeCategory = true
+        label.accessibilityValue = title
         return label
     }()
 
     private lazy var saveButton: UIButton = {
+        let title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.savebutton",
+                                                             comment: "Save")
         let button = UIButton()
-        button.setTitle(NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.savebutton",
-                                                                 comment: "Save"), for: .normal)
+        button.setAttributedTitle(NSAttributedString(string: title, attributes: textAttributes(for: .bodyBold)),
+                                  for: .normal)
         button.addTarget(self, action: #selector(didTapSave), for: .touchUpInside)
-        button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         button.setTitleColor(.GiniBank.accent1, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.accessibilityValue = title
         return button
     }()
 
@@ -113,6 +122,11 @@ final class EditLineItemView: UIView {
 
         addSubview(stackView)
 
+        stackView.setContentHuggingPriority(.defaultLow, for: .vertical)
+        nameLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        priceLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        quantityView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+
         stackView.addArrangedSubview(nameLabel)
         stackView.addArrangedSubview(priceLabel)
         stackView.addArrangedSubview(quantityView)
@@ -126,10 +140,10 @@ final class EditLineItemView: UIView {
                                               constant: Constants.verticalPadding),
 
             titleLabel.centerYAnchor.constraint(equalTo: cancelButton.centerYAnchor),
-            titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: cancelButton.leadingAnchor,
-                                                constant: Constants.horizontalPadding),
+            titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: cancelButton.trailingAnchor,
+                                                constant: Constants.titlePadding),
             titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: saveButton.leadingAnchor,
-                                                constant: -Constants.horizontalPadding),
+                                                constant: -Constants.titlePadding),
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
 
             saveButton.topAnchor.constraint(equalTo: topAnchor,
@@ -156,6 +170,21 @@ final class EditLineItemView: UIView {
                               currency: priceLabel.currencyValue,
                               quantity: quantityView.quantity)
     }
+
+    private func textAttributes(for textStyle: UIFont.TextStyle) -> [NSAttributedString.Key: Any] {
+        var attributes: [NSAttributedString.Key: Any]
+        if let font = configuration.textStyleFonts[textStyle] {
+            if font.pointSize > Constants.maximumFontSize {
+                attributes = [NSAttributedString.Key.font: font.withSize(Constants.maximumFontSize)]
+            } else {
+                attributes = [NSAttributedString.Key.font: font]
+            }
+        } else {
+            let font = configuration.textStyleFonts[textStyle] as Any
+            attributes = [NSAttributedString.Key.font: font]
+        }
+        return attributes
+     }
 }
 
 extension EditLineItemView: CurrencyPickerViewDelegate {
@@ -191,9 +220,11 @@ private extension EditLineItemView {
     enum Constants {
         static let verticalPadding: CGFloat = 24
         static let horizontalPadding: CGFloat = 16
+        static let titlePadding: CGFloat = 4
         static let stackViewPadding: CGFloat = 72
         static let stackViewSpacing: CGFloat = 8
         static let currencyPickerPadding: CGFloat = 8
         static let currencyPickerWidth: CGFloat = 120
+        static let maximumFontSize: CGFloat = 20
     }
 }
