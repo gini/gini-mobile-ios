@@ -37,9 +37,15 @@ final class CameraLensSwitcherView: UIView {
         let button = UIButton()
         button.isHidden = true
         button.setTitleColor(.GiniCapture.light1, for: .normal)
-        button.titleLabel?.font = GiniConfiguration.shared.textStyleFonts[.caption2]
         button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(Constants.inactiveStateAlpha)
         button.translatesAutoresizingMaskIntoConstraints = false
+        if let font = GiniConfiguration.shared.textStyleFonts[.caption2] {
+            if font.pointSize > Constants.maxFontSize {
+                button.titleLabel?.font = font.withSize(Constants.maxFontSize)
+            } else {
+                button.titleLabel?.font = font
+            }
+        }
         return button
     }()
 
@@ -47,9 +53,15 @@ final class CameraLensSwitcherView: UIView {
         let button = UIButton()
         button.isHidden = true
         button.setTitleColor(.GiniCapture.light1, for: .normal)
-        button.titleLabel?.font = GiniConfiguration.shared.textStyleFonts[.caption2]
         button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(Constants.inactiveStateAlpha)
         button.translatesAutoresizingMaskIntoConstraints = false
+        if let font = GiniConfiguration.shared.textStyleFonts[.caption2] {
+            if font.pointSize > Constants.maxFontSize {
+                button.titleLabel?.font = font.withSize(Constants.maxFontSize)
+            } else {
+                button.titleLabel?.font = font
+            }
+        }
         return button
     }()
 
@@ -57,9 +69,15 @@ final class CameraLensSwitcherView: UIView {
         let button = UIButton()
         button.isHidden = true
         button.setTitleColor(.GiniCapture.light1, for: .normal)
-        button.titleLabel?.font = GiniConfiguration.shared.textStyleFonts[.caption2]
         button.backgroundColor = .GiniCapture.dark4.withAlphaComponent(Constants.inactiveStateAlpha)
         button.translatesAutoresizingMaskIntoConstraints = false
+        if let font = GiniConfiguration.shared.textStyleFonts[.caption2] {
+            if font.pointSize > Constants.maxFontSize {
+                button.titleLabel?.font = font.withSize(Constants.maxFontSize)
+            } else {
+                button.titleLabel?.font = font
+            }
+        }
         return button
     }()
 
@@ -412,5 +430,6 @@ private extension CameraLensSwitcherView {
         static let inactiveStateAlpha: CGFloat = 0.24
         static let activeStateAlpha: CGFloat = 0.54
         static let animationDuration: CGFloat = 0.3
+        static let maxFontSize: CGFloat = 17
     }
 }
