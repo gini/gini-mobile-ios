@@ -75,7 +75,8 @@ final class EditLineItemView: UIView {
         label.font = configuration.textStyleFonts[.caption2]?.withSize(11)
         label.textColor = .GiniBank.error3
         label.alpha = 0
-        label.text = "Please enter the item name."
+        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.name.error",
+                                                              comment: "Name error title")
         return label
     }()
 
@@ -93,7 +94,8 @@ final class EditLineItemView: UIView {
         label.font = configuration.textStyleFonts[.caption2]?.withSize(11)
         label.textColor = .GiniBank.error3
         label.alpha = 0
-        label.text = "Please enter the item price."
+        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.price.error",
+                                                              comment: "Price error title")
         return label
     }()
 
