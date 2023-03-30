@@ -35,6 +35,8 @@ final class EditLineItemViewController: UIViewController {
     private var currentBottomPadding: CGFloat = 0
 
     private var defaultHeight: CGFloat = 340
+    private var isKeyboardPresented: Bool = false
+    private var keyboardHeight: CGFloat = 0
 
     private var containerViewHeightConstraint: NSLayoutConstraint?
     private var containerViewBottomConstraint: NSLayoutConstraint?
@@ -213,7 +215,7 @@ final class EditLineItemViewController: UIViewController {
                 } else {
                     /* Dismiss the view if the height is less than minimum height
                      or animate back to initial height of not */
-                    if newHeight < Constants.dismissibleHeight {
+                    if newHeight < Constants.dismissibleHeight + (isKeyboardPresented ? keyboardHeight : 0) {
                         animateDismissView()
                     } else {
                         editLineItemView.alpha = 1
@@ -232,10 +234,15 @@ final class EditLineItemViewController: UIViewController {
 
     private func animateContainerToInitialHeight() {
         UIView.animate(withDuration: Constants.animationDuration) {
-            self.containerViewHeightConstraint?.constant = self.defaultHeight
-            self.view.layoutIfNeeded()
+            if self.isKeyboardPresented {
+                self.containerViewHeightConstraint?.constant = self.defaultHeight + (self.isKeyboardPresented ? self.keyboardHeight : 0)
+                self.view.layoutIfNeeded()
+            } else {
+                self.containerViewHeightConstraint?.constant = self.defaultHeight
+                self.view.layoutIfNeeded()
+            }
         }
-        currentContainerHeight = defaultHeight
+        currentContainerHeight = defaultHeight + (isKeyboardPresented ? keyboardHeight : 0)
     }
 
     private func animateContainerToInitialPosition() {
@@ -251,7 +258,9 @@ final class EditLineItemViewController: UIViewController {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardRectangle = keyboardFrame.cgRectValue
             let keyboardHeight = keyboardRectangle.height
+            self.keyboardHeight = keyboardHeight
 
+            isKeyboardPresented = true
             if UIDevice.current.isIpad {
                 if currentBottomPadding < keyboardHeight {
                     UIView.animate(withDuration: Constants.animationDuration) {
@@ -272,6 +281,7 @@ final class EditLineItemViewController: UIViewController {
 
     @objc
     private func keyboardWillDisappear() {
+        isKeyboardPresented = false
         if UIDevice.current.isIpad {
             animateContainerToInitialPosition()
         } else {
