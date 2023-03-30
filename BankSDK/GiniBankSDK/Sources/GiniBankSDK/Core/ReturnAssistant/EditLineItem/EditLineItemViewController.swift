@@ -288,7 +288,7 @@ final class EditLineItemViewController: UIViewController {
 private extension EditLineItemViewController {
     enum Constants {
         static let maxDimmedAlpha: CGFloat = 0.6
-        static let defaultHeight: CGFloat = 526
+        static let defaultHeight: CGFloat = 586
         static let dismissibleHeight: CGFloat = 200
         static let maximumContainerHeight: CGFloat = UIScreen.main.bounds.height - 64
         static let tabletWidthMultiplier: CGFloat = 0.6
