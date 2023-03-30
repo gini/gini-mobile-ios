@@ -81,3 +81,6 @@
 "ginibank.digitalinvoice.help.title3" = "3. Welche Onlineshops werden unterstützt?";
 "ginibank.digitalinvoice.help.description3" = "Wir bieten die Funktion moment für die fünf größten Onlineshops im Markt an. Weitere Shops werden in naher Zukunft hinzukommen.";
 "ginibank.digitalinvoice.info.hidebutton" = "Schließen";
+
+"ginibank.digitalinvoice.edit.name.error" = "Bitte geben Sie den Artikelnamen ein.";
+"ginibank.digitalinvoice.edit.price.error" = "Bitte geben Sie den Artikelpreis ein.";
