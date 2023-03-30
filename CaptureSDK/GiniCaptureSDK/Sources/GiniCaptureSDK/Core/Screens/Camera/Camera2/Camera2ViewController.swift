@@ -381,8 +381,10 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                 cameraLensSwitcherView.trailingAnchor.constraint(equalTo: cameraPane.leadingAnchor,
                                                                  constant: -Constants.switcherPadding),
                 cameraLensSwitcherView.centerYAnchor.constraint(equalTo: cameraPane.captureButton.centerYAnchor),
-                cameraLensSwitcherView.widthAnchor.constraint(equalToConstant: Constants.tableSwitcherSize.width),
-                cameraLensSwitcherView.heightAnchor.constraint(equalToConstant: Constants.tableSwitcherSize.height)
+                cameraLensSwitcherView.widthAnchor.constraint(greaterThanOrEqualToConstant:
+                                                                Constants.tableSwitcherSize.width),
+                cameraLensSwitcherView.heightAnchor.constraint(greaterThanOrEqualToConstant:
+                                                                Constants.tableSwitcherSize.height)
             ])
         } else {
             NSLayoutConstraint.activate([
@@ -390,8 +392,10 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                                                                constant: -Constants.switcherPadding),
                 cameraLensSwitcherView.leadingAnchor.constraint(greaterThanOrEqualTo: cameraPane.leadingAnchor),
                 cameraLensSwitcherView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                cameraLensSwitcherView.widthAnchor.constraint(equalToConstant: Constants.phoneSwitcherSize.width),
-                cameraLensSwitcherView.heightAnchor.constraint(equalToConstant: Constants.phoneSwitcherSize.height)
+                cameraLensSwitcherView.widthAnchor.constraint(greaterThanOrEqualToConstant:
+                                                                Constants.phoneSwitcherSize.width),
+                cameraLensSwitcherView.heightAnchor.constraint(greaterThanOrEqualToConstant:
+                                                                Constants.phoneSwitcherSize.height)
             ])
         }
     }
