@@ -21,7 +21,7 @@ import GiniBankAPILibrary
      *  [here](https://pay-api.gini.net/documentation/#specific-extractions),
      *  it can also return the epsPaymentQRCodeUrl extraction, obtained from a EPS QR code.
      */
-    public let extractions: [String: Extraction]
+    public var extractions: [String: Extraction]
     
     /**
      *  Line item compound extractions obtained in the analysis.
