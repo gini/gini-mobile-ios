@@ -20,6 +20,7 @@
 "ginicapture.navigationbar.help.backToCamera"   = "Kamera";
 "ginicapture.navigationbar.help.backToMenu"     = "Hilfe";
 "ginicapture.navigationbar.analysis.backToReview" = "Übersicht";
+"ginicapture.navigationbar.accessibility.back" = "Bezahlen";
 
 
 "ginicapture.camera.captureButton" = "Auslösen";

@@ -102,6 +102,8 @@ public final class GiniBarButton {
         imageView.contentMode = .scaleAspectFit
         titleLabel.textColor = .GiniCapture.accent1
         titleLabel.accessibilityTraits = .button
+        titleLabel.isAccessibilityElement = true
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         if imageView.image != nil {
             stackView.addArrangedSubview(imageView)
@@ -109,6 +111,10 @@ public final class GiniBarButton {
 
         if titleLabel.text != nil {
             stackView.addArrangedSubview(titleLabel)
+
+            NSLayoutConstraint.activate([
+                titleLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 40)
+            ])
         }
     }
 
@@ -147,6 +153,12 @@ public final class GiniBarButton {
         if let buttonTitle = buttonTitle, buttonTitle.isNotEmpty {
             titleLabel.attributedText = NSAttributedString(string: buttonTitle,
                                                            attributes: textAttributes())
+
+            // For the back buttons that have whitespaces as title, we add the title for voice over here
+            if buttonTitle.trimmingCharacters(in: .whitespaces).isEmpty {
+                titleLabel.accessibilityValue = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.accessibility.back",
+                                                                                 comment: "Back")
+            }
         }
     }
 
