@@ -101,6 +101,7 @@ public final class GiniBarButton {
 
         imageView.contentMode = .scaleAspectFit
         titleLabel.textColor = .GiniCapture.accent1
+        titleLabel.accessibilityTraits = .button
 
         if imageView.image != nil {
             stackView.addArrangedSubview(imageView)
@@ -146,7 +147,6 @@ public final class GiniBarButton {
         if let buttonTitle = buttonTitle, buttonTitle.isNotEmpty {
             titleLabel.attributedText = NSAttributedString(string: buttonTitle,
                                                            attributes: textAttributes())
-            stackView.accessibilityValue = buttonTitle
         }
     }
 
