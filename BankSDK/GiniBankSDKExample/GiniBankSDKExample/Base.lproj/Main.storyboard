@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ggv-ZP-h5h">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ggv-ZP-h5h">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -344,7 +345,7 @@
         <scene sceneID="dA0-59-wBc">
             <objects>
                 <tableViewController storyboardIdentifier="resultScreen" id="QXp-IJ-1GQ" customClass="ResultTableViewController" customModule="GiniBankSDKExample" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="cFL-Kk-4eP">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="cFL-Kk-4eP">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -352,7 +353,7 @@
                         <color key="sectionIndexBackgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="resultCell" textLabel="tqh-o9-sCn" detailTextLabel="QaN-K3-zRa" style="IBUITableViewCellStyleSubtitle" id="weQ-uh-Qns">
-                                <rect key="frame" x="0.0" y="50" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="44.5" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="weQ-uh-Qns" id="3Ue-zA-qTY">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
@@ -376,37 +377,49 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="kCustomResultCell" id="sQo-nx-i3D">
-                                <rect key="frame" x="0.0" y="94" width="414" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="kCustomResultCell" rowHeight="75" id="sQo-nx-i3D" customClass="ResultTableViewCell" customModule="GiniBankSDKExample" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="88.5" width="414" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sQo-nx-i3D" id="BQy-bx-9wM">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="75"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aru-m8-c5S">
-                                            <rect key="frame" x="20" y="8" width="386" height="19.5"/>
-                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
-                                            <color key="textColor" red="0.21960783" green="0.48627454040000001" blue="0.67450982329999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                        <textField opaque="NO" tag="100" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hB8-Sy-IWa">
+                                            <rect key="frame" x="20" y="27" width="386" height="44"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="44" id="wAs-m7-ipz"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" returnKeyType="next"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="QXp-IJ-1GQ" id="IlG-Zj-EIh"/>
+                                            </connections>
+                                        </textField>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AZb-zT-KVh">
-                                            <rect key="frame" x="20" y="30.5" width="386" height="9.5"/>
+                                            <rect key="frame" x="20" y="8" width="386" height="15"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="15" id="nGP-mi-cMx"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                            <color key="textColor" red="0.43529411759999997" green="0.64705884459999996" blue="0.75686275960000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <color key="textColor" name="Accent01"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="AZb-zT-KVh" firstAttribute="leading" secondItem="Aru-m8-c5S" secondAttribute="leading" id="37K-WR-Dd3"/>
-                                        <constraint firstItem="AZb-zT-KVh" firstAttribute="top" secondItem="Aru-m8-c5S" secondAttribute="bottom" constant="3" id="COo-Yf-JE9"/>
-                                        <constraint firstItem="Aru-m8-c5S" firstAttribute="top" secondItem="BQy-bx-9wM" secondAttribute="top" constant="8" id="Fam-Fc-zis"/>
-                                        <constraint firstAttribute="trailing" secondItem="Aru-m8-c5S" secondAttribute="trailing" constant="8" id="Usf-O1-oCy"/>
+                                        <constraint firstItem="hB8-Sy-IWa" firstAttribute="leading" secondItem="BQy-bx-9wM" secondAttribute="leading" constant="20" id="5TJ-ux-MSH"/>
+                                        <constraint firstItem="hB8-Sy-IWa" firstAttribute="leading" secondItem="AZb-zT-KVh" secondAttribute="leading" id="8FI-mx-gud"/>
                                         <constraint firstAttribute="trailing" secondItem="AZb-zT-KVh" secondAttribute="trailing" constant="8" id="fr4-xS-AJE"/>
-                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="AZb-zT-KVh" secondAttribute="bottom" constant="4" id="qyL-S8-ENM"/>
-                                        <constraint firstItem="Aru-m8-c5S" firstAttribute="leading" secondItem="BQy-bx-9wM" secondAttribute="leading" constant="20" id="yEs-0D-tOG"/>
+                                        <constraint firstItem="hB8-Sy-IWa" firstAttribute="top" secondItem="AZb-zT-KVh" secondAttribute="bottom" constant="4" id="hoJ-0r-4mV"/>
+                                        <constraint firstItem="AZb-zT-KVh" firstAttribute="top" secondItem="BQy-bx-9wM" secondAttribute="top" constant="8" id="hp2-4o-VPr"/>
+                                        <constraint firstAttribute="trailing" secondItem="hB8-Sy-IWa" secondAttribute="trailing" constant="8" id="oHF-xX-BWw"/>
+                                        <constraint firstAttribute="bottom" secondItem="hB8-Sy-IWa" secondAttribute="bottom" constant="4" id="wZD-cA-bR0"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <connections>
+                                    <outlet property="detailTextField" destination="hB8-Sy-IWa" id="fmx-ey-hBO"/>
+                                    <outlet property="titleLabel" destination="AZb-zT-KVh" id="Bqx-xN-4md"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -417,7 +430,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZdL-Oq-NkM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4583" y="-255"/>
+            <point key="canvasLocation" x="4582.608695652174" y="-255.13392857142856"/>
         </scene>
     </scenes>
     <designables>
@@ -427,8 +440,11 @@
     </designables>
     <resources>
         <image name="gini_logo" width="708" height="246"/>
+        <namedColor name="Accent01">
+            <color red="0.039000000804662704" green="0.51800000667572021" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="labelColor">
-            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="opaqueSeparatorColor">
             <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
