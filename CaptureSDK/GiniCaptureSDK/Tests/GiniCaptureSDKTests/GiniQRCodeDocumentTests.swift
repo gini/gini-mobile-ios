@@ -92,4 +92,12 @@ final class GiniQRCodeDocumentTests: XCTestCase {
                                                                       withConfig: giniConfiguration),
                              "validation should throw a DocumentaValidationError")
     }
+    
+    func testValidStuzzaQR(){
+        let scannedString = "BCD\n001\n1\nSCT\nABCDATWW\nExample with fictive data\nAT611904300234573201\nEUR24.2"
+        let qrDocument = GiniQRCodeDocument(scannedString: scannedString)
+        XCTAssertNoThrow(try GiniCaptureDocumentValidator.validate(qrDocument,
+                                                                  withConfig: giniConfiguration),
+                         "should not throw an error since qr code is valid")
+    }
 }
