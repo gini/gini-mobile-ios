@@ -63,26 +63,42 @@ public final class QRCodesExtractor {
         let lines = string.splitlines
         var parameters: [String: String] = [:]
         
-        if !lines[4].isEmpty {
+        if lines.indices.contains(4) && !lines[4].isEmpty {
             parameters["bic"] = lines[4]
+        } else {
+            parameters["bic"] = ""
         }
         
-        if !lines[5].isEmpty {
+        if lines.indices.contains(5) && !lines[5].isEmpty {
             parameters["paymentRecipient"] = lines[5]
+        } else {
+            parameters["paymentRecipient"] = ""
         }
-        
-        if !lines[9].isEmpty {
+
+        if lines.indices.contains(9) && !lines[9].isEmpty {
             parameters["paymentReference"] = lines[9]
+        } else {
+            parameters["paymentReference"] = ""
         }
-        
-        if IBANValidator().isValid(iban: lines[6]) {
+
+        // if index out of range, return empty string
+
+        if lines.indices.contains(6) && IBANValidator().isValid(iban: lines[6]) {
             parameters["iban"] = lines[6]
+        } else {
+            parameters["iban"] = ""
         }
-        
-        if let amountToPay = normalize(amount: lines[7], currency: nil) {
-            parameters["amountToPay"] = amountToPay
+
+        if lines.indices.contains(7) {
+            if let amountToPay = normalize(amount: lines[7], currency: nil) {
+                parameters["amountToPay"] = amountToPay
+            } else {
+                parameters["amountToPay"] = ""
+            }
+        } else {
+            parameters["amountToPay"] = ""
         }
-        
+
         return parameters
     }
     
