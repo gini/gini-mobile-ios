@@ -177,6 +177,9 @@ public final class ReviewViewController: UIViewController {
                                    name: NSLocalizedStringPreferredFormat(
                                     "ginicapture.multipagereview.secondaryButtonTitle",
                                         comment: "Add pages button title"))
+        addPagesButton.accessibilityValue = NSLocalizedStringPreferredFormat(
+                                                "ginicapture.multipagereview.secondaryButton.accessibility",
+                                                comment: "Add pages")
         addPagesButton.isHidden = !giniConfiguration.multipageEnabled
         addPagesButton.actionLabel.font = giniConfiguration.textStyleFonts[.bodyBold]
         addPagesButton.configure(with: giniConfiguration.addPageButtonConfiguration)

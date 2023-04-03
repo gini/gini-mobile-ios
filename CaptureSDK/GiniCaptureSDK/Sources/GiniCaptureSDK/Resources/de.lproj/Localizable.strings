@@ -178,6 +178,7 @@
 "ginicapture.multipagereview.description" = "Sind alle Zahlungsinformationen gut sichtbar?";
 "ginicapture.multipagereview.mainButtonTitle" = "Verarbeiten";
 "ginicapture.multipagereview.secondaryButtonTitle" = "Seite";
+"ginicapture.multipagereview.secondaryButton.accessibility" = "Add pages";
 "ginicapture.multipagereview.error.retakeAction" = "Wiederholung";
 "ginicapture.multipagereview.error.retryAction" = "Wiederholen";
 
