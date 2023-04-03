@@ -43,15 +43,16 @@ import UIKit
             return .bezahl
         } else if self.scannedString.starts(with: "epspayment://") {
             return .eps4mobile
-        } else if let lines = Optional(self.scannedString.splitlines),
-            lines.count > 9 &&
-            (lines[1] == "001" || lines[1] == "002") {
-            
+        } else if let lines = Optional(self.scannedString.splitlines), lines.count > 0 && lines[0] == "BCD" {
             if !(lines[2] == "1" || lines[2] == "2") {
                 print("WARNING: Character set \(lines[2]) is unknown. Expected version 1 or 2.")
             }
-            
-            return .epc06912
+
+            if IBANValidator().isValid(iban: lines[6]) {
+                return .epc06912
+            } else {
+                return nil
+            }
         } else {
             return nil
         }
