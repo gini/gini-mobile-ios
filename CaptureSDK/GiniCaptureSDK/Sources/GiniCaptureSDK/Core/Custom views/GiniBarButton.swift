@@ -105,6 +105,11 @@ public final class GiniBarButton {
         titleLabel.isAccessibilityElement = true
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
+        imageView.isAccessibilityElement = false
+        titleLabel.isAccessibilityElement = false
+        stackView.isAccessibilityElement = true
+        stackView.accessibilityTraits = .button
+
         if imageView.image != nil {
             stackView.addArrangedSubview(imageView)
         }
@@ -133,6 +138,13 @@ public final class GiniBarButton {
             icon = UIImageNamedPreferred(named: "barButton_help")
         case .back(title: let title):
             buttonTitle = title
+            let backString = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.accessibility.back",
+                                                              comment: "Back")
+            if title.trimmingCharacters(in: .whitespaces).isNotEmpty {
+                stackView.accessibilityValue = "\(title) \(backString)"
+            } else {
+                stackView.accessibilityValue = backString
+            }
             icon = UIImageNamedPreferred(named: "barButton_back")
         case .done:
             buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.imagepicker.openbutton",
@@ -150,14 +162,11 @@ public final class GiniBarButton {
 
         imageView.image = icon
 
-        if let buttonTitle = buttonTitle, buttonTitle.isNotEmpty {
+        if let buttonTitle = buttonTitle {
             titleLabel.attributedText = NSAttributedString(string: buttonTitle,
                                                            attributes: textAttributes())
-
-            // For the back buttons that have whitespaces as title, we add the title for voice over here
-            if buttonTitle.trimmingCharacters(in: .whitespaces).isEmpty {
-                titleLabel.accessibilityValue = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.accessibility.back",
-                                                                                 comment: "Back")
+            if stackView.accessibilityValue == nil {
+                stackView.accessibilityValue = buttonTitle
             }
         }
     }
