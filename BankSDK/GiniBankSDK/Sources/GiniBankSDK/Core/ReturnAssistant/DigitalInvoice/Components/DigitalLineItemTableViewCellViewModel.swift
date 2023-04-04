@@ -17,8 +17,9 @@ struct DigitalLineItemTableViewCellViewModel {
     let invoiceLineItemsCount: Int
 
     private var quantityString: String {
-        return String.localizedStringWithFormat(DigitalInvoiceStrings.lineItemQuantity.localizedGiniBankFormat,
-                                                lineItem.quantity)
+        let string = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.quantity",
+                                                              comment: "Quantity")
+        return String.localizedStringWithFormat(string, lineItem.quantity)
     }
 
     var nameLabelString: String? {
