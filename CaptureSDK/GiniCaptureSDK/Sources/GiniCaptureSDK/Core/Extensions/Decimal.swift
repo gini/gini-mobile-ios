@@ -8,15 +8,19 @@
 import Foundation
 
 public extension Decimal {
-    /// This function is an extension to the Decimal type in Swift. It converts a Decimal value to a Double value, rounding the result to the specified number of decimal places.
-    /// - Parameter decimalPoint: specifies the number of decimal places to which the result should be cut off
-    /// - Returns: returns the double value with the specified decimal places
-    /// - Note: internal only
-    func convertToDouble(withDecimalPoint decimalPoint: Int) -> Double {
-        let divisor = Double(truncating: pow(10.0, decimalPoint) as NSNumber)
-        let doubleValue = Double(truncating: self as NSNumber)
-        let doubleValueTruncated = (doubleValue * divisor).rounded(.towardZero) / divisor
+    /**
+    The stringValue(withDecimalPoint:) method takes an integer parameter decimalPoint, which represents the number of decimal points to be included in the output string. The method returns an optional String value, which is nil if the Decimal value cannot be converted to a string.
 
-        return doubleValueTruncated
+    Parameter decimalPoint: An integer representing the number of decimal points required in the output string.
+    Returns: An optional String value that represents the Decimal value as a string with the specified number of decimal points. If the Decimal value cannot be converted to a string, the method returns nil.
+    */
+
+    func stringValue(withDecimalPoint decimalPoint: Int) -> String? {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.maximumFractionDigits = decimalPoint
+        numberFormatter.minimumFractionDigits = decimalPoint
+
+        return numberFormatter.string(from: self as NSNumber)
     }
 }

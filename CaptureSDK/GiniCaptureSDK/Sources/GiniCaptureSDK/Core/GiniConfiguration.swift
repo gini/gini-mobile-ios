@@ -520,13 +520,11 @@ import GiniBankAPILibrary
      ///   - iban: iban description
      ///   - bic: bic description
      ///   - amountToPay: amountToPay description
-    public func cleanup(paymentRecipient: String, paymentReference: String, paymentPurpose: String, iban: String, bic: String, amountToPay: ExtractionAmount) {
+    public func cleanup(paymentRecipient: String, paymentReference: String, paymentPurpose: String, iban: String, bic: String,  amountToPay: ExtractionAmount) {
          guard let documentService = documentService else { return }
 
-         // Convert amount object to string
-         // Cut off decimals after the first 2
-         let truncatedAmountValue = amountToPay.value.convertToDouble(withDecimalPoint: 2)
-         let amountToPayString = "\(truncatedAmountValue)" + ":" + amountToPay.currency.rawValue
+         let formattedPriceValue = amountToPay.value.stringValue(withDecimalPoint: 2) ?? "\(amountToPay.value)"
+         let amountToPayString = "\(formattedPriceValue)" + ":" + amountToPay.currency.rawValue
 
          let paymentRecipientExtraction = Extraction(box: nil,
                                                      candidates: nil,
@@ -536,7 +534,7 @@ import GiniBankAPILibrary
          let paymentReferenceExtraction = Extraction(box: nil,
                                                      candidates: nil,
                                                      entity: "reference",
-                                                     value: paymentRecipient,
+                                                     value: paymentReference,
                                                      name: "paymentReference")
          let paymentPurposeExtraction = Extraction(box: nil,
                                                    candidates: nil,
