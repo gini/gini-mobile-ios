@@ -29,6 +29,10 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
     weak var analysisDelegate: AnalysisDelegate?
     var visionDocuments: [GiniCaptureDocument]?
     var visionConfiguration: GiniConfiguration
+	private var extractedResults: [Extraction] = []
+	
+	// {extraction name} : {entity name}
+	private let editableSpecificExtractions = ["paymentRecipient" : "companyname", "paymentReference" : "reference", "paymentPurpose" : "text", "iban" : "iban", "bic" : "bic", "amountToPay" : "amount"]
 
     init(configuration: GiniConfiguration,
          importedDocuments documents: [GiniCaptureDocument]?,
@@ -73,7 +77,8 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
         let customResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "resultScreen") as? ResultTableViewController)!
         customResultsScreen.result = results
-
+		customResultsScreen.editableFields = editableSpecificExtractions
+		
         DispatchQueue.main.async { [weak self] in
             if #available(iOS 15.0, *) {
                 if let config = self?.visionConfiguration,
@@ -98,12 +103,17 @@ extension ScreenAPICoordinator: UINavigationControllerDelegate {
         // when it is necessary to go back, it dismiss the ScreenAPI so the Analysis screen is not shown again
 
         if fromVC is ResultTableViewController {
-            visionConfiguration.cleanup(paymentRecipient: "",
-                                        paymentReference: "",
-                                        paymentPurpose: "",
-                                        iban: "",
-                                        bic: "",
-                                        amountToPay: ExtractionAmount(value: 10.242, currency: .EUR))
+			var extractionAmount = ExtractionAmount(value: 0.0, currency: .EUR)
+			if let amountValue = extractedResults.first(where: { $0.name == "amountToPay"})?.value {
+				extractionAmount = ExtractionAmount(value: Decimal(string: String(amountValue.split(separator: ":")[0])) ?? 0.0, currency: .EUR)
+			}
+		
+			visionConfiguration.cleanup(paymentRecipient: extractedResults.first(where: { $0.name == "paymentRecipient"})?.value ?? "",
+								  paymentReference: extractedResults.first(where: { $0.name == "paymentReference"})?.value ?? "",
+								  paymentPurpose: extractedResults.first(where: { $0.name == "paymentPurpose"})?.value ?? "",
+								  iban: extractedResults.first(where: { $0.name == "iban"})?.value ?? "",
+								  bic: extractedResults.first(where: { $0.name == "bic"})?.value ?? "",
+								  amountToPay: extractionAmount)
             delegate?.screenAPI(coordinator: self, didFinish: ())
         }
 
@@ -119,7 +129,13 @@ extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
     }
     
     func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
-        showResultsScreen(results: result.extractions.map { $0.value }, document: result.document)
+		extractedResults = result.extractions.map { $0.value}
+		for extraction in editableSpecificExtractions {
+			if (extractedResults.first(where: { $0.name == extraction.key }) == nil) {
+				extractedResults.append(Extraction(box: nil, candidates: nil, entity: extraction.value, value: "", name: extraction.key))
+			}
+		}
+        showResultsScreen(results: extractedResults, document: result.document)
     }
 
     func giniCaptureDidCancelAnalysis() {

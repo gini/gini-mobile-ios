@@ -19,7 +19,7 @@ jobs:
 
       - uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '14.0.1'
+          xcode-version: '14.2'
 
       - name: Setup provisioning profile
         env:

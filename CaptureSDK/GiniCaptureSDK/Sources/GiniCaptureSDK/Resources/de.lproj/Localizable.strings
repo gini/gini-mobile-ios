@@ -180,6 +180,7 @@
 "ginicapture.multipagereview.error.retakeAction" = "Wiederholung";
 "ginicapture.multipagereview.error.retryAction" = "Wiederholen";
 
+"ginicapture.images.backToAlbums" = "Alben";
 "ginicapture.images.openWithTutorialStep1" = "openWithTutorialStep1";
 "ginicapture.images.openWithTutorialStep2" = "openWithTutorialStep2";
 "ginicapture.images.openWithTutorialStep3" = "openWithTutorialStep3";

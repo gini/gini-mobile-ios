@@ -62,7 +62,7 @@ struct Price {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.currencySymbol = ""
-        return formatter.string(from: NSDecimalNumber(decimal: value))
+        return formatter.string(from: NSDecimalNumber(decimal: value))?.trimmingCharacters(in: .whitespaces)
     }
     
     static func formatAmountString(newText: String) -> String? {

@@ -8,36 +8,22 @@
 import UIKit
 import GiniBankAPILibrary
 import GiniCaptureSDK
-/**
- Delegate protocol for `DigitalInvoiceViewController`.
- */
-public protocol DigitalInvoiceViewControllerDelegate: AnyObject {
-    
-    /**
-     Called after the user taps the "Pay" button on the `DigitalInvoiceViewController`.
-     
-     - parameter viewController: The `DigitalInvoiceViewController` instance.
-     - parameter invoice: The `DigitalInvoice` as amended by the user.
-     */
-    func didFinish(viewController: DigitalInvoiceViewController,
-                   invoice: DigitalInvoice)
-}
 
 /**
  This class is a view controller that lets the user view their invoice
- together with the line items and total amount to pay. It will push the
- `LineItemDetailsViewController` onto the navigation stack when the user
+ together with the line items and total amount to pay. It will present the
+ `EditLineItemViewModel` onto the navigation stack when the user
  taps the "Edit" button on any of the line items.
  */
-public class DigitalInvoiceViewController: UIViewController {
+final class DigitalInvoiceViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(DigitalInvoiceTableViewTitleCell.self, forCellReuseIdentifier: "DigitalInvoiceTableViewTitleCell")
+        tableView.register(DigitalInvoiceTableViewTitleCell.self, forCellReuseIdentifier: DigitalInvoiceTableViewTitleCell.reuseIdentifier)
         tableView.register(UINib(nibName: "DigitalLineItemTableViewCell", bundle: giniBankBundle()),
-                           forCellReuseIdentifier: "DigitalLineItemTableViewCell")
-        tableView.register(DigitalInvoiceAddOnListCell.self, forCellReuseIdentifier: "DigitalInvoiceAddOnListCell")
+                           forCellReuseIdentifier: DigitalLineItemTableViewCell.reuseIdentifier)
+        tableView.register(DigitalInvoiceAddOnListCell.self, forCellReuseIdentifier: DigitalInvoiceAddOnListCell.reuseIdentifier)
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
@@ -58,8 +44,11 @@ public class DigitalInvoiceViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configure(with: configuration.primaryButtonConfiguration)
         button.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
-        button.setTitle(NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.paybutton.title",
-                                                                 comment: "Proceed"), for: .normal)
+        let buttonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.paybutton.title",
+                                                                   comment: "Proceed")
+        button.setTitle(buttonTitle, for: .normal)
+        button.accessibilityValue = buttonTitle
+
         button.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
         button.isEnabled = viewModel.isPayButtonEnabled()
         return button
@@ -68,10 +57,13 @@ public class DigitalInvoiceViewController: UIViewController {
     private lazy var totalLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontForContentSizeCategory = true
         label.font = configuration.textStyleFonts[.body]
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
-        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.totalpricetitle",
-                                                              comment: "Total")
+        let labelTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.totalpricetitle",
+                                                                  comment: "Total")
+        label.text = labelTitle
+        label.accessibilityValue = labelTitle
         return label
     }()
 
@@ -82,10 +74,10 @@ public class DigitalInvoiceViewController: UIViewController {
         label.font = configuration.textStyleFonts[.title1Bold]
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         label.text = viewModel.invoice?.total?.string
+        label.accessibilityValue = viewModel.invoice?.total?.string
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
-
-    public weak var delegate: DigitalInvoiceViewControllerDelegate?
 
     private let viewModel: DigitalInvoiceViewModel
     private let configuration = GiniBankConfiguration.shared
@@ -106,31 +98,20 @@ public class DigitalInvoiceViewController: UIViewController {
         title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
         edgesForExtendedLayout = []
         view.backgroundColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2).uiColor()
-        let helpButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.help.screenTitle",
-                                                                       comment: "Help")
-        let cancelButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.cancelButtonTitle",
-                                                                         comment: "Cancel")
-
         if configuration.bottomNavigationBarEnabled {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: cancelButtonTitle,
-                                                               style: .plain,
-                                                               target: self,
-                                                               action: #selector(closeReturnAssistantOverview))
-
+            let cancelButton = GiniBarButton(ofType: .cancel)
+            cancelButton.addAction(self, #selector(closeReturnAssistantOverview))
+            navigationItem.rightBarButtonItem = cancelButton.barButton
             navigationItem.hidesBackButton = true
         } else {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: helpButtonTitle,
-                                                                style: .plain,
-                                                                target: self,
-                                                                action: #selector(helpButtonTapped(source:)))
+            let helpButton = GiniBarButton(ofType: .help)
+            helpButton.addAction(self, #selector(helpButtonTapped(source:)))
+            navigationItem.rightBarButtonItem = helpButton.barButton
 
-            navigationItem.leftBarButtonItem = UIBarButtonItem(title: cancelButtonTitle,
-                                                               style: .plain,
-                                                               target: self,
-                                                               action: #selector(closeReturnAssistantOverview))
+            let cancelButton = GiniBarButton(ofType: .cancel)
+            cancelButton.addAction(self, #selector(closeReturnAssistantOverview))
+            navigationItem.leftBarButtonItem = cancelButton.barButton
         }
-
-
 
         view.addSubview(tableView)
         view.addSubview(buttonContainerView)
@@ -160,7 +141,7 @@ public class DigitalInvoiceViewController: UIViewController {
             totalLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor, constant: Constants.padding),
             totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: totalValueLabel.leadingAnchor, constant: Constants.padding),
 
-            totalValueLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor, constant: Constants.padding),
+            totalValueLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor, constant: Constants.padding / 2),
             totalValueLabel.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
             totalValueLabel.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: -Constants.labelPadding),
             totalValueLabel.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor)
@@ -219,14 +200,14 @@ public class DigitalInvoiceViewController: UIViewController {
     }
 
     
-    override public func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         setupView()
         setupConstraints()
     }
     
-    override public func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.shouldShowOnboarding()
     }
@@ -243,6 +224,7 @@ public class DigitalInvoiceViewController: UIViewController {
             navigationBarBottomAdapter?.updateProceedButtonState(enabled: viewModel.isPayButtonEnabled())
         } else {
             totalValueLabel.text = viewModel.invoice?.total?.string
+            totalValueLabel.accessibilityValue = viewModel.invoice?.total?.string
 
             if viewModel.isPayButtonEnabled() {
                 payButton.isEnabled = true
@@ -252,16 +234,6 @@ public class DigitalInvoiceViewController: UIViewController {
                 payButton.configure(with: configuration.secondaryButtonConfiguration)
             }
         }
-    }
-    
-    private func payButtonAccessibilityLabel() -> String {
-        guard let invoice = viewModel.invoice else {
-            return .ginibankLocalized(resource: DigitalInvoiceStrings.disabledPayButtonTitle)
-        }
-        
-        return String.localizedStringWithFormat(DigitalInvoiceStrings.payButtonTitleAccessibilityLabel.localizedGiniBankFormat,
-                                                invoice.numSelected,
-                                                invoice.numTotal)
     }
 
     @objc func helpButtonTapped(source: UIButton) {
@@ -281,13 +253,13 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
         case addOns
     }
 
-    public func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return Section.allCases.count
     }
 
     // MARK: - UITableViewDataSource
 
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Section(rawValue: section) {
         case .titleCell: return 1
         case .lineItems: return viewModel.invoice?.lineItems.count ?? 0
@@ -296,15 +268,15 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
         }
     }
     
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch Section(rawValue: indexPath.section) {
         case .titleCell:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceTableViewTitleCell",
+            let cell = tableView.dequeueReusableCell(withIdentifier: DigitalInvoiceTableViewTitleCell.reuseIdentifier,
                                                      for: indexPath) as! DigitalInvoiceTableViewTitleCell
             return cell
         case .lineItems:
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalLineItemTableViewCell",
+            let cell = tableView.dequeueReusableCell(withIdentifier: DigitalLineItemTableViewCell.reuseIdentifier,
                                                      for: indexPath) as! DigitalLineItemTableViewCell
             if let invoice = viewModel.invoice {
                 cell.viewModel = DigitalLineItemTableViewCellViewModel(lineItem: invoice.lineItems[indexPath.row],
@@ -316,7 +288,7 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
             return cell
             
         case .addOns:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalInvoiceAddOnListCell",
+            let cell = tableView.dequeueReusableCell(withIdentifier: DigitalInvoiceAddOnListCell.reuseIdentifier,
                                                      for: indexPath) as! DigitalInvoiceAddOnListCell
             cell.addOns = viewModel.invoice?.addons
             return cell

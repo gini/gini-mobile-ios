@@ -14,21 +14,20 @@
             <rect key="frame" x="0.0" y="0.0" width="458" height="114"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vSv-hD-64s">
-                    <rect key="frame" x="9.9999999999999964" y="0.0" width="53.666666666666657" height="114"/>
-                    <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="plain" title="Left"/>
-                </button>
+                <view contentMode="scaleToFill" placeholderIntrinsicWidth="72" placeholderIntrinsicHeight="114" translatesAutoresizingMaskIntoConstraints="NO" id="rsH-iL-GlT">
+                    <rect key="frame" x="8" y="0.0" width="72" height="114"/>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="4wS-E7-91z"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="vSv-hD-64s" secondAttribute="bottom" id="XU9-Av-T5X"/>
-                <constraint firstItem="vSv-hD-64s" firstAttribute="leading" secondItem="4wS-E7-91z" secondAttribute="leading" constant="10" id="gQi-39-xtn"/>
-                <constraint firstItem="vSv-hD-64s" firstAttribute="top" secondItem="C2e-DR-fFB" secondAttribute="top" id="hnQ-9M-ICh"/>
+                <constraint firstItem="rsH-iL-GlT" firstAttribute="top" secondItem="C2e-DR-fFB" secondAttribute="top" id="D7j-LI-1h1"/>
+                <constraint firstItem="4wS-E7-91z" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="rsH-iL-GlT" secondAttribute="trailing" id="OlU-FO-RIc"/>
+                <constraint firstItem="rsH-iL-GlT" firstAttribute="leading" secondItem="4wS-E7-91z" secondAttribute="leading" constant="8" id="bvz-PO-QCi"/>
+                <constraint firstAttribute="bottom" secondItem="rsH-iL-GlT" secondAttribute="bottom" id="kga-xX-Qii"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="backButton" destination="vSv-hD-64s" id="7uc-uR-7js"/>
+                <outlet property="backButtonContainer" destination="rsH-iL-GlT" id="Yao-jD-s9e"/>
             </connections>
             <point key="canvasLocation" x="86.153846153846146" y="-245.260663507109"/>
         </view>

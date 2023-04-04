@@ -28,17 +28,18 @@
                                     </constraints>
                                 </switch>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" placeholderIntrinsicWidth="248" placeholderIntrinsicHeight="36" insetsLayoutMarginsFromSafeArea="NO" text="Nike Sportswear Air Max 97 - Sneaker Low…" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.90000000000000002" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ci3-Xk-SLN">
-                                    <rect key="frame" x="81" y="16" width="248" height="36"/>
+                                    <rect key="frame" x="81" y="16" width="221" height="36"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ogc-mD-pz6">
-                                    <rect key="frame" x="345" y="16" width="53" height="20"/>
+                                <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" horizontalHuggingPriority="1000" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ogc-mD-pz6">
+                                    <rect key="frame" x="318" y="16" width="80" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="kYO-Wq-hMQ"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                     <color key="tintColor" systemColor="labelColor"/>
-                                    <inset key="contentEdgeInsets" minX="24" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="-14" maxY="0.0"/>
                                     <state key="normal" title="Edit">
                                         <color key="titleColor" systemColor="systemOrangeColor"/>
                                     </state>
@@ -46,8 +47,8 @@
                                         <action selector="editButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="Rmo-hw-Kdk"/>
                                     </connections>
                                 </button>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="€76" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GOU-G0-cKp">
-                                    <rect key="frame" x="368" y="112" width="30" height="21"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="€76" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GOU-G0-cKp">
+                                    <rect key="frame" x="368" y="112.5" width="30" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -61,6 +62,9 @@
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" placeholderIntrinsicWidth="82" placeholderIntrinsicHeight="21" text="76 per unit" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gxv-Uq-3b2" userLabel="Unit Price Label">
                                     <rect key="frame" x="81" y="112" width="82" height="21"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="DjP-a3-oEv"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -72,6 +76,8 @@
                                 <constraint firstItem="gxv-Uq-3b2" firstAttribute="leading" secondItem="CUJ-3d-daD" secondAttribute="trailing" constant="16" id="1em-Ut-DuO"/>
                                 <constraint firstAttribute="bottom" secondItem="gxv-Uq-3b2" secondAttribute="bottom" constant="16" id="3vh-hu-Phz"/>
                                 <constraint firstItem="6LC-kT-CZp" firstAttribute="top" secondItem="utZ-Ul-3Ih" secondAttribute="top" id="8SD-r7-sCI"/>
+                                <constraint firstItem="GOU-G0-cKp" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ogc-mD-pz6" secondAttribute="bottom" constant="8" id="ESd-mH-1s7"/>
+                                <constraint firstItem="ogc-mD-pz6" firstAttribute="width" relation="greaterThanOrEqual" secondItem="GOU-G0-cKp" secondAttribute="width" id="Fr6-VB-cOu"/>
                                 <constraint firstAttribute="trailing" secondItem="GOU-G0-cKp" secondAttribute="trailing" constant="16" id="LOk-ya-d4E"/>
                                 <constraint firstItem="CUJ-3d-daD" firstAttribute="leading" secondItem="utZ-Ul-3Ih" secondAttribute="leading" constant="16" id="Qaw-sc-nhH"/>
                                 <constraint firstItem="ci3-Xk-SLN" firstAttribute="top" secondItem="utZ-Ul-3Ih" secondAttribute="top" constant="16" id="RUI-hM-caR"/>
@@ -82,6 +88,7 @@
                                 <constraint firstItem="ci3-Xk-SLN" firstAttribute="leading" secondItem="CUJ-3d-daD" secondAttribute="trailing" constant="16" id="dFW-am-j5J"/>
                                 <constraint firstAttribute="trailing" secondItem="6LC-kT-CZp" secondAttribute="trailing" id="dhA-9x-O1V"/>
                                 <constraint firstItem="ogc-mD-pz6" firstAttribute="leading" secondItem="ci3-Xk-SLN" secondAttribute="trailing" constant="16" id="fcM-tp-Rdf"/>
+                                <constraint firstItem="ogc-mD-pz6" firstAttribute="width" relation="lessThanOrEqual" secondItem="ci3-Xk-SLN" secondAttribute="width" multiplier="0.199203" priority="999" id="fku-Rc-nMm"/>
                                 <constraint firstItem="6LC-kT-CZp" firstAttribute="leading" secondItem="CUJ-3d-daD" secondAttribute="trailing" constant="16" id="jXE-AF-bNY"/>
                                 <constraint firstItem="GOU-G0-cKp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gxv-Uq-3b2" secondAttribute="trailing" constant="16" id="qoD-Z4-5cv"/>
                             </constraints>

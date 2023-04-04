@@ -12,17 +12,15 @@ import Foundation
 extension GiniScreenAPICoordinator {
     func createAnalysisScreen(withDocument document: GiniCaptureDocument) -> AnalysisViewController {
         let viewController = AnalysisViewController(document: document)
+
+        let cancelButton = GiniBarButton(ofType: .cancel)
+        cancelButton.addAction(self, #selector(back))
+
         if giniConfiguration.bottomNavigationBarEnabled {
             viewController.navigationItem.setHidesBackButton(true, animated: false)
-            viewController.setupNavigationItem(usingResources: self.cancelButtonResource,
-                                               selector: #selector(back),
-                                               position: .right,
-                                               target: self)
+            viewController.navigationItem.rightBarButtonItem = cancelButton.barButton
         } else {
-            viewController.setupNavigationItem(usingResources: self.cancelButtonResource,
-                                               selector: #selector(back),
-                                               position: .left,
-                                               target: self)
+            viewController.navigationItem.leftBarButtonItem = cancelButton.barButton
         }
 
         return viewController
