@@ -38,15 +38,20 @@ private enum AddonExtraction: String {
     var name: String {
         switch self {
         case .discount:
-            return .ginibankLocalized(resource: DigitalInvoiceStrings.addonNameDiscount)
+            return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.addonname.discount",
+                                                            comment: "addonNameDiscount")
         case .giftcard:
-            return .ginibankLocalized(resource: DigitalInvoiceStrings.addonNameGiftCard)
+            return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.addonname.giftcard",
+                                                            comment: "addonNameGiftCard")
         case .otherDiscounts:
-            return .ginibankLocalized(resource: DigitalInvoiceStrings.addonNameOtherDiscounts)
+            return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.addonname.otherdiscounts",
+                                                            comment: "addonNameOtherDiscounts")
         case .otherCharges:
-            return .ginibankLocalized(resource: DigitalInvoiceStrings.addonNameOtherCharges)
+            return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.addonname.othercharges",
+                                                            comment: "addonNameOtherCharges")
         case .shipment:
-            return .ginibankLocalized(resource: DigitalInvoiceStrings.addonNameShipment)
+            return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.addonname.shipment",
+                                                            comment: "addonNameShipment")
         }
     }
 }
