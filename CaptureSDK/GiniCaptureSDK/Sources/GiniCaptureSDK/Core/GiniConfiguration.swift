@@ -520,7 +520,7 @@ import GiniBankAPILibrary
      ///   - iban: iban description
      ///   - bic: bic description
      ///   - amountToPay: amountToPay description
-    public func cleanup(paymentRecipient: String, paymentReference: String, paymentPurpose: String, iban: String, bic: String,  amountToPay: ExtractionAmount) {
+    public func cleanup(paymentRecipient: String, paymentReference: String, paymentPurpose: String, iban: String, bic: String, amountToPay: ExtractionAmount) {
          guard let documentService = documentService else { return }
 
          let formattedPriceValue = amountToPay.value.stringValue(withDecimalPoint: 2) ?? "\(amountToPay.value)"

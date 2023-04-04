@@ -20,6 +20,7 @@ public extension Decimal {
         numberFormatter.numberStyle = .decimal
         numberFormatter.maximumFractionDigits = decimalPoint
         numberFormatter.minimumFractionDigits = decimalPoint
+        numberFormatter.locale = Locale(identifier: "en")
 
         return numberFormatter.string(from: self as NSNumber)
     }

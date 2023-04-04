@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  DecimalExtensionTests.swift
 //  
 //
 //  Created by David Vizaknai on 04.04.2023.
@@ -24,5 +24,29 @@ class DecimalExtensionTests: XCTestCase {
         let decimalValue: Decimal = 210.3
         let decimalString = decimalValue.stringValue(withDecimalPoint: 2)
         XCTAssertEqual(decimalString, "210.30", "Decimal string value is not equal to expected string value.")
+    }
+
+    func testStringValueFromTwoDecimals2() {
+        let decimalValue: Decimal = 1000.09
+        let decimalString = decimalValue.stringValue(withDecimalPoint: 2)
+        XCTAssertEqual(decimalString, "1,000.09", "Decimal string value is not equal to expected string value.")
+    }
+
+    func testStringValueFromTwoDecimals3() {
+        let decimalValue: Decimal = 200.37
+        let decimalString = decimalValue.stringValue(withDecimalPoint: 2)
+        XCTAssertEqual(decimalString, "200.37", "Decimal string value is not equal to expected string value.")
+    }
+
+    func testStringValueFromTwoDecimals4() {
+        let decimalValue: Decimal = 999.35
+        let decimalString = decimalValue.stringValue(withDecimalPoint: 2)
+        XCTAssertEqual(decimalString, "999.35", "Decimal string value is not equal to expected string value.")
+    }
+
+    func testStringValueFromTwoDecimals5() {
+        let decimalValue: Decimal = 0.09
+        let decimalString = decimalValue.stringValue(withDecimalPoint: 2)
+        XCTAssertEqual(decimalString, "0.09", "Decimal string value is not equal to expected string value.")
     }
 }
