@@ -10,7 +10,7 @@ We also removed the Component API integration option and unified the public API 
 `GiniBankConfiguration` is a singleton now.
 You don't need to create a new instance of `GiniBankConfiguration` just use `GiniBankConfiguration.shared` instead.
 
-Please, find more details in [Getting started](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta06/getting-started.html).
+Please, find more details in [Getting started](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/getting-started.html).
 
 # Migrate from Compoment API
 
@@ -293,15 +293,15 @@ You can find more details [here](https://developer.gini.net/gini-mobile-ios/Gini
 You can show your own UI for data input if an error occured and the user clicks the "Enter manually" button on the error screen.
 For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/features.html#error-screen-customization) and [here]((https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/customization-guide.html#error-screen).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/features.html#error-screen-customization) and [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/customization-guide.html#error-screen).
 
 # Migrate Return Assistant
 
 ## Digital Invoice Onboarding screen
 
-The new Digital Invoice Onboarding screen uses the global UI customization options. You can discard the old screen specific customizations.
+The new digital invoice onboarding screen uses the global UI customization options. You can discard the old screen specific customizations.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta06/customization-guide.html#digital-invoice-onboarding-screen) and [here](https://www.figma.com/file/623Fahuwq8tUzSWQPd23Ie/iOS-Gini-Bank-SDK-3.0.0-UI-Customisation?node-id=1301%3A11187&t=YJcxLW7BENnbqCmt-1).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/customization-guide.html#digital-invoice-onboarding-screen) and [here](https://www.figma.com/file/623Fahuwq8tUzSWQPd23Ie/iOS-Gini-Bank-SDK-3.0.0-UI-Customisation?node-id=1301%3A11187&t=YJcxLW7BENnbqCmt-1).
 
 ### New Features
 
@@ -316,34 +316,45 @@ If you need to animate the illustrations on the onboarding pages implement the `
 
 ## Digital Invoice Overview Screen
 
+The new digital invoice overview screen uses the global UI customization options. You can discard the old screen specific customizations.
+
+TODO You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/customization-guide.html#digital-invoice-screen).
+
 ### Breaking Changes
 
-Info box was removed.
+We removed the ability for users to manually add additional articles.
+We also removed the info box.
 
 ### New Features
 
-#### New UI
+#### Bottom navigation bar
 
-The new digital invoice screen uses the global UI customization options. You can discard the old screen specific customizations.
+You can show a bottom navigation bar by passing true to `GiniBankConfiguration.shared.bottomNavigationBarEnabled`. There is a default implementation, but you can also use
+your own by implementing the `DigitalInvoiceNavigationBarBottomAdapter` interface and passing it to `GiniBankConfiguration.shared.digitalInvoiceNavigationBarBottomAdapter`.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta06/customization-guide.html#digital-invoice-screen).
+## Digital Invoice Edit Article screen
 
-## TODO Edit line item screen
+The new edit article screen uses the global UI customization options and is presented as a bottom sheet on phones and as a dialog on iPad. You can discard the old screen specific customizations.
 
-### New Features
+[Here](TODO) you can find the detailed description on how to customize this screen.
 
-#### New UI
+### Breaking Changes
 
-The new edit line item screen uses the global UI customization options. You can discard the old screen specific customizations.
-
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta06/customization-guide.html#edit-line-item-screen).
-
-## TODO Help screen (former Info screen)
+We removed the ability to deselect the article from this screen.
 
 ### New Features
 
-#### New UI
+Easier currency and amount input when editing an article.
+
+## Digital Invoice Help screen
 
 The new help screen uses the global UI customization options. You can discard the old screen specific customizations.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta06/customization-guide.html#return-assistant-help-screen).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/customization-guide.html#return-assistant-help-screen) and [here](https://www.figma.com/file/623Fahuwq8tUzSWQPd23Ie/iOS-Gini-Bank-SDK-3.0.0-UI-Customisation?node-id=1356%3A11409&t=hzHQDEsTJv9ZVE7M-1).
+
+### New Features
+
+#### Bottom navigation bar
+
+You can show a bottom navigation bar by passing true to `GiniBankConfiguration.shared.bottomNavigationBarEnabled`. There is a default implementation, but you can also use
+your own by implementing the `DigitalInvoiceHelpNavigationBarBottomAdapter` interface and passing it to `GiniBankConfiguration.shared.digitalInvoiceHelpNavigationBarBottomAdapter`.
