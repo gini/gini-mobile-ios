@@ -158,6 +158,10 @@ final class EditLineItemView: UIView {
         ])
     }
 
+    func hideKeyBoard() {
+        self.endEditing(true)
+    }
+
     @objc
     private func didTapCancel() {
         viewModel?.didTapCancel()

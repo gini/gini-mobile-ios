@@ -144,16 +144,18 @@ final class EditLineItemViewController: UIViewController {
     }
 
     private func animateDismissView() {
+        editLineItemView.hideKeyBoard()
         UIView.animate(withDuration: Constants.animationDuration) {
             self.containerViewBottomConstraint?.constant = self.defaultHeight
             self.view.layoutIfNeeded()
-        }
-
-        dimmedView.alpha = Constants.maxDimmedAlpha
-        UIView.animate(withDuration: Constants.animationDuration) {
-            self.dimmedView.alpha = 0
-        } completion: { _ in
-            self.dismiss(animated: false)
+        } completion: { [weak self] _ in
+            guard let self = self else { return }
+            self.dimmedView.alpha = Constants.maxDimmedAlpha
+            UIView.animate(withDuration: Constants.animationDuration) {
+                self.dimmedView.alpha = 0
+            } completion: { _ in
+                self.dismiss(animated: false)
+            }
         }
     }
 
