@@ -10,7 +10,7 @@ We also removed the Component API integration option and unified the public API 
 `GiniConfiguration` is a singleton now.
 You don't need to create a new instance of `GiniConfiguration` just use `GiniConfiguration.shared` instead.
 
-Please, find more details in [Getting started](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta06/getting-started.html).
+Please, find more details in [Getting started](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta07/getting-started.html).
 
 # Migrate from Compoment API
 
