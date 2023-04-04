@@ -92,8 +92,6 @@ extension NameLabelView: UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
-
-
 }
 
 
