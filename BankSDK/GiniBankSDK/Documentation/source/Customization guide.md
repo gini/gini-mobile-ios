@@ -223,3 +223,20 @@ your own by implementing the `DigitalInvoiceOnboardingNavigationBarBottomAdapter
 ### Custom Illustration View
 
 If you need to animate the illustrations on the onboarding pages implement the `OnboardingIllustrationAdapter` interface to inject a view that can animate images (e.g., `Lottie`) and pass it to the `digitalInvoiceOnboardingIllustrationAdapter` when configuring the `GiniBankConfiguration.shared` instance.
+
+## Digital Invoice Overview Screen
+
+TODO
+
+## Digital Invoice Help screen
+
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F623Fahuwq8tUzSWQPd23Ie%2FiOS-Gini-Bank-SDK-3.0.0-UI-Customisation%3Fnode-id%3D1356%253A11409%26t%3DhzHQDEsTJv9ZVE7M-1" allowfullscreen></iframe>
+
+### Bottom navigation bar
+
+You can show a bottom navigation bar by passing true to `GiniBankConfiguration.shared.bottomNavigationBarEnabled`. There is a default implementation, but you can also use
+your own by implementing the `DigitalInvoiceHelpNavigationBarBottomAdapter` interface and passing it to `GiniBankConfiguration.shared.digitalInvoiceHelpNavigationBarBottomAdapter`.
+
+## Digital Invoice Edit Article Screen
+
+TODO
