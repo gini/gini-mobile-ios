@@ -39,6 +39,14 @@
 "ginibank.digitalinvoice.headermessage.secondary" = "Du kannst nun die Artikel abwählen, die du zurückschicken willst.";
 "ginibank.digitalinvoice.total.addArticleButtonTitle" = "Artikel hinzufügen";
 "ginibank.digitalinvoice.total.accessibilitylabel" = "Total: %@";
+
+"ginibank.digitalinvoice.edit.unitPrice" = "Einzelpreis";
+"ginibank.digitalinvoice.edit.name" = "Name";
+"ginibank.digitalinvoice.edit.quantity" = "Anzahl";
+"ginibank.digitalinvoice.edit.title" = "Artikel bearbeiten";
+"ginibank.digitalinvoice.edit.minus.button.accessibility" = "Anzahl verringern";
+"ginibank.digitalinvoice.edit.plus.button.accessibility" = "Anzahl erhöhen";
+
 "ginibank.digitalinvoice.footermessage" = "Bitte überprüfe vor der Zahlung, ob alles in Ordnung ist und füge eventuell fehlende Artikel hinzu.";
 "ginibank.digitalinvoice.totalcaptionlabeltext" = "Gesamt";
 "ginibank.digitalinvoice.totalexplanationlabeltext" = "Inkl. Versandkosten, Rabatt usw.";
@@ -65,6 +73,7 @@
 "ginibank.digitalinvoice.backbutton" = "Zurück";
 
 "ginibank.digitalinvoice.help.screenTitle" = "Hilfe";
+"ginibank.digitalinvoice.help.backToInvoice" = "Digitale Rechnung";
 "ginibank.digitalinvoice.help.title1" = "1. Wie funktioniert die Digitale Rechnung?";
 "ginibank.digitalinvoice.help.description1" = "Wir lesen alle Artikel aus der Rechnung aus und listen diese für Sie auf. Falls Sie einige Artikel zurücksenden oder die Rechnung nur teilweise bezahlen möchten, wählen Sie einfach die Artikel ab, die Sie zurücksenden und wir berechnen den zu zahlenden Betrag für Sie neu.";
 "ginibank.digitalinvoice.help.title2" = "2. Wie kann ich Artikel bearbeiten";

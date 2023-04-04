@@ -22,9 +22,8 @@ final class GalleryCoordinator: NSObject, Coordinator {
     let galleryManager: GalleryManagerProtocol
     fileprivate(set) var selectedImageDocuments: [(assetId: String, imageDocument: GiniImageDocument)] = [] {
         didSet {
-            currentImagePickerViewController?
-                .navigationItem
-                .setRightBarButton(selectedImageDocuments.isEmpty ? cancelButton : openImagesButton, animated: true)
+            let button = selectedImageDocuments.isEmpty ? cancelButton : openImagesButton
+            currentImagePickerViewController?.navigationItem.setRightBarButton(button, animated: true)
         }
     }
     
@@ -67,26 +66,17 @@ final class GalleryCoordinator: NSObject, Coordinator {
     fileprivate(set) var currentImagePickerViewController: ImagePickerViewController?
 
     // MARK: - Navigation bar buttons
-    
-    lazy var cancelButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
-                                                             target: self,
-                                                             action: #selector(cancelAction))
-    
-    lazy var openImagesButton: UIBarButtonItem = {
-        let button = UIButton(type: UIButton.ButtonType.custom)
-        button.addTarget(self, action: #selector(openImages), for: .touchUpInside)
-        button.frame.size = CGSize(width: 50, height: 20)
-        button.titleLabel?.textColor = UIColor.GiniCapture.accent1
 
-        let attributes = [NSAttributedString.Key.font: giniConfiguration.textStyleFonts[.bodyBold] as Any]
-        let openLocalizedString: String = NSLocalizedStringPreferredFormat("ginicapture.imagepicker.openbutton",
-                                                                           comment: "Open")
-        let attributedString = NSMutableAttributedString(string: openLocalizedString,
-                                                         attributes: attributes)
-        button.setAttributedTitle(attributedString, for: .normal)
-        button.titleLabel?.adjustsFontSizeToFitWidth = true
-        
-        return UIBarButtonItem(customView: button)
+    lazy var cancelButton: UIBarButtonItem = {
+        let cancelButton = GiniBarButton(ofType: .cancel)
+        cancelButton.addAction(self, #selector(cancelAction))
+        return cancelButton.barButton
+    }()
+
+    lazy var openImagesButton: UIBarButtonItem = {
+        let openButton = GiniBarButton(ofType: .done)
+        openButton.addAction(self, #selector(openImages))
+        return openButton.barButton
     }()
     
     // MARK: - Initializer
@@ -129,17 +119,21 @@ final class GalleryCoordinator: NSObject, Coordinator {
     }
     
     // MARK: - Bar button actions
-    
-    @objc fileprivate func cancelAction() {
+    @objc func cancelAction() {
         selectedImageDocuments = []
         delegate?.gallery(self, didCancel: ())
     }
     
-    @objc fileprivate func openImages() {
+    @objc func openImages() {
         DispatchQueue.main.async {
             let imageDocuments: [GiniImageDocument] = self.selectedImageDocuments.map { $0.imageDocument }
             self.delegate?.gallery(self, didSelectImageDocuments: imageDocuments)
         }
+    }
+
+    @objc
+    private func backAction() {
+        galleryNavigator.popViewController(animated: true)
     }
     
     // MARK: - Image picker generation.
@@ -150,9 +144,14 @@ final class GalleryCoordinator: NSObject, Coordinator {
                                                                   giniConfiguration: giniConfiguration)
         imagePickerViewController.delegate = self
         imagePickerViewController.navigationItem.rightBarButtonItem = cancelButton
-        if giniConfiguration.bottomNavigationBarEnabled {
-            imagePickerViewController.navigationItem.setHidesBackButton(true, animated: false)
+        imagePickerViewController.navigationItem.setHidesBackButton(true, animated: false)
+        if !giniConfiguration.bottomNavigationBarEnabled {
+            let buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.images.backToAlbums", comment: "Albums")
+            let backButton = GiniBarButton(ofType: .back(title: buttonTitle))
+            backButton.addAction(self, #selector(backAction))
+            imagePickerViewController.navigationItem.leftBarButtonItem = backButton.barButton
         }
+
         return imagePickerViewController
     }
     
