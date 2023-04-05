@@ -21,7 +21,7 @@ public extension Decimal {
         numberFormatter.maximumFractionDigits = decimalPoint
         numberFormatter.minimumFractionDigits = decimalPoint
         numberFormatter.locale = Locale(identifier: "en")
-        numberFormatter.groupingSeparator = ""
+        numberFormatter.usesGroupingSeparator = false
 
         return numberFormatter.string(from: self as NSNumber)
     }
