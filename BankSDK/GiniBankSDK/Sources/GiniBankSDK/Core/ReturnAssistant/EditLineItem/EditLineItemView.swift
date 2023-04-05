@@ -235,7 +235,7 @@ final class EditLineItemView: UIView {
     }
 
     private func isNameLabelValid() -> Bool {
-        return !(nameLabel.text == nil || nameLabel.text!.isEmpty)
+        return !(nameLabel.text == nil || nameLabel.text!.trimmingCharacters(in: .whitespaces).isEmpty)
     }
 
     private func isPriceLabelValid() -> Bool {
