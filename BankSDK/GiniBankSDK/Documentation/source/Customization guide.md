@@ -27,6 +27,11 @@ The Gini Bank SDK components can be customized either through the `GiniBankConfi
   - [Gallery album screen](#gallery-album-screen)
   - [No result screen](#no-result-screen)
   - [Error screen](#error-screen)
+  - [Return assistant](#return-assistant)
+    - [Digital Invoice Onboarding screen](#digital-invoice-onboarding-screen)
+    - [Digital Invoice Overview screen](#digital-invoice-overview-screen)
+    - [Digital Invoice Help screen](#digital-invoice-help-screen)
+    - [Digital Invoice Edit Article screen](#digital-invoice-edit-article-screen)
 
 ## Colors
 
