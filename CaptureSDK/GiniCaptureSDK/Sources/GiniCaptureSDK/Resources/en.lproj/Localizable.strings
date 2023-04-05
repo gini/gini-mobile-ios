@@ -20,6 +20,7 @@
 "ginicapture.navigationbar.help.backToCamera"   = "Camera";
 "ginicapture.navigationbar.help.backToMenu"     = "Help";
 "ginicapture.navigationbar.analysis.backToReview" = "Review";
+"ginicapture.navigationbar.accessibility.back" = "Back";
 
 
 "ginicapture.camera.captureButton" = "Capture";
@@ -157,6 +158,7 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.multipagereview.description" = "Make sure the payment details are visible";
 "ginicapture.multipagereview.mainButtonTitle" = "Process";
 "ginicapture.multipagereview.secondaryButtonTitle" = "Pages";
+"ginicapture.multipagereview.secondaryButton.accessibility" = "Add pages";
 "ginicapture.multipagereview.error.retakeAction" = "Retake";
 "ginicapture.multipagereview.error.retryAction" = "Retry";
 
