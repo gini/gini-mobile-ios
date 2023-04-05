@@ -24,6 +24,7 @@ protocol CameraProtocol: AnyObject {
                atDevicePoint point: CGPoint,
                monitorSubjectAreaChange: Bool)
     func setup(completion: @escaping ((CameraError?) -> Void))
+    func switchTo(newVideoDevice: AVCaptureDevice)
     func setupQRScanningOutput(completion: @escaping ((CameraError?) -> Void))
     func start()
     func stop()
@@ -56,7 +57,7 @@ final class Camera: NSObject, CameraProtocol {
     
     fileprivate let application: UIApplication
     fileprivate let sessionQueue = DispatchQueue(label: "session queue")
-    
+
     init(application: UIApplication = UIApplication.shared,
          giniConfiguration: GiniConfiguration) {
         self.application = application
@@ -78,10 +79,38 @@ final class Camera: NSObject, CameraProtocol {
             }
         }
     }
+
+    func switchTo(newVideoDevice: AVCaptureDevice) {
+        guard let videoInput = videoDeviceInput else { return }
+
+        sessionQueue.async { [weak self] in
+            guard let self else { return }
+            var newInput: AVCaptureDeviceInput
+
+            do {
+                newInput = try AVCaptureDeviceInput(device: newVideoDevice)
+            } catch {
+                return
+            }
+
+            self.session.beginConfiguration()
+            self.session.removeInput(videoInput)
+
+            if self.session.canAddInput(newInput) {
+                self.session.addInput(newInput)
+                self.videoDeviceInput = newInput
+            } else {
+                // Could not add the new input, so readding the old one.
+                self.session.addInput(videoInput)
+            }
+
+            self.session.commitConfiguration()
+        }
+    }
     
     func setup(completion: @escaping ((CameraError?) -> Void)) {
         
-        setupCaptureDevice { [weak self] result in
+        setupCaptureDevice() { [weak self] result in
             
             guard let self = self else { return }
             

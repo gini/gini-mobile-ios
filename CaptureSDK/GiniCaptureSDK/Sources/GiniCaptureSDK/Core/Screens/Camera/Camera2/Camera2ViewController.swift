@@ -6,11 +6,11 @@
 //  Copyright © 2022 Gini GmbH. All rights reserved.
 //
 
+import AVFoundation
 import UIKit
 
 // swiftlint:disable type_body_length
 public final class Camera2ViewController: UIViewController, CameraScreen {
-
     /**
      The object that acts as the delegate of the camera view controller.
     */
@@ -43,6 +43,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     private let cameraButtonsViewModel: CameraButtonsViewModel
     private var navigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
     private var bottomNavigationBar: UIView?
+    private let cameraLensSwitcherView: CameraLensSwitcherView
 
     @IBOutlet weak var iPadBottomPaneConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomButtonsConstraints: NSLayoutConstraint!
@@ -62,11 +63,17 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     ) {
         self.giniConfiguration = giniConfiguration
         self.cameraButtonsViewModel = viewModel
+
+        let availableLenses = Camera2ViewController.checkAvailableLenses()
+        self.cameraLensSwitcherView = CameraLensSwitcherView(availableLenses: availableLenses)
+
         if UIDevice.current.isIphone {
             super.init(nibName: "CameraPhone", bundle: giniCaptureBundle())
         } else {
             super.init(nibName: "CameraiPad", bundle: giniCaptureBundle())
         }
+
+        self.cameraLensSwitcherView.delegate = self
     }
 
     required init?(coder: NSCoder) {
@@ -114,6 +121,8 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         cameraPreviewViewController.didMove(toParent: self)
         view.sendSubviewToBack(cameraPreviewViewController.view)
         view.addSubview(qrCodeOverLay)
+        cameraLensSwitcherView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(cameraLensSwitcherView)
         configureConstraints()
         configureTitle()
 
@@ -128,6 +137,38 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             configureCameraPaneButtons()
             configureBottomNavigationBar()
         }
+    }
+
+    private static func checkAvailableLenses() -> [CameraLensesAvailable] {
+        var discoverySession: AVCaptureDevice.DiscoverySession
+        if #available(iOS 13.0, *) {
+            discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInUltraWideCamera,
+                                                                                  .builtInWideAngleCamera,
+                                                                                  .builtInTelephotoCamera],
+                                                                    mediaType: .video, position: .back)
+        } else {
+            discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera,
+                                                                                  .builtInTelephotoCamera],
+                                                                    mediaType: .video, position: .back)
+        }
+
+        var availableLenses: [CameraLensesAvailable] = []
+
+        let rawDeviceTypes = discoverySession.devices.map { $0.deviceType.rawValue }
+
+        if rawDeviceTypes.contains("AVCaptureDeviceTypeBuiltInUltraWideCamera") {
+            availableLenses.append(.ultraWide)
+        }
+
+        if rawDeviceTypes.contains("AVCaptureDeviceTypeBuiltInWideAngleCamera") {
+            availableLenses.append(.wide)
+        }
+
+        if rawDeviceTypes.contains("AVCaptureDeviceTypeBuiltInTelephotoCamera") {
+            availableLenses.append(.tele)
+        }
+
+        return availableLenses
     }
 
     private func configureCustomTopNavigationBar(containsImage: Bool) {
@@ -332,9 +373,31 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             cameraPreviewViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
             cameraPreviewViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             cameraPreviewViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            cameraPreviewBottomContraint
-            ]
+            cameraPreviewBottomContraint]
         )
+
+        if UIDevice.current.isIpad {
+            NSLayoutConstraint.activate([
+                cameraLensSwitcherView.trailingAnchor.constraint(equalTo: cameraPane.leadingAnchor,
+                                                                 constant: -Constants.switcherPadding),
+                cameraLensSwitcherView.centerYAnchor.constraint(equalTo: cameraPane.captureButton.centerYAnchor),
+                cameraLensSwitcherView.widthAnchor.constraint(greaterThanOrEqualToConstant:
+                                                                Constants.tableSwitcherSize.width),
+                cameraLensSwitcherView.heightAnchor.constraint(greaterThanOrEqualToConstant:
+                                                                Constants.tableSwitcherSize.height)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                cameraLensSwitcherView.bottomAnchor.constraint(equalTo: cameraPane.topAnchor,
+                                                               constant: -Constants.switcherPadding),
+                cameraLensSwitcherView.leadingAnchor.constraint(greaterThanOrEqualTo: cameraPane.leadingAnchor),
+                cameraLensSwitcherView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                cameraLensSwitcherView.widthAnchor.constraint(greaterThanOrEqualToConstant:
+                                                                Constants.phoneSwitcherSize.width),
+                cameraLensSwitcherView.heightAnchor.constraint(greaterThanOrEqualToConstant:
+                                                                Constants.phoneSwitcherSize.height)
+            ])
+        }
     }
 
     fileprivate func didPick(_ document: GiniCaptureDocument) {
@@ -554,6 +617,8 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
             cameraPane.toggleCaptureButtonActivation(state: true)
         }
 
+        cameraLensSwitcherView.isHidden = false
+
         cameraPreviewViewController.updatePreviewViewOrientation()
         UIView.animate(withDuration: 1.0) {
             self.cameraPane.setupAuthorization(isHidden: false)
@@ -576,5 +641,36 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
     func notAuthorized() {
         cameraPane.setupAuthorization(isHidden: true)
         cameraPreviewViewController.cameraFrameView.isHidden = true
+        cameraLensSwitcherView.isHidden = true
+    }
+}
+
+// MARK: - CameraLensSwitcherViewDelegate
+
+extension Camera2ViewController: CameraLensSwitcherViewDelegate {
+    func cameraLensSwitcherDidSwitchTo(lens: CameraLensesAvailable, on: CameraLensSwitcherView) {
+        var device: AVCaptureDevice?
+
+        switch lens {
+        case .ultraWide:
+            if #available(iOS 13.0, *) {
+                device = AVCaptureDevice.default(.builtInUltraWideCamera, for: .video, position: .back)
+            }
+        case .wide:
+            device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
+        case .tele:
+            device = AVCaptureDevice.default(.builtInTelephotoCamera, for: .video, position: .back)
+        }
+
+        guard let device = device else { return }
+        cameraPreviewViewController.changeCaptureDevice(withType: device)
+    }
+}
+
+private extension Camera2ViewController {
+    enum Constants {
+        static let switcherPadding: CGFloat = 8
+        static let phoneSwitcherSize: CGSize = CGSize(width: 124, height: 40)
+        static let tableSwitcherSize: CGSize = CGSize(width: 40, height: 124)
     }
 }
