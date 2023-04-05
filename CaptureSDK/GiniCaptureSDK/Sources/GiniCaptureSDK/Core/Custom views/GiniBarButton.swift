@@ -101,6 +101,14 @@ public final class GiniBarButton {
 
         imageView.contentMode = .scaleAspectFit
         titleLabel.textColor = .GiniCapture.accent1
+        titleLabel.accessibilityTraits = .button
+        titleLabel.isAccessibilityElement = true
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        imageView.isAccessibilityElement = false
+        titleLabel.isAccessibilityElement = false
+        stackView.isAccessibilityElement = true
+        stackView.accessibilityTraits = .button
 
         if imageView.image != nil {
             stackView.addArrangedSubview(imageView)
@@ -108,6 +116,10 @@ public final class GiniBarButton {
 
         if titleLabel.text != nil {
             stackView.addArrangedSubview(titleLabel)
+
+            NSLayoutConstraint.activate([
+                titleLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 40)
+            ])
         }
     }
 
@@ -126,6 +138,13 @@ public final class GiniBarButton {
             icon = UIImageNamedPreferred(named: "barButton_help")
         case .back(title: let title):
             buttonTitle = title
+            let backString = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.accessibility.back",
+                                                              comment: "Back")
+            if title.trimmingCharacters(in: .whitespaces).isNotEmpty {
+                stackView.accessibilityValue = "\(title) \(backString)"
+            } else {
+                stackView.accessibilityValue = backString
+            }
             icon = UIImageNamedPreferred(named: "barButton_back")
         case .done:
             buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.imagepicker.openbutton",
@@ -143,10 +162,12 @@ public final class GiniBarButton {
 
         imageView.image = icon
 
-        if let buttonTitle = buttonTitle, buttonTitle.isNotEmpty {
+        if let buttonTitle = buttonTitle {
             titleLabel.attributedText = NSAttributedString(string: buttonTitle,
                                                            attributes: textAttributes())
-            stackView.accessibilityValue = buttonTitle
+            if stackView.accessibilityValue == nil {
+                stackView.accessibilityValue = buttonTitle
+            }
         }
     }
 
