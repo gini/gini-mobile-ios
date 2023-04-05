@@ -350,7 +350,7 @@ Easier currency and amount input when editing an article.
 
 The new help screen uses the global UI customization options. You can discard the old screen specific customizations.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/customization-guide.html#return-assistant-help-screen) and [here](https://www.figma.com/file/623Fahuwq8tUzSWQPd23Ie/iOS-Gini-Bank-SDK-3.0.0-UI-Customisation?node-id=1356%3A11409&t=hzHQDEsTJv9ZVE7M-1).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/customization-guide.html#digital-invoice-help-screen).
 
 ### New Features
 
