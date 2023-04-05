@@ -29,7 +29,7 @@ class DecimalExtensionTests: XCTestCase {
     func testStringValueFromTwoDecimals2() {
         let decimalValue: Decimal = 1000.09
         let decimalString = decimalValue.stringValue(withDecimalPoint: 2)
-        XCTAssertEqual(decimalString, "1,000.09", "Decimal string value is not equal to expected string value.")
+        XCTAssertEqual(decimalString, "1000.09", "Decimal string value is not equal to expected string value.")
     }
 
     func testStringValueFromTwoDecimals3() {
