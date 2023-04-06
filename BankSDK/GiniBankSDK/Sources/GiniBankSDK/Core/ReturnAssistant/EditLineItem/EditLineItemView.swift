@@ -64,7 +64,20 @@ final class EditLineItemView: UIView {
     private lazy var nameLabel: NameLabelView = {
         let view = NameLabelView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.delegate = self
         return view
+    }()
+
+    private lazy var nameErrorLabel: UILabel = {
+        let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = configuration.textStyleFonts[.caption2]?.withSize(11)
+        label.textColor = .GiniBank.error3
+        label.alpha = 0
+        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.name.error",
+                                                              comment: "Name error title")
+        return label
     }()
 
     private lazy var priceLabel: PriceLabelView = {
@@ -72,6 +85,18 @@ final class EditLineItemView: UIView {
         view.delegate = self
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
+    }()
+
+    private lazy var priceErrorLabel: UILabel = {
+        let label = UILabel()
+        label.adjustsFontForContentSizeCategory = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = configuration.textStyleFonts[.caption2]?.withSize(11)
+        label.textColor = .GiniBank.error3
+        label.alpha = 0
+        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.price.error",
+                                                              comment: "Price error title")
+        return label
     }()
 
     private lazy var quantityView: QuantityView = {
@@ -130,6 +155,9 @@ final class EditLineItemView: UIView {
         stackView.addArrangedSubview(nameLabel)
         stackView.addArrangedSubview(priceLabel)
         stackView.addArrangedSubview(quantityView)
+
+        addSubview(nameErrorLabel)
+        addSubview(priceErrorLabel)
     }
 
     private func setupConstraints() {
@@ -155,6 +183,16 @@ final class EditLineItemView: UIView {
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.horizontalPadding),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.horizontalPadding),
             stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -Constants.horizontalPadding),
+
+            nameErrorLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
+            nameErrorLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: Constants.titlePadding),
+            nameErrorLabel.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor),
+            nameErrorLabel.bottomAnchor.constraint(equalTo: priceLabel.topAnchor, constant: -Constants.titlePadding),
+
+            priceErrorLabel.leadingAnchor.constraint(equalTo: priceLabel.leadingAnchor),
+            priceErrorLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: Constants.titlePadding),
+            priceErrorLabel.trailingAnchor.constraint(equalTo: priceLabel.trailingAnchor),
+            priceErrorLabel.bottomAnchor.constraint(equalTo: quantityView.topAnchor, constant: -Constants.titlePadding)
         ])
     }
 
@@ -169,10 +207,20 @@ final class EditLineItemView: UIView {
 
     @objc
     private func didTapSave() {
-        viewModel?.didTapSave(name: nameLabel.text,
-                              price: priceLabel.priceValue,
-                              currency: priceLabel.currencyValue,
-                              quantity: quantityView.quantity)
+        if isNameLabelValid() && isPriceLabelValid() {
+            viewModel?.didTapSave(name: nameLabel.text,
+                                  price: priceLabel.priceValue,
+                                  currency: priceLabel.currencyValue,
+                                  quantity: quantityView.quantity)
+        } else {
+            if !isNameLabelValid() {
+                showNameLabelError()
+            }
+
+            if !isPriceLabelValid() {
+                showPriceLabelError()
+            }
+        }
     }
 
     private func textAttributes(for textStyle: UIFont.TextStyle) -> [NSAttributedString.Key: Any] {
@@ -188,7 +236,37 @@ final class EditLineItemView: UIView {
             attributes = [NSAttributedString.Key.font: font]
         }
         return attributes
-     }
+    }
+
+    private func isNameLabelValid() -> Bool {
+        return !(nameLabel.text == nil || nameLabel.text!.trimmingCharacters(in: .whitespaces).isEmpty)
+    }
+
+    private func isPriceLabelValid() -> Bool {
+        return !(priceLabel.priceValue <= 0)
+    }
+
+    private func showNameLabelError() {
+        UIView.animate(withDuration: 0.3) {
+            self.nameErrorLabel.alpha = 1
+        }
+    }
+
+    private func showPriceLabelError() {
+        UIView.animate(withDuration: 0.3) {
+            self.priceErrorLabel.alpha = 1
+        }
+    }
+}
+
+extension EditLineItemView: NameLabelViewDelegate {
+    func nameLabelViewTextFieldDidChange(on: NameLabelView) {
+        if nameLabel.text != nil && !nameLabel.text!.isEmpty {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.nameErrorLabel.alpha = 0
+            })
+        }
+    }
 }
 
 extension EditLineItemView: CurrencyPickerViewDelegate {
@@ -204,6 +282,14 @@ extension EditLineItemView: CurrencyPickerViewDelegate {
 }
 
 extension EditLineItemView: PriceLabelViewDelegate {
+    func priceLabelViewTextFieldDidChange(on: PriceLabelView) {
+        if priceLabel.priceValue > 0 {
+            UIView.animate(withDuration: 0.3) {
+                self.priceErrorLabel.alpha = 0
+            }
+        }
+    }
+    
     func showCurrencyPicker(on view: UIView) {
         addSubview(currencyPicker)
 
@@ -226,7 +312,7 @@ private extension EditLineItemView {
         static let horizontalPadding: CGFloat = 16
         static let titlePadding: CGFloat = 4
         static let stackViewPadding: CGFloat = 72
-        static let stackViewSpacing: CGFloat = 8
+        static let stackViewSpacing: CGFloat = 20
         static let currencyPickerPadding: CGFloat = 8
         static let currencyPickerWidth: CGFloat = 120
         static let maximumFontSize: CGFloat = 20

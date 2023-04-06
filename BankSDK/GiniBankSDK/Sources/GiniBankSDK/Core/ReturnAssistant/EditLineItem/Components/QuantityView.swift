@@ -108,7 +108,7 @@ final class QuantityView: UIView {
                                                         constant: -Constants.padding),
             quantityTextField.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.padding),
 
-            buttonContainerView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: Constants.padding),
+            buttonContainerView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
             buttonContainerView.centerYAnchor.constraint(equalTo: centerYAnchor),
             buttonContainerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
 
