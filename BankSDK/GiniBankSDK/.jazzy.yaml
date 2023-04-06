@@ -5,7 +5,7 @@ xcodebuild_arguments:
 - "-scheme"
 - GiniBankSDK
 - "-destination"
-- platform=iOS Simulator,OS=15.0,name=iPhone 13
+- platform=iOS Simulator,OS=16.2,name=iPhone 13
 author: Gini GmbH
 author_url: https://gini.net
 module: GiniBankSDK
