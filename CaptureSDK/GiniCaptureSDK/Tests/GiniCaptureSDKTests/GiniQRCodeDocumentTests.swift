@@ -49,6 +49,24 @@ final class GiniQRCodeDocumentTests: XCTestCase {
                        "bic should match")
 
     }
+
+    func testEPC06912QRCodeWithDoubleNewLineExtractions() {
+        let scannedString = "BCD\r\n001\r\n1\r\nSCT\r\nGENODEF1AB1\r\r\nADJULEX Rechtsanwaelte Feldmann, Klug & Partner\r\r\nDE72795625140001046462\r\r\nEUR54.15\r\n\r\n3372/12 RgNr.: 2201207\r\n"
+        let qrDocument = GiniQRCodeDocument(scannedString: scannedString)
+        XCTAssertNoThrow(try GiniCaptureDocumentValidator.validate(qrDocument,
+                                                                  withConfig: giniConfiguration),
+                         "should throw an error since is valid")
+        XCTAssertEqual(qrDocument.extractedParameters["amountToPay"], "54.15:EUR",
+                       "amountToPay should match")
+        XCTAssertEqual(qrDocument.extractedParameters["paymentRecipient"], "ADJULEX Rechtsanwaelte Feldmann, Klug & Partner",
+                       "paymentRecipient should match")
+        XCTAssertEqual(qrDocument.extractedParameters["paymentReference"], "3372/12 RgNr.: 2201207",
+                       "paymentReference should match")
+        XCTAssertEqual(qrDocument.extractedParameters["iban"], "DE72795625140001046462",
+                       "iban should match")
+        XCTAssertEqual(qrDocument.extractedParameters["bic"], "GENODEF1AB1",
+                       "bic should match")
+    }
     
     func testNotValidQRCodeFormat() {
         let qrDocument = GiniQRCodeDocument(scannedString: "invalidQRCodeFormat")
@@ -73,5 +91,13 @@ final class GiniQRCodeDocumentTests: XCTestCase {
         XCTAssertThrowsError(try GiniCaptureDocumentValidator.validate(qrDocument,
                                                                       withConfig: giniConfiguration),
                              "validation should throw a DocumentaValidationError")
+    }
+    
+    func testValidStuzzaQR(){
+        let scannedString = "BCD\n001\n1\nSCT\nABCDATWW\nExample with fictive data\nAT611904300234573201\nEUR24.2"
+        let qrDocument = GiniQRCodeDocument(scannedString: scannedString)
+        XCTAssertNoThrow(try GiniCaptureDocumentValidator.validate(qrDocument,
+                                                                  withConfig: giniConfiguration),
+                         "should not throw an error since qr code is valid")
     }
 }
