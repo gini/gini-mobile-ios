@@ -16,11 +16,11 @@
 		<string>https://</string>
 	</dict>
 	<key>method</key>
-	<string>enterprise</string>
+	<string>ad-hoc</string>
 	<key>provisioningProfiles</key>
 	<dict>
-		<key>net.gini.ginipaybank.Example-Swift</key>
-		<string>Bank SDK Example Distribution</string>
+		<key>net.gini.banksdk.example</key>
+		<string>Gini Bank SDK Example App Ad-Hoc Distribution</string>
 	</dict>
 	<key>signingCertificate</key>
 	<string>Apple Distribution</string>
@@ -29,7 +29,7 @@
 	<key>stripSwiftSymbols</key>
 	<true/>
 	<key>teamID</key>
-	<string>BQY9KX4V88</string>
+	<string>JA825X8F7Z</string>
 	<key>thinning</key>
 	<string>&lt;none&gt;</string>
 </dict>
