@@ -20,6 +20,7 @@
 "ginicapture.navigationbar.help.backToCamera"   = "Kamera";
 "ginicapture.navigationbar.help.backToMenu"     = "Hilfe";
 "ginicapture.navigationbar.analysis.backToReview" = "Übersicht";
+"ginicapture.navigationbar.accessibility.back" = "Zurück";
 
 
 "ginicapture.camera.captureButton" = "Auslösen";
@@ -177,6 +178,7 @@
 "ginicapture.multipagereview.description" = "Sind alle Zahlungsinformationen gut sichtbar?";
 "ginicapture.multipagereview.mainButtonTitle" = "Verarbeiten";
 "ginicapture.multipagereview.secondaryButtonTitle" = "Seite";
+"ginicapture.multipagereview.secondaryButton.accessibility" = "Seiten hinzufügen";
 "ginicapture.multipagereview.error.retakeAction" = "Wiederholung";
 "ginicapture.multipagereview.error.retryAction" = "Wiederholen";
 

@@ -47,7 +47,6 @@ final class DigitalInvoiceViewController: UIViewController {
         let buttonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.paybutton.title",
                                                                    comment: "Proceed")
         button.setTitle(buttonTitle, for: .normal)
-        button.accessibilityValue = buttonTitle
 
         button.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
         button.isEnabled = viewModel.isPayButtonEnabled()

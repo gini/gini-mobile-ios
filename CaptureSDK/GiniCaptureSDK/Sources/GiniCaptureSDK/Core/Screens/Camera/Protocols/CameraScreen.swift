@@ -6,6 +6,7 @@
 //  Copyright © 2022 Gini GmbH. All rights reserved.
 //
 
+import AVFoundation
 import Foundation
 import UIKit
 
