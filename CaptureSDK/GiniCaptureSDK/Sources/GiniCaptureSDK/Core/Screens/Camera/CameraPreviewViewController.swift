@@ -280,6 +280,7 @@ final class CameraPreviewViewController: UIViewController {
                     if self.giniConfiguration.debugModeOn {
                         #if targetEnvironment(simulator)
                         self.isAuthorized = true
+                        self.cameraFrameView.isHidden = false
                         self.addDefaultImage()
                         #endif
                     } else {
