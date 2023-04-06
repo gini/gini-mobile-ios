@@ -10,7 +10,7 @@ We also removed the Component API integration option and unified the public API 
 `GiniConfiguration` is a singleton now.
 You don't need to create a new instance of `GiniConfiguration` just use `GiniConfiguration.shared` instead.
 
-Please, find more details in [Getting started](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/getting-started.html).
+Please, find more details in [Getting started](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta07/getting-started.html).
 
 # Migrate from Compoment API
 
@@ -150,7 +150,7 @@ below:
 
 #### Custom Illustration Views
 
-By implementing the `OnboardingIllustrationAdapter` interface and passing it to either `GiniCapture` or the
+By implementing the `OnboardingIllustrationAdapter` interface and passing it to either `GiniConfiguration` or the
 `OnboardingPage` constructor you can inject any custom view for the illustration.
 
 If you need to animate the illustrations on the onboarding pages implement the `OnboardingIllustrationAdapter` interface to inject a view that can animate images (e.g., `Lottie`) and pass it to the relevant onboarding illustration adapter setters (e.g., 
@@ -191,7 +191,7 @@ String keys changed:
 You can show a bottom navigation bar by passing true to `GiniConfiguration.shared.bottomNavigationBarEnabled`. There is a default implementation, but you can also use
 your own by implementing the `HelpBottomNavigationBarAdapter` interface and passing it to `GiniConfiguration.shared.helpNavigationBarBottomAdapter`.
 
-You can find more details [here][https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta07/features.html#help-screen-customization] and [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=141%3A2328&t=6sAk7LGf1mi3zV9L-1).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta07/features.html#help-screen-customization)).
 
 ## Analysis screen
 

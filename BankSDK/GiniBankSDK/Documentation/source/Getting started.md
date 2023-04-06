@@ -1,5 +1,17 @@
-Installation
+Getting started
 =============================
+
+## Requirements
+
+- The minimum iOS version supported 12+.
+
+In addition to the minimum iOS version we also have hardware requirements to ensure the best possible analysis
+results:
+
+- Back-facing camera with auto-focus and flash (iPhone).
+- 8MP+ camera resolution. You can find the specification [here](https://developer.apple.com/library/archive/documentation/DeviceInformation/Reference/iOSDeviceCompatibility/Cameras/Cameras.html)
+
+## Installation
 
 Gini Bank SDK can either be installed by using Swift Package Manager or by manually dragging the required XCFrameworks to your project.
 
@@ -38,4 +50,4 @@ In case that you want to use the certificate pinning you need to add the followi
  - `GiniBankSDKPinning.xcframework`
  - `TrustKit.xcframework`
 
- The latest version of the frameworks is be availiable on [github](https://github.com/gini/gini-mobile-ios/releases/tag/GiniBankSDK%3B1.11.2).
+ The latest version of the frameworks is available on [github](https://github.com/gini/gini-mobile-ios/releases/).
