@@ -39,6 +39,9 @@ final class ReviewBottomNavigationBar: UIView {
                                     name: NSLocalizedStringPreferredFormat(
                                         "ginicapture.multipagereview.secondaryButtonTitle",
                                             comment: "Add pages button title"))
+        secondaryButton.accessibilityValue = NSLocalizedStringPreferredFormat(
+                                                "ginicapture.multipagereview.secondaryButton.accessibility",
+                                                comment: "Add pages")
         secondaryButton.isHidden = !configuration.multipageEnabled
 
         secondaryButton.actionLabel.font = configuration.textStyleFonts[.bodyBold]

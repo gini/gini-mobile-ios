@@ -90,7 +90,6 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
         doneButton.setTitle(doneButtonTitle, for: .normal)
         doneButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         doneButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        doneButton.accessibilityValue = doneButtonTitle
         doneButton.configure(with: configuration.primaryButtonConfiguration)
 
         if configuration.bottomNavigationBarEnabled {

@@ -167,8 +167,6 @@ public final class ReviewViewController: UIViewController {
                                                         comment: "Process button title"), for: .normal)
         button.addTarget(self, action: #selector(didTapProcessDocument), for: .touchUpInside)
         button.isAccessibilityElement = true
-        button.accessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.multipagereview.mainButtonTitle",
-                                                                     comment: "Process button title")
         return button
     }()
 
@@ -179,6 +177,9 @@ public final class ReviewViewController: UIViewController {
                                    name: NSLocalizedStringPreferredFormat(
                                     "ginicapture.multipagereview.secondaryButtonTitle",
                                         comment: "Add pages button title"))
+        addPagesButton.accessibilityValue = NSLocalizedStringPreferredFormat(
+                                                "ginicapture.multipagereview.secondaryButton.accessibility",
+                                                comment: "Add pages")
         addPagesButton.isHidden = !giniConfiguration.multipageEnabled
         addPagesButton.actionLabel.font = giniConfiguration.textStyleFonts[.bodyBold]
         addPagesButton.configure(with: giniConfiguration.addPageButtonConfiguration)
@@ -188,9 +189,7 @@ public final class ReviewViewController: UIViewController {
             self.delegate?.reviewDidTapAddImage(self)
         }
         addPagesButton.isAccessibilityElement = true
-        addPagesButton.accessibilityLabel = NSLocalizedStringPreferredFormat(
-                                                "ginicapture.multipagereview.secondaryButtonTitle",
-                                                comment: "Add pages button title")
+        addPagesButton.accessibilityTraits = .button
         return addPagesButton
     }()
 

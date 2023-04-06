@@ -35,6 +35,8 @@ final class EditLineItemViewController: UIViewController {
     private var currentBottomPadding: CGFloat = 0
 
     private var defaultHeight: CGFloat = 340
+    private var isKeyboardPresented: Bool = false
+    private var keyboardHeight: CGFloat = 0
 
     private var containerViewHeightConstraint: NSLayoutConstraint?
     private var containerViewBottomConstraint: NSLayoutConstraint?
@@ -144,16 +146,18 @@ final class EditLineItemViewController: UIViewController {
     }
 
     private func animateDismissView() {
+        editLineItemView.hideKeyBoard()
         UIView.animate(withDuration: Constants.animationDuration) {
             self.containerViewBottomConstraint?.constant = self.defaultHeight
             self.view.layoutIfNeeded()
-        }
-
-        dimmedView.alpha = Constants.maxDimmedAlpha
-        UIView.animate(withDuration: Constants.animationDuration) {
-            self.dimmedView.alpha = 0
-        } completion: { _ in
-            self.dismiss(animated: false)
+        } completion: { [weak self] _ in
+            guard let self = self else { return }
+            self.dimmedView.alpha = Constants.maxDimmedAlpha
+            UIView.animate(withDuration: Constants.animationDuration) {
+                self.dimmedView.alpha = 0
+            } completion: { _ in
+                self.dismiss(animated: false)
+            }
         }
     }
 
@@ -213,7 +217,7 @@ final class EditLineItemViewController: UIViewController {
                 } else {
                     /* Dismiss the view if the height is less than minimum height
                      or animate back to initial height of not */
-                    if newHeight < Constants.dismissibleHeight {
+                    if newHeight < Constants.dismissibleHeight + (isKeyboardPresented ? keyboardHeight : 0) {
                         animateDismissView()
                     } else {
                         editLineItemView.alpha = 1
@@ -232,10 +236,15 @@ final class EditLineItemViewController: UIViewController {
 
     private func animateContainerToInitialHeight() {
         UIView.animate(withDuration: Constants.animationDuration) {
-            self.containerViewHeightConstraint?.constant = self.defaultHeight
-            self.view.layoutIfNeeded()
+            if self.isKeyboardPresented {
+                self.containerViewHeightConstraint?.constant = self.defaultHeight + (self.isKeyboardPresented ? self.keyboardHeight : 0)
+                self.view.layoutIfNeeded()
+            } else {
+                self.containerViewHeightConstraint?.constant = self.defaultHeight
+                self.view.layoutIfNeeded()
+            }
         }
-        currentContainerHeight = defaultHeight
+        currentContainerHeight = defaultHeight + (isKeyboardPresented ? keyboardHeight : 0)
     }
 
     private func animateContainerToInitialPosition() {
@@ -251,7 +260,9 @@ final class EditLineItemViewController: UIViewController {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardRectangle = keyboardFrame.cgRectValue
             let keyboardHeight = keyboardRectangle.height
+            self.keyboardHeight = keyboardHeight
 
+            isKeyboardPresented = true
             if UIDevice.current.isIpad {
                 if currentBottomPadding < keyboardHeight {
                     UIView.animate(withDuration: Constants.animationDuration) {
@@ -272,6 +283,7 @@ final class EditLineItemViewController: UIViewController {
 
     @objc
     private func keyboardWillDisappear() {
+        isKeyboardPresented = false
         if UIDevice.current.isIpad {
             animateContainerToInitialPosition()
         } else {
@@ -288,7 +300,7 @@ final class EditLineItemViewController: UIViewController {
 private extension EditLineItemViewController {
     enum Constants {
         static let maxDimmedAlpha: CGFloat = 0.6
-        static let defaultHeight: CGFloat = 526
+        static let defaultHeight: CGFloat = 586
         static let dismissibleHeight: CGFloat = 200
         static let maximumContainerHeight: CGFloat = UIScreen.main.bounds.height - 64
         static let tabletWidthMultiplier: CGFloat = 0.6
