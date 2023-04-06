@@ -8,14 +8,15 @@
 import Foundation
 
 extension String {
+    /*
+     In this implementation, the regular expression pattern "\r\r?\n" matches one or more consecutive occurrences of the line separator (\r\n) or double line separator (\r\r\n). The replacingOccurrences(of:with:options:) method is then used to replace all occurrences of this pattern with a single new line character (\n), and the resulting string is split into an array of lines using the components(separatedBy:) method with the newlines delimiter.
+     */
     var splitlines: [String] {
-        var lines: [String] = []
-        enumerateLines(invoking: { line, _ in
-            lines.append(line)
-        })
-        return lines
+        let pattern = #"\r\r?\n"#
+        return self.replacingOccurrences(of: pattern, with: "\n", options: .regularExpression)
+                   .components(separatedBy: .newlines)
     }
-    
+
     public static func localized<T: LocalizableStringResource>(resource: T, args: CVarArg...) -> String {
         if args.isEmpty {
             return resource.localizedFormat
