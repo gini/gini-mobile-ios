@@ -73,6 +73,16 @@ final class EditLineItemViewController: UIViewController {
         animateDimmedView()
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        coordinator.animate(alongsideTransition: { [weak self] _ in
+            if UIDevice.current.isIpad {
+                self?.animatePresentContainer()
+            }
+        })
+    }
+
     private func setupView() {
         view.backgroundColor = .clear
     }
