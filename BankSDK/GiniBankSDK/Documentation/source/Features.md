@@ -83,7 +83,7 @@ The QR Code scanning may be triggered directly without the need to analyze the d
 
 If the QR code does not have a supported payment format then a popup informs the user that a QR code was detected, but it cannot be used.
 
-Please find more information in the [QR Code scanning guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/qr-code-scanning-guide.html).
+Please find more information in the [QR Code scanning guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta08/qr-code-scanning-guide.html).
 
 ## QR Code Only
 
@@ -95,13 +95,13 @@ For enabling QR code only mode the both flags `GiniBankConfiguration.shared.qrCo
 
 This feature enables the Gini Bank SDK to import documents from the camera screen. When it's enabled an additional button is shown next to the camera trigger. Using this button allows the user to pick either an image or a pdf from the device.
 
-Please find more information in the [Import PDFs and images guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/import-pdfs-and-images-guide.html).
+Please find more information in the [Import PDFs and images guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta08/import-pdfs-and-images-guide.html).
 
 # Open with
 
 The `Open with` feature allows importing of files from other apps via iOS `share` functionality.
 
-Please find more information in the [Open with guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/open-with-guide.html).
+Please find more information in the [Open with guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta08/open-with-guide.html).
 
 # Help screen customization
 
@@ -115,7 +115,7 @@ You can pass the title and view controller for each screen to the
 
         configuration.customMenuItems = [customMenuItem]
  ```           
-The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta07/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomMenuItemViewController.swift).
+The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta08/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomMenuItemViewController.swift).
 
 You can also disable the supported formats help screen by passing `false` to
 `GiniBankConfiguration.shared.shouldShowSupportedFormatsScreen`.
@@ -125,14 +125,14 @@ You can also disable the supported formats help screen by passing `false` to
 You can show a custom loading indicator with custom animation support on the process button.
 Your custom loading indicator should implement `OnButtonLoadingIndicatorAdapter` interface and be passed  to `GiniBankConfiguration.shared.onButtonLoadingIndicator`.
 
-The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta07/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift#L36).
+The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta08/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift#L36).
 
 # Analysis screen customization
 
 You can show a custom loading indicator with custom animation support.
 Your custom loading indicator should implement `CustomLoadingIndicatorAdapter` interface and be passed  to `GiniBankConfiguration.shared.customLoadingIndicator`.
 
-The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta07/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift).
+The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta08/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift).
 
 # No result screen customization
 
@@ -150,10 +150,10 @@ The buttom "Retake images" will be shown only if you took or imported images.
 
 You have the possibility to track various events which occur during the usage of the Gini Bank SDK.
 
-Please find more information in the [Event tracking guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/event-tracking-guide.html).
+Please find more information in the [Event tracking guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta08/event-tracking-guide.html).
 
 # Error Logging
 
-The SDK logs errors to the Gini Bank API when the default networking implementation is used. See the `Default networking` implementation in the [Integration](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/integration.html).
+The SDK logs errors to the Gini Bank API when the default networking implementation is used. See the `Default networking` implementation in the [Integration](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta08/integration.html).
 
-Please find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/error-logging-guide.html).
+Please find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta08/error-logging-guide.html).
