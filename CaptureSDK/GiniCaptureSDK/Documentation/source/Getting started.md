@@ -47,4 +47,4 @@ In case that you want to use the certificate pinning you need to add the followi
  - `GiniCaptureSDKPinning.xcframework`
  - `TrustKit.xcframework`
 
- The latest version of the frameworks is availiable on [github](https://github.com/gini/gini-mobile-ios/releases/).
+ The latest version of the frameworks is available on [github](https://github.com/gini/gini-mobile-ios/releases/).
