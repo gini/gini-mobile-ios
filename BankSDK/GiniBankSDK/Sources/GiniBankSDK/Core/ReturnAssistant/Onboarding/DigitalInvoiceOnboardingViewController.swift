@@ -19,6 +19,20 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     @IBOutlet weak var scrollViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollViewBottomAnchor: NSLayoutConstraint!
 
+    private lazy var scrollViewWidthAnchor = scrollView.widthAnchor.constraint(equalTo: view.widthAnchor)
+
+    private var widthMultiplier: CGFloat {
+        get {
+            return view.frame.width > view.frame.height ? 0.4 : 0.6
+        }
+    }
+
+    private var topPadding: CGFloat {
+        get {
+            return view.frame.width > view.frame.height ? 16 : 96
+        }
+    }
+
     private var navigationBarBottomAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter?
     private var bottomNavigationBar: UIView?
 
@@ -127,15 +141,26 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
 
     private func configureConstraints() {
         if UIDevice.current.isIpad {
-            scrollViewTopConstraint.constant = view.frame.width > view.frame.height ? 16 : 96
-
-            let multiplier: CGFloat = view.frame.width > view.frame.height ? 0.4 : 0.6
-
             scrollView.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate(
-                [scrollView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: multiplier)]
-            )
+
+            scrollViewTopConstraint.constant = topPadding
+            scrollViewWidthAnchor = scrollView.widthAnchor.constraint(equalTo: view.widthAnchor,
+                                                                      multiplier: widthMultiplier)
+            scrollViewWidthAnchor.isActive = true
         }
+    }
+
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: { [weak self] _ in
+            guard let self = self else { return }
+            self.scrollViewTopConstraint.constant = self.topPadding
+
+            self.scrollViewWidthAnchor.isActive = false
+            self.scrollViewWidthAnchor = self.scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor,
+                                                                                multiplier: self.widthMultiplier)
+            self.scrollViewWidthAnchor.isActive = true
+        })
     }
     
     @objc func doneAction(_ sender: UIButton!) {
