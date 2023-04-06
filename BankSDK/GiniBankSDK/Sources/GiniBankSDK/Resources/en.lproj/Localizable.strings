@@ -89,3 +89,6 @@
 "ginibank.digitalinvoice.help.title3" = "3. Which online shops are supported?";
 "ginibank.digitalinvoice.help.description3" = "We are currently focused on the top five online merchants in the market. More retailers will be added in the future.";
 "ginibank.digitalinvoice.info.hidebutton" = "Close";
+
+"ginibank.digitalinvoice.edit.name.error" = "Please enter the article name.";
+"ginibank.digitalinvoice.edit.price.error" = "Please enter the article price.";

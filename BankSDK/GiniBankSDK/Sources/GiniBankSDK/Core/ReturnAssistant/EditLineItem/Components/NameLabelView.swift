@@ -8,8 +8,13 @@
 import GiniCaptureSDK
 import UIKit
 
+protocol NameLabelViewDelegate: AnyObject {
+    func nameLabelViewTextFieldDidChange(on: NameLabelView)
+}
+
 final class NameLabelView: UIView {
     private lazy var configuration = GiniBankConfiguration.shared
+    weak var delegate: NameLabelViewDelegate?
 
     var text: String? {
         get {
@@ -59,6 +64,8 @@ final class NameLabelView: UIView {
         layer.cornerRadius = Constants.cornerRadius
         addSubview(titleLabel)
         addSubview(nameTextField)
+
+        self.nameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
 
     private func setupConstraints() {
@@ -72,6 +79,10 @@ final class NameLabelView: UIView {
             nameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
             nameTextField.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.padding)
         ])
+    }
+
+    @objc private func textFieldDidChange(_ textField: UITextField) {
+        delegate?.nameLabelViewTextFieldDidChange(on: self)
     }
 }
 

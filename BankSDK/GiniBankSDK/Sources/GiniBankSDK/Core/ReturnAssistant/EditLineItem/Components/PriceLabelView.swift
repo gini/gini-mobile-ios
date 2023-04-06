@@ -10,6 +10,7 @@ import UIKit
 
 protocol PriceLabelViewDelegate: AnyObject {
     func showCurrencyPicker(on view: UIView)
+    func priceLabelViewTextFieldDidChange(on: PriceLabelView)
 }
 
 final class PriceLabelView: UIView {
@@ -155,6 +156,7 @@ extension PriceLabelView: UITextFieldDelegate {
 
                     textField.text = newAmount
 
+                    delegate?.priceLabelViewTextFieldDidChange(on: self)
                     // Move the cursor position after the inserted character
                     if let selectedRange = selectedRange {
                         let countDelta = newAmount.count - text.count
