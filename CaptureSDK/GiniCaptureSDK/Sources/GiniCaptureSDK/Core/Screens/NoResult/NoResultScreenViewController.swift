@@ -63,10 +63,17 @@ final class NoResultScreenViewController: UIViewController {
             header.headerLabel.adjustsFontForContentSizeCategory = true
             header.headerLabel.adjustsFontSizeToFitWidth = true
             header.translatesAutoresizingMaskIntoConstraints = false
-        return header
+            return header
         }
         fatalError("No result header not found")
     }()
+
+    private lazy var errorHeaderContentView: UIView = {
+        let contentView = UIView()
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        return contentView
+    }()
+
     private (set) var dataSource: HelpDataSource
     private var giniConfiguration: GiniConfiguration
     private let type: NoResultType
@@ -160,13 +167,13 @@ final class NoResultScreenViewController: UIViewController {
             dark: UIColor.GiniCapture.light1
         ).uiColor()
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
-        view.addSubview(header)
+        view.addSubview(errorHeaderContentView)
+        errorHeaderContentView.addSubview(header)
         view.addSubview(tableView)
         view.addSubview(buttonsView)
-        header.backgroundColor = GiniColor(
-            light: UIColor.GiniCapture.error4,
-            dark: UIColor.GiniCapture.error1
-        ).uiColor()
+        errorHeaderContentView.backgroundColor = GiniColor(light: .GiniCapture.error4,
+                                                           dark: .GiniCapture.error1).uiColor()
+        header.backgroundColor = .clear
     }
 
     private func configureCustomTopNavigationBar() {
@@ -183,9 +190,9 @@ final class NoResultScreenViewController: UIViewController {
 
     private func getButtonsMinHeight(numberOfButtons: Int) -> CGFloat {
         if numberOfButtons == 1 {
-            return Constants.singleButtonHeight.rawValue
+            return Constants.singleButtonHeight
         } else {
-            return Constants.twoButtonsHeight.rawValue
+            return Constants.twoButtonsHeight
         }
     }
 
@@ -193,11 +200,11 @@ final class NoResultScreenViewController: UIViewController {
         registerCells()
         tableView.delegate = self.dataSource
         tableView.dataSource = self.dataSource
-        tableView.estimatedRowHeight = Constants.tableRowHeight.rawValue
+        tableView.estimatedRowHeight = Constants.tableRowHeight
         tableView.rowHeight = UITableView.automaticDimension
         tableView.tableFooterView = UIView()
         tableView.tableHeaderView = UIView()
-        tableView.sectionHeaderHeight = Constants.sectionHeight.rawValue
+        tableView.sectionHeaderHeight = Constants.sectionHeight
         tableView.allowsSelection = false
         tableView.backgroundColor = UIColor.clear
         tableView.alwaysBounceVertical = false
@@ -214,23 +221,14 @@ final class NoResultScreenViewController: UIViewController {
     private func registerCells() {
         switch type {
         case .pdf:
-            tableView.register(
-                UINib(
-                    nibName: "HelpFormatCell",
-                    bundle: giniCaptureBundle()),
-                forCellReuseIdentifier: HelpFormatCell.reuseIdentifier)
+            tableView.register(UINib(nibName: "HelpFormatCell", bundle: giniCaptureBundle()),
+                               forCellReuseIdentifier: HelpFormatCell.reuseIdentifier)
         case .image, .custom(_):
-            tableView.register(
-                UINib(
-                    nibName: "HelpTipCell",
-                    bundle: giniCaptureBundle()),
-                forCellReuseIdentifier: HelpTipCell.reuseIdentifier)
+            tableView.register(UINib(nibName: "HelpTipCell", bundle: giniCaptureBundle()),
+                               forCellReuseIdentifier: HelpTipCell.reuseIdentifier)
         }
-        tableView.register(
-            UINib(
-                nibName: "HelpFormatSectionHeader",
-                bundle: giniCaptureBundle()),
-            forHeaderFooterViewReuseIdentifier: HelpFormatSectionHeader.reuseIdentifier)
+        tableView.register(UINib(nibName: "HelpFormatSectionHeader", bundle: giniCaptureBundle()),
+                           forHeaderFooterViewReuseIdentifier: HelpFormatSectionHeader.reuseIdentifier)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -240,14 +238,12 @@ final class NoResultScreenViewController: UIViewController {
     }
 
     private func configureButtons() {
-        buttonsView.enterButton.addTarget(
-            viewModel,
-            action: #selector(viewModel.didPressEnterManually),
-            for: .touchUpInside)
-        buttonsView.retakeButton.addTarget(
-            viewModel,
-            action: #selector(viewModel.didPressRetake),
-            for: .touchUpInside)
+        buttonsView.enterButton.addTarget(viewModel,
+                                          action: #selector(viewModel.didPressEnterManually),
+                                          for: .touchUpInside)
+        buttonsView.retakeButton.addTarget(viewModel,
+                                           action: #selector(viewModel.didPressRetake),
+                                           for: .touchUpInside)
     }
 
     private func configureConstraints() {
@@ -260,12 +256,18 @@ final class NoResultScreenViewController: UIViewController {
         buttonsHeightConstraint = buttonsConstraint
         NSLayoutConstraint.activate([
             tableView.heightAnchor.constraint(greaterThanOrEqualToConstant: view.bounds.size.height * 0.6),
-            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-            header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            header.heightAnchor.constraint(greaterThanOrEqualToConstant: 62),
-            tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 13),
-            tableView.bottomAnchor.constraint(equalTo: buttonsView.bottomAnchor, constant: 16),
+            tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: Constants.tableViewPadding),
+            tableView.bottomAnchor.constraint(equalTo: buttonsView.bottomAnchor, constant: Constants.tableViewPadding),
+
+            errorHeaderContentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            errorHeaderContentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            errorHeaderContentView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            errorHeaderContentView.bottomAnchor.constraint(equalTo: header.bottomAnchor),
+
+            header.topAnchor.constraint(equalTo: errorHeaderContentView.topAnchor),
+            header.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            header.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.errorHeaderHeight),
+
             buttonsView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
                                                 constant: -GiniMargins.margin),
             buttonsConstraint
@@ -278,32 +280,37 @@ final class NoResultScreenViewController: UIViewController {
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
                 tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                tableView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7),
-                buttonsView.leadingAnchor.constraint(
-                    equalTo: view.leadingAnchor,
-                    constant: GiniMargins.margin),
-                buttonsView.trailingAnchor.constraint(
-                    equalTo: view.trailingAnchor,
-                    constant: -GiniMargins.margin)
+                tableView.widthAnchor.constraint(equalTo: view.widthAnchor,
+                                                 multiplier: Constants.tabletWidthMultiplier),
+
+                header.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor),
+
+                buttonsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: GiniMargins.margin),
+                buttonsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -GiniMargins.margin)
             ])
         } else {
             NSLayoutConstraint.activate([
-                tableView.leadingAnchor.constraint(
-                    equalTo: view.leadingAnchor,
-                    constant: GiniMargins.margin),
-                tableView.trailingAnchor.constraint(
-                    equalTo: view.trailingAnchor,
-                    constant: -GiniMargins.margin),
+                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: GiniMargins.margin),
+                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -GiniMargins.margin),
+
+                header.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.errorPadding),
+
                 buttonsView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
                 buttonsView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor)
             ])
         }
     }
+}
 
-    private enum Constants: CGFloat {
-        case singleButtonHeight = 50
-        case twoButtonsHeight = 112
-        case tableRowHeight = 44
-        case sectionHeight = 70
+private extension NoResultScreenViewController {
+    enum Constants {
+        static let singleButtonHeight: CGFloat = 50
+        static let twoButtonsHeight: CGFloat = 112
+        static let tableRowHeight: CGFloat = 44
+        static let sectionHeight: CGFloat = 70
+        static let errorPadding: CGFloat = 24
+        static let errorHeaderHeight: CGFloat = 62
+        static let tableViewPadding: CGFloat = 16
+        static let tabletWidthMultiplier: CGFloat = 0.6
     }
 }
