@@ -126,7 +126,7 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
             errorScreen,
             "first view controller is not a ErrorScreenViewController")
         XCTAssertTrue(errorScreen?.errorHeader.headerLabel.text == ErrorType.connection.title(), "Error title should match no response error type")
-        XCTAssertTrue(errorScreen?.errorContent.text == ErrorType.connection.content(), "Error content should match no response error type")
+        XCTAssertTrue(errorScreen?.errorDescriptionLabel.text == ErrorType.connection.content(), "Error content should match no response error type")
         
     }
     
@@ -146,7 +146,7 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
             errorScreen,
             "first view controller is not a ErrorScreenViewController")
         XCTAssertTrue(errorScreen?.errorHeader.headerLabel.text == ErrorType.request.title(), "Error title should match no response error type")
-        XCTAssertTrue(errorScreen?.errorContent.text == ErrorType.request.content(), "Error content should match no response error type")
+        XCTAssertTrue(errorScreen?.errorDescriptionLabel.text == ErrorType.request.content(), "Error content should match no response error type")
         
     }
     
@@ -166,7 +166,7 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
             errorScreen,
             "first view controller is not a ErrorScreenViewController")
         XCTAssertTrue(errorScreen?.errorHeader.headerLabel.text == ErrorType.serverError.title(), "Error title should match server error type")
-        XCTAssertTrue(errorScreen?.errorContent.text == ErrorType.serverError.content(), "Error content should match server error type")
+        XCTAssertTrue(errorScreen?.errorDescriptionLabel.text == ErrorType.serverError.content(), "Error content should match server error type")
         
     }
 }
