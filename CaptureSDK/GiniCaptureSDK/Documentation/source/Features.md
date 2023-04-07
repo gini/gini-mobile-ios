@@ -159,3 +159,21 @@ Please find more information in the [Event tracking guide](https://developer.gin
 # Error Logging
 
 The SDK logs errors to the Gini Bank API when the default networking implementation is used (see the `Default networking` implementation in the [Integration](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/integration.html).
+
+# Accessibility
+
+## The SDK conforms to the following accessibility features:
+
+• All UI elements have clear and concise descriptions, ensuring that users who rely on screenreaders are able to navigate the app with ease.
+
+• The UI works seamlessly even when the system text size is increased.
+ 
+• All elements have a minimum size of 44pt x 44pt, making it easy for users to interact with the app even if they have limited dexterity.
+
+• The SDK utilizes the OS font size settings, making it easy for users to adjust the font size according to their preferences. This ensures that all text is easily legible, regardless of a user's individual needs.
+
+• The app features an adequate contrast ratio, ensuring that all users can easily read and distinguish text from the background.
+
+### Warning
+
+When customizing the SDK’s UI you can override accessibility conformance by changing colors, images and injecting custom UI elements. We strongly advise you to make your customizations accessibility friendly.
