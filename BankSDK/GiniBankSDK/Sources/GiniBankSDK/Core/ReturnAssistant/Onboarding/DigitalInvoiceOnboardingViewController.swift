@@ -91,13 +91,11 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
         firstLabel.font = configuration.textStyleFonts[.title2Bold]
         firstLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         firstLabel.adjustsFontForContentSizeCategory = true
-        firstLabel.accessibilityValue = firstLabelText
         
         secondLabel.text = secondLabelText
-        secondLabel.font = configuration.textStyleFonts[.headline]
+        secondLabel.font = configuration.textStyleFonts[.title2Bold]
         secondLabel.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark7).uiColor()
         secondLabel.adjustsFontForContentSizeCategory = true
-        secondLabel.accessibilityValue = secondLabelText
 
         doneButton.addTarget(self, action: #selector(doneAction(_:)), for: .touchUpInside)
         doneButton.setTitle(doneButtonTitle, for: .normal)
