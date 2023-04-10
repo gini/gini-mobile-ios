@@ -21,22 +21,22 @@
                                 <rect key="frame" x="15.333333333333343" y="0.0" width="344.33333333333326" height="626"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ySK-ra-mer" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="344.33333333333331" height="618"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="344.33333333333331" height="612"/>
                                         <subviews>
                                             <view clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="255" verticalHuggingPriority="255" horizontalCompressionResistancePriority="747" verticalCompressionResistancePriority="747" translatesAutoresizingMaskIntoConstraints="NO" id="vN8-eg-TBS" customClass="OnboardingImageView" customModule="GiniCaptureSDK">
-                                                <rect key="frame" x="69.000000000000014" y="96" width="206.33333333333337" height="244"/>
+                                                <rect key="frame" x="71.333333333333357" y="96" width="201.66666666666663" height="238"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="vN8-eg-TBS" secondAttribute="height" multiplier="221:261" id="PI1-Sv-D4v"/>
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Your new return assistant!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wrk-c0-ekq">
-                                                <rect key="frame" x="32" y="404" width="280.33333333333331" height="76.666666666666686"/>
+                                                <rect key="frame" x="32" y="398" width="280.33333333333331" height="76.666666666666686"/>
                                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="32"/>
                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Deselect article that you want to return and pay only for what you keep!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="b5g-YZ-Ffz">
-                                                <rect key="frame" x="48.000000000000014" y="496.66666666666669" width="248.33333333333337" height="57.333333333333314"/>
+                                                <rect key="frame" x="48.000000000000014" y="490.66666666666669" width="248.33333333333337" height="57.333333333333314"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -48,7 +48,6 @@
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="b5g-YZ-Ffz" secondAttribute="trailing" constant="48" id="8g0-DW-fbi"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="Wrk-c0-ekq" secondAttribute="trailing" constant="24" id="BAS-u8-o2S"/>
                                             <constraint firstItem="vN8-eg-TBS" firstAttribute="centerX" secondItem="ySK-ra-mer" secondAttribute="centerX" id="HRp-HJ-8Ro"/>
-                                            <constraint firstItem="vN8-eg-TBS" firstAttribute="width" secondItem="ySK-ra-mer" secondAttribute="width" multiplier="0.6" id="g5S-oO-uIY"/>
                                             <constraint firstItem="Wrk-c0-ekq" firstAttribute="leading" secondItem="ySK-ra-mer" secondAttribute="leadingMargin" constant="24" id="g6E-J0-wSL"/>
                                             <constraint firstItem="vN8-eg-TBS" firstAttribute="top" secondItem="ySK-ra-mer" secondAttribute="top" constant="96" id="g9Z-ce-gWT"/>
                                             <constraint firstItem="Wrk-c0-ekq" firstAttribute="top" secondItem="vN8-eg-TBS" secondAttribute="bottom" constant="64" id="glu-Cf-fTO"/>
@@ -60,6 +59,7 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="ggS-N1-el3" firstAttribute="leading" secondItem="ySK-ra-mer" secondAttribute="leading" id="QQx-hP-9ti"/>
+                                    <constraint firstItem="vN8-eg-TBS" firstAttribute="height" secondItem="EiW-yt-Ug3" secondAttribute="height" multiplier="0.38" id="SuC-Vo-6xK"/>
                                     <constraint firstItem="ggS-N1-el3" firstAttribute="bottom" secondItem="ySK-ra-mer" secondAttribute="bottom" id="XL5-bT-xkG"/>
                                     <constraint firstItem="ySK-ra-mer" firstAttribute="trailing" secondItem="ggS-N1-el3" secondAttribute="trailing" id="sEH-Zh-2JJ"/>
                                     <constraint firstItem="ySK-ra-mer" firstAttribute="width" secondItem="bJz-ke-al3" secondAttribute="width" id="vs2-Ed-wvy"/>
