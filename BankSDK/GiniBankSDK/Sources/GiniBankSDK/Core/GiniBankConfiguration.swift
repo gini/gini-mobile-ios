@@ -113,10 +113,6 @@ public final class GiniBankConfiguration: NSObject {
     
     /**
      Indicates the status bar style in the Gini Bank SDK.
-     
-     - note: If `UIViewControllerBasedStatusBarAppearance` is set to `false` in the `Info.plist`,
-     it may not work in future versions of iOS since the `UIApplication.setStatusBarStyle` method was
-     deprecated on iOS 9.0.
      */
     @objc public var statusBarStyle = UIStatusBarStyle.lightContent
     
