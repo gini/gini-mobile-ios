@@ -244,6 +244,8 @@ final class EditLineItemViewController: UIViewController {
     private func handleTapGesture() {
         if isKeyboardPresented {
             editLineItemView.hideKeyBoard()
+        } else {
+            animateDismissView()
         }
     }
 
