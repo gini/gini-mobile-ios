@@ -59,6 +59,24 @@ The following steps will help you migrate to the new public API:
 
 The new public API is based on the Screen API, so you only need to use the new UI customization options and follow the [Customization guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/customization-guide.html) to adapt the look of the new UI.
 
+# Migrate Cleanup Step and Feedback Sending
+
+We simplified the feedback sending logic. When you clean up the Gini Bank SDK you only need to pass the values the
+user has used (and potentially corrected) to `GiniBankConfiguration.shared.cleanup()`. All values except the one for the amount are
+passed in as strings. Amount needs to be passed in as `Decimal` and its currency as an `enum` value.
+
+You don't have to call any additional methods to send the extraction feedback.
+
+## Default Networking
+
+You don't need to maintain a reference and call `sendFeedbackBlock` anymore. The `GiniBankConfiguration.shared.cleanup()` method
+will take care of sending the feedback.
+
+## Custom Networking
+
+Here as well you don't need to maintain a reference and call `sendFeedbackBlock` anymore. Your implementation of the `GiniCaptureNetworkService.sendFeedback()` 
+method will be called when you pass the values the user has used (and potentially corrected) to `GiniBankConfiguration.shared.cleanup()`.
+
 # Overview of New UI Customization Options
 
 To simplify UI customization we introduced global customization options. There is no need to customize each screen separately anymore.
