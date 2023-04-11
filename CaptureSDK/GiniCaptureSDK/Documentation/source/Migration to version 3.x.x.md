@@ -12,7 +12,7 @@ You don't need to create a new instance of `GiniConfiguration` just use `GiniCon
 
 Please, find more details in [Getting started](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta07/getting-started.html).
 
-# Migrate from Compoment API
+# Migrate from Component API
 
 The Component API allowed more UI customization options at the cost of a more difficult integration and maintenance. It
 was based on the view controllers, and you had to manage navigation between them and also update the navigation whenever we introduced
