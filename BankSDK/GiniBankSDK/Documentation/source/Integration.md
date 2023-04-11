@@ -269,4 +269,35 @@ func stopGiniBankSDK() {
 
 ```
 
+## Capturing documents
 
+To launch the Gini Bank SDK you only need to:
+
+1. Request camera access via configuring `Info.plist` in your project.
+
+2. Configure `GiniBankConfiguration.shared`. The implementation example can be found [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta07/BankSDK/GiniBankSDKExample/GiniBankSDKExample/AppCoordinator.swift#L32)
+
+3. Present the `UIViewController`. You can find the example [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta07/BankSDK/GiniBankSDKExample/GiniBankSDKExample/Screen%20API/ScreenAPICoordinator.swift#L68)
+
+4. Handle the extraction results.  
+   For handling the extraction results you need to implement `GiniCaptureResultsDelegate`. [Here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta07/BankSDK/GiniBankSDKExample/GiniBankSDKExample/Screen%20API/ScreenAPICoordinator.swift#L135) you can find the implementation example.
+
+5. Cleanup configuration and resources while also providing the required extraction feedback to
+   improve the future extraction accuracy. You don't need to implement any extra steps, just follow the recommendations below:
+
+    - Please provide values for all necessary fields, including those that were not extracted.
+
+    - Provide the final data approved by the user (and not the initially extracted only).
+
+    - Do cleanup after TAN verification.
+
+   ```swift
+   GiniBankConfiguration.shared.cleanup(paymentRecipient: "Payment Recipient",
+                                   paymentReference: "Payment Reference",
+                                   paymentPurpose: "Payment Purpose",
+                                   iban: "IBAN",
+                                   bic: "BIC",
+                                   amountToPay: ExtractionAmount(value: 10.242, currency: .EUR))
+   ```
+
+Check out the [example app](https://github.com/gini/gini-mobile-ios/tree/GiniBankSDK;3.0.0-beta07/BankSDK/GiniBankSDKExample/GiniBankSDKExample) to see how an integration could look like.
