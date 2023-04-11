@@ -1,5 +1,6 @@
 Integration
-=============================
+===========
+
 ## Request camera access
 
 **Note**: You need to specify the `NSCameraUsageDescription` key in your `Info.plist` file.
@@ -11,7 +12,11 @@ For more information see the [Integration Guide](https://developer.gini.net/gini
 ## Start SDK
 
 The SDK provides a custom `UIViewController` object, which can be presented modally. It handles the complete process from showing the onboarding until providing a UI for the analysis.
-Gini Capture SDK offers two different ways of the networking implementation:
+
+Gini Capture SDK offers two different ways of implementing networking:
+
+* Default Networking (Recommended)
+* Custom Networking
 
 ### Default Networking (Recommended)
 
