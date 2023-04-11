@@ -80,6 +80,10 @@ To allow users toggle the camera flash pass `true` to `GiniConfiguration.shared.
 - Turn off flash by default:
 Flash is on by default, and you can turn it off by passing `false` to `GiniConfiguration.shared.flashOnByDefault`.
 
+## Camera Picker
+
+On iPhones with more than one camera the SDK allows users to switch between the cameras. The UI/UX was based on the native Camera app.
+
  # QR Code Scanning
 
 When a supported QR code is detected with valid payment data, the QR Code will be processed automatically without any further user interaction.
