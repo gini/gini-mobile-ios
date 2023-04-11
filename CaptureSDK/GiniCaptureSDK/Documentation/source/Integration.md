@@ -126,37 +126,31 @@ func stopGiniBankSDK() {
 
 To launch the Gini Capture SDK you only need to:
 
-1.  Request camera access via configuring `Info.plist` in your project.
+1. Request camera access via configuring `Info.plist` in your project.
 
-2.  Configure `GiniConfiguration.shared`. The implementation example can be found [here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0-beta07/CaptureSDK/GiniCaptureSDKExample/Example%20Swift/AppCoordinator.swift#L32)
+2. Configure `GiniConfiguration.shared`. The implementation example can be found [here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0-beta07/CaptureSDK/GiniCaptureSDKExample/Example%20Swift/AppCoordinator.swift#L32)
 
-3.  Present the `UIViewController`.
+3. Present the `UIViewController`. You can find the example [here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0-beta07/CaptureSDK/GiniCaptureSDKExample/Example%20Swift/ScreenAPICoordinator.swift#L44)
 
-You can find the example [here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0-beta07/CaptureSDK/GiniCaptureSDKExample/Example%20Swift/ScreenAPICoordinator.swift#L44)
+4. Handle the extraction results.  
+   For handling the extraction results you need to implement `GiniCaptureResultsDelegate`. [Here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK;3.0.0-beta07/CaptureSDK/GiniCaptureSDKExample/Example%20Swift/ScreenAPICoordinator.swift#L116) you can find the implementation example.
 
-4.  Handle the extraction results
+5. Cleanup configuration and resources while also providing the required extraction feedback to
+   improve the future extraction accuracy. You don't need to implement any extra steps, just follow the recommendations below:
 
-For handling the extraction results you need to implement `GiniCaptureResultsDelegate `.
-[Here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0-beta07/CaptureSDK/GiniCaptureSDKExample/Example%20Swift/ScreenAPICoordinator.swift#L128) you can find the implementation example.
+    - Please provide values for all necessary fields, including those that were not extracted.
 
-5.  Cleanup configuration and resources.
+    - Provide the final data approved by the user (and not the initially extracted only).
 
-The cleanup step includes the previously called `feedback sending` method. You don't need to implement any extra steps, just follow the recommendations below:
+    - Do cleanup after TAN verification.
 
- - Please do cleanup always for all necessary fields, including those that were not extracted.
-
- - Please do cleanup with final data approved by the user (and not initially extracted only).
-
- - Please do cleanup after TAN verification.
-
-```swift
-GiniConfiguration.shared.cleanup(paymentRecipient: "Payment Recipient",
-                                        paymentReference: "Payment Reference",
-                                        paymentPurpose: "Payment Purpose",
-                                        iban: "IBAN",
-                                        bic: "BIC",
-                                        amountToPay: ExtractionAmount(value: 10.242, currency: .EUR))
-```
+   ```swift
+   GiniConfiguration.shared.cleanup(paymentRecipient: "Payment Recipient",
+                                   paymentReference: "Payment Reference",
+                                   paymentPurpose: "Payment Purpose",
+                                   iban: "IBAN",
+                                   bic: "BIC",
+                                   amountToPay: ExtractionAmount(value: 10.242, currency: .EUR))
+   ```
 
 Check out the [example app](https://github.com/gini/gini-mobile-ios/tree/GiniCaptureSDK%3B3.0.0-beta07/CaptureSDK/GiniCaptureSDKExample/Example%20Swift) to see how an integration could look like.
-The following example shows how to launch the Gini Capture SDK and how to handle the extraction results.
