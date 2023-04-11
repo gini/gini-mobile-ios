@@ -131,17 +131,18 @@ You can also test with a real health app. Please contact us in case you don't kn
 Photo payment functionality
 ============================
 
-The Gini Bank SDK provides two integration options. A [Screen API](#screen-api) that is easy to implement and a more complex, but also more flexible [Component API](#component-api). Both APIs can access the complete functionality of the SDK.
+The SDK provides a custom `UIViewController` object, which can be presented modally. It handles the complete process from showing the onboarding until providing a UI for the analysis.
 
 **Note**: You need to specify the `NSCameraUsageDescription` key in your `Info.plist` file. This key is mandatory for all apps since iOS 10 when using the `Camera` framework.
 Also if you're using the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios) you need to add support for "Keychain Sharing" in your entitlements by adding a `keychain-access-groups` value to your entitlements file. For more information see the [Integration Guide](https://developer.gini.net/gini-mobile-ios/GiniBankAPILibrary/getting-started.html) of the Gini Bank API Library.
 
-## Screen API
+Gini Bank SDK offers two different ways of implementing networking:
 
-The Screen API provides a custom `UIViewController` object, which can be presented modally. It handles the complete process from showing the onboarding until providing a UI for the analysis.
-The Screen API, in turn, offers two different ways of implementation:
+* Default Networking (Recommended)
+* Custom Networking
 
-### UI with Default Networking (Recommended)
+## Default Networking (Recommended)
+
 Using this method you don't need to care about handling the analysis process with the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios), you only need to provide your API credentials and a delegate to get the analysis results.
 
 ```swift
@@ -153,7 +154,7 @@ present(viewController, animated: true, completion: nil)
 ```
 Optionally if you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information), the metadata information and the _API type_ (the [Gini Pay API](https://pay-api.gini.net/documentation/#gini-pay-api-documentation-v1-0) is used by default) as follows:
 
-#### Certificate Pinning
+### Certificate Pinning
 
 ```swift
 import TrustKit
@@ -190,7 +191,7 @@ present(viewController, animated: true, completion:nil)
 > - The document metadata for the upload process is intended to be used for reporting.
 > - Certification pinning requires iOS 12.
 
-#### Retrieve the Analyzed Document
+### Retrieve the Analyzed Document
 
 The `AnalysisResult` returned in `GiniCaptureResultsDelegate.giniCaptureAnalysisDidFinishWith(result:, sendFeedbackBlock:)` 
 will return the analyzed Gini Bank API document in its `document` property.
@@ -198,7 +199,7 @@ will return the analyzed Gini Bank API document in its `document` property.
 When extractions were retrieved without using the Gini Bank API, then the `AnalysisResult.document` will be `nil`. For example when the
 extractions came from an EPS QR Code.
 
-### UI with Custom Networking
+## Custom Networking
 
 You can also provide your own networking by implementing the `GiniCaptureNetworkService` and `GiniCaptureResultsDelegate` protocols. Pass your instances to the `UIViewController` initialiser of GiniCapture as shown below:
 
@@ -218,7 +219,7 @@ We provide an example implementation [here](https://github.com/gini/gini-mobile-
 
 You may also use the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios) or implement communication with the Gini Bank API yourself.
 
-### Return Assistant TODO
+## Return Assistant TODO
 
 The return assistant feature allows your users to view and edit payable items in an invoice. The total amount is
 updated to be the sum of only those items which the user opts to pay.
