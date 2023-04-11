@@ -14,19 +14,19 @@ The following sections list all the features along with the related configuratio
 This is the core feature of the Gini Bank SDK. It enables your app to capture documents with the camera and prepares
 them to be analyzed by the Gini Bank API.
 
-## Custom UI Elements
+# Custom UI Elements
 
 Certain elements of the UI can now be fully customized via UI injection. It utilizes view adapter interfaces which you
 can implement and pass to `GiniBankConfiguration` when configuring the SDK. These interfaces declare the contract the injected
 view has to fulfill and allow the SDK to ask for your view instance when needed.
 
-### Top Navigation Bar
+## Top Navigation Bar
 
 To inject your own navigation bar view you need to pass your navigation view controller to 
 `GiniBankConfiguration.shared.customNavigationController`.
 The view from the custom navigation view controller will then be displayed on all screens as the top navigation bar.
 
-### Bottom Navigation Bar
+## Bottom Navigation Bar
 
 You can opt to show a bottom navigation bar. To enable it pass `true` to
 `GiniBankConfiguration.shared.bottomNavigationBarEnabled`.
@@ -34,7 +34,7 @@ You can opt to show a bottom navigation bar. To enable it pass `true` to
 **Note**:  The top navigation bar will still be used, but its    functionality will be limited to showing the screen's title and
 an optional close button. Please inject a custom top navigation bar if your design requires it even if you have enabled the bottom navigation bar.
 
-## Onboarding
+# Onboarding
 
 The onboarding feature presents essential information to the user on how to best capture documents.
 
@@ -57,18 +57,18 @@ You can customize the onboarding in the following ways:
    pass it to the relevant onboarding illustration adapter setters (e.g.,
    `onboardingAlignCornersIllustrationAdapter`,`onboardingLightingIllustrationAdapter`,`onboardingMultiPageIllustrationAdapter`,`onboardingQRCodeIllustrationAdapter`) when configuring the `GiniBankConfiguration.shared` instance.
 
-## Single Page
+# Single Page
 
 By default, the Gini Bank SDK is configured to capture single page documents. No further configuration is required for
 this.
 
-## Multi-Page
+# Multi-Page
 
 The multi-page feature allows the SDK to capture documents with multiple pages.
 
 To enable this simply pass `true` to `GiniBankConfiguration.shared.multipageEnabled`.
 
-## Camera
+# Camera
 
 - Enable the flash toggle button:
 To allow users toggle the camera flash pass `true` to `GiniBankConfiguration.shared.flashToggleEnabled`.
