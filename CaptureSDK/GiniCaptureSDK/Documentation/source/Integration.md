@@ -95,9 +95,9 @@ present(viewController, animated: true, completion: nil)
 
 You may also use the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios) or implement communication with the Gini Bank API yourself.
 
-## Sending Feedback - TODO
+## Cleanup and Sending Feedback
 
-Your app should send feedback for the extractions the Gini Bank API delivered. Feedback should be sent only for the extractions the user has seen and accepted (or corrected).
+Your app should clean up the SDK and provide feedback for the extractions the Gini Bank API delivered. Feedback should be sent only for the extractions the user has seen and accepted (or corrected).
 
 We provide a sample test case [here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK;3.0.0-beta07/CaptureSDK/GiniCaptureSDKExample/Tests/ExtractionFeedbackIntegrationTest.swift) to verify that extraction feedback sending works. 
 You may use it along with the example pdf and json files as a starting point to write your own test case.
@@ -106,37 +106,21 @@ The sample test case is based on the Bank API documentation's [recommended steps
 
 For additional information about feedback see the [Gini Bank API documentation](https://pay-api.gini.net/documentation/#send-feedback-and-get-even-better-extractions-next-time).
 
-### Default networking implementation - TODO
-
-The example below shows how to correct extractions and send feedback using the default networking implementation:
-
-You should send feedback only for extractions the user has seen and accepted.
-
 ```swift
-var sendFeedbackBlock: (([String: Extraction]) -> Void)?
-var extractions: [String: Extraction] = []
 
-func giniCaptureAnalysisDidFinishWith(result: AnalysisResult,
-                           sendFeedbackBlock: @escaping ([String: Extraction]) -> Void){
-        
-    self.extractions = result.extractions
-    self.sendFeedbackBlock = sendFeedbackBlock
-    showResultsScreen(results: result.extractions.map { $0.value })
+func stopGiniBankSDK() {
+    // After the user has seen and potentially corrected the extractions
+    // cleanup the SDK while passing in the final extraction values
+    // which will be used as feedback to improve the future extraction accuracy:
+    GiniConfiguration.shared.cleanup(paymentRecipient: "Payment Recipient",
+                                     paymentReference: "Payment Reference",
+                                     paymentPurpose: "Payment Purpose",
+                                     iban: "IBAN",
+                                     bic: "BIC",
+                                     amountToPay: ExtractionAmount(value: 10.242, currency: .EUR))
 }
-.
-.
-.
-// In this example only the amountToPay was wrong and we can reuse the other extractions.
-let updatedExtractions = self.extractions
-updatedExtractions.map{$0.value}.first(where: {$0.name == "amountToPay"})?.value = "31,25:EUR"
-sendFeedbackBlock(updatedExtractions)
 
 ```
-### Custom networking implementation - TODO
-
-If you use your own networking implementation and directly communicate with the Gini Bank API then see [this section](https://pay-api.gini.net/documentation/#submitting-feedback-on-extractions) in its documentation on how to send feedback.
-
-In case you use the [Gini Bank API Library](https://developer.gini.net/gini-mobile-ios/GiniBankAPILibrary/) then see [this section](https://developer.gini.net/gini-mobile-ios/GiniBankAPILibrary/getting-started.html) in its documentation for details.
 
 ## Capturing documents
 
