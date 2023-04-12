@@ -102,6 +102,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         unitPriceLabel.textColor = .GiniBank.dark7
         editButton.setTitleColor(.GiniBank.accent1, for: .normal)
         nameLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
+        priceLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
 
         priceLabel.font = configuration.textStyleFonts[.body]
         nameLabel.font = configuration.textStyleFonts[.body]
