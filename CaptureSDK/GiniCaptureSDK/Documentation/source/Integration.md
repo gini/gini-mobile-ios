@@ -11,7 +11,7 @@ For more information see the [Integration Guide](https://developer.gini.net/gini
 
 ## Start SDK
 
-The SDK provides a custom `UIViewController` object, which can be presented modally. It handles the complete process from showing the onboarding until providing a UI for the analysis.
+The SDK provides a custom `UIViewController` object, which should be shown by your app. It handles the complete process from showing the onboarding until providing a UI for the analysis.
 
 Gini Capture SDK offers two different ways of implementing networking:
 
