@@ -162,9 +162,11 @@ The SDK logs errors to the Gini Bank API when the default networking implementat
 
 # Accessibility
 
+During the development, we’ve followed the best practices from [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/foundations/accessibility).
+
 ## The SDK conforms to the following accessibility features:
 
-• All UI elements have clear and concise descriptions, ensuring that users who rely on screenreaders are able to navigate the app with ease.
+• All UI elements have clear and concise descriptions, ensuring that users who rely on VoiceOver are able to navigate the app with ease.
 
 • The UI works seamlessly even when the system text size is increased.
  
