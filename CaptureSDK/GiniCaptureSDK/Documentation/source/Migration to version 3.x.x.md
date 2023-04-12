@@ -28,7 +28,7 @@ The following steps will help you migrate to the new public API:
 
 * Configure the SDK the same way as before by using `GiniConfiguration`.
 * If you used a custom navigation bar, then you can now pass `UINavigationViewController` to `GiniConfiguration.shared.customNavigationController`.
-* The SDK provides a custom `UIViewController` object, which can be presented modally. It handles the complete process from showing the onboarding until providing a UI for the analysis.
+* The SDK provides a custom `UIViewController` object, which should be shown by your app. It handles the complete process from showing the onboarding until providing a UI for the analysis.
 
 ```swift
 // MARK: - Default networking
