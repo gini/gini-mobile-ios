@@ -128,7 +128,9 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     @objc private func closeSreenAPIAndSendFeedback() {
 		var extractionAmount = ExtractionAmount(value: 0.0, currency: .EUR)
 		if let amountValue = extractedResults.first(where: { $0.name == "amountToPay"})?.value {
-			extractionAmount = ExtractionAmount(value: Decimal(string: String(amountValue.split(separator: ":")[0])) ?? 0.0, currency: .EUR)
+            if amountValue.split(separator: ":").count > 0 {
+                extractionAmount = ExtractionAmount(value: Decimal(string: String(amountValue.split(separator: ":")[0])) ?? 0.0, currency: .EUR)
+            }
 		}
 	
 		configuration.cleanup(paymentRecipient: extractedResults.first(where: { $0.name == "paymentRecipient"})?.value ?? "",
