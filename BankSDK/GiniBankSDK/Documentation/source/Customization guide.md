@@ -223,7 +223,7 @@ You can find more details [here](https://developer.gini.net/gini-mobile-ios/Gini
 ### Bottom navigation bar
 
 You can show a bottom navigation bar by passing true to `GiniBankConfiguration.shared.bottomNavigationBarEnabled`. There is a default implementation, but you can also use
-your own by implementing the `DigitalInvoiceOnboardingNavigationBarBottomAdapter` interface and passing it to `GiniBankConfiguration.shared.digitalInvoiceNavigationBarBottomAdapter`.
+your own by implementing the `DigitalInvoiceOnboardingNavigationBarBottomAdapter` interface and passing it to `GiniBankConfiguration.shared.digitalInvoiceOnboardingNavigationBarBottomAdapter`.
 
 ### Custom Illustration View
 
@@ -231,7 +231,12 @@ If you need to animate the illustrations on the onboarding pages implement the `
 
 ## Digital Invoice Overview Screen
 
-TODO
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F623Fahuwq8tUzSWQPd23Ie%2FiOS-Gini-Bank-SDK-3.0.0-UI-Customisation%3Fnode-id%3D1356%253A12034%26t%3D71bWVnPFDuIAIDKF-1" allowfullscreen></iframe>
+
+### Bottom navigation bar
+
+You can show a bottom navigation bar by passing true to `GiniBankConfiguration.shared.bottomNavigationBarEnabled`. There is a default implementation, but you can also use
+your own by implementing the `DigitalInvoiceNavigationBarBottomAdapter` interface and passing it to `GiniBankConfiguration.shared.digitalInvoiceNavigationBarBottomAdapter`.
 
 ## Digital Invoice Help screen
 

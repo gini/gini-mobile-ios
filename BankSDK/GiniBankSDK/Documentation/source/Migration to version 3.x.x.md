@@ -318,7 +318,7 @@ If you need to animate the illustrations on the onboarding pages implement the `
 
 The new digital invoice overview screen uses the global UI customization options. You can discard the old screen specific customizations.
 
-TODO You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta08/customization-guide.html#digital-invoice-screen).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta08/customization-guide.html#digital-invoice-overview-screen).
 
 ### Breaking Changes
 
