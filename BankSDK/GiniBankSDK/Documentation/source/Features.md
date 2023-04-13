@@ -14,19 +14,19 @@ The following sections list all the features along with the related configuratio
 This is the core feature of the Gini Bank SDK. It enables your app to capture documents with the camera and prepares
 them to be analyzed by the Gini Bank API.
 
-## Custom UI Elements
+# Custom UI Elements
 
 Certain elements of the UI can now be fully customized via UI injection. It utilizes view adapter interfaces which you
 can implement and pass to `GiniBankConfiguration` when configuring the SDK. These interfaces declare the contract the injected
 view has to fulfill and allow the SDK to ask for your view instance when needed.
 
-### Top Navigation Bar
+## Top Navigation Bar
 
 To inject your own navigation bar view you need to pass your navigation view controller to 
 `GiniBankConfiguration.shared.customNavigationController`.
 The view from the custom navigation view controller will then be displayed on all screens as the top navigation bar.
 
-### Bottom Navigation Bar
+## Bottom Navigation Bar
 
 You can opt to show a bottom navigation bar. To enable it pass `true` to
 `GiniBankConfiguration.shared.bottomNavigationBarEnabled`.
@@ -34,7 +34,7 @@ You can opt to show a bottom navigation bar. To enable it pass `true` to
 **Note**:  The top navigation bar will still be used, but its    functionality will be limited to showing the screen's title and
 an optional close button. Please inject a custom top navigation bar if your design requires it even if you have enabled the bottom navigation bar.
 
-## Onboarding
+# Onboarding
 
 The onboarding feature presents essential information to the user on how to best capture documents.
 
@@ -57,24 +57,28 @@ You can customize the onboarding in the following ways:
    pass it to the relevant onboarding illustration adapter setters (e.g.,
    `onboardingAlignCornersIllustrationAdapter`,`onboardingLightingIllustrationAdapter`,`onboardingMultiPageIllustrationAdapter`,`onboardingQRCodeIllustrationAdapter`) when configuring the `GiniBankConfiguration.shared` instance.
 
-## Single Page
+# Single Page
 
 By default, the Gini Bank SDK is configured to capture single page documents. No further configuration is required for
 this.
 
-## Multi-Page
+# Multi-Page
 
 The multi-page feature allows the SDK to capture documents with multiple pages.
 
 To enable this simply pass `true` to `GiniBankConfiguration.shared.multipageEnabled`.
 
-## Camera
+# Camera
 
 - Enable the flash toggle button:
 To allow users toggle the camera flash pass `true` to `GiniBankConfiguration.shared.flashToggleEnabled`.
 
 - Turn off flash by default:
 Flash is on by default, and you can turn it off by passing `false` to `GiniBankConfiguration.shared.flashOnByDefault`.
+
+## Camera Picker
+
+On iPhones with more than one camera the SDK allows users to switch between the cameras. The UI/UX was based on the native Camera app.
 
  # QR Code Scanning
 
@@ -83,7 +87,7 @@ The QR Code scanning may be triggered directly without the need to analyze the d
 
 If the QR code does not have a supported payment format then a popup informs the user that a QR code was detected, but it cannot be used.
 
-Please find more information in the [QR Code scanning guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/qr-code-scanning-guide.html).
+Please find more information in the [QR Code scanning guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta08/qr-code-scanning-guide.html).
 
 ## QR Code Only
 
@@ -95,13 +99,13 @@ For enabling QR code only mode the both flags `GiniBankConfiguration.shared.qrCo
 
 This feature enables the Gini Bank SDK to import documents from the camera screen. When it's enabled an additional button is shown next to the camera trigger. Using this button allows the user to pick either an image or a pdf from the device.
 
-Please find more information in the [Import PDFs and images guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/import-pdfs-and-images-guide.html).
+Please find more information in the [Import PDFs and images guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta08/import-pdfs-and-images-guide.html).
 
 # Open with
 
 The `Open with` feature allows importing of files from other apps via iOS `share` functionality.
 
-Please find more information in the [Open with guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/open-with-guide.html).
+Please find more information in the [Open with guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta08/open-with-guide.html).
 
 # Help screen customization
 
@@ -115,7 +119,7 @@ You can pass the title and view controller for each screen to the
 
         configuration.customMenuItems = [customMenuItem]
  ```           
-The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta07/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomMenuItemViewController.swift).
+The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta08/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomMenuItemViewController.swift).
 
 You can also disable the supported formats help screen by passing `false` to
 `GiniBankConfiguration.shared.shouldShowSupportedFormatsScreen`.
@@ -125,14 +129,14 @@ You can also disable the supported formats help screen by passing `false` to
 You can show a custom loading indicator with custom animation support on the process button.
 Your custom loading indicator should implement `OnButtonLoadingIndicatorAdapter` interface and be passed  to `GiniBankConfiguration.shared.onButtonLoadingIndicator`.
 
-The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta07/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift#L36).
+The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta08/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift#L36).
 
 # Analysis screen customization
 
 You can show a custom loading indicator with custom animation support.
 Your custom loading indicator should implement `CustomLoadingIndicatorAdapter` interface and be passed  to `GiniBankConfiguration.shared.customLoadingIndicator`.
 
-The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta07/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift).
+The example implementation is available [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0-beta08/BankSDK/GiniBankSDKExample/GiniBankSDKExample/CustomLoadingIndicator.swift).
 
 # No result screen customization
 
@@ -150,10 +154,30 @@ The buttom "Retake images" will be shown only if you took or imported images.
 
 You have the possibility to track various events which occur during the usage of the Gini Bank SDK.
 
-Please find more information in the [Event tracking guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/event-tracking-guide.html).
+Please find more information in the [Event tracking guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta08/event-tracking-guide.html).
 
 # Error Logging
 
-The SDK logs errors to the Gini Bank API when the default networking implementation is used. See the `Default networking` implementation in the [Integration](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/integration.html).
+The SDK logs errors to the Gini Bank API when the default networking implementation is used. See the `Default networking` implementation in the [Integration](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta08/integration.html).
 
-Please find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta07/error-logging-guide.html).
+Please find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta08/error-logging-guide.html).
+
+# Accessibility
+
+During the development, we’ve followed the best practices from [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/foundations/accessibility).
+
+## The SDK conforms to the following accessibility features:
+
+• All UI elements have clear and concise descriptions, ensuring that users who rely on VoiceOver are able to navigate the app with ease.
+
+• The UI works seamlessly even when the system text size is increased.
+ 
+• All elements have a minimum size of 44pt x 44pt, making it easy for users to interact with the app even if they have limited dexterity.
+
+• The SDK utilizes the OS font size settings, making it easy for users to adjust the font size according to their preferences. This ensures that all text is easily legible, regardless of a user's individual needs.
+
+• The app features an adequate contrast ratio, ensuring that all users can easily read and distinguish text from the background.
+
+### Warning
+
+When customizing the SDK’s UI you can override accessibility conformance by changing colors, images and injecting custom UI elements. We strongly advise you to make your customizations accessibility friendly.
