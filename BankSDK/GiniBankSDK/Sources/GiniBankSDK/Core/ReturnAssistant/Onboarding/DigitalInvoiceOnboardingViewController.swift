@@ -29,7 +29,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
 
     private var topPadding: CGFloat {
         get {
-            return view.frame.width > view.frame.height ? 16 : 96
+            return view.frame.width > view.frame.height ? 40 : 104
         }
     }
 
