@@ -235,8 +235,8 @@ final class NoResultScreenViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        tableView.reloadData()
         view.layoutSubviews()
+        tableView.reloadData()
     }
 
     private func configureButtons() {
@@ -259,7 +259,6 @@ final class NoResultScreenViewController: UIViewController {
         )
         buttonsHeightConstraint = buttonsConstraint
         NSLayoutConstraint.activate([
-            tableView.heightAnchor.constraint(greaterThanOrEqualToConstant: view.bounds.size.height * 0.6),
             header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
