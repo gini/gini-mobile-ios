@@ -70,7 +70,7 @@ final class CameraPreviewViewController: UIViewController {
     lazy var previewView: CameraPreviewView = {
         let previewView = CameraPreviewView()
         previewView.translatesAutoresizingMaskIntoConstraints = false
-        (previewView.layer as? AVCaptureVideoPreviewLayer)?.videoGravity = .resize
+        (previewView.layer as? AVCaptureVideoPreviewLayer)?.videoGravity = .resizeAspectFill
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(focusAndExposeTap))
         previewView.addGestureRecognizer(tapGesture)
         return previewView
