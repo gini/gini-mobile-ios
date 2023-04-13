@@ -209,6 +209,8 @@ final class CameraPreviewViewController: UIViewController {
 
     private func updateFrameOrientation(with orientation: AVCaptureVideoOrientation) {
         if UIDevice.current.isIpad {
+            NSLayoutConstraint.deactivate([cameraFrameViewHeightAnchorPortrait, cameraFrameViewHeightAnchorLandscape])
+
             let isLandscape = orientation == .landscapeRight || orientation == .landscapeLeft
             cameraFrameViewHeightAnchorPortrait.isActive = !isLandscape
             cameraFrameViewHeightAnchorLandscape.isActive = isLandscape
