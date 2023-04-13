@@ -10,14 +10,21 @@ import Foundation
 public enum UserDomain {
     /// The default one, which points to https://user.gini.net
     case `default`
-    /// A custom domain
-    case custom(domain: String)
+    /// A custom domain with optional path
+    case custom(domain: String, path: String? = nil)
     
     var domainString: String {
         
         switch self {
         case .default: return "user.gini.net"
-        case .custom(let domain): return domain
+        case .custom(let domain, _): return domain
+        }
+    }
+    
+    var path: String {
+        switch self {
+        case .default: return ""
+        case .custom(_, let path): return path ?? ""
         }
     }
 }
@@ -37,6 +44,10 @@ struct UserResource<T: Decodable>: Resource {
     }
     
     var path: String {
+        return "\(domain.path)\(methodPath)"
+    }
+    
+    private var methodPath: String {
         switch method {
         case .token:
             return "/oauth/token"
