@@ -21,11 +21,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
 
     private lazy var scrollViewWidthAnchor = scrollView.widthAnchor.constraint(equalTo: view.widthAnchor)
 
-    private var widthMultiplier: CGFloat {
-        get {
-            return view.frame.width > view.frame.height ? 0.4 : 0.6
-        }
-    }
+    private var widthMultiplier: CGFloat = 0.6
 
     private var topPadding: CGFloat {
         get {
