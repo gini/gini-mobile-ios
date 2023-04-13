@@ -36,7 +36,8 @@ class DigitalLineItemTableViewCell: UITableViewCell {
             if let priceString = viewModel.totalPriceString {
                 priceLabel.text = priceString
                 priceLabel.accessibilityValue = priceString
-                let format = DigitalInvoiceStrings.totalAccessibilityLabel.localizedGiniBankFormat
+                let format = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.total.accessibilitylabel",
+                                                                      comment: "Total")
                 priceLabel.accessibilityLabel = String.localizedStringWithFormat(format, priceString)
             }
 
@@ -95,7 +96,8 @@ class DigitalLineItemTableViewCell: UITableViewCell {
 
         editButton.contentHorizontalAlignment = .right
         editButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        let editTitle: String = .ginibankLocalized(resource: DigitalInvoiceStrings.lineItemEditButtonTitle)
+        let editTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.editbutton",
+                                                                 comment: "Edit")
         editButton.setTitle(editTitle, for: .normal)
 
         separatorView.backgroundColor = GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4).uiColor()
