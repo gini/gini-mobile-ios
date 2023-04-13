@@ -73,7 +73,8 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
 
     private func configureUI() {
         let configuration = GiniBankConfiguration.shared
-        title = .ginibankLocalized(resource: DigitalInvoiceStrings.screenTitle)
+        title = NSLocalizedStringPreferredFormat("ginibank.digitalinvoice.screentitle",
+                                                 comment: "Digital invoice")
         view.backgroundColor = GiniColor(light: UIColor.GiniBank.light2, dark: UIColor.GiniBank.dark2).uiColor()
         contentView.backgroundColor = .clear
 

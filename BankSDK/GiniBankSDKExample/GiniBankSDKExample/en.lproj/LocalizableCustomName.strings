@@ -69,9 +69,96 @@
 //
 //"ginicapture.help.openWithTutorial.title" = "CM Open documents from other apps";
 "close" = "Close";
+"results.sendfeedback.button.title" = "Send feedback and close";
 //
 //"ginibank.digitalinvoice.backbutton" = "CM Back";
 //"ginibank.digitalinvoice.paybuttontitle.disabled" = "CM Pay";
 //"ginibank.digitalinvoice.paybuttontitle.othercharges" = "CM Pay";
 //"ginibank.digitalinvoice.paybuttontitle" = "CM Pay %d/%d";
-"results.sendfeedback.button.title" = "Send feedback and close";
+//
+//"ginibank.help.menu.fourthItem" = "CM The new return assistant";
+//
+//"ginibank.help.menu.returnAssistant.title" = "CM Return Assistant";
+//"ginibank.help.menu.returnAssistant.section1.title" = "CM The new Return Assistant";
+//"ginibank.help.menu.returnAssistant.section1.body1" = "CM You can now deselect invoice items that you do not want. You only pay for the things you keep and can return the rest.";
+//"ginibank.help.menu.returnAssistant.section1.body2" = "CM By clicking on the Edit button of any invoice item, you can change the quantity and correct the price.";
+//
+//"ginibank.help.menu.returnAssistant.section2.title" = "CM Change the quantity";
+//"ginibank.help.menu.returnAssistant.section2.body" = "CM For example, if you want to keep a lower number than you ordered, just change the quantity. The total price will be updated automatically.";
+//
+//"ginibank.help.menu.returnAssistant.section3.title" = "CM Fix the price";
+//"ginibank.help.menu.returnAssistant.section3.body" = "CM If the price has not been read out perfectly, you can simply correct it manually. The total price is updated automatically.";
+//"ginibank.help.menu.returnAssistant.backButton.title" = "CM Back";
+//
+//"ginibank.digitalinvoice.screentitle" = "CM Digital invoice";
+//"ginibank.digitalinvoice.paybutton.title" = "CM Proceed";
+//"ginibank.digitalinvoice.paybuttontitle.othercharges" = "CM Pay";
+//"ginibank.digitalinvoice.paybuttontitle" = "CM Pay %d/%d";
+//"ginibank.digitalinvoice.paybuttontitle.accessibilitylabel" = "CM Pay %d out of %d";
+//"ginibank.digitalinvoice.cancelButtonTitle" = "CM Cancel";
+//
+//"ginibank.digitalinvoice.skipbuttontitle" = "CM Skip feature";
+//
+//"ginibank.digitalinvoice.items" = "CM Article %d/%d";
+//"ginibank.digitalinvoice.items.accessibilitylabel" = "CM Items %d out of %d";
+//
+//"ginibank.digitalinvoice.lineitem.quantity" = "CM %dx";
+//"ginibank.digitalinvoice.lineitem.editbutton" = "CM Edit";
+//
+//"ginibank.digitalinvoice.checkmarkbutton.deselect.accessibilitylabel" = "CM Deselect item";
+//"ginibank.digitalinvoice.checkmarkbutton.select.accessibilitylabel" = "CM Select item";
+//
+//"ginibank.digitalinvoice.deselectreasonactionsheet.message" = "CM Your reasons to return this item";
+//"ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel" = "CM Cancel";
+//
+//"ginibank.digitalinvoice.headermessage.primary" = "CM Scan successful!";
+//"ginibank.digitalinvoice.headermessage.secondary" = "CM You can now deselect items you would like to return.";
+//
+//"ginibank.digitalinvoice.total.addArticleButtonTitle" = "CM Add article";
+//"ginibank.digitalinvoice.total.accessibilitylabel" = "CM Total: %@";
+//
+//"ginibank.digitalinvoice.edit.unitPrice" = "CM Unit price";
+//"ginibank.digitalinvoice.edit.name" = "CM Name";
+//"ginibank.digitalinvoice.edit.quantity" = "CM Quantity";
+//"ginibank.digitalinvoice.edit.title" = "CM Edit article";
+//"ginibank.digitalinvoice.edit.minus.button.accessibility" = "CM Decrease quantity";
+//"ginibank.digitalinvoice.edit.plus.button.accessibility" = "CM Increase quantity";
+//
+//"ginibank.digitalinvoice.footermessage" = "CM Please double check if the amount is correct and add further articles if necessary";
+//"ginibank.digitalinvoice.totalcaptionlabeltext" = "CM Total";
+//"ginibank.digitalinvoice.totalexplanationlabeltext" = "CM Incl. shipping, discount and so on.";
+//
+//"ginibank.digitalinvoice.lineitem.title" = "CM Articles";
+//"ginibank.digitalinvoice.lineitem.notitle" = "CM Additional";
+//"ginibank.digitalinvoice.lineitem.savebutton" = "CM Save";
+//"ginibank.digitalinvoice.lineitem.unitTitle" = "CM per unit";
+//"ginibank.digitalinvoice.lineitem.itemnametextfieldtitle" = "CM Item Name";
+//"ginibank.digitalinvoice.lineitem.quantitytextfieldtitle" = "CM Quantity";
+//"ginibank.digitalinvoice.lineitem.pricetextfieldtitle" = "CM Item Price";
+//"ginibank.digitalinvoice.lineitem.multiplication.accessibilitylabel" = "CM times";
+//"ginibank.digitalinvoice.lineitem.totalpricetitle" = "CM Total";
+//"ginibank.digitalinvoice.lineitem.includevattitle" = "CM Incl. tax";
+//
+//"ginibank.digitalinvoice.addonname.discount" = "CM Discount";
+//"ginibank.digitalinvoice.addonname.giftcard" = "CM Giftcard";
+//"ginibank.digitalinvoice.addonname.otherdiscounts" = "CM Other discounts";
+//"ginibank.digitalinvoice.addonname.othercharges" = "CM Other charges";
+//"ginibank.digitalinvoice.addonname.shipment" = "CM Shipment";
+//"ginibank.digitalinvoice.onboarding.text1" = "CM Digital invoice";
+//"ginibank.digitalinvoice.onboarding.text2" = "CM Deselect the products you want to return and we will recalculate the price for you.";
+//"ginibank.digitalinvoice.onboarding.getStartedButton" = "CM Get started";
+//"ginibank.digitalinvoice.onboarding.hidebutton" = "CM Don’t show anymore";
+//"ginibank.digitalinvoice.backbutton" = "CM Back";
+//
+//"ginibank.digitalinvoice.help.screenTitle" = "CM Help";
+//"ginibank.digitalinvoice.help.backToInvoice" = "CM Digital invoice";
+//"ginibank.digitalinvoice.help.title1" = "CM 1. How does a digital invoice work?";
+//"ginibank.digitalinvoice.help.description1" = "CM We extracted all articles from your invoice and listed them for you. In case you want to return an ordered article or just partly pay your invoice, you simply deselect the article and the new total will be calculated automatically. ";
+//"ginibank.digitalinvoice.help.title2" = "CM 2. How can I edit an article?";
+//"ginibank.digitalinvoice.help.description2" = "CM By clicking an article, you are able to edit its description, quantity and price per item. Please note that the price per item needs to include tax.";
+//"ginibank.digitalinvoice.help.title3" = "CM 3. Which online shops are supported?";
+//"ginibank.digitalinvoice.help.description3" = "CM We are currently focused on the top five online merchants in the market. More retailers will be added in the future.";
+//"ginibank.digitalinvoice.info.hidebutton" = "CM Close";
+//
+//"ginibank.digitalinvoice.edit.name.error" = "CM Please enter the article name.";
+//"ginibank.digitalinvoice.edit.price.error" = "CM Please enter the article price.";
