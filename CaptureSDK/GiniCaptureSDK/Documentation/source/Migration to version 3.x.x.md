@@ -12,7 +12,7 @@ You don't need to create a new instance of `GiniConfiguration` just use `GiniCon
 
 Please, find more details in [Getting started](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta08/getting-started.html).
 
-# Migrate from Compoment API
+# Migrate from Component API
 
 The Component API allowed more UI customization options at the cost of a more difficult integration and maintenance. It
 was based on the view controllers, and you had to manage navigation between them and also update the navigation whenever we introduced
@@ -28,7 +28,7 @@ The following steps will help you migrate to the new public API:
 
 * Configure the SDK the same way as before by using `GiniConfiguration`.
 * If you used a custom navigation bar, then you can now pass `UINavigationViewController` to `GiniConfiguration.shared.customNavigationController`.
-* The SDK provides a custom `UIViewController` object, which can be presented modally. It handles the complete process from showing the onboarding until providing a UI for the analysis.
+* The SDK provides a custom `UIViewController` object, which should be shown by your app. It handles the complete process from showing the onboarding until providing a UI for the analysis.
 
 ```swift
 // MARK: - Default networking
@@ -57,6 +57,24 @@ The following steps will help you migrate to the new public API:
 # Migrate from Screen API
 
 The new public API is based on the Screen API, so you only need to use the new UI customization options and follow the [Customization guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta08/customization-guide.html) to adapt the look of the new UI.
+
+# Migrate Cleanup Step and Feedback Sending
+
+We simplified the feedback sending logic. When you clean up the Gini Capture SDK you only need to pass the values the
+user has used (and potentially corrected) to `GiniConfiguration.shared.cleanup()`. All values except the one for the amount are
+passed in as strings. Amount needs to be passed in as `Decimal` and its currency as an `enum` value.
+
+You don't have to call any additional methods to send the extraction feedback.
+
+## Default Networking
+
+You don't need to maintain a reference and call `sendFeedbackBlock` anymore. The `GiniConfiguration.shared.cleanup()` method
+will take care of sending the feedback.
+
+## Custom Networking
+
+Here as well you don't need to maintain a reference and call `sendFeedbackBlock` anymore. Your implementation of the `GiniCaptureNetworkService.sendFeedback()`  
+method will be called when you pass the values the user has used (and potentially corrected) to `GiniConfiguration.shared.cleanup()`.
 
 # Overview of New UI Customization Options
 
