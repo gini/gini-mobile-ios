@@ -219,29 +219,6 @@ We provide an example implementation [here](https://github.com/gini/gini-mobile-
 
 You may also use the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios) or implement communication with the Gini Bank API yourself.
 
-## Return Assistant TODO
-
-The return assistant feature allows your users to view and edit payable items in an invoice. The total amount is
-updated to be the sum of only those items which the user opts to pay.
-
-To enable this feature simply set ``returnAssistantEnabled`` to ``true`` in the ``GiniBankConfiguration``: 
-
-```swift
-let configuration = GiniBankConfiguration()
-configuration.returnAssistantEnabled = true
-```
-
-When integrating using the Screen API it is enough to enable the return assistant feature. The Gini Bank SDK will
-show the return assistant automatically if the invoice contained payable items and will update the extractions returned
-to your app according to the user's changes.
-
-The ``amountToPay`` extraction is updated to be the sum of the items the user decided to pay. It includes discounts and
-additional charges that might be present on the invoice.
-
-The extractions related to the return assistant are stored in the ``lineItems`` field of the ``AnalysisResult``. See the
-Gini Bank API's [documentation](https://pay-api.gini.net/documentation/#return-assistant-extractions) to learn about the
-return assistant's extractions.
-
 ## Cleanup and Sending Feedback
 
 Your app should clean up the SDK and provide feedback for the extractions the Gini Bank API delivered. Feedback should be sent only for the extractions the user has seen and accepted (or corrected).
