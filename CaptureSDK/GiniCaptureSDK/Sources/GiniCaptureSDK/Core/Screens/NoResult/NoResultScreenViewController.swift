@@ -235,8 +235,10 @@ final class NoResultScreenViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        view.layoutSubviews()
-        tableView.reloadData()
+        coordinator.animate(alongsideTransition: nil) { [weak self] _ in
+            self?.tableView.reloadData()
+            self?.view.layoutSubviews()
+        }
     }
 
     private func configureButtons() {
