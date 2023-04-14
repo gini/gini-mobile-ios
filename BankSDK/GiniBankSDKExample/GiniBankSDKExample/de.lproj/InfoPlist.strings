@@ -6,9 +6,12 @@
 
  /* iOS camera permissions: OS system level permissions prompt. This key will be converted into NSCameraUsageDescription and used in the InfoPlist.strings files */
 
- "NSCameraUsageDescription" = "Um Dokumente mit deinem Gerät zu scannen, erlaube den Zugriff auf deine Kamera.  📸 -> 📄 -> 🎉";
+ "NSCameraUsageDescription" = "Um Dokumente mit deinem Gerät zu scannen, erlaube den Zugriff auf deine Kamera.";
 
  /* iOS photo library permissions: OS system level permissions prompt. This key will be converted into NSPhotoLibraryUsageDescription and used in the InfoPlist.strings files */
 
- "NSPhotoLibraryUsageDescription" = "Um Dokumente auf deinem Gerät zu scannen, erlaube den Zugriff auf deine Fotos  🏞 -> 📄 -> 🎉";
-*/
+ "NSPhotoLibraryUsageDescription" = "Um Dokumente auf deinem Gerät zu scannen, erlaube den Zugriff auf deine Fotos.";
+
+/* iOS photo library permissions */
+
+ "NSPhotoLibraryAddUsageDescription" = "Um Dokumente auf deinem Gerät zu scannen, erlaube den Zugriff auf deine Fotos.";

@@ -107,7 +107,6 @@
 		3E7839CD29C9DBB700B42216 /* ResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultTableViewCell.swift; sourceTree = "<group>"; };
 		4C84B5DC264ED55100853F33 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
 		4C84B5DE2653FFF000853F33 /* Example Swift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Example Swift.entitlements"; sourceTree = "<group>"; };
-		764E0AD328CF274A00F96503 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		764E0AD528CF275000F96503 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		76610BE5298D542A004C1ECB /* CustomReviewScreenBottomNavigationBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomReviewScreenBottomNavigationBar.xib; sourceTree = "<group>"; };
 		76610BE7298D5447004C1ECB /* CustomReviewScreenBottomNavigationBarAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReviewScreenBottomNavigationBarAdapter.swift; sourceTree = "<group>"; };
@@ -189,6 +188,7 @@
 		F4BB7CF126984E5D003FD77E /* CustomMenuItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMenuItemViewController.swift; sourceTree = "<group>"; };
 		F4DF824E25EFA8ED00A8D755 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
 		F4E0218727BD349A0042D000 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
+		F4F9AA2C29E99CB1001C69A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -714,8 +714,8 @@
 		764E0AD428CF274A00F96503 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				764E0AD328CF274A00F96503 /* en */,
 				764E0AD528CF275000F96503 /* de */,
+				F4F9AA2C29E99CB1001C69A7 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
