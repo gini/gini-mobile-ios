@@ -331,7 +331,7 @@ private extension EditLineItemView {
         static let titlePadding: CGFloat = 4
         static let errorPadding: CGFloat = 2
         static let stackViewPadding: CGFloat = 72
-        static let stackViewSpacing: CGFloat = 24
+        static let stackViewSpacing: CGFloat = 26
         static let currencyPickerPadding: CGFloat = 8
         static let currencyPickerWidth: CGFloat = 120
         static let maximumFontSize: CGFloat = 20
