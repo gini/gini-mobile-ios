@@ -48,6 +48,11 @@ class HelpRoundedCornersDataSource<Item, Cell>: NSObject, HelpDataSource where C
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if #available(iOS 13, *) {
+            // The rounded corners are done in iOS13+ by using the tableView style mode .insetGrouped
+            return
+        }
+        
         cell.reset()
         if items.count == 1 {
             cell.round(corners: [.bottomLeft, .bottomRight, .topLeft, .topRight],
