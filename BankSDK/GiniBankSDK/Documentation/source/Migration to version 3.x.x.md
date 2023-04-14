@@ -354,7 +354,7 @@ your own by implementing the `DigitalInvoiceNavigationBarBottomAdapter` interfac
 
 The new edit article screen uses the global UI customization options and is presented as a bottom sheet on phones and as a dialog on iPad. You can discard the old screen specific customizations.
 
-[Here](TODO) you can find the detailed description on how to customize this screen.
+[Here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0-beta08/customization-guide.html#digital-invoice-edit-article-screen) you can find the detailed description on how to customize this screen.
 
 ### Breaking Changes
 
@@ -363,6 +363,7 @@ We removed the ability to deselect the article from this screen.
 ### New Features
 
 Easier currency and amount input when editing an article.
+We added validation and showing the error messages for the article name and price input fields.
 
 ## Digital Invoice Help screen
 
