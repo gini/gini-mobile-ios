@@ -106,7 +106,8 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
             totalLabel.leadingAnchor.constraint(equalTo: totalContainerView.leadingAnchor),
             totalLabel.centerYAnchor.constraint(equalTo: totalContainerView.centerYAnchor),
             totalLabel.bottomAnchor.constraint(lessThanOrEqualTo: totalContainerView.bottomAnchor),
-            totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: totalValueLabel.leadingAnchor, constant: Constants.padding),
+            totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: totalValueLabel.leadingAnchor,
+                                                 constant: Constants.padding),
 
             totalValueLabel.topAnchor.constraint(equalTo: totalContainerView.topAnchor),
             totalValueLabel.trailingAnchor.constraint(equalTo: totalContainerView.trailingAnchor),
@@ -121,14 +122,16 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
                 totalContainerView.centerXAnchor.constraint(equalTo: centerXAnchor),
-                totalContainerView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: Constants.tabletWidthMultiplier),
-                payButton.leadingAnchor.constraint(equalTo: totalContainerView.leadingAnchor),
+                totalContainerView.widthAnchor.constraint(equalTo: widthAnchor,
+                                                          multiplier: Constants.tabletWidthMultiplier),
+                payButton.leadingAnchor.constraint(equalTo: totalContainerView.leadingAnchor)
             ])
         } else {
             NSLayoutConstraint.activate([
                 totalContainerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
                 totalContainerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-                payButton.leadingAnchor.constraint(greaterThanOrEqualTo: totalContainerView.leadingAnchor, constant: Constants.buttonPadding),
+                payButton.leadingAnchor.constraint(greaterThanOrEqualTo: totalContainerView.leadingAnchor,
+                                                   constant: Constants.buttonPadding),
                 payButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 150)
             ])
         }

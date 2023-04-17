@@ -32,8 +32,9 @@ final class DigitalInvoiceHelpViewController: UIViewController {
         return stackView
     }()
 
-    private lazy var scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                                                     constant: -Constants.padding)
+    private lazy var scrollViewBottomConstraint =
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                               constant: -Constants.padding)
     private var navigationBarBottomAdapter: DigitalInvoiceHelpNavigationBarBottomAdapter?
 
     private let viewModel: DigitalInvoiceHelpViewModel

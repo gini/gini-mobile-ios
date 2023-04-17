@@ -20,10 +20,12 @@ final class DigitalInvoiceViewController: UIViewController {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(DigitalInvoiceTableViewTitleCell.self, forCellReuseIdentifier: DigitalInvoiceTableViewTitleCell.reuseIdentifier)
+        tableView.register(DigitalInvoiceTableViewTitleCell.self,
+                           forCellReuseIdentifier: DigitalInvoiceTableViewTitleCell.reuseIdentifier)
         tableView.register(UINib(nibName: "DigitalLineItemTableViewCell", bundle: giniBankBundle()),
                            forCellReuseIdentifier: DigitalLineItemTableViewCell.reuseIdentifier)
-        tableView.register(DigitalInvoiceAddOnListCell.self, forCellReuseIdentifier: DigitalInvoiceAddOnListCell.reuseIdentifier)
+        tableView.register(DigitalInvoiceAddOnListCell.self,
+                           forCellReuseIdentifier: DigitalInvoiceAddOnListCell.reuseIdentifier)
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
@@ -134,15 +136,19 @@ final class DigitalInvoiceViewController: UIViewController {
             buttonContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             buttonContainerView.heightAnchor.constraint(equalToConstant: Constants.buttonContainerHeight),
 
-            payButton.bottomAnchor.constraint(equalTo: buttonContainerView.bottomAnchor, constant: -Constants.labelPadding),
+            payButton.bottomAnchor.constraint(equalTo: buttonContainerView.bottomAnchor,
+                                              constant: -Constants.labelPadding),
             payButton.centerXAnchor.constraint(equalTo: buttonContainerView.centerXAnchor),
             payButton.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
             payButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.payButtonHeight),
 
-            totalLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor, constant: Constants.padding),
-            totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: totalValueLabel.leadingAnchor, constant: Constants.padding),
+            totalLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor,
+                                            constant: Constants.padding),
+            totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: totalValueLabel.leadingAnchor,
+                                                 constant: Constants.padding),
 
-            totalValueLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor, constant: Constants.padding / 2),
+            totalValueLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor,
+                                                 constant: Constants.padding / 2),
             totalValueLabel.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
             totalValueLabel.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: -Constants.labelPadding),
             totalValueLabel.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor)
@@ -151,15 +157,17 @@ final class DigitalInvoiceViewController: UIViewController {
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
                 tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                tableView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: Constants.tabletWidthMultiplier),
-                totalLabel.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
+                tableView.widthAnchor.constraint(equalTo: view.widthAnchor,
+                                                 multiplier: Constants.tabletWidthMultiplier),
+                totalLabel.leadingAnchor.constraint(equalTo: tableView.leadingAnchor)
             ])
         } else {
             NSLayoutConstraint.activate([
                 tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding),
                 tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.padding),
 
-                totalLabel.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor, constant: Constants.labelPadding)
+                totalLabel.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor,
+                                                    constant: Constants.labelPadding)
             ])
         }
     }
@@ -200,19 +208,18 @@ final class DigitalInvoiceViewController: UIViewController {
         }
     }
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupView()
         setupConstraints()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.shouldShowOnboarding()
     }
-    
+
     @objc func payButtonTapped() {
         viewModel.didTapPay()
     }
@@ -240,7 +247,7 @@ final class DigitalInvoiceViewController: UIViewController {
     @objc func helpButtonTapped(source: UIButton) {
         viewModel.didTapHelp()
     }
-    
+
     @objc func closeReturnAssistantOverview() {
         viewModel.didTapCancel()
     }
@@ -268,39 +275,50 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
         default: fatalError()
         }
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch Section(rawValue: indexPath.section) {
         case .titleCell:
-            let cell = tableView.dequeueReusableCell(withIdentifier: DigitalInvoiceTableViewTitleCell.reuseIdentifier,
-                                                     for: indexPath) as! DigitalInvoiceTableViewTitleCell
-            return cell
-        case .lineItems:
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier: DigitalLineItemTableViewCell.reuseIdentifier,
-                                                     for: indexPath) as! DigitalLineItemTableViewCell
-            if let invoice = viewModel.invoice {
-                cell.viewModel = DigitalLineItemTableViewCellViewModel(lineItem: invoice.lineItems[indexPath.row],
-                                                                       index: indexPath.row,
-                                                                       invoiceNumTotal: invoice.numTotal,
-                                                                       invoiceLineItemsCount: invoice.lineItems.count)
+            if let cell = tableView.dequeueReusableCell(withIdentifier:
+                                                            DigitalInvoiceTableViewTitleCell.reuseIdentifier,
+                                                        for: indexPath) as? DigitalInvoiceTableViewTitleCell {
+                return cell
             }
-            cell.delegate = self
-            return cell
-            
+            assertionFailure("DigitalInvoiceTableViewTitleCell could not been reused")
+            return UITableViewCell()
+        case .lineItems:
+
+            if let cell = tableView.dequeueReusableCell(withIdentifier: DigitalLineItemTableViewCell.reuseIdentifier,
+                                                        for: indexPath) as? DigitalLineItemTableViewCell {
+                if let invoice = viewModel.invoice {
+                    cell.viewModel = DigitalLineItemTableViewCellViewModel(lineItem: invoice.lineItems[indexPath.row],
+                                                                           index: indexPath.row,
+                                                                           invoiceNumTotal: invoice.numTotal,
+                                                                           invoiceLineItemsCount:
+                                                                                invoice.lineItems.count)
+                }
+                cell.delegate = self
+                return cell
+            }
+            assertionFailure("DigitalLineItemTableViewCell could not been reused")
+            return UITableViewCell()
         case .addOns:
-            let cell = tableView.dequeueReusableCell(withIdentifier: DigitalInvoiceAddOnListCell.reuseIdentifier,
-                                                     for: indexPath) as! DigitalInvoiceAddOnListCell
-            cell.addOns = viewModel.invoice?.addons
-            return cell
+            if let cell = tableView.dequeueReusableCell(withIdentifier: DigitalInvoiceAddOnListCell.reuseIdentifier,
+                                                        for: indexPath) as? DigitalInvoiceAddOnListCell {
+                cell.addOns = viewModel.invoice?.addons
+                return cell
+            }
+            assertionFailure("DigitalInvoiceAddOnListCell could not been reused")
+            return UITableViewCell()
         default: fatalError()
         }
     }
 }
 
 extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
-    func modeSwitchValueChanged(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
-        
+    func modeSwitchValueChanged(cell: DigitalLineItemTableViewCell,
+                                lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
+
         guard let invoice = viewModel.invoice else { return }
         switch invoice.lineItems[lineItemViewModel.index].selectedState {
         case .selected:
@@ -317,7 +335,7 @@ extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
         }
         updateValues()
     }
-        
+
     func editTapped(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
         viewModel.didTapEdit(on: lineItemViewModel)
     }
@@ -325,7 +343,9 @@ extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
 
 extension DigitalInvoiceViewController {
     private func presentReturnReasonActionSheet(for index: Int, source: UIView, with returnReasons: [ReturnReason]) {
-        DeselectLineItemActionSheet().present(from: self, source: source, returnReasons: returnReasons) { [weak self] selectedState in
+        DeselectLineItemActionSheet().present(from: self,
+                                              source: source,
+                                              returnReasons: returnReasons) { [weak self] selectedState in
             guard let self = self else { return }
             switch selectedState {
             case .selected:

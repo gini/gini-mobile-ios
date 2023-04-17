@@ -68,6 +68,6 @@ final class DigitalInvoiceAddOnListView: UIView {
 
 private extension DigitalInvoiceAddOnListView {
     enum Constants {
-        static let labelPadding:      CGFloat = 8
+        static let labelPadding: CGFloat = 8
     }
 }

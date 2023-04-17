@@ -58,10 +58,14 @@ final class DigitalInvoiceCoordinator: Coordinator {
         digitalInvoiceViewController = DigitalInvoiceViewController(viewModel: digitalInvoiceViewModel!)
     }
 
+    // swiftlint:disable: force_cast
     private func showDigitalInvoiceOnboarding() {
         if onboardingWillBeShown && !didShowOnboardInCurrentSession {
             let storyboard = UIStoryboard(name: "DigitalInvoiceOnboarding", bundle: giniBankBundle())
-            let digitalInvoiceOnboardingViewController = storyboard.instantiateViewController(withIdentifier: "digitalInvoiceOnboardingViewController") as! DigitalInvoiceOnboardingViewController
+            let digitalInvoiceOnboardingViewController =
+                storyboard.instantiateViewController(
+                    withIdentifier: "digitalInvoiceOnboardingViewController"
+                ) as! DigitalInvoiceOnboardingViewController
 
             navigationController.present(digitalInvoiceOnboardingViewController, animated: true)
             didShowOnboardInCurrentSession = true

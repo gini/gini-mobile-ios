@@ -12,9 +12,11 @@ class DeselectLineItemActionSheet {
     func present(from viewController: UIViewController,
                  source: UIView?,
                  returnReasons: [ReturnReason],
-                 completion: @escaping (DigitalInvoice.LineItem.SelectedState) -> Void) {
+                 completion: @escaping (DigitalInvoice.SelectedState) -> Void) {
         let actionSheet = UIAlertController(title: nil,
-                                            message: NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.deselectreasonactionsheet.message", comment: "Info message when deselect a return reason"),
+                                            message: NSLocalizedStringPreferredGiniBankFormat(
+                                                "ginibank.digitalinvoice.deselectreasonactionsheet.message",
+                                                comment: "Info message when deselect a return reason"),
                                             preferredStyle: .actionSheet)
         actionSheet.view.tintColor = .GiniBank.accent1
 
@@ -26,8 +28,9 @@ class DeselectLineItemActionSheet {
                                                 }))
         }
 
-        actionSheet.addAction(UIAlertAction(title: NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel",
-                                                                                            comment: "title for cancel action when deselect a return reason"),
+        actionSheet.addAction(UIAlertAction(title: NSLocalizedStringPreferredGiniBankFormat(
+                                                    "ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel",
+                                                    comment: "title for cancel action when deselect a return reason"),
                                             style: .cancel,
                                             handler: { _ in
                                                 completion(.selected)
