@@ -8,9 +8,9 @@
 import UIKit
 
 final class AlbumsPickerTableViewCell: UITableViewCell {
-    
+
     static let identifier = "AlbumsPickerTableViewCellIdentifier"
-    
+
     lazy var albumThumbnailView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -22,10 +22,9 @@ final class AlbumsPickerTableViewCell: UITableViewCell {
         imageView.layer.shadowOffset = CGSize(width: -2, height: 2)
         imageView.layer.shadowPath = UIBezierPath(rect: imageView.bounds).cgPath
         imageView.layer.cornerRadius = 8
-        
         return imageView
     }()
-    
+
     lazy var albumTitleLabel: UILabel = {
         let albumTitleLabel = UILabel(frame: .zero)
         albumTitleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -34,7 +33,7 @@ final class AlbumsPickerTableViewCell: UITableViewCell {
         albumTitleLabel.adjustsFontForContentSizeCategory = true
         return albumTitleLabel
     }()
-    
+
     lazy var albumSubTitleLabel: UILabel = {
         let albumSubTitleLabel = UILabel(frame: .zero)
         albumSubTitleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -43,7 +42,7 @@ final class AlbumsPickerTableViewCell: UITableViewCell {
         albumSubTitleLabel.textColor = GiniColor(light: .GiniCapture.dark6, dark: .GiniCapture.light6).uiColor()
         return albumSubTitleLabel
     }()
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         accessoryType = .disclosureIndicator
@@ -54,33 +53,43 @@ final class AlbumsPickerTableViewCell: UITableViewCell {
         backgroundColor = .clear
         addConstraints()
     }
-    
+
     private func addConstraints() {
         NSLayoutConstraint.activate([
-            albumThumbnailView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.paddingBig),
-            albumThumbnailView.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: Constants.padding),
-            albumThumbnailView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -Constants.padding),
+            albumThumbnailView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                                        constant: Constants.paddingBig),
+            albumThumbnailView.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor,
+                                                    constant: Constants.padding),
+            albumThumbnailView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor,
+                                                       constant: -Constants.padding),
             albumThumbnailView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             albumThumbnailView.heightAnchor.constraint(equalToConstant: Constants.imageSize.height),
             albumThumbnailView.widthAnchor.constraint(equalTo: albumThumbnailView.heightAnchor),
 
-            albumTitleLabel.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: Constants.padding),
-            albumTitleLabel.leadingAnchor.constraint(equalTo: albumThumbnailView.trailingAnchor, constant: Constants.paddingBig),
-            albumTitleLabel.bottomAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -Constants.paddingHalf),
-            albumTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.paddingHalf),
+            albumTitleLabel.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor,
+                                                 constant: Constants.padding),
+            albumTitleLabel.leadingAnchor.constraint(equalTo: albumThumbnailView.trailingAnchor,
+                                                     constant: Constants.paddingBig),
+            albumTitleLabel.bottomAnchor.constraint(equalTo: contentView.centerYAnchor,
+                                                    constant: -Constants.paddingHalf),
+            albumTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                      constant: -Constants.paddingHalf),
 
-            albumSubTitleLabel.topAnchor.constraint(equalTo: contentView.centerYAnchor, constant: Constants.paddingHalf),
+            albumSubTitleLabel.topAnchor.constraint(equalTo: contentView.centerYAnchor,
+                                                    constant: Constants.paddingHalf),
             albumSubTitleLabel.leadingAnchor.constraint(equalTo: albumTitleLabel.leadingAnchor),
-            albumSubTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.paddingBig),
-            albumSubTitleLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -Constants.padding)
+            albumSubTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                         constant: -Constants.paddingBig),
+            albumSubTitleLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor,
+                                                       constant: -Constants.padding)
 
         ])
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func setUp(with album: Album, giniConfiguration: GiniConfiguration, galleryManager: GalleryManagerProtocol) {
         albumTitleLabel.text = album.title
         albumSubTitleLabel.text = "\(album.count)"
@@ -90,7 +99,7 @@ final class AlbumsPickerTableViewCell: UITableViewCell {
 
         albumTitleLabel.font = giniConfiguration.textStyleFonts[.headline]
         albumSubTitleLabel.font = giniConfiguration.textStyleFonts[.subheadline]
-        
+
         let asset = album.assets[album.assets.count - 1]
         galleryManager.fetchImage(from: asset,
                                   imageQuality: .thumbnail) {[weak self] image in

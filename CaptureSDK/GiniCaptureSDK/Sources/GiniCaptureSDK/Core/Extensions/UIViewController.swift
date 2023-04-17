@@ -19,7 +19,7 @@ extension UIViewController {
         let message: String
         var cancelActionTitle: String = .localized(resource: CameraStrings.errorPopupCancelButton)
         var confirmActionTitle: String? = .localized(resource: CameraStrings.errorPopupPickAnotherFileButton)
-        
+
         switch error {
         case let validationError as DocumentValidationError:
             message = validationError.message
@@ -43,31 +43,31 @@ extension UIViewController {
         default:
             message = DocumentValidationError.unknown.message
         }
-        
+
         let dialog = errorDialog(withMessage: message,
                                  cancelActionTitle: cancelActionTitle,
                                  confirmActionTitle: confirmActionTitle,
                                  confirmAction: positiveAction)
-        
+
         present(dialog, animated: true, completion: nil)
     }
-    
+
     fileprivate func errorDialog(withMessage message: String,
                                  title: String? = nil,
                                  cancelActionTitle: String,
                                  confirmActionTitle: String? = nil,
                                  confirmAction: (() -> Void)? = nil) -> UIAlertController {
-        
+
         let alertViewController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
 
         alertViewController.view.tintColor = .GiniCapture.accent1
-        
+
         alertViewController.addAction(UIAlertAction(title: cancelActionTitle,
                                                     style: .cancel,
                                                     handler: { _ in
                                                         alertViewController.dismiss(animated: true, completion: nil)
         }))
-        
+
         if let confirmActionTitle = confirmActionTitle, let confirmAction = confirmAction {
             alertViewController.addAction(UIAlertAction(title: confirmActionTitle,
                                                         style: .default,
@@ -75,7 +75,7 @@ extension UIViewController {
                                                             confirmAction()
             }))
         }
-        
+
         return alertViewController
     }
 }

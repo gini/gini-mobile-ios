@@ -11,7 +11,7 @@ import Photos
 struct Asset {
     var identifier: String
     var value: PHAsset
-    
+
     init(value: PHAsset) {
         self.value = value
         self.identifier = value.localIdentifier

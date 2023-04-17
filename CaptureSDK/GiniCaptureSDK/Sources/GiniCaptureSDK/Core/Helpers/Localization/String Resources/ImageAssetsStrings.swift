@@ -8,13 +8,13 @@
 import Foundation
 
 public enum ImageAssetsStrings: LocalizableStringResource {
-    
+
     case openWithTutorialStep1, openWithTutorialStep2, openWithTutorialStep3
-    
+
     public var tableName: String {
         return "images"
     }
-    
+
     public var tableEntry: LocalizationEntry {
         switch self {
         case .openWithTutorialStep1:
@@ -25,11 +25,11 @@ public enum ImageAssetsStrings: LocalizableStringResource {
             return ("openWithTutorialStep3", "Third step image name")
         }
     }
-    
+
     public var isCustomizable: Bool {
         return true
     }
-    
+
     public var fallbackTableEntry: String {
         return ""
     }

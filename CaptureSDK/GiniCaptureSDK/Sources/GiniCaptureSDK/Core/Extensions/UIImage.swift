@@ -10,7 +10,7 @@ import UIKit
 extension UIImage {
     convenience init?(qrData data: Data) {
         let filter = CIFilter(name: "CIQRCodeGenerator")
-        
+
         filter?.setValue(data, forKey: "inputMessage")
         filter?.setValue("Q", forKey: "inputCorrectionLevel")
 
@@ -28,13 +28,13 @@ extension UIImage {
             return nil
         }
     }
-    
+
     func rotated90Degrees() -> UIImage? {
         guard let cgImage = self.cgImage else { return nil }
         let rotatedOrientation = nextImageOrientationClockwise(self.imageOrientation)
         return UIImage(cgImage: cgImage, scale: 1.0, orientation: rotatedOrientation)
     }
-    
+
     fileprivate func nextImageOrientationClockwise(_ orientation: UIImage.Orientation) -> UIImage.Orientation {
         var nextOrientation: UIImage.Orientation!
         switch orientation {
@@ -51,7 +51,7 @@ extension UIImage {
         }
         return nextOrientation
     }
-    
+
     static func downsample(from data: Data, to pointSize: CGSize, scale: CGFloat) -> UIImage {
         let imageSourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
         let maxDimensionInPixels = max(pointSize.width, pointSize.height) * scale
@@ -60,7 +60,7 @@ extension UIImage {
              kCGImageSourceShouldCacheImmediately: true,
              kCGImageSourceCreateThumbnailWithTransform: true,
              kCGImageSourceThumbnailMaxPixelSize: maxDimensionInPixels] as CFDictionary
-        
+
         guard let imageSource = CGImageSourceCreateWithData(data as CFData, imageSourceOptions),
         let downsampledImage =
             CGImageSourceCreateThumbnailAtIndex(imageSource, 0, downsampleOptions) else {
@@ -68,7 +68,7 @@ extension UIImage {
         }
         return UIImage(cgImage: downsampledImage)
     }
-    
+
     func tintedImageWithColor(_ color: UIColor) -> UIImage? {
         let image = withRenderingMode(.alwaysTemplate)
         UIGraphicsBeginImageContextWithOptions(size, false, scale)
