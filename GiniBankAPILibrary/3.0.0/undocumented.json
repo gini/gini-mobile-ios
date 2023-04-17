@@ -1,0 +1,691 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/APIResource.swift",
+      "line": 10,
+      "symbol": "APIDomain",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/CompositeDocumentInfo.swift",
+      "line": 16,
+      "symbol": "CompositeDocumentInfo.init(partialDocuments:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/Auth/AlternativeTokenSource.swift",
+      "line": 10,
+      "symbol": "AlternativeTokenSource",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/Auth/AlternativeTokenSource.swift",
+      "line": 12,
+      "symbol": "AlternativeTokenSource.fetchToken(completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/Auth/Token.swift",
+      "line": 10,
+      "symbol": "Token",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/Auth/Token.swift",
+      "line": 15,
+      "symbol": "Token.accessToken",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/Auth/Token.swift",
+      "line": 17,
+      "symbol": "Token.init(expiration:scope:type:accessToken:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/Auth/Token.swift",
+      "line": 33,
+      "symbol": "Token",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/Auth/UserResource.swift",
+      "line": 10,
+      "symbol": "UserDomain",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/Client.swift",
+      "line": 21,
+      "symbol": "Client.init(id:secret:domain:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/GiniBankAPI.swift",
+      "line": 62,
+      "symbol": "GiniBankAPI.Builder.sessionDelegate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/GiniBankAPI.swift",
+      "line": 98,
+      "symbol": "GiniBankAPI.Builder.build()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/GiniError.swift",
+      "line": 20,
+      "symbol": "GiniErrorProtocol.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/GiniError.swift",
+      "line": 21,
+      "symbol": "GiniErrorProtocol.response",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/GiniError.swift",
+      "line": 22,
+      "symbol": "GiniErrorProtocol.data",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/GiniError.swift",
+      "line": 40,
+      "symbol": "GiniError.badRequest(response:data:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/GiniError.swift",
+      "line": 41,
+      "symbol": "GiniError.notAcceptable(response:data:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/GiniError.swift",
+      "line": 42,
+      "symbol": "GiniError.notFound(response:data:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/GiniError.swift",
+      "line": 43,
+      "symbol": "GiniError.noResponse",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/GiniError.swift",
+      "line": 44,
+      "symbol": "GiniError.parseError(message:response:data:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/GiniError.swift",
+      "line": 45,
+      "symbol": "GiniError.requestCancelled",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/GiniError.swift",
+      "line": 46,
+      "symbol": "GiniError.tooManyRequests(response:data:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/GiniError.swift",
+      "line": 47,
+      "symbol": "GiniError.unauthorized(response:data:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/GiniError.swift",
+      "line": 48,
+      "symbol": "GiniError.unknown(response:data:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/GiniError.swift",
+      "line": 50,
+      "symbol": "GiniError.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/GiniError.swift",
+      "line": 73,
+      "symbol": "GiniError.response",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/GiniError.swift",
+      "line": 88,
+      "symbol": "GiniError.data",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/Logger.swift",
+      "line": 27,
+      "symbol": "LogLevel",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/Logger.swift",
+      "line": 28,
+      "symbol": "LogLevel.none",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/Logger.swift",
+      "line": 29,
+      "symbol": "LogLevel.debug",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Core/SessionManager.swift",
+      "line": 109,
+      "symbol": "CancellationToken.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/DefaultDocumentService.swift",
+      "line": 17,
+      "symbol": "DefaultDocumentService.apiDomain",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Document+Layout.swift",
+      "line": 45,
+      "symbol": "Document.Layout.TextZone.paragraphs",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Document.swift",
+      "line": 139,
+      "symbol": "Document.DocType.bankStatement",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Document.swift",
+      "line": 140,
+      "symbol": "Document.DocType.contract",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Document.swift",
+      "line": 141,
+      "symbol": "Document.DocType.invoice",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Document.swift",
+      "line": 142,
+      "symbol": "Document.DocType.receipt",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Document.swift",
+      "line": 143,
+      "symbol": "Document.DocType.reminder",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Document.swift",
+      "line": 144,
+      "symbol": "Document.DocType.remittanceSlip",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Document.swift",
+      "line": 145,
+      "symbol": "Document.DocType.travelExpenseReport",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Document.swift",
+      "line": 146,
+      "symbol": "Document.DocType.other",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Document.swift",
+      "line": 151,
+      "symbol": "Document.Links.extractions",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Document.swift",
+      "line": 152,
+      "symbol": "Document.Links.layout",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Document.swift",
+      "line": 153,
+      "symbol": "Document.Links.processed",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Document.swift",
+      "line": 154,
+      "symbol": "Document.Links.document",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Document.swift",
+      "line": 155,
+      "symbol": "Document.Links.pages",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/DocumentService.swift",
+      "line": 14,
+      "symbol": "DocumentService",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/DocumentService.swift",
+      "line": 16,
+      "symbol": "DocumentService.apiDomain",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/ErrorEvent.swift",
+      "line": 21,
+      "symbol": "ErrorEvent.init(deviceModel:osName:osVersion:captureSdkVersion:apiLibVersion:description:documentId:originalRequestId:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Extraction.swift",
+      "line": 28,
+      "symbol": "Extraction.Box.height",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Extraction.swift",
+      "line": 29,
+      "symbol": "Extraction.Box.left",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Extraction.swift",
+      "line": 30,
+      "symbol": "Extraction.Box.page",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Extraction.swift",
+      "line": 31,
+      "symbol": "Extraction.Box.top",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Extraction.swift",
+      "line": 32,
+      "symbol": "Extraction.Box.width",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Extraction.swift",
+      "line": 34,
+      "symbol": "Extraction.Box.init(height:left:page:top:width:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Extraction.swift",
+      "line": 45,
+      "symbol": "Extraction.Candidate.box",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Extraction.swift",
+      "line": 46,
+      "symbol": "Extraction.Candidate.entity",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Extraction.swift",
+      "line": 47,
+      "symbol": "Extraction.Candidate.value",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Extraction.swift",
+      "line": 49,
+      "symbol": "Extraction.Candidate.init(box:entity:value:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Extraction.swift",
+      "line": 56,
+      "symbol": "Extraction.init(box:candidates:entity:value:name:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Extraction.swift",
+      "line": 76,
+      "symbol": "Extraction.isEqual(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Extraction.swift",
+      "line": 90,
+      "symbol": "Extraction.debugDescription",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Extraction.swift",
+      "line": 97,
+      "symbol": "Extraction.Box.isEqual(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Extraction.swift",
+      "line": 111,
+      "symbol": "Extraction.Candidate.isEqual(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/ExtractionResult.swift",
+      "line": 22,
+      "symbol": "ExtractionResult.returnReasons",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/ExtractionResult.swift",
+      "line": 27,
+      "symbol": "ExtractionResult.init(extractions:lineItems:returnReasons:candidates:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/PartialDocumentInfo.swift",
+      "line": 28,
+      "symbol": "PartialDocumentInfo.init(document:rotationDelta:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/Payment.swift",
+      "line": 13,
+      "symbol": "Payment.iban",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/Payment.swift",
+      "line": 13,
+      "symbol": "Payment.paidAt",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/Payment.swift",
+      "line": 13,
+      "symbol": "Payment.recipient",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/Payment.swift",
+      "line": 14,
+      "symbol": "Payment.bic",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/Payment.swift",
+      "line": 15,
+      "symbol": "Payment.amount",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/Payment.swift",
+      "line": 15,
+      "symbol": "Payment.purpose",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/PaymentRequest.swift",
+      "line": 13,
+      "symbol": "PaymentRequest.requesterURI",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/PaymentRequest.swift",
+      "line": 14,
+      "symbol": "PaymentRequest.iban",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/PaymentRequest.swift",
+      "line": 15,
+      "symbol": "PaymentRequest.bic",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/PaymentRequest.swift",
+      "line": 16,
+      "symbol": "PaymentRequest.amount",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/PaymentRequest.swift",
+      "line": 16,
+      "symbol": "PaymentRequest.createdAt",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/PaymentRequest.swift",
+      "line": 16,
+      "symbol": "PaymentRequest.purpose",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/PaymentRequest.swift",
+      "line": 16,
+      "symbol": "PaymentRequest.recipient",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/PaymentRequest.swift",
+      "line": 17,
+      "symbol": "PaymentRequest.status",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/PaymentRequest.swift",
+      "line": 40,
+      "symbol": "PaymentRequests",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/PaymentService.swift",
+      "line": 77,
+      "symbol": "PaymentService.apiDomain",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/PaymentService.swift",
+      "line": 85,
+      "symbol": "PaymentServiceProtocol",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/ResolvedPaymentRequest.swift",
+      "line": 12,
+      "symbol": "ResolvedPaymentRequest.requesterUri",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/ResolvedPaymentRequest.swift",
+      "line": 13,
+      "symbol": "ResolvedPaymentRequest.iban",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/ResolvedPaymentRequest.swift",
+      "line": 14,
+      "symbol": "ResolvedPaymentRequest.bic",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/ResolvedPaymentRequest.swift",
+      "line": 15,
+      "symbol": "ResolvedPaymentRequest.amount",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/ResolvedPaymentRequest.swift",
+      "line": 15,
+      "symbol": "ResolvedPaymentRequest.createdAt",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/ResolvedPaymentRequest.swift",
+      "line": 15,
+      "symbol": "ResolvedPaymentRequest.purpose",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/ResolvedPaymentRequest.swift",
+      "line": 15,
+      "symbol": "ResolvedPaymentRequest.recipient",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/Payments/ResolvedPaymentRequest.swift",
+      "line": 16,
+      "symbol": "ResolvedPaymentRequest.status",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/ReturnReason.swift",
+      "line": 15,
+      "symbol": "ReturnReason.id",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/ReturnReason.swift",
+      "line": 16,
+      "symbol": "ReturnReason.localizedLabels",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/ReturnReason.swift",
+      "line": 18,
+      "symbol": "ReturnReason.init(id:localizedLabels:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/ReturnReason.swift",
+      "line": 65,
+      "symbol": "ReturnReason.isEqual(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/Documents/ReturnReason.swift",
+      "line": 76,
+      "symbol": "ReturnReason.debugDescription",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankAPILibrary/GiniBankAPILibrary/Sources/GiniBankAPILibrary/GiniBankAPILibraryVersion.swift",
+      "line": 8,
+      "symbol": "GiniBankAPILibraryVersion",
+      "symbol_kind": "source.lang.swift.decl.var.global",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios"
+}
