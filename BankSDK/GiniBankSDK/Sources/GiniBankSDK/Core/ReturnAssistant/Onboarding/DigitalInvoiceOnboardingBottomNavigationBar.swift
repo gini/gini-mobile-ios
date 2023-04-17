@@ -37,8 +37,9 @@ final class DigitalInvoiceOnboardingBottomNavigationBar: UIView {
         getStartedButton.isAccessibilityElement = true
         getStartedButton.translatesAutoresizingMaskIntoConstraints = false
 
-        let getStartedButtonTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.getStartedButton",
-                                                                           comment: "title for the done button on the digital invoice onboarding screen")
+        let getStartedButtonTitle = NSLocalizedStringPreferredGiniBankFormat(
+                                        "ginibank.digitalinvoice.onboarding.getStartedButton",
+                                        comment: "title for the done button on the digital invoice onboarding screen")
         getStartedButton.setTitle(getStartedButtonTitle, for: .normal)
         getStartedButton.accessibilityValue = getStartedButtonTitle
     }
@@ -49,7 +50,8 @@ final class DigitalInvoiceOnboardingBottomNavigationBar: UIView {
             getStartedButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonSize.width),
             getStartedButton.heightAnchor.constraint(equalToConstant: Constants.buttonSize.height),
             getStartedButton.topAnchor.constraint(equalTo: topAnchor, constant: Constants.verticalPadding),
-            getStartedButton.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: Constants.horizontalPadding)
+            getStartedButton.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor,
+                                                      constant: Constants.horizontalPadding)
         ])
     }
 }

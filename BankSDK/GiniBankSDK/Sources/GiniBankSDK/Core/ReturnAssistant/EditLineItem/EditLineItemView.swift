@@ -289,7 +289,7 @@ extension EditLineItemView: PriceLabelViewDelegate {
             }
         }
     }
-    
+
     func showCurrencyPicker(on view: UIView) {
         addSubview(currencyPicker)
 

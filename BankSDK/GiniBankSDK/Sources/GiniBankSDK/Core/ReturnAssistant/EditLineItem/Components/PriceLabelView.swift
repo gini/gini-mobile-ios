@@ -56,7 +56,7 @@ final class PriceLabelView: UIView {
         }
         set {
             var sign = ""
-            if (newValue < 0) {
+            if newValue < 0 {
                 sign = "- "
             }
             let string = sign + (Price.stringWithoutSymbol(from: abs(newValue)) ?? "")
@@ -135,8 +135,8 @@ extension PriceLabelView: UITextFieldDelegate {
     }
 
     func textField(_ textField: UITextField,
-                          shouldChangeCharactersIn range: NSRange,
-                          replacementString string: String) -> Bool {
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
 
         if let text = textField.text, let textRange = Range(range, in: text) {
             let updatedText = text.replacingCharacters(in: textRange, with: string)
@@ -150,7 +150,8 @@ extension PriceLabelView: UITextFieldDelegate {
             if let decimal = Decimal(string: onlyDigits) {
                 let decimalWithFraction = decimal / 100
 
-                if let newAmount = Price.stringWithoutSymbol(from: decimalWithFraction)?.trimmingCharacters(in: .whitespaces) {
+                if let newAmount = Price.stringWithoutSymbol(from: decimalWithFraction)?
+                                        .trimmingCharacters(in: .whitespaces) {
                     // Save the selected text range to restore the cursor position after replacing the text
                     let selectedRange = textField.selectedTextRange
 
