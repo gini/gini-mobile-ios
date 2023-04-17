@@ -76,18 +76,17 @@ final class ImageAnalysisNoResultsViewController: UIViewController {
     var didTapBottomButton: (() -> Void) = { }
 
     convenience init(title: String? = nil,
-                            subHeaderText: String? = NSLocalizedStringPreferredFormat(
-                                "ginicapture.noresults.collection.header",
-                                comment: "no results suggestions collection header title"),
-                            topViewText: String = NSLocalizedStringPreferredFormat(
-                                "ginicapture.noresults.warning",
-                                comment: "Warning text that indicates that there " +
-                                "was any result for this photo analysis"),
-                            topViewIcon: UIImage? = UIImageNamedPreferred(named: "warningNoResults"),
-                            bottomButtonText: String? = NSLocalizedStringPreferredFormat(
-                                "ginicapture.noresults.gotocamera",
-                                comment: "bottom button title (go to camera button)"),
-                            bottomButtonIcon: UIImage? = UIImageNamedPreferred(named: "cameraIcon")) {
+                     subHeaderText: String? = NSLocalizedStringPreferredFormat(
+                                                    "ginicapture.noresults.collection.header",
+                                                    comment: "no results suggestions collection header title"),
+                     topViewText: String = NSLocalizedStringPreferredFormat(
+                                                    "ginicapture.noresults.warning",
+                                                    comment: "Warning text that indicates that there " +
+                                                             "was any result for this photo analysis"),
+                     topViewIcon: UIImage? = UIImageNamedPreferred(named: "warningNoResults"),
+                     bottomButtonText: String? = NSLocalizedStringPreferredFormat("ginicapture.noresults.gotocamera",
+                                                    comment: "bottom button title (go to camera button)"),
+                     bottomButtonIcon: UIImage? = UIImageNamedPreferred(named: "cameraIcon")) {
         self.init(title: title,
                   subHeaderText: subHeaderText,
                   topViewText: topViewText,
@@ -193,7 +192,7 @@ extension ImageAnalysisNoResultsViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView,
-                               cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let identifier = CaptureSuggestionsCollectionView.captureSuggestionsCellIdentifier
         let cell = (collectionView.dequeueReusableCell(withReuseIdentifier: identifier,
                                                        for: indexPath) as? CaptureSuggestionsCollectionCell)!
@@ -212,20 +211,20 @@ extension ImageAnalysisNoResultsViewController: UICollectionViewDataSource {
 
 extension ImageAnalysisNoResultsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
-                               layout collectionViewLayout: UICollectionViewLayout,
-                               sizeForItemAt indexPath: IndexPath) -> CGSize {
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         return suggestionsCollectionView.cellSize()
     }
 
     func collectionView(_ collectionView: UICollectionView,
-                               layout collectionViewLayout: UICollectionViewLayout,
-                               referenceSizeForHeaderInSection section: Int) -> CGSize {
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        referenceSizeForHeaderInSection section: Int) -> CGSize {
         return suggestionsCollectionView.headerSize(withSubHeader: subHeaderTitle != nil)
     }
 
     func collectionView(_ collectionView: UICollectionView,
-                               viewForSupplementaryElementOfKind kind: String,
-                               at indexPath: IndexPath) -> UICollectionReusableView {
+                        viewForSupplementaryElementOfKind kind: String,
+                        at indexPath: IndexPath) -> UICollectionReusableView {
         let identifier = CaptureSuggestionsCollectionView.captureSuggestionsHeaderIdentifier
         let header = (collectionView
             .dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader,

@@ -42,7 +42,6 @@ import UIKit
     var didShowAnalysis: (() -> Void)?
     private let document: GiniCaptureDocument
     private let giniConfiguration: GiniConfiguration
-    private static let loadingIndicatorContainerHeight: CGFloat = 60
 
     public weak var trackingDelegate: AnalysisScreenTrackingDelegate?
 
@@ -198,7 +197,8 @@ import UIKit
         Constraints.active(item: imageView, attr: .bottom, relatedBy: .equal, to: view.safeAreaLayoutGuide,
                            attr: .bottom, priority: 999)
         Constraints.active(item: imageView, attr: .centerX, relatedBy: .equal, to: view, attr: .centerX)
-        Constraints.active(item: imageView, attr: .width, relatedBy: .equal, to: view, attr: .width, multiplier: 0.9)
+        Constraints.active(item: imageView, attr: .width, relatedBy: .equal, to: view, attr: .width,
+                           multiplier: Constants.widthMultiplier)
     }
 
     private func addOverlay() {
@@ -231,10 +231,12 @@ import UIKit
         loadingIndicatorText.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            loadingIndicatorText.topAnchor.constraint(equalTo: loadingIndicator.bottomAnchor, constant: 16),
+            loadingIndicatorText.topAnchor.constraint(equalTo: loadingIndicator.bottomAnchor,
+                                                      constant: Constants.padding),
             loadingIndicatorText.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
             loadingIndicatorText.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
-            loadingIndicatorText.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)])
+            loadingIndicatorText.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                         constant: -Constants.padding)])
     }
 
     private func addLoadingView(intoContainer container: UIView? = nil) {
@@ -255,8 +257,7 @@ import UIKit
             NSLayoutConstraint.activate([
                 container.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 container.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-                container.heightAnchor.constraint(equalToConstant:
-                                                    AnalysisViewController.loadingIndicatorContainerHeight),
+                container.heightAnchor.constraint(equalToConstant: Constants.loadingIndicatorContainerHeight),
                 container.widthAnchor.constraint(equalTo: container.heightAnchor),
                 loadingIndicator.centerXAnchor.constraint(equalTo: container.centerXAnchor),
                 loadingIndicator.centerYAnchor.constraint(equalTo: container.centerYAnchor)
@@ -279,12 +280,20 @@ import UIKit
             loadingIndicatorContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             loadingIndicatorContainer.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor),
             loadingIndicatorContainer.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
-                                                               constant: 16)])
+                                                               constant: Constants.padding)])
     }
 
     private func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {
         let captureSuggestions = CaptureSuggestionsView(superView: view,
                                                         bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
         captureSuggestions.start()
+    }
+}
+
+private extension AnalysisViewController {
+    enum Constants {
+        static let padding: CGFloat = 16
+        static let loadingIndicatorContainerHeight: CGFloat = 60
+        static let widthMultiplier: CGFloat = 0.9
     }
 }
