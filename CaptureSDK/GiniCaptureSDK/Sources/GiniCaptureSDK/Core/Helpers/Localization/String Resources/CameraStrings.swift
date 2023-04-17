@@ -8,19 +8,20 @@
 import Foundation
 
 enum CameraStrings: LocalizableStringResource {
-    
+
     case captureButton, captureFailedMessage, capturedImagesStackSubtitleLabel, errorPopupCancelButton,
          errorPopupGrantAccessButton, errorPopupPickAnotherFileButton, errorPopupReviewPagesButton,
          importFileButtonLabel, tooManyPagesErrorMessage, mixedArraysPopupCancelButton,
          mixedArraysPopupUsePhotosButton, mixedDocumentsErrorMessage, notAuthorizedButton,
          notAuthorizedMessage, photoLibraryAccessDeniedMessage, qrCodeDetectedPopupMessage, qrCodeDetectedPopupButton,
          popupTitleImportPDF, popupOptionPhotos, popupOptionFiles, popupTitleImportPDForPhotos, popupCancel,
-         unsupportedQrCodeDetectedPopupMessage, unknownErrorMessage, failedToOpenDocumentErrorMessage, multiplePdfErrorMessage, errorConfirmButton
-    
+         unsupportedQrCodeDetectedPopupMessage, unknownErrorMessage, failedToOpenDocumentErrorMessage,
+         multiplePdfErrorMessage, errorConfirmButton
+
     var tableName: String {
         return "camera"
     }
-    
+
     var tableEntry: LocalizationEntry {
         switch self {
         case .captureButton:
@@ -86,11 +87,11 @@ enum CameraStrings: LocalizableStringResource {
             return ("filepicker.errorPopup.confirmButton", "Ok button title")
         }
     }
-    
+
     var isCustomizable: Bool {
         return true
     }
-    
+
     var fallbackTableEntry: String {
         switch self {
         case .errorPopupPickAnotherFileButton:

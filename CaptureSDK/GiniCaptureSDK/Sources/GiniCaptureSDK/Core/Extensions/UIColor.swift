@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIColor {    
+extension UIColor {
     public static func from(hex: UInt) -> UIColor {
         return UIColor(
             red: CGFloat((hex & 0xFF0000) >> 16) / 255.0,

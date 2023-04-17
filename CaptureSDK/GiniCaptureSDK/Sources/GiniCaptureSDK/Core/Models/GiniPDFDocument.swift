@@ -10,27 +10,27 @@ import UIKit
 import MobileCoreServices
 
 final public class GiniPDFDocument: NSObject, GiniCaptureDocument {
-    
+
     static let acceptedPDFTypes: [String] = [kUTTypePDF as String]
-    
+
     public var type: GiniCaptureDocumentType = .pdf
     public var id: String
     public let data: Data
     public var previewImage: UIImage?
     public var isReviewable: Bool
     public var isImported: Bool
-    
+
     private(set) var numberPages: Int = 0
     private(set) var pdfTitle: String?
 
     /**
      Initializes a GiniPDFDocument with a preview image (from the first page)
-     
+
      - Parameter data: PDF data
      - Parameter fileName: PDF file name
-     
+
      */
-    
+
     init(data: Data, fileName: String?) {
         self.data = data
         self.isReviewable = false
@@ -50,7 +50,7 @@ final public class GiniPDFDocument: NSObject, GiniCaptureDocument {
 
         }
     }
-    
+
     fileprivate func getKey(_ key: String, from document: CGPDFDocument) -> String? {
         if let dict = document.info {
             var cfValue: CGPDFStringRef?
@@ -61,24 +61,24 @@ final public class GiniPDFDocument: NSObject, GiniCaptureDocument {
 
         return nil
     }
-    
+
     fileprivate func renderFirstPage(fromPdf pdf: CGPDFDocument) -> UIImage? {
         var pdfImage: UIImage?
         let pdfDoc = pdf
-        
+
         if let pdfPage: CGPDFPage = pdfDoc.page(at: 1) {
             let pageRect: CGRect = normalizedRect(forBoxRect: pdfPage.getBoxRect(.cropBox),
                                                  withRotationAngle: pdfPage.rotationAngle)
-            
+
             // Create context
             UIGraphicsBeginImageContextWithOptions(CGSize(width: pageRect.width,
                                                           height: pageRect.height), false, 0.0)
             let context: CGContext = UIGraphicsGetCurrentContext()!
-            
+
             // Fill context color
             context.setFillColor(UIColor.white.cgColor)
             context.fill(pageRect)
-            
+
             // Align PDF's cropBox to the context
             context.translateBy(x: 0, y: pageRect.size.height)
             context.scaleBy(x: 1, y: -1)
@@ -93,21 +93,21 @@ final public class GiniPDFDocument: NSObject, GiniCaptureDocument {
             pdfImage = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
         }
-        
+
         return pdfImage
     }
-    
+
     fileprivate func normalizedRect(forBoxRect rect: CGRect,
                                     withRotationAngle rotationAngle: Int32) -> CGRect {
         var rect = rect
-        
+
         // In case that the image was rotated 90 or 270, final rect should be rotated to portrait
         if rotationAngle == 90 || rotationAngle == 270 {
             let tempWidth = rect.size.width
             rect.size.width = rect.size.height
             rect.size.height = tempWidth
         }
-        
+
         return rect
     }
 }
@@ -115,13 +115,13 @@ final public class GiniPDFDocument: NSObject, GiniCaptureDocument {
 // MARK: NSItemProviderReading
 
 extension GiniPDFDocument: NSItemProviderReading {
-    
+
     static public var readableTypeIdentifiersForItemProvider: [String] {
         return [kUTTypePDF as String]
     }
-    
+
     static public func object(withItemProviderData data: Data, typeIdentifier: String) throws -> Self {
         return self.init(data: data, fileName: nil)
     }
-    
+
 }

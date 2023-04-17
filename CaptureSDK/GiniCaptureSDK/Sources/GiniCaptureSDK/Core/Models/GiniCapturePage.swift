@@ -15,17 +15,17 @@ public struct GiniCapturePage: Diffable {
     public var document: GiniCaptureDocument
     public var error: Error?
     public var isUploaded = false
-    
+
     public var primaryKey: String {
         return document.id
     }
-    
+
     public init(document: GiniCaptureDocument, error: Error? = nil, isUploaded: Bool = false) {
         self.document = document
         self.error = error
         self.isUploaded = isUploaded
     }
-    
+
     public func isUpdated(to element: GiniCapturePage) -> Bool {
         return error?.localizedDescription == element.error?.localizedDescription &&
             isUploaded == element.isUploaded

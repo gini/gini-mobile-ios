@@ -10,12 +10,12 @@ import UIKit
 import MobileCoreServices
 
 final public class GiniImageDocument: NSObject, GiniCaptureDocument {
-    
+
     static let acceptedImageTypes: [String] = [kUTTypeJPEG as String,
                                                kUTTypePNG as String,
                                                kUTTypeGIF as String,
                                                kUTTypeTIFF as String]
-    
+
     public var type: GiniCaptureDocumentType = .image
     public var id: String
     public var data: Data
@@ -29,16 +29,16 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
     // A flag to determine if the document is opened from another app or from the SDK
     public var isFromOtherApp: Bool
     fileprivate let metaInformationManager: ImageMetaInformationManager
-    
+
     /**
      Initializes a GiniImageDocument.
-     
+
      - Parameter data: PDF data
      - Parameter deviceOrientation: Device orientation when a picture was taken from the camera.
                                     In other cases it should be `nil`
-     
+
      */
-    
+
     init(data: Data,
          processedImageData: Data? = nil,
          imageSource: DocumentSource,
@@ -65,25 +65,25 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
         if processedImageData != nil {
             self.metaInformationManager.update(imageOrientation: .up)
         }
-        
+
         if let dataWithMetadata = metaInformationManager.imageByAddingMetadata(to: processedImageData) {
             self.data = dataWithMetadata
         } else {
             self.data = data
-        }        
+        }
     }
 }
 
 // MARK: NSItemProviderReading
 
 extension GiniImageDocument: NSItemProviderReading {
-    
+
     static public var readableTypeIdentifiersForItemProvider: [String] {
         return acceptedImageTypes
     }
-    
+
     static public func object(withItemProviderData data: Data, typeIdentifier: String) throws -> Self {
         return self.init(data: data, imageSource: .external, imageImportMethod: .picker)
     }
-    
+
 }

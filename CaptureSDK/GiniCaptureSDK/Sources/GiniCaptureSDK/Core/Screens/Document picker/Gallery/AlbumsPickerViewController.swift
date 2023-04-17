@@ -30,6 +30,9 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
         return height
     }
 
+    private lazy var tableViewHeightAnchor =
+        albumsTableView.heightAnchor.constraint(equalToConstant: tableViewContentHeight)
+
     // MARK: - Views
 
     lazy var albumsTableView: UITableView = {
@@ -68,7 +71,6 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
         setupTableView()
     }
 
-    private lazy var tableViewHeightAnchor = albumsTableView.heightAnchor.constraint(equalToConstant: tableViewContentHeight)
     func setupTableView() {
         if #available(iOS 15.0, *) {
              albumsTableView.sectionHeaderTopPadding = 0
@@ -131,14 +133,15 @@ final class AlbumsPickerViewController: UIViewController, PHPhotoLibraryChangeOb
         tableViewHeightAnchor.constant = tableViewContentHeight
         view.layoutIfNeeded()
     }
-    
-    fileprivate func updateLayoutForFooter(){
+
+    fileprivate func updateLayoutForFooter() {
         guard let footerView = albumsTableView.tableFooterView else {
             return
         }
 
         let width = albumsTableView.bounds.size.width
-        let size = footerView.systemLayoutSizeFitting(CGSize(width: width, height: UIView.layoutFittingCompressedSize.height))
+        let size = footerView.systemLayoutSizeFitting(CGSize(width: width,
+                                                             height: UIView.layoutFittingCompressedSize.height))
 
         if footerView.frame.size.height != size.height {
             footerView.frame.size.height = size.height
