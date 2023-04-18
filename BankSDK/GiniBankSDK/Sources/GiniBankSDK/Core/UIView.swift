@@ -7,7 +7,7 @@
 
 import UIKit
 
-// swiftlint: disable force_cast
+// swiftlint:disable force_cast
 extension UIView {
     /** Loads instance from nib with the same name. */
     func loadNib() -> UIView {
