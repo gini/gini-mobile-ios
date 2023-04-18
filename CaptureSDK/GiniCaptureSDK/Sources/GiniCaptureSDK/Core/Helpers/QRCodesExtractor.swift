@@ -32,9 +32,10 @@ public final class QRCodesExtractor {
     
     class func extractParameters(fromBezhalCodeString string: String) -> [String: String] {
         var parameters: [String: String] = [:]
-        
-        if let queryParameters = URL(string: string)?.queryParameters {
-            
+
+        if let encodedString = string.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+           let queryParameters = URL(string: encodedString)?.queryParameters {
+
             if let bic = queryParameters["bic"] as? String {
                 parameters["bic"] = bic
             }
