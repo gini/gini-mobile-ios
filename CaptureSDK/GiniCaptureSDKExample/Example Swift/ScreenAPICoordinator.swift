@@ -76,6 +76,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
         
         let customResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "resultScreen") as? ResultTableViewController)!
+        customResultsScreen.tableView.estimatedRowHeight = 75
         customResultsScreen.result = results
 		customResultsScreen.editableFields = editableSpecificExtractions
 		
