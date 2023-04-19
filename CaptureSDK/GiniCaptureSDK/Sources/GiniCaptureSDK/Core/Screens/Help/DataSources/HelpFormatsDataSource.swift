@@ -143,10 +143,13 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
         return UITableView.automaticDimension
     }
 
-    override  func tableView(
-        _ tableView: UITableView,
-        willDisplay cell: UITableViewCell,
-        forRowAt indexPath: IndexPath) {
+    override  func tableView(_ tableView: UITableView,
+                             willDisplay cell: UITableViewCell,
+                             forRowAt indexPath: IndexPath) {
+        if #available(iOS 13, *) {
+            // The rounded corners are done in iOS13+ by using the tableView style mode .insetGrouped
+            return
+        }
         if items[indexPath.section].formats.count == 1 {
             cell.round(
                 corners: [.bottomLeft, .bottomRight, .topLeft, .topRight], withRadius: RoundedCorners.cornerRadius)

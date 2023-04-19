@@ -66,6 +66,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
         let availableLenses = Camera2ViewController.checkAvailableLenses()
         self.cameraLensSwitcherView = CameraLensSwitcherView(availableLenses: availableLenses)
+        self.cameraLensSwitcherView.isHidden = true
 
         if UIDevice.current.isIphone {
             super.init(nibName: "CameraPhone", bundle: giniCaptureBundle())
@@ -521,7 +522,7 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
             cameraPane.toggleCaptureButtonActivation(state: true)
         }
 
-        cameraLensSwitcherView.isHidden = false
+        cameraLensSwitcherView.isHidden = true
 
         cameraPreviewViewController.updatePreviewViewOrientation()
         UIView.animate(withDuration: 1.0) {
