@@ -152,47 +152,6 @@ public class Constraints {
     }
 }
 
-public struct Colors {
-    public struct Gini {
-        public static var blue = UIColor.from(hex: 0x009edc)
-        public static var bluishGreen = UIColor.from(hex: 0x007c99)
-        public static var crimson = UIColor.from(hex: 0xFF4F65)
-        public static var lightBlue = UIColor.from(hex: 0x74d1f5)
-        public static var grey = UIColor.from(hex: 0xAFB2B3)
-        public static var raspberry = UIColor.from(hex: 0xe30b5d)
-        public static var rose = UIColor.from(hex: 0xFC6B7E)
-        public static var pearl = UIColor.from(hex: 0xF2F2F2)
-        @available(iOS 13.0, *)
-        public static var dynamicPearl = UIColor { (traitCollection: UITraitCollection) -> UIColor in
-            if traitCollection.userInterfaceStyle == .dark {
-                return UIColor.from(hex: 0x1C1C1C)
-            } else {
-                return pearl
-            }
-        }
-        public static var paleGreen = UIColor.from(hex: 0xB8E986)
-        public static var springGreen = UIColor.from(hex: 0x00FA9A)
-        public static var veryLightGray = UIColor.from(hex: 0xD8D8D8)
-
-        @available(iOS 13.0, *)
-        public static var dynamicVeryLightGray = UIColor { (traitCollection: UITraitCollection) -> UIColor in
-            if traitCollection.userInterfaceStyle == .dark {
-                return UIColor.from(hex: 0x3A3A3A)
-            } else {
-                return UIColor.from(hex: 0xD8D8D8)
-            }
-        }
-        @available(iOS 13.0, *)
-        public static var shadowColor = UIColor { (traitCollection: UITraitCollection) -> UIColor in
-            if traitCollection.userInterfaceStyle == .dark {
-                return .white
-            } else {
-                return .black
-            }
-        }
-    }
-}
-
 /**
     Measure the time spent executing a block
  */
