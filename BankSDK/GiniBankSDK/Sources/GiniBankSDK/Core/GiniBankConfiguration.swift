@@ -269,17 +269,6 @@ public final class GiniBankConfiguration: NSObject {
     // MARK: Help screens
 
     /**
-     Sets the background color for all help screens.
-     */
-    @objc public var helpScreenBackgroundColor =  GiniColor(light: Colors.Gini.pearl, dark: UIColor.from(hex: 0x1C1C1C))
-
-    /**
-     Sets the background color for the cells on help screen.
-     */
-    @objc public var helpScreenCellsBackgroundColor =  GiniColor(light: Colors.Gini.pearl,
-                                                                 dark: UIColor.from(hex: 0x1C1C1C))
-
-    /**
      Sets the back button text in the navigation bar on the help menu screen. Use this if you only want to show the title.
      */
     @objc public var navigationBarHelpMenuTitleBackToCameraButton = ""
@@ -294,18 +283,6 @@ public final class GiniBankConfiguration: NSObject {
      the option won't be shown in the Help menu.
      */
     @objc public var shouldShowSupportedFormatsScreen = true
-
-    // MARK: Supported formats
-
-    /**
-     Sets the color of the unsupported formats icon background to the specified color.
-     */
-    @objc public var nonSupportedFormatsIconColor = Colors.Gini.crimson
-
-    /**
-     Sets the color of the supported formats icon background to the specified color.
-     */
-    @objc public var supportedFormatsIconColor = Colors.Gini.paleGreen
 
     // MARK: Open with tutorial options
 
@@ -512,10 +489,6 @@ public final class GiniBankConfiguration: NSObject {
         configuration.navigationBarHelpScreenTitleBackToMenuButton = self.navigationBarHelpScreenTitleBackToMenuButton
 
         configuration.shouldShowSupportedFormatsScreen = self.shouldShowSupportedFormatsScreen
-
-        configuration.nonSupportedFormatsIconColor = self.nonSupportedFormatsIconColor
-
-        configuration.supportedFormatsIconColor = self.supportedFormatsIconColor
 
         configuration.openWithAppNameForTexts = self.openWithAppNameForTexts
 

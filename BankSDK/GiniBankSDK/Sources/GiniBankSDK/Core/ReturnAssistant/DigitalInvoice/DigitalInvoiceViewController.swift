@@ -279,9 +279,9 @@ extension DigitalInvoiceViewController: UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch Section(rawValue: indexPath.section) {
         case .titleCell:
-            if let cell = tableView.dequeueReusableCell(withIdentifier:
-                                                            DigitalInvoiceTableViewTitleCell.reuseIdentifier,
-                                                        for: indexPath) as? DigitalInvoiceTableViewTitleCell {
+            if let cell = tableView.dequeueReusableCell(
+                                        withIdentifier: DigitalInvoiceTableViewTitleCell.reuseIdentifier,
+                                        for: indexPath) as? DigitalInvoiceTableViewTitleCell {
                 return cell
             }
             assertionFailure("DigitalInvoiceTableViewTitleCell could not been reused")
