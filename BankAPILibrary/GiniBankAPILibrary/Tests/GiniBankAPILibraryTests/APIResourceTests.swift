@@ -250,4 +250,13 @@ final class APIResourceTests: XCTestCase {
         XCTAssertEqual(urlString, "https://custom.domain.com/documents/", "path should match")
     }
     
+    func testCustomApiDomainWithPath() {
+        let resource = APIResource<[Document]>(method: .documents(limit: nil, offset: nil),
+                                               apiDomain: .custom(domain: "custom.domain.com", path:"/custom/path", tokenSource: nil),
+                                               httpMethod: .get)
+        
+        let urlString = resource.url.absoluteString
+        XCTAssertEqual(urlString, "https://custom.domain.com/custom/path/documents/", "path should match")
+    }
+    
 }

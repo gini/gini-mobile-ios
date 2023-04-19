@@ -107,7 +107,7 @@ extension GiniBankAPI {
             case .default:
                 let sessionManager = SessionManager(userDomain: userApi, sessionDelegate: self.sessionDelegate)
                 return GiniBankAPI(documentService: DefaultDocumentService(sessionManager: sessionManager), paymentService: PaymentService(sessionManager: sessionManager, apiDomain: .default))
-            case .custom(_, let tokenSource):
+            case .custom(_, _, let tokenSource):
                 var sessionManager : SessionManager
                 if let tokenSource = tokenSource {
                      sessionManager = SessionManager(alternativeTokenSource: tokenSource, sessionDelegate: self.sessionDelegate)
