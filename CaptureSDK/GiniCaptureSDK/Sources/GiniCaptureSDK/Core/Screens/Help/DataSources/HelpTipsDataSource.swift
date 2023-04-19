@@ -15,7 +15,6 @@ struct HelpTipsItem {
 }
 
 final class HelpTipsDataSource: HelpRoundedCornersDataSource<HelpTipsItem, HelpTipCell> {
-    // swiftlint:disable function_body_length
 
     var showHeader = false
 

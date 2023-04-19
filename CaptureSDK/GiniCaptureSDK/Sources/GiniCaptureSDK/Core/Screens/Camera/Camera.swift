@@ -223,7 +223,7 @@ final class Camera: NSObject, CameraProtocol {
 fileprivate extension Camera {
 
     var captureSettings: AVCapturePhotoSettings {
-        var captureSettings = AVCapturePhotoSettings(rawPixelFormatType: 0,
+        let captureSettings = AVCapturePhotoSettings(rawPixelFormatType: 0,
                                                      rawFileType: nil,
                                                      processedFormat: nil,
                                                      processedFileType: AVFileType.jpg)
