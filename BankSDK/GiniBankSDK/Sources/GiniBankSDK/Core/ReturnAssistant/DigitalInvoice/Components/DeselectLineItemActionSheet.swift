@@ -13,10 +13,11 @@ class DeselectLineItemActionSheet {
                  source: UIView?,
                  returnReasons: [ReturnReason],
                  completion: @escaping (DigitalInvoice.SelectedState) -> Void) {
+        let message = NSLocalizedStringPreferredGiniBankFormat(
+                                "ginibank.digitalinvoice.deselectreasonactionsheet.message",
+                                comment: "Info message when deselect a return reason")
         let actionSheet = UIAlertController(title: nil,
-                                            message: NSLocalizedStringPreferredGiniBankFormat(
-                                                "ginibank.digitalinvoice.deselectreasonactionsheet.message",
-                                                comment: "Info message when deselect a return reason"),
+                                            message: message,
                                             preferredStyle: .actionSheet)
         actionSheet.view.tintColor = .GiniBank.accent1
 

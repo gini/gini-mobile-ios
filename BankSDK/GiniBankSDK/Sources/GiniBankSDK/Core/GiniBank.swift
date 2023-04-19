@@ -145,9 +145,9 @@ import GiniCaptureSDK
     public class func viewController(withDelegate delegate: GiniCaptureDelegate,
                                      importedDocuments: [GiniCaptureDocument]? = nil,
                                      trackingDelegate: GiniCaptureTrackingDelegate? = nil) -> UIViewController {
+        let configuration = GiniBankConfiguration.shared.captureConfiguration()
         let screenCoordinator = GiniScreenAPICoordinator(withDelegate: delegate,
-                                                         giniConfiguration:
-                                                            GiniBankConfiguration.shared.captureConfiguration())
+                                                         giniConfiguration: configuration)
         screenCoordinator.trackingDelegate = trackingDelegate
 
         return screenCoordinator.start(withDocuments: importedDocuments)
