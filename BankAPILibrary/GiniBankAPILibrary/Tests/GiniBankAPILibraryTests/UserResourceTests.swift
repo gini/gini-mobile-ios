@@ -47,4 +47,12 @@ class UserResourceTests: XCTestCase {
         XCTAssertEqual(urlString, "https://custom.domain.com/api/users")
     }
     
+    func testCustomUserDomainWithPath() {
+        let resource = UserResource<Token>(method: .users,
+                                           userDomain: .custom(domain: "custom.domain.com", path:"/custom/path"),
+                                           httpMethod: .post)
+        let urlString = resource.url.absoluteString
+        XCTAssertEqual(urlString, "https://custom.domain.com/custom/path/api/users")
+    }
+    
 }
