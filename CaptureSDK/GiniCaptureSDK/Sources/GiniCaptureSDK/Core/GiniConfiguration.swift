@@ -392,18 +392,6 @@ import GiniBankAPILibrary
      */
     @objc public var shouldShowSupportedFormatsScreen = true
 
-    // MARK: Supported formats
-
-    /**
-     Sets the color of the unsupported formats icon background to the specified color.
-     */
-    @objc public var nonSupportedFormatsIconColor = Colors.Gini.crimson
-
-    /**
-     Sets the color of the supported formats icon background to the specified color.
-     */
-    @objc public var supportedFormatsIconColor = Colors.Gini.paleGreen
-
     // MARK: Open with tutorial options
 
     /**
