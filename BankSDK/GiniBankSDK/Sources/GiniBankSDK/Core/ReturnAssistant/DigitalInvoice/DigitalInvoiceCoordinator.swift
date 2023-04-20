@@ -46,6 +46,7 @@ final class DigitalInvoiceCoordinator: Coordinator {
         navigationController.pushViewController(rootViewController, animated: true)
     }
 
+    // swiftlint:disable force_cast
     init(navigationController: UINavigationController,
          digitalInvoice: DigitalInvoice,
          analysisDelegate: AnalysisDelegate) {
@@ -58,7 +59,6 @@ final class DigitalInvoiceCoordinator: Coordinator {
         digitalInvoiceViewController = DigitalInvoiceViewController(viewModel: digitalInvoiceViewModel!)
     }
 
-    // swiftlint:disable: force_cast
     private func showDigitalInvoiceOnboarding() {
         let onboardingViewControllerName = "digitalInvoiceOnboardingViewController"
         if onboardingWillBeShown && !didShowOnboardInCurrentSession {
