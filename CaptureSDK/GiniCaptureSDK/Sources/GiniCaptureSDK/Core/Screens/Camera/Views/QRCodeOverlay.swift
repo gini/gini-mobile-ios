@@ -195,14 +195,15 @@ final class QRCodeOverlay: UIView {
         NSLayoutConstraint.activate([
             correctQRFeedback.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
             correctQRCenterYAnchor,
-            correctQRFeedback.topAnchor.constraint(greaterThanOrEqualTo: viewController.view.topAnchor, constant: 2),
+            correctQRFeedback.topAnchor.constraint(greaterThanOrEqualTo: viewController.view.topAnchor,
+                                                   constant: Constants.topSpacing),
             correctQRFeedback.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor,
                                                        constant: Constants.spacing * 2),
 
             checkMarkImageView.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
             checkMarkImageView.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor),
-            checkMarkImageView.heightAnchor.constraint(equalToConstant: 56),
-            checkMarkImageView.widthAnchor.constraint(equalToConstant: 56)
+            checkMarkImageView.heightAnchor.constraint(equalToConstant: Constants.iconSize.height),
+            checkMarkImageView.widthAnchor.constraint(equalToConstant: Constants.iconSize.width)
         ])
     }
 
@@ -275,4 +276,6 @@ final class QRCodeOverlay: UIView {
 
 private enum Constants {
     static let spacing: CGFloat = 8
+    static let topSpacing: CGFloat = 2
+    static let iconSize = CGSize(width: 56, height: 56)
 }
