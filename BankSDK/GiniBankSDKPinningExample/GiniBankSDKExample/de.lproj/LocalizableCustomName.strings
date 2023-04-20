@@ -25,3 +25,7 @@
 "newDocument" = "New document";
 "help" = "Help";
 "analysisFailedErrorMessage" = "Dokumentanalyse fehlgeschlagen. Möchten Sie es erneut versuchen?";
+
+"import.data.error.title" = "Ungültiges Dokument";
+"import.data.error.description" = "Dies ist kein gültiges Dokument";
+"import.cancelButtonTitle" = "Abbrechen";
