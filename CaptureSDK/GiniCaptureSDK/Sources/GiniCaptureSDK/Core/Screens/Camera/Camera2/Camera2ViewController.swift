@@ -360,9 +360,11 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
     private func configureConstraints() {
         if qrCodeScanningOnlyEnabled {
-            qrCodeOverLay.layoutViews(centeringBy: cameraPreviewViewController.qrCodeFrameView)
+            qrCodeOverLay.layoutViews(centeringBy: cameraPreviewViewController.qrCodeFrameView,
+                                      on: cameraPreviewViewController)
         } else {
-            qrCodeOverLay.layoutViews(centeringBy: cameraPreviewViewController.cameraFrameView)
+            qrCodeOverLay.layoutViews(centeringBy: cameraPreviewViewController.cameraFrameView,
+                                      on: cameraPreviewViewController)
         }
 
         NSLayoutConstraint.activate([

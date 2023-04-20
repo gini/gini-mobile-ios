@@ -18,6 +18,7 @@ final class CorrectQRCodeTextContainer: UIView {
         label.textColor = .GiniCapture.light1
         label.text = NSLocalizedStringPreferredFormat("ginicapture.QRscanning.correct",
                                                       comment: "QR Detected")
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
@@ -138,6 +139,7 @@ final class QRCodeOverlay: UIView {
         loadingIndicatorText.adjustsFontForContentSizeCategory = true
         loadingIndicatorText.textColor = .GiniCapture.light1
         loadingIndicatorText.isAccessibilityElement = true
+        loadingIndicatorText.numberOfLines = 0
         loadingIndicatorText.text = NSLocalizedStringPreferredFormat("ginicapture.QRscanning.loading",
                                                                      comment: "Retrievenig invoice")
         return loadingIndicatorText
@@ -180,16 +182,20 @@ final class QRCodeOverlay: UIView {
         loadingContainer.addArrangedSubview(loadingIndicatorText)
     }
 
-    func layoutViews(centeringBy cameraFrame: UIView) {
-        layoutCorrectQRCode(centeringBy: cameraFrame)
+    func layoutViews(centeringBy cameraFrame: UIView, on viewController: UIViewController) {
+        layoutCorrectQRCode(centeringBy: cameraFrame, on: viewController)
         layoutIncorrectQRCode(centeringBy: cameraFrame)
         layoutLoadingIndicator(centeringBy: cameraFrame)
     }
 
-    private func layoutCorrectQRCode(centeringBy cameraFrame: UIView) {
+    private func layoutCorrectQRCode(centeringBy cameraFrame: UIView, on viewController: UIViewController) {
+        let correctQRCenterYAnchor = correctQRFeedback.centerYAnchor.constraint(equalTo: cameraFrame.topAnchor)
+        correctQRCenterYAnchor.priority = .defaultLow
+
         NSLayoutConstraint.activate([
             correctQRFeedback.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
-            correctQRFeedback.centerYAnchor.constraint(equalTo: cameraFrame.topAnchor),
+            correctQRCenterYAnchor,
+            correctQRFeedback.topAnchor.constraint(greaterThanOrEqualTo: viewController.view.topAnchor, constant: 2),
             correctQRFeedback.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor,
                                                        constant: Constants.spacing * 2),
 
