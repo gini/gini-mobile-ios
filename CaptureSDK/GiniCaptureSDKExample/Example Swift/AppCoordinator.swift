@@ -162,7 +162,6 @@ final class AppCoordinator: Coordinator {
             alertViewController.dismiss(animated: true, completion: nil)
         })
 
-
         rootViewController.present(alertViewController, animated: true, completion: nil)
     }
 
