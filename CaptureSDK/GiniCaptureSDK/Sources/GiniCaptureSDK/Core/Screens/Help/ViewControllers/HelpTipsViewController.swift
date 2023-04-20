@@ -94,7 +94,10 @@ final class HelpTipsViewController: UIViewController, HelpBottomBarEnabledViewCo
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        tableView.reloadData()
+        coordinator.animate(alongsideTransition: nil) { [weak self] _ in
+            self?.tableView.reloadData()
+            self?.view.layoutSubviews()
+        }
     }
 
     private func configureConstraints() {

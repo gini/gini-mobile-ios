@@ -19,7 +19,9 @@ final class EditLineItemView: UIView {
                                   for: .normal)
         button.setTitle(title, for: .normal)
         button.addTarget(self, action: #selector(didTapCancel), for: .touchUpInside)
+        // The color is set twice beacuse in some iOS versions the `setTitleColor` does not change the color
         button.setTitleColor(.GiniBank.accent1, for: .normal)
+        button.titleLabel?.textColor = .GiniBank.accent1
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.accessibilityValue = title
@@ -45,7 +47,9 @@ final class EditLineItemView: UIView {
         button.setAttributedTitle(NSAttributedString(string: title, attributes: textAttributes(for: .bodyBold)),
                                   for: .normal)
         button.addTarget(self, action: #selector(didTapSave), for: .touchUpInside)
+        // The color is set twice beacuse in some iOS versions the `setTitleColor` does not change the color
         button.setTitleColor(.GiniBank.accent1, for: .normal)
+        button.titleLabel?.textColor = .GiniBank.accent1
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.accessibilityValue = title
@@ -72,11 +76,17 @@ final class EditLineItemView: UIView {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = configuration.textStyleFonts[.caption2]?.withSize(11)
         label.textColor = .GiniBank.error3
         label.alpha = 0
         label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.name.error",
                                                               comment: "Name error title")
+        if let font = configuration.textStyleFonts[.caption2] {
+            if font.pointSize > Constants.maximumFontSize {
+                label.font = configuration.textStyleFonts[.caption2]?.withSize(Constants.maximumFontSize)
+            } else {
+                label.font = configuration.textStyleFonts[.caption2]
+            }
+        }
         return label
     }()
 
@@ -91,11 +101,17 @@ final class EditLineItemView: UIView {
         let label = UILabel()
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = configuration.textStyleFonts[.caption2]?.withSize(11)
         label.textColor = .GiniBank.error3
         label.alpha = 0
         label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.price.error",
                                                               comment: "Price error title")
+        if let font = configuration.textStyleFonts[.caption2] {
+            if font.pointSize > Constants.maximumFontSize {
+                label.font = configuration.textStyleFonts[.caption2]?.withSize(Constants.maximumFontSize)
+            } else {
+                label.font = configuration.textStyleFonts[.caption2]
+            }
+        }
         return label
     }()
 
@@ -184,15 +200,19 @@ final class EditLineItemView: UIView {
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.horizontalPadding),
             stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -Constants.horizontalPadding),
 
-            nameErrorLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
-            nameErrorLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: Constants.titlePadding),
+            nameErrorLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor, constant: 16),
+            nameErrorLabel.topAnchor.constraint(greaterThanOrEqualTo: nameLabel.bottomAnchor, constant: Constants.errorPadding),
             nameErrorLabel.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor),
-            nameErrorLabel.bottomAnchor.constraint(equalTo: priceLabel.topAnchor, constant: -Constants.titlePadding),
+            nameErrorLabel.bottomAnchor.constraint(lessThanOrEqualTo: priceLabel.topAnchor, constant: -Constants.errorPadding),
+            nameErrorLabel.centerYAnchor.constraint(equalTo: nameLabel.bottomAnchor,
+                                                    constant: Constants.stackViewSpacing / 2),
 
-            priceErrorLabel.leadingAnchor.constraint(equalTo: priceLabel.leadingAnchor),
-            priceErrorLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: Constants.titlePadding),
+            priceErrorLabel.leadingAnchor.constraint(equalTo: priceLabel.leadingAnchor, constant: 16),
+            priceErrorLabel.topAnchor.constraint(greaterThanOrEqualTo: priceLabel.bottomAnchor, constant: Constants.errorPadding),
             priceErrorLabel.trailingAnchor.constraint(equalTo: priceLabel.trailingAnchor),
-            priceErrorLabel.bottomAnchor.constraint(equalTo: quantityView.topAnchor, constant: -Constants.titlePadding)
+            priceErrorLabel.bottomAnchor.constraint(lessThanOrEqualTo: quantityView.topAnchor, constant: -Constants.errorPadding),
+            priceErrorLabel.centerYAnchor.constraint(equalTo: priceLabel.bottomAnchor,
+                                                    constant: Constants.stackViewSpacing / 2),
         ])
     }
 
@@ -311,8 +331,9 @@ private extension EditLineItemView {
         static let verticalPadding: CGFloat = 24
         static let horizontalPadding: CGFloat = 16
         static let titlePadding: CGFloat = 4
+        static let errorPadding: CGFloat = 2
         static let stackViewPadding: CGFloat = 72
-        static let stackViewSpacing: CGFloat = 20
+        static let stackViewSpacing: CGFloat = 26
         static let currencyPickerPadding: CGFloat = 8
         static let currencyPickerWidth: CGFloat = 120
         static let maximumFontSize: CGFloat = 20

@@ -1,5 +1,6 @@
 Integration
-=============================
+===========
+
 ## Request camera access
 
 **Note**: You need to specify the `NSCameraUsageDescription` key in your `Info.plist` file.
@@ -10,8 +11,12 @@ For more information see the [Integration Guide](https://developer.gini.net/gini
 
 ## Start SDK
 
-The SDK provides a custom `UIViewController` object, which can be presented modally. It handles the complete process from showing the onboarding until providing a UI for the analysis.
-Gini Capture SDK offers two different ways of the networking implementation:
+The SDK provides a custom `UIViewController` object, which should be shown by your app. It handles the complete process from showing the onboarding until providing a UI for the analysis.
+
+Gini Capture SDK offers two different ways of implementing networking:
+
+* Default Networking (Recommended)
+* Custom Networking
 
 ### Default Networking (Recommended)
 
@@ -90,84 +95,62 @@ present(viewController, animated: true, completion: nil)
 
 You may also use the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios) or implement communication with the Gini Bank API yourself.
 
-## Sending Feedback - TODO
+## Cleanup and Sending Feedback
 
-Your app should send feedback for the extractions the Gini Bank API delivered. Feedback should be sent only for the extractions the user has seen and accepted (or corrected).
+Your app should clean up the SDK and provide feedback for the extractions the Gini Bank API delivered. Feedback should be sent only for the extractions the user has seen and accepted (or corrected).
 
-We provide a sample test case [here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK;3.0.0-beta07/CaptureSDK/GiniCaptureSDKExample/Tests/ExtractionFeedbackIntegrationTest.swift) to verify that extraction feedback sending works. 
+We provide a sample test case [here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK;3.0.0/CaptureSDK/GiniCaptureSDKExample/Tests/ExtractionFeedbackIntegrationTest.swift) to verify that extraction feedback sending works. 
 You may use it along with the example pdf and json files as a starting point to write your own test case.
 
 The sample test case is based on the Bank API documentation's [recommended steps](https://pay-api.gini.net/documentation/#test-example) for testing extraction feedback sending.
 
 For additional information about feedback see the [Gini Bank API documentation](https://pay-api.gini.net/documentation/#send-feedback-and-get-even-better-extractions-next-time).
 
-### Default networking implementation - TODO
-
-The example below shows how to correct extractions and send feedback using the default networking implementation:
-
-You should send feedback only for extractions the user has seen and accepted.
-
 ```swift
-var sendFeedbackBlock: (([String: Extraction]) -> Void)?
-var extractions: [String: Extraction] = []
 
-func giniCaptureAnalysisDidFinishWith(result: AnalysisResult,
-                           sendFeedbackBlock: @escaping ([String: Extraction]) -> Void){
-        
-    self.extractions = result.extractions
-    self.sendFeedbackBlock = sendFeedbackBlock
-    showResultsScreen(results: result.extractions.map { $0.value })
+func stopGiniBankSDK() {
+    // After the user has seen and potentially corrected the extractions
+    // cleanup the SDK while passing in the final extraction values
+    // which will be used as feedback to improve the future extraction accuracy:
+    GiniConfiguration.shared.cleanup(paymentRecipient: "Payment Recipient",
+                                     paymentReference: "Payment Reference",
+                                     paymentPurpose: "Payment Purpose",
+                                     iban: "IBAN",
+                                     bic: "BIC",
+                                     amountToPay: ExtractionAmount(value: 10.242, currency: .EUR))
 }
-.
-.
-.
-// In this example only the amountToPay was wrong and we can reuse the other extractions.
-let updatedExtractions = self.extractions
-updatedExtractions.map{$0.value}.first(where: {$0.name == "amountToPay"})?.value = "31,25:EUR"
-sendFeedbackBlock(updatedExtractions)
 
 ```
-### Custom networking implementation - TODO
-
-If you use your own networking implementation and directly communicate with the Gini Bank API then see [this section](https://pay-api.gini.net/documentation/#submitting-feedback-on-extractions) in its documentation on how to send feedback.
-
-In case you use the [Gini Bank API Library](https://developer.gini.net/gini-mobile-ios/GiniBankAPILibrary/) then see [this section](https://developer.gini.net/gini-mobile-ios/GiniBankAPILibrary/getting-started.html) in its documentation for details.
 
 ## Capturing documents
 
 To launch the Gini Capture SDK you only need to:
 
-1.  Request camera access via configuring `Info.plist` in your project.
+1. Request camera access via configuring `Info.plist` in your project.
 
-2.  Configure `GiniConfiguration.shared`. The implementation example can be found [here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0-beta07/CaptureSDK/GiniCaptureSDKExample/Example%20Swift/AppCoordinator.swift#L32)
+2.  Configure `GiniConfiguration.shared`. The implementation example can be found [here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0/CaptureSDK/GiniCaptureSDKExample/Example%20Swift/AppCoordinator.swift#L32)
 
-3.  Present the `UIViewController`.
+3. Present the `UIViewController`. You can find the example [here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0/CaptureSDK/GiniCaptureSDKExample/Example%20Swift/ScreenAPICoordinator.swift#L44)
 
-You can find the example [here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0-beta07/CaptureSDK/GiniCaptureSDKExample/Example%20Swift/ScreenAPICoordinator.swift#L44)
+4. Handle the extraction results.  
+   For handling the extraction results you need to implement `GiniCaptureResultsDelegate`. [Here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK;3.0.0/CaptureSDK/GiniCaptureSDKExample/Example%20Swift/ScreenAPICoordinator.swift#L116) you can find the implementation example.
 
-4.  Handle the extraction results
+5. Cleanup configuration and resources while also providing the required extraction feedback to
+   improve the future extraction accuracy. You don't need to implement any extra steps, just follow the recommendations below:
 
-For handling the extraction results you need to implement `GiniCaptureResultsDelegate `.
-[Here](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0-beta07/CaptureSDK/GiniCaptureSDKExample/Example%20Swift/ScreenAPICoordinator.swift#L128) you can find the implementation example.
+    - Please provide values for all necessary fields, including those that were not extracted.
 
-5.  Cleanup configuration and resources.
+    - Provide the final data approved by the user (and not the initially extracted only).
 
-The cleanup step includes the previously called `feedback sending` method. You don't need to implement any extra steps, just follow the recommendations below:
+    - Do cleanup after TAN verification.
 
- - Please do cleanup always for all necessary fields, including those that were not extracted.
+   ```swift
+   GiniConfiguration.shared.cleanup(paymentRecipient: "Payment Recipient",
+                                   paymentReference: "Payment Reference",
+                                   paymentPurpose: "Payment Purpose",
+                                   iban: "IBAN",
+                                   bic: "BIC",
+                                   amountToPay: ExtractionAmount(value: 10.242, currency: .EUR))
+   ```
 
- - Please do cleanup with final data approved by the user (and not initially extracted only).
-
- - Please do cleanup after TAN verification.
-
-```swift
-GiniConfiguration.shared.cleanup(paymentRecipient: "Payment Recipient",
-                                        paymentReference: "Payment Reference",
-                                        paymentPurpose: "Payment Purpose",
-                                        iban: "IBAN",
-                                        bic: "BIC",
-                                        amountToPay: ExtractionAmount(value: 10.242, currency: .EUR))
-```
-
-Check out the [example app](https://github.com/gini/gini-mobile-ios/tree/GiniCaptureSDK%3B3.0.0-beta07/CaptureSDK/GiniCaptureSDKExample/Example%20Swift) to see how an integration could look like.
-The following example shows how to launch the Gini Capture SDK and how to handle the extraction results.
+Check out the [example app](https://github.com/gini/gini-mobile-ios/tree/GiniCaptureSDK%3B3.0.0/CaptureSDK/GiniCaptureSDKExample/Example%20Swift) to see how an integration could look like.
