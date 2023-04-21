@@ -18,7 +18,8 @@ final class CameraNotAuthorizedView: UIView {
         label.numberOfLines = 0
         label.textColor = GiniColor(light: UIColor.GiniCapture.dark1, dark: UIColor.GiniCapture.light1).uiColor()
         label.textAlignment = .center
-        label.font = configuration.textStyleFonts[.title2]
+        label.font = configuration.textStyleFonts[.title2]?.limitingFontSize(to: Constants.maximumFontSize)
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
@@ -29,7 +30,8 @@ final class CameraNotAuthorizedView: UIView {
         label.numberOfLines = 0
         label.textColor = UIColor.GiniCapture.dark7
         label.textAlignment = .center
-        label.font = configuration.textStyleFonts[.headline]
+        label.font = configuration.textStyleFonts[.headline]?.limitingFontSize(to: Constants.maximumFontSize)
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
@@ -37,6 +39,10 @@ final class CameraNotAuthorizedView: UIView {
         let imageView = UIImageView()
         imageView.image = UIImageNamedPreferred(named: "cameraNotAuthorizedIcon")
         imageView.contentMode = .scaleAspectFit
+        imageView.accessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.camera.notAuthorized.title",
+                                                                        comment: "Not authorized title")
+        imageView.isAccessibilityElement = true
+        imageView.accessibilityTraits = .none
         return imageView
     }()
 
@@ -49,7 +55,9 @@ final class CameraNotAuthorizedView: UIView {
         button.setTitleColor(GiniColor(light: UIColor.GiniCapture.accent1,
                                        dark: UIColor.GiniCapture.accent1).uiColor().withAlphaComponent(0.8),
                              for: .highlighted)
-        button.titleLabel?.font = configuration.textStyleFonts[.subheadline]
+        button.titleLabel?.font = configuration.textStyleFonts[.subheadline]?
+                                        .limitingFontSize(to: Constants.maximumFontSize)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
         return button
     }()
@@ -97,9 +105,9 @@ final class CameraNotAuthorizedView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: Constants.padding * 2),
-            contentView.bottomAnchor.constraint(equalTo: centerYAnchor),
+            contentView.bottomAnchor.constraint(lessThanOrEqualTo: button.topAnchor, constant: Constants.padding),
             contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            contentView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -Constants.padding * 2),
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
             // Image view
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -132,5 +140,6 @@ extension CameraNotAuthorizedView {
         static let padding: CGFloat = 16
         static let widthCoefficient: CGFloat = 0.7
         static let imageSize: CGSize = CGSize(width: 50, height: 50)
+        static let maximumFontSize: CGFloat = 36
     }
 }

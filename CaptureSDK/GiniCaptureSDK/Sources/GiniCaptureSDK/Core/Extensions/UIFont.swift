@@ -17,6 +17,14 @@ extension UIFont {
     public static func scaledFont(_ font: UIFont, textStyle: UIFont.TextStyle) -> UIFont {
         return UIFontMetrics(forTextStyle: textStyle).scaledFont(for: font)
     }
+
+    func limitingFontSize(to fontSizeLimit: CGFloat) -> UIFont {
+        if self.pointSize > fontSizeLimit {
+            return self.withSize(fontSizeLimit)
+        } else {
+            return self
+        }
+    }
 }
 
 extension UIFont.TextStyle {
