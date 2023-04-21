@@ -14,7 +14,7 @@ public enum AnalysisStrings: LocalizableStringResource {
     public var tableName: String {
         return "analysis"
     }
-    
+
     public var tableEntry: LocalizationEntry {
         switch self {
         case .analysisErrorMessage:
@@ -29,7 +29,7 @@ public enum AnalysisStrings: LocalizableStringResource {
     public var isCustomizable: Bool {
         return true
     }
-    
+
     public var fallbackTableEntry: String {
         switch self {
         default:

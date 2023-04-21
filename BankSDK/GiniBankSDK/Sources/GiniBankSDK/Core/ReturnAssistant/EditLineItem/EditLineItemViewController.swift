@@ -129,7 +129,7 @@ final class EditLineItemViewController: UIViewController {
         let normalSize: CGFloat = 17 // size of the .body textstyle when the font is not set bigger in accessibility
         if let pointSize = GiniBankConfiguration.shared.textStyleFonts[.body]?.pointSize {
             let diff = pointSize - normalSize
-            let height = defaultHeight + 6 * diff //adding the extra difference for the 6 lines of the edit screen
+            let height = defaultHeight + 6 * diff // adding the extra difference for the 6 lines of the edit screen
             defaultHeight = min(height, self.view.frame.height)
             currentContainerHeight = min(height, self.view.frame.height)
         }
@@ -252,7 +252,8 @@ final class EditLineItemViewController: UIViewController {
     private func animateContainerToInitialHeight() {
         UIView.animate(withDuration: Constants.animationDuration) {
             if self.isKeyboardPresented {
-                self.containerViewHeightConstraint?.constant = self.defaultHeight + (self.isKeyboardPresented ? self.keyboardHeight : 0)
+                self.containerViewHeightConstraint?.constant = self.defaultHeight +
+                                                                (self.isKeyboardPresented ? self.keyboardHeight : 0)
                 self.view.layoutIfNeeded()
             } else {
                 self.containerViewHeightConstraint?.constant = self.defaultHeight

@@ -8,7 +8,7 @@
 import UIKit
 import GiniCaptureSDK
 
-
+// swiftlint:disable implicit_getter
 final class DigitalInvoiceOnboardingViewController: UIViewController {
     @IBOutlet var contentView: UIView!
     @IBOutlet var topImageView: OnboardingImageView!
@@ -35,19 +35,22 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     private var topImage: UIImage {
         return prefferedImage(named: "digital_invoice_onboarding_icon") ?? UIImage()
     }
-    
+
     private var firstLabelText: String {
-        return  NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.text1", comment: "title for the first label on the digital invoice onboarding screen")
+        return  NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.text1",
+                                                         comment: "title for digital invoice onboarding screen")
     }
-    
+
     private var secondLabelText: String {
-        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.text2", comment: "title for the second label on the digital invoice onboarding screen")
+        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.text2",
+                                                        comment: "title for digital invoice onboarding screen")
     }
-    
+
     private var doneButtonTitle: String {
-        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.getStartedButton", comment: "title for the done button on the digital invoice onboarding screen")
+        return NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.onboarding.getStartedButton",
+                                                        comment: "title for digital invoice onboarding screen")
     }
-    
+
     override public func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
@@ -67,6 +70,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
         configuration.digitalInvoiceOnboardingIllustrationAdapter?.pageDidDisappear()
     }
 
+    // swiftlint:disable function_body_length
     private func configureUI() {
         let configuration = GiniBankConfiguration.shared
         title = NSLocalizedStringPreferredFormat("ginibank.digitalinvoice.screentitle",
@@ -83,12 +87,12 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
         topImageView.isAccessibilityElement = true
         topImageView.accessibilityValue = firstLabelText
         topImageView.setupView()
-        
+
         firstLabel.text = firstLabelText
         firstLabel.font = configuration.textStyleFonts[.title2Bold]
         firstLabel.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         firstLabel.adjustsFontForContentSizeCategory = true
-        
+
         secondLabel.text = secondLabelText
         secondLabel.font = configuration.textStyleFonts[.title2Bold]
         secondLabel.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark7).uiColor()
@@ -157,16 +161,16 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
             self.scrollViewWidthAnchor.isActive = true
         })
     }
-    
+
     @objc func doneAction(_ sender: UIButton!) {
         dismissViewController()
     }
-    
+
     @objc func hideAction(_ sender: UIButton!) {
         UserDefaults.standard.set(true, forKey: "ginibank.defaults.digitalInvoiceOnboardingShowed")
         dismissViewController()
     }
-    
+
     private func dismissViewController() {
         dismiss(animated: true)
     }

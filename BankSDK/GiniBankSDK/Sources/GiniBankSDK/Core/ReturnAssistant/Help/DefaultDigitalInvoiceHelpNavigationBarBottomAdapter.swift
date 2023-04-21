@@ -17,7 +17,8 @@ final class DefaultDigitalInvoiceHelpNavigationBarBottomAdapter: DigitalInvoiceH
     }
 
     func injectedView() -> UIView {
-        if let navigationBarView = DefaultBackButtonBottomNavigationBar().loadNib() as? DefaultBackButtonBottomNavigationBar {
+        if let navigationBarView = DefaultBackButtonBottomNavigationBar()
+                                        .loadNib() as? DefaultBackButtonBottomNavigationBar {
             navigationBarView.backButton.addAction(self, #selector(backButtonClicked))
             return navigationBarView
         } else {

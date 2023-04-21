@@ -27,7 +27,7 @@ final class DigitalInvoiceViewModel {
         if let total = invoice?.total?.value {
             return total > 0
         }
-        
+
         return false
     }
 
