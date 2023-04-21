@@ -18,7 +18,7 @@ protocol ImagePickerViewControllerDelegate: AnyObject {
 }
 
 final class ImagePickerViewController: UIViewController {
-    
+
     let currentAlbum: Album
     weak var delegate: ImagePickerViewControllerDelegate?
     fileprivate var indexesForAssetsBeingDownloaded: [IndexPath] = []
@@ -28,14 +28,14 @@ final class ImagePickerViewController: UIViewController {
     private var isInitialized: Bool = false
     private var isLayoutDone: Bool = false
     private var navigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter?
-    
+
     // MARK: - Views
-    
+
     lazy var collectionView: UICollectionView = {
         let collectionLayout = UICollectionViewFlowLayout()
         collectionLayout.minimumLineSpacing = 1
         collectionLayout.minimumInteritemSpacing = 1
-        
+
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionLayout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.dataSource = self
@@ -52,9 +52,9 @@ final class ImagePickerViewController: UIViewController {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         return contentView
     }()
-    
+
     // MARK: - Initializers
-    
+
     init(album: Album,
          galleryManager: GalleryManagerProtocol,
          giniConfiguration: GiniConfiguration) {
@@ -63,13 +63,13 @@ final class ImagePickerViewController: UIViewController {
         self.currentAlbum = album
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(giniConfiguration:) has not been implemented")
     }
-    
+
     // MARK: - UIViewController
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -112,14 +112,14 @@ final class ImagePickerViewController: UIViewController {
     }
 
     // MARK: - Others
-    
+
     func addToDownloadingItems(index: IndexPath, needsReloading: Bool = true) {
         indexesForAssetsBeingDownloaded.append(index)
         if needsReloading {
             collectionView.reloadItems(at: [index])
         }
     }
-    
+
     func removeFromDownloadingItems(index: IndexPath, needsReloading: Bool = false) {
         if let assetIndex = indexesForAssetsBeingDownloaded.firstIndex(of: index) {
             indexesForAssetsBeingDownloaded.remove(at: assetIndex)
@@ -128,27 +128,27 @@ final class ImagePickerViewController: UIViewController {
             }
         }
     }
-    
+
     func selectCell(at indexPath: IndexPath) {
         indexesForSelectedCells.append(indexPath)
         collectionView.reloadItems(at: [indexPath])
     }
-    
+
     func deselectCell(at indexPath: IndexPath) {
         if let deselectCellIndex = indexesForSelectedCells.firstIndex(of: indexPath) {
             indexesForSelectedCells.remove(at: deselectCellIndex)
             collectionView.reloadItems(at: [indexPath])
         }
     }
-    
+
     func deselectAllCells() {
         var indexesToDeselect: [IndexPath] = []
         indexesToDeselect.append(contentsOf: indexesForSelectedCells)
-        
+
         indexesForSelectedCells.removeAll()
         self.collectionView.reloadItems(at: indexesToDeselect)
     }
- 
+
     fileprivate func scrollToBottomOnStartup() {
         guard isLayoutDone else { return }
         // This tweak is needed to fix an issue with the UICollectionView. UICollectionView doesn't
@@ -214,14 +214,14 @@ extension ImagePickerViewController: UICollectionViewDataSource {
                    galleryManager: galleryManager,
                    isDownloading: indexesForAssetsBeingDownloaded.contains(indexPath),
                    isSelected: indexesForSelectedCells.contains(indexPath))
-        
+
         return cell!
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return currentAlbum.count
     }
-    
+
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -236,7 +236,7 @@ extension ImagePickerViewController: UICollectionViewDelegateFlowLayout {
         return ImagePickerCollectionViewCell.size(itemsInARow: 4,
                                                   collectionViewLayout: collectionViewLayout)
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let asset = currentAlbum.assets[indexPath.row]
 

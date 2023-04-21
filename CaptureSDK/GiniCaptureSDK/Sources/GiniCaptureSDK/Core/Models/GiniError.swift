@@ -18,16 +18,16 @@ public protocol GiniCaptureError: Error {
 @objc public enum CameraError: Int, GiniCaptureError {
     /// Unknown error during camera use.
     case unknown
-    
+
     /// Camera can not be loaded because the user has denied authorization in the past.
     case notAuthorizedToUseDevice
-    
+
     /// No valid input device could be found for capturing.
     case noInputDevice
-    
+
     /// Capturing could not be completed.
     case captureFailed
-    
+
     public var message: String {
         switch self {
         case .captureFailed:
@@ -46,10 +46,10 @@ public protocol GiniCaptureError: Error {
  Errors thrown on the review screen.
  */
 @objc public enum ReviewError: Int, GiniCaptureError {
-    
+
     /// Unknown error during review.
     case unknown
-    
+
     public var message: String {
         switch self {
         case .unknown:
@@ -63,22 +63,22 @@ public protocol GiniCaptureError: Error {
  */
 
 @objc public enum FilePickerError: Int, GiniCaptureError {
-    
+
     /// Camera roll can not be loaded because the user has denied authorization in the past.
     case photoLibraryAccessDenied
-    
+
     /// Max number of files picked exceeded
     case maxFilesPickedCountExceeded
-    
+
     /// Mixed documents unsupported
     case mixedDocumentsUnsupported
-    
+
     /// Could not open the document (data could not be read or unsupported file type or some other issue)
     case failedToOpenDocument
 
     /// MultiplePDFs unsupported
     case multiplePdfsUnsupported
-    
+
     public var message: String {
         switch self {
         case .photoLibraryAccessDenied:
@@ -100,14 +100,14 @@ public protocol GiniCaptureError: Error {
  */
 
 @objc public enum AnalysisError: Int, GiniCaptureError {
-    
+
     /// The analysis was cancelled
     case cancelled
-    
+
     /// There was an error creating the document
     case documentCreation
-    case unknown    
-    
+    case unknown
+
     public var message: String {
         switch self {
         case .documentCreation:
@@ -124,28 +124,28 @@ public protocol GiniCaptureError: Error {
  Errors thrown validating a document (image or pdf).
  */
 @objc public enum DocumentValidationError: Int, GiniCaptureError, Equatable {
-    
+
     /// Unknown error during review.
     case unknown
-    
+
     /// Exceeded max file size
     case exceededMaxFileSize
-    
+
     /// Image format not valid
     case imageFormatNotValid
-    
+
     /// File format not valid
     case fileFormatNotValid
-    
+
     /// PDF length exceeded
     case pdfPageLengthExceeded
-    
+
     // PDF password protected
     case pdfPasswordProtected
-    
+
     /// QR Code formar not valid
     case qrCodeFormatNotValid
-    
+
     public var message: String {
         switch self {
         case .exceededMaxFileSize:
@@ -181,7 +181,7 @@ public protocol GiniCaptureError: Error {
                 comment: "Message text of a general document validation error shown in camera screen")
         }
     }
-    
+
     public static func == (lhs: DocumentValidationError, rhs: DocumentValidationError) -> Bool {
         return lhs.rawValue == rhs.rawValue
     }
@@ -191,11 +191,11 @@ public protocol GiniCaptureError: Error {
  Errors thrown when running a custom validation.
  */
 @objc public class CustomDocumentValidationError: NSError {
-    
+
     public convenience init(message: String) {
         self.init(domain: "net.gini", code: 1, userInfo: ["message": message])
     }
-    
+
     public var message: String {
         return userInfo["message"] as? String ?? ""
     }
@@ -204,16 +204,16 @@ public protocol GiniCaptureError: Error {
 public class CustomDocumentValidationResult: NSObject {
     private(set) var isSuccess: Bool
     private(set) var error: CustomDocumentValidationError?
-    
+
     private init(withSuccess success: Bool, error: CustomDocumentValidationError? = nil) {
         self.isSuccess = success
         self.error = error
     }
-    
+
     public class func success() -> CustomDocumentValidationResult {
         return CustomDocumentValidationResult(withSuccess: true)
     }
-    
+
     public class func failure(withError error: CustomDocumentValidationError) -> CustomDocumentValidationResult {
         return CustomDocumentValidationResult(withSuccess: false, error: error)
     }

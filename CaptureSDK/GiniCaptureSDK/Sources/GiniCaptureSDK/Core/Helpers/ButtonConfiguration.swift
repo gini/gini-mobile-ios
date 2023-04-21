@@ -28,7 +28,14 @@ public struct ButtonConfiguration {
     ///   - borderWidth: the button's border width
     ///   - shadowRadius: the button's shadow radius
     ///   - withBlurEffect: adds a blur effect on the button ignoring the background color and making it translucent
-    public init(backgroundColor: UIColor, borderColor: UIColor, titleColor: UIColor, shadowColor: UIColor, cornerRadius: CGFloat, borderWidth: CGFloat, shadowRadius: CGFloat, withBlurEffect: Bool) {
+    public init(backgroundColor: UIColor,
+                borderColor: UIColor,
+                titleColor: UIColor,
+                shadowColor: UIColor,
+                cornerRadius: CGFloat,
+                borderWidth: CGFloat,
+                shadowRadius: CGFloat,
+                withBlurEffect: Bool) {
         self.backgroundColor = backgroundColor
         self.borderColor = borderColor
         self.titleColor = titleColor

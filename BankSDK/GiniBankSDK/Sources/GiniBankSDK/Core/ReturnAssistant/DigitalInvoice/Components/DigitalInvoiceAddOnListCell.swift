@@ -28,14 +28,14 @@ class DigitalInvoiceAddOnListCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+
         setupViews()
         setupConstraints()
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
+
         setupViews()
         setupConstraints()
     }
@@ -47,7 +47,7 @@ class DigitalInvoiceAddOnListCell: UITableViewCell {
             }
         }
     }
-    
+
     private func setupViews() {
         selectionStyle = .none
         backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
@@ -62,9 +62,12 @@ class DigitalInvoiceAddOnListCell: UITableViewCell {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             addOnStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.verticalPadding),
-            addOnStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.horizontalPadding),
-            addOnStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.horizontalPadding),
-            addOnStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.verticalPadding),
+            addOnStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                                    constant: Constants.horizontalPadding),
+            addOnStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                     constant: -Constants.horizontalPadding),
+            addOnStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
+                                                   constant: -Constants.verticalPadding),
 
             separatorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             separatorView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -82,8 +85,8 @@ class DigitalInvoiceAddOnListCell: UITableViewCell {
             if addOns.isEmpty {
                 let currency = addOns.first?.price.currencyCode ?? "EUR"
                 let zeroPrice = Price(value: 0, currencyCode: currency)
-                let addOnTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.addonname.othercharges",
-                                                                     comment: "Other charges")
+                let addOnTitle = NSLocalizedStringPreferredGiniBankFormat(
+                                    "ginibank.digitalinvoice.addonname.othercharges", comment: "Other charges")
                 let view = DigitalInvoiceAddOnListView(addOnTitle: addOnTitle, addOnPrice: zeroPrice)
 
                 addOnStackView.addArrangedSubview(view)
@@ -99,8 +102,8 @@ class DigitalInvoiceAddOnListCell: UITableViewCell {
 
 private extension DigitalInvoiceAddOnListCell {
     enum Constants {
-        static let separatorHeight:   CGFloat = 1
-        static let verticalPadding:   CGFloat = 24
+        static let separatorHeight: CGFloat = 1
+        static let verticalPadding: CGFloat = 24
         static let horizontalPadding: CGFloat = 16
     }
 }

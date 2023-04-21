@@ -10,7 +10,7 @@ import UIKit
 import GiniCaptureSDK
 import GiniBankAPILibrary
 extension GiniBank {
-    
+
     // MARK: - Screen API with Default Networking - Initializers for 'UIViewController'
 
     /**
@@ -45,9 +45,9 @@ extension GiniBank {
                                                                           trackingDelegate: trackingDelegate)
         return screenCoordinator.start(withDocuments: importedDocuments)
     }
-    
+
     // MARK: - Screen API with Custom Networking - Initializers for 'UIViewController'
-    
+
     /**
      Returns a view controller which will handle the analysis process.
      It's the easiest way to get started with the Gini Bank SDK as it comes pre-configured and handles

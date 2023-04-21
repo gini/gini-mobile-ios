@@ -16,7 +16,7 @@ protocol GalleryCoordinatorDelegate: AnyObject {
 }
 
 final class GalleryCoordinator: NSObject, Coordinator {
-        
+
     weak var delegate: GalleryCoordinatorDelegate?
     fileprivate let giniConfiguration: GiniConfiguration
     let galleryManager: GalleryManagerProtocol
@@ -26,23 +26,23 @@ final class GalleryCoordinator: NSObject, Coordinator {
             currentImagePickerViewController?.navigationItem.setRightBarButton(button, animated: true)
         }
     }
-    
+
     var isGalleryPermissionGranted: Bool {
         return PHPhotoLibrary.authorizationStatus() == .authorized
     }
-    
+
     // MARK: - View controllers
-    
+
     var rootViewController: UIViewController {
         return containerNavigationController
     }
-    
+
     lazy fileprivate(set) var containerNavigationController: ContainerNavigationController = {
         let container = ContainerNavigationController(rootViewController: self.galleryNavigator,
                                                       giniConfiguration: self.giniConfiguration)
         return container
     }()
-    
+
     lazy fileprivate(set) var galleryNavigator: UINavigationController = {
         let navController = UINavigationController(rootViewController: self.albumsController)
         if giniConfiguration.customNavigationController == nil {
@@ -51,7 +51,7 @@ final class GalleryCoordinator: NSObject, Coordinator {
         navController.delegate = self
         return navController
     }()
-    
+
     lazy fileprivate(set) var albumsController: AlbumsPickerViewController = {
         let albumsPickerVC = AlbumsPickerViewController(galleryManager: self.galleryManager)
         albumsPickerVC.delegate = self
@@ -62,7 +62,7 @@ final class GalleryCoordinator: NSObject, Coordinator {
         }
         return albumsPickerVC
     }()
-    
+
     fileprivate(set) var currentImagePickerViewController: ImagePickerViewController?
 
     // MARK: - Navigation bar buttons
@@ -78,31 +78,31 @@ final class GalleryCoordinator: NSObject, Coordinator {
         openButton.addAction(self, #selector(openImages))
         return openButton.barButton
     }()
-    
+
     // MARK: - Initializer
-    
+
     init(galleryManager: GalleryManagerProtocol = GalleryManager(), giniConfiguration: GiniConfiguration) {
         self.galleryManager = galleryManager
         self.giniConfiguration = giniConfiguration
     }
-    
+
     // MARK: - Coordinator lifecycle
-    
+
     func start() {
         DispatchQueue.global().async {
             if let firstAlbum = self.galleryManager.albums.first {
                 DispatchQueue.main.async {
                     self.galleryManager.startCachingImages(for: firstAlbum)
-                    if #available(iOS 14.0, *) {
-                    } else {
+                    if #unavailable(iOS 14.0) {
                         self.currentImagePickerViewController = self.createImagePicker(with: firstAlbum)
-                        self.galleryNavigator.pushViewController(self.currentImagePickerViewController!, animated: false)
+                        self.galleryNavigator.pushViewController(self.currentImagePickerViewController!,
+                                                                 animated: false)
                     }
                 }
             }
         }
     }
-    
+
     func dismissGallery(completion: (() -> Void)? = nil) {
         rootViewController.dismiss(animated: true) { [weak self] in
             completion?()
@@ -111,19 +111,19 @@ final class GalleryCoordinator: NSObject, Coordinator {
         }
         resetToInitialState()
     }
-    
+
     private func resetToInitialState() {
         self.selectedImageDocuments.removeAll()
         self.currentImagePickerViewController?.deselectAllCells()
         self.currentImagePickerViewController?.navigationItem.setRightBarButton(cancelButton, animated: false)
     }
-    
+
     // MARK: - Bar button actions
     @objc func cancelAction() {
         selectedImageDocuments = []
         delegate?.gallery(self, didCancel: ())
     }
-    
+
     @objc func openImages() {
         DispatchQueue.main.async {
             let imageDocuments: [GiniImageDocument] = self.selectedImageDocuments.map { $0.imageDocument }
@@ -135,9 +135,9 @@ final class GalleryCoordinator: NSObject, Coordinator {
     private func backAction() {
         galleryNavigator.popViewController(animated: true)
     }
-    
+
     // MARK: - Image picker generation.
-    
+
     fileprivate func createImagePicker(with album: Album) -> ImagePickerViewController {
         let imagePickerViewController = ImagePickerViewController(album: album,
                                                                   galleryManager: galleryManager,
@@ -154,15 +154,15 @@ final class GalleryCoordinator: NSObject, Coordinator {
 
         return imagePickerViewController
     }
-    
+
     // MARK: Photo library permission
-    
+
+    // swiftlint:disable function_body_length
     func checkGalleryAccessPermission(deniedHandler: @escaping (_ error: GiniCaptureError) -> Void,
                                       authorizedHandler: @escaping () -> Void) {
         if #available(iOS 14.0, *) {
             let accessLevel: PHAccessLevel = .readWrite
-            PHPhotoLibrary.requestAuthorization(for: accessLevel) {
-                [weak self] newStatus in
+            PHPhotoLibrary.requestAuthorization(for: accessLevel) { [weak self] newStatus in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
                     switch newStatus {
@@ -197,8 +197,8 @@ final class GalleryCoordinator: NSObject, Coordinator {
             case .authorized:
                 authorizedHandler()
             #if swift(>=5.3) // Xcode 12 iOS 14 support
-                case .limited:
-                    authorizedHandler()
+            case .limited:
+                authorizedHandler()
             #endif
             case .denied, .restricted:
                 deniedHandler(FilePickerError.photoLibraryAccessDenied)
@@ -271,22 +271,20 @@ extension GalleryCoordinator: ImagePickerViewControllerDelegate {
                 }
             }
         }
-        
     }
-    
+
     func imagePicker(_ viewController: ImagePickerViewController,
                      didDeselectAsset asset: Asset,
                      at index: IndexPath) {
         if let documentIndex = selectedImageDocuments.firstIndex(where: { $0.assetId == asset.identifier }) {
             viewController.deselectCell(at: index)
-            
             selectedImageDocuments.remove(at: documentIndex)
         }
     }
-    
+
     private func addSelected(_ asset: Asset, withData data: Data) {
         var data = data
-        
+
         // Some pictures have a wrong bytes structure and are not processed as images.
         if !data.isImage {
             if let image = UIImage(data: data),
@@ -298,10 +296,10 @@ extension GalleryCoordinator: ImagePickerViewControllerDelegate {
                                               imageSource: .external,
                                               imageImportMethod: .picker,
                                               deviceOrientation: nil)
-        
+
         selectedImageDocuments.append((assetId: asset.identifier,
                                        imageDocument: imageDocument))
-        
+
         if !giniConfiguration.multipageEnabled {
             openImages()
         }

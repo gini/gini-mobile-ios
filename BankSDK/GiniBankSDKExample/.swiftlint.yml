@@ -16,18 +16,8 @@ type_body_length:
 excluded: # paths to ignore during linting.
   
 included:
-  - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Help
-  - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/NoResult
-  - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Error
-  - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Helpers/Utils.swift
-  - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Analysis
-  - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Onboarding
-  - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Camera2
-  - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Protocols
-  - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Camera/Views
-  - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Review
-  - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Custom views/
-  - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/Screens/Screen API Coordinator
+  - ../../CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Core/
+  - ../../BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core
   
 cyclomatic_complexity:
   ignores_case_statements: true
