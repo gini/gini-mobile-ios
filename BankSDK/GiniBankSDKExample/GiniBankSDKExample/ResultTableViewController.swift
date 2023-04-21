@@ -25,7 +25,6 @@ final class ResultTableViewController: UITableViewController, UITextFieldDelegat
 	var editableFields: [String : String] = [:]
     var lineItems: [[Extraction]]? = nil
 	var enabledRows: [Int] = []
-	private let rowHeight: CGFloat = 75
 }
 
 extension ResultTableViewController {
@@ -64,7 +63,7 @@ extension ResultTableViewController {
     }
 	
 	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		return rowHeight
+		return UITableView.automaticDimension
 	}
 	
 	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
