@@ -132,11 +132,13 @@ final class AppCoordinator: Coordinator {
         let title = NSLocalizedStringPreferredFormat("import.data.title", comment: "Import data")
         let description = NSLocalizedStringPreferredFormat("import.data.description",
                                                            comment: "Import data description")
+        let startButtonTitle = NSLocalizedStringPreferredFormat("import.startButtonTitle",
+                                                                 comment: "Yes")
         let cancelButtonTitle = NSLocalizedStringPreferredFormat("import.cancelButtonTitle",
-                                                                 comment: "Cancel")
+                                                                 comment: "No")
         let alertViewController = UIAlertController(title: title, message: description, preferredStyle: .alert)
 
-        alertViewController.addAction(UIAlertAction(title: "GiniBank SDK", style: .default) { [weak self] _ in
+        alertViewController.addAction(UIAlertAction(title: startButtonTitle, style: .default) { [weak self] _ in
             self?.showScreenAPI(with: pages)
         })
         alertViewController.addAction(UIAlertAction(title: cancelButtonTitle, style: .default) { _ in
