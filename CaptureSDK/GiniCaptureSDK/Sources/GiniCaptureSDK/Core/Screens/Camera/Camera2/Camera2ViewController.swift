@@ -397,11 +397,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     }
 
     fileprivate func didPick(_ document: GiniCaptureDocument) {
-        if let delegate = delegate {
-            delegate.camera(self, didCapture: document)
-        } else {
-            assertionFailure("The CameraViewControllerDelegate has not been assigned")
-        }
+        delegate?.camera(self, didCapture: document)
     }
 
     override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
