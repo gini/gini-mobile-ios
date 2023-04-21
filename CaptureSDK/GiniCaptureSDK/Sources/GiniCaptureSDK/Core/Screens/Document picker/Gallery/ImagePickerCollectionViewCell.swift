@@ -9,16 +9,16 @@ import UIKit
 
 final class ImagePickerCollectionViewCell: UICollectionViewCell {
     static let identifier = "ImagePickerCollectionViewCell"
-    
+
     let selectedCircleSize = CGSize(width: 25, height: 25)
-    
+
     lazy var activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(style: .gray)
         indicator.translatesAutoresizingMaskIntoConstraints = false
         indicator.alpha = 0
         return indicator
     }()
-    
+
     fileprivate lazy var galleryImage: UIImageView = {
         let galleryImage: UIImageView = UIImageView(frame: .zero)
         galleryImage.translatesAutoresizingMaskIntoConstraints = false
@@ -26,7 +26,7 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
         galleryImage.clipsToBounds = true
         return galleryImage
     }()
-    
+
     fileprivate lazy var selectedForegroundView: UIView = {
         var view = UIView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -36,7 +36,7 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
         view.alpha = 0
         return view
     }()
-    
+
     lazy var checkImage: UIImageView = {
         let image = UIImageNamedPreferred(named: "checkMarkBlue")
         var imageView = UIImageView(image: image)
@@ -44,7 +44,7 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
         imageView.isHidden = true
         return imageView
     }()
-    
+
     lazy var checkCircleBackground: UIView = {
         let circleView = UIView()
         circleView.translatesAutoresizingMaskIntoConstraints = false
@@ -60,13 +60,13 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
             changeCheckCircle(to: isProgramaticallySelected)
         }
     }
-    
+
     override var isHighlighted: Bool {
         didSet {
             selectedForegroundView.alpha = isHighlighted ? 1 : 0
         }
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(galleryImage)
@@ -77,7 +77,7 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
 
         setupConstraints()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -106,10 +106,10 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
             checkImage.topAnchor.constraint(equalTo: checkCircleBackground.topAnchor),
             checkImage.leadingAnchor.constraint(equalTo: checkCircleBackground.leadingAnchor),
             checkImage.centerXAnchor.constraint(equalTo: checkCircleBackground.centerXAnchor),
-            checkImage.centerYAnchor.constraint(equalTo: checkCircleBackground.centerYAnchor),
+            checkImage.centerYAnchor.constraint(equalTo: checkCircleBackground.centerYAnchor)
         ])
     }
-    
+
     func fill(withAsset asset: Asset,
               multipleSelectionEnabled: Bool,
               galleryManager: GalleryManagerProtocol,
@@ -128,22 +128,22 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
             self?.galleryImage.image = image
         }
     }
-    
+
     class func size(for screen: UIScreen = UIScreen.main,
                     itemsInARow: Int,
                     collectionViewLayout: UICollectionViewLayout) -> CGSize {
         let width = screen.bounds.width / CGFloat(itemsInARow)
-        
+
         guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout else {
             return CGSize(width: width, height: width)
         }
-        
+
         let spacing = flowLayout.minimumInteritemSpacing * CGFloat(itemsInARow - 1)
         let widthWithoutSpacing = (screen.bounds.width - spacing) / CGFloat(itemsInARow)
-        
+
         return CGSize(width: widthWithoutSpacing, height: widthWithoutSpacing)
     }
-    
+
     func changeCheckCircle(to selected: Bool, giniConfiguration: GiniConfiguration = .shared) {
         checkCircleBackground.isHidden = selected
         checkImage.isHidden = !selected

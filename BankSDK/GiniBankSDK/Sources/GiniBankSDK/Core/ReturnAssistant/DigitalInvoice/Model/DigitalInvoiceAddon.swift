@@ -13,16 +13,16 @@ struct DigitalInvoiceAddon: Equatable {
     var name: String {
         return addonExtraction.name
     }
-    
+
     private let addonExtraction: AddonExtraction
-    
+
     init?(from extraction: Extraction) {
         guard let name = extraction.name,
             let addonExtraction = AddonExtraction(rawValue: name),
             let price = Price(extractionString: extraction.value) else {
                 return nil
         }
-        
+
         self.price = price
         self.addonExtraction = addonExtraction
     }
@@ -34,7 +34,7 @@ private enum AddonExtraction: String {
     case otherDiscounts = "other-discounts-addon"
     case otherCharges = "other-charges-addon"
     case shipment = "shipment-addon"
-    
+
     var name: String {
         switch self {
         case .discount:

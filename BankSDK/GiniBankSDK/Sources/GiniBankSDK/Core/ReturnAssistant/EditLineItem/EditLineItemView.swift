@@ -201,18 +201,22 @@ final class EditLineItemView: UIView {
             stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -Constants.horizontalPadding),
 
             nameErrorLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor, constant: 16),
-            nameErrorLabel.topAnchor.constraint(greaterThanOrEqualTo: nameLabel.bottomAnchor, constant: Constants.errorPadding),
+            nameErrorLabel.topAnchor.constraint(greaterThanOrEqualTo: nameLabel.bottomAnchor,
+                                                constant: Constants.errorPadding),
             nameErrorLabel.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor),
-            nameErrorLabel.bottomAnchor.constraint(lessThanOrEqualTo: priceLabel.topAnchor, constant: -Constants.errorPadding),
+            nameErrorLabel.bottomAnchor.constraint(lessThanOrEqualTo: priceLabel.topAnchor,
+                                                   constant: -Constants.errorPadding),
             nameErrorLabel.centerYAnchor.constraint(equalTo: nameLabel.bottomAnchor,
                                                     constant: Constants.stackViewSpacing / 2),
 
             priceErrorLabel.leadingAnchor.constraint(equalTo: priceLabel.leadingAnchor, constant: 16),
-            priceErrorLabel.topAnchor.constraint(greaterThanOrEqualTo: priceLabel.bottomAnchor, constant: Constants.errorPadding),
+            priceErrorLabel.topAnchor.constraint(greaterThanOrEqualTo: priceLabel.bottomAnchor,
+                                                 constant: Constants.errorPadding),
             priceErrorLabel.trailingAnchor.constraint(equalTo: priceLabel.trailingAnchor),
-            priceErrorLabel.bottomAnchor.constraint(lessThanOrEqualTo: quantityView.topAnchor, constant: -Constants.errorPadding),
+            priceErrorLabel.bottomAnchor.constraint(lessThanOrEqualTo: quantityView.topAnchor,
+                                                    constant: -Constants.errorPadding),
             priceErrorLabel.centerYAnchor.constraint(equalTo: priceLabel.bottomAnchor,
-                                                    constant: Constants.stackViewSpacing / 2),
+                                                    constant: Constants.stackViewSpacing / 2)
         ])
     }
 
@@ -309,7 +313,7 @@ extension EditLineItemView: PriceLabelViewDelegate {
             }
         }
     }
-    
+
     func showCurrencyPicker(on view: UIView) {
         addSubview(currencyPicker)
 

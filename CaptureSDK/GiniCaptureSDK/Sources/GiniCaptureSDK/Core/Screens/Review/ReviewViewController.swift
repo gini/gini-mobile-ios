@@ -64,6 +64,7 @@ public protocol ReviewViewControllerDelegate: AnyObject {
   - note: Component API only.
   */
 
+// swiftlint:disable file_length
 public final class ReviewViewController: UIViewController {
 
     /**
@@ -551,6 +552,13 @@ extension ReviewViewController {
         delegate?.reviewDidTapProcess(self)
     }
 
+    private func deleteItem(at indexPath: IndexPath) {
+        let pageToDelete = pages[indexPath.row]
+        pages.remove(at: indexPath.row)
+        collectionView.deleteItems(at: [indexPath])
+        delegate?.review(self, didDelete: pageToDelete)
+    }
+
     @objc
     private func swipeHandler(sender: UISwipeGestureRecognizer) {
         guard pages.count > 1 else { return }
@@ -595,17 +603,6 @@ extension ReviewViewController {
             }
 
         }
-    }
-}
-
-// MARK: - Toolbar actions
-
-extension ReviewViewController {
-    private func deleteItem(at indexPath: IndexPath) {
-        let pageToDelete = pages[indexPath.row]
-        pages.remove(at: indexPath.row)
-        collectionView.deleteItems(at: [indexPath])
-        delegate?.review(self, didDelete: pageToDelete)
     }
 }
 

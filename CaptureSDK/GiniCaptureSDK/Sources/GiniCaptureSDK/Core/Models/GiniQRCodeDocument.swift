@@ -7,15 +7,14 @@
 
 import UIKit
 
-//swiftlint:disable line_length
 /**
  A Gini Capture document made from a QR code.
- 
+
  The Gini Capture SDK supports the following QR code formats:
  - Bezahlcode (http://www.bezahlcode.de).
  - Stuzza (AT) and GiroCode (DE) (https://www.europeanpaymentscouncil.eu/document-library/guidance-documents/quick-response-code-guidelines-enable-data-capture-initiation).
  - EPS E-Payment (https://eservice.stuzza.at/de/eps-ueberweisung-dokumentation/category/5-dokumentation.html).
- 
+
  */
 @objc final public class GiniQRCodeDocument: NSObject, GiniCaptureDocument {
     public var type: GiniCaptureDocumentType = .qrcode
@@ -28,10 +27,10 @@ import UIKit
     }()
     public var isReviewable: Bool = false
     public var isImported: Bool = false
-    
+
     fileprivate lazy var paymentInformation: Data? = {
         let jsonDict: [String: Any] = ["qrcode": self.scannedString, "paymentdata": self.extractedParameters]
-        
+
         return try? JSONSerialization.data(withJSONObject: jsonDict, options: .prettyPrinted)
     }()
     fileprivate let scannedString: String
@@ -57,12 +56,12 @@ import UIKit
             return nil
         }
     }()
-    
+
     init(scannedString: String) {
         self.scannedString = scannedString
         self.id = UUID().uuidString
         super.init()
-    }    
+    }
 }
 
 // MARK: Equatable

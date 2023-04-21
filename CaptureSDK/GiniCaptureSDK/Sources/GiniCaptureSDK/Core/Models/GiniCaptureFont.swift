@@ -28,7 +28,7 @@ public class GiniCaptureFont: NSObject {
     public var light: UIFont
     public var thin: UIFont
     public private(set) var isEnabled: Bool
-    
+
     public init(regular: UIFont, bold: UIFont, light: UIFont, thin: UIFont, isEnabled: Bool = true) {
         self.regular = regular
         self.bold = bold
@@ -36,11 +36,11 @@ public class GiniCaptureFont: NSObject {
         self.thin = thin
         self.isEnabled = isEnabled
     }
-    
+
     public func with(weight: UIFont.Weight, size: CGFloat, style: UIFont.TextStyle) -> UIFont {
         return UIFontMetrics(forTextStyle: style).scaledFont(for: font(for: weight).withSize(size))
     }
-    
+
     private func font(for weight: UIFont.Weight) -> UIFont {
         switch weight {
         case .regular:

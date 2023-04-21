@@ -123,7 +123,7 @@ final class QuantityView: UIView {
             plusButton.bottomAnchor.constraint(equalTo: buttonContainerView.bottomAnchor),
             plusButton.trailingAnchor.constraint(equalTo: buttonContainerView.trailingAnchor),
             plusButton.heightAnchor.constraint(equalToConstant: Constants.buttonSize.height),
-            plusButton.widthAnchor.constraint(equalToConstant: Constants.buttonSize.width),
+            plusButton.widthAnchor.constraint(equalToConstant: Constants.buttonSize.width)
         ])
     }
 
