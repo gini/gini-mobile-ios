@@ -31,5 +31,6 @@
 
 "import.data.error.title" = "Ungültiges Dokument";
 "import.data.error.description" = "Dies ist kein gültiges Dokument";
-"import.cancelButtonTitle" = "Abbrechen";
+"import.startButtonTitle" = "Ja";
+"import.cancelButtonTitle" = "Nein";
 
