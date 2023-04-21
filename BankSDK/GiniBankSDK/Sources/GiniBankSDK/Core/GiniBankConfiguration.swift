@@ -10,29 +10,29 @@ import GiniCaptureSDK
 import GiniBankAPILibrary
 
 public final class GiniBankConfiguration: NSObject {
-    
+
     /**
      Singleton to make configuration internally accessible in all classes of the Gini Bank SDK.
      */
     public static var shared = GiniBankConfiguration()
-    
+
     /**
      Indicates whether the Return Assistant feature is enabled or not. In case of `true`,
      the user will be presented with a digital representation of their invoice where they
      can see individual line items and are able to amend them or choose to not to pay for them.
     */
     @objc public var returnAssistantEnabled = true
-    
+
     /**
      Returns a `GiniBankConfiguration` instance which allows to set individual configurations
      to change the look and feel of the Gini Bank SDK.
-     
+
      - returns: Instance of `GiniBankConfiguration`.
      */
     override init() {}
-    
+
     // MARK: General options
-    
+
     /**
      Sets custom validations that can be done apart from the default ones (file size, file type...).
      It should throw a `CustomDocumentValidationError` error.
@@ -40,67 +40,67 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var customDocumentValidations: ((GiniCaptureDocument) -> CustomDocumentValidationResult) = { _ in
         return CustomDocumentValidationResult.success()
     }
-    
+
     /**
      Can be turned on during development to unlock extra information and to save captured images to camera roll.
-     
+
      - warning: Should never be used outside of a development enviroment.
      */
     @objc public var debugModeOn = false
-    
+
     /**
      Used to handle all the logging messages in order to log them in a different way.
      */
     @objc public var logger: GiniLogger = GiniConfiguration.shared.logger
-    
+
     /**
      Indicates whether the multipage feature is enabled or not. In case of `true`,
      multiple pages can be processed, showing a different review screen when capturing.
      */
     @objc public var multipageEnabled = false
-    
+
     /**
      Sets the custom navigation view controller as a root view controller for Gini Bank SDK screens.
     */
-    @objc public var customNavigationController : UINavigationController? = nil
-    
+    @objc public var customNavigationController: UINavigationController?
+
     /**
      Sets the tint color of the UIDocumentPickerViewController navigation bar.
-     
+
      - note: Use only if you have a custom `UIAppearance` for your UINavigationBar
      */
     @objc public var documentPickerNavigationBarTintColor: UIColor?
-    
+
     /**
      Sets the background color of an informal notice. Notices are small pieces of
      information appearing underneath the navigation bar.
      */
     @objc public var noticeInformationBackgroundColor = UIColor.black
-    
+
     /**
      Sets the text color of an informal notice. Notices are small pieces of
      information appearing underneath the navigation bar.
      */
     @objc public var noticeInformationTextColor = UIColor.white
-    
+
     /**
      Sets the background color of an error notice. Notices are small pieces of
      information appearing underneath the navigation bar.
      */
     @objc public var noticeErrorBackgroundColor = UIColor.red
-    
+
     /**
      Sets the text color of an error notice. Notices are small pieces of
      information appearing underneath the navigation bar.
      */
     @objc public var noticeErrorTextColor = UIColor.white
-    
+
     /**
      Indicates whether the open with feature is enabled or not. In case of `true`,
      a new option with the open with tutorial wil be shown in the Help menu.
      */
     @objc public var openWithEnabled = false
-    
+
     /**
      Indicates whether the QR Code scanning feature is enabled or not.
      */
@@ -110,14 +110,14 @@ public final class GiniBankConfiguration: NSObject {
      Indicates whether only the QR Code scanning feature is enabled or not.
      */
     @objc public var onlyQRCodeScanningEnabled = false
-    
+
     /**
      Indicates the status bar style in the Gini Bank SDK.
      */
     @objc public var statusBarStyle = UIStatusBarStyle.lightContent
-    
+
     // MARK: Camera options
-    
+
     /**
      Set the types supported by the file import feature. `GiniCaptureImportFileTypes.none` by default.
      */
@@ -127,49 +127,48 @@ public final class GiniBankConfiguration: NSObject {
      Indicates whether the flash toggle should be shown in the camera screen.
      */
     @objc public var flashToggleEnabled = false
-    
+
     /**
      When the flash toggle is enabled, this flag indicates if the flash is on by default.
      */
     @objc public var flashOnByDefault = true
-    
+
     /**
      Sets the close button text in the navigation bar on the camera screen.
      */
     @objc public var navigationBarCameraTitleCloseButton = ""
-    
+
     /**
      Sets the help button text in the navigation bar on the camera screen.
     */
     @objc public var navigationBarCameraTitleHelpButton = ""
-    
-    
+
     // MARK: Onboarding screens
 
     /**
      Sets the continue button text in the navigation bar on the onboarding screen.
     */
     @objc public var navigationBarOnboardingTitleContinueButton = ""
-                
+
     /**
      Indicates whether the onboarding screen should be presented at each start of the Gini Bank SDK.
      */
     @objc public var onboardingShowAtLaunch = false
-    
+
     /**
      Indicates whether the onboarding screen should be presented at the first
      start of the Gini Bank SDK. It is advised to do so.
-     
+
      - note: Overwrites `onboardingShowAtLaunch` for the first launch.
      */
     @objc public var onboardingShowAtFirstLaunch = true
-        
+
     /**
      Set custom onboarding pages
      - note: For your convenience we provide the `OnboardingPage` struct.
      */
     public var customOnboardingPages: [OnboardingPage]?
-    
+
     /**
       * Set an adapter implementation to show a custom illustration on the "align corners" onboarding page.
      */
@@ -194,22 +193,22 @@ public final class GiniBankConfiguration: NSObject {
      * Set an adapter implementation to show a custom illustration on the return assistant onboarding page.
      */
    public var digitalInvoiceOnboardingIllustrationAdapter: OnboardingIllustrationAdapter?
-    
+
     /**
      Enable/disable the bottom navigation bar.
      */
     public var bottomNavigationBarEnabled: Bool = false
-    
+
     /**
       * Set an adapter implementation to show a custom bottom navigation bar on the help screens.
      */
     public var helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
-    
+
     /**
       * Set an adapter implementation to show a custom bottom navigation bar on the camera screen.
      */
     public var cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
-    
+
     /**
       * Set an adapter implementation to show a custom bottom navigation bar on the onboarding screen.
      */
@@ -249,76 +248,54 @@ public final class GiniBankConfiguration: NSObject {
      Sets the back button text in the navigation bar on the review screen. Use this if you only want to show the title.
      */
     @objc public var navigationBarReviewTitleBackButton = ""
-    
+
     /**
      Sets the close button text in the navigation bar on the review screen. Use this if you only want to show the title.
      */
     @objc public var navigationBarReviewTitleCloseButton = ""
-    
+
     /**
      Sets the continue button text in the navigation bar on the review screen.
      */
     @objc public var navigationBarReviewTitleContinueButton = ""
-    
+
     // MARK: Analysis options
 
     /**
      Sets the back button text in the navigation bar on the analysis screen. Use this if you only want to show the title.
      */
     @objc public var navigationBarAnalysisTitleBackButton = ""
-    
+
     // MARK: Help screens
-    
-    /**
-     Sets the background color for all help screens.
-     */
-    @objc public var helpScreenBackgroundColor =  GiniColor(light: Colors.Gini.pearl, dark: UIColor.from(hex: 0x1C1C1C))
-    
-    /**
-     Sets the background color for the cells on help screen.
-     */
-    @objc public var helpScreenCellsBackgroundColor =  GiniColor(light: Colors.Gini.pearl, dark: UIColor.from(hex: 0x1C1C1C))
-    
+
     /**
      Sets the back button text in the navigation bar on the help menu screen. Use this if you only want to show the title.
      */
     @objc public var navigationBarHelpMenuTitleBackToCameraButton = ""
-    
+
     /**
      Sets the back button text in the navigation bar on the help screen. Use this if you only want to show the title.
      */
     @objc public var navigationBarHelpScreenTitleBackToMenuButton = ""
-    
+
     /**
      Indicates whether the supported format screens should be shown. In case of `false`,
      the option won't be shown in the Help menu.
      */
     @objc public var shouldShowSupportedFormatsScreen = true
-    
-    // MARK: Supported formats
-    
-    /**
-     Sets the color of the unsupported formats icon background to the specified color.
-     */
-    @objc public var nonSupportedFormatsIconColor = Colors.Gini.crimson
-    
-    /**
-     Sets the color of the supported formats icon background to the specified color.
-     */
-    @objc public var supportedFormatsIconColor = Colors.Gini.paleGreen
-    
+
     // MARK: Open with tutorial options
-    
+
     /**
      Sets the text of the app name for the Open with tutorial texts.
      */
     @objc public var openWithAppNameForTexts = Bundle.main.appName
-    
+
     /**
      Sets if the Drag&Drop step should be shown in the "Open with" tutorial.
      */
     @objc public var shouldShowDragAndDropTutorial = true
-    
+
     // Undocumented--Xamarin only
     @objc public var closeButtonResource: PreferredButtonResource?
     @objc public var helpButtonResource: PreferredButtonResource?
@@ -390,7 +367,7 @@ public final class GiniBankConfiguration: NSObject {
                                 borderWidth: 0,
                                 shadowRadius: 0,
                                 withBlurEffect: false)
-    
+
     // MARK: - TODO DELETE
     /**
      Sets the font used in the Return Assistant screens by default.
@@ -409,22 +386,22 @@ public final class GiniBankConfiguration: NSObject {
      Set an array of additional custom help menu items . Those items will be presented as table view cells on the help menu screen. By selecting the cell the user will be redirected to the page, which represented by viewController provided by customer during the  `HelpMenuViewController.Item` initialization.
     */
     public var customMenuItems: [HelpMenuItem] = []
-    
+
     /**
      Sets if the default error logging implementation is on.
      */
     public var giniErrorLoggerIsOn: Bool = true
-    
+
     /**
      Should be set if the custom error logging is implemented.
      */
-    public var customGiniErrorLoggerDelegate : GiniCaptureErrorLoggerDelegate?
-    
+    public var customGiniErrorLoggerDelegate: GiniCaptureErrorLoggerDelegate?
+
     /**
      Should be set if the default name "Localizable.strings" are not used.
      */
     public var localizedStringsTableName: String?
-    
+
     /**
      Set dictionary of fonts for available text styles. Used internally.
      */
@@ -446,87 +423,84 @@ public final class GiniBankConfiguration: NSObject {
     .footnote: UIFontMetrics(forTextStyle: .footnote).scaledFont(for: UIFont.systemFont(ofSize: 13)),
     .footnoteBold: UIFontMetrics(forTextStyle: .footnote).scaledFont(for: UIFont.boldSystemFont(ofSize: 13))
     ]
-    
+
+    // swiftlint: disable function_body_length
     public func captureConfiguration() -> GiniConfiguration {
         let configuration = GiniConfiguration.shared
         configuration.customDocumentValidations = self.customDocumentValidations
-        
+
         configuration.customFont = self.customFont
-        
+
         configuration.debugModeOn = self.debugModeOn
-        
+
         configuration.logger = self.logger
-        
+
         configuration.multipageEnabled = self.multipageEnabled
         configuration.customNavigationController = self.customNavigationController
-        
+
         configuration.documentPickerNavigationBarTintColor = self.documentPickerNavigationBarTintColor
 
         configuration.noticeInformationBackgroundColor = self.noticeInformationBackgroundColor
-        
+
         configuration.noticeInformationTextColor = self.noticeInformationTextColor
         configuration.noticeErrorBackgroundColor = self.noticeErrorBackgroundColor
         configuration.noticeErrorTextColor = self.noticeErrorTextColor
-        
+
         configuration.openWithEnabled = self.openWithEnabled
-        
+
         configuration.qrCodeScanningEnabled = self.qrCodeScanningEnabled
         configuration.onlyQRCodeScanningEnabled = self.onlyQRCodeScanningEnabled
-        
+
         configuration.statusBarStyle = self.statusBarStyle
-        
+
         configuration.fileImportSupportedTypes = self.fileImportSupportedTypes
-        
+
         configuration.flashToggleEnabled = self.flashToggleEnabled
         configuration.flashOnByDefault = self.flashOnByDefault
-        
+
         configuration.navigationBarCameraTitleCloseButton = self.navigationBarCameraTitleCloseButton
         configuration.navigationBarCameraTitleHelpButton = self.navigationBarCameraTitleHelpButton
-        
+
         configuration.bottomNavigationBarEnabled = self.bottomNavigationBarEnabled
         configuration.cameraNavigationBarBottomAdapter = self.cameraNavigationBarBottomAdapter
         configuration.helpNavigationBarBottomAdapter = self.helpNavigationBarBottomAdapter
         configuration.reviewNavigationBarBottomAdapter = self.reviewNavigationBarBottomAdapter
         configuration.imagePickerNavigationBarBottomAdapter = self.imagePickerNavigationBarBottomAdapter
         configuration.navigationBarOnboardingTitleContinueButton = self.navigationBarOnboardingTitleContinueButton
-        
+
         configuration.onboardingShowAtLaunch = self.onboardingShowAtLaunch
         configuration.onboardingShowAtFirstLaunch = self.onboardingShowAtFirstLaunch
         configuration.onboardingAlignCornersIllustrationAdapter = self.onboardingAlignCornersIllustrationAdapter
-    
+
         configuration.onboardingLightingIllustrationAdapter = self.onboardingLightingIllustrationAdapter
         configuration.onboardingQRCodeIllustrationAdapter = self.onboardingQRCodeIllustrationAdapter
         configuration.onboardingMultiPageIllustrationAdapter = self.onboardingMultiPageIllustrationAdapter
-    
+
         configuration.onboardingNavigationBarBottomAdapter = self.onboardingNavigationBarBottomAdapter
         configuration.onButtonLoadingIndicator = self.onButtonLoadingIndicator
-        
+
         configuration.navigationBarReviewTitleBackButton = self.navigationBarReviewTitleBackButton
         configuration.navigationBarReviewTitleCloseButton = self.navigationBarReviewTitleCloseButton
         configuration.navigationBarReviewTitleContinueButton = self.navigationBarReviewTitleContinueButton
 
         configuration.navigationBarAnalysisTitleBackButton = self.navigationBarAnalysisTitleBackButton
-        
+
         configuration.navigationBarHelpMenuTitleBackToCameraButton = self.navigationBarHelpMenuTitleBackToCameraButton
         configuration.navigationBarHelpScreenTitleBackToMenuButton = self.navigationBarHelpScreenTitleBackToMenuButton
-        
+
         configuration.shouldShowSupportedFormatsScreen = self.shouldShowSupportedFormatsScreen
-        
-        configuration.nonSupportedFormatsIconColor = self.nonSupportedFormatsIconColor
-        
-        configuration.supportedFormatsIconColor = self.supportedFormatsIconColor
-        
+
         configuration.openWithAppNameForTexts = self.openWithAppNameForTexts
-        
+
         configuration.shouldShowDragAndDropTutorial = self.shouldShowDragAndDropTutorial
-        
+
         configuration.customMenuItems = self.customMenuItems
-        
+
         configuration.giniErrorLoggerIsOn = self.giniErrorLoggerIsOn
         configuration.customGiniErrorLoggerDelegate = self.customGiniErrorLoggerDelegate
 
         configuration.customLoadingIndicator = self.customLoadingIndicator
-        
+
         // Undocumented--Xamarin only
         configuration.closeButtonResource = self.closeButtonResource
         configuration.helpButtonResource = self.helpButtonResource
@@ -535,9 +509,9 @@ public final class GiniBankConfiguration: NSObject {
         configuration.nextButtonResource = self.nextButtonResource
         configuration.cancelButtonResource = self.cancelButtonResource
         configuration.localizedStringsTableName = self.localizedStringsTableName
-        
+
         for textStyle in UIFont.TextStyle.allCases {
-            if let newFont = textStyleFonts[textStyle]{
+            if let newFont = textStyleFonts[textStyle] {
                 configuration.updateFont(newFont, for: textStyle)
             }
         }
@@ -549,48 +523,48 @@ public final class GiniBankConfiguration: NSObject {
         configuration.cameraControlButtonConfiguration = self.cameraControlButtonConfiguration
 
         GiniCapture.setConfiguration(configuration)
-        
+
         // Set onboarding pages after setting the GiniCapture's configuration
         // because the onboarding page initialisers need the configuration
         configuration.onboardingAlignCornersIllustrationAdapter = self.onboardingAlignCornersIllustrationAdapter
-        
+
         return configuration
     }
-    
+
     /**
      Sets the configuration flags back. Used only in the example app. See `SettingsViewController` for the details.
      */
     public func updateConfiguration(withCaptureConfiguration configuration: GiniConfiguration) {
-        
+
         let giniBankConfiguration = GiniBankConfiguration.shared
         giniBankConfiguration.customFont = configuration.customFont
-        
+
         giniBankConfiguration.debugModeOn = configuration.debugModeOn
-                
+
         giniBankConfiguration.multipageEnabled = configuration.multipageEnabled
-        
+
         giniBankConfiguration.openWithEnabled = configuration.openWithEnabled
-        
+
         giniBankConfiguration.qrCodeScanningEnabled = configuration.qrCodeScanningEnabled
 
         giniBankConfiguration.onlyQRCodeScanningEnabled = configuration.onlyQRCodeScanningEnabled
-        
+
         giniBankConfiguration.fileImportSupportedTypes = configuration.fileImportSupportedTypes
-        
+
         giniBankConfiguration.flashToggleEnabled = configuration.flashToggleEnabled
         giniBankConfiguration.flashOnByDefault = configuration.flashOnByDefault
-        
+
         giniBankConfiguration.onboardingShowAtLaunch = configuration.onboardingShowAtLaunch
         giniBankConfiguration.onboardingShowAtFirstLaunch = configuration.onboardingShowAtFirstLaunch
         giniBankConfiguration.shouldShowSupportedFormatsScreen = configuration.shouldShowSupportedFormatsScreen
-                                
+
         giniBankConfiguration.shouldShowDragAndDropTutorial = configuration.shouldShowDragAndDropTutorial
         giniBankConfiguration.bottomNavigationBarEnabled = configuration.bottomNavigationBarEnabled
     }
-    
+
     /**
      Allows setting a custom font for specific text styles. The change will affect all screens where a specific text style was used.
-     
+
      - parameter font: Font that is going to be assosiated with specific text style. You can use scaled font or scale your font with our util method `UIFont.scaledFont(_ font: UIFont, textStyle: UIFont.TextStyle)`
      - parameter textStyle: Constants that describe the preferred styles for fonts. Please, find additional information [here](https://developer.apple.com/documentation/uikit/uifont/textstyle)
     */
@@ -601,6 +575,7 @@ public final class GiniBankConfiguration: NSObject {
     var documentService: DocumentServiceProtocol?
     var lineItems: [[Extraction]]?
 
+    // swiftlint: disable function_parameter_count
     /// Function for clean up
     /// - Parameters:
     ///   - paymentRecipient: paymentRecipient description
@@ -608,7 +583,12 @@ public final class GiniBankConfiguration: NSObject {
     ///   - iban: iban description
     ///   - bic: bic description
     ///   - amountToPay: amountToPay description
-    public func cleanup(paymentRecipient: String, paymentReference: String, paymentPurpose: String, iban: String, bic: String, amountToPay: ExtractionAmount) {
+    public func cleanup(paymentRecipient: String,
+                        paymentReference: String,
+                        paymentPurpose: String,
+                        iban: String,
+                        bic: String,
+                        amountToPay: ExtractionAmount) {
         guard let documentService = documentService else { return }
 
         let formattedPriceValue = amountToPay.value.stringValue(withDecimalPoint: 2) ?? "\(amountToPay.value)"

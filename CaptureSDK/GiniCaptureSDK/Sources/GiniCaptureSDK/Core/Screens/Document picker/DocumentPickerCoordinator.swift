@@ -61,7 +61,6 @@ public protocol DocumentPickerCoordinatorDelegate: AnyObject {
  - note: Component API only.
  */
 
-// swiftlint:disable file_length
 public final class DocumentPickerCoordinator: NSObject {
     /**
      The object that acts as the delegate of the document picker coordinator.

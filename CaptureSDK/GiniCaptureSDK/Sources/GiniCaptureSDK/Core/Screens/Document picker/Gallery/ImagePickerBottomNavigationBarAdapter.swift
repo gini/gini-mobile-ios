@@ -21,4 +21,3 @@ public protocol ImagePickerBottomNavigationBarAdapter: InjectedViewAdapter {
      */
     func setBackButtonClickedActionCallback(_ callback: @escaping () -> Void)
 }
-

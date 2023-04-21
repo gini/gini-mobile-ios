@@ -47,7 +47,7 @@ extension ResultTableViewController {
 		cell.detailTextField.placeholder = result[indexPath.row].name
 		cell.detailTextField.tag = indexPath.row
 		cell.titleLabel.text = result[indexPath.row].name
-		cell.detailTextField.textColor = GiniColor(light: UIColor.black, dark: Colors.Gini.veryLightGray).uiColor()
+		cell.detailTextField.textColor = GiniColor(light: UIColor.black, dark: UIColor.gray).uiColor()
 		
 		if (editableFields.keys.contains(result[indexPath.row].name ?? "")) {
 			cell.detailTextField.isEnabled = true
@@ -66,7 +66,7 @@ extension ResultTableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		return rowHeight
+        return UITableView.automaticDimension
 	}
 	
 	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

@@ -9,7 +9,8 @@ import UIKit
 import GiniCaptureSDK
 
 protocol DigitalLineItemTableViewCellDelegate: AnyObject {
-    func modeSwitchValueChanged(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemTableViewCellViewModel)
+    func modeSwitchValueChanged(cell: DigitalLineItemTableViewCell,
+                                lineItemViewModel: DigitalLineItemTableViewCellViewModel)
     func editTapped(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemTableViewCellViewModel)
 }
 
@@ -36,8 +37,9 @@ class DigitalLineItemTableViewCell: UITableViewCell {
             if let priceString = viewModel.totalPriceString {
                 priceLabel.text = priceString
                 priceLabel.accessibilityValue = priceString
-                let format = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.total.accessibilitylabel",
-                                                                      comment: "Total")
+                let format = NSLocalizedStringPreferredGiniBankFormat(
+                                        "ginibank.digitalinvoice.total.accessibilitylabel",
+                                        comment: "Total")
                 priceLabel.accessibilityLabel = String.localizedStringWithFormat(format, priceString)
             }
 
@@ -63,25 +65,25 @@ class DigitalLineItemTableViewCell: UITableViewCell {
             setup()
         }
     }
-    
+
     weak var delegate: DigitalLineItemTableViewCellDelegate?
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+
         setup()
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         setup()
     }
-    
+
     private func setup() {
         backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark3).uiColor()
         selectionStyle = .none
@@ -111,13 +113,13 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         unitPriceLabel.font = configuration.textStyleFonts[.body]
         editButton.titleLabel?.font = configuration.textStyleFonts[.body]
     }
-    
+
     @objc func modeSwitchValueChange(sender: UISwitch) {
         if let viewModel = viewModel {
             delegate?.modeSwitchValueChanged(cell: self, lineItemViewModel: viewModel)
         }
     }
-    
+
     @IBAction func editButtonTapped(_ sender: Any) {
         if let viewModel = viewModel {
             delegate?.editTapped(cell: self, lineItemViewModel: viewModel)

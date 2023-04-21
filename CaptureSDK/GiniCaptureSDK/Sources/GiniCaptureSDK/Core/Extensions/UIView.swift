@@ -7,6 +7,7 @@
 
 import UIKit
 extension UIView {
+    // swiftlint:disable force_cast
     /** Loads instance from nib with the same name. */
     func loadNib() -> UIView {
         let bundle = giniCaptureBundle()
