@@ -102,6 +102,8 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         
         let customResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "resultScreen") as? ResultTableViewController)!
+
+        customResultsScreen.tableView.estimatedRowHeight = 75
         customResultsScreen.result = results
 		customResultsScreen.editableFields = editableSpecificExtractions
         customResultsScreen.navigationItem.setHidesBackButton(true, animated: true)
@@ -128,7 +130,9 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     @objc private func closeSreenAPIAndSendFeedback() {
 		var extractionAmount = ExtractionAmount(value: 0.0, currency: .EUR)
 		if let amountValue = extractedResults.first(where: { $0.name == "amountToPay"})?.value {
-			extractionAmount = ExtractionAmount(value: Decimal(string: String(amountValue.split(separator: ":")[0])) ?? 0.0, currency: .EUR)
+            if amountValue.split(separator: ":").count > 0 {
+                extractionAmount = ExtractionAmount(value: Decimal(string: String(amountValue.split(separator: ":")[0])) ?? 0.0, currency: .EUR)
+            }
 		}
 	
 		configuration.cleanup(paymentRecipient: extractedResults.first(where: { $0.name == "paymentRecipient"})?.value ?? "",

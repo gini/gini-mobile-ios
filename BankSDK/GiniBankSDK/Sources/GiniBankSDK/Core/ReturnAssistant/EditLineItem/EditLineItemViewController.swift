@@ -129,8 +129,9 @@ final class EditLineItemViewController: UIViewController {
         let normalSize: CGFloat = 17 // size of the .body textstyle when the font is not set bigger in accessibility
         if let pointSize = GiniBankConfiguration.shared.textStyleFonts[.body]?.pointSize {
             let diff = pointSize - normalSize
-            let height = defaultHeight + 6 * diff //adding the extra difference for the 6 lines of the edit screen
+            let height = defaultHeight + 6 * diff // adding the extra difference for the 6 lines of the edit screen
             defaultHeight = min(height, self.view.frame.height)
+            currentContainerHeight = min(height, self.view.frame.height)
         }
     }
 
@@ -241,13 +242,18 @@ final class EditLineItemViewController: UIViewController {
 
     @objc
     private func handleTapGesture() {
-        animateDismissView()
+        if isKeyboardPresented {
+            editLineItemView.hideKeyBoard()
+        } else {
+            animateDismissView()
+        }
     }
 
     private func animateContainerToInitialHeight() {
         UIView.animate(withDuration: Constants.animationDuration) {
             if self.isKeyboardPresented {
-                self.containerViewHeightConstraint?.constant = self.defaultHeight + (self.isKeyboardPresented ? self.keyboardHeight : 0)
+                self.containerViewHeightConstraint?.constant = self.defaultHeight +
+                                                                (self.isKeyboardPresented ? self.keyboardHeight : 0)
                 self.view.layoutIfNeeded()
             } else {
                 self.containerViewHeightConstraint?.constant = self.defaultHeight
@@ -275,8 +281,16 @@ final class EditLineItemViewController: UIViewController {
             isKeyboardPresented = true
             if UIDevice.current.isIpad {
                 if currentBottomPadding < keyboardHeight {
+                    var bottomPadding: CGFloat
+
+                    if keyboardHeight + currentContainerHeight > view.frame.height {
+                        bottomPadding = view.frame.height - currentContainerHeight - Constants.topPadding
+                    } else {
+                        bottomPadding = keyboardHeight
+                    }
+
                     UIView.animate(withDuration: Constants.animationDuration) {
-                        self.containerViewBottomConstraint?.constant = -keyboardHeight
+                        self.containerViewBottomConstraint?.constant = -bottomPadding
                         self.view.layoutIfNeeded()
                     }
                 }
@@ -315,5 +329,6 @@ private extension EditLineItemViewController {
         static let maximumContainerHeight: CGFloat = UIScreen.main.bounds.height - 64
         static let tabletWidthMultiplier: CGFloat = 0.6
         static let animationDuration: CGFloat = 0.3
+        static let topPadding: CGFloat = 36
     }
 }

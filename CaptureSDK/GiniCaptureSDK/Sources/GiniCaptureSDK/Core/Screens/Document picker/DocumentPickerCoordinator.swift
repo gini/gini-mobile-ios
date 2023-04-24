@@ -61,7 +61,6 @@ public protocol DocumentPickerCoordinatorDelegate: AnyObject {
  - note: Component API only.
  */
 
-// swiftlint:disable file_length
 public final class DocumentPickerCoordinator: NSObject {
     /**
      The object that acts as the delegate of the document picker coordinator.
@@ -193,13 +192,6 @@ public final class DocumentPickerCoordinator: NSObject {
             UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self])
                 .setTitleTextAttributes([.foregroundColor: tintColor],
                                         for: .normal)
-        }
-
-        // This is needed since the UIDocumentPickerViewController on iPad is presented over the current view controller
-        // without covering the previous screen. This causes that the `viewWillAppear` method is not being called
-        // in the current view controller.
-        if !device.isIpad {
-            setStatusBarStyle(to: .default)
         }
 
         currentPickerDismissesAutomatically = true

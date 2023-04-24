@@ -17,11 +17,34 @@ final class HelpTipCell: UITableViewCell, HelpCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.isAccessibilityElement = false
-        self.iconImageView.isAccessibilityElement = true
-        self.headerLabel.isAccessibilityElement = true
-        self.descriptionLabel.isAccessibilityElement = true
-        self.iconImageView.adjustsImageSizeForAccessibilityContentSizeCategory = true
+        setupView()
+    }
+
+    private func setupView() {
+        let configuration = GiniConfiguration.shared
+        isAccessibilityElement = false
+        selectionStyle = .none
+        backgroundColor = GiniColor(light: .GiniCapture.light1,
+                                    dark: .GiniCapture.dark3).uiColor()
+
+        iconImageView.isAccessibilityElement = true
+        iconImageView.accessibilityTraits = .image
+        iconImageView.adjustsImageSizeForAccessibilityContentSizeCategory = true
+
+        headerLabel.isAccessibilityElement = true
+        headerLabel.font = configuration.textStyleFonts[.calloutBold]
+        headerLabel.adjustsFontForContentSizeCategory = true
+        headerLabel.textColor = GiniColor(light: .GiniCapture.dark1,
+                                          dark: UIColor.GiniCapture.light1).uiColor()
+
+        descriptionLabel.isAccessibilityElement = true
+        descriptionLabel.font = configuration.textStyleFonts[.subheadline]
+        descriptionLabel.adjustsFontForContentSizeCategory = true
+        descriptionLabel.textColor = GiniColor(light: .GiniCapture.dark7,
+                                               dark: .GiniCapture.dark7).uiColor()
+
+        separatorView.backgroundColor = GiniColor(light: .GiniCapture.light3,
+                                                  dark: .GiniCapture.dark4).uiColor()
     }
 
 }
