@@ -128,23 +128,31 @@ final class AppCoordinator: Coordinator {
     }
 
     fileprivate func showOpenWithSwitchDialog(for pages: [GiniCapturePage]) {
-        let alertViewController = UIAlertController(title: "Importierte Datei",
-                                                    message: "Möchten Sie die importierte Datei mit dem " +
-                                                        "ScreenAPI",
-                                                    preferredStyle: .alert)
+        let title = NSLocalizedStringPreferredFormat("import.data.title", comment: "Import data")
+        let description = NSLocalizedStringPreferredFormat("import.data.description",
+                                                           comment: "Import data description")
+        let startButtonTitle = NSLocalizedStringPreferredFormat("import.startButtonTitle",
+                                                                 comment: "Yes")
+        let cancelButtonTitle = NSLocalizedStringPreferredFormat("import.cancelButtonTitle",
+                                                                 comment: "No")
+        let alertViewController = UIAlertController(title: title, message: description, preferredStyle: .alert)
 
-        alertViewController.addAction(UIAlertAction(title: "Screen API", style: .default) { [weak self] _ in
+        alertViewController.addAction(UIAlertAction(title: startButtonTitle, style: .default) { [weak self] _ in
             self?.showScreenAPI(with: pages)
+        })
+        alertViewController.addAction(UIAlertAction(title: cancelButtonTitle, style: .default) { _ in
+            alertViewController.dismiss(animated: true, completion: nil)
         })
 
         rootViewController.present(alertViewController, animated: true, completion: nil)
     }
 
     fileprivate func showExternalDocumentNotValidDialog() {
-        let alertViewController = UIAlertController(title: "Ungültiges Dokument",
-                                                    message: "Dies ist kein gültiges Dokument",
-                                                    preferredStyle: .alert)
+        let title = NSLocalizedStringPreferredFormat("import.data.error.title", comment: "Import error")
+        let description = NSLocalizedStringPreferredFormat("import.data.error.description",
+                                                           comment: "Import error description")
 
+        let alertViewController = UIAlertController(title: title, message: description, preferredStyle: .alert)
         alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
             alertViewController.dismiss(animated: true, completion: nil)
         })

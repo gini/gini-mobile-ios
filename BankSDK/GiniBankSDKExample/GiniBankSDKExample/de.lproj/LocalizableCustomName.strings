@@ -71,6 +71,14 @@
 "close" = "Schließen";
 "results.sendfeedback.button.title" = "Feedback senden und schließen";
 
+"import.data.title" = "Importierte Datei";
+"import.data.description" = "Möchten Sie die importierte Datei mit dem GiniBankSDKExample verwenden?";
+
+"import.data.error.title" = "Ungültiges Dokument";
+"import.data.error.description" = "Dies ist kein gültiges Dokument";
+"import.startButtonTitle" = "Ja";
+"import.cancelButtonTitle" = "Nein";
+
 //
 //"ginibank.digitalinvoice.backbutton" = "CM Schließen";
 //"ginibank.digitalinvoice.paybuttontitle.disabled" = "CM Bezahlen";
