@@ -11,6 +11,6 @@ import UIKit
 final class CustomMenuItemViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = Colors.Gini.blue
+        view.backgroundColor = UIColor.blue
     }
 }

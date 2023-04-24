@@ -17,7 +17,7 @@ final class DefaultHelpBottomNavigationBarAdapter: HelpBottomNavigationBarAdapte
 
     func injectedView() -> UIView {
         if let navigationBarView = BackButtonBottomNavigationBar().loadNib() as? BackButtonBottomNavigationBar {
-            navigationBarView.backButton.addAction(self,  #selector(backButtonClicked))
+            navigationBarView.backButton.addAction(self, #selector(backButtonClicked))
             return navigationBarView
         } else {
             return UIView()

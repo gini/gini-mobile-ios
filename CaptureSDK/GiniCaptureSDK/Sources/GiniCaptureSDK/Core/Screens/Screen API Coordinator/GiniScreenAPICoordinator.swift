@@ -202,6 +202,11 @@ extension GiniScreenAPICoordinator {
         switch screenAPINavigationController.topViewController {
         case is CameraScreen:
             trackingDelegate?.onCameraScreenEvent(event: Event(type: .exit))
+
+            if pages.type == .qrcode {
+                screenAPINavigationController.dismiss(animated: true)
+            }
+
             if pages.count > 0 {
                 if screenAPINavigationController.viewControllers.count > 1 {
                     screenAPINavigationController.popViewController(animated: true)

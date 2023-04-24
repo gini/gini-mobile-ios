@@ -41,19 +41,19 @@ final class AlbumsFooterView: UIView {
         let leadingContraint = contentLabel.leadingAnchor.constraint(equalTo: leadingAnchor,
                                                                      constant: Constants.padding)
         leadingContraint.priority = .defaultHigh
-        
+
         // Hack to fix AutoLayout bug related to UIView-Encapsulated-Layout-Height
         let topConstraint = contentLabel.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor)
         topConstraint.priority = .defaultHigh
-        
+
         NSLayoutConstraint.activate([
             leadingContraint,
             topConstraint,
             contentLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
-            contentLabel.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor),
+            contentLabel.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
         ])
     }
-    
+
     private func setupUI() {
         addSubview(contentLabel)
         setupConstraints()

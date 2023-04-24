@@ -13,6 +13,6 @@ final class CustomMenuItemViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = Colors.Gini.raspberry
+        self.view.backgroundColor = UIColor.red
     }
 }

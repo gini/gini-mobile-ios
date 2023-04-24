@@ -10,9 +10,9 @@ We also removed the Component API integration option and unified the public API 
 `GiniConfiguration` is a singleton now.
 You don't need to create a new instance of `GiniConfiguration` just use `GiniConfiguration.shared` instead.
 
-Please, find more details in [Getting started](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta07/getting-started.html).
+Please, find more details in [Getting started](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/getting-started.html).
 
-# Migrate from Compoment API
+# Migrate from Component API
 
 The Component API allowed more UI customization options at the cost of a more difficult integration and maintenance. It
 was based on the view controllers, and you had to manage navigation between them and also update the navigation whenever we introduced
@@ -28,7 +28,7 @@ The following steps will help you migrate to the new public API:
 
 * Configure the SDK the same way as before by using `GiniConfiguration`.
 * If you used a custom navigation bar, then you can now pass `UINavigationViewController` to `GiniConfiguration.shared.customNavigationController`.
-* The SDK provides a custom `UIViewController` object, which can be presented modally. It handles the complete process from showing the onboarding until providing a UI for the analysis.
+* The SDK provides a custom `UIViewController` object, which should be shown by your app. It handles the complete process from showing the onboarding until providing a UI for the analysis.
 
 ```swift
 // MARK: - Default networking
@@ -52,11 +52,29 @@ The following steps will help you migrate to the new public API:
 * Handling the analysis results and receiving the extracted information (error or cancellation) can be handled though `GiniCaptureResultsDelegate` protocol implementation.
 * You can also provide your own networking by implementing the `GiniCaptureNetworkService` and `GiniCaptureResultsDelegate` protocols. Pass your instances to the `UIViewController` initialiser of GiniCapture as shown below.
 * Remove all code related to interacting with the SDK's specific view controllers. From now on the entry point is the `UIViewController` and customization happens through `GiniConfiguration` and via overriding of images and color resources.
-* Use the new UI customization options and follow the [Customization guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta07/customization-guide.html) to adapt the look of the new UI.
+* Use the new UI customization options and follow the [Customization guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/customization-guide.html) to adapt the look of the new UI.
 
 # Migrate from Screen API
 
-The new public API is based on the Screen API, so you only need to use the new UI customization options and follow the [Customization guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta07/customization-guide.html) to adapt the look of the new UI.
+The new public API is based on the Screen API, so you only need to use the new UI customization options and follow the [Customization guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/customization-guide.html) to adapt the look of the new UI.
+
+# Migrate Cleanup Step and Feedback Sending
+
+We simplified the feedback sending logic. When you clean up the Gini Capture SDK you only need to pass the values the
+user has used (and potentially corrected) to `GiniConfiguration.shared.cleanup()`. All values except the one for the amount are
+passed in as strings. Amount needs to be passed in as `Decimal` and its currency as an `enum` value.
+
+You don't have to call any additional methods to send the extraction feedback.
+
+## Default Networking
+
+You don't need to maintain a reference and call `sendFeedbackBlock` anymore. The `GiniConfiguration.shared.cleanup()` method
+will take care of sending the feedback.
+
+## Custom Networking
+
+Here as well you don't need to maintain a reference and call `sendFeedbackBlock` anymore. Your implementation of the `GiniCaptureNetworkService.sendFeedback()`  
+method will be called when you pass the values the user has used (and potentially corrected) to `GiniConfiguration.shared.cleanup()`.
 
 # Overview of New UI Customization Options
 
@@ -65,7 +83,7 @@ To simplify UI customization we introduced global customization options. There i
 ## Colors
 
 We are providing a global color palette `GiniColors.xcassets` which you are free to override. The custom colors will be then applied on all screens.
-You can find the names of the colors in [GiniColors.xcassets](https://github.com/gini/gini-mobile-ios/tree/GiniCaptureSDK%3B3.0.0-beta07/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/GiniColors.xcassets).
+You can find the names of the colors in [GiniColors.xcassets](https://github.com/gini/gini-mobile-ios/tree/GiniCaptureSDK%3B3.0.0/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/GiniColors.xcassets).
 
  You can view our color palette here:
 
@@ -93,13 +111,13 @@ To override them in your application please use `GiniConfiguration.updateFont(_ 
 
 ## Images
 
-Images customization is done via overriding of [GiniImages.xcassets](https://github.com/gini/gini-mobile-ios/tree/GiniCaptureSDK%3B3.0.0-beta07/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/GiniImages.xcassets) resources.
+Images customization is done via overriding of [GiniImages.xcassets](https://github.com/gini/gini-mobile-ios/tree/GiniCaptureSDK%3B3.0.0/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/GiniImages.xcassets) resources.
 
 ## Text
 
  Text customization is done via overriding of string resources.
 
- You can find all the string resources in [Localizable.strings](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0-beta07/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/de.lproj/Localizable.strings).
+ You can find all the string resources in [Localizable.strings](https://github.com/gini/gini-mobile-ios/blob/GiniCaptureSDK%3B3.0.0/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/de.lproj/Localizable.strings).
 
 # UI Elements
 
@@ -130,7 +148,7 @@ customizations.
 
 Images and text are onboarding page specific and need to be customized for each page.
 
-[here][https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta07/features.html#onboarding] and [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=243%3A3305&t=6sAk7LGf1mi3zV9L-1).
+[here][https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/features.html#onboarding] and [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=243%3A3305&t=6sAk7LGf1mi3zV9L-1).
 
 ### Breaking Changes
 
@@ -191,7 +209,7 @@ String keys changed:
 You can show a bottom navigation bar by passing true to `GiniConfiguration.shared.bottomNavigationBarEnabled`. There is a default implementation, but you can also use
 your own by implementing the `HelpBottomNavigationBarAdapter` interface and passing it to `GiniConfiguration.shared.helpNavigationBarBottomAdapter`.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta07/features.html#help-screen-customization)).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/features.html#help-screen-customization)).
 
 ## Analysis screen
 
@@ -269,7 +287,7 @@ customizations.
 You can show your own UI for data input if an error occurred and the user clicks the "Enter manually" button on the error screen.
 For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
 
-You can find more details [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=263%3A6989&t=7wXW9XyhTUcmp5sk-1) and [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta07/customization-guide.html#no-result-screen).
+You can find more details [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=263%3A6989&t=7wXW9XyhTUcmp5sk-1) and [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/customization-guide.html#no-result-screen).
 
 ## Error screen
 
@@ -285,11 +303,11 @@ Showing errors during usage of the SDK was changed from snackbar to a whole new 
 
 The new error screen gives options to retake photos or enter details manually and displays errors with more detailed description.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta07/customization-guide.html#error-screen).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/customization-guide.html#error-screen).
 
 #### Option to enter details manually
 
 You can show your own UI for data input if an error occured and the user clicks the "Enter manually" button on the error screen.
 For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta07/features.html#error-screen-customization) and [here]((https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0-beta07/customization-guide.html#error-screen).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/features.html#error-screen-customization) and [here]((https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/customization-guide.html#error-screen).

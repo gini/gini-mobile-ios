@@ -8,7 +8,7 @@
 import Foundation
 
 enum HelpStrings: LocalizableStringResource {
-    
+
     case menuTitle, menuFirstItemText, menuSecondItemText, menuThirdItemText, openWithTutorialTitle,
     openWithTutorialCollectionHeader, openWithTutorialStep1Title, openWithTutorialStep1Subtitle,
     openWithTutorialStep2Title, openWithTutorialStep2Subtitle,
@@ -17,11 +17,11 @@ enum HelpStrings: LocalizableStringResource {
     supportedFormatsSection1Item4Text,
     supportedFormatsSection2Title, supportedFormatsSection2Item1Text, supportedFormatsSection2Item2Text,
     formatsTitle
-    
+
     var tableName: String {
         return "help"
     }
-    
+
     var tableEntry: LocalizationEntry {
         switch self {
         case .menuTitle:
@@ -70,16 +70,16 @@ enum HelpStrings: LocalizableStringResource {
             return ("Fomrats", "message for Formats screen")
         }
     }
-    
+
     var isCustomizable: Bool {
         return true
     }
-    
+
     var fallbackTableEntry: String {
         switch self {
         default:
             return ""
         }
     }
-    
+
 }

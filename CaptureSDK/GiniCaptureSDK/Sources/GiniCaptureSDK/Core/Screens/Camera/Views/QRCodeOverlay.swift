@@ -18,6 +18,7 @@ final class CorrectQRCodeTextContainer: UIView {
         label.textColor = .GiniCapture.light1
         label.text = NSLocalizedStringPreferredFormat("ginicapture.QRscanning.correct",
                                                       comment: "QR Detected")
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
@@ -51,6 +52,7 @@ final class IncorrectQRCodeTextContainer: UIView {
         label.textColor = .GiniCapture.dark1
         label.text = NSLocalizedStringPreferredFormat("ginicapture.QRscanning.incorrect.title",
                                                       comment: "Unknown QR")
+        label.numberOfLines = 0
         return label
     }()
 
@@ -138,6 +140,7 @@ final class QRCodeOverlay: UIView {
         loadingIndicatorText.adjustsFontForContentSizeCategory = true
         loadingIndicatorText.textColor = .GiniCapture.light1
         loadingIndicatorText.isAccessibilityElement = true
+        loadingIndicatorText.numberOfLines = 0
         loadingIndicatorText.text = NSLocalizedStringPreferredFormat("ginicapture.QRscanning.loading",
                                                                      comment: "Retrievenig invoice")
         return loadingIndicatorText
@@ -180,23 +183,28 @@ final class QRCodeOverlay: UIView {
         loadingContainer.addArrangedSubview(loadingIndicatorText)
     }
 
-    func layoutViews(centeringBy cameraFrame: UIView) {
-        layoutCorrectQRCode(centeringBy: cameraFrame)
+    func layoutViews(centeringBy cameraFrame: UIView, on viewController: UIViewController) {
+        layoutCorrectQRCode(centeringBy: cameraFrame, on: viewController)
         layoutIncorrectQRCode(centeringBy: cameraFrame)
         layoutLoadingIndicator(centeringBy: cameraFrame)
     }
 
-    private func layoutCorrectQRCode(centeringBy cameraFrame: UIView) {
+    private func layoutCorrectQRCode(centeringBy cameraFrame: UIView, on viewController: UIViewController) {
+        let correctQRCenterYAnchor = correctQRFeedback.centerYAnchor.constraint(equalTo: cameraFrame.topAnchor)
+        correctQRCenterYAnchor.priority = .defaultLow
+
         NSLayoutConstraint.activate([
             correctQRFeedback.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
-            correctQRFeedback.centerYAnchor.constraint(equalTo: cameraFrame.topAnchor),
+            correctQRCenterYAnchor,
+            correctQRFeedback.topAnchor.constraint(greaterThanOrEqualTo: viewController.view.topAnchor,
+                                                   constant: Constants.topSpacing),
             correctQRFeedback.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor,
                                                        constant: Constants.spacing * 2),
 
             checkMarkImageView.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
             checkMarkImageView.centerYAnchor.constraint(equalTo: cameraFrame.centerYAnchor),
-            checkMarkImageView.heightAnchor.constraint(equalToConstant: 56),
-            checkMarkImageView.widthAnchor.constraint(equalToConstant: 56)
+            checkMarkImageView.heightAnchor.constraint(equalToConstant: Constants.iconSize.height),
+            checkMarkImageView.widthAnchor.constraint(equalToConstant: Constants.iconSize.width)
         ])
     }
 
@@ -269,4 +277,6 @@ final class QRCodeOverlay: UIView {
 
 private enum Constants {
     static let spacing: CGFloat = 8
+    static let topSpacing: CGFloat = 2
+    static let iconSize = CGSize(width: 56, height: 56)
 }

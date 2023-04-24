@@ -94,7 +94,6 @@ extension NameLabelView: UITextFieldDelegate {
     }
 }
 
-
 private extension NameLabelView {
     enum Constants {
         static let cornerRadius: CGFloat = 8
@@ -102,4 +101,3 @@ private extension NameLabelView {
         static let labelPadding: CGFloat = 4
     }
 }
-

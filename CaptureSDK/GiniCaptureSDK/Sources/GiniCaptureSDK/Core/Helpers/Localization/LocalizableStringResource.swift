@@ -28,6 +28,5 @@ extension LocalizableStringResource {
                                                 fallbackKey: fallbackKey,
                                                 comment: tableEntry.description,
                                                 isCustomizable: isCustomizable)
-        
     }
 }

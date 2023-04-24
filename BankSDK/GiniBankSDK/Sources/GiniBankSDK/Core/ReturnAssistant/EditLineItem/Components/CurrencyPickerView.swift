@@ -73,11 +73,14 @@ extension CurrencyPickerView: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: CurrencyPickerCell.reuseIdentifier,
-                                                 for: indexPath) as! CurrencyPickerCell
-        cell.currency = currencies[indexPath.row].rawValue
-        cell.isActive = currencies[indexPath.row].rawValue == currentCurrency?.uppercased()
-        return cell
+        if let cell = tableView.dequeueReusableCell(withIdentifier: CurrencyPickerCell.reuseIdentifier,
+                                                    for: indexPath) as? CurrencyPickerCell {
+            cell.currency = currencies[indexPath.row].rawValue
+            cell.isActive = currencies[indexPath.row].rawValue == currentCurrency?.uppercased()
+            return cell
+        }
+        assertionFailure("CurrencyPickerCell could not be reused")
+        return UITableViewCell()
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
