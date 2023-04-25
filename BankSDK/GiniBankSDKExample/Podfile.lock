@@ -1,0 +1,16 @@
+PODS:
+  - GiniBankSDKPinning (1.14.0)
+
+DEPENDENCIES:
+  - GiniBankSDKPinning
+
+SPEC REPOS:
+  https://github.com/gini/gini-podspecs.git:
+    - GiniBankSDKPinning
+
+SPEC CHECKSUMS:
+  GiniBankSDKPinning: 651798bd3a5d5c263531faa193979bd8e16d837b
+
+PODFILE CHECKSUM: 0b961c71b8e0cc9ed17e097ea57fb5ac7d765d67
+
+COCOAPODS: 1.12.0
