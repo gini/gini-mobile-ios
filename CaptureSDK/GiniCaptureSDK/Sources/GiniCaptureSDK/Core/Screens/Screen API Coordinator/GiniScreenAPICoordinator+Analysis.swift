@@ -36,23 +36,12 @@ extension GiniScreenAPICoordinator {
         let viewModel: BottomButtonsViewModel
         let viewController: NoResultScreenViewController
         switch type {
+        case .qrCode:
+            viewModel = createRetakeAndEnterManuallyButtonsViewModel()
         case .image:
             if pages.contains(where: { $0.document.isImported == false }) {
                 // if there is a photo captured with camera
-                viewModel = BottomButtonsViewModel(
-                    retakeBlock: { [weak self] in
-                        self?.pages = []
-                        self?.backToCamera()
-                    },
-                    manuallyPressed: { [weak self] in
-                        if let delegate = self?.visionDelegate {
-                            delegate.didPressEnterManually()
-                        } else {
-                            self?.screenAPINavigationController.dismiss(animated: true)
-                        }
-                    }, cancelPressed: { [weak self] in
-                        self?.closeScreenApi()
-                })
+                viewModel = createRetakeAndEnterManuallyButtonsViewModel()
             } else {
                 viewModel = BottomButtonsViewModel(
                     manuallyPressed: { [weak self] in
@@ -73,12 +62,27 @@ extension GiniScreenAPICoordinator {
                 self?.closeScreenApi()
             })
         }
-        viewController = NoResultScreenViewController(
-            giniConfiguration: giniConfiguration,
-            type: type,
-            viewModel: viewModel)
-
+        viewController = NoResultScreenViewController(giniConfiguration: giniConfiguration,
+                                                      type: type,
+                                                      viewModel: viewModel)
         return viewController
+    }
+
+    private func createRetakeAndEnterManuallyButtonsViewModel() -> BottomButtonsViewModel {
+        return BottomButtonsViewModel(
+            retakeBlock: { [weak self] in
+                self?.pages = []
+                self?.backToCamera()
+            },
+            manuallyPressed: { [weak self] in
+                if let delegate = self?.visionDelegate {
+                    delegate.didPressEnterManually()
+                } else {
+                    self?.screenAPINavigationController.dismiss(animated: true)
+                }
+            }, cancelPressed: { [weak self] in
+                self?.closeScreenApi()
+        })
     }
 }
 
@@ -148,6 +152,9 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
             shouldDisplay = true
         case .pdf:
             noResultType = .pdf
+            shouldDisplay = true
+        case .qrcode:
+            noResultType = .qrCode
             shouldDisplay = true
         default:
             shouldDisplay = false

@@ -166,6 +166,7 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.noresult.retakeImages" = "Retake images";
 "ginicapture.noresult.title" = "No results";
 "ginicapture.noresult.header" = "Could not retrieve any information from your documents.";
+"ginicapture.noresult.header.qrcode" = "The QR code does not contain payment information";
 
 "ginicapture.error.enterManually" = "Enter manually";
 "ginicapture.error.backToCamera" = "Back to camera";
