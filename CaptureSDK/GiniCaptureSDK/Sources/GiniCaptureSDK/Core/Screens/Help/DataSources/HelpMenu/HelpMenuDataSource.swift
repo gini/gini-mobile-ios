@@ -31,7 +31,7 @@ final class HelpMenuDataSource: HelpRoundedCornersDataSource<HelpMenuItem, HelpM
     required init(
         configuration: GiniConfiguration
     ) {
-        super.init(configuration: configuration)
+        super.init()
         self.items.append(contentsOf: defaultItems)
         self.items.append(contentsOf: configuration.customMenuItems)
     }

@@ -30,7 +30,7 @@ final class HelpFormatsViewController: UIViewController, HelpBottomBarEnabledVie
 
     init(giniConfiguration: GiniConfiguration) {
         self.giniConfiguration = giniConfiguration
-        self.dataSource = HelpFormatsDataSource(configuration: giniConfiguration)
+        self.dataSource = HelpFormatsDataSource()
         super.init(nibName: nil, bundle: nil)
     }
 

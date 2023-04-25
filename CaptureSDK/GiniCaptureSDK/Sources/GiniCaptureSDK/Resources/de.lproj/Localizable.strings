@@ -129,6 +129,7 @@
 
 "ginicapture.noresult.title" = "Keine Ergebnisse";
 "ginicapture.noresult.header" = "Leider konnten keine Informationen aus dem Dokument ausgelesen werden";
+"ginicapture.noresult.header.qrcode" = "The QR code does not contain payment information";
 
 "ginicapture.error.enterManually" = "Manuell ausfüllen";
 "ginicapture.error.backToCamera" = "Neues Photo";
