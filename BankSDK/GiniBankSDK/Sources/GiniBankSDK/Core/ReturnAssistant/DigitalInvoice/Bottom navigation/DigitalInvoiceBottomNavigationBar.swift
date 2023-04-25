@@ -102,17 +102,14 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
             totalContainerView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: Constants.padding / 2),
             totalContainerView.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: -Constants.padding),
 
-            totalLabel.topAnchor.constraint(greaterThanOrEqualTo: totalContainerView.topAnchor),
+            totalLabel.topAnchor.constraint(equalTo: totalContainerView.topAnchor, constant: Constants.padding),
             totalLabel.leadingAnchor.constraint(equalTo: totalContainerView.leadingAnchor),
-            totalLabel.centerYAnchor.constraint(equalTo: totalContainerView.centerYAnchor),
-            totalLabel.bottomAnchor.constraint(lessThanOrEqualTo: totalContainerView.bottomAnchor),
-            totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: totalValueLabel.leadingAnchor,
-                                                 constant: Constants.padding),
+            totalLabel.bottomAnchor.constraint(equalTo: totalValueLabel.topAnchor, constant: -Constants.padding),
+            totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: totalContainerView.trailingAnchor,
+                                                 constant: -Constants.padding),
 
-            totalValueLabel.topAnchor.constraint(equalTo: totalContainerView.topAnchor),
-            totalValueLabel.trailingAnchor.constraint(equalTo: totalContainerView.trailingAnchor),
+            totalValueLabel.leadingAnchor.constraint(equalTo: totalContainerView.leadingAnchor),
             totalValueLabel.bottomAnchor.constraint(equalTo: totalContainerView.bottomAnchor),
-            totalValueLabel.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor),
 
             helpButton.buttonView.centerYAnchor.constraint(equalTo: payButton.centerYAnchor),
             helpButton.buttonView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
