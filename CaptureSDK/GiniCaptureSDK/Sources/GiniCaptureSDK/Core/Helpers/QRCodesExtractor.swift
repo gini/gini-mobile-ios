@@ -14,9 +14,9 @@ public enum QRCodesFormat {
 }
 
 public final class QRCodesExtractor {
-    
+
     public static let epsCodeUrlKey = "epsPaymentQRCodeUrl"
-    
+
     class func extractParameters(from string: String, withFormat qrCodeFormat: QRCodesFormat?) -> [String: String] {
         switch qrCodeFormat {
         case .some(.bezahl):
@@ -29,7 +29,7 @@ public final class QRCodesExtractor {
             return [:]
         }
     }
-    
+
     class func extractParameters(fromBezhalCodeString string: String) -> [String: String] {
         var parameters: [String: String] = [:]
 
@@ -63,20 +63,20 @@ public final class QRCodesExtractor {
                 parameters["amountToPay"] = amountNormalized
             }
         }
-        
+
         return parameters
     }
-    
+
     class func extractParameters(fromEPC06912CodeString string: String) -> [String: String] {
         let lines = string.splitlines
         var parameters: [String: String] = [:]
-        
+
         if lines.indices.contains(4) && !lines[4].isEmpty {
             parameters["bic"] = lines[4]
         } else {
             parameters["bic"] = ""
         }
-        
+
         if lines.indices.contains(5) && !lines[5].isEmpty {
             parameters["paymentRecipient"] = lines[5]
         } else {
@@ -109,11 +109,11 @@ public final class QRCodesExtractor {
 
         return parameters
     }
-    
+
     fileprivate class func normalize(amount: String, currency: String?) -> String? {
         let regexCurrency = try? NSRegularExpression(pattern: "[aA-zZ]", options: [])
         let length = amount.count < 3 ? amount.count : 3
-        
+
         if regexCurrency?.numberOfMatches(in: amount, options: [], range: NSRange(location: 0, length: length)) == 3 {
             let currency = String(amount[..<String.Index(utf16Offset: 3, in: amount)])
             let quantity = String(amount[String.Index(utf16Offset: 3, in: amount)...])
@@ -121,7 +121,7 @@ public final class QRCodesExtractor {
         } else if let currency = currency {
             return amount + ":" + currency
         }
-        
+
         return nil
     }
 }
