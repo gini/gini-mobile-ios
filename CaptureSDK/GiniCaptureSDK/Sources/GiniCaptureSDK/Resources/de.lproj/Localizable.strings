@@ -167,6 +167,11 @@
 "ginicapture.help.supportedFormats.section.2.item.1" = "Handschrift";
 "ginicapture.help.supportedFormats.section.2.item.2" = "Fotos von Bildschirmen";
 
+"ginicapture.help.supportedFormats.qrcode.item.1" = "QR Codes";
+"ginicapture.help.supportedFormats.qrcode.item.2" = "QR Codes";
+"ginicapture.help.supportedFormats.qrcode.item.3" = "QR Codes";
+"ginicapture.help.supportedFormats.qrcode.item.4" = "QR Codes";
+
 "ginicapture.help.menu.title" = "Hilfe";
 "ginicapture.help.menu.tips" = "Tipps für bessere Ergebnisse";
 "ginicapture.help.menu.formats" = "Unterstützte Formate";
