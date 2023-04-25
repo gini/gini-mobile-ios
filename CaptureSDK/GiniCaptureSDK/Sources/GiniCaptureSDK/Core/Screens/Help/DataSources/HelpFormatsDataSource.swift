@@ -18,11 +18,15 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
         var sections: [HelpFormatsCollectionSection] =  [
             (NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.section.1.title",
                                               comment: "supported format for section 1 title"),
-             ["BezahlCode",
-              "EPC069-12",
-              "Stuzza (AT)",
-              "GiroCode (DE)"],
-                UIImageNamedPreferred(named: "supportedFormatsIcon"))
+             [NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.1",
+                                               comment: "QR code type"),
+              NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.2",
+                                                comment: "QR code type"),
+              NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.3",
+                                                comment: "QR code type"),
+              NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.4",
+                                                comment: "QR code type")],
+            UIImageNamedPreferred(named: "supportedFormatsIcon"))
         ]
 
         return sections

@@ -146,6 +146,11 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.help.supportedFormats.section.2.item.1" = "Handwriting";
 "ginicapture.help.supportedFormats.section.2.item.2" = "Photos of monitors or screens";
 
+"ginicapture.help.supportedFormats.qrcode.item.1" = "QR Codes";
+"ginicapture.help.supportedFormats.qrcode.item.2" = "QR Codes";
+"ginicapture.help.supportedFormats.qrcode.item.3" = "QR Codes";
+"ginicapture.help.supportedFormats.qrcode.item.4" = "QR Codes";
+
 "ginicapture.help.menu.title" = "Help";
 "ginicapture.help.menu.tips" = "Tips for best results from photos";
 "ginicapture.help.menu.formats" = "Supported formats";
