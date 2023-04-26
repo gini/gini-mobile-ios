@@ -47,7 +47,9 @@
 "ginicapture.camera.flashButtonLabel.Off" = "Off";
 "ginicapture.camera.thumbnail.Voice.Over" = "Photo review";
 "ginicapture.camera.capturebutton" = "Take picture";
-"ginicapture.camera.infoLabel" = "Scan an invoice or a QR code";
+"ginicapture.camera.infoLabel.double" = "Scan an invoice or a QR code";
+"ginicapture.camera.infoLabel.only.invoice" = "Scan an invoice";
+"ginicapture.camera.infoLabel.only.qr" = "Scan a QR code";
 "ginicapture.camera.capturedImagesStackLabel" = "Captured documents";
 "ginicapture.camera.qrCodeDetectedPopup.message" = "Use QR code?";
 "ginicapture.camera.unsupportedQrCodeDetectedPopup.message" = "This QR Code does not contain any payment information.";

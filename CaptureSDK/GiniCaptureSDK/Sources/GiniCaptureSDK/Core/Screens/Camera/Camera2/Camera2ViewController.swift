@@ -107,9 +107,21 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                 "ginicapture.navigationbar.camera.title",
                 comment: "Info label")
         } else {
-            self.title = NSLocalizedStringPreferredFormat(
-                "ginicapture.camera.infoLabel",
-                comment: "Info label")
+            var title: String?
+
+            if !giniConfiguration.qrCodeScanningEnabled {
+                title = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.only.invoice",
+                                                         comment: "Info label")
+            } else {
+                if giniConfiguration.onlyQRCodeScanningEnabled {
+                    title = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.only.qr",
+                                                             comment: "Info label")
+                } else {
+                    title = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.double",
+                                                             comment: "Info label")
+                }
+            }
+            self.title = title
         }
     }
 
