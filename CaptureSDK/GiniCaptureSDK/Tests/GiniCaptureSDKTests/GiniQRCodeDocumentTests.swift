@@ -13,8 +13,10 @@ final class GiniQRCodeDocumentTests: XCTestCase {
     let giniConfiguration: GiniConfiguration = GiniConfiguration()
     
     func testBezahlQRCodeExtractions() {
-        let qrDocument = GiniQRCodeDocument(scannedString: "bank://singlepaymentsepa?name=Gini%20Online%20Shop" +
-            "&reason=A12345-6789&iban=DE89370400440532013000&bic=GINIBICXXX&amount=47%2C65&currency=EUR")
+        let qrDocument = GiniQRCodeDocument(scannedString:
+                "bank://singlepaymentsepa?name=Gini Online Shop&reason=A12345-6789&" +
+                "iban=DE89370400440532013000&bic=GINIBICXXX&amount=47,65&currency=EUR")
+
         XCTAssertNoThrow(try GiniCaptureDocumentValidator.validate(qrDocument,
                                                                   withConfig: giniConfiguration),
                          "should throw an error since is valid")
