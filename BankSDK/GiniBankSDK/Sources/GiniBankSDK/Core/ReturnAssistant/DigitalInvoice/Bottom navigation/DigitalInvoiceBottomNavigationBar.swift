@@ -20,6 +20,7 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
                                                              comment: "Proceed")
         button.setTitle(title, for: .normal)
         button.accessibilityValue = title
+        button.setContentHuggingPriority(.required, for: .vertical)
         return button
     }()
 
@@ -31,28 +32,21 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
         label.font = configuration.textStyleFonts[.body]
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         label.adjustsFontForContentSizeCategory = true
+        label.setContentHuggingPriority(.required, for: .vertical)
         let text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.lineitem.totalpricetitle",
                                                             comment: "Total")
         label.text = text
-        label.accessibilityValue = text
         return label
     }()
 
     private lazy var totalValueLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .right
         label.adjustsFontForContentSizeCategory = true
         label.font = configuration.textStyleFonts[.title1Bold]
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
+        label.setContentHuggingPriority(.required, for: .vertical)
         return label
-    }()
-
-    private lazy var totalContainerView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .clear
-        return view
     }()
 
     override init(frame: CGRect) {
@@ -68,7 +62,6 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
 
     func updatePrice(with price: String?) {
         totalValueLabel.text = price
-        totalValueLabel.accessibilityValue = price
     }
 
     func setProceedButtonState(enabled: Bool) {
@@ -83,9 +76,8 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
 
     private func setupView() {
         addSubview(payButton)
-        addSubview(totalContainerView)
-        totalContainerView.addSubview(totalLabel)
-        totalContainerView.addSubview(totalValueLabel)
+        addSubview(totalLabel)
+        addSubview(totalValueLabel)
         addSubview(helpButton.buttonView)
         helpButton.buttonView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -96,23 +88,13 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
         NSLayoutConstraint.activate([
             payButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.labelPadding),
             payButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-
             payButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.payButtonHeight),
 
-            totalContainerView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: Constants.padding / 2),
-            totalContainerView.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: -Constants.padding),
+            totalLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.padding/2),
+            totalLabel.bottomAnchor.constraint(equalTo: totalValueLabel.topAnchor, constant: -Constants.padding/2),
 
-            totalLabel.topAnchor.constraint(greaterThanOrEqualTo: totalContainerView.topAnchor),
-            totalLabel.leadingAnchor.constraint(equalTo: totalContainerView.leadingAnchor),
-            totalLabel.centerYAnchor.constraint(equalTo: totalContainerView.centerYAnchor),
-            totalLabel.bottomAnchor.constraint(lessThanOrEqualTo: totalContainerView.bottomAnchor),
-            totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: totalValueLabel.leadingAnchor,
-                                                 constant: Constants.padding),
-
-            totalValueLabel.topAnchor.constraint(equalTo: totalContainerView.topAnchor),
-            totalValueLabel.trailingAnchor.constraint(equalTo: totalContainerView.trailingAnchor),
-            totalValueLabel.bottomAnchor.constraint(equalTo: totalContainerView.bottomAnchor),
-            totalValueLabel.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor),
+            totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor, constant: Constants.padding/2),
+            totalValueLabel.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: -Constants.padding),
 
             helpButton.buttonView.centerYAnchor.constraint(equalTo: payButton.centerYAnchor),
             helpButton.buttonView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
@@ -121,18 +103,23 @@ final class DigitalInvoiceBottomNavigationBar: UIView {
 
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
-                totalContainerView.centerXAnchor.constraint(equalTo: centerXAnchor),
-                totalContainerView.widthAnchor.constraint(equalTo: widthAnchor,
-                                                          multiplier: Constants.tabletWidthMultiplier),
-                payButton.leadingAnchor.constraint(equalTo: totalContainerView.leadingAnchor)
+                totalLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+                totalLabel.widthAnchor.constraint(equalTo: widthAnchor,
+                                                  multiplier: Constants.tabletWidthMultiplier),
+                totalValueLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+                totalValueLabel.widthAnchor.constraint(equalTo: widthAnchor,
+                                                  multiplier: Constants.tabletWidthMultiplier),
+                payButton.leadingAnchor.constraint(equalTo: totalLabel.leadingAnchor)
             ])
         } else {
             NSLayoutConstraint.activate([
-                totalContainerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
-                totalContainerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
-                payButton.leadingAnchor.constraint(greaterThanOrEqualTo: totalContainerView.leadingAnchor,
+                totalLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
+                totalLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+                totalValueLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
+                totalValueLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
+                payButton.leadingAnchor.constraint(greaterThanOrEqualTo: totalValueLabel.leadingAnchor,
                                                    constant: Constants.buttonPadding),
-                payButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 150)
+                payButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.minimumPayButtonWidth)
             ])
         }
     }
@@ -144,6 +131,7 @@ extension DigitalInvoiceBottomNavigationBar {
         static let labelPadding: CGFloat = 24
         static let buttonPadding: CGFloat = 76
         static let payButtonHeight: CGFloat = 50
+        static let minimumPayButtonWidth: CGFloat = 150
         static let helpButtonHeight: CGFloat = 44
         static let helpButtonInset: CGFloat = 4
         static let tabletWidthMultiplier: CGFloat = 0.7

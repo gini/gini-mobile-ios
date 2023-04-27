@@ -71,7 +71,6 @@ final class DigitalInvoiceViewController: UIViewController {
     private lazy var totalValueLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .right
         label.font = configuration.textStyleFonts[.title1Bold]
         label.textColor = GiniColor(light: .GiniBank.dark1, dark: .GiniBank.light1).uiColor()
         label.text = viewModel.invoice?.total?.string
@@ -134,7 +133,7 @@ final class DigitalInvoiceViewController: UIViewController {
             buttonContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             buttonContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             buttonContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            buttonContainerView.heightAnchor.constraint(equalToConstant: Constants.buttonContainerHeight),
+            buttonContainerView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonContainerHeight),
 
             payButton.bottomAnchor.constraint(equalTo: buttonContainerView.bottomAnchor,
                                               constant: -Constants.labelPadding),
@@ -142,32 +141,27 @@ final class DigitalInvoiceViewController: UIViewController {
             payButton.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
             payButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.payButtonHeight),
 
-            totalLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor,
+            totalLabel.topAnchor.constraint(equalTo: buttonContainerView.topAnchor,
                                             constant: Constants.padding),
-            totalLabel.trailingAnchor.constraint(lessThanOrEqualTo: totalValueLabel.leadingAnchor,
-                                                 constant: Constants.padding),
+            totalLabel.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
+            totalLabel.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
 
-            totalValueLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonContainerView.topAnchor,
+            totalValueLabel.topAnchor.constraint(equalTo: totalLabel.bottomAnchor,
                                                  constant: Constants.padding / 2),
+            totalValueLabel.leadingAnchor.constraint(equalTo: totalLabel.leadingAnchor),
             totalValueLabel.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
-            totalValueLabel.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: -Constants.labelPadding),
-            totalValueLabel.centerYAnchor.constraint(equalTo: totalLabel.centerYAnchor)
+            totalValueLabel.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: -Constants.labelPadding)
         ])
 
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
                 tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 tableView.widthAnchor.constraint(equalTo: view.widthAnchor,
-                                                 multiplier: Constants.tabletWidthMultiplier),
-                totalLabel.leadingAnchor.constraint(equalTo: tableView.leadingAnchor)
-            ])
+                                                 multiplier: Constants.tabletWidthMultiplier)])
         } else {
             NSLayoutConstraint.activate([
                 tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding),
-                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.padding),
-
-                totalLabel.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor,
-                                                    constant: Constants.labelPadding)
+                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.padding)
             ])
         }
     }
@@ -198,7 +192,6 @@ final class DigitalInvoiceViewController: UIViewController {
                     navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                     navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                     navigationBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                    navigationBar.heightAnchor.constraint(equalToConstant: 160),
                     navigationBar.topAnchor.constraint(equalTo: tableView.bottomAnchor)
                 ])
             }

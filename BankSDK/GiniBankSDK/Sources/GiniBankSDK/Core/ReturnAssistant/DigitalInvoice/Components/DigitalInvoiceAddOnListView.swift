@@ -56,11 +56,11 @@ final class DigitalInvoiceAddOnListView: UIView {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: topAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: valueLabel.leadingAnchor, constant: -Constants.labelPadding),
-            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
+            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -Constants.labelPadding),
+            titleLabel.bottomAnchor.constraint(equalTo: valueLabel.topAnchor, constant: -Constants.labelPadding),
 
-            valueLabel.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            valueLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            valueLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            valueLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -Constants.labelPadding),
             valueLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
