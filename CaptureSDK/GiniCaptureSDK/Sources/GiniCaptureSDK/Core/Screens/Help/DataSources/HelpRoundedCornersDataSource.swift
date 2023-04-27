@@ -8,15 +8,11 @@
 
 import UIKit
 
+protocol HelpDataSource: UITableViewDelegate, UITableViewDataSource {}
+
 class HelpRoundedCornersDataSource<Item, Cell>: NSObject, HelpDataSource where Cell: HelpCell {
     var items: [Item] = []
-    let giniConfiguration: GiniConfiguration
-
-    required init(
-        configuration: GiniConfiguration
-    ) {
-        giniConfiguration = configuration
-    }
+    let giniConfiguration = GiniConfiguration.shared
 
     func configureCell(cell: Cell, indexPath: IndexPath) {
         fatalError("init(coder:) has not been implemented")

@@ -129,6 +129,7 @@
 
 "ginicapture.noresult.title" = "Keine Ergebnisse";
 "ginicapture.noresult.header" = "Leider konnten keine Informationen aus dem Dokument ausgelesen werden";
+"ginicapture.noresult.header.qrcode" = "Der QR-Code enthält keine Zahlungsinformationen";
 
 "ginicapture.error.enterManually" = "Manuell ausfüllen";
 "ginicapture.error.backToCamera" = "Neues Photo";
@@ -165,6 +166,11 @@
 "ginicapture.help.supportedFormats.section.2.title" = "Nicht unterstütztes Format";
 "ginicapture.help.supportedFormats.section.2.item.1" = "Handschrift";
 "ginicapture.help.supportedFormats.section.2.item.2" = "Fotos von Bildschirmen";
+
+"ginicapture.help.supportedFormats.qrcode.item.1" = "BezahlCode";
+"ginicapture.help.supportedFormats.qrcode.item.2" = "eps Überweisung";
+"ginicapture.help.supportedFormats.qrcode.item.3" = "Stuzza (AT)";
+"ginicapture.help.supportedFormats.qrcode.item.4" = "Girocode (DE)";
 
 "ginicapture.help.menu.title" = "Hilfe";
 "ginicapture.help.menu.tips" = "Tipps für bessere Ergebnisse";

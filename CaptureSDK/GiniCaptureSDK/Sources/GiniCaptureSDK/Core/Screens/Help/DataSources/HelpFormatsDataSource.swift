@@ -14,7 +14,25 @@ typealias HelpFormatsCollectionSection = (title: String,
 
 class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionSection, HelpFormatCell> {
 
-    lazy var itemSections: [HelpFormatsCollectionSection] = {
+    lazy var qrCodeItemSections: [HelpFormatsCollectionSection] = {
+        var sections: [HelpFormatsCollectionSection] =  [
+            (NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.section.1.title",
+                                              comment: "supported format for section 1 title"),
+             [NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.1",
+                                               comment: "QR code type"),
+              NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.2",
+                                                comment: "QR code type"),
+              NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.3",
+                                                comment: "QR code type"),
+              NSLocalizedStringPreferredFormat("ginicapture.help.supportedFormats.qrcode.item.4",
+                                                comment: "QR code type")],
+            UIImageNamedPreferred(named: "supportedFormatsIcon"))
+        ]
+
+        return sections
+    }()
+
+    lazy var pdfItemSections: [HelpFormatsCollectionSection] = {
         var sections: [HelpFormatsCollectionSection] =  [
             (NSLocalizedStringPreferredFormat(
                 "ginicapture.help.supportedFormats.section.1.title",
@@ -62,11 +80,24 @@ class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionS
 
     override var items: [HelpFormatsCollectionSection] {
         get {
-            return itemSections
+            if isQRCodeContent {
+                return qrCodeItemSections
+            }
+            return pdfItemSections
         }
         set {
-            itemSections = newValue
+            if isQRCodeContent {
+                qrCodeItemSections = newValue
+            }
+            pdfItemSections = newValue
         }
+    }
+
+    private let isQRCodeContent: Bool
+
+    init(isQRCodeContent: Bool = false) {
+        self.isQRCodeContent = isQRCodeContent
+        super.init()
     }
 
     private func configureCellAccessibility(

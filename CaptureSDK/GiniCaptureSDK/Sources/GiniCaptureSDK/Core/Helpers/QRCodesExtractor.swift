@@ -33,23 +33,31 @@ public final class QRCodesExtractor {
     class func extractParameters(fromBezhalCodeString string: String) -> [String: String] {
         var parameters: [String: String] = [:]
 
-        if let queryParameters = URL(string: string)?.queryParameters {
+        if let encodedString = string.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+           let queryParameters = URL(string: encodedString)?.queryParameters {
 
-            if let bic = queryParameters["bic"] as? String {
+            let queryParametersDecoded = queryParameters.reduce(into: [String: Any]()) { result, parameter in
+                if let decodedValue = (parameter.value as? String)?.removingPercentEncoding {
+                    result[parameter.key] = decodedValue
+                }
+            }
+
+            if let bic = queryParametersDecoded["bic"] as? String {
                 parameters["bic"] = bic
             }
-            if let paymentRecipient = queryParameters["name"] as? String {
+            if let paymentRecipient = queryParametersDecoded["name"] as? String {
                 parameters["paymentRecipient"] = paymentRecipient
             }
-            if let iban = queryParameters["iban"] as? String,
+
+            if let iban = queryParametersDecoded["iban"] as? String,
                 IBANValidator().isValid(iban: iban) {
                 parameters["iban"] = iban
             }
-            if let paymentReference = queryParameters["reason"] as? String ??
+            if let paymentReference = queryParametersDecoded["reason"] as? String ??
                 queryParameters["reason1"] as? String {
                 parameters["paymentReference"] = paymentReference
             }
-            if let amount = queryParameters["amount"] as? String,
+            if let amount = queryParametersDecoded["amount"] as? String,
                 let amountNormalized = normalize(amount: amount,
                                                  currency: queryParameters["currency"] as? String ?? "EUR") {
                 parameters["amountToPay"] = amountNormalized
