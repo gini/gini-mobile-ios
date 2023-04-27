@@ -34,7 +34,7 @@ final class HelpTipsViewController: UIViewController, HelpBottomBarEnabledViewCo
 
     init(giniConfiguration: GiniConfiguration) {
         self.giniConfiguration = giniConfiguration
-        self.dataSource = HelpTipsDataSource(configuration: giniConfiguration)
+        self.dataSource = HelpTipsDataSource()
         super.init(nibName: nil, bundle: nil)
     }
 

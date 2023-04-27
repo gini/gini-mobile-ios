@@ -12,18 +12,20 @@ final class NoResultScreenViewController: UIViewController {
     enum NoResultType {
         case image
         case pdf
+        case qrCode
         case custom(String)
 
         var description: String {
             switch self {
             case .pdf:
-                return NSLocalizedStringPreferredFormat(
-                    "ginicapture.noresult.header",
-                    comment: "no results header")
+                return NSLocalizedStringPreferredFormat("ginicapture.noresult.header",
+                                                        comment: "no results header")
             case .image:
-                return NSLocalizedStringPreferredFormat(
-                    "ginicapture.noresult.header",
-                    comment: "no results header")
+                return NSLocalizedStringPreferredFormat("ginicapture.noresult.header",
+                                                        comment: "no results header")
+            case .qrCode:
+                return NSLocalizedStringPreferredFormat("ginicapture.noresult.header.qrcode",
+                                                        comment: "no results header for qr codes")
             case .custom(let text):
                 return text
             }
@@ -90,13 +92,15 @@ final class NoResultScreenViewController: UIViewController {
         self.type = type
         switch type {
         case .image:
-            let tipsDS = HelpTipsDataSource(configuration: giniConfiguration)
+            let tipsDS = HelpTipsDataSource()
             tipsDS.showHeader = true
             self.dataSource = tipsDS
         case .pdf:
-            self.dataSource = HelpFormatsDataSource(configuration: giniConfiguration)
+            self.dataSource = HelpFormatsDataSource()
+        case .qrCode:
+            self.dataSource = HelpFormatsDataSource(isQRCodeContent: true)
         case .custom(_):
-            self.dataSource = HelpFormatsDataSource(configuration: giniConfiguration)
+            self.dataSource = HelpFormatsDataSource()
         }
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -213,7 +217,7 @@ final class NoResultScreenViewController: UIViewController {
 
     private func registerCells() {
         switch type {
-        case .pdf:
+        case .pdf, .qrCode:
             tableView.register(
                 UINib(
                     nibName: "HelpFormatCell",

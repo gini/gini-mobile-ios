@@ -18,8 +18,8 @@ final class HelpTipsDataSource: HelpRoundedCornersDataSource<HelpTipsItem, HelpT
 
     var showHeader = false
 
-    required init(configuration: GiniConfiguration) {
-        super.init(configuration: configuration)
+    override init() {
+        super.init()
         items.append(contentsOf: [
             HelpTipsItem(header: NSLocalizedStringPreferredFormat("ginicapture.analysis.suggestion.1",
                                                                   comment: "Analysis suggestion 1 header"),
