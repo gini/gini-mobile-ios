@@ -59,7 +59,7 @@ final class CameraPane: UIView {
             title = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.only.invoice",
                                                      comment: "Info label")
         } else {
-            title = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.double",
+            title = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.invoice.and.qr",
                                                      comment: "Info label")
         }
         cameraTitleLabel.text = title
