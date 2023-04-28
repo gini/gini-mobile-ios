@@ -138,7 +138,7 @@ final class AppCoordinator: Coordinator {
     }
     
     func processExternalDocument(withUrl url: URL, sourceApplication: String?) {
-        
+        var doc: GiniCaptureDocument?
         let captureConfiguration = configuration.captureConfiguration()
         // 1. Build the document
         let documentBuilder = GiniCaptureDocumentBuilder(documentSource: .appName(name: sourceApplication))
@@ -146,21 +146,28 @@ final class AppCoordinator: Coordinator {
         
         documentBuilder.build(with: url) { [weak self] (document) in
             guard let self = self else { return }
-            
+            // Get saved imageData which was save in the extension from the group extension UserDefaults
+            // Build document with imageData because it's not possible to do it for the url from Photos
+            if let userDefaults = UserDefaults(suiteName: "group.bank.extension.test") {
+                if let data = userDefaults.value(forKey: "imageData") {
+                    doc = documentBuilder.build(with: data as! Data, fileName: "image")
+                }
+            }
             // When a document is imported with "Open with", a dialog allowing to choose between both APIs
             // is shown in the main screen. Therefore it needs to go to the main screen if it is not there yet.
             self.popToRootViewControllerIfNeeded()
             
             // 2. Validate the document
             if let document = document {
-                do {
-                    try GiniCapture.validate(document,
-                                             withConfig: captureConfiguration)
-                    self.showOpenWithSwitchDialog(
-                        for: [GiniCapturePage(document: document, error: nil)])
-                } catch  {
-                    self.rootViewController.showErrorDialog(for: error, positiveAction: nil)
-                }
+                doc = document
+            }
+            do {
+                try GiniCapture.validate(doc!,
+                                         withConfig: captureConfiguration)
+                self.showOpenWithSwitchDialog(
+                    for: [GiniCapturePage(document: doc!, error: nil)])
+            } catch  {
+                self.rootViewController.showErrorDialog(for: error, positiveAction: nil)
             }
         }
     }
