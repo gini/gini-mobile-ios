@@ -117,7 +117,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                     title = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.only.qr",
                                                              comment: "Info label")
                 } else {
-                    title = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.double",
+                    title = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.invoice.and.qr",
                                                              comment: "Info label")
                 }
             }
