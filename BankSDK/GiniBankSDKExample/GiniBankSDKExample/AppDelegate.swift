@@ -24,7 +24,17 @@ var window: UIWindow?
     func application(_ app: UIApplication,
                      open url: URL,
                      options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        coordinator.processExternalDocument(withUrl: url, sourceApplication: options[.sourceApplication] as? String)
+        // Coming from Photos extension app
+        if url.absoluteString == "BankSDKExtension://" {
+            if let userDefaults = UserDefaults(suiteName: "group.bank.extension.test") {
+                //Getting urlString for the image
+                let imageUrlString = userDefaults.value(forKey: "incomingURL")
+                coordinator.processExternalDocument(withUrl: URL(string: imageUrlString as! String)!, sourceApplication: options[.sourceApplication] as? String)
+            }
+        } else {
+            // Coming from Files share functionality
+                coordinator.processExternalDocument(withUrl: url, sourceApplication: options[.sourceApplication] as? String)
+        }
         return true
     }
     
@@ -34,6 +44,5 @@ var window: UIWindow?
         }
         return UIInterfaceOrientationMask.portrait
     }
-
 }
 

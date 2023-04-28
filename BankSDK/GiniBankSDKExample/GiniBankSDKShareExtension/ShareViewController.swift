@@ -12,8 +12,9 @@ import CoreServices
 class ShareViewController: UIViewController {
     private let typeURL = String(kUTTypeImage)
     private let appURL = "BankSDKExtension://"
-    private let groupName = "group.BankSDKExtension"
+    private let groupName = "group.bank.extension.test"
     private let urlDefaultName = "incomingURL"
+    private let imageKey = "imageData"
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -28,12 +29,22 @@ class ShareViewController: UIViewController {
             self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
         }
     }
+      
+    private func save(_ data: Data, key: String, value: Any) {
+      // You must use the userdefaults of an app group, otherwise the main app don't have access to it.
+        if let userDefaults = UserDefaults(suiteName: groupName){
+            userDefaults.set(data, forKey: imageKey)
+        }
+    }
+        
 
     private func handleIncomingURL(itemProvider: NSItemProvider) {
         itemProvider.loadItem(forTypeIdentifier: typeURL, options: nil) { (item, error) in
             if let error = error { print("URL-Error: \(error.localizedDescription)") }
 
             if let url = item as? NSURL, let urlString = url.absoluteString {
+                let imageData = try? Data(contentsOf: url as URL)
+                self.save(imageData!, key: self.imageKey, value: imageData!)
                 self.saveURLString(urlString)
             }
 
@@ -42,7 +53,9 @@ class ShareViewController: UIViewController {
     }
 
     private func saveURLString(_ urlString: String) {
-        UserDefaults(suiteName: self.groupName)?.set(urlString, forKey: self.urlDefaultName)
+        if let userDefaults = UserDefaults(suiteName: self.groupName){
+            userDefaults.setValue(urlString, forKey: self.urlDefaultName)
+        }
     }
 
     private func openMainApp() {
