@@ -53,9 +53,16 @@ final class CameraPane: UIView {
     }
 
     private func configureTitle(giniConfiguration: GiniConfiguration) {
-        cameraTitleLabel.text = NSLocalizedStringPreferredFormat(
-            "ginicapture.camera.infoLabel",
-            comment: "Info label")
+        var title: String?
+
+        if !giniConfiguration.qrCodeScanningEnabled {
+            title = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.only.invoice",
+                                                     comment: "Info label")
+        } else {
+            title = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.invoice.and.qr",
+                                                     comment: "Info label")
+        }
+        cameraTitleLabel.text = title
         cameraTitleLabel.adjustsFontForContentSizeCategory = true
         cameraTitleLabel.adjustsFontSizeToFitWidth = true
         cameraTitleLabel.numberOfLines = 1
