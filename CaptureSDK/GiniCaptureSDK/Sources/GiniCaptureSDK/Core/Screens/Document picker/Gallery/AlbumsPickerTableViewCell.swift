@@ -8,11 +8,9 @@
 import UIKit
 
 final class AlbumsPickerTableViewCell: UITableViewCell {
-    
+
     static let identifier = "AlbumsPickerTableViewCellIdentifier"
-    static let height: CGFloat = 90.0
-    let padding = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-    
+
     lazy var albumThumbnailView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -23,82 +21,99 @@ final class AlbumsPickerTableViewCell: UITableViewCell {
         imageView.layer.shadowOpacity = 0.5
         imageView.layer.shadowOffset = CGSize(width: -2, height: 2)
         imageView.layer.shadowPath = UIBezierPath(rect: imageView.bounds).cgPath
-        
+        imageView.layer.cornerRadius = 8
         return imageView
     }()
-    
+
     lazy var albumTitleLabel: UILabel = {
-        let albumTitle = UILabel(frame: .zero)
-        albumTitle.translatesAutoresizingMaskIntoConstraints = false
-        
-        return albumTitle
+        let albumTitleLabel = UILabel(frame: .zero)
+        albumTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        albumTitleLabel.textColor = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
+        albumTitleLabel.isAccessibilityElement = true
+        albumTitleLabel.adjustsFontForContentSizeCategory = true
+        return albumTitleLabel
     }()
-    
+
     lazy var albumSubTitleLabel: UILabel = {
-        let albumSubTitle = UILabel(frame: .zero)
-        albumSubTitle.translatesAutoresizingMaskIntoConstraints = false
-        
-        if #available(iOS 13.0, *) {
-            albumSubTitle.textColor = .secondaryLabel
-        } else {
-            albumSubTitle.textColor = .lightGray
-        }
-        
-        return albumSubTitle
+        let albumSubTitleLabel = UILabel(frame: .zero)
+        albumSubTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        albumSubTitleLabel.isAccessibilityElement = true
+        albumSubTitleLabel.adjustsFontForContentSizeCategory = true
+        albumSubTitleLabel.textColor = GiniColor(light: .GiniCapture.dark6, dark: .GiniCapture.light6).uiColor()
+        return albumSubTitleLabel
     }()
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         accessoryType = .disclosureIndicator
-        addSubview(albumThumbnailView)
-        addSubview(albumTitleLabel)
-        addSubview(albumSubTitleLabel)
+        contentView.addSubview(albumThumbnailView)
+        contentView.addSubview(albumTitleLabel)
+        contentView.addSubview(albumSubTitleLabel)
+
+        backgroundColor = .clear
         addConstraints()
     }
-    
+
     private func addConstraints() {
-        // albumThumbnailView
-        Constraints.active(item: albumThumbnailView, attr: .leading, relatedBy: .equal, to: self, attr: .leading,
-                           constant: padding.left)
-        Constraints.active(item: albumThumbnailView, attr: .top, relatedBy: .equal, to: self, attr: .top, constant:
-            padding.top)
-        Constraints.active(item: albumThumbnailView, attr: .bottom, relatedBy: .equal, to: self, attr: .bottom,
-                           constant: -padding.bottom)
-        Constraints.active(item: albumThumbnailView, attr: .trailing, relatedBy: .equal, to: albumTitleLabel,
-                           attr: .leading, constant: -20)
-        Constraints.active(item: albumThumbnailView, attr: .height, relatedBy: .equal, to: nil, attr: .notAnAttribute,
-                           constant: 70)
-        Constraints.active(item: albumThumbnailView, attr: .width, relatedBy: .equal, to: nil, attr: .notAnAttribute,
-                           constant: 70)
-        
-        // albumTitleLabel
-        Constraints.active(item: albumTitleLabel, attr: .centerY, relatedBy: .equal, to: self, attr: .centerY,
-                           constant: -padding.top)
-        Constraints.active(item: albumTitleLabel, attr: .bottom, relatedBy: .equal, to: albumSubTitleLabel,
-                           attr: .top, constant: -5)
-        
-        // albumSubTitleLabel
-        Constraints.active(item: albumSubTitleLabel, attr: .bottom, relatedBy: .lessThanOrEqual, to: self,
-                           attr: .bottom, constant: 0)
-        Constraints.active(item: albumSubTitleLabel, attr: .leading, relatedBy: .equal, to: albumTitleLabel,
-                           attr: .leading)
+        NSLayoutConstraint.activate([
+            albumThumbnailView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                                        constant: Constants.paddingBig),
+            albumThumbnailView.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor,
+                                                    constant: Constants.padding),
+            albumThumbnailView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor,
+                                                       constant: -Constants.padding),
+            albumThumbnailView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            albumThumbnailView.heightAnchor.constraint(equalToConstant: Constants.imageSize.height),
+            albumThumbnailView.widthAnchor.constraint(equalTo: albumThumbnailView.heightAnchor),
+
+            albumTitleLabel.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor,
+                                                 constant: Constants.padding),
+            albumTitleLabel.leadingAnchor.constraint(equalTo: albumThumbnailView.trailingAnchor,
+                                                     constant: Constants.paddingBig),
+            albumTitleLabel.bottomAnchor.constraint(equalTo: contentView.centerYAnchor,
+                                                    constant: -Constants.paddingHalf),
+            albumTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                      constant: -Constants.paddingHalf),
+
+            albumSubTitleLabel.topAnchor.constraint(equalTo: contentView.centerYAnchor,
+                                                    constant: Constants.paddingHalf),
+            albumSubTitleLabel.leadingAnchor.constraint(equalTo: albumTitleLabel.leadingAnchor),
+            albumSubTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                         constant: -Constants.paddingBig),
+            albumSubTitleLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor,
+                                                       constant: -Constants.padding)
+
+        ])
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func setUp(with album: Album, giniConfiguration: GiniConfiguration, galleryManager: GalleryManagerProtocol) {
         albumTitleLabel.text = album.title
         albumSubTitleLabel.text = "\(album.count)"
-        albumTitleLabel.font = giniConfiguration.customFont.with(weight: .regular, size: 16, style: .headline)
-        albumSubTitleLabel.font = giniConfiguration.customFont.with(weight: .regular, size: 12, style: .subheadline)
-        
+
+        albumTitleLabel.accessibilityValue = album.title
+        albumSubTitleLabel.accessibilityValue = "\(album.count)"
+
+        albumTitleLabel.font = giniConfiguration.textStyleFonts[.headline]
+        albumSubTitleLabel.font = giniConfiguration.textStyleFonts[.subheadline]
+
         let asset = album.assets[album.assets.count - 1]
         galleryManager.fetchImage(from: asset,
                                   imageQuality: .thumbnail) {[weak self] image in
             guard let self = self else { return }
             self.albumThumbnailView.image = image
         }
+    }
+}
+
+extension AlbumsPickerTableViewCell {
+    private enum Constants {
+        static let imageSize: CGSize = CGSize(width: 70, height: 70)
+        static let paddingHalf: CGFloat = 4
+        static let padding: CGFloat = 8
+        static let paddingBig: CGFloat = 16
     }
 }

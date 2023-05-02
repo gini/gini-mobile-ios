@@ -8,13 +8,13 @@
 import Foundation
 
 public enum ImageAnalysisNoResultsStrings: LocalizableStringResource {
-    
+
     case collectionHeaderText, goToCameraButton, titleText, warningText, warningHelpMenuText
-    
+
     public var tableName: String {
         return "noresults"
     }
-    
+
     public var tableEntry: LocalizationEntry {
         switch self {
         case .collectionHeaderText:
@@ -31,16 +31,16 @@ public enum ImageAnalysisNoResultsStrings: LocalizableStringResource {
                     "warning text shown on no results tips, when the screen is shown through the help menu")
         }
     }
-    
+
     public var isCustomizable: Bool {
         return true
     }
-    
+
     public var fallbackTableEntry: String {
         switch self {
         default:
             return ""
         }
     }
-    
+
 }

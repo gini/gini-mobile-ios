@@ -58,7 +58,7 @@ You can also add these by going to your target’s *Info* tab and enter the valu
 In order to allow GiniCapture library to handle files imported from other apps and to show the _Open With tutorial_ in the _Help_ menu, it is necessary to indicate it in the `GiniConfiguration`.
 
 ```swift
-        let giniConfiguration = GiniConfiguration()
+        let giniConfiguration = GiniConfiguration.shared
         ...
         ...
         giniConfiguration.openWithEnabled = true

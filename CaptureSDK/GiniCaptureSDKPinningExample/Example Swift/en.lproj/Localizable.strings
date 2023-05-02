@@ -25,3 +25,8 @@
 "newDocument" = "New document";
 "help" = "Help";
 "analysisFailedErrorMessage" = "Dokumentanalyse fehlgeschlagen. Möchten Sie es erneut versuchen?";
+
+"import.data.error.title" = "Invalid document";
+"import.data.error.description" = "This document is not valid";
+"import.startButtonTitle" = "Yes";
+"import.cancelButtonTitle" = "No";

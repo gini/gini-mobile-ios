@@ -10,7 +10,6 @@ import AVFoundation
 @testable import GiniCaptureSDK
 
 final class CameraMock: CameraProtocol {
-
     var didDetectInvalidQR: ((GiniCaptureSDK.GiniQRCodeDocument) -> Void)?
     
     enum CameraAuthState {
@@ -27,6 +26,10 @@ final class CameraMock: CameraProtocol {
     
     init(state: CameraAuthState) {
         self.state = state
+    }
+
+    func switchTo(newVideoDevice: AVCaptureDevice) {
+
     }
     
     func captureStillImage(completion: @escaping (Data?, CameraError?) -> Void) {
@@ -50,7 +53,7 @@ final class CameraMock: CameraProtocol {
     }
     
     func setupQRScanningOutput(completion: @escaping ((GiniCaptureSDK.CameraError?) -> Void)) {
-        
+
     }
     
     func start() {

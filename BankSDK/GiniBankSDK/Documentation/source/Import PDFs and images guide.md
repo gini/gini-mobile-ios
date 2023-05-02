@@ -5,7 +5,7 @@ Import PDFs and images
 If you want to add the _File import_ feature on your app, first you need to specify the supported types (`fileImportSupportedTypes `) on the `GiniBankConfiguration` instance.
 
 ```swift
-let giniBankConfiguration = GiniBankConfiguration()
+let giniBankConfiguration = GiniBankConfiguration.shared
 giniBankConfiguration.fileImportSupportedTypes = .pdf_and_images
 ```
 
@@ -26,13 +26,6 @@ giniBankConfiguration.customDocumentValidations = { document in
 	}
 }
 ```
-#### Only Component API
-
-Additionaly - when using the Component API - you have to use the `DocumentPickerCoordinator` to present both the Photo Gallery and the File Explorer and to handle all the interaction with them.
-To enable _Drag&Drop_, just call the `DocumentPickerCoordinator.setupDragAndDrop(in:)` method, passing the view that will handle the drop interaction (we recommend to pass the `CameraViewController.view`).
-
-Also, with the addition of a custom image picker to support multiple selection, you can start caching the album images by calling the `DocumentPickerCoordinator.startCaching()` method when creating the coordinator, but only if the gallery access permission is granted before (`DocumentPickerCoordinator.isGalleryPermissionGranted`).
-
 
 Import images from camera roll
 ----------------------

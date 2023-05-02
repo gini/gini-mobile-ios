@@ -2,7 +2,7 @@
 //  ResultTableViewCell.swift
 //  GiniBankSDKExample
 //
-//  Created by Levente Lorincz on 22.03.2023.
+//  Created by Levente Lorincz on 21.03.2023.
 //
 
 import Foundation

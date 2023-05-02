@@ -8,14 +8,14 @@
 import Foundation
 
 public enum OnboardingStrings: LocalizableStringResource {
-    
+
     case onboardingFirstPageText, onboardingSecondPageText, onboardingThirdPageText, onboardingFourthPageText,
     onboardingFifthPageText
-    
+
     public var tableName: String {
         return "onboarding"
     }
-    
+
     public var tableEntry: LocalizationEntry {
         switch self {
         case .onboardingFirstPageText:
@@ -30,16 +30,16 @@ public enum OnboardingStrings: LocalizableStringResource {
             return ("fifthPage", "Text on the fifth page of the onboarding screen")
         }
     }
-    
+
     public var isCustomizable: Bool {
         return true
     }
-    
+
     public var fallbackTableEntry: String {
         switch self {
         default:
             return ""
         }
     }
-    
+
 }

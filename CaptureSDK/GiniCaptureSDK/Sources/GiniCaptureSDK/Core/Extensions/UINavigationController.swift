@@ -2,28 +2,33 @@
 //  UINavigationController.swift
 //  GiniCapture
 //
-//  Created by Enrique del Pozo Gómez on 12/19/17.
-//  Copyright © 2017 Gini GmbH. All rights reserved.
+//  Created by Nadzeya Karaban on 07/11/22.
+//  Copyright © 2022 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 
 extension UINavigationController {
     public func applyStyle(withConfiguration configuration: GiniConfiguration) {
-        let titleTextAttrubutes = [NSAttributedString.Key.font: configuration.customFont.isEnabled ?
-            configuration.customFont.with(weight: .light, size: 16, style: .title2) :
-            configuration.navigationBarTitleFont as Any, NSAttributedString.Key.foregroundColor: configuration.navigationBarTitleColor]
-        if #available(iOS 15.0, *) {
+        let titleTextAttrubutes = [NSAttributedString.Key.font: configuration.textStyleFonts[.bodyBold] as Any,
+                                   NSAttributedString.Key.foregroundColor: GiniColor(light: .GiniCapture.dark1,
+                                                                                     dark: .GiniCapture.light1)
+                                                                                                    .uiColor()]
+        let navigationBackgroundColor = GiniColor(light: .GiniCapture.light2,
+                                                  dark: .GiniCapture.dark2).uiColor()
+        if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = configuration.navigationBarTintColor
+            appearance.backgroundColor = navigationBackgroundColor
             appearance.titleTextAttributes = titleTextAttrubutes
+            appearance.shadowColor = navigationBackgroundColor
             navigationBar.standardAppearance = appearance
             navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
         } else {
-            self.navigationBar.barTintColor = configuration.navigationBarTintColor
-            self.navigationBar.titleTextAttributes = titleTextAttrubutes
+            navigationBar.barTintColor = navigationBackgroundColor
+            navigationBar.titleTextAttributes = titleTextAttrubutes
+            navigationBar.setValue(true, forKey: "hidesShadow")
         }
-        self.navigationBar.tintColor = configuration.navigationBarItemTintColor
+        navigationBar.tintColor = UIColor.GiniCapture.accent1
     }
 }

@@ -29,14 +29,14 @@ final class AppCoordinator: Coordinator {
     }()
 
     lazy var giniConfiguration: GiniConfiguration = {
-        let giniConfiguration = GiniConfiguration()
+        let giniConfiguration = GiniConfiguration.shared
         giniConfiguration.debugModeOn = true
         giniConfiguration.fileImportSupportedTypes = .pdf_and_images
         giniConfiguration.openWithEnabled = true
         giniConfiguration.qrCodeScanningEnabled = true
         giniConfiguration.multipageEnabled = true
         giniConfiguration.flashToggleEnabled = true
-        giniConfiguration.navigationBarItemTintColor = .white
+//        giniConfiguration.bottomNavigationBarEnabled = true
         giniConfiguration.customDocumentValidations = { document in
             // As an example of custom document validation, we add a more strict check for file size
             let maxFileSize = 5 * 1024 * 1024
@@ -46,12 +46,28 @@ final class AppCoordinator: Coordinator {
             }
             return CustomDocumentValidationResult.success()
         }
-        let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
+        let customMenuItem = HelpMenuItem.custom("Custom menu item", CustomMenuItemViewController())
         giniConfiguration.customMenuItems = [customMenuItem]
-        giniConfiguration.cameraPreviewCornerGuidesColor = .white
-        giniConfiguration.cameraPreviewFrameColor = .init(lightModeColor: UIColor.init(white: 0.5, alpha: 0.1), darkModeColor: UIColor.init(white: 0.5, alpha: 0.3))
-        giniConfiguration.cameraButtonsViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
-        giniConfiguration.cameraContainerViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
+        
+        // If you need to scale your font please use our method `scaledFont()`. Please, find the example below.
+//        let customFontToBeScaled = UIFont.scaledFont(UIFont(name: "Avenir", size: 20) ?? UIFont.systemFont(ofSize: 7, weight: .regular), textStyle: .caption1)
+//        giniConfiguration.updateFont(customFontToBeScaled, for: .caption1)
+        
+        // If you would like to pass us already scaled font.
+//        let customScaledFont = UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 28))
+//        giniConfiguration.updateFont(customScaledFont, for: .caption2)
+        // Custom navigation view controller
+//        let navigationViewController = UINavigationController()
+//        navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
+//        giniConfiguration.customNavigationController = navigationViewController
+
+//        giniConfiguration.noResultNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
+//        giniConfiguration.helpNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
+//        giniConfiguration.imagePickerNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
+//        giniConfiguration.reviewNavigationBarBottomAdapter = CustomReviewScreenBottomNavigationBarAdapter()
+//        giniConfiguration.onboardingNavigationBarBottomAdapter = CustomOnboardingBottomNavigationBarAdapter()
+//        giniConfiguration.cameraNavigationBarBottomAdapter = CustomCameraBottomNavigationBarAdapter()
+
         return giniConfiguration
     }()
 
@@ -120,25 +136,6 @@ final class AppCoordinator: Coordinator {
         rootViewController.present(screenAPICoordinator.rootViewController, animated: true, completion: nil)
     }
 
-    fileprivate func showComponentAPI(with pages: [GiniCapturePage]? = nil) {
-        let componentAPICoordinator = ComponentAPICoordinator(pages: pages ?? [],
-                                                              configuration: giniConfiguration,
-                                                              documentService: componentAPIDocumentService())
-        componentAPICoordinator.delegate = self
-        componentAPICoordinator.start()
-        add(childCoordinator: componentAPICoordinator)
-
-        rootViewController.present(componentAPICoordinator.rootViewController, animated: true, completion: nil)
-    }
-
-    fileprivate func componentAPIDocumentService() -> ComponentAPIDocumentServiceProtocol {
-        let lib = GiniBankAPI.Builder(client: client).build()
-
-        documentMetadata = Document.Metadata(branchId: documentMetadataBranchId,
-                                             additionalHeaders: [documentMetadataAppFlowKey: "ComponentAPI"])
-        return ComponentAPIDocumentsService(lib: lib, documentMetadata: documentMetadata)
-    }
-
     fileprivate func showSettings() {
         let settingsViewController = (UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "settingsViewController") as? SettingsViewController)!
@@ -151,26 +148,31 @@ final class AppCoordinator: Coordinator {
     }
 
     fileprivate func showOpenWithSwitchDialog(for pages: [GiniCapturePage]) {
-        let alertViewController = UIAlertController(title: "Importierte Datei",
-                                                    message: "Möchten Sie die importierte Datei mit dem " +
-                                                        "ScreenAPI oder ComponentAPI verwenden?",
-                                                    preferredStyle: .alert)
+        let title = NSLocalizedStringPreferredFormat("import.data.title", comment: "Import data")
+        let description = NSLocalizedStringPreferredFormat("import.data.description",
+                                                           comment: "Import data description")
+        let startButtonTitle = NSLocalizedStringPreferredFormat("import.startButtonTitle",
+                                                                 comment: "Yes")
+        let cancelButtonTitle = NSLocalizedStringPreferredFormat("import.cancelButtonTitle",
+                                                                 comment: "No")
+        let alertViewController = UIAlertController(title: title, message: description, preferredStyle: .alert)
 
-        alertViewController.addAction(UIAlertAction(title: "Screen API", style: .default) { [weak self] _ in
+        alertViewController.addAction(UIAlertAction(title: startButtonTitle, style: .default) { [weak self] _ in
             self?.showScreenAPI(with: pages)
         })
-        alertViewController.addAction(UIAlertAction(title: "Component API", style: .default) { [weak self] _ in
-            self?.showComponentAPI(with: pages)
+        alertViewController.addAction(UIAlertAction(title: cancelButtonTitle, style: .default) { _ in
+            alertViewController.dismiss(animated: true, completion: nil)
         })
 
         rootViewController.present(alertViewController, animated: true, completion: nil)
     }
 
     fileprivate func showExternalDocumentNotValidDialog() {
-        let alertViewController = UIAlertController(title: "Ungültiges Dokument",
-                                                    message: "Dies ist kein gültiges Dokument",
-                                                    preferredStyle: .alert)
+        let title = NSLocalizedStringPreferredFormat("import.data.error.title", comment: "Import error")
+        let description = NSLocalizedStringPreferredFormat("import.data.error.description",
+                                                           comment: "Import error description")
 
+        let alertViewController = UIAlertController(title: title, message: description, preferredStyle: .alert)
         alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
             alertViewController.dismiss(animated: true, completion: nil)
         })
@@ -193,8 +195,6 @@ extension AppCoordinator: SelectAPIViewControllerDelegate {
         switch api {
         case .screen:
             showScreenAPI()
-        case .component:
-            showComponentAPI()
         }
     }
 
@@ -214,15 +214,6 @@ extension AppCoordinator: SettingsViewControllerDelegate {
 
 extension AppCoordinator: ScreenAPICoordinatorDelegate {
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ()) {
-        coordinator.rootViewController.dismiss(animated: true, completion: nil)
-        remove(childCoordinator: coordinator)
-    }
-}
-
-// MARK: ComponentAPICoordinatorDelegate
-
-extension AppCoordinator: ComponentAPICoordinatorDelegate {
-    func componentAPI(coordinator: ComponentAPICoordinator, didFinish: ()) {
         coordinator.rootViewController.dismiss(animated: true, completion: nil)
         remove(childCoordinator: coordinator)
     }

@@ -33,7 +33,7 @@ The Gini Bank API Library will be used instead of the Gini iOS SDK.
 
 ## Configuration
 
-For customization the Gini Bank SDK uses `GiniBankConfiguration` class - extended version of `GiniConfiguration`. All settings from the `GiniConfiguration` are availible in `GiniBankConfiguration`.
+For customization the Gini Bank SDK uses `GiniBankConfiguration` class - extended version of `GiniConfiguration`. All settings from the `GiniConfiguration` are available in `GiniBankConfiguration`.
 
 ## Screen API
 

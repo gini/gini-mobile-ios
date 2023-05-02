@@ -21,15 +21,11 @@
 "ginibank.help.menu.returnAssistant.backButton.title" = "Zurück";
 
 "ginibank.digitalinvoice.screentitle" = "Digitale Rechnung";
-"ginibank.digitalinvoice.paybuttontitle.disabled" = "Bezahlen";
+"ginibank.digitalinvoice.paybutton.title" = "Weiter";
 "ginibank.digitalinvoice.paybuttontitle.othercharges" = "Bezahlen";
 "ginibank.digitalinvoice.paybuttontitle" = "Bezahlen %d/%d";
 "ginibank.digitalinvoice.paybuttontitle.accessibilitylabel" = "Bezahlen %d von %d";
-"ginibank.digitalinvoice.warningleftbuttontitle" = "OK";
-"ginibank.digitalinvoice.warningrightbuttontitle" = "Überspringen";
-"ginibank.digitalinvoice.warningtoptitle" = "Info";
-"ginibank.digitalinvoice.warningmiddletext" = "Diese neue Funktion kann Fehler enthalten. Bitte überprüfe noch einmal die Artikel und den Gesamtbetrag und bearbeite diese gegebenenfalls. ";
-"ginibank.digitalinvoice.warningbottomtext" = "Du kannst die neue Funktion jederzeit überspringen.";
+"ginibank.digitalinvoice.cancelButtonTitle" = "Abbrechen";
 "ginibank.digitalinvoice.skipbuttontitle" = "Funktion überspringen";
 "ginibank.digitalinvoice.items" = "Artikel %d/%d";
 "ginibank.digitalinvoice.items.accessibilitylabel" = "%d von %d Artikel";
@@ -38,16 +34,26 @@
 "ginibank.digitalinvoice.checkmarkbutton.deselect.accessibilitylabel" = "Artikel abwählen";
 "ginibank.digitalinvoice.checkmarkbutton.select.accessibilitylabel" = "Artikel wählen";
 "ginibank.digitalinvoice.deselectreasonactionsheet.message" = "Der Grund der Rücksendung";
-"ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel" = "Cancel";
+"ginibank.digitalinvoice.deselectreasonactionsheet.action.cancel" = "Abbrechen";
 "ginibank.digitalinvoice.headermessage.primary" = "Scan war erfolgreich!";
 "ginibank.digitalinvoice.headermessage.secondary" = "Du kannst nun die Artikel abwählen, die du zurückschicken willst.";
 "ginibank.digitalinvoice.total.addArticleButtonTitle" = "Artikel hinzufügen";
 "ginibank.digitalinvoice.total.accessibilitylabel" = "Total: %@";
+
+"ginibank.digitalinvoice.edit.unitPrice" = "Einzelpreis";
+"ginibank.digitalinvoice.edit.name" = "Name";
+"ginibank.digitalinvoice.edit.quantity" = "Anzahl";
+"ginibank.digitalinvoice.edit.title" = "Artikel bearbeiten";
+"ginibank.digitalinvoice.edit.minus.button.accessibility" = "Anzahl verringern";
+"ginibank.digitalinvoice.edit.plus.button.accessibility" = "Anzahl erhöhen";
+
 "ginibank.digitalinvoice.footermessage" = "Bitte überprüfe vor der Zahlung, ob alles in Ordnung ist und füge eventuell fehlende Artikel hinzu.";
 "ginibank.digitalinvoice.totalcaptionlabeltext" = "Gesamt";
 "ginibank.digitalinvoice.totalexplanationlabeltext" = "Inkl. Versandkosten, Rabatt usw.";
+"ginibank.digitalinvoice.lineitem.title" = "Artikel";
 "ginibank.digitalinvoice.lineitem.notitle" = "Sonstiges";
 "ginibank.digitalinvoice.lineitem.savebutton" = "Speichern";
+"ginibank.digitalinvoice.lineitem.unitTitle" = "pro Stück";
 "ginibank.digitalinvoice.lineitem.itemnametextfieldtitle" = "Artikelname";
 "ginibank.digitalinvoice.lineitem.quantitytextfieldtitle" = "Anzahl";
 "ginibank.digitalinvoice.lineitem.pricetextfieldtitle" = "Artikelpreis";
@@ -60,13 +66,21 @@
 "ginibank.digitalinvoice.addonname.otherdiscounts" = "Weitere Abzüge";
 "ginibank.digitalinvoice.addonname.othercharges" = "Weitere Kosten";
 "ginibank.digitalinvoice.addonname.shipment" = "Versandkosten";
-"ginibank.digitalinvoice.onboarding.text1" = "Dein neuer Retouren Assistent!";
-"ginibank.digitalinvoice.onboarding.text2" = "Du kannst jetzt Artikel abwählen, die du zurückschicken möchtest.
-Bezahle nur, was du behältst.";
-"ginibank.digitalinvoice.onboarding.donebutton" = "Weiter";
+"ginibank.digitalinvoice.onboarding.text1" = "Digitale Rechnung";
+"ginibank.digitalinvoice.onboarding.text2" = "Wählen Sie die Artikel ab, die Sie zurücksenden wollen, wir berechnen den neuen Preis für Sie.";
+"ginibank.digitalinvoice.onboarding.getStartedButton" = "Los geht’s";
 "ginibank.digitalinvoice.onboarding.hidebutton" = "Bitte nicht mehr anzeigen";
 "ginibank.digitalinvoice.backbutton" = "Zurück";
 
-"ginibank.digitalinvoice.info.text1" = "Was ist das?";
-"ginibank.digitalinvoice.info.text2" = "Wir haben die Artikel aus deiner Rechnung extrahiert. Wenn du einige Artikel zurückschicken oder du deine Rechnung nur teilweise bezahlen möchtest, kannst du einzelne Artikel abwählen und der zu bezahlende Betrag wird automatisch neu berechnet.";
+"ginibank.digitalinvoice.help.screenTitle" = "Hilfe";
+"ginibank.digitalinvoice.help.backToInvoice" = "Digitale Rechnung";
+"ginibank.digitalinvoice.help.title1" = "1. Wie funktioniert die Digitale Rechnung?";
+"ginibank.digitalinvoice.help.description1" = "Wir lesen alle Artikel aus der Rechnung aus und listen diese für Sie auf. Falls Sie einige Artikel zurücksenden oder die Rechnung nur teilweise bezahlen möchten, wählen Sie einfach die Artikel ab, die Sie zurücksenden und wir berechnen den zu zahlenden Betrag für Sie neu.";
+"ginibank.digitalinvoice.help.title2" = "2. Wie kann ich Artikel bearbeiten";
+"ginibank.digitalinvoice.help.description2" = "Mit einem Klick auf “Bearbeiten” neben dem entsprechenden Artikel haben Sie anschließend die Möglichkeit die Beschreibung, Anzahl und Preis zu bearbeiten. Bitte beachten Sie, dass der Preis pro Stück die Mehrwertsteuer bereits enthält. ";
+"ginibank.digitalinvoice.help.title3" = "3. Welche Onlineshops werden unterstützt?";
+"ginibank.digitalinvoice.help.description3" = "Wir bieten die Funktion moment für die fünf größten Onlineshops im Markt an. Weitere Shops werden in naher Zukunft hinzukommen.";
 "ginibank.digitalinvoice.info.hidebutton" = "Schließen";
+
+"ginibank.digitalinvoice.edit.name.error" = "Bitte geben Sie den Artikelnamen ein.";
+"ginibank.digitalinvoice.edit.price.error" = "Bitte geben Sie den Artikelpreis ein.";

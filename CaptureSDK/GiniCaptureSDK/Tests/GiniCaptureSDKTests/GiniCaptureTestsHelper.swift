@@ -36,13 +36,13 @@ final class GiniCaptureTestsHelper {
     class func loadPDFDocument(named name: String) -> GiniPDFDocument {
         let data = fileData(named: name, fileExtension: "pdf")!
         let builder = GiniCaptureDocumentBuilder(documentSource: .external)
-        return (builder.build(with: data) as? GiniPDFDocument)!
+        return (builder.build(with: data, fileName: "\(name).pdf") as? GiniPDFDocument)!
     }
     
     class func loadImageDocument(named name: String, fileExtension: String = "jpg") -> GiniImageDocument {
         let data = fileData(named: name, fileExtension: fileExtension)!
         let builder = GiniCaptureDocumentBuilder(documentSource: .external)
-        return (builder.build(with: data) as? GiniImageDocument)!
+        return (builder.build(with: data, fileName: "\(name).pdf") as? GiniImageDocument)!
     }
     
     class private func loadPage(named name: String,
@@ -50,7 +50,7 @@ final class GiniCaptureTestsHelper {
 
         let data = fileData(named: name, fileExtension: fileExtension)!
         let builder = GiniCaptureDocumentBuilder(documentSource: .external)
-        return GiniCapturePage(document: builder.build(with: data)!)
+        return GiniCapturePage(document: builder.build(with: data, fileName: "\(name).pdf")!)
     }
     
     class func loadImagePage(named name: String, fileExtension: String = "jpg") -> GiniCapturePage {

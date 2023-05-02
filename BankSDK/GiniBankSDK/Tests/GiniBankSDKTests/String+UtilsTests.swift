@@ -10,7 +10,6 @@ import XCTest
 @testable import GiniBankSDK
 
 final class StringUtilsTests: XCTestCase {
-    
     func testParseAmountStringToBackendFormat(){
         let amountToPay = "28"
         let parsedAmount = try! String.parseAmountStringToBackendFormat(string: "28.00")
@@ -86,54 +85,8 @@ final class StringUtilsTests: XCTestCase {
     }
     
     func testEnablingPayButtonWithoutAmount() {
-        let vm = DigitalInvoiceViewModel()
-        let totalAmount: Decimal = 0
-        let isEnabled = vm.isPayButtonEnabled(total: totalAmount)
+        let vm = DigitalInvoiceViewModel(invoice: nil)
+        let isEnabled = vm.isPayButtonEnabled()
         XCTAssertEqual(isEnabled, false)
-    }
-    
-    func testEnablingPayButtonWithAmount() {
-        let vm = DigitalInvoiceViewModel()
-        let totalAmount: Decimal = 123
-        let isEnabled = vm.isPayButtonEnabled(total: totalAmount)
-        XCTAssertEqual(isEnabled, true)
-    }
-    
-    func testPayButtonDisabledTitle() {
-        let vm = DigitalInvoiceViewModel()
-        let totalItems = 3
-        let isEnabled = false
-        let title = vm.payButtonTitle(isEnabled: isEnabled, numSelected: 0, numTotal: totalItems)
-        XCTAssertEqual(title,  .ginibankLocalized(resource: DigitalInvoiceStrings.disabledPayButtonTitle)
-)
-    }
-    
-    func testPayButtonEnabledItemsZeroTotalTitle() {
-        let vm = DigitalInvoiceViewModel()
-        let totalItems = 3
-        let isEnabled = false
-        let title = vm.payButtonTitle(isEnabled: isEnabled, numSelected: 3, numTotal: totalItems)
-        XCTAssertEqual(title, .ginibankLocalized(resource: DigitalInvoiceStrings.disabledPayButtonTitle))
-    }
-    
-    func testPayButtonEnabled2ItemsTotalPositiveTitle() {
-        let vm = DigitalInvoiceViewModel()
-        let totalItems = 3
-        let isEnabled = true
-        let title = vm.payButtonTitle(isEnabled: isEnabled, numSelected: 3, numTotal: totalItems)
-        XCTAssertEqual(
-            title,
-            String.localizedStringWithFormat(
-                DigitalInvoiceStrings.payButtonTitle.localizedGiniBankFormat,
-                3,
-                3))
-    }
-    
-    func testPayButtonEnabled0ItemsTotalPositiveTitle() {
-        let vm = DigitalInvoiceViewModel()
-        let totalItems = 3
-        let isEnabled = vm.isPayButtonEnabled(total: 23.03)
-        let title = vm.payButtonTitle(isEnabled: isEnabled, numSelected: 0, numTotal: totalItems)
-        XCTAssertEqual(title, .ginibankLocalized(resource: DigitalInvoiceStrings.payButtonOtherCharges))
     }
 }

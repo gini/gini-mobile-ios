@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="ipad12_9rounded" orientation="portrait" layout="fullscreen" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Camera2ViewController" customModule="GiniCaptureSDK">
+            <connections>
+                <outlet property="cameraPane" destination="13s-Zb-nTw" id="kgw-sM-jQj"/>
+                <outlet property="iPadBottomPaneConstraint" destination="mY8-4T-W5K" id="wVw-76-a0x"/>
+                <outlet property="view" destination="iN0-l3-epB" id="Kff-Gp-d1h"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="13s-Zb-nTw" customClass="CameraPane" customModule="GiniCaptureSDK">
+                    <rect key="frame" x="900" y="0.0" width="124" height="1366"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hTe-DA-2qT">
+                            <rect key="frame" x="15" y="641" width="94" height="84"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" image="cameraCaptureButton"/>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UDD-dX-FJV" customClass="ThumbnailView" customModule="GiniCaptureSDK">
+                            <rect key="frame" x="40" y="543" width="44" height="52"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="52" id="jLa-kI-mGE"/>
+                                <constraint firstAttribute="width" constant="44" id="kc1-c0-e27"/>
+                            </constraints>
+                        </view>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="41" translatesAutoresizingMaskIntoConstraints="NO" id="jYB-R4-Jjg">
+                            <rect key="frame" x="2" y="771" width="120" height="145"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MKr-w2-Lou" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
+                                    <rect key="frame" x="0.0" y="0.0" width="120" height="52"/>
+                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="52" id="3K8-zn-O8j"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fXR-zD-tfI" customClass="BottomLabelButton" customModule="GiniCaptureSDK">
+                                    <rect key="frame" x="0.0" y="93" width="120" height="52"/>
+                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="52" id="e5k-rv-7Iu"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="UDD-dX-FJV" firstAttribute="centerX" secondItem="13s-Zb-nTw" secondAttribute="centerX" id="3Kb-6P-cpG"/>
+                        <constraint firstItem="hTe-DA-2qT" firstAttribute="top" secondItem="UDD-dX-FJV" secondAttribute="bottom" constant="46" id="5bk-7v-yh6"/>
+                        <constraint firstAttribute="width" constant="124" id="Khx-qJ-aJy"/>
+                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="jYB-R4-Jjg" secondAttribute="bottom" constant="20" symbolic="YES" id="YQR-lD-HXg"/>
+                        <constraint firstItem="hTe-DA-2qT" firstAttribute="centerX" secondItem="13s-Zb-nTw" secondAttribute="centerX" id="cRC-4H-3jT"/>
+                        <constraint firstItem="jYB-R4-Jjg" firstAttribute="leading" secondItem="13s-Zb-nTw" secondAttribute="leading" constant="2" id="efa-xa-ebw"/>
+                        <constraint firstItem="jYB-R4-Jjg" firstAttribute="top" secondItem="hTe-DA-2qT" secondAttribute="bottom" constant="46" id="fa0-Ru-Wks"/>
+                        <constraint firstAttribute="trailing" secondItem="jYB-R4-Jjg" secondAttribute="trailing" constant="2" id="oc7-x7-hM6"/>
+                        <constraint firstItem="hTe-DA-2qT" firstAttribute="centerY" secondItem="13s-Zb-nTw" secondAttribute="centerY" id="zsn-TD-QbB"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="captureButton" destination="hTe-DA-2qT" id="Te8-hA-q3L"/>
+                        <outlet property="fileUploadButton" destination="fXR-zD-tfI" id="vOT-VU-27l"/>
+                        <outlet property="flashButton" destination="MKr-w2-Lou" id="06K-R2-Qon"/>
+                        <outlet property="leftButtonsStack" destination="jYB-R4-Jjg" id="1Re-QX-4e5"/>
+                        <outlet property="thumbnailConstraint" destination="5bk-7v-yh6" id="TyV-i3-HYv"/>
+                        <outlet property="thumbnailView" destination="UDD-dX-FJV" id="3mt-Az-b9p"/>
+                    </connections>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="13s-Zb-nTw" secondAttribute="bottom" id="mY8-4T-W5K"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="13s-Zb-nTw" secondAttribute="trailing" id="nDS-Tf-anT"/>
+                <constraint firstItem="13s-Zb-nTw" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="pNX-vt-Y8o"/>
+            </constraints>
+            <point key="canvasLocation" x="139" y="66"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="cameraCaptureButton" width="70" height="70"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

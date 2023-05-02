@@ -20,17 +20,12 @@
 "ginibank.help.menu.returnAssistant.section3.body" = "If the price has not been read out perfectly, you can simply correct it manually. The total price is updated automatically.";
 "ginibank.help.menu.returnAssistant.backButton.title" = "Back";
 
-"ginibank.digitalinvoice.screentitle" = "Digital Invoice";
-"ginibank.digitalinvoice.paybuttontitle.disabled" = "Pay";
+"ginibank.digitalinvoice.screentitle" = "Digital invoice";
+"ginibank.digitalinvoice.paybutton.title" = "Proceed";
 "ginibank.digitalinvoice.paybuttontitle.othercharges" = "Pay";
 "ginibank.digitalinvoice.paybuttontitle" = "Pay %d/%d";
 "ginibank.digitalinvoice.paybuttontitle.accessibilitylabel" = "Pay %d out of %d";
-
-"ginibank.digitalinvoice.warningleftbuttontitle" = "OK";
-"ginibank.digitalinvoice.warningrightbuttontitle" = "Skip";
-"ginibank.digitalinvoice.warningtoptitle" = "Info";
-"ginibank.digitalinvoice.warningmiddletext" = "This new feature may contain some bugs. Please double check the articles and the total amount. If necessay you can edit them.";
-"ginibank.digitalinvoice.warningbottomtext" = "If you don’t like to use this feature, you can simply skip it.";
+"ginibank.digitalinvoice.cancelButtonTitle" = "Cancel";
 
 "ginibank.digitalinvoice.skipbuttontitle" = "Skip feature";
 
@@ -52,12 +47,21 @@
 "ginibank.digitalinvoice.total.addArticleButtonTitle" = "Add article";
 "ginibank.digitalinvoice.total.accessibilitylabel" = "Total: %@";
 
+"ginibank.digitalinvoice.edit.unitPrice" = "Unit price";
+"ginibank.digitalinvoice.edit.name" = "Name";
+"ginibank.digitalinvoice.edit.quantity" = "Quantity";
+"ginibank.digitalinvoice.edit.title" = "Edit article";
+"ginibank.digitalinvoice.edit.minus.button.accessibility" = "Decrease quantity";
+"ginibank.digitalinvoice.edit.plus.button.accessibility" = "Increase quantity";
+
 "ginibank.digitalinvoice.footermessage" = "Please double check if the amount is correct and add further articles if necessary";
 "ginibank.digitalinvoice.totalcaptionlabeltext" = "Total";
 "ginibank.digitalinvoice.totalexplanationlabeltext" = "Incl. shipping, discount and so on.";
 
+"ginibank.digitalinvoice.lineitem.title" = "Articles";
 "ginibank.digitalinvoice.lineitem.notitle" = "Additional";
 "ginibank.digitalinvoice.lineitem.savebutton" = "Save";
+"ginibank.digitalinvoice.lineitem.unitTitle" = "per unit";
 "ginibank.digitalinvoice.lineitem.itemnametextfieldtitle" = "Item Name";
 "ginibank.digitalinvoice.lineitem.quantitytextfieldtitle" = "Quantity";
 "ginibank.digitalinvoice.lineitem.pricetextfieldtitle" = "Item Price";
@@ -70,12 +74,21 @@
 "ginibank.digitalinvoice.addonname.otherdiscounts" = "Other discounts";
 "ginibank.digitalinvoice.addonname.othercharges" = "Other charges";
 "ginibank.digitalinvoice.addonname.shipment" = "Shipment";
-"ginibank.digitalinvoice.onboarding.text1" = "Your new return assistant!";
-"ginibank.digitalinvoice.onboarding.text2" = "Deselect article that you want to return and pay only for what you keep!";
-"ginibank.digitalinvoice.onboarding.donebutton" = "Next";
+"ginibank.digitalinvoice.onboarding.text1" = "Digital invoice";
+"ginibank.digitalinvoice.onboarding.text2" = "Deselect the products you want to return and we will recalculate the price for you.";
+"ginibank.digitalinvoice.onboarding.getStartedButton" = "Get started";
 "ginibank.digitalinvoice.onboarding.hidebutton" = "Don’t show anymore";
 "ginibank.digitalinvoice.backbutton" = "Back";
 
-"ginibank.digitalinvoice.info.text1" = "What is it?";
-"ginibank.digitalinvoice.info.text2" = "We extracted the articles from your invoice. Simply deselect articles if you want to return them. The new total will be calculated for you.";
+"ginibank.digitalinvoice.help.screenTitle" = "Help";
+"ginibank.digitalinvoice.help.backToInvoice" = "Digital invoice";
+"ginibank.digitalinvoice.help.title1" = "1. How does a digital invoice work?";
+"ginibank.digitalinvoice.help.description1" = "We extracted all articles from your invoice and listed them for you. In case you want to return an ordered article or just partly pay your invoice, you simply deselect the article and the new total will be calculated automatically. ";
+"ginibank.digitalinvoice.help.title2" = "2. How can I edit an article?";
+"ginibank.digitalinvoice.help.description2" = "By clicking an article, you are able to edit its description, quantity and price per item. Please note that the price per item needs to include tax.";
+"ginibank.digitalinvoice.help.title3" = "3. Which online shops are supported?";
+"ginibank.digitalinvoice.help.description3" = "We are currently focused on the top five online merchants in the market. More retailers will be added in the future.";
 "ginibank.digitalinvoice.info.hidebutton" = "Close";
+
+"ginibank.digitalinvoice.edit.name.error" = "Please enter the article name.";
+"ginibank.digitalinvoice.edit.price.error" = "Please enter the article price.";

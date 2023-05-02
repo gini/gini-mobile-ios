@@ -8,13 +8,11 @@
 import UIKit
 import GiniBankAPILibrary
 import GiniCaptureSDK
-
 /**
  Presents a dictionary of results from the analysis process in a table view.
  Values from the dictionary will be used as the cells titles and keys as the cells subtitles.
  */
 final class ResultTableViewController: UITableViewController, UITextFieldDelegate {
-    
     /**
      The result collection from the analysis process.
      */
@@ -27,7 +25,6 @@ final class ResultTableViewController: UITableViewController, UITextFieldDelegat
 	var editableFields: [String : String] = [:]
     var lineItems: [[Extraction]]? = nil
 	var enabledRows: [Int] = []
-	private let rowHeight: CGFloat = 75
 }
 
 extension ResultTableViewController {
@@ -48,8 +45,8 @@ extension ResultTableViewController {
 		cell.detailTextField.placeholder = result[indexPath.row].name
 		cell.detailTextField.tag = indexPath.row
 		cell.titleLabel.text = result[indexPath.row].name
-		cell.detailTextField.textColor = UIColor.from(giniColor: GiniColor(lightModeColor: UIColor.black, darkModeColor: Colors.Gini.veryLightGray))
-		
+		cell.detailTextField.textColor = GiniColor(light: UIColor.black,
+                                                   dark: UIColor.gray).uiColor()
 		if (editableFields.keys.contains(result[indexPath.row].name ?? "")) {
 			cell.detailTextField.isEnabled = true
 			cell.detailTextField.returnKeyType = indexPath.row == result.count - 1 ? .done : .next
@@ -63,11 +60,11 @@ extension ResultTableViewController {
 			cell.detailTextField.alpha = 0.5
 		}
 		
-		return cell
+        return cell
     }
 	
 	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		return rowHeight
+		return UITableView.automaticDimension
 	}
 	
 	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

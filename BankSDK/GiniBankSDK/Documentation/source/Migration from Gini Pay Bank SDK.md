@@ -31,7 +31,7 @@ The Gini Bank API Library will be used instead of the Gini Pay Api Library.
 
 ## Configuration
 
-For customization the Gini Bank SDK uses `GiniBankConfiguration` class instead of `GiniPayBankConfiguration`. All settings from the `GiniPayBankConfiguration` are availible in `GiniBankConfiguration`.
+For customization the Gini Bank SDK uses `GiniBankConfiguration` class instead of `GiniPayBankConfiguration`. All settings from the `GiniPayBankConfiguration` are available in `GiniBankConfiguration`.
 
 ## Screen API
 

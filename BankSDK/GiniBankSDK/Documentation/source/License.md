@@ -3,7 +3,7 @@ License
 
 ## Gini Bank SDK for iOS is licensed under a Private License.
 
-    Copyright (c) 2014-2022, Gini GmbH
+    Copyright (c) 2014-2023, Gini GmbH
     All rights reserved.
 
     The Gini Bank SDK is licensed through Gini GmbH ("Gini") and may not be
@@ -18,7 +18,7 @@ License
 
 ## Gini Bank SDK Pinning for iOS is licensed under a Private License.
 
-    Copyright (c) 2014-2022, Gini GmbH
+    Copyright (c) 2014-2023, Gini GmbH
     All rights reserved.
 
     The Gini Bank SDK Pinning is licensed through Gini GmbH ("Gini") and may not be

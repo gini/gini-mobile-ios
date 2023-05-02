@@ -25,6 +25,9 @@ final class SettingsViewController: UIViewController {
     @IBOutlet weak var qrCodeScanningSwitch: UISwitch!
     @IBOutlet weak var multipageSwitch: UISwitch!
     @IBOutlet weak var flashToggleSwitch: UISwitch!
+    @IBOutlet weak var bottomBarSwitch: UISwitch!
+    @IBOutlet weak var onlyQRCodeScanningSwitch: UISwitch!
+
     @IBAction func fileImportOptions(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
         case 0:
@@ -36,6 +39,12 @@ final class SettingsViewController: UIViewController {
         default: return
         }
         
+        delegate?.settings(settingViewController: self, didChangeConfiguration: giniConfiguration)
+    }
+    
+
+    @IBAction func bottomNavigationBarSwitched(_ sender: UISwitch) {
+        giniConfiguration.bottomNavigationBarEnabled = sender.isOn
         delegate?.settings(settingViewController: self, didChangeConfiguration: giniConfiguration)
     }
     
@@ -68,16 +77,20 @@ final class SettingsViewController: UIViewController {
         UserDefaults().removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
     }
     
+    @IBAction func qrCodeScanningOnlySwitch(_ sender: UISwitch) {
+        giniConfiguration.onlyQRCodeScanningEnabled = sender.isOn
+        delegate?.settings(settingViewController: self, didChangeConfiguration: giniConfiguration)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        bottomBarSwitch.setOn(giniConfiguration.bottomNavigationBarEnabled, animated: false)
         openWithSwitch.setOn(giniConfiguration.openWithEnabled, animated: false)
         qrCodeScanningSwitch.setOn(giniConfiguration.qrCodeScanningEnabled, animated: false)
         multipageSwitch.setOn(giniConfiguration.multipageEnabled, animated: false)
         flashToggleSwitch.setOn(giniConfiguration.flashToggleEnabled, animated: false)
-        flashToggleSwitch.isEnabled = AVCaptureDevice.default(.builtInWideAngleCamera,
-                                                              for: .video,
-                                                              position: .back)?.hasFlash ?? false
-        
+        onlyQRCodeScanningSwitch.setOn(giniConfiguration.onlyQRCodeScanningEnabled, animated: false)
+        flashToggleSwitch.isEnabled = isFlashTogglSettingEnabled()
         switch giniConfiguration.fileImportSupportedTypes {
         case .none:
             fileImportControl.selectedSegmentIndex = 0
@@ -87,4 +100,16 @@ final class SettingsViewController: UIViewController {
             fileImportControl.selectedSegmentIndex = 2
         }
     }
+    
+    private func isFlashTogglSettingEnabled() -> Bool {
+        #if targetEnvironment(simulator)
+            return true
+        #else
+            return AVCaptureDevice.default(.builtInWideAngleCamera,
+                                                                  for: .video,
+                                                                  position: .back)?.hasFlash ?? false
+        #endif
+    }
+
+
 }

@@ -29,15 +29,13 @@ final class AppCoordinator: Coordinator {
     }()
 
     lazy var configuration: GiniBankConfiguration = {
-        let configuration = GiniBankConfiguration()
+        let configuration = GiniBankConfiguration.shared
         configuration.debugModeOn = true
         configuration.fileImportSupportedTypes = .pdf_and_images
         configuration.openWithEnabled = true
         configuration.qrCodeScanningEnabled = true
         configuration.multipageEnabled = true
         configuration.flashToggleEnabled = true
-        configuration.navigationBarItemTintColor = .white
-        configuration.navigationBarTintColor = Colors.Gini.blue
         configuration.localizedStringsTableName = "LocalizableCustomName"
         configuration.customDocumentValidations = { document in
             // As an example of custom document validation, we add a more strict check for file size
@@ -48,28 +46,76 @@ final class AppCoordinator: Coordinator {
             }
             return CustomDocumentValidationResult.success()
         }
-//        configuration.noResultsWarningContainerIconColor = .cyan
+//        configuration.cameraNavigationBarBottomAdapter = CustomCameraBottomNavigationBarAdapter()
+//        configuration.onlyQRCodeScanningEnabled = true
+//        configuration.bottomNavigationBarEnabled = true
+//        configuration.noResultNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
+//        configuration.helpNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
+//        configuration.imagePickerNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
+//        configuration.reviewNavigationBarBottomAdapter = CustomReviewScreenBottomNavigationBarAdapter()
+//        configuration.onboardingNavigationBarBottomAdapter = CustomOnboardingBottomNavigationBarAdapter()
+//        configuration.cameraNavigationBarBottomAdapter = CustomCameraBottomNavigationBarAdapter()
+//        configuration.digitalInvoiceHelpNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
+//        configuration.digitalInvoiceOnboardingNavigationBarBottomAdapter = CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter()
+//        configuration.digitalInvoiceNavigationBarBottomAdapter = CustomDigitalInvoiceBottomNavigationBarAdapter()
+
 //        let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
 //        configuration.customMenuItems = [customMenuItem]
-//        configuration.albumsScreenSelectMorePhotosTextColor = GiniColor(lightModeColor: .systemBlue, darkModeColor: .systemBlue)
-        
-        // A few return assistant customisation examples
-//        configuration.digitalInvoiceLineItemEditButtonTintColor = Colors.Gini.bluishGreen
-//        configuration.lineItemBorderColor = Colors.Gini.paleGreen
-//        configuration.digitalInvoiceLineItemToggleSwitchTintColor = Colors.Gini.springGreen
-//        configuration.digitalInvoiceLineItemsDisabledColor = Colors.Gini.raspberry.withAlphaComponent(0.2)
-//        configuration.lineItemDetailsContentHighlightedColor = Colors.Gini.paleGreen
 
         // A few camera screen customisation examples
 //        configuration.navigationBarItemFont = UIFont.systemFont(ofSize: 20, weight: .bold)
 //        configuration.navigationBarCameraTitleHelpButton = "? Help"
-//        configuration.cameraPreviewFrameColor = .init(lightModeColor: UIColor.init(white: 0.5, alpha: 0.1), darkModeColor: UIColor.init(white: 0.5, alpha: 0.3))
-//        configuration.cameraButtonsViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
-//        configuration.cameraContainerViewBackgroundColor = .init(lightModeColor: UIColor.darkGray, darkModeColor: UIColor.darkGray)
 //
 //        configuration.multipagePageSuccessfullUploadIconBackgroundColor = .systemGreen
 //        configuration.multipagePageFailureUploadIconBackgroundColor = .systemRed
 //        configuration.enableReturnReasons = false
+        
+    // If you need to scale your font please use our method `scaledFont()`. Please, find the example below.
+//    let customFontToBeScaled = UIFont.scaledFont(UIFont(name: "Avenir", size: 20) ?? UIFont.systemFont(ofSize: 7, weight: .regular), textStyle: .caption1)
+//    configuration.updateFont(customFontToBeScaled, for: .caption1)
+        
+    // If you would like to pass us already scaled font.
+//    let customScaledFont = UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 28))
+//    configuration.updateFont(customScaledFont, for: .caption2)
+//    configuration.primaryButtonBorderWidth = 10
+//    configuration.primaryButtonShadowColor = UIColor.red.cgColor
+//    configuration.primaryButtonShadowRadius = 10
+//    configuration.primaryButtonShadowOpacity = 0.7
+//    configuration.primaryButtonCornerRadius = 10
+//    configuration.customOnboardingPages = [OnboardingPage(imageName: "captureSuggestion1", title: "Page 1", description: "Description for page 1")]
+        //configuration.onboardingAlignCornersIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "page1Animation", backgroundColor: UIColor.red)
+        //configuration.onboardingLightingIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "cameraAnimation", backgroundColor: UIColor.yellow)
+        //configuration.onboardingMultiPageIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "uploadAnimation", backgroundColor: UIColor.green)
+        //configuration.onboardingQRCodeIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "magicAnimation", backgroundColor: UIColor.blue)
+//        configuration.digitalInvoiceOnboardingIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "magicAnimation", backgroundColor: UIColor.blue)
+
+//       //  Custom loading indicator customization example for the analysis screen
+//        let customLoadingIndicator = CustomLoadingIndicator()
+//        configuration.customLoadingIndicator = customLoadingIndicator
+
+//      // Custom loading indicator customization example for the on button laoding indicator
+//        let customButtonLoadingIndicator = OnButtonLoading()
+//        configuration.onButtonLoadingIndicator = customButtonLoadingIndicator
+        
+        // Custom navigation view controller
+//        let navigationViewController = UINavigationController()
+//        navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
+//        configuration.customNavigationController = navigationViewController
+
+        // Custom button configuration example:
+//        configuration.primaryButtonConfiguration = ButtonConfiguration(backgroundColor: .yellow,
+//                                                                       borderColor: .red,
+//                                                                       titleColor: .green,
+//                                                                       shadowColor: .clear,
+//                                                                       titleFont: UIFont.systemFont(ofSize: 20,
+//                                                                                                    weight: .thin),
+//                                                                       cornerRadius: 22,
+//                                                                       borderWidth: 4,
+//                                                                       shadowRadius: 0,
+//                                                                       withBlurEffect: false)
+//        configuration.transparentButtonConfiguration =
+//        configuration.secondaryButtonConfiguration =
+
        return configuration
     }()
     
@@ -99,7 +145,6 @@ final class AppCoordinator: Coordinator {
         documentBuilder.importMethod = .openWith
         
         documentBuilder.build(with: url) { [weak self] (document) in
-            
             guard let self = self else { return }
             
             // When a document is imported with "Open with", a dialog allowing to choose between both APIs
@@ -111,9 +156,10 @@ final class AppCoordinator: Coordinator {
                 do {
                     try GiniCapture.validate(document,
                                              withConfig: captureConfiguration)
-                    self.showOpenWithSwitchDialog(for: [GiniCapturePage(document: document, error: nil)])
-                } catch {
-                    self.showExternalDocumentNotValidDialog()
+                    self.showOpenWithSwitchDialog(
+                        for: [GiniCapturePage(document: document, error: nil)])
+                } catch  {
+                    self.rootViewController.showErrorDialog(for: error, positiveAction: nil)
                 }
             }
         }
@@ -138,25 +184,6 @@ final class AppCoordinator: Coordinator {
         rootViewController.present(screenAPICoordinator.rootViewController, animated: true, completion: nil)
     }
     
-    fileprivate func showComponentAPI(with pages: [GiniCapturePage]? = nil) {
-        let componentAPICoordinator = ComponentAPICoordinator(pages: pages ?? [],
-                                                              configuration: configuration,
-                                                              documentService: componentAPIDocumentService())
-        componentAPICoordinator.delegate = self
-        componentAPICoordinator.start()
-        add(childCoordinator: componentAPICoordinator)
-        
-        rootViewController.present(componentAPICoordinator.rootViewController, animated: true, completion: nil)
-    }
-    
-    fileprivate func componentAPIDocumentService() -> ComponentAPIDocumentServiceProtocol {
-        let lib = GiniBankAPI.Builder(client: client).build()
-        
-        documentMetadata = Document.Metadata(branchId: documentMetadataBranchId,
-                                             additionalHeaders: [documentMetadataAppFlowKey: "ComponentAPI"])
-        return ComponentAPIDocumentsService(lib: lib, documentMetadata: documentMetadata)
-    }
-    
     fileprivate func showSettings() {
         let settingsViewController = (UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "settingsViewController") as? SettingsViewController)!
@@ -167,28 +194,34 @@ final class AppCoordinator: Coordinator {
         
         rootViewController.present(settingsViewController, animated: true, completion: nil)
     }
-    
+
     fileprivate func showOpenWithSwitchDialog(for pages: [GiniCapturePage]) {
-        let alertViewController = UIAlertController(title: "Importierte Datei",
-                                                    message: "Möchten Sie die importierte Datei mit dem " +
-            "ScreenAPI oder ComponentAPI verwenden?",
-                                                    preferredStyle: .alert)
-        
-        alertViewController.addAction(UIAlertAction(title: "Screen API", style: .default) {[weak self] _ in
+        let title = NSLocalizedStringPreferredFormat("import.data.title", comment: "Import data")
+        let description = NSLocalizedStringPreferredFormat("import.data.description",
+                                                           comment: "Import data description")
+        let startButtonTitle = NSLocalizedStringPreferredFormat("import.startButtonTitle",
+                                                                 comment: "Yes")
+        let cancelButtonTitle = NSLocalizedStringPreferredFormat("import.cancelButtonTitle",
+                                                                 comment: "No")
+        let alertViewController = UIAlertController(title: title, message: description, preferredStyle: .alert)
+
+        alertViewController.addAction(UIAlertAction(title: startButtonTitle, style: .default) { [weak self] _ in
             self?.showScreenAPI(with: pages)
         })
-        alertViewController.addAction(UIAlertAction(title: "Component API", style: .default) { [weak self] _ in
-            self?.showComponentAPI(with: pages)
+        alertViewController.addAction(UIAlertAction(title: cancelButtonTitle, style: .default) { _ in
+            alertViewController.dismiss(animated: true, completion: nil)
         })
-        
+
+
         rootViewController.present(alertViewController, animated: true, completion: nil)
     }
-    
+
     fileprivate func showExternalDocumentNotValidDialog() {
-        let alertViewController = UIAlertController(title: "Ungültiges Dokument",
-                                                    message: "Dies ist kein gültiges Dokument",
-                                                    preferredStyle: .alert)
-        
+        let title = NSLocalizedStringPreferredFormat("import.data.error.title", comment: "Import error")
+        let description = NSLocalizedStringPreferredFormat("import.data.error.description",
+                                                           comment: "Import error description")
+
+        let alertViewController = UIAlertController(title: title, message: description, preferredStyle: .alert)
         alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
             alertViewController.dismiss(animated: true, completion: nil)
         })
@@ -212,8 +245,6 @@ extension AppCoordinator: SelectAPIViewControllerDelegate {
         switch api {
         case .screen:
             showScreenAPI()
-        case .component:
-            showComponentAPI()
         }
     }
     
@@ -232,16 +263,6 @@ extension AppCoordinator: SettingsViewControllerDelegate {
 // MARK: ScreenAPICoordinatorDelegate
 
 extension AppCoordinator: ScreenAPICoordinatorDelegate {
-    func screenAPIShowNoResults(coordinator: ScreenAPICoordinator) {
-        coordinator.rootViewController.dismiss(animated: true, completion: nil)
-        self.remove(childCoordinator: coordinator as Coordinator)
-        
-        let customNoResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
-            .instantiateViewController(withIdentifier: "noResultScreen") as? NoResultViewController)!
-        customNoResultsScreen.delegate = self
-        rootViewController.present(customNoResultsScreen, animated: true)
-    }
-    
     func screenAPIShouldRestart(coordinator: ScreenAPICoordinator) {
         coordinator.rootViewController.dismiss(animated: false, completion: nil)
         coordinator.start()
@@ -251,22 +272,5 @@ extension AppCoordinator: ScreenAPICoordinatorDelegate {
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ()) {
         coordinator.rootViewController.dismiss(animated: true, completion: nil)
         self.remove(childCoordinator: coordinator as Coordinator)
-    }
-}
-
-// MARK: ComponentAPICoordinatorDelegate
-
-extension AppCoordinator: ComponentAPICoordinatorDelegate {
-    func componentAPI(coordinator: ComponentAPICoordinator, didFinish: ()) {
-        coordinator.rootViewController.dismiss(animated: true, completion: nil)
-        self.remove(childCoordinator: coordinator)
-    }
-}
-
-// MARK: - NoResultsScreenDelegate
-extension AppCoordinator: NoResultsScreenDelegate {
-    func noResults(viewController: NoResultViewController, didTapRetry: ()) {
-        viewController.dismiss(animated: true)
-        showScreenAPI()
     }
 }
