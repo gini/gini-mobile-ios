@@ -9,8 +9,8 @@ import Foundation
 
 public class GiniCaptureErrorLogger: GiniCaptureErrorLoggerDelegate {
     var isGiniLoggingOn = true
-    var customErrorLogger: GiniCaptureErrorLoggerDelegate? = nil
-    var giniErrorLogger: GiniCaptureErrorLoggerDelegate? = nil
+    var customErrorLogger: GiniCaptureErrorLoggerDelegate?
+    var giniErrorLogger: GiniCaptureErrorLoggerDelegate?
     public func handleErrorLog(error: ErrorLog) {
         if isGiniLoggingOn {
             giniErrorLogger?.handleErrorLog(error: error)

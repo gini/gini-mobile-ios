@@ -9,14 +9,14 @@
 import UIKit
 
 final class CaptureSuggestionsCollectionCell: UICollectionViewCell {
-    
+
     var suggestionImage: UIImageView = {
         let suggestionImage = UIImageView()
         suggestionImage.translatesAutoresizingMaskIntoConstraints = false
         suggestionImage.contentMode = .scaleAspectFit
         return suggestionImage
     }()
-    
+
     var suggestionText: UILabel = {
         let suggestionText = UILabel()
         suggestionText.translatesAutoresizingMaskIntoConstraints = false
@@ -25,18 +25,18 @@ final class CaptureSuggestionsCollectionCell: UICollectionViewCell {
         suggestionText.minimumScaleFactor = 10 / 14
         return suggestionText
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(suggestionImage)
         addSubview(suggestionText)
         addConstraints()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(frame:) should be used instead")
     }
-    
+
     private func addConstraints() {
         Constraints.active(item: suggestionImage, attr: .top, relatedBy: .equal, to: self, attr: .top, priority: 999)
         Constraints.active(item: suggestionImage, attr: .bottom, relatedBy: .equal, to: self, attr: .bottom,
@@ -50,11 +50,10 @@ final class CaptureSuggestionsCollectionCell: UICollectionViewCell {
         Constraints.active(item: suggestionImage, attr: .height, relatedBy: .lessThanOrEqual, to: nil,
                           attr: .notAnAttribute, constant: 75)
         Constraints.active(item: suggestionImage, attr: .centerY, relatedBy: .equal, to: self, attr: .centerY)
-        
+
         Constraints.active(item: suggestionText, attr: .top, relatedBy: .equal, to: self, attr: .top)
         Constraints.active(item: suggestionText, attr: .bottom, relatedBy: .equal, to: self, attr: .bottom)
         Constraints.active(item: suggestionText, attr: .trailing, relatedBy: .equal, to: self, attr: .trailing,
                           constant: -20, priority: 999)
     }
 }
-

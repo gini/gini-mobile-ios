@@ -47,7 +47,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
             "cNzbGowA+LNeQ681yMm8ulHxXiGojHE8qAjI+M7bIxU=",
             // new *.gini.net public key, active from around June 2020
             "zEVdOCzXU8euGVuMJYPr3DUU/d1CaKevtr0dW0XzZNo="
-        ]],
+        ]]
     ]] as [String: Any]
 
     init(configuration: GiniConfiguration,
@@ -71,7 +71,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
                                                         documentMetadata: documentMetadata,
                                                         api: .default,
                                                         trackingDelegate: self)
-        
 // MARK: - Screen API with custom networking
 //        let viewController = GiniCapture.viewController(importedDocuments: visionDocuments,
 //                                                        configuration: visionConfiguration,
@@ -80,8 +79,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
 //                                                        trackingDelegate: trackingDelegate,
 //                                                        networkingService: self)
         screenAPIViewController = RootNavigationController(rootViewController: viewController)
-        screenAPIViewController.navigationBar.barTintColor = visionConfiguration.navigationBarTintColor
-        screenAPIViewController.navigationBar.tintColor = visionConfiguration.navigationBarTitleColor
         screenAPIViewController.setNavigationBarHidden(true, animated: false)
         screenAPIViewController.delegate = self
         screenAPIViewController.interactivePopGestureRecognizer?.delegate = nil
@@ -93,7 +90,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
         } else {
             print("❓ Showing results for unknown Gini Bank API document")
         }
-        
         let customResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "resultScreen") as? ResultTableViewController)!
         customResultsScreen.result = results
@@ -101,7 +97,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator {
         DispatchQueue.main.async { [weak self] in
             if #available(iOS 15.0, *) {
                 let config = self?.visionConfiguration
-                self?.screenAPIViewController.applyStyle(withConfiguration: config ?? GiniConfiguration())
+                self?.screenAPIViewController.applyStyle(withConfiguration: config ?? GiniConfiguration.shared)
             }
             self?.screenAPIViewController.setNavigationBarHidden(false, animated: false)
             self?.screenAPIViewController.pushViewController(customResultsScreen, animated: true)
@@ -116,12 +112,8 @@ extension ScreenAPICoordinator: UINavigationControllerDelegate {
                               animationControllerFor operation: UINavigationController.Operation,
                               from fromVC: UIViewController,
                               to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        // Since the NoResultViewController and ResultTableViewController are in the navigation stack,
+        // Since the ResultTableViewController is in the navigation stack,
         // when it is necessary to go back, it dismiss the ScreenAPI so the Analysis screen is not shown again
-
-        if fromVC is NoResultViewController {
-            delegate?.screenAPI(coordinator: self, didFinish: ())
-        }
 
         if let fromVC = fromVC as? ResultTableViewController {
             sendFeedbackBlock?(fromVC.result.reduce([:]) {
@@ -137,38 +129,20 @@ extension ScreenAPICoordinator: UINavigationControllerDelegate {
     }
 }
 
-// MARK: - NoResultsScreenDelegate
-
-extension ScreenAPICoordinator: NoResultsScreenDelegate {
-    func noResults(viewController: NoResultViewController, didTapRetry: ()) {
-        screenAPIViewController.popToRootViewController(animated: true)
-    }
-}
-
 // MARK: - GiniCaptureResultsDelegate
 
 extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
-    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult,
-                                          sendFeedbackBlock: @escaping ([String: Extraction]) -> Void) {
+
+    func giniCaptureDidEnterManually() {
+        screenAPIViewController.dismiss(animated: true)
+    }
+    
+    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
         showResultsScreen(results: result.extractions.map { $0.value }, document: result.document)
-        self.sendFeedbackBlock = sendFeedbackBlock
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-            sendFeedbackBlock(result.extractions)
-        }
     }
 
     func giniCaptureDidCancelAnalysis() {
         delegate?.screenAPI(coordinator: self, didFinish: ())
-    }
-
-    func giniCaptureAnalysisDidFinishWithoutResults(_ showingNoResultsScreen: Bool) {
-        if !showingNoResultsScreen {
-            let customNoResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
-                .instantiateViewController(withIdentifier: "noResultScreen") as? NoResultViewController)!
-            customNoResultsScreen.delegate = self
-            screenAPIViewController.setNavigationBarHidden(false, animated: false)
-            screenAPIViewController.pushViewController(customNoResultsScreen, animated: true)
-        }
     }
 }
 

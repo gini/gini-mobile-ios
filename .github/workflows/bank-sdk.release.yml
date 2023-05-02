@@ -7,7 +7,7 @@ on:
   
 jobs:
   check:
-    uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@main
+    uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@new-ui
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
   
@@ -62,7 +62,7 @@ jobs:
 
   release-documentation:
     needs: release
-    uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.publish.docs.yml@main
+    uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.publish.docs.yml@new-ui
     secrets:
       RELEASE_GITHUB_USER: ${{ secrets.RELEASE_GITHUB_USER }}
       RELEASE_GITHUB_PASSWORD: ${{ secrets.RELEASE_GITHUB_PASSWORD }}

@@ -25,16 +25,16 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
         let rootViewController = coordinator.start(withDocuments: nil)
         _ = rootViewController.view
         let screenNavigator = rootViewController.children.first as? UINavigationController
-        XCTAssertEqual(screenNavigator?.viewControllers.count, 1,
-                       "there should be only one view controller in the nav stack")
+        XCTAssertEqual(screenNavigator?.viewControllers.count, 2,
+                       "there should be two view controllers in the nav stack, Review and Camera screens")
     }
     
     func testNavControllerTypesAfterStartWithoutDocuments() {
         let rootViewController = coordinator.start(withDocuments: nil)
         _ = rootViewController.view
         let screenNavigator = rootViewController.children.first as? UINavigationController
-        XCTAssertNotNil(screenNavigator?.viewControllers.first as? CameraViewController,
-                        "first view controller is not a CameraViewController")
+        XCTAssertNotNil(screenNavigator?.viewControllers.first as? ReviewViewController,
+                        "first view controller is not a ReviewViewController")
     }
     
     func testNavControllerCountAfterStartWithImages() {
@@ -44,22 +44,26 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
         let rootViewController = coordinator.start(withDocuments: capturedImages)
         _ = rootViewController.view
         let screenNavigator = rootViewController.children.first as? UINavigationController
-        XCTAssertEqual(screenNavigator?.viewControllers.count, 2,
+        XCTAssertEqual(screenNavigator?.viewControllers.count, 1,
                        "there should be 2 view controllers in the nav stack")
     }
     
     func testNavControllerTypesAfterStartWithImages() {
-        let capturedImages = [GiniCaptureTestsHelper.loadImageDocument(named: "invoice"),
-                              GiniCaptureTestsHelper.loadImageDocument(named: "invoice2")]
+        let document1 = GiniCaptureTestsHelper.loadImageDocument(named: "invoice")
+        document1.isImported = false
+        let document2 = GiniCaptureTestsHelper.loadImageDocument(named: "invoice2")
+        document2.isImported = false
+        let capturedImages = [document1, document2]
 
         let rootViewController = coordinator.start(withDocuments: capturedImages)
         _ = rootViewController.view
         let screenNavigator = rootViewController.children.first as? UINavigationController
         
-        XCTAssertNotNil(screenNavigator?.viewControllers.first as? CameraViewController,
-                        "first view controller is not a CameraViewController")
-        XCTAssertNotNil(screenNavigator?.viewControllers.last as? MultipageReviewViewController,
-                        "last view controller is not a MultipageReviewController")
+        XCTAssertNotNil(screenNavigator?.viewControllers.last as? ReviewViewController,
+                        "first view controller is not a ReviewViewController")
+        XCTAssertEqual(screenNavigator?.viewControllers.count, 1,
+                       "there should be only one view controller in the nav stack")
+        
     }
     
     func testNavControllerCountAfterStartWithAPDF() {
@@ -85,55 +89,84 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
     
     func testNavControllerTypesAfterStartWithImageAndMultipageDisabled() {
         giniConfiguration.multipageEnabled = false
-        let capturedImages = [GiniCaptureTestsHelper.loadImageDocument(named: "invoice")]
+        let document = GiniCaptureTestsHelper.loadImageDocument(named: "invoice")
+        document.isImported = false
+        let capturedImages = [document]
 
         let rootViewController = coordinator.start(withDocuments: capturedImages)
         _ = rootViewController.view
         let screenNavigator = rootViewController.children.first as? UINavigationController
-        
         XCTAssertNotNil(screenNavigator?.viewControllers.last as? ReviewViewController,
                         "first view controller is not a ReviewViewController")
     }
-    
-    func testDocumentCollectionAfterRotateImageInMultipage() {
-        let capturedImageDocument = GiniCaptureTestsHelper.loadImagePage(named: "invoice")
-        coordinator.addToDocuments(new: [capturedImageDocument])
-        
-        (coordinator.multiPageReviewViewController
-            .pages[0]
-            .document as? GiniImageDocument)?
-            .rotatePreviewImage90Degrees()
-        coordinator.multipageReview(coordinator.multiPageReviewViewController,
-                                    didRotate: coordinator.multiPageReviewViewController.pages[0])
 
-        let imageDocument = coordinator.pages[0].document as? GiniImageDocument
-        XCTAssertEqual(imageDocument?.rotationDelta, 90,
-                       "the image document rotation delta should have been updated after rotation")
-    }
-    
     func testDocumentCollectionAfterRemoveImageInMultipage() {
         let capturedImageDocument = GiniCaptureTestsHelper.loadImagePage(named: "invoice")
         coordinator.addToDocuments(new: [capturedImageDocument])
         
-        coordinator.multipageReview(coordinator.multiPageReviewViewController,
-                                    didDelete: coordinator.multiPageReviewViewController.pages[0])
+        coordinator.review(coordinator.reviewViewController,
+                                    didDelete: coordinator.reviewViewController.pages[0])
         XCTAssertTrue(coordinator.pages.isEmpty,
                       "vision documents collection should be empty after delete " +
             "the image in the multipage review view controller")
     }
     
-    func testMultipageImageDocumentWhenSortingDocuments() {
-        let capturedImageDocument = [GiniCaptureTestsHelper.loadImagePage(named: "invoice"),
-                                     GiniCaptureTestsHelper.loadImagePage(named: "invoice")]
-        let firstItemId = capturedImageDocument.first?.document.id
-        coordinator.addToDocuments(new: capturedImageDocument)
+    func testErrorTypeNoResponse() {
+        giniConfiguration.multipageEnabled = false
+        let capturedImages = [GiniCaptureTestsHelper.loadImageDocument(named: "invoice")]
+
+        let rootViewController = coordinator.start(withDocuments: capturedImages)
+        _ = rootViewController.view
+        let errorType = ErrorType(error: .noResponse)
+        coordinator.displayError(errorType: errorType, animated: false)
+        let screenNavigator = rootViewController.children.first as? UINavigationController
+        let errorScreen = screenNavigator?.viewControllers.last as? ErrorScreenViewController
+        errorScreen?.setupView()
+        XCTAssertNotNil(
+            errorScreen,
+            "first view controller is not a ErrorScreenViewController")
+        XCTAssertTrue(errorScreen?.errorHeader.headerLabel.text == ErrorType.connection.title(), "Error title should match no response error type")
+        XCTAssertTrue(errorScreen?.errorContent.text == ErrorType.connection.content(), "Error content should match no response error type")
         
-        var reorderedItems = capturedImageDocument
-        reorderedItems.swapAt(0, 1)
+    }
+    
+    func testErrorTooManyRequests() {
+        giniConfiguration.multipageEnabled = false
+        let capturedImages = [GiniCaptureTestsHelper.loadImageDocument(named: "invoice")]
+
+        let rootViewController = coordinator.start(withDocuments: capturedImages)
+        _ = rootViewController.view
+        let response = HTTPURLResponse(url: URL(string: "example")!, statusCode: 429, httpVersion: "", headerFields: [:])
+        let errorType = ErrorType(error: .tooManyRequests(response: response, data: Data()))
+        coordinator.displayError(errorType: errorType, animated: false)
+        let screenNavigator = rootViewController.children.first as? UINavigationController
+        let errorScreen = screenNavigator?.viewControllers.last as? ErrorScreenViewController
+        errorScreen?.setupView()
+        XCTAssertNotNil(
+            errorScreen,
+            "first view controller is not a ErrorScreenViewController")
+        XCTAssertTrue(errorScreen?.errorHeader.headerLabel.text == ErrorType.request.title(), "Error title should match no response error type")
+        XCTAssertTrue(errorScreen?.errorContent.text == ErrorType.request.content(), "Error content should match no response error type")
         
-        coordinator.multipageReview(coordinator.multiPageReviewViewController, didReorder: reorderedItems)
-        
-        XCTAssertTrue(coordinator.pages.last?.document.id == firstItemId, "last items should be the one moved")
+    }
+    
+    func testErrorServerError() {
+        giniConfiguration.multipageEnabled = false
+        let capturedImages = [GiniCaptureTestsHelper.loadImageDocument(named: "invoice")]
+
+        let rootViewController = coordinator.start(withDocuments: capturedImages)
+        _ = rootViewController.view
+        let response = HTTPURLResponse(url: URL(string: "example")!, statusCode: 501, httpVersion: "", headerFields: [:])
+        let errorType = ErrorType(error: .notAcceptable(response: response, data: Data()))
+        coordinator.displayError(errorType: errorType, animated: false)
+        let screenNavigator = rootViewController.children.first as? UINavigationController
+        let errorScreen = screenNavigator?.viewControllers.last as? ErrorScreenViewController
+        errorScreen?.setupView()
+        XCTAssertNotNil(
+            errorScreen,
+            "first view controller is not a ErrorScreenViewController")
+        XCTAssertTrue(errorScreen?.errorHeader.headerLabel.text == ErrorType.serverError.title(), "Error title should match server error type")
+        XCTAssertTrue(errorScreen?.errorContent.text == ErrorType.serverError.content(), "Error content should match server error type")
         
     }
 }

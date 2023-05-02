@@ -10,27 +10,25 @@ import UIKit
 
 /**
  Delegate which can be used to communicate back to the analysis screen allowing to display custom messages on screen.
- 
- - note: Screen API only.
  */
 @objc public protocol AnalysisDelegate {
-    
+
     /**
-     Will display an error view on the analysis screen with a custom message.
-     The provided action will be called, when the user taps on the error view.
+     Will display an error screen with predefined type.
      
-     - parameter message: The error message to be displayed.
-     - parameter action:  The action to be performed after the user tapped the error view.
+     - parameter message: The error type to be displayed.
      */
-    func displayError(withMessage message: String?, andAction action: (() -> Void)?)
-    
+    func displayError(
+        errorType: ErrorType,
+        animated: Bool
+    )
+
     /**
      In case that the `GiniCaptureDocument` analysed is an image it will display a no results screen
-     with some capture suggestions. It won't show any screen if it is not an image, return `false` in that case.
-     
-     - returns: `true` if the screen was shown or `false` if it wasn't.
+     with some capture suggestions.
+
      */
-    func tryDisplayNoResultsScreen() -> Bool
+    func tryDisplayNoResultsScreen()
 }
 
 /**
@@ -40,63 +38,68 @@ import UIKit
  - note: Component API only.
  */
 @objcMembers public final class AnalysisViewController: UIViewController {
-    
+
     var didShowAnalysis: (() -> Void)?
-    fileprivate let document: GiniCaptureDocument
-    fileprivate let giniConfiguration: GiniConfiguration
-    fileprivate static let loadingIndicatorContainerHeight: CGFloat = 60
-    
+    private let document: GiniCaptureDocument
+    private let giniConfiguration: GiniConfiguration
+
     public weak var trackingDelegate: AnalysisScreenTrackingDelegate?
 
-    
     // User interface
-    fileprivate var imageView: UIImageView = {
+    private var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
-    
-    fileprivate var loadingIndicatorView: UIActivityIndicatorView = {
+
+    private var loadingIndicatorView: UIActivityIndicatorView = {
         let indicatorView = UIActivityIndicatorView()
         indicatorView.hidesWhenStopped = true
         indicatorView.style = .whiteLarge
         indicatorView.startAnimating()
         return indicatorView
     }()
-    
-    fileprivate lazy var loadingIndicatorText: UILabel = {
+
+    private lazy var loadingIndicatorText: UILabel = {
         var loadingText = UILabel()
-        loadingText.text = .localized(resource: AnalysisStrings.loadingText)
-        loadingText.font = giniConfiguration.customFont.with(weight: .regular, size: 18, style: .body)
+        loadingText.font = giniConfiguration.textStyleFonts[.bodyBold]
         loadingText.textAlignment = .center
-        loadingText.textColor = .white
+        loadingText.adjustsFontForContentSizeCategory = true
+        loadingText.textColor = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
+        loadingText.isAccessibilityElement = true
+        loadingText.numberOfLines = 0
+
+        if document.type == .pdf {
+            if let documentTitle = (document as? GiniPDFDocument)?.pdfTitle {
+                let titleString = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText.pdf",
+                                                                   comment: "Analysis screen loading text for PDF")
+
+                loadingText.text = String(format: titleString, documentTitle)
+            } else {
+                loadingText.text = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
+                                                                    comment: "Analysis screen loading text for images")
+            }
+        } else {
+            loadingText.text = NSLocalizedStringPreferredFormat("ginicapture.analysis.loadingText",
+                                                                comment: "Analysis screen loading text for images")
+        }
+
         return loadingText
     }()
-    
-    fileprivate lazy var loadingIndicatorContainer: UIView = {
-        let size = CGSize(width: AnalysisViewController.loadingIndicatorContainerHeight,
-                          height: AnalysisViewController.loadingIndicatorContainerHeight)
+
+    private lazy var loadingIndicatorContainer: UIView = {
         let loadingIndicatorContainer = UIView(frame: CGRect(origin: .zero,
-                                                             size: size))
-        loadingIndicatorContainer.backgroundColor = .white
-        loadingIndicatorContainer.layer.cornerRadius = AnalysisViewController.loadingIndicatorContainerHeight / 2
+                                                             size: .zero))
         return loadingIndicatorContainer
     }()
-    
-    fileprivate lazy var overlayView: UIView = {
+
+    private lazy var overlayView: UIView = {
         let overlayView = UIView()
-        overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        overlayView.backgroundColor = GiniColor(light: .GiniCapture.light1,
+                                                dark: .GiniCapture.dark1).uiColor().withAlphaComponent(0.6)
         return overlayView
     }()
-    
-    fileprivate lazy var errorView: NoticeView = {
-        let errorView = NoticeView(text: "",
-                                   type: .error,
-                                   noticeAction: NoticeAction(title: "", action: {}))
-        errorView.translatesAutoresizingMaskIntoConstraints = false
-        return errorView
-    }()
-    
+
     /**
      Designated intitializer for the `AnalysisViewController`.
      
@@ -110,7 +113,7 @@ import UIKit
         self.giniConfiguration = giniConfiguration
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     /**
      Convenience intitializer for the `AnalysisViewController`.
      
@@ -121,7 +124,7 @@ import UIKit
     public convenience init(document: GiniCaptureDocument) {
         self.init(document: document, giniConfiguration: GiniConfiguration.shared)
     }
-    
+
     /**
      Returns an object initialized from data in a given unarchiver.
      
@@ -130,168 +133,167 @@ import UIKit
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    public override func loadView() {
-        super.loadView()
-        imageView.image = document.previewImage
-        edgesForExtendedLayout = []
-        view.backgroundColor = .black
-        
+
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+
         // Configure view hierachy
-        addImageView()
-        
-        if let document = document as? GiniPDFDocument {
-            addLoadingView(intoContainer: loadingIndicatorContainer)
-            loadingIndicatorView.color = giniConfiguration.analysisLoadingIndicatorColor
-            
-            showPDFInformationView(withDocument: document,
-                                   giniConfiguration: giniConfiguration)
-        } else {
-            addLoadingView()
-            addLoadingText(below: loadingIndicatorView)
-            addOverlay()
-            
-            if document.type == .image {
-                showCaptureSuggestions(giniConfiguration: giniConfiguration)
-            }
-        }
-        
-        addErrorView()
+        setupView()
     }
-    
+
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         didShowAnalysis?()
     }
-    
+
     // MARK: Toggle animation
-    /**
-     Displays a loading activity indicator. Should be called when document analysis is started.
-     */
+
+    /// Displays a loading activity indicator. Should be called when document analysis is started.
     public func showAnimation() {
-        loadingIndicatorView.startAnimating()
-    }
-    
-    /**
-     Hides the loading activity indicator. Should be called when document analysis is finished.
-     */
-    public func hideAnimation() {
-        loadingIndicatorView.stopAnimating()
-    }
-    
-    /**
-     Shows an error when there was an error with either the analysis or document upload
-     */
-    public func showError(with message: String, action: @escaping () -> Void ) {
-        
-        trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .error, info: ["message" : message]))
-        
-        errorView.textLabel.text = message
-        errorView.userAction = NoticeAction(title: NoticeActionType.retry.title, action: { [weak self] in
-            guard let self = self else { return }
-            self.trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .retry))
-            self.errorView.hide(true, completion: action)
-        })
-        errorView.show()
-    }
-    
-    /**
-     Hide the error view
-     */
-    public func hideError(animated: Bool = false) {
-        errorView.hide(animated, completion: nil)
-    }
-    
-    fileprivate func addImageView() {
-        self.view.addSubview(imageView)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        Constraints.active(item: imageView, attr: .top, relatedBy: .equal, to: view.safeAreaLayoutGuide, attr: .top,
-                          priority: 999)
-        Constraints.active(item: imageView, attr: .bottom, relatedBy: .equal, to: view.safeAreaLayoutGuide, attr: .bottom,
-                          priority: 999)
-        Constraints.active(item: imageView, attr: .trailing, relatedBy: .equal, to: self.view, attr: .trailing)
-        Constraints.active(item: imageView, attr: .leading, relatedBy: .equal, to: self.view, attr: .leading)
-    }
-    
-    fileprivate func addOverlay() {
-        self.view.insertSubview(overlayView, aboveSubview: imageView)
-        overlayView.translatesAutoresizingMaskIntoConstraints = false
-        
-        Constraints.active(item: overlayView, attr: .top, relatedBy: .equal, to: imageView, attr: .top)
-        Constraints.active(item: overlayView, attr: .trailing, relatedBy: .equal, to: imageView, attr: .trailing)
-        Constraints.active(item: overlayView, attr: .bottom, relatedBy: .equal, to: imageView, attr: .bottom)
-        Constraints.active(item: overlayView, attr: .leading, relatedBy: .equal, to: imageView, attr: .leading)
-    }
-    
-    fileprivate func addLoadingText(below: UIView) {
-        self.view.addSubview(loadingIndicatorText)
-        loadingIndicatorText.translatesAutoresizingMaskIntoConstraints = false
-        
-        Constraints.active(item: loadingIndicatorText, attr: .trailing, relatedBy: .equal, to: imageView,
-                          attr: .trailing)
-        Constraints.active(item: loadingIndicatorText, attr: .top, relatedBy: .equal, to: below, attr: .bottom,
-                          constant: 16)
-        Constraints.active(item: loadingIndicatorText, attr: .leading, relatedBy: .equal, to: imageView, attr: .leading)
-    }
-    
-    fileprivate func addLoadingView(intoContainer container: UIView? = nil) {
-        loadingIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        
-        if let container = container {
-            container.translatesAutoresizingMaskIntoConstraints = false
-            self.view.addSubview(container)
-            container.addSubview(loadingIndicatorView)
-            
-            Constraints.active(item: container, attr: .centerX, relatedBy: .equal, to: self.view, attr: .centerX)
-            Constraints.active(item: container, attr: .centerY, relatedBy: .equal, to: self.view, attr: .centerY)
-            Constraints.active(item: container, attr: .height, relatedBy: .equal, to: nil, attr: .notAnAttribute,
-                              constant: AnalysisViewController.loadingIndicatorContainerHeight)
-            Constraints.active(item: container, attr: .width, relatedBy: .equal, to: nil, attr: .notAnAttribute,
-                              constant: AnalysisViewController.loadingIndicatorContainerHeight)
-            Constraints.active(item: loadingIndicatorView, attr: .centerX, relatedBy: .equal, to: container,
-                              attr: .centerX, constant: 1.5)
-            Constraints.active(item: loadingIndicatorView, attr: .centerY, relatedBy: .equal, to: container,
-                              attr: .centerY, constant: 1.5)
-            
+        if let loadingIndicator = giniConfiguration.customLoadingIndicator {
+            loadingIndicator.startAnimation()
         } else {
-            self.view.addSubview(loadingIndicatorView)
-            Constraints.active(item: loadingIndicatorView, attr: .centerX, relatedBy: .equal, to: self.view,
-                              attr: .centerX)
-            Constraints.active(item: loadingIndicatorView, attr: .centerY, relatedBy: .equal, to: self.view,
-                              attr: .centerY)
+            loadingIndicatorView.startAnimating()
         }
     }
-    
-    fileprivate func addErrorView() {
-        view.addSubview(errorView)
-        
-        Constraints.pin(view: errorView, toSuperView: view, positions: [.left, .right, .top])
+
+    /// Hides the loading activity indicator. Should be called when document analysis is finished.
+    public func hideAnimation() {
+        if let loadingIndicator = giniConfiguration.customLoadingIndicator {
+            loadingIndicator.stopAnimation()
+        } else {
+            loadingIndicatorView.stopAnimating()
+        }
     }
-    
-    fileprivate func showPDFInformationView(withDocument document: GiniPDFDocument,
-                                            giniConfiguration: GiniConfiguration) {
-        let title: String = document.pdfTitle ?? .localized(resource: AnalysisStrings.defaultPdfDokumentTitle)
-        let pdfView = PDFInformationView(title: title,
-                                         subtitle: .localized(resource: AnalysisStrings.pdfPages,
-                                                              args: document.numberPages),
-                                         textColor: giniConfiguration.analysisPDFInformationTextColor,
-                                         textFont: giniConfiguration.customFont.with(weight: .regular,
-                                                                                     size: 16,
-                                                                                     style: .body),
-                                         backgroundColor: giniConfiguration.analysisPDFInformationBackgroundColor,
-                                         superView: self.view,
-                                         viewBelow: self.imageView)
-        
-        pdfView.show()
+
+    /**
+     Set up the view elements on the screen
+     */
+
+    private func setupView() {
+        addImageView()
+        edgesForExtendedLayout = []
+        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
+        title = NSLocalizedStringPreferredFormat("ginicapture.analysis.screenTitle", comment: "Analysis screen title")
+
+        if let document = document as? GiniPDFDocument {
+            imageView.image = document.previewImage
+        }
+
+        configureLoadingIndicator()
+        addOverlay()
+
+        if document is GiniImageDocument {
+            showCaptureSuggestions(giniConfiguration: giniConfiguration)
+        }
     }
-    
-    fileprivate func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {
-        let captureSuggestions = CaptureSuggestionsView(superView: self.view,
-                                                        bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor,
-                                                        font: giniConfiguration.customFont.with(weight: .regular,
-                                                                                                size: 16,
-                                                                                                style: .body))
+
+    private func addImageView() {
+        view.addSubview(imageView)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+
+        Constraints.active(item: imageView, attr: .top, relatedBy: .equal, to: view.safeAreaLayoutGuide, attr: .top,
+                          priority: 999)
+        Constraints.active(item: imageView, attr: .bottom, relatedBy: .equal, to: view.safeAreaLayoutGuide,
+                           attr: .bottom, priority: 999)
+        Constraints.active(item: imageView, attr: .centerX, relatedBy: .equal, to: view, attr: .centerX)
+        Constraints.active(item: imageView, attr: .width, relatedBy: .equal, to: view, attr: .width,
+                           multiplier: Constants.widthMultiplier)
+    }
+
+    private func addOverlay() {
+        view.insertSubview(overlayView, aboveSubview: imageView)
+        overlayView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([overlayView.topAnchor.constraint(equalTo: view.topAnchor),
+                                     overlayView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                                     overlayView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                                     overlayView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
+    }
+
+    private func configureLoadingIndicator() {
+        loadingIndicatorView.color = GiniColor(light: .GiniCapture.dark1, dark: .GiniCapture.light1).uiColor()
+
+        addLoadingContainer()
+        addLoadingView(intoContainer: loadingIndicatorContainer)
+
+        if let loadingIndicator = giniConfiguration.customLoadingIndicator {
+            addLoadingText(below: loadingIndicator.injectedView())
+            loadingIndicator.startAnimation()
+        } else {
+            addLoadingText(below: loadingIndicatorView)
+            loadingIndicatorView.startAnimating()
+        }
+    }
+
+    private func addLoadingText(below loadingIndicator: UIView) {
+        loadingIndicatorContainer.addSubview(loadingIndicatorText)
+        loadingIndicatorText.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            loadingIndicatorText.topAnchor.constraint(equalTo: loadingIndicator.bottomAnchor,
+                                                      constant: Constants.padding),
+            loadingIndicatorText.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            loadingIndicatorText.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
+            loadingIndicatorText.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                         constant: -Constants.padding)])
+    }
+
+    private func addLoadingView(intoContainer container: UIView? = nil) {
+        let loadingIndicator: UIView
+
+        if let customLoadingIndicator = giniConfiguration.customLoadingIndicator?.injectedView() {
+            loadingIndicator = customLoadingIndicator
+        } else {
+            loadingIndicator = loadingIndicatorView
+        }
+
+        if let container = container {
+            container.translatesAutoresizingMaskIntoConstraints = false
+            loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(container)
+            container.addSubview(loadingIndicator)
+
+            NSLayoutConstraint.activate([
+                container.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                container.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                container.heightAnchor.constraint(equalToConstant: Constants.loadingIndicatorContainerHeight),
+                container.widthAnchor.constraint(equalTo: container.heightAnchor),
+                loadingIndicator.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+                loadingIndicator.centerYAnchor.constraint(equalTo: container.centerYAnchor)
+            ])
+        } else {
+            view.addSubview(loadingIndicatorView)
+
+            NSLayoutConstraint.activate([
+                loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            ])
+        }
+    }
+
+    private func addLoadingContainer() {
+        loadingIndicatorContainer.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(loadingIndicatorContainer)
+        NSLayoutConstraint.activate([
+            loadingIndicatorContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loadingIndicatorContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            loadingIndicatorContainer.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor),
+            loadingIndicatorContainer.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor,
+                                                               constant: Constants.padding)])
+    }
+
+    private func showCaptureSuggestions(giniConfiguration: GiniConfiguration) {
+        let captureSuggestions = CaptureSuggestionsView(superView: view,
+                                                        bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
         captureSuggestions.start()
+    }
+}
+
+private extension AnalysisViewController {
+    enum Constants {
+        static let padding: CGFloat = 16
+        static let loadingIndicatorContainerHeight: CGFloat = 60
+        static let widthMultiplier: CGFloat = 0.9
     }
 }

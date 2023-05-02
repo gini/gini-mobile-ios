@@ -10,7 +10,7 @@ import AVFoundation
 import UIKit
 
 extension AVCaptureVideoOrientation {
-    
+
     init(_ interface: UIInterfaceOrientation) {
         switch interface {
         case .portraitUpsideDown: self = .portraitUpsideDown
@@ -19,7 +19,7 @@ extension AVCaptureVideoOrientation {
         default: self = .portrait
         }
     }
-    
+
     init?(_ device: UIDeviceOrientation?) {
         guard let orientation = device else { return nil }
         switch orientation {

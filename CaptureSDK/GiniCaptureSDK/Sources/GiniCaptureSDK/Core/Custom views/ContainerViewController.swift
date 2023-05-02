@@ -9,21 +9,21 @@
 import UIKit
 
 protocol ContainerViewController: AnyObject {
-    
+
     var containerView: UIView { get }
     var contentController: UIViewController { get }
-    
+
     func displayContent(_ controller: UIViewController)
-    
+
 }
 
 extension ContainerViewController where Self: UIViewController {
-    
+
     func displayContent(_ controller: UIViewController) {
         self.addChild(controller)
         controller.view.frame = self.containerView.bounds
         self.containerView.addSubview(controller.view)
         controller.didMove(toParent: self)
     }
-    
+
 }

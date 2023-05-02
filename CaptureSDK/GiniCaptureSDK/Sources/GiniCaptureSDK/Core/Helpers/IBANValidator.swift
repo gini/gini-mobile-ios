@@ -23,22 +23,22 @@ final class IBANValidator {
             "AE": 23, "VG": 24, "CH": 21
         ]
     }
-    
+
     private var validationSet: CharacterSet {
         return CharacterSet(charactersIn: "01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ").inverted
     }
-    
+
     func isValid(iban: String) -> Bool {
         let iban = iban.replacingOccurrences(of: " ", with: "")
         let ibanLength = iban.count
         guard let minValues = countryIbanDictionary.values.min(), ibanLength >= minValues else {
             return false
         }
-        
+
         if iban.rangeOfCharacter(from: validationSet) != nil {
             return false
         }
-        
+
         let countryCode = String(iban[..<iban.index(iban.startIndex, offsetBy: 2)])
         let countryDescriptor = countryIbanDictionary[countryCode]
         var countryIsValid = false
@@ -48,18 +48,18 @@ final class IBANValidator {
                 return false
             }
         }
-        
+
         let normalizedIban = "\(String(iban[iban.index(iban.startIndex, offsetBy: 4)...]))" +
         "\(String(iban[..<iban.index(iban.startIndex, offsetBy: 4)]))"
-        
+
         let result = validateMod97(iban: normalizedIban)
         if !countryIsValid && result == true {
             return false
         }
-        
+
         return result
     }
-    
+
     func checkSum(iban: String) -> UInt32 {
         var checkSum = UInt32(0)
         var letterNumberMapping: [Character: Int] {
@@ -67,7 +67,7 @@ final class IBANValidator {
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ".forEach { dict[$0] = Int($0.unicodeScalarCodePoint() - 55) }
             return dict
         }
-        
+
         for char in iban {
             let value = UInt32(letterNumberMapping[char] ?? Int(String(char)) ?? 0)
             if value < 10 {
@@ -81,7 +81,7 @@ final class IBANValidator {
         }
         return checkSum % 97
     }
-    
+
     func validateMod97(iban: String) -> Bool {
         return checkSum(iban: iban) == 1
     }

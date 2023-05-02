@@ -18,16 +18,16 @@ public protocol GiniCaptureError: Error {
 @objc public enum CameraError: Int, GiniCaptureError {
     /// Unknown error during camera use.
     case unknown
-    
+
     /// Camera can not be loaded because the user has denied authorization in the past.
     case notAuthorizedToUseDevice
-    
+
     /// No valid input device could be found for capturing.
     case noInputDevice
-    
+
     /// Capturing could not be completed.
     case captureFailed
-    
+
     public var message: String {
         switch self {
         case .captureFailed:
@@ -46,14 +46,14 @@ public protocol GiniCaptureError: Error {
  Errors thrown on the review screen.
  */
 @objc public enum ReviewError: Int, GiniCaptureError {
-    
+
     /// Unknown error during review.
     case unknown
-    
+
     public var message: String {
         switch self {
         case .unknown:
-            return .localized(resource: ReviewStrings.unknownErrorMessage)
+            return NSLocalizedStringPreferredFormat("ginicapture.review.unknownError", comment: "Unknown error")
         }
     }
 }
@@ -63,19 +63,22 @@ public protocol GiniCaptureError: Error {
  */
 
 @objc public enum FilePickerError: Int, GiniCaptureError {
-    
+
     /// Camera roll can not be loaded because the user has denied authorization in the past.
     case photoLibraryAccessDenied
-    
+
     /// Max number of files picked exceeded
     case maxFilesPickedCountExceeded
-    
+
     /// Mixed documents unsupported
     case mixedDocumentsUnsupported
-    
+
     /// Could not open the document (data could not be read or unsupported file type or some other issue)
     case failedToOpenDocument
-    
+
+    /// MultiplePDFs unsupported
+    case multiplePdfsUnsupported
+
     public var message: String {
         switch self {
         case .photoLibraryAccessDenied:
@@ -86,6 +89,8 @@ public protocol GiniCaptureError: Error {
             return .localized(resource: CameraStrings.mixedDocumentsErrorMessage)
         case .failedToOpenDocument:
             return .localized(resource: CameraStrings.failedToOpenDocumentErrorMessage)
+        case .multiplePdfsUnsupported:
+            return .localized(resource: CameraStrings.multiplePdfErrorMessage)
         }
     }
 }
@@ -95,14 +100,14 @@ public protocol GiniCaptureError: Error {
  */
 
 @objc public enum AnalysisError: Int, GiniCaptureError {
-    
+
     /// The analysis was cancelled
     case cancelled
-    
+
     /// There was an error creating the document
     case documentCreation
-    case unknown    
-    
+    case unknown
+
     public var message: String {
         switch self {
         case .documentCreation:
@@ -119,44 +124,66 @@ public protocol GiniCaptureError: Error {
  Errors thrown validating a document (image or pdf).
  */
 @objc public enum DocumentValidationError: Int, GiniCaptureError, Equatable {
-    
+
     /// Unknown error during review.
     case unknown
-    
+
     /// Exceeded max file size
     case exceededMaxFileSize
-    
+
     /// Image format not valid
     case imageFormatNotValid
-    
+
     /// File format not valid
     case fileFormatNotValid
-    
+
     /// PDF length exceeded
     case pdfPageLengthExceeded
-    
+
+    // PDF password protected
+    case pdfPasswordProtected
+
     /// QR Code formar not valid
     case qrCodeFormatNotValid
-    
+
     public var message: String {
         switch self {
         case .exceededMaxFileSize:
-            return .localized(resource: CameraStrings.exceededFileSizeErrorMessage)
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.camera.documentValidationError.excedeedFileSize",
+                comment: "Message text error shown in camera screen when a file size is higher than 10MB")
         case .imageFormatNotValid:
-            return .localized(resource: CameraStrings.wrongFormatErrorMessage)
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.camera.documentValidationError.wrongFormat",
+                comment: "Message text error shown in camera screen when a file " +
+                    "has a wrong format (neither PDF, JPEG, GIF, TIFF or PNG)")
         case .fileFormatNotValid:
-            return .localized(resource: CameraStrings.wrongFormatErrorMessage)
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.camera.documentValidationError.wrongFormat",
+                comment: "Message text error shown in camera screen when a file " +
+                "has a wrong format (neither PDF, JPEG, GIF, TIFF or PNG)")
         case .pdfPageLengthExceeded:
-            return .localized(resource: CameraStrings.tooManyPagesErrorMessage)
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.camera.documentValidationError.tooManyPages",
+                comment: "Message text error shown in camera screen when a pdf length is higher than 10 pages")
+        case .pdfPasswordProtected:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.camera.documentValidationError.pdfPasswordProtected",
+                comment: "Message text error shown when there pdf uplaoded is password protected")
         case .qrCodeFormatNotValid:
-            return .localized(resource: CameraStrings.wrongFormatErrorMessage)
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.camera.documentValidationError.wrongFormat",
+                comment: "Message text error shown in camera screen when a file " +
+                "has a wrong format (neither PDF, JPEG, GIF, TIFF or PNG)")
         case .unknown:
-            return .localized(resource: CameraStrings.documentValidationGeneralErrorMessage)
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.camera.documentValidationError.general",
+                comment: "Message text of a general document validation error shown in camera screen")
         }
     }
-    
+
     public static func == (lhs: DocumentValidationError, rhs: DocumentValidationError) -> Bool {
-        return lhs.message == rhs.message
+        return lhs.rawValue == rhs.rawValue
     }
 }
 
@@ -164,11 +191,11 @@ public protocol GiniCaptureError: Error {
  Errors thrown when running a custom validation.
  */
 @objc public class CustomDocumentValidationError: NSError {
-    
+
     public convenience init(message: String) {
         self.init(domain: "net.gini", code: 1, userInfo: ["message": message])
     }
-    
+
     public var message: String {
         return userInfo["message"] as? String ?? ""
     }
@@ -177,16 +204,16 @@ public protocol GiniCaptureError: Error {
 public class CustomDocumentValidationResult: NSObject {
     private(set) var isSuccess: Bool
     private(set) var error: CustomDocumentValidationError?
-    
+
     private init(withSuccess success: Bool, error: CustomDocumentValidationError? = nil) {
         self.isSuccess = success
         self.error = error
     }
-    
+
     public class func success() -> CustomDocumentValidationResult {
         return CustomDocumentValidationResult(withSuccess: true)
     }
-    
+
     public class func failure(withError error: CustomDocumentValidationError) -> CustomDocumentValidationResult {
         return CustomDocumentValidationResult(withSuccess: false, error: error)
     }

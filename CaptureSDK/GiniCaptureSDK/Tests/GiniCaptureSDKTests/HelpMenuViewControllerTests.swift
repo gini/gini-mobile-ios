@@ -59,7 +59,7 @@ final class HelpMenuViewControllerTests: XCTestCase {
         _ = helpMenuViewController.view
         
         let itemsCount = items.count
-        let tableRowsCount = helpMenuViewController.menuItems.count
+        let tableRowsCount = helpMenuViewController.dataSource.items.count
         
         XCTAssertEqual(itemsCount, tableRowsCount, "items count should be equal to the datasource items count")
     }
@@ -71,7 +71,7 @@ final class HelpMenuViewControllerTests: XCTestCase {
         _ = helpMenuViewController.view
         
         let itemsCount = items.count
-        let tableRowsCount = helpMenuViewController.menuItems.count
+        let tableRowsCount = helpMenuViewController.dataSource.items.count
         
         XCTAssertEqual(itemsCount, tableRowsCount, "items count should be equal to the datasource items count")
     }
@@ -83,30 +83,24 @@ final class HelpMenuViewControllerTests: XCTestCase {
         _ = helpMenuViewController.view
         
         let itemsCount = items.count
-        let tableRowsCount = helpMenuViewController.menuItems.count
+        let tableRowsCount = helpMenuViewController.dataSource.items.count
         
         XCTAssertEqual(itemsCount, tableRowsCount, "items count should be equal to the datasource items count")
     }
     
     func testCellContent() {
         let indexPath = IndexPath(row: 0, section: 0)
-        let itemText = helpMenuViewController.menuItems[indexPath.row].title
+        let itemText = helpMenuViewController.dataSource.items[indexPath.row].title
         let cellAccesoryType = UITableViewCell.AccessoryType.disclosureIndicator
         
-        let cell = helpMenuViewController.tableView(helpMenuViewController.tableView, cellForRowAt: indexPath)
+        let cell = helpMenuViewController.dataSource.tableView(helpMenuViewController.tableView, cellForRowAt: indexPath) as! HelpMenuCell
         
-        XCTAssertEqual(itemText, cell.textLabel?.text,
+        XCTAssertEqual(itemText, cell.titleLabel.text,
                        "cell text in the first row should be the same as the first item text")
         
         XCTAssertEqual(cellAccesoryType,
                        cell.accessoryType,
                        "cell accesory type should be and a disclosure indicator")
-    }
-    
-    func testTableRowheight() {
-        let tableRowHeight = helpMenuViewController.tableView.rowHeight
-        
-        XCTAssertEqual(tableRowHeight, helpMenuViewController.tableRowHeight, "table row height should match")
     }
     
 }

@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array>
-		<string>iCloud.net.gini.ginipaybank.Example-Swift</string>
+		<string>iCloud.net.gini.banksdk.pinning.example</string>
 	</array>
 	<key>com.apple.developer.icloud-services</key>
 	<array>
@@ -12,14 +12,13 @@
 	</array>
 	<key>com.apple.developer.ubiquity-container-identifiers</key>
 	<array>
-		<string>iCloud.net.gini.ginipaybank.Example-Swift</string>
+		<string>iCloud.net.gini.banksdk.pinning.example</string>
 	</array>
 	<key>com.apple.developer.ubiquity-kvstore-identifier</key>
 	<string>$(TeamIdentifierPrefix)$(CFBundleIdentifier)</string>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)net.gini.ginipaybank.Example-Swift</string>
-		<string>$(AppIdentifierPrefix)net.gini.banksdkpinning.Example-Swift</string>
+		<string>$(AppIdentifierPrefix)net.gini.banksdk.pinning.example</string>
 	</array>
 </dict>
 </plist>

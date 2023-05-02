@@ -12,7 +12,12 @@ import GiniBankAPILibrary
  Values from the dictionary will be used as the cells titles and keys as the cells subtitles.
  */
 final class ResultTableViewController: UITableViewController {
-    
+
+    fileprivate enum LabelType: Int {
+    case textLabel = 100
+    case detailTextLabel = 101
+    }
+
     /**
      The result collection from the analysis process.
      */
@@ -20,6 +25,10 @@ final class ResultTableViewController: UITableViewController {
         didSet {
             result.sort(by: { $0.name! < $1.name! })
         }
+    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.rowHeight = UITableView.automaticDimension
     }
 }
 
@@ -33,9 +42,14 @@ extension ResultTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "resultCell", for: indexPath)
-        cell.textLabel?.text = result[indexPath.row].value
-        cell.detailTextLabel?.text = result[indexPath.row].name
+        let cell = tableView.dequeueReusableCell(withIdentifier: "kCustomResultCell", for: indexPath)
+        if let label = cell.viewWithTag(LabelType.textLabel.rawValue) as? UILabel {
+            label.text = result[indexPath.row].value
+        }
+        
+        if let label = cell.viewWithTag(LabelType.detailTextLabel.rawValue) as? UILabel {
+            label.text = result[indexPath.row].name
+        }
         return cell
     }
 }

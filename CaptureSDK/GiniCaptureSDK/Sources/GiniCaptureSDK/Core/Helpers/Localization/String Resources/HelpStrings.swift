@@ -8,18 +8,20 @@
 import Foundation
 
 enum HelpStrings: LocalizableStringResource {
-    
+
     case menuTitle, menuFirstItemText, menuSecondItemText, menuThirdItemText, openWithTutorialTitle,
     openWithTutorialCollectionHeader, openWithTutorialStep1Title, openWithTutorialStep1Subtitle,
     openWithTutorialStep2Title, openWithTutorialStep2Subtitle,
     openWithTutorialStep3Title, openWithTutorialStep3Subtitle, supportedFormatsTitle, supportedFormatsSection1Title,
     supportedFormatsSection1Item1Text, supportedFormatsSection1Item2Text, supportedFormatsSection1Item3Text,
     supportedFormatsSection1Item4Text,
-    supportedFormatsSection2Title, supportedFormatsSection2Item1Text, supportedFormatsSection2Item2Text
+    supportedFormatsSection2Title, supportedFormatsSection2Item1Text, supportedFormatsSection2Item2Text,
+    formatsTitle
+
     var tableName: String {
         return "help"
     }
-    
+
     var tableEntry: LocalizationEntry {
         switch self {
         case .menuTitle:
@@ -64,18 +66,20 @@ enum HelpStrings: LocalizableStringResource {
             return ("supportedFormats.section.2.item.2", "message for second item on supported formats section")
         case .supportedFormatsSection1Item4Text:
             return ("supportedFormats.section.1.item.4", "message for fouth item on supported formats section")
+        case .formatsTitle:
+            return ("Fomrats", "message for Formats screen")
         }
     }
-    
+
     var isCustomizable: Bool {
         return true
     }
-    
+
     var fallbackTableEntry: String {
         switch self {
         default:
             return ""
         }
     }
-    
+
 }

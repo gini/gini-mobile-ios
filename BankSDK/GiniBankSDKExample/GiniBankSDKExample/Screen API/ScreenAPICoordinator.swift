@@ -13,7 +13,6 @@ import GiniCaptureSDK
 
 protocol ScreenAPICoordinatorDelegate: AnyObject {
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish:())
-    func screenAPIShowNoResults(coordinator: ScreenAPICoordinator)
 }
 
 class TrackingDelegate: GiniCaptureTrackingDelegate {
@@ -50,14 +49,11 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     weak var analysisDelegate: GiniBankAnalysisDelegate?
     var visionDocuments: [GiniCaptureDocument]?
     var configuration: GiniBankConfiguration
-    var sendFeedbackBlock: (([String: Extraction]) -> Void)?
-    var extractionsForFeedback: [String: Extraction]?
     var manuallyCreatedDocument: Document?
 	private var extractedResults: [Extraction] = []
 	
 	// {extraction name} : {entity name}
 	private let editableSpecificExtractions = ["paymentRecipient" : "companyname", "paymentReference" : "reference", "paymentPurpose" : "text", "iban" : "iban", "bic" : "bic", "amountToPay" : "amount"]
-
     
     init(configuration: GiniBankConfiguration,
          importedDocuments documents: [GiniCaptureDocument]?,
@@ -92,8 +88,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
 //        let viewController = GiniBank.viewController(withDelegate: self, withConfiguration: configuration)
 
         screenAPIViewController = RootNavigationController(rootViewController: viewController)
-        screenAPIViewController.navigationBar.barTintColor = configuration.navigationBarTintColor
-        screenAPIViewController.navigationBar.tintColor = configuration.navigationBarTitleColor
         screenAPIViewController.setNavigationBarHidden(true, animated: false)
         screenAPIViewController.delegate = self
         screenAPIViewController.interactivePopGestureRecognizer?.delegate = nil
@@ -108,6 +102,8 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         
         let customResultsScreen = (UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "resultScreen") as? ResultTableViewController)!
+
+        customResultsScreen.tableView.estimatedRowHeight = 75
         customResultsScreen.result = results
 		customResultsScreen.editableFields = editableSpecificExtractions
         customResultsScreen.navigationItem.setHidesBackButton(true, animated: true)
@@ -120,8 +116,10 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
                                                   action: #selector(closeSreenAPIAndSendFeedback))
         DispatchQueue.main.async { [weak self] in
             if #available(iOS 15.0, *) {
-                let config = self?.configuration.captureConfiguration()
-                 self?.screenAPIViewController.applyStyle(withConfiguration: config ?? GiniConfiguration())
+                if let config = self?.configuration.captureConfiguration(),
+                 config.customNavigationController == nil {
+                    self?.screenAPIViewController.applyStyle(withConfiguration: config)
+                }
              }
             self?.screenAPIViewController.setNavigationBarHidden(false, animated: false)
             
@@ -130,44 +128,42 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     }
     
     @objc private func closeSreenAPIAndSendFeedback() {
-        if let sendFeedbackBlock = sendFeedbackBlock, let extractionsForFeedback = extractionsForFeedback {
-            print("💬 Sending extractions feedback")
-            sendFeedbackBlock(extractionsForFeedback)
-        } else {
-            print("❌ Extractions feedback was not sent")
-        }
+		var extractionAmount = ExtractionAmount(value: 0.0, currency: .EUR)
+		if let amountValue = extractedResults.first(where: { $0.name == "amountToPay"})?.value {
+            if amountValue.split(separator: ":").count > 0 {
+                extractionAmount = ExtractionAmount(value: Decimal(string: String(amountValue.split(separator: ":")[0])) ?? 0.0, currency: .EUR)
+            }
+		}
+	
+		configuration.cleanup(paymentRecipient: extractedResults.first(where: { $0.name == "paymentRecipient"})?.value ?? "",
+                              paymentReference: extractedResults.first(where: { $0.name == "paymentReference"})?.value ?? "",
+                              paymentPurpose: extractedResults.first(where: { $0.name == "paymentPurpose"})?.value ?? "",
+                              iban: extractedResults.first(where: { $0.name == "iban"})?.value ?? "",
+                              bic: extractedResults.first(where: { $0.name == "bic"})?.value ?? "",
+                              amountToPay: extractionAmount)
         delegate?.screenAPI(coordinator: self, didFinish: ())
     }
 }
 
 // MARK: - GiniCaptureResultsDelegate
 extension ScreenAPICoordinator: GiniCaptureResultsDelegate {
+
+    func giniCaptureDidEnterManually() {
+        screenAPIViewController.dismiss(animated: true)
+    }
     
-    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult,
-                                         sendFeedbackBlock: @escaping ([String: Extraction]) -> Void) {
-		
-		
+    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
 		extractedResults = result.extractions.map { $0.value}
 		for extraction in editableSpecificExtractions {
 			if (extractedResults.first(where: { $0.name == extraction.key }) == nil) {
 				extractedResults.append(Extraction(box: nil, candidates: nil, entity: extraction.value, value: "", name: extraction.key))
-				result.extractions[extraction.key] = Extraction(box: nil, candidates: nil, entity: extraction.value, value: "", name: extraction.key)
 			}
 		}
-
-        showResultsScreen(results: result.extractions.map { $0.value}, document: result.document)
-        self.extractionsForFeedback = result.extractions
-        self.sendFeedbackBlock = sendFeedbackBlock
+        showResultsScreen(results: extractedResults, document: result.document)
     }
     
     func giniCaptureDidCancelAnalysis() {
         delegate?.screenAPI(coordinator: self, didFinish: ())
-    }
-    
-    func giniCaptureAnalysisDidFinishWithoutResults(_ showingNoResultsScreen: Bool) {
-        if !showingNoResultsScreen {
-            delegate?.screenAPIShowNoResults(coordinator: self)
-        }
     }
 }
 
@@ -228,6 +224,11 @@ extension ScreenAPICoordinator: GiniCaptureNetworkService {
 // MARK: Screen API - UI Only - GiniCaptureDelegate
 
 extension ScreenAPICoordinator: GiniCaptureDelegate {
+
+    func didPressEnterManually() {
+        // Add your  implementation
+    }
+    
     func didCapture(document: GiniCaptureDocument, networkDelegate: GiniCaptureNetworkDelegate) {
         // Add your  implementation
     }
@@ -247,4 +248,5 @@ extension ScreenAPICoordinator: GiniCaptureDelegate {
     func didCancelAnalysis() {
         // Add your  implementation
     }
+
 }

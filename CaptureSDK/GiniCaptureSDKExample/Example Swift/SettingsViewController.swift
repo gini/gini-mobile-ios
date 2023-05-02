@@ -66,15 +66,23 @@ final class SettingsViewController: UIViewController {
         UserDefaults().removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
     }
 
+    private func isFlashTogglSettingEnabled() -> Bool {
+        #if targetEnvironment(simulator)
+            return true
+        #else
+            return AVCaptureDevice.default(.builtInWideAngleCamera,
+                                                                  for: .video,
+                                                                  position: .back)?.hasFlash ?? false
+        #endif
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         openWithSwitch.setOn(giniConfiguration.openWithEnabled, animated: false)
         qrCodeScanningSwitch.setOn(giniConfiguration.qrCodeScanningEnabled, animated: false)
         multipageSwitch.setOn(giniConfiguration.multipageEnabled, animated: false)
         flashToggleSwitch.setOn(giniConfiguration.flashToggleEnabled, animated: false)
-        flashToggleSwitch.isEnabled = AVCaptureDevice.default(.builtInWideAngleCamera,
-                                                              for: .video,
-                                                              position: .back)?.hasFlash ?? false
+        flashToggleSwitch.isEnabled = isFlashTogglSettingEnabled()
 
         switch giniConfiguration.fileImportSupportedTypes {
         case .none:

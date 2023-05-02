@@ -9,10 +9,10 @@
 import UIKit
 
 final class CaptureSuggestionsCollectionHeader: UICollectionReusableView {
-    
+
     static let topContainerHeight: CGFloat = 100
     static let subHeaderHeight: CGFloat = 60
-    
+
     private let topViewIconWidth: CGFloat = 25
     private var leadingTopViewTextConstraint: NSLayoutConstraint?
     private var bottomTopViewContainerConstraint: NSLayoutConstraint?
@@ -25,7 +25,7 @@ final class CaptureSuggestionsCollectionHeader: UICollectionReusableView {
             }
         }
     }
-    
+
     var shouldShowSubHeader: Bool = true {
         didSet {
             if !shouldShowSubHeader {
@@ -35,43 +35,43 @@ final class CaptureSuggestionsCollectionHeader: UICollectionReusableView {
             }
         }
     }
-    
+
     // Views
     lazy var topViewContainer: UIView = {
         let container = UIView()
         container.translatesAutoresizingMaskIntoConstraints = false
         return container
     }()
-    
+
     lazy var topViewContainerBottomLine: UIView = {
         let line = UIView()
         line.translatesAutoresizingMaskIntoConstraints = false
         line.backgroundColor = .lightGray
         return line
     }()
-    
+
     lazy var topViewIcon: UIImageView = {
         let icon = UIImageView()
         icon.translatesAutoresizingMaskIntoConstraints = false
         icon.contentMode = .scaleAspectFit
-        icon.tintColor = GiniConfiguration.shared.noResultsWarningContainerIconColor
+        icon.tintColor = UIColor.GiniCapture.warning1
         return icon
     }()
-    
+
     lazy var topViewText: UILabel = {
         let text = UILabel()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.numberOfLines = 0
         return text
     }()
-    
+
     lazy var subHeaderTitle: UILabel = {
         let subHeaderTitle = UILabel()
         subHeaderTitle.translatesAutoresizingMaskIntoConstraints = false
         subHeaderTitle.numberOfLines = 0
         return subHeaderTitle
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         topViewContainer.addSubview(topViewContainerBottomLine)
@@ -81,11 +81,11 @@ final class CaptureSuggestionsCollectionHeader: UICollectionReusableView {
         addSubview(subHeaderTitle)
         addConstraints()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(frame:) should be used instead")
     }
-    
+
     private func addConstraints() {
         // Top view container bottom line
         Constraints.active(item: topViewContainerBottomLine, attr: .height, relatedBy: .equal, to: nil,
@@ -94,7 +94,7 @@ final class CaptureSuggestionsCollectionHeader: UICollectionReusableView {
                           attr: .width)
         Constraints.active(item: topViewContainerBottomLine, attr: .top, relatedBy: .equal, to: topViewContainer,
                           attr: .bottom)
-        
+
         // Top Container
         Constraints.active(item: topViewContainer, attr: .top, relatedBy: .equal, to: self, attr: .top)
         Constraints.active(item: topViewContainer, attr: .leading, relatedBy: .equal, to: self, attr: .leading)
@@ -116,7 +116,7 @@ final class CaptureSuggestionsCollectionHeader: UICollectionReusableView {
                           constant: -16)
         Constraints.active(item: topViewIcon, attr: .width, relatedBy: .equal, to: nil, attr: .notAnAttribute,
                           constant: topViewIconWidth)
-        
+
         // Top text
         Constraints.active(item: topViewText, attr: .top, relatedBy: .equal, to: topViewContainer, attr: .top,
                           constant: 16)
@@ -127,7 +127,7 @@ final class CaptureSuggestionsCollectionHeader: UICollectionReusableView {
         leadingTopViewTextConstraint = NSLayoutConstraint(item: topViewText, attribute: .leading, relatedBy: .equal,
                                                           toItem: topViewContainer, attribute: .leading, multiplier: 1,
                                                           constant: 16)
-        
+
         // Sub header title
         Constraints.active(item: subHeaderTitle, attr: .top, relatedBy: .equal, to: topViewContainerBottomLine,
                           attr: .bottom, constant: 20)
@@ -136,7 +136,5 @@ final class CaptureSuggestionsCollectionHeader: UICollectionReusableView {
         Constraints.active(item: subHeaderTitle, attr: .trailing, relatedBy: .equal, to: self, attr: .trailing,
                           constant: -20)
         Constraints.active(item: subHeaderTitle, attr: .bottom, relatedBy: .equal, to: self, attr: .bottom)
-        
     }
 }
-

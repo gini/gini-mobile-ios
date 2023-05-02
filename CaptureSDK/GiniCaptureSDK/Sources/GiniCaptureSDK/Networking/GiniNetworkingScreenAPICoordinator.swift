@@ -17,29 +17,24 @@ import GiniBankAPILibrary
      Called when the analysis finished with results
      
      - parameter result: Contains the analysis result
-     - parameter sendFeedbackBlock: Block used to send feeback once the results have been corrected
      */
-    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult,
-                                         sendFeedbackBlock: @escaping ([String: Extraction]) -> Void)
-    
-    /**
-     Called when the analysis finished without results.
-     
-     - parameter showingNoResultsScreen: Indicated if the `ImageAnalysisNoResultsViewController` has been shown
-     */
-    func giniCaptureAnalysisDidFinishWithoutResults(_ showingNoResultsScreen: Bool)
-    
+    func giniCaptureAnalysisDidFinishWith(result: AnalysisResult)
+
     /**
      Called when the analysis was cancelled.
      */
     func giniCaptureDidCancelAnalysis()
+
+    /**
+     Called when the 'Enter Manually' was pressed within No Result/ Error screen
+     */
+    func giniCaptureDidEnterManually()
 }
 
  public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
-    
     public weak var resultsDelegate: GiniCaptureResultsDelegate?
     public let documentService: DocumentServiceProtocol
-    
+
     public init(client: Client,
          resultsDelegate: GiniCaptureResultsDelegate,
          giniConfiguration: GiniConfiguration,
@@ -54,7 +49,8 @@ import GiniBankAPILibrary
                                                                                   for: api)
         super.init(withDelegate: nil,
                    giniConfiguration: giniConfiguration)
-        
+
+        self.giniConfiguration.documentService = documentService
         self.visionDelegate = self
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
@@ -70,7 +66,8 @@ import GiniBankAPILibrary
          
          super.init(withDelegate: nil,
                     giniConfiguration: giniConfiguration)
-         
+
+         self.giniConfiguration.documentService = documentService
          self.visionDelegate = self
          self.resultsDelegate = resultsDelegate
          self.trackingDelegate = trackingDelegate
@@ -122,16 +119,10 @@ import GiniBankAPILibrary
                 
                 
                 let result = AnalysisResult(extractions: extractions, lineItems: result.lineItems, images: images, document: document, candidates: result.candidates)
-                
-                let documentService = self.documentService
-                
-                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result) { updatedExtractions in
-                    documentService.sendFeedback(with: updatedExtractions.map { $0.value }, updatedCompoundExtractions: nil)
-                    documentService.resetToInitialState()
-                }
+                                
+                self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
             } else {
-                self.resultsDelegate?
-                    .giniCaptureAnalysisDidFinishWithoutResults(analysisDelegate.tryDisplayNoResultsScreen())
+                analysisDelegate.tryDisplayNoResultsScreen()
                 self.documentService.resetToInitialState()
             }
         }
@@ -147,13 +138,8 @@ extension GiniNetworkingScreenAPICoordinator {
             case .success(let extractions):
                 self.deliver(result: extractions, and: self.documentService.document, to: networkDelegate)
             case .failure(let error):
-
                 guard error != .requestCancelled else { return }
-                
-                networkDelegate.displayError(withMessage: .localized(resource: AnalysisStrings.analysisErrorMessage),
-                                             andAction: {
-                    self.startAnalysis(networkDelegate: networkDelegate)
-                })
+                networkDelegate.displayError(errorType: ErrorType(error: error), animated: true)
             }
         }
     }
@@ -171,20 +157,15 @@ extension GiniNetworkingScreenAPICoordinator {
         }
     }
 
-    fileprivate func uploadAndStartAnalysis(document: GiniCaptureDocument,
-                                            networkDelegate: GiniCaptureNetworkDelegate,
-                                            uploadDidFail: @escaping () -> Void) {
+    fileprivate func uploadAndStartAnalysis(
+        document: GiniCaptureDocument,
+        networkDelegate: GiniCaptureNetworkDelegate,
+        uploadDidFail: @escaping () -> Void) {
         self.upload(document: document, didComplete: { _ in
             self.startAnalysis(networkDelegate: networkDelegate)
         }, didFail: { _, error in
-            let error = error as? GiniCaptureError ?? AnalysisError.documentCreation
-
-            guard let analysisError = error as? AnalysisError, case analysisError = AnalysisError.cancelled else {
-                networkDelegate.displayError(withMessage: error.message, andAction: {
-                    uploadDidFail()
-                })
-                return
-            }
+            guard let giniError = error as? GiniError, giniError != .requestCancelled else { return }
+            networkDelegate.displayError(errorType: ErrorType(error: giniError), animated: true)
         })
     }
 }
@@ -192,6 +173,11 @@ extension GiniNetworkingScreenAPICoordinator {
 // MARK: - GiniCaptureDelegate
 
 extension GiniNetworkingScreenAPICoordinator: GiniCaptureDelegate {
+    
+    public func didPressEnterManually() {
+        resultsDelegate?.giniCaptureDidEnterManually()
+    }
+    
     public func didCancelCapturing() {
         resultsDelegate?.giniCaptureDidCancelAnalysis()
     }
@@ -266,4 +252,5 @@ extension GiniNetworkingScreenAPICoordinator: GiniCaptureDelegate {
             documentService.resetToInitialState()
         }
     }
+
 }

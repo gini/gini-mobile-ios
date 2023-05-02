@@ -20,7 +20,6 @@ protocol SelectAPIViewControllerDelegate: AnyObject {
  */
 enum GiniPayBankApiType {
     case screen
-    case component
 }
 
 /**
@@ -46,10 +45,6 @@ final class SelectAPIViewController: UIViewController {
     // MARK: User interaction
     @IBAction func launchScreenAPI(_ sender: Any) {
         delegate?.selectAPI(viewController: self, didSelectApi: .screen)
-    }
-
-    @IBAction func launchComponentAPI(_ sender: Any) {
-        delegate?.selectAPI(viewController: self, didSelectApi: .component)
     }
     
     @IBAction func launchSettings(_ sender: Any) {

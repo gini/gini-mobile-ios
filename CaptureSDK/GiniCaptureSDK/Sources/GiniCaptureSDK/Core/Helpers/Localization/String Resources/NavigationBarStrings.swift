@@ -8,13 +8,13 @@
 import Foundation
 
 enum NavigationBarStrings: LocalizableStringResource {
-    
+
     case analysisTitle, cameraTitle, onboardingTitle, reviewTitle
-    
+
     var tableName: String {
         return "navigationbar"
     }
-    
+
     var tableEntry: LocalizationEntry {
         switch self {
         case .analysisTitle:
@@ -27,11 +27,11 @@ enum NavigationBarStrings: LocalizableStringResource {
             return ("review.title", "Title in the navigation bar on the review screen")
         }
     }
-    
+
     var isCustomizable: Bool {
         return true
     }
-    
+
     var fallbackTableEntry: String {
         switch self {
         default:

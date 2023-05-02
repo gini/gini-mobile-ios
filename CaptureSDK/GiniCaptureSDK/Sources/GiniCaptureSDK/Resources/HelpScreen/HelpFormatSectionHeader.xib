@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="t6c-Gu-yrL" customClass="HelpFormatSectionHeader" customModule="GiniCaptureSDK">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xwt-uA-xrm">
+                    <rect key="frame" x="10" y="10" width="394" height="80"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Xwt-uA-xrm" secondAttribute="trailing" constant="10" id="I9P-fd-ais"/>
+                <constraint firstItem="Xwt-uA-xrm" firstAttribute="top" secondItem="t6c-Gu-yrL" secondAttribute="top" priority="999" constant="10" id="YgK-cL-D83"/>
+                <constraint firstItem="Xwt-uA-xrm" firstAttribute="centerY" secondItem="t6c-Gu-yrL" secondAttribute="centerY" id="ibq-hX-6fC"/>
+                <constraint firstAttribute="bottom" secondItem="Xwt-uA-xrm" secondAttribute="bottom" priority="999" constant="10" id="jvg-9l-rl1"/>
+                <constraint firstItem="Xwt-uA-xrm" firstAttribute="leading" secondItem="t6c-Gu-yrL" secondAttribute="leading" constant="10" id="me3-8p-PgQ"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="titleLabel" destination="Xwt-uA-xrm" id="JCb-Mc-oWR"/>
+            </connections>
+            <point key="canvasLocation" x="136" y="-12"/>
+        </view>
+    </objects>
+</document>

@@ -10,7 +10,7 @@ import UIKit
 
 @objc
 public protocol PreferredButtonResource {
-    
+
     var preferredImage: UIImage? { get }
     var preferredText: String? { get }
 }
@@ -30,7 +30,7 @@ enum ResourceOrigin {
  */
 
 class GiniPreferredButtonResource: PreferredButtonResource {
-    
+
     private let imageName: String?
     private let localizedTextKey: String?
     private let localizedTextComment: String?
@@ -47,7 +47,7 @@ class GiniPreferredButtonResource: PreferredButtonResource {
         }
         return.unknown
     }
-    
+
     private var textSource: ResourceOrigin {
         if localizedConfigEntry != nil && !localizedConfigEntry!.isEmpty {
             return .custom
@@ -75,7 +75,7 @@ class GiniPreferredButtonResource: PreferredButtonResource {
         }
         return nil
     }
-    
+
     var preferredText: String? {
         guard localizedConfigEntry == nil || localizedConfigEntry?.isEmpty == true else {
             return localizedConfigEntry
@@ -86,7 +86,7 @@ class GiniPreferredButtonResource: PreferredButtonResource {
         }
         return ""
     }
-    
+
     // if a custom text is supplied to the control, but the image is left to the default one
     // (or not set at all), the image property needs to be ignored so that the text is shown instead
     private var shouldIgnoreImage: Bool {

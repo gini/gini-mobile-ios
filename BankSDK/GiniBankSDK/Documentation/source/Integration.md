@@ -131,17 +131,18 @@ You can also test with a real health app. Please contact us in case you don't kn
 Photo payment functionality
 ============================
 
-The Gini Bank SDK provides two integration options. A [Screen API](#screen-api) that is easy to implement and a more complex, but also more flexible [Component API](#component-api). Both APIs can access the complete functionality of the SDK.
+The SDK provides a custom `UIViewController` object, which should be shown by your app. It handles the complete process from showing the onboarding until providing a UI for the analysis.
 
 **Note**: You need to specify the `NSCameraUsageDescription` key in your `Info.plist` file. This key is mandatory for all apps since iOS 10 when using the `Camera` framework.
 Also if you're using the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios) you need to add support for "Keychain Sharing" in your entitlements by adding a `keychain-access-groups` value to your entitlements file. For more information see the [Integration Guide](https://developer.gini.net/gini-mobile-ios/GiniBankAPILibrary/getting-started.html) of the Gini Bank API Library.
 
-## Screen API
+Gini Bank SDK offers two different ways of implementing networking:
 
-The Screen API provides a custom `UIViewController` object, which can be presented modally. It handles the complete process from showing the onboarding until providing a UI for the analysis.
-The Screen API, in turn, offers two different ways of implementation:
+* Default Networking (Recommended)
+* Custom Networking
 
-### UI with Default Networking (Recommended)
+## Default Networking (Recommended)
+
 Using this method you don't need to care about handling the analysis process with the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios), you only need to provide your API credentials and a delegate to get the analysis results.
 
 ```swift
@@ -153,7 +154,7 @@ present(viewController, animated: true, completion: nil)
 ```
 Optionally if you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information), the metadata information and the _API type_ (the [Gini Pay API](https://pay-api.gini.net/documentation/#gini-pay-api-documentation-v1-0) is used by default) as follows:
 
-#### Certificate Pinning
+### Certificate Pinning
 
 ```swift
 import TrustKit
@@ -190,7 +191,7 @@ present(viewController, animated: true, completion:nil)
 > - The document metadata for the upload process is intended to be used for reporting.
 > - Certification pinning requires iOS 12.
 
-#### Retrieve the Analyzed Document
+### Retrieve the Analyzed Document
 
 The `AnalysisResult` returned in `GiniCaptureResultsDelegate.giniCaptureAnalysisDidFinishWith(result:, sendFeedbackBlock:)` 
 will return the analyzed Gini Bank API document in its `document` property.
@@ -198,7 +199,7 @@ will return the analyzed Gini Bank API document in its `document` property.
 When extractions were retrieved without using the Gini Bank API, then the `AnalysisResult.document` will be `nil`. For example when the
 extractions came from an EPS QR Code.
 
-### UI with Custom Networking
+## Custom Networking
 
 You can also provide your own networking by implementing the `GiniCaptureNetworkService` and `GiniCaptureResultsDelegate` protocols. Pass your instances to the `UIViewController` initialiser of GiniCapture as shown below:
 
@@ -218,91 +219,62 @@ We provide an example implementation [here](https://github.com/gini/gini-mobile-
 
 You may also use the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios) or implement communication with the Gini Bank API yourself.
 
-### Return Assistant
+## Cleanup and Sending Feedback
 
-The return assistant feature allows your users to view and edit payable items in an invoice. The total amount is
-updated to be the sum of only those items which the user opts to pay.
+Your app should clean up the SDK and provide feedback for the extractions the Gini Bank API delivered. Feedback should be sent only for the extractions the user has seen and accepted (or corrected).
 
-To enable this feature simply set ``returnAssistantEnabled`` to ``true`` in the ``GiniBankConfiguration``: 
-
-```swift
-let configuration = GiniBankConfiguration()
-configuration.returnAssistantEnabled = true
-```
-
-When integrating using the Screen API it is enough to enable the return assistant feature. The Gini Bank SDK will
-show the return assistant automatically if the invoice contained payable items and will update the extractions returned
-to your app according to the user's changes.
-
-The ``amountToPay`` extraction is updated to be the sum of the items the user decided to pay. It includes discounts and
-additional charges that might be present on the invoice.
-
-The extractions related to the return assistant are stored in the ``lineItems`` field of the ``AnalysisResult``. See the
-Gini Bank API's [documentation](https://pay-api.gini.net/documentation/#return-assistant-extractions) to learn about the
-return assistant's extractions.
-
-## Component API
-
-The Component API provides a custom `UIViewController` for each screen. This allows a maximum of flexibility, as the screens can be presented modally, used in a container view or pushed to a navigation view controller. Make sure to add your own navigational elements around the provided views.
-
-For using the `GiniBankConfiguration` with the Component API:
-
-```swift
-let giniBankConfiguration = GiniBankConfiguration()
-.
-.
-.
-GiniCapture.setConfiguration(giniBankConfiguration.captureConfiguration())
-```
-
-The components that can be found in the library are:
-* **Camera**: The actual camera screen to capture the image of the document, to import a PDF or an image or to scan a QR Code (`CameraViewController`).
-* **Review**: Offers the opportunity to the user to check the sharpness of the image and eventually to rotate it into reading direction (`ReviewViewController`).
-* **Multipage Review**: Allows to check the quality of one or several images and the possibility to rotate and reorder them (`MultipageReviewViewController`).
-* **Analysis**: Provides a UI for the analysis process of the document by showing the user capture tips when an image is analyzed or the document information when it is a PDF. In both cases an image preview of the document analyzed will be shown (`AnalysisViewController`).
-* **Help**: Helpful tutorials indicating how to use the open with feature, which are the supported file types and how to capture better photos for a good analysis (`HelpMenuViewController`).
-* **No results**: Shows some suggestions to capture better photos when there are no results after an analysis (`ImageAnalysisNoResultsViewController`).
-* **Digital Invoice**: Main screen of the return assistant feature. Allows your users to view and edit payable items in an invoice (`DigitalInvoiceViewController`).
-
-## Sending Feedback
-
-Your app should send feedback for the extractions the Gini Bank API delivered. Feedback should be sent only for the extractions the user has seen and accepted (or corrected).
-
-We provide a sample test case [here](https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/Tests/ExtractionFeedbackIntegrationTest.swift) to verify that extraction feedback sending works. 
+We provide a sample test case [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0/BankSDK/GiniBankSDKExample/Tests/ExtractionFeedbackIntegrationTest.swift) to verify that extraction feedback sending works. 
 You may use it along with the example pdf and json files as a starting point to write your own test case.
 
 The sample test case is based on the Bank API documentation's [recommended steps](https://pay-api.gini.net/documentation/#test-example) for testing extraction feedback sending.
 
 For additional information about feedback see the [Gini Bank API documentation](https://pay-api.gini.net/documentation/#send-feedback-and-get-even-better-extractions-next-time).
 
-### Default Implementation
-
-The example below shows how to correct extractions and send feedback using the default networking implementation:
-
-You should send feedback only for extractions the user has seen and accepted.
-
 ```swift
-var sendFeedbackBlock: (([String: Extraction]) -> Void)?
-var extractions: [String: Extraction] = []
 
-func giniCaptureAnalysisDidFinishWith(result: AnalysisResult,
-                           sendFeedbackBlock: @escaping ([String: Extraction]) -> Void){
-        
-    self.extractions = result.extractions
-    self.sendFeedbackBlock = sendFeedbackBlock
-    showResultsScreen(results: result.extractions.map { $0.value })
+func stopGiniBankSDK() {
+    // After the user has seen and potentially corrected the extractions
+    // cleanup the SDK while passing in the final extraction values
+    // which will be used as feedback to improve the future extraction accuracy:
+    GiniBankConfiguration.shared.cleanup(paymentRecipient: "Payment Recipient",
+                                         paymentReference: "Payment Reference",
+                                         paymentPurpose: "Payment Purpose",
+                                         iban: "IBAN",
+                                         bic: "BIC",
+                                         amountToPay: ExtractionAmount(value: 10.242, currency: .EUR))
 }
-.
-.
-.
-// In this example only the amountToPay was wrong and we can reuse the other extractions.
-let updatedExtractions = self.extractions
-updatedExtractions.map{$0.value}.first(where: {$0.name == "amountToPay"})?.value = "31,25:EUR"
-sendFeedbackBlock(updatedExtractions)
 
 ```
-### Custom Implementation
 
-If you use your own networking implementation and directly communicate with the Gini Bank API then see [this section](https://pay-api.gini.net/documentation/#submitting-feedback-on-extractions) in its documentation on how to send feedback.
+## Capturing documents
 
-In case you use the [Gini Bank API Library](https://github.com/gini/bank-api-library-ios) then see [this section](https://developer.gini.net/gini-mobile-ios/GiniBankAPILibrary/getting-started.html) in its documentation for details.
+To launch the Gini Bank SDK you only need to:
+
+1. Request camera access via configuring `Info.plist` in your project.
+
+2. Configure `GiniBankConfiguration.shared`. The implementation example can be found [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0/BankSDK/GiniBankSDKExample/GiniBankSDKExample/AppCoordinator.swift#L32)
+
+3. Present the `UIViewController`. You can find the example [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0/BankSDK/GiniBankSDKExample/GiniBankSDKExample/Screen%20API/ScreenAPICoordinator.swift#L68)
+
+4. Handle the extraction results.  
+   For handling the extraction results you need to implement `GiniCaptureResultsDelegate`. [Here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.0.0/BankSDK/GiniBankSDKExample/GiniBankSDKExample/Screen%20API/ScreenAPICoordinator.swift#L135) you can find the implementation example.
+
+5. Cleanup configuration and resources while also providing the required extraction feedback to
+   improve the future extraction accuracy. You don't need to implement any extra steps, just follow the recommendations below:
+
+    - Please provide values for all necessary fields, including those that were not extracted.
+
+    - Provide the final data approved by the user (and not the initially extracted only).
+
+    - Do cleanup after TAN verification.
+
+   ```swift
+   GiniBankConfiguration.shared.cleanup(paymentRecipient: "Payment Recipient",
+                                   paymentReference: "Payment Reference",
+                                   paymentPurpose: "Payment Purpose",
+                                   iban: "IBAN",
+                                   bic: "BIC",
+                                   amountToPay: ExtractionAmount(value: 10.242, currency: .EUR))
+   ```
+
+Check out the [example app](https://github.com/gini/gini-mobile-ios/tree/GiniBankSDK;3.0.0/BankSDK/GiniBankSDKExample/GiniBankSDKExample) to see how an integration could look like.
