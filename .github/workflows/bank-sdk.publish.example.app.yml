@@ -6,7 +6,7 @@ on:
       - 'CaptureSDK/**'
 jobs:
   check:
-    uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@new-ui
+    uses: gini/gini-mobile-ios/.github/workflows/bank-sdk.check.yml@main
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
 
@@ -107,4 +107,3 @@ jobs:
           app: Gini-Team-Organization/Example-Gini-Pay-Bank-SDK
           group: 'Internal'
           release_notes: ${{ format('{{ {0} {1} }}', github.ref, github.sha) }}
-
