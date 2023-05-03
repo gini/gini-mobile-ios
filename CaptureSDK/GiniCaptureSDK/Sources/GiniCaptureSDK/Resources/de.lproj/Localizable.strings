@@ -47,7 +47,9 @@
 "ginicapture.camera.flashButtonLabel.Off" = "Aus";
 "ginicapture.camera.thumbnail.Voice.Over" = "Foto vorschaubild";
 "ginicapture.camera.capturebutton" = "Bild Aufnehmen";
-"ginicapture.camera.infoLabel" = "Rechnung oder QR Code scannen";
+"ginicapture.camera.infoLabel.invoice.and.qr" = "Rechnung oder QR Code scannen";
+"ginicapture.camera.infoLabel.only.invoice" = "Rechnung scannen";
+"ginicapture.camera.infoLabel.only.qr" = "QR Code scannen";
 "ginicapture.camera.capturedImagesStackLabel" = "Erfasste Dokumente";
 "ginicapture.camera.qrCodeDetectedPopup.message" = "QR verwenden?";
 "ginicapture.camera.unsupportedQrCodeDetectedPopup.message" = "Dieser QR-Code enthält keine Bezahlinformationen.";
