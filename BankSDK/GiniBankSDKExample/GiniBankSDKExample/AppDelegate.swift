@@ -8,10 +8,12 @@
 import UIKit
 
 @UIApplicationMain
-final class AppDelegate: UIResponder, UIApplicationDelegate {
-
-var coordinator: AppCoordinator!
-var window: UIWindow?
+    final class AppDelegate: UIResponder, UIApplicationDelegate {
+    private let appsheme = "BankSDKExtension://"
+    private let appGroupName = "group.bank.extension.test"
+    private let imageUrlKey = "incomingURL"
+    var coordinator: AppCoordinator!
+    var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -25,11 +27,13 @@ var window: UIWindow?
                      open url: URL,
                      options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         // Coming from Photos extension app
-        if url.absoluteString == "BankSDKExtension://" {
-            if let userDefaults = UserDefaults(suiteName: "group.bank.extension.test") {
+        if url.absoluteString == appsheme {
+            if let userDefaults = UserDefaults(suiteName: appGroupName) {
                 //Getting urlString for the image
-                let imageUrlString = userDefaults.value(forKey: "incomingURL")
-                coordinator.processExternalDocument(withUrl: URL(string: imageUrlString as! String)!, sourceApplication: options[.sourceApplication] as? String)
+                let imageUrlString = userDefaults.value(forKey: imageUrlKey) as! String
+                if let imageUrl = URL(string: imageUrlString) {
+                    coordinator.processExternalDocumentFromPhotos(withUrl: imageUrl, sourceApplication: options[.sourceApplication] as? String)
+                }
             }
         } else {
             // Coming from Files share functionality
