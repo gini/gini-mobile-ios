@@ -30,8 +30,7 @@ import UIKit
         if url.absoluteString == appsheme {
             if let userDefaults = UserDefaults(suiteName: appGroupName) {
                 //Getting urlString for the image
-                let imageUrlString = userDefaults.value(forKey: imageUrlKey) as! String
-                if let imageUrl = URL(string: imageUrlString) {
+                if let imageUrlString = userDefaults.value(forKey: imageUrlKey), let imageUrl = URL(string: imageUrlString as! String) {
                     coordinator.processExternalDocumentFromPhotos(withUrl: imageUrl, sourceApplication: options[.sourceApplication] as? String)
                 }
             }
