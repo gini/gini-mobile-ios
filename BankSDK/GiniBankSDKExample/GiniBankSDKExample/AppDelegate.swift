@@ -9,7 +9,7 @@ import UIKit
 
 @UIApplicationMain
     final class AppDelegate: UIResponder, UIApplicationDelegate {
-    private let appsheme = "BankSDKExtension://"
+    private let appSheme = "BankSDKExtension://"
     private let appGroupName = "group.bank.extension.test"
     private let imageUrlKey = "incomingURL"
     var coordinator: AppCoordinator!
@@ -27,7 +27,7 @@ import UIKit
                      open url: URL,
                      options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         // Coming from Photos extension app
-        if url.absoluteString == appsheme {
+        if url.absoluteString == appSheme {
             if let userDefaults = UserDefaults(suiteName: appGroupName) {
                 //Getting urlString for the image
                 if let imageUrlString = userDefaults.value(forKey: imageUrlKey), let imageUrl = URL(string: imageUrlString as! String) {
