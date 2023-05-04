@@ -178,8 +178,7 @@ final class AppCoordinator: Coordinator {
         // Build document with imageData because it's not possible to do it for the url from Photos
         if let userDefaults = UserDefaults(suiteName: groupName) {
             if let data = userDefaults.value(forKey: imageDataKey) {
-             let doc = documentBuilder.build(with: data as! Data, fileName: "image")
-                 if doc != nil, let doc = doc {
+             if let doc = documentBuilder.build(with: data as! Data, fileName: "image") {
                      // When a document is imported with "Open with", a dialog allowing to choose between both APIs
                      // is shown in the main screen. Therefore it needs to go to the main screen if it is not there yet.
 
