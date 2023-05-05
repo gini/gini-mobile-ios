@@ -47,7 +47,7 @@ final class QuantityView: UIView {
         button.addTarget(self, action: #selector(decreaseQuantity), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         let descriptor = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.minus.button.accessibility",
-                                                          comment: "Decrease quantity")
+                                                                  comment: "Decrease quantity")
         button.accessibilityValue = descriptor
         return button
     }()
@@ -58,7 +58,7 @@ final class QuantityView: UIView {
         button.addTarget(self, action: #selector(increaseQuantity), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         let descriptor = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.plus.button.accessibility",
-                                                          comment: "Increase quantity")
+                                                                  comment: "Increase quantity")
         button.accessibilityValue = descriptor
         return button
     }()
