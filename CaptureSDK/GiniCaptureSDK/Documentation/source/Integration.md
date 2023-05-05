@@ -21,6 +21,28 @@ let viewController = GiniCapture.viewController(withClient: client,
 present(viewController, animated: true, completion:nil)
 ```
 
+If you want to use a transparent proxy with your own authentication you can specify your own domain and add `AlternativeTokenSource` protocol implementation:
+
+```swift
+let viewController = GiniCapture.viewController(withClient: client,
+                                                configuration: configuration,
+                                                resultsDelegate: resultsDelegate,
+                                                api: .custom(domain: "api.custom.net",
+                                                            tokenSource: MyAlternativeTokenSource))
+```
+The token your provide will be added as a bearer token to all `api.custom.net` requests.
+
+You can also specify a custom path segment, if your proxy url requires it:
+
+```swift
+let viewController = GiniCapture.viewController(withClient: client,
+                                                configuration: configuration,
+                                                resultsDelegate: resultsDelegate,
+                                                api: .custom(domain: "api.custom.net",
+                                                            path: "/custom/path",
+                                                            tokenSource: MyAlternativeTokenSource))
+```
+
 #### Certificate Pinning
 
 Optionally if you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information), the metadata information and the _API type_ (the [Gini Pay API](https://pay-api.gini.net/documentation/#gini-pay-api-documentation-v1-0) is used by default) as follows:
