@@ -96,7 +96,7 @@ final class DigitalInvoiceViewController: UIViewController {
 
     private func setupView() {
         title = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.screentitle",
-                                                    comment: "Digital invoice")
+                                                         comment: "Digital invoice")
         edgesForExtendedLayout = []
         view.backgroundColor = GiniColor(light: .GiniBank.light2, dark: .GiniBank.dark2).uiColor()
         if configuration.bottomNavigationBarEnabled {
