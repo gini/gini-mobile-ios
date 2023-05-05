@@ -35,7 +35,7 @@ Once the QR code has been detected, processing will happen automatically and the
 Customization
 ----------------------
 
-All customization options are availible in https://www.figma.com/file/623Fahuwq8tUzSWQPd23Ie/iOS-Gini-Bank-SDK-3.0.0-UI-Customisation?type=design&node-id=243%3A3306&t=1TgjAZioWGW808Uc-1
+All customization options are available [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0/customization-guide.html#camera).
 
 Supported QR codes
 ----------------------
