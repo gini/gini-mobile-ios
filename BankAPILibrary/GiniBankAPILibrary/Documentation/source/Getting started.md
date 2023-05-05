@@ -41,7 +41,7 @@ You can also specify a custom path segment, if your proxy url requires it:
 
 ## Public Key Pinning
 
-If you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information), the metadata information (the [Gini Bank API](https://developer.gini.net/gini-api/html/index.html) is used by default) as follows:
+If you want to use _Certificate pinning_, then pass your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information) as follows:
 
 ```swift
     let yourPublicPinningConfig = [
@@ -82,9 +82,6 @@ For customizing an API domain please, use the following snippet:
                  pinningConfig: yourPublicPinningConfig)
         .build()
 ```
-
-> ⚠️  **Important**
-> - The document metadata for the upload process is intended to be used for reporting.
 
 ## Extract Hash From gini.net
 
@@ -138,6 +135,9 @@ documentService.createDocument(fileName: "myFirstDocument.jpg",
     }
 }
 ```
+
+> ⚠️  **Important**
+> - The document metadata for the upload process is intended to be used for reporting. You can find out more about it in the [Gini Bank API](https://pay-api.gini.net/documentation) documentation.
 
 Each page of a document needs to uploaded as a partial document. In addition documents consisting of one page also should be uploaded as a partial document.
 
