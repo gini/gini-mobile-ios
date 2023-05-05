@@ -24,23 +24,23 @@ present(viewController, animated: true, completion:nil)
 If you want to use a transparent proxy with your own authentication you can specify your own domain and add `AlternativeTokenSource` protocol implementation:
 
 ```swift
-let viewController = GiniCapture.viewController(withClient: client,
-                                                configuration: configuration,
-                                                resultsDelegate: resultsDelegate,
-                                                api: .custom(domain: "api.custom.net",
-                                                            tokenSource: MyAlternativeTokenSource))
+    let viewController = GiniCapture.viewController(withClient: client,
+                                                    configuration: configuration,
+                                                    resultsDelegate: resultsDelegate,
+                                                    api: .custom(domain: "api.custom.net",
+                                                                tokenSource: MyAlternativeTokenSource))
 ```
 The token you provide will be added as a bearer token to all `api.custom.net` requests.
 
 You can also specify a custom path segment, if your proxy url requires it:
 
 ```swift
-let viewController = GiniCapture.viewController(withClient: client,
-                                                configuration: configuration,
-                                                resultsDelegate: resultsDelegate,
-                                                api: .custom(domain: "api.custom.net",
-                                                            path: "/custom/path",
-                                                            tokenSource: MyAlternativeTokenSource))
+    let viewController = GiniCapture.viewController(withClient: client,
+                                                    configuration: configuration,
+                                                    resultsDelegate: resultsDelegate,
+                                                    api: .custom(domain: "api.custom.net",
+                                                                path: "/custom/path",
+                                                                tokenSource: MyAlternativeTokenSource))
 ```
 
 #### Certificate Pinning
