@@ -1,50 +1,41 @@
 QR Code Scanning
 =============================
 
-Some invoices have a QR code that allows the user to get the payment data just by scanning it from the camera screen. If the QR code has a valid format (see [supported QR codes](#supported-qr-codes)), a popup appears pointing out that a QR code has been detected and allowing the user to use it.
-<center><img src="img/qr_code_popup.jpg" border="1"/></center>
+Some invoices have a QR code that allows the user to get the payment data just by scanning it from the camera screen.
+Scanning and processing happens automatically. Please find the list of the [supported QR codes](#supported-qr-codes).
 
 Enable QR code scanning
 ------------------------
 
 The QR code scanning feature is disabled by default, so in case that you what to use it you just need to enable it in the `GiniBankConfiguration`, like so:
 ```swift
-let giniBankConfiguration = GiniBankConfiguration.shared
-...
-...
-...		
-giniBankConfiguration.qrCodeScanningEnabled = true
+    let giniBankConfiguration = GiniBankConfiguration.shared
+    ...
+    ...
+    ...		
+    giniBankConfiguration.qrCodeScanningEnabled = true
 ```
 
 For activating QR code-only mode without the ability to take images, you need to enable the flag in the `GiniBankConfiguration`, but also the QR scanning ability, like so: 
 ```swift
-let giniBankConfiguration = GiniBankConfiguration.shared
-...
-...
-...        
-giniBankConfiguration.qrCodeScanningEnabled = true
-giniBankConfiguration.onlyQRCodeScanningEnabled = true
+    let giniBankConfiguration = GiniBankConfiguration.shared
+    ...
+    ...
+    ...        
+    giniBankConfiguration.qrCodeScanningEnabled = true
+    giniBankConfiguration.onlyQRCodeScanningEnabled = true
 ```
+During QR Code only mode the capture and import controls will be hidden from the camera screen.
 
 Handle and process the Payment Data
 ------------------------------------
 
-Once the QR code has been detected and the user has tapped the button to use it, the payment data is returned and ready to be analyzed in the API. In order to handle the Payment Data from the QR code, on one hand if you are using the _Screen API_ the `GiniQRCodeDocument` is received in the delegate method `GiniCaptureDelegate.didCapture(document:)`, where it must be sent to the API as though it was an image or a pdf.
-On the other hand if you are using the _Component API_, you will get the `GiniQRCodeDocument` in the `CameraScreenSuccessBlock`, where it also must be sent to the API as if it was an image or a pdf.
+Once the QR code has been detected, processing will happen automatically and the payment data will be returned. In order to handle the Payment Data from the QR code: the `GiniQRCodeDocument` is received in the delegate method `GiniCaptureDelegate.didCapture(document:)`, where it must be sent to the API as though it was an image or a pdf.
 
 Customization
 ----------------------
-It is possible to customize the text label, button and background colors with these parameters:
-- `GiniBankConfiguration.qrCodePopupBackgroundColor`
-- `GiniBankConfiguration.qrCodePopupButtonColor`
-- `GiniBankConfiguration.qrCodePopupTextColor`
 
-Additionally the text from both correct, incorrect and loading label can be customized through the following parameters in your `Localizable.strings` file:
-- _ginicapture.QRscanning.incorrect.title_
-- _ginicapture.QRscanning.incorrect.description_
-- _ginicapture.QRscanning.correct_
-- _ginicapture.QRscanning.loading_
-
+All customization options are availible in https://www.figma.com/file/623Fahuwq8tUzSWQPd23Ie/iOS-Gini-Bank-SDK-3.0.0-UI-Customisation?type=design&node-id=243%3A3306&t=1TgjAZioWGW808Uc-1
 
 Supported QR codes
 ----------------------
