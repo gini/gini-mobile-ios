@@ -24,7 +24,7 @@ If you want to use a transparent proxy with your own authentication you can spec
                     alternativeTokenSource: MyAlternativeTokenSource)
         .build()
 ```
-The token your provide will be added as a bearer token to all `api.custom.net` requests.
+The token you provide will be added as a bearer token to all `api.custom.net` requests.
 
 You can also specify a custom path segment, if your proxy url requires it:
 
@@ -173,7 +173,7 @@ let viewController = GiniBank.viewController(withClient: client,
                                                 api: .custom(domain: "api.custom.net",
                                                             tokenSource: MyAlternativeTokenSource))
 ```
-The token your provide will be added as a bearer token to all `api.custom.net` requests.
+The token you provide will be added as a bearer token to all `api.custom.net` requests.
 
 You can also specify a custom path segment, if your proxy url requires it:
 
