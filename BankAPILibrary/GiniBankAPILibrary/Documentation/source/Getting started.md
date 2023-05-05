@@ -21,11 +21,23 @@ To initialize the library, you just need to provide the API credentials:
 If you want to use a transparent proxy with your own authentication you can specify your own domain and add `AlternativeTokenSource` protocol implementation:
 
 ```swift
- let apiLib =  GiniBankAPI.Builder(customApiDomain: "api.custom.net",
-                                 alternativeTokenSource: MyAlternativeTokenSource)
-                                 .build()
+    let giniBankAPI = GiniBankAPI
+        .Builder(customApiDomain: "api.custom.net",
+                    alternativeTokenSource: MyAlternativeTokenSource)
+        .build()
 ```
-The token your provide will be added as a bearer token to all api.custom.net requests.
+The token your provide will be added as a bearer token to all `api.custom.net` requests.
+
+You can also specify a custom path segment, if your proxy url requires it:
+
+```swift
+    let giniBankAPI = GiniBankAPI
+        .Builder(client: client,
+                    api: .custom(domain: "api.custom.net",
+                                path: "/custom/path",
+                                tokenSource: MyAlternativeTokenSource))
+        .build()
+```
 
 ## Public Key Pinning
 
