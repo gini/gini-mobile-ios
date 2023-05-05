@@ -45,7 +45,7 @@ You can also specify a custom path segment, if your proxy url requires it:
 
 #### Certificate Pinning
 
-Optionally if you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information), the metadata information and the _API type_ (the [Gini Pay API](https://pay-api.gini.net/documentation/#gini-pay-api-documentation-v1-0) is used by default) as follows:
+Optionally if you want to use _Certificate pinning_ and provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information), the metadata information and the _API type_ (the [Gini Pay API](https://pay-api.gini.net/documentation/#gini-pay-api-documentation-v1-0) is used by default) as follows:
 
 ```swift
 import TrustKit
@@ -80,7 +80,7 @@ present(viewController, animated: true, completion:nil)
 **Note**: Starting from Gini Capture SDK version 1.0.6 certificate pinning requires **iOS 12**.
 
 > ⚠️  **Important**
-> - The document metadata for the upload process is intended to be used for reporting.
+> - The document metadata for the upload process is intended to be used for reporting. You can find out more about it in the [Gini Bank API](https://pay-api.gini.net/documentation) documentation.
 > - The multipage is supported only by the `.default` api.
 
 #### Retrieve the Analyzed Document
