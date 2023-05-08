@@ -7,8 +7,10 @@
 
 import Foundation
 
+// swiftlint:disable large_tuple
 typealias DiffResults<Element: Diffable> = (updated: [Element], removed: [Element], inserted: [Element])
 typealias DiffResultsIndexes = (updated: [Int], removed: [Int], inserted: [Int])
+// swiftlint:enable large_tuple
 
 extension Array where Element: Diffable {
     func diff(with second: [Element]) -> DiffResults<Element> {
