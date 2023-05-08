@@ -530,6 +530,7 @@ public final class GiniBankConfiguration: NSObject {
 
         return configuration
     }
+    // swiftlint:enable function_body_length
 
     /**
      Sets the configuration flags back. Used only in the example app. See `SettingsViewController` for the details.
@@ -644,4 +645,5 @@ public final class GiniBankConfiguration: NSObject {
         self.documentService = nil
         self.lineItems = nil
     }
+    // swiftlint: enable function_parameter_count
 }
