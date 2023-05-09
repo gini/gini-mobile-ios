@@ -24,7 +24,7 @@ protocol CameraLensSwitcherViewDelegate: AnyObject {
     func cameraLensSwitcherDidSwitchTo(lens: CameraLensesAvailable, on: CameraLensSwitcherView)
 }
 
-// swiftlint: disable type_body_length
+// swiftlint:disable type_body_length
 final class CameraLensSwitcherView: UIView {
     private lazy var buttonContainerView: UIView = {
         let view = UIView()
@@ -416,4 +416,4 @@ private extension CameraLensSwitcherView {
         static let maxFontSize: CGFloat = 17
     }
 }
-// swiftlint: enable type_body_length
+// swiftlint:enable  type_body_length

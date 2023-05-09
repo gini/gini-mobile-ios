@@ -495,7 +495,7 @@ import GiniBankAPILibrary
 
     var documentService: DocumentServiceProtocol?
 
-    // swiftlint: disable function_parameter_count
+    // swiftlint:disable function_parameter_count
      /// Function for clean up
      /// - Parameters:
      ///   - paymentRecipient: paymentRecipient description
@@ -557,5 +557,5 @@ import GiniBankAPILibrary
          documentService.resetToInitialState()
          self.documentService = nil
      }
-    // swiftlint: enable function_parameter_count
+    // swiftlint:enable  function_parameter_count
 }
