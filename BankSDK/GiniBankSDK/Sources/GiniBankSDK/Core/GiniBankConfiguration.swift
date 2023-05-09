@@ -645,5 +645,5 @@ public final class GiniBankConfiguration: NSObject {
         self.documentService = nil
         self.lineItems = nil
     }
-    // swiftlint:enable  function_parameter_count
+    // swiftlint:enable function_parameter_count
 }
