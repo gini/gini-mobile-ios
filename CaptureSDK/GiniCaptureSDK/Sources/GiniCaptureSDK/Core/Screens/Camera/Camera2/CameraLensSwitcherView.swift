@@ -416,4 +416,4 @@ private extension CameraLensSwitcherView {
         static let maxFontSize: CGFloat = 17
     }
 }
-// swiftlint:enable  type_body_length
+// swiftlint:enable type_body_length

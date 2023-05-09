@@ -557,5 +557,5 @@ import GiniBankAPILibrary
          documentService.resetToInitialState()
          self.documentService = nil
      }
-    // swiftlint:enable  function_parameter_count
+    // swiftlint:enable function_parameter_count
 }
