@@ -73,8 +73,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     // swiftlint:disable function_body_length
     private func configureUI() {
         let configuration = GiniBankConfiguration.shared
-        title = NSLocalizedStringPreferredFormat("ginibank.digitalinvoice.screentitle",
-                                                 comment: "Digital invoice")
+
         view.backgroundColor = GiniColor(light: UIColor.GiniBank.light2, dark: UIColor.GiniBank.dark2).uiColor()
         contentView.backgroundColor = .clear
 
