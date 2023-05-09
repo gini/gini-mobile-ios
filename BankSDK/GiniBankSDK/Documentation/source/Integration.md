@@ -19,13 +19,25 @@ Payment functionality
 If you want to use a transparent proxy with your own authentication you can specify your own domain and add `AlternativeTokenSource` protocol implementation:
 
 ```swift
- let apiLib =  GiniBankAPI.Builder(customApiDomain: "api.custom.net",
-                                 alternativeTokenSource: MyAlternativeTokenSource)
-                                 .build()
+    let giniBankAPI = GiniBankAPI
+        .Builder(customApiDomain: "api.custom.net",
+                    alternativeTokenSource: MyAlternativeTokenSource)
+        .build()
 ```
-The token your provide will be added as a bearer token to all api.custom.net requests.
+The token you provide will be added as a bearer token to all `api.custom.net` requests.
 
-Optionally if you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information)
+You can also specify a custom path segment, if your proxy url requires it:
+
+```swift
+    let giniBankAPI = GiniBankAPI
+        .Builder(client: client,
+                    api: .custom(domain: "api.custom.net",
+                                path: "/custom/path",
+                                tokenSource: MyAlternativeTokenSource))
+        .build()
+```
+
+Optionally if you want to use _Certificate pinning_, then pass your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information) as follows:
 ```swift
     let giniApiLib = GiniBankAPI
         .Builder(client: Client(id: "your-id",
@@ -35,8 +47,6 @@ Optionally if you want to use _Certificate pinning_, provide metadata for the up
                  pinningConfig: yourPublicPinningConfig)
         .build()
 ```
-> ⚠️  **Important**
-> - The document metadata for the upload process is intended to be used for reporting.
 
 ##  GiniBank initialization
 
@@ -151,9 +161,33 @@ let viewController = GiniBank.viewController(withClient: client,
 
 present(viewController, animated: true, completion: nil)
 ```
-Optionally if you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information), the metadata information and the _API type_ (the [Gini Pay API](https://pay-api.gini.net/documentation/#gini-pay-api-documentation-v1-0) is used by default) as follows:
+
+If you want to use a transparent proxy with your own authentication you can specify your own domain and add `AlternativeTokenSource` protocol implementation:
+
+```swift
+    let viewController = GiniBank.viewController(withClient: client,
+                                                    configuration: configuration,
+                                                    resultsDelegate: resultsDelegate,
+                                                    api: .custom(domain: "api.custom.net",
+                                                                tokenSource: MyAlternativeTokenSource))
+```
+The token you provide will be added as a bearer token to all `api.custom.net` requests.
+
+You can also specify a custom path segment, if your proxy url requires it:
+
+```swift
+    let viewController = GiniBank.viewController(withClient: client,
+                                                    configuration: configuration,
+                                                    resultsDelegate: resultsDelegate,
+                                                    api: .custom(domain: "api.custom.net",
+                                                                path: "/custom/path",
+                                                                tokenSource: MyAlternativeTokenSource))
+```
 
 #### Certificate Pinning
+
+Optionally if you want to use _Certificate pinning_ and provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information), the metadata information and the _API type_ (the [Gini Pay API](https://pay-api.gini.net/documentation/#gini-pay-api-documentation-v1-0) is used by default) as follows:
+
 
 ```swift
 import TrustKit
@@ -187,8 +221,8 @@ present(viewController, animated: true, completion:nil)
 ```
 
 > ⚠️  **Important**
-> - The document metadata for the upload process is intended to be used for reporting.
-> - Certification pinning requires iOS 12.
+> - The document metadata for the upload process is intended to be used for reporting. You can find out more about it in the [Gini Bank API](https://pay-api.gini.net/documentation) documentation.
+> - Certificate pinning requires iOS 12.
 
 #### Retrieve the Analyzed Document
 
