@@ -129,7 +129,7 @@ extension DigitalInvoice {
     }
 }
 
-// swiftlint: disable implicit_getter
+// swiftlint:disable implicit_getter
 extension ReturnReason {
     var labelInLocalLanguageOrGerman: String {
         get {
