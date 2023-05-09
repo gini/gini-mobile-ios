@@ -248,15 +248,25 @@
 </code></pre>
 
 <p>If you want to use a transparent proxy with your own authentication you can specify your own domain and add <code><a href="Protocols/AlternativeTokenSource.html">AlternativeTokenSource</a></code> protocol implementation:</p>
-<pre class="highlight swift"><code> <span class="k">let</span> <span class="nv">apiLib</span> <span class="o">=</span>  <span class="kt">GiniBankAPI</span><span class="o">.</span><span class="kt">Builder</span><span class="p">(</span><span class="nv">customApiDomain</span><span class="p">:</span> <span class="s">"api.custom.net"</span><span class="p">,</span>
-                                 <span class="nv">alternativeTokenSource</span><span class="p">:</span> <span class="kt">MyAlternativeTokenSource</span><span class="p">)</span>
-                                 <span class="o">.</span><span class="nf">build</span><span class="p">()</span>
+<pre class="highlight swift"><code>    <span class="k">let</span> <span class="nv">giniBankAPI</span> <span class="o">=</span> <span class="kt">GiniBankAPI</span>
+        <span class="o">.</span><span class="kt">Builder</span><span class="p">(</span><span class="nv">customApiDomain</span><span class="p">:</span> <span class="s">"api.custom.net"</span><span class="p">,</span>
+                    <span class="nv">alternativeTokenSource</span><span class="p">:</span> <span class="kt">MyAlternativeTokenSource</span><span class="p">)</span>
+        <span class="o">.</span><span class="nf">build</span><span class="p">()</span>
 </code></pre>
 
-<p>The token your provide will be added as a bearer token to all api.custom.net requests.</p>
+<p>The token you provide will be added as a bearer token to all <code>api.custom.net</code> requests.</p>
+
+<p>You can also specify a custom path segment, if your proxy url requires it:</p>
+<pre class="highlight swift"><code>    <span class="k">let</span> <span class="nv">giniBankAPI</span> <span class="o">=</span> <span class="kt">GiniBankAPI</span>
+        <span class="o">.</span><span class="kt">Builder</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span>
+                    <span class="nv">api</span><span class="p">:</span> <span class="o">.</span><span class="nf">custom</span><span class="p">(</span><span class="nv">domain</span><span class="p">:</span> <span class="s">"api.custom.net"</span><span class="p">,</span>
+                                <span class="nv">path</span><span class="p">:</span> <span class="s">"/custom/path"</span><span class="p">,</span>
+                                <span class="nv">tokenSource</span><span class="p">:</span> <span class="kt">MyAlternativeTokenSource</span><span class="p">))</span>
+        <span class="o">.</span><span class="nf">build</span><span class="p">()</span>
+</code></pre>
 <h2 id='public-key-pinning' class='heading'>Public Key Pinning</h2>
 
-<p>If you want to use <em>Certificate pinning</em>, provide metadata for the upload process, you can pass both your public key pinning configuration (see <a href="https://github.com/datatheorem/TrustKit">TrustKit repo</a> for more information), the metadata information (the <a href="https://developer.gini.net/gini-api/html/index.html">Gini Bank API</a> is used by default) as follows:</p>
+<p>If you want to use <em>Certificate pinning</em>, then pass your public key pinning configuration (see <a href="https://github.com/datatheorem/TrustKit">TrustKit repo</a> for more information) as follows:</p>
 <pre class="highlight swift"><code>    <span class="k">let</span> <span class="nv">yourPublicPinningConfig</span> <span class="o">=</span> <span class="p">[</span>
             <span class="nv">kTSKPinnedDomains</span><span class="p">:</span> <span class="p">[</span>
             <span class="s">"Bank-api.gini.net"</span><span class="p">:</span> <span class="p">[</span>
@@ -293,14 +303,6 @@
                  <span class="nv">pinningConfig</span><span class="p">:</span> <span class="n">yourPublicPinningConfig</span><span class="p">)</span>
         <span class="o">.</span><span class="nf">build</span><span class="p">()</span>
 </code></pre>
-
-<blockquote>
-<p>⚠️  <strong>Important</strong></p>
-
-<ul>
-<li>The document metadata for the upload process is intended to be used for reporting.</li>
-</ul>
-</blockquote>
 <h2 id='extract-hash-from-gini-net' class='heading'>Extract Hash From gini.net</h2>
 
 <p>The current Gini Bank API public key SHA256 hash digest in Base64 encoding can be extracted with the following openssl commands:</p>
@@ -344,6 +346,14 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
+
+<blockquote>
+<p>⚠️  <strong>Important</strong></p>
+
+<ul>
+<li>The document metadata for the upload process is intended to be used for reporting. You can find out more about it in the <a href="https://pay-api.gini.net/documentation">Gini Bank API</a> documentation.</li>
+</ul>
+</blockquote>
 
 <p>Each page of a document needs to uploaded as a partial document. In addition documents consisting of one page also should be uploaded as a partial document.</p>
 
@@ -448,7 +458,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2023 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2023-04-19)</p>
+      <p>&copy; 2023 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2023-05-09)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
