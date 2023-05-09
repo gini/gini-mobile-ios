@@ -192,14 +192,24 @@
 <h2 id='ginibankapi-initialization' class='heading'>GiniBankAPI initialization</h2>
 
 <p>If you want to use a transparent proxy with your own authentication you can specify your own domain and add <code>AlternativeTokenSource</code> protocol implementation:</p>
-<pre class="highlight swift"><code> <span class="k">let</span> <span class="nv">apiLib</span> <span class="o">=</span>  <span class="kt">GiniBankAPI</span><span class="o">.</span><span class="kt">Builder</span><span class="p">(</span><span class="nv">customApiDomain</span><span class="p">:</span> <span class="s">"api.custom.net"</span><span class="p">,</span>
-                                 <span class="nv">alternativeTokenSource</span><span class="p">:</span> <span class="kt">MyAlternativeTokenSource</span><span class="p">)</span>
-                                 <span class="o">.</span><span class="nf">build</span><span class="p">()</span>
+<pre class="highlight swift"><code>    <span class="k">let</span> <span class="nv">giniBankAPI</span> <span class="o">=</span> <span class="kt">GiniBankAPI</span>
+        <span class="o">.</span><span class="kt">Builder</span><span class="p">(</span><span class="nv">customApiDomain</span><span class="p">:</span> <span class="s">"api.custom.net"</span><span class="p">,</span>
+                    <span class="nv">alternativeTokenSource</span><span class="p">:</span> <span class="kt">MyAlternativeTokenSource</span><span class="p">)</span>
+        <span class="o">.</span><span class="nf">build</span><span class="p">()</span>
 </code></pre>
 
-<p>The token your provide will be added as a bearer token to all api.custom.net requests.</p>
+<p>The token you provide will be added as a bearer token to all <code>api.custom.net</code> requests.</p>
 
-<p>Optionally if you want to use <em>Certificate pinning</em>, provide metadata for the upload process, you can pass both your public key pinning configuration (see <a href="https://github.com/datatheorem/TrustKit">TrustKit repo</a> for more information)</p>
+<p>You can also specify a custom path segment, if your proxy url requires it:</p>
+<pre class="highlight swift"><code>    <span class="k">let</span> <span class="nv">giniBankAPI</span> <span class="o">=</span> <span class="kt">GiniBankAPI</span>
+        <span class="o">.</span><span class="kt">Builder</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span>
+                    <span class="nv">api</span><span class="p">:</span> <span class="o">.</span><span class="nf">custom</span><span class="p">(</span><span class="nv">domain</span><span class="p">:</span> <span class="s">"api.custom.net"</span><span class="p">,</span>
+                                <span class="nv">path</span><span class="p">:</span> <span class="s">"/custom/path"</span><span class="p">,</span>
+                                <span class="nv">tokenSource</span><span class="p">:</span> <span class="kt">MyAlternativeTokenSource</span><span class="p">))</span>
+        <span class="o">.</span><span class="nf">build</span><span class="p">()</span>
+</code></pre>
+
+<p>Optionally if you want to use <em>Certificate pinning</em>, then pass your public key pinning configuration (see <a href="https://github.com/datatheorem/TrustKit">TrustKit repo</a> for more information) as follows:</p>
 <pre class="highlight swift"><code>    <span class="k">let</span> <span class="nv">giniApiLib</span> <span class="o">=</span> <span class="kt">GiniBankAPI</span>
         <span class="o">.</span><span class="kt">Builder</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="kt">Client</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="s">"your-id"</span><span class="p">,</span>
                                 <span class="nv">secret</span><span class="p">:</span> <span class="s">"your-secret"</span><span class="p">,</span>
@@ -208,14 +218,6 @@
                  <span class="nv">pinningConfig</span><span class="p">:</span> <span class="n">yourPublicPinningConfig</span><span class="p">)</span>
         <span class="o">.</span><span class="nf">build</span><span class="p">()</span>
 </code></pre>
-
-<blockquote>
-<p>⚠️  <strong>Important</strong></p>
-
-<ul>
-<li>The document metadata for the upload process is intended to be used for reporting.</li>
-</ul>
-</blockquote>
 <h2 id='ginibank-initialization' class='heading'>GiniBank initialization</h2>
 
 <p>Now that the <code>GiniBankAPI</code> has been initialized, you can initialize <code><a href="Classes/GiniBank.html">GiniBank</a></code></p>
@@ -313,8 +315,27 @@ The Screen API, in turn, offers two different ways of implementation:</p>
 <span class="nf">present</span><span class="p">(</span><span class="n">viewController</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
 </code></pre>
 
-<p>Optionally if you want to use <em>Certificate pinning</em>, provide metadata for the upload process, you can pass both your public key pinning configuration (see <a href="https://github.com/datatheorem/TrustKit">TrustKit repo</a> for more information), the metadata information and the <em>API type</em> (the <a href="https://pay-api.gini.net/documentation/#gini-pay-api-documentation-v1-0">Gini Pay API</a> is used by default) as follows:</p>
+<p>If you want to use a transparent proxy with your own authentication you can specify your own domain and add <code>AlternativeTokenSource</code> protocol implementation:</p>
+<pre class="highlight swift"><code>    <span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">GiniBank</span><span class="o">.</span><span class="nf">viewController</span><span class="p">(</span><span class="nv">withClient</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span>
+                                                    <span class="nv">configuration</span><span class="p">:</span> <span class="n">configuration</span><span class="p">,</span>
+                                                    <span class="nv">resultsDelegate</span><span class="p">:</span> <span class="n">resultsDelegate</span><span class="p">,</span>
+                                                    <span class="nv">api</span><span class="p">:</span> <span class="o">.</span><span class="nf">custom</span><span class="p">(</span><span class="nv">domain</span><span class="p">:</span> <span class="s">"api.custom.net"</span><span class="p">,</span>
+                                                                <span class="nv">tokenSource</span><span class="p">:</span> <span class="kt">MyAlternativeTokenSource</span><span class="p">))</span>
+</code></pre>
+
+<p>The token you provide will be added as a bearer token to all <code>api.custom.net</code> requests.</p>
+
+<p>You can also specify a custom path segment, if your proxy url requires it:</p>
+<pre class="highlight swift"><code>    <span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">GiniBank</span><span class="o">.</span><span class="nf">viewController</span><span class="p">(</span><span class="nv">withClient</span><span class="p">:</span> <span class="n">client</span><span class="p">,</span>
+                                                    <span class="nv">configuration</span><span class="p">:</span> <span class="n">configuration</span><span class="p">,</span>
+                                                    <span class="nv">resultsDelegate</span><span class="p">:</span> <span class="n">resultsDelegate</span><span class="p">,</span>
+                                                    <span class="nv">api</span><span class="p">:</span> <span class="o">.</span><span class="nf">custom</span><span class="p">(</span><span class="nv">domain</span><span class="p">:</span> <span class="s">"api.custom.net"</span><span class="p">,</span>
+                                                                <span class="nv">path</span><span class="p">:</span> <span class="s">"/custom/path"</span><span class="p">,</span>
+                                                                <span class="nv">tokenSource</span><span class="p">:</span> <span class="kt">MyAlternativeTokenSource</span><span class="p">))</span>
+</code></pre>
 <h4 id='certificate-pinning' class='heading'>Certificate Pinning</h4>
+
+<p>Optionally if you want to use <em>Certificate pinning</em> and provide metadata for the upload process, you can pass both your public key pinning configuration (see <a href="https://github.com/datatheorem/TrustKit">TrustKit repo</a> for more information), the metadata information and the <em>API type</em> (the <a href="https://pay-api.gini.net/documentation/#gini-pay-api-documentation-v1-0">Gini Pay API</a> is used by default) as follows:</p>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">TrustKit</span>
 
 <span class="k">let</span> <span class="nv">yourPublicPinningConfig</span> <span class="o">=</span> <span class="p">[</span>
@@ -349,8 +370,8 @@ The Screen API, in turn, offers two different ways of implementation:</p>
 <p>⚠️  <strong>Important</strong></p>
 
 <ul>
-<li>The document metadata for the upload process is intended to be used for reporting.</li>
-<li>Certification pinning requires iOS 12.</li>
+<li>The document metadata for the upload process is intended to be used for reporting. You can find out more about it in the <a href="https://pay-api.gini.net/documentation">Gini Bank API</a> documentation.</li>
+<li>Certificate pinning requires iOS 12.</li>
 </ul>
 </blockquote>
 <h4 id='retrieve-the-analyzed-document' class='heading'>Retrieve the Analyzed Document</h4>
@@ -467,7 +488,7 @@ You may use it along with the example pdf and json files as a starting point to 
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2023 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2023-04-19)</p>
+      <p>&copy; 2023 <a class="link" href="https://gini.net" target="_blank" rel="external noopener">Gini GmbH</a>. All rights reserved. (Last updated: 2023-05-09)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
