@@ -6,14 +6,14 @@
 //
 
 import UIKit
-
+// swiftlint:disable file_length
 /**
  The ReviewViewControllerDelegate protocol defines methods that allow you to handle user actions in the
  ReviewViewControllerDelegate
  (tap add, delete...)
  
  - note: Component API only.
- - TODO:  - REMOVE Componen API
+ - TODO:  - REMOVE Component API
  */
 public protocol ReviewViewControllerDelegate: AnyObject {
     /**
@@ -63,8 +63,6 @@ public protocol ReviewViewControllerDelegate: AnyObject {
 
   - note: Component API only.
   */
-
-// swiftlint:disable file_length
 public final class ReviewViewController: UIViewController {
 
     /**
@@ -707,3 +705,4 @@ extension ReviewViewController {
         static let bottomNavigationBarHeight: CGFloat = 114
     }
 }
+// swiftlint:enable file_length

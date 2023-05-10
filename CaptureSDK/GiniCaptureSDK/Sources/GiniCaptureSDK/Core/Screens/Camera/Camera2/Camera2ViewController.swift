@@ -586,3 +586,4 @@ private extension Camera2ViewController {
         static let tableSwitcherSize: CGSize = CGSize(width: 40, height: 124)
     }
 }
+// swiftlint:enable type_body_length
