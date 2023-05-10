@@ -220,6 +220,7 @@ final class GalleryCoordinator: NSObject, Coordinator {
             }
         }
     }
+    // swiftlint:enable function_body_length
 }
 
 // MARK: UINavigationControllerDelegate

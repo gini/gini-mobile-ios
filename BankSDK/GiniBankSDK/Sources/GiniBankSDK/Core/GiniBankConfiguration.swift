@@ -424,7 +424,7 @@ public final class GiniBankConfiguration: NSObject {
     .footnoteBold: UIFontMetrics(forTextStyle: .footnote).scaledFont(for: UIFont.boldSystemFont(ofSize: 13))
     ]
 
-    // swiftlint: disable function_body_length
+    // swiftlint:disable function_body_length
     public func captureConfiguration() -> GiniConfiguration {
         let configuration = GiniConfiguration.shared
         configuration.customDocumentValidations = self.customDocumentValidations
@@ -530,6 +530,7 @@ public final class GiniBankConfiguration: NSObject {
 
         return configuration
     }
+    // swiftlint:enable function_body_length
 
     /**
      Sets the configuration flags back. Used only in the example app. See `SettingsViewController` for the details.
@@ -575,7 +576,7 @@ public final class GiniBankConfiguration: NSObject {
     var documentService: DocumentServiceProtocol?
     var lineItems: [[Extraction]]?
 
-    // swiftlint: disable function_parameter_count
+    // swiftlint:disable function_parameter_count
     /// Function for clean up
     /// - Parameters:
     ///   - paymentRecipient: paymentRecipient description
@@ -644,4 +645,5 @@ public final class GiniBankConfiguration: NSObject {
         self.documentService = nil
         self.lineItems = nil
     }
+    // swiftlint:enable function_parameter_count
 }

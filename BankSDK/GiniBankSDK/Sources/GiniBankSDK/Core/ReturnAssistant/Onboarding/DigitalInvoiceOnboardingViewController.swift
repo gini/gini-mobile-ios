@@ -136,6 +136,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
 
         configureConstraints()
     }
+    // swiftlint:enable function_body_length
 
     private func configureConstraints() {
         if UIDevice.current.isIpad {
