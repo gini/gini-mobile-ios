@@ -234,7 +234,7 @@ You can show a custom loading indicator with custom animation support on the cen
 Your custom loading indicator should implement `CustomLoadingIndicatorAdapter` interface and be passed  to `GiniBankConfiguration.shared.customLoadingIndicator`.
 This loading indicator is also used on the `Camera screen` when loading data for a valid QR code.
 
-You can find more details [here](https://www.figma.com/file/623Fahuwq8tUzSWQPd23Ie/iOS-Gini-Bank-SDK-3.0.0-UI-Customisation?node-id=501%3A7494&t=YJcxLW7BENnbqCmt-1).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.0.0/customization-guide.html#camera-screen).
 
 ## Review screen
 
