@@ -141,11 +141,11 @@ Please find more information in the [QR Code scanning guide](https://developer.g
 
 ### QR Code Only
 
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fw6VLDKCkunlgBRQcydqJGo%2FiOS-Gini-Bank-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D2510%253A12875%26t%3DKh7bmfr4NDQNjZpY-1" allowfullscreen></iframe>
+
 During QR Code only mode the capture and import controls will be hidden from the camera screen.
 
 For enabling QR code only mode the both flags `GiniBankConfiguration.shared.qrCodeScanningEnabled` and `GiniBankConfiguration.shared.onlyQRCodeScanningEnabled` should be `true`.
-
-More information about the customization is available [here](https://www.figma.com/file/w6VLDKCkunlgBRQcydqJGo/iOS-Gini-Bank-SDK-3.1.0-UI-Customisation?type=design&node-id=243%3A3306&t=78TzSOVx8Srs65Lh-1)
 
 ### Document Import
 
