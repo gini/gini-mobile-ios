@@ -46,7 +46,7 @@ You can find the names of the colors in [GiniColors.xcassets](https://github.com
 
 We provide a global typography based on text appearance styles from `UIFont.TextStyle`. 
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fw6VLDKCkunlgBRQcydqJGo%2FiOS-Gini-Bank-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D0%253A1%26t%3D78TzSOVx8Srs65Lh-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fw6VLDKCkunlgBRQcydqJGo%2FiOS-Gini-Bank-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D2574%253A12863%26t%3DCzesgbkkTCy8Ztwv-1" allowfullscreen></iframe>
 
 To override them in your application please use `GiniBankConfiguration.updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle)`. For example:
 
