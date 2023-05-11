@@ -67,7 +67,8 @@ struct APIResource<T: Decodable>: Resource {
                     URLQueryItem(name: "doctype", itemValue: docType?.rawValue)
             ]
         case .paymentRequests(let limit, let offset):
-            return [URLQueryItem(name: "offset", itemValue: offset),URLQueryItem(name: "limit", itemValue: limit)]
+            return [URLQueryItem(name: "offset", itemValue: offset),
+                    URLQueryItem(name: "limit", itemValue: limit)]
         default: return nil
         }
     }
