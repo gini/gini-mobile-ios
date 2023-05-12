@@ -49,7 +49,7 @@ final public class GiniImageDocument: NSObject, GiniCaptureDocument {
         self.id = UUID().uuidString
 
         switch imageSource {
-        case .appName(name: _) :
+        case .appName(name: _):
             isFromOtherApp = true
         default:
             isFromOtherApp = false

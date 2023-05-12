@@ -9,7 +9,7 @@ dependencies: [
     .package(url: "https://github.com/gini/bank-sdk-ios.git", .exact("1.0.0"))
 ]
 ```
-**Note: Availible from iOS 12**
+**Note: Available from iOS 12**
 In case that you want to use the certificate pinning in the library, add `GiniBankSDKPinning`:
 ```swif
 dependencies: [

@@ -22,8 +22,7 @@ Further documentation with installation, integration or customization guides can
 
 ### Capture feature
 
-You can find implementation example of the capture feature under 'GiniBankSDKExample' target. The example illustrates two integration options. A Screen API that is easy to implement and a more complex, but also more flexible Component API. Both APIs can access the complete functionality of the SDK.
-
+You can find implementation example of the capture feature under 'GiniBankSDKExample' target.
 You need to specify the NSCameraUsageDescription key in your Info.plist file. This key is mandatory for all apps since iOS 10 when using the Camera framework.
 
 **Note: iOS 14**
