@@ -11,10 +11,10 @@ import Lottie
 import UIKit
 
 class CustomOnboardingIllustrationAdapter: OnboardingIllustrationAdapter {
-    private var animatedOnboarding: AnimationView?
+    private var animatedOnboarding: LottieAnimationView?
     
     init(animationName: String? = nil, backgroundColor: UIColor) {
-        self.animatedOnboarding = AnimationView(name: animationName ?? "")
+        self.animatedOnboarding = LottieAnimationView(name: animationName ?? "")
         self.animatedOnboarding?.backgroundColor = backgroundColor
     }
     
