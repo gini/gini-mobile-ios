@@ -18,10 +18,10 @@
 #   changes to many sections, or if no section in particular is 
 #   modified, leave blank without the parentheses. 
 #   Examples:
-#   * Commit that changes the bank-sdk project:
-#     feat(bank-sdk): Add error logging interface
-#   * Commit that updates the health-sdk documentation:
-#     doc(health-sdk): Update extraction feedback guide
+#   * Commit that changes the GiniBankSDK project:
+#     feat(GiniBankSDK): Add error logging interface
+#   * Commit that updates the GiniHealthSDK documentation:
+#     doc(GiniHealthSDK): Update extraction feedback guide
 #   * Commit that changes the build script:
 #     ci: Send slack message with build result
 #   * Commit that changes many projects:

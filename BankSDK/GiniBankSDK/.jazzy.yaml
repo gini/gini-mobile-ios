@@ -19,7 +19,7 @@ abstract: BankSDK/GiniBankSDK/Documentation/Sections/*.md
 custom_categories:
 - name: Documentation
   children:
-  - Installation
+  - Getting started
   - Features
   - Integration
   - Migration

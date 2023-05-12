@@ -85,15 +85,13 @@ To simplify UI customization we introduced global customization options. There i
 We are providing a global color palette `GiniColors.xcassets` which you are free to override. The custom colors will be then applied on all screens.
 You can find the names of the colors in [GiniColors.xcassets](https://github.com/gini/gini-mobile-ios/tree/GiniCaptureSDK%3B3.0.0/CaptureSDK/GiniCaptureSDK/Sources/GiniCaptureSDK/Resources/GiniColors.xcassets).
 
- You can view our color palette here:
-
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F1985HMF83siAXmysSn3dC6%2FiOS-Gini-Capture-SDK-3.0.0-UI-Customisation%3Fnode-id%3D14%253A355%26t%3D6sAk7LGf1mi3zV9L-1" allowfullscreen></iframe>
+ You can view our color palette [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/customization-guide.html#colors).
 
 ## Typography
 
 We provide a global typography based on text appearance styles from `UIFont.TextStyle`. 
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F1985HMF83siAXmysSn3dC6%2FiOS-Gini-Capture-SDK-3.0.0-UI-Customisation%3Fnode-id%3D123%253A2326%26t%3D6sAk7LGf1mi3zV9L-1" allowfullscreen></iframe>
+You can view our typography [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/customization-guide.html#typography).
 
 To override them in your application please use `GiniConfiguration.updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle)`. For example:
 
@@ -148,7 +146,7 @@ customizations.
 
 Images and text are onboarding page specific and need to be customized for each page.
 
-[here][https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/features.html#onboarding] and [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=243%3A3305&t=6sAk7LGf1mi3zV9L-1).
+[here][https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/features.html#onboarding] and [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/customization-guide.html#onboarding-screens).
 
 ### Breaking Changes
 
@@ -181,7 +179,7 @@ If you need to animate the illustrations on the onboarding pages implement the `
 ## Camera screen
 
 The new camera screen uses the global UI customization options. You can discard the old screen specific
-customizations.
+customizations. You can find the more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/customization-guide.html#camera-screen).
 
 ### New Features
 
@@ -209,7 +207,7 @@ String keys changed:
 You can show a bottom navigation bar by passing true to `GiniConfiguration.shared.bottomNavigationBarEnabled`. There is a default implementation, but you can also use
 your own by implementing the `HelpBottomNavigationBarAdapter` interface and passing it to `GiniConfiguration.shared.helpNavigationBarBottomAdapter`.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/features.html#help-screen-customization)).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/features.html#help-screen-customization) and [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/customization-guide.html#help-screens).
 
 ## Analysis screen
 
@@ -235,7 +233,7 @@ You can show a custom loading indicator with custom animation support on the cen
 Your custom loading indicator should implement `CustomLoadingIndicatorAdapter` interface and be passed  to `GiniConfiguration.shared.customLoadingIndicator`.
 This loading indicator is also used on the `Camera screen` when loading data for a valid QR code.
 
-You can find more details [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=501%3A7494&t=6sAk7LGf1mi3zV9L-1).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/customization-guide.html#analysis-screen).
 
 ## Review screen
 
@@ -259,7 +257,7 @@ Your custom loading indicator should implement `OnButtonLoadingIndicatorAdapter`
 You can show a bottom navigation bar by passing true to `GiniConfiguration.shared.bottomNavigationBarEnabled`. There is a default implementation, but you can also use
 your own by implementing the `ReviewScreenBottomNavigationBarAdapter` interface and passing it to `GiniConfiguration.shared.reviewNavigationBarBottomAdapter`.
 
-You can find more details [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=261%3A8256&t=6sAk7LGf1mi3zV9L-1).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/customization-guide.html#review-screen).
 
 ## No results screen
 
@@ -287,7 +285,7 @@ customizations.
 You can show your own UI for data input if an error occurred and the user clicks the "Enter manually" button on the error screen.
 For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
 
-You can find more details [here](https://www.figma.com/file/1985HMF83siAXmysSn3dC6/iOS-Gini-Capture-SDK-3.0.0-UI-Customisation?node-id=263%3A6989&t=7wXW9XyhTUcmp5sk-1) and [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/customization-guide.html#no-result-screen).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/customization-guide.html#no-result-screen).
 
 ## Error screen
 
@@ -310,4 +308,4 @@ You can find more details [here](https://developer.gini.net/gini-mobile-ios/Gini
 You can show your own UI for data input if an error occured and the user clicks the "Enter manually" button on the error screen.
 For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/features.html#error-screen-customization) and [here]((https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/customization-guide.html#error-screen).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/features.html#error-screen-customization) and [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.0.0/customization-guide.html#error-screen).
