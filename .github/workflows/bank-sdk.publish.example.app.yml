@@ -63,7 +63,6 @@ jobs:
               "project_path": "BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj",
               "team_id": "JA825X8F7Z",
               "bundle_identifier": "net.gini.banksdk.example",
-              "extension_identifier": "net.gini.banksdk.example.ShareExtension",
               "profile_name": "Gini Bank SDK Example App Ad-Hoc Distribution", 
               "entitlements_file_path": "GiniBankSDKExample/Example Swift.entitlements", 
               "ci": "true"
