@@ -181,7 +181,8 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Sets the color of camera preview frame.
      */
-    @objc public var cameraPreviewFrameColor = GiniColor(lightModeColor: UIColor(white: 0.0, alpha: 0.7), darkModeColor: UIColor(white: 0.0, alpha: 0.7))
+    @objc public var cameraPreviewFrameColor = GiniColor(lightModeColor: UIColor(white: 0.0, alpha: 0.7),
+                                                         darkModeColor: UIColor(white: 0.0, alpha: 0.7))
     
     /**
      Sets the background color of camera buttons view.
@@ -257,7 +258,7 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Sets the color of the captured images stack indicator label
      */
-    @objc public var imagesStackIndicatorLabelTextcolor: UIColor = Colors.Gini.blue
+    @objc public var imagesStackIndicatorLabelTextcolor = Colors.Gini.blue
     
     /**
      Sets the close button text in the navigation bar on the camera screen.
@@ -286,7 +287,8 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Sets the text color of the QR Code popup background.
      */
-    @objc public var qrCodePopupBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: UIColor.from(hex: 0x1c1c1e))
+    @objc public var qrCodePopupBackgroundColor = GiniColor(lightModeColor: .white,
+                                                            darkModeColor: Colors.Gini.charcoalGray)
     
     // MARK: Onboarding screens
 
@@ -420,7 +422,8 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Sets the color of the pages container and toolbar.
      */
-    @objc public var multipagePagesContainerAndToolBarColor = GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: UIColor.from(hex: 0x1c1c1c))
+    @objc public var multipagePagesContainerAndToolBarColor = GiniColor(lightModeColor: Colors.Gini.pearl,
+                                                                        darkModeColor: Colors.Gini.nero)
     
     @objc private var _multipagePagesContainerAndToolBarColor: UIColor?
     
@@ -447,7 +450,8 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Sets the background color of the page background.
      */
-    @objc public var multipagePageBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: UIColor.from(hex: 0x1c1c1e))
+    @objc public var multipagePageBackgroundColor = GiniColor(lightModeColor: .white,
+                                                              darkModeColor: Colors.Gini.charcoalGray)
     
     @objc private var _multipagePageBackgroundColor: UIColor?
     
@@ -498,14 +502,16 @@ public final class GiniBankConfiguration: NSObject {
     // MARK: Help screens
     
     /**
-     Sets the background color for all help screens.
+     Sets the background color for help screen.
      */
-    @objc public var helpScreenBackgroundColor =  GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: UIColor.from(hex: 0x1C1C1C))
+    @objc public var helpScreenBackgroundColor = GiniColor(lightModeColor: Colors.Gini.pearl,
+                                                            darkModeColor: Colors.Gini.nero)
     
     /**
      Sets the background color for the cells on help screen.
      */
-    @objc public var helpScreenCellsBackgroundColor =  GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: UIColor.from(hex: 0x1C1C1C))
+    @objc public var helpScreenCellsBackgroundColor = GiniColor(lightModeColor: Colors.Gini.pearl,
+                                                                 darkModeColor: Colors.Gini.nero)
     
     /**
      Sets the back button text in the navigation bar on the help menu screen. Use this if you only want to show the title.
@@ -530,6 +536,18 @@ public final class GiniBankConfiguration: NSObject {
     // MARK: Supported formats
     
     /**
+     Sets the background color for supported formats screen.
+     */
+    @objc public var supportedFormatsScreenBackgroundColor = GiniColor(lightModeColor: Colors.Gini.pearl,
+                                                                       darkModeColor: Colors.Gini.nero)
+    
+    /**
+     Sets the background color for the cells on supported formats screen.
+     */
+    @objc public var supportedFormatsScreenCellsBackgroundColor = GiniColor(lightModeColor: .white,
+                                                                            darkModeColor: Colors.Gini.systemBackgroundColor)
+
+    /**
      Sets the color of the unsupported formats icon background to the specified color.
      */
     @objc public var nonSupportedFormatsIconColor = Colors.Gini.crimson
@@ -542,6 +560,18 @@ public final class GiniBankConfiguration: NSObject {
     // MARK: Open with tutorial options
     
     /**
+     Sets the background color for Open with tutorial screen.
+     */
+    @objc public var openWithScreenBackgroundColor = GiniColor(lightModeColor: Colors.Gini.pearl,
+                                                               darkModeColor: Colors.Gini.nero)
+    
+    /**
+     Sets the background color for the cells on Open with tutorial screen.
+     */
+    @objc public var openWithScreenCellsBackgroundColor = GiniColor(lightModeColor: Colors.Gini.pearl,
+                                                                    darkModeColor: Colors.Gini.nero)
+    
+    /**
      Sets the text of the app name for the Open with tutorial texts.
      */
     @objc public var openWithAppNameForTexts = Bundle.main.appName
@@ -552,6 +582,19 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var stepIndicatorColor = Colors.Gini.blue
     
     // MARK: No results options
+    
+    /**
+     Sets the background color for no results screen.
+     */
+    
+    @objc public var noResultsScreenBackgroundColor = GiniColor(lightModeColor: .white,
+                                                                darkModeColor: Colors.Gini.systemBackgroundColor)
+    
+    /**
+     Sets the background color for the cells on no results screen.
+     */
+    @objc public var noResultsScreenCellsBackgroundColor = GiniColor(lightModeColor: .white,
+                                                                     darkModeColor: Colors.Gini.systemBackgroundColor)
     
     /**
      Sets the color of the bottom button to the specified color.
@@ -578,7 +621,7 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Sets the text color for the select more photos button on the albums screen.
      */
-    @objc public var albumsScreenSelectMorePhotosTextColor =  GiniColor(lightModeColor: Colors.Gini.blue, darkModeColor: Colors.Gini.blue)
+    @objc public var albumsScreenSelectMorePhotosTextColor = GiniColor(lightModeColor: Colors.Gini.blue, darkModeColor: Colors.Gini.blue)
     
     /**
      Sets if the Drag&Drop step should be shown in the "Open with" tutorial.
@@ -598,47 +641,47 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Sets the background color for the return assistant help screen.
      */
-    @objc public var helpReturnAssistantScreenBackgroundColor =  GiniColor(lightModeColor: .white, darkModeColor:.black)
+    @objc public var helpReturnAssistantScreenBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor:.black)
     
     /**
      Sets the text color for the section titles on the return assistant help screen.
      */
-    @objc public var helpReturnAssistantScreenSectionTitleColor =  GiniColor(lightModeColor: Colors.Gini.blue, darkModeColor: Colors.Gini.blue)
+    @objc public var helpReturnAssistantScreenSectionTitleColor = GiniColor(lightModeColor: Colors.Gini.blue, darkModeColor: Colors.Gini.blue)
     
     /**
      Sets the font for the page title on the return assistant help screen.
      */
-    @objc public var helpReturnAssistantScreenPageTitleFont =  UIFont.systemFont(ofSize: 28, weight: .semibold)
+    @objc public var helpReturnAssistantScreenPageTitleFont = UIFont.systemFont(ofSize: 28, weight: .semibold)
     
     /**
      Sets the font for the section titles on the return assistant help screen.
      */
-    @objc public var helpReturnAssistantScreenSectionTitleFont =  UIFont.systemFont(ofSize: 28, weight: .bold)
+    @objc public var helpReturnAssistantScreenSectionTitleFont = UIFont.systemFont(ofSize: 28, weight: .bold)
     
     /**
      Sets the text color for the instructions on the return assistant help screen.
      */
-    @objc public var helpReturnAssistantScreenInstructionColor =  GiniColor(lightModeColor: .black, darkModeColor:.white)
+    @objc public var helpReturnAssistantScreenInstructionColor = GiniColor(lightModeColor: .black, darkModeColor:.white)
     
     /**
      Sets the font for the instructions on the return assistant help screen.
      */
-    @objc public var helpReturnAssistantScreenInstructionFont =  UIFont.systemFont(ofSize: 18, weight: .regular)
+    @objc public var helpReturnAssistantScreenInstructionFont = UIFont.systemFont(ofSize: 18, weight: .regular)
     
     /**
      Sets the background color for the back button on the return assistant help screen.
      */
-    @objc public var helpReturnAssistantScreenBackButtonColor =  Colors.Gini.blue
+    @objc public var helpReturnAssistantScreenBackButtonColor = Colors.Gini.blue
 
     /**
      Sets the title color for the back button on the return assistant help screen.
      */
-    @objc public var helpReturnAssistantScreenBackButtonTitleColor =  GiniColor(lightModeColor: .white, darkModeColor:.black)
+    @objc public var helpReturnAssistantScreenBackButtonTitleColor = GiniColor(lightModeColor: .white, darkModeColor:.black)
     
     /**
      Sets the font for the back button title on the return assistant help screen.
      */
-    @objc public var helpReturnAssistantScreenBackButtonTitleFont =  UIFont.systemFont(ofSize: 18, weight: .regular)
+    @objc public var helpReturnAssistantScreenBackButtonTitleFont = UIFont.systemFont(ofSize: 18, weight: .regular)
 
         
     // MARK: Digital invoice
@@ -742,17 +785,17 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Sets the background color for digital invoice screen.
      */
-    @objc public var digitalInvoiceBackgroundColor =  GiniColor(lightModeColor: .white, darkModeColor: .black)
+    @objc public var digitalInvoiceBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: .black)
     
     /**
      Sets the background color for the line items on the digital invoice screen.
      */
-    @objc public var digitalInvoiceLineItemsBackgroundColor =  GiniColor(lightModeColor: .white, darkModeColor: .black)
+    @objc public var digitalInvoiceLineItemsBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: .black)
     
     /**
      Sets the disabled color for the line items on the digital invoice screen.
      */
-    @objc public var digitalInvoiceLineItemsDisabledColor =  UIColor.gray
+    @objc public var digitalInvoiceLineItemsDisabledColor = UIColor.gray
     
     /**
      Sets the font of the footer message on the digital invoice screen to the specified font.
@@ -959,7 +1002,7 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Sets the background color for  the line item details view.
      */
-    @objc public var lineItemDetailsBackgroundColor =  GiniColor(lightModeColor: .white, darkModeColor: .black)
+    @objc public var lineItemDetailsBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: .black)
     
     @objc private var _lineItemDetailsDescriptionLabelColor: UIColor?
     
