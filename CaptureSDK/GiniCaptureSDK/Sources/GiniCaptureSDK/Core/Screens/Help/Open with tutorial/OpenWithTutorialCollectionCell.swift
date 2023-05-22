@@ -105,13 +105,6 @@ final class OpenWithTutorialCollectionCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        if #available(iOS 13.0, *) {
-            backgroundColor = .systemBackground
-        } else {
-            backgroundColor = .white
-        }
-        
         addSubview(stepIndicator)
         addSubview(stepIndicatorCircle)
         addSubview(stepTitle)
@@ -210,6 +203,7 @@ final class OpenWithTutorialCollectionCell: UICollectionViewCell {
     }
     
     public func fillWith(item: OpenWithTutorialStep, at position: Int, giniConfiguration: GiniConfiguration) {
+        backgroundColor = UIColor.from(giniColor: giniConfiguration.openWithScreenCellsBackgroundColor)
         stepIndicator.text = String(describing: position + 1)
         stepTitle.text = item.title
         stepTitle.font = giniConfiguration.customFont.with(weight: .regular,

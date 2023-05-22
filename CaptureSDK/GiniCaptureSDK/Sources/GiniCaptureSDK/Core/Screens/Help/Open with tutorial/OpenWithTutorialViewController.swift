@@ -48,7 +48,7 @@ final class OpenWithTutorialViewController: UICollectionViewController {
     }()
     
     fileprivate var stepsCollectionLayout: OpenWithTutorialCollectionFlowLayout {
-        return (self.collectionView?.collectionViewLayout as? OpenWithTutorialCollectionFlowLayout)!
+        return (collectionView?.collectionViewLayout as? OpenWithTutorialCollectionFlowLayout)!
     }
     
     init(giniConfiguration: GiniConfiguration = .shared) {
@@ -62,27 +62,21 @@ final class OpenWithTutorialViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = .localized(resource: HelpStrings.openWithTutorialTitle)
-        
-        if #available(iOS 13.0, *) {
-            view.backgroundColor = Colors.Gini.dynamicPearl
-        } else {
-            view.backgroundColor = Colors.Gini.pearl
-        }
-        
-        self.collectionView!.backgroundColor = nil
-        self.collectionView.contentInsetAdjustmentBehavior = .never
+        title = .localized(resource: HelpStrings.openWithTutorialTitle)
 
-        self.collectionView!.register(OpenWithTutorialCollectionCell.self,
+        collectionView?.backgroundColor = UIColor.from(giniColor: giniConfiguration.openWithScreenBackgroundColor)
+        collectionView.contentInsetAdjustmentBehavior = .never
+
+        collectionView?.register(OpenWithTutorialCollectionCell.self,
                                       forCellWithReuseIdentifier: openWithTutorialCollectionCellIdentifier)
-        self.collectionView!.register(OpenWithTutorialCollectionHeader.self,
+        collectionView?.register(OpenWithTutorialCollectionHeader.self,
                                       forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                       withReuseIdentifier: openWithTutorialCollectionHeaderIdentifier)
-        
+        collectionView?.showsVerticalScrollIndicator = false
         stepsCollectionLayout.minimumLineSpacing = 1
         stepsCollectionLayout.minimumInteritemSpacing = 1
         stepsCollectionLayout.estimatedItemSize = estimatedCellSize(widthParentSize: view.frame.size)
-        self.edgesForExtendedLayout = []
+        edgesForExtendedLayout = []
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -96,8 +90,8 @@ final class OpenWithTutorialViewController: UICollectionViewController {
     
     private func estimatedCellSize(widthParentSize size: CGSize) -> CGSize {
         if size.width > size.height && UIDevice.current.isIpad {
-            let width: CGFloat = round(UIScreen.main.bounds.width / CGFloat(self.items.count) -
-                CGFloat(self.stepsCollectionLayout.minimumInteritemSpacing * CGFloat(self.items.count - 1)))
+            let width: CGFloat = round(UIScreen.main.bounds.width / CGFloat(items.count) -
+                CGFloat(stepsCollectionLayout.minimumInteritemSpacing * CGFloat(items.count - 1)))
             return CGSize(width: width, height: size.height)
         } else {
             return CGSize(width: UIScreen.main.bounds.width, height: 100)
@@ -135,6 +129,7 @@ final class OpenWithTutorialViewController: UICollectionViewController {
                              size: OpenWithTutorialCollectionHeader.maxHeaderFontSize,
                              style: .body)
         header.headerTitle.text = headerTitle
+        header.headerTitle.backgroundColor = UIColor.from(giniColor: giniConfiguration.openWithScreenCellsBackgroundColor)
         return header
     }
     

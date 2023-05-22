@@ -14,7 +14,7 @@ final class SupportedFormatsTableViewCell: UITableViewCell {
     let imageBackgroundSize = CGSize(width: 22, height: 22)
     
     lazy var imageBackgroundView: UIView = {
-        let view = UIView(frame: CGRect(origin: .zero, size: self.imageBackgroundSize))
+        let view = UIView(frame: CGRect(origin: .zero, size: imageBackgroundSize))
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = view.frame.width / 2
         return view
@@ -25,7 +25,7 @@ final class SupportedFormatsTableViewCell: UITableViewCell {
         if let imageView = imageView {
             imageView.tintColor = .white
             imageView.frame = CGRect(origin: CGPoint(x: imageView.frame.origin.x,
-                                                     y: (self.frame.height - imageViewSize.height) / 2),
+                                                     y: (frame.height - imageViewSize.height) / 2),
                                      size: imageViewSize)
             contentView.insertSubview(imageBackgroundView, belowSubview: imageView)
             addConstraints()
