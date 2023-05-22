@@ -112,19 +112,17 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
     public override func loadView() {
         super.loadView()
         edgesForExtendedLayout = []
-        
-        if #available(iOS 13.0, *) {
-            view.backgroundColor = .systemBackground
-        } else {
-            view.backgroundColor = .white
-        }
-        
+
         view.addSubview(suggestionsCollectionView)
         
         if bottomButtonText != nil {
             view.addSubview(bottomButton)
         }
         addConstraints()
+        
+        // Needed to set both view and suggestionsCollectionView to have same background color
+        view.backgroundColor = UIColor.from(giniColor: giniConfiguration.noResultsScreenBackgroundColor)
+        suggestionsCollectionView.backgroundColor = UIColor.from(giniColor: giniConfiguration.noResultsScreenBackgroundColor)
         
         suggestionsCollectionView.dataSource = self
         suggestionsCollectionView.delegate = self
@@ -133,7 +131,7 @@ public final class ImageAnalysisNoResultsViewController: UIViewController {
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         coordinator.animate(alongsideTransition: { _ in
             self.suggestionsCollectionView.collectionViewLayout.invalidateLayout()
-        }, completion: nil)
+        })
     }
     
     fileprivate func addConstraints() {
@@ -185,9 +183,10 @@ extension ImageAnalysisNoResultsViewController: UICollectionViewDataSource {
         let identifier = CaptureSuggestionsCollectionView.captureSuggestionsCellIdentifier
         let cell = (collectionView.dequeueReusableCell(withReuseIdentifier: identifier,
                                                        for: indexPath) as? CaptureSuggestionsCollectionCell)!
-        cell.suggestionText.text = self.captureSuggestions[indexPath.row].text
+        cell.suggestionText.text = captureSuggestions[indexPath.row].text
         cell.suggestionText.font = giniConfiguration.customFont.with(weight: .regular, size: 14, style: .body)
-        cell.suggestionImage.image = self.captureSuggestions[indexPath.row].image
+        cell.suggestionImage.image = captureSuggestions[indexPath.row].image
+        cell.backgroundColor = UIColor.from(giniColor: giniConfiguration.noResultsScreenCellsBackgroundColor)
         return cell
     }
     
@@ -219,10 +218,10 @@ extension ImageAnalysisNoResultsViewController: UICollectionViewDelegateFlowLayo
             .dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader,
                                               withReuseIdentifier: identifier,
                                               for: indexPath) as? CaptureSuggestionsCollectionHeader)!
-        header.subHeaderTitle.text = self.subHeaderTitle
+        header.subHeaderTitle.text = subHeaderTitle
         header.subHeaderTitle.font = giniConfiguration.customFont.with(weight: .bold, size: 14, style: .body)
-        header.topViewIcon.image = self.topViewIcon
-        header.topViewText.text = self.topViewText
+        header.topViewIcon.image = topViewIcon
+        header.topViewText.text = topViewText
         header.topViewText.font = giniConfiguration.customFont.with(weight: .bold, size: 14, style: .body)
         header.shouldShowTopViewIcon = topViewIcon != nil
         header.shouldShowSubHeader = subHeaderTitle != nil

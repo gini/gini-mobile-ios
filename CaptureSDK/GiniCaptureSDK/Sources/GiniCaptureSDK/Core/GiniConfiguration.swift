@@ -73,7 +73,7 @@ import UIKit
      */
     @available(*, unavailable,
     message: "Use the screen specific background color instead e.g. onboardingScreenBackgroundColor")
-    @objc public var backgroundColor: UIColor = UIColor.black
+    @objc public var backgroundColor = UIColor.black
     
     /**
      Sets custom validations that can be done apart from the default ones (file size, file type...).
@@ -87,14 +87,14 @@ import UIKit
      Sets the font used in the GiniCapture library by default.
      */
     @objc public lazy var customFont: GiniCaptureFont = GiniCaptureFont(regular: UIFont.systemFont(ofSize: 14,
-                                                                                                 weight: .regular),
-                                                                      bold: UIFont.systemFont(ofSize: 14,
-                                                                                              weight: .bold),
-                                                                      light: UIFont.systemFont(ofSize: 14,
-                                                                                               weight: .light),
-                                                                      thin: UIFont.systemFont(ofSize: 14,
-                                                                                              weight: .thin),
-                                                                      isEnabled: false)
+                                                                                                   weight: .regular),
+                                                                        bold: UIFont.systemFont(ofSize: 14,
+                                                                                                weight: .bold),
+                                                                        light: UIFont.systemFont(ofSize: 14,
+                                                                                                 weight: .light),
+                                                                        thin: UIFont.systemFont(ofSize: 14,
+                                                                                                weight: .thin),
+                                                                        isEnabled: false)
     
     /**
      Can be turned on during development to unlock extra information and to save captured images to camera roll.
@@ -242,7 +242,8 @@ import UIKit
     /**
      Sets the color of camera preview frame.
      */
-    @objc public var cameraPreviewFrameColor = GiniColor(lightModeColor: UIColor(white: 0.0, alpha: 0.7), darkModeColor: UIColor(white: 0.0, alpha: 0.7))
+    @objc public var cameraPreviewFrameColor = GiniColor(lightModeColor: UIColor(white: 0.0, alpha: 0.7),
+                                                         darkModeColor: UIColor(white: 0.0, alpha: 0.7))
     
     /**
      Sets the background color of camera buttons view.
@@ -347,12 +348,13 @@ import UIKit
     /**
      Sets the text color of the QR Code popup background.
      */
-    @objc public var qrCodePopupBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: UIColor.from(hex: 0x1c1c1e))
+    @objc public var qrCodePopupBackgroundColor = GiniColor(lightModeColor: .white,
+                                                            darkModeColor: Colors.Gini.charcoalGray)
     
     /**
      Sets the button color of the unsupported QR Code popup.
      */
-    @objc public var unsupportedQrCodePopupButtonColor : UIColor = .red
+    @objc public var unsupportedQrCodePopupButtonColor: UIColor = .red
     
     /**
      Sets the text color of the unsupported QR Code popup.
@@ -362,7 +364,8 @@ import UIKit
     /**
      Sets the  background color of the unsupported QR Code popup.
      */
-    @objc public var unsupportedQrCodePopupBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: UIColor.from(hex: 0x1c1c1e))
+    @objc public var unsupportedQrCodePopupBackgroundColor = GiniColor(lightModeColor: .white,
+                                                                       darkModeColor: Colors.Gini.charcoalGray)
     
     // MARK: Onboarding screens
 
@@ -495,7 +498,8 @@ import UIKit
     /**
      Sets the color of the pages container and toolbar.
      */
-    @objc public var multipagePagesContainerAndToolBarColor = GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: UIColor.from(hex: 0x1c1c1c))
+    @objc public var multipagePagesContainerAndToolBarColor = GiniColor(lightModeColor: Colors.Gini.pearl,
+                                                                        darkModeColor: Colors.Gini.nero)
     
     @objc private var _multipagePagesContainerAndToolBarColor: UIColor?
     
@@ -522,7 +526,8 @@ import UIKit
     /**
      Sets the background color of the page background.
      */
-    @objc public var multipagePageBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: UIColor.from(hex: 0x1c1c1e))
+    @objc public var multipagePageBackgroundColor = GiniColor(lightModeColor: .white,
+                                                              darkModeColor: Colors.Gini.charcoalGray)
     
     @objc private var _multipagePageBackgroundColor: UIColor?
     
@@ -573,14 +578,16 @@ import UIKit
     // MARK: Help screens
     
     /**
-     Sets the background color for all help screens.
+     Sets the background color for help screen.
      */
-    @objc public var helpScreenBackgroundColor =  GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: UIColor.from(hex: 0x1C1C1C))
+    @objc public var helpScreenBackgroundColor = GiniColor(lightModeColor: Colors.Gini.pearl,
+                                                           darkModeColor: Colors.Gini.nero)
     
     /**
      Sets the background color for the cells on help screen.
      */
-    @objc public var helpScreenCellsBackgroundColor =  GiniColor(lightModeColor: Colors.Gini.pearl, darkModeColor: UIColor.from(hex: 0x1C1C1C))
+    @objc public var helpScreenCellsBackgroundColor = GiniColor(lightModeColor: Colors.Gini.pearl,
+                                                                darkModeColor: Colors.Gini.nero)
     
     /**
      Sets the back button text in the navigation bar on the help menu screen. Use this if you only want to show the title.
@@ -603,6 +610,17 @@ import UIKit
     @objc public var shouldShowSupportedFormatsScreen = true
     
     // MARK: Supported formats
+    /**
+     Sets the background color for supported formats screen.
+     */
+    @objc public var supportedFormatsScreenBackgroundColor = GiniColor(lightModeColor: Colors.Gini.pearl,
+                                                                       darkModeColor: Colors.Gini.nero)
+    
+    /**
+     Sets the background color for the cells on supported formats screen.
+     */
+    @objc public var supportedFormatsScreenCellsBackgroundColor = GiniColor(lightModeColor: .white,
+                                                                            darkModeColor: Colors.Gini.systemBackgroundColor)
     
     /**
      Sets the color of the unsupported formats icon background to the specified color.
@@ -615,6 +633,17 @@ import UIKit
     @objc public var supportedFormatsIconColor = Colors.Gini.paleGreen
     
     // MARK: Open with tutorial options
+    /**
+     Sets the background color for Open with tutorial screen.
+     */
+    @objc public var openWithScreenBackgroundColor = GiniColor(lightModeColor: Colors.Gini.pearl,
+                                                               darkModeColor: Colors.Gini.nero)
+    
+    /**
+     Sets the background color for the cells on Open with tutorial screen.
+     */
+    @objc public var openWithScreenCellsBackgroundColor = GiniColor(lightModeColor: Colors.Gini.pearl,
+                                                                    darkModeColor: Colors.Gini.nero)
     
     /**
      Sets the text of the app name for the Open with tutorial texts.
@@ -627,6 +656,18 @@ import UIKit
     @objc public var stepIndicatorColor = Colors.Gini.blue
     
     // MARK: No results options
+    /**
+     Sets the background color for no results screen.
+     */
+    
+    @objc public var noResultsScreenBackgroundColor = GiniColor(lightModeColor: .white,
+                                                                darkModeColor: Colors.Gini.systemBackgroundColor)
+    
+    /**
+     Sets the background color for the cells on no results screen.
+     */
+    @objc public var noResultsScreenCellsBackgroundColor = GiniColor(lightModeColor: .white,
+                                                                     darkModeColor: Colors.Gini.systemBackgroundColor)
     
     /**
      Sets the color of the bottom button to the specified color.
@@ -658,7 +699,8 @@ import UIKit
     /**
      Sets the text color for the select more photos button on the albums screen.
      */
-    @objc public var albumsScreenSelectMorePhotosTextColor =  GiniColor(lightModeColor: Colors.Gini.blue, darkModeColor: Colors.Gini.blue)
+    @objc public var albumsScreenSelectMorePhotosTextColor =  GiniColor(lightModeColor: Colors.Gini.blue,
+                                                                        darkModeColor: Colors.Gini.blue)
     
     /**
      Set an array of additional custom help menu items . Those items will be presented as table view cells on the help menu screen. By selecting the cell the user will be redirected to the page, which represented by viewController provided by customer during the  `HelpMenuViewController.Item` initialization.

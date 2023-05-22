@@ -9,9 +9,9 @@
 import UIKit
 
 typealias SupportedFormatCollectionSection = (title: String,
-    items: [String],
-    itemsImage: UIImage?,
-    itemsImageBackgroundColor: UIColor)
+                                              items: [String],
+                                              itemsImage: UIImage?,
+                                              itemsImageBackgroundColor: UIColor)
 
 final class SupportedFormatsViewController: UITableViewController {
     
@@ -60,14 +60,11 @@ final class SupportedFormatsViewController: UITableViewController {
         tableView.sectionHeaderHeight = sectionHeight
         tableView.allowsSelection = false
         
-        if #available(iOS 13.0, *) {
-            tableView.backgroundColor = Colors.Gini.dynamicPearl
-        } else {
-            tableView.backgroundColor = Colors.Gini.pearl
-        }
-        
+        tableView.backgroundColor = UIColor.from(giniColor: giniConfiguration.supportedFormatsScreenBackgroundColor)
+
         tableView.alwaysBounceVertical = false
         tableView.contentInsetAdjustmentBehavior = .never
+        tableView.showsVerticalScrollIndicator = false
     }
     
     override func viewDidLoad() {
@@ -97,6 +94,7 @@ final class SupportedFormatsViewController: UITableViewController {
         cell.textLabel?.font = giniConfiguration.customFont.with(weight: .regular, size: 14, style: .body)
         cell.imageView?.image = section.itemsImage
         cell.imageBackgroundView.backgroundColor = section.itemsImageBackgroundColor
+        cell.backgroundColor = UIColor.from(giniColor: giniConfiguration.supportedFormatsScreenCellsBackgroundColor)
 
         return cell
     }
