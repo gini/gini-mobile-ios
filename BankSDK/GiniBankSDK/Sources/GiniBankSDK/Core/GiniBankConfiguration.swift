@@ -499,16 +499,16 @@ public final class GiniBankConfiguration: NSObject {
      */
     @objc public var navigationBarAnalysisTitleBackButton = ""
     
-    // MARK: Help screens
+    // MARK: Help menu
     
     /**
-     Sets the background color for help screen.
+     Sets the background color for help menu screen.
      */
     @objc public var helpScreenBackgroundColor = GiniColor(lightModeColor: Colors.Gini.pearl,
                                                             darkModeColor: Colors.Gini.nero)
     
     /**
-     Sets the background color for the cells on help screen.
+     Sets the background color for the cells on help menu screen.
      */
     @objc public var helpScreenCellsBackgroundColor = GiniColor(lightModeColor: Colors.Gini.pearl,
                                                                  darkModeColor: Colors.Gini.nero)
@@ -566,12 +566,6 @@ public final class GiniBankConfiguration: NSObject {
                                                                darkModeColor: Colors.Gini.nero)
     
     /**
-     Sets the background color for the cells on Open with tutorial screen.
-     */
-    @objc public var openWithScreenCellsBackgroundColor = GiniColor(lightModeColor: Colors.Gini.pearl,
-                                                                    darkModeColor: Colors.Gini.nero)
-    
-    /**
      Sets the text of the app name for the Open with tutorial texts.
      */
     @objc public var openWithAppNameForTexts = Bundle.main.appName
@@ -589,12 +583,6 @@ public final class GiniBankConfiguration: NSObject {
     
     @objc public var noResultsScreenBackgroundColor = GiniColor(lightModeColor: .white,
                                                                 darkModeColor: Colors.Gini.systemBackgroundColor)
-    
-    /**
-     Sets the background color for the cells on no results screen.
-     */
-    @objc public var noResultsScreenCellsBackgroundColor = GiniColor(lightModeColor: .white,
-                                                                     darkModeColor: Colors.Gini.systemBackgroundColor)
     
     /**
      Sets the color of the bottom button to the specified color.
