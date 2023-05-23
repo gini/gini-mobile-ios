@@ -10,13 +10,13 @@ If you plan to use a custom name for localizable strings, you need to set it in 
 - [Review screen](#review-screen)
 - [Multipage Review screen](#multipage-review-screen)
 - [Analysis screen](#analysis-screen)
-- [Supported formats screen](#supported-formats-screen)
-- [Open with tutorial screen](#open-with-tutorial-screen)
 - [Capturing tips screen](#capturing-tips-screen)
 - [Gallery album screen](#gallery-album-screen)
 - [Onboarding screens](#onboarding-screens)
 - [Help screen](#help-screen)
 - [No results screen](#no-results-screen)
+- [Supported formats screen](#supported-formats-screen)
+- [Open with tutorial screen](#open-with-tutorial-screen)
 - [Albums screen](#albums-screen)
 - [Return assistant](#return-assistant)
   - [Onboarding screen](#onboarding-screen)
@@ -200,59 +200,6 @@ Some background and text colors use the `GiniColor` type with which you can set 
 - Indicator color &#8594; `GiniBankConfiguration.analysisLoadingIndicatorColor` (Only with PDFs)
 - Text &#8594; <span style="color:#009EDF">*ginicapture.analysis.loadingText*</span> localized string
 
-## Supported formats screen
-
-<br>
-<center><img src="img/Customization guide/Supported formats.jpg" height="500"/></center>
-</br>
-
-##### Navigation bar
-- Back button
-  - With image and title
-	  - Image &#8594; <span style="color:#009EDF">*arrowBack*</span> image asset
-	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.help.backToMenu*</span> localized string
-  - With title only
-	  - Title &#8594; `GiniBankConfiguration.navigationBarHelpScreenTitleBackToMenuButton`
-
-##### 1. Supported format cells
-- Supported fortmats icon &#8594; <span style="color:#009EDF">*supportedFormatsIcon*</span> image asset
-- Supported formats icon color &#8594; `GiniBankConfiguration.supportedFormatsIconColor`
-- Non supported fortmats icon &#8594; <span style="color:#009EDF">*nonSupportedFormatsIcon*</span> image asset
-- Non supported formats icon color &#8594; `GiniBankConfiguration.nonSupportedFormatsIconColor`
-
-## Open with tutorial screen
-
-<br>
-<center><img src="img/Customization guide/Open with tutorial.jpg" height="500"/></center>
-</br>
-
-##### Navigation bar
-- Back button
-  - With image and title
-	  - Image &#8594; <span style="color:#009EDF">*arrowBack*</span> image asset
-	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.help.backToMenu*</span> localized string
-  - With title only
-	  - Title &#8594; `GiniBankConfiguration.navigationBarHelpScreenTitleBackToMenuButton`
-
-##### 1. Header
-- Text &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.collectionHeader*</span> localized string
-
-##### 2. Open with steps
-- App name &#8594; `GiniBankConfiguration.openWithAppNameForTexts`
-- Step indicator color &#8594; `GiniBankConfiguration.stepIndicatorColor`
-- Step 1
-	- Title &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.step1.title*</span> localized string
-	- Subtitle &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.step1.subtitle*</span> localized string
-	- Image &#8594; <span style="color:#009EDF">*openWithTutorialStep1* (German) and *openWithTutorialStep1_en* (English)</span> image assets
-- Step 2
-	- Title &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.step2.title*</span> localized string
-	- Subtitle &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.step2.subtitle*</span> localized string
-	- Image &#8594; <span style="color:#009EDF">*openWithTutorialStep2* (German) and *openWithTutorialStep2_en* (English)</span> image assets
-- Step 3
-	- Title &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.step3.title*</span> localized string
-	- Subtitle &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.step3.subtitle*</span> localized string
-	- Image &#8594; <span style="color:#009EDF">*openWithTutorialStep3* (German) and *openWithTutorialStep3_en* (English)</span> image assets
-
 ## Capturing tips screen
 
 <br>
@@ -265,14 +212,18 @@ Some background and text colors use the `GiniColor` type with which you can set 
 ##### 2. Header container
 - Text &#8594; <span style="color:#009EDF">*ginicapture.noresults.warningHelpMenu*</span> localized string
 
-##### 3. Capturing tip images
+##### 3. Background
+
+- Same background color as No results screen &#8594; `GiniBankConfiguration.noResultsScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
+
+##### 4. Capturing tip images
 - Tip 1 image &#8594; <span style="color:#009EDF">*captureSuggestion1*</span> image asset
 - Tip 2 image &#8594; <span style="color:#009EDF">*captureSuggestion2*</span> image asset
 - Tip 3 image &#8594; <span style="color:#009EDF">*captureSuggestion3*</span> image asset
 - Tip 4 image &#8594; <span style="color:#009EDF">*captureSuggestion4*</span> image asset
 - Tip 5 image &#8594; <span style="color:#009EDF">*captureSuggestion5*</span> image asset
 
-##### 4. Go to camera button
+##### 5. Go to camera button
 - Background color &#8594; `GiniBankConfiguration.noResultsBottomButtonColor`
 - Text color &#8594; `GiniBankConfiguration.noResultsBottomButtonTextColor`
 - Corner radius &#8594; `GiniBankConfiguration.noResultsBottomButtonCornerRadius`
@@ -358,7 +309,10 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 - Tip 4 image &#8594; <span style="color:#009EDF">*captureSuggestion4*</span> image asset
 - Tip 5 image &#8594; <span style="color:#009EDF">*captureSuggestion5*</span> image asset
 
-##### 3. Back to camera button
+##### 3. Background
+- Background color &#8594; `GiniBankConfiguration.noResultsScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
+
+##### 4. Back to camera button
 - Background color &#8594; `GiniBankConfiguration.noResultsBottomButtonColor`
 - Text color &#8594; `GiniBankConfiguration.noResultsBottomButtonTextColor`
 - Corner radius &#8594; `GiniBankConfiguration.noResultsBottomButtonCornerRadius`
@@ -366,6 +320,69 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
   - With image and title
       - Image &#8594; <span style="color:#009EDF">*cameraIcon*</span> image asset
       - Title &#8594; <span style="color:#009EDF">*ginicapture.noresults.gotocamera*</span> localized string
+
+## Supported formats screen
+
+<br>
+<center><img src="img/Customization guide/Supported formats.jpg" height="500"/></center>
+</br>
+
+##### Navigation bar
+- Back button
+  - With image and title
+	  - Image &#8594; <span style="color:#009EDF">*arrowBack*</span> image asset
+	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.help.backToMenu*</span> localized string
+  - With title only
+	  - Title &#8594; `GiniBankConfiguration.navigationBarHelpScreenTitleBackToMenuButton`
+
+##### 1. Supported format cells
+- Supported fortmats icon &#8594; <span style="color:#009EDF">*supportedFormatsIcon*</span> image asset
+- Supported formats icon color &#8594; `GiniBankConfiguration.supportedFormatsIconColor`
+- Non supported fortmats icon &#8594; <span style="color:#009EDF">*nonSupportedFormatsIcon*</span> image asset
+- Non supported formats icon color &#8594; `GiniBankConfiguration.nonSupportedFormatsIconColor`
+
+##### 2. Table View Cells
+- Background color &#8594; `GiniBankConfiguration.supportedFormatsScreenCellsBackgroundColor` using `GiniColor` with dark mode and light mode colors
+
+##### 3. Background
+- Background color &#8594; `GiniBankConfiguration.supportedFormatsScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
+
+## Open with tutorial screen
+
+<br>
+<center><img src="img/Customization guide/Open with tutorial.jpg" height="500"/></center>
+</br>
+
+##### Navigation bar
+- Back button
+  - With image and title
+	  - Image &#8594; <span style="color:#009EDF">*arrowBack*</span> image asset
+	  - Title &#8594; <span style="color:#009EDF">*ginicapture.navigationbar.help.backToMenu*</span> localized string
+  - With title only
+	  - Title &#8594; `GiniBankConfiguration.navigationBarHelpScreenTitleBackToMenuButton`
+
+##### 1. Header
+- Text &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.collectionHeader*</span> localized string
+
+##### 2. Open with steps
+- App name &#8594; `GiniBankConfiguration.openWithAppNameForTexts`
+- Step indicator color &#8594; `GiniBankConfiguration.stepIndicatorColor`
+- Step 1
+	- Title &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.step1.title*</span> localized string
+	- Subtitle &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.step1.subtitle*</span> localized string
+	- Image &#8594; <span style="color:#009EDF">*openWithTutorialStep1* (German) and *openWithTutorialStep1_en* (English)</span> image assets
+- Step 2
+	- Title &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.step2.title*</span> localized string
+	- Subtitle &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.step2.subtitle*</span> localized string
+	- Image &#8594; <span style="color:#009EDF">*openWithTutorialStep2* (German) and *openWithTutorialStep2_en* (English)</span> image assets
+- Step 3
+	- Title &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.step3.title*</span> localized string
+	- Subtitle &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.step3.subtitle*</span> localized string
+	- Image &#8594; <span style="color:#009EDF">*openWithTutorialStep3* (German) and *openWithTutorialStep3_en* (English)</span> image assets
+
+##### 3. Background
+
+- Background color &#8594; `GiniBankConfiguration.openWithScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
 ## Albums screen
 
