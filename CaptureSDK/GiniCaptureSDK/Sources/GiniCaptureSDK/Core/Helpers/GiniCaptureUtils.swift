@@ -155,7 +155,7 @@ public struct Colors {
         
         @available(iOS 13.0, *)
         public static var dynamicPearl = UIColor { (traitCollection: UITraitCollection) -> UIColor in
-            traitCollection.userInterfaceStyle == .dark ? nero : veryLightGray
+            traitCollection.userInterfaceStyle == .dark ? nero : pearl
         }
         
         @available(iOS 13.0, *)
