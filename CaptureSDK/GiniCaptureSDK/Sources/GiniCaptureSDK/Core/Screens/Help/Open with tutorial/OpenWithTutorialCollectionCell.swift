@@ -203,7 +203,7 @@ final class OpenWithTutorialCollectionCell: UICollectionViewCell {
     }
     
     public func fillWith(item: OpenWithTutorialStep, at position: Int, giniConfiguration: GiniConfiguration) {
-        backgroundColor = UIColor.from(giniColor: giniConfiguration.openWithScreenCellsBackgroundColor)
+        backgroundColor = UIColor.from(giniColor: giniConfiguration.openWithScreenBackgroundColor)
         stepIndicator.text = String(describing: position + 1)
         stepTitle.text = item.title
         stepTitle.font = giniConfiguration.customFont.with(weight: .regular,

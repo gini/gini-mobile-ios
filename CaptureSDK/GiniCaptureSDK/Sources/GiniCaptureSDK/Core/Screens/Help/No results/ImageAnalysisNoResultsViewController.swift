@@ -186,7 +186,7 @@ extension ImageAnalysisNoResultsViewController: UICollectionViewDataSource {
         cell.suggestionText.text = captureSuggestions[indexPath.row].text
         cell.suggestionText.font = giniConfiguration.customFont.with(weight: .regular, size: 14, style: .body)
         cell.suggestionImage.image = captureSuggestions[indexPath.row].image
-        cell.backgroundColor = UIColor.from(giniColor: giniConfiguration.noResultsScreenCellsBackgroundColor)
+        cell.backgroundColor = UIColor.from(giniColor: giniConfiguration.noResultsScreenBackgroundColor)
         return cell
     }
     
