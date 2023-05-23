@@ -1290,6 +1290,13 @@ public final class GiniBankConfiguration: NSObject {
         configuration.helpScreenBackgroundColor = self.helpScreenBackgroundColor
         configuration.helpScreenCellsBackgroundColor = self.helpScreenCellsBackgroundColor
         
+        configuration.noResultsScreenBackgroundColor = self.noResultsScreenBackgroundColor
+        
+        configuration.openWithScreenBackgroundColor = self.openWithScreenBackgroundColor
+        
+        configuration.supportedFormatsScreenBackgroundColor = self.supportedFormatsScreenBackgroundColor
+        configuration.supportedFormatsScreenCellsBackgroundColor = self.supportedFormatsScreenCellsBackgroundColor
+        
         configuration.navigationBarHelpMenuTitleBackToCameraButton = self.navigationBarHelpMenuTitleBackToCameraButton
         configuration.navigationBarHelpScreenTitleBackToMenuButton = self.navigationBarHelpScreenTitleBackToMenuButton
         
@@ -1411,7 +1418,6 @@ public final class GiniBankConfiguration: NSObject {
         configuration.digitalInvoiceAddonPriceColor = self.digitalInvoiceAddonPriceColor
         configuration.digitalInvoiceAddonLabelColor = self.digitalInvoiceAddonLabelColor
         configuration.digitalInvoiceTotalPriceColor = self.digitalInvoiceTotalPriceColor
-        
 
         configuration.digitalInvoiceTotalPriceMainUnitFont = self.digitalInvoiceTotalPriceMainUnitFont
         configuration.digitalInvoiceTotalPriceFractionalUnitFont = self.digitalInvoiceTotalPriceFractionalUnitFont
@@ -1540,6 +1546,13 @@ public final class GiniBankConfiguration: NSObject {
         
         giniBankConfiguration.helpScreenBackgroundColor = configuration.helpScreenBackgroundColor
         giniBankConfiguration.helpScreenCellsBackgroundColor = configuration.helpScreenCellsBackgroundColor
+        
+        giniBankConfiguration.noResultsScreenBackgroundColor = configuration.noResultsScreenBackgroundColor
+        
+        giniBankConfiguration.openWithScreenBackgroundColor = configuration.openWithScreenBackgroundColor
+        
+        giniBankConfiguration.supportedFormatsScreenBackgroundColor = configuration.supportedFormatsScreenBackgroundColor
+        giniBankConfiguration.supportedFormatsScreenCellsBackgroundColor = configuration.supportedFormatsScreenCellsBackgroundColor
         
         giniBankConfiguration.navigationBarHelpMenuTitleBackToCameraButton = configuration.navigationBarHelpMenuTitleBackToCameraButton
         giniBankConfiguration.navigationBarHelpScreenTitleBackToMenuButton = configuration.navigationBarHelpScreenTitleBackToMenuButton
