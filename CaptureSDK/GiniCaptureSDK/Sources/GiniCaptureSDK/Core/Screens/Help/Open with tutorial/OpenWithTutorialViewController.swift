@@ -129,7 +129,7 @@ final class OpenWithTutorialViewController: UICollectionViewController {
                              size: OpenWithTutorialCollectionHeader.maxHeaderFontSize,
                              style: .body)
         header.headerTitle.text = headerTitle
-        header.headerTitle.backgroundColor = UIColor.from(giniColor: giniConfiguration.openWithScreenCellsBackgroundColor)
+        header.headerTitle.backgroundColor = UIColor.from(giniColor: giniConfiguration.openWithScreenBackgroundColor)
         return header
     }
     
