@@ -11,6 +11,7 @@ import UIKit
 import GiniCaptureSDK
 import GiniHealthAPILibrary
 import GiniHealthSDK
+import GiniBankAPILibrary
 
 final class AppCoordinator: Coordinator {
     
@@ -29,7 +30,7 @@ final class AppCoordinator: Coordinator {
     }()
     
     lazy var giniConfiguration: GiniConfiguration = {
-        let giniConfiguration = GiniConfiguration()
+        let giniConfiguration = GiniConfiguration.shared
         giniConfiguration.debugModeOn = true
         giniConfiguration.fileImportSupportedTypes = .pdf_and_images
         giniConfiguration.openWithEnabled = true
@@ -48,11 +49,11 @@ final class AppCoordinator: Coordinator {
         return giniConfiguration
     }()
     
-    private lazy var client: Client = CredentialsManager.fetchClientFromBundle()
-    lazy var apiLib = GiniHealthAPI.Builder(client: client).build()
-    lazy var health = GiniHealth(with: apiLib)
+    private lazy var client: GiniHealthAPILibrary.Client = CredentialsManager.fetchClientFromBundle()
+    private lazy var apiLib = GiniHealthAPI.Builder(client: client).build()
+    private lazy var health = GiniHealth(with: apiLib)
 
-    private var documentMetadata: Document.Metadata?
+    private var documentMetadata: GiniHealthAPILibrary.Document.Metadata?
     private let documentMetadataBranchId = "GiniHealthExampleIOS"
     private let documentMetadataAppFlowKey = "AppFlow"
 
@@ -107,22 +108,29 @@ final class AppCoordinator: Coordinator {
     }
     
     
-    fileprivate func showComponentAPI(with pages: [GiniCapturePage]? = nil) {
-        checkIfAnyBankingAppsInstalled(from: self.rootViewController) {
-            let componentAPICoordinator = ComponentAPICoordinator(pages: pages ?? [],
-                                                                  configuration: self.giniConfiguration,
-                                                                  documentService: self.componentAPIDocumentService(),
-                                                                  giniHealth: self.health)
-            componentAPICoordinator.delegate = self
-            componentAPICoordinator.start()
-            self.add(childCoordinator: componentAPICoordinator)
+    fileprivate func showScreenAPI(with pages: [GiniCapturePage]? = nil) {
+        let metadata = GiniBankAPILibrary.Document.Metadata(branchId: documentMetadataBranchId,
+                                             additionalHeaders: [documentMetadataAppFlowKey: "ScreenAPI"])
 
-            self.rootViewController.present(componentAPICoordinator.rootViewController, animated: true, completion: nil)
-        }
+        let screenAPICoordinator = ScreenAPICoordinator(configuration: giniConfiguration,
+                                                        importedDocuments: pages?.map { $0.document },
+                                                        client: GiniBankAPILibrary.Client(id: self.client.id,
+                                                                                          secret: self.client.secret,
+                                                                                          domain: self.client.domain),
+                                                        documentMetadata: metadata)
+        
+        screenAPICoordinator.delegate = self
+        
+        screenAPICoordinator.giniHealth = health
+        
+        screenAPICoordinator.start(healthAPI: apiLib)
+        add(childCoordinator: screenAPICoordinator)
+
+        rootViewController.present(screenAPICoordinator.rootViewController, animated: true, completion: nil)
     }
     
-    private var testDocument: Document?
-    private var testDocumentExtractions: [Extraction]?
+    private var testDocument: GiniHealthAPILibrary.Document?
+    private var testDocumentExtractions: [GiniHealthAPILibrary.Extraction]?
     
     fileprivate func checkIfAnyBankingAppsInstalled(from viewController: UIViewController, completion: @escaping () -> Void) {
         health.checkIfAnyPaymentProviderAvailable { result in
@@ -191,7 +199,7 @@ final class AppCoordinator: Coordinator {
                                                         metadata: nil) { result in
                     switch result {
                     case .success(let createdDocument):
-                        let partialDocInfo = PartialDocumentInfo(document: createdDocument.links.document)
+                        let partialDocInfo = GiniHealthAPILibrary.PartialDocumentInfo(document: createdDocument.links.document)
                         self.health.documentService.createDocument(fileName: nil,
                                                                 docType: nil,
                                                                 type: .composite(CompositeDocumentInfo(partialDocuments: [partialDocInfo])),
@@ -226,22 +234,14 @@ final class AppCoordinator: Coordinator {
         }
     }
     
-    fileprivate func componentAPIDocumentService() -> ComponentAPIDocumentServiceProtocol {
-        
-        documentMetadata = Document.Metadata(branchId: documentMetadataBranchId,
-                                             additionalHeaders: [documentMetadataAppFlowKey: "ComponentAPI"])
-        return ComponentAPIDocumentsService(lib: apiLib, documentMetadata: documentMetadata)
-    }
-    
-    
     fileprivate func showOpenWithSwitchDialog(for pages: [GiniCapturePage]) {
         let alertViewController = UIAlertController(title: "Importierte Datei",
                                                     message: "Möchten Sie die importierte Datei mit dem " +
-            "ScreenAPI oder ComponentAPI verwenden?",
+            "Gini Health SDK verwenden?",
                                                     preferredStyle: .alert)
                
-        alertViewController.addAction(UIAlertAction(title: "Component API", style: .default) { [weak self] _ in
-            self?.showComponentAPI(with: pages)
+        alertViewController.addAction(UIAlertAction(title: "Ja", style: .default) { [weak self] _ in
+            self?.showScreenAPI(with: pages)
         })
         
         rootViewController.present(alertViewController, animated: true, completion: nil)
@@ -282,24 +282,20 @@ final class AppCoordinator: Coordinator {
 // MARK: SelectAPIViewControllerDelegate
 
 extension AppCoordinator: SelectAPIViewControllerDelegate {
-    
     func selectAPI(viewController: SelectAPIViewController, didSelectApi api: GiniCaptureAPIType) {
         switch api {
         case .screen:
-            break
+            showScreenAPI()
         case .component:
-            showComponentAPI()
+            break
         case .paymentReview:
             showPaymentReviewWithTestDocument()
         }
     }
-    
 }
 
-// MARK: ComponentAPICoordinatorDelegate
-
-extension AppCoordinator: ComponentAPICoordinatorDelegate {
-    func componentAPI(coordinator: ComponentAPICoordinator, didFinish: ()) {
+extension AppCoordinator: ScreenAPICoordinatorDelegate{
+    func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ()) {
         coordinator.rootViewController.dismiss(animated: true, completion: nil)
         self.remove(childCoordinator: coordinator)
     }

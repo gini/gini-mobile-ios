@@ -9,6 +9,16 @@
 import UIKit
 import GiniCaptureSDK
 
+enum CustomAnalysisError: GiniCaptureError {
+    case analysisFailed
+    var message: String {
+        switch self {
+        case .analysisFailed:
+            return NSLocalizedString("analysisFailedErrorMessage", comment: "analysis failed error message")
+        }
+    }
+}
+
 extension UIViewController {
     func showErrorDialog(for error: Error, positiveAction: (() -> Void)?) {
         let message: String
@@ -45,7 +55,7 @@ extension UIViewController {
                 confirmActionTitle = NSLocalizedString("ginicapture.camera.mixedarrayspopup.usePhotos",
                                                        bundle: Bundle(for: GiniCapture.self),
                                                        comment: "use photos button text in popup")
-            case .failedToOpenDocument:
+            case .failedToOpenDocument, .multiplePdfsUnsupported:
                 break
             }
         case let visionError as CustomAnalysisError:
