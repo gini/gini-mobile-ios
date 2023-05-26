@@ -99,7 +99,7 @@ extension ScreenAPICoordinator: UINavigationControllerDelegate {
                               animationControllerFor operation: UINavigationController.Operation,
                               from fromVC: UIViewController,
                               to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if let fromVC = fromVC as? PaymentReviewViewController {
+        if fromVC is PaymentReviewViewController {
             delegate?.screenAPI(coordinator: self, didFinish: ())
         }
         return nil

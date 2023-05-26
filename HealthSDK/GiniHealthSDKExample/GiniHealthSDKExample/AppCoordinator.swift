@@ -52,18 +52,18 @@ final class AppCoordinator: Coordinator {
     private lazy var client: GiniHealthAPILibrary.Client = CredentialsManager.fetchClientFromBundle()
     private lazy var apiLib = GiniHealthAPI.Builder(client: client).build()
     private lazy var health = GiniHealth(with: apiLib)
-
+    
     private var documentMetadata: GiniHealthAPILibrary.Document.Metadata?
     private let documentMetadataBranchId = "GiniHealthExampleIOS"
     private let documentMetadataAppFlowKey = "AppFlow"
-
+    
     init(window: UIWindow) {
         self.window = window
         print("------------------------------------\n\n",
               "📸 Gini Capture SDK for iOS (\(GiniCapture.versionString))\n\n",
-            "      - Client id:  \(client.id)\n",
-            "      - Client email domain:  \(client.domain)",
-            "\n\n------------------------------------\n")
+              "      - Client id:  \(client.id)\n",
+              "      - Client email domain:  \(client.domain)",
+              "\n\n------------------------------------\n")
     }
     
     func start() {
@@ -88,7 +88,7 @@ final class AppCoordinator: Coordinator {
             if let document = document {
                 do {
                     try GiniCapture.validate(document,
-                                            withConfig: self.giniConfiguration)
+                                             withConfig: self.giniConfiguration)
                     self.showOpenWithSwitchDialog(for: [GiniCapturePage(document: document, error: nil)])
                 } catch {
                     self.showExternalDocumentNotValidDialog()
@@ -98,9 +98,11 @@ final class AppCoordinator: Coordinator {
     }
     
     func processBankUrl() {
-            self.popToRootViewControllerIfNeeded()
-            showReturnMessage()
-        }
+        //self.popToRootViewControllerIfNeeded()
+        rootViewController.dismiss(animated: true)
+        showReturnMessage()
+        
+    }
     
     fileprivate func showSelectAPIScreen() {
         self.window.rootViewController = rootViewController
@@ -110,8 +112,8 @@ final class AppCoordinator: Coordinator {
     
     fileprivate func showScreenAPI(with pages: [GiniCapturePage]? = nil) {
         let metadata = GiniBankAPILibrary.Document.Metadata(branchId: documentMetadataBranchId,
-                                             additionalHeaders: [documentMetadataAppFlowKey: "ScreenAPI"])
-
+                                                            additionalHeaders: [documentMetadataAppFlowKey: "ScreenAPI"])
+        
         let screenAPICoordinator = ScreenAPICoordinator(configuration: giniConfiguration,
                                                         importedDocuments: pages?.map { $0.document },
                                                         client: GiniBankAPILibrary.Client(id: self.client.id,
@@ -125,7 +127,7 @@ final class AppCoordinator: Coordinator {
         
         screenAPICoordinator.start(healthAPI: apiLib)
         add(childCoordinator: screenAPICoordinator)
-
+        
         rootViewController.present(screenAPICoordinator.rootViewController, animated: true, completion: nil)
     }
     
@@ -194,16 +196,16 @@ final class AppCoordinator: Coordinator {
                 self.selectAPIViewController.showActivityIndicator()
                 
                 self.health.documentService.createDocument(fileName: nil,
-                                                        docType: nil,
-                                                        type: .partial(testDocumentData),
-                                                        metadata: nil) { result in
+                                                           docType: nil,
+                                                           type: .partial(testDocumentData),
+                                                           metadata: nil) { result in
                     switch result {
                     case .success(let createdDocument):
                         let partialDocInfo = GiniHealthAPILibrary.PartialDocumentInfo(document: createdDocument.links.document)
                         self.health.documentService.createDocument(fileName: nil,
-                                                                docType: nil,
-                                                                type: .composite(CompositeDocumentInfo(partialDocuments: [partialDocInfo])),
-                                                                metadata: nil) { result in
+                                                                   docType: nil,
+                                                                   type: .composite(CompositeDocumentInfo(partialDocuments: [partialDocInfo])),
+                                                                   metadata: nil) { result in
                             switch result {
                             case .success(let compositeDocument):
                                 self.health.setDocumentForReview(documentId: compositeDocument.id) { result in
@@ -237,9 +239,9 @@ final class AppCoordinator: Coordinator {
     fileprivate func showOpenWithSwitchDialog(for pages: [GiniCapturePage]) {
         let alertViewController = UIAlertController(title: "Importierte Datei",
                                                     message: "Möchten Sie die importierte Datei mit dem " +
-            "Gini Health SDK verwenden?",
+                                                    "Gini Health SDK verwenden?",
                                                     preferredStyle: .alert)
-               
+        
         alertViewController.addAction(UIAlertAction(title: "Ja", style: .default) { [weak self] _ in
             self?.showScreenAPI(with: pages)
         })
