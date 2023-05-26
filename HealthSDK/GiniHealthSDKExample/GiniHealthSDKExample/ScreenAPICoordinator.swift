@@ -49,7 +49,8 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
     }
     
     func start(healthAPI: GiniHealthAPI) {
-        let viewController = GiniCapture.viewController(configuration: visionConfiguration,
+        let viewController = GiniCapture.viewController(importedDocuments: visionDocuments,
+                                                        configuration: visionConfiguration,
                                                         resultsDelegate: self,
                                                         networkingService: HealthNetworkingService(lib: healthAPI))
         screenAPIViewController = RootNavigationController(rootViewController: viewController)
