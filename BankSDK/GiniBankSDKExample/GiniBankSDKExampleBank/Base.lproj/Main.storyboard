@@ -197,7 +197,6 @@
                                     </stackView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="rCc-Wp-FrY" firstAttribute="width" secondItem="2gF-VP-3K5" secondAttribute="width" multiplier="0.89372" id="BfK-Wi-9Sq"/>
                                     <constraint firstItem="rCc-Wp-FrY" firstAttribute="top" secondItem="2gF-VP-3K5" secondAttribute="topMargin" constant="16" id="STx-lC-8gv"/>
                                     <constraint firstItem="rCc-Wp-FrY" firstAttribute="centerX" secondItem="2gF-VP-3K5" secondAttribute="centerX" id="YaN-u0-AAR"/>
                                 </constraints>
