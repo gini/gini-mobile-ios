@@ -49,7 +49,6 @@ Some background and text colors use the `GiniColor` type with which you can set 
     - <span style="color:#009EDF">*ginicapture.multipagereview.reorderContainerTooltipMessage*</span> localized string for reorder tooltip
 
 ##### 4. Gini Capture font
-
 - Font &#8594;  `GiniConfiguration.customFont`
 
 ## Camera screen
@@ -204,7 +203,6 @@ Some background and text colors use the `GiniColor` type with which you can set 
 - Text &#8594; <span style="color:#009EDF">*ginicapture.noresults.warningHelpMenu*</span> localized string
 
 ##### 3. Background
-
 - Same background color as No results screen &#8594; `GiniConfiguration.noResultsScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
 ##### 4. Capturing tip images
@@ -258,7 +256,7 @@ Some background and text colors use the `GiniColor` type with which you can set 
 ## Help screen
 
 <br>
-<center><img src="img/Customization guide/Help screen.png" height="500"/></center>
+<center><img src="img/Customization guide/Help screen.jpg" height="500"/></center>
 </br>
 
 ##### 1. Navigation bar
@@ -271,21 +269,18 @@ Some background and text colors use the `GiniColor` type with which you can set 
 	  - Title &#8594; `GiniConfiguration.navigationBarHelpMenuTitleBackToCameraButton`
 
 ##### 2. Table View Cells
-
 - Background color &#8594; `GiniConfiguration.helpScreenCellsBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
-##### 3. Background
-
-- Background color &#8594; `GiniConfiguration.helpScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
-
-##### 4. Additional help menu items
-
+##### 3. Additional help menu items
 - Custom help menu items &#8594; `GiniConfiguration.customMenuItems` an array of `HelpMenuViewController.Item` objects
+
+##### 4. Background
+- Background color &#8594; `GiniConfiguration.helpScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
 ## No results screen
 
 <br>
-<center><img src="img/Customization guide/No results.png" height="500"/></center>
+<center><img src="img/Customization guide/No results.jpg" height="500"/></center>
 </br>
 
 ##### 1. Warning container
@@ -305,7 +300,6 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 - Tip 5 image &#8594; <span style="color:#009EDF">*captureSuggestion5*</span> image asset
 
 ##### 3. Background
-
 - Background color &#8594; `GiniConfiguration.noResultsScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
 ##### 4. Back to camera button
@@ -360,11 +354,9 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 	  - Title &#8594; `GiniConfiguration.navigationBarHelpScreenTitleBackToMenuButton`
 
 ##### 1. Header
-
 - Text &#8594; <span style="color:#009EDF">*ginicapture.help.openWithTutorial.collectionHeader*</span> localized string
 
 ##### 2. Open with steps
-
 - App name &#8594; `GiniConfiguration.openWithAppNameForTexts`
 - Step indicator color &#8594; `GiniConfiguration.stepIndicatorColor`
 - Step 1
@@ -381,5 +373,4 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 	- Image &#8594; <span style="color:#009EDF">*openWithTutorialStep3* (German) and *openWithTutorialStep3_en* (English)</span> image assets
 
 ##### 3. Background
-
 - Background color &#8594; `GiniConfiguration.openWithScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
