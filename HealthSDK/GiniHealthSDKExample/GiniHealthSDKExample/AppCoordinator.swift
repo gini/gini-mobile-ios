@@ -98,7 +98,6 @@ final class AppCoordinator: Coordinator {
     }
     
     func processBankUrl() {
-        //self.popToRootViewControllerIfNeeded()
         rootViewController.dismiss(animated: true)
         showReturnMessage()
         
