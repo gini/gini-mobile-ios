@@ -193,7 +193,7 @@ Some background and text colors use the `GiniColor` type with which you can set 
 ## Capturing tips screen
 
 <br>
-<center><img src="img/Customization guide/Tips for photos.png" height="500"/></center>
+<center><img src="img/Customization guide/Tips for photos.jpg" height="500"/></center>
 </br>
 
 ##### 1. Navigation bar

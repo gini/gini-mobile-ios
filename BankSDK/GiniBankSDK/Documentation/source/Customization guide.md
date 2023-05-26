@@ -288,7 +288,7 @@ Some background and text colors use the `GiniColor` type with which you can set 
 ## No results screen
 
 <br>
-<center><img src="img/Customization guide/No results.png" height="500"/></center>
+<center><img src="img/Customization guide/No results.jpg" height="500"/></center>
 </br>
 
 ##### 1. Warning container
