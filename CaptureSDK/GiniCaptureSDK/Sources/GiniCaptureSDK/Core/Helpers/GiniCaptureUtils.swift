@@ -146,42 +146,36 @@ public struct Colors {
         public static var raspberry = UIColor.from(hex: 0xe30b5d)
         public static var rose = UIColor.from(hex: 0xFC6B7E)
         public static var pearl = UIColor.from(hex: 0xF2F2F2)
-        
-        @available(iOS 13.0, *)
-        public static var dynamicPearl = UIColor { (traitCollection: UITraitCollection) -> UIColor in
-            
-            if traitCollection.userInterfaceStyle == .dark {
-                return UIColor.from(hex: 0x1C1C1C)
-            } else {
-                return pearl
-            }
-        }
-        
+        public static var nero = UIColor.from(hex: 0x1c1c1c)
+        public static var charcoalGray = UIColor.from(hex: 0x1c1c1e)
         public static var paleGreen = UIColor.from(hex: 0xB8E986)
         public static var springGreen = UIColor.from(hex: 0x00FA9A)
         public static var veryLightGray = UIColor.from(hex: 0xD8D8D8)
+        public static var eclipseGray = UIColor.from(hex: 0x3A3A3A)
+        
+        @available(iOS 13.0, *)
+        public static var dynamicPearl = UIColor { (traitCollection: UITraitCollection) -> UIColor in
+            traitCollection.userInterfaceStyle == .dark ? nero : pearl
+        }
         
         @available(iOS 13.0, *)
         public static var dynamicVeryLightGray = UIColor { (traitCollection: UITraitCollection) -> UIColor in
-            
-            if traitCollection.userInterfaceStyle == .dark {
-                return UIColor.from(hex: 0x3A3A3A)
-            } else {
-                return UIColor.from(hex: 0xD8D8D8)
-            }
+            traitCollection.userInterfaceStyle == .dark ? eclipseGray : veryLightGray
         }
         
         @available(iOS 13.0, *)
         public static var shadowColor = UIColor { (traitCollection: UITraitCollection) -> UIColor in
-            
-            if traitCollection.userInterfaceStyle == .dark {
-                return .white
-            } else {
-                return .black
-            }
+            traitCollection.userInterfaceStyle == .dark ? .white : .black
         }
+        
+        public static var systemBackgroundColor: UIColor = {
+            if #available(iOS 13.0, *) {
+                return .systemBackground
+            } else {
+                return .white
+            }
+        }()
     }
-    
 }
 
 /**
