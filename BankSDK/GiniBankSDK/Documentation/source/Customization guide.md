@@ -58,7 +58,6 @@ Some background and text colors use the `GiniColor` type with which you can set 
 	- <span style="color:#009EDF">*ginicapture.multipagereview.reorderContainerTooltipMessage*</span> localized string for reorder tooltip
 
 ##### 4. GVL font
-
 - Font &#8594;  `GiniBankConfiguration.customFont`
 
 ## Camera screen
@@ -213,7 +212,6 @@ Some background and text colors use the `GiniColor` type with which you can set 
 - Text &#8594; <span style="color:#009EDF">*ginicapture.noresults.warningHelpMenu*</span> localized string
 
 ##### 3. Background
-
 - Same background color as No results screen &#8594; `GiniBankConfiguration.noResultsScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
 ##### 4. Capturing tip images
@@ -267,7 +265,7 @@ Some background and text colors use the `GiniColor` type with which you can set 
 ## Help screen
 
 <br>
-<center><img src="img/Customization guide/Help screen.png" height="500"/></center>
+<center><img src="img/Customization guide/Help screen.jpg" height="500"/></center>
 </br>
 
 ##### 1. Navigation bar
@@ -281,11 +279,11 @@ Some background and text colors use the `GiniColor` type with which you can set 
 ##### 2. Table View Cells
 - Background color &#8594; `GiniBankConfiguration.helpScreenCellsBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
-##### 3. Background
-- Background color &#8594; `GiniBankConfiguration.helpScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
-
-##### 4. Additional help menu items
+##### 3. Additional help menu items
 - Custom help menu items &#8594; `GiniBankConfiguration.customMenuItems` an array of `HelpMenuViewController.Item` objects
+
+##### 4. Background
+- Background color &#8594; `GiniBankConfiguration.helpScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
 ## No results screen
 
@@ -381,7 +379,6 @@ Overriding tips images below will lead to the changes on the [Capturing tips scr
 	- Image &#8594; <span style="color:#009EDF">*openWithTutorialStep3* (German) and *openWithTutorialStep3_en* (English)</span> image assets
 
 ##### 3. Background
-
 - Background color &#8594; `GiniBankConfiguration.openWithScreenBackgroundColor` using `GiniColor` with dark mode and light mode colors
 
 ## Albums screen
