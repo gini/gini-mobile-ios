@@ -19,13 +19,24 @@ Payment functionality
 If you want to use a transparent proxy with your own authentication you can specify your own domain and add `AlternativeTokenSource` protocol implementation:
 
 ```swift
- let apiLib =  GiniBankAPI.Builder(customApiDomain: "api.custom.net",
-                                 alternativeTokenSource: MyAlternativeTokenSource)
+ let apiLib = GiniBankAPI.Builder(customApiDomain: "api.custom.net",
+                                  alternativeTokenSource: MyAlternativeTokenSource)
+                         .build()
+```
+The token you provide will be added as a bearer token to all `api.custom.net` requests.
+
+You can also specify a custom path segment, if your proxy url requires it:
+
+```swift
+    let giniBankAPI = GiniBankAPI.Builder(client: client,
+                                          api: .custom(domain: "api.custom.net",
+                                                       path: "/custom/path",
+                                                       tokenSource: MyAlternativeTokenSource))
                                  .build()
 ```
-The token your provide will be added as a bearer token to all api.custom.net requests.
 
-Optionally if you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information)
+Optionally if you want to use _Certificate pinning_, then pass your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information) as follows:
+
 ```swift
     let giniApiLib = GiniBankAPI
         .Builder(client: Client(id: "your-id",
@@ -35,8 +46,6 @@ Optionally if you want to use _Certificate pinning_, provide metadata for the up
                  pinningConfig: yourPublicPinningConfig)
         .build()
 ```
-> ⚠️  **Important**
-> - The document metadata for the upload process is intended to be used for reporting.
 
 ##  GiniBank initialization
 
@@ -49,8 +58,8 @@ and receive the payment requestID in `AppDelegate`. For handling incoming URL, p
 
 ```swift
 func application(_ app: UIApplication,
-                     open url: URL,
-                     options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+                 open url: URL,
+                 options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         receivePaymentRequestId(url: url) { result in
             switch result {
             case let .success(requestId):
@@ -78,7 +87,7 @@ The method above returns the completion block with the struct `PaymentRequest`, 
 ```swift
 
 bankSDK.resolvePaymentRequest(paymentRequesId: appDelegate.paymentRequestId,
-                                 paymentInfo: paymentInfo)
+                              paymentInfo: paymentInfo)
 
 ```
 The method above returns the completion block with the struct `ResolvedPaymentRequest`, which includes `requesterUri` for redirecting back to the payment requester's app.
@@ -90,6 +99,7 @@ If the payment request was successfully resolved you can allow the user redirect
 ```swift
 bankSDK.returnBackToBusinessAppHandler(resolvedPaymentRequest: resolvedPayment)
 ```
+
 ## Gini Bank Scheme For Your App
 
 In order for your banking app to be available as a payment provider and support the Gini Pay Connect functionality, you need to register a URL scheme for your app known by the Gini Bank API.
@@ -147,12 +157,35 @@ Using this method you don't need to care about handling the analysis process wit
 
 ```swift
 let viewController = GiniBank.viewController(withClient: client,
-                                               configuration: giniBankConfiguration,
-                                               resultsDelegate: giniCaptureResultsDelegate)
+                                             configuration: giniBankConfiguration,
+                                             resultsDelegate: giniCaptureResultsDelegate)
 
 present(viewController, animated: true, completion: nil)
 ```
-Optionally if you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information), the metadata information and the _API type_ (the [Gini Pay API](https://pay-api.gini.net/documentation/#gini-pay-api-documentation-v1-0) is used by default) as follows:
+
+If you want to use a transparent proxy with your own authentication you can specify your own domain and add `AlternativeTokenSource` protocol implementation:
+
+```swift
+    let viewController = GiniBank.viewController(withClient: client,
+                                                 configuration: configuration,
+                                                 resultsDelegate: resultsDelegate,
+                                                 api: .custom(domain: "api.custom.net",
+                                                              tokenSource: MyAlternativeTokenSource))
+```
+The token you provide will be added as a bearer token to all `api.custom.net` requests.
+
+You can also specify a custom path segment, if your proxy url requires it:
+
+```swift
+    let viewController = GiniBank.viewController(withClient: client,
+                                                 configuration: configuration,
+                                                 resultsDelegate: resultsDelegate,
+                                                 api: .custom(domain: "api.custom.net",
+                                                              path: "/custom/path",
+                                                              tokenSource: MyAlternativeTokenSource))
+```
+
+Optionally if you want to use _Certificate pinning_ and provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information), the metadata information and the _API type_ (the [Gini Pay API](https://pay-api.gini.net/documentation/#gini-pay-api-documentation-v1-0) is used by default) as follows:
 
 ### Certificate Pinning
 
@@ -178,18 +211,18 @@ let yourPublicPinningConfig = [
 ]] as [String: Any]
 
 let viewController = GiniBank.viewController(withClient: client,
-                                               configuration: giniBankConfiguration,
-                                               resultsDelegate: giniCaptureResultsDelegate,
-                                               publicKeyPinningConfig: yourPublicPinningConfig,
-                                               documentMetadata: documentMetadata,
-                                               api: .default)
+                                             configuration: giniBankConfiguration,
+                                             resultsDelegate: giniCaptureResultsDelegate,
+                                             publicKeyPinningConfig: yourPublicPinningConfig,
+                                             documentMetadata: documentMetadata,
+                                             api: .default)
 
 present(viewController, animated: true, completion:nil)
 ```
 
 > ⚠️  **Important**
-> - The document metadata for the upload process is intended to be used for reporting.
-> - Certification pinning requires iOS 12.
+> - The document metadata for the upload process is intended to be used for reporting. You can find out more about it in the [Gini Bank API](https://pay-api.gini.net/documentation) documentation.
+> - Certificate pinning requires iOS 12.
 
 ### Retrieve the Analyzed Document
 
@@ -205,11 +238,11 @@ You can also provide your own networking by implementing the `GiniCaptureNetwork
 
 ```swift
 let viewController = GiniBank.viewController(importedDocuments: visionDocuments,
-                                            configuration: giniBankConfiguration,
-                                            resultsDelegate: resultsDelegate,
-                                            documentMetadata: documentMetadata,
-                                            trackingDelegate: trackingDelegate,
-                                            networkingService: networkingService)
+                                             configuration: giniBankConfiguration,
+                                             resultsDelegate: resultsDelegate,
+                                             documentMetadata: documentMetadata,
+                                             trackingDelegate: trackingDelegate,
+                                             networkingService: networkingService)
 
 
 present(viewController, animated: true, completion: nil)
@@ -270,11 +303,11 @@ To launch the Gini Bank SDK you only need to:
 
    ```swift
    GiniBankConfiguration.shared.cleanup(paymentRecipient: "Payment Recipient",
-                                   paymentReference: "Payment Reference",
-                                   paymentPurpose: "Payment Purpose",
-                                   iban: "IBAN",
-                                   bic: "BIC",
-                                   amountToPay: ExtractionAmount(value: 10.242, currency: .EUR))
+                                        paymentReference: "Payment Reference",
+                                        paymentPurpose: "Payment Purpose",
+                                        iban: "IBAN",
+                                        bic: "BIC",
+                                        amountToPay: ExtractionAmount(value: 10.242, currency: .EUR))
    ```
 
 Check out the [example app](https://github.com/gini/gini-mobile-ios/tree/GiniBankSDK;3.1.0/BankSDK/GiniBankSDKExample/GiniBankSDKExample) to see how an integration could look like.
