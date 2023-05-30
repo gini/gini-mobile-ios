@@ -11,22 +11,32 @@ import GiniBankAPILibrary
 import GiniCaptureSDK
 
 class HealthNetworkingService: GiniCaptureNetworkService {
-    
+    typealias GiniBankAPIAnalysisCompletion = (Result<(document: GiniBankAPILibrary.Document, extractionResult: GiniBankAPILibrary.ExtractionResult), GiniBankAPILibrary.GiniError>) -> Void
+
     private func mapDocumentToGiniHealthAPI(doc: GiniBankAPILibrary.Document) -> GiniHealthAPILibrary.Document {
         let links = GiniHealthAPILibrary.Document.Links.init(giniAPIDocumentURL: doc.links.document)
+        let sourceClassification = GiniHealthAPILibrary.Document.SourceClassification(rawValue: doc.sourceClassification.rawValue) ?? .scanned
 
-        return GiniHealthAPILibrary.Document(creationDate: doc.creationDate, id: doc.id, name: doc.id, links: links, sourceClassification: GiniHealthAPILibrary.Document.SourceClassification(rawValue:  doc.sourceClassification.rawValue) ?? .scanned )
+        return GiniHealthAPILibrary.Document(creationDate: doc.creationDate,
+                                             id: doc.id,
+                                             name: doc.name,
+                                             links: links,
+                                             sourceClassification:sourceClassification)
     }
     
     private func mapDocumentToGiniBankAPI(doc: GiniHealthAPILibrary.Document) -> GiniBankAPILibrary.Document {
         let links = GiniBankAPILibrary.Document.Links.init(giniAPIDocumentURL: doc.links.document)
-
-        return GiniBankAPILibrary.Document(creationDate: doc.creationDate, id: doc.id, name: doc.name, links: links, sourceClassification: GiniBankAPILibrary.Document.SourceClassification(rawValue: doc.sourceClassification.rawValue) ?? .scanned)
+        let sourceClassification = GiniBankAPILibrary.Document.SourceClassification(rawValue: doc.sourceClassification.rawValue) ?? .scanned
+        return GiniBankAPILibrary.Document(creationDate: doc.creationDate,
+                                           id: doc.id,
+                                           name: doc.name,
+                                           links: links,
+                                           sourceClassification: sourceClassification)
     }
     
     private func mapPartialDocumentsInfoToGiniHealthAPI(partialDocuments: [GiniBankAPILibrary.PartialDocumentInfo]) -> [GiniHealthAPILibrary.PartialDocumentInfo] {
         var healthPartialDocuments: [GiniHealthAPILibrary.PartialDocumentInfo] = []
-        for doc in partialDocuments{
+        for doc in partialDocuments {
             healthPartialDocuments.append(GiniHealthAPILibrary.PartialDocumentInfo(document: doc.document))
         }
         return healthPartialDocuments
@@ -37,13 +47,21 @@ class HealthNetworkingService: GiniCaptureNetworkService {
     }
     
     private func mapExtractionToGiniHealthAPI(extraction: GiniBankAPILibrary.Extraction) -> GiniHealthAPILibrary.Extraction {
-        return GiniHealthAPILibrary.Extraction(box: nil, candidates: extraction.candidates, entity: extraction.entity, value: extraction.value, name: extraction.name)
+        return GiniHealthAPILibrary.Extraction(box: nil,
+                                               candidates: extraction.candidates,
+                                               entity: extraction.entity,
+                                               value: extraction.value,
+                                               name: extraction.name)
     }
     
     private func mapExtractionsToGiniHealthAPI(extractions: [GiniBankAPILibrary.Extraction]) -> [GiniHealthAPILibrary.Extraction] {
         var healthExtractions: [GiniHealthAPILibrary.Extraction] = []
         for extraction in extractions {
-            healthExtractions.append(GiniHealthAPILibrary.Extraction(box: nil, candidates: extraction.candidates, entity: extraction.entity, value: extraction.value, name: extraction.name))
+            healthExtractions.append(GiniHealthAPILibrary.Extraction(box: nil,
+                                                                     candidates: extraction.candidates,
+                                                                     entity: extraction.entity,
+                                                                     value: extraction.value,
+                                                                     name: extraction.name))
         }
         return healthExtractions
     }
@@ -51,17 +69,32 @@ class HealthNetworkingService: GiniCaptureNetworkService {
     private func mapExtractionsToGiniBankAPI(extractions: [GiniHealthAPILibrary.Extraction]) -> [GiniBankAPILibrary.Extraction] {
         var bankExtractions: [GiniBankAPILibrary.Extraction] = []
         for extraction in extractions {
-            bankExtractions.append(GiniBankAPILibrary.Extraction(box: nil, candidates: extraction.candidates, entity: extraction.entity, value: extraction.value, name: extraction.name))
+            bankExtractions.append(GiniBankAPILibrary.Extraction(box: nil,
+                                                                 candidates: extraction.candidates,
+                                                                 entity: extraction.entity,
+                                                                 value: extraction.value,
+                                                                 name: extraction.name))
         }
         return bankExtractions
     }
     
     private func mapExtractionResultToGiniHealthAPI(result: GiniBankAPILibrary.ExtractionResult) -> GiniHealthAPILibrary.ExtractionResult {
-        return GiniHealthAPILibrary.ExtractionResult(extractions: mapExtractionsToGiniHealthAPI(extractions: result.extractions), payment: [mapExtractionsToGiniHealthAPI(extractions: result.extractions)], lineItems: [mapExtractionsToGiniHealthAPI(extractions: result.extractions)])
+        let extractions = mapExtractionsToGiniHealthAPI(extractions: result.extractions)
+        let payment = [extractions]
+        let lineItems = [extractions]
+        return GiniHealthAPILibrary.ExtractionResult(extractions: extractions,
+                                                     payment: payment,
+                                                     lineItems: lineItems)
     }
     
     private func mapExtractionResultToGiniBankAPI(result: GiniHealthAPILibrary.ExtractionResult) -> GiniBankAPILibrary.ExtractionResult {
-        return GiniBankAPILibrary.ExtractionResult(extractions: mapExtractionsToGiniBankAPI(extractions: result.extractions), lineItems: [mapExtractionsToGiniBankAPI(extractions: result.extractions)], returnReasons: nil, candidates: ["" : [Extraction.Candidate.init(box: nil, entity: "", value: "")]])
+        let extractions = mapExtractionsToGiniBankAPI(extractions: result.extractions)
+        let lineItems = [extractions]
+        let candidates = ["" : [GiniBankAPILibrary.Extraction.Candidate.init(box: nil, entity: "", value: "")]]
+        return GiniBankAPILibrary.ExtractionResult(extractions: extractions,
+                                                   lineItems: lineItems,
+                                                   returnReasons: nil,
+                                                   candidates: candidates)
     }
     
     private var documentService: GiniHealthAPILibrary.DefaultDocumentService
@@ -86,14 +119,14 @@ class HealthNetworkingService: GiniCaptureNetworkService {
     func analyse(partialDocuments: [GiniBankAPILibrary.PartialDocumentInfo],
                  metadata: GiniBankAPILibrary.Document.Metadata?,
                  cancellationToken: GiniBankAPILibrary.CancellationToken,
-                 completion: @escaping (Result<(document: GiniBankAPILibrary.Document, extractionResult: GiniBankAPILibrary.ExtractionResult), GiniBankAPILibrary.GiniError>) -> Void) {
+                 completion: @escaping GiniBankAPIAnalysisCompletion) {
         
         let fileName = "Composite-\(NSDate().timeIntervalSince1970)"
-
-        documentService
-            .createDocument(fileName: fileName,
-                            docType: nil,
-                            type: .composite(CompositeDocumentInfo(partialDocuments: mapPartialDocumentsInfoToGiniHealthAPI(partialDocuments: partialDocuments))),
+        let partialDocs = mapPartialDocumentsInfoToGiniHealthAPI(partialDocuments: partialDocuments)
+        
+        documentService.createDocument(fileName: fileName,
+                                       docType: nil,
+                                       type: .composite(CompositeDocumentInfo(partialDocuments: partialDocs)),
                             metadata: nil) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
@@ -105,16 +138,12 @@ class HealthNetworkingService: GiniCaptureNetworkService {
                             switch result {
                             case let .success(extractionResult):
                                 if let doc = self?.mapDocumentToGiniBankAPI(doc: createdDocument),
-                                   let result = self?.mapExtractionResultToGiniBankAPI(result: extractionResult){
+                                   let result = self?.mapExtractionResultToGiniBankAPI(result: extractionResult) {
                                     completion(.success((doc, result)))
                                 } else {
-                                    completion(.failure(.parseError(message: "")))
+                                    completion(.failure(.parseError(message: "Failed to parse extraction result")))
                                  }
                             case let .failure(error):
-                                switch error {
-                                case .requestCancelled: break
-                                default: break
-                                }
                                 completion(.failure(.unknown(response: error.response, data: error.data)))
                             }
                         }
@@ -143,12 +172,10 @@ class HealthNetworkingService: GiniCaptureNetworkService {
     }
     
     func log(errorEvent: ErrorEvent,
-             completion: @escaping (Result<Void, GiniBankAPILibrary.GiniError>) -> Void) {
-    }
+             completion: @escaping (Result<Void, GiniBankAPILibrary.GiniError>) -> Void) {}
     
     func sendFeedback(document: GiniBankAPILibrary.Document,
                       updatedExtractions: [GiniBankAPILibrary.Extraction],
                       updatedCompoundExtractions: [String : [[GiniBankAPILibrary.Extraction]]]?,
-                      completion: @escaping (Result<Void, GiniBankAPILibrary.GiniError>) -> Void) {
-    }
+                      completion: @escaping (Result<Void, GiniBankAPILibrary.GiniError>) -> Void) {}
 }

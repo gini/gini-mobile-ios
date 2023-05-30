@@ -16,7 +16,7 @@ import UIKit
 
 final class RootNavigationController: UINavigationController {
     override var shouldAutorotate: Bool {
-        return self.topViewController?.shouldAutorotate ?? true
+        return topViewController?.shouldAutorotate ?? true
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {

@@ -127,7 +127,7 @@ final class AppCoordinator: Coordinator {
         screenAPICoordinator.start(healthAPI: apiLib)
         add(childCoordinator: screenAPICoordinator)
         
-        rootViewController.present(screenAPICoordinator.rootViewController, animated: true, completion: nil)
+        rootViewController.present(screenAPICoordinator.rootViewController, animated: true)
     }
     
     private var testDocument: GiniHealthAPILibrary.Document?
@@ -144,9 +144,9 @@ final class AppCoordinator: Coordinator {
                                                             preferredStyle: .alert)
                 
                 alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-                    alertViewController.dismiss(animated: true, completion: nil)
+                    alertViewController.dismiss(animated: true)
                 })
-                viewController.present(alertViewController, animated: true, completion: nil)
+                viewController.present(alertViewController, animated: true)
             }
         }
     }
@@ -245,7 +245,7 @@ final class AppCoordinator: Coordinator {
             self?.showScreenAPI(with: pages)
         })
         
-        rootViewController.present(alertViewController, animated: true, completion: nil)
+        rootViewController.present(alertViewController, animated: true)
     }
     
     fileprivate func showExternalDocumentNotValidDialog() {
@@ -254,10 +254,10 @@ final class AppCoordinator: Coordinator {
                                                     preferredStyle: .alert)
         
         alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-            alertViewController.dismiss(animated: true, completion: nil)
+            alertViewController.dismiss(animated: true)
         })
         
-        rootViewController.present(alertViewController, animated: true, completion: nil)
+        rootViewController.present(alertViewController, animated: true)
     }
     
     fileprivate func showReturnMessage() {
@@ -266,15 +266,15 @@ final class AppCoordinator: Coordinator {
                                                     preferredStyle: .alert)
         
         alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-            alertViewController.dismiss(animated: true, completion: nil)
+            alertViewController.dismiss(animated: true)
         })
         
-        rootViewController.present(alertViewController, animated: true, completion: nil)
+        rootViewController.present(alertViewController, animated: true)
     }
     
     fileprivate func popToRootViewControllerIfNeeded() {
         self.childCoordinators.forEach { coordinator in
-            coordinator.rootViewController.dismiss(animated: true, completion: nil)
+            coordinator.rootViewController.dismiss(animated: true)
             self.remove(childCoordinator: coordinator)
         }
     }
@@ -295,9 +295,11 @@ extension AppCoordinator: SelectAPIViewControllerDelegate {
     }
 }
 
-extension AppCoordinator: ScreenAPICoordinatorDelegate{
+// MARK: ScreenAPICoordinatorDelegate
+
+extension AppCoordinator: ScreenAPICoordinatorDelegate {
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ()) {
-        coordinator.rootViewController.dismiss(animated: true, completion: nil)
+        coordinator.rootViewController.dismiss(animated: true)
         self.remove(childCoordinator: coordinator)
     }
 }

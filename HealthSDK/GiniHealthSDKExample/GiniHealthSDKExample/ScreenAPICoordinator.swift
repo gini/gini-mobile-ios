@@ -5,7 +5,6 @@
 //  Created by Nadya Karaban on 22.05.23.
 //
 
-import Foundation
 import GiniBankAPILibrary
 import GiniCaptureSDK
 import GiniHealthSDK
