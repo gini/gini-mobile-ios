@@ -18,7 +18,7 @@ public struct Payment {
      - parameter iban: the iban (international bank account number) of the payment recipient.
      - parameter bic: the bic (bank identifier code) for the payment.
      - parameter purpose: the purpose of the payment, e.g. the invoice or customer identifier.
-     - parameter links: object with links to other resources e.g. document and paymentRequestr.
+     - parameter links: object with links to other resources e.g. document and paymentRequest.
      */
 
     public init(paidAt: String,
