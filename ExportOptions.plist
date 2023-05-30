@@ -22,7 +22,7 @@
 		<key>net.gini.banksdk.example</key>
 		<string>Gini Bank SDK Example App Ad-Hoc Distribution</string>
 		<key>net.gini.banksdk.example.ShareExtension</key>
-		<string>Gini Bank SDK Share Extension Ad Hoc</string>
+		<string>Gini Bank SDK Share Extension Ad-Hoc Distribution</string>
 	</dict>
 	<key>signingCertificate</key>
 	<string>Apple Distribution</string>
