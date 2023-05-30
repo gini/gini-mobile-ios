@@ -21,7 +21,7 @@ class HealthNetworkingService: GiniCaptureNetworkService {
                                              id: doc.id,
                                              name: doc.name,
                                              links: links,
-                                             sourceClassification:sourceClassification)
+                                             sourceClassification: sourceClassification)
     }
     
     private func mapDocumentToGiniBankAPI(doc: GiniHealthAPILibrary.Document) -> GiniBankAPILibrary.Document {
