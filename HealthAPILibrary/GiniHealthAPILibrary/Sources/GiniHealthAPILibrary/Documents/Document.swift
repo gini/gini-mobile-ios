@@ -247,11 +247,20 @@ extension Document: Decodable {
      - note: Custom networking only.
      */
     public init(creationDate: Date,
-                     id: String,
-                     name: String,
-                     links: Links,
-                     sourceClassification: SourceClassification) {
-        self.init(compositeDocuments: [], creationDate: creationDate, id: id, name: name, origin: .upload, pageCount: 1, pages: [], links: links, partialDocuments: [], progress: .completed, sourceClassification: sourceClassification)
+                id: String,
+                name: String,
+                links: Links,
+                sourceClassification: SourceClassification) {
+        self.init(compositeDocuments: [],
+                  creationDate: creationDate,
+                  id: id, name: name,
+                  origin: .upload,
+                  pageCount: 1,
+                  pages: [],
+                  links: links,
+                  partialDocuments: [],
+                  progress: .completed,
+                  sourceClassification: sourceClassification)
     }
 }
 
