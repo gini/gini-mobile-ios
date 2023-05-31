@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F4206BBC2A1B9C6900E5E101 /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F4206BBB2A1B9C6900E5E101 /* GiniCaptureSDK */; };
+		F4206BBE2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4206BBD2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift */; };
+		F4206BC02A1BB86B00E5E101 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4206BBF2A1BB86B00E5E101 /* RootNavigationController.swift */; };
+		F4206BC22A1D012E00E5E101 /* HealthNetworkingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4206BC12A1D012E00E5E101 /* HealthNetworkingService.swift */; };
 		F42377262799ABB000FAC3D6 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42377252799ABB000FAC3D6 /* CloudKit.framework */; };
 		F43198332784BD570000D39C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F43198322784BD570000D39C /* Main.storyboard */; };
 		F464B17627CD2147001735B9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F464B17827CD2147001735B9 /* Localizable.strings */; };
@@ -29,16 +33,12 @@
 		F4EC38F8273C2311007045DC /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC38F2273C2311007045DC /* CredentialsManager.swift */; };
 		F4EC38F9273C2311007045DC /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4EC38F3273C2311007045DC /* Credentials.plist */; };
 		F4EC38FA273C2311007045DC /* Base.lproj in Resources */ = {isa = PBXBuildFile; fileRef = F4EC38F4273C2311007045DC /* Base.lproj */; };
-		F4EC38FE273C2452007045DC /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F4EC38FD273C2452007045DC /* GiniCaptureSDK */; };
 		F4EC3900273C245E007045DC /* GiniHealthSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F4EC38FF273C245E007045DC /* GiniHealthSDK */; };
 		F4EC390A273C2622007045DC /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC3903273C2621007045DC /* AppCoordinator.swift */; };
 		F4EC390B273C2622007045DC /* SelectAPIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC3907273C2621007045DC /* SelectAPIViewController.swift */; };
-		F4EC390C273C2622007045DC /* ComponentAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC3905273C2621007045DC /* ComponentAPICoordinator.swift */; };
 		F4EC390D273C2622007045DC /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC3906273C2621007045DC /* Coordinator.swift */; };
 		F4EC390E273C2622007045DC /* PartialDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC3904273C2621007045DC /* PartialDocument.swift */; };
-		F4EC390F273C2622007045DC /* ComponentAPIDocumentsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC3902273C2621007045DC /* ComponentAPIDocumentsService.swift */; };
 		F4EC3910273C2622007045DC /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC3908273C2622007045DC /* UIViewController.swift */; };
-		F4EC3911273C2622007045DC /* ComponentAPIDocumentServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EC3909273C2622007045DC /* ComponentAPIDocumentServiceProtocol.swift */; };
 		F4EC3913273C2B41007045DC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4EC3912273C2B41007045DC /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +60,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F4206BBD2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
+		F4206BBF2A1BB86B00E5E101 /* RootNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
+		F4206BC12A1D012E00E5E101 /* HealthNetworkingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthNetworkingService.swift; sourceTree = "<group>"; };
 		F42377252799ABB000FAC3D6 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		F43198322784BD570000D39C /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		F4366E62273D183C0054923F /* GiniHealthSDKExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GiniHealthSDKExample.entitlements; sourceTree = "<group>"; };
@@ -92,14 +95,11 @@
 		F4EC38F4273C2311007045DC /* Base.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Base.lproj; sourceTree = "<group>"; };
 		F4EC38FB273C240F007045DC /* GiniHealthSDK */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniHealthSDK; path = ../GiniHealthSDK; sourceTree = "<group>"; };
 		F4EC38FC273C2432007045DC /* GiniCaptureSDK */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniCaptureSDK; path = ../../CaptureSDK/GiniCaptureSDK; sourceTree = "<group>"; };
-		F4EC3902273C2621007045DC /* ComponentAPIDocumentsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentAPIDocumentsService.swift; sourceTree = "<group>"; };
 		F4EC3903273C2621007045DC /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		F4EC3904273C2621007045DC /* PartialDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialDocument.swift; sourceTree = "<group>"; };
-		F4EC3905273C2621007045DC /* ComponentAPICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentAPICoordinator.swift; sourceTree = "<group>"; };
 		F4EC3906273C2621007045DC /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		F4EC3907273C2621007045DC /* SelectAPIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAPIViewController.swift; sourceTree = "<group>"; };
 		F4EC3908273C2622007045DC /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
-		F4EC3909273C2622007045DC /* ComponentAPIDocumentServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentAPIDocumentServiceProtocol.swift; sourceTree = "<group>"; };
 		F4EC3912273C2B41007045DC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F4F9E5C5270E003600C6FBA3 /* GiniHealthSDKPinning */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniHealthSDKPinning; path = ../GiniHealthSDKPinning; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -125,8 +125,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F42377262799ABB000FAC3D6 /* CloudKit.framework in Frameworks */,
+				F4206BBC2A1B9C6900E5E101 /* GiniCaptureSDK in Frameworks */,
 				F4EC3900273C245E007045DC /* GiniHealthSDK in Frameworks */,
-				F4EC38FE273C2452007045DC /* GiniCaptureSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,11 +212,11 @@
 				F4366E62273D183C0054923F /* GiniHealthSDKExample.entitlements */,
 				F4EC3912273C2B41007045DC /* Assets.xcassets */,
 				F4EC38C1273C21E4007045DC /* AppDelegate.swift */,
+				F4206BBD2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift */,
+				F4206BC12A1D012E00E5E101 /* HealthNetworkingService.swift */,
+				F4206BBF2A1BB86B00E5E101 /* RootNavigationController.swift */,
 				F464B17827CD2147001735B9 /* Localizable.strings */,
 				F4EC3903273C2621007045DC /* AppCoordinator.swift */,
-				F4EC3905273C2621007045DC /* ComponentAPICoordinator.swift */,
-				F4EC3909273C2622007045DC /* ComponentAPIDocumentServiceProtocol.swift */,
-				F4EC3902273C2621007045DC /* ComponentAPIDocumentsService.swift */,
 				F4EC3906273C2621007045DC /* Coordinator.swift */,
 				F4EC3904273C2621007045DC /* PartialDocument.swift */,
 				F4EC3907273C2621007045DC /* SelectAPIViewController.swift */,
@@ -297,8 +297,8 @@
 			);
 			name = GiniHealthSDKExample;
 			packageProductDependencies = (
-				F4EC38FD273C2452007045DC /* GiniCaptureSDK */,
 				F4EC38FF273C245E007045DC /* GiniHealthSDK */,
+				F4206BBB2A1B9C6900E5E101 /* GiniCaptureSDK */,
 			);
 			productName = GiniHealthSDKExample;
 			productReference = F4EC38BF273C21E4007045DC /* GiniHealthSDKExample.app */;
@@ -436,16 +436,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4EC390B273C2622007045DC /* SelectAPIViewController.swift in Sources */,
+				F4206BC22A1D012E00E5E101 /* HealthNetworkingService.swift in Sources */,
 				F4EC390D273C2622007045DC /* Coordinator.swift in Sources */,
-				F4EC3911273C2622007045DC /* ComponentAPIDocumentServiceProtocol.swift in Sources */,
 				F4EC38F8273C2311007045DC /* CredentialsManager.swift in Sources */,
-				F4EC390C273C2622007045DC /* ComponentAPICoordinator.swift in Sources */,
 				F4EC38F5273C2311007045DC /* UIViewController+Utils.swift in Sources */,
 				F4EC38C6273C21E4007045DC /* ViewController.swift in Sources */,
 				F4EC3910273C2622007045DC /* UIViewController.swift in Sources */,
+				F4206BC02A1BB86B00E5E101 /* RootNavigationController.swift in Sources */,
 				F4EC38C2273C21E4007045DC /* AppDelegate.swift in Sources */,
 				F4EC38C4273C21E4007045DC /* SceneDelegate.swift in Sources */,
-				F4EC390F273C2622007045DC /* ComponentAPIDocumentsService.swift in Sources */,
+				F4206BBE2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift in Sources */,
 				F4EC390A273C2622007045DC /* AppCoordinator.swift in Sources */,
 				F4EC390E273C2622007045DC /* PartialDocument.swift in Sources */,
 			);
@@ -758,9 +758,8 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -799,9 +798,8 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -919,13 +917,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		F4206BBB2A1B9C6900E5E101 /* GiniCaptureSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GiniCaptureSDK;
+		};
 		F4CEC7EC270CB06D004A862F /* GiniHealthSDKPinning */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GiniHealthSDKPinning;
-		};
-		F4EC38FD273C2452007045DC /* GiniCaptureSDK */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = GiniCaptureSDK;
 		};
 		F4EC38FF273C245E007045DC /* GiniHealthSDK */ = {
 			isa = XCSwiftPackageProductDependency;

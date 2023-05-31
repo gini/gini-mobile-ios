@@ -48,8 +48,8 @@ final class SelectAPIViewController: UIViewController {
     
     // MARK: User interaction
 
-    @IBAction func launchComponentAPI(_ sender: Any) {
-        delegate?.selectAPI(viewController: self, didSelectApi: .component)
+    @IBAction func launchScreentAPI(_ sender: Any) {
+        delegate?.selectAPI(viewController: self, didSelectApi: .screen)
     }
     
     @IBAction func launchPaymentReview(_ sender: Any) {
