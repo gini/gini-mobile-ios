@@ -7,7 +7,7 @@ on:
   
 jobs:
   check:
-    uses: gini/gini-mobile-ios/.github/workflows/bank-api-library.check.yml@PIA-3956-release-candidate-3.0.0-beta08
+    uses: gini/gini-mobile-ios/.github/workflows/bank-api-library.check.yml@main
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
 
@@ -62,7 +62,7 @@ jobs:
 
   release-documentation:
     needs: release
-    uses: gini/gini-mobile-ios/.github/workflows/bank-api-library.publish.docs.yml@PIA-3956-release-candidate-3.0.0-beta08
+    uses: gini/gini-mobile-ios/.github/workflows/bank-api-library.publish.docs.yml@main
     secrets:
       RELEASE_GITHUB_USER: ${{ secrets.RELEASE_GITHUB_USER }}
       RELEASE_GITHUB_PASSWORD: ${{ secrets.RELEASE_GITHUB_PASSWORD }}

@@ -11,6 +11,7 @@ import UIKit
 import GiniCaptureSDK
 import GiniHealthAPILibrary
 import GiniHealthSDK
+import GiniBankAPILibrary
 
 final class AppCoordinator: Coordinator {
     
@@ -29,7 +30,7 @@ final class AppCoordinator: Coordinator {
     }()
     
     lazy var giniConfiguration: GiniConfiguration = {
-        let giniConfiguration = GiniConfiguration()
+        let giniConfiguration = GiniConfiguration.shared
         giniConfiguration.debugModeOn = true
         giniConfiguration.fileImportSupportedTypes = .pdf_and_images
         giniConfiguration.openWithEnabled = true
@@ -48,21 +49,21 @@ final class AppCoordinator: Coordinator {
         return giniConfiguration
     }()
     
-    private lazy var client: Client = CredentialsManager.fetchClientFromBundle()
-    lazy var apiLib = GiniHealthAPI.Builder(client: client).build()
-    lazy var health = GiniHealth(with: apiLib)
-
-    private var documentMetadata: Document.Metadata?
+    private lazy var client: GiniHealthAPILibrary.Client = CredentialsManager.fetchClientFromBundle()
+    private lazy var apiLib = GiniHealthAPI.Builder(client: client).build()
+    private lazy var health = GiniHealth(with: apiLib)
+    
+    private var documentMetadata: GiniHealthAPILibrary.Document.Metadata?
     private let documentMetadataBranchId = "GiniHealthExampleIOS"
     private let documentMetadataAppFlowKey = "AppFlow"
-
+    
     init(window: UIWindow) {
         self.window = window
         print("------------------------------------\n\n",
               "📸 Gini Capture SDK for iOS (\(GiniCapture.versionString))\n\n",
-            "      - Client id:  \(client.id)\n",
-            "      - Client email domain:  \(client.domain)",
-            "\n\n------------------------------------\n")
+              "      - Client id:  \(client.id)\n",
+              "      - Client email domain:  \(client.domain)",
+              "\n\n------------------------------------\n")
     }
     
     func start() {
@@ -87,7 +88,7 @@ final class AppCoordinator: Coordinator {
             if let document = document {
                 do {
                     try GiniCapture.validate(document,
-                                            withConfig: self.giniConfiguration)
+                                             withConfig: self.giniConfiguration)
                     self.showOpenWithSwitchDialog(for: [GiniCapturePage(document: document, error: nil)])
                 } catch {
                     self.showExternalDocumentNotValidDialog()
@@ -97,9 +98,10 @@ final class AppCoordinator: Coordinator {
     }
     
     func processBankUrl() {
-            self.popToRootViewControllerIfNeeded()
-            showReturnMessage()
-        }
+        rootViewController.dismiss(animated: true)
+        showReturnMessage()
+        
+    }
     
     fileprivate func showSelectAPIScreen() {
         self.window.rootViewController = rootViewController
@@ -107,22 +109,29 @@ final class AppCoordinator: Coordinator {
     }
     
     
-    fileprivate func showComponentAPI(with pages: [GiniCapturePage]? = nil) {
-        checkIfAnyBankingAppsInstalled(from: self.rootViewController) {
-            let componentAPICoordinator = ComponentAPICoordinator(pages: pages ?? [],
-                                                                  configuration: self.giniConfiguration,
-                                                                  documentService: self.componentAPIDocumentService(),
-                                                                  giniHealth: self.health)
-            componentAPICoordinator.delegate = self
-            componentAPICoordinator.start()
-            self.add(childCoordinator: componentAPICoordinator)
-
-            self.rootViewController.present(componentAPICoordinator.rootViewController, animated: true, completion: nil)
-        }
+    fileprivate func showScreenAPI(with pages: [GiniCapturePage]? = nil) {
+        let metadata = GiniBankAPILibrary.Document.Metadata(branchId: documentMetadataBranchId,
+                                                            additionalHeaders: [documentMetadataAppFlowKey: "ScreenAPI"])
+        
+        let screenAPICoordinator = ScreenAPICoordinator(configuration: giniConfiguration,
+                                                        importedDocuments: pages?.map { $0.document },
+                                                        client: GiniBankAPILibrary.Client(id: self.client.id,
+                                                                                          secret: self.client.secret,
+                                                                                          domain: self.client.domain),
+                                                        documentMetadata: metadata)
+        
+        screenAPICoordinator.delegate = self
+        
+        screenAPICoordinator.giniHealth = health
+        
+        screenAPICoordinator.start(healthAPI: apiLib)
+        add(childCoordinator: screenAPICoordinator)
+        
+        rootViewController.present(screenAPICoordinator.rootViewController, animated: true)
     }
     
-    private var testDocument: Document?
-    private var testDocumentExtractions: [Extraction]?
+    private var testDocument: GiniHealthAPILibrary.Document?
+    private var testDocumentExtractions: [GiniHealthAPILibrary.Extraction]?
     
     fileprivate func checkIfAnyBankingAppsInstalled(from viewController: UIViewController, completion: @escaping () -> Void) {
         health.checkIfAnyPaymentProviderAvailable { result in
@@ -135,9 +144,9 @@ final class AppCoordinator: Coordinator {
                                                             preferredStyle: .alert)
                 
                 alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-                    alertViewController.dismiss(animated: true, completion: nil)
+                    alertViewController.dismiss(animated: true)
                 })
-                viewController.present(alertViewController, animated: true, completion: nil)
+                viewController.present(alertViewController, animated: true)
             }
         }
     }
@@ -186,16 +195,16 @@ final class AppCoordinator: Coordinator {
                 self.selectAPIViewController.showActivityIndicator()
                 
                 self.health.documentService.createDocument(fileName: nil,
-                                                        docType: nil,
-                                                        type: .partial(testDocumentData),
-                                                        metadata: nil) { result in
+                                                           docType: nil,
+                                                           type: .partial(testDocumentData),
+                                                           metadata: nil) { result in
                     switch result {
                     case .success(let createdDocument):
-                        let partialDocInfo = PartialDocumentInfo(document: createdDocument.links.document)
+                        let partialDocInfo = GiniHealthAPILibrary.PartialDocumentInfo(document: createdDocument.links.document)
                         self.health.documentService.createDocument(fileName: nil,
-                                                                docType: nil,
-                                                                type: .composite(CompositeDocumentInfo(partialDocuments: [partialDocInfo])),
-                                                                metadata: nil) { result in
+                                                                   docType: nil,
+                                                                   type: .composite(CompositeDocumentInfo(partialDocuments: [partialDocInfo])),
+                                                                   metadata: nil) { result in
                             switch result {
                             case .success(let compositeDocument):
                                 self.health.setDocumentForReview(documentId: compositeDocument.id) { result in
@@ -226,25 +235,17 @@ final class AppCoordinator: Coordinator {
         }
     }
     
-    fileprivate func componentAPIDocumentService() -> ComponentAPIDocumentServiceProtocol {
-        
-        documentMetadata = Document.Metadata(branchId: documentMetadataBranchId,
-                                             additionalHeaders: [documentMetadataAppFlowKey: "ComponentAPI"])
-        return ComponentAPIDocumentsService(lib: apiLib, documentMetadata: documentMetadata)
-    }
-    
-    
     fileprivate func showOpenWithSwitchDialog(for pages: [GiniCapturePage]) {
         let alertViewController = UIAlertController(title: "Importierte Datei",
                                                     message: "Möchten Sie die importierte Datei mit dem " +
-            "ScreenAPI oder ComponentAPI verwenden?",
+                                                    "Gini Health SDK verwenden?",
                                                     preferredStyle: .alert)
-               
-        alertViewController.addAction(UIAlertAction(title: "Component API", style: .default) { [weak self] _ in
-            self?.showComponentAPI(with: pages)
+        
+        alertViewController.addAction(UIAlertAction(title: "Ja", style: .default) { [weak self] _ in
+            self?.showScreenAPI(with: pages)
         })
         
-        rootViewController.present(alertViewController, animated: true, completion: nil)
+        rootViewController.present(alertViewController, animated: true)
     }
     
     fileprivate func showExternalDocumentNotValidDialog() {
@@ -253,10 +254,10 @@ final class AppCoordinator: Coordinator {
                                                     preferredStyle: .alert)
         
         alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-            alertViewController.dismiss(animated: true, completion: nil)
+            alertViewController.dismiss(animated: true)
         })
         
-        rootViewController.present(alertViewController, animated: true, completion: nil)
+        rootViewController.present(alertViewController, animated: true)
     }
     
     fileprivate func showReturnMessage() {
@@ -265,15 +266,15 @@ final class AppCoordinator: Coordinator {
                                                     preferredStyle: .alert)
         
         alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-            alertViewController.dismiss(animated: true, completion: nil)
+            alertViewController.dismiss(animated: true)
         })
         
-        rootViewController.present(alertViewController, animated: true, completion: nil)
+        rootViewController.present(alertViewController, animated: true)
     }
     
     fileprivate func popToRootViewControllerIfNeeded() {
         self.childCoordinators.forEach { coordinator in
-            coordinator.rootViewController.dismiss(animated: true, completion: nil)
+            coordinator.rootViewController.dismiss(animated: true)
             self.remove(childCoordinator: coordinator)
         }
     }
@@ -282,25 +283,23 @@ final class AppCoordinator: Coordinator {
 // MARK: SelectAPIViewControllerDelegate
 
 extension AppCoordinator: SelectAPIViewControllerDelegate {
-    
     func selectAPI(viewController: SelectAPIViewController, didSelectApi api: GiniCaptureAPIType) {
         switch api {
         case .screen:
-            break
+            showScreenAPI()
         case .component:
-            showComponentAPI()
+            break
         case .paymentReview:
             showPaymentReviewWithTestDocument()
         }
     }
-    
 }
 
-// MARK: ComponentAPICoordinatorDelegate
+// MARK: ScreenAPICoordinatorDelegate
 
-extension AppCoordinator: ComponentAPICoordinatorDelegate {
-    func componentAPI(coordinator: ComponentAPICoordinator, didFinish: ()) {
-        coordinator.rootViewController.dismiss(animated: true, completion: nil)
+extension AppCoordinator: ScreenAPICoordinatorDelegate {
+    func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ()) {
+        coordinator.rootViewController.dismiss(animated: true)
         self.remove(childCoordinator: coordinator)
     }
 }
