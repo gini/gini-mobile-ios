@@ -58,32 +58,18 @@ jobs:
         run: |
             plutil -replace client_id -string "gini-mobile-test" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
             plutil -replace client_password -string "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
-      
+
       - name: Setup Manual Signing for Gini Bank SDK Example
         uses: maierj/fastlane-action@v2.0.1
         with:
-          lane: 'setup_manual_signing'
+          lane: 'update_provisioning'
           options: >
             { 
               "project_path": "BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj",
-              "team_id": "JA825X8F7Z",
-              "bundle_identifier": "net.gini.banksdk.example",
-              "profile_name": "Gini Bank SDK Example App Ad-Hoc Distribution", 
-              "entitlements_file_path": "GiniBankSDKExample/Example Swift.entitlements", 
-              "ci": "true"
-            }
-               
-      - name: Setup Manual Signing for Gini Bank SDK Example Share Extension
-        uses: maierj/fastlane-action@v2.0.1
-        with:
-          lane: 'setup_manual_signing'
-          options: >
-            { 
-              "project_path": "BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj",
-              "team_id": "JA825X8F7Z",
-              "bundle_identifier": "net.gini.banksdk.example.ShareExtension",
-              "profile_name": "Gini Bank SDK Share Extension Ad-Hoc Distribution", 
-              "entitlements_file_path": "GiniBankSDKShareExtension/GiniBankSDKShareExtension.entitlements", 
+              "target_filter":"*.banksdk.example",
+              "target_extension_filter":"*.example.ShareExtension",
+              "profile_name":"Gini Bank SDK Example App Ad-Hoc Distribution",
+              "profile_extension_name":"Gini Bank SDK Share Extension Ad-Hoc Distribution",
               "ci": "true"
             }
                 

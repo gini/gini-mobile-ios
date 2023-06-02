@@ -355,6 +355,30 @@ platform :ios do
       entitlements_file_path: entitlements_file_path
     )
   end
+
+desc <<~DOC
+  Setup Manual Signing for project at path
+DOC
+lane :update_provisioning do |options|
+  (project_path, target_filter, target_extension_filter, profile_name, profile_extension_name, ci) = 
+    check_and_get_options(options, [:project_path, :target_filter, :target_extension_filter, :profile_name, :profile_extension_name, :ci], UI)
+
+    disable_automatic_code_signing(
+      xcodeproj: project_path,
+    )
+   update_project_provisioning(
+     xcodeproj: project_path,
+     profile: profile_name,
+     target_filter: target_filter,
+     build_configuration: "Release"
+    )
+    update_project_provisioning(
+     xcodeproj: project_path,
+     profile: profile_extension_name,
+     target_filter: target_extension_filter,
+     build_configuration: "Release"
+    )
+end
   
   desc <<~DOC
     Add Resources to Project file
