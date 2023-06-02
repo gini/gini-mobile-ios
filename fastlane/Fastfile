@@ -364,16 +364,16 @@ lane :update_provisioning do |options|
     check_and_get_options(options, [:project_path, :target_filter, :target_extension_filter, :profile_name, :profile_extension_name, :ci], UI)
 
     disable_automatic_code_signing(
-      xcodeproj: project_path,
+     project_path: project_path,
     )
    update_project_provisioning(
-     xcodeproj: project_path,
+     project_path: project_path,
      profile: profile_name,
      target_filter: target_filter,
      build_configuration: "Release"
     )
     update_project_provisioning(
-     xcodeproj: project_path,
+     project_path: project_path,
      profile: profile_extension_name,
      target_filter: target_extension_filter,
      build_configuration: "Release"
