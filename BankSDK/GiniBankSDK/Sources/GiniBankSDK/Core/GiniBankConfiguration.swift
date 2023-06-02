@@ -367,21 +367,6 @@ public final class GiniBankConfiguration: NSObject {
                                 borderWidth: 0,
                                 shadowRadius: 0,
                                 withBlurEffect: false)
-
-    // MARK: - TODO DELETE
-    /**
-     Sets the font used in the Return Assistant screens by default.
-     */
-    @objc public lazy var customFont = GiniCaptureFont(regular: UIFont.systemFont(ofSize: 14,
-                                                                                                 weight: .regular),
-                                                                      bold: UIFont.systemFont(ofSize: 14,
-                                                                                              weight: .bold),
-                                                                      light: UIFont.systemFont(ofSize: 14,
-                                                                                               weight: .light),
-                                                                      thin: UIFont.systemFont(ofSize: 14,
-                                                                                              weight: .thin),
-                                                                      isEnabled: false)
-
     /**
      Set an array of additional custom help menu items . Those items will be presented as table view cells on the help menu screen. By selecting the cell the user will be redirected to the page, which represented by viewController provided by customer during the  `HelpMenuViewController.Item` initialization.
     */
@@ -428,8 +413,6 @@ public final class GiniBankConfiguration: NSObject {
     public func captureConfiguration() -> GiniConfiguration {
         let configuration = GiniConfiguration.shared
         configuration.customDocumentValidations = self.customDocumentValidations
-
-        configuration.customFont = self.customFont
 
         configuration.debugModeOn = self.debugModeOn
 
@@ -538,7 +521,6 @@ public final class GiniBankConfiguration: NSObject {
     public func updateConfiguration(withCaptureConfiguration configuration: GiniConfiguration) {
 
         let giniBankConfiguration = GiniBankConfiguration.shared
-        giniBankConfiguration.customFont = configuration.customFont
 
         giniBankConfiguration.debugModeOn = configuration.debugModeOn
 
