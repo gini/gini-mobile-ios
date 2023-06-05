@@ -105,11 +105,6 @@ public final class GiniBankConfiguration: NSObject {
     // MARK: Onboarding screens
 
     /**
-     Sets the continue button text in the navigation bar on the onboarding screen.
-    */
-    @objc public var navigationBarOnboardingTitleContinueButton = ""
-
-    /**
      Indicates whether the onboarding screen should be presented at each start of the Gini Bank SDK.
      */
     @objc public var onboardingShowAtLaunch = false
@@ -391,13 +386,12 @@ public final class GiniBankConfiguration: NSObject {
 
         configuration.flashToggleEnabled = self.flashToggleEnabled
         configuration.flashOnByDefault = self.flashOnByDefault
-        
+
         configuration.bottomNavigationBarEnabled = self.bottomNavigationBarEnabled
         configuration.cameraNavigationBarBottomAdapter = self.cameraNavigationBarBottomAdapter
         configuration.helpNavigationBarBottomAdapter = self.helpNavigationBarBottomAdapter
         configuration.reviewNavigationBarBottomAdapter = self.reviewNavigationBarBottomAdapter
         configuration.imagePickerNavigationBarBottomAdapter = self.imagePickerNavigationBarBottomAdapter
-        configuration.navigationBarOnboardingTitleContinueButton = self.navigationBarOnboardingTitleContinueButton
 
         configuration.onboardingShowAtLaunch = self.onboardingShowAtLaunch
         configuration.onboardingShowAtFirstLaunch = self.onboardingShowAtFirstLaunch
