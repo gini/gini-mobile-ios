@@ -198,13 +198,6 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var onButtonLoadingIndicator: OnButtonLoadingIndicatorAdapter?
 
-    // MARK: Analysis options
-
-    /**
-     Sets the back button text in the navigation bar on the analysis screen. Use this if you only want to show the title.
-     */
-    @objc public var navigationBarAnalysisTitleBackButton = ""
-
     // MARK: Help screens
 
     /**
@@ -388,8 +381,6 @@ public final class GiniBankConfiguration: NSObject {
 
         configuration.onboardingNavigationBarBottomAdapter = self.onboardingNavigationBarBottomAdapter
         configuration.onButtonLoadingIndicator = self.onButtonLoadingIndicator
-
-        configuration.navigationBarAnalysisTitleBackButton = self.navigationBarAnalysisTitleBackButton
 
         configuration.navigationBarHelpMenuTitleBackToCameraButton = self.navigationBarHelpMenuTitleBackToCameraButton
         configuration.navigationBarHelpScreenTitleBackToMenuButton = self.navigationBarHelpScreenTitleBackToMenuButton
