@@ -12,11 +12,10 @@ jobs:
       GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
 
   upload-version:
-    needs: check
     runs-on: macOS-12    
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - uses: maxim-lobanov/setup-xcode@v1
         with:
@@ -61,7 +60,7 @@ jobs:
             plutil -replace client_password -string "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
 
       - name: Setup Manual Signing for Gini Bank SDK Example
-        uses: maierj/fastlane-action@v2.0.1
+        uses: maierj/fastlane-action@v2.3.0
         with:
           lane: 'update_provisioning'
           options: >
@@ -69,8 +68,8 @@ jobs:
               "project_path": "BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj",
               "target_filter":"GiniBankSDKExample",
               "target_extension_filter":"GiniBankSDKShareExtension",
-              "profile_name":"~/Library/MobileDevice/Provisioning\\ Profiles/build_pp1.mobileprovision",
-              "profile_extension_name":"~/Library/MobileDevice/Provisioning\\ Profiles/build_pp2.mobileprovision",
+              "profile_name":"/Users/runner/Library/MobileDevice/Provisioning\\ Profiles/build_pp1.mobileprovision",
+              "profile_extension_name":"/Users/runner/Library/MobileDevice/Provisioning\\ Profiles/build_pp2.mobileprovision",
               "ci": "true"
             }
                 
