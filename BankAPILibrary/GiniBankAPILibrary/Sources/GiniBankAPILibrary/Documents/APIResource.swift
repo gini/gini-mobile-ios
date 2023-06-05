@@ -12,15 +12,21 @@ public enum APIDomain {
     case `default`
     /// The GYM API, which points to https://gym.gini.net/
     case gym(tokenSource: AlternativeTokenSource)
-    /// A custom domain with optional custom token source
-    case custom(domain: String, tokenSource: AlternativeTokenSource?)
+    /// A custom domain with optional path and custom token source
+    case custom(domain: String, path: String? = nil, tokenSource: AlternativeTokenSource?)
     
     var domainString: String {
-        
         switch self {
         case .default: return "pay-api.gini.net"
         case .gym: return "gym.gini.net"
-        case .custom(let domain, _): return domain
+        case .custom(let domain, _, _): return domain
+        }
+    }
+    
+    var path: String {
+        switch self {
+        case .custom(_, let path, _): return path ?? ""
+        default: return ""
         }
     }
 }
@@ -64,12 +70,17 @@ struct APIResource<T: Decodable>: Resource {
                     URLQueryItem(name: "doctype", itemValue: docType?.rawValue)
             ]
         case .paymentRequests(let limit, let offset):
-            return [URLQueryItem(name: "offset", itemValue: offset),URLQueryItem(name: "limit", itemValue: limit)]
+            return [URLQueryItem(name: "offset", itemValue: offset),
+                    URLQueryItem(name: "limit", itemValue: limit)]
         default: return nil
         }
     }
     
     var path: String {
+        return "\(domain.path)\(methodPath)"
+    }
+    
+    private var methodPath: String {
         switch method {
         case .composite:
             return "/documents/composite"

@@ -12,20 +12,16 @@
 
 The Gini Capture SDK provides components for capturing, reviewing and analyzing photos of invoices and remittance slips.
 
-By integrating this library into your application you can allow your users to easily take a picture of a document, review it and get analysis results from the Gini backend.
+By integrating this SDK into your application you can allow your users to easily take a picture of a document, review it and getting analysis results from the Gini backend.
 
-The Gini Capture SDK can be integrated in two ways, either by using the *Screen API* or the *Component API*. In the Screen API we provide pre-defined screens that can be customized in a limited way. The screen and configuration design is based on our long-lasting experience with integration in customer apps. In the Component API, we provide independent views so you can design your own application as you wish. We strongly recommend keeping in mind our UI/UX guidelines, however.
+We provide pre-defined screens that can be customized in a limited way. The screen and configuration design is based on our long-lasting experience with integration in customer apps.
 
-On *iPhone*, the Gini Capture SDK has been designed for portrait orientation. In the Screen API, orientation is automatically forced to portrait when being displayed. In case you use the Component API, you should limit the view controllers orientation hosting the Component API's views to portrait orientation. This is specifically true for the camera view.
+On *iPhone*, the Gini Capture SDK has been designed for portrait orientation.
+On *iPad* we support portrait and landscape orientations.
 
 ## Documentation
 
-Further documentation with installation, integration or customization guides can be found in our [website](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/).
-
-## Example
-
-We are providing example apps for Swift and Objective-C. These apps demonstrate how to integrate the Gini Capture SDK with the Screen API and Component API. To run the example project, clone the repo and run `pod install` from the Example directory first.
-To inject your API credentials into the Example app, just add to the Example directory the `Credentials.plist` file.
+Further documentation with installation, integration or customization guides can be found in our [website](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK).
 
 ## Requirements
 
