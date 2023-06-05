@@ -66,10 +66,10 @@ jobs:
           options: >
             { 
               "project_path": "BankSDK/GiniBankSDKExample/GiniBankSDKExample.xcodeproj",
-              "target_filter":"*.banksdk.example",
-              "target_extension_filter":"*.example.ShareExtension",
-              "profile_name":"Gini Bank SDK Example App Ad-Hoc Distribution",
-              "profile_extension_name":"Gini Bank SDK Share Extension Ad-Hoc Distribution",
+              "target_filter":"GiniBankSDKExample",
+              "target_extension_filter":"GiniBankSDKShareExtension",
+              "profile_name":"~/Library/MobileDevice/Provisioning\ Profiles/build_pp1.mobileprovision",
+              "profile_extension_name":"~/Library/MobileDevice/Provisioning\ Profiles/build_pp2.mobileprovision",
               "ci": "true"
             }
                 
