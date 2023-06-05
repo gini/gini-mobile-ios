@@ -198,21 +198,6 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var onButtonLoadingIndicator: OnButtonLoadingIndicatorAdapter?
 
-    /**
-     Sets the back button text in the navigation bar on the review screen. Use this if you only want to show the title.
-     */
-    @objc public var navigationBarReviewTitleBackButton = ""
-
-    /**
-     Sets the close button text in the navigation bar on the review screen. Use this if you only want to show the title.
-     */
-    @objc public var navigationBarReviewTitleCloseButton = ""
-
-    /**
-     Sets the continue button text in the navigation bar on the review screen.
-     */
-    @objc public var navigationBarReviewTitleContinueButton = ""
-
     // MARK: Analysis options
 
     /**
@@ -403,10 +388,6 @@ public final class GiniBankConfiguration: NSObject {
 
         configuration.onboardingNavigationBarBottomAdapter = self.onboardingNavigationBarBottomAdapter
         configuration.onButtonLoadingIndicator = self.onButtonLoadingIndicator
-
-        configuration.navigationBarReviewTitleBackButton = self.navigationBarReviewTitleBackButton
-        configuration.navigationBarReviewTitleCloseButton = self.navigationBarReviewTitleCloseButton
-        configuration.navigationBarReviewTitleContinueButton = self.navigationBarReviewTitleContinueButton
 
         configuration.navigationBarAnalysisTitleBackButton = self.navigationBarAnalysisTitleBackButton
 
