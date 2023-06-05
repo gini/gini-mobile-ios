@@ -62,10 +62,6 @@ final class AppCoordinator: Coordinator {
 //        let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
 //        configuration.customMenuItems = [customMenuItem]
 
-        // A few camera screen customisation examples
-//        configuration.navigationBarItemFont = UIFont.systemFont(ofSize: 20, weight: .bold)
-//        configuration.navigationBarCameraTitleHelpButton = "? Help"
-//
 //        configuration.multipagePageSuccessfullUploadIconBackgroundColor = .systemGreen
 //        configuration.multipagePageFailureUploadIconBackgroundColor = .systemRed
 //        configuration.enableReturnReasons = false

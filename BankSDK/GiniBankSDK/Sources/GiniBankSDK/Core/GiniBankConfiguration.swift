@@ -102,16 +102,6 @@ public final class GiniBankConfiguration: NSObject {
      */
     @objc public var flashOnByDefault = true
 
-    /**
-     Sets the close button text in the navigation bar on the camera screen.
-     */
-    @objc public var navigationBarCameraTitleCloseButton = ""
-
-    /**
-     Sets the help button text in the navigation bar on the camera screen.
-    */
-    @objc public var navigationBarCameraTitleHelpButton = ""
-
     // MARK: Onboarding screens
 
     /**
@@ -401,10 +391,7 @@ public final class GiniBankConfiguration: NSObject {
 
         configuration.flashToggleEnabled = self.flashToggleEnabled
         configuration.flashOnByDefault = self.flashOnByDefault
-
-        configuration.navigationBarCameraTitleCloseButton = self.navigationBarCameraTitleCloseButton
-        configuration.navigationBarCameraTitleHelpButton = self.navigationBarCameraTitleHelpButton
-
+        
         configuration.bottomNavigationBarEnabled = self.bottomNavigationBarEnabled
         configuration.cameraNavigationBarBottomAdapter = self.cameraNavigationBarBottomAdapter
         configuration.helpNavigationBarBottomAdapter = self.helpNavigationBarBottomAdapter
