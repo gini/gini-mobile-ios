@@ -22,14 +22,25 @@ If you want to use a transparent proxy with your own authentication you can spec
 
 ```swift
  let apiLib =  GiniBankAPI.Builder(customApiDomain: "api.custom.net",
-                                 alternativeTokenSource: MyAlternativeTokenSource)
+                                   alternativeTokenSource: MyAlternativeTokenSource)
                                  .build()
 ```
-The token your provide will be added as a bearer token to all api.custom.net requests.
+The token you provide will be added as a bearer token to all `api.custom.net` requests.
+
+You can also specify a custom path segment, if your proxy url requires it:
+
+```swift
+    let giniBankAPI = GiniBankAPI
+        .Builder(client: client,
+                 api: .custom(domain: "api.custom.net",
+                              path: "/custom/path",
+                              tokenSource: MyAlternativeTokenSource))
+        .build()
+```
 
 ## Public Key Pinning
 
-If you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information), the metadata information (the [Gini Bank API](https://developer.gini.net/gini-api/html/index.html) is used by default) as follows:
+If you want to use _Certificate pinning_, then pass your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information) as follows:
 
 ```swift
     let yourPublicPinningConfig = [
@@ -66,13 +77,11 @@ For customizing an API domain please, use the following snippet:
         .Builder(client: Client(id: "your-id",
                                 secret: "your-secret",
                                 domain: "your-domain"),
-                 api: .custom(domain: "custom-api.net"),
+                 api: .custom(domain: "custom-api.net", 
+                              path:"/custom/path"),
                  pinningConfig: yourPublicPinningConfig)
         .build()
 ```
-
-> ⚠️  **Important**
-> - The document metadata for the upload process is intended to be used for reporting.
 
 ## Extract Hash From gini.net
 
@@ -126,6 +135,8 @@ documentService.createDocument(fileName: "myFirstDocument.jpg",
     }
 }
 ```
+> ⚠️  **Important**
+> - The document metadata for the upload process is intended to be used for reporting. You can find out more about it in the [Gini Bank API](https://pay-api.gini.net/documentation) documentation.
 
 Each page of a document needs to uploaded as a partial document. In addition documents consisting of one page also should be uploaded as a partial document.
 
