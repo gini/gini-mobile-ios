@@ -29,7 +29,7 @@ import UIKit
         // Coming from Photos extension app
         if url.absoluteString == appSheme {
             if let userDefaults = UserDefaults(suiteName: appGroupName) {
-                //Getting urlString for the image
+                // Getting urlString for the image
                 if let imageUrlString = userDefaults.value(forKey: imageUrlKey), let imageUrl = URL(string: imageUrlString as! String) {
                     coordinator.processExternalDocumentFromPhotos(withUrl: imageUrl, sourceApplication: options[.sourceApplication] as? String)
                 }
