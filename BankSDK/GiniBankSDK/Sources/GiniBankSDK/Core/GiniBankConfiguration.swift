@@ -63,14 +63,7 @@ public final class GiniBankConfiguration: NSObject {
      Sets the custom navigation view controller as a root view controller for Gini Bank SDK screens.
     */
     @objc public var customNavigationController: UINavigationController?
-
-    /**
-     Sets the tint color of the UIDocumentPickerViewController navigation bar.
-
-     - note: Use only if you have a custom `UIAppearance` for your UINavigationBar
-     */
-    @objc public var documentPickerNavigationBarTintColor: UIColor?
-
+    
     /**
      Sets the background color of an informal notice. Notices are small pieces of
      information appearing underneath the navigation bar.
@@ -421,10 +414,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.multipageEnabled = self.multipageEnabled
         configuration.customNavigationController = self.customNavigationController
 
-        configuration.documentPickerNavigationBarTintColor = self.documentPickerNavigationBarTintColor
-
         configuration.noticeInformationBackgroundColor = self.noticeInformationBackgroundColor
-
         configuration.noticeInformationTextColor = self.noticeInformationTextColor
         configuration.noticeErrorBackgroundColor = self.noticeErrorBackgroundColor
         configuration.noticeErrorTextColor = self.noticeErrorTextColor
