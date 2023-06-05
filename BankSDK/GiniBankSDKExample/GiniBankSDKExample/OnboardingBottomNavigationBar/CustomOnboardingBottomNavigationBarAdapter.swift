@@ -27,11 +27,9 @@ class CustomOnboardingBottomNavigationBarAdapter: OnboardingNavigationBarBottomA
     }
     
     func setSkipButtonClickedActionCallback(_ callback: @escaping () -> Void) {
-        
     }
     
     func setGetStartedButtonClickedActionCallback(_ callback: @escaping () -> Void) {
-        
     }
     
     @objc func actionPressed() {
