@@ -63,30 +63,6 @@ public final class GiniBankConfiguration: NSObject {
      Sets the custom navigation view controller as a root view controller for Gini Bank SDK screens.
     */
     @objc public var customNavigationController: UINavigationController?
-    
-    /**
-     Sets the background color of an informal notice. Notices are small pieces of
-     information appearing underneath the navigation bar.
-     */
-    @objc public var noticeInformationBackgroundColor = UIColor.black
-
-    /**
-     Sets the text color of an informal notice. Notices are small pieces of
-     information appearing underneath the navigation bar.
-     */
-    @objc public var noticeInformationTextColor = UIColor.white
-
-    /**
-     Sets the background color of an error notice. Notices are small pieces of
-     information appearing underneath the navigation bar.
-     */
-    @objc public var noticeErrorBackgroundColor = UIColor.red
-
-    /**
-     Sets the text color of an error notice. Notices are small pieces of
-     information appearing underneath the navigation bar.
-     */
-    @objc public var noticeErrorTextColor = UIColor.white
 
     /**
      Indicates whether the open with feature is enabled or not. In case of `true`,
@@ -413,11 +389,6 @@ public final class GiniBankConfiguration: NSObject {
 
         configuration.multipageEnabled = self.multipageEnabled
         configuration.customNavigationController = self.customNavigationController
-
-        configuration.noticeInformationBackgroundColor = self.noticeInformationBackgroundColor
-        configuration.noticeInformationTextColor = self.noticeInformationTextColor
-        configuration.noticeErrorBackgroundColor = self.noticeErrorBackgroundColor
-        configuration.noticeErrorTextColor = self.noticeErrorTextColor
 
         configuration.openWithEnabled = self.openWithEnabled
 
