@@ -199,17 +199,6 @@ public final class GiniBankConfiguration: NSObject {
     public var onButtonLoadingIndicator: OnButtonLoadingIndicatorAdapter?
 
     // MARK: Help screens
-
-    /**
-     Sets the back button text in the navigation bar on the help menu screen. Use this if you only want to show the title.
-     */
-    @objc public var navigationBarHelpMenuTitleBackToCameraButton = ""
-
-    /**
-     Sets the back button text in the navigation bar on the help screen. Use this if you only want to show the title.
-     */
-    @objc public var navigationBarHelpScreenTitleBackToMenuButton = ""
-
     /**
      Indicates whether the supported format screens should be shown. In case of `false`,
      the option won't be shown in the Help menu.
@@ -374,16 +363,12 @@ public final class GiniBankConfiguration: NSObject {
         configuration.onboardingShowAtLaunch = self.onboardingShowAtLaunch
         configuration.onboardingShowAtFirstLaunch = self.onboardingShowAtFirstLaunch
         configuration.onboardingAlignCornersIllustrationAdapter = self.onboardingAlignCornersIllustrationAdapter
-
         configuration.onboardingLightingIllustrationAdapter = self.onboardingLightingIllustrationAdapter
         configuration.onboardingQRCodeIllustrationAdapter = self.onboardingQRCodeIllustrationAdapter
         configuration.onboardingMultiPageIllustrationAdapter = self.onboardingMultiPageIllustrationAdapter
-
         configuration.onboardingNavigationBarBottomAdapter = self.onboardingNavigationBarBottomAdapter
+        
         configuration.onButtonLoadingIndicator = self.onButtonLoadingIndicator
-
-        configuration.navigationBarHelpMenuTitleBackToCameraButton = self.navigationBarHelpMenuTitleBackToCameraButton
-        configuration.navigationBarHelpScreenTitleBackToMenuButton = self.navigationBarHelpScreenTitleBackToMenuButton
 
         configuration.shouldShowSupportedFormatsScreen = self.shouldShowSupportedFormatsScreen
 
