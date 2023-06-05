@@ -104,6 +104,15 @@ Create documentation release tags for all packages that have documentation that 
 Setup Manual Signing for project at path
 
 
+### ios update_provisioning
+
+```sh
+[bundle exec] fastlane ios update_provisioning
+```
+
+Setup Manual Signing for project at path
+
+
 ### ios add_resources
 
 ```sh
