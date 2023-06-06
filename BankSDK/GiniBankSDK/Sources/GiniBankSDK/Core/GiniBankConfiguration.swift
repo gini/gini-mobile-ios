@@ -217,14 +217,6 @@ public final class GiniBankConfiguration: NSObject {
      */
     @objc public var shouldShowDragAndDropTutorial = true
 
-    // Undocumented--Xamarin only
-    @objc public var closeButtonResource: PreferredButtonResource?
-    @objc public var helpButtonResource: PreferredButtonResource?
-    @objc public var backToCameraButtonResource: PreferredButtonResource?
-    @objc public var backToMenuButtonResource: PreferredButtonResource?
-    @objc public var nextButtonResource: PreferredButtonResource?
-    @objc public var cancelButtonResource: PreferredButtonResource?
-
     /**
      Shows the return reasons dialog.
      */
@@ -377,7 +369,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.onboardingQRCodeIllustrationAdapter = self.onboardingQRCodeIllustrationAdapter
         configuration.onboardingMultiPageIllustrationAdapter = self.onboardingMultiPageIllustrationAdapter
         configuration.onboardingNavigationBarBottomAdapter = self.onboardingNavigationBarBottomAdapter
-        
+
         configuration.onButtonLoadingIndicator = self.onButtonLoadingIndicator
 
         configuration.shouldShowSupportedFormatsScreen = self.shouldShowSupportedFormatsScreen
@@ -392,14 +384,6 @@ public final class GiniBankConfiguration: NSObject {
         configuration.customGiniErrorLoggerDelegate = self.customGiniErrorLoggerDelegate
 
         configuration.customLoadingIndicator = self.customLoadingIndicator
-
-        // Undocumented--Xamarin only
-        configuration.closeButtonResource = self.closeButtonResource
-        configuration.helpButtonResource = self.helpButtonResource
-        configuration.backToCameraButtonResource = self.helpButtonResource
-        configuration.backToMenuButtonResource = self.backToMenuButtonResource
-        configuration.nextButtonResource = self.nextButtonResource
-        configuration.cancelButtonResource = self.cancelButtonResource
 
         configuration.localizedStringsTableName = self.localizedStringsTableName
 
