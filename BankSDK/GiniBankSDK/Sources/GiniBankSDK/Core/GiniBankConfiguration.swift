@@ -236,7 +236,9 @@ public final class GiniBankConfiguration: NSObject {
     public var customLoadingIndicator: CustomLoadingIndicatorAdapter?
 
     // MARK: Button configuration options
-
+    /**
+     * Cnfiguration used to define the appearance of the primary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons in different screens: `Onboarding`, `Review`, `Digital Invoice Onboarding`, `Digital Invoice Overview`, `No Results`, `Error`.
+     */
     public lazy var primaryButtonConfiguration: ButtonConfiguration =
             ButtonConfiguration(backgroundColor: .GiniBank.accent1,
                                 borderColor: .clear,
@@ -246,7 +248,9 @@ public final class GiniBankConfiguration: NSObject {
                                 borderWidth: 0,
                                 shadowRadius: 0,
                                 withBlurEffect: false)
-
+    /**
+     * Configuration used to define the appearance of the secondary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons in different screens: `No Results`, `Error`.
+     */
     public lazy var secondaryButtonConfiguration: ButtonConfiguration =
             ButtonConfiguration(backgroundColor: .GiniBank.dark4,
                                 borderColor: GiniColor(light: UIColor.GiniBank.light6,
@@ -258,7 +262,9 @@ public final class GiniBankConfiguration: NSObject {
                                 borderWidth: 2,
                                 shadowRadius: 14,
                                 withBlurEffect: true)
-
+    /**
+     * Configuration used to define the appearance of the transparent button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used in Onboarding screen in the bottom navigation bar.
+     */
     public lazy var transparentButtonConfiguration: ButtonConfiguration =
             ButtonConfiguration(backgroundColor: .clear,
                                 borderColor: .clear,
@@ -268,7 +274,9 @@ public final class GiniBankConfiguration: NSObject {
                                 borderWidth: 0,
                                 shadowRadius: 0,
                                 withBlurEffect: false)
-
+    /**
+     * Configuration used to define the appearance of the camera buttons, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for browse and flash buttons in Camera screen.
+     */
     public lazy var cameraControlButtonConfiguration: ButtonConfiguration =
             ButtonConfiguration(backgroundColor: .clear,
                                 borderColor: .clear,
@@ -278,7 +286,9 @@ public final class GiniBankConfiguration: NSObject {
                                 borderWidth: 0,
                                 shadowRadius: 0,
                                 withBlurEffect: false)
-
+    /**
+     *  Configuration used to define the appearance of the "Add Page" button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used in Review screen.
+     */
     public lazy var addPageButtonConfiguration: ButtonConfiguration =
             ButtonConfiguration(backgroundColor: .clear,
                                 borderColor: .clear,
@@ -289,7 +299,7 @@ public final class GiniBankConfiguration: NSObject {
                                 shadowRadius: 0,
                                 withBlurEffect: false)
     /**
-     Set an array of additional custom help menu items . Those items will be presented as table view cells on the help menu screen. By selecting the cell the user will be redirected to the page, which represented by viewController provided by customer during the  `HelpMenuViewController.Item` initialization.
+     Set an array of additional custom help menu items. Those items will be presented as table view cells on the help menu screen. By selecting the cell the user will be redirected to the page, which represented by viewController provided by customer during the `HelpMenuViewController.Item` initialization.
     */
     public var customMenuItems: [HelpMenuItem] = []
 
@@ -390,6 +400,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.backToMenuButtonResource = self.backToMenuButtonResource
         configuration.nextButtonResource = self.nextButtonResource
         configuration.cancelButtonResource = self.cancelButtonResource
+
         configuration.localizedStringsTableName = self.localizedStringsTableName
 
         for textStyle in UIFont.TextStyle.allCases {
@@ -442,6 +453,12 @@ public final class GiniBankConfiguration: NSObject {
 
         giniBankConfiguration.shouldShowDragAndDropTutorial = configuration.shouldShowDragAndDropTutorial
         giniBankConfiguration.bottomNavigationBarEnabled = configuration.bottomNavigationBarEnabled
+
+        giniBankConfiguration.primaryButtonConfiguration = configuration.primaryButtonConfiguration
+        giniBankConfiguration.secondaryButtonConfiguration = configuration.secondaryButtonConfiguration
+        giniBankConfiguration.transparentButtonConfiguration = configuration.transparentButtonConfiguration
+        giniBankConfiguration.cameraControlButtonConfiguration = configuration.cameraControlButtonConfiguration
+        giniBankConfiguration.addPageButtonConfiguration = configuration.addPageButtonConfiguration
     }
 
     /**
