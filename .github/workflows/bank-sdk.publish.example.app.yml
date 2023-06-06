@@ -12,6 +12,7 @@ jobs:
       GINI_MOBILE_TEST_CLIENT_SECRET: ${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}
 
   upload-version:
+    needs: check
     runs-on: macOS-12    
     steps:
       - name: Checkout repository
