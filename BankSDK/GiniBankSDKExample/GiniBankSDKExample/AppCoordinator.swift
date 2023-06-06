@@ -46,6 +46,7 @@ final class AppCoordinator: Coordinator {
             }
             return CustomDocumentValidationResult.success()
         }
+
 //        configuration.cameraNavigationBarBottomAdapter = CustomCameraBottomNavigationBarAdapter()
 //        configuration.onlyQRCodeScanningEnabled = true
 //        configuration.bottomNavigationBarEnabled = true
@@ -73,11 +74,7 @@ final class AppCoordinator: Coordinator {
     // If you would like to pass us already scaled font.
 //    let customScaledFont = UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 28))
 //    configuration.updateFont(customScaledFont, for: .caption2)
-//    configuration.primaryButtonBorderWidth = 10
-//    configuration.primaryButtonShadowColor = UIColor.red.cgColor
-//    configuration.primaryButtonShadowRadius = 10
-//    configuration.primaryButtonShadowOpacity = 0.7
-//    configuration.primaryButtonCornerRadius = 10
+
 //    configuration.customOnboardingPages = [OnboardingPage(imageName: "captureSuggestion1", title: "Page 1", description: "Description for page 1")]
         //configuration.onboardingAlignCornersIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "page1Animation", backgroundColor: UIColor.red)
         //configuration.onboardingLightingIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "cameraAnimation", backgroundColor: UIColor.yellow)
@@ -98,20 +95,15 @@ final class AppCoordinator: Coordinator {
 //        navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
 //        configuration.customNavigationController = navigationViewController
 
-        // Custom button configuration example:
+        // Custom button configuration example
 //        configuration.primaryButtonConfiguration = ButtonConfiguration(backgroundColor: .yellow,
 //                                                                       borderColor: .red,
 //                                                                       titleColor: .green,
 //                                                                       shadowColor: .clear,
-//                                                                       titleFont: UIFont.systemFont(ofSize: 20,
-//                                                                                                    weight: .thin),
 //                                                                       cornerRadius: 22,
 //                                                                       borderWidth: 4,
 //                                                                       shadowRadius: 0,
 //                                                                       withBlurEffect: false)
-//        configuration.transparentButtonConfiguration =
-//        configuration.secondaryButtonConfiguration =
-
        return configuration
     }()
     
