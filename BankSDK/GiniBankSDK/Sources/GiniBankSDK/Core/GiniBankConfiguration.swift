@@ -30,12 +30,12 @@ public final class GiniBankConfiguration: NSObject {
      Indicates the status bar style in the Gini Bank SDK.
      */
     @objc public var statusBarStyle = UIStatusBarStyle.lightContent
-    
+
     /**
      Should be set if the default name "Localizable.strings" are not used.
      */
     public var localizedStringsTableName: String?
-    
+
     /**
      Indicates whether the Return Assistant feature is enabled or not. In case of `true`,
      the user will be presented with a digital representation of their invoice where they
@@ -64,12 +64,12 @@ public final class GiniBankConfiguration: NSObject {
      Indicates whether only the QR Code scanning feature is enabled or not.
      */
     @objc public var onlyQRCodeScanningEnabled = false
-    
+
     /**
      Sets the custom navigation view controller as a root view controller for Gini Bank SDK screens.
     */
     @objc public var customNavigationController: UINavigationController?
-    
+
     /**
      Sets custom validations that can be done apart from the default ones (file size, file type...).
      It should throw a `CustomDocumentValidationError` error.
@@ -77,9 +77,9 @@ public final class GiniBankConfiguration: NSObject {
     @objc public var customDocumentValidations: ((GiniCaptureDocument) -> CustomDocumentValidationResult) = { _ in
         return CustomDocumentValidationResult.success()
     }
-    
+
     // MARK: Button configuration options
-    
+
     /**
       Cnfiguration used to define the appearance of the primary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons in different screens: `Onboarding`, `Review`, `Digital Invoice Onboarding`, `Digital Invoice Overview`, `No Results`, `Error`.
      */
@@ -95,10 +95,11 @@ public final class GiniBankConfiguration: NSObject {
      Configuration used to define the appearance of the secondary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons in different screens: `No Results`, `Error`.
      */
     public lazy var secondaryButtonConfiguration = ButtonConfiguration(backgroundColor: .GiniBank.dark4,
-                                                                       borderColor: GiniColor(light: UIColor.GiniBank.light6,
-                                                                                              dark: UIColor.clear).uiColor(),
-                                                                       titleColor: GiniColor(light: UIColor.GiniBank.dark6,
-                                                                                             dark: UIColor.GiniBank.light1).uiColor(),
+                                                                       borderColor: GiniColor(light: .GiniBank.light6,
+                                                                                              dark: .clear).uiColor(),
+                                                                       titleColor: GiniColor(light: .GiniBank.dark6,
+                                                                                             dark: .GiniBank.light1)
+                                                                                   .uiColor(),
                                                                        shadowColor: .clear,
                                                                        cornerRadius: 16,
                                                                        borderWidth: 2,
@@ -131,49 +132,51 @@ public final class GiniBankConfiguration: NSObject {
      */
     public lazy var addPageButtonConfiguration = ButtonConfiguration(backgroundColor: .clear,
                                                                      borderColor: .clear,
-                                                                     titleColor: GiniColor(light: .GiniBank.dark2, dark: .GiniBank.light2).uiColor(),
+                                                                     titleColor: GiniColor(light: .GiniBank.dark2,
+                                                                                           dark: .GiniBank.light2)
+                                                                                .uiColor(),
                                                                      shadowColor: .clear,
                                                                      cornerRadius: 0,
                                                                      borderWidth: 0,
                                                                      shadowRadius: 0,
                                                                      withBlurEffect: false)
-    
+
     // MARK: Loading indicators
-    
+
     /**
      * Set an adapter implementation to show a custom loading indicator on the buttons which support loading.
      */
     public var onButtonLoadingIndicator: OnButtonLoadingIndicatorAdapter?
-    
+
     /**
      * Set an adapter implementation to show a custom loading indicator on the document analysis screen.
      */
     public var customLoadingIndicator: CustomLoadingIndicatorAdapter?
-    
+
     // MARK: Camera options
-    
+
     /**
      Set the types supported by the file import feature. `GiniCaptureImportFileTypes.none` by default.
      */
     @objc public var fileImportSupportedTypes = GiniConfiguration.GiniCaptureImportFileTypes.none
-    
+
     /**
      Indicates whether the flash toggle should be shown in the camera screen.
      */
     @objc public var flashToggleEnabled = false
-    
+
     /**
      When the flash toggle is enabled, this flag indicates if the flash is on by default.
      */
     @objc public var flashOnByDefault = true
-    
+
     // MARK: Onboarding screens
-    
+
     /**
      Indicates whether the onboarding screen should be presented at each start of the Gini Bank SDK.
      */
     @objc public var onboardingShowAtLaunch = false
-    
+
     /**
      Indicates whether the onboarding screen should be presented at the first
      start of the Gini Bank SDK. It is advised to do so.
@@ -289,33 +292,33 @@ public final class GiniBankConfiguration: NSObject {
      Shows the return reasons dialog.
      */
     @objc public var enableReturnReasons: Bool = true
-    
+
     // MARK: Error
-    
+
     /**
      Sets if the default error logging implementation is on.
      */
     public var giniErrorLoggerIsOn: Bool = true
-    
+
     /**
      Used to handle all the logging messages in order to log them in a different way.
      */
     @objc public var logger: GiniLogger = GiniConfiguration.shared.logger
-    
+
     /**
      Should be set if the custom error logging is implemented.
      */
     public var customGiniErrorLoggerDelegate: GiniCaptureErrorLoggerDelegate?
-    
+
     // MARK: Debug
-    
+
     /**
      Can be turned on during development to unlock extra information and to save captured images to camera roll.
 
      - warning: Should never be used outside of a development enviroment.
      */
     @objc public var debugModeOn = false
-    
+
     /**
      Set dictionary of fonts for available text styles. Used internally.
      */
@@ -339,8 +342,7 @@ public final class GiniBankConfiguration: NSObject {
     ]
 
     // MARK: Configuration Methods
-    
-    // swiftlint:disable function_body_length
+
     public func captureConfiguration() -> GiniConfiguration {
         let configuration = GiniConfiguration.shared
         configuration.customDocumentValidations = self.customDocumentValidations
@@ -415,7 +417,6 @@ public final class GiniBankConfiguration: NSObject {
 
         return configuration
     }
-    // swiftlint:enable function_body_length
 
     /**
      Sets the configuration flags back. Used only in the example app. See `SettingsViewController` for the details.
