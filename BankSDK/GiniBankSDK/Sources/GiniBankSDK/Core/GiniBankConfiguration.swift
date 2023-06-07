@@ -11,25 +11,27 @@ import GiniBankAPILibrary
 
 public final class GiniBankConfiguration: NSObject {
 
+    // MARK: - Accessing the shared configuration
     /**
      Singleton to make configuration internally accessible in all classes of the Gini Bank SDK.
      */
     public static var shared = GiniBankConfiguration()
 
+    // MARK: - Initializer
     /**
      Returns a `GiniBankConfiguration` instance which allows to set individual configurations
      to change the look and feel of the Gini Bank SDK.
-
+     
      - returns: Instance of `GiniBankConfiguration`.
      */
     override init() {}
 
-    // MARK: General options
+    // MARK: - General options
 
     /**
      Indicates the status bar style in the Gini Bank SDK.
      */
-    @objc public var statusBarStyle = UIStatusBarStyle.lightContent
+    public var statusBarStyle = UIStatusBarStyle.lightContent
 
     /**
      Should be set if the default name "Localizable.strings" are not used.
@@ -37,51 +39,39 @@ public final class GiniBankConfiguration: NSObject {
     public var localizedStringsTableName: String?
 
     /**
-     Indicates whether the Return Assistant feature is enabled or not. In case of `true`,
-     the user will be presented with a digital representation of their invoice where they
-     can see individual line items and are able to amend them or choose to not to pay for them.
-    */
-    @objc public var returnAssistantEnabled = true
+     Enable/disable the bottom navigation bar.
+     */
+    public var bottomNavigationBarEnabled: Bool = false
 
     /**
      Indicates whether the multipage feature is enabled or not. In case of `true`,
      multiple pages can be processed, showing a different review screen when capturing.
      */
-    @objc public var multipageEnabled = false
+    public var multipageEnabled = false
 
     /**
      Indicates whether the open with feature is enabled or not. In case of `true`,
      a new option with the open with tutorial wil be shown in the Help menu.
      */
-    @objc public var openWithEnabled = false
-
-    /**
-     Indicates whether the QR Code scanning feature is enabled or not.
-     */
-    @objc public var qrCodeScanningEnabled = false
-
-    /**
-     Indicates whether only the QR Code scanning feature is enabled or not.
-     */
-    @objc public var onlyQRCodeScanningEnabled = false
+    public var openWithEnabled = false
 
     /**
      Sets the custom navigation view controller as a root view controller for Gini Bank SDK screens.
-    */
-    @objc public var customNavigationController: UINavigationController?
+     */
+    public var customNavigationController: UINavigationController?
 
     /**
      Sets custom validations that can be done apart from the default ones (file size, file type...).
      It should throw a `CustomDocumentValidationError` error.
      */
-    @objc public var customDocumentValidations: ((GiniCaptureDocument) -> CustomDocumentValidationResult) = { _ in
+    public var customDocumentValidations: ((GiniCaptureDocument) -> CustomDocumentValidationResult) = { _ in
         return CustomDocumentValidationResult.success()
     }
 
-    // MARK: Button configuration options
+    // MARK: - Button configuration options
 
     /**
-      Cnfiguration used to define the appearance of the primary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons in different screens: `Onboarding`, `Review`, `Digital Invoice Onboarding`, `Digital Invoice Overview`, `No Results`, `Error`.
+     Cnfiguration used to define the appearance of the primary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons in different screens: `Onboarding`, `Review`, `Digital Invoice Onboarding`, `Digital Invoice Overview`, `No Results`, `Error`.
      */
     public lazy var primaryButtonConfiguration = ButtonConfiguration(backgroundColor: .GiniBank.accent1,
                                                                      borderColor: .clear,
@@ -99,7 +89,7 @@ public final class GiniBankConfiguration: NSObject {
                                                                                               dark: .clear).uiColor(),
                                                                        titleColor: GiniColor(light: .GiniBank.dark6,
                                                                                              dark: .GiniBank.light1)
-                                                                                   .uiColor(),
+                                                                                  .uiColor(),
                                                                        shadowColor: .clear,
                                                                        cornerRadius: 16,
                                                                        borderWidth: 2,
@@ -141,41 +131,57 @@ public final class GiniBankConfiguration: NSObject {
                                                                      shadowRadius: 0,
                                                                      withBlurEffect: false)
 
-    // MARK: Loading indicators
+    // MARK: - Loading indicators
 
     /**
-     * Set an adapter implementation to show a custom loading indicator on the buttons which support loading.
+     Set an adapter implementation to show a custom loading indicator on the buttons which support loading.
      */
     public var onButtonLoadingIndicator: OnButtonLoadingIndicatorAdapter?
 
     /**
-     * Set an adapter implementation to show a custom loading indicator on the document analysis screen.
+     Set an adapter implementation to show a custom loading indicator on the document analysis screen.
      */
     public var customLoadingIndicator: CustomLoadingIndicatorAdapter?
 
-    // MARK: Camera options
+    // MARK: - QR code options
+    /**
+     Indicates whether the QR Code scanning feature is enabled or not.
+     */
+    public var qrCodeScanningEnabled = false
+
+    /**
+     Indicates whether only the QR Code scanning feature is enabled or not.
+     */
+    public var onlyQRCodeScanningEnabled = false
+
+    // MARK: - Camera screen
 
     /**
      Set the types supported by the file import feature. `GiniCaptureImportFileTypes.none` by default.
      */
-    @objc public var fileImportSupportedTypes = GiniConfiguration.GiniCaptureImportFileTypes.none
+    public var fileImportSupportedTypes = GiniConfiguration.GiniCaptureImportFileTypes.none
 
     /**
      Indicates whether the flash toggle should be shown in the camera screen.
      */
-    @objc public var flashToggleEnabled = false
+    public var flashToggleEnabled = false
 
     /**
      When the flash toggle is enabled, this flag indicates if the flash is on by default.
      */
-    @objc public var flashOnByDefault = true
+    public var flashOnByDefault = true
 
-    // MARK: Onboarding screens
+    /**
+     Set an adapter implementation to show a custom bottom navigation bar on the camera screen.
+     */
+    public var cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
+
+    // MARK: - Onboarding screens
 
     /**
      Indicates whether the onboarding screen should be presented at each start of the Gini Bank SDK.
      */
-    @objc public var onboardingShowAtLaunch = false
+    public var onboardingShowAtLaunch = false
 
     /**
      Indicates whether the onboarding screen should be presented at the first
@@ -183,7 +189,7 @@ public final class GiniBankConfiguration: NSObject {
      
      - note: Overwrites `onboardingShowAtLaunch` for the first launch.
      */
-    @objc public var onboardingShowAtFirstLaunch = true
+    public var onboardingShowAtFirstLaunch = true
 
     /**
      Set custom onboarding pages
@@ -192,108 +198,107 @@ public final class GiniBankConfiguration: NSObject {
     public var customOnboardingPages: [OnboardingPage]?
 
     /**
-      * Set an adapter implementation to show a custom illustration on the "align corners" onboarding page.
-     */
-    public var onboardingAlignCornersIllustrationAdapter: OnboardingIllustrationAdapter?
-
-     /**
-       * Set an adapter implementation to show a custom illustration on the "lighting" onboarding page.
-      */
-    public var onboardingLightingIllustrationAdapter: OnboardingIllustrationAdapter?
-
-     /**
-      * Set an adapter implementation to show a custom illustration on the "multi-page" onboarding page.
-      */
-    public var onboardingMultiPageIllustrationAdapter: OnboardingIllustrationAdapter?
-
-     /**
-      * Set an adapter implementation to show a custom illustration on the "QR code" onboarding page.
-      */
-    public var onboardingQRCodeIllustrationAdapter: OnboardingIllustrationAdapter?
-
-    /**
-     * Set an adapter implementation to show a custom illustration on the return assistant onboarding page.
-     */
-   public var digitalInvoiceOnboardingIllustrationAdapter: OnboardingIllustrationAdapter?
-
-    // MARK: Bottom Navigation Bar
-
-    /**
-      Enable/disable the bottom navigation bar.
-     */
-    public var bottomNavigationBarEnabled: Bool = false
-
-    /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the help screens.
-     */
-    public var helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
-
-    /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the camera screen.
-     */
-    public var cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
-
-    /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the onboarding screen.
+     Set an adapter implementation to show a custom bottom navigation bar on the onboarding screen.
      */
     public var onboardingNavigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
 
     /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the review screen.
+     Set an adapter implementation to show a custom illustration on the "align corners" onboarding page.
+     */
+    public var onboardingAlignCornersIllustrationAdapter: OnboardingIllustrationAdapter?
+
+    /**
+     * Set an adapter implementation to show a custom illustration on the "lighting" onboarding page.
+     */
+    public var onboardingLightingIllustrationAdapter: OnboardingIllustrationAdapter?
+
+    /**
+     Set an adapter implementation to show a custom illustration on the "multi-page" onboarding page.
+     */
+    public var onboardingMultiPageIllustrationAdapter: OnboardingIllustrationAdapter?
+
+    /**
+     Set an adapter implementation to show a custom illustration on the "QR code" onboarding page.
+     */
+    public var onboardingQRCodeIllustrationAdapter: OnboardingIllustrationAdapter?
+
+    // MARK: - Review screen
+
+    /**
+     Set an adapter implementation to show a custom bottom navigation bar on the review screen.
      */
     public var reviewNavigationBarBottomAdapter: ReviewScreenBottomNavigationBarAdapter?
 
+    // MARK: - Gallery screen
+
     /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the image picker screen.
+     Set an adapter implementation to show a custom bottom navigation bar on the image picker screen.
      */
     public var imagePickerNavigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter?
 
-    /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the digital invoice help screen
-     */
-    public var digitalInvoiceHelpNavigationBarBottomAdapter: DigitalInvoiceHelpNavigationBarBottomAdapter?
+    // MARK: - Help screens
 
     /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the digital invoice onboarding screen.
+     Set an adapter implementation to show a custom bottom navigation bar on the help screens.
      */
-    public var digitalInvoiceOnboardingNavigationBarBottomAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter?
-
-    /**
-      * Set an adapter implementation to show a custom bottom navigation bar on the digital invoice overview screen.
-     */
-    public var digitalInvoiceNavigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter?
-
-    // MARK: Help screens
+    public var helpNavigationBarBottomAdapter: HelpBottomNavigationBarAdapter?
 
     /**
      Set an array of additional custom help menu items. Those items will be presented as table view cells on the help menu screen. By selecting the cell the user will be redirected to the page, which represented by viewController provided by customer during the `HelpMenuViewController.Item` initialization.
-    */
+     */
     public var customMenuItems: [HelpMenuItem] = []
 
     /**
      Indicates whether the supported format screens should be shown. In case of `false`,
      the option won't be shown in the Help menu.
      */
-    @objc public var shouldShowSupportedFormatsScreen = true
-
-    // MARK: Open with tutorial options
-
-    /**
-     Sets the text of the app name for the Open with tutorial texts.
-     */
-    @objc public var openWithAppNameForTexts = Bundle.main.appName
+    public var shouldShowSupportedFormatsScreen = true
 
     /**
      Sets if the Drag&Drop step should be shown in the "Open with" tutorial.
      */
-    @objc public var shouldShowDragAndDropTutorial = true
+    public var shouldShowDragAndDropTutorial = true
+
+    /**
+     Sets the text of the app name for the Open with tutorial texts.
+     */
+    public var openWithAppNameForTexts = Bundle.main.appName
+
+    // MARK: - Digital Invoice
+
+    /**
+     Set an adapter implementation to show a custom illustration on the return assistant onboarding page.
+     */
+    public var digitalInvoiceOnboardingIllustrationAdapter: OnboardingIllustrationAdapter?
+
+    /**
+     Indicates whether the Return Assistant feature is enabled or not. In case of `true`,
+     the user will be presented with a digital representation of their invoice where they
+     can see individual line items and are able to amend them or choose to not to pay for them.
+     */
+    public var returnAssistantEnabled = true
+
+    /**
+     Set an adapter implementation to show a custom bottom navigation bar on the digital invoice help screen
+     */
+    public var digitalInvoiceHelpNavigationBarBottomAdapter: DigitalInvoiceHelpNavigationBarBottomAdapter?
+
+    /**
+     Set an adapter implementation to show a custom bottom navigation bar on the digital invoice onboarding screen.
+     */
+    public var digitalInvoiceOnboardingNavigationBarBottomAdapter: DigitalInvoiceOnboardingNavigationBarBottomAdapter?
+
+    /**
+     Set an adapter implementation to show a custom bottom navigation bar on the digital invoice overview screen.
+     */
+    public var digitalInvoiceNavigationBarBottomAdapter: DigitalInvoiceNavigationBarBottomAdapter?
 
     /**
      Shows the return reasons dialog.
      */
-    @objc public var enableReturnReasons: Bool = true
+    public var enableReturnReasons: Bool = true
 
-    // MARK: Error
+    // MARK: - Error Logger
 
     /**
      Sets if the default error logging implementation is on.
@@ -303,45 +308,23 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Used to handle all the logging messages in order to log them in a different way.
      */
-    @objc public var logger: GiniLogger = GiniConfiguration.shared.logger
+    public var logger: GiniLogger = GiniConfiguration.shared.logger
 
     /**
      Should be set if the custom error logging is implemented.
      */
     public var customGiniErrorLoggerDelegate: GiniCaptureErrorLoggerDelegate?
 
-    // MARK: Debug
+    // MARK: - Development Debug
 
     /**
      Can be turned on during development to unlock extra information and to save captured images to camera roll.
-
+     
      - warning: Should never be used outside of a development enviroment.
      */
-    @objc public var debugModeOn = false
+    public var debugModeOn = false
 
-    /**
-     Set dictionary of fonts for available text styles. Used internally.
-     */
-    var textStyleFonts: [UIFont.TextStyle: UIFont] = [
-    .largeTitle: UIFontMetrics(forTextStyle: .largeTitle).scaledFont(for: UIFont.systemFont(ofSize: 34)),
-    .title1: UIFontMetrics(forTextStyle: .title1).scaledFont(for: UIFont.systemFont(ofSize: 28)),
-    .title1Bold: UIFontMetrics(forTextStyle: .title1).scaledFont(for: UIFont.boldSystemFont(ofSize: 28)),
-    .title2: UIFontMetrics(forTextStyle: .title2).scaledFont(for: UIFont.systemFont(ofSize: 22)),
-    .title2Bold: UIFontMetrics(forTextStyle: .title2).scaledFont(for: UIFont.boldSystemFont(ofSize: 22)),
-    .title3: UIFontMetrics(forTextStyle: .title3).scaledFont(for: UIFont.systemFont(ofSize: 20)),
-    .caption1: UIFontMetrics(forTextStyle: .caption1).scaledFont(for: UIFont.systemFont(ofSize: 12)),
-    .caption2: UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 11)),
-    .headline: UIFontMetrics(forTextStyle: .headline).scaledFont(for: UIFont.systemFont(ofSize: 17)),
-    .subheadline: UIFontMetrics(forTextStyle: .subheadline).scaledFont(for: UIFont.systemFont(ofSize: 15)),
-    .body: UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont.systemFont(ofSize: 17)),
-    .bodyBold: UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont.boldSystemFont(ofSize: 17)),
-    .callout: UIFontMetrics(forTextStyle: .callout).scaledFont(for: UIFont.systemFont(ofSize: 16)),
-    .calloutBold: UIFontMetrics(forTextStyle: .callout).scaledFont(for: UIFont.boldSystemFont(ofSize: 16)),
-    .footnote: UIFontMetrics(forTextStyle: .footnote).scaledFont(for: UIFont.systemFont(ofSize: 13)),
-    .footnoteBold: UIFontMetrics(forTextStyle: .footnote).scaledFont(for: UIFont.boldSystemFont(ofSize: 13))
-    ]
-
-    // MARK: Configuration Methods
+    // MARK: - Configuration Methods
 
     public func captureConfiguration() -> GiniConfiguration {
         let configuration = GiniConfiguration.shared
@@ -454,20 +437,18 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.addPageButtonConfiguration = configuration.addPageButtonConfiguration
     }
 
-    // MARK: Instance Methods
+    // MARK: - Update to custom font
     /**
      Allows setting a custom font for specific text styles. The change will affect all screens where a specific text style was used.
 
      - parameter font: Font that is going to be assosiated with specific text style. You can use scaled font or scale your font with our util method `UIFont.scaledFont(_ font: UIFont, textStyle: UIFont.TextStyle)`
      - parameter textStyle: Constants that describe the preferred styles for fonts. Please, find additional information [here](https://developer.apple.com/documentation/uikit/uifont/textstyle)
-    */
+     */
     public func updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle) {
         textStyleFonts[textStyle] = font
     }
 
-    var documentService: DocumentServiceProtocol?
-    var lineItems: [[Extraction]]?
-
+    // MARK: - Cleanup and feedback sending
     // swiftlint:disable function_parameter_count
     /// Function for clean up
     /// - Parameters:
@@ -538,4 +519,30 @@ public final class GiniBankConfiguration: NSObject {
         self.lineItems = nil
     }
     // swiftlint:enable function_parameter_count
+
+    // MARK: - Internal usage
+    var documentService: DocumentServiceProtocol?
+    var lineItems: [[Extraction]]?
+
+    /**
+     Set dictionary of fonts for available text styles. Used internally.
+     */
+    var textStyleFonts: [UIFont.TextStyle: UIFont] = [
+        .largeTitle: UIFontMetrics(forTextStyle: .largeTitle).scaledFont(for: UIFont.systemFont(ofSize: 34)),
+        .title1: UIFontMetrics(forTextStyle: .title1).scaledFont(for: UIFont.systemFont(ofSize: 28)),
+        .title1Bold: UIFontMetrics(forTextStyle: .title1).scaledFont(for: UIFont.boldSystemFont(ofSize: 28)),
+        .title2: UIFontMetrics(forTextStyle: .title2).scaledFont(for: UIFont.systemFont(ofSize: 22)),
+        .title2Bold: UIFontMetrics(forTextStyle: .title2).scaledFont(for: UIFont.boldSystemFont(ofSize: 22)),
+        .title3: UIFontMetrics(forTextStyle: .title3).scaledFont(for: UIFont.systemFont(ofSize: 20)),
+        .caption1: UIFontMetrics(forTextStyle: .caption1).scaledFont(for: UIFont.systemFont(ofSize: 12)),
+        .caption2: UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 11)),
+        .headline: UIFontMetrics(forTextStyle: .headline).scaledFont(for: UIFont.systemFont(ofSize: 17)),
+        .subheadline: UIFontMetrics(forTextStyle: .subheadline).scaledFont(for: UIFont.systemFont(ofSize: 15)),
+        .body: UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont.systemFont(ofSize: 17)),
+        .bodyBold: UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont.boldSystemFont(ofSize: 17)),
+        .callout: UIFontMetrics(forTextStyle: .callout).scaledFont(for: UIFont.systemFont(ofSize: 16)),
+        .calloutBold: UIFontMetrics(forTextStyle: .callout).scaledFont(for: UIFont.boldSystemFont(ofSize: 16)),
+        .footnote: UIFontMetrics(forTextStyle: .footnote).scaledFont(for: UIFont.systemFont(ofSize: 13)),
+        .footnoteBold: UIFontMetrics(forTextStyle: .footnote).scaledFont(for: UIFont.boldSystemFont(ofSize: 13))
+    ]
 }
