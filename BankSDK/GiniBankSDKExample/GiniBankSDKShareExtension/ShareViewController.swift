@@ -65,9 +65,7 @@ class ShareViewController: UIViewController {
         })
     }
 
-    // Courtesy: https://stackoverflow.com/a/44499222/13363449 👇🏾
-    // Function must be named exactly like this so a selector can be found by the compiler!
-    // Anyway - it's another selector in another instance that would be "performed" instead.
+    // Function must be named exactly like this so a selector can be found by the compiler
     @objc private func openURL(_ url: URL) -> Bool {
         var responder: UIResponder? = self
         while responder != nil {
