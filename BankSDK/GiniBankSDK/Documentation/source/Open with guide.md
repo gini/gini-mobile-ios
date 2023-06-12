@@ -121,7 +121,7 @@ For enabling your app to be opened with share functionality from Photos you need
 1. Add a share extension to your project
 
 Go to `File -> New -> Target` and select `Share Extension`. Please make sure you link it to the main app.
-The system will ask you if you want to activate the `Share scheme` , just select `Activate`. 
+The system will ask you if you want to activate the `Share scheme`, just select `Activate`. 
 
 2. Set the extension activation rule
 
@@ -142,7 +142,7 @@ Check the example [here](https://github.com/gini/gini-mobile-ios/blob/main/BankS
 
 5. Open the main app and retrieve the shared data
 
- - Register your app extention scheme in the URL types for the main app.
+ - Register your app extension scheme in the URL types for the main app.
 
  - Open the main app from the [extension](https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/GiniBankSDKShareExtension/ShareViewController.swift#L61).
 
