@@ -26,14 +26,15 @@ jobs:
         run: |
           cd BankSDK/GiniBankSDKPinning
           /usr/local/bin/mint run swift-create-xcframework
+
+      - name: setup ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2.0'
+          bundler-cache: true
     
       - name: Add resources to BankSDK target for generated Xcode project
-        uses: actions/checkout@v3
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.0'
-          bundler-cache: true
-      - uses: maierj/fastlane-action@v3.0.0
+        uses: maierj/fastlane-action@v3.0.0
         with:
           lane: 'add_resources'
           options: >
@@ -46,12 +47,7 @@ jobs:
             }
         
       - name: Add resources to CaptureSDK target for generated Xcode project
-        uses: actions/checkout@v3
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.0'
-          bundler-cache: true
-      - uses: maierj/fastlane-action@v3.0.0
+        uses: maierj/fastlane-action@v3.0.0
         with:
           lane: 'add_resources'
           options: >
