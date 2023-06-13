@@ -29,7 +29,6 @@ public final class CustomLoadingIndicator: UIActivityIndicatorView, CustomLoadin
     }
 
     public func onDeinit() {
-
     }
 }
 

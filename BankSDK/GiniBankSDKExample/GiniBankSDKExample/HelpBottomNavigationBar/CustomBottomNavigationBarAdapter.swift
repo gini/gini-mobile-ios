@@ -49,7 +49,6 @@ public final class CustomBottomNavigationBarAdapter: HelpBottomNavigationBarAdap
     /**
      Called when the CustomBottomNavigationBarAdapter object is deallocated.
      */
-
     public func onDeinit() {
         backButtonCallback = nil
     }
