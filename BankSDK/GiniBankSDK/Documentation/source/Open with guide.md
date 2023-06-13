@@ -136,7 +136,7 @@ Find the example implementation [here](https://github.com/gini/gini-mobile-ios/b
 4. Pass the data from the extension to the main app
 
 Here we connect the share extension directly to the main app using `AppGroups` and `UserDefaults`.
-Add [AppGroups](https://developer.apple.com/documentation/bundleresources/entitlements/com_apple_security_application-groups) to the capabilities of both the extension and main using the same app group.
+Add [AppGroups](https://developer.apple.com/documentation/bundleresources/entitlements/com_apple_security_application-groups) to the capabilities of both the extension and main app using the same app group.
 
 Check the example [here](https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/GiniBankSDKShareExtension/ShareViewController.swift#L33)
 
@@ -147,5 +147,5 @@ Check the example [here](https://github.com/gini/gini-mobile-ios/blob/main/BankS
  - Open the main app from the [extension](https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/GiniBankSDKShareExtension/ShareViewController.swift#L61).
 
  - Handle incoming URL from the app extension in `AppDelegate` and retrieve data from the shared `UserDefaults`.
- The system delivers the URL to your app by calling your app delegate’s `application(_:open:options:)` method.
+The system delivers the URL to your app by calling your app delegate’s `application(_:open:options:)` method.
 You can check our example implementation [here](https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/GiniBankSDKExample/AppDelegate.swift#L29).
