@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'BankAPILibrary/**'
+  workflow_dispatch:
     tags-ignore:
       - '**'
   pull_request:
