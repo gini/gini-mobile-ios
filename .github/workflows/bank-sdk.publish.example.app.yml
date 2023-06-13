@@ -61,7 +61,12 @@ jobs:
             plutil -replace client_password -string "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
 
       - name: Setup Manual Signing for Xcode project
-        uses: maierj/fastlane-action@v3.0.0
+        uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+      - uses: maierj/fastlane-action@v3.0.0
         with:
           lane: 'setup_manual_signing'
           options: >
