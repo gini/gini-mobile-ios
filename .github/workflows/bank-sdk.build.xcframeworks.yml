@@ -1,6 +1,7 @@
 name: Build BankSDK XCFrameworks
 on:
   push:
+  workflow_dispatch:
     tags:
       - 'GiniBankSDK;[0-9]+.[0-9]+.[0-9]+;xcframeworks**'
       - 'GiniBankSDK;[0-9]+.[0-9]+.[0-9]+-beta[0-9][0-9]+;xcframeworks**'
@@ -11,7 +12,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Mint
         uses: fabasoad/setup-mint-action@main
@@ -27,7 +28,7 @@ jobs:
           /usr/local/bin/mint run swift-create-xcframework
     
       - name: Add resources to BankSDK target for generated Xcode project
-        uses: maierj/fastlane-action@v2.0.1
+        uses: maierj/fastlane-action@v3.0.0
         with:
           lane: 'add_resources'
           options: >
@@ -40,7 +41,7 @@ jobs:
             }
         
       - name: Add resources to CaptureSDK target for generated Xcode project
-        uses: maierj/fastlane-action@v2.0.1
+        uses: maierj/fastlane-action@v3.0.0
         with:
           lane: 'add_resources'
           options: >
@@ -89,7 +90,7 @@ jobs:
           xcodebuild -create-xcframework -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/TrustKit.framework -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/TrustKit.framework -output TrustKit.xcframework
         
       - name: archive frameworks GiniBankAPILibrary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: GiniBankSDKFramework
           path: |
