@@ -40,13 +40,13 @@ You can find the names of the colors in [GiniColors.xcassets](https://github.com
 
  You can view our color palette here:
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fw6VLDKCkunlgBRQcydqJGo%2FiOS-Gini-Bank-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D14%253A355%26t%3D78TzSOVx8Srs65Lh-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fz2naLjqFknlrlbHhfAWx85%2FiOS-Gini-Bank-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D14%253A355%26t%3DkpmaxiSASzEV6nAe-1" allowfullscreen></iframe>
 
 ## Typography
 
 We provide a global typography based on text appearance styles from `UIFont.TextStyle`. 
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fw6VLDKCkunlgBRQcydqJGo%2FiOS-Gini-Bank-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D2574%253A12863%26t%3DCzesgbkkTCy8Ztwv-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fz2naLjqFknlrlbHhfAWx85%2FiOS-Gini-Bank-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D2574%253A12863%26t%3DkpmaxiSASzEV6nAe-1" allowfullscreen></iframe>
 
 To override them in your application please use `GiniBankConfiguration.updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle)`. For example:
 
@@ -98,11 +98,11 @@ More details will be added below during the specific screen customization.
 
 ## Onboarding screens
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fw6VLDKCkunlgBRQcydqJGo%2FiOS-Gini-Bank-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D243%253A3305%26t%3D78TzSOVx8Srs65Lh-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fz2naLjqFknlrlbHhfAWx85%2FiOS-Gini-Bank-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D243%253A3305%26t%3DkpmaxiSASzEV6nAe-1" allowfullscreen></iframe>
 
 ## Camera screen
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fw6VLDKCkunlgBRQcydqJGo%2FiOS-Gini-Bank-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D243%253A3306%26t%3D78TzSOVx8Srs65Lh-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fz2naLjqFknlrlbHhfAWx85%2FiOS-Gini-Bank-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D243%253A3306%26t%3DkpmaxiSASzEV6nAe-1" allowfullscreen></iframe>
 
 ### Single Page
 
@@ -125,7 +125,7 @@ Flash is on by default, and you can turn it off by passing `false` to `GiniBankC
 
 ### Camera access
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fw6VLDKCkunlgBRQcydqJGo%2FiOS-Gini-Bank-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D257%253A15890%26t%3D78TzSOVx8Srs65Lh-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fz2naLjqFknlrlbHhfAWx85%2FiOS-Gini-Bank-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D257%253A15890%26t%3DkpmaxiSASzEV6nAe-1" allowfullscreen></iframe>
 
 ### QR Code Scanning
 
@@ -141,7 +141,7 @@ Please find more information in the [QR Code scanning guide](https://developer.g
 
 ### QR Code Only
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fw6VLDKCkunlgBRQcydqJGo%2FiOS-Gini-Bank-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D2510%253A12875%26t%3DKh7bmfr4NDQNjZpY-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fz2naLjqFknlrlbHhfAWx85%2FiOS-Gini-Bank-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D2510%253A12875%26t%3DkpmaxiSASzEV6nAe-1" allowfullscreen></iframe>
 
 During QR Code only mode the capture and import controls will be hidden from the camera screen.
 
@@ -151,17 +151,17 @@ For enabling QR code only mode the both flags `GiniBankConfiguration.shared.qrCo
 
 This feature enables the Gini Capture SDK to import documents from the camera screen. When it's enabled an additional button is shown next to the camera trigger. Using this button allows the user to pick either an image or a pdf from the device.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fw6VLDKCkunlgBRQcydqJGo%2FiOS-Gini-Bank-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D1028%253A11176%26t%3D78TzSOVx8Srs65Lh-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fz2naLjqFknlrlbHhfAWx85%2FiOS-Gini-Bank-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D2510%253A12877%26t%3DkpmaxiSASzEV6nAe-1" allowfullscreen></iframe>
 
 Please find more information in the [Import PDFs and images guide](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/import-pdfs-and-images-guide.html).
 
 ### Camera import error handling
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fw6VLDKCkunlgBRQcydqJGo%2FiOS-Gini-Bank-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D1028%253A12180%26t%3D78TzSOVx8Srs65Lh-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fz2naLjqFknlrlbHhfAWx85%2FiOS-Gini-Bank-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D2510%253A12879%26t%3DkpmaxiSASzEV6nAe-1" allowfullscreen></iframe>
 
 ## Review screen
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fw6VLDKCkunlgBRQcydqJGo%2FiOS-Gini-Bank-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D261%253A8256%26t%3D78TzSOVx8Srs65Lh-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fz2naLjqFknlrlbHhfAWx85%2FiOS-Gini-Bank-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D261%253A8256%26t%3DkpmaxiSASzEV6nAe-1" allowfullscreen></iframe>
 
 You can show a custom loading indicator with custom animation support on the process button.
 Your custom loading indicator should implement `OnButtonLoadingIndicatorAdapter` interface and be passed  to `GiniBankConfiguration.shared.onButtonLoadingIndicator`.
@@ -170,7 +170,7 @@ The example implementation is available [here](https://github.com/gini/gini-mobi
 
 ## Analysis screen
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fw6VLDKCkunlgBRQcydqJGo%2FiOS-Gini-Bank-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D501%253A7494%26t%3D78TzSOVx8Srs65Lh-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fz2naLjqFknlrlbHhfAWx85%2FiOS-Gini-Bank-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D501%253A7494%26t%3DkpmaxiSASzEV6nAe-1" allowfullscreen></iframe>
 
 You can show a custom loading indicator with custom animation support.
 Your custom loading indicator should implement `CustomLoadingIndicatorAdapter` interface and be passed  to `GiniBankConfiguration.shared.customLoadingIndicator`.
@@ -179,7 +179,7 @@ The example implementation is available [here](https://github.com/gini/gini-mobi
 
 ## Help screens
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fw6VLDKCkunlgBRQcydqJGo%2FiOS-Gini-Bank-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D141%253A2328%26t%3D78TzSOVx8Srs65Lh-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fz2naLjqFknlrlbHhfAWx85%2FiOS-Gini-Bank-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D141%253A2328%26t%3DkpmaxiSASzEV6nAe-1" allowfullscreen></iframe>
 
 You can show your own help screens in the Gini Capture SDK.
 You can pass the title and view controller for each screen to the
@@ -199,11 +199,11 @@ You can also disable the supported formats help screen by passing `false` to
 
 ## Gallery album screen
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fw6VLDKCkunlgBRQcydqJGo%2FiOS-Gini-Bank-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D279%253A7588%26t%3D78TzSOVx8Srs65Lh-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fz2naLjqFknlrlbHhfAWx85%2FiOS-Gini-Bank-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D279%253A7588%26t%3DkpmaxiSASzEV6nAe-1" allowfullscreen></iframe>
 
 ## No result screen
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fw6VLDKCkunlgBRQcydqJGo%2FiOS-Gini-Bank-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D263%253A6989%26t%3D78TzSOVx8Srs65Lh-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fz2naLjqFknlrlbHhfAWx85%2FiOS-Gini-Bank-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D263%253A6989%26t%3DkpmaxiSASzEV6nAe-1" allowfullscreen></iframe>
 
 You can show your own UI for data input if an error occurred and the user clicks the "Enter manually" button on the error screen.
 For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
@@ -212,7 +212,7 @@ You can find more details [here](https://developer.gini.net/gini-mobile-ios/Gini
 
 ## Error screen
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fw6VLDKCkunlgBRQcydqJGo%2FiOS-Gini-Bank-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D263%253A6858%26t%3D78TzSOVx8Srs65Lh-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fz2naLjqFknlrlbHhfAWx85%2FiOS-Gini-Bank-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D263%253A6858%26t%3DkpmaxiSASzEV6nAe-1" allowfullscreen></iframe>
 
 You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.1/features.html#error-screen-customization).
 
@@ -220,7 +220,7 @@ You can find more details [here](https://developer.gini.net/gini-mobile-ios/Gini
 
 ## Digital Invoice Onboarding screen
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fw6VLDKCkunlgBRQcydqJGo%2FiOS-Gini-Bank-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D1301%253A11187%26t%3D78TzSOVx8Srs65Lh-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fz2naLjqFknlrlbHhfAWx85%2FiOS-Gini-Bank-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D1301%253A11187%26t%3DkpmaxiSASzEV6nAe-1" allowfullscreen></iframe>
 
 ### Bottom navigation bar
 
@@ -233,7 +233,7 @@ If you need to animate the illustrations on the onboarding pages implement the `
 
 ## Digital Invoice Overview Screen
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fw6VLDKCkunlgBRQcydqJGo%2FiOS-Gini-Bank-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D1356%253A12034%26t%3D78TzSOVx8Srs65Lh-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fz2naLjqFknlrlbHhfAWx85%2FiOS-Gini-Bank-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D1356%253A12034%26t%3DkpmaxiSASzEV6nAe-1" allowfullscreen></iframe>
 
 ### Bottom navigation bar
 
@@ -242,7 +242,7 @@ your own by implementing the `DigitalInvoiceNavigationBarBottomAdapter` interfac
 
 ## Digital Invoice Help screen
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fw6VLDKCkunlgBRQcydqJGo%2FiOS-Gini-Bank-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D1356%253A11409%26t%3D78TzSOVx8Srs65Lh-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fz2naLjqFknlrlbHhfAWx85%2FiOS-Gini-Bank-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D1356%253A11409%26t%3DkpmaxiSASzEV6nAe-1" allowfullscreen></iframe>
 
 ### Bottom navigation bar
 
@@ -251,5 +251,4 @@ your own by implementing the `DigitalInvoiceHelpNavigationBarBottomAdapter` inte
 
 ## Digital Invoice Edit Article Screen
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fw6VLDKCkunlgBRQcydqJGo%2FiOS-Gini-Bank-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D1356%253A12601%26t%3D78TzSOVx8Srs65Lh-1" allowfullscreen></iframe>
-
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fz2naLjqFknlrlbHhfAWx85%2FiOS-Gini-Bank-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D1356%253A12601%26t%3DkpmaxiSASzEV6nAe-1" allowfullscreen></iframe>
