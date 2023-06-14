@@ -173,14 +173,11 @@ final class AppCoordinator: Coordinator {
     }
     
     fileprivate func showSettings() {
-        let settingsViewController = (UIStoryboard(name: "Main", bundle: nil)
-            .instantiateViewController(withIdentifier: "settingsViewController") as? SettingsViewController)!
-        settingsViewController.delegate = self
-        settingsViewController.giniConfiguration = configuration.captureConfiguration()
-        settingsViewController.modalPresentationStyle = .overFullScreen
-        settingsViewController.modalTransitionStyle = .crossDissolve
-        
-        rootViewController.present(settingsViewController, animated: true, completion: nil)
+		let settingsViewController = SettingsViewController(giniConfiguration: configuration.captureConfiguration())
+		settingsViewController.delegate = self
+		settingsViewController.modalPresentationStyle = .overFullScreen
+		settingsViewController.modalTransitionStyle = .coverVertical
+		rootViewController.present(settingsViewController, animated: true)
     }
 
     fileprivate func showOpenWithSwitchDialog(for pages: [GiniCapturePage]) {
