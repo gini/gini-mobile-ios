@@ -169,7 +169,7 @@ final class AppCoordinator: Coordinator {
         screenAPICoordinator.start()
         add(childCoordinator: screenAPICoordinator as Coordinator)
         
-        rootViewController.present(screenAPICoordinator.rootViewController, animated: true, completion: nil)
+        rootViewController.present(screenAPICoordinator.rootViewController, animated: true)
     }
     
     fileprivate func showSettings() {
@@ -197,11 +197,11 @@ final class AppCoordinator: Coordinator {
             self?.showScreenAPI(with: pages)
         })
         alertViewController.addAction(UIAlertAction(title: cancelButtonTitle, style: .default) { _ in
-            alertViewController.dismiss(animated: true, completion: nil)
+            alertViewController.dismiss(animated: true)
         })
 
 
-        rootViewController.present(alertViewController, animated: true, completion: nil)
+        rootViewController.present(alertViewController, animated: true)
     }
 
     fileprivate func showExternalDocumentNotValidDialog() {
@@ -211,15 +211,15 @@ final class AppCoordinator: Coordinator {
 
         let alertViewController = UIAlertController(title: title, message: description, preferredStyle: .alert)
         alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-            alertViewController.dismiss(animated: true, completion: nil)
+            alertViewController.dismiss(animated: true)
         })
         
-        rootViewController.present(alertViewController, animated: true, completion: nil)
+        rootViewController.present(alertViewController, animated: true)
     }
     
     fileprivate func popToRootViewControllerIfNeeded() {
         self.childCoordinators.forEach { coordinator in
-            coordinator.rootViewController.dismiss(animated: true, completion: nil)
+            coordinator.rootViewController.dismiss(animated: true)
             self.remove(childCoordinator: coordinator)
         }
     }
@@ -230,10 +230,8 @@ final class AppCoordinator: Coordinator {
 extension AppCoordinator: SelectAPIViewControllerDelegate {
     
     func selectAPI(viewController: SelectAPIViewController, didSelectApi api: GiniPayBankApiType) {
-        switch api {
-        case .screen:
-            showScreenAPI()
-        }
+		guard case .screen = api else { return }
+		showScreenAPI()
     }
     
     func selectAPI(viewController: SelectAPIViewController, didTapSettings: ()) {
@@ -252,13 +250,13 @@ extension AppCoordinator: SettingsViewControllerDelegate {
 
 extension AppCoordinator: ScreenAPICoordinatorDelegate {
     func screenAPIShouldRestart(coordinator: ScreenAPICoordinator) {
-        coordinator.rootViewController.dismiss(animated: false, completion: nil)
+        coordinator.rootViewController.dismiss(animated: false)
         coordinator.start()
-        rootViewController.present(coordinator.rootViewController, animated: false, completion: nil)
+        rootViewController.present(coordinator.rootViewController, animated: false)
     }
     
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ()) {
-        coordinator.rootViewController.dismiss(animated: true, completion: nil)
+        coordinator.rootViewController.dismiss(animated: true)
         self.remove(childCoordinator: coordinator as Coordinator)
     }
 }
