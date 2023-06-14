@@ -20,8 +20,8 @@ class SettingsViewController: UIViewController {
 	@IBOutlet private weak var navigationBar: UINavigationBar!
 	@IBOutlet private weak var tableView: UITableView!
 	
-	private var sectionData = [SectionType]()
-	private let giniConfiguration: GiniConfiguration
+	var sectionData = [SectionType]()
+	let giniConfiguration: GiniConfiguration
 	
 	weak var delegate: SettingsViewControllerDelegate?
 	
