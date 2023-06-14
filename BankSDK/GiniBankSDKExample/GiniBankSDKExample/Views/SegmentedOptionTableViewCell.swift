@@ -17,7 +17,7 @@ struct SegmentedOptionCellModel {
 	let selectedIndex: Int
 }
 
-class SegmentedOptionTableViewCell: UITableViewCell, NibLoadableView {
+final class SegmentedOptionTableViewCell: UITableViewCell, NibLoadableView {
 
 	@IBOutlet private weak var stackViewContainer: UIStackView!
 	@IBOutlet private weak var titleLabel: UILabel!

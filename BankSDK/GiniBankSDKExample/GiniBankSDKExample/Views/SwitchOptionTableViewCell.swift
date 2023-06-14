@@ -16,7 +16,7 @@ struct SwitchOptionModelCell: Hashable {
 	let active: Bool
 }
 
-class SwitchOptionTableViewCell: UITableViewCell, NibLoadableView {
+final class SwitchOptionTableViewCell: UITableViewCell, NibLoadableView {
 	
 	@IBOutlet private weak var titleLabel: UILabel!
 	@IBOutlet private weak var optionSwitch: UISwitch!
