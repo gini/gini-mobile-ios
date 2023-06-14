@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import GiniCaptureSDK
 
 final class CustomMenuItemViewController: UIViewController {
     
