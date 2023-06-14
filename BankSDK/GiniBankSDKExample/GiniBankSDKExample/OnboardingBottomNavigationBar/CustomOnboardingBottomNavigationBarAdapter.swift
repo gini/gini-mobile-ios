@@ -5,7 +5,6 @@
 //  Created by Krzysztof Kryniecki on 27/10/2022.
 //
 
-import Foundation
 import GiniCaptureSDK
 import UIKit
 

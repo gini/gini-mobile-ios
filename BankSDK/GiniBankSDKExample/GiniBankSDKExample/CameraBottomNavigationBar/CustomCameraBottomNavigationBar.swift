@@ -5,7 +5,6 @@
 //  Created by Krzysztof Kryniecki on 10/11/2022.
 //
 
-import Foundation
 import UIKit
 
 class CustomCameraBottomNavigationBar: UIView {

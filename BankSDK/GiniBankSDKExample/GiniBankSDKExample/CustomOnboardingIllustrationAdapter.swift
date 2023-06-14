@@ -5,7 +5,6 @@
 //  Created by Nadya Karaban on 16.09.22.
 //
 
-import Foundation
 import GiniCaptureSDK
 import Lottie
 import UIKit
