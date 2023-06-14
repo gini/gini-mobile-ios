@@ -53,7 +53,12 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
 	private var extractedResults: [Extraction] = []
 	
 	// {extraction name} : {entity name}
-	private let editableSpecificExtractions = ["paymentRecipient" : "companyname", "paymentReference" : "reference", "paymentPurpose" : "text", "iban" : "iban", "bic" : "bic", "amountToPay" : "amount"]
+	private let editableSpecificExtractions = ["paymentRecipient" : "companyname",
+											   "paymentReference" : "reference",
+											   "paymentPurpose" : "text",
+											   "iban" : "iban",
+											   "bic" : "bic",
+											   "amountToPay" : "amount"]
     
     init(configuration: GiniBankConfiguration,
          importedDocuments documents: [GiniCaptureDocument]?,
