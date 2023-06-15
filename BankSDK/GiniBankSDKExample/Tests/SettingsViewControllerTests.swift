@@ -19,6 +19,7 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.qrCodeScanningEnabled = true
 		configuration.multipageEnabled = true
 		configuration.flashToggleEnabled = true
+		configuration.flashOnByDefault = true
 		return configuration
 	}()
 	
@@ -29,20 +30,22 @@ final class SettingsViewControllerTests: XCTestCase {
 		super.setUp()
 		settingsViewController = SettingsViewController(giniConfiguration: configuration)
 		
-		sectionData.append(.switchOption(data: SwitchOptionModel(type: .openWith,
-																 isActive: configuration.openWithEnabled)))
-		sectionData.append(.switchOption(data: SwitchOptionModel(type: .qrCodeScanning,
-																 isActive: configuration.qrCodeScanningEnabled)))
-		sectionData.append(.switchOption(data: SwitchOptionModel(type: .qrCodeScanningOnly,
-																 isActive: configuration.onlyQRCodeScanningEnabled)))
-		sectionData.append(.switchOption(data: SwitchOptionModel(type: .multipage,
-																 isActive: configuration.multipageEnabled)))
+		sectionData.append(.switchOption(data: .init(type: .openWith,
+													 isActive: configuration.openWithEnabled)))
+		sectionData.append(.switchOption(data: .init(type: .qrCodeScanning,
+													 isActive: configuration.qrCodeScanningEnabled)))
+		sectionData.append(.switchOption(data: .init(type: .qrCodeScanningOnly,
+													 isActive: configuration.onlyQRCodeScanningEnabled)))
+		sectionData.append(.switchOption(data: .init(type: .multipage,
+													 isActive: configuration.multipageEnabled)))
 		if flashToggleSettingEnabled {
-			sectionData.append(.switchOption(data: SwitchOptionModel(type: .flashToggle,
-																	 isActive: configuration.flashToggleEnabled)))
+			sectionData.append(.switchOption(data: .init(type: .flashToggle,
+														 isActive: configuration.flashToggleEnabled)))
+			sectionData.append(.switchOption(data: .init(type: .flashOnByDefault,
+														 isActive: configuration.flashToggleEnabled)))
 		}
-		sectionData.append(.switchOption(data: SwitchOptionModel(type: .bottomNavigationBar,
-																 isActive: configuration.bottomNavigationBarEnabled)))
+		sectionData.append(.switchOption(data: .init(type: .bottomNavigationBar,
+													 isActive: configuration.bottomNavigationBarEnabled)))
 		var selectedSegmentIndex = 0
 		switch configuration.fileImportSupportedTypes {
 		case .none:
@@ -200,6 +203,35 @@ final class SettingsViewControllerTests: XCTestCase {
 			
 			XCTAssertFalse(configuration.flashToggleEnabled,
 						   "flashToggle should not be enabled in the gini configuration")
+		}
+	}
+	
+	
+	func testFlashOnByDefaultSwitchOn() {
+		if case .switchOption(var data) = sectionData[4] {
+			guard data.type == .flashOnByDefault else {
+				XCTFail("Expected type `flashOnByDefault`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			configuration.flashOnByDefault = data.isActive
+			
+			XCTAssertTrue(configuration.flashOnByDefault,
+						  "flashOnByDefault should be enabled in the gini configuration")
+		}
+	}
+	
+	func testFlashOnByDefaultSwitchOff() {
+		if case .switchOption(var data) = sectionData[4] {
+			guard data.type == .flashOnByDefault else {
+				XCTFail("Expected type `flashOnByDefault`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.flashOnByDefault = data.isActive
+			
+			XCTAssertFalse(configuration.flashOnByDefault,
+						   "flashOnByDefault should not be enabled in the gini configuration")
 		}
 	}
 	
