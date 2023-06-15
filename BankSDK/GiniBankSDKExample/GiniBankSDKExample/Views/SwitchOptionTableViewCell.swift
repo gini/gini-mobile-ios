@@ -14,16 +14,22 @@ protocol SwitchOptionTableViewCellDelegate: AnyObject {
 struct SwitchOptionModelCell: Hashable {
 	let title: String
 	let active: Bool
+	let message: String?
 }
 
 final class SwitchOptionTableViewCell: UITableViewCell, NibLoadableView {
 	
 	@IBOutlet private weak var titleLabel: UILabel!
+	@IBOutlet private weak var messageLabel: UILabel!
 	@IBOutlet private weak var optionSwitch: UISwitch!
 	
 	weak var delegate: SwitchOptionTableViewCellDelegate?
 	
-	private (set) var isActive: Bool = false
+	var isActive: Bool = false {
+		didSet {
+			optionSwitch.isOn = isActive
+		}
+	}
 
 	override func awakeFromNib() {
 		super.awakeFromNib()
@@ -40,8 +46,16 @@ final class SwitchOptionTableViewCell: UITableViewCell, NibLoadableView {
 	func set(data: SwitchOptionModelCell) {
 		titleLabel.text = data.title
 		optionSwitch.isOn = data.active
+		if let message = data.message {
+			messageLabel.isHidden = false
+			messageLabel.text = message
+		} else {
+			messageLabel.isHidden = true
+		}
 	}
 	
+	// MARK: - Actions
+
 	@objc private func switchValueChanged(_ sender: UISwitch) {
 		isActive = sender.isOn
 		delegate?.didToggleOption(in: self)
