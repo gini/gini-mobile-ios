@@ -41,7 +41,7 @@ final class SettingsViewControllerTests: XCTestCase {
 			sectionData.append(.switchOption(data: SwitchOptionModel(type: .flashToggle,
 																	 isActive: configuration.flashToggleEnabled)))
 		}
-		sectionData.append(.switchOption(data: SwitchOptionModel(type: .bottomNaviagtionBar,
+		sectionData.append(.switchOption(data: SwitchOptionModel(type: .bottomNavigationBar,
 																 isActive: configuration.bottomNavigationBarEnabled)))
 		var selectedSegmentIndex = 0
 		switch configuration.fileImportSupportedTypes {
@@ -122,28 +122,28 @@ final class SettingsViewControllerTests: XCTestCase {
 	func testQrCodeScanningOnlySwitchOn() {
 		if case .switchOption(var data) = sectionData[2] {
 			guard data.type == .qrCodeScanningOnly else {
-				XCTFail("Expected type `qrCodeScanning`, found a different one: \(data.type)")
+				XCTFail("Expected type `qrCodeScanningOnly`, found a different one: \(data.type)")
 				return
 			}
 			data.isActive = true
 			configuration.onlyQRCodeScanningEnabled = data.isActive
 			
 			XCTAssertTrue(configuration.onlyQRCodeScanningEnabled,
-						  "qr code scanning should be enabled in the gini configuration")
+						  "qrCodeScanningOnly should be enabled in the gini configuration")
 		}
 	}
 	
 	func testQrCodeScanningOnlySwitchOff() {
 		if case .switchOption(var data) = sectionData[2] {
 			guard data.type == .qrCodeScanningOnly else {
-				XCTFail("Expected type `qrCodeScanning`, found a different one: \(data.type)")
+				XCTFail("Expected type `qrCodeScanningOnly`, found a different one: \(data.type)")
 				return
 			}
 			data.isActive = false
 			configuration.onlyQRCodeScanningEnabled = data.isActive
 			
 			XCTAssertFalse(configuration.onlyQRCodeScanningEnabled,
-						   "qr code scanning should not be enabled in the gini configuration")
+						   "qrCodeScanningOnly should not be enabled in the gini configuration")
 		}
 	}
 	
@@ -178,7 +178,7 @@ final class SettingsViewControllerTests: XCTestCase {
 	func testFlashToggleSwitchOn() {
 		if case .switchOption(var data) = sectionData[4] {
 			guard data.type == .flashToggle else {
-				XCTFail("Expected type `multipage`, found a different one: \(data.type)")
+				XCTFail("Expected type `flashToggle`, found a different one: \(data.type)")
 				return
 			}
 			data.isActive = true
@@ -192,7 +192,7 @@ final class SettingsViewControllerTests: XCTestCase {
 	func testFlashToggleSwitchOff() {
 		if case .switchOption(var data) = sectionData[4] {
 			guard data.type == .flashToggle else {
-				XCTFail("Expected type `multipage`, found a different one: \(data.type)")
+				XCTFail("Expected type `flashToggle`, found a different one: \(data.type)")
 				return
 			}
 			data.isActive = false
@@ -205,7 +205,7 @@ final class SettingsViewControllerTests: XCTestCase {
 	
 	func testbottomNaviagtionBarSwitchOn() {
 		if case .switchOption(var data) = sectionData[5] {
-			guard data.type == .bottomNaviagtionBar else {
+			guard data.type == .bottomNavigationBar else {
 				XCTFail("Expected type `bottomNaviagtionBar`, found a different one: \(data.type)")
 				return
 			}
@@ -213,21 +213,21 @@ final class SettingsViewControllerTests: XCTestCase {
 			configuration.bottomNavigationBarEnabled = data.isActive
 			
 			XCTAssertTrue(configuration.bottomNavigationBarEnabled,
-						  "flashToggle should be enabled in the gini configuration")
+						  "bottomNaviagtionBar should be enabled in the gini configuration")
 		}
 	}
 	
 	func testbottomNaviagtionBarSwitchOff() {
 		if case .switchOption(var data) = sectionData[5] {
-			guard data.type == .bottomNaviagtionBar else {
-				XCTFail("Expected type `bottomNaviagtionBar`, found a different one: \(data.type)")
+			guard data.type == .bottomNavigationBar else {
+				XCTFail("Expected type `bottomNavigationBar`, found a different one: \(data.type)")
 				return
 			}
 			data.isActive = false
 			configuration.bottomNavigationBarEnabled = data.isActive
 			
 			XCTAssertFalse(configuration.bottomNavigationBarEnabled,
-						   "flashToggle should not be enabled in the gini configuration")
+						   "bottomNavigationBar should not be enabled in the gini configuration")
 		}
 	}
 
@@ -236,7 +236,8 @@ final class SettingsViewControllerTests: XCTestCase {
 		data.selectedIndex = 0
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
 		
-        XCTAssertEqual(configuration.fileImportSupportedTypes, .none,
+        XCTAssertEqual(configuration.fileImportSupportedTypes,
+					   .none,
                        "none types should be supported in the gini configuration")
     }
 
@@ -244,7 +245,8 @@ final class SettingsViewControllerTests: XCTestCase {
 		guard case .fileImportType(var data) = sectionData[6] else { return }
 		data.selectedIndex = 1
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
-        XCTAssertEqual(configuration.fileImportSupportedTypes, .pdf,
+        XCTAssertEqual(configuration.fileImportSupportedTypes,
+					   .pdf,
                        "pdf type should be supported in the gini configuration")
     }
 	
@@ -252,7 +254,8 @@ final class SettingsViewControllerTests: XCTestCase {
 		guard case .fileImportType(var data) = sectionData[6] else { return }
 		data.selectedIndex = 2
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
-		XCTAssertEqual(configuration.fileImportSupportedTypes, .pdf_and_images,
+		XCTAssertEqual(configuration.fileImportSupportedTypes,
+					   .pdf_and_images,
 					   "pdf and image types should be supported in the gini configuration")
 	}
 	
