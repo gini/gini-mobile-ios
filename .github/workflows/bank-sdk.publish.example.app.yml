@@ -13,12 +13,12 @@ jobs:
 
   upload-version:
     needs: check
-    runs-on: macOS-12    
+    runs-on: macos-latest    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - uses: maxim-lobanov/setup-xcode@v1
+      - uses: maxim-lobanov/setup-xcode@v1.5.1
         with:
           xcode-version: '14.2'
 
@@ -61,7 +61,12 @@ jobs:
             plutil -replace client_password -string "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
 
       - name: Setup Manual Signing for Xcode project
-        uses: maierj/fastlane-action@v2.3.0
+        uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+      - uses: maierj/fastlane-action@v3.0.0
         with:
           lane: 'setup_manual_signing'
           options: >
@@ -106,12 +111,12 @@ jobs:
             CODE_SIGN_STYLE=Manual
 
       - name: Check file existence
-        uses: andstor/file-existence-action@v1
+        uses: andstor/file-existence-action@v2
         with:
           files: "*.ipa"
       
       - name: Distribute ipa to App Center
-        uses: akiojin/appcenter-distribute-github-action@v1
+        uses: akiojin/appcenter-distribute-github-action@v1.4.8
         with:
           token: ${{ secrets.GINI_APPCENTER_API_TOKEN }}
           path: GiniBankSDKExample.ipa
