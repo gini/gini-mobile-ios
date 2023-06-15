@@ -83,20 +83,22 @@ final class SettingsViewController: UIViewController {
 
 		var sectionData = [SectionType]()
 		
-		sectionData.append(.switchOption(data: SwitchOptionModel(type: .openWith,
-																 isActive: giniConfiguration.openWithEnabled)))
-		sectionData.append(.switchOption(data: SwitchOptionModel(type: .qrCodeScanning,
-																 isActive: giniConfiguration.qrCodeScanningEnabled)))
-		sectionData.append(.switchOption(data: SwitchOptionModel(type: .qrCodeScanningOnly,
-																 isActive: giniConfiguration.onlyQRCodeScanningEnabled)))
-		sectionData.append(.switchOption(data: SwitchOptionModel(type: .multipage,
-																 isActive: giniConfiguration.multipageEnabled)))
+		sectionData.append(.switchOption(data: .init(type: .openWith,
+													 isActive: giniConfiguration.openWithEnabled)))
+		sectionData.append(.switchOption(data: .init(type: .qrCodeScanning,
+													 isActive: giniConfiguration.qrCodeScanningEnabled)))
+		sectionData.append(.switchOption(data: .init(type: .qrCodeScanningOnly,
+													 isActive: giniConfiguration.onlyQRCodeScanningEnabled)))
+		sectionData.append(.switchOption(data: .init(type: .multipage,
+													 isActive: giniConfiguration.multipageEnabled)))
 		if flashToggleSettingEnabled {
-			sectionData.append(.switchOption(data: SwitchOptionModel(type: .flashToggle,
-																	 isActive: giniConfiguration.flashToggleEnabled)))
+			sectionData.append(.switchOption(data: .init(type: .flashToggle,
+														 isActive: giniConfiguration.flashToggleEnabled)))
+			sectionData.append(.switchOption(data: .init(type: .flashOnByDefault,
+														 isActive: giniConfiguration.flashOnByDefault)))
 		}
-		sectionData.append(.switchOption(data: SwitchOptionModel(type: .bottomNavigationBar,
-																 isActive: giniConfiguration.bottomNavigationBarEnabled)))
+		sectionData.append(.switchOption(data: .init(type: .bottomNavigationBar,
+													 isActive: giniConfiguration.bottomNavigationBarEnabled)))
 		var selectedSegmentIndex = 0
 		switch giniConfiguration.fileImportSupportedTypes {
 		case .none:
@@ -134,15 +136,38 @@ final class SettingsViewController: UIViewController {
 			giniConfiguration.multipageEnabled = data.isActive
 		case .flashToggle:
 			giniConfiguration.flashToggleEnabled = data.isActive
+			if !data.isActive && giniConfiguration.flashOnByDefault {
+				// if `flashToggle` is disabled and `flashToggle` is enabled, make `flashToggle` disabled
+				// flashOnByDefault cell is right after
+				guard let cell = getSwitchOptionCell(at: cell.tag + 1) as? SwitchOptionTableViewCell else { return }
+				cell.isActive = data.isActive
+				giniConfiguration.flashOnByDefault = data.isActive
+			}
+		case .flashOnByDefault:
+			giniConfiguration.flashOnByDefault = data.isActive
+			if data.isActive && !giniConfiguration.flashToggleEnabled {
+				// if `flashOnByDefault` is enabled and `flashToggle` is disabled, make `flashToggle` enabled
+				// flashToggle cell is right above this
+				guard let cell = getSwitchOptionCell(at: cell.tag - 1) as? SwitchOptionTableViewCell else { return }
+				cell.isActive = data.isActive
+				giniConfiguration.flashToggleEnabled = data.isActive
+			}
 		case .bottomNavigationBar:
 			giniConfiguration.bottomNavigationBarEnabled = data.isActive
 		}
 	}
 	
+	private func getSwitchOptionCell(at row: Int) -> UITableViewCell? {
+		let indexPath = IndexPath(row: row, section: 0)
+		 return tableView.cellForRow(at: indexPath)
+	}
+	
 	private func cell(for optionModel: SwitchOptionModel, at row: Int) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell() as SwitchOptionTableViewCell
 		cell.tag = row
-		let model = SwitchOptionModelCell(title: optionModel.type.title, active: optionModel.isActive)
+		let model = SwitchOptionModelCell(title: optionModel.type.title,
+										  active: optionModel.isActive,
+										  message: optionModel.type.message)
 		cell.set(data: model)
 		cell.delegate = self
 		return cell
