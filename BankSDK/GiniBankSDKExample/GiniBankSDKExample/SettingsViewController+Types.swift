@@ -22,7 +22,7 @@ struct SwitchOptionModel {
 		case qrCodeScanningOnly
 		case multipage
 		case flashToggle
-		case bottomNaviagtionBar
+		case bottomNavigationBar
 		
 		var title: String {
 			switch self {
@@ -36,7 +36,7 @@ struct SwitchOptionModel {
 				return "Multipage"
 			case .flashToggle:
 				return "Flash Toggle"
-			case .bottomNaviagtionBar:
+			case .bottomNavigationBar:
 				return "Bottom Navigation Bar"
 			}
 		}

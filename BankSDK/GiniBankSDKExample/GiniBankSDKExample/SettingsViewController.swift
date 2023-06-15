@@ -14,7 +14,7 @@ protocol SettingsViewControllerDelegate: AnyObject {
 				  didChangeConfiguration captureConfiguration: GiniConfiguration)
 }
 
-class SettingsViewController: UIViewController {
+final class SettingsViewController: UIViewController {
 
 	@IBOutlet private weak var navigationBarItem: UINavigationItem!
 	@IBOutlet private weak var navigationBar: UINavigationBar!
@@ -38,8 +38,7 @@ class SettingsViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		setupTableView()
-		setContent()
+		configureTableView()
 		styleNavigationBar()
 		addNavigationBarItems()
     }
@@ -66,7 +65,7 @@ class SettingsViewController: UIViewController {
 		navigationBarItem.rightBarButtonItems = [applyButton]
 	}
 
-	private func setupTableView() {
+	private func configureTableView() {
 		tableView.dataSource = self
 		
 		tableView.separatorStyle = .none
@@ -81,9 +80,7 @@ class SettingsViewController: UIViewController {
 		
 		tableView.register(SwitchOptionTableViewCell.self)
 		tableView.register(SegmentedOptionTableViewCell.self)
-	}
-	
-	private func setContent() {
+
 		var sectionData = [SectionType]()
 		
 		sectionData.append(.switchOption(data: SwitchOptionModel(type: .openWith,
@@ -98,7 +95,7 @@ class SettingsViewController: UIViewController {
 			sectionData.append(.switchOption(data: SwitchOptionModel(type: .flashToggle,
 																	 isActive: giniConfiguration.flashToggleEnabled)))
 		}
-		sectionData.append(.switchOption(data: SwitchOptionModel(type: .bottomNaviagtionBar,
+		sectionData.append(.switchOption(data: SwitchOptionModel(type: .bottomNavigationBar,
 																 isActive: giniConfiguration.bottomNavigationBarEnabled)))
 		var selectedSegmentIndex = 0
 		switch giniConfiguration.fileImportSupportedTypes {
@@ -137,7 +134,7 @@ class SettingsViewController: UIViewController {
 			giniConfiguration.multipageEnabled = data.isActive
 		case .flashToggle:
 			giniConfiguration.flashToggleEnabled = data.isActive
-		case .bottomNaviagtionBar:
+		case .bottomNavigationBar:
 			giniConfiguration.bottomNavigationBarEnabled = data.isActive
 		}
 	}
