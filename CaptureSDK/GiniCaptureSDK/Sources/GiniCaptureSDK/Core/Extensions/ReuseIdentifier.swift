@@ -7,11 +7,11 @@
 
 import UIKit
 
-public protocol Reusable {
+protocol Reusable {
     static var reuseIdentifier: String { get }
 }
 
-public extension Reusable {
+extension Reusable {
     static var reuseIdentifier: String {
         String(describing: self)
     }
