@@ -148,6 +148,18 @@ final class SettingsViewController: UIViewController {
 		return cell
 	}
 
+	private func cell(for optionModel: SegmentedOptionModel, at row: Int) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell() as SegmentedOptionTableViewCell
+		cell.tag = row
+		
+		let segmentItemTitles = optionModel.items.map { return $0.title }
+		let model = SegmentedOptionCellModel(title: optionModel.title,
+											 items: segmentItemTitles,
+											 selectedIndex: optionModel.selectedIndex)
+		cell.set(data: model)
+		cell.delegate = self
+		return cell
+	}
 	// MARK: - Actions
 	
 	@objc func didSelectCloseButton() {
@@ -178,16 +190,7 @@ extension SettingsViewController: UITableViewDataSource {
 		case .switchOption(let data):
 			return cell(for: data, at: row)
 		case .fileImportType(let data):
-			let cell = tableView.dequeueReusableCell() as SegmentedOptionTableViewCell
-			cell.tag = row
-		
-			let segmentItemTitles = data.items.map { return $0.title }
-			let model = SegmentedOptionCellModel(title: data.title,
-												 items: segmentItemTitles,
-												 selectedIndex: data.selectedIndex)
-			cell.set(data: model)
-			cell.delegate = self
-			return cell
+			return cell(for: data, at: row)
 		}
 	}
 }
