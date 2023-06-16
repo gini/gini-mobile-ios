@@ -24,6 +24,7 @@ struct SwitchOptionModel {
 		case flashToggle
 		case flashOnByDefault
 		case bottomNavigationBar
+		case statusBarStyle
 		
 		var title: String {
 			switch self {
@@ -41,6 +42,8 @@ struct SwitchOptionModel {
 				return "Flash ON by default"
 			case .bottomNavigationBar:
 				return "Bottom navigation bar"
+			case .statusBarStyle:
+				return "Status bar style"
 			}
 		}
 		
@@ -50,6 +53,8 @@ struct SwitchOptionModel {
 				return "This will work if the `qrCodeScanning` switch is also enabled"
 			case .flashOnByDefault:
 				return "This will work if the `flashToggle` switch is also enabled."
+			case .statusBarStyle:
+				return "Enable a custom value for `statusBarStyle` than what GiniConfiguration provides"
 			default:
 				return nil
 			}
