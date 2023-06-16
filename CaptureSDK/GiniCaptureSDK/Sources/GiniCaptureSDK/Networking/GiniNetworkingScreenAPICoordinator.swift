@@ -134,12 +134,12 @@ import GiniBankAPILibrary
 extension GiniNetworkingScreenAPICoordinator {
     fileprivate func startAnalysis(networkDelegate: GiniCaptureNetworkDelegate) {
         self.documentService.startAnalysis { result in
-            switch result {
-            case .success(let extractions):
-                self.deliver(result: extractions, and: self.documentService.document, to: networkDelegate)
-            case .failure(let error):
-                guard error != .requestCancelled else { return }
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let extractions):
+                    self.deliver(result: extractions, and: self.documentService.document, to: networkDelegate)
+                case .failure(let error):
+                    guard error != .requestCancelled else { return }
                     networkDelegate.displayError(errorType: ErrorType(error: error), animated: true)
                 }
             }
