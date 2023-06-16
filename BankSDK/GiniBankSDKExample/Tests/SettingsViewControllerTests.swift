@@ -20,7 +20,6 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.multipageEnabled = true
 		configuration.flashToggleEnabled = true
 		configuration.flashOnByDefault = true
-		configuration.statusBarStyle = .default
 		return configuration
 	}()
 	
@@ -57,7 +56,6 @@ final class SettingsViewControllerTests: XCTestCase {
 			selectedSegmentIndex = 2
 		}
 		sectionData.append(.fileImportType(data: SegmentedOptionModel(selectedIndex: selectedSegmentIndex)))
-		sectionData.append(.switchOption(data: .init(type: .statusBarStyle, isActive: true)))
 	}
 
 	private var flashToggleSettingEnabled: Bool = {
@@ -302,28 +300,6 @@ final class SettingsViewControllerTests: XCTestCase {
 		case 2:
 			return .pdf_and_images
 		default: return .none
-		}
-	}
-	
-	func testStatusBarStyleSwitchOn() {
-		if case .switchOption(var data) = sectionData[8] {
-			guard data.type == .statusBarStyle else {
-				XCTFail("Expected type `statusBarStyle`, found a different one: \(data.type)")
-				return
-			}
-			data.isActive = true
-			XCTAssert(data.isActive == true, "`statusBarStyle` should be custom")
-		}
-	}
-	
-	func testStatusBarStyleSwitchOff() {
-		if case .switchOption(var data) = sectionData[8] {
-			guard data.type == .statusBarStyle else {
-				XCTFail("Expected type `statusBarStyle`, found a different one: \(data.type)")
-				return
-			}
-			data.isActive = false
-			XCTAssert(data.isActive == false, "`statusBarStyle` should not be custom")
 		}
 	}
 }
