@@ -99,6 +99,7 @@ final class SettingsViewController: UIViewController {
 		}
 		sectionData.append(.switchOption(data: .init(type: .bottomNavigationBar,
 													 isActive: giniConfiguration.bottomNavigationBarEnabled)))
+		
 		var selectedSegmentIndex = 0
 		switch giniConfiguration.fileImportSupportedTypes {
 		case .none:
@@ -109,6 +110,8 @@ final class SettingsViewController: UIViewController {
 			selectedSegmentIndex = 2
 		}
 		sectionData.append(.fileImportType(data: SegmentedOptionModel(selectedIndex: selectedSegmentIndex)))
+
+		sectionData.append(.switchOption(data: .init(type: .statusBarStyle, isActive: false)))
 
 		self.sectionData = sectionData
 	}
@@ -154,6 +157,9 @@ final class SettingsViewController: UIViewController {
 			}
 		case .bottomNavigationBar:
 			giniConfiguration.bottomNavigationBarEnabled = data.isActive
+		case .statusBarStyle:
+			// `.lightContent` is the default value set in GiniConfiguration for `statusBarStyle`
+			giniConfiguration.statusBarStyle = data.isActive ? .default : .lightContent
 		}
 	}
 	

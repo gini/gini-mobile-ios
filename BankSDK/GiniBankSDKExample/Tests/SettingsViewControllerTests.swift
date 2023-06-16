@@ -12,7 +12,7 @@ import AVFoundation
 @testable import GiniCaptureSDK
 
 final class SettingsViewControllerTests: XCTestCase {
-	lazy var configuration: GiniConfiguration = {
+	private lazy var configuration: GiniConfiguration = {
 		let configuration = GiniConfiguration()
 		configuration.fileImportSupportedTypes = .pdf_and_images
 		configuration.openWithEnabled = true
@@ -20,11 +20,12 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.multipageEnabled = true
 		configuration.flashToggleEnabled = true
 		configuration.flashOnByDefault = true
+		configuration.statusBarStyle = .default
 		return configuration
 	}()
 	
-	var settingsViewController: SettingsViewController?
-	var sectionData = [SettingsViewController.SectionType]()
+	private var settingsViewController: SettingsViewController?
+	private var sectionData = [SettingsViewController.SectionType]()
 
 	override func setUp() {
 		super.setUp()
@@ -56,6 +57,7 @@ final class SettingsViewControllerTests: XCTestCase {
 			selectedSegmentIndex = 2
 		}
 		sectionData.append(.fileImportType(data: SegmentedOptionModel(selectedIndex: selectedSegmentIndex)))
+		sectionData.append(.switchOption(data: .init(type: .statusBarStyle, isActive: true)))
 	}
 
 	private var flashToggleSettingEnabled: Bool = {
@@ -208,7 +210,7 @@ final class SettingsViewControllerTests: XCTestCase {
 	
 	
 	func testFlashOnByDefaultSwitchOn() {
-		if case .switchOption(var data) = sectionData[4] {
+		if case .switchOption(var data) = sectionData[5] {
 			guard data.type == .flashOnByDefault else {
 				XCTFail("Expected type `flashOnByDefault`, found a different one: \(data.type)")
 				return
@@ -222,7 +224,7 @@ final class SettingsViewControllerTests: XCTestCase {
 	}
 	
 	func testFlashOnByDefaultSwitchOff() {
-		if case .switchOption(var data) = sectionData[4] {
+		if case .switchOption(var data) = sectionData[5] {
 			guard data.type == .flashOnByDefault else {
 				XCTFail("Expected type `flashOnByDefault`, found a different one: \(data.type)")
 				return
@@ -236,7 +238,7 @@ final class SettingsViewControllerTests: XCTestCase {
 	}
 	
 	func testbottomNaviagtionBarSwitchOn() {
-		if case .switchOption(var data) = sectionData[5] {
+		if case .switchOption(var data) = sectionData[6] {
 			guard data.type == .bottomNavigationBar else {
 				XCTFail("Expected type `bottomNaviagtionBar`, found a different one: \(data.type)")
 				return
@@ -250,7 +252,7 @@ final class SettingsViewControllerTests: XCTestCase {
 	}
 	
 	func testbottomNaviagtionBarSwitchOff() {
-		if case .switchOption(var data) = sectionData[5] {
+		if case .switchOption(var data) = sectionData[6] {
 			guard data.type == .bottomNavigationBar else {
 				XCTFail("Expected type `bottomNavigationBar`, found a different one: \(data.type)")
 				return
@@ -264,7 +266,7 @@ final class SettingsViewControllerTests: XCTestCase {
 	}
 
     func testSegmentedControlNone() {
-		guard case .fileImportType(var data) = sectionData[6] else { return }
+		guard case .fileImportType(var data) = sectionData[7] else { return }
 		data.selectedIndex = 0
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
 		
@@ -274,7 +276,7 @@ final class SettingsViewControllerTests: XCTestCase {
     }
 
     func testSegmentedControlPDF() {
-		guard case .fileImportType(var data) = sectionData[6] else { return }
+		guard case .fileImportType(var data) = sectionData[7] else { return }
 		data.selectedIndex = 1
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
         XCTAssertEqual(configuration.fileImportSupportedTypes,
@@ -283,7 +285,7 @@ final class SettingsViewControllerTests: XCTestCase {
     }
 	
 	func testSegmentedControlPDFAndImages() {
-		guard case .fileImportType(var data) = sectionData[6] else { return }
+		guard case .fileImportType(var data) = sectionData[7] else { return }
 		data.selectedIndex = 2
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
 		XCTAssertEqual(configuration.fileImportSupportedTypes,
@@ -300,6 +302,28 @@ final class SettingsViewControllerTests: XCTestCase {
 		case 2:
 			return .pdf_and_images
 		default: return .none
+		}
+	}
+	
+	func testStatusBarStyleSwitchOn() {
+		if case .switchOption(var data) = sectionData[8] {
+			guard data.type == .statusBarStyle else {
+				XCTFail("Expected type `statusBarStyle`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			XCTAssert(data.isActive == true, "`statusBarStyle` should be custom")
+		}
+	}
+	
+	func testStatusBarStyleSwitchOff() {
+		if case .switchOption(var data) = sectionData[8] {
+			guard data.type == .statusBarStyle else {
+				XCTFail("Expected type `statusBarStyle`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			XCTAssert(data.isActive == false, "`statusBarStyle` should not be custom")
 		}
 	}
 }

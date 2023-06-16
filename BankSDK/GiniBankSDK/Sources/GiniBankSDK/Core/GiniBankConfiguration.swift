@@ -407,6 +407,7 @@ public final class GiniBankConfiguration: NSObject {
     public func updateConfiguration(withCaptureConfiguration configuration: GiniConfiguration) {
 
         let giniBankConfiguration = GiniBankConfiguration.shared
+		giniBankConfiguration.statusBarStyle = configuration.statusBarStyle
 
         giniBankConfiguration.debugModeOn = configuration.debugModeOn
 
