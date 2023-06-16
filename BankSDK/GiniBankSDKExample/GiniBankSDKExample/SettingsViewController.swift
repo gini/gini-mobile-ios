@@ -111,8 +111,6 @@ final class SettingsViewController: UIViewController {
 		}
 		sectionData.append(.fileImportType(data: SegmentedOptionModel(selectedIndex: selectedSegmentIndex)))
 
-		sectionData.append(.switchOption(data: .init(type: .statusBarStyle, isActive: false)))
-
 		self.sectionData = sectionData
 	}
 	
@@ -157,9 +155,6 @@ final class SettingsViewController: UIViewController {
 			}
 		case .bottomNavigationBar:
 			giniConfiguration.bottomNavigationBarEnabled = data.isActive
-		case .statusBarStyle:
-			// `.lightContent` is the default value set in GiniConfiguration for `statusBarStyle`
-			giniConfiguration.statusBarStyle = data.isActive ? .default : .lightContent
 		}
 	}
 	
