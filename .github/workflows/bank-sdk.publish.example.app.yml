@@ -55,11 +55,6 @@ jobs:
           cp $PP_PATH1 ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH2 ~/Library/MobileDevice/Provisioning\ Profiles
 
-      - name: Setup Credentials
-        run: |
-            plutil -replace client_id -string "gini-mobile-test" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
-            plutil -replace client_password -string "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
-
       - name: Setup Manual Signing for Xcode project
         uses: actions/checkout@v3
       - uses: ruby/setup-ruby@v1
@@ -82,7 +77,12 @@ jobs:
               "entitlements_file_path": "GiniBankSDKExample/Example Swift.entitlements", 
               "entitlements_file_path_extension": "GiniBankSDKShareExtension/GiniBankSDKShareExtension.entitlements", 
               "ci": "true"
-            }        
+            }
+
+      - name: Setup Credentials
+        run: |
+            plutil -replace client_id -string "gini-mobile-test" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
+            plutil -replace client_password -string "${{ secrets.GINI_MOBILE_TEST_CLIENT_SECRET }}" BankSDK/GiniBankSDKExample/GiniBankSDKExample/Credentials.plist
                 
       - name: Archiving project
         run: |
