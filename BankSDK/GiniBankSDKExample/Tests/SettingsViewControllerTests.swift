@@ -26,6 +26,7 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.customOnboardingPages = nil
 		configuration.onButtonLoadingIndicator = nil
 		configuration.customLoadingIndicator = nil
+		configuration.shouldShowSupportedFormatsScreen = true
 		return configuration
 	}()
 	
@@ -62,6 +63,9 @@ final class SettingsViewControllerTests: XCTestCase {
 													 isActive: configuration.onButtonLoadingIndicator != nil)))
 		sectionData.append(.switchOption(data: .init(type: .customLoadingIndicator,
 													 isActive: configuration.customLoadingIndicator != nil)))
+		
+		sectionData.append(.switchOption(data: .init(type: .shouldShowSupportedFormatsScreen,
+													 isActive: configuration.shouldShowSupportedFormatsScreen)))
 		
 		var selectedSegmentIndex = 0
 		switch configuration.fileImportSupportedTypes {
@@ -346,7 +350,7 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
-	func testbottomNaviagtionBarSwitchOn() {
+	func testBottomNaviagtionBarSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .bottomNavigationBar) else {
 			XCTFail("`bottomNavigationBar` option not found in sectionData")
 			return
@@ -365,7 +369,7 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
-	func testbottomNaviagtionBarSwitchOff() {
+	func testBottomNaviagtionBarSwitchOff() {
 		guard let index = getSwitchOptionIndex(for: .bottomNavigationBar) else {
 			XCTFail("`bottomNavigationBar` option not found in sectionData")
 			return
@@ -576,6 +580,44 @@ extension SettingsViewControllerTests {
 			
 			XCTAssertTrue(configuration.customLoadingIndicator != nil,
 						  "customLoadingIndicator should be enabled in the gini configuration")
+		}
+	}
+
+	func testSupportedFormatsScreenSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .shouldShowSupportedFormatsScreen) else {
+			XCTFail("`shouldShowSupportedFormatsScreen` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .shouldShowSupportedFormatsScreen else {
+				XCTFail("Expected type `shouldShowSupportedFormatsScreen`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			configuration.shouldShowSupportedFormatsScreen = data.isActive
+			
+			XCTAssertTrue(configuration.shouldShowSupportedFormatsScreen,
+						  "shouldShowSupportedFormatsScreen should be enabled in the gini configuration")
+		}
+	}
+	
+	func testSupportedFormatsScreenSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .shouldShowSupportedFormatsScreen) else {
+			XCTFail("`shouldShowSupportedFormatsScreen` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .shouldShowSupportedFormatsScreen else {
+				XCTFail("Expected type `shouldShowSupportedFormatsScreen`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.shouldShowSupportedFormatsScreen = data.isActive
+			
+			XCTAssertFalse(configuration.shouldShowSupportedFormatsScreen,
+						   "shouldShowSupportedFormatsScreen should not be enabled in the gini configuration")
 		}
 	}
 }
