@@ -100,6 +100,8 @@ final class SettingsViewController: UIViewController {
 													 isActive: giniConfiguration.onboardingShowAtLaunch)))
 		sectionData.append(.switchOption(data: .init(type: .customOnboardingPages,
 													 isActive: giniConfiguration.customOnboardingPages != nil)))
+		sectionData.append(.switchOption(data: .init(type: .onButtonLoadingIndicator,
+													 isActive: giniConfiguration.onButtonLoadingIndicator !=  nil)))
 		
 		var selectedSegmentIndex = 0
 		switch giniConfiguration.fileImportSupportedTypes {
@@ -164,6 +166,8 @@ final class SettingsViewController: UIViewController {
 											description: "Description for page 1")
 			let customOnboardingPages = data.isActive ? [customPage] : nil
 			giniConfiguration.customOnboardingPages = customOnboardingPages
+		case .onButtonLoadingIndicator:
+			giniConfiguration.onButtonLoadingIndicator = data.isActive ?  OnButtonLoading() : nil
 		}
 	}
 	

@@ -19,6 +19,7 @@ struct SwitchOptionModel {
 		case bottomNavigationBar
 		case onboardingShowAtLaunch
 		case customOnboardingPages
+		case onButtonLoadingIndicator
 		
 		var title: String {
 			switch self {
@@ -40,6 +41,8 @@ struct SwitchOptionModel {
 				return "Show Onboarding screens at launch"
 			case .customOnboardingPages:
 				return "Set custom onboarding pages"
+			case .onButtonLoadingIndicator:
+				return "Set custom loading indicator on the buttons"
 			}
 		}
 		

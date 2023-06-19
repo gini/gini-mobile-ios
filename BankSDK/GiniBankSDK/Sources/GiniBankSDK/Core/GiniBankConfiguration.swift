@@ -337,7 +337,7 @@ public final class GiniBankConfiguration: NSObject {
 
         configuration.flashToggleEnabled = self.flashToggleEnabled
         configuration.flashOnByDefault = self.flashOnByDefault
-		
+
 		configuration.customOnboardingPages = self.customOnboardingPages
 
         configuration.bottomNavigationBarEnabled = self.bottomNavigationBarEnabled
@@ -428,6 +428,8 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.transparentButtonConfiguration = configuration.transparentButtonConfiguration
         giniBankConfiguration.cameraControlButtonConfiguration = configuration.cameraControlButtonConfiguration
         giniBankConfiguration.addPageButtonConfiguration = configuration.addPageButtonConfiguration
+
+		giniBankConfiguration.onButtonLoadingIndicator = configuration.onButtonLoadingIndicator
     }
 
     // MARK: - Update to custom font
