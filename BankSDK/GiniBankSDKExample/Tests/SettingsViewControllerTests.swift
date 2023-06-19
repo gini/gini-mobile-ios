@@ -27,6 +27,7 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.onButtonLoadingIndicator = nil
 		configuration.customLoadingIndicator = nil
 		configuration.shouldShowSupportedFormatsScreen = true
+		configuration.customMenuItems = []
 		return configuration
 	}()
 	
@@ -66,6 +67,8 @@ final class SettingsViewControllerTests: XCTestCase {
 		
 		sectionData.append(.switchOption(data: .init(type: .shouldShowSupportedFormatsScreen,
 													 isActive: configuration.shouldShowSupportedFormatsScreen)))
+		sectionData.append(.switchOption(data: .init(type: .customMenuItems,
+													 isActive: !configuration.customMenuItems.isEmpty)))
 		
 		var selectedSegmentIndex = 0
 		switch configuration.fileImportSupportedTypes {
@@ -617,6 +620,45 @@ extension SettingsViewControllerTests {
 			configuration.shouldShowSupportedFormatsScreen = data.isActive
 			
 			XCTAssertFalse(configuration.shouldShowSupportedFormatsScreen,
+						   "shouldShowSupportedFormatsScreen should not be enabled in the gini configuration")
+		}
+	}
+	
+	func testCustomHelpMenuItemsSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .customMenuItems) else {
+			XCTFail("`customMenuItems` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .customMenuItems else {
+				XCTFail("Expected type `customMenuItems`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			let customMenuItem = HelpMenuItem.custom("Custom menu item", CustomMenuItemViewController())
+			configuration.customMenuItems = [customMenuItem]
+			
+			XCTAssertTrue(configuration.customMenuItems.isEmpty == false,
+						  "shouldShowSupportedFormatsScreen should be enabled in the gini configuration")
+		}
+	}
+	
+	func testCustomHelpMenuItemsSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .customMenuItems) else {
+			XCTFail("`customMenuItems` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .customMenuItems else {
+				XCTFail("Expected type `customMenuItems`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.customMenuItems = []
+			
+			XCTAssertFalse(configuration.customMenuItems.isEmpty == false,
 						   "shouldShowSupportedFormatsScreen should not be enabled in the gini configuration")
 		}
 	}

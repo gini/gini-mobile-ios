@@ -22,6 +22,7 @@ struct SwitchOptionModel {
 		case onButtonLoadingIndicator
 		case customLoadingIndicator
 		case shouldShowSupportedFormatsScreen
+		case customMenuItems
 		
 		var title: String {
 			switch self {
@@ -49,6 +50,8 @@ struct SwitchOptionModel {
 				return "Screen custom loading indicator"
 			case .shouldShowSupportedFormatsScreen:
 				return "Supported formats screen"
+			case .customMenuItems:
+				return "Help custom menu items"
 			}
 		}
 		

@@ -107,6 +107,8 @@ final class SettingsViewController: UIViewController {
 		
 		sectionData.append(.switchOption(data: .init(type: .shouldShowSupportedFormatsScreen,
 													 isActive: giniConfiguration.shouldShowSupportedFormatsScreen)))
+		sectionData.append(.switchOption(data: .init(type: .customMenuItems,
+													 isActive: !giniConfiguration.customMenuItems.isEmpty)))
 		
 		var selectedSegmentIndex = 0
 		switch giniConfiguration.fileImportSupportedTypes {
@@ -177,6 +179,9 @@ final class SettingsViewController: UIViewController {
 			giniConfiguration.customLoadingIndicator = data.isActive ? CustomLoadingIndicator() : nil
 		case .shouldShowSupportedFormatsScreen:
 			giniConfiguration.shouldShowSupportedFormatsScreen = data.isActive
+		case .customMenuItems:
+			let customMenuItem = HelpMenuItem.custom("Custom menu item", CustomMenuItemViewController())
+			giniConfiguration.customMenuItems = [customMenuItem]
 		}
 	}
 	
