@@ -25,9 +25,9 @@ final class SwitchOptionTableViewCell: UITableViewCell, NibLoadableView {
 	
 	weak var delegate: SwitchOptionTableViewCellDelegate?
 	
-	var isActive: Bool = false {
+	var isSwitchOn: Bool = false {
 		didSet {
-			optionSwitch.isOn = isActive
+			optionSwitch.isOn = isSwitchOn
 		}
 	}
 
@@ -41,6 +41,7 @@ final class SwitchOptionTableViewCell: UITableViewCell, NibLoadableView {
 	private func setupUI() {
 		selectionStyle = .none
 		optionSwitch.addTarget(self, action: #selector(switchValueChanged(_:)), for: .valueChanged)
+		titleLabel.numberOfLines = Device.small ? 0 : 1
 	}
 	
 	func set(data: SwitchOptionModelCell) {
@@ -57,7 +58,7 @@ final class SwitchOptionTableViewCell: UITableViewCell, NibLoadableView {
 	// MARK: - Actions
 
 	@objc private func switchValueChanged(_ sender: UISwitch) {
-		isActive = sender.isOn
+		isSwitchOn = sender.isOn
 		delegate?.didToggleOption(in: self)
 	}
 }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2815B6F42A0CF51C004ABF06 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2815B6F32A0CF51C004ABF06 /* Lottie */; };
+		282A9F812A4063F200031F83 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282A9F802A4063F200031F83 /* Device.swift */; };
 		289447712A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */; };
 		289447732A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */; };
 		289570932A30CD7600CC2C56 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289570912A30CD7600CC2C56 /* SettingsViewController.swift */; };
@@ -138,6 +139,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		282A9F802A4063F200031F83 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SwitchOptionModel.swift"; sourceTree = "<group>"; };
 		289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SegmentedOptionModel.swift"; sourceTree = "<group>"; };
 		289570912A30CD7600CC2C56 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 			children = (
 				83D02CDA290AC86300DA97F7 /* NibLoading.swift */,
 				28CDB8222A38A5E40016A81C /* ColorPalette.swift */,
+				282A9F802A4063F200031F83 /* Device.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -785,6 +788,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				282A9F812A4063F200031F83 /* Device.swift in Sources */,
 				83D02CD3290AC3AD00DA97F7 /* CustomOnboardingBottomNavigationBarAdapter.swift in Sources */,
 				F4AD00B625DED1A000C34E15 /* AppCoordinator.swift in Sources */,
 				768B017E28D1E54E009A2124 /* CustomLoadingIndicator.swift in Sources */,

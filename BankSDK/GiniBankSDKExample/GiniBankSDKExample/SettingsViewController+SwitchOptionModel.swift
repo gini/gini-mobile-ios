@@ -17,6 +17,7 @@ struct SwitchOptionModel {
 		case flashToggle
 		case flashOnByDefault
 		case bottomNavigationBar
+		case onboardingShowAtLaunch
 		
 		var title: String {
 			switch self {
@@ -34,6 +35,8 @@ struct SwitchOptionModel {
 				return "Flash ON by default"
 			case .bottomNavigationBar:
 				return "Bottom navigation bar"
+			case .onboardingShowAtLaunch:
+				return "Show Onboarding screens at launch"
 			}
 		}
 		
