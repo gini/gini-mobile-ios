@@ -10,7 +10,6 @@ import GiniCaptureSDK
 
 final class CustomCameraBottomNavigationBarAdapter: CameraBottomNavigationBarAdapter {
     func showButtons(navigationBar: UIView, navigationButtons: [GiniCaptureSDK.CameraNavigationBarBottomButton]) {
-        
     }
     
     func setHelpButtonClickedActionCallback(_ callback: @escaping () -> Void) {
