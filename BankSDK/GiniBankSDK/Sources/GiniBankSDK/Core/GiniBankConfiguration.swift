@@ -425,6 +425,8 @@ public final class GiniBankConfiguration: NSObject {
 		giniBankConfiguration.customLoadingIndicator = configuration.customLoadingIndicator
 		giniBankConfiguration.customMenuItems = configuration.customMenuItems
 		giniBankConfiguration.customNavigationController = configuration.customNavigationController
+
+		giniBankConfiguration.giniErrorLoggerIsOn = configuration.giniErrorLoggerIsOn
     }
 
     // MARK: - Update to custom font

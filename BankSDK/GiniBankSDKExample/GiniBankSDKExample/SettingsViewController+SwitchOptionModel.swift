@@ -24,6 +24,7 @@ struct SwitchOptionModel {
 		case shouldShowSupportedFormatsScreen
 		case customMenuItems
 		case customNavigationController
+		case giniErrorLoggerIsOn
 		
 		var title: String {
 			switch self {
@@ -55,6 +56,8 @@ struct SwitchOptionModel {
 				return "Help custom menu items"
 			case .customNavigationController:
 				return "Custom navigation controller"
+			case .giniErrorLoggerIsOn:
+				return "Gini error logger"
 			}
 		}
 		
@@ -71,7 +74,7 @@ struct SwitchOptionModel {
 			case .customLoadingIndicator:
 				return "Show a custom loading indicator on the document analysis screen."
 			case .shouldShowSupportedFormatsScreen:
-				return "In case of `off` the option won't be shown in the Help menu."
+				return "Show the supported formats screen in the Help menu."
 			default:
 				return nil
 			}
