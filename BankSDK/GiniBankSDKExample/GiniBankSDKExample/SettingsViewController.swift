@@ -96,6 +96,8 @@ final class SettingsViewController: UIViewController {
 		}
 		sectionData.append(.switchOption(data: .init(type: .bottomNavigationBar,
 													 isActive: giniConfiguration.bottomNavigationBarEnabled)))
+		sectionData.append(.switchOption(data: .init(type: .onboardingShowAtLaunch,
+													 isActive: giniConfiguration.onboardingShowAtLaunch)))
 		
 		var selectedSegmentIndex = 0
 		switch giniConfiguration.fileImportSupportedTypes {
@@ -122,7 +124,7 @@ final class SettingsViewController: UIViewController {
 	private func handleOnToggle(in cell: SwitchOptionTableViewCell) {
 		let option = sectionData[cell.tag]
 		guard case .switchOption(var data) = option else { return }
-		data.isActive = cell.isActive
+		data.isActive = cell.isSwitchOn
 		switch data.type {
 		case .openWith:
 			giniConfiguration.openWithEnabled = data.isActive
@@ -138,7 +140,7 @@ final class SettingsViewController: UIViewController {
 				// if `flashToggle` is disabled and `flashToggle` is enabled, make `flashToggle` disabled
 				// flashOnByDefault cell is right after
 				guard let cell = getSwitchOptionCell(at: cell.tag + 1) as? SwitchOptionTableViewCell else { return }
-				cell.isActive = data.isActive
+				cell.isSwitchOn = data.isActive
 				giniConfiguration.flashOnByDefault = data.isActive
 			}
 		case .flashOnByDefault:
@@ -147,11 +149,13 @@ final class SettingsViewController: UIViewController {
 				// if `flashOnByDefault` is enabled and `flashToggle` is disabled, make `flashToggle` enabled
 				// flashToggle cell is right above this
 				guard let cell = getSwitchOptionCell(at: cell.tag - 1) as? SwitchOptionTableViewCell else { return }
-				cell.isActive = data.isActive
+				cell.isSwitchOn = data.isActive
 				giniConfiguration.flashToggleEnabled = data.isActive
 			}
 		case .bottomNavigationBar:
 			giniConfiguration.bottomNavigationBarEnabled = data.isActive
+		case .onboardingShowAtLaunch:
+			giniConfiguration.onboardingShowAtLaunch = data.isActive
 		}
 	}
 	

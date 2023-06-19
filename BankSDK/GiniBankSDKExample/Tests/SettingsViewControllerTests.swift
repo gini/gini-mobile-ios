@@ -20,12 +20,13 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.multipageEnabled = true
 		configuration.flashToggleEnabled = true
 		configuration.flashOnByDefault = true
+		configuration.onboardingShowAtLaunch = false
 		return configuration
 	}()
 	
 	private var settingsViewController: SettingsViewController?
 	private var sectionData = [SettingsViewController.SectionType]()
-
+	
 	override func setUp() {
 		super.setUp()
 		settingsViewController = SettingsViewController(giniConfiguration: configuration)
@@ -46,6 +47,9 @@ final class SettingsViewControllerTests: XCTestCase {
 		}
 		sectionData.append(.switchOption(data: .init(type: .bottomNavigationBar,
 													 isActive: configuration.bottomNavigationBarEnabled)))
+		
+		sectionData.append(.switchOption(data: .init(type: .onboardingShowAtLaunch,
+													 isActive: configuration.onboardingShowAtLaunch)))
 		var selectedSegmentIndex = 0
 		switch configuration.fileImportSupportedTypes {
 		case .none:
@@ -57,7 +61,7 @@ final class SettingsViewControllerTests: XCTestCase {
 		}
 		sectionData.append(.fileImportType(data: SegmentedOptionModel(selectedIndex: selectedSegmentIndex)))
 	}
-
+	
 	private var flashToggleSettingEnabled: Bool = {
 		#if targetEnvironment(simulator)
 			return true
@@ -66,6 +70,22 @@ final class SettingsViewControllerTests: XCTestCase {
 	#endif
 	}()
 	
+	private func giniImportFileType(selectedIndex: Int) -> GiniCaptureSDK.GiniConfiguration.GiniCaptureImportFileTypes {
+		switch selectedIndex {
+		case 0:
+			return .none
+		case 1:
+			return .pdf
+		case 2:
+			return .pdf_and_images
+		default: return .none
+		}
+	}
+}
+
+// MARK: - Tests
+
+extension SettingsViewControllerTests {
 	func testOpenWithSwitchOff() {
 		if case .switchOption(var data) = sectionData[0] {
 			guard data.type == .openWith else {
@@ -163,7 +183,7 @@ final class SettingsViewControllerTests: XCTestCase {
 						  "multipage should be enabled in the gini configuration")
 		}
 	}
-
+	
 	func testMultipageSwitchOff() {
 		if case .switchOption(var data) = sectionData[3] {
 			guard data.type == .multipage else {
@@ -262,25 +282,25 @@ final class SettingsViewControllerTests: XCTestCase {
 						   "bottomNavigationBar should not be enabled in the gini configuration")
 		}
 	}
-
-    func testSegmentedControlNone() {
+	
+	func testSegmentedControlNone() {
 		guard case .fileImportType(var data) = sectionData[7] else { return }
 		data.selectedIndex = 0
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
 		
-        XCTAssertEqual(configuration.fileImportSupportedTypes,
+		XCTAssertEqual(configuration.fileImportSupportedTypes,
 					   .none,
-                       "none types should be supported in the gini configuration")
-    }
-
-    func testSegmentedControlPDF() {
+					   "none types should be supported in the gini configuration")
+	}
+	
+	func testSegmentedControlPDF() {
 		guard case .fileImportType(var data) = sectionData[7] else { return }
 		data.selectedIndex = 1
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
-        XCTAssertEqual(configuration.fileImportSupportedTypes,
+		XCTAssertEqual(configuration.fileImportSupportedTypes,
 					   .pdf,
-                       "pdf type should be supported in the gini configuration")
-    }
+					   "pdf type should be supported in the gini configuration")
+	}
 	
 	func testSegmentedControlPDFAndImages() {
 		guard case .fileImportType(var data) = sectionData[7] else { return }
@@ -291,15 +311,32 @@ final class SettingsViewControllerTests: XCTestCase {
 					   "pdf and image types should be supported in the gini configuration")
 	}
 	
-	private func giniImportFileType(selectedIndex: Int) -> GiniCaptureSDK.GiniConfiguration.GiniCaptureImportFileTypes {
-		switch selectedIndex {
-		case 0:
-			return .none
-		case 1:
-			return .pdf
-		case 2:
-			return .pdf_and_images
-		default: return .none
+	func testOnboardingShowAtLaunchOff() {
+		if case .switchOption(var data) = sectionData[8] {
+			guard data.type == .onboardingShowAtLaunch else {
+				XCTFail("Expected type `onboardingShowAtLaunch`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.onboardingShowAtLaunch = data.isActive
+			
+			XCTAssertFalse(configuration.openWithEnabled,
+						   "onboardingShowAtLaunch should not be enabled in the gini configuration")
 		}
 	}
+	
+	func testOnboardingShowAtLaunchOn() {
+		if case .switchOption(var data) = sectionData[8] {
+			guard data.type == .onboardingShowAtLaunch else {
+				XCTFail("Expected type `onboardingShowAtLaunch`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			configuration.onboardingShowAtLaunch = data.isActive
+			
+			XCTAssertTrue(configuration.openWithEnabled,
+						  "onboardingShowAtLaunch should be enabled in the gini configuration")
+		}
+	}
+	
 }
