@@ -62,8 +62,6 @@ final class AppCoordinator: Coordinator {
 //        let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
 //        configuration.customMenuItems = [customMenuItem]
 
-//        configuration.multipagePageSuccessfullUploadIconBackgroundColor = .systemGreen
-//        configuration.multipagePageFailureUploadIconBackgroundColor = .systemRed
 //        configuration.enableReturnReasons = false
         
     // If you need to scale your font please use our method `scaledFont()`. Please, find the example below.
@@ -74,7 +72,9 @@ final class AppCoordinator: Coordinator {
 //    let customScaledFont = UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 28))
 //    configuration.updateFont(customScaledFont, for: .caption2)
 
-//    configuration.customOnboardingPages = [OnboardingPage(imageName: "captureSuggestion1", title: "Page 1", description: "Description for page 1")]
+//		configuration.customOnboardingPages = [OnboardingPage(imageName: "captureSuggestion1",
+//															  title: "Page 1",
+//															  description: "Description for page 1")]
         //configuration.onboardingAlignCornersIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "page1Animation", backgroundColor: UIColor.red)
         //configuration.onboardingLightingIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "cameraAnimation", backgroundColor: UIColor.yellow)
         //configuration.onboardingMultiPageIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "uploadAnimation", backgroundColor: UIColor.green)

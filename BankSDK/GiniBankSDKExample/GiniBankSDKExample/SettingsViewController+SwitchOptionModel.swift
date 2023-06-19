@@ -18,6 +18,7 @@ struct SwitchOptionModel {
 		case flashOnByDefault
 		case bottomNavigationBar
 		case onboardingShowAtLaunch
+		case customOnboardingPages
 		
 		var title: String {
 			switch self {
@@ -37,15 +38,19 @@ struct SwitchOptionModel {
 				return "Bottom navigation bar"
 			case .onboardingShowAtLaunch:
 				return "Show Onboarding screens at launch"
+			case .customOnboardingPages:
+				return "Set custom onboarding pages"
 			}
 		}
 		
 		var message: String? {
 			switch self {
 			case .qrCodeScanningOnly:
-				return "This will work if the `qrCodeScanning` switch is also enabled"
+				return "This will work if the `qrCodeScanning` switch is also enabled."
 			case .flashOnByDefault:
 				return "This will work if the `flashToggle` switch is also enabled."
+			case .customOnboardingPages:
+				return "This will work if the `onboardingShowAtLaunch` switch is also enabled."
 			default:
 				return nil
 			}
