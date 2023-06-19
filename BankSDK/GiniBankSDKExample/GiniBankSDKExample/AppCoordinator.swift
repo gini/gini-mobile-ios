@@ -166,8 +166,10 @@ final class AppCoordinator: Coordinator {
                                                         documentMetadata: documentMetadata)
         screenAPICoordinator.delegate = self
         screenAPICoordinator.start()
+	
         add(childCoordinator: screenAPICoordinator as Coordinator)
-        
+		screenAPICoordinator.rootViewController.modalPresentationStyle = .overFullScreen
+		screenAPICoordinator.rootViewController.modalTransitionStyle = .coverVertical
         rootViewController.present(screenAPICoordinator.rootViewController, animated: true)
     }
     
