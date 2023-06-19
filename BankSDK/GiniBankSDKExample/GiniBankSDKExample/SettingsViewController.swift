@@ -38,17 +38,14 @@ final class SettingsViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
+		configureNavigationBar()
 		configureTableView()
-		styleNavigationBar()
-		addNavigationBarItems()
     }
 
-	private func styleNavigationBar() {
+	private func configureNavigationBar() {
 		navigationBar.isTranslucent = false
 		navigationBar.tintColor = ColorPalette.raspberryPunch
-	}
-	
-	private func addNavigationBarItems() {
+
 		let closeButton = UIBarButtonItem(image: UIImageNamedPreferred(named: "close"),
 										  style: .plain,
 										  target: nil,

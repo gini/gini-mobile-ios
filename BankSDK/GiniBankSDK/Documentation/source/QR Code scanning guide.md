@@ -2,7 +2,12 @@ QR Code Scanning
 =============================
 
 Some invoices have a QR code that allows the user to get the payment data just by scanning it from the camera screen.
-Scanning and processing happens automatically. Please find the list of the [supported QR codes](#supported-qr-codes).
+Scanning and processing happens automatically. 
+When a supported QR code is detected with valid payment data, white camera frame will turn into the green color with proper message that QR code is detected.
+
+If the QR code does not have a supported payment format, white camera frame will turn into the yellow color with proper message that QR code is not supported.
+
+Please find the list of the [supported QR codes](#supported-qr-codes).
 
 Enable QR code scanning
 ------------------------
@@ -42,6 +47,5 @@ Supported QR codes
 
 The supported QR codes are:
 - [BezahlCode](http://www.bezahlcode.de)
-- [EPC069-12](https://www.europeanpaymentscouncil.eu/document-library/guidance-documents/quick-response-code-guidelines-enable-data-capture-initiation)
-- [Stuzza (AT)](https://www.stuzza.at/de/zahlungsverkehr/qr-code.html)
-- [GiroCode (DE)](https://www.girocode.de/rechnungsempfaenger/)
+- [EPC069-12](https://www.europeanpaymentscouncil.eu/document-library/guidance-documents/quick-response-code-guidelines-enable-data-capture-initiation): ([Stuzza (AT)](https://www.stuzza.at/de/zahlungsverkehr/qr-code.html) and [GiroCode (DE)](https://www.girocode.de/rechnungsempfaenger/))
+- [EPS](https://eservice.stuzza.at/de/eps-ueberweisung-dokumentation/category/5-dokumentation.html)
