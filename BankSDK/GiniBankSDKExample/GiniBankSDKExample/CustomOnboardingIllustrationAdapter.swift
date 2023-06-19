@@ -13,8 +13,8 @@ class CustomOnboardingIllustrationAdapter: OnboardingIllustrationAdapter {
     private var animatedOnboarding: LottieAnimationView?
     
     init(animationName: String? = nil, backgroundColor: UIColor) {
-        self.animatedOnboarding = LottieAnimationView(name: animationName ?? "")
-        self.animatedOnboarding?.backgroundColor = backgroundColor
+        animatedOnboarding = LottieAnimationView(name: animationName ?? "")
+        animatedOnboarding?.backgroundColor = backgroundColor
     }
     
     func pageDidAppear() {
