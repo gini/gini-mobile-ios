@@ -29,12 +29,12 @@ public final class GiniBankConfiguration: NSObject {
     // MARK: - General options
 
     /**
-     Indicates the status bar style in the Gini Bank SDK.
+	 The appearance of the status bar in the Gini Bank SDK.
      */
     public var statusBarStyle = UIStatusBarStyle.lightContent
 
     /**
-     Should be set if the default name "Localizable.strings" are not used.
+     Should be set if the default name "Localizable.strings" is not used.
      */
     public var localizedStringsTableName: String?
 
