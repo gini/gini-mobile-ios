@@ -29,6 +29,7 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.shouldShowSupportedFormatsScreen = true
 		configuration.customMenuItems = []
 		configuration.customNavigationController = nil
+		configuration.giniErrorLoggerIsOn = true
 		return configuration
 	}()
 	
@@ -73,6 +74,9 @@ final class SettingsViewControllerTests: XCTestCase {
 		
 		sectionData.append(.switchOption(data: .init(type: .customNavigationController,
 													 isActive: configuration.customNavigationController != nil)))
+		
+		sectionData.append(.switchOption(data: .init(type: .giniErrorLoggerIsOn,
+													 isActive: configuration.giniErrorLoggerIsOn)))
 		
 		var selectedSegmentIndex = 0
 		switch configuration.fileImportSupportedTypes {
@@ -704,6 +708,44 @@ extension SettingsViewControllerTests {
 			
 			XCTAssertFalse(configuration.customNavigationController != nil,
 						   "customNavigationController should not be enabled in the gini configuration")
+		}
+	}
+	
+	func testGiniErrorLoggerSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .giniErrorLoggerIsOn) else {
+			XCTFail("`giniErrorLoggerIsOn` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .giniErrorLoggerIsOn else {
+				XCTFail("Expected type `giniErrorLoggerIsOn`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			configuration.giniErrorLoggerIsOn = data.isActive
+			
+			XCTAssertTrue(configuration.giniErrorLoggerIsOn,
+						  "giniErrorLoggerIsOn should be enabled in the gini configuration")
+		}
+	}
+	
+	func testGiniErrorLoggerSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .giniErrorLoggerIsOn) else {
+			XCTFail("`giniErrorLoggerIsOn` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .giniErrorLoggerIsOn else {
+				XCTFail("Expected type `giniErrorLoggerIsOn`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.giniErrorLoggerIsOn = data.isActive
+			
+			XCTAssertFalse(configuration.giniErrorLoggerIsOn,
+						   "giniErrorLoggerIsOn should not be enabled in the gini configuration")
 		}
 	}
 }

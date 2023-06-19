@@ -94,6 +94,18 @@ final class SettingsViewController: UIViewController {
 			sectionData.append(.switchOption(data: .init(type: .flashOnByDefault,
 														 isActive: giniConfiguration.flashOnByDefault)))
 		}
+		
+		var selectedSegmentIndex = 0
+		switch giniConfiguration.fileImportSupportedTypes {
+		case .none:
+			selectedSegmentIndex = 0
+		case .pdf:
+			selectedSegmentIndex = 1
+		case .pdf_and_images:
+			selectedSegmentIndex = 2
+		}
+		sectionData.append(.fileImportType(data: .init(selectedIndex: selectedSegmentIndex)))
+		
 		sectionData.append(.switchOption(data: .init(type: .bottomNavigationBar,
 													 isActive: giniConfiguration.bottomNavigationBarEnabled)))
 		sectionData.append(.switchOption(data: .init(type: .onboardingShowAtLaunch,
@@ -113,16 +125,8 @@ final class SettingsViewController: UIViewController {
 		sectionData.append(.switchOption(data: .init(type: .customNavigationController,
 													 isActive: giniConfiguration.customNavigationController != nil)))
 		
-		var selectedSegmentIndex = 0
-		switch giniConfiguration.fileImportSupportedTypes {
-		case .none:
-			selectedSegmentIndex = 0
-		case .pdf:
-			selectedSegmentIndex = 1
-		case .pdf_and_images:
-			selectedSegmentIndex = 2
-		}
-		sectionData.append(.fileImportType(data: SegmentedOptionModel(selectedIndex: selectedSegmentIndex)))
+		sectionData.append(.switchOption(data: .init(type: .giniErrorLoggerIsOn,
+													 isActive: giniConfiguration.giniErrorLoggerIsOn)))
 
 		self.sectionData = sectionData
 	}
@@ -189,6 +193,8 @@ final class SettingsViewController: UIViewController {
 			let navigationViewController = UINavigationController()
 			navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
 			giniConfiguration.customNavigationController = data.isActive ? navigationViewController : nil
+		case .giniErrorLoggerIsOn:
+			giniConfiguration.giniErrorLoggerIsOn = data.isActive
 		}
 	}
 	
