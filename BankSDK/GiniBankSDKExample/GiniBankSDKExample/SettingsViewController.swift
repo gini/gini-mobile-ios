@@ -98,6 +98,8 @@ final class SettingsViewController: UIViewController {
 													 isActive: giniConfiguration.bottomNavigationBarEnabled)))
 		sectionData.append(.switchOption(data: .init(type: .onboardingShowAtLaunch,
 													 isActive: giniConfiguration.onboardingShowAtLaunch)))
+		sectionData.append(.switchOption(data: .init(type: .customOnboardingPages,
+													 isActive: giniConfiguration.customOnboardingPages != nil)))
 		
 		var selectedSegmentIndex = 0
 		switch giniConfiguration.fileImportSupportedTypes {
@@ -156,6 +158,12 @@ final class SettingsViewController: UIViewController {
 			giniConfiguration.bottomNavigationBarEnabled = data.isActive
 		case .onboardingShowAtLaunch:
 			giniConfiguration.onboardingShowAtLaunch = data.isActive
+		case .customOnboardingPages:
+			let customPage = OnboardingPage(imageName: "captureSuggestion1",
+											title: "Page 1",
+											description: "Description for page 1")
+			let customOnboardingPages = data.isActive ? [customPage] : nil
+			giniConfiguration.customOnboardingPages = customOnboardingPages
 		}
 	}
 	

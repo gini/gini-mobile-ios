@@ -337,6 +337,8 @@ public final class GiniBankConfiguration: NSObject {
 
         configuration.flashToggleEnabled = self.flashToggleEnabled
         configuration.flashOnByDefault = self.flashOnByDefault
+		
+		configuration.customOnboardingPages = self.customOnboardingPages
 
         configuration.bottomNavigationBarEnabled = self.bottomNavigationBarEnabled
         configuration.cameraNavigationBarBottomAdapter = self.cameraNavigationBarBottomAdapter
@@ -413,6 +415,7 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.flashToggleEnabled = configuration.flashToggleEnabled
         giniBankConfiguration.flashOnByDefault = configuration.flashOnByDefault
 
+		giniBankConfiguration.customOnboardingPages = configuration.customOnboardingPages
         giniBankConfiguration.onboardingShowAtLaunch = configuration.onboardingShowAtLaunch
         giniBankConfiguration.onboardingShowAtFirstLaunch = configuration.onboardingShowAtFirstLaunch
         giniBankConfiguration.shouldShowSupportedFormatsScreen = configuration.shouldShowSupportedFormatsScreen

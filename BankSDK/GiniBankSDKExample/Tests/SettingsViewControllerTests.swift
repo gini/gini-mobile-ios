@@ -50,6 +50,9 @@ final class SettingsViewControllerTests: XCTestCase {
 		
 		sectionData.append(.switchOption(data: .init(type: .onboardingShowAtLaunch,
 													 isActive: configuration.onboardingShowAtLaunch)))
+		sectionData.append(.switchOption(data: .init(type: .customOnboardingPages,
+													 isActive: configuration.customOnboardingPages != nil)))
+		
 		var selectedSegmentIndex = 0
 		switch configuration.fileImportSupportedTypes {
 		case .none:
@@ -339,4 +342,34 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
+	func testCustomOnboardingPagesOff() {
+		if case .switchOption(var data) = sectionData[9] {
+			guard data.type == .customOnboardingPages else {
+				XCTFail("Expected type `customOnboardingPages`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.customOnboardingPages = nil
+			
+			XCTAssertFalse(configuration.customOnboardingPages == nil,
+						   "customOnboardingPages should not be enabled in the gini configuration")
+		}
+	}
+	
+	func testCustomOnboardingPagesOn() {
+		if case .switchOption(var data) = sectionData[9] {
+			guard data.type == .customOnboardingPages else {
+				XCTFail("Expected type `customOnboardingPages`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			let customPage = OnboardingPage(imageName: "captureSuggestion1",
+											title: "Page 1",
+											description: "Description for page 1")
+			configuration.customOnboardingPages = [customPage]
+			
+			XCTAssertTrue(configuration.customOnboardingPages != nil,
+						  "customOnboardingPages should be enabled in the gini configuration")
+		}
+	}
 }
