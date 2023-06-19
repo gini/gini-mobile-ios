@@ -17,10 +17,14 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.fileImportSupportedTypes = .pdf_and_images
 		configuration.openWithEnabled = true
 		configuration.qrCodeScanningEnabled = true
+		configuration.onlyQRCodeScanningEnabled = false
 		configuration.multipageEnabled = true
 		configuration.flashToggleEnabled = true
 		configuration.flashOnByDefault = true
-		configuration.onboardingShowAtLaunch = false
+		configuration.bottomNavigationBarEnabled = false
+		configuration.onboardingShowAtLaunch = true
+		configuration.customOnboardingPages = nil
+		configuration.onButtonLoadingIndicator = nil
 		return configuration
 	}()
 	
@@ -52,6 +56,9 @@ final class SettingsViewControllerTests: XCTestCase {
 													 isActive: configuration.onboardingShowAtLaunch)))
 		sectionData.append(.switchOption(data: .init(type: .customOnboardingPages,
 													 isActive: configuration.customOnboardingPages != nil)))
+
+		sectionData.append(.switchOption(data: .init(type: .onButtonLoadingIndicator,
+													 isActive: configuration.onButtonLoadingIndicator != nil)))
 		
 		var selectedSegmentIndex = 0
 		switch configuration.fileImportSupportedTypes {
@@ -84,13 +91,36 @@ final class SettingsViewControllerTests: XCTestCase {
 		default: return .none
 		}
 	}
+	
+	private func getSwitchOptionIndex(for type: SwitchOptionModel.OptionType) -> Int? {
+		return sectionData.firstIndex { section in
+			guard case .switchOption(let data) = section, data.type == type else {
+				return false
+			}
+			return true
+		}
+	}
+	
+	private func getFileImportOptionIndex() -> Int? {
+		return sectionData.firstIndex { section in
+			guard case .fileImportType = section else {
+				return false
+			}
+			return true
+		}
+	}
 }
 
 // MARK: - Tests
 
 extension SettingsViewControllerTests {
 	func testOpenWithSwitchOff() {
-		if case .switchOption(var data) = sectionData[0] {
+		guard let index = getSwitchOptionIndex(for: .openWith) else {
+			XCTFail("`openWith` option not found in sectionData")
+			return
+		}
+			
+		if case .switchOption(var data) = sectionData[index] {
 			guard data.type == .openWith else {
 				XCTFail("Expected type `openWith`, found a different one: \(data.type)")
 				return
@@ -104,7 +134,12 @@ extension SettingsViewControllerTests {
 	}
 	
 	func testOpenWithSwitchOn() {
-		if case .switchOption(var data) = sectionData[0] {
+		guard let index = getSwitchOptionIndex(for: .openWith) else {
+			XCTFail("`openWith` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
 			guard data.type == .openWith else {
 				XCTFail("Expected type `openWith`, found a different one: \(data.type)")
 				return
@@ -118,7 +153,12 @@ extension SettingsViewControllerTests {
 	}
 	
 	func testQrCodeScanningSwitchOn() {
-		if case .switchOption(var data) = sectionData[1] {
+		guard let index = getSwitchOptionIndex(for: .qrCodeScanning) else {
+			XCTFail("`qrCodeScanning` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
 			guard data.type == .qrCodeScanning else {
 				XCTFail("Expected type `qrCodeScanning`, found a different one: \(data.type)")
 				return
@@ -132,7 +172,12 @@ extension SettingsViewControllerTests {
 	}
 	
 	func testQrCodeScanningSwitchOff() {
-		if case .switchOption(var data) = sectionData[1] {
+		guard let index = getSwitchOptionIndex(for: .qrCodeScanning) else {
+			XCTFail("`qrCodeScanning` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
 			guard data.type == .qrCodeScanning else {
 				XCTFail("Expected type `qrCodeScanning`, found a different one: \(data.type)")
 				return
@@ -146,7 +191,12 @@ extension SettingsViewControllerTests {
 	}
 	
 	func testQrCodeScanningOnlySwitchOn() {
-		if case .switchOption(var data) = sectionData[2] {
+		guard let index = getSwitchOptionIndex(for: .qrCodeScanningOnly) else {
+			XCTFail("`qrCodeScanningOnly` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
 			guard data.type == .qrCodeScanningOnly else {
 				XCTFail("Expected type `qrCodeScanningOnly`, found a different one: \(data.type)")
 				return
@@ -160,7 +210,12 @@ extension SettingsViewControllerTests {
 	}
 	
 	func testQrCodeScanningOnlySwitchOff() {
-		if case .switchOption(var data) = sectionData[2] {
+		guard let index = getSwitchOptionIndex(for: .qrCodeScanningOnly) else {
+			XCTFail("`qrCodeScanningOnly` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
 			guard data.type == .qrCodeScanningOnly else {
 				XCTFail("Expected type `qrCodeScanningOnly`, found a different one: \(data.type)")
 				return
@@ -174,7 +229,12 @@ extension SettingsViewControllerTests {
 	}
 	
 	func testMultipageSwitchOn() {
-		if case .switchOption(var data) = sectionData[3] {
+		guard let index = getSwitchOptionIndex(for: .multipage) else {
+			XCTFail("`multipage` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
 			guard data.type == .multipage else {
 				XCTFail("Expected type `multipage`, found a different one: \(data.type)")
 				return
@@ -188,7 +248,12 @@ extension SettingsViewControllerTests {
 	}
 	
 	func testMultipageSwitchOff() {
-		if case .switchOption(var data) = sectionData[3] {
+		guard let index = getSwitchOptionIndex(for: .multipage) else {
+			XCTFail("`multipage` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
 			guard data.type == .multipage else {
 				XCTFail("Expected type `multipage`, found a different one: \(data.type)")
 				return
@@ -202,7 +267,12 @@ extension SettingsViewControllerTests {
 	}
 	
 	func testFlashToggleSwitchOn() {
-		if case .switchOption(var data) = sectionData[4] {
+		guard let index = getSwitchOptionIndex(for: .flashToggle) else {
+			XCTFail("`flashToggle` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
 			guard data.type == .flashToggle else {
 				XCTFail("Expected type `flashToggle`, found a different one: \(data.type)")
 				return
@@ -216,7 +286,12 @@ extension SettingsViewControllerTests {
 	}
 	
 	func testFlashToggleSwitchOff() {
-		if case .switchOption(var data) = sectionData[4] {
+		guard let index = getSwitchOptionIndex(for: .flashToggle) else {
+			XCTFail("`flashToggle` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
 			guard data.type == .flashToggle else {
 				XCTFail("Expected type `flashToggle`, found a different one: \(data.type)")
 				return
@@ -231,7 +306,12 @@ extension SettingsViewControllerTests {
 	
 	
 	func testFlashOnByDefaultSwitchOn() {
-		if case .switchOption(var data) = sectionData[5] {
+		guard let index = getSwitchOptionIndex(for: .flashOnByDefault) else {
+			XCTFail("`flashOnByDefault` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
 			guard data.type == .flashOnByDefault else {
 				XCTFail("Expected type `flashOnByDefault`, found a different one: \(data.type)")
 				return
@@ -245,7 +325,12 @@ extension SettingsViewControllerTests {
 	}
 	
 	func testFlashOnByDefaultSwitchOff() {
-		if case .switchOption(var data) = sectionData[5] {
+		guard let index = getSwitchOptionIndex(for: .flashOnByDefault) else {
+			XCTFail("`flashOnByDefault` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
 			guard data.type == .flashOnByDefault else {
 				XCTFail("Expected type `flashOnByDefault`, found a different one: \(data.type)")
 				return
@@ -259,7 +344,12 @@ extension SettingsViewControllerTests {
 	}
 	
 	func testbottomNaviagtionBarSwitchOn() {
-		if case .switchOption(var data) = sectionData[6] {
+		guard let index = getSwitchOptionIndex(for: .bottomNavigationBar) else {
+			XCTFail("`bottomNavigationBar` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
 			guard data.type == .bottomNavigationBar else {
 				XCTFail("Expected type `bottomNaviagtionBar`, found a different one: \(data.type)")
 				return
@@ -273,7 +363,12 @@ extension SettingsViewControllerTests {
 	}
 	
 	func testbottomNaviagtionBarSwitchOff() {
-		if case .switchOption(var data) = sectionData[6] {
+		guard let index = getSwitchOptionIndex(for: .bottomNavigationBar) else {
+			XCTFail("`bottomNavigationBar` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
 			guard data.type == .bottomNavigationBar else {
 				XCTFail("Expected type `bottomNavigationBar`, found a different one: \(data.type)")
 				return
@@ -287,7 +382,11 @@ extension SettingsViewControllerTests {
 	}
 	
 	func testSegmentedControlNone() {
-		guard case .fileImportType(var data) = sectionData[7] else { return }
+		guard let index = getFileImportOptionIndex()else {
+			XCTFail("`fileImportType` option not found in sectionData")
+			return
+		}
+		guard case .fileImportType(var data) = sectionData[index] else { return }
 		data.selectedIndex = 0
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
 		
@@ -297,7 +396,11 @@ extension SettingsViewControllerTests {
 	}
 	
 	func testSegmentedControlPDF() {
-		guard case .fileImportType(var data) = sectionData[7] else { return }
+		guard let index = getFileImportOptionIndex()else {
+			XCTFail("`fileImportType` option not found in sectionData")
+			return
+		}
+		guard case .fileImportType(var data) = sectionData[index] else { return }
 		data.selectedIndex = 1
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
 		XCTAssertEqual(configuration.fileImportSupportedTypes,
@@ -306,7 +409,11 @@ extension SettingsViewControllerTests {
 	}
 	
 	func testSegmentedControlPDFAndImages() {
-		guard case .fileImportType(var data) = sectionData[7] else { return }
+		guard let index = getFileImportOptionIndex()else {
+			XCTFail("`fileImportType` option not found in sectionData")
+			return
+		}
+		guard case .fileImportType(var data) = sectionData[index] else { return }
 		data.selectedIndex = 2
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
 		XCTAssertEqual(configuration.fileImportSupportedTypes,
@@ -315,7 +422,12 @@ extension SettingsViewControllerTests {
 	}
 	
 	func testOnboardingShowAtLaunchOff() {
-		if case .switchOption(var data) = sectionData[8] {
+		guard let index = getSwitchOptionIndex(for: .onboardingShowAtLaunch) else {
+			XCTFail("`onboardingShowAtLaunch` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
 			guard data.type == .onboardingShowAtLaunch else {
 				XCTFail("Expected type `onboardingShowAtLaunch`, found a different one: \(data.type)")
 				return
@@ -323,13 +435,18 @@ extension SettingsViewControllerTests {
 			data.isActive = false
 			configuration.onboardingShowAtLaunch = data.isActive
 			
-			XCTAssertFalse(configuration.openWithEnabled,
+			XCTAssertFalse(configuration.onboardingShowAtLaunch,
 						   "onboardingShowAtLaunch should not be enabled in the gini configuration")
 		}
 	}
 	
 	func testOnboardingShowAtLaunchOn() {
-		if case .switchOption(var data) = sectionData[8] {
+		guard let index = getSwitchOptionIndex(for: .onboardingShowAtLaunch) else {
+			XCTFail("`onboardingShowAtLaunch` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
 			guard data.type == .onboardingShowAtLaunch else {
 				XCTFail("Expected type `onboardingShowAtLaunch`, found a different one: \(data.type)")
 				return
@@ -337,13 +454,18 @@ extension SettingsViewControllerTests {
 			data.isActive = true
 			configuration.onboardingShowAtLaunch = data.isActive
 			
-			XCTAssertTrue(configuration.openWithEnabled,
+			XCTAssertTrue(configuration.onboardingShowAtLaunch,
 						  "onboardingShowAtLaunch should be enabled in the gini configuration")
 		}
 	}
 	
 	func testCustomOnboardingPagesOff() {
-		if case .switchOption(var data) = sectionData[9] {
+		guard let index = getSwitchOptionIndex(for: .customOnboardingPages) else {
+			XCTFail("`customOnboardingPages` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
 			guard data.type == .customOnboardingPages else {
 				XCTFail("Expected type `customOnboardingPages`, found a different one: \(data.type)")
 				return
@@ -351,13 +473,18 @@ extension SettingsViewControllerTests {
 			data.isActive = false
 			configuration.customOnboardingPages = nil
 			
-			XCTAssertFalse(configuration.customOnboardingPages == nil,
+			XCTAssertFalse(configuration.customOnboardingPages != nil,
 						   "customOnboardingPages should not be enabled in the gini configuration")
 		}
 	}
 	
 	func testCustomOnboardingPagesOn() {
-		if case .switchOption(var data) = sectionData[9] {
+		guard let index = getSwitchOptionIndex(for: .customOnboardingPages) else {
+			XCTFail("`customOnboardingPages` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
 			guard data.type == .customOnboardingPages else {
 				XCTFail("Expected type `customOnboardingPages`, found a different one: \(data.type)")
 				return
@@ -370,6 +497,44 @@ extension SettingsViewControllerTests {
 			
 			XCTAssertTrue(configuration.customOnboardingPages != nil,
 						  "customOnboardingPages should be enabled in the gini configuration")
+		}
+	}
+	
+	func testOnButtonLoadingIndicatorOff() {
+		guard let index = getSwitchOptionIndex(for: .onButtonLoadingIndicator) else {
+			XCTFail("`onButtonLoadingIndicator` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .onButtonLoadingIndicator else {
+				XCTFail("Expected type `onButtonLoadingIndicator`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.onButtonLoadingIndicator = nil
+			
+			XCTAssertFalse(configuration.onButtonLoadingIndicator != nil,
+						   "onButtonLoadingIndicator should not be enabled in the gini configuration")
+		}
+	}
+	
+	func testOnButtonLoadingIndicatorOn() {
+		guard let index = getSwitchOptionIndex(for: .onButtonLoadingIndicator) else {
+			XCTFail("`onButtonLoadingIndicator` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .onButtonLoadingIndicator else {
+				XCTFail("Expected type `onButtonLoadingIndicator`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			configuration.onButtonLoadingIndicator = OnButtonLoading()
+			
+			XCTAssertTrue(configuration.onButtonLoadingIndicator != nil,
+						  "onButtonLoadingIndicator should be enabled in the gini configuration")
 		}
 	}
 }
