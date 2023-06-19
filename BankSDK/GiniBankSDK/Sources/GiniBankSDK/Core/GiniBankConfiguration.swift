@@ -27,7 +27,6 @@ public final class GiniBankConfiguration: NSObject {
     override init() {}
 
     // MARK: - General options
-
     /**
 	 The appearance of the status bar in the Gini Bank SDK.
      */
@@ -50,12 +49,6 @@ public final class GiniBankConfiguration: NSObject {
     public var multipageEnabled = false
 
     /**
-     Indicates whether the open with feature is enabled or not. In case of `true`,
-     a new option with the open with tutorial wil be shown in the Help menu.
-     */
-    public var openWithEnabled = false
-
-    /**
      Sets the custom navigation view controller as a root view controller for Gini Bank SDK screens.
      */
     public var customNavigationController: UINavigationController?
@@ -69,9 +62,8 @@ public final class GiniBankConfiguration: NSObject {
     }
 
     // MARK: - Button configuration options
-
     /**
-     Cnfiguration used to define the appearance of the primary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons in different screens: `Onboarding`, `Review`, `Digital Invoice Onboarding`, `Digital Invoice Overview`, `No Results`, `Error`.
+	 A configuration that defines the appearance of the primary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different screens: `Onboarding`, `Review`, `Digital Invoice Onboarding`, `Digital Invoice Overview`, `No Results`, `Error`.
      */
     public lazy var primaryButtonConfiguration = ButtonConfiguration(backgroundColor: .GiniBank.accent1,
                                                                      borderColor: .clear,
@@ -82,7 +74,7 @@ public final class GiniBankConfiguration: NSObject {
                                                                      shadowRadius: 0,
                                                                      withBlurEffect: false)
     /**
-     Configuration used to define the appearance of the secondary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons in different screens: `No Results`, `Error`.
+     A configuration that defines the appearance of the secondary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different screens: `No Results`, `Error`.
      */
     public lazy var secondaryButtonConfiguration = ButtonConfiguration(backgroundColor: .GiniBank.dark4,
                                                                        borderColor: GiniColor(light: .GiniBank.light6,
@@ -96,7 +88,7 @@ public final class GiniBankConfiguration: NSObject {
                                                                        shadowRadius: 14,
                                                                        withBlurEffect: true)
     /**
-     Configuration used to define the appearance of the transparent button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used in `Onboarding` screen in the bottom navigation bar.
+     A configuration that defines the appearance of the transparent button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used on `Onboarding` screen in the bottom navigation bar.
      */
     public lazy var transparentButtonConfiguration = ButtonConfiguration(backgroundColor: .clear,
                                                                          borderColor: .clear,
@@ -107,7 +99,7 @@ public final class GiniBankConfiguration: NSObject {
                                                                          shadowRadius: 0,
                                                                          withBlurEffect: false)
     /**
-     Configuration used to define the appearance of the camera buttons, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for `browse` and `flash` buttons in `Camera` screen.
+     A configuration that defines the appearance of the camera buttons, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for `Browse` and `Flash` buttons on `Camera` screen.
      */
     public lazy var cameraControlButtonConfiguration = ButtonConfiguration(backgroundColor: .clear,
                                                                            borderColor: .clear,
@@ -118,7 +110,7 @@ public final class GiniBankConfiguration: NSObject {
                                                                            shadowRadius: 0,
                                                                            withBlurEffect: false)
     /**
-     Configuration used to define the appearance of the "Add Page" button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used in `Review `screen.
+     A configuration that defines the appearance of the "Add Page" button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used on `Review `screen.
      */
     public lazy var addPageButtonConfiguration = ButtonConfiguration(backgroundColor: .clear,
                                                                      borderColor: .clear,
@@ -132,7 +124,6 @@ public final class GiniBankConfiguration: NSObject {
                                                                      withBlurEffect: false)
 
     // MARK: - Loading indicators
-
     /**
      Set an adapter implementation to show a custom loading indicator on the buttons which support loading.
      */
@@ -155,7 +146,6 @@ public final class GiniBankConfiguration: NSObject {
     public var onlyQRCodeScanningEnabled = false
 
     // MARK: - Camera screen
-
     /**
      Set the types supported by the file import feature. `GiniCaptureImportFileTypes.none` by default.
      */
@@ -177,7 +167,6 @@ public final class GiniBankConfiguration: NSObject {
     public var cameraNavigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
 
     // MARK: - Onboarding screens
-
     /**
      Indicates whether the onboarding screen should be presented at each start of the Gini Bank SDK.
      */
@@ -208,7 +197,7 @@ public final class GiniBankConfiguration: NSObject {
     public var onboardingAlignCornersIllustrationAdapter: OnboardingIllustrationAdapter?
 
     /**
-     * Set an adapter implementation to show a custom illustration on the "lighting" onboarding page.
+     Set an adapter implementation to show a custom illustration on the "lighting" onboarding page.
      */
     public var onboardingLightingIllustrationAdapter: OnboardingIllustrationAdapter?
 
@@ -223,21 +212,23 @@ public final class GiniBankConfiguration: NSObject {
     public var onboardingQRCodeIllustrationAdapter: OnboardingIllustrationAdapter?
 
     // MARK: - Review screen
-
     /**
      Set an adapter implementation to show a custom bottom navigation bar on the review screen.
      */
     public var reviewNavigationBarBottomAdapter: ReviewScreenBottomNavigationBarAdapter?
 
     // MARK: - Gallery screen
-
     /**
      Set an adapter implementation to show a custom bottom navigation bar on the image picker screen.
      */
     public var imagePickerNavigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter?
 
     // MARK: - Help screens
-
+	/**
+	 Indicates whether the open with feature is enabled or not. In case of `true`,
+	 a new option with the `Open with` tutorial will be shown on the Help menu.
+	 */
+	public var openWithEnabled = false
     /**
      Set an adapter implementation to show a custom bottom navigation bar on the help screens.
      */
@@ -272,9 +263,9 @@ public final class GiniBankConfiguration: NSObject {
     public var digitalInvoiceOnboardingIllustrationAdapter: OnboardingIllustrationAdapter?
 
     /**
-     Indicates whether the Return Assistant feature is enabled or not. In case of `true`,
+     Indicates whether the Return Assistant feature is enabled or not. In the case of `true`,
      the user will be presented with a digital representation of their invoice where they
-     can see individual line items and are able to amend them or choose to not to pay for them.
+	 can see individual line items and are able to amend them or choose not to pay for them.
      */
     public var returnAssistantEnabled = true
 
@@ -299,7 +290,6 @@ public final class GiniBankConfiguration: NSObject {
     public var enableReturnReasons: Bool = true
 
     // MARK: - Error Logger
-
     /**
      Sets if the default error logging implementation is on.
      */
@@ -316,9 +306,8 @@ public final class GiniBankConfiguration: NSObject {
     public var customGiniErrorLoggerDelegate: GiniCaptureErrorLoggerDelegate?
 
     // MARK: - Development Debug
-
     /**
-     Can be turned on during development to unlock extra information and to save captured images to camera roll.
+     Can be turned on during development to unlock extra information and to save captured images to the camera roll.
      
      - warning: Should never be used outside of a development enviroment.
      */
