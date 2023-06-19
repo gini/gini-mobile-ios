@@ -430,6 +430,7 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.addPageButtonConfiguration = configuration.addPageButtonConfiguration
 
 		giniBankConfiguration.onButtonLoadingIndicator = configuration.onButtonLoadingIndicator
+		giniBankConfiguration.customLoadingIndicator = configuration.customLoadingIndicator
     }
 
     // MARK: - Update to custom font

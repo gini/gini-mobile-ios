@@ -25,6 +25,7 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.onboardingShowAtLaunch = true
 		configuration.customOnboardingPages = nil
 		configuration.onButtonLoadingIndicator = nil
+		configuration.customLoadingIndicator = nil
 		return configuration
 	}()
 	
@@ -59,6 +60,8 @@ final class SettingsViewControllerTests: XCTestCase {
 
 		sectionData.append(.switchOption(data: .init(type: .onButtonLoadingIndicator,
 													 isActive: configuration.onButtonLoadingIndicator != nil)))
+		sectionData.append(.switchOption(data: .init(type: .customLoadingIndicator,
+													 isActive: configuration.customLoadingIndicator != nil)))
 		
 		var selectedSegmentIndex = 0
 		switch configuration.fileImportSupportedTypes {
@@ -535,6 +538,44 @@ extension SettingsViewControllerTests {
 			
 			XCTAssertTrue(configuration.onButtonLoadingIndicator != nil,
 						  "onButtonLoadingIndicator should be enabled in the gini configuration")
+		}
+	}
+	
+	func testCustomLoadingIndicatorOff() {
+		guard let index = getSwitchOptionIndex(for: .customLoadingIndicator) else {
+			XCTFail("`customLoadingIndicator` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .customLoadingIndicator else {
+				XCTFail("Expected type `customLoadingIndicator`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.customLoadingIndicator = nil
+			
+			XCTAssertFalse(configuration.customLoadingIndicator != nil,
+						   "customLoadingIndicator should not be enabled in the gini configuration")
+		}
+	}
+	
+	func testCustomLoadingIndicatorOn() {
+		guard let index = getSwitchOptionIndex(for: .customLoadingIndicator) else {
+			XCTFail("`customLoadingIndicator` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .customLoadingIndicator else {
+				XCTFail("Expected type `customLoadingIndicator`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			configuration.customLoadingIndicator = CustomLoadingIndicator()
+			
+			XCTAssertTrue(configuration.customLoadingIndicator != nil,
+						  "customLoadingIndicator should be enabled in the gini configuration")
 		}
 	}
 }
