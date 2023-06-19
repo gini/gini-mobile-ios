@@ -28,6 +28,7 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.customLoadingIndicator = nil
 		configuration.shouldShowSupportedFormatsScreen = true
 		configuration.customMenuItems = []
+		configuration.customNavigationController = nil
 		return configuration
 	}()
 	
@@ -69,6 +70,9 @@ final class SettingsViewControllerTests: XCTestCase {
 													 isActive: configuration.shouldShowSupportedFormatsScreen)))
 		sectionData.append(.switchOption(data: .init(type: .customMenuItems,
 													 isActive: !configuration.customMenuItems.isEmpty)))
+		
+		sectionData.append(.switchOption(data: .init(type: .customNavigationController,
+													 isActive: configuration.customNavigationController != nil)))
 		
 		var selectedSegmentIndex = 0
 		switch configuration.fileImportSupportedTypes {
@@ -640,7 +644,7 @@ extension SettingsViewControllerTests {
 			configuration.customMenuItems = [customMenuItem]
 			
 			XCTAssertTrue(configuration.customMenuItems.isEmpty == false,
-						  "shouldShowSupportedFormatsScreen should be enabled in the gini configuration")
+						  "customMenuItems should be enabled in the gini configuration")
 		}
 	}
 	
@@ -659,7 +663,47 @@ extension SettingsViewControllerTests {
 			configuration.customMenuItems = []
 			
 			XCTAssertFalse(configuration.customMenuItems.isEmpty == false,
-						   "shouldShowSupportedFormatsScreen should not be enabled in the gini configuration")
+						   "customMenuItems should not be enabled in the gini configuration")
+		}
+	}
+	
+	func testCustomNavigationControllerSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .customNavigationController) else {
+			XCTFail("`customNavigationController` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .customNavigationController else {
+				XCTFail("Expected type `customNavigationController`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			let navigationViewController = UINavigationController()
+			navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
+			configuration.customNavigationController = navigationViewController
+			
+			XCTAssertTrue(configuration.customNavigationController != nil,
+						  "customNavigationController should be enabled in the gini configuration")
+		}
+	}
+	
+	func testCustomNavigationControllerSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .customNavigationController) else {
+			XCTFail("`customNavigationController` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .customNavigationController else {
+				XCTFail("Expected type `customNavigationController`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.customNavigationController = nil
+			
+			XCTAssertFalse(configuration.customNavigationController != nil,
+						   "customNavigationController should not be enabled in the gini configuration")
 		}
 	}
 }

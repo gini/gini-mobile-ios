@@ -101,14 +101,17 @@ final class SettingsViewController: UIViewController {
 		sectionData.append(.switchOption(data: .init(type: .customOnboardingPages,
 													 isActive: giniConfiguration.customOnboardingPages != nil)))
 		sectionData.append(.switchOption(data: .init(type: .onButtonLoadingIndicator,
-													 isActive: giniConfiguration.onButtonLoadingIndicator !=  nil)))
+													 isActive: giniConfiguration.onButtonLoadingIndicator != nil)))
 		sectionData.append(.switchOption(data: .init(type: .customLoadingIndicator,
-													 isActive: giniConfiguration.customLoadingIndicator !=  nil)))
-		
+													 isActive: giniConfiguration.customLoadingIndicator != nil)))
+
 		sectionData.append(.switchOption(data: .init(type: .shouldShowSupportedFormatsScreen,
 													 isActive: giniConfiguration.shouldShowSupportedFormatsScreen)))
 		sectionData.append(.switchOption(data: .init(type: .customMenuItems,
 													 isActive: !giniConfiguration.customMenuItems.isEmpty)))
+
+		sectionData.append(.switchOption(data: .init(type: .customNavigationController,
+													 isActive: giniConfiguration.customNavigationController != nil)))
 		
 		var selectedSegmentIndex = 0
 		switch giniConfiguration.fileImportSupportedTypes {
@@ -182,6 +185,10 @@ final class SettingsViewController: UIViewController {
 		case .customMenuItems:
 			let customMenuItem = HelpMenuItem.custom("Custom menu item", CustomMenuItemViewController())
 			giniConfiguration.customMenuItems = [customMenuItem]
+		case .customNavigationController:
+			let navigationViewController = UINavigationController()
+			navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
+			giniConfiguration.customNavigationController = data.isActive ? navigationViewController : nil
 		}
 	}
 	
