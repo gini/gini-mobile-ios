@@ -105,6 +105,9 @@ final class SettingsViewController: UIViewController {
 		sectionData.append(.switchOption(data: .init(type: .customLoadingIndicator,
 													 isActive: giniConfiguration.customLoadingIndicator !=  nil)))
 		
+		sectionData.append(.switchOption(data: .init(type: .shouldShowSupportedFormatsScreen,
+													 isActive: giniConfiguration.shouldShowSupportedFormatsScreen)))
+		
 		var selectedSegmentIndex = 0
 		switch giniConfiguration.fileImportSupportedTypes {
 		case .none:
@@ -172,6 +175,8 @@ final class SettingsViewController: UIViewController {
 			giniConfiguration.onButtonLoadingIndicator = data.isActive ? OnButtonLoading() : nil
 		case .customLoadingIndicator:
 			giniConfiguration.customLoadingIndicator = data.isActive ? CustomLoadingIndicator() : nil
+		case .shouldShowSupportedFormatsScreen:
+			giniConfiguration.shouldShowSupportedFormatsScreen = data.isActive
 		}
 	}
 	

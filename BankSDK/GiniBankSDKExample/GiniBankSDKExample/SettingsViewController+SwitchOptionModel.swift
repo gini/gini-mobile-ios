@@ -21,6 +21,7 @@ struct SwitchOptionModel {
 		case customOnboardingPages
 		case onButtonLoadingIndicator
 		case customLoadingIndicator
+		case shouldShowSupportedFormatsScreen
 		
 		var title: String {
 			switch self {
@@ -46,7 +47,8 @@ struct SwitchOptionModel {
 				return "Buttons custom loading indicator"
 			case .customLoadingIndicator:
 				return "Screen custom loading indicator"
-				
+			case .shouldShowSupportedFormatsScreen:
+				return "Supported formats screen"
 			}
 		}
 		
@@ -62,6 +64,8 @@ struct SwitchOptionModel {
 				return "Set custom loading indicator on the buttons which support loading."
 			case .customLoadingIndicator:
 				return "Show a custom loading indicator on the document analysis screen."
+			case .shouldShowSupportedFormatsScreen:
+				return "In case of `off` the option won't be shown in the Help menu."
 			default:
 				return nil
 			}
