@@ -255,15 +255,15 @@ final class AppCoordinator: Coordinator {
 // MARK: SelectAPIViewControllerDelegate
 
 extension AppCoordinator: SelectAPIViewControllerDelegate {
-    
-    func selectAPI(viewController: SelectAPIViewController, didSelectApi api: GiniPayBankApiType) {
+	
+	func selectAPI(viewController: SelectAPIViewController, didSelectApi api: GiniPayBankApiType) {
 		guard case .screen = api else { return }
 		showScreenAPI()
-    }
-    
-    func selectAPI(viewController: SelectAPIViewController, didTapSettings: ()) {
-        showSettings()
-    }
+	}
+	
+	func selectAPI(viewController: SelectAPIViewController, didTapSettings: ()) {
+		showSettings()
+	}
 }
 
 extension AppCoordinator: SettingsViewControllerDelegate {
