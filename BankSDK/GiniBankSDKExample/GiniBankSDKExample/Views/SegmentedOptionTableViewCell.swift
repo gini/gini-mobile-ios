@@ -49,6 +49,8 @@ final class SegmentedOptionTableViewCell: UITableViewCell, NibLoadableView {
 			stackViewContainer.axis = .vertical
 			stackViewContainer.spacing = 8.0
 		}
+		
+		segmentedControl.tintColor = .systemGray
 	}
 
 	func set(data: SegmentedOptionCellModel) {
