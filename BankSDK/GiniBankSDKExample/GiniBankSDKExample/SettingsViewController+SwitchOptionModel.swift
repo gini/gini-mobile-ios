@@ -26,6 +26,7 @@ struct SwitchOptionModel {
 		case customNavigationController
 		case shouldShowDragAndDropTutorial // just for iPad
 		case giniErrorLoggerIsOn
+		case debugModeOn
 		
 		var title: String {
 			switch self {
@@ -61,6 +62,8 @@ struct SwitchOptionModel {
 				return "Drag and drop tutorial"
 			case .giniErrorLoggerIsOn:
 				return "Gini error logger"
+			case .debugModeOn:
+				return "Debug mode"
 			}
 		}
 		
