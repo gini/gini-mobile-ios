@@ -63,6 +63,7 @@ final class AppCoordinator: Coordinator {
 //        configuration.customMenuItems = [customMenuItem]
 
 //        configuration.enableReturnReasons = false
+//		configuration.shouldShowDragAndDropTutorial = true
         
     // If you need to scale your font please use our method `scaledFont()`. Please, find the example below.
 //    let customFontToBeScaled = UIFont.scaledFont(UIFont(name: "Avenir", size: 20) ?? UIFont.systemFont(ofSize: 7, weight: .regular), textStyle: .caption1)

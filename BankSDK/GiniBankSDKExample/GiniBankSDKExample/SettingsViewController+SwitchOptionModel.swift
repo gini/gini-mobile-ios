@@ -24,6 +24,7 @@ struct SwitchOptionModel {
 		case shouldShowSupportedFormatsScreen
 		case customMenuItems
 		case customNavigationController
+		case shouldShowDragAndDropTutorial // just for iPad
 		case giniErrorLoggerIsOn
 		
 		var title: String {
@@ -56,6 +57,8 @@ struct SwitchOptionModel {
 				return "Help custom menu items"
 			case .customNavigationController:
 				return "Custom navigation controller"
+			case .shouldShowDragAndDropTutorial:
+				return "Drag and drop tutorial"
 			case .giniErrorLoggerIsOn:
 				return "Gini error logger"
 			}
@@ -75,6 +78,8 @@ struct SwitchOptionModel {
 				return "Show a custom loading indicator on the document analysis screen."
 			case .shouldShowSupportedFormatsScreen:
 				return "Show the supported formats screen in the Help menu."
+			case .shouldShowDragAndDropTutorial:
+				return "Show drag and drop tutorial step in Help menu > How to import option."
 			default:
 				return nil
 			}

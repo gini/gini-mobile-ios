@@ -247,6 +247,7 @@ public final class GiniBankConfiguration: NSObject {
 
     /**
      Sets if the Drag&Drop step should be shown in the "Open with" tutorial.
+	 - note: Available just for iPad
      */
     public var shouldShowDragAndDropTutorial = true
 

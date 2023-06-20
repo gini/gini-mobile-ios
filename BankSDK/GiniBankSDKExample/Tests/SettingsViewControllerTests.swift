@@ -29,6 +29,7 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.shouldShowSupportedFormatsScreen = true
 		configuration.customMenuItems = []
 		configuration.customNavigationController = nil
+		configuration.shouldShowDragAndDropTutorial = true
 		configuration.giniErrorLoggerIsOn = true
 		return configuration
 	}()
@@ -74,6 +75,9 @@ final class SettingsViewControllerTests: XCTestCase {
 		
 		sectionData.append(.switchOption(data: .init(type: .customNavigationController,
 													 isActive: configuration.customNavigationController != nil)))
+		
+		sectionData.append(.switchOption(data: .init(type: .shouldShowDragAndDropTutorial,
+													 isActive: configuration.shouldShowDragAndDropTutorial)))
 		
 		sectionData.append(.switchOption(data: .init(type: .giniErrorLoggerIsOn,
 													 isActive: configuration.giniErrorLoggerIsOn)))
@@ -708,6 +712,44 @@ extension SettingsViewControllerTests {
 			
 			XCTAssertFalse(configuration.customNavigationController != nil,
 						   "customNavigationController should not be enabled in the gini configuration")
+		}
+	}
+	
+	func testDragAndDropSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .shouldShowDragAndDropTutorial) else {
+			XCTFail("`shouldShowDragAndDropTutorial` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .shouldShowDragAndDropTutorial else {
+				XCTFail("Expected type `shouldShowDragAndDropTutorial`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			configuration.shouldShowDragAndDropTutorial = data.isActive
+			
+			XCTAssertTrue(configuration.shouldShowDragAndDropTutorial,
+						  "shouldShowDragAndDropTutorial should be enabled in the gini configuration")
+		}
+	}
+	
+	func testDragAndDropSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .shouldShowDragAndDropTutorial) else {
+			XCTFail("`shouldShowDragAndDropTutorial` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .shouldShowDragAndDropTutorial else {
+				XCTFail("Expected type `shouldShowDragAndDropTutorial`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.shouldShowDragAndDropTutorial = data.isActive
+			
+			XCTAssertFalse(configuration.shouldShowDragAndDropTutorial,
+						   "shouldShowDragAndDropTutorial should not be enabled in the gini configuration")
 		}
 	}
 	
