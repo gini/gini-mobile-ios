@@ -167,7 +167,9 @@ extension GiniNetworkingScreenAPICoordinator {
             self.startAnalysis(networkDelegate: networkDelegate)
         }, didFail: { _, error in
             guard let giniError = error as? GiniError, giniError != .requestCancelled else { return }
-            networkDelegate.displayError(errorType: ErrorType(error: giniError), animated: true)
+            DispatchQueue.main.async {
+                networkDelegate.displayError(errorType: ErrorType(error: giniError), animated: true)
+            }
         })
     }
 }
