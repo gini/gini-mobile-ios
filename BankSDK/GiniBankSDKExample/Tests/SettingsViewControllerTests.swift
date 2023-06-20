@@ -23,6 +23,7 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.flashOnByDefault = true
 		configuration.bottomNavigationBarEnabled = false
 		configuration.onboardingShowAtLaunch = true
+		configuration.onboardingShowAtFirstLaunch = true
 		configuration.customOnboardingPages = nil
 		configuration.onButtonLoadingIndicator = nil
 		configuration.customLoadingIndicator = nil
@@ -61,6 +62,10 @@ final class SettingsViewControllerTests: XCTestCase {
 		
 		sectionData.append(.switchOption(data: .init(type: .onboardingShowAtLaunch,
 													 isActive: configuration.onboardingShowAtLaunch)))
+		
+		sectionData.append(.switchOption(data: .init(type: .onboardingShowAtFirstLaunch,
+													 isActive: configuration.onboardingShowAtFirstLaunch)))
+		
 		sectionData.append(.switchOption(data: .init(type: .customOnboardingPages,
 													 isActive: configuration.customOnboardingPages != nil)))
 
@@ -481,6 +486,44 @@ extension SettingsViewControllerTests {
 			
 			XCTAssertTrue(configuration.onboardingShowAtLaunch,
 						  "onboardingShowAtLaunch should be enabled in the gini configuration")
+		}
+	}
+	
+	func testOnboardingShowAtFirstLaunchOff() {
+		guard let index = getSwitchOptionIndex(for: .onboardingShowAtFirstLaunch) else {
+			XCTFail("`onboardingShowAtFirstLaunch` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .onboardingShowAtFirstLaunch else {
+				XCTFail("Expected type `onboardingShowAtFirstLaunch`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.onboardingShowAtFirstLaunch = data.isActive
+			
+			XCTAssertFalse(configuration.onboardingShowAtFirstLaunch,
+						   "onboardingShowAtFirstLaunch should not be enabled in the gini configuration")
+		}
+	}
+	
+	func testOnboardingShowAtFirstLaunchOn() {
+		guard let index = getSwitchOptionIndex(for: .onboardingShowAtFirstLaunch) else {
+			XCTFail("`onboardingShowAtFirstLaunch` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .onboardingShowAtFirstLaunch else {
+				XCTFail("Expected type `onboardingShowAtFirstLaunch`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			configuration.onboardingShowAtFirstLaunch = data.isActive
+			
+			XCTAssertTrue(configuration.onboardingShowAtFirstLaunch,
+						  "onboardingShowAtFirstLaunch should be enabled in the gini configuration")
 		}
 	}
 	
