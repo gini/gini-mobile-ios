@@ -108,10 +108,14 @@ final class SettingsViewController: UIViewController {
 		
 		sectionData.append(.switchOption(data: .init(type: .bottomNavigationBar,
 													 isActive: giniConfiguration.bottomNavigationBarEnabled)))
+		
 		sectionData.append(.switchOption(data: .init(type: .onboardingShowAtLaunch,
 													 isActive: giniConfiguration.onboardingShowAtLaunch)))
+		sectionData.append(.switchOption(data: .init(type: .onboardingShowAtFirstLaunch,
+													 isActive: giniConfiguration.onboardingShowAtFirstLaunch)))
 		sectionData.append(.switchOption(data: .init(type: .customOnboardingPages,
 													 isActive: giniConfiguration.customOnboardingPages != nil)))
+		
 		sectionData.append(.switchOption(data: .init(type: .onButtonLoadingIndicator,
 													 isActive: giniConfiguration.onButtonLoadingIndicator != nil)))
 		sectionData.append(.switchOption(data: .init(type: .customLoadingIndicator,
@@ -131,6 +135,9 @@ final class SettingsViewController: UIViewController {
 			sectionData.append(.switchOption(data: .init(type: .shouldShowDragAndDropTutorial,
 														 isActive: giniConfiguration.shouldShowDragAndDropTutorial)))
 		}
+		
+		// Add debug or development options at the end in the list
+		
 		sectionData.append(.switchOption(data: .init(type: .giniErrorLoggerIsOn,
 													 isActive: giniConfiguration.giniErrorLoggerIsOn)))
 		sectionData.append(.switchOption(data: .init(type: .debugModeOn,
@@ -182,6 +189,12 @@ final class SettingsViewController: UIViewController {
 			giniConfiguration.bottomNavigationBarEnabled = data.isActive
 		case .onboardingShowAtLaunch:
 			giniConfiguration.onboardingShowAtLaunch = data.isActive
+			let onboardingShowedUserDefault = UserDefaults.standard.bool(forKey: "ginicapture.defaults.onboardingShowed")
+			if !data.isActive && onboardingShowedUserDefault {
+				UserDefaults.standard.removeObject(forKey: "ginicapture.defaults.onboardingShowed")
+			}
+		case .onboardingShowAtFirstLaunch:
+			giniConfiguration.onboardingShowAtFirstLaunch = data.isActive
 		case .customOnboardingPages:
 			let customPage = OnboardingPage(imageName: "captureSuggestion1",
 											title: "Page 1",
