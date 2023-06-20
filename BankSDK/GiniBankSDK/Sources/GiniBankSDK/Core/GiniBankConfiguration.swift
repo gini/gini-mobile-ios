@@ -246,6 +246,11 @@ public final class GiniBankConfiguration: NSObject {
     public var shouldShowSupportedFormatsScreen = true
 
     /**
+     Sets if the Drag&Drop step should be shown in the "Open with" tutorial.
+     */
+    public var shouldShowDragAndDropTutorial = true
+
+    /**
      Sets the text of the app name for the Open with tutorial texts.
      */
     public var openWithAppNameForTexts = Bundle.main.appName
@@ -355,6 +360,8 @@ public final class GiniBankConfiguration: NSObject {
 
         configuration.openWithAppNameForTexts = self.openWithAppNameForTexts
 
+        configuration.shouldShowDragAndDropTutorial = self.shouldShowDragAndDropTutorial
+
         configuration.customMenuItems = self.customMenuItems
 
         configuration.giniErrorLoggerIsOn = self.giniErrorLoggerIsOn
@@ -413,6 +420,7 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.onboardingShowAtFirstLaunch = configuration.onboardingShowAtFirstLaunch
         giniBankConfiguration.shouldShowSupportedFormatsScreen = configuration.shouldShowSupportedFormatsScreen
 
+        giniBankConfiguration.shouldShowDragAndDropTutorial = configuration.shouldShowDragAndDropTutorial
         giniBankConfiguration.bottomNavigationBarEnabled = configuration.bottomNavigationBarEnabled
 
         giniBankConfiguration.primaryButtonConfiguration = configuration.primaryButtonConfiguration
