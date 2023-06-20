@@ -31,6 +31,7 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.customNavigationController = nil
 		configuration.shouldShowDragAndDropTutorial = true
 		configuration.giniErrorLoggerIsOn = true
+		configuration.debugModeOn = true
 		return configuration
 	}()
 	
@@ -81,6 +82,8 @@ final class SettingsViewControllerTests: XCTestCase {
 		
 		sectionData.append(.switchOption(data: .init(type: .giniErrorLoggerIsOn,
 													 isActive: configuration.giniErrorLoggerIsOn)))
+		sectionData.append(.switchOption(data: .init(type: .debugModeOn,
+													 isActive: configuration.debugModeOn)))
 		
 		var selectedSegmentIndex = 0
 		switch configuration.fileImportSupportedTypes {
@@ -790,4 +793,43 @@ extension SettingsViewControllerTests {
 						   "giniErrorLoggerIsOn should not be enabled in the gini configuration")
 		}
 	}
+	
+	func testDebugModeSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .debugModeOn) else {
+			XCTFail("`debugModeOn` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .debugModeOn else {
+				XCTFail("Expected type `debugModeOn`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			configuration.debugModeOn = data.isActive
+			
+			XCTAssertTrue(configuration.debugModeOn,
+						  "debugModeOn should be enabled in the gini configuration")
+		}
+	}
+	
+	func testDebugModeSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .debugModeOn) else {
+			XCTFail("`debugModeOn` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .debugModeOn else {
+				XCTFail("Expected type `debugModeOn`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.debugModeOn = data.isActive
+			
+			XCTAssertFalse(configuration.debugModeOn,
+						   "debugModeOn should not be enabled in the gini configuration")
+		}
+	}
+
 }

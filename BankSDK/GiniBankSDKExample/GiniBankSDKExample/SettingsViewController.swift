@@ -133,6 +133,8 @@ final class SettingsViewController: UIViewController {
 		}
 		sectionData.append(.switchOption(data: .init(type: .giniErrorLoggerIsOn,
 													 isActive: giniConfiguration.giniErrorLoggerIsOn)))
+		sectionData.append(.switchOption(data: .init(type: .debugModeOn,
+													 isActive: giniConfiguration.debugModeOn)))
 
 		self.sectionData = sectionData
 	}
@@ -203,6 +205,8 @@ final class SettingsViewController: UIViewController {
 			giniConfiguration.shouldShowDragAndDropTutorial = data.isActive
 		case .giniErrorLoggerIsOn:
 			giniConfiguration.giniErrorLoggerIsOn = data.isActive
+		case .debugModeOn:
+			giniConfiguration.debugModeOn = data.isActive
 		}
 	}
 	
