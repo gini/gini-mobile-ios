@@ -103,9 +103,13 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
     fileprivate func configureTitle() {
         if UIDevice.current.isIphone {
-            self.title = NSLocalizedStringPreferredFormat(
-                "ginicapture.navigationbar.camera.title",
-                comment: "Info label")
+            if giniConfiguration.onlyQRCodeScanningEnabled {
+                title = NSLocalizedStringPreferredFormat("ginicapture.camera.infoLabel.only.qr",
+                                                         comment: "Info label")
+            } else {
+                self.title = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.camera.title",
+                                                              comment: "Info label")
+            }
         } else {
             var title: String?
 

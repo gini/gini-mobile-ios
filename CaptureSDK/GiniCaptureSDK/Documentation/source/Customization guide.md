@@ -35,13 +35,13 @@ You can find the names of the colors in [GiniColors.xcassets](https://github.com
 
  You can view our color palette here:
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fl53W9WftoNCiLqEjGXaFHc%2FiOS-Gini-Capture-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D14%253A355%26t%3DzF5QZXPx3KuIExcb-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhxgxewJy4t08Pb0qK2TbxA%2FiOS-Gini-Capture-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D14%253A355%26t%3DLYTtm00hbAAxIqyu-1" allowfullscreen></iframe>
 
 ## Typography
 
 We provide a global typography based on text appearance styles from `UIFont.TextStyle`. 
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fl53W9WftoNCiLqEjGXaFHc%2FiOS-Gini-Capture-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D3379%253A11417%26t%3Di1iGDdIel9x0xYzn-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhxgxewJy4t08Pb0qK2TbxA%2FiOS-Gini-Capture-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D3379%253A11417%26t%3DLYTtm00hbAAxIqyu-1" allowfullscreen></iframe>
 
 To override them in your application please use `GiniConfiguration.updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle)`. For example:
 
@@ -91,11 +91,11 @@ More details will be added below during the specific screen customization.
 
 ## Onboarding screens
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fl53W9WftoNCiLqEjGXaFHc%2FiOS-Gini-Capture-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D243%253A3305%26t%3DzF5QZXPx3KuIExcb-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhxgxewJy4t08Pb0qK2TbxA%2FiOS-Gini-Capture-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D243%253A3305%26t%3DLYTtm00hbAAxIqyu-1" allowfullscreen></iframe>
 
 ## Camera screen
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fl53W9WftoNCiLqEjGXaFHc%2FiOS-Gini-Capture-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D243%253A3306%26t%3DzF5QZXPx3KuIExcb-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhxgxewJy4t08Pb0qK2TbxA%2FiOS-Gini-Capture-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D243%253A3306%26t%3DLYTtm00hbAAxIqyu-1" allowfullscreen></iframe>
 
 ### Single Page
 
@@ -118,7 +118,7 @@ Flash is on by default, and you can turn it off by passing `false` to `GiniConfi
 
 ### Camera access
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fl53W9WftoNCiLqEjGXaFHc%2FiOS-Gini-Capture-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D257%253A15890%26t%3DzF5QZXPx3KuIExcb-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhxgxewJy4t08Pb0qK2TbxA%2FiOS-Gini-Capture-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D257%253A15890%26t%3DLYTtm00hbAAxIqyu-1" allowfullscreen></iframe>
 
 ### QR Code Scanning
 
@@ -134,7 +134,7 @@ Please find more information in the [QR Code scanning guide](https://developer.g
 
 ### QR Code Only
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fl53W9WftoNCiLqEjGXaFHc%2FiOS-Gini-Capture-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D3308%253A12139%26t%3DzF5QZXPx3KuIExcb-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhxgxewJy4t08Pb0qK2TbxA%2FiOS-Gini-Capture-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D3308%253A12139%26t%3DLYTtm00hbAAxIqyu-1" allowfullscreen></iframe>
 
 During QR Code only mode the capture and import controls will be hidden from the camera screen.
 
@@ -142,7 +142,7 @@ For enabling QR code only mode the both flags `GiniConfiguration.shared.qrCodeSc
 
 ### Document Import
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fl53W9WftoNCiLqEjGXaFHc%2FiOS-Gini-Capture-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D3308%253A12138%26t%3DzF5QZXPx3KuIExcb-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhxgxewJy4t08Pb0qK2TbxA%2FiOS-Gini-Capture-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D3308%253A12138%26t%3DLYTtm00hbAAxIqyu-1" allowfullscreen></iframe>
 
 This feature enables the Gini Capture SDK to import documents from the camera screen. When it's enabled an additional button is shown next to the camera trigger. Using this button allows the user to pick either an image or a pdf from the device.
 
@@ -150,11 +150,11 @@ Please find more information in the [Import PDFs and images guide](https://devel
 
 ### Camera import error handling
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fl53W9WftoNCiLqEjGXaFHc%2FiOS-Gini-Capture-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D3308%253A12152%26t%3DzF5QZXPx3KuIExcb-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhxgxewJy4t08Pb0qK2TbxA%2FiOS-Gini-Capture-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D3308%253A12152%26t%3DLYTtm00hbAAxIqyu-1" allowfullscreen></iframe>
 
 ## Review screen
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fl53W9WftoNCiLqEjGXaFHc%2FiOS-Gini-Capture-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D261%253A8256%26t%3DzF5QZXPx3KuIExcb-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhxgxewJy4t08Pb0qK2TbxA%2FiOS-Gini-Capture-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D261%253A8256%26t%3DLYTtm00hbAAxIqyu-1" allowfullscreen></iframe>
 
 You can show a custom loading indicator with custom animation support on the process button.
 Your custom loading indicator should implement `OnButtonLoadingIndicatorAdapter` interface and be passed  to `GiniConfiguration.shared.onButtonLoadingIndicator`.
@@ -163,7 +163,7 @@ The example implementation is available [here](https://github.com/gini/gini-mobi
 
 ## Analysis screen
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fl53W9WftoNCiLqEjGXaFHc%2FiOS-Gini-Capture-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D501%253A7494%26t%3DzF5QZXPx3KuIExcb-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhxgxewJy4t08Pb0qK2TbxA%2FiOS-Gini-Capture-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D501%253A7494%26t%3DLYTtm00hbAAxIqyu-1" allowfullscreen></iframe>
 
 You can show a custom loading indicator with custom animation support.
 Your custom loading indicator should implement `CustomLoadingIndicatorAdapter` interface and be passed  to `GiniConfiguration.shared.customLoadingIndicator`.
@@ -172,7 +172,7 @@ The example implementation is available [here](https://github.com/gini/gini-mobi
 
 ## Help screens
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fl53W9WftoNCiLqEjGXaFHc%2FiOS-Gini-Capture-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D141%253A2328%26t%3DzF5QZXPx3KuIExcb-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhxgxewJy4t08Pb0qK2TbxA%2FiOS-Gini-Capture-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D141%253A2328%26t%3DLYTtm00hbAAxIqyu-1" allowfullscreen></iframe>
 
 You can show your own help screens in the Gini Capture SDK.
 You can pass the title and view controller for each screen to the
@@ -192,11 +192,11 @@ You can also disable the supported formats help screen by passing `false` to
 
 ## Gallery album screen
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fl53W9WftoNCiLqEjGXaFHc%2FiOS-Gini-Capture-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D279%253A7588%26t%3DzF5QZXPx3KuIExcb-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhxgxewJy4t08Pb0qK2TbxA%2FiOS-Gini-Capture-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D279%253A7588%26t%3DLYTtm00hbAAxIqyu-1" allowfullscreen></iframe>
 
 ## No result screen
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fl53W9WftoNCiLqEjGXaFHc%2FiOS-Gini-Capture-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D263%253A6989%26t%3DzF5QZXPx3KuIExcb-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhxgxewJy4t08Pb0qK2TbxA%2FiOS-Gini-Capture-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D263%253A6989%26t%3DLYTtm00hbAAxIqyu-1" allowfullscreen></iframe>
 
 You can show your own UI for data input if an error occurred and the user clicks the "Enter manually" button on the error screen.
 For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
@@ -205,6 +205,6 @@ You can find more details [here](https://developer.gini.net/gini-mobile-ios/Gini
 
 ## Error screen
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fl53W9WftoNCiLqEjGXaFHc%2FiOS-Gini-Capture-SDK-3.1.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D263%253A6858%26t%3DzF5QZXPx3KuIExcb-1" allowfullscreen></iframe>
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="600" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhxgxewJy4t08Pb0qK2TbxA%2FiOS-Gini-Capture-SDK-3.1.2-UI-Customisation%3Ftype%3Ddesign%26node-id%3D263%253A6858%26t%3DLYTtm00hbAAxIqyu-1" allowfullscreen></iframe>
 
 You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/3.1.1/features.html#error-screen-customization).
