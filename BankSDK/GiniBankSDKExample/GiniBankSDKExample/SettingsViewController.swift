@@ -125,6 +125,12 @@ final class SettingsViewController: UIViewController {
 		sectionData.append(.switchOption(data: .init(type: .customNavigationController,
 													 isActive: giniConfiguration.customNavigationController != nil)))
 		
+		sectionData.append(.switchOption(data: .init(type: .shouldShowSupportedFormatsScreen,
+													 isActive: giniConfiguration.shouldShowSupportedFormatsScreen)))
+		if UIDevice.current.isIpad{
+			sectionData.append(.switchOption(data: .init(type: .shouldShowDragAndDropTutorial,
+														 isActive: giniConfiguration.shouldShowDragAndDropTutorial)))
+		}
 		sectionData.append(.switchOption(data: .init(type: .giniErrorLoggerIsOn,
 													 isActive: giniConfiguration.giniErrorLoggerIsOn)))
 
@@ -193,6 +199,8 @@ final class SettingsViewController: UIViewController {
 			let navigationViewController = UINavigationController()
 			navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
 			giniConfiguration.customNavigationController = data.isActive ? navigationViewController : nil
+		case .shouldShowDragAndDropTutorial:
+			giniConfiguration.shouldShowDragAndDropTutorial = data.isActive
 		case .giniErrorLoggerIsOn:
 			giniConfiguration.giniErrorLoggerIsOn = data.isActive
 		}
