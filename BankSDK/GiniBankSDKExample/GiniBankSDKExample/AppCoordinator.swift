@@ -104,6 +104,8 @@ final class AppCoordinator: Coordinator {
 //                                                                       borderWidth: 4,
 //                                                                       shadowRadius: 0,
 //                                                                       withBlurEffect: false)
+		
+//		configuration.giniErrorLoggerIsOn = true
        return configuration
     }()
     
