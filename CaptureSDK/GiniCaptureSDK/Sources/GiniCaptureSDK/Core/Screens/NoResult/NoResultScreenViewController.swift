@@ -284,11 +284,11 @@ final class NoResultScreenViewController: UIViewController {
     private func configureConstraints() {
         configureHeaderContraints()
         configureTableViewConstraints()
-        configureButtonsConstraints()
+        configureButtonsViewConstraints()
         view.layoutSubviews()
     }
 
-    private func configureButtonsConstraints() {
+    private func configureButtonsViewConstraints() {
         let buttonsConstraint =  buttonsView.heightAnchor.constraint(
             greaterThanOrEqualToConstant: getButtonsMinHeight(numberOfButtons: numberOfButtons)
         )
