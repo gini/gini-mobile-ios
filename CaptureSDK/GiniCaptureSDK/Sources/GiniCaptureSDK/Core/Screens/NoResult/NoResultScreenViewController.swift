@@ -256,34 +256,50 @@ final class NoResultScreenViewController: UIViewController {
             for: .touchUpInside)
     }
 
-    private func configureConstraints() {
+    private func configureHeaderContraints() {
         header.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
         header.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-        tableView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        if UIDevice.current.isIpad {
+            NSLayoutConstraint.activate([
+                header.headerStack.widthAnchor.constraint(equalTo: view.widthAnchor,
+                                                          multiplier: Constants.iPadWidthMultiplier.rawValue),
+                header.headerStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                header.headerStack.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                            constant: Constants.iPadWidthPadding.rawValue),
+                header.headerStack.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                             constant: -Constants.iPadWidthPadding.rawValue)
+            ])
+        }
+        NSLayoutConstraint.activate([
+            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            header.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.contentHeight.rawValue)
+        ])
+    }
+
+    private func configureConstraints() {
+        configureHeaderContraints()
+        configureTableViewConstraints()
+        configureButtonsConstraints()
+        view.layoutSubviews()
+    }
+
+    private func configureButtonsConstraints() {
         let buttonsConstraint =  buttonsView.heightAnchor.constraint(
             greaterThanOrEqualToConstant: getButtonsMinHeight(numberOfButtons: numberOfButtons)
         )
         buttonsHeightConstraint = buttonsConstraint
         NSLayoutConstraint.activate([
-            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-            header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            header.heightAnchor.constraint(greaterThanOrEqualToConstant: 62),
-            tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 13),
-            tableView.bottomAnchor.constraint(equalTo: buttonsView.bottomAnchor, constant: 16),
             buttonsView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
                                                 constant: -GiniMargins.margin),
             buttonsConstraint
         ])
-        configureHorizontalConstraints()
-        view.layoutSubviews()
-    }
-
-    private func configureHorizontalConstraints() {
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
-                tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                tableView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7),
                 buttonsView.leadingAnchor.constraint(
                     equalTo: view.leadingAnchor,
                     constant: GiniMargins.margin),
@@ -293,14 +309,36 @@ final class NoResultScreenViewController: UIViewController {
             ])
         } else {
             NSLayoutConstraint.activate([
+                buttonsView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
+                buttonsView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor)
+            ])
+        }
+    }
+
+    private func configureTableViewConstraints() {
+        tableView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        NSLayoutConstraint.activate([
+
+            tableView.topAnchor.constraint(equalTo: header.bottomAnchor,
+                                           constant: Constants.contentTopMargin.rawValue),
+            tableView.bottomAnchor.constraint(equalTo: buttonsView.bottomAnchor,
+                                              constant: Constants.contentBottomMargin.rawValue)
+        ])
+
+        if UIDevice.current.isIpad {
+            NSLayoutConstraint.activate([
+                tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                tableView.widthAnchor.constraint(equalTo: view.widthAnchor,
+                                                 multiplier: Constants.iPadWidthMultiplier.rawValue)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
                 tableView.leadingAnchor.constraint(
                     equalTo: view.leadingAnchor,
                     constant: GiniMargins.margin),
                 tableView.trailingAnchor.constraint(
                     equalTo: view.trailingAnchor,
-                    constant: -GiniMargins.margin),
-                buttonsView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
-                buttonsView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor)
+                    constant: -GiniMargins.margin)
             ])
         }
     }
@@ -310,5 +348,10 @@ final class NoResultScreenViewController: UIViewController {
         case twoButtonsHeight = 112
         case tableRowHeight = 44
         case sectionHeight = 70
+        case iPadWidthMultiplier = 0.7
+        case iPadWidthPadding = 35
+        case contentTopMargin = 13
+        case contentBottomMargin = 16
+        case contentHeight = 62
     }
 }
