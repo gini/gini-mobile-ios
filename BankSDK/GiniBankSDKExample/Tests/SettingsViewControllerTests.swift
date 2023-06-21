@@ -153,6 +153,9 @@ final class SettingsViewControllerTests: XCTestCase {
 // MARK: - Tests
 
 extension SettingsViewControllerTests {
+	
+	//MARK: - OpenWith
+	
 	func testOpenWithSwitchOff() {
 		guard let index = getSwitchOptionIndex(for: .openWith) else {
 			XCTFail("`openWith` option not found in sectionData")
@@ -190,6 +193,8 @@ extension SettingsViewControllerTests {
 						  "open with feature should be enabled in the gini configuration")
 		}
 	}
+	
+	//MARK: - QRCodeScanning
 	
 	func testQrCodeScanningSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .qrCodeScanning) else {
@@ -229,6 +234,8 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
+	// MARK: - QrCodeScanningOnly
+	
 	func testQrCodeScanningOnlySwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .qrCodeScanningOnly) else {
 			XCTFail("`qrCodeScanningOnly` option not found in sectionData")
@@ -266,6 +273,8 @@ extension SettingsViewControllerTests {
 						   "qrCodeScanningOnly should not be enabled in the gini configuration")
 		}
 	}
+	
+	// MARK: - Multipage
 	
 	func testMultipageSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .multipage) else {
@@ -305,6 +314,8 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
+	// MARK: - FlashToggle
+	
 	func testFlashToggleSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .flashToggle) else {
 			XCTFail("`flashToggle` option not found in sectionData")
@@ -343,6 +354,7 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
+	// MARK: - FlashOnByDefault
 	
 	func testFlashOnByDefaultSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .flashOnByDefault) else {
@@ -382,6 +394,8 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
+	// MARK: - Bottom Naviagtion Bar
+	
 	func testBottomNaviagtionBarSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .bottomNavigationBar) else {
 			XCTFail("`bottomNavigationBar` option not found in sectionData")
@@ -419,6 +433,8 @@ extension SettingsViewControllerTests {
 						   "bottomNavigationBar should not be enabled in the gini configuration")
 		}
 	}
+	
+	// MARK: - File Import options
 	
 	func testSegmentedControlNone() {
 		guard let index = getFileImportOptionIndex()else {
@@ -460,6 +476,8 @@ extension SettingsViewControllerTests {
 					   "pdf and image types should be supported in the gini configuration")
 	}
 	
+	// MARK: - OnboardingShowAtLaunch
+	
 	func testOnboardingShowAtLaunchOff() {
 		guard let index = getSwitchOptionIndex(for: .onboardingShowAtLaunch) else {
 			XCTFail("`onboardingShowAtLaunch` option not found in sectionData")
@@ -498,6 +516,8 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
+	// MARK: - OnboardingShowAtFirstLaunch
+	
 	func testOnboardingShowAtFirstLaunchOff() {
 		guard let index = getSwitchOptionIndex(for: .onboardingShowAtFirstLaunch) else {
 			XCTFail("`onboardingShowAtFirstLaunch` option not found in sectionData")
@@ -535,6 +555,8 @@ extension SettingsViewControllerTests {
 						  "onboardingShowAtFirstLaunch should be enabled in the gini configuration")
 		}
 	}
+	
+	// MARK: - CustomOnboardingPages
 	
 	func testCustomOnboardingPagesOff() {
 		guard let index = getSwitchOptionIndex(for: .customOnboardingPages) else {
@@ -577,6 +599,8 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
+	// MARK: - OnButtonLoadingIndicator
+	
 	func testOnButtonLoadingIndicatorOff() {
 		guard let index = getSwitchOptionIndex(for: .onButtonLoadingIndicator) else {
 			XCTFail("`onButtonLoadingIndicator` option not found in sectionData")
@@ -615,6 +639,8 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
+	// MARK: - CustomLoadingIndicator
+	
 	func testCustomLoadingIndicatorOff() {
 		guard let index = getSwitchOptionIndex(for: .customLoadingIndicator) else {
 			XCTFail("`customLoadingIndicator` option not found in sectionData")
@@ -652,7 +678,9 @@ extension SettingsViewControllerTests {
 						  "customLoadingIndicator should be enabled in the gini configuration")
 		}
 	}
-
+	
+	// MARK: - SupportedFormatsScreen
+	
 	func testSupportedFormatsScreenSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .shouldShowSupportedFormatsScreen) else {
 			XCTFail("`shouldShowSupportedFormatsScreen` option not found in sectionData")
@@ -690,6 +718,8 @@ extension SettingsViewControllerTests {
 						   "shouldShowSupportedFormatsScreen should not be enabled in the gini configuration")
 		}
 	}
+	
+	// MARK: - CustomHelpMenuItems
 	
 	func testCustomHelpMenuItemsSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .customMenuItems) else {
@@ -729,6 +759,8 @@ extension SettingsViewControllerTests {
 						   "customMenuItems should not be enabled in the gini configuration")
 		}
 	}
+	
+	// MARK: - CustomNavigationController
 	
 	func testCustomNavigationControllerSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .customNavigationController) else {
@@ -770,6 +802,8 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
+	// MARK: - DragAndDrop
+	
 	func testDragAndDropSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .shouldShowDragAndDropTutorial) else {
 			XCTFail("`shouldShowDragAndDropTutorial` option not found in sectionData")
@@ -808,6 +842,8 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
+	// MARK: - ReturnAssistant
+	
 	func testReturnAssistantSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .returnAssistantEnabled) else {
 			XCTFail("`returnAssistantEnabled` option not found in sectionData")
@@ -845,7 +881,9 @@ extension SettingsViewControllerTests {
 						   "returnAssistantEnabled should not be enabled in the gini configuration")
 		}
 	}
-		
+	
+	// MARK: - ReturnReasonsDigitalInvoiceDialog
+	
 	func testReturnReasonsDigitalInvoiceDialogSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .enableReturnReasons) else {
 			XCTFail("`enableReturnReasons` option not found in sectionData")
@@ -884,6 +922,8 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
+	// MARK: - GiniErrorLogger
+	
 	func testGiniErrorLoggerSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .giniErrorLoggerIsOn) else {
 			XCTFail("`giniErrorLoggerIsOn` option not found in sectionData")
@@ -921,6 +961,8 @@ extension SettingsViewControllerTests {
 						   "giniErrorLoggerIsOn should not be enabled in the gini configuration")
 		}
 	}
+	
+	// MARK: - DebugMode
 	
 	func testDebugModeSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .debugModeOn) else {
