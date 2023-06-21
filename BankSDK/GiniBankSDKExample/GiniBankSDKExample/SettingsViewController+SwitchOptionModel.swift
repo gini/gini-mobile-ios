@@ -26,6 +26,7 @@ struct SwitchOptionModel {
 		case customNavigationController
 		case shouldShowDragAndDropTutorial // just for iPad
 		case onboardingShowAtFirstLaunch
+		case returnAssistantEnabled
 		case giniErrorLoggerIsOn
 		case debugModeOn
 		
@@ -63,6 +64,8 @@ struct SwitchOptionModel {
 				return "Drag and drop tutorial"
 			case .onboardingShowAtFirstLaunch:
 				return "Show Onboarding screens at first launch"
+			case .returnAssistantEnabled:
+				return "Return Assistant feature"
 			case .giniErrorLoggerIsOn:
 				return "Gini error logger"
 			case .debugModeOn:
@@ -88,6 +91,8 @@ struct SwitchOptionModel {
 				return "Show drag and drop tutorial step in Help menu > How to import option."
 			case .onboardingShowAtFirstLaunch:
 				return "Overwrites `onboardingShowAtLaunch` for the first launch."
+			case .returnAssistantEnabled:
+				return "Present a digital representation of the invoice"
 			default:
 				return nil
 			}

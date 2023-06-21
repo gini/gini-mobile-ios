@@ -6,12 +6,13 @@
 //
 
 import UIKit
+import GiniBankSDK
 import GiniCaptureSDK
 import AVFoundation
 
 protocol SettingsViewControllerDelegate: AnyObject {
 	func settings(settingViewController: SettingsViewController,
-				  didChangeConfiguration captureConfiguration: GiniConfiguration)
+				  didChangeConfiguration configuration: GiniBankConfiguration)
 }
 
 final class SettingsViewController: UIViewController {
@@ -21,13 +22,13 @@ final class SettingsViewController: UIViewController {
 	@IBOutlet private weak var tableView: UITableView!
 	
 	var sectionData = [SectionType]()
-	let giniConfiguration: GiniConfiguration
+	let giniConfiguration: GiniBankConfiguration
 	
 	weak var delegate: SettingsViewControllerDelegate?
 	
 	// MARK: - Initializers
 	
-	init(giniConfiguration: GiniConfiguration) {
+	init(giniConfiguration: GiniBankConfiguration) {
 		self.giniConfiguration = giniConfiguration
 		super.init(nibName: nil, bundle: nil)
 	}
@@ -135,6 +136,9 @@ final class SettingsViewController: UIViewController {
 			sectionData.append(.switchOption(data: .init(type: .shouldShowDragAndDropTutorial,
 														 isActive: giniConfiguration.shouldShowDragAndDropTutorial)))
 		}
+		sectionData.append(.switchOption(data: .init(type: .returnAssistantEnabled,
+													 isActive: giniConfiguration.returnAssistantEnabled)))
+		
 		
 		// Add debug or development options at the end in the list
 		
@@ -216,6 +220,8 @@ final class SettingsViewController: UIViewController {
 			giniConfiguration.customNavigationController = data.isActive ? navigationViewController : nil
 		case .shouldShowDragAndDropTutorial:
 			giniConfiguration.shouldShowDragAndDropTutorial = data.isActive
+		case .returnAssistantEnabled:
+			giniConfiguration.returnAssistantEnabled = data.isActive
 		case .giniErrorLoggerIsOn:
 			giniConfiguration.giniErrorLoggerIsOn = data.isActive
 		case .debugModeOn:
