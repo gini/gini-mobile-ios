@@ -33,6 +33,7 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.customNavigationController = nil
 		configuration.shouldShowDragAndDropTutorial = true
 		configuration.returnAssistantEnabled = true
+		configuration.enableReturnReasons = true
 		configuration.giniErrorLoggerIsOn = true
 		configuration.debugModeOn = true
 		return configuration
@@ -89,6 +90,9 @@ final class SettingsViewControllerTests: XCTestCase {
 		
 		sectionData.append(.switchOption(data: .init(type: .returnAssistantEnabled,
 													 isActive: configuration.returnAssistantEnabled)))
+		
+		sectionData.append(.switchOption(data: .init(type: .enableReturnReasons,
+													 isActive: configuration.enableReturnReasons)))
 		
 		sectionData.append(.switchOption(data: .init(type: .giniErrorLoggerIsOn,
 													 isActive: configuration.giniErrorLoggerIsOn)))
@@ -839,6 +843,44 @@ extension SettingsViewControllerTests {
 			
 			XCTAssertFalse(configuration.returnAssistantEnabled,
 						   "returnAssistantEnabled should not be enabled in the gini configuration")
+		}
+	}
+		
+	func testReturnReasonsDigitalInvoiceDialogSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .enableReturnReasons) else {
+			XCTFail("`enableReturnReasons` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .enableReturnReasons else {
+				XCTFail("Expected type `enableReturnReasons`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			configuration.enableReturnReasons = data.isActive
+			
+			XCTAssertTrue(configuration.enableReturnReasons,
+						  "enableReturnReasons should be enabled in the gini configuration")
+		}
+	}
+	
+	func testReturnReasonsDigitalInvoiceDialogSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .enableReturnReasons) else {
+			XCTFail("`enableReturnReasons` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .enableReturnReasons else {
+				XCTFail("Expected type `enableReturnReasons`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.enableReturnReasons = data.isActive
+			
+			XCTAssertFalse(configuration.enableReturnReasons,
+						   "enableReturnReasons should not be enabled in the gini configuration")
 		}
 	}
 	
