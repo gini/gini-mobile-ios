@@ -136,10 +136,12 @@ final class SettingsViewController: UIViewController {
 			sectionData.append(.switchOption(data: .init(type: .shouldShowDragAndDropTutorial,
 														 isActive: giniConfiguration.shouldShowDragAndDropTutorial)))
 		}
+
 		sectionData.append(.switchOption(data: .init(type: .returnAssistantEnabled,
 													 isActive: giniConfiguration.returnAssistantEnabled)))
-		
-		
+
+		sectionData.append(.switchOption(data: .init(type: .enableReturnReasons,
+													 isActive: giniConfiguration.enableReturnReasons)))
 		// Add debug or development options at the end in the list
 		
 		sectionData.append(.switchOption(data: .init(type: .giniErrorLoggerIsOn,
@@ -222,6 +224,8 @@ final class SettingsViewController: UIViewController {
 			giniConfiguration.shouldShowDragAndDropTutorial = data.isActive
 		case .returnAssistantEnabled:
 			giniConfiguration.returnAssistantEnabled = data.isActive
+		case .enableReturnReasons:
+			giniConfiguration.enableReturnReasons = data.isActive
 		case .giniErrorLoggerIsOn:
 			giniConfiguration.giniErrorLoggerIsOn = data.isActive
 		case .debugModeOn:

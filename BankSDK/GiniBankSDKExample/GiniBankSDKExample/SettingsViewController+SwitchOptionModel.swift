@@ -27,6 +27,7 @@ struct SwitchOptionModel {
 		case shouldShowDragAndDropTutorial // just for iPad
 		case onboardingShowAtFirstLaunch
 		case returnAssistantEnabled
+		case enableReturnReasons
 		case giniErrorLoggerIsOn
 		case debugModeOn
 		
@@ -47,7 +48,7 @@ struct SwitchOptionModel {
 			case .bottomNavigationBar:
 				return "Bottom navigation bar"
 			case .onboardingShowAtLaunch:
-				return "Show Onboarding screens at launch"
+				return "Onboarding screens at launch"
 			case .customOnboardingPages:
 				return "Custom onboarding pages"
 			case .onButtonLoadingIndicator:
@@ -63,9 +64,11 @@ struct SwitchOptionModel {
 			case .shouldShowDragAndDropTutorial:
 				return "Drag and drop tutorial"
 			case .onboardingShowAtFirstLaunch:
-				return "Show Onboarding screens at first launch"
+				return "Onboarding screens at first launch"
 			case .returnAssistantEnabled:
 				return "Return Assistant feature"
+			case .enableReturnReasons:
+				return "Return reasons dialog"
 			case .giniErrorLoggerIsOn:
 				return "Gini error logger"
 			case .debugModeOn:
