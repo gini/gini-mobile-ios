@@ -46,13 +46,39 @@ final class AppCoordinator: Coordinator {
             return CustomDocumentValidationResult.success()
         }
 
-		configuration.onboardingShowAtLaunch = false
-		configuration.onboardingShowAtFirstLaunch = true
+//		configuration.onboardingShowAtLaunch = false
+//		configuration.onboardingShowAtFirstLaunch = true
 		
-		configuration.returnAssistantEnabled = false
+//		configuration.returnAssistantEnabled = false
+//		let customMenuItem = HelpMenuItem.custom("Custom menu item", CustomMenuItemViewController())
+//		configuration.customMenuItems = [customMenuItem]
+		
+//		configuration.onlyQRCodeScanningEnabled = true
+		
+		//		Custom navigation view controller
+//		let navigationViewController = UINavigationController()
+//		navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
+//		configuration.customNavigationController = navigationViewController
+//		configuration.bottomNavigationBarEnabled = true
+		
+//		configuration.enableReturnReasons = false
+//		configuration.shouldShowDragAndDropTutorial = true
+		
+//		configuration.customOnboardingPages = [OnboardingPage(imageName: "captureSuggestion1",
+//															  title: "Page 1",
+//															  description: "Description for page 1")]
+		
+//		//  Custom loading indicator customization example for the analysis screen
+//		let customLoadingIndicator = CustomLoadingIndicator()
+//		configuration.customLoadingIndicator = customLoadingIndicator
+
+//		// Custom loading indicator customization example for the on button laoding indicator
+//		let customButtonLoadingIndicator = OnButtonLoading()
+//		configuration.onButtonLoadingIndicator = customButtonLoadingIndicator
+		
+//		configuration.giniErrorLoggerIsOn = true
+		
 //        configuration.cameraNavigationBarBottomAdapter = CustomCameraBottomNavigationBarAdapter()
-//        configuration.onlyQRCodeScanningEnabled = true
-//        configuration.bottomNavigationBarEnabled = true
 //        configuration.noResultNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
 //        configuration.helpNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
 //        configuration.imagePickerNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
@@ -63,12 +89,6 @@ final class AppCoordinator: Coordinator {
 //        configuration.digitalInvoiceOnboardingNavigationBarBottomAdapter = CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter()
 //        configuration.digitalInvoiceNavigationBarBottomAdapter = CustomDigitalInvoiceBottomNavigationBarAdapter()
 
-//        let customMenuItem = HelpMenuItem.custom("Custom menu item", CustomMenuItemViewController())
-//        configuration.customMenuItems = [customMenuItem]
-
-//        configuration.enableReturnReasons = false
-//		configuration.shouldShowDragAndDropTutorial = true
-        
     // If you need to scale your font please use our method `scaledFont()`. Please, find the example below.
 //    let customFontToBeScaled = UIFont.scaledFont(UIFont(name: "Avenir", size: 20) ?? UIFont.systemFont(ofSize: 7, weight: .regular), textStyle: .caption1)
 //    configuration.updateFont(customFontToBeScaled, for: .caption1)
@@ -77,27 +97,11 @@ final class AppCoordinator: Coordinator {
 //    let customScaledFont = UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 28))
 //    configuration.updateFont(customScaledFont, for: .caption2)
 
-//		configuration.customOnboardingPages = [OnboardingPage(imageName: "captureSuggestion1",
-//															  title: "Page 1",
-//															  description: "Description for page 1")]
         //configuration.onboardingAlignCornersIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "page1Animation", backgroundColor: UIColor.red)
         //configuration.onboardingLightingIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "cameraAnimation", backgroundColor: UIColor.yellow)
         //configuration.onboardingMultiPageIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "uploadAnimation", backgroundColor: UIColor.green)
         //configuration.onboardingQRCodeIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "magicAnimation", backgroundColor: UIColor.blue)
 //        configuration.digitalInvoiceOnboardingIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "magicAnimation", backgroundColor: UIColor.blue)
-
-//       //  Custom loading indicator customization example for the analysis screen
-//        let customLoadingIndicator = CustomLoadingIndicator()
-//        configuration.customLoadingIndicator = customLoadingIndicator
-
-//      // Custom loading indicator customization example for the on button laoding indicator
-//        let customButtonLoadingIndicator = OnButtonLoading()
-//        configuration.onButtonLoadingIndicator = customButtonLoadingIndicator
-        
-        // Custom navigation view controller
-//        let navigationViewController = UINavigationController()
-//        navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
-//        configuration.customNavigationController = navigationViewController
 
         // Custom button configuration example
 //        configuration.primaryButtonConfiguration = ButtonConfiguration(backgroundColor: .yellow,
@@ -108,8 +112,7 @@ final class AppCoordinator: Coordinator {
 //                                                                       borderWidth: 4,
 //                                                                       shadowRadius: 0,
 //                                                                       withBlurEffect: false)
-		
-//		configuration.giniErrorLoggerIsOn = true
+
        return configuration
     }()
     
@@ -212,7 +215,7 @@ final class AppCoordinator: Coordinator {
     }
     
     fileprivate func showSettings() {
-		let settingsViewController = SettingsViewController(giniConfiguration: configuration.captureConfiguration())
+		let settingsViewController = SettingsViewController(giniConfiguration: configuration)
 		settingsViewController.delegate = self
 		settingsViewController.modalPresentationStyle = .overFullScreen
 		settingsViewController.modalTransitionStyle = .coverVertical
@@ -277,8 +280,8 @@ extension AppCoordinator: SelectAPIViewControllerDelegate {
 
 extension AppCoordinator: SettingsViewControllerDelegate {
     func settings(settingViewController: SettingsViewController,
-                  didChangeConfiguration captureConfiguration: GiniConfiguration) {
-        configuration.updateConfiguration(withCaptureConfiguration: captureConfiguration)
+                  didChangeConfiguration configuration: GiniBankConfiguration) {
+		GiniBank.setConfiguration(configuration)
     }
 }
 

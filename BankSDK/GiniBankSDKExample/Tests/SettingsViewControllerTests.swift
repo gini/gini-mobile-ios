@@ -9,11 +9,12 @@
 import XCTest
 import AVFoundation
 @testable import GiniBankSDKExample
+@testable import GiniBankSDK
 @testable import GiniCaptureSDK
 
 final class SettingsViewControllerTests: XCTestCase {
-	private lazy var configuration: GiniConfiguration = {
-		let configuration = GiniConfiguration()
+	private lazy var configuration: GiniBankConfiguration = {
+		let configuration = GiniBankConfiguration()
 		configuration.fileImportSupportedTypes = .pdf_and_images
 		configuration.openWithEnabled = true
 		configuration.qrCodeScanningEnabled = true
@@ -31,6 +32,7 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.customMenuItems = []
 		configuration.customNavigationController = nil
 		configuration.shouldShowDragAndDropTutorial = true
+		configuration.returnAssistantEnabled = true
 		configuration.giniErrorLoggerIsOn = true
 		configuration.debugModeOn = true
 		return configuration
@@ -84,6 +86,9 @@ final class SettingsViewControllerTests: XCTestCase {
 		
 		sectionData.append(.switchOption(data: .init(type: .shouldShowDragAndDropTutorial,
 													 isActive: configuration.shouldShowDragAndDropTutorial)))
+		
+		sectionData.append(.switchOption(data: .init(type: .returnAssistantEnabled,
+													 isActive: configuration.returnAssistantEnabled)))
 		
 		sectionData.append(.switchOption(data: .init(type: .giniErrorLoggerIsOn,
 													 isActive: configuration.giniErrorLoggerIsOn)))
@@ -796,6 +801,44 @@ extension SettingsViewControllerTests {
 			
 			XCTAssertFalse(configuration.shouldShowDragAndDropTutorial,
 						   "shouldShowDragAndDropTutorial should not be enabled in the gini configuration")
+		}
+	}
+	
+	func testReturnAssistantSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .returnAssistantEnabled) else {
+			XCTFail("`returnAssistantEnabled` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .returnAssistantEnabled else {
+				XCTFail("Expected type `returnAssistantEnabled`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			configuration.returnAssistantEnabled = data.isActive
+			
+			XCTAssertTrue(configuration.returnAssistantEnabled,
+						  "returnAssistantEnabled should be enabled in the gini configuration")
+		}
+	}
+	
+	func testReturnAssistantSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .returnAssistantEnabled) else {
+			XCTFail("`returnAssistantEnabled` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .returnAssistantEnabled else {
+				XCTFail("Expected type `returnAssistantEnabled`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.returnAssistantEnabled = data.isActive
+			
+			XCTAssertFalse(configuration.returnAssistantEnabled,
+						   "returnAssistantEnabled should not be enabled in the gini configuration")
 		}
 	}
 	
