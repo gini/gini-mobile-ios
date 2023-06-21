@@ -166,18 +166,33 @@ class ErrorScreenViewController: UIViewController {
     }
 
     private func configureConstraints() {
+        configureScrollViewConstraints()
+        configureButtonsViewConstraints()
+        configureHeaderConstraints()
+        view.layoutSubviews()
+    }
+
+    private func configureHeaderConstraints() {
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
                 errorHeader.headerStack.widthAnchor.constraint(equalTo: view.widthAnchor,
                                                                multiplier: Constants.iPadWidthMultiplier.rawValue),
-                errorHeader.headerStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+                errorHeader.headerStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                errorContent.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                errorContent.widthAnchor.constraint(equalTo: view.widthAnchor,
+                                                    multiplier: Constants.iPadWidthMultiplier.rawValue)
             ])
         } else {
             NSLayoutConstraint.activate([
                 errorHeader.headerStack.leadingAnchor.constraint(equalTo: view.leadingAnchor,
                                                                  constant: Constants.iPadWidthPadding.rawValue),
                 errorHeader.headerStack.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                                  constant: -Constants.iPadWidthPadding.rawValue)
+                                                                  constant: -Constants.iPadWidthPadding.rawValue),
+                errorContent.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                      constant: Constants.textContentMargin.rawValue),
+                errorContent.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                       constant: -Constants.textContentMargin.rawValue),
+                errorContent.bottomAnchor.constraint(greaterThanOrEqualTo: scrollView.bottomAnchor)
             ])
         }
         errorHeader.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
@@ -186,17 +201,7 @@ class ErrorScreenViewController: UIViewController {
         errorContent.setContentHuggingPriority(.required, for: .vertical)
         errorContent.setContentCompressionResistancePriority(.required, for: .vertical)
 
-        let buttonsConstraint =  buttonsView.heightAnchor.constraint(
-            greaterThanOrEqualToConstant: getButtonsMinHeight(numberOfButtons: numberOfButtons)
-        )
-
-        buttonsHeightConstraint = buttonsConstraint
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: errorHeader.bottomAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: buttonsView.topAnchor),
-
             errorHeader.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             errorHeader.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             errorHeader.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -205,21 +210,31 @@ class ErrorScreenViewController: UIViewController {
             errorHeader.heightAnchor.constraint(
                 lessThanOrEqualToConstant: Constants.errorHeaderMaxHeight.rawValue),
             errorContent.topAnchor.constraint(equalTo: scrollView.topAnchor,
-                                              constant: Constants.errorContentBottomMargin.rawValue),
+                                              constant: Constants.errorContentBottomMargin.rawValue)
+        ])
+    }
+
+    private func configureScrollViewConstraints() {
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: errorHeader.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: buttonsView.topAnchor)
+        ])
+    }
+
+    private func configureButtonsViewConstraints() {
+        let buttonsConstraint =  buttonsView.heightAnchor.constraint(
+            greaterThanOrEqualToConstant: getButtonsMinHeight(numberOfButtons: numberOfButtons)
+        )
+        buttonsHeightConstraint = buttonsConstraint
+        NSLayoutConstraint.activate([
             buttonsConstraint,
             buttonsView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
                                                 constant: -GiniMargins.margin)
         ])
-        configureHorizontalConstraints()
-        view.layoutSubviews()
-    }
-
-    private func configureHorizontalConstraints() {
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
-                errorContent.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                errorContent.widthAnchor.constraint(equalTo: view.widthAnchor,
-                                                    multiplier: Constants.iPadWidthMultiplier.rawValue),
                 buttonsView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
                                                      constant: GiniMargins.margin),
                 buttonsView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
@@ -227,11 +242,6 @@ class ErrorScreenViewController: UIViewController {
             ])
         } else {
             NSLayoutConstraint.activate([
-                errorContent.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                      constant: Constants.textContentMargin.rawValue),
-                errorContent.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                       constant: -Constants.textContentMargin.rawValue),
-                errorContent.bottomAnchor.constraint(greaterThanOrEqualTo: scrollView.bottomAnchor),
                 buttonsView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                                      constant: GiniMargins.margin),
                 buttonsView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor,
