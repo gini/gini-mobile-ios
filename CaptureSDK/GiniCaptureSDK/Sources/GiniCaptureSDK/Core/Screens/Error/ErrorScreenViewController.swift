@@ -166,6 +166,20 @@ class ErrorScreenViewController: UIViewController {
     }
 
     private func configureConstraints() {
+        if UIDevice.current.isIpad {
+            NSLayoutConstraint.activate([
+                errorHeader.headerStack.widthAnchor.constraint(equalTo: view.widthAnchor,
+                                                               multiplier: Constants.iPadWidthMultiplier.rawValue),
+                errorHeader.headerStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                errorHeader.headerStack.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                                 constant: Constants.iPadWidthPadding.rawValue),
+                errorHeader.headerStack.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                                  constant: -Constants.iPadWidthPadding.rawValue)
+            ])
+        }
         errorHeader.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
         errorHeader.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
 
@@ -235,5 +249,6 @@ class ErrorScreenViewController: UIViewController {
         case errorHeaderMaxHeight = 180
         case errorContentBottomMargin = 13
         case iPadWidthMultiplier = 0.7
+        case iPadWidthPadding = 35
     }
 }
