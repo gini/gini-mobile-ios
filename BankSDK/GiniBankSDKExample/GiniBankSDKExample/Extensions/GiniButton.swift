@@ -5,8 +5,8 @@
 //  Created by Nadya Karaban on 05.03.21.
 //
 
-import Foundation
 import UIKit
+
 @IBDesignable
 public class GiniButton: UIButton {
     @IBInspectable public var borderColor: UIColor? {

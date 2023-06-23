@@ -12,10 +12,6 @@ import XCTest
 @testable import GiniCaptureSDK
 
 class ScreenAPICoordinator___UI_Only: XCTestCase {
-        
-    let client = Client(id: "",
-                            secret: "",
-                            domain: "")
     var screenAPICoordinator = ScreenAPIUIOnlyCoordinator()
     
     lazy var configuration: GiniBankConfiguration = {

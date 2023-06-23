@@ -24,20 +24,15 @@ final class CustomCameraBottomNavigationBarAdapter: CameraBottomNavigationBarAda
     }
 
     func injectedView() -> UIView {
-        if let navigationBarView = CustomCameraBottomNavigationBar().loadNib() as? CustomCameraBottomNavigationBar {
-            navigationBarView.backButton.addTarget(
-                self,
-                action: #selector(backButtonClicked),
-                for: .touchUpInside)
-            navigationBarView.helpButton.addTarget(
-                self,
-                action: #selector(helpButtonClicked),
-                for: .touchUpInside)
-            return navigationBarView
-        } else {
-            return UIView()
-        }
-    }
+		let navigationBarView = CustomCameraBottomNavigationBar()
+		navigationBarView.backButton.addTarget(self,
+											   action: #selector(backButtonClicked),
+											   for: .touchUpInside)
+		navigationBarView.helpButton.addTarget(self,
+											   action: #selector(helpButtonClicked),
+											   for: .touchUpInside)
+		return navigationBarView
+	}
 
     @objc func backButtonClicked() {
         backButtonCallback?()
