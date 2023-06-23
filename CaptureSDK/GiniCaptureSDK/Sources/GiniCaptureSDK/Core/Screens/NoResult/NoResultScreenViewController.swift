@@ -187,9 +187,9 @@ final class NoResultScreenViewController: UIViewController {
 
     private func getButtonsMinHeight(numberOfButtons: Int) -> CGFloat {
         if numberOfButtons == 1 {
-            return Constants.singleButtonHeight.rawValue
+            return Constants.singleButtonHeight
         } else {
-            return Constants.twoButtonsHeight.rawValue
+            return Constants.twoButtonsHeight
         }
     }
 
@@ -197,11 +197,11 @@ final class NoResultScreenViewController: UIViewController {
         registerCells()
         tableView.delegate = self.dataSource
         tableView.dataSource = self.dataSource
-        tableView.estimatedRowHeight = Constants.tableRowHeight.rawValue
+        tableView.estimatedRowHeight = Constants.tableRowHeight
         tableView.rowHeight = UITableView.automaticDimension
         tableView.tableFooterView = UIView()
         tableView.tableHeaderView = UIView()
-        tableView.sectionHeaderHeight = Constants.sectionHeight.rawValue
+        tableView.sectionHeaderHeight = Constants.sectionHeight
         tableView.allowsSelection = false
         tableView.backgroundColor = UIColor.clear
         tableView.alwaysBounceVertical = false
@@ -262,22 +262,22 @@ final class NoResultScreenViewController: UIViewController {
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
                 header.headerStack.widthAnchor.constraint(equalTo: view.widthAnchor,
-                                                          multiplier: Constants.iPadWidthMultiplier.rawValue),
+                                                          multiplier: Constants.iPadWidthMultiplier),
                 header.headerStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
         } else {
             NSLayoutConstraint.activate([
                 header.headerStack.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                            constant: Constants.iPadWidthPadding.rawValue),
+                                                            constant: Constants.sidePadding),
                 header.headerStack.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                             constant: -Constants.iPadWidthPadding.rawValue)
+                                                             constant: -Constants.sidePadding)
             ])
         }
         NSLayoutConstraint.activate([
             header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            header.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.contentHeight.rawValue)
+            header.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.contentHeight)
         ])
     }
 
@@ -320,16 +320,16 @@ final class NoResultScreenViewController: UIViewController {
         NSLayoutConstraint.activate([
 
             tableView.topAnchor.constraint(equalTo: header.bottomAnchor,
-                                           constant: Constants.contentTopMargin.rawValue),
+                                           constant: Constants.contentTopMargin),
             tableView.bottomAnchor.constraint(equalTo: buttonsView.bottomAnchor,
-                                              constant: Constants.contentBottomMargin.rawValue)
+                                              constant: Constants.contentBottomMargin)
         ])
 
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
                 tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 tableView.widthAnchor.constraint(equalTo: view.widthAnchor,
-                                                 multiplier: Constants.iPadWidthMultiplier.rawValue)
+                                                 multiplier: Constants.iPadWidthMultiplier)
             ])
         } else {
             NSLayoutConstraint.activate([
@@ -343,15 +343,15 @@ final class NoResultScreenViewController: UIViewController {
         }
     }
 
-    private enum Constants: CGFloat {
-        case singleButtonHeight = 50
-        case twoButtonsHeight = 112
-        case tableRowHeight = 44
-        case sectionHeight = 70
-        case iPadWidthMultiplier = 0.7
-        case iPadWidthPadding = 35
-        case contentTopMargin = 13
-        case contentBottomMargin = 16
-        case contentHeight = 62
+    private enum Constants {
+        static let singleButtonHeight: CGFloat = 50
+        static let twoButtonsHeight: CGFloat = 112
+        static let tableRowHeight: CGFloat = 44
+        static let sectionHeight: CGFloat = 70
+        static let sidePadding: CGFloat = 24
+        static let contentTopMargin: CGFloat = 13
+        static let contentBottomMargin: CGFloat = 16
+        static let contentHeight: CGFloat = 62
+        static let iPadWidthMultiplier: CGFloat = 0.7
     }
 }

@@ -23,15 +23,8 @@ class IconHeader: UIView {
         iconImageView.accessibilityTraits = .image
     }
 
-    fileprivate func configureView() {
-        if UIDevice.current.isIpad {
-            headerLabel.textAlignment = .center
-        }
-    }
-
     override func awakeFromNib() {
         super.awakeFromNib()
         configureAccessibility()
-        configureView()
     }
 }
