@@ -169,6 +169,7 @@ class ErrorScreenViewController: UIViewController {
         configureHeaderConstraints()
         configureScrollViewConstraints()
         configureButtonsViewConstraints()
+        configureErrorContentConstraints()
         view.layoutSubviews()
     }
 
@@ -177,29 +178,18 @@ class ErrorScreenViewController: UIViewController {
             NSLayoutConstraint.activate([
                 errorHeader.headerStack.widthAnchor.constraint(equalTo: view.widthAnchor,
                                                                multiplier: Constants.iPadWidthMultiplier),
-                errorHeader.headerStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                errorContent.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                errorContent.widthAnchor.constraint(equalTo: view.widthAnchor,
-                                                    multiplier: Constants.iPadWidthMultiplier)
+                errorHeader.headerStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
         } else {
             NSLayoutConstraint.activate([
                 errorHeader.headerStack.leadingAnchor.constraint(equalTo: view.leadingAnchor,
                                                                  constant: Constants.sidePadding),
                 errorHeader.headerStack.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                                  constant: -Constants.sidePadding),
-                errorContent.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                      constant: Constants.textContentMargin),
-                errorContent.bottomAnchor.constraint(greaterThanOrEqualTo: scrollView.bottomAnchor),
-                errorContent.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                       constant: -Constants.textContentMargin)
+                                                                  constant: -Constants.sidePadding)
             ])
         }
         errorHeader.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
         errorHeader.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-
-        errorContent.setContentHuggingPriority(.required, for: .vertical)
-        errorContent.setContentCompressionResistancePriority(.required, for: .vertical)
 
         NSLayoutConstraint.activate([
             errorHeader.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -208,9 +198,7 @@ class ErrorScreenViewController: UIViewController {
             errorHeader.heightAnchor.constraint(
                 greaterThanOrEqualToConstant: Constants.errorHeaderMinHeight),
             errorHeader.heightAnchor.constraint(
-                lessThanOrEqualToConstant: Constants.errorHeaderMaxHeight),
-            errorContent.topAnchor.constraint(equalTo: scrollView.topAnchor,
-                                              constant: Constants.errorContentBottomMargin)
+                lessThanOrEqualToConstant: Constants.errorHeaderMaxHeight)
         ])
     }
 
@@ -248,6 +236,32 @@ class ErrorScreenViewController: UIViewController {
                                                       constant: -GiniMargins.margin)
             ])
         }
+    }
+
+    private func configureErrorContentConstraints() {
+        if UIDevice.current.isIpad {
+            NSLayoutConstraint.activate([
+                errorContent.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                errorContent.widthAnchor.constraint(equalTo: view.widthAnchor,
+                                                    multiplier: Constants.iPadWidthMultiplier)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                errorContent.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                      constant: Constants.textContentMargin),
+                errorContent.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                       constant: -Constants.textContentMargin)
+            ])
+        }
+
+        errorContent.setContentHuggingPriority(.required, for: .vertical)
+        errorContent.setContentCompressionResistancePriority(.required, for: .vertical)
+
+        NSLayoutConstraint.activate([
+            errorContent.topAnchor.constraint(equalTo: scrollView.topAnchor,
+                                              constant: Constants.errorContentBottomMargin),
+            errorContent.bottomAnchor.constraint(greaterThanOrEqualTo: scrollView.bottomAnchor)
+        ])
     }
 
     private enum Constants {
