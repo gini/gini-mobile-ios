@@ -16,25 +16,18 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="P49-IF-cNr">
-                    <rect key="frame" x="20" y="-12" width="374" height="124"/>
+                <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" alignment="center" spacing="19" translatesAutoresizingMaskIntoConstraints="NO" id="P49-IF-cNr">
+                    <rect key="frame" x="20" y="0.0" width="374" height="100"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="alertTriangle" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hcl-ui-jnN">
-                            <rect key="frame" x="-0.5" y="49.5" width="25" height="25"/>
+                            <rect key="frame" x="-0.5" y="37.5" width="25" height="25"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="24" id="Db8-lY-6Ej"/>
                                 <constraint firstAttribute="width" constant="24" id="W61-RH-hQr"/>
                             </constraints>
                         </imageView>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mvb-oc-bWo">
-                            <rect key="frame" x="24" y="37" width="32" height="50"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="32" id="IiO-cT-8dY"/>
-                            </constraints>
-                        </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="500" verticalHuggingPriority="500" placeholderIntrinsicWidth="106.3" placeholderIntrinsicHeight="33.299999999999997" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="3Ga-iz-N0F">
-                            <rect key="frame" x="56" y="12" width="318" height="100"/>
+                            <rect key="frame" x="43" y="12" width="331" height="76"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -59,9 +52,7 @@
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="P49-IF-cNr" secondAttribute="trailing" priority="999" id="dwy-kE-J58">
                     <variation key="heightClass=regular-widthClass=compact" constant="32"/>
                 </constraint>
-                <constraint firstItem="P49-IF-cNr" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" priority="999" constant="12" id="k3h-yT-QHk">
-                    <variation key="heightClass=regular-widthClass=compact" constant="12"/>
-                </constraint>
+                <constraint firstItem="P49-IF-cNr" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" priority="999" id="k3h-yT-QHk"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
