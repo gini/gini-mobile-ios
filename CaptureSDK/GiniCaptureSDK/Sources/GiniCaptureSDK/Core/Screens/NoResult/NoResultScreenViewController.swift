@@ -277,14 +277,16 @@ final class NoResultScreenViewController: UIViewController {
             header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            header.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.contentHeight)
+            header.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.contentHeight),
+            header.heightAnchor.constraint(lessThanOrEqualTo: view.heightAnchor,
+                                           multiplier: Constants.contentHeightMultiplier)
         ])
     }
 
     private func configureConstraints() {
         configureHeaderContraints()
-        configureTableViewConstraints()
         configureButtonsViewConstraints()
+        configureTableViewConstraints()
         view.layoutSubviews()
     }
 
@@ -317,14 +319,6 @@ final class NoResultScreenViewController: UIViewController {
 
     private func configureTableViewConstraints() {
         tableView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
-        NSLayoutConstraint.activate([
-
-            tableView.topAnchor.constraint(equalTo: header.bottomAnchor,
-                                           constant: Constants.contentTopMargin),
-            tableView.bottomAnchor.constraint(equalTo: buttonsView.bottomAnchor,
-                                              constant: Constants.contentBottomMargin)
-        ])
-
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
                 tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -341,6 +335,12 @@ final class NoResultScreenViewController: UIViewController {
                     constant: -GiniMargins.margin)
             ])
         }
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: header.bottomAnchor,
+                                           constant: Constants.contentTopMargin),
+            tableView.bottomAnchor.constraint(equalTo: buttonsView.bottomAnchor,
+                                              constant: Constants.contentBottomMargin)
+        ])
     }
 
     private enum Constants {
@@ -352,6 +352,7 @@ final class NoResultScreenViewController: UIViewController {
         static let contentTopMargin: CGFloat = 13
         static let contentBottomMargin: CGFloat = 16
         static let contentHeight: CGFloat = 62
+        static let contentHeightMultiplier: CGFloat = 0.3
         static let iPadWidthMultiplier: CGFloat = 0.7
     }
 }
