@@ -40,12 +40,5 @@ import UIKit
         }
         return true
     }
-    
-    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            return UIInterfaceOrientationMask.allButUpsideDown
-        }
-        return UIInterfaceOrientationMask.portrait
-    }
 }
 
