@@ -197,8 +197,8 @@ class ErrorScreenViewController: UIViewController {
             errorHeader.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             errorHeader.heightAnchor.constraint(
                 greaterThanOrEqualToConstant: Constants.errorHeaderMinHeight),
-            errorHeader.heightAnchor.constraint(
-                lessThanOrEqualToConstant: Constants.errorHeaderMaxHeight)
+            errorHeader.heightAnchor.constraint(lessThanOrEqualTo: view.heightAnchor,
+                                           multiplier: Constants.errorHeaderHeightMultiplier)
         ])
     }
 
@@ -269,7 +269,7 @@ class ErrorScreenViewController: UIViewController {
         static let twoButtonsHeight: CGFloat = 112
         static let textContentMargin: CGFloat = 24
         static let errorHeaderMinHeight: CGFloat = 64
-        static let errorHeaderMaxHeight: CGFloat = 180
+        static let errorHeaderHeightMultiplier: CGFloat = 0.3
         static let errorContentBottomMargin: CGFloat = 13
         static let sidePadding: CGFloat = 24
         static let iPadWidthMultiplier: CGFloat = 0.7
