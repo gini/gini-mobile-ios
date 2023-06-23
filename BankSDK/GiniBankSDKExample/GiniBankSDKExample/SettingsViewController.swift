@@ -116,6 +116,17 @@ final class SettingsViewController: UIViewController {
 													 isActive: giniConfiguration.onboardingShowAtFirstLaunch)))
 		sectionData.append(.switchOption(data: .init(type: .customOnboardingPages,
 													 isActive: giniConfiguration.customOnboardingPages != nil)))
+
+		sectionData.append(.switchOption(data: .init(type: .onboardingAlignCornersIllustrationAdapter,
+													 isActive: giniConfiguration.onboardingAlignCornersIllustrationAdapter != nil)))
+		sectionData.append(.switchOption(data: .init(type: .onboardingLightingIllustrationAdapter,
+													 isActive: giniConfiguration.onboardingLightingIllustrationAdapter != nil)))
+		sectionData.append(.switchOption(data: .init(type: .onboardingQRCodeIllustrationAdapter,
+													 isActive: giniConfiguration.onboardingQRCodeIllustrationAdapter != nil)))
+		sectionData.append(.switchOption(data: .init(type: .onboardingMultiPageIllustrationAdapter,
+													 isActive: giniConfiguration.onboardingMultiPageIllustrationAdapter != nil)))
+		sectionData.append(.switchOption(data: .init(type: .onboardingNavigationBarBottomAdapter,
+													 isActive: giniConfiguration.onboardingNavigationBarBottomAdapter != nil)))
 		
 		sectionData.append(.switchOption(data: .init(type: .onButtonLoadingIndicator,
 													 isActive: giniConfiguration.onButtonLoadingIndicator != nil)))
@@ -207,6 +218,25 @@ final class SettingsViewController: UIViewController {
 											description: "Description for page 1")
 			let customOnboardingPages = data.isActive ? [customPage] : nil
 			giniConfiguration.customOnboardingPages = customOnboardingPages
+		case .onboardingAlignCornersIllustrationAdapter:
+			let customAdapter = CustomOnboardingIllustrationAdapter(animationName: "page1Animation",
+																	backgroundColor: .red)
+			giniConfiguration.onboardingAlignCornersIllustrationAdapter = data.isActive ? customAdapter : nil
+		case .onboardingLightingIllustrationAdapter:
+			let customAdapter = CustomOnboardingIllustrationAdapter(animationName: "cameraAnimation",
+																	backgroundColor: .yellow)
+			giniConfiguration.onboardingLightingIllustrationAdapter = data.isActive ? customAdapter : nil
+		case .onboardingQRCodeIllustrationAdapter:
+			let customAdapter = CustomOnboardingIllustrationAdapter(animationName: "magicAnimation",
+																	backgroundColor: .blue)
+			giniConfiguration.onboardingQRCodeIllustrationAdapter = data.isActive ? customAdapter : nil
+		case .onboardingMultiPageIllustrationAdapter:
+			let customAdapter = CustomOnboardingIllustrationAdapter(animationName: "uploadAnimation",
+																	backgroundColor: .green)
+			giniConfiguration.onboardingMultiPageIllustrationAdapter = data.isActive ? customAdapter : nil
+		case .onboardingNavigationBarBottomAdapter:
+			let customAdapter = CustomOnboardingBottomNavigationBarAdapter()
+			giniConfiguration.onboardingNavigationBarBottomAdapter = data.isActive ? customAdapter : nil
 		case .onButtonLoadingIndicator:
 			giniConfiguration.onButtonLoadingIndicator = data.isActive ? OnButtonLoading() : nil
 		case .customLoadingIndicator:

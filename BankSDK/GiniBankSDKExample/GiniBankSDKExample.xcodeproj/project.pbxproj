@@ -13,6 +13,7 @@
 		289447732A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */; };
 		289570932A30CD7600CC2C56 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289570912A30CD7600CC2C56 /* SettingsViewController.swift */; };
 		289570942A30CE2800CC2C56 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289570922A30CD7600CC2C56 /* SettingsViewController.xib */; };
+		28B1B3932A45DC4C0045B4A1 /* UIView+LoadNib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B1B3922A45DC4C0045B4A1 /* UIView+LoadNib.swift */; };
 		28B5873C2A372790008CB210 /* UITableView+CellRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B5873B2A372790008CB210 /* UITableView+CellRegistration.swift */; };
 		28B5873E2A3727F8008CB210 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B5873D2A3727F8008CB210 /* ReusableView.swift */; };
 		28B587462A373A72008CB210 /* SwitchOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B587442A373A72008CB210 /* SwitchOptionTableViewCell.swift */; };
@@ -145,6 +146,7 @@
 		289570912A30CD7600CC2C56 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		289570922A30CD7600CC2C56 /* SettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
 		289570952A30D66B00CC2C56 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		28B1B3922A45DC4C0045B4A1 /* UIView+LoadNib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+LoadNib.swift"; sourceTree = "<group>"; };
 		28B5873B2A372790008CB210 /* UITableView+CellRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+CellRegistration.swift"; sourceTree = "<group>"; };
 		28B5873D2A3727F8008CB210 /* ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableView.swift; sourceTree = "<group>"; };
 		28B587442A373A72008CB210 /* SwitchOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchOptionTableViewCell.swift; sourceTree = "<group>"; };
@@ -403,6 +405,7 @@
 				28DB2C812A39AF5000F5B304 /* GiniButton.swift */,
 				28B5873B2A372790008CB210 /* UITableView+CellRegistration.swift */,
 				28B5873D2A3727F8008CB210 /* ReusableView.swift */,
+				28B1B3922A45DC4C0045B4A1 /* UIView+LoadNib.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -800,6 +803,7 @@
 				F44AD01528D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift in Sources */,
 				289447712A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift in Sources */,
 				76610BEA298D5448004C1ECB /* CustomReviewScreenBottomNavigationBarAdapter.swift in Sources */,
+				28B1B3932A45DC4C0045B4A1 /* UIView+LoadNib.swift in Sources */,
 				F4AD00BC25DED33300C34E15 /* Coordinator.swift in Sources */,
 				F490C7E525DE873900D8CA6F /* AppDelegate.swift in Sources */,
 				834735F32940999500C3B5F3 /* CustomAnalysisError.swift in Sources */,

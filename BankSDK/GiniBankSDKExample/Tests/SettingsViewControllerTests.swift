@@ -25,6 +25,11 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.bottomNavigationBarEnabled = false
 		configuration.onboardingShowAtLaunch = true
 		configuration.onboardingShowAtFirstLaunch = true
+		configuration.onboardingAlignCornersIllustrationAdapter = nil
+		configuration.onboardingLightingIllustrationAdapter = nil
+		configuration.onboardingQRCodeIllustrationAdapter = nil
+		configuration.onboardingMultiPageIllustrationAdapter = nil
+		configuration.onboardingNavigationBarBottomAdapter = nil
 		configuration.customOnboardingPages = nil
 		configuration.onButtonLoadingIndicator = nil
 		configuration.customLoadingIndicator = nil
@@ -68,7 +73,16 @@ final class SettingsViewControllerTests: XCTestCase {
 		
 		sectionData.append(.switchOption(data: .init(type: .onboardingShowAtFirstLaunch,
 													 isActive: configuration.onboardingShowAtFirstLaunch)))
-		
+		sectionData.append(.switchOption(data: .init(type: .onboardingAlignCornersIllustrationAdapter,
+													 isActive: configuration.onboardingAlignCornersIllustrationAdapter != nil)))
+		sectionData.append(.switchOption(data: .init(type: .onboardingLightingIllustrationAdapter,
+													 isActive: configuration.onboardingLightingIllustrationAdapter != nil)))
+		sectionData.append(.switchOption(data: .init(type: .onboardingQRCodeIllustrationAdapter,
+													 isActive: configuration.onboardingQRCodeIllustrationAdapter != nil)))
+		sectionData.append(.switchOption(data: .init(type: .onboardingMultiPageIllustrationAdapter,
+													 isActive: configuration.onboardingMultiPageIllustrationAdapter != nil)))
+		sectionData.append(.switchOption(data: .init(type: .onboardingNavigationBarBottomAdapter,
+													 isActive: configuration.onboardingNavigationBarBottomAdapter != nil)))
 		sectionData.append(.switchOption(data: .init(type: .customOnboardingPages,
 													 isActive: configuration.customOnboardingPages != nil)))
 
@@ -515,7 +529,216 @@ extension SettingsViewControllerTests {
 						  "onboardingShowAtLaunch should be enabled in the gini configuration")
 		}
 	}
+
+	// MARK: - OnboardingNavigationBarBottomAdapter
 	
+	func testOnboardingCustomNavigationBottomBarOff() {
+		guard let index = getSwitchOptionIndex(for: .onboardingNavigationBarBottomAdapter) else {
+			XCTFail("`onboardingNavigationBarBottomAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .onboardingNavigationBarBottomAdapter else {
+				XCTFail("Expected type `onboardingNavigationBarBottomAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.onboardingNavigationBarBottomAdapter = nil
+			
+			XCTAssertFalse(configuration.onboardingNavigationBarBottomAdapter != nil,
+						   "onboardingNavigationBarBottomAdapter should not be enabled in the gini configuration")
+		}
+	}
+	
+	func testOnboardingCustomNavigationBottomBarOn() {
+		guard let index = getSwitchOptionIndex(for: .onboardingNavigationBarBottomAdapter) else {
+			XCTFail("`onboardingNavigationBarBottomAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .onboardingNavigationBarBottomAdapter else {
+				XCTFail("Expected type `onboardingNavigationBarBottomAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			let customAdapter = CustomOnboardingBottomNavigationBarAdapter()
+			configuration.onboardingNavigationBarBottomAdapter = customAdapter
+			
+			XCTAssertTrue(configuration.onboardingNavigationBarBottomAdapter != nil,
+						  "onboardingNavigationBarBottomAdapter should be enabled in the gini configuration")
+		}
+	}
+
+	// MARK: - OnboardingMultiPageIllustrationAdapter
+	
+	func testOnboardingMultiPageCustomIllustrationOff() {
+		guard let index = getSwitchOptionIndex(for: .onboardingMultiPageIllustrationAdapter) else {
+			XCTFail("`onboardingMultiPageIllustrationAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .onboardingMultiPageIllustrationAdapter else {
+				XCTFail("Expected type `onboardingMultiPageIllustrationAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.onboardingMultiPageIllustrationAdapter = nil
+			
+			XCTAssertFalse(configuration.onboardingMultiPageIllustrationAdapter != nil,
+						   "onboardingMultiPageIllustrationAdapter should not be enabled in the gini configuration")
+		}
+	}
+	
+	func testOnboardingMultiPageCustomIllustrationOn() {
+		guard let index = getSwitchOptionIndex(for: .onboardingMultiPageIllustrationAdapter) else {
+			XCTFail("`onboardingMultiPageIllustrationAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .onboardingMultiPageIllustrationAdapter else {
+				XCTFail("Expected type `onboardingMultiPageIllustrationAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			let customAdapter = CustomOnboardingIllustrationAdapter(animationName: "uploadAnimation",
+																	backgroundColor: .green)
+			configuration.onboardingMultiPageIllustrationAdapter = customAdapter
+			
+			XCTAssertTrue(configuration.onboardingMultiPageIllustrationAdapter != nil,
+						  "onboardingMultiPageIllustrationAdapter should be enabled in the gini configuration")
+		}
+	}
+	
+	// MARK: - OnboardingQRCodeIllustrationAdapter
+	
+	func testOnboardingQRCodeCustomIllustrationOff() {
+		guard let index = getSwitchOptionIndex(for: .onboardingQRCodeIllustrationAdapter) else {
+			XCTFail("`onboardingQRCodeIllustrationAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .onboardingQRCodeIllustrationAdapter else {
+				XCTFail("Expected type `onboardingQRCodeIllustrationAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.onboardingQRCodeIllustrationAdapter = nil
+			
+			XCTAssertFalse(configuration.onboardingQRCodeIllustrationAdapter != nil,
+						   "onboardingQRCodeIllustrationAdapter should not be enabled in the gini configuration")
+		}
+	}
+	
+	func testOnboardingQRCodeCustomIllustrationOn() {
+		guard let index = getSwitchOptionIndex(for: .onboardingQRCodeIllustrationAdapter) else {
+			XCTFail("`onboardingQRCodeIllustrationAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .onboardingQRCodeIllustrationAdapter else {
+				XCTFail("Expected type `onboardingQRCodeIllustrationAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			let customAdapter = CustomOnboardingIllustrationAdapter(animationName: "magicAnimation",
+																	backgroundColor: .blue)
+			configuration.onboardingQRCodeIllustrationAdapter = customAdapter
+			
+			XCTAssertTrue(configuration.onboardingQRCodeIllustrationAdapter != nil,
+						  "onboardingQRCodeIllustrationAdapter should be enabled in the gini configuration")
+		}
+	}
+	
+	// MARK: - OnboardingLightingIllustrationAdapter
+	
+	func testOnboardingLightingCustomIllustrationOff() {
+		guard let index = getSwitchOptionIndex(for: .onboardingLightingIllustrationAdapter) else {
+			XCTFail("`onboardingLightingIllustrationAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .onboardingLightingIllustrationAdapter else {
+				XCTFail("Expected type `onboardingLightingIllustrationAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.onboardingLightingIllustrationAdapter = nil
+			
+			XCTAssertFalse(configuration.onboardingLightingIllustrationAdapter != nil,
+						   "onboardingLightingIllustrationAdapter should not be enabled in the gini configuration")
+		}
+	}
+	
+	func testOnboardingLightingCustomIllustrationOn() {
+		guard let index = getSwitchOptionIndex(for: .onboardingLightingIllustrationAdapter) else {
+			XCTFail("`onboardingLightingIllustrationAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .onboardingLightingIllustrationAdapter else {
+				XCTFail("Expected type `onboardingLightingIllustrationAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			let customAdapter = CustomOnboardingIllustrationAdapter(animationName: "cameraAnimation",
+																	backgroundColor: .yellow)
+			configuration.onboardingLightingIllustrationAdapter = customAdapter
+			
+			XCTAssertTrue(configuration.onboardingLightingIllustrationAdapter != nil,
+						  "onboardingLightingIllustrationAdapter should be enabled in the gini configuration")
+		}
+	}
+	
+	// MARK: - OnboardingAlignCornersIllustrationAdapter
+	
+	func testOnboardingAlignCornersCustomIllustrationOff() {
+		guard let index = getSwitchOptionIndex(for: .onboardingAlignCornersIllustrationAdapter) else {
+			XCTFail("`onboardingAlignCornersIllustrationAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .onboardingAlignCornersIllustrationAdapter else {
+				XCTFail("Expected type `onboardingAlignCornersIllustrationAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.onboardingAlignCornersIllustrationAdapter = nil
+			
+			XCTAssertFalse(configuration.onboardingAlignCornersIllustrationAdapter != nil,
+						   "onboardingAlignCornersIllustrationAdapter should not be enabled in the gini configuration")
+		}
+	}
+	
+	func testOnboardingAlignCornersCustomIllustrationOn() {
+		guard let index = getSwitchOptionIndex(for: .onboardingAlignCornersIllustrationAdapter) else {
+			XCTFail("`onboardingAlignCornersIllustrationAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .onboardingAlignCornersIllustrationAdapter else {
+				XCTFail("Expected type `onboardingAlignCornersIllustrationAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			let customAdapter = CustomOnboardingIllustrationAdapter(animationName: "page1Animation",
+																	backgroundColor: .red)
+			configuration.onboardingAlignCornersIllustrationAdapter = customAdapter
+			
+			XCTAssertTrue(configuration.onboardingAlignCornersIllustrationAdapter != nil,
+						  "onboardingAlignCornersIllustrationAdapter should be enabled in the gini configuration")
+		}
+	}
+
 	// MARK: - OnboardingShowAtFirstLaunch
 	
 	func testOnboardingShowAtFirstLaunchOff() {

@@ -18,6 +18,12 @@ struct SwitchOptionModel {
 		case flashOnByDefault
 		case bottomNavigationBar
 		case onboardingShowAtLaunch
+		case onboardingShowAtFirstLaunch
+		case onboardingAlignCornersIllustrationAdapter
+		case onboardingLightingIllustrationAdapter
+		case onboardingQRCodeIllustrationAdapter
+		case onboardingMultiPageIllustrationAdapter
+		case onboardingNavigationBarBottomAdapter
 		case customOnboardingPages
 		case onButtonLoadingIndicator
 		case customLoadingIndicator
@@ -25,7 +31,6 @@ struct SwitchOptionModel {
 		case customMenuItems
 		case customNavigationController
 		case shouldShowDragAndDropTutorial // just for iPad
-		case onboardingShowAtFirstLaunch
 		case returnAssistantEnabled
 		case enableReturnReasons
 		case giniErrorLoggerIsOn
@@ -49,6 +54,18 @@ struct SwitchOptionModel {
 				return "Bottom navigation bar"
 			case .onboardingShowAtLaunch:
 				return "Onboarding screens at launch"
+			case .onboardingShowAtFirstLaunch:
+				return "Onboarding screens at first launch"
+			case .onboardingAlignCornersIllustrationAdapter:
+				return "`align corners` custom illustration"
+			case .onboardingLightingIllustrationAdapter:
+				return "`lighting` custom illustration"
+			case .onboardingQRCodeIllustrationAdapter:
+				return "`QR code`custom illustration"
+			case .onboardingMultiPageIllustrationAdapter:
+				return "`multi page` custom illustration"
+			case .onboardingNavigationBarBottomAdapter:
+				return "Onboarding custom bottom navigation bar"
 			case .customOnboardingPages:
 				return "Custom onboarding pages"
 			case .onButtonLoadingIndicator:
@@ -63,8 +80,6 @@ struct SwitchOptionModel {
 				return "Custom navigation controller"
 			case .shouldShowDragAndDropTutorial:
 				return "Drag and drop tutorial"
-			case .onboardingShowAtFirstLaunch:
-				return "Onboarding screens at first launch"
 			case .returnAssistantEnabled:
 				return "Return Assistant feature"
 			case .enableReturnReasons:
@@ -94,6 +109,8 @@ struct SwitchOptionModel {
 				return "Show drag and drop tutorial step in Help menu > How to import option."
 			case .onboardingShowAtFirstLaunch:
 				return "Overwrites `onboardingShowAtLaunch` for the first launch."
+			case .onboardingNavigationBarBottomAdapter:
+				return "The custom bottom navigation bar is shown if both `bottomNavigationBar` and `onboardingShowAtLaunch` are also enabled."
 			case .returnAssistantEnabled:
 				return "Present a digital representation of the invoice"
 			default:
