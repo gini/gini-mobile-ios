@@ -40,64 +40,64 @@ final class SettingsViewControllerTests: XCTestCase {
 	}()
 	
 	private var settingsViewController: SettingsViewController?
-	private var sectionData = [SettingsViewController.SectionType]()
+	private var sectionData = [SettingsViewController.CellType]()
 	
 	override func setUp() {
 		super.setUp()
 		settingsViewController = SettingsViewController(giniConfiguration: configuration)
 		
 		sectionData.append(.switchOption(data: .init(type: .openWith,
-													 isActive: configuration.openWithEnabled)))
+													 isSwitchOn: configuration.openWithEnabled)))
 		sectionData.append(.switchOption(data: .init(type: .qrCodeScanning,
-													 isActive: configuration.qrCodeScanningEnabled)))
+													 isSwitchOn: configuration.qrCodeScanningEnabled)))
 		sectionData.append(.switchOption(data: .init(type: .qrCodeScanningOnly,
-													 isActive: configuration.onlyQRCodeScanningEnabled)))
+													 isSwitchOn: configuration.onlyQRCodeScanningEnabled)))
 		sectionData.append(.switchOption(data: .init(type: .multipage,
-													 isActive: configuration.multipageEnabled)))
+													 isSwitchOn: configuration.multipageEnabled)))
 		if flashToggleSettingEnabled {
 			sectionData.append(.switchOption(data: .init(type: .flashToggle,
-														 isActive: configuration.flashToggleEnabled)))
+														 isSwitchOn: configuration.flashToggleEnabled)))
 			sectionData.append(.switchOption(data: .init(type: .flashOnByDefault,
-														 isActive: configuration.flashToggleEnabled)))
+														 isSwitchOn: configuration.flashToggleEnabled)))
 		}
 		sectionData.append(.switchOption(data: .init(type: .bottomNavigationBar,
-													 isActive: configuration.bottomNavigationBarEnabled)))
+													 isSwitchOn: configuration.bottomNavigationBarEnabled)))
 		
 		sectionData.append(.switchOption(data: .init(type: .onboardingShowAtLaunch,
-													 isActive: configuration.onboardingShowAtLaunch)))
+													 isSwitchOn: configuration.onboardingShowAtLaunch)))
 		
 		sectionData.append(.switchOption(data: .init(type: .onboardingShowAtFirstLaunch,
-													 isActive: configuration.onboardingShowAtFirstLaunch)))
+													 isSwitchOn: configuration.onboardingShowAtFirstLaunch)))
 		
 		sectionData.append(.switchOption(data: .init(type: .customOnboardingPages,
-													 isActive: configuration.customOnboardingPages != nil)))
+													 isSwitchOn: configuration.customOnboardingPages != nil)))
 
 		sectionData.append(.switchOption(data: .init(type: .onButtonLoadingIndicator,
-													 isActive: configuration.onButtonLoadingIndicator != nil)))
+													 isSwitchOn: configuration.onButtonLoadingIndicator != nil)))
 		sectionData.append(.switchOption(data: .init(type: .customLoadingIndicator,
-													 isActive: configuration.customLoadingIndicator != nil)))
+													 isSwitchOn: configuration.customLoadingIndicator != nil)))
 		
 		sectionData.append(.switchOption(data: .init(type: .shouldShowSupportedFormatsScreen,
-													 isActive: configuration.shouldShowSupportedFormatsScreen)))
+													 isSwitchOn: configuration.shouldShowSupportedFormatsScreen)))
 		sectionData.append(.switchOption(data: .init(type: .customMenuItems,
-													 isActive: !configuration.customMenuItems.isEmpty)))
+													 isSwitchOn: !configuration.customMenuItems.isEmpty)))
 		
 		sectionData.append(.switchOption(data: .init(type: .customNavigationController,
-													 isActive: configuration.customNavigationController != nil)))
+													 isSwitchOn: configuration.customNavigationController != nil)))
 		
 		sectionData.append(.switchOption(data: .init(type: .shouldShowDragAndDropTutorial,
-													 isActive: configuration.shouldShowDragAndDropTutorial)))
+													 isSwitchOn: configuration.shouldShowDragAndDropTutorial)))
 		
 		sectionData.append(.switchOption(data: .init(type: .returnAssistantEnabled,
-													 isActive: configuration.returnAssistantEnabled)))
+													 isSwitchOn: configuration.returnAssistantEnabled)))
 		
 		sectionData.append(.switchOption(data: .init(type: .enableReturnReasons,
-													 isActive: configuration.enableReturnReasons)))
+													 isSwitchOn: configuration.enableReturnReasons)))
 		
 		sectionData.append(.switchOption(data: .init(type: .giniErrorLoggerIsOn,
-													 isActive: configuration.giniErrorLoggerIsOn)))
+													 isSwitchOn: configuration.giniErrorLoggerIsOn)))
 		sectionData.append(.switchOption(data: .init(type: .debugModeOn,
-													 isActive: configuration.debugModeOn)))
+													 isSwitchOn: configuration.debugModeOn)))
 		
 		var selectedSegmentIndex = 0
 		switch configuration.fileImportSupportedTypes {
@@ -167,8 +167,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `openWith`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = false
-			configuration.openWithEnabled = data.isActive
+			data.isSwitchOn = false
+			configuration.openWithEnabled = data.isSwitchOn
 			
 			XCTAssertFalse(configuration.openWithEnabled,
 						   "open with feature should not be enabled in the gini configuration")
@@ -186,8 +186,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `openWith`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = true
-			configuration.openWithEnabled = data.isActive
+			data.isSwitchOn = true
+			configuration.openWithEnabled = data.isSwitchOn
 			
 			XCTAssertTrue(configuration.openWithEnabled,
 						  "open with feature should be enabled in the gini configuration")
@@ -207,8 +207,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `qrCodeScanning`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = true
-			configuration.qrCodeScanningEnabled = data.isActive
+			data.isSwitchOn = true
+			configuration.qrCodeScanningEnabled = data.isSwitchOn
 			
 			XCTAssertTrue(configuration.qrCodeScanningEnabled,
 						  "qr code scanning should be enabled in the gini configuration")
@@ -226,8 +226,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `qrCodeScanning`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = false
-			configuration.qrCodeScanningEnabled = data.isActive
+			data.isSwitchOn = false
+			configuration.qrCodeScanningEnabled = data.isSwitchOn
 			
 			XCTAssertFalse(configuration.qrCodeScanningEnabled,
 						   "qr code scanning should not be enabled in the gini configuration")
@@ -247,8 +247,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `qrCodeScanningOnly`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = true
-			configuration.onlyQRCodeScanningEnabled = data.isActive
+			data.isSwitchOn = true
+			configuration.onlyQRCodeScanningEnabled = data.isSwitchOn
 			
 			XCTAssertTrue(configuration.onlyQRCodeScanningEnabled,
 						  "qrCodeScanningOnly should be enabled in the gini configuration")
@@ -266,8 +266,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `qrCodeScanningOnly`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = false
-			configuration.onlyQRCodeScanningEnabled = data.isActive
+			data.isSwitchOn = false
+			configuration.onlyQRCodeScanningEnabled = data.isSwitchOn
 			
 			XCTAssertFalse(configuration.onlyQRCodeScanningEnabled,
 						   "qrCodeScanningOnly should not be enabled in the gini configuration")
@@ -287,8 +287,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `multipage`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = true
-			configuration.multipageEnabled = data.isActive
+			data.isSwitchOn = true
+			configuration.multipageEnabled = data.isSwitchOn
 			
 			XCTAssertTrue(configuration.multipageEnabled,
 						  "multipage should be enabled in the gini configuration")
@@ -306,8 +306,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `multipage`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = false
-			configuration.multipageEnabled = data.isActive
+			data.isSwitchOn = false
+			configuration.multipageEnabled = data.isSwitchOn
 			
 			XCTAssertFalse(configuration.multipageEnabled,
 						   "multipage should not be enabled in the gini configuration")
@@ -327,8 +327,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `flashToggle`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = true
-			configuration.flashToggleEnabled = data.isActive
+			data.isSwitchOn = true
+			configuration.flashToggleEnabled = data.isSwitchOn
 			
 			XCTAssertTrue(configuration.flashToggleEnabled,
 						  "flashToggle should be enabled in the gini configuration")
@@ -346,8 +346,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `flashToggle`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = false
-			configuration.flashToggleEnabled = data.isActive
+			data.isSwitchOn = false
+			configuration.flashToggleEnabled = data.isSwitchOn
 			
 			XCTAssertFalse(configuration.flashToggleEnabled,
 						   "flashToggle should not be enabled in the gini configuration")
@@ -367,8 +367,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `flashOnByDefault`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = true
-			configuration.flashOnByDefault = data.isActive
+			data.isSwitchOn = true
+			configuration.flashOnByDefault = data.isSwitchOn
 			
 			XCTAssertTrue(configuration.flashOnByDefault,
 						  "flashOnByDefault should be enabled in the gini configuration")
@@ -386,8 +386,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `flashOnByDefault`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = false
-			configuration.flashOnByDefault = data.isActive
+			data.isSwitchOn = false
+			configuration.flashOnByDefault = data.isSwitchOn
 			
 			XCTAssertFalse(configuration.flashOnByDefault,
 						   "flashOnByDefault should not be enabled in the gini configuration")
@@ -407,8 +407,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `bottomNaviagtionBar`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = true
-			configuration.bottomNavigationBarEnabled = data.isActive
+			data.isSwitchOn = true
+			configuration.bottomNavigationBarEnabled = data.isSwitchOn
 			
 			XCTAssertTrue(configuration.bottomNavigationBarEnabled,
 						  "bottomNaviagtionBar should be enabled in the gini configuration")
@@ -426,8 +426,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `bottomNavigationBar`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = false
-			configuration.bottomNavigationBarEnabled = data.isActive
+			data.isSwitchOn = false
+			configuration.bottomNavigationBarEnabled = data.isSwitchOn
 			
 			XCTAssertFalse(configuration.bottomNavigationBarEnabled,
 						   "bottomNavigationBar should not be enabled in the gini configuration")
@@ -489,8 +489,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `onboardingShowAtLaunch`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = false
-			configuration.onboardingShowAtLaunch = data.isActive
+			data.isSwitchOn = false
+			configuration.onboardingShowAtLaunch = data.isSwitchOn
 			
 			XCTAssertFalse(configuration.onboardingShowAtLaunch,
 						   "onboardingShowAtLaunch should not be enabled in the gini configuration")
@@ -508,8 +508,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `onboardingShowAtLaunch`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = true
-			configuration.onboardingShowAtLaunch = data.isActive
+			data.isSwitchOn = true
+			configuration.onboardingShowAtLaunch = data.isSwitchOn
 			
 			XCTAssertTrue(configuration.onboardingShowAtLaunch,
 						  "onboardingShowAtLaunch should be enabled in the gini configuration")
@@ -529,8 +529,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `onboardingShowAtFirstLaunch`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = false
-			configuration.onboardingShowAtFirstLaunch = data.isActive
+			data.isSwitchOn = false
+			configuration.onboardingShowAtFirstLaunch = data.isSwitchOn
 			
 			XCTAssertFalse(configuration.onboardingShowAtFirstLaunch,
 						   "onboardingShowAtFirstLaunch should not be enabled in the gini configuration")
@@ -548,8 +548,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `onboardingShowAtFirstLaunch`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = true
-			configuration.onboardingShowAtFirstLaunch = data.isActive
+			data.isSwitchOn = true
+			configuration.onboardingShowAtFirstLaunch = data.isSwitchOn
 			
 			XCTAssertTrue(configuration.onboardingShowAtFirstLaunch,
 						  "onboardingShowAtFirstLaunch should be enabled in the gini configuration")
@@ -569,7 +569,7 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `customOnboardingPages`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = false
+			data.isSwitchOn = false
 			configuration.customOnboardingPages = nil
 			
 			XCTAssertFalse(configuration.customOnboardingPages != nil,
@@ -588,7 +588,7 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `customOnboardingPages`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = true
+			data.isSwitchOn = true
 			let customPage = OnboardingPage(imageName: "captureSuggestion1",
 											title: "Page 1",
 											description: "Description for page 1")
@@ -612,7 +612,7 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `onButtonLoadingIndicator`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = false
+			data.isSwitchOn = false
 			configuration.onButtonLoadingIndicator = nil
 			
 			XCTAssertFalse(configuration.onButtonLoadingIndicator != nil,
@@ -631,7 +631,7 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `onButtonLoadingIndicator`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = true
+			data.isSwitchOn = true
 			configuration.onButtonLoadingIndicator = OnButtonLoading()
 			
 			XCTAssertTrue(configuration.onButtonLoadingIndicator != nil,
@@ -652,7 +652,7 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `customLoadingIndicator`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = false
+			data.isSwitchOn = false
 			configuration.customLoadingIndicator = nil
 			
 			XCTAssertFalse(configuration.customLoadingIndicator != nil,
@@ -671,7 +671,7 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `customLoadingIndicator`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = true
+			data.isSwitchOn = true
 			configuration.customLoadingIndicator = CustomLoadingIndicator()
 			
 			XCTAssertTrue(configuration.customLoadingIndicator != nil,
@@ -692,8 +692,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `shouldShowSupportedFormatsScreen`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = true
-			configuration.shouldShowSupportedFormatsScreen = data.isActive
+			data.isSwitchOn = true
+			configuration.shouldShowSupportedFormatsScreen = data.isSwitchOn
 			
 			XCTAssertTrue(configuration.shouldShowSupportedFormatsScreen,
 						  "shouldShowSupportedFormatsScreen should be enabled in the gini configuration")
@@ -711,8 +711,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `shouldShowSupportedFormatsScreen`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = false
-			configuration.shouldShowSupportedFormatsScreen = data.isActive
+			data.isSwitchOn = false
+			configuration.shouldShowSupportedFormatsScreen = data.isSwitchOn
 			
 			XCTAssertFalse(configuration.shouldShowSupportedFormatsScreen,
 						   "shouldShowSupportedFormatsScreen should not be enabled in the gini configuration")
@@ -732,7 +732,7 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `customMenuItems`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = true
+			data.isSwitchOn = true
 			let customMenuItem = HelpMenuItem.custom("Custom menu item", CustomMenuItemViewController())
 			configuration.customMenuItems = [customMenuItem]
 			
@@ -752,7 +752,7 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `customMenuItems`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = false
+			data.isSwitchOn = false
 			configuration.customMenuItems = []
 			
 			XCTAssertFalse(configuration.customMenuItems.isEmpty == false,
@@ -773,7 +773,7 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `customNavigationController`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = true
+			data.isSwitchOn = true
 			let navigationViewController = UINavigationController()
 			navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
 			configuration.customNavigationController = navigationViewController
@@ -794,7 +794,7 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `customNavigationController`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = false
+			data.isSwitchOn = false
 			configuration.customNavigationController = nil
 			
 			XCTAssertFalse(configuration.customNavigationController != nil,
@@ -815,8 +815,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `shouldShowDragAndDropTutorial`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = true
-			configuration.shouldShowDragAndDropTutorial = data.isActive
+			data.isSwitchOn = true
+			configuration.shouldShowDragAndDropTutorial = data.isSwitchOn
 			
 			XCTAssertTrue(configuration.shouldShowDragAndDropTutorial,
 						  "shouldShowDragAndDropTutorial should be enabled in the gini configuration")
@@ -834,8 +834,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `shouldShowDragAndDropTutorial`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = false
-			configuration.shouldShowDragAndDropTutorial = data.isActive
+			data.isSwitchOn = false
+			configuration.shouldShowDragAndDropTutorial = data.isSwitchOn
 			
 			XCTAssertFalse(configuration.shouldShowDragAndDropTutorial,
 						   "shouldShowDragAndDropTutorial should not be enabled in the gini configuration")
@@ -855,8 +855,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `returnAssistantEnabled`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = true
-			configuration.returnAssistantEnabled = data.isActive
+			data.isSwitchOn = true
+			configuration.returnAssistantEnabled = data.isSwitchOn
 			
 			XCTAssertTrue(configuration.returnAssistantEnabled,
 						  "returnAssistantEnabled should be enabled in the gini configuration")
@@ -874,8 +874,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `returnAssistantEnabled`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = false
-			configuration.returnAssistantEnabled = data.isActive
+			data.isSwitchOn = false
+			configuration.returnAssistantEnabled = data.isSwitchOn
 			
 			XCTAssertFalse(configuration.returnAssistantEnabled,
 						   "returnAssistantEnabled should not be enabled in the gini configuration")
@@ -895,8 +895,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `enableReturnReasons`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = true
-			configuration.enableReturnReasons = data.isActive
+			data.isSwitchOn = true
+			configuration.enableReturnReasons = data.isSwitchOn
 			
 			XCTAssertTrue(configuration.enableReturnReasons,
 						  "enableReturnReasons should be enabled in the gini configuration")
@@ -914,8 +914,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `enableReturnReasons`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = false
-			configuration.enableReturnReasons = data.isActive
+			data.isSwitchOn = false
+			configuration.enableReturnReasons = data.isSwitchOn
 			
 			XCTAssertFalse(configuration.enableReturnReasons,
 						   "enableReturnReasons should not be enabled in the gini configuration")
@@ -935,8 +935,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `giniErrorLoggerIsOn`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = true
-			configuration.giniErrorLoggerIsOn = data.isActive
+			data.isSwitchOn = true
+			configuration.giniErrorLoggerIsOn = data.isSwitchOn
 			
 			XCTAssertTrue(configuration.giniErrorLoggerIsOn,
 						  "giniErrorLoggerIsOn should be enabled in the gini configuration")
@@ -954,8 +954,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `giniErrorLoggerIsOn`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = false
-			configuration.giniErrorLoggerIsOn = data.isActive
+			data.isSwitchOn = false
+			configuration.giniErrorLoggerIsOn = data.isSwitchOn
 			
 			XCTAssertFalse(configuration.giniErrorLoggerIsOn,
 						   "giniErrorLoggerIsOn should not be enabled in the gini configuration")
@@ -975,8 +975,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `debugModeOn`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = true
-			configuration.debugModeOn = data.isActive
+			data.isSwitchOn = true
+			configuration.debugModeOn = data.isSwitchOn
 			
 			XCTAssertTrue(configuration.debugModeOn,
 						  "debugModeOn should be enabled in the gini configuration")
@@ -994,8 +994,8 @@ extension SettingsViewControllerTests {
 				XCTFail("Expected type `debugModeOn`, found a different one: \(data.type)")
 				return
 			}
-			data.isActive = false
-			configuration.debugModeOn = data.isActive
+			data.isSwitchOn = false
+			configuration.debugModeOn = data.isSwitchOn
 			
 			XCTAssertFalse(configuration.debugModeOn,
 						   "debugModeOn should not be enabled in the gini configuration")
