@@ -7,7 +7,7 @@
 
 struct SwitchOptionModel {
 	let type: OptionType
-	var isActive: Bool
+	var isSwitchOn: Bool
 	
 	enum OptionType {
 		case openWith
