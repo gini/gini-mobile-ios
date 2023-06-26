@@ -6,7 +6,7 @@
 //
 
 extension SettingsViewController {
-	enum SectionType {
+	enum CellType {
 		case switchOption(data: SwitchOptionModel)
 		case fileImportType(data: SegmentedOptionModel)
 	}
