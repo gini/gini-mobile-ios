@@ -37,6 +37,10 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.customMenuItems = []
 		configuration.customNavigationController = nil
 		configuration.shouldShowDragAndDropTutorial = true
+		configuration.digitalInvoiceOnboardingIllustrationAdapter = nil
+		configuration.digitalInvoiceHelpNavigationBarBottomAdapter = nil
+		configuration.digitalInvoiceHelpNavigationBarBottomAdapter = nil
+		configuration.digitalInvoiceNavigationBarBottomAdapter = nil
 		configuration.returnAssistantEnabled = true
 		configuration.enableReturnReasons = true
 		configuration.giniErrorLoggerIsOn = true
@@ -101,6 +105,15 @@ final class SettingsViewControllerTests: XCTestCase {
 		
 		sectionData.append(.switchOption(data: .init(type: .shouldShowDragAndDropTutorial,
 													 isActive: configuration.shouldShowDragAndDropTutorial)))
+		
+		sectionData.append(.switchOption(data: .init(type: .digitalInvoiceOnboardingIllustrationAdapter,
+													 isActive: configuration.digitalInvoiceOnboardingIllustrationAdapter != nil)))
+		sectionData.append(.switchOption(data: .init(type: .digitalInvoiceHelpNavigationBarBottomAdapter,
+													 isActive: configuration.digitalInvoiceHelpNavigationBarBottomAdapter != nil)))
+		sectionData.append(.switchOption(data: .init(type: .digitalInvoiceOnboardingNavigationBarBottomAdapter,
+													 isActive: configuration.digitalInvoiceOnboardingNavigationBarBottomAdapter != nil)))
+		sectionData.append(.switchOption(data: .init(type: .digitalInvoiceNavigationBarBottomAdapter,
+													 isActive: configuration.digitalInvoiceNavigationBarBottomAdapter != nil)))
 		
 		sectionData.append(.switchOption(data: .init(type: .returnAssistantEnabled,
 													 isActive: configuration.returnAssistantEnabled)))
@@ -1062,6 +1075,171 @@ extension SettingsViewControllerTests {
 			
 			XCTAssertFalse(configuration.shouldShowDragAndDropTutorial,
 						   "shouldShowDragAndDropTutorial should not be enabled in the gini configuration")
+		}
+	}
+	
+	// MARK: - DigitalInvoiceOnboardingIllustrationAdapter
+	
+	func testDigitalInvoiceOnboardingCustomIllustrationSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .digitalInvoiceOnboardingIllustrationAdapter) else {
+			XCTFail("`customNavigationController` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .digitalInvoiceOnboardingIllustrationAdapter else {
+				XCTFail("Expected type `digitalInvoiceOnboardingIllustrationAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			let customAdapter = CustomOnboardingIllustrationAdapter(animationName: "magicAnimation",
+																	backgroundColor: UIColor.blue)
+			configuration.digitalInvoiceOnboardingIllustrationAdapter = customAdapter
+			
+			XCTAssertTrue(configuration.digitalInvoiceOnboardingIllustrationAdapter != nil,
+						  "customNavigationController should be enabled in the gini configuration")
+		}
+	}
+	
+	func testDigitalInvoiceOnboardingCustomIllustrationSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .digitalInvoiceOnboardingIllustrationAdapter) else {
+			XCTFail("`digitalInvoiceOnboardingIllustrationAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .digitalInvoiceOnboardingIllustrationAdapter else {
+				XCTFail("Expected type `digitalInvoiceOnboardingIllustrationAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.digitalInvoiceOnboardingIllustrationAdapter = nil
+			
+			XCTAssertFalse(configuration.digitalInvoiceOnboardingIllustrationAdapter != nil,
+						   "digitalInvoiceOnboardingIllustrationAdapter should not be enabled in the gini configuration")
+		}
+	}
+	
+	// MARK: - DigitalInvoiceHelpNavigationBarBottomAdapter
+	
+	func testDigitalInvoiceHelpCustomNavigationBarBottomSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .digitalInvoiceHelpNavigationBarBottomAdapter) else {
+			XCTFail("`digitalInvoiceHelpNavigationBarBottomAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .digitalInvoiceHelpNavigationBarBottomAdapter else {
+				XCTFail("Expected type `digitalInvoiceHelpNavigationBarBottomAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			let customAdapter = CustomBottomNavigationBarAdapter()
+			configuration.digitalInvoiceHelpNavigationBarBottomAdapter = customAdapter
+			
+			XCTAssertTrue(configuration.digitalInvoiceHelpNavigationBarBottomAdapter != nil,
+						  "digitalInvoiceHelpNavigationBarBottomAdapter should be enabled in the gini configuration")
+		}
+	}
+	
+	func testDigitalInvoiceHelpCustomNavigationBarBottomSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .digitalInvoiceHelpNavigationBarBottomAdapter) else {
+			XCTFail("`digitalInvoiceHelpNavigationBarBottomAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .digitalInvoiceHelpNavigationBarBottomAdapter else {
+				XCTFail("Expected type `digitalInvoiceHelpNavigationBarBottomAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.digitalInvoiceHelpNavigationBarBottomAdapter = nil
+			
+			XCTAssertFalse(configuration.digitalInvoiceHelpNavigationBarBottomAdapter != nil,
+						   "digitalInvoiceHelpNavigationBarBottomAdapter should not be enabled in the gini configuration")
+		}
+	}
+	
+	// MARK: - DigitalInvoiceOnboardingNavigationBarBottomAdapter
+	
+	func testDigitalInvoiceOnboardingCustomNavigationBarBottomSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .digitalInvoiceOnboardingNavigationBarBottomAdapter) else {
+			XCTFail("`digitalInvoiceOnboardingNavigationBarBottomAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .digitalInvoiceOnboardingNavigationBarBottomAdapter else {
+				XCTFail("Expected type `digitalInvoiceOnboardingNavigationBarBottomAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			let customAdapter = CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter()
+			configuration.digitalInvoiceOnboardingNavigationBarBottomAdapter = customAdapter
+			
+			XCTAssertTrue(configuration.digitalInvoiceOnboardingNavigationBarBottomAdapter != nil,
+						  "digitalInvoiceOnboardingNavigationBarBottomAdapter should be enabled in the gini configuration")
+		}
+	}
+	
+	func testDigitalInvoiceOnboardingCustomNavigationBarBottomSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .digitalInvoiceOnboardingNavigationBarBottomAdapter) else {
+			XCTFail("`digitalInvoiceOnboardingNavigationBarBottomAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .digitalInvoiceOnboardingNavigationBarBottomAdapter else {
+				XCTFail("Expected type `digitalInvoiceOnboardingNavigationBarBottomAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.digitalInvoiceOnboardingNavigationBarBottomAdapter = nil
+			
+			XCTAssertFalse(configuration.digitalInvoiceOnboardingNavigationBarBottomAdapter != nil,
+						   "digitalInvoiceOnboardingNavigationBarBottomAdapter should not be enabled in the gini configuration")
+		}
+	}
+	
+	// MARK: - DigitalInvoiceNavigationBarBottomAdapter
+	
+	func testDigitalInvoiceCustomNavigationBarBottomSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .digitalInvoiceNavigationBarBottomAdapter) else {
+			XCTFail("`digitalInvoiceNavigationBarBottomAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .digitalInvoiceNavigationBarBottomAdapter else {
+				XCTFail("Expected type `digitalInvoiceNavigationBarBottomAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = true
+			let customAdapter = CustomDigitalInvoiceBottomNavigationBarAdapter()
+			configuration.digitalInvoiceNavigationBarBottomAdapter = customAdapter
+			
+			XCTAssertTrue(configuration.digitalInvoiceNavigationBarBottomAdapter != nil,
+						  "digitalInvoiceNavigationBarBottomAdapter should be enabled in the gini configuration")
+		}
+	}
+	
+	func testDigitalInvoiceCustomNavigationBarBottomSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .digitalInvoiceNavigationBarBottomAdapter) else {
+			XCTFail("`digitalInvoiceNavigationBarBottomAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = sectionData[index] {
+			guard data.type == .digitalInvoiceNavigationBarBottomAdapter else {
+				XCTFail("Expected type `digitalInvoiceNavigationBarBottomAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isActive = false
+			configuration.digitalInvoiceNavigationBarBottomAdapter = nil
+			
+			XCTAssertFalse(configuration.digitalInvoiceNavigationBarBottomAdapter != nil,
+						   "digitalInvoiceNavigationBarBottomAdapter should not be enabled in the gini configuration")
 		}
 	}
 	

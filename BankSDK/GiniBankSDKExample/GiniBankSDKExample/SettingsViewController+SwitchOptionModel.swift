@@ -31,6 +31,10 @@ struct SwitchOptionModel {
 		case customMenuItems
 		case customNavigationController
 		case shouldShowDragAndDropTutorial // just for iPad
+		case digitalInvoiceOnboardingIllustrationAdapter
+		case digitalInvoiceHelpNavigationBarBottomAdapter
+		case digitalInvoiceOnboardingNavigationBarBottomAdapter
+		case digitalInvoiceNavigationBarBottomAdapter
 		case returnAssistantEnabled
 		case enableReturnReasons
 		case giniErrorLoggerIsOn
@@ -57,13 +61,13 @@ struct SwitchOptionModel {
 			case .onboardingShowAtFirstLaunch:
 				return "Onboarding screens at first launch"
 			case .onboardingAlignCornersIllustrationAdapter:
-				return "`align corners` custom illustration"
+				return "Onboarding `align corners` page custom illustration"
 			case .onboardingLightingIllustrationAdapter:
-				return "`lighting` custom illustration"
+				return "Onboarding `lighting` page custom illustration"
 			case .onboardingQRCodeIllustrationAdapter:
-				return "`QR code`custom illustration"
+				return "Onboarding `QR code` page custom illustration"
 			case .onboardingMultiPageIllustrationAdapter:
-				return "`multi page` custom illustration"
+				return "Onboarding `multi page` page custom illustration"
 			case .onboardingNavigationBarBottomAdapter:
 				return "Onboarding custom bottom navigation bar"
 			case .customOnboardingPages:
@@ -80,6 +84,14 @@ struct SwitchOptionModel {
 				return "Custom navigation controller"
 			case .shouldShowDragAndDropTutorial:
 				return "Drag and drop tutorial"
+			case .digitalInvoiceOnboardingIllustrationAdapter:
+				return "Digital invoice onboarding custom illustration"
+			case .digitalInvoiceHelpNavigationBarBottomAdapter:
+				return "Digital invoice help bottom navigation bar"
+			case .digitalInvoiceOnboardingNavigationBarBottomAdapter:
+				return "Digital invoice onboarding bottom navigation bar"
+			case .digitalInvoiceNavigationBarBottomAdapter:
+				return "Digital invoice bottom navigation bar"
 			case .returnAssistantEnabled:
 				return "Return Assistant feature"
 			case .enableReturnReasons:
@@ -94,11 +106,11 @@ struct SwitchOptionModel {
 		var message: String? {
 			switch self {
 			case .qrCodeScanningOnly:
-				return "This will work if the `qrCodeScanning` switch is also enabled."
+				return "This will work if the `QR code scanning` switch is also enabled."
 			case .flashOnByDefault:
-				return "This will work if the `flashToggle` switch is also enabled."
+				return "This will work if the `flash toggle` switch is also enabled."
 			case .customOnboardingPages:
-				return "This will work if the `onboardingShowAtLaunch` switch is also enabled."
+				return "This will work if the `onboarding show at launch` switch is also enabled."
 			case .onButtonLoadingIndicator:
 				return "Set custom loading indicator on the buttons which support loading."
 			case .customLoadingIndicator:
@@ -108,9 +120,15 @@ struct SwitchOptionModel {
 			case .shouldShowDragAndDropTutorial:
 				return "Show drag and drop tutorial step in Help menu > How to import option."
 			case .onboardingShowAtFirstLaunch:
-				return "Overwrites `onboardingShowAtLaunch` for the first launch."
+				return "Overwrites `Onboarding screens at launch` for the first launch."
 			case .onboardingNavigationBarBottomAdapter:
-				return "The custom bottom navigation bar is shown if both `bottomNavigationBar` and `onboardingShowAtLaunch` are also enabled."
+				return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
+			case .digitalInvoiceHelpNavigationBarBottomAdapter:
+				return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
+			case .digitalInvoiceOnboardingNavigationBarBottomAdapter:
+				return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
+			case .digitalInvoiceNavigationBarBottomAdapter:
+				return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
 			case .returnAssistantEnabled:
 				return "Present a digital representation of the invoice"
 			default:
