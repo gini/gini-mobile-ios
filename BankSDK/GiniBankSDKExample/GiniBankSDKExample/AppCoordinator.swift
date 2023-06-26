@@ -84,10 +84,12 @@ final class AppCoordinator: Coordinator {
 //        configuration.imagePickerNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
 //        configuration.reviewNavigationBarBottomAdapter = CustomReviewScreenBottomNavigationBarAdapter()
 //        configuration.cameraNavigationBarBottomAdapter = CustomCameraBottomNavigationBarAdapter()
+
 //        configuration.digitalInvoiceHelpNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
 //        configuration.digitalInvoiceOnboardingNavigationBarBottomAdapter = CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter()
 //        configuration.digitalInvoiceNavigationBarBottomAdapter = CustomDigitalInvoiceBottomNavigationBarAdapter()
-
+//		configuration.digitalInvoiceOnboardingIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "magicAnimation",
+//																										backgroundColor: UIColor.blue)
     // If you need to scale your font please use our method `scaledFont()`. Please, find the example below.
 //    let customFontToBeScaled = UIFont.scaledFont(UIFont(name: "Avenir", size: 20) ?? UIFont.systemFont(ofSize: 7, weight: .regular), textStyle: .caption1)
 //    configuration.updateFont(customFontToBeScaled, for: .caption1)
@@ -105,7 +107,6 @@ final class AppCoordinator: Coordinator {
 //																								   backgroundColor: .green)
 //        configuration.onboardingQRCodeIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "magicAnimation",
 //																								backgroundColor: .blue)
-//        configuration.digitalInvoiceOnboardingIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "magicAnimation", backgroundColor: UIColor.blue)
 
         // Custom button configuration example
 //        configuration.primaryButtonConfiguration = ButtonConfiguration(backgroundColor: .yellow,

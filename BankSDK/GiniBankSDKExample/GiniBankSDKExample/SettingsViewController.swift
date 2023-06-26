@@ -143,13 +143,23 @@ final class SettingsViewController: UIViewController {
 		
 		sectionData.append(.switchOption(data: .init(type: .shouldShowSupportedFormatsScreen,
 													 isActive: giniConfiguration.shouldShowSupportedFormatsScreen)))
-		if UIDevice.current.isIpad{
+		if UIDevice.current.isIpad {
 			sectionData.append(.switchOption(data: .init(type: .shouldShowDragAndDropTutorial,
 														 isActive: giniConfiguration.shouldShowDragAndDropTutorial)))
 		}
-
+		
 		sectionData.append(.switchOption(data: .init(type: .returnAssistantEnabled,
 													 isActive: giniConfiguration.returnAssistantEnabled)))
+		sectionData.append(.switchOption(data: .init(type: .digitalInvoiceOnboardingIllustrationAdapter,
+													 isActive: giniConfiguration.digitalInvoiceOnboardingIllustrationAdapter != nil)))
+		sectionData.append(.switchOption(data: .init(type: .digitalInvoiceHelpNavigationBarBottomAdapter,
+													 isActive: giniConfiguration.digitalInvoiceHelpNavigationBarBottomAdapter != nil)))
+		sectionData.append(.switchOption(data: .init(type: .digitalInvoiceOnboardingNavigationBarBottomAdapter,
+													 isActive: giniConfiguration.digitalInvoiceOnboardingNavigationBarBottomAdapter != nil)))
+		sectionData.append(.switchOption(data: .init(type: .digitalInvoiceNavigationBarBottomAdapter,
+													 isActive: giniConfiguration.digitalInvoiceNavigationBarBottomAdapter != nil)))
+
+
 
 		sectionData.append(.switchOption(data: .init(type: .enableReturnReasons,
 													 isActive: giniConfiguration.enableReturnReasons)))
@@ -260,6 +270,19 @@ final class SettingsViewController: UIViewController {
 			giniConfiguration.giniErrorLoggerIsOn = data.isActive
 		case .debugModeOn:
 			giniConfiguration.debugModeOn = data.isActive
+		case .digitalInvoiceOnboardingIllustrationAdapter:
+			let customAdapter = CustomOnboardingIllustrationAdapter(animationName: "magicAnimation",
+																	backgroundColor: UIColor.blue)
+			giniConfiguration.digitalInvoiceOnboardingIllustrationAdapter = customAdapter
+		case .digitalInvoiceHelpNavigationBarBottomAdapter:
+			let customAdapter = CustomBottomNavigationBarAdapter()
+			giniConfiguration.digitalInvoiceHelpNavigationBarBottomAdapter = customAdapter
+		case .digitalInvoiceOnboardingNavigationBarBottomAdapter:
+			let customAdapter = CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter()
+			giniConfiguration.digitalInvoiceOnboardingNavigationBarBottomAdapter = customAdapter
+		case .digitalInvoiceNavigationBarBottomAdapter:
+			let customAdapter = CustomDigitalInvoiceBottomNavigationBarAdapter()
+			giniConfiguration.digitalInvoiceNavigationBarBottomAdapter = customAdapter
 		}
 	}
 	

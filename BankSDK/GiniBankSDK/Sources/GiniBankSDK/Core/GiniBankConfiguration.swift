@@ -349,7 +349,6 @@ public final class GiniBankConfiguration: NSObject {
 
         configuration.onboardingShowAtLaunch = self.onboardingShowAtLaunch
         configuration.onboardingShowAtFirstLaunch = self.onboardingShowAtFirstLaunch
-        configuration.onboardingAlignCornersIllustrationAdapter = self.onboardingAlignCornersIllustrationAdapter
         configuration.onboardingLightingIllustrationAdapter = self.onboardingLightingIllustrationAdapter
         configuration.onboardingQRCodeIllustrationAdapter = self.onboardingQRCodeIllustrationAdapter
         configuration.onboardingMultiPageIllustrationAdapter = self.onboardingMultiPageIllustrationAdapter
