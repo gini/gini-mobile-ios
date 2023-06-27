@@ -52,12 +52,31 @@ final class SettingsViewControllerTests: XCTestCase {
 		return configuration
 	}()
 	
+	private lazy var initialSettingsButtonStates: SettingsButtonStates = {
+		let primaryButtonState = SettingsButtonStates.ButtonState(configuration: configuration.primaryButtonConfiguration,
+																  isSwitchOn: false)
+		let secondaryButtonState = SettingsButtonStates.ButtonState(configuration: configuration.secondaryButtonConfiguration,
+																	isSwitchOn: false)
+		let transparentButtonState = SettingsButtonStates.ButtonState(configuration: configuration.transparentButtonConfiguration,
+																	  isSwitchOn: false)
+		let cameraControlButtonState = SettingsButtonStates.ButtonState(configuration: configuration.cameraControlButtonConfiguration,
+																		isSwitchOn: false)
+		let addPageButtonState = SettingsButtonStates.ButtonState(configuration: configuration.addPageButtonConfiguration,
+																  isSwitchOn: false)
+		return SettingsButtonStates(primaryButtonState: primaryButtonState,
+									secondaryButtonState: secondaryButtonState,
+									transparentButtonState: transparentButtonState,
+									cameraControlButtonState: cameraControlButtonState,
+									addPageButtonState: addPageButtonState)
+	}()
+	
 	private var settingsViewController: SettingsViewController?
 	private var contentData = [SettingsViewController.CellType]()
 	
 	override func setUp() {
 		super.setUp()
-		settingsViewController = SettingsViewController(giniConfiguration: configuration)
+		settingsViewController = SettingsViewController(giniConfiguration: configuration,
+														initialSettingsButtonStates: initialSettingsButtonStates)
 		
 		contentData.append(.switchOption(data: .init(type: .openWith,
 													 isSwitchOn: configuration.openWithEnabled)))
@@ -127,7 +146,21 @@ final class SettingsViewControllerTests: XCTestCase {
 													 isSwitchOn: configuration.digitalInvoiceOnboardingNavigationBarBottomAdapter != nil)))
 		contentData.append(.switchOption(data: .init(type: .digitalInvoiceNavigationBarBottomAdapter,
 													 isSwitchOn: configuration.digitalInvoiceNavigationBarBottomAdapter != nil)))
+
+		contentData.append(.switchOption(data: .init(type: .primaryButtonConfiguration,
+													 isSwitchOn: initialSettingsButtonStates.primaryButtonState.isSwitchOn)))
 		
+		contentData.append(.switchOption(data: .init(type: .secondaryButtonConfiguration,
+													 isSwitchOn: initialSettingsButtonStates.secondaryButtonState.isSwitchOn)))
+		
+		contentData.append(.switchOption(data: .init(type: .transparentButtonConfiguration,
+													 isSwitchOn: initialSettingsButtonStates.transparentButtonState.isSwitchOn)))
+		
+		contentData.append(.switchOption(data: .init(type: .cameraControlButtonConfiguration,
+													 isSwitchOn: initialSettingsButtonStates.cameraControlButtonState.isSwitchOn)))
+		
+		contentData.append(.switchOption(data: .init(type: .addPageButtonConfiguration,
+													 isSwitchOn: initialSettingsButtonStates.addPageButtonState.isSwitchOn)))
 		contentData.append(.switchOption(data: .init(type: .returnAssistantEnabled,
 													 isSwitchOn: configuration.returnAssistantEnabled)))
 		
@@ -1417,6 +1450,257 @@ extension SettingsViewControllerTests {
 			
 			XCTAssertFalse(configuration.digitalInvoiceNavigationBarBottomAdapter != nil,
 						   "digitalInvoiceNavigationBarBottomAdapter should not be enabled in the gini configuration")
+		}
+	}
+	
+	// MARK: - PrimaryButtonConfiguration
+	
+	func testCustomPrimaryButtonSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .primaryButtonConfiguration) else {
+			XCTFail("`primaryButtonConfiguration` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .primaryButtonConfiguration else {
+				XCTFail("Expected type `primaryButtonConfiguration`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = true
+			let buttonConfiguration = ButtonConfiguration(backgroundColor: .yellow,
+														  borderColor: .red,
+														  titleColor: .green,
+														  shadowColor: .clear,
+														  cornerRadius: 22,
+														  borderWidth: 4,
+														  shadowRadius: 0,
+														  withBlurEffect: false)
+			configuration.primaryButtonConfiguration = buttonConfiguration
+			initialSettingsButtonStates.primaryButtonState.isSwitchOn = true
+			
+			XCTAssertTrue(initialSettingsButtonStates.primaryButtonState.isSwitchOn,
+						  "primaryButtonConfiguration should be enabled in the gini configuration")
+		}
+	}
+	
+	func testCustomPrimaryButtonSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .primaryButtonConfiguration) else {
+			XCTFail("`primaryButtonConfiguration` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .primaryButtonConfiguration else {
+				XCTFail("Expected type `primaryButtonConfiguration`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = false
+			configuration.primaryButtonConfiguration = initialSettingsButtonStates.primaryButtonState.configuration
+			initialSettingsButtonStates.primaryButtonState.isSwitchOn = false
+			
+			XCTAssertFalse(initialSettingsButtonStates.primaryButtonState.isSwitchOn,
+						   "primaryButtonConfiguration should not be enabled in the gini configuration")
+		}
+	}
+	
+	// MARK: - SecondaryButtonConfiguration
+	
+	func testCustomSecondaryButtonSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .secondaryButtonConfiguration) else {
+			XCTFail("`secondaryButtonConfiguration` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .secondaryButtonConfiguration else {
+				XCTFail("Expected type `secondaryButtonConfiguration`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = true
+			let buttonConfiguration = ButtonConfiguration(backgroundColor: .yellow,
+														  borderColor: .red,
+														  titleColor: .green,
+														  shadowColor: .clear,
+														  cornerRadius: 22,
+														  borderWidth: 4,
+														  shadowRadius: 0,
+														  withBlurEffect: false)
+			configuration.secondaryButtonConfiguration = buttonConfiguration
+			initialSettingsButtonStates.secondaryButtonState.isSwitchOn = true
+			
+			XCTAssertTrue(initialSettingsButtonStates.secondaryButtonState.isSwitchOn,
+						  "secondaryButtonConfiguration should be enabled in the gini configuration")
+		}
+	}
+	
+	func testCustomSecondaryButtonSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .secondaryButtonConfiguration) else {
+			XCTFail("`secondaryButtonConfiguration` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .secondaryButtonConfiguration else {
+				XCTFail("Expected type `secondaryButtonConfiguration`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = false
+			configuration.secondaryButtonConfiguration = initialSettingsButtonStates.secondaryButtonState.configuration
+			initialSettingsButtonStates.secondaryButtonState.isSwitchOn = false
+			
+			XCTAssertFalse(initialSettingsButtonStates.secondaryButtonState.isSwitchOn,
+						   "secondaryButtonConfiguration should not be enabled in the gini configuration")
+		}
+	}
+	
+	// MARK: - TransparentButtonConfiguration
+	
+	func testCustomTransparentButtonSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .transparentButtonConfiguration) else {
+			XCTFail("`transparentButtonConfiguration` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .transparentButtonConfiguration else {
+				XCTFail("Expected type `transparentButtonConfiguration`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = true
+			let buttonConfiguration = ButtonConfiguration(backgroundColor: .yellow,
+														  borderColor: .red,
+														  titleColor: .green,
+														  shadowColor: .clear,
+														  cornerRadius: 22,
+														  borderWidth: 4,
+														  shadowRadius: 0,
+														  withBlurEffect: false)
+			configuration.transparentButtonConfiguration = buttonConfiguration
+			initialSettingsButtonStates.transparentButtonState.isSwitchOn = true
+			
+			XCTAssertTrue(initialSettingsButtonStates.transparentButtonState.isSwitchOn,
+						  "transparentButtonConfiguration should be enabled in the gini configuration")
+		}
+	}
+	
+	func testCustomTransparentButtonSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .transparentButtonConfiguration) else {
+			XCTFail("`transparentButtonConfiguration` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .transparentButtonConfiguration else {
+				XCTFail("Expected type `transparentButtonConfiguration`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = false
+			configuration.transparentButtonConfiguration = initialSettingsButtonStates.transparentButtonState.configuration
+			initialSettingsButtonStates.transparentButtonState.isSwitchOn = false
+			
+			XCTAssertFalse(initialSettingsButtonStates.transparentButtonState.isSwitchOn,
+						   "transparentButtonConfiguration should not be enabled in the gini configuration")
+		}
+	}
+	
+	
+	// MARK: - CameraControlButtonConfiguration
+	
+	func testCustomCameraButtonSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .cameraControlButtonConfiguration) else {
+			XCTFail("`cameraControlButtonConfiguration` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .cameraControlButtonConfiguration else {
+				XCTFail("Expected type `cameraControlButtonConfiguration`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = true
+			let buttonConfiguration = ButtonConfiguration(backgroundColor: .yellow,
+														  borderColor: .red,
+														  titleColor: .green,
+														  shadowColor: .clear,
+														  cornerRadius: 22,
+														  borderWidth: 4,
+														  shadowRadius: 0,
+														  withBlurEffect: false)
+			configuration.cameraControlButtonConfiguration = buttonConfiguration
+			initialSettingsButtonStates.cameraControlButtonState.isSwitchOn = true
+			
+			XCTAssertTrue(initialSettingsButtonStates.cameraControlButtonState.isSwitchOn,
+						  "cameraControlButtonConfiguration should be enabled in the gini configuration")
+		}
+	}
+	
+	func testCustomCameraButtonSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .cameraControlButtonConfiguration) else {
+			XCTFail("`cameraControlButtonConfiguration` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .cameraControlButtonConfiguration else {
+				XCTFail("Expected type `cameraControlButtonConfiguration`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = false
+			configuration.cameraControlButtonConfiguration = initialSettingsButtonStates.cameraControlButtonState.configuration
+			initialSettingsButtonStates.cameraControlButtonState.isSwitchOn = false
+			
+			XCTAssertFalse(initialSettingsButtonStates.cameraControlButtonState.isSwitchOn,
+						   "cameraControlButtonConfiguration should not be enabled in the gini configuration")
+		}
+	}
+	
+	// MARK: - AddPageButtonConfiguration
+	
+	func testCustomAddPageButtonSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .addPageButtonConfiguration) else {
+			XCTFail("`addPageButtonConfiguration` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .addPageButtonConfiguration else {
+				XCTFail("Expected type `addPageButtonConfiguration`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = true
+			let buttonConfiguration = ButtonConfiguration(backgroundColor: .yellow,
+														  borderColor: .red,
+														  titleColor: .green,
+														  shadowColor: .clear,
+														  cornerRadius: 22,
+														  borderWidth: 4,
+														  shadowRadius: 0,
+														  withBlurEffect: false)
+			configuration.addPageButtonConfiguration = buttonConfiguration
+			initialSettingsButtonStates.addPageButtonState.isSwitchOn = true
+			
+			XCTAssertTrue(initialSettingsButtonStates.addPageButtonState.isSwitchOn,
+						  "addPageButtonConfiguration should be enabled in the gini configuration")
+		}
+	}
+	
+	func testCustomAddPageButtonSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .addPageButtonConfiguration) else {
+			XCTFail("`addPageButtonConfiguration` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .addPageButtonConfiguration else {
+				XCTFail("Expected type `addPageButtonConfiguration`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = false
+			configuration.addPageButtonConfiguration = initialSettingsButtonStates.addPageButtonState.configuration
+			initialSettingsButtonStates.addPageButtonState.isSwitchOn = false
+			
+			XCTAssertFalse(initialSettingsButtonStates.addPageButtonState.isSwitchOn,
+						   "addPageButtonConfiguration should not be enabled in the gini configuration")
 		}
 	}
 	

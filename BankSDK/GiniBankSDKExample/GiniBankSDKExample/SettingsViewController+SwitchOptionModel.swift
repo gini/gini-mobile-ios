@@ -39,6 +39,11 @@ struct SwitchOptionModel {
 		case digitalInvoiceHelpNavigationBarBottomAdapter
 		case digitalInvoiceOnboardingNavigationBarBottomAdapter
 		case digitalInvoiceNavigationBarBottomAdapter
+		case primaryButtonConfiguration
+		case secondaryButtonConfiguration
+		case transparentButtonConfiguration
+		case cameraControlButtonConfiguration
+		case addPageButtonConfiguration
 		case returnAssistantEnabled
 		case enableReturnReasons
 		case giniErrorLoggerIsOn
@@ -104,6 +109,16 @@ struct SwitchOptionModel {
 				return "Digital invoice onboarding bottom navigation bar"
 			case .digitalInvoiceNavigationBarBottomAdapter:
 				return "Digital invoice bottom navigation bar"
+			case .primaryButtonConfiguration:
+				return "Custom primary button"
+			case .secondaryButtonConfiguration:
+				return "Custom secondary button"
+			case .transparentButtonConfiguration:
+				return "Custom transparent button"
+			case .cameraControlButtonConfiguration:
+				return "Custom camera control button"
+			case .addPageButtonConfiguration:
+				return "Custom add page button"
 			case .returnAssistantEnabled:
 				return "Return Assistant feature"
 			case .enableReturnReasons:
@@ -149,6 +164,16 @@ struct SwitchOptionModel {
 				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
 			case .imagePickerNavigationBarBottomAdapter:
 				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
+			case .primaryButtonConfiguration:
+				return "Primary button on different screens, e.g: `Onboarding`, `Digital Invoice Onboarding`, `Error`, etc."
+			case .secondaryButtonConfiguration:
+				return "Secondary button on different screens: `No Results`, `Error`."
+			case .transparentButtonConfiguration:
+				return "Transparent button used on `Onboarding` screen in the bottom navigation bar."
+			case .cameraControlButtonConfiguration:
+				return "Camera control button used for `Browse` and `Flash` buttons on `Camera` screen."
+			case .addPageButtonConfiguration:
+				return "Add page button used on `Review `screen."
 			case .returnAssistantEnabled:
 				return "Present a digital representation of the invoice"
 			default:

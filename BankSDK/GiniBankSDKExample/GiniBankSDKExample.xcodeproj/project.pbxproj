@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2815B6F42A0CF51C004ABF06 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2815B6F32A0CF51C004ABF06 /* Lottie */; };
+		288647542A4AFF7600ED7C5C /* SettingsViewController+ButtonConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288647532A4AFF7600ED7C5C /* SettingsViewController+ButtonConfiguration.swift */; };
 		289447712A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */; };
 		289447732A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */; };
 		289570932A30CD7600CC2C56 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289570912A30CD7600CC2C56 /* SettingsViewController.swift */; };
@@ -139,6 +140,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		288647532A4AFF7600ED7C5C /* SettingsViewController+ButtonConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+ButtonConfiguration.swift"; sourceTree = "<group>"; };
 		289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SwitchOptionModel.swift"; sourceTree = "<group>"; };
 		289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SegmentedOptionModel.swift"; sourceTree = "<group>"; };
 		289570912A30CD7600CC2C56 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -508,6 +510,7 @@
 				289570912A30CD7600CC2C56 /* SettingsViewController.swift */,
 				289570922A30CD7600CC2C56 /* SettingsViewController.xib */,
 				28B587482A373FCB008CB210 /* SettingsViewController+Types.swift */,
+				288647532A4AFF7600ED7C5C /* SettingsViewController+ButtonConfiguration.swift */,
 				289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */,
 				289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */,
 				F4AD00DB25DFDCE400C34E15 /* ResultTableViewController.swift */,
@@ -822,6 +825,7 @@
 				F4E0218827BD349A0042D000 /* Amount.swift in Sources */,
 				768100372996959800C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter.swift in Sources */,
 				28B587462A373A72008CB210 /* SwitchOptionTableViewCell.swift in Sources */,
+				288647542A4AFF7600ED7C5C /* SettingsViewController+ButtonConfiguration.swift in Sources */,
 				289447732A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift in Sources */,
 				28DB2C822A39AF5000F5B304 /* GiniButton.swift in Sources */,
 				28CDB8232A38A5E40016A81C /* ColorPalette.swift in Sources */,
