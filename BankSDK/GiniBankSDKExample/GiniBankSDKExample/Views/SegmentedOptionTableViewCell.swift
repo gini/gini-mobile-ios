@@ -49,14 +49,10 @@ final class SegmentedOptionTableViewCell: UITableViewCell, NibLoadableView {
 			stackViewContainer.axis = .vertical
 			stackViewContainer.spacing = 8.0
 		}
+		
+		segmentedControl.tintColor = .systemGray
 	}
-	
-	@objc func segmentedControlValueChanged(_ sender: UISegmentedControl) {
-		let selectedIndex = sender.selectedSegmentIndex
-		selectedSegmentIndex = selectedIndex
-		delegate?.didSegmentedControlValueChanged(in: self)
-	}
-	
+
 	func set(data: SegmentedOptionCellModel) {
 		titleLabel.text = data.title
 		// remove all segments from segmentedControl before adding new items
@@ -66,6 +62,13 @@ final class SegmentedOptionTableViewCell: UITableViewCell, NibLoadableView {
 			segmentedControl.insertSegment(withTitle: title, at: index, animated: false)
 		}
 
-		selectedSegmentIndex = data.selectedIndex
+		segmentedControl.selectedSegmentIndex = data.selectedIndex
+	}
+	
+	// MARK: - Actions
+	
+	@objc func segmentedControlValueChanged(_ sender: UISegmentedControl) {
+		selectedSegmentIndex = sender.selectedSegmentIndex
+		delegate?.didSegmentedControlValueChanged(in: self)
 	}
 }

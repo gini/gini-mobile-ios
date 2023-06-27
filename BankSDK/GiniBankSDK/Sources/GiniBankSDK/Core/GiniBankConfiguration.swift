@@ -247,6 +247,7 @@ public final class GiniBankConfiguration: NSObject {
 
     /**
      Sets if the Drag&Drop step should be shown in the "Open with" tutorial.
+	 - note: Available just for iPad
      */
     public var shouldShowDragAndDropTutorial = true
 
@@ -338,6 +339,8 @@ public final class GiniBankConfiguration: NSObject {
         configuration.flashToggleEnabled = self.flashToggleEnabled
         configuration.flashOnByDefault = self.flashOnByDefault
 
+		configuration.customOnboardingPages = self.customOnboardingPages
+
         configuration.bottomNavigationBarEnabled = self.bottomNavigationBarEnabled
         configuration.cameraNavigationBarBottomAdapter = self.cameraNavigationBarBottomAdapter
         configuration.helpNavigationBarBottomAdapter = self.helpNavigationBarBottomAdapter
@@ -396,6 +399,7 @@ public final class GiniBankConfiguration: NSObject {
     public func updateConfiguration(withCaptureConfiguration configuration: GiniConfiguration) {
 
         let giniBankConfiguration = GiniBankConfiguration.shared
+		giniBankConfiguration.statusBarStyle = configuration.statusBarStyle
 
         giniBankConfiguration.debugModeOn = configuration.debugModeOn
 
@@ -412,6 +416,7 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.flashToggleEnabled = configuration.flashToggleEnabled
         giniBankConfiguration.flashOnByDefault = configuration.flashOnByDefault
 
+		giniBankConfiguration.customOnboardingPages = configuration.customOnboardingPages
         giniBankConfiguration.onboardingShowAtLaunch = configuration.onboardingShowAtLaunch
         giniBankConfiguration.onboardingShowAtFirstLaunch = configuration.onboardingShowAtFirstLaunch
         giniBankConfiguration.shouldShowSupportedFormatsScreen = configuration.shouldShowSupportedFormatsScreen
@@ -424,6 +429,13 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.transparentButtonConfiguration = configuration.transparentButtonConfiguration
         giniBankConfiguration.cameraControlButtonConfiguration = configuration.cameraControlButtonConfiguration
         giniBankConfiguration.addPageButtonConfiguration = configuration.addPageButtonConfiguration
+
+		giniBankConfiguration.onButtonLoadingIndicator = configuration.onButtonLoadingIndicator
+		giniBankConfiguration.customLoadingIndicator = configuration.customLoadingIndicator
+		giniBankConfiguration.customMenuItems = configuration.customMenuItems
+		giniBankConfiguration.customNavigationController = configuration.customNavigationController
+
+		giniBankConfiguration.giniErrorLoggerIsOn = configuration.giniErrorLoggerIsOn
     }
 
     // MARK: - Update to custom font

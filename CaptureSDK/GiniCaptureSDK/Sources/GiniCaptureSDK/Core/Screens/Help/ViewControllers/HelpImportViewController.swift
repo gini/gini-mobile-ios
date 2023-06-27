@@ -24,7 +24,7 @@ final class HelpImportViewController: UIViewController, HelpBottomBarEnabledView
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
-    private var dataSource: [HelpImportCellType] = [.selectInvoice, .importToApp, .dragAndDrop]
+    private var dataSource: [HelpImportCellType] = [.selectInvoice, .importToApp]
     private var giniConfiguration: GiniConfiguration
 
     init(giniConfiguration: GiniConfiguration) {
@@ -47,10 +47,8 @@ final class HelpImportViewController: UIViewController, HelpBottomBarEnabledView
     }
 
     private func setupView() {
-        if UIDevice.current.isIphone {
-            dataSource = [.selectInvoice, .importToApp]
-        } else {
-            dataSource = [.selectInvoice, .importToApp, .dragAndDrop]
+		if UIDevice.current.isIpad && giniConfiguration.shouldShowDragAndDropTutorial {
+			dataSource.append(.dragAndDrop)
         }
         configureMainView()
         configureTableView()
@@ -75,6 +73,7 @@ final class HelpImportViewController: UIViewController, HelpBottomBarEnabledView
         tableView.separatorStyle = .none
         tableView.allowsSelection = false
         tableView.backgroundColor = UIColor.clear
+		tableView.showsVerticalScrollIndicator = false
         tableView.tableFooterView = UIView()
         tableView.estimatedRowHeight = 300
         tableView.register(
