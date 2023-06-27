@@ -110,6 +110,15 @@ final class SettingsViewController: UIViewController {
 		contentData.append(.switchOption(data: .init(type: .bottomNavigationBar,
 													 isSwitchOn: giniConfiguration.bottomNavigationBarEnabled)))
 		
+		contentData.append(.switchOption(data: .init(type: .helpNavigationBarBottomAdapter,
+													 isSwitchOn: giniConfiguration.helpNavigationBarBottomAdapter != nil)))
+		contentData.append(.switchOption(data: .init(type: .cameraNavigationBarBottomAdapter,
+													 isSwitchOn: giniConfiguration.cameraNavigationBarBottomAdapter != nil)))
+		contentData.append(.switchOption(data: .init(type: .reviewNavigationBarBottomAdapter,
+													 isSwitchOn: giniConfiguration.reviewNavigationBarBottomAdapter != nil)))
+		contentData.append(.switchOption(data: .init(type: .imagePickerNavigationBarBottomAdapter,
+													 isSwitchOn: giniConfiguration.imagePickerNavigationBarBottomAdapter != nil)))
+
 		contentData.append(.switchOption(data: .init(type: .onboardingShowAtLaunch,
 													 isSwitchOn: giniConfiguration.onboardingShowAtLaunch)))
 		contentData.append(.switchOption(data: .init(type: .onboardingShowAtFirstLaunch,
@@ -214,6 +223,18 @@ final class SettingsViewController: UIViewController {
 			}
 		case .bottomNavigationBar:
 			giniConfiguration.bottomNavigationBarEnabled = data.isSwitchOn
+		case .helpNavigationBarBottomAdapter:
+			let customAdapter = CustomBottomNavigationBarAdapter()
+			giniConfiguration.helpNavigationBarBottomAdapter = customAdapter
+		case .cameraNavigationBarBottomAdapter:
+			let customAdapter = CustomCameraBottomNavigationBarAdapter()
+			giniConfiguration.cameraNavigationBarBottomAdapter = customAdapter
+		case .reviewNavigationBarBottomAdapter:
+			let customAdapter = CustomReviewScreenBottomNavigationBarAdapter()
+			giniConfiguration.reviewNavigationBarBottomAdapter = customAdapter
+		case .imagePickerNavigationBarBottomAdapter:
+			let customAdapter = CustomBottomNavigationBarAdapter()
+			giniConfiguration.imagePickerNavigationBarBottomAdapter = customAdapter
 		case .onboardingShowAtLaunch:
 			giniConfiguration.onboardingShowAtLaunch = data.isSwitchOn
 			let onboardingShowedUserDefault = UserDefaults.standard.bool(forKey: "ginicapture.defaults.onboardingShowed")

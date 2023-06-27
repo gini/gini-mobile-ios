@@ -23,6 +23,10 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.flashToggleEnabled = true
 		configuration.flashOnByDefault = true
 		configuration.bottomNavigationBarEnabled = false
+		configuration.helpNavigationBarBottomAdapter = nil
+		configuration.cameraNavigationBarBottomAdapter = nil
+		configuration.reviewNavigationBarBottomAdapter = nil
+		configuration.imagePickerNavigationBarBottomAdapter = nil
 		configuration.onboardingShowAtLaunch = true
 		configuration.onboardingShowAtFirstLaunch = true
 		configuration.onboardingAlignCornersIllustrationAdapter = nil
@@ -71,6 +75,15 @@ final class SettingsViewControllerTests: XCTestCase {
 		}
 		contentData.append(.switchOption(data: .init(type: .bottomNavigationBar,
 													 isSwitchOn: configuration.bottomNavigationBarEnabled)))
+		
+		contentData.append(.switchOption(data: .init(type: .helpNavigationBarBottomAdapter,
+													 isSwitchOn: configuration.helpNavigationBarBottomAdapter != nil)))
+		contentData.append(.switchOption(data: .init(type: .cameraNavigationBarBottomAdapter,
+													 isSwitchOn: configuration.cameraNavigationBarBottomAdapter != nil)))
+		contentData.append(.switchOption(data: .init(type: .reviewNavigationBarBottomAdapter,
+													 isSwitchOn: configuration.reviewNavigationBarBottomAdapter != nil)))
+		contentData.append(.switchOption(data: .init(type: .imagePickerNavigationBarBottomAdapter,
+													 isSwitchOn: configuration.imagePickerNavigationBarBottomAdapter != nil)))
 		
 		contentData.append(.switchOption(data: .init(type: .onboardingShowAtLaunch,
 													 isSwitchOn: configuration.onboardingShowAtLaunch)))
@@ -461,6 +474,170 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
+	// MARK: - HelpNavigationBarBottomAdapter
+	
+	func testHelpCustomNavigationBarBottomSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .helpNavigationBarBottomAdapter) else {
+			XCTFail("`helpNavigationBarBottomAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .helpNavigationBarBottomAdapter else {
+				XCTFail("Expected type `helpNavigationBarBottomAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = false
+			configuration.helpNavigationBarBottomAdapter = nil
+			
+			XCTAssertFalse(configuration.helpNavigationBarBottomAdapter != nil,
+						   "helpNavigationBarBottomAdapter should not be enabled in the gini configuration")
+		}
+	}
+	
+	func testHelpCustomNavigationBarBottomSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .helpNavigationBarBottomAdapter) else {
+			XCTFail("`helpNavigationBarBottomAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .helpNavigationBarBottomAdapter else {
+				XCTFail("Expected type `helpNavigationBarBottomAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = true
+			let customAdapter = CustomBottomNavigationBarAdapter()
+			configuration.helpNavigationBarBottomAdapter = customAdapter
+			
+			XCTAssertTrue(configuration.helpNavigationBarBottomAdapter != nil,
+						  "helpNavigationBarBottomAdapter should be enabled in the gini configuration")
+		}
+	}
+	
+	// MARK: - CameraNavigationBarBottomAdapter
+	
+	func testCameraCustomNavigationBarBottomSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .cameraNavigationBarBottomAdapter) else {
+			XCTFail("`cameraNavigationBarBottomAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .cameraNavigationBarBottomAdapter else {
+				XCTFail("Expected type `cameraNavigationBarBottomAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = false
+			configuration.cameraNavigationBarBottomAdapter = nil
+			
+			XCTAssertFalse(configuration.cameraNavigationBarBottomAdapter != nil,
+						   "cameraNavigationBarBottomAdapter should not be enabled in the gini configuration")
+		}
+	}
+	
+	func testCameraCustomNavigationBarBottomSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .cameraNavigationBarBottomAdapter) else {
+			XCTFail("`cameraNavigationBarBottomAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .cameraNavigationBarBottomAdapter else {
+				XCTFail("Expected type `cameraNavigationBarBottomAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = true
+			let customAdapter = CustomCameraBottomNavigationBarAdapter()
+			configuration.cameraNavigationBarBottomAdapter = customAdapter
+			
+			XCTAssertTrue(configuration.cameraNavigationBarBottomAdapter != nil,
+						  "cameraNavigationBarBottomAdapter should be enabled in the gini configuration")
+		}
+	}
+	
+	// MARK: - ReviewNavigationBarBottomAdapter
+	
+	func testReviewCustomNavigationBarBottomSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .reviewNavigationBarBottomAdapter) else {
+			XCTFail("`reviewNavigationBarBottomAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .reviewNavigationBarBottomAdapter else {
+				XCTFail("Expected type `reviewNavigationBarBottomAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = false
+			configuration.reviewNavigationBarBottomAdapter = nil
+			
+			XCTAssertFalse(configuration.reviewNavigationBarBottomAdapter != nil,
+						   "reviewNavigationBarBottomAdapter should not be enabled in the gini configuration")
+		}
+	}
+	
+	func testReviewCustomNavigationBarBottomSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .reviewNavigationBarBottomAdapter) else {
+			XCTFail("`reviewNavigationBarBottomAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .reviewNavigationBarBottomAdapter else {
+				XCTFail("Expected type `reviewNavigationBarBottomAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = true
+			let customAdapter = CustomReviewScreenBottomNavigationBarAdapter()
+			configuration.reviewNavigationBarBottomAdapter = customAdapter
+			
+			XCTAssertTrue(configuration.reviewNavigationBarBottomAdapter != nil,
+						  "reviewNavigationBarBottomAdapter should be enabled in the gini configuration")
+		}
+	}
+	
+	// MARK: - imagePickerNavigationBarBottomAdapter
+	
+	func testImagePickerCustomNavigationBarBottomSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .imagePickerNavigationBarBottomAdapter) else {
+			XCTFail("`imagePickerNavigationBarBottomAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .imagePickerNavigationBarBottomAdapter else {
+				XCTFail("Expected type `imagePickerNavigationBarBottomAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = false
+			configuration.imagePickerNavigationBarBottomAdapter = nil
+			
+			XCTAssertFalse(configuration.imagePickerNavigationBarBottomAdapter != nil,
+						   "imagePickerNavigationBarBottomAdapter should not be enabled in the gini configuration")
+		}
+	}
+	
+	func testImagePickerNavigationBarBottomSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .imagePickerNavigationBarBottomAdapter) else {
+			XCTFail("`imagePickerNavigationBarBottomAdapter` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .imagePickerNavigationBarBottomAdapter else {
+				XCTFail("Expected type `imagePickerNavigationBarBottomAdapter`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = true
+			let customAdapter = CustomBottomNavigationBarAdapter()
+			configuration.imagePickerNavigationBarBottomAdapter = customAdapter
+			
+			XCTAssertTrue(configuration.imagePickerNavigationBarBottomAdapter != nil,
+						  "imagePickerNavigationBarBottomAdapter should be enabled in the gini configuration")
+		}
+	}
+	
 	// MARK: - File Import options
 	
 	func testSegmentedControlNone() {
@@ -505,7 +682,7 @@ extension SettingsViewControllerTests {
 	
 	// MARK: - OnboardingShowAtLaunch
 	
-	func testOnboardingShowAtLaunchOff() {
+	func testOnboardingShowAtLaunchSwitchOff() {
 		guard let index = getSwitchOptionIndex(for: .onboardingShowAtLaunch) else {
 			XCTFail("`onboardingShowAtLaunch` option not found in sectionData")
 			return
@@ -524,7 +701,7 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
-	func testOnboardingShowAtLaunchOn() {
+	func testOnboardingShowAtLaunchSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .onboardingShowAtLaunch) else {
 			XCTFail("`onboardingShowAtLaunch` option not found in sectionData")
 			return
@@ -545,7 +722,7 @@ extension SettingsViewControllerTests {
 
 	// MARK: - OnboardingNavigationBarBottomAdapter
 	
-	func testOnboardingCustomNavigationBottomBarOff() {
+	func testOnboardingCustomNavigationBottomBarSwitchOff() {
 		guard let index = getSwitchOptionIndex(for: .onboardingNavigationBarBottomAdapter) else {
 			XCTFail("`onboardingNavigationBarBottomAdapter` option not found in sectionData")
 			return
@@ -564,7 +741,7 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
-	func testOnboardingCustomNavigationBottomBarOn() {
+	func testOnboardingCustomNavigationBottomBarSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .onboardingNavigationBarBottomAdapter) else {
 			XCTFail("`onboardingNavigationBarBottomAdapter` option not found in sectionData")
 			return
@@ -586,7 +763,7 @@ extension SettingsViewControllerTests {
 
 	// MARK: - OnboardingMultiPageIllustrationAdapter
 	
-	func testOnboardingMultiPageCustomIllustrationOff() {
+	func testOnboardingMultiPageCustomIllustrationSwitchOff() {
 		guard let index = getSwitchOptionIndex(for: .onboardingMultiPageIllustrationAdapter) else {
 			XCTFail("`onboardingMultiPageIllustrationAdapter` option not found in sectionData")
 			return
@@ -605,7 +782,7 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
-	func testOnboardingMultiPageCustomIllustrationOn() {
+	func testOnboardingMultiPageCustomIllustrationSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .onboardingMultiPageIllustrationAdapter) else {
 			XCTFail("`onboardingMultiPageIllustrationAdapter` option not found in sectionData")
 			return
@@ -628,7 +805,7 @@ extension SettingsViewControllerTests {
 	
 	// MARK: - OnboardingQRCodeIllustrationAdapter
 	
-	func testOnboardingQRCodeCustomIllustrationOff() {
+	func testOnboardingQRCodeCustomIllustrationSwitchOff() {
 		guard let index = getSwitchOptionIndex(for: .onboardingQRCodeIllustrationAdapter) else {
 			XCTFail("`onboardingQRCodeIllustrationAdapter` option not found in sectionData")
 			return
@@ -647,7 +824,7 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
-	func testOnboardingQRCodeCustomIllustrationOn() {
+	func testOnboardingQRCodeCustomIllustrationSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .onboardingQRCodeIllustrationAdapter) else {
 			XCTFail("`onboardingQRCodeIllustrationAdapter` option not found in sectionData")
 			return
@@ -670,7 +847,7 @@ extension SettingsViewControllerTests {
 	
 	// MARK: - OnboardingLightingIllustrationAdapter
 	
-	func testOnboardingLightingCustomIllustrationOff() {
+	func testOnboardingLightingCustomIllustrationSwitchOff() {
 		guard let index = getSwitchOptionIndex(for: .onboardingLightingIllustrationAdapter) else {
 			XCTFail("`onboardingLightingIllustrationAdapter` option not found in sectionData")
 			return
@@ -689,7 +866,7 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
-	func testOnboardingLightingCustomIllustrationOn() {
+	func testOnboardingLightingCustomIllustrationSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .onboardingLightingIllustrationAdapter) else {
 			XCTFail("`onboardingLightingIllustrationAdapter` option not found in sectionData")
 			return
@@ -712,7 +889,7 @@ extension SettingsViewControllerTests {
 	
 	// MARK: - OnboardingAlignCornersIllustrationAdapter
 	
-	func testOnboardingAlignCornersCustomIllustrationOff() {
+	func testOnboardingAlignCornersCustomIllustrationSwitchOff() {
 		guard let index = getSwitchOptionIndex(for: .onboardingAlignCornersIllustrationAdapter) else {
 			XCTFail("`onboardingAlignCornersIllustrationAdapter` option not found in sectionData")
 			return
@@ -731,7 +908,7 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
-	func testOnboardingAlignCornersCustomIllustrationOn() {
+	func testOnboardingAlignCornersCustomIllustrationSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .onboardingAlignCornersIllustrationAdapter) else {
 			XCTFail("`onboardingAlignCornersIllustrationAdapter` option not found in sectionData")
 			return
@@ -754,7 +931,7 @@ extension SettingsViewControllerTests {
 
 	// MARK: - OnboardingShowAtFirstLaunch
 	
-	func testOnboardingShowAtFirstLaunchOff() {
+	func testOnboardingShowAtFirstLaunchSwitchOff() {
 		guard let index = getSwitchOptionIndex(for: .onboardingShowAtFirstLaunch) else {
 			XCTFail("`onboardingShowAtFirstLaunch` option not found in sectionData")
 			return
@@ -773,7 +950,7 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
-	func testOnboardingShowAtFirstLaunchOn() {
+	func testOnboardingShowAtFirstLaunchSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .onboardingShowAtFirstLaunch) else {
 			XCTFail("`onboardingShowAtFirstLaunch` option not found in sectionData")
 			return
@@ -794,7 +971,7 @@ extension SettingsViewControllerTests {
 	
 	// MARK: - CustomOnboardingPages
 	
-	func testCustomOnboardingPagesOff() {
+	func testCustomOnboardingPagesSwitchOff() {
 		guard let index = getSwitchOptionIndex(for: .customOnboardingPages) else {
 			XCTFail("`customOnboardingPages` option not found in sectionData")
 			return
@@ -813,7 +990,7 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
-	func testCustomOnboardingPagesOn() {
+	func testCustomOnboardingPagesSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .customOnboardingPages) else {
 			XCTFail("`customOnboardingPages` option not found in sectionData")
 			return
@@ -837,7 +1014,7 @@ extension SettingsViewControllerTests {
 	
 	// MARK: - OnButtonLoadingIndicator
 	
-	func testOnButtonLoadingIndicatorOff() {
+	func testOnButtonLoadingIndicatorSwitchOff() {
 		guard let index = getSwitchOptionIndex(for: .onButtonLoadingIndicator) else {
 			XCTFail("`onButtonLoadingIndicator` option not found in sectionData")
 			return
@@ -856,7 +1033,7 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
-	func testOnButtonLoadingIndicatorOn() {
+	func testOnButtonLoadingIndicatorSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .onButtonLoadingIndicator) else {
 			XCTFail("`onButtonLoadingIndicator` option not found in sectionData")
 			return
@@ -877,7 +1054,7 @@ extension SettingsViewControllerTests {
 	
 	// MARK: - CustomLoadingIndicator
 	
-	func testCustomLoadingIndicatorOff() {
+	func testCustomLoadingIndicatorSwitchOff() {
 		guard let index = getSwitchOptionIndex(for: .customLoadingIndicator) else {
 			XCTFail("`customLoadingIndicator` option not found in sectionData")
 			return
@@ -896,7 +1073,7 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
-	func testCustomLoadingIndicatorOn() {
+	func testCustomLoadingIndicatorSwitchOn() {
 		guard let index = getSwitchOptionIndex(for: .customLoadingIndicator) else {
 			XCTFail("`customLoadingIndicator` option not found in sectionData")
 			return

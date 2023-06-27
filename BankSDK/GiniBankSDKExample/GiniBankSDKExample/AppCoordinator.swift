@@ -79,7 +79,6 @@ final class AppCoordinator: Coordinator {
 //		configuration.giniErrorLoggerIsOn = true
 		
 //        configuration.cameraNavigationBarBottomAdapter = CustomCameraBottomNavigationBarAdapter()
-//        configuration.noResultNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
 //        configuration.helpNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
 //        configuration.imagePickerNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
 //        configuration.reviewNavigationBarBottomAdapter = CustomReviewScreenBottomNavigationBarAdapter()
