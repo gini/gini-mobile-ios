@@ -119,29 +119,29 @@ For enabling your app to be opened with share functionality from Photos you need
 [Share extensions](https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/Share.html), in particular, allow you to share content to your application.
 
 1. Add a share extension to your project
-
+---------------------------------
 Go to `File -> New -> Target` and select `Share Extension`. Please make sure you link it to the main app.
 The system will ask you if you want to activate the `Share scheme`, just select `Activate`. 
 
 2. Set the extension activation rule
-
+---------------------------------
 To do this you need to change the [`NSExtensionActivationRule`](https://developer.apple.com/documentation/bundleresources/information_property_list/nsextension/nsextensionattributes/nsextensionactivationrule) in the `Info.plist` in your extension target.
 
 Please check the example [here](https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/GiniBankSDKShareExtension/Info.plist).
 
 3. Handling the URL
-
+---------------------------------
 Find the example implementation [here](https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/GiniBankSDKShareExtension/ShareViewController.swift#L41)
 
 4. Pass the data from the extension to the main app
-
+---------------------------------
 Here we connect the share extension directly to the main app using `AppGroups` and `UserDefaults`.
 Add [AppGroups](https://developer.apple.com/documentation/bundleresources/entitlements/com_apple_security_application-groups) to the capabilities of both the extension and main app using the same app group.
 
 Check the example [here](https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/GiniBankSDKShareExtension/ShareViewController.swift#L33)
 
 5. Open the main app and retrieve the shared data
-
+---------------------------------------------
  - Register your app extension scheme in the URL types for the main app.
 
  - Open the main app from the [extension](https://github.com/gini/gini-mobile-ios/blob/main/BankSDK/GiniBankSDKExample/GiniBankSDKShareExtension/ShareViewController.swift#L61).
