@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		2815B6F42A0CF51C004ABF06 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2815B6F32A0CF51C004ABF06 /* Lottie */; };
+		282A9F812A4063F200031F83 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282A9F802A4063F200031F83 /* Device.swift */; };
+		289447712A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */; };
+		289447732A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */; };
 		289570932A30CD7600CC2C56 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289570912A30CD7600CC2C56 /* SettingsViewController.swift */; };
 		289570942A30CE2800CC2C56 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289570922A30CD7600CC2C56 /* SettingsViewController.xib */; };
 		28B5873C2A372790008CB210 /* UITableView+CellRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B5873B2A372790008CB210 /* UITableView+CellRegistration.swift */; };
@@ -136,6 +139,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		282A9F802A4063F200031F83 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SwitchOptionModel.swift"; sourceTree = "<group>"; };
+		289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SegmentedOptionModel.swift"; sourceTree = "<group>"; };
 		289570912A30CD7600CC2C56 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		289570922A30CD7600CC2C56 /* SettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
 		289570952A30D66B00CC2C56 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
@@ -279,6 +285,7 @@
 			children = (
 				83D02CDA290AC86300DA97F7 /* NibLoading.swift */,
 				28CDB8222A38A5E40016A81C /* ColorPalette.swift */,
+				282A9F802A4063F200031F83 /* Device.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -501,6 +508,8 @@
 				289570912A30CD7600CC2C56 /* SettingsViewController.swift */,
 				289570922A30CD7600CC2C56 /* SettingsViewController.xib */,
 				28B587482A373FCB008CB210 /* SettingsViewController+Types.swift */,
+				289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */,
+				289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */,
 				F4AD00DB25DFDCE400C34E15 /* ResultTableViewController.swift */,
 				3E7839CD29C9DBB700B42216 /* ResultTableViewCell.swift */,
 				F4BB7CF126984E5D003FD77E /* CustomMenuItemViewController.swift */,
@@ -779,6 +788,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				282A9F812A4063F200031F83 /* Device.swift in Sources */,
 				83D02CD3290AC3AD00DA97F7 /* CustomOnboardingBottomNavigationBarAdapter.swift in Sources */,
 				F4AD00B625DED1A000C34E15 /* AppCoordinator.swift in Sources */,
 				768B017E28D1E54E009A2124 /* CustomLoadingIndicator.swift in Sources */,
@@ -788,6 +798,7 @@
 				76810039299696A900C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBar.swift in Sources */,
 				F4AD00EC25DFDE2000C34E15 /* RootNavigationController.swift in Sources */,
 				F44AD01528D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift in Sources */,
+				289447712A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift in Sources */,
 				76610BEA298D5448004C1ECB /* CustomReviewScreenBottomNavigationBarAdapter.swift in Sources */,
 				F4AD00BC25DED33300C34E15 /* Coordinator.swift in Sources */,
 				F490C7E525DE873900D8CA6F /* AppDelegate.swift in Sources */,
@@ -811,6 +822,7 @@
 				F4E0218827BD349A0042D000 /* Amount.swift in Sources */,
 				768100372996959800C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter.swift in Sources */,
 				28B587462A373A72008CB210 /* SwitchOptionTableViewCell.swift in Sources */,
+				289447732A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift in Sources */,
 				28DB2C822A39AF5000F5B304 /* GiniButton.swift in Sources */,
 				28CDB8232A38A5E40016A81C /* ColorPalette.swift in Sources */,
 				3E7839CE29C9DBB700B42216 /* ResultTableViewCell.swift in Sources */,
