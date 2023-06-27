@@ -17,6 +17,10 @@ struct SwitchOptionModel {
 		case flashToggle
 		case flashOnByDefault
 		case bottomNavigationBar
+		case helpNavigationBarBottomAdapter
+		case cameraNavigationBarBottomAdapter
+		case reviewNavigationBarBottomAdapter
+		case imagePickerNavigationBarBottomAdapter
 		case onboardingShowAtLaunch
 		case onboardingShowAtFirstLaunch
 		case onboardingAlignCornersIllustrationAdapter
@@ -56,6 +60,14 @@ struct SwitchOptionModel {
 				return "Flash ON by default"
 			case .bottomNavigationBar:
 				return "Bottom navigation bar"
+			case .helpNavigationBarBottomAdapter:
+				return "Custom bottom navigation bar on the help screens"
+			case .cameraNavigationBarBottomAdapter:
+				return "Custom bottom navigation bar on the camera screen"
+			case .reviewNavigationBarBottomAdapter:
+				return "Custom bottom navigation bar on the review screen"
+			case .imagePickerNavigationBarBottomAdapter:
+				return "Custom bottom navigation bar on the image picker screen"
 			case .onboardingShowAtLaunch:
 				return "Onboarding screens at launch"
 			case .onboardingShowAtFirstLaunch:
@@ -129,6 +141,14 @@ struct SwitchOptionModel {
 				return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
 			case .digitalInvoiceNavigationBarBottomAdapter:
 				return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
+			case .helpNavigationBarBottomAdapter:
+				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
+			case .cameraNavigationBarBottomAdapter:
+				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
+			case .reviewNavigationBarBottomAdapter:
+				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
+			case .imagePickerNavigationBarBottomAdapter:
+				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
 			case .returnAssistantEnabled:
 				return "Present a digital representation of the invoice"
 			default:
