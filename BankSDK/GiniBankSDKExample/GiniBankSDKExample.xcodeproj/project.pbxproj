@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2815B6F42A0CF51C004ABF06 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2815B6F32A0CF51C004ABF06 /* Lottie */; };
 		288647542A4AFF7600ED7C5C /* SettingsViewController+ButtonConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288647532A4AFF7600ED7C5C /* SettingsViewController+ButtonConfiguration.swift */; };
+		288647562A4B4A4000ED7C5C /* SettingsViewController+DocumentValidations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288647552A4B4A4000ED7C5C /* SettingsViewController+DocumentValidations.swift */; };
 		289447712A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */; };
 		289447732A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */; };
 		289570932A30CD7600CC2C56 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289570912A30CD7600CC2C56 /* SettingsViewController.swift */; };
@@ -141,6 +142,7 @@
 
 /* Begin PBXFileReference section */
 		288647532A4AFF7600ED7C5C /* SettingsViewController+ButtonConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+ButtonConfiguration.swift"; sourceTree = "<group>"; };
+		288647552A4B4A4000ED7C5C /* SettingsViewController+DocumentValidations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+DocumentValidations.swift"; sourceTree = "<group>"; };
 		289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SwitchOptionModel.swift"; sourceTree = "<group>"; };
 		289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SegmentedOptionModel.swift"; sourceTree = "<group>"; };
 		289570912A30CD7600CC2C56 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -511,6 +513,7 @@
 				289570922A30CD7600CC2C56 /* SettingsViewController.xib */,
 				28B587482A373FCB008CB210 /* SettingsViewController+Types.swift */,
 				288647532A4AFF7600ED7C5C /* SettingsViewController+ButtonConfiguration.swift */,
+				288647552A4B4A4000ED7C5C /* SettingsViewController+DocumentValidations.swift */,
 				289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */,
 				289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */,
 				F4AD00DB25DFDCE400C34E15 /* ResultTableViewController.swift */,
@@ -813,6 +816,7 @@
 				837EEFB5291D6ABE00DB781F /* CustomCameraBottomNavigationBarAdapter.swift in Sources */,
 				76610BE9298D5448004C1ECB /* CustomReviewScreenBottomNavigationBar.swift in Sources */,
 				F4AD00CC25DFDB4E00C34E15 /* CredentialsManager.swift in Sources */,
+				288647562A4B4A4000ED7C5C /* SettingsViewController+DocumentValidations.swift in Sources */,
 				28B5874C2A374730008CB210 /* SegmentedOptionTableViewCell.swift in Sources */,
 				8336530128F0334C00B5A1CE /* CustomBottomNavigationBar.swift in Sources */,
 				28B5873C2A372790008CB210 /* UITableView+CellRegistration.swift in Sources */,

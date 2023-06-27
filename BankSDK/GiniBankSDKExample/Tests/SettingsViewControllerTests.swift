@@ -52,7 +52,7 @@ final class SettingsViewControllerTests: XCTestCase {
 		return configuration
 	}()
 	
-	private lazy var initialSettingsButtonStates: SettingsButtonStates = {
+	private lazy var settingsButtonStates: SettingsButtonStates = {
 		let primaryButtonState = SettingsButtonStates.ButtonState(configuration: configuration.primaryButtonConfiguration,
 																  isSwitchOn: false)
 		let secondaryButtonState = SettingsButtonStates.ButtonState(configuration: configuration.secondaryButtonConfiguration,
@@ -70,13 +70,19 @@ final class SettingsViewControllerTests: XCTestCase {
 									addPageButtonState: addPageButtonState)
 	}()
 	
+	private lazy var documentValidationsState: DocumentValidationsState = {
+		return DocumentValidationsState(validations: configuration.customDocumentValidations,
+										isSwitchOn: false)
+	}()
+	
 	private var settingsViewController: SettingsViewController?
 	private var contentData = [SettingsViewController.CellType]()
 	
 	override func setUp() {
 		super.setUp()
 		settingsViewController = SettingsViewController(giniConfiguration: configuration,
-														initialSettingsButtonStates: initialSettingsButtonStates)
+														settingsButtonStates: settingsButtonStates,
+														documentValidationsState: documentValidationsState)
 		
 		contentData.append(.switchOption(data: .init(type: .openWith,
 													 isSwitchOn: configuration.openWithEnabled)))
@@ -148,25 +154,26 @@ final class SettingsViewControllerTests: XCTestCase {
 													 isSwitchOn: configuration.digitalInvoiceNavigationBarBottomAdapter != nil)))
 
 		contentData.append(.switchOption(data: .init(type: .primaryButtonConfiguration,
-													 isSwitchOn: initialSettingsButtonStates.primaryButtonState.isSwitchOn)))
+													 isSwitchOn: settingsButtonStates.primaryButtonState.isSwitchOn)))
 		
 		contentData.append(.switchOption(data: .init(type: .secondaryButtonConfiguration,
-													 isSwitchOn: initialSettingsButtonStates.secondaryButtonState.isSwitchOn)))
+													 isSwitchOn: settingsButtonStates.secondaryButtonState.isSwitchOn)))
 		
 		contentData.append(.switchOption(data: .init(type: .transparentButtonConfiguration,
-													 isSwitchOn: initialSettingsButtonStates.transparentButtonState.isSwitchOn)))
+													 isSwitchOn: settingsButtonStates.transparentButtonState.isSwitchOn)))
 		
 		contentData.append(.switchOption(data: .init(type: .cameraControlButtonConfiguration,
-													 isSwitchOn: initialSettingsButtonStates.cameraControlButtonState.isSwitchOn)))
+													 isSwitchOn: settingsButtonStates.cameraControlButtonState.isSwitchOn)))
 		
 		contentData.append(.switchOption(data: .init(type: .addPageButtonConfiguration,
-													 isSwitchOn: initialSettingsButtonStates.addPageButtonState.isSwitchOn)))
+													 isSwitchOn: settingsButtonStates.addPageButtonState.isSwitchOn)))
 		contentData.append(.switchOption(data: .init(type: .returnAssistantEnabled,
 													 isSwitchOn: configuration.returnAssistantEnabled)))
 		
 		contentData.append(.switchOption(data: .init(type: .enableReturnReasons,
 													 isSwitchOn: configuration.enableReturnReasons)))
-		
+		contentData.append(.switchOption(data: .init(type: .customDocumentValidations,
+													 isSwitchOn: documentValidationsState.isSwitchOn)))
 		contentData.append(.switchOption(data: .init(type: .giniErrorLoggerIsOn,
 													 isSwitchOn: configuration.giniErrorLoggerIsOn)))
 		contentData.append(.switchOption(data: .init(type: .debugModeOn,
@@ -1476,9 +1483,9 @@ extension SettingsViewControllerTests {
 														  shadowRadius: 0,
 														  withBlurEffect: false)
 			configuration.primaryButtonConfiguration = buttonConfiguration
-			initialSettingsButtonStates.primaryButtonState.isSwitchOn = true
+			settingsButtonStates.primaryButtonState.isSwitchOn = true
 			
-			XCTAssertTrue(initialSettingsButtonStates.primaryButtonState.isSwitchOn,
+			XCTAssertTrue(settingsButtonStates.primaryButtonState.isSwitchOn,
 						  "primaryButtonConfiguration should be enabled in the gini configuration")
 		}
 	}
@@ -1495,10 +1502,10 @@ extension SettingsViewControllerTests {
 				return
 			}
 			data.isSwitchOn = false
-			configuration.primaryButtonConfiguration = initialSettingsButtonStates.primaryButtonState.configuration
-			initialSettingsButtonStates.primaryButtonState.isSwitchOn = false
+			configuration.primaryButtonConfiguration = settingsButtonStates.primaryButtonState.configuration
+			settingsButtonStates.primaryButtonState.isSwitchOn = false
 			
-			XCTAssertFalse(initialSettingsButtonStates.primaryButtonState.isSwitchOn,
+			XCTAssertFalse(settingsButtonStates.primaryButtonState.isSwitchOn,
 						   "primaryButtonConfiguration should not be enabled in the gini configuration")
 		}
 	}
@@ -1526,9 +1533,9 @@ extension SettingsViewControllerTests {
 														  shadowRadius: 0,
 														  withBlurEffect: false)
 			configuration.secondaryButtonConfiguration = buttonConfiguration
-			initialSettingsButtonStates.secondaryButtonState.isSwitchOn = true
+			settingsButtonStates.secondaryButtonState.isSwitchOn = true
 			
-			XCTAssertTrue(initialSettingsButtonStates.secondaryButtonState.isSwitchOn,
+			XCTAssertTrue(settingsButtonStates.secondaryButtonState.isSwitchOn,
 						  "secondaryButtonConfiguration should be enabled in the gini configuration")
 		}
 	}
@@ -1545,10 +1552,10 @@ extension SettingsViewControllerTests {
 				return
 			}
 			data.isSwitchOn = false
-			configuration.secondaryButtonConfiguration = initialSettingsButtonStates.secondaryButtonState.configuration
-			initialSettingsButtonStates.secondaryButtonState.isSwitchOn = false
+			configuration.secondaryButtonConfiguration = settingsButtonStates.secondaryButtonState.configuration
+			settingsButtonStates.secondaryButtonState.isSwitchOn = false
 			
-			XCTAssertFalse(initialSettingsButtonStates.secondaryButtonState.isSwitchOn,
+			XCTAssertFalse(settingsButtonStates.secondaryButtonState.isSwitchOn,
 						   "secondaryButtonConfiguration should not be enabled in the gini configuration")
 		}
 	}
@@ -1576,9 +1583,9 @@ extension SettingsViewControllerTests {
 														  shadowRadius: 0,
 														  withBlurEffect: false)
 			configuration.transparentButtonConfiguration = buttonConfiguration
-			initialSettingsButtonStates.transparentButtonState.isSwitchOn = true
+			settingsButtonStates.transparentButtonState.isSwitchOn = true
 			
-			XCTAssertTrue(initialSettingsButtonStates.transparentButtonState.isSwitchOn,
+			XCTAssertTrue(settingsButtonStates.transparentButtonState.isSwitchOn,
 						  "transparentButtonConfiguration should be enabled in the gini configuration")
 		}
 	}
@@ -1595,10 +1602,10 @@ extension SettingsViewControllerTests {
 				return
 			}
 			data.isSwitchOn = false
-			configuration.transparentButtonConfiguration = initialSettingsButtonStates.transparentButtonState.configuration
-			initialSettingsButtonStates.transparentButtonState.isSwitchOn = false
+			configuration.transparentButtonConfiguration = settingsButtonStates.transparentButtonState.configuration
+			settingsButtonStates.transparentButtonState.isSwitchOn = false
 			
-			XCTAssertFalse(initialSettingsButtonStates.transparentButtonState.isSwitchOn,
+			XCTAssertFalse(settingsButtonStates.transparentButtonState.isSwitchOn,
 						   "transparentButtonConfiguration should not be enabled in the gini configuration")
 		}
 	}
@@ -1627,9 +1634,9 @@ extension SettingsViewControllerTests {
 														  shadowRadius: 0,
 														  withBlurEffect: false)
 			configuration.cameraControlButtonConfiguration = buttonConfiguration
-			initialSettingsButtonStates.cameraControlButtonState.isSwitchOn = true
+			settingsButtonStates.cameraControlButtonState.isSwitchOn = true
 			
-			XCTAssertTrue(initialSettingsButtonStates.cameraControlButtonState.isSwitchOn,
+			XCTAssertTrue(settingsButtonStates.cameraControlButtonState.isSwitchOn,
 						  "cameraControlButtonConfiguration should be enabled in the gini configuration")
 		}
 	}
@@ -1646,10 +1653,10 @@ extension SettingsViewControllerTests {
 				return
 			}
 			data.isSwitchOn = false
-			configuration.cameraControlButtonConfiguration = initialSettingsButtonStates.cameraControlButtonState.configuration
-			initialSettingsButtonStates.cameraControlButtonState.isSwitchOn = false
+			configuration.cameraControlButtonConfiguration = settingsButtonStates.cameraControlButtonState.configuration
+			settingsButtonStates.cameraControlButtonState.isSwitchOn = false
 			
-			XCTAssertFalse(initialSettingsButtonStates.cameraControlButtonState.isSwitchOn,
+			XCTAssertFalse(settingsButtonStates.cameraControlButtonState.isSwitchOn,
 						   "cameraControlButtonConfiguration should not be enabled in the gini configuration")
 		}
 	}
@@ -1677,9 +1684,9 @@ extension SettingsViewControllerTests {
 														  shadowRadius: 0,
 														  withBlurEffect: false)
 			configuration.addPageButtonConfiguration = buttonConfiguration
-			initialSettingsButtonStates.addPageButtonState.isSwitchOn = true
+			settingsButtonStates.addPageButtonState.isSwitchOn = true
 			
-			XCTAssertTrue(initialSettingsButtonStates.addPageButtonState.isSwitchOn,
+			XCTAssertTrue(settingsButtonStates.addPageButtonState.isSwitchOn,
 						  "addPageButtonConfiguration should be enabled in the gini configuration")
 		}
 	}
@@ -1696,10 +1703,10 @@ extension SettingsViewControllerTests {
 				return
 			}
 			data.isSwitchOn = false
-			configuration.addPageButtonConfiguration = initialSettingsButtonStates.addPageButtonState.configuration
-			initialSettingsButtonStates.addPageButtonState.isSwitchOn = false
+			configuration.addPageButtonConfiguration = settingsButtonStates.addPageButtonState.configuration
+			settingsButtonStates.addPageButtonState.isSwitchOn = false
 			
-			XCTAssertFalse(initialSettingsButtonStates.addPageButtonState.isSwitchOn,
+			XCTAssertFalse(settingsButtonStates.addPageButtonState.isSwitchOn,
 						   "addPageButtonConfiguration should not be enabled in the gini configuration")
 		}
 	}
@@ -1781,6 +1788,57 @@ extension SettingsViewControllerTests {
 			
 			XCTAssertFalse(configuration.enableReturnReasons,
 						   "enableReturnReasons should not be enabled in the gini configuration")
+		}
+	}
+	
+	// MARK: - CustomDocumentValidations
+	
+	func testCustomDocumentValidationsSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .customDocumentValidations) else {
+			XCTFail("`customDocumentValidations` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .customDocumentValidations else {
+				XCTFail("Expected type `customDocumentValidations`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = true
+
+			configuration.customDocumentValidations = { document in
+				// As an example of custom document validation, we add a more strict check for file size
+				let maxFileSize = 0.5 * 1024 * 1024
+				if document.data.count > Int(maxFileSize) {
+					let error = CustomDocumentValidationError(message: "Diese Datei ist leider größer als \(maxFileSize)MB")
+					return CustomDocumentValidationResult.failure(withError: error)
+				}
+				return CustomDocumentValidationResult.success()
+			}
+			documentValidationsState.isSwitchOn = true
+			
+			XCTAssertTrue(documentValidationsState.isSwitchOn,
+						  "customDocumentValidations should be enabled in the gini configuration")
+		}
+	}
+	
+	func testCustomDocumentValidationsSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .customDocumentValidations) else {
+			XCTFail("`customDocumentValidations` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .customDocumentValidations else {
+				XCTFail("Expected type `customDocumentValidations`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = false
+			configuration.customDocumentValidations = documentValidationsState.validations
+			documentValidationsState.isSwitchOn = false
+			
+			XCTAssertFalse(documentValidationsState.isSwitchOn,
+						   "customDocumentValidations should not be enabled in the gini configuration")
 		}
 	}
 	

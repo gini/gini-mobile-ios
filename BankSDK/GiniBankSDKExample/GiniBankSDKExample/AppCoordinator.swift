@@ -126,7 +126,8 @@ final class AppCoordinator: Coordinator {
     private let documentMetadataAppFlowKey = "AppFlow"
     private let groupName = "group.bank.extension.test"
     private let imageDataKey = "imageData"
-	private var initialSettingsButtonStates: SettingsButtonStates?
+	private var settingsButtonStates: SettingsButtonStates?
+	private var documentValidationsState: DocumentValidationsState?
 
     init(window: UIWindow) {
         self.window = window
@@ -201,10 +202,11 @@ final class AppCoordinator: Coordinator {
     fileprivate func showSelectAPIScreen() {
         self.window.rootViewController = rootViewController
         self.window.makeKeyAndVisible()
-		setInitialSettingsButtonStates()
+		setSettingsButtonStates()
+		setDocumentValidationsState()
     }
 	
-	private func setInitialSettingsButtonStates() {
+	fileprivate func setSettingsButtonStates() {
 		let primaryButtonState = SettingsButtonStates.ButtonState(configuration: configuration.primaryButtonConfiguration,
 																  isSwitchOn: false)
 		let secondaryButtonState = SettingsButtonStates.ButtonState(configuration: configuration.secondaryButtonConfiguration,
@@ -215,13 +217,18 @@ final class AppCoordinator: Coordinator {
 																  isSwitchOn: false)
 		let addPageButtonState = SettingsButtonStates.ButtonState(configuration: configuration.addPageButtonConfiguration,
 																  isSwitchOn: false)
-		initialSettingsButtonStates = SettingsButtonStates(primaryButtonState: primaryButtonState,
-														   secondaryButtonState: secondaryButtonState,
-														   transparentButtonState: transparentButtonState,
-														   cameraControlButtonState: cameraControlButtonState,
-														   addPageButtonState: addPageButtonState)
+		settingsButtonStates = SettingsButtonStates(primaryButtonState: primaryButtonState,
+													secondaryButtonState: secondaryButtonState,
+													transparentButtonState: transparentButtonState,
+													cameraControlButtonState: cameraControlButtonState,
+													addPageButtonState: addPageButtonState)
 	}
     
+	fileprivate func setDocumentValidationsState() {
+		documentValidationsState = DocumentValidationsState(validations: configuration.customDocumentValidations,
+															isSwitchOn: false)
+	}
+	
     fileprivate func showScreenAPI(with pages: [GiniCapturePage]? = nil) {
         documentMetadata = Document.Metadata(branchId: documentMetadataBranchId,
                                              additionalHeaders: [documentMetadataAppFlowKey: "ScreenAPI"])
@@ -239,9 +246,11 @@ final class AppCoordinator: Coordinator {
     }
     
     fileprivate func showSettings() {
-		guard let initialSettingsButtonStates = initialSettingsButtonStates else { return }
+		guard let settingsButtonStates = settingsButtonStates,
+			  let documentValidationsState = documentValidationsState else { return }
 		let settingsViewController = SettingsViewController(giniConfiguration: configuration,
-															initialSettingsButtonStates: initialSettingsButtonStates)
+															settingsButtonStates: settingsButtonStates,
+															documentValidationsState: documentValidationsState)
 		settingsViewController.delegate = self
 		settingsViewController.modalPresentationStyle = .overFullScreen
 		settingsViewController.modalTransitionStyle = .coverVertical

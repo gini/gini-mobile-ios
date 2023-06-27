@@ -23,16 +23,19 @@ final class SettingsViewController: UIViewController {
 	
 	var contentData = [CellType]()
 	let giniConfiguration: GiniBankConfiguration
-	var initialSettingsButtonStates: SettingsButtonStates
+	var settingsButtonStates: SettingsButtonStates
+	var documentValidationsState: DocumentValidationsState
 	
 	weak var delegate: SettingsViewControllerDelegate?
 	
 	// MARK: - Initializers
 	
 	init(giniConfiguration: GiniBankConfiguration,
-		 initialSettingsButtonStates: SettingsButtonStates) {
+		 settingsButtonStates: SettingsButtonStates,
+		 documentValidationsState: DocumentValidationsState) {
 		self.giniConfiguration = giniConfiguration
-		self.initialSettingsButtonStates = initialSettingsButtonStates
+		self.settingsButtonStates = settingsButtonStates
+		self.documentValidationsState = documentValidationsState
 		super.init(nibName: nil, bundle: nil)
 	}
 	
@@ -172,29 +175,33 @@ final class SettingsViewController: UIViewController {
 													 isSwitchOn: giniConfiguration.digitalInvoiceNavigationBarBottomAdapter != nil)))
 
 		contentData.append(.switchOption(data: .init(type: .primaryButtonConfiguration,
-													 isSwitchOn: initialSettingsButtonStates.primaryButtonState.isSwitchOn)))
+													 isSwitchOn: settingsButtonStates.primaryButtonState.isSwitchOn)))
 		
 		contentData.append(.switchOption(data: .init(type: .secondaryButtonConfiguration,
-													 isSwitchOn: initialSettingsButtonStates.secondaryButtonState.isSwitchOn)))
+													 isSwitchOn: settingsButtonStates.secondaryButtonState.isSwitchOn)))
 		
 		contentData.append(.switchOption(data: .init(type: .transparentButtonConfiguration,
-													 isSwitchOn: initialSettingsButtonStates.transparentButtonState.isSwitchOn)))
+													 isSwitchOn: settingsButtonStates.transparentButtonState.isSwitchOn)))
 		
 		contentData.append(.switchOption(data: .init(type: .cameraControlButtonConfiguration,
-													 isSwitchOn: initialSettingsButtonStates.cameraControlButtonState.isSwitchOn)))
+													 isSwitchOn: settingsButtonStates.cameraControlButtonState.isSwitchOn)))
 		
 		contentData.append(.switchOption(data: .init(type: .addPageButtonConfiguration,
-													 isSwitchOn: initialSettingsButtonStates.addPageButtonState.isSwitchOn)))
+													 isSwitchOn: settingsButtonStates.addPageButtonState.isSwitchOn)))
 
 		contentData.append(.switchOption(data: .init(type: .enableReturnReasons,
 													 isSwitchOn: giniConfiguration.enableReturnReasons)))
+		
+		contentData.append(.switchOption(data: .init(type: .customDocumentValidations,
+													 isSwitchOn: documentValidationsState.isSwitchOn)))
+		
 		// Add debug or development options at the end in the list
 		
 		contentData.append(.switchOption(data: .init(type: .giniErrorLoggerIsOn,
 													 isSwitchOn: giniConfiguration.giniErrorLoggerIsOn)))
 		contentData.append(.switchOption(data: .init(type: .debugModeOn,
 													 isSwitchOn: giniConfiguration.debugModeOn)))
-
+		
 		self.contentData = contentData
 	}
 	
@@ -322,10 +329,10 @@ final class SettingsViewController: UIViewController {
 			giniConfiguration.digitalInvoiceNavigationBarBottomAdapter = customAdapter
 		case .primaryButtonConfiguration:
 			guard data.isSwitchOn else {
-				giniConfiguration.primaryButtonConfiguration = initialSettingsButtonStates.primaryButtonState.configuration
+				giniConfiguration.primaryButtonConfiguration = settingsButtonStates.primaryButtonState.configuration
 				return
 			}
-			initialSettingsButtonStates.primaryButtonState.isSwitchOn = data.isSwitchOn
+			settingsButtonStates.primaryButtonState.isSwitchOn = data.isSwitchOn
 			
 			let buttonConfiguration = ButtonConfiguration(backgroundColor: .yellow,
 														  borderColor: .red,
@@ -338,10 +345,10 @@ final class SettingsViewController: UIViewController {
 			giniConfiguration.primaryButtonConfiguration = buttonConfiguration
 		case .secondaryButtonConfiguration:
 			guard data.isSwitchOn else {
-				giniConfiguration.secondaryButtonConfiguration = initialSettingsButtonStates.secondaryButtonState.configuration
+				giniConfiguration.secondaryButtonConfiguration = settingsButtonStates.secondaryButtonState.configuration
 				return
 			}
-			initialSettingsButtonStates.secondaryButtonState.isSwitchOn = data.isSwitchOn
+			settingsButtonStates.secondaryButtonState.isSwitchOn = data.isSwitchOn
 			let buttonConfiguration = ButtonConfiguration(backgroundColor: .cyan,
 														  borderColor: .blue,
 														  titleColor: .green,
@@ -353,10 +360,10 @@ final class SettingsViewController: UIViewController {
 			giniConfiguration.secondaryButtonConfiguration = buttonConfiguration
 		case .transparentButtonConfiguration:
 			guard data.isSwitchOn else {
-				giniConfiguration.transparentButtonConfiguration = initialSettingsButtonStates.transparentButtonState.configuration
+				giniConfiguration.transparentButtonConfiguration = settingsButtonStates.transparentButtonState.configuration
 				return
 			}
-			initialSettingsButtonStates.transparentButtonState.isSwitchOn = data.isSwitchOn
+			settingsButtonStates.transparentButtonState.isSwitchOn = data.isSwitchOn
 			let buttonConfiguration = ButtonConfiguration(backgroundColor: .green,
 														  borderColor: .yellow,
 														  titleColor: .green,
@@ -368,10 +375,10 @@ final class SettingsViewController: UIViewController {
 			giniConfiguration.transparentButtonConfiguration = buttonConfiguration
 		case .cameraControlButtonConfiguration:
 			guard data.isSwitchOn else {
-				giniConfiguration.cameraControlButtonConfiguration = initialSettingsButtonStates.cameraControlButtonState.configuration
+				giniConfiguration.cameraControlButtonConfiguration = settingsButtonStates.cameraControlButtonState.configuration
 				return
 			}
-			initialSettingsButtonStates.cameraControlButtonState.isSwitchOn = data.isSwitchOn
+			settingsButtonStates.cameraControlButtonState.isSwitchOn = data.isSwitchOn
 			let buttonConfiguration = ButtonConfiguration(backgroundColor: .magenta,
 														  borderColor: .lightGray,
 														  titleColor: .green,
@@ -383,10 +390,10 @@ final class SettingsViewController: UIViewController {
 			giniConfiguration.cameraControlButtonConfiguration = buttonConfiguration
 		case .addPageButtonConfiguration:
 			guard data.isSwitchOn else {
-				giniConfiguration.addPageButtonConfiguration = initialSettingsButtonStates.addPageButtonState.configuration
+				giniConfiguration.addPageButtonConfiguration = settingsButtonStates.addPageButtonState.configuration
 				return
 			}
-			initialSettingsButtonStates.addPageButtonState.isSwitchOn = data.isSwitchOn
+			settingsButtonStates.addPageButtonState.isSwitchOn = data.isSwitchOn
 			let buttonConfiguration = ButtonConfiguration(backgroundColor: .white,
 														  borderColor: .red,
 														  titleColor: .green,
@@ -396,6 +403,21 @@ final class SettingsViewController: UIViewController {
 														  shadowRadius: 0,
 														  withBlurEffect: false)
 			giniConfiguration.addPageButtonConfiguration = buttonConfiguration
+		case .customDocumentValidations:
+			guard data.isSwitchOn else {
+				giniConfiguration.customDocumentValidations = documentValidationsState.validations
+				return
+			}
+			documentValidationsState.isSwitchOn = data.isSwitchOn
+			giniConfiguration.customDocumentValidations = { document in
+				// As an example of custom document validation, we add a more strict check for file size
+				let maxFileSize = 0.5 * 1024 * 1024
+				if document.data.count > Int(maxFileSize) {
+					let error = CustomDocumentValidationError(message: "Diese Datei ist leider größer als \(maxFileSize)MB")
+					return CustomDocumentValidationResult.failure(withError: error)
+				}
+				return CustomDocumentValidationResult.success()
+			}
 		}
 	}
 	
