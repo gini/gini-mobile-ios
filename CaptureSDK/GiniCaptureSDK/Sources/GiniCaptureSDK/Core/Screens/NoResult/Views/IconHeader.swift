@@ -12,14 +12,19 @@ import UIKit
 class IconHeader: UIView {
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var headerLabel: UILabel!
+    @IBOutlet weak var headerStack: UIStackView!
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    fileprivate func configureAccessibility() {
         isAccessibilityElement = false
         accessibilityElements = [iconImageView as Any, headerLabel as Any]
         headerLabel.adjustsFontForContentSizeCategory = true
         headerLabel.isAccessibilityElement = true
         iconImageView.isAccessibilityElement = true
         iconImageView.accessibilityTraits = .image
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        configureAccessibility()
     }
 }
