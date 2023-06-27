@@ -400,8 +400,6 @@ public final class GiniBankConfiguration: NSObject {
         let giniBankConfiguration = GiniBankConfiguration.shared
 		giniBankConfiguration.statusBarStyle = configuration.statusBarStyle
 
-        giniBankConfiguration.debugModeOn = configuration.debugModeOn
-
         giniBankConfiguration.multipageEnabled = configuration.multipageEnabled
 
         giniBankConfiguration.openWithEnabled = configuration.openWithEnabled
@@ -434,6 +432,13 @@ public final class GiniBankConfiguration: NSObject {
 		giniBankConfiguration.customMenuItems = configuration.customMenuItems
 		giniBankConfiguration.customNavigationController = configuration.customNavigationController
 
+		
+		giniBankConfiguration.onboardingLightingIllustrationAdapter = configuration.onboardingLightingIllustrationAdapter
+		giniBankConfiguration.onboardingQRCodeIllustrationAdapter = configuration.onboardingQRCodeIllustrationAdapter
+		giniBankConfiguration.onboardingMultiPageIllustrationAdapter = configuration.onboardingMultiPageIllustrationAdapter
+		giniBankConfiguration.onboardingNavigationBarBottomAdapter = configuration.onboardingNavigationBarBottomAdapter
+
+		giniBankConfiguration.debugModeOn = configuration.debugModeOn
 		giniBankConfiguration.giniErrorLoggerIsOn = configuration.giniErrorLoggerIsOn
     }
 
