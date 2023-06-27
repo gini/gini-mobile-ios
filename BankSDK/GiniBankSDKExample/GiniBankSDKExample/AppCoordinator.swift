@@ -126,6 +126,7 @@ final class AppCoordinator: Coordinator {
     private let documentMetadataAppFlowKey = "AppFlow"
     private let groupName = "group.bank.extension.test"
     private let imageDataKey = "imageData"
+	private var initialSettingsButtonStates: SettingsButtonStates?
 
     init(window: UIWindow) {
         self.window = window
@@ -200,7 +201,26 @@ final class AppCoordinator: Coordinator {
     fileprivate func showSelectAPIScreen() {
         self.window.rootViewController = rootViewController
         self.window.makeKeyAndVisible()
+		setInitialSettingsButtonStates()
     }
+	
+	private func setInitialSettingsButtonStates() {
+		let primaryButtonState = SettingsButtonStates.ButtonState(configuration: configuration.primaryButtonConfiguration,
+																  isSwitchOn: false)
+		let secondaryButtonState = SettingsButtonStates.ButtonState(configuration: configuration.secondaryButtonConfiguration,
+																  isSwitchOn: false)
+		let transparentButtonState = SettingsButtonStates.ButtonState(configuration: configuration.transparentButtonConfiguration,
+																  isSwitchOn: false)
+		let cameraControlButtonState = SettingsButtonStates.ButtonState(configuration: configuration.cameraControlButtonConfiguration,
+																  isSwitchOn: false)
+		let addPageButtonState = SettingsButtonStates.ButtonState(configuration: configuration.addPageButtonConfiguration,
+																  isSwitchOn: false)
+		initialSettingsButtonStates = SettingsButtonStates(primaryButtonState: primaryButtonState,
+														   secondaryButtonState: secondaryButtonState,
+														   transparentButtonState: transparentButtonState,
+														   cameraControlButtonState: cameraControlButtonState,
+														   addPageButtonState: addPageButtonState)
+	}
     
     fileprivate func showScreenAPI(with pages: [GiniCapturePage]? = nil) {
         documentMetadata = Document.Metadata(branchId: documentMetadataBranchId,
@@ -219,7 +239,9 @@ final class AppCoordinator: Coordinator {
     }
     
     fileprivate func showSettings() {
-		let settingsViewController = SettingsViewController(giniConfiguration: configuration)
+		guard let initialSettingsButtonStates = initialSettingsButtonStates else { return }
+		let settingsViewController = SettingsViewController(giniConfiguration: configuration,
+															initialSettingsButtonStates: initialSettingsButtonStates)
 		settingsViewController.delegate = self
 		settingsViewController.modalPresentationStyle = .overFullScreen
 		settingsViewController.modalTransitionStyle = .coverVertical

@@ -23,13 +23,16 @@ final class SettingsViewController: UIViewController {
 	
 	var contentData = [CellType]()
 	let giniConfiguration: GiniBankConfiguration
+	var initialSettingsButtonStates: SettingsButtonStates
 	
 	weak var delegate: SettingsViewControllerDelegate?
 	
 	// MARK: - Initializers
 	
-	init(giniConfiguration: GiniBankConfiguration) {
+	init(giniConfiguration: GiniBankConfiguration,
+		 initialSettingsButtonStates: SettingsButtonStates) {
 		self.giniConfiguration = giniConfiguration
+		self.initialSettingsButtonStates = initialSettingsButtonStates
 		super.init(nibName: nil, bundle: nil)
 	}
 	
@@ -168,7 +171,20 @@ final class SettingsViewController: UIViewController {
 		contentData.append(.switchOption(data: .init(type: .digitalInvoiceNavigationBarBottomAdapter,
 													 isSwitchOn: giniConfiguration.digitalInvoiceNavigationBarBottomAdapter != nil)))
 
-
+		contentData.append(.switchOption(data: .init(type: .primaryButtonConfiguration,
+													 isSwitchOn: initialSettingsButtonStates.primaryButtonState.isSwitchOn)))
+		
+		contentData.append(.switchOption(data: .init(type: .secondaryButtonConfiguration,
+													 isSwitchOn: initialSettingsButtonStates.secondaryButtonState.isSwitchOn)))
+		
+		contentData.append(.switchOption(data: .init(type: .transparentButtonConfiguration,
+													 isSwitchOn: initialSettingsButtonStates.transparentButtonState.isSwitchOn)))
+		
+		contentData.append(.switchOption(data: .init(type: .cameraControlButtonConfiguration,
+													 isSwitchOn: initialSettingsButtonStates.cameraControlButtonState.isSwitchOn)))
+		
+		contentData.append(.switchOption(data: .init(type: .addPageButtonConfiguration,
+													 isSwitchOn: initialSettingsButtonStates.addPageButtonState.isSwitchOn)))
 
 		contentData.append(.switchOption(data: .init(type: .enableReturnReasons,
 													 isSwitchOn: giniConfiguration.enableReturnReasons)))
@@ -304,6 +320,82 @@ final class SettingsViewController: UIViewController {
 		case .digitalInvoiceNavigationBarBottomAdapter:
 			let customAdapter = CustomDigitalInvoiceBottomNavigationBarAdapter()
 			giniConfiguration.digitalInvoiceNavigationBarBottomAdapter = customAdapter
+		case .primaryButtonConfiguration:
+			guard data.isSwitchOn else {
+				giniConfiguration.primaryButtonConfiguration = initialSettingsButtonStates.primaryButtonState.configuration
+				return
+			}
+			initialSettingsButtonStates.primaryButtonState.isSwitchOn = data.isSwitchOn
+			
+			let buttonConfiguration = ButtonConfiguration(backgroundColor: .yellow,
+														  borderColor: .red,
+														  titleColor: .green,
+														  shadowColor: .clear,
+														  cornerRadius: 22,
+														  borderWidth: 4,
+														  shadowRadius: 0,
+														  withBlurEffect: false)
+			giniConfiguration.primaryButtonConfiguration = buttonConfiguration
+		case .secondaryButtonConfiguration:
+			guard data.isSwitchOn else {
+				giniConfiguration.secondaryButtonConfiguration = initialSettingsButtonStates.secondaryButtonState.configuration
+				return
+			}
+			initialSettingsButtonStates.secondaryButtonState.isSwitchOn = data.isSwitchOn
+			let buttonConfiguration = ButtonConfiguration(backgroundColor: .cyan,
+														  borderColor: .blue,
+														  titleColor: .green,
+														  shadowColor: .clear,
+														  cornerRadius: 22,
+														  borderWidth: 4,
+														  shadowRadius: 0,
+														  withBlurEffect: false)
+			giniConfiguration.secondaryButtonConfiguration = buttonConfiguration
+		case .transparentButtonConfiguration:
+			guard data.isSwitchOn else {
+				giniConfiguration.transparentButtonConfiguration = initialSettingsButtonStates.transparentButtonState.configuration
+				return
+			}
+			initialSettingsButtonStates.transparentButtonState.isSwitchOn = data.isSwitchOn
+			let buttonConfiguration = ButtonConfiguration(backgroundColor: .green,
+														  borderColor: .yellow,
+														  titleColor: .green,
+														  shadowColor: .clear,
+														  cornerRadius: 22,
+														  borderWidth: 4,
+														  shadowRadius: 0,
+														  withBlurEffect: false)
+			giniConfiguration.transparentButtonConfiguration = buttonConfiguration
+		case .cameraControlButtonConfiguration:
+			guard data.isSwitchOn else {
+				giniConfiguration.cameraControlButtonConfiguration = initialSettingsButtonStates.cameraControlButtonState.configuration
+				return
+			}
+			initialSettingsButtonStates.cameraControlButtonState.isSwitchOn = data.isSwitchOn
+			let buttonConfiguration = ButtonConfiguration(backgroundColor: .magenta,
+														  borderColor: .lightGray,
+														  titleColor: .green,
+														  shadowColor: .clear,
+														  cornerRadius: 22,
+														  borderWidth: 4,
+														  shadowRadius: 0,
+														  withBlurEffect: false)
+			giniConfiguration.cameraControlButtonConfiguration = buttonConfiguration
+		case .addPageButtonConfiguration:
+			guard data.isSwitchOn else {
+				giniConfiguration.addPageButtonConfiguration = initialSettingsButtonStates.addPageButtonState.configuration
+				return
+			}
+			initialSettingsButtonStates.addPageButtonState.isSwitchOn = data.isSwitchOn
+			let buttonConfiguration = ButtonConfiguration(backgroundColor: .white,
+														  borderColor: .red,
+														  titleColor: .green,
+														  shadowColor: .clear,
+														  cornerRadius: 22,
+														  borderWidth: 4,
+														  shadowRadius: 0,
+														  withBlurEffect: false)
+			giniConfiguration.addPageButtonConfiguration = buttonConfiguration
 		}
 	}
 	

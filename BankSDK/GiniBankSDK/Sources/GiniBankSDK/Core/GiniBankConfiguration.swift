@@ -430,13 +430,13 @@ public final class GiniBankConfiguration: NSObject {
 		giniBankConfiguration.onButtonLoadingIndicator = configuration.onButtonLoadingIndicator
 		giniBankConfiguration.customLoadingIndicator = configuration.customLoadingIndicator
 		giniBankConfiguration.customMenuItems = configuration.customMenuItems
-		
+
 		giniBankConfiguration.customNavigationController = configuration.customNavigationController
 		giniBankConfiguration.helpNavigationBarBottomAdapter = configuration.helpNavigationBarBottomAdapter
 		giniBankConfiguration.cameraNavigationBarBottomAdapter = configuration.cameraNavigationBarBottomAdapter
 		giniBankConfiguration.reviewNavigationBarBottomAdapter = configuration.reviewNavigationBarBottomAdapter
 		giniBankConfiguration.imagePickerNavigationBarBottomAdapter = configuration.imagePickerNavigationBarBottomAdapter
-		
+
 		giniBankConfiguration.onboardingLightingIllustrationAdapter = configuration.onboardingLightingIllustrationAdapter
 		giniBankConfiguration.onboardingQRCodeIllustrationAdapter = configuration.onboardingQRCodeIllustrationAdapter
 		giniBankConfiguration.onboardingMultiPageIllustrationAdapter = configuration.onboardingMultiPageIllustrationAdapter
