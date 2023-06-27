@@ -46,6 +46,7 @@ struct SwitchOptionModel {
 		case addPageButtonConfiguration
 		case returnAssistantEnabled
 		case enableReturnReasons
+		case customDocumentValidations
 		case giniErrorLoggerIsOn
 		case debugModeOn
 		
@@ -123,6 +124,8 @@ struct SwitchOptionModel {
 				return "Return Assistant feature"
 			case .enableReturnReasons:
 				return "Return reasons dialog"
+			case .customDocumentValidations:
+				return "Add custom document validations"
 			case .giniErrorLoggerIsOn:
 				return "Gini error logger"
 			case .debugModeOn:

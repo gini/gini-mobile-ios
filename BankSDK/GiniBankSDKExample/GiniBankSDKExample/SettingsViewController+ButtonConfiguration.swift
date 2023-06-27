@@ -15,7 +15,11 @@ final class SettingsButtonStates {
 	var cameraControlButtonState: ButtonState
 	var addPageButtonState: ButtonState
 	
-	init(primaryButtonState: ButtonState, secondaryButtonState: ButtonState, transparentButtonState: ButtonState, cameraControlButtonState: ButtonState, addPageButtonState: ButtonState) {
+	init(primaryButtonState: ButtonState,
+		 secondaryButtonState: ButtonState,
+		 transparentButtonState: ButtonState,
+		 cameraControlButtonState: ButtonState,
+		 addPageButtonState: ButtonState) {
 		self.primaryButtonState = primaryButtonState
 		self.secondaryButtonState = secondaryButtonState
 		self.transparentButtonState = transparentButtonState
