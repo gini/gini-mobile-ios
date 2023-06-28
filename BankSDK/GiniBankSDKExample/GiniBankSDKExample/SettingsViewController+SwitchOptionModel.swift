@@ -48,6 +48,7 @@ struct SwitchOptionModel {
 		case enableReturnReasons
 		case customDocumentValidations
 		case giniErrorLoggerIsOn
+		case customGiniErrorLogger
 		case debugModeOn
 		
 		var title: String {
@@ -128,6 +129,8 @@ struct SwitchOptionModel {
 				return "Add custom document validations"
 			case .giniErrorLoggerIsOn:
 				return "Gini error logger"
+			case .customGiniErrorLogger:
+				return "Custom Gini error logger"
 			case .debugModeOn:
 				return "Debug mode"
 			}
@@ -179,6 +182,8 @@ struct SwitchOptionModel {
 				return "Add page button used on `Review `screen."
 			case .returnAssistantEnabled:
 				return "Present a digital representation of the invoice"
+			case .customGiniErrorLogger:
+				return "This will work if the `Gini error logger` is also enabled."
 			default:
 				return nil
 			}
