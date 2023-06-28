@@ -199,6 +199,9 @@ final class SettingsViewController: UIViewController {
 		
 		contentData.append(.switchOption(data: .init(type: .giniErrorLoggerIsOn,
 													 isSwitchOn: giniConfiguration.giniErrorLoggerIsOn)))
+		contentData.append(.switchOption(data: .init(type: .customGiniErrorLogger,
+													 isSwitchOn: giniConfiguration.customGiniErrorLoggerDelegate != nil)))
+		
 		contentData.append(.switchOption(data: .init(type: .debugModeOn,
 													 isSwitchOn: giniConfiguration.debugModeOn)))
 		
@@ -312,6 +315,13 @@ final class SettingsViewController: UIViewController {
 			giniConfiguration.enableReturnReasons = data.isSwitchOn
 		case .giniErrorLoggerIsOn:
 			giniConfiguration.giniErrorLoggerIsOn = data.isSwitchOn
+		case .customGiniErrorLogger:
+			if data.isSwitchOn && giniConfiguration.giniErrorLoggerIsOn {
+				giniConfiguration.customGiniErrorLoggerDelegate = self
+			} else {
+				giniConfiguration.customGiniErrorLoggerDelegate = nil
+			}
+			
 		case .debugModeOn:
 			giniConfiguration.debugModeOn = data.isSwitchOn
 		case .digitalInvoiceOnboardingIllustrationAdapter:
@@ -508,5 +518,11 @@ extension SettingsViewController: SegmentedOptionTableViewCellDelegate {
 			giniConfiguration.fileImportSupportedTypes = .pdf_and_images
 		default: return
 		}
+	}
+}
+
+extension SettingsViewController: GiniCaptureErrorLoggerDelegate {
+	func handleErrorLog(error: GiniCaptureSDK.ErrorLog) {
+		print("💻 custom - log error event called")
 	}
 }

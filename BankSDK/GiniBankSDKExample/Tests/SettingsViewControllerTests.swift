@@ -48,6 +48,7 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.returnAssistantEnabled = true
 		configuration.enableReturnReasons = true
 		configuration.giniErrorLoggerIsOn = true
+		configuration.customGiniErrorLoggerDelegate = self
 		configuration.debugModeOn = true
 		return configuration
 	}()
@@ -176,6 +177,8 @@ final class SettingsViewControllerTests: XCTestCase {
 													 isSwitchOn: documentValidationsState.isSwitchOn)))
 		contentData.append(.switchOption(data: .init(type: .giniErrorLoggerIsOn,
 													 isSwitchOn: configuration.giniErrorLoggerIsOn)))
+		contentData.append(.switchOption(data: .init(type: .customGiniErrorLogger,
+													 isSwitchOn: configuration.customGiniErrorLoggerDelegate != nil)))
 		contentData.append(.switchOption(data: .init(type: .debugModeOn,
 													 isSwitchOn: configuration.debugModeOn)))
 		
@@ -1882,6 +1885,46 @@ extension SettingsViewControllerTests {
 		}
 	}
 	
+	// MARK: - CustomGiniErrorLogger
+	
+	func testCustomGiniErrorLoggerSwitchOn() {
+		guard let index = getSwitchOptionIndex(for: .customGiniErrorLogger) else {
+			XCTFail("`customGiniErrorLogger` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .customGiniErrorLogger else {
+				XCTFail("Expected type `customGiniErrorLogger`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = true
+			configuration.customGiniErrorLoggerDelegate = self
+			
+			XCTAssertTrue(configuration.customGiniErrorLoggerDelegate != nil,
+						  "customGiniErrorLogger should be enabled in the gini configuration")
+		}
+	}
+	
+	func testCustomGiniErrorLoggerSwitchOff() {
+		guard let index = getSwitchOptionIndex(for: .customGiniErrorLogger) else {
+			XCTFail("`customGiniErrorLogger` option not found in sectionData")
+			return
+		}
+		
+		if case .switchOption(var data) = contentData[index] {
+			guard data.type == .customGiniErrorLogger else {
+				XCTFail("Expected type `customGiniErrorLogger`, found a different one: \(data.type)")
+				return
+			}
+			data.isSwitchOn = false
+			configuration.customGiniErrorLoggerDelegate = nil
+			
+			XCTAssertFalse(configuration.customGiniErrorLoggerDelegate != nil,
+						   "customGiniErrorLogger should not be enabled in the gini configuration")
+		}
+	}
+	
 	// MARK: - DebugMode
 	
 	func testDebugModeSwitchOn() {
@@ -1922,4 +1965,10 @@ extension SettingsViewControllerTests {
 		}
 	}
 
+}
+
+extension SettingsViewControllerTests: GiniCaptureErrorLoggerDelegate {
+	func handleErrorLog(error: GiniCaptureSDK.ErrorLog) {
+		print("💻 custom - log error event called")
+	}
 }
