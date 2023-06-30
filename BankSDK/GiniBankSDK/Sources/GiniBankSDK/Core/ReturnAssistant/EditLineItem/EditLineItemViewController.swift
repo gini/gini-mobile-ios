@@ -11,7 +11,6 @@ final class EditLineItemViewController: UIViewController {
     private lazy var containerView: UIView = {
         let view = UIView()
         view.backgroundColor = .GiniBank.light1
-        view.layer.cornerRadius = 16
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -85,6 +84,7 @@ final class EditLineItemViewController: UIViewController {
 
     private func setupView() {
         view.backgroundColor = .clear
+		containerView.round(corners: [.topLeft, .topRight], radius: Constants.cornerRadius)
     }
 
     private func setupConstraints() {
@@ -330,5 +330,6 @@ private extension EditLineItemViewController {
         static let tabletWidthMultiplier: CGFloat = 0.6
         static let animationDuration: CGFloat = 0.3
         static let topPadding: CGFloat = 36
+		static let cornerRadius: CGFloat = 16
     }
 }
