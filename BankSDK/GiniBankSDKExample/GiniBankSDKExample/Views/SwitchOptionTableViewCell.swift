@@ -43,6 +43,7 @@ final class SwitchOptionTableViewCell: UITableViewCell, NibLoadableView {
 		optionSwitch.addTarget(self, action: #selector(switchValueChanged(_:)), for: .valueChanged)
 		titleLabel.numberOfLines = 0
 		messageLabel.numberOfLines = 0
+		messageLabel.textColor = ColorPalette.greySuit
 	}
 	
 	func set(data: SwitchOptionModelCell) {
