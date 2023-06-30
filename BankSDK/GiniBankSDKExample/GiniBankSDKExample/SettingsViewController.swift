@@ -84,9 +84,11 @@ final class SettingsViewController: UIViewController {
 		
 		tableView.register(SwitchOptionTableViewCell.self)
 		tableView.register(SegmentedOptionTableViewCell.self)
+		tableView.register(InfoTableViewCell.self)
 
 		var contentData = [CellType]()
 		
+		contentData.append(.info(message: "Please relaunch the app to use the default GiniConfiguration values."))
 		contentData.append(.switchOption(data: .init(type: .openWith,
 													 isSwitchOn: giniConfiguration.openWithEnabled)))
 		contentData.append(.switchOption(data: .init(type: .qrCodeScanning,
@@ -459,6 +461,13 @@ final class SettingsViewController: UIViewController {
 		cell.delegate = self
 		return cell
 	}
+	
+	private func cell(for message: String) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell() as InfoTableViewCell
+		cell.set(message: message)
+		return cell
+	}
+	
 	// MARK: - Actions
 	
 	@objc func didSelectCloseButton() {
@@ -486,6 +495,8 @@ extension SettingsViewController: UITableViewDataSource {
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let row = indexPath.row
 		switch contentData[row] {
+		case .info(let message):
+			return cell(for: message)
 		case .switchOption(let data):
 			return cell(for: data, at: row)
 		case .fileImportType(let data):
