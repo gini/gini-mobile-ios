@@ -34,8 +34,6 @@ import UIKit
 /**
  The `AnalysisViewController` provides a custom analysis screen which shows the upload and analysis activity.
  The user should have the option of canceling the process by navigating back to the review screen.
- 
- - note: Component API only.
  */
 @objcMembers public final class AnalysisViewController: UIViewController {
 
