@@ -4,7 +4,6 @@
 //
 //  Created by David Vizaknai on 06.03.2023.
 //
-
 import GiniCaptureSDK
 import UIKit
 
@@ -34,7 +33,7 @@ final class EditLineItemViewController: UIViewController {
     private var currentContainerHeight: CGFloat = 300
     private var currentBottomPadding: CGFloat = 0
 
-    private var defaultHeight: CGFloat = 340
+    private var defaultHeight: CGFloat = 355
     private var isKeyboardPresented: Bool = false
     private var keyboardHeight: CGFloat = 0
 
@@ -93,19 +92,24 @@ final class EditLineItemViewController: UIViewController {
         view.addSubview(containerView)
         containerView.addSubview(editLineItemView)
 
-        NSLayoutConstraint.activate([
-            dimmedView.topAnchor.constraint(equalTo: view.topAnchor),
-            dimmedView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            dimmedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            dimmedView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+		// Create the constraints
+		let constraints = [
+			dimmedView.topAnchor.constraint(equalTo: view.topAnchor),
+			dimmedView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+			dimmedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+			dimmedView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+			editLineItemView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+			editLineItemView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+			editLineItemView.topAnchor.constraint(equalTo: containerView.topAnchor),
+			editLineItemView.bottomAnchor.constraint(lessThanOrEqualTo: containerView.bottomAnchor)
+		]
 
-            editLineItemView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            editLineItemView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            editLineItemView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            editLineItemView.heightAnchor.constraint(equalToConstant: defaultHeight),
-            editLineItemView.bottomAnchor.constraint(lessThanOrEqualTo: containerView.bottomAnchor)
-        ])
+		// Set the priority for the height constraint
+		let heightConstraint = editLineItemView.heightAnchor.constraint(equalToConstant: defaultHeight)
+		heightConstraint.priority = UILayoutPriority(rawValue: 750)
 
+		// Activate the constraints
+		NSLayoutConstraint.activate(constraints + [heightConstraint])
         containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: defaultHeight)
         containerViewBottomConstraint = containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
 
