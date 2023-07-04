@@ -5,12 +5,13 @@
 //  Created by David Vizaknai on 06.03.2023.
 //
 
+import GiniCaptureSDK
 import UIKit
 
 final class EditLineItemViewController: UIViewController {
     private lazy var containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .GiniBank.light1
+        view.backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark1).uiColor()
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
