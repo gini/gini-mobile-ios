@@ -68,15 +68,15 @@ struct SwitchOptionModel {
 			case .bottomNavigationBar:
 				return "Bottom navigation bar"
 			case .helpNavigationBarBottomAdapter:
-				return "Custom bottom navigation bar on the help screens"
+				return "Help screens custom bottom navigation bar"
 			case .cameraNavigationBarBottomAdapter:
-				return "Custom bottom navigation bar on the camera screen"
+				return "Camera screen custom bottom navigation bar"
 			case .reviewNavigationBarBottomAdapter:
-				return "Custom bottom navigation bar on the review screen"
+				return "Review screen custom bottom navigation bar"
 			case .imagePickerNavigationBarBottomAdapter:
-				return "Custom bottom navigation bar on the image picker screen"
+				return "Image picker screen custom bottom navigation bar"
 			case .onboardingShowAtLaunch:
-				return "Onboarding screens at launch"
+				return "Onboarding screens at every launch"
 			case .onboardingShowAtFirstLaunch:
 				return "Onboarding screens at first launch"
 			case .onboardingAlignCornersIllustrationAdapter:
@@ -126,7 +126,7 @@ struct SwitchOptionModel {
 			case .enableReturnReasons:
 				return "Return reasons dialog"
 			case .customDocumentValidations:
-				return "Add custom document validations"
+				return "Custom document validations"
 			case .giniErrorLoggerIsOn:
 				return "Gini error logger"
 			case .customGiniErrorLogger:
@@ -141,9 +141,9 @@ struct SwitchOptionModel {
 			case .qrCodeScanningOnly:
 				return "This will work if the `QR code scanning` switch is also enabled."
 			case .flashOnByDefault:
-				return "This will work if the `flash toggle` switch is also enabled."
+				return "This will work if the `Flash toggle` switch is also enabled."
 			case .customOnboardingPages:
-				return "This will work if the `onboarding show at launch` switch is also enabled."
+				return "This will work if the `Onboarding show at every launch` switch is also enabled."
 			case .onButtonLoadingIndicator:
 				return "Set custom loading indicator on the buttons which support loading."
 			case .customLoadingIndicator:
@@ -153,9 +153,9 @@ struct SwitchOptionModel {
 			case .shouldShowDragAndDropTutorial:
 				return "Show drag and drop tutorial step in Help menu > How to import option."
 			case .onboardingShowAtFirstLaunch:
-				return "Overwrites `Onboarding screens at launch` for the first launch."
+				return "Overwrites `Onboarding screens at every launch` for the first launch."
 			case .onboardingNavigationBarBottomAdapter:
-				return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
+				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
 			case .digitalInvoiceHelpNavigationBarBottomAdapter:
 				return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
 			case .digitalInvoiceOnboardingNavigationBarBottomAdapter:
@@ -182,6 +182,8 @@ struct SwitchOptionModel {
 				return "Add page button used on `Review `screen."
 			case .returnAssistantEnabled:
 				return "Present a digital representation of the invoice"
+			case .customDocumentValidations:
+				return "Custom document validations that can be done apart from the default ones (file size, file type...)"
 			case .customGiniErrorLogger:
 				return "This will work if the `Gini error logger` is also enabled."
 			default:
