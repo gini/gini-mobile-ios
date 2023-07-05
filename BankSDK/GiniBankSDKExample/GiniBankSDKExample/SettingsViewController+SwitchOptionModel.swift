@@ -112,15 +112,15 @@ struct SwitchOptionModel {
 			case .digitalInvoiceNavigationBarBottomAdapter:
 				return "Digital invoice bottom navigation bar"
 			case .primaryButtonConfiguration:
-				return "Custom primary button"
+				return "Custom configuration for the primary button"
 			case .secondaryButtonConfiguration:
-				return "Custom secondary button"
+				return "Custom configuration for the secondary button"
 			case .transparentButtonConfiguration:
-				return "Custom transparent button"
+				return "Custom configuration for the transparent button"
 			case .cameraControlButtonConfiguration:
-				return "Custom camera control button"
+				return "Custom configuration for the camera control button"
 			case .addPageButtonConfiguration:
-				return "Custom add page button"
+				return "Custom configuration for the add page button"
 			case .returnAssistantEnabled:
 				return "Return Assistant feature"
 			case .enableReturnReasons:
@@ -142,8 +142,6 @@ struct SwitchOptionModel {
 				return "This will work if the `QR code scanning` switch is also enabled."
 			case .flashOnByDefault:
 				return "This will work if the `Flash toggle` switch is also enabled."
-			case .customOnboardingPages:
-				return "This will work if the `Onboarding show at every launch` switch is also enabled."
 			case .onButtonLoadingIndicator:
 				return "Set custom loading indicator on the buttons which support loading."
 			case .customLoadingIndicator:
@@ -154,6 +152,16 @@ struct SwitchOptionModel {
 				return "Show drag and drop tutorial step in Help menu > How to import option."
 			case .onboardingShowAtFirstLaunch:
 				return "Overwrites `Onboarding screens at every launch` for the first launch."
+			case .customOnboardingPages:
+				return "This will work if the `Onboarding show at every launch` switch is also enabled."
+			case .onboardingAlignCornersIllustrationAdapter:
+				return "This will work if the `Onboarding show at every launch` switch is also enabled."
+			case .onboardingLightingIllustrationAdapter:
+				return "This will work if the `Onboarding show at every launch` switch is also enabled."
+			case .onboardingQRCodeIllustrationAdapter:
+				return "This will work if the `Onboarding show at every launch` switch is also enabled."
+			case .onboardingMultiPageIllustrationAdapter:
+				return "This will work if the `Onboarding show at every launch` switch is also enabled."
 			case .onboardingNavigationBarBottomAdapter:
 				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
 			case .digitalInvoiceHelpNavigationBarBottomAdapter:
@@ -171,9 +179,9 @@ struct SwitchOptionModel {
 			case .imagePickerNavigationBarBottomAdapter:
 				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
 			case .primaryButtonConfiguration:
-				return "Primary button on different screens, e.g: `Onboarding`, `Digital Invoice Onboarding`, `Error`, etc."
+				return "Primary button used on different screens, e.g: `Onboarding`, `Digital Invoice Onboarding`, `Error`, etc."
 			case .secondaryButtonConfiguration:
-				return "Secondary button on different screens: `No Results`, `Error`."
+				return "Secondary button used on different screens: `No Results`, `Error`."
 			case .transparentButtonConfiguration:
 				return "Transparent button used on `Onboarding` screen in the bottom navigation bar."
 			case .cameraControlButtonConfiguration:
