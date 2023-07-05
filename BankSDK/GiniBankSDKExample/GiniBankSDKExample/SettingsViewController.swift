@@ -11,8 +11,7 @@ import GiniCaptureSDK
 import AVFoundation
 
 protocol SettingsViewControllerDelegate: AnyObject {
-	func settings(settingViewController: SettingsViewController,
-				  didChangeConfiguration configuration: GiniBankConfiguration)
+	func didTapCloseButton()
 }
 
 final class SettingsViewController: UIViewController {
@@ -52,21 +51,12 @@ final class SettingsViewController: UIViewController {
 	private func configureNavigationBar() {
 		navigationBar.isTranslucent = false
 		navigationBar.tintColor = ColorPalette.raspberryPunch
-
-		let closeButton = UIBarButtonItem(image: UIImageNamedPreferred(named: "close"),
+		let closeButton = UIBarButtonItem(title: "Close",
 										  style: .plain,
 										  target: nil,
 										  action: #selector(didSelectCloseButton))
 		closeButton.target = self
 		navigationBarItem.leftBarButtonItem = closeButton
-		
-		let applyButton = UIBarButtonItem(title: "Apply",
-										  style: .plain,
-										  target: nil,
-										  action: nil)
-		applyButton.target = self
-		applyButton.action = #selector(didSelectApply)
-		navigationBarItem.rightBarButtonItems = [applyButton]
 	}
 
 	private func configureTableView() {
@@ -471,13 +461,7 @@ final class SettingsViewController: UIViewController {
 	// MARK: - Actions
 	
 	@objc func didSelectCloseButton() {
-		dismiss(animated: true)
-	}
-
-	@objc func didSelectApply() {
-		delegate?.settings(settingViewController: self,
-						   didChangeConfiguration: giniConfiguration)
-		dismiss(animated: true)
+		delegate?.didTapCloseButton()
 	}
 }
 
