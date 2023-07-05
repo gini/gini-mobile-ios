@@ -253,8 +253,8 @@ extension AppCoordinator: SelectAPIViewControllerDelegate {
 }
 
 extension AppCoordinator: SettingsViewControllerDelegate {
-    func settings(settingViewController: SettingsViewController,
-                  didChangeConfiguration configuration: GiniBankConfiguration) {
+    func didTapCloseButton() {
+		rootViewController.dismiss(animated: true)
 		GiniBank.setConfiguration(configuration)
     }
 }
