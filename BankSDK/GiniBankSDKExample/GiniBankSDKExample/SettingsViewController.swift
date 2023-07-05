@@ -217,8 +217,24 @@ final class SettingsViewController: UIViewController {
 			giniConfiguration.openWithEnabled = data.isSwitchOn
 		case .qrCodeScanning:
 			giniConfiguration.qrCodeScanningEnabled = data.isSwitchOn
+			giniConfiguration.flashToggleEnabled = data.isSwitchOn
+			if !data.isSwitchOn && giniConfiguration.flashOnByDefault {
+				// if `qrCodeScanningEnabled` is disabled and `onlyQRCodeScanningEnabled` is enabled,
+				// make `onlyQRCodeScanningEnabled` disabled
+				// onlyQRCodeScanningEnabled cell is right after
+				guard let cell = getSwitchOptionCell(at: cell.tag + 1) as? SwitchOptionTableViewCell else { return }
+				cell.isSwitchOn = data.isSwitchOn
+				giniConfiguration.onlyQRCodeScanningEnabled = data.isSwitchOn
+			}
 		case .qrCodeScanningOnly:
 			giniConfiguration.onlyQRCodeScanningEnabled = data.isSwitchOn
+			if data.isSwitchOn && !giniConfiguration.flashToggleEnabled {
+				// if `onlyQRCodeScanningEnabled` is enabled and `qrCodeScanningEnabled` is disabled, make `qrCodeScanningEnabled` enabled
+				// qrCodeScanningEnabled cell is right above this
+				guard let cell = getSwitchOptionCell(at: cell.tag - 1) as? SwitchOptionTableViewCell else { return }
+				cell.isSwitchOn = data.isSwitchOn
+				giniConfiguration.qrCodeScanningEnabled = data.isSwitchOn
+			}
 		case .multipage:
 			giniConfiguration.multipageEnabled = data.isSwitchOn
 		case .flashToggle:
