@@ -84,7 +84,13 @@ final class EditLineItemViewController: UIViewController {
 
     private func setupView() {
         view.backgroundColor = .clear
-		containerView.round(corners: [.topLeft, .topRight], radius: Constants.cornerRadius)
+		if UIDevice.current.isIpad {
+			containerView.round(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight],
+								radius: Constants.cornerRadius)
+		} else {
+			containerView.round(corners: [.topLeft, .topRight],
+								radius: Constants.cornerRadius)
+		}
     }
 
     private func setupConstraints() {
