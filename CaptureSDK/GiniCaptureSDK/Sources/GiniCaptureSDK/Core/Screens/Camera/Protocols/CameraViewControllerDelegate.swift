@@ -12,8 +12,6 @@ import UIKit
 /**
  The CameraViewControllerDelegate protocol defines methods that allow you to handle captured images and user
  actions.
- 
- - note: Component API only.
  */
 @objc public protocol CameraViewControllerDelegate: AnyObject {
     /**

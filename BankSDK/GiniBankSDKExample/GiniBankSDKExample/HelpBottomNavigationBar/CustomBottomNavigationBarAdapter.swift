@@ -31,7 +31,9 @@ public final class CustomBottomNavigationBarAdapter: HelpBottomNavigationBarAdap
      - Returns: A CustomBottomNavigationBar instance.
      */
     public func injectedView() -> UIView {
-		let navigationBarView = CustomBottomNavigationBar()
+		guard let navigationBarView = CustomBottomNavigationBar().loadNib() as? CustomBottomNavigationBar else {
+			return UIView()
+		}
 		navigationBarView.backButton.addTarget(self,
 											   action: #selector(backButtonClicked),
 											   for: .touchUpInside)

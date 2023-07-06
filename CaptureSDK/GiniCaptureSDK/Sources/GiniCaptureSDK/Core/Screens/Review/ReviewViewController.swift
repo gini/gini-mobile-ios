@@ -10,10 +10,7 @@ import UIKit
 /**
  The ReviewViewControllerDelegate protocol defines methods that allow you to handle user actions in the
  ReviewViewControllerDelegate
- (tap add, delete...)
- 
- - note: Component API only.
- - TODO:  - REMOVE Component API
+ (tap add, delete...
  */
 public protocol ReviewViewControllerDelegate: AnyObject {
     /**
@@ -60,8 +57,6 @@ public protocol ReviewViewControllerDelegate: AnyObject {
   for blurriness and document orientation. If the result is not satisfying, the user can return to the camera screen.
   The photo should be uploaded to Gini’s backend immediately after having been taken as it is safe to assume that
   in most cases the photo is good enough to be processed further.
-
-  - note: Component API only.
   */
 public final class ReviewViewController: UIViewController {
 

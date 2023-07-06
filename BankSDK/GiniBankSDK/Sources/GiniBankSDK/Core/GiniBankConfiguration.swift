@@ -349,10 +349,10 @@ public final class GiniBankConfiguration: NSObject {
 
         configuration.onboardingShowAtLaunch = self.onboardingShowAtLaunch
         configuration.onboardingShowAtFirstLaunch = self.onboardingShowAtFirstLaunch
-        configuration.onboardingAlignCornersIllustrationAdapter = self.onboardingAlignCornersIllustrationAdapter
         configuration.onboardingLightingIllustrationAdapter = self.onboardingLightingIllustrationAdapter
         configuration.onboardingQRCodeIllustrationAdapter = self.onboardingQRCodeIllustrationAdapter
         configuration.onboardingMultiPageIllustrationAdapter = self.onboardingMultiPageIllustrationAdapter
+		configuration.onboardingAlignCornersIllustrationAdapter = self.onboardingAlignCornersIllustrationAdapter
         configuration.onboardingNavigationBarBottomAdapter = self.onboardingNavigationBarBottomAdapter
 
         configuration.onButtonLoadingIndicator = self.onButtonLoadingIndicator
@@ -386,10 +386,6 @@ public final class GiniBankConfiguration: NSObject {
 
         GiniCapture.setConfiguration(configuration)
 
-        // Set onboarding pages after setting the GiniCapture's configuration
-        // because the onboarding page initialisers need the configuration
-        configuration.onboardingAlignCornersIllustrationAdapter = self.onboardingAlignCornersIllustrationAdapter
-
         return configuration
     }
 
@@ -400,8 +396,6 @@ public final class GiniBankConfiguration: NSObject {
 
         let giniBankConfiguration = GiniBankConfiguration.shared
 		giniBankConfiguration.statusBarStyle = configuration.statusBarStyle
-
-        giniBankConfiguration.debugModeOn = configuration.debugModeOn
 
         giniBankConfiguration.multipageEnabled = configuration.multipageEnabled
 
@@ -433,8 +427,20 @@ public final class GiniBankConfiguration: NSObject {
 		giniBankConfiguration.onButtonLoadingIndicator = configuration.onButtonLoadingIndicator
 		giniBankConfiguration.customLoadingIndicator = configuration.customLoadingIndicator
 		giniBankConfiguration.customMenuItems = configuration.customMenuItems
-		giniBankConfiguration.customNavigationController = configuration.customNavigationController
 
+		giniBankConfiguration.customNavigationController = configuration.customNavigationController
+		giniBankConfiguration.helpNavigationBarBottomAdapter = configuration.helpNavigationBarBottomAdapter
+		giniBankConfiguration.cameraNavigationBarBottomAdapter = configuration.cameraNavigationBarBottomAdapter
+		giniBankConfiguration.reviewNavigationBarBottomAdapter = configuration.reviewNavigationBarBottomAdapter
+		giniBankConfiguration.imagePickerNavigationBarBottomAdapter = configuration.imagePickerNavigationBarBottomAdapter
+
+		giniBankConfiguration.onboardingLightingIllustrationAdapter = configuration.onboardingLightingIllustrationAdapter
+		giniBankConfiguration.onboardingQRCodeIllustrationAdapter = configuration.onboardingQRCodeIllustrationAdapter
+		giniBankConfiguration.onboardingMultiPageIllustrationAdapter = configuration.onboardingMultiPageIllustrationAdapter
+		giniBankConfiguration.onboardingNavigationBarBottomAdapter = configuration.onboardingNavigationBarBottomAdapter
+		giniBankConfiguration.onboardingAlignCornersIllustrationAdapter = configuration.onboardingAlignCornersIllustrationAdapter
+
+		giniBankConfiguration.debugModeOn = configuration.debugModeOn
 		giniBankConfiguration.giniErrorLoggerIsOn = configuration.giniErrorLoggerIsOn
     }
 

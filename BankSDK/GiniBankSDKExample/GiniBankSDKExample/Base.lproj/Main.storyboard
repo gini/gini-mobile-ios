@@ -122,7 +122,6 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="SQK-hk-Ah4"/>
                     <connections>
                         <outlet property="metaInformationButton" destination="40A-WQ-jHQ" id="S7F-xE-0Nc"/>
                     </connections>

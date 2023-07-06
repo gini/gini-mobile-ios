@@ -36,7 +36,9 @@ class CustomOnboardingBottomNavigationBarAdapter: OnboardingNavigationBarBottomA
     }
     
     func injectedView() -> UIView {
-		let view =  CustomOnboardingBottomNavigationBar()
+		guard let view =  CustomOnboardingBottomNavigationBar().loadNib() as? CustomOnboardingBottomNavigationBar else {
+			return UIView()
+		}
 		view.nextButton.addTarget(self,
 								  action: #selector(actionPressed),
 								  for: .touchUpInside)

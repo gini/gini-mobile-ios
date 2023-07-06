@@ -17,7 +17,17 @@ struct SwitchOptionModel {
 		case flashToggle
 		case flashOnByDefault
 		case bottomNavigationBar
+		case helpNavigationBarBottomAdapter
+		case cameraNavigationBarBottomAdapter
+		case reviewNavigationBarBottomAdapter
+		case imagePickerNavigationBarBottomAdapter
 		case onboardingShowAtLaunch
+		case onboardingShowAtFirstLaunch
+		case onboardingAlignCornersIllustrationAdapter
+		case onboardingLightingIllustrationAdapter
+		case onboardingQRCodeIllustrationAdapter
+		case onboardingMultiPageIllustrationAdapter
+		case onboardingNavigationBarBottomAdapter
 		case customOnboardingPages
 		case onButtonLoadingIndicator
 		case customLoadingIndicator
@@ -25,10 +35,20 @@ struct SwitchOptionModel {
 		case customMenuItems
 		case customNavigationController
 		case shouldShowDragAndDropTutorial // just for iPad
-		case onboardingShowAtFirstLaunch
+		case digitalInvoiceOnboardingIllustrationAdapter
+		case digitalInvoiceHelpNavigationBarBottomAdapter
+		case digitalInvoiceOnboardingNavigationBarBottomAdapter
+		case digitalInvoiceNavigationBarBottomAdapter
+		case primaryButtonConfiguration
+		case secondaryButtonConfiguration
+		case transparentButtonConfiguration
+		case cameraControlButtonConfiguration
+		case addPageButtonConfiguration
 		case returnAssistantEnabled
 		case enableReturnReasons
+		case customDocumentValidations
 		case giniErrorLoggerIsOn
+		case customGiniErrorLogger
 		case debugModeOn
 		
 		var title: String {
@@ -47,8 +67,28 @@ struct SwitchOptionModel {
 				return "Flash ON by default"
 			case .bottomNavigationBar:
 				return "Bottom navigation bar"
+			case .helpNavigationBarBottomAdapter:
+				return "Help screens custom bottom navigation bar"
+			case .cameraNavigationBarBottomAdapter:
+				return "Camera screen custom bottom navigation bar"
+			case .reviewNavigationBarBottomAdapter:
+				return "Review screen custom bottom navigation bar"
+			case .imagePickerNavigationBarBottomAdapter:
+				return "Image picker screen custom bottom navigation bar"
 			case .onboardingShowAtLaunch:
-				return "Onboarding screens at launch"
+				return "Onboarding screens at every launch"
+			case .onboardingShowAtFirstLaunch:
+				return "Onboarding screens at first launch"
+			case .onboardingAlignCornersIllustrationAdapter:
+				return "Onboarding `align corners` page custom illustration"
+			case .onboardingLightingIllustrationAdapter:
+				return "Onboarding `lighting` page custom illustration"
+			case .onboardingQRCodeIllustrationAdapter:
+				return "Onboarding `QR code` page custom illustration"
+			case .onboardingMultiPageIllustrationAdapter:
+				return "Onboarding `multi page` page custom illustration"
+			case .onboardingNavigationBarBottomAdapter:
+				return "Onboarding custom bottom navigation bar"
 			case .customOnboardingPages:
 				return "Custom onboarding pages"
 			case .onButtonLoadingIndicator:
@@ -63,14 +103,34 @@ struct SwitchOptionModel {
 				return "Custom navigation controller"
 			case .shouldShowDragAndDropTutorial:
 				return "Drag and drop tutorial"
-			case .onboardingShowAtFirstLaunch:
-				return "Onboarding screens at first launch"
+			case .digitalInvoiceOnboardingIllustrationAdapter:
+				return "Digital invoice onboarding custom illustration"
+			case .digitalInvoiceHelpNavigationBarBottomAdapter:
+				return "Digital invoice help bottom navigation bar"
+			case .digitalInvoiceOnboardingNavigationBarBottomAdapter:
+				return "Digital invoice onboarding bottom navigation bar"
+			case .digitalInvoiceNavigationBarBottomAdapter:
+				return "Digital invoice bottom navigation bar"
+			case .primaryButtonConfiguration:
+				return "Custom configuration for the primary button"
+			case .secondaryButtonConfiguration:
+				return "Custom configuration for the secondary button"
+			case .transparentButtonConfiguration:
+				return "Custom configuration for the transparent button"
+			case .cameraControlButtonConfiguration:
+				return "Custom configuration for the camera control button"
+			case .addPageButtonConfiguration:
+				return "Custom configuration for the add page button"
 			case .returnAssistantEnabled:
 				return "Return Assistant feature"
 			case .enableReturnReasons:
 				return "Return reasons dialog"
+			case .customDocumentValidations:
+				return "Custom document validations"
 			case .giniErrorLoggerIsOn:
 				return "Gini error logger"
+			case .customGiniErrorLogger:
+				return "Custom Gini error logger"
 			case .debugModeOn:
 				return "Debug mode"
 			}
@@ -79,11 +139,9 @@ struct SwitchOptionModel {
 		var message: String? {
 			switch self {
 			case .qrCodeScanningOnly:
-				return "This will work if the `qrCodeScanning` switch is also enabled."
+				return "This will work if the `QR code scanning` switch is also enabled."
 			case .flashOnByDefault:
-				return "This will work if the `flashToggle` switch is also enabled."
-			case .customOnboardingPages:
-				return "This will work if the `onboardingShowAtLaunch` switch is also enabled."
+				return "This will work if the `Flash toggle` switch is also enabled."
 			case .onButtonLoadingIndicator:
 				return "Set custom loading indicator on the buttons which support loading."
 			case .customLoadingIndicator:
@@ -93,9 +151,49 @@ struct SwitchOptionModel {
 			case .shouldShowDragAndDropTutorial:
 				return "Show drag and drop tutorial step in Help menu > How to import option."
 			case .onboardingShowAtFirstLaunch:
-				return "Overwrites `onboardingShowAtLaunch` for the first launch."
+				return "Overwrites `Onboarding screens at every launch` for the first launch."
+			case .customOnboardingPages:
+				return "This will work if the `Onboarding show at every launch` switch is also enabled."
+			case .onboardingAlignCornersIllustrationAdapter:
+				return "This will work if the `Onboarding show at every launch` switch is also enabled."
+			case .onboardingLightingIllustrationAdapter:
+				return "This will work if the `Onboarding show at every launch` switch is also enabled."
+			case .onboardingQRCodeIllustrationAdapter:
+				return "This will work if the `Onboarding show at every launch` switch is also enabled."
+			case .onboardingMultiPageIllustrationAdapter:
+				return "This will work if the `Onboarding show at every launch` switch is also enabled."
+			case .onboardingNavigationBarBottomAdapter:
+				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
+			case .digitalInvoiceHelpNavigationBarBottomAdapter:
+				return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
+			case .digitalInvoiceOnboardingNavigationBarBottomAdapter:
+				return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
+			case .digitalInvoiceNavigationBarBottomAdapter:
+				return "The custom bottom navigation bar is shown if both `Bottom navigation bar` and `Return Assistant feature` are also enabled."
+			case .helpNavigationBarBottomAdapter:
+				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
+			case .cameraNavigationBarBottomAdapter:
+				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
+			case .reviewNavigationBarBottomAdapter:
+				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
+			case .imagePickerNavigationBarBottomAdapter:
+				return "The custom bottom navigation bar is shown if `Bottom navigation bar` is also enabled."
+			case .primaryButtonConfiguration:
+				return "Primary button used on different screens, e.g: `Onboarding`, `Digital Invoice Onboarding`, `Error`, etc."
+			case .secondaryButtonConfiguration:
+				return "Secondary button used on different screens: `No Results`, `Error`."
+			case .transparentButtonConfiguration:
+				return "Transparent button used on `Onboarding` screen in the bottom navigation bar."
+			case .cameraControlButtonConfiguration:
+				return "Camera control button used for `Browse` and `Flash` buttons on `Camera` screen."
+			case .addPageButtonConfiguration:
+				return "Add page button used on `Review `screen."
 			case .returnAssistantEnabled:
 				return "Present a digital representation of the invoice"
+			case .customDocumentValidations:
+				return "Custom document validations that can be done apart from the default ones (file size, file type...)"
+			case .customGiniErrorLogger:
+				return "This will work if the `Gini error logger` is also enabled."
 			default:
 				return nil
 			}
