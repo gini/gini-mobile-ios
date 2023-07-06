@@ -138,6 +138,19 @@ final class AppCoordinator: Coordinator {
         }
     }
     
+	func displayOpenWithAlertView() {
+		let alert = UIAlertController(title: "Feature is disabled",
+									  message: "`Open with` feature is currently disabled. \n If you want to test this, please enable it in Gini configuration!",
+									  preferredStyle: .alert)
+		
+		let ok = UIAlertAction(title: "OK", style: .default) { _ in
+			self.rootViewController.dismiss(animated: true)
+		}
+
+		alert.addAction(ok)
+		rootViewController.present(alert, animated: true)
+	}
+	
     fileprivate func showSelectAPIScreen() {
         self.window.rootViewController = rootViewController
         self.window.makeKeyAndVisible()

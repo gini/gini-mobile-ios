@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GiniBankSDK
 
 @UIApplicationMain
     final class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -26,6 +27,10 @@ import UIKit
     func application(_ app: UIApplication,
                      open url: URL,
                      options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+		guard GiniBankConfiguration.shared.openWithEnabled else {
+			coordinator.displayOpenWithAlertView()
+			return false
+		}
         // Coming from Photos extension app
         if url.absoluteString == appSheme {
             if let userDefaults = UserDefaults(suiteName: appGroupName) {
