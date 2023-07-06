@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22113.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -29,7 +29,7 @@
                     </items>
                 </navigationBar>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="MAh-US-NZF">
-                    <rect key="frame" x="0.0" y="104" width="393" height="724"/>
+                    <rect key="frame" x="0.0" y="104" width="393" height="714"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </tableView>
             </subviews>
@@ -39,7 +39,7 @@
                 <constraint firstItem="FQn-RB-pKw" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="6fk-za-aK0"/>
                 <constraint firstItem="FQn-RB-pKw" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="FHW-6C-p2L"/>
                 <constraint firstItem="MAh-US-NZF" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Ip8-Cq-rNJ"/>
-                <constraint firstAttribute="bottom" secondItem="MAh-US-NZF" secondAttribute="bottom" constant="24" id="M1g-q5-esi"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="MAh-US-NZF" secondAttribute="bottom" id="M1g-q5-esi"/>
                 <constraint firstItem="MAh-US-NZF" firstAttribute="top" secondItem="FQn-RB-pKw" secondAttribute="bottom" constant="1" id="ctp-nU-grc"/>
                 <constraint firstItem="FQn-RB-pKw" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="lJc-DI-j5z"/>
                 <constraint firstItem="MAh-US-NZF" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="xS8-zZ-FGX"/>

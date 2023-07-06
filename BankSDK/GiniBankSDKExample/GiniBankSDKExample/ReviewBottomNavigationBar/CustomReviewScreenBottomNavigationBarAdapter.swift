@@ -32,9 +32,12 @@ final public class CustomReviewScreenBottomNavigationBarAdapter: ReviewScreenBot
     }
 
     public func injectedView() -> UIView {
-		let navigationBarView = CustomReviewScreenBottomNavigationBar()
-		self.view = navigationBarView
-		self.view?.delegate = self
+		guard let navigationBarView = CustomReviewScreenBottomNavigationBar().loadNib()
+				as? CustomReviewScreenBottomNavigationBar else {
+			return UIView()
+		}
+		view = navigationBarView
+		view?.delegate = self
 		return navigationBarView
 	}
 

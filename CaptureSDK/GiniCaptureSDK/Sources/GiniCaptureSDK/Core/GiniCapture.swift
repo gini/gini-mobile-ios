@@ -71,15 +71,8 @@ public typealias GiniCaptureNetworkDelegate = AnalysisDelegate & UploadDelegate
  By integrating this library in your application you can allow your users to easily take a picture of
  a document, review it and - by implementing the necessary callbacks - upload the document for analysis to the Gini Bank API.
  
- The Gini Capture SDK can be integrated in two ways, either by using the **Screen API** or
- the **Component API**. The Screen API provides a fully pre-configured navigation controller for
- easy integration, while the Component API provides single view controllers for advanced
- integration with more freedom for customization.
- 
- - important: When using the Component API we advise you to use a similar flow as suggested in the
- Screen API. Use the `CameraViewController` as an entry point with the `OnboardingViewController` presented on
- top of it. After capturing let the user review the document with the `ReviewViewController` and finally present
- the `AnalysisViewController` while the user waits for the analysis results.
+ The Gini Capture SDK can be integrated using the **Screen API**.
+ The Screen API provides a fully pre-configured navigation controller for easy integration.
  */
 @objc public final class GiniCapture: NSObject {
 
