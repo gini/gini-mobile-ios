@@ -5,7 +5,6 @@
 //  Created by Valentina Iancu on 04.07.23.
 //
 
-import GiniCaptureSDK
 import UIKit
 
 final class ErrorView: UIView {
