@@ -98,6 +98,7 @@ final class ImageMetaInformationManager {
     let userCommentDeviceOrientation = "DeviceOrientation"
     let userCommentSource = "Source"
     let userCommentImportMethod = "ImportMethod"
+    let userCommentEntryPoint = "EntryPoint"
 
     var imageData: Data?
     var metaInformation: MetaInformation?
@@ -231,16 +232,29 @@ final class ImageMetaInformationManager {
         return nil
     }
 
+    fileprivate func entryFieldString(_ entryPoint: GiniConfiguration.GiniEntryPoint) -> String {
+            var stringValue: String
+            switch entryPoint {
+            case .button:
+                stringValue = "button"
+            case .field:
+                stringValue = "field"
+            }
+            return stringValue
+        }
+
     fileprivate func userComment(rotationDegrees: Int? = nil) -> String {
         let platform = "iOS"
         let osVersion = UIDevice.current.systemVersion
         let GiniCaptureVersion = GiniCapture.versionString
         let uuid = imageUUID()
+        let entryPoint = entryFieldString(GiniConfiguration.shared.entryPoint)
         var comment = "\(userCommentPlatform)=\(platform)," +
             "\(userCommentOSVer)=\(osVersion)," +
             "\(userCommentGiniVersionVer)=\(GiniCaptureVersion)," +
             "\(userCommentContentId)=\(uuid)," +
-        "\(userCommentSource)=\(imageSource.value)"
+        "\(userCommentSource)=\(imageSource.value)," +
+        "\(userCommentEntryPoint)=\(entryPoint)"
 
         if let imageImportMethod = imageImportMethod, imageSource.value != DocumentSource.camera.value {
             comment += ",\(userCommentImportMethod)=\(imageImportMethod.rawValue)"
