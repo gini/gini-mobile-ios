@@ -48,7 +48,7 @@ final class ImageMetaInformationManagerTests: XCTestCase {
     
     func testFilteringAndSettingRequiredFields() {
         let mutableManager = manager
-        guard let filteredData = mutableManager.imageByAddingMetadata()else {
+        guard let filteredData = mutableManager.imageByAddingMetadata() else {
             return XCTFail("filtered image data should not be nil")
         }
         
@@ -61,6 +61,43 @@ final class ImageMetaInformationManagerTests: XCTestCase {
         let key = kCGImagePropertyExifUserComment as String
         XCTAssert((mutableInformation.getMetaInformation(forKey: key) as? String)?.contains("GiniCaptureVer") == true,
                   "filtered data did not set custom fields")
+    }
+    
+    func testSettingDefaultEntryPointToMetaInformation() {
+        guard let mutableInformation = manager.metaInformation?.mutableCopy() as? NSMutableDictionary else {
+            return XCTFail("failed to retrieve mutable meta information from test data")
+        }
+        let value = "button"
+        let key = kCGImagePropertyTIFFMake as String
+        mutableInformation.set(metaInformation: value as AnyObject?, forKey: key)
+        XCTAssert(mutableInformation.getMetaInformation(forKey: key) as? String == value,
+                  "failed to set value for entry point correctly on meta information")
+    }
+    
+    func testSettingFieldEntryPointToMetaInformation() {
+        guard let mutableInformation = manager.metaInformation?.mutableCopy() as? NSMutableDictionary else {
+            return XCTFail("failed to retrieve mutable meta information from test data")
+        }
+        let value = "field"
+        let key = kCGImagePropertyTIFFMake as String
+        mutableInformation.set(metaInformation: value as AnyObject?, forKey: key)
+        XCTAssert(mutableInformation.getMetaInformation(forKey: key) as? String == value,
+                  "failed to set value for entry point correctly on meta information")
+    }
+    
+    func testFieldEntryPointToMetaInformation() {
+        let metaManager = ImageMetaInformationManager(imageData: GiniCaptureTestsHelper.fileData(named: "testFieldEntryPoint", fileExtension: "jpg")!, imageSource: .camera)
+        let metaInformation = metaManager.metaInformation as? NSMutableDictionary
+        let value = "field"
+        let existingUserComment = metaInformation?.getMetaInformation(forKey: kCGImagePropertyExifUserComment as String)
+        let components = existingUserComment?.components(separatedBy: ",")
+        let userCommentComponent = components?.filter({ (component) -> Bool in
+            return component.contains("EntryPoint")
+        })
+        let equasionComponents = userCommentComponent?.last?.components(separatedBy: "=")
+        let entryPoint = equasionComponents?.last
+        XCTAssert(entryPoint == value,
+                  "failed to set value for entry point correctly on meta information")
     }
         
 }
