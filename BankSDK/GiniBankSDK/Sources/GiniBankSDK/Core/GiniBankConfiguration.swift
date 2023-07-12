@@ -527,6 +527,7 @@ public final class GiniBankConfiguration: NSObject {
         // Set onboarding pages after setting the GiniCapture's configuration
         // because the onboarding page initialisers need the configuration
         configuration.onboardingAlignCornersIllustrationAdapter = self.onboardingAlignCornersIllustrationAdapter
+        configuration.entryPoint = self.entryPoint
 
         return configuration
     }
@@ -561,6 +562,7 @@ public final class GiniBankConfiguration: NSObject {
 
         giniBankConfiguration.shouldShowDragAndDropTutorial = configuration.shouldShowDragAndDropTutorial
         giniBankConfiguration.bottomNavigationBarEnabled = configuration.bottomNavigationBarEnabled
+        giniBankConfiguration.entryPoint = configuration.entryPoint
     }
 
     /**
@@ -646,4 +648,9 @@ public final class GiniBankConfiguration: NSObject {
         self.lineItems = nil
     }
     // swiftlint:enable function_parameter_count
+
+    /**
+     Set the entry point for the Gini Bank SDK with a default value `GiniEntryPoint.button`
+    */
+    public var entryPoint = GiniConfiguration.GiniEntryPoint.button
 }
