@@ -40,7 +40,7 @@ Once the QR code has been detected, processing will happen automatically and the
 Customization
 ----------------------
 
-All customization options are available [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.2/customization-guide.html#camera).
+All customization options are available [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.3/customization-guide.html#camera).
 
 Supported QR codes
 ----------------------

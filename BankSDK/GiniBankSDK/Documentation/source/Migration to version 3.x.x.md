@@ -10,7 +10,7 @@ We also removed the Component API integration option and unified the public API 
 `GiniBankConfiguration` is a singleton now.
 You don't need to create a new instance of `GiniBankConfiguration` just use `GiniBankConfiguration.shared` instead.
 
-Please, find more details in [Getting started](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.2/getting-started.html).
+Please, find more details in [Getting started](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.3/getting-started.html).
 
 # Migrate from Component API
 
@@ -53,11 +53,11 @@ The following steps will help you migrate to the new public API:
 * You can also provide your own networking by implementing the `GiniCaptureNetworkService` and `GiniCaptureResultsDelegate` protocols. Pass your instances to the `UIViewController` initialiser of GiniCapture as shown below.
 * Remove all code related to interacting with the SDK's specific view controllers. From now on the entry point is the `UIViewController` and customization happens through `GiniBankConfiguration` and via overriding of images and color resources.
 
-* Use the new UI customization options and follow the [Customization guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.2/customization-guide.html) to adapt the look of the new UI.
+* Use the new UI customization options and follow the [Customization guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.3/customization-guide.html) to adapt the look of the new UI.
 
 # Migrate from Screen API
 
-The new public API is based on the Screen API, so you only need to use the new UI customization options and follow the [Customization guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.2/customization-guide.html) to adapt the look of the new UI.
+The new public API is based on the Screen API, so you only need to use the new UI customization options and follow the [Customization guide](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.3/customization-guide.html) to adapt the look of the new UI.
 
 # Migrate Cleanup Step and Feedback Sending
 
@@ -84,15 +84,15 @@ To simplify UI customization we introduced global customization options. There i
 ## Colors
 
 We are providing a global color palette `GiniColors.xcassets` which you are free to override. The custom colors will be then applied on all screens.
-You can find the names of the colors in [GiniColors.xcassets](https://github.com/gini/gini-mobile-ios/tree/GiniBankSDK%3B3.1.2/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources/GiniColors.xcassets).
+You can find the names of the colors in [GiniColors.xcassets](https://github.com/gini/gini-mobile-ios/tree/GiniBankSDK%3B3.1.3/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources/GiniColors.xcassets).
 
- You can view our color palette [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.2/customization-guide.html#colors)
+ You can view our color palette [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.3/customization-guide.html#colors)
 
 ## Typography
 
 We provide a global typography based on text appearance styles from `UIFont.TextStyle`. 
 
-You can view our typography [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.2/customization-guide.html#typography)
+You can view our typography [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.3/customization-guide.html#typography)
 
 To override them in your application please use `GiniBankConfiguration.updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle)`. For example:
 
@@ -110,13 +110,13 @@ To override them in your application please use `GiniBankConfiguration.updateFon
 
 ## Images
 
-Images customization is done via overriding of [GiniImages.xcassets](https://github.com/gini/gini-mobile-ios/tree/GiniBankSDK%3B3.1.2/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources/GiniImages.xcassets) resources.
+Images customization is done via overriding of [GiniImages.xcassets](https://github.com/gini/gini-mobile-ios/tree/GiniBankSDK%3B3.1.3/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources/GiniImages.xcassets) resources.
 
 ## Text
 
  Text customization is done via overriding of string resources.
 
- You can find all the string resources in [Localizable.strings](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.1.2/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources/de.lproj/Localizable.strings).
+ You can find all the string resources in [Localizable.strings](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.1.3/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Resources/de.lproj/Localizable.strings).
 
 # UI Elements
 
@@ -147,7 +147,7 @@ customizations.
 
 Images and text are onboarding page specific and need to be customized for each page.
 
-[here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.2/features.html#onboarding) and [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.2/customization-guide.html#onboarding-screens).
+[here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.3/features.html#onboarding) and [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.3/customization-guide.html#onboarding-screens).
 
 ### Breaking Changes
 
@@ -208,7 +208,7 @@ String keys changed:
 You can show a bottom navigation bar by passing true to `GiniBankConfiguration.shared.bottomNavigationBarEnabled`. There is a default implementation, but you can also use
 your own by implementing the `HelpBottomNavigationBarAdapter` interface and passing it to `GiniBankConfiguration.shared.helpNavigationBarBottomAdapter`.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.2/features.html#help-screen-customization) and [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.2/customization-guide.html#help-screens).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.3/features.html#help-screen-customization) and [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.3/customization-guide.html#help-screens).
 
 ## Analysis screen
 
@@ -234,7 +234,7 @@ You can show a custom loading indicator with custom animation support on the cen
 Your custom loading indicator should implement `CustomLoadingIndicatorAdapter` interface and be passed  to `GiniBankConfiguration.shared.customLoadingIndicator`.
 This loading indicator is also used on the `Camera screen` when loading data for a valid QR code.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.2/customization-guide.html#camera-screen).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.3/customization-guide.html#camera-screen).
 
 ## Review screen
 
@@ -258,7 +258,7 @@ Your custom loading indicator should implement `OnButtonLoadingIndicatorAdapter`
 You can show a bottom navigation bar by passing true to `GiniBankConfiguration.shared.bottomNavigationBarEnabled`. There is a default implementation, but you can also use
 your own by implementing the `ReviewScreenBottomNavigationBarAdapter` interface and passing it to `GiniBankConfiguration.shared.reviewNavigationBarBottomAdapter`.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.2/customization-guide.html#review-screen).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.3/customization-guide.html#review-screen).
 
 ## No results screen
 
@@ -286,7 +286,7 @@ customizations.
 You can show your own UI for data input if an error occurred and the user clicks the "Enter manually" button on the error screen.
 For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.2/customization-guide.html#no-result-screen).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.3/customization-guide.html#no-result-screen).
 
 ## Error screen
 
@@ -302,14 +302,14 @@ Showing errors during usage of the SDK was changed from snackbar to a whole new 
 
 The new error screen gives options to retake photos or enter details manually and displays errors with more detailed description.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.2/customization-guide.html#error-screen).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.3/customization-guide.html#error-screen).
 
 #### Option to enter details manually
 
 You can show your own UI for data input if an error occured and the user clicks the "Enter manually" button on the error screen.
 For this you must to implement `GiniCaptureResultsDelegate.giniCaptureDidEnterManually() `.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.2/customization-guide.html#error-screen).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.3/customization-guide.html#error-screen).
 
 # Migrate Return Assistant
 
@@ -317,7 +317,7 @@ You can find more details [here](https://developer.gini.net/gini-mobile-ios/Gini
 
 The new digital invoice onboarding screen uses the global UI customization options. You can discard the old screen specific customizations.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.2/customization-guide.html#digital-invoice-onboarding-screen).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.3/customization-guide.html#digital-invoice-onboarding-screen).
 
 ### New Features
 
@@ -334,7 +334,7 @@ If you need to animate the illustrations on the onboarding pages implement the `
 
 The new digital invoice overview screen uses the global UI customization options. You can discard the old screen specific customizations.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.2/customization-guide.html#digital-invoice-overview-screen).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.3/customization-guide.html#digital-invoice-overview-screen).
 
 ### Breaking Changes
 
@@ -352,7 +352,7 @@ your own by implementing the `DigitalInvoiceNavigationBarBottomAdapter` interfac
 
 The new edit article screen uses the global UI customization options and is presented as a bottom sheet on phones and as a dialog on iPad. You can discard the old screen specific customizations.
 
-[Here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.2/customization-guide.html#digital-invoice-edit-article-screen) you can find the detailed description on how to customize this screen.
+[Here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.3/customization-guide.html#digital-invoice-edit-article-screen) you can find the detailed description on how to customize this screen.
 
 ### Breaking Changes
 
@@ -367,7 +367,7 @@ We added validation and showing the error messages for the article name and pric
 
 The new help screen uses the global UI customization options. You can discard the old screen specific customizations.
 
-You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.2/customization-guide.html#digital-invoice-help-screen).
+You can find more details [here](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/3.1.3/customization-guide.html#digital-invoice-help-screen).
 
 ### New Features
 

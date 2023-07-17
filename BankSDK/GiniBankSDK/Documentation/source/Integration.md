@@ -256,7 +256,7 @@ You may also use the [Gini Bank API Library](https://github.com/gini/bank-api-li
 
 Your app should clean up the SDK and provide feedback for the extractions the Gini Bank API delivered. Feedback should be sent only for the extractions the user has seen and accepted (or corrected).
 
-We provide a sample test case [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.1.2/BankSDK/GiniBankSDKExample/Tests/ExtractionFeedbackIntegrationTest.swift) to verify that extraction feedback sending works. 
+We provide a sample test case [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.1.3/BankSDK/GiniBankSDKExample/Tests/ExtractionFeedbackIntegrationTest.swift) to verify that extraction feedback sending works. 
 You may use it along with the example pdf and json files as a starting point to write your own test case.
 
 The sample test case is based on the Bank API documentation's [recommended steps](https://pay-api.gini.net/documentation/#test-example) for testing extraction feedback sending.
@@ -285,12 +285,12 @@ To launch the Gini Bank SDK you only need to:
 
 1. Request camera access via configuring `Info.plist` in your project.
 
-2. Configure `GiniBankConfiguration.shared`. The implementation example can be found [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.1.2/BankSDK/GiniBankSDKExample/GiniBankSDKExample/AppCoordinator.swift#L32)
+2. Configure `GiniBankConfiguration.shared`. The implementation example can be found [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.1.3/BankSDK/GiniBankSDKExample/GiniBankSDKExample/AppCoordinator.swift#L32)
 
-3. Present the `UIViewController`. You can find the example [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.1.2/BankSDK/GiniBankSDKExample/GiniBankSDKExample/Screen%20API/ScreenAPICoordinator.swift#L68)
+3. Present the `UIViewController`. You can find the example [here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.1.3/BankSDK/GiniBankSDKExample/GiniBankSDKExample/Screen%20API/ScreenAPICoordinator.swift#L68)
 
 4. Handle the extraction results.  
-   For handling the extraction results you need to implement `GiniCaptureResultsDelegate`. [Here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.1.2/BankSDK/GiniBankSDKExample/GiniBankSDKExample/Screen%20API/ScreenAPICoordinator.swift#L135) you can find the implementation example.
+   For handling the extraction results you need to implement `GiniCaptureResultsDelegate`. [Here](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.1.3/BankSDK/GiniBankSDKExample/GiniBankSDKExample/Screen%20API/ScreenAPICoordinator.swift#L135) you can find the implementation example.
 
 5. Cleanup configuration and resources while also providing the required extraction feedback to
    improve the future extraction accuracy. You don't need to implement any extra steps, just follow the recommendations below:
