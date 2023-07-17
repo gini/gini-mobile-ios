@@ -102,7 +102,7 @@ final class QuantityView: UIView {
             titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: buttonContainerView.leadingAnchor,
                                                  constant: -Constants.padding),
 
-            quantityTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Constants.labelPadding),
+            quantityTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Constants.textFieldTopPadding),
             quantityTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
             quantityTextField.trailingAnchor.constraint(lessThanOrEqualTo: buttonContainerView.leadingAnchor,
                                                         constant: -Constants.padding),
@@ -147,7 +147,8 @@ private extension QuantityView {
         static let cornerRadius: CGFloat = 8
         static let minimumQuantity: Int = 1
         static let maximumQuantity: Int = 1000
-        static let padding: CGFloat = 16
+        static let padding: CGFloat = 12
+		static let textFieldTopPadding: CGFloat = 0
         static let labelPadding: CGFloat = 4
         static let buttonSize = CGSize(width: 44, height: 44)
     }
