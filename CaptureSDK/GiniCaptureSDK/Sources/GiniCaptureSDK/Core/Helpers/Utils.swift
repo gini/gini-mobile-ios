@@ -24,11 +24,6 @@ extension UITableViewCell {
         layer.mask = nil
         clipsToBounds = true
     }
-
-    open override func layoutSubviews() {
-        super.layoutSubviews()
-        layer.mask?.frame = bounds
-    }
 }
 
 public struct GiniMargins {
