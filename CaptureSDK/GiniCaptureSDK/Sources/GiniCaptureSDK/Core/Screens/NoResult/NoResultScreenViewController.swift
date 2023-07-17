@@ -207,12 +207,6 @@ final class NoResultScreenViewController: UIViewController {
         tableView.alwaysBounceVertical = false
         tableView.showsVerticalScrollIndicator = false
         tableView.separatorStyle = .none
-
-        if #available(iOS 14.0, *) {
-            var bgConfig = UIBackgroundConfiguration.listPlainCell()
-            bgConfig.backgroundColor = UIColor.clear
-            UITableViewHeaderFooterView.appearance().backgroundConfiguration = bgConfig
-        }
     }
 
     private func registerCells() {
