@@ -90,11 +90,6 @@ final class HelpFormatsViewController: UIViewController, HelpBottomBarEnabledVie
         tableView.alwaysBounceVertical = false
         tableView.contentInsetAdjustmentBehavior = .never
         tableView.separatorStyle = .none
-        if #available(iOS 14.0, *) {
-            var bgConfig = UIBackgroundConfiguration.listPlainCell()
-            bgConfig.backgroundColor = UIColor.clear
-            UITableViewHeaderFooterView.appearance().backgroundConfiguration = bgConfig
-        }
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
