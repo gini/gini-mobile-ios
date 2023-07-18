@@ -563,7 +563,9 @@ import GiniBankAPILibrary
      Enum that represents entry points used for launching the SDK.
     */
     public enum GiniEntryPoint: Int {
+        // Must be used when the user launches the SDK from a button.
         case button
+        // Must be used when the user launches the SDK from a text field.
         case field
     }
 
