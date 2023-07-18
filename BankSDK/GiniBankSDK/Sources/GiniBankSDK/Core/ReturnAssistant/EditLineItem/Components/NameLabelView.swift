@@ -74,7 +74,8 @@ final class NameLabelView: UIView {
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
             titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -Constants.padding),
 
-            nameTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Constants.labelPadding),
+            nameTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
+											   constant: Constants.textFieldTopPadding),
             nameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
             nameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
             nameTextField.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.padding)
@@ -97,7 +98,7 @@ extension NameLabelView: UITextFieldDelegate {
 private extension NameLabelView {
     enum Constants {
         static let cornerRadius: CGFloat = 8
-        static let padding: CGFloat = 16
-        static let labelPadding: CGFloat = 4
+        static let padding: CGFloat = 12
+        static let textFieldTopPadding: CGFloat = 0
     }
 }

@@ -4,14 +4,13 @@
 //
 //  Created by David Vizaknai on 06.03.2023.
 //
-
+import GiniCaptureSDK
 import UIKit
 
 final class EditLineItemViewController: UIViewController {
     private lazy var containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .GiniBank.light1
-        view.layer.cornerRadius = 16
+        view.backgroundColor = GiniColor(light: .GiniBank.light1, dark: .GiniBank.dark1).uiColor()
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -34,7 +33,7 @@ final class EditLineItemViewController: UIViewController {
     private var currentContainerHeight: CGFloat = 300
     private var currentBottomPadding: CGFloat = 0
 
-    private var defaultHeight: CGFloat = 340
+    private var defaultHeight: CGFloat = 355
     private var isKeyboardPresented: Bool = false
     private var keyboardHeight: CGFloat = 0
 
@@ -85,6 +84,13 @@ final class EditLineItemViewController: UIViewController {
 
     private func setupView() {
         view.backgroundColor = .clear
+		if UIDevice.current.isIpad {
+			containerView.round(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight],
+								radius: Constants.cornerRadius)
+		} else {
+			containerView.round(corners: [.topLeft, .topRight],
+								radius: Constants.cornerRadius)
+		}
     }
 
     private func setupConstraints() {
@@ -92,19 +98,24 @@ final class EditLineItemViewController: UIViewController {
         view.addSubview(containerView)
         containerView.addSubview(editLineItemView)
 
-        NSLayoutConstraint.activate([
-            dimmedView.topAnchor.constraint(equalTo: view.topAnchor),
-            dimmedView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            dimmedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            dimmedView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+		// Create the constraints
+		let constraints = [
+			dimmedView.topAnchor.constraint(equalTo: view.topAnchor),
+			dimmedView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+			dimmedView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+			dimmedView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+			editLineItemView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+			editLineItemView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+			editLineItemView.topAnchor.constraint(equalTo: containerView.topAnchor),
+			editLineItemView.bottomAnchor.constraint(lessThanOrEqualTo: containerView.bottomAnchor)
+		]
 
-            editLineItemView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            editLineItemView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            editLineItemView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            editLineItemView.heightAnchor.constraint(equalToConstant: defaultHeight),
-            editLineItemView.bottomAnchor.constraint(lessThanOrEqualTo: containerView.bottomAnchor)
-        ])
+		// Set the priority for the height constraint
+		let heightConstraint = editLineItemView.heightAnchor.constraint(equalToConstant: defaultHeight)
+		heightConstraint.priority = UILayoutPriority(rawValue: 750)
 
+		// Activate the constraints
+		NSLayoutConstraint.activate(constraints + [heightConstraint])
         containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: defaultHeight)
         containerViewBottomConstraint = containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
 
@@ -206,12 +217,6 @@ final class EditLineItemViewController: UIViewController {
                     // Resize the container based on the pan gesture
                     if newHeight < Constants.maximumContainerHeight {
                         containerViewHeightConstraint?.constant = newHeight
-                        if newHeight < defaultHeight {
-                            let alpha = newHeight / defaultHeight
-                            editLineItemView.alpha = alpha - 0.2
-                        } else {
-                            editLineItemView.alpha = 1
-                        }
                         view.layoutIfNeeded()
                     }
                 }
@@ -231,7 +236,6 @@ final class EditLineItemViewController: UIViewController {
                     if newHeight < Constants.dismissibleHeight + (isKeyboardPresented ? keyboardHeight : 0) {
                         animateDismissView()
                     } else {
-                        editLineItemView.alpha = 1
                         animateContainerToInitialHeight()
                     }
                 }
@@ -330,5 +334,6 @@ private extension EditLineItemViewController {
         static let tabletWidthMultiplier: CGFloat = 0.6
         static let animationDuration: CGFloat = 0.3
         static let topPadding: CGFloat = 36
+		static let cornerRadius: CGFloat = 16
     }
 }

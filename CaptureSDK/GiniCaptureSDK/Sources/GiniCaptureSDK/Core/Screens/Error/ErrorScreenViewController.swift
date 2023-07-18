@@ -159,53 +159,70 @@ class ErrorScreenViewController: UIViewController {
 
     private func getButtonsMinHeight(numberOfButtons: Int) -> CGFloat {
         if numberOfButtons == 1 {
-            return Constants.singleButtonHeight.rawValue
+            return Constants.singleButtonHeight
         } else {
-            return Constants.twoButtonsHeight.rawValue
+            return Constants.twoButtonsHeight
         }
     }
 
     private func configureConstraints() {
+        configureHeaderConstraints()
+        configureScrollViewConstraints()
+        configureButtonsViewConstraints()
+        configureErrorContentConstraints()
+        view.layoutSubviews()
+    }
+
+    private func configureHeaderConstraints() {
+        if UIDevice.current.isIpad {
+            NSLayoutConstraint.activate([
+                errorHeader.headerStack.widthAnchor.constraint(equalTo: view.widthAnchor,
+                                                               multiplier: Constants.iPadWidthMultiplier),
+                errorHeader.headerStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                errorHeader.headerStack.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                                 constant: Constants.sidePadding),
+                errorHeader.headerStack.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                                  constant: -Constants.sidePadding)
+            ])
+        }
         errorHeader.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
         errorHeader.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
 
-        errorContent.setContentHuggingPriority(.required, for: .vertical)
-        errorContent.setContentCompressionResistancePriority(.required, for: .vertical)
-
-        let buttonsConstraint =  buttonsView.heightAnchor.constraint(
-            greaterThanOrEqualToConstant: getButtonsMinHeight(numberOfButtons: numberOfButtons)
-        )
-
-        buttonsHeightConstraint = buttonsConstraint
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: errorHeader.bottomAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: buttonsView.topAnchor),
-
             errorHeader.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             errorHeader.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             errorHeader.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             errorHeader.heightAnchor.constraint(
-                greaterThanOrEqualToConstant: Constants.errorHeaderMinHeight.rawValue),
-            errorHeader.heightAnchor.constraint(
-                lessThanOrEqualToConstant: Constants.errorHeaderMaxHeight.rawValue),
-            errorContent.topAnchor.constraint(equalTo: scrollView.topAnchor,
-                                              constant: Constants.errorContentBottomMargin.rawValue),
+                greaterThanOrEqualToConstant: Constants.errorHeaderMinHeight),
+            errorHeader.heightAnchor.constraint(lessThanOrEqualTo: view.heightAnchor,
+                                           multiplier: Constants.errorHeaderHeightMultiplier)
+        ])
+    }
+
+    private func configureScrollViewConstraints() {
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: errorHeader.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: buttonsView.topAnchor)
+        ])
+    }
+
+    private func configureButtonsViewConstraints() {
+        let buttonsConstraint =  buttonsView.heightAnchor.constraint(
+            greaterThanOrEqualToConstant: getButtonsMinHeight(numberOfButtons: numberOfButtons)
+        )
+        buttonsHeightConstraint = buttonsConstraint
+        NSLayoutConstraint.activate([
             buttonsConstraint,
             buttonsView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
                                                 constant: -GiniMargins.margin)
         ])
-        configureHorizontalConstraints()
-        view.layoutSubviews()
-    }
-
-    private func configureHorizontalConstraints() {
         if UIDevice.current.isIpad {
             NSLayoutConstraint.activate([
-                errorContent.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                errorContent.widthAnchor.constraint(equalTo: view.widthAnchor,
-                                                    multiplier: Constants.iPadWidthMultiplier.rawValue),
                 buttonsView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
                                                      constant: GiniMargins.margin),
                 buttonsView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
@@ -213,11 +230,6 @@ class ErrorScreenViewController: UIViewController {
             ])
         } else {
             NSLayoutConstraint.activate([
-                errorContent.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                      constant: Constants.textContentMargin.rawValue),
-                errorContent.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                       constant: -Constants.textContentMargin.rawValue),
-                errorContent.bottomAnchor.constraint(greaterThanOrEqualTo: scrollView.bottomAnchor),
                 buttonsView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                                      constant: GiniMargins.margin),
                 buttonsView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor,
@@ -226,14 +238,41 @@ class ErrorScreenViewController: UIViewController {
         }
     }
 
-    private enum Constants: CGFloat {
-        case singleButtonHeight = 50
-        case twoButtonsHeight = 112
-        case textContentMargin = 24
-        case iPadButtonsWidth = 280
-        case errorHeaderMinHeight = 64
-        case errorHeaderMaxHeight = 180
-        case errorContentBottomMargin = 13
-        case iPadWidthMultiplier = 0.7
+    private func configureErrorContentConstraints() {
+        if UIDevice.current.isIpad {
+            NSLayoutConstraint.activate([
+                errorContent.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                errorContent.widthAnchor.constraint(equalTo: view.widthAnchor,
+                                                    multiplier: Constants.iPadWidthMultiplier)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                errorContent.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                      constant: Constants.textContentMargin),
+                errorContent.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                       constant: -Constants.textContentMargin)
+            ])
+        }
+
+        errorContent.setContentHuggingPriority(.required, for: .vertical)
+        errorContent.setContentCompressionResistancePriority(.required, for: .vertical)
+
+        NSLayoutConstraint.activate([
+            errorContent.topAnchor.constraint(equalTo: scrollView.topAnchor,
+                                              constant: Constants.errorContentBottomMargin),
+            errorContent.bottomAnchor.constraint(greaterThanOrEqualTo: scrollView.bottomAnchor)
+        ])
+    }
+
+    private enum Constants {
+        static let singleButtonHeight: CGFloat = 50
+        static let twoButtonsHeight: CGFloat = 112
+        static let textContentMargin: CGFloat = 24
+        static let errorHeaderMinHeight: CGFloat = 64
+        static let errorHeaderHeightMultiplier: CGFloat = 0.3
+        static let errorContentBottomMargin: CGFloat = 13
+        static let sidePadding: CGFloat = 24
+        static let iPadWidthMultiplier: CGFloat = 0.7
+        static let iPadButtonsWidth: CGFloat = 280
     }
 }

@@ -107,11 +107,11 @@ final class PriceLabelView: UIView {
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
 
-            priceTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Constants.labelPadding),
+            priceTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
+												constant: Constants.textFieldTopPadding),
             priceTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
             priceTextField.trailingAnchor.constraint(equalTo: currencyLabel.leadingAnchor,
                                                      constant: -Constants.padding),
-            priceTextField.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.padding),
 
             currencyLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.padding),
             currencyLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
@@ -175,7 +175,7 @@ extension PriceLabelView: UITextFieldDelegate {
 private extension PriceLabelView {
     enum Constants {
         static let cornerRadius: CGFloat = 8
-        static let padding: CGFloat = 16
-        static let labelPadding: CGFloat = 4
+        static let padding: CGFloat = 12
+        static let textFieldTopPadding: CGFloat = 0
     }
 }
