@@ -550,9 +550,8 @@ extension MultipageReviewViewController {
     }
     
     @objc fileprivate func deleteImageButtonAction() {
-        if let currentIndexPath = visibleCell(in: self.mainCollection) {
-            deleteItem(at: currentIndexPath)
-        }
+		let indexPath = IndexPath(row: currentSelectedItemPosition, section: 0)
+		deleteItem(at: indexPath)
     }
     
 }
