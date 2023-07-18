@@ -538,17 +538,16 @@ extension MultipageReviewViewController {
     }
     
     @objc fileprivate func rotateImageButtonAction() {
-        if let currentIndexPath = visibleCell(in: self.mainCollection) {
-            presenter.rotateThumbnails(for: pages[currentIndexPath.row])
-            
-            mainCollection.reloadItems(at: [currentIndexPath])
-            pagesCollection.reloadItems(at: [currentIndexPath])
-            
-            selectItem(at: currentIndexPath.row)
-            delegate?.multipageReview(self, didRotate: pages[currentIndexPath.row])
-        }
-    }
-    
+		let currentIndexPath = IndexPath(row: currentSelectedItemPosition, section: 0)
+		presenter.rotateThumbnails(for: pages[currentIndexPath.row])
+		
+		mainCollection.reloadItems(at: [currentIndexPath])
+		pagesCollection.reloadItems(at: [currentIndexPath])
+		
+		selectItem(at: currentIndexPath.row)
+		delegate?.multipageReview(self, didRotate: pages[currentIndexPath.row])
+	}
+	
     @objc fileprivate func deleteImageButtonAction() {
 		let indexPath = IndexPath(row: currentSelectedItemPosition, section: 0)
 		deleteItem(at: indexPath)
