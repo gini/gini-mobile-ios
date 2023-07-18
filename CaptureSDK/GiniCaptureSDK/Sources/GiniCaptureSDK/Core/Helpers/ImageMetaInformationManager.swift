@@ -233,14 +233,12 @@ final class ImageMetaInformationManager {
     }
 
     fileprivate func entryFieldString(_ entryPoint: GiniConfiguration.GiniEntryPoint) -> String {
-            var stringValue: String
             switch entryPoint {
             case .button:
-                stringValue = "button"
+                return "button"
             case .field:
-                stringValue = "field"
+                return "field"
             }
-            return stringValue
         }
 
     fileprivate func userComment(rotationDegrees: Int? = nil) -> String {
