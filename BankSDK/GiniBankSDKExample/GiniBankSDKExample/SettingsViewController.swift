@@ -212,6 +212,7 @@ final class SettingsViewController: UIViewController {
 		let option = contentData[cell.tag]
 		guard case .switchOption(var data) = option else { return }
 		data.isSwitchOn = cell.isSwitchOn
+		contentData[cell.tag] = .switchOption(data:(SwitchOptionModel(type: data.type, isSwitchOn: data.isSwitchOn)))
 		switch data.type {
 		case .openWith:
 			giniConfiguration.openWithEnabled = data.isSwitchOn
