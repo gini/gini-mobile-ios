@@ -1,5 +1,5 @@
 //
-//  UIView.swift
+//  UIView+LoadNib.swift
 //  
 //
 //  Created by David Vizaknai on 22.02.2023.

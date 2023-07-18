@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <device id="retina4_7" orientation="landscape" appearance="light"/>
+    <accessibilityOverrides isEnabled="YES" boldText="YES" dynamicTypePreference="5"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -15,46 +16,28 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="P49-IF-cNr">
-                    <rect key="frame" x="32" y="-12" width="350" height="124"/>
+                <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" alignment="center" spacing="19" translatesAutoresizingMaskIntoConstraints="NO" id="P49-IF-cNr">
+                    <rect key="frame" x="20" y="0.0" width="374" height="100"/>
                     <subviews>
-                        <view contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="qXA-rg-jnW">
-                            <rect key="frame" x="0.0" y="37" width="78" height="50"/>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        </view>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="alertTriangle" translatesAutoresizingMaskIntoConstraints="NO" id="hcl-ui-jnN">
-                            <rect key="frame" x="78" y="50" width="24" height="24"/>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="alertTriangle" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hcl-ui-jnN">
+                            <rect key="frame" x="-0.5" y="37.5" width="25" height="25"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="24" id="Db8-lY-6Ej"/>
                                 <constraint firstAttribute="width" constant="24" id="W61-RH-hQr"/>
                             </constraints>
                         </imageView>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mvb-oc-bWo">
-                            <rect key="frame" x="102" y="37" width="32" height="50"/>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="32" id="IiO-cT-8dY"/>
-                            </constraints>
-                        </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="500" verticalHuggingPriority="500" placeholderIntrinsicWidth="106.3" placeholderIntrinsicHeight="33.299999999999997" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Ga-iz-N0F">
-                            <rect key="frame" x="134" y="12" width="106" height="100"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="500" verticalHuggingPriority="500" placeholderIntrinsicWidth="106.3" placeholderIntrinsicHeight="33.299999999999997" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="3Ga-iz-N0F">
+                            <rect key="frame" x="43" y="12" width="331" height="76"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E0r-u7-Vo8">
-                            <rect key="frame" x="240" y="37" width="110" height="50"/>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        </view>
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="3Ga-iz-N0F" secondAttribute="bottom" priority="999" constant="12" id="1bL-SQ-csv"/>
-                        <constraint firstAttribute="trailing" secondItem="E0r-u7-Vo8" secondAttribute="trailing" id="B3t-3s-GcU"/>
-                        <constraint firstItem="E0r-u7-Vo8" firstAttribute="width" secondItem="qXA-rg-jnW" secondAttribute="width" id="NuG-7v-3PD">
-                            <variation key="heightClass=regular-widthClass=compact" constant="32"/>
-                        </constraint>
                         <constraint firstItem="3Ga-iz-N0F" firstAttribute="top" secondItem="P49-IF-cNr" secondAttribute="top" priority="999" constant="12" id="SPA-BA-YWn"/>
                     </constraints>
+                    <variation key="heightClass=regular-widthClass=regular" alignment="center"/>
                 </stackView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
@@ -63,19 +46,18 @@
                 <constraint firstItem="P49-IF-cNr" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="4v8-7t-0eW"/>
                 <constraint firstItem="P49-IF-cNr" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="7Dz-yE-Ol3"/>
                 <constraint firstItem="P49-IF-cNr" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="FpW-7D-0Sm"/>
-                <constraint firstItem="P49-IF-cNr" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" priority="999" id="JhM-7a-REp">
+                <constraint firstItem="P49-IF-cNr" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" priority="999" constant="20" id="JhM-7a-REp">
                     <variation key="heightClass=regular-widthClass=compact" constant="32"/>
                 </constraint>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="P49-IF-cNr" secondAttribute="trailing" priority="999" id="dwy-kE-J58">
                     <variation key="heightClass=regular-widthClass=compact" constant="32"/>
                 </constraint>
-                <constraint firstItem="P49-IF-cNr" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" priority="999" constant="12" id="k3h-yT-QHk">
-                    <variation key="heightClass=regular-widthClass=compact" constant="12"/>
-                </constraint>
+                <constraint firstItem="P49-IF-cNr" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" priority="999" id="k3h-yT-QHk"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="headerLabel" destination="3Ga-iz-N0F" id="S2U-OK-tbH"/>
+                <outlet property="headerStack" destination="P49-IF-cNr" id="Ueo-5k-dDv"/>
                 <outlet property="iconImageView" destination="hcl-ui-jnN" id="Nu0-AH-Z10"/>
             </connections>
             <point key="canvasLocation" x="139" y="72"/>

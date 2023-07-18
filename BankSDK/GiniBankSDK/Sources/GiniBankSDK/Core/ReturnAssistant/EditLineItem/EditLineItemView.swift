@@ -19,7 +19,7 @@ final class EditLineItemView: UIView {
                                   for: .normal)
         button.setTitle(title, for: .normal)
         button.addTarget(self, action: #selector(didTapCancel), for: .touchUpInside)
-        // The color is set twice beacuse in some iOS versions the `setTitleColor` does not change the color
+        // The color is set twice because in some iOS versions the `setTitleColor` does not change the color
         button.setTitleColor(.GiniBank.accent1, for: .normal)
         button.titleLabel?.textColor = .GiniBank.accent1
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -47,7 +47,7 @@ final class EditLineItemView: UIView {
         button.setAttributedTitle(NSAttributedString(string: title, attributes: textAttributes(for: .bodyBold)),
                                   for: .normal)
         button.addTarget(self, action: #selector(didTapSave), for: .touchUpInside)
-        // The color is set twice beacuse in some iOS versions the `setTitleColor` does not change the color
+        // The color is set twice because in some iOS versions the `setTitleColor` does not change the color
         button.setTitleColor(.GiniBank.accent1, for: .normal)
         button.titleLabel?.textColor = .GiniBank.accent1
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -59,61 +59,50 @@ final class EditLineItemView: UIView {
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .fillEqually
+		stackView.distribution = .fill
         stackView.axis = .vertical
         stackView.spacing = Constants.stackViewSpacing
         return stackView
     }()
 
-    private lazy var nameLabel: NameLabelView = {
+	private let nameContainerView = UIView()
+
+    private lazy var nameLabelView: NameLabelView = {
         let view = NameLabelView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.delegate = self
         return view
     }()
 
-    private lazy var nameErrorLabel: UILabel = {
-        let label = UILabel()
-        label.adjustsFontForContentSizeCategory = true
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .GiniBank.error3
-        label.alpha = 0
-        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.name.error",
-                                                              comment: "Name error title")
-        if let font = configuration.textStyleFonts[.caption2] {
-            if font.pointSize > Constants.maximumFontSize {
-                label.font = configuration.textStyleFonts[.caption2]?.withSize(Constants.maximumFontSize)
-            } else {
-                label.font = configuration.textStyleFonts[.caption2]
-            }
-        }
-        return label
-    }()
+	private lazy var nameErrorView: ErrorView = {
+		let view = ErrorView()
+		view.alpha = 0
+		view.translatesAutoresizingMaskIntoConstraints = false
+		let errorTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.name.error",
+																  comment: "Name error title")
+		view.set(errorTitle: errorTitle)
+		return view
+	}()
 
-    private lazy var priceLabel: PriceLabelView = {
+	private let priceContainerView = UIView()
+
+    private lazy var priceLabelView: PriceLabelView = {
         let view = PriceLabelView()
         view.delegate = self
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
-    private lazy var priceErrorLabel: UILabel = {
-        let label = UILabel()
-        label.adjustsFontForContentSizeCategory = true
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .GiniBank.error3
-        label.alpha = 0
-        label.text = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.price.error",
-                                                              comment: "Price error title")
-        if let font = configuration.textStyleFonts[.caption2] {
-            if font.pointSize > Constants.maximumFontSize {
-                label.font = configuration.textStyleFonts[.caption2]?.withSize(Constants.maximumFontSize)
-            } else {
-                label.font = configuration.textStyleFonts[.caption2]
-            }
-        }
-        return label
-    }()
+	private lazy var priceErrorView: ErrorView = {
+		let view = ErrorView()
+		view.translatesAutoresizingMaskIntoConstraints = false
+		view.alpha = 0
+
+		let errorTitle = NSLocalizedStringPreferredGiniBankFormat("ginibank.digitalinvoice.edit.price.error",
+																  comment: "Price error title")
+		view.set(errorTitle: errorTitle)
+		return view
+	}()
 
     private lazy var quantityView: QuantityView = {
         let view = QuantityView()
@@ -148,9 +137,9 @@ final class EditLineItemView: UIView {
     }
 
     private func setupData(with viewModel: EditLineItemViewModel) {
-        nameLabel.text = viewModel.name
-        priceLabel.priceValue = viewModel.price
-        priceLabel.currencyValue = viewModel.currency
+        nameLabelView.text = viewModel.name
+        priceLabelView.priceValue = viewModel.price
+        priceLabelView.currencyValue = viewModel.currency
         quantityView.quantity = viewModel.quantity
         currencyPicker.currentCurrency = viewModel.currency
     }
@@ -163,18 +152,46 @@ final class EditLineItemView: UIView {
 
         addSubview(stackView)
 
-        stackView.setContentHuggingPriority(.defaultLow, for: .vertical)
-        nameLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-        priceLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-        quantityView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-
-        stackView.addArrangedSubview(nameLabel)
-        stackView.addArrangedSubview(priceLabel)
+        stackView.addArrangedSubview(nameContainerView)
+        stackView.addArrangedSubview(priceContainerView)
         stackView.addArrangedSubview(quantityView)
 
-        addSubview(nameErrorLabel)
-        addSubview(priceErrorLabel)
+		nameContainerView.addSubview(nameLabelView)
+		nameContainerView.addSubview(nameErrorView)
+		setupNameContainerViewConstraints()
+
+		priceContainerView.addSubview(priceLabelView)
+		priceContainerView.addSubview(priceErrorView)
+		setupPriceContainerViewConstraints()
     }
+
+	private func setupNameContainerViewConstraints() {
+		NSLayoutConstraint.activate([
+			nameLabelView.topAnchor.constraint(equalTo: nameContainerView.topAnchor, constant: 0),
+			nameLabelView.leadingAnchor.constraint(equalTo: nameContainerView.leadingAnchor, constant: 0),
+			nameLabelView.trailingAnchor.constraint(equalTo: nameContainerView.trailingAnchor, constant: 0),
+			nameLabelView.heightAnchor.constraint(equalToConstant: Constants.itemContainerMaxHeight),
+
+			nameErrorView.topAnchor.constraint(equalTo: nameLabelView.bottomAnchor, constant: Constants.errorPadding),
+			nameErrorView.leadingAnchor.constraint(equalTo: nameContainerView.leadingAnchor, constant: 0),
+			nameErrorView.trailingAnchor.constraint(equalTo: nameContainerView.trailingAnchor, constant: 0),
+			nameErrorView.bottomAnchor.constraint(equalTo: nameContainerView.bottomAnchor, constant: 0)
+		])
+	}
+
+	private func setupPriceContainerViewConstraints() {
+		NSLayoutConstraint.activate([
+			priceLabelView.topAnchor.constraint(equalTo: priceContainerView.topAnchor, constant: 0),
+			priceLabelView.leadingAnchor.constraint(equalTo: priceContainerView.leadingAnchor, constant: 0),
+			priceLabelView.trailingAnchor.constraint(equalTo: priceContainerView.trailingAnchor, constant: 0),
+			priceLabelView.heightAnchor.constraint(equalToConstant: Constants.itemContainerMaxHeight),
+
+			priceErrorView.topAnchor.constraint(equalTo: priceLabelView.bottomAnchor, constant: Constants.errorPadding),
+			priceErrorView.leadingAnchor.constraint(equalTo: priceContainerView.leadingAnchor, constant: 0),
+			priceErrorView.trailingAnchor.constraint(equalTo: priceContainerView.trailingAnchor, constant: 0),
+			priceErrorView.bottomAnchor.constraint(equalTo: priceContainerView.bottomAnchor, constant: 0)
+		])
+	}
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
@@ -195,28 +212,11 @@ final class EditLineItemView: UIView {
             saveButton.trailingAnchor.constraint(equalTo: trailingAnchor,
                                                  constant: -Constants.horizontalPadding),
 
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.stackViewPadding),
+			stackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Constants.verticalPadding),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.horizontalPadding),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.horizontalPadding),
-            stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -Constants.horizontalPadding),
 
-            nameErrorLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor, constant: 16),
-            nameErrorLabel.topAnchor.constraint(greaterThanOrEqualTo: nameLabel.bottomAnchor,
-                                                constant: Constants.errorPadding),
-            nameErrorLabel.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor),
-            nameErrorLabel.bottomAnchor.constraint(lessThanOrEqualTo: priceLabel.topAnchor,
-                                                   constant: -Constants.errorPadding),
-            nameErrorLabel.centerYAnchor.constraint(equalTo: nameLabel.bottomAnchor,
-                                                    constant: Constants.stackViewSpacing / 2),
-
-            priceErrorLabel.leadingAnchor.constraint(equalTo: priceLabel.leadingAnchor, constant: 16),
-            priceErrorLabel.topAnchor.constraint(greaterThanOrEqualTo: priceLabel.bottomAnchor,
-                                                 constant: Constants.errorPadding),
-            priceErrorLabel.trailingAnchor.constraint(equalTo: priceLabel.trailingAnchor),
-            priceErrorLabel.bottomAnchor.constraint(lessThanOrEqualTo: quantityView.topAnchor,
-                                                    constant: -Constants.errorPadding),
-            priceErrorLabel.centerYAnchor.constraint(equalTo: priceLabel.bottomAnchor,
-                                                    constant: Constants.stackViewSpacing / 2)
+			quantityView.heightAnchor.constraint(equalToConstant: Constants.itemContainerMaxHeight)
         ])
     }
 
@@ -231,17 +231,17 @@ final class EditLineItemView: UIView {
 
     @objc
     private func didTapSave() {
-        if isNameLabelValid() && isPriceLabelValid() {
-            viewModel?.didTapSave(name: nameLabel.text,
-                                  price: priceLabel.priceValue,
-                                  currency: priceLabel.currencyValue,
+        if isNameLabelValid && isPriceLabelValid {
+            viewModel?.didTapSave(name: nameLabelView.text,
+                                  price: priceLabelView.priceValue,
+                                  currency: priceLabelView.currencyValue,
                                   quantity: quantityView.quantity)
         } else {
-            if !isNameLabelValid() {
+            if !isNameLabelValid {
                 showNameLabelError()
             }
 
-            if !isPriceLabelValid() {
+            if !isPriceLabelValid {
                 showPriceLabelError()
             }
         }
@@ -262,32 +262,32 @@ final class EditLineItemView: UIView {
         return attributes
     }
 
-    private func isNameLabelValid() -> Bool {
-        return !(nameLabel.text == nil || nameLabel.text!.trimmingCharacters(in: .whitespaces).isEmpty)
+	private var isNameLabelValid: Bool {
+        return !(nameLabelView.text == nil || nameLabelView.text!.trimmingCharacters(in: .whitespaces).isEmpty)
     }
 
-    private func isPriceLabelValid() -> Bool {
-        return !(priceLabel.priceValue <= 0)
+	private var isPriceLabelValid: Bool {
+        return !(priceLabelView.priceValue <= 0)
     }
 
     private func showNameLabelError() {
-        UIView.animate(withDuration: 0.3) {
-            self.nameErrorLabel.alpha = 1
+        UIView.animate(withDuration: Constants.animationDuration) {
+            self.nameErrorView.alpha = 1
         }
     }
 
     private func showPriceLabelError() {
-        UIView.animate(withDuration: 0.3) {
-            self.priceErrorLabel.alpha = 1
+        UIView.animate(withDuration: Constants.animationDuration) {
+            self.priceErrorView.alpha = 1
         }
     }
 }
 
 extension EditLineItemView: NameLabelViewDelegate {
     func nameLabelViewTextFieldDidChange(on: NameLabelView) {
-        if nameLabel.text != nil && !nameLabel.text!.isEmpty {
-            UIView.animate(withDuration: 0.3, animations: {
-                self.nameErrorLabel.alpha = 0
+        if nameLabelView.text != nil && !nameLabelView.text!.isEmpty {
+            UIView.animate(withDuration: Constants.animationDuration, animations: {
+                self.nameErrorView.alpha = 0
             })
         }
     }
@@ -295,9 +295,9 @@ extension EditLineItemView: NameLabelViewDelegate {
 
 extension EditLineItemView: CurrencyPickerViewDelegate {
     func currencyPickerDidPick(_ currency: String, on view: CurrencyPickerView) {
-        priceLabel.currencyValue = currency
+        priceLabelView.currencyValue = currency
 
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: Constants.animationDuration) {
             self.currencyPicker.alpha = 0
         }
 
@@ -307,9 +307,9 @@ extension EditLineItemView: CurrencyPickerViewDelegate {
 
 extension EditLineItemView: PriceLabelViewDelegate {
     func priceLabelViewTextFieldDidChange(on: PriceLabelView) {
-        if priceLabel.priceValue > 0 {
-            UIView.animate(withDuration: 0.3) {
-                self.priceErrorLabel.alpha = 0
+        if priceLabelView.priceValue > 0 {
+            UIView.animate(withDuration: Constants.animationDuration) {
+                self.priceErrorView.alpha = 0
             }
         }
     }
@@ -324,7 +324,7 @@ extension EditLineItemView: PriceLabelViewDelegate {
             currencyPicker.widthAnchor.constraint(equalToConstant: Constants.currencyPickerWidth)
         ])
 
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: Constants.animationDuration) {
             self.currencyPicker.alpha = 1
         }
     }
@@ -336,10 +336,11 @@ private extension EditLineItemView {
         static let horizontalPadding: CGFloat = 16
         static let titlePadding: CGFloat = 4
         static let errorPadding: CGFloat = 2
-        static let stackViewPadding: CGFloat = 72
-        static let stackViewSpacing: CGFloat = 26
+        static let stackViewSpacing: CGFloat = 8
         static let currencyPickerPadding: CGFloat = 8
         static let currencyPickerWidth: CGFloat = 120
         static let maximumFontSize: CGFloat = 20
+		static let itemContainerMaxHeight: CGFloat = 64
+		static let animationDuration: CGFloat = 0.3
     }
 }
