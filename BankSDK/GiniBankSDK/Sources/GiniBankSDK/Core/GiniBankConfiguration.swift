@@ -650,7 +650,8 @@ public final class GiniBankConfiguration: NSObject {
     // swiftlint:enable function_parameter_count
 
     /**
-     Set the entry point for the Gini Bank SDK with a default value `GiniEntryPoint.button`
-    */
+     Set the entry point used for launching the Gini Bank SDK.
+     Default value is `GiniEntryPoint.button`.
+     */
     public var entryPoint = GiniConfiguration.GiniEntryPoint.button
 }
