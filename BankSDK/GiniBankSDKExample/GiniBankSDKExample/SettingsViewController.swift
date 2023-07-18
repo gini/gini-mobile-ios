@@ -260,16 +260,16 @@ final class SettingsViewController: UIViewController {
 			giniConfiguration.bottomNavigationBarEnabled = data.isSwitchOn
 		case .helpNavigationBarBottomAdapter:
 			let customAdapter = CustomBottomNavigationBarAdapter()
-			giniConfiguration.helpNavigationBarBottomAdapter = customAdapter
+			giniConfiguration.helpNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
 		case .cameraNavigationBarBottomAdapter:
 			let customAdapter = CustomCameraBottomNavigationBarAdapter()
-			giniConfiguration.cameraNavigationBarBottomAdapter = customAdapter
+			giniConfiguration.cameraNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
 		case .reviewNavigationBarBottomAdapter:
 			let customAdapter = CustomReviewScreenBottomNavigationBarAdapter()
-			giniConfiguration.reviewNavigationBarBottomAdapter = customAdapter
+			giniConfiguration.reviewNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
 		case .imagePickerNavigationBarBottomAdapter:
 			let customAdapter = CustomBottomNavigationBarAdapter()
-			giniConfiguration.imagePickerNavigationBarBottomAdapter = customAdapter
+			giniConfiguration.imagePickerNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
 		case .onboardingShowAtLaunch:
 			giniConfiguration.onboardingShowAtLaunch = data.isSwitchOn
 		case .onboardingShowAtFirstLaunch:
@@ -336,16 +336,16 @@ final class SettingsViewController: UIViewController {
 		case .digitalInvoiceOnboardingIllustrationAdapter:
 			let customAdapter = CustomOnboardingIllustrationAdapter(animationName: "magicAnimation",
 																	backgroundColor: UIColor.blue)
-			giniConfiguration.digitalInvoiceOnboardingIllustrationAdapter = customAdapter
+			giniConfiguration.digitalInvoiceOnboardingIllustrationAdapter = data.isSwitchOn ? customAdapter : nil
 		case .digitalInvoiceHelpNavigationBarBottomAdapter:
 			let customAdapter = CustomBottomNavigationBarAdapter()
-			giniConfiguration.digitalInvoiceHelpNavigationBarBottomAdapter = customAdapter
+			giniConfiguration.digitalInvoiceHelpNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
 		case .digitalInvoiceOnboardingNavigationBarBottomAdapter:
 			let customAdapter = CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter()
-			giniConfiguration.digitalInvoiceOnboardingNavigationBarBottomAdapter = customAdapter
+			giniConfiguration.digitalInvoiceOnboardingNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
 		case .digitalInvoiceNavigationBarBottomAdapter:
 			let customAdapter = CustomDigitalInvoiceBottomNavigationBarAdapter()
-			giniConfiguration.digitalInvoiceNavigationBarBottomAdapter = customAdapter
+			giniConfiguration.digitalInvoiceNavigationBarBottomAdapter = data.isSwitchOn ? customAdapter : nil
 		case .primaryButtonConfiguration:
 			guard data.isSwitchOn else {
 				giniConfiguration.primaryButtonConfiguration = settingsButtonStates.primaryButtonState.configuration
