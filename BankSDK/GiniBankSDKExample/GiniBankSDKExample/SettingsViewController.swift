@@ -272,12 +272,12 @@ final class SettingsViewController: UIViewController {
 			giniConfiguration.imagePickerNavigationBarBottomAdapter = customAdapter
 		case .onboardingShowAtLaunch:
 			giniConfiguration.onboardingShowAtLaunch = data.isSwitchOn
+		case .onboardingShowAtFirstLaunch:
+			giniConfiguration.onboardingShowAtFirstLaunch = data.isSwitchOn
 			let onboardingShowedUserDefault = UserDefaults.standard.bool(forKey: "ginicapture.defaults.onboardingShowed")
 			if !data.isSwitchOn && onboardingShowedUserDefault {
 				UserDefaults.standard.removeObject(forKey: "ginicapture.defaults.onboardingShowed")
 			}
-		case .onboardingShowAtFirstLaunch:
-			giniConfiguration.onboardingShowAtFirstLaunch = data.isSwitchOn
 		case .customOnboardingPages:
 			let customPage = OnboardingPage(imageName: "captureSuggestion1",
 											title: "Page 1",
