@@ -11,7 +11,7 @@ protocol SwitchOptionTableViewCellDelegate: AnyObject {
 	func didToggleOption(in cell: SwitchOptionTableViewCell)
 }
 
-struct SwitchOptionModelCell: Hashable {
+struct SwitchOptionModelCell {
 	let title: String
 	let active: Bool
 	let message: String?
@@ -27,6 +27,7 @@ final class SwitchOptionTableViewCell: UITableViewCell, NibLoadableView {
 	
 	var isSwitchOn: Bool = false {
 		didSet {
+			guard isSwitchOn != oldValue else { return }
 			optionSwitch.isOn = isSwitchOn
 		}
 	}
