@@ -609,18 +609,9 @@ extension MultipageReviewViewController: UICollectionViewDataSource {
             var indexes = IndexPath.indexesBetween(sourceIndexPath, and: destinationIndexPath)
             indexes.append(sourceIndexPath)
             
-            // On iOS < 11 the destinationIndexPath is not reloaded automatically.
-            if ProcessInfo().operatingSystemVersion.majorVersion < 11 {
-                indexes.append(destinationIndexPath)
-            }
-            
             let elementMoved = pages.remove(at: sourceIndexPath.row)
             pages.insert(elementMoved, at: destinationIndexPath.row)
-            
-            if sourceIndexPath.row != currentSelectedItemPosition {
-                mainCollection.reloadData()
-            }
-            
+
             // This is needed because this method is called before the dragging animation finishes.
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: { [weak self] in
                 guard let self = self else { return }
@@ -697,6 +688,7 @@ extension MultipageReviewViewController: UICollectionViewDelegateFlowLayout {
             }
             changeTitle(withPage: indexPath.row + 1)
             currentSelectedItemPosition = indexPath.row
+			mainCollection.reloadData()
         }
     }
     
