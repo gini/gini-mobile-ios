@@ -311,7 +311,7 @@ final class SettingsViewController: UIViewController {
 			giniConfiguration.shouldShowSupportedFormatsScreen = data.isSwitchOn
 		case .customMenuItems:
 			let customMenuItem = HelpMenuItem.custom("Custom menu item", CustomMenuItemViewController())
-			giniConfiguration.customMenuItems = [customMenuItem]
+			giniConfiguration.customMenuItems = data.isSwitchOn ? [customMenuItem] : []
 		case .customNavigationController:
 			let navigationViewController = UINavigationController()
 			navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
