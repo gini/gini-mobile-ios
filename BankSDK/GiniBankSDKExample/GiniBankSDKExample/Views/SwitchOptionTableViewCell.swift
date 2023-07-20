@@ -27,7 +27,6 @@ final class SwitchOptionTableViewCell: UITableViewCell, NibLoadableView {
 	
 	var isSwitchOn: Bool = false {
 		didSet {
-			guard isSwitchOn != oldValue else { return }
 			optionSwitch.isOn = isSwitchOn
 		}
 	}
