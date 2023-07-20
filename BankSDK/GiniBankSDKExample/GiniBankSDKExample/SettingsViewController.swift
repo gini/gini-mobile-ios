@@ -147,9 +147,6 @@ final class SettingsViewController: UIViewController {
 
 		contentData.append(.switchOption(data: .init(type: .customNavigationController,
 													 isSwitchOn: giniConfiguration.customNavigationController != nil)))
-		
-		contentData.append(.switchOption(data: .init(type: .shouldShowSupportedFormatsScreen,
-													 isSwitchOn: giniConfiguration.shouldShowSupportedFormatsScreen)))
 		if UIDevice.current.isIpad {
 			contentData.append(.switchOption(data: .init(type: .shouldShowDragAndDropTutorial,
 														 isSwitchOn: giniConfiguration.shouldShowDragAndDropTutorial)))
