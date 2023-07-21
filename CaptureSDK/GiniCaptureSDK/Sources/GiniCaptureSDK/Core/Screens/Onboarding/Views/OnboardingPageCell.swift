@@ -4,7 +4,6 @@
 //  Created by Nadya Karaban on 08.06.22.
 //
 
-import Foundation
 import UIKit
 
 class OnboardingPageCell: UICollectionViewCell {
@@ -13,8 +12,8 @@ class OnboardingPageCell: UICollectionViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
 
-    @IBOutlet weak var iconBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var topConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var iconBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var topConstraint: NSLayoutConstraint!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -57,10 +56,6 @@ class OnboardingPageCell: UICollectionViewCell {
             iconBottomConstraint.constant = calculateIconMargin()
         }
         super.layoutSubviews()
-    }
-
-    func configureCell() {
-
     }
 
     override func prepareForReuse() {

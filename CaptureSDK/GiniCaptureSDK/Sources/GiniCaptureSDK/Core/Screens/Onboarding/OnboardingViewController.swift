@@ -5,7 +5,6 @@
 //  Created by Nadya Karaban on 07.06.22.
 //
 
-import Foundation
 import UIKit
 
 class OnboardingViewController: UIViewController {
