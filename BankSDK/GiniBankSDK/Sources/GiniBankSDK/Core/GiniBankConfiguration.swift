@@ -470,8 +470,8 @@ public final class GiniBankConfiguration: NSObject {
 
         configuration.onboardingShowAtLaunch = self.onboardingShowAtLaunch
         configuration.onboardingShowAtFirstLaunch = self.onboardingShowAtFirstLaunch
+		configuration.customOnboardingPages = self.customOnboardingPages
         configuration.onboardingAlignCornersIllustrationAdapter = self.onboardingAlignCornersIllustrationAdapter
-
         configuration.onboardingLightingIllustrationAdapter = self.onboardingLightingIllustrationAdapter
         configuration.onboardingQRCodeIllustrationAdapter = self.onboardingQRCodeIllustrationAdapter
         configuration.onboardingMultiPageIllustrationAdapter = self.onboardingMultiPageIllustrationAdapter
@@ -561,6 +561,7 @@ public final class GiniBankConfiguration: NSObject {
 
         giniBankConfiguration.shouldShowDragAndDropTutorial = configuration.shouldShowDragAndDropTutorial
         giniBankConfiguration.bottomNavigationBarEnabled = configuration.bottomNavigationBarEnabled
+		giniBankConfiguration.customOnboardingPages = configuration.customOnboardingPages
     }
 
     /**
