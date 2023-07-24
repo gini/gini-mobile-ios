@@ -538,21 +538,19 @@ extension MultipageReviewViewController {
     }
     
     @objc fileprivate func rotateImageButtonAction() {
-        if let currentIndexPath = visibleCell(in: self.mainCollection) {
-            presenter.rotateThumbnails(for: pages[currentIndexPath.row])
-            
-            mainCollection.reloadItems(at: [currentIndexPath])
-            pagesCollection.reloadItems(at: [currentIndexPath])
-            
-            selectItem(at: currentIndexPath.row)
-            delegate?.multipageReview(self, didRotate: pages[currentIndexPath.row])
-        }
-    }
-    
+		let currentIndexPath = IndexPath(row: currentSelectedItemPosition, section: 0)
+		presenter.rotateThumbnails(for: pages[currentIndexPath.row])
+		
+		mainCollection.reloadItems(at: [currentIndexPath])
+		pagesCollection.reloadItems(at: [currentIndexPath])
+		
+		selectItem(at: currentIndexPath.row)
+		delegate?.multipageReview(self, didRotate: pages[currentIndexPath.row])
+	}
+	
     @objc fileprivate func deleteImageButtonAction() {
-        if let currentIndexPath = visibleCell(in: self.mainCollection) {
-            deleteItem(at: currentIndexPath)
-        }
+		let indexPath = IndexPath(row: currentSelectedItemPosition, section: 0)
+		deleteItem(at: indexPath)
     }
     
 }
@@ -611,18 +609,9 @@ extension MultipageReviewViewController: UICollectionViewDataSource {
             var indexes = IndexPath.indexesBetween(sourceIndexPath, and: destinationIndexPath)
             indexes.append(sourceIndexPath)
             
-            // On iOS < 11 the destinationIndexPath is not reloaded automatically.
-            if ProcessInfo().operatingSystemVersion.majorVersion < 11 {
-                indexes.append(destinationIndexPath)
-            }
-            
             let elementMoved = pages.remove(at: sourceIndexPath.row)
             pages.insert(elementMoved, at: destinationIndexPath.row)
-            
-            if sourceIndexPath.row != currentSelectedItemPosition {
-                mainCollection.reloadData()
-            }
-            
+
             // This is needed because this method is called before the dragging animation finishes.
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: { [weak self] in
                 guard let self = self else { return }
@@ -699,6 +688,7 @@ extension MultipageReviewViewController: UICollectionViewDelegateFlowLayout {
             }
             changeTitle(withPage: indexPath.row + 1)
             currentSelectedItemPosition = indexPath.row
+			mainCollection.reloadData()
         }
     }
     
