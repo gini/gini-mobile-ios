@@ -1,5 +1,5 @@
 //
-//  SettingsViewController+ButtonConfiguration.swift
+//  SettingsViewController+SettingsButtonStates.swift
 //  GiniBankSDKExample
 //
 //  Created by Valentina Iancu on 27.06.23.
