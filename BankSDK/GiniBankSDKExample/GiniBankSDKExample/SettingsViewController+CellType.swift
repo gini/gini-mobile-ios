@@ -1,5 +1,5 @@
 //
-//  SettingsViewController+Types.swift
+//  SettingsViewController+CellType.swift
 //  GiniBankSDKExample
 //
 //  Created by Valentina Iancu on 12.06.23.

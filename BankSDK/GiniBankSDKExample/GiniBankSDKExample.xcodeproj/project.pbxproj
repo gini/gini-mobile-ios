@@ -8,20 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		2815B6F42A0CF51C004ABF06 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2815B6F32A0CF51C004ABF06 /* Lottie */; };
-		288647542A4AFF7600ED7C5C /* SettingsViewController+ButtonConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288647532A4AFF7600ED7C5C /* SettingsViewController+ButtonConfiguration.swift */; };
-		288647562A4B4A4000ED7C5C /* SettingsViewController+DocumentValidations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288647552A4B4A4000ED7C5C /* SettingsViewController+DocumentValidations.swift */; };
 		289447712A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */; };
 		289447732A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */; };
 		289570932A30CD7600CC2C56 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289570912A30CD7600CC2C56 /* SettingsViewController.swift */; };
 		289570942A30CE2800CC2C56 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289570922A30CD7600CC2C56 /* SettingsViewController.xib */; };
 		289D3DB32A4EC857002A6681 /* InfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289D3DB12A4EC857002A6681 /* InfoTableViewCell.swift */; };
 		289D3DB42A4EC857002A6681 /* InfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289D3DB22A4EC857002A6681 /* InfoTableViewCell.xib */; };
+		28A4112F2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A4112D2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift */; };
+		28A411302A6EB9E500421033 /* SettingsViewController+DocumentValidationsState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A4112E2A6EB9E500421033 /* SettingsViewController+DocumentValidationsState.swift */; };
 		28B1B3932A45DC4C0045B4A1 /* UIView+LoadNib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B1B3922A45DC4C0045B4A1 /* UIView+LoadNib.swift */; };
 		28B5873C2A372790008CB210 /* UITableView+CellRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B5873B2A372790008CB210 /* UITableView+CellRegistration.swift */; };
 		28B5873E2A3727F8008CB210 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B5873D2A3727F8008CB210 /* ReusableView.swift */; };
 		28B587462A373A72008CB210 /* SwitchOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B587442A373A72008CB210 /* SwitchOptionTableViewCell.swift */; };
 		28B587472A373A72008CB210 /* SwitchOptionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28B587452A373A72008CB210 /* SwitchOptionTableViewCell.xib */; };
-		28B587492A373FCB008CB210 /* SettingsViewController+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B587482A373FCB008CB210 /* SettingsViewController+Types.swift */; };
+		28B587492A373FCB008CB210 /* SettingsViewController+CellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B587482A373FCB008CB210 /* SettingsViewController+CellType.swift */; };
 		28B5874C2A374730008CB210 /* SegmentedOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B5874A2A374730008CB210 /* SegmentedOptionTableViewCell.swift */; };
 		28B5874D2A374730008CB210 /* SegmentedOptionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28B5874B2A374730008CB210 /* SegmentedOptionTableViewCell.xib */; };
 		28CDB8232A38A5E40016A81C /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CDB8222A38A5E40016A81C /* ColorPalette.swift */; };
@@ -143,20 +143,20 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		288647532A4AFF7600ED7C5C /* SettingsViewController+ButtonConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+ButtonConfiguration.swift"; sourceTree = "<group>"; };
-		288647552A4B4A4000ED7C5C /* SettingsViewController+DocumentValidations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+DocumentValidations.swift"; sourceTree = "<group>"; };
 		289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SwitchOptionModel.swift"; sourceTree = "<group>"; };
 		289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SegmentedOptionModel.swift"; sourceTree = "<group>"; };
 		289570912A30CD7600CC2C56 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		289570922A30CD7600CC2C56 /* SettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
 		289D3DB12A4EC857002A6681 /* InfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTableViewCell.swift; sourceTree = "<group>"; };
 		289D3DB22A4EC857002A6681 /* InfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InfoTableViewCell.xib; sourceTree = "<group>"; };
+		28A4112D2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SettingsButtonStates.swift"; sourceTree = "<group>"; };
+		28A4112E2A6EB9E500421033 /* SettingsViewController+DocumentValidationsState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+DocumentValidationsState.swift"; sourceTree = "<group>"; };
 		28B1B3922A45DC4C0045B4A1 /* UIView+LoadNib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+LoadNib.swift"; sourceTree = "<group>"; };
 		28B5873B2A372790008CB210 /* UITableView+CellRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+CellRegistration.swift"; sourceTree = "<group>"; };
 		28B5873D2A3727F8008CB210 /* ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableView.swift; sourceTree = "<group>"; };
 		28B587442A373A72008CB210 /* SwitchOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchOptionTableViewCell.swift; sourceTree = "<group>"; };
 		28B587452A373A72008CB210 /* SwitchOptionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwitchOptionTableViewCell.xib; sourceTree = "<group>"; };
-		28B587482A373FCB008CB210 /* SettingsViewController+Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+Types.swift"; sourceTree = "<group>"; };
+		28B587482A373FCB008CB210 /* SettingsViewController+CellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+CellType.swift"; sourceTree = "<group>"; };
 		28B5874A2A374730008CB210 /* SegmentedOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedOptionTableViewCell.swift; sourceTree = "<group>"; };
 		28B5874B2A374730008CB210 /* SegmentedOptionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SegmentedOptionTableViewCell.xib; sourceTree = "<group>"; };
 		28CDB8222A38A5E40016A81C /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
@@ -515,9 +515,9 @@
 				F441DCC525E56BF800AAB09A /* LaunchScreen.xib */,
 				289570912A30CD7600CC2C56 /* SettingsViewController.swift */,
 				289570922A30CD7600CC2C56 /* SettingsViewController.xib */,
-				28B587482A373FCB008CB210 /* SettingsViewController+Types.swift */,
-				288647532A4AFF7600ED7C5C /* SettingsViewController+ButtonConfiguration.swift */,
-				288647552A4B4A4000ED7C5C /* SettingsViewController+DocumentValidations.swift */,
+				28B587482A373FCB008CB210 /* SettingsViewController+CellType.swift */,
+				28A4112E2A6EB9E500421033 /* SettingsViewController+DocumentValidationsState.swift */,
+				28A4112D2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift */,
 				289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */,
 				289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */,
 				F4AD00DB25DFDCE400C34E15 /* ResultTableViewController.swift */,
@@ -821,7 +821,6 @@
 				837EEFB5291D6ABE00DB781F /* CustomCameraBottomNavigationBarAdapter.swift in Sources */,
 				76610BE9298D5448004C1ECB /* CustomReviewScreenBottomNavigationBar.swift in Sources */,
 				F4AD00CC25DFDB4E00C34E15 /* CredentialsManager.swift in Sources */,
-				288647562A4B4A4000ED7C5C /* SettingsViewController+DocumentValidations.swift in Sources */,
 				28B5874C2A374730008CB210 /* SegmentedOptionTableViewCell.swift in Sources */,
 				8336530128F0334C00B5A1CE /* CustomBottomNavigationBar.swift in Sources */,
 				28B5873C2A372790008CB210 /* UITableView+CellRegistration.swift in Sources */,
@@ -829,18 +828,19 @@
 				F414A56325EBB87F00D04A80 /* DocumentAnalysisHelper.swift in Sources */,
 				F4BB7CF226984E5D003FD77E /* CustomMenuItemViewController.swift in Sources */,
 				837EEFB3291D6AAC00DB781F /* CustomCameraBottomNavigationBar.swift in Sources */,
+				28A4112F2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift in Sources */,
 				833652FD28F0308B00B5A1CE /* CustomBottomNavigationBarAdapter.swift in Sources */,
 				289570932A30CD7600CC2C56 /* SettingsViewController.swift in Sources */,
 				F4E0218827BD349A0042D000 /* Amount.swift in Sources */,
 				768100372996959800C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter.swift in Sources */,
 				28B587462A373A72008CB210 /* SwitchOptionTableViewCell.swift in Sources */,
-				288647542A4AFF7600ED7C5C /* SettingsViewController+ButtonConfiguration.swift in Sources */,
 				289447732A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift in Sources */,
 				28DB2C822A39AF5000F5B304 /* GiniButton.swift in Sources */,
+				28A411302A6EB9E500421033 /* SettingsViewController+DocumentValidationsState.swift in Sources */,
 				28CDB8232A38A5E40016A81C /* ColorPalette.swift in Sources */,
 				289D3DB32A4EC857002A6681 /* InfoTableViewCell.swift in Sources */,
 				3E7839CE29C9DBB700B42216 /* ResultTableViewCell.swift in Sources */,
-				28B587492A373FCB008CB210 /* SettingsViewController+Types.swift in Sources */,
+				28B587492A373FCB008CB210 /* SettingsViewController+CellType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
