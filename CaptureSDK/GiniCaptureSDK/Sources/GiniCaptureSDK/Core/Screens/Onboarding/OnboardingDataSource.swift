@@ -34,6 +34,10 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         if let customPages = giniConfiguration.customOnboardingPages {
             return customPages
         } else {
+            adapters = [
+                .alignCorners: giniConfiguration.onboardingAlignCornersIllustrationAdapter,
+                .lighting: giniConfiguration.onboardingLightingIllustrationAdapter
+            ]
             var sections: [OnboardingPage] =
             [
                 OnboardingPage(imageName: "onboardingFlatPaper", title: NSLocalizedStringPreferredFormat(
@@ -55,8 +59,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
                                       description: NSLocalizedStringPreferredFormat(
                                         "ginicapture.onboarding.multiPages.description",
                                         comment: "onboarding multi pages description")))
-            } else {
-                adapters[.multipage] = nil
+                adapters[.multipage] = giniConfiguration.onboardingMultiPageIllustrationAdapter
             }
             if giniConfiguration.qrCodeScanningEnabled {
                 sections.append(
@@ -65,22 +68,15 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
                         comment: "onboarding qrcode title"), description: NSLocalizedStringPreferredFormat(
                             "ginicapture.onboarding.qrCode.description",
                             comment: "onboarding qrcode description")))
-            } else {
-                adapters[.qrcode] = nil
+                adapters[.qrcode] = giniConfiguration.onboardingQRCodeIllustrationAdapter
             }
+
             return sections
         }
     }()
 
     required init(configuration: GiniConfiguration) {
         giniConfiguration = configuration
-
-        adapters = [
-            .alignCorners: giniConfiguration.onboardingAlignCornersIllustrationAdapter,
-            .lighting: giniConfiguration.onboardingLightingIllustrationAdapter,
-            .multipage: giniConfiguration.onboardingMultiPageIllustrationAdapter,
-            .qrcode: giniConfiguration.onboardingQRCodeIllustrationAdapter
-        ]
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -89,10 +85,9 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
 
     private func configureCell(cell: OnboardingPageCell, indexPath: IndexPath) {
         let item = itemSections[indexPath.row]
-        
+       
         if let predefinedPageType = OnboadingPageType.init(rawValue: indexPath.row),
-            let adapter = adapters[predefinedPageType],
-            adapter != nil {
+            let adapter = adapters[predefinedPageType], adapter != nil {
             cell.iconView.illustrationAdapter = adapter
         } else {
             cell.iconView.illustrationAdapter = ImageOnboardingIllustrationAdapter()
