@@ -558,4 +558,20 @@ import GiniBankAPILibrary
          self.documentService = nil
      }
     // swiftlint:enable function_parameter_count
+ 
+    /**
+     Enum that represents entry points used for launching the SDK.
+    */
+    public enum GiniEntryPoint: Int {
+        // Must be used when the user launches the SDK from a button.
+        case button
+        // Must be used when the user launches the SDK from a text field.
+        case field
+    }
+
+    /**
+     Set the entry point used for launching the Gini Capture SDK.
+     Default value is `GiniEntryPoint.button`.
+     */
+    public var entryPoint: GiniEntryPoint = .button
 }
