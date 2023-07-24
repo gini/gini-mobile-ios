@@ -89,16 +89,16 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
 
     private func configureCell(cell: OnboardingPageCell, indexPath: IndexPath) {
         let item = itemSections[indexPath.row]
-        let image = UIImageNamedPreferred(named: item.imageName)
-        guard let onboardingPageType = OnboadingPageType.init(rawValue: indexPath.row) else {
-            return
-        }
-        if let adapter = adapters[onboardingPageType], adapter != nil {
+        
+        if let predefinedPageType = OnboadingPageType.init(rawValue: indexPath.row),
+            let adapter = adapters[predefinedPageType],
+            adapter != nil {
             cell.iconView.illustrationAdapter = adapter
         } else {
             cell.iconView.illustrationAdapter = ImageOnboardingIllustrationAdapter()
-            cell.iconView.icon = image
         }
+
+        cell.iconView.icon = UIImageNamedPreferred(named: item.imageName)
         cell.iconView.accessibilityValue = item.title
         cell.iconView.setupView()
 
