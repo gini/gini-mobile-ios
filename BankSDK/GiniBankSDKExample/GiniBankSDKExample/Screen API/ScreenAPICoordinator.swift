@@ -5,7 +5,6 @@
 //  Created by Nadya Karaban on 19.02.21.
 //
 
-import Foundation
 import UIKit
 import GiniBankAPILibrary
 import GiniBankSDK
@@ -53,7 +52,12 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
 	private var extractedResults: [Extraction] = []
 	
 	// {extraction name} : {entity name}
-	private let editableSpecificExtractions = ["paymentRecipient" : "companyname", "paymentReference" : "reference", "paymentPurpose" : "text", "iban" : "iban", "bic" : "bic", "amountToPay" : "amount"]
+	private let editableSpecificExtractions = ["paymentRecipient" : "companyname",
+											   "paymentReference" : "reference",
+											   "paymentPurpose" : "text",
+											   "iban" : "iban",
+											   "bic" : "bic",
+											   "amountToPay" : "amount"]
     
     init(configuration: GiniBankConfiguration,
          importedDocuments documents: [GiniCaptureDocument]?,

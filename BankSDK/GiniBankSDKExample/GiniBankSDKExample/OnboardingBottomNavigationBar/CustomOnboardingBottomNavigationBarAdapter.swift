@@ -5,7 +5,6 @@
 //  Created by Krzysztof Kryniecki on 27/10/2022.
 //
 
-import Foundation
 import GiniCaptureSDK
 import UIKit
 
@@ -37,15 +36,14 @@ class CustomOnboardingBottomNavigationBarAdapter: OnboardingNavigationBarBottomA
     }
     
     func injectedView() -> UIView {
-        if let view =  CustomOnboardingBottomNavigationBar().loadNib() as? CustomOnboardingBottomNavigationBar {
-            view.nextButton.addTarget(
-                self,
-                action: #selector(actionPressed),
-                for: .touchUpInside)
-            return view
-        }
-        return UIView()
-    }
+		guard let view =  CustomOnboardingBottomNavigationBar().loadNib() as? CustomOnboardingBottomNavigationBar else {
+			return UIView()
+		}
+		view.nextButton.addTarget(self,
+								  action: #selector(actionPressed),
+								  for: .touchUpInside)
+		return view
+	}
     
     func onDeinit() {
         buttonClicked = nil

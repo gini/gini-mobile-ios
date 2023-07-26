@@ -5,7 +5,6 @@
 //  Created by Nadya Karaban on 18.02.21.
 //
 
-import Foundation
 import UIKit
 import GiniCaptureSDK
 import GiniBankAPILibrary
@@ -46,30 +45,9 @@ final class AppCoordinator: Coordinator {
             }
             return CustomDocumentValidationResult.success()
         }
-//        configuration.cameraNavigationBarBottomAdapter = CustomCameraBottomNavigationBarAdapter()
-//        configuration.onlyQRCodeScanningEnabled = true
-//        configuration.bottomNavigationBarEnabled = true
-//        configuration.noResultNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
-//        configuration.helpNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
-//        configuration.imagePickerNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
-//        configuration.reviewNavigationBarBottomAdapter = CustomReviewScreenBottomNavigationBarAdapter()
-//        configuration.onboardingNavigationBarBottomAdapter = CustomOnboardingBottomNavigationBarAdapter()
-//        configuration.cameraNavigationBarBottomAdapter = CustomCameraBottomNavigationBarAdapter()
-//        configuration.digitalInvoiceHelpNavigationBarBottomAdapter = CustomBottomNavigationBarAdapter()
-//        configuration.digitalInvoiceOnboardingNavigationBarBottomAdapter = CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter()
-//        configuration.digitalInvoiceNavigationBarBottomAdapter = CustomDigitalInvoiceBottomNavigationBarAdapter()
-
-//        let customMenuItem = HelpMenuViewController.Item.custom("Custom menu item", CustomMenuItemViewController())
-//        configuration.customMenuItems = [customMenuItem]
-
-        // A few camera screen customisation examples
-//        configuration.navigationBarItemFont = UIFont.systemFont(ofSize: 20, weight: .bold)
-//        configuration.navigationBarCameraTitleHelpButton = "? Help"
-//
-//        configuration.multipagePageSuccessfullUploadIconBackgroundColor = .systemGreen
-//        configuration.multipagePageFailureUploadIconBackgroundColor = .systemRed
-//        configuration.enableReturnReasons = false
-        
+		// Note: more examples of how the GiniBankConfiguration options can be configured can be found
+		// in SettingsViewController
+		
     // If you need to scale your font please use our method `scaledFont()`. Please, find the example below.
 //    let customFontToBeScaled = UIFont.scaledFont(UIFont(name: "Avenir", size: 20) ?? UIFont.systemFont(ofSize: 7, weight: .regular), textStyle: .caption1)
 //    configuration.updateFont(customFontToBeScaled, for: .caption1)
@@ -77,42 +55,6 @@ final class AppCoordinator: Coordinator {
     // If you would like to pass us already scaled font.
 //    let customScaledFont = UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 28))
 //    configuration.updateFont(customScaledFont, for: .caption2)
-//    configuration.primaryButtonBorderWidth = 10
-//    configuration.primaryButtonShadowColor = UIColor.red.cgColor
-//    configuration.primaryButtonShadowRadius = 10
-//    configuration.primaryButtonShadowOpacity = 0.7
-//    configuration.primaryButtonCornerRadius = 10
-//    configuration.customOnboardingPages = [OnboardingPage(imageName: "captureSuggestion1", title: "Page 1", description: "Description for page 1")]
-        //configuration.onboardingAlignCornersIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "page1Animation", backgroundColor: UIColor.red)
-        //configuration.onboardingLightingIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "cameraAnimation", backgroundColor: UIColor.yellow)
-        //configuration.onboardingMultiPageIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "uploadAnimation", backgroundColor: UIColor.green)
-        //configuration.onboardingQRCodeIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "magicAnimation", backgroundColor: UIColor.blue)
-//        configuration.digitalInvoiceOnboardingIllustrationAdapter = CustomOnboardingIllustrationAdapter(animationName: "magicAnimation", backgroundColor: UIColor.blue)
-
-//       //  Custom loading indicator customization example for the analysis screen
-//        let customLoadingIndicator = CustomLoadingIndicator()
-//        configuration.customLoadingIndicator = customLoadingIndicator
-
-//      // Custom loading indicator customization example for the on button laoding indicator
-//        let customButtonLoadingIndicator = OnButtonLoading()
-//        configuration.onButtonLoadingIndicator = customButtonLoadingIndicator
-        
-        // Custom navigation view controller
-//        let navigationViewController = UINavigationController()
-//        navigationViewController.navigationBar.backgroundColor = GiniColor(light: .purple, dark: .lightGray).uiColor()
-//        configuration.customNavigationController = navigationViewController
-
-        // Custom button configuration example:
-//        configuration.primaryButtonConfiguration = ButtonConfiguration(backgroundColor: .yellow,
-//                                                                       borderColor: .red,
-//                                                                       titleColor: .green,
-//                                                                       shadowColor: .clear,
-//                                                                       titleFont: UIFont.systemFont(ofSize: 20,
-//                                                                                                    weight: .thin),
-//                                                                       cornerRadius: 22,
-//                                                                       borderWidth: 4,
-//                                                                       shadowRadius: 0,
-//                                                                       withBlurEffect: false)
 
        return configuration
     }()
@@ -123,6 +65,8 @@ final class AppCoordinator: Coordinator {
     private let documentMetadataAppFlowKey = "AppFlow"
     private let groupName = "group.bank.extension.test"
     private let imageDataKey = "imageData"
+	private var settingsButtonStates: SettingsButtonStates?
+	private var documentValidationsState: DocumentValidationsState?
 
     init(window: UIWindow) {
         self.window = window
@@ -194,11 +138,49 @@ final class AppCoordinator: Coordinator {
         }
     }
     
+	func displayOpenWithAlertView() {
+		let alert = UIAlertController(title: "Feature is disabled",
+									  message: "`Open with` feature is currently disabled. \n If you want to test this, please enable it in Gini configuration!",
+									  preferredStyle: .alert)
+		
+		let ok = UIAlertAction(title: "OK", style: .default) { _ in
+			self.rootViewController.dismiss(animated: true)
+		}
+
+		alert.addAction(ok)
+		rootViewController.present(alert, animated: true)
+	}
+	
     fileprivate func showSelectAPIScreen() {
         self.window.rootViewController = rootViewController
         self.window.makeKeyAndVisible()
+		setSettingsButtonStates()
+		setDocumentValidationsState()
     }
+	
+	fileprivate func setSettingsButtonStates() {
+		let primaryButtonState = SettingsButtonStates.ButtonState(configuration: configuration.primaryButtonConfiguration,
+																  isSwitchOn: false)
+		let secondaryButtonState = SettingsButtonStates.ButtonState(configuration: configuration.secondaryButtonConfiguration,
+																  isSwitchOn: false)
+		let transparentButtonState = SettingsButtonStates.ButtonState(configuration: configuration.transparentButtonConfiguration,
+																  isSwitchOn: false)
+		let cameraControlButtonState = SettingsButtonStates.ButtonState(configuration: configuration.cameraControlButtonConfiguration,
+																  isSwitchOn: false)
+		let addPageButtonState = SettingsButtonStates.ButtonState(configuration: configuration.addPageButtonConfiguration,
+																  isSwitchOn: false)
+		settingsButtonStates = SettingsButtonStates(primaryButtonState: primaryButtonState,
+													secondaryButtonState: secondaryButtonState,
+													transparentButtonState: transparentButtonState,
+													cameraControlButtonState: cameraControlButtonState,
+													addPageButtonState: addPageButtonState)
+	}
     
+	fileprivate func setDocumentValidationsState() {
+		documentValidationsState = DocumentValidationsState(validations: configuration.customDocumentValidations,
+															isSwitchOn: false)
+	}
+	
     fileprivate func showScreenAPI(with pages: [GiniCapturePage]? = nil) {
         documentMetadata = Document.Metadata(branchId: documentMetadataBranchId,
                                              additionalHeaders: [documentMetadataAppFlowKey: "ScreenAPI"])
@@ -208,20 +190,23 @@ final class AppCoordinator: Coordinator {
                                                         documentMetadata: documentMetadata)
         screenAPICoordinator.delegate = self
         screenAPICoordinator.start()
+	
         add(childCoordinator: screenAPICoordinator as Coordinator)
-        
-        rootViewController.present(screenAPICoordinator.rootViewController, animated: true, completion: nil)
+		screenAPICoordinator.rootViewController.modalPresentationStyle = .overFullScreen
+		screenAPICoordinator.rootViewController.modalTransitionStyle = .coverVertical
+        rootViewController.present(screenAPICoordinator.rootViewController, animated: true)
     }
     
     fileprivate func showSettings() {
-        let settingsViewController = (UIStoryboard(name: "Main", bundle: nil)
-            .instantiateViewController(withIdentifier: "settingsViewController") as? SettingsViewController)!
-        settingsViewController.delegate = self
-        settingsViewController.giniConfiguration = configuration.captureConfiguration()
-        settingsViewController.modalPresentationStyle = .overFullScreen
-        settingsViewController.modalTransitionStyle = .crossDissolve
-        
-        rootViewController.present(settingsViewController, animated: true, completion: nil)
+		guard let settingsButtonStates = settingsButtonStates,
+			  let documentValidationsState = documentValidationsState else { return }
+		let settingsViewController = SettingsViewController(giniConfiguration: configuration,
+															settingsButtonStates: settingsButtonStates,
+															documentValidationsState: documentValidationsState)
+		settingsViewController.delegate = self
+		settingsViewController.modalPresentationStyle = .overFullScreen
+		settingsViewController.modalTransitionStyle = .coverVertical
+		rootViewController.present(settingsViewController, animated: true)
     }
 
     fileprivate func showOpenWithSwitchDialog(for pages: [GiniCapturePage]) {
@@ -238,11 +223,11 @@ final class AppCoordinator: Coordinator {
             self?.showScreenAPI(with: pages)
         })
         alertViewController.addAction(UIAlertAction(title: cancelButtonTitle, style: .default) { _ in
-            alertViewController.dismiss(animated: true, completion: nil)
+            alertViewController.dismiss(animated: true)
         })
 
 
-        rootViewController.present(alertViewController, animated: true, completion: nil)
+        rootViewController.present(alertViewController, animated: true)
     }
 
     fileprivate func showExternalDocumentNotValidDialog() {
@@ -252,15 +237,15 @@ final class AppCoordinator: Coordinator {
 
         let alertViewController = UIAlertController(title: title, message: description, preferredStyle: .alert)
         alertViewController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-            alertViewController.dismiss(animated: true, completion: nil)
+            alertViewController.dismiss(animated: true)
         })
         
-        rootViewController.present(alertViewController, animated: true, completion: nil)
+        rootViewController.present(alertViewController, animated: true)
     }
     
     fileprivate func popToRootViewControllerIfNeeded() {
         self.childCoordinators.forEach { coordinator in
-            coordinator.rootViewController.dismiss(animated: true, completion: nil)
+            coordinator.rootViewController.dismiss(animated: true)
             self.remove(childCoordinator: coordinator)
         }
     }
@@ -269,23 +254,21 @@ final class AppCoordinator: Coordinator {
 // MARK: SelectAPIViewControllerDelegate
 
 extension AppCoordinator: SelectAPIViewControllerDelegate {
-    
-    func selectAPI(viewController: SelectAPIViewController, didSelectApi api: GiniPayBankApiType) {
-        switch api {
-        case .screen:
-            showScreenAPI()
-        }
-    }
-    
-    func selectAPI(viewController: SelectAPIViewController, didTapSettings: ()) {
-        showSettings()
-    }
+	
+	func selectAPI(viewController: SelectAPIViewController, didSelectApi api: GiniPayBankApiType) {
+		guard case .screen = api else { return }
+		showScreenAPI()
+	}
+	
+	func selectAPI(viewController: SelectAPIViewController, didTapSettings: ()) {
+		showSettings()
+	}
 }
 
 extension AppCoordinator: SettingsViewControllerDelegate {
-    func settings(settingViewController: SettingsViewController,
-                  didChangeConfiguration captureConfiguration: GiniConfiguration) {
-        configuration.updateConfiguration(withCaptureConfiguration: captureConfiguration)
+    func didTapCloseButton() {
+		rootViewController.dismiss(animated: true)
+		GiniBank.setConfiguration(configuration)
     }
 }
 
@@ -293,13 +276,13 @@ extension AppCoordinator: SettingsViewControllerDelegate {
 
 extension AppCoordinator: ScreenAPICoordinatorDelegate {
     func screenAPIShouldRestart(coordinator: ScreenAPICoordinator) {
-        coordinator.rootViewController.dismiss(animated: false, completion: nil)
+        coordinator.rootViewController.dismiss(animated: false)
         coordinator.start()
-        rootViewController.present(coordinator.rootViewController, animated: false, completion: nil)
+        rootViewController.present(coordinator.rootViewController, animated: false)
     }
     
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ()) {
-        coordinator.rootViewController.dismiss(animated: true, completion: nil)
+        coordinator.rootViewController.dismiss(animated: true)
         self.remove(childCoordinator: coordinator as Coordinator)
     }
 }
