@@ -12,8 +12,6 @@ import UIKit
 /**
  The CameraViewControllerDelegate protocol defines methods that allow you to handle picked documents from both
  Gallery and Files Explorer.
-
- - note: Component API only.
  */
 public protocol DocumentPickerCoordinatorDelegate: AnyObject {
     /**
@@ -57,8 +55,6 @@ public protocol DocumentPickerCoordinatorDelegate: AnyObject {
  the `delegate` property.
  When using multipage and having imported/captured images, you have to update the `isPDFSelectionAllowed`
  property before showing the File explorer in order to filter out PDFs.
-
- - note: Component API only.
  */
 
 public final class DocumentPickerCoordinator: NSObject {
