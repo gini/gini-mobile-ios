@@ -54,12 +54,16 @@ public class OnboardingImageView: UIView {
     /** The object responsible for providing the illustration to be displayed in the view. */
     public var illustrationAdapter: OnboardingIllustrationAdapter?
 
-    /** The icon to be displayed in the view. Setting this property automatically calls the `setupView()` method to update the view. */
+    /** The icon to be displayed in the view.*/
     public var icon: UIImage? {
         didSet {
-            setupView()
+            let imageView = UIImageView()
+            imageView.image = icon
+            imageView.contentMode = .scaleAspectFit
+            imageView.fixInView(self)
         }
     }
+
     private let injectedViewTag = 1010
 
 // MARK: - Initializers
@@ -78,15 +82,11 @@ public class OnboardingImageView: UIView {
     }
 
     /**
-     Sets up the view by adding the injected view to the view hierarchy if it is not already present.
-     If an injected view is present, its image is updated to reflect the current `icon` value.
+     Sets up the view by adding an imageView to the view hierarchy.
      */
     public func setupView() {
-        // add injected view if it wasn't already there
+        // add injected view if exists
         if viewWithTag(injectedViewTag) == nil, let containerView = illustrationAdapter?.injectedView() {
-            if let imageView = containerView as? UIImageView {
-                imageView.image = icon
-            }
             containerView.tag = injectedViewTag
             containerView.fixInView(self)
         }
