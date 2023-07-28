@@ -31,6 +31,8 @@ How to release new versions
 put all the XCFrameworks into a subfolder with the same name as the zipped folder. This breaks adding the XCFrameworks
 to the project because Cocoapods can't find XCFrameworks in subfolders.
 
+[^2]: Cocoapods unzip command: `unzip GiniBankSDKPinning-XCFrameworks.zip -d output-dir`
+
 How to use the GiniBankSDK pod
 ------------------------------
 
@@ -38,6 +40,3 @@ How to use the GiniBankSDK pod
    1. `source 'https://github.com/gini/gini-podspecs.git'`
    2. `pod GiniBankSDKPinning`
 2. Run `pod update` to fetch the latest Gini Bank SDK pod version.
-
-
-
