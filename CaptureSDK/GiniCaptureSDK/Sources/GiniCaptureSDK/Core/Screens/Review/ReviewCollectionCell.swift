@@ -53,9 +53,8 @@ final class ReviewCollectionCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(documentImageView)
-        addSubview(deleteButton)
-        bringSubviewToFront(deleteButton)
+        contentView.addSubview(documentImageView)
+        contentView.addSubview(deleteButton)
 
         addConstraints()
     }
