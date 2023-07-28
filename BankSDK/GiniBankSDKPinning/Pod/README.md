@@ -19,16 +19,16 @@ How to release new versions
    GiniCaptureSDKPinning.xcframework \
    TrustKit.xcframework
    ```
-2. Update the version in the `GiniBankSDKPinning.podspec`, for example `spec.version = 2.2.1`.
-3. Clone the `https://github.com/gini/gini-podspecs` repository.
-4. Go into the `gini-podspecs` repository folder and create a subfolder in `GiniBankSDKPinning` which is named after the
-   version, for example `GiniBankSDKPinning/2.2.1`.
-5. Copy the `GiniBankSDKPinning-XCFrameworks.zip` and the `GiniBankSDKPinning.podspec` into the new folder.
-6. Commit and push the new folder and its contents to `gini-podspecs`. You can discard the changes in the
-   `gini-mobile-ios` repo.
+2. Clone the `https://github.com/gini/gini-podspecs` repository.
+3. Go into the `gini-podspecs` repository folder and create a subfolder in `GiniBankSDKPinning` which is named after the
+   version, for example `2.2.1`.
+4. Copy the `GiniBankSDKPinning-XCFrameworks.zip` into the new folder.
+5. Copy the `GiniBankSDKPinning.podspec` file from the folder where this readme is located into the new folder and update the
+   version with the corresponding one, for example `spec.version = 2.2.1`.
+6. Commit and push the new folder and its contents to `gini-podspecs` repo.
 
-[^1]: If we put the XCFrameworks into a folder and then zip that folder then the `unzip` command Cocoapods uses will put
-all the XCFrameworks into a subfolder with the same name as the zipped folder. This breaks adding the XCFrameworks
+[^1]: If we put the XCFrameworks into a folder and then zip that folder then the `unzip` command Cocoapods uses[^2] will
+put all the XCFrameworks into a subfolder with the same name as the zipped folder. This breaks adding the XCFrameworks
 to the project because Cocoapods can't find XCFrameworks in subfolders.
 
 How to use the GiniBankSDK pod
