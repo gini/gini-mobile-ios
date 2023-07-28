@@ -69,11 +69,11 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(galleryImage)
-        addSubview(selectedForegroundView)
-        addSubview(checkCircleBackground)
-        addSubview(activityIndicator)
-        addSubview(checkImage)
+        contentView.addSubview(galleryImage)
+        contentView.addSubview(selectedForegroundView)
+        contentView.addSubview(checkCircleBackground)
+        contentView.addSubview(activityIndicator)
+        contentView.addSubview(checkImage)
 
         setupConstraints()
     }

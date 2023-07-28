@@ -20,7 +20,7 @@ final class HelpMenuCell: UITableViewCell, HelpCell {
     func setupView() {
         let separator = UIView()
         separator.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(separator)
+        contentView.addSubview(separator)
         separatorView = separator
         configureConstraints()
     }

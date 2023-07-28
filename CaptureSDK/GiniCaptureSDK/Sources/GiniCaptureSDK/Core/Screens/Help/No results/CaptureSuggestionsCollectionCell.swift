@@ -28,8 +28,8 @@ final class CaptureSuggestionsCollectionCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(suggestionImage)
-        addSubview(suggestionText)
+        contentView.addSubview(suggestionImage)
+        contentView.addSubview(suggestionText)
         addConstraints()
     }
 
