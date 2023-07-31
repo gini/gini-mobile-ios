@@ -9,9 +9,6 @@ import UIKit
 
 final class ImagePickerCollectionViewCell: UICollectionViewCell {
     static let identifier = "ImagePickerCollectionViewCell"
-
-    let selectedCircleSize = CGSize(width: 25, height: 25)
-
     lazy var activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(style: .gray)
         indicator.translatesAutoresizingMaskIntoConstraints = false
@@ -48,8 +45,8 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
     lazy var checkCircleBackground: UIView = {
         let circleView = UIView()
         circleView.translatesAutoresizingMaskIntoConstraints = false
-        circleView.layer.borderWidth = 1
-        circleView.layer.cornerRadius = self.selectedCircleSize.width / 2
+        circleView.layer.borderWidth = Constants.circleBorder
+        circleView.layer.cornerRadius = Constants.selectedCircleSize.width / 2
         circleView.layer.borderColor = UIColor.GiniCapture.light1.cgColor
         return circleView
     }()
@@ -155,5 +152,6 @@ extension ImagePickerCollectionViewCell {
         static let borderWidth: CGFloat = 2
         static let selectedCircleSize = CGSize(width: 25, height: 25)
         static let circlePadding: CGFloat = 5
+        static let circleBorder: CGFloat = 1
     }
 }

@@ -29,10 +29,19 @@ final class HelpMenuCell: UITableViewCell, HelpCell {
         if let separatorView = separatorView {
             NSLayoutConstraint.activate([
                 separatorView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-                separatorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
-                separatorView.heightAnchor.constraint(equalToConstant: 1),
-                separatorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -1)
+                separatorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                        constant: -Constants.separatorLeadingInset),
+                separatorView.heightAnchor.constraint(equalToConstant: Constants.separatorHeight),
+                separatorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
+                                                      constant: -Constants.separatorHeight)
             ])
         }
+    }
+}
+
+extension HelpMenuCell {
+    private enum Constants {
+        static let separatorHeight: CGFloat = 1
+        static let separatorLeadingInset: CGFloat = 8
     }
 }
