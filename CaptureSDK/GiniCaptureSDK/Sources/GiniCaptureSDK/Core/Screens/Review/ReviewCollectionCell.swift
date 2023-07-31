@@ -66,13 +66,13 @@ final class ReviewCollectionCell: UICollectionViewCell {
     private func addConstraints() {
 
         NSLayoutConstraint.activate([
-            documentImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            documentImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            documentImageView.topAnchor.constraint(equalTo: topAnchor),
-            documentImageView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            documentImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            documentImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            documentImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            documentImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 
-            deleteButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            deleteButton.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            deleteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            deleteButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
             deleteButton.heightAnchor.constraint(equalToConstant: 44),
             deleteButton.widthAnchor.constraint(equalToConstant: 44)
         ])
