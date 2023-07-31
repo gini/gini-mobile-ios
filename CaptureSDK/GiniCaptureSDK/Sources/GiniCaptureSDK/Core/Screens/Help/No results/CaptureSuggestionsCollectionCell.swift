@@ -22,7 +22,7 @@ final class CaptureSuggestionsCollectionCell: UICollectionViewCell {
         suggestionText.translatesAutoresizingMaskIntoConstraints = false
         suggestionText.numberOfLines = 0
         suggestionText.adjustsFontSizeToFitWidth = true
-        suggestionText.minimumScaleFactor = 10 / 14
+        suggestionText.minimumScaleFactor = Constants.minScaleFactor
         return suggestionText
     }()
 
@@ -39,21 +39,27 @@ final class CaptureSuggestionsCollectionCell: UICollectionViewCell {
 
     private func addConstraints() {
         Constraints.active(item: suggestionImage, attr: .top, relatedBy: .equal, to: contentView, attr: .top, priority: 999)
-        Constraints.active(item: suggestionImage, attr: .bottom, relatedBy: .equal, to: contentView, attr: .bottom,
-                          priority: 999)
+        Constraints.active(item: suggestionImage, attr: .bottom, relatedBy: .equal, to: contentView, attr: .bottom, priority: 999)
         Constraints.active(item: suggestionImage, attr: .leading, relatedBy: .equal, to: contentView, attr: .leading,
-                          constant: 20)
+                           constant: Constants.horizontalInset)
         Constraints.active(item: suggestionImage, attr: .trailing, relatedBy: .equal, to: suggestionText,
-                          attr: .leading, constant: -20)
+                           attr: .leading, constant: -Constants.horizontalInset)
         Constraints.active(item: suggestionImage, attr: .width, relatedBy: .equal, to: nil, attr: .notAnAttribute,
-                          constant: 85)
+                           constant: Constants.suggestionImageWidth)
         Constraints.active(item: suggestionImage, attr: .height, relatedBy: .lessThanOrEqual, to: nil,
-                          attr: .notAnAttribute, constant: 75)
+                           attr: .notAnAttribute, constant: Constants.suggestionImageHeight)
         Constraints.active(item: suggestionImage, attr: .centerY, relatedBy: .equal, to: contentView, attr: .centerY)
-
         Constraints.active(item: suggestionText, attr: .top, relatedBy: .equal, to: contentView, attr: .top)
         Constraints.active(item: suggestionText, attr: .bottom, relatedBy: .equal, to: contentView, attr: .bottom)
-        Constraints.active(item: suggestionText, attr: .trailing, relatedBy: .equal, to: contentView, attr: .trailing,
-                          constant: -20, priority: 999)
+        Constraints.active(item: suggestionText, attr: .trailing, relatedBy: .equal, to: contentView, attr: .trailing, constant: -Constants.horizontalInset, priority: 999)
+    }
+}
+
+extension CaptureSuggestionsCollectionCell {
+    private enum Constants {
+        static let horizontalInset: CGFloat = 20
+        static let suggestionImageWidth: CGFloat = 85
+        static let suggestionImageHeight: CGFloat = 75
+        static let minScaleFactor: CGFloat = 10 / 14
     }
 }
