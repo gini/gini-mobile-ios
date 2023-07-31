@@ -29,8 +29,8 @@ to the project because Cocoapods can't find XCFrameworks in subfolders.
 
 [^2]: Cocoapods unzip command: `unzip GiniBankSDK-XCFrameworks.zip -d output-dir`
 
-How to use the Gini Bank SDK pod
---------------------------------
+How to use the GiniBankSDK pod
+------------------------------
 
 1. Add the following to your `Podfile`:
    1. `source 'https://github.com/gini/gini-podspecs.git'`
