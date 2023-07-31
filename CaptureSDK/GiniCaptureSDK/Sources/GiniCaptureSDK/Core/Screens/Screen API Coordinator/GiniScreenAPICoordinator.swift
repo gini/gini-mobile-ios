@@ -36,7 +36,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
     // Screens
     var analysisViewController: AnalysisViewController?
     weak var cameraScreen: CameraScreen?
-    var imageAnalysisNoResultsViewController: NoResultScreenViewController?
+    var noResultsViewController: NoResultScreenViewController?
     lazy var reviewViewController: ReviewViewController = {
         return self.createReviewScreenContainer(with: [])
     }()
@@ -324,7 +324,8 @@ extension GiniScreenAPICoordinator: HelpMenuViewControllerDelegate {
 
         switch item {
         case .noResultsTips:
-            let title: String = .localized(resource: ImageAnalysisNoResultsStrings.titleText)
+            let title: String = NSLocalizedStringPreferredFormat("ginicapture.noresults.title",
+                                                                 comment: "Tips")
             viewController = HelpTipsViewController(giniConfiguration: giniConfiguration)
             viewController.title = title
         case .openWithTutorial:
