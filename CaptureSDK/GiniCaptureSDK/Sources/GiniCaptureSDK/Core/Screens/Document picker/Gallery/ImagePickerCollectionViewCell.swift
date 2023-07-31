@@ -94,7 +94,8 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
             selectedForegroundView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             selectedForegroundView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
 
-            checkCircleBackground.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.circlePadding),
+            checkCircleBackground.topAnchor.constraint(equalTo: contentView.topAnchor,
+                                                       constant: Constants.circlePadding),
             checkCircleBackground.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
                                                             constant: -Constants.circlePadding),
             checkCircleBackground.widthAnchor.constraint(equalToConstant: Constants.selectedCircleSize.width),
