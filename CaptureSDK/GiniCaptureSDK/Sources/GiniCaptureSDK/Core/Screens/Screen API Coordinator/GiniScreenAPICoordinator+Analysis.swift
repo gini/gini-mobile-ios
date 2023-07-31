@@ -163,7 +163,7 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
         if shouldDisplay, let type = noResultType {
             let noResultsScreen = self.createImageAnalysisNoResultsScreen(type: type)
             DispatchQueue.main.async {
-                self.imageAnalysisNoResultsViewController = noResultsScreen
+                self.noResultsViewController = noResultsScreen
                 self.screenAPINavigationController.pushViewController(
                     noResultsScreen, animated: true)
             }
