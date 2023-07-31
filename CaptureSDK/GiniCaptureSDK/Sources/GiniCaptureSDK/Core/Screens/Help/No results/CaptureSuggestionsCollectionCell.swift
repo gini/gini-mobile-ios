@@ -38,10 +38,10 @@ final class CaptureSuggestionsCollectionCell: UICollectionViewCell {
     }
 
     private func addConstraints() {
-        Constraints.active(item: suggestionImage, attr: .top, relatedBy: .equal, to: self, attr: .top, priority: 999)
-        Constraints.active(item: suggestionImage, attr: .bottom, relatedBy: .equal, to: self, attr: .bottom,
+        Constraints.active(item: suggestionImage, attr: .top, relatedBy: .equal, to: contentView, attr: .top, priority: 999)
+        Constraints.active(item: suggestionImage, attr: .bottom, relatedBy: .equal, to: contentView, attr: .bottom,
                           priority: 999)
-        Constraints.active(item: suggestionImage, attr: .leading, relatedBy: .equal, to: self, attr: .leading,
+        Constraints.active(item: suggestionImage, attr: .leading, relatedBy: .equal, to: contentView, attr: .leading,
                           constant: 20)
         Constraints.active(item: suggestionImage, attr: .trailing, relatedBy: .equal, to: suggestionText,
                           attr: .leading, constant: -20)
@@ -49,11 +49,11 @@ final class CaptureSuggestionsCollectionCell: UICollectionViewCell {
                           constant: 85)
         Constraints.active(item: suggestionImage, attr: .height, relatedBy: .lessThanOrEqual, to: nil,
                           attr: .notAnAttribute, constant: 75)
-        Constraints.active(item: suggestionImage, attr: .centerY, relatedBy: .equal, to: self, attr: .centerY)
+        Constraints.active(item: suggestionImage, attr: .centerY, relatedBy: .equal, to: contentView, attr: .centerY)
 
-        Constraints.active(item: suggestionText, attr: .top, relatedBy: .equal, to: self, attr: .top)
-        Constraints.active(item: suggestionText, attr: .bottom, relatedBy: .equal, to: self, attr: .bottom)
-        Constraints.active(item: suggestionText, attr: .trailing, relatedBy: .equal, to: self, attr: .trailing,
+        Constraints.active(item: suggestionText, attr: .top, relatedBy: .equal, to: contentView, attr: .top)
+        Constraints.active(item: suggestionText, attr: .bottom, relatedBy: .equal, to: contentView, attr: .bottom)
+        Constraints.active(item: suggestionText, attr: .trailing, relatedBy: .equal, to: contentView, attr: .trailing,
                           constant: -20, priority: 999)
     }
 }

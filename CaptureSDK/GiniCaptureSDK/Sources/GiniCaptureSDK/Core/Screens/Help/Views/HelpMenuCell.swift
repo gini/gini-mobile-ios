@@ -29,9 +29,9 @@ final class HelpMenuCell: UITableViewCell, HelpCell {
         if let separatorView = separatorView {
             NSLayoutConstraint.activate([
                 separatorView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-                separatorView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+                separatorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
                 separatorView.heightAnchor.constraint(equalToConstant: 1),
-                separatorView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1)
+                separatorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -1)
             ])
         }
     }

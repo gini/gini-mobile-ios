@@ -84,21 +84,21 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
-            activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor),
+            activityIndicator.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
 
-            galleryImage.topAnchor.constraint(equalTo: topAnchor),
-            galleryImage.leadingAnchor.constraint(equalTo: leadingAnchor),
-            galleryImage.centerXAnchor.constraint(equalTo: centerXAnchor),
-            galleryImage.centerYAnchor.constraint(equalTo: centerYAnchor),
+            galleryImage.topAnchor.constraint(equalTo: contentView.topAnchor),
+            galleryImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            galleryImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            galleryImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
 
-            selectedForegroundView.topAnchor.constraint(equalTo: topAnchor),
-            selectedForegroundView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            selectedForegroundView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            selectedForegroundView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            selectedForegroundView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            selectedForegroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            selectedForegroundView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            selectedForegroundView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
 
-            checkCircleBackground.topAnchor.constraint(equalTo: topAnchor, constant: Constants.circlePadding),
-            checkCircleBackground.trailingAnchor.constraint(equalTo: trailingAnchor,
+            checkCircleBackground.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.circlePadding),
+            checkCircleBackground.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
                                                             constant: -Constants.circlePadding),
             checkCircleBackground.widthAnchor.constraint(equalToConstant: Constants.selectedCircleSize.width),
             checkCircleBackground.heightAnchor.constraint(equalToConstant: Constants.selectedCircleSize.height),
