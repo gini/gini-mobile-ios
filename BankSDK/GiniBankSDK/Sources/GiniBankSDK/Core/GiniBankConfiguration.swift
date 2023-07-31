@@ -451,6 +451,9 @@ public final class GiniBankConfiguration: NSObject {
         
         giniBankConfiguration.entryPoint = configuration.entryPoint
 		giniBankConfiguration.customOnboardingPages = configuration.customOnboardingPages
+        
+        giniBankConfiguration.debugModeOn = configuration.debugModeOn
+        giniBankConfiguration.giniErrorLoggerIsOn = configuration.giniErrorLoggerIsOn
     }
 
     // MARK: - Update to custom font
