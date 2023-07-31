@@ -33,8 +33,8 @@ to the project because Cocoapods can't find XCFrameworks in subfolders.
 
 [^2]: Cocoapods unzip command: `unzip GiniBankSDKPinning-XCFrameworks.zip -d output-dir`
 
-How to use the GiniBankSDK pod
-------------------------------
+How to use the GiniBankSDKPinning pod
+-------------------------------------
 
 1. Add the following to your `Podfile`:
    1. `source 'https://github.com/gini/gini-podspecs.git'`
