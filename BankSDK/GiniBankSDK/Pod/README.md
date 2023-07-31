@@ -36,4 +36,12 @@ How to use the GiniBankSDK pod
    1. `source 'https://github.com/gini/gini-podspecs.git'`
    2. `pod GiniBankSDK`
 2. Run `pod update` to fetch the latest Gini Bank SDK pod version.
-   
+
+How to test the GiniBankSDK pod
+-------------------------------
+
+1. Clone the `cocoapods-xcframework-tester` repository: https://github.com/gini/cocoapods-xcframework-tester
+2. Go to your local `cocoapods-xcframework-tester` repo folder.
+3. Update the `Podfile` to use the `GiniBankSDK` pod.
+4. Run `pod update` to get the newest version of the pod.
+5. Open the `.xcworkspace` to build and run the project.
