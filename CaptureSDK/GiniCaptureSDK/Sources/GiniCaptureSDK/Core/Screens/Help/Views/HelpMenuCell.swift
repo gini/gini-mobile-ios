@@ -20,8 +20,8 @@ final class HelpMenuCell: UITableViewCell, HelpCell {
     func setupView() {
         let separator = UIView()
         separator.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(separator)
         separatorView = separator
+        addSubview(separator)
         configureConstraints()
     }
 
@@ -29,10 +29,10 @@ final class HelpMenuCell: UITableViewCell, HelpCell {
         if let separatorView = separatorView {
             NSLayoutConstraint.activate([
                 separatorView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-                separatorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                separatorView.trailingAnchor.constraint(equalTo: self.trailingAnchor,
                                                         constant: -Constants.separatorLeadingInset),
                 separatorView.heightAnchor.constraint(equalToConstant: Constants.separatorHeight),
-                separatorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
+                separatorView.bottomAnchor.constraint(equalTo: self.bottomAnchor,
                                                       constant: -Constants.separatorHeight)
             ])
         }
