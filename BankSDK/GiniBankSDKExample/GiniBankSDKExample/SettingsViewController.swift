@@ -94,16 +94,16 @@ final class SettingsViewController: UIViewController {
 														 isSwitchOn: giniConfiguration.flashOnByDefault)))
 		}
 		
-		var selectedSegmentIndex = 0
+		var selectedFileImportTypeSegmentIndex = 0
 		switch giniConfiguration.fileImportSupportedTypes {
 		case .none:
-			selectedSegmentIndex = 0
+			selectedFileImportTypeSegmentIndex = 0
 		case .pdf:
-			selectedSegmentIndex = 1
+			selectedFileImportTypeSegmentIndex = 1
 		case .pdf_and_images:
-			selectedSegmentIndex = 2
+			selectedFileImportTypeSegmentIndex = 2
 		}
-		contentData.append(.fileImportType(data: .init(selectedIndex: selectedSegmentIndex)))
+        contentData.append(.segmentedOption(data: .init(optionType: .fileImport, selectedIndex: selectedFileImportTypeSegmentIndex)))
 		
 		contentData.append(.switchOption(data: .init(type: .bottomNavigationBar,
 													 isSwitchOn: giniConfiguration.bottomNavigationBarEnabled)))
@@ -193,6 +193,15 @@ final class SettingsViewController: UIViewController {
 		
 		contentData.append(.switchOption(data: .init(type: .debugModeOn,
 													 isSwitchOn: giniConfiguration.debugModeOn)))
+        var selectedEntryPointSegmentIndex = 0
+        switch giniConfiguration.entryPoint {
+        case .button:
+            selectedEntryPointSegmentIndex = 0
+        case .field:
+            selectedEntryPointSegmentIndex = 1
+        }
+        contentData.append(.segmentedOption(data: .init(optionType: .entryPoint, selectedIndex: selectedEntryPointSegmentIndex)))
+
 		
 		self.contentData = contentData
 	}
@@ -457,9 +466,8 @@ final class SettingsViewController: UIViewController {
 		let cell = tableView.dequeueReusableCell() as SegmentedOptionTableViewCell
 		cell.tag = row
 		
-		let segmentItemTitles = optionModel.items.map { return $0.title }
 		let model = SegmentedOptionCellModel(title: optionModel.title,
-											 items: segmentItemTitles,
+                                             items: optionModel.items,
 											 selectedIndex: optionModel.selectedIndex)
 		cell.set(data: model)
 		cell.delegate = self
@@ -497,7 +505,7 @@ extension SettingsViewController: UITableViewDataSource {
 			return cell(for: message)
 		case .switchOption(let data):
 			return cell(for: data, at: row)
-		case .fileImportType(let data):
+		case .segmentedOption(let data):
 			return cell(for: data, at: row)
 		}
 	}
@@ -516,17 +524,31 @@ extension SettingsViewController: SwitchOptionTableViewCellDelegate {
 extension SettingsViewController: SegmentedOptionTableViewCellDelegate {
 	func didSegmentedControlValueChanged(in cell: SegmentedOptionTableViewCell) {
 		let option = contentData[cell.tag]
-		guard case .fileImportType(var data) = option else { return }
-		data.selectedIndex = cell.selectedSegmentIndex
-		switch data.selectedIndex {
-		case 0:
-			giniConfiguration.fileImportSupportedTypes = .none
-		case 1:
-			giniConfiguration.fileImportSupportedTypes = .pdf
-		case 2:
-			giniConfiguration.fileImportSupportedTypes = .pdf_and_images
-		default: return
-		}
+		guard case .segmentedOption(var data) = option else { return }
+        data.selectedIndex = cell.selectedSegmentIndex
+
+        switch data.optionType {
+        case .fileImport:
+            switch data.selectedIndex {
+            case 0:
+                giniConfiguration.fileImportSupportedTypes = .none
+            case 1:
+                giniConfiguration.fileImportSupportedTypes = .pdf
+            case 2:
+                giniConfiguration.fileImportSupportedTypes = .pdf_and_images
+            default: return
+        }
+            
+        case .entryPoint:
+            switch data.selectedIndex {
+            case 0:
+                giniConfiguration.entryPoint = .button
+            case 1:
+                giniConfiguration.entryPoint = .field
+            default:
+                return
+            }
+        }
 	}
 }
 

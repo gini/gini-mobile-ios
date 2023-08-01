@@ -191,7 +191,7 @@ final class SettingsViewControllerTests: XCTestCase {
 		case .pdf_and_images:
 			selectedSegmentIndex = 2
 		}
-		contentData.append(.fileImportType(data: SegmentedOptionModel(selectedIndex: selectedSegmentIndex)))
+        contentData.append(.segmentedOption(data: SegmentedOptionModel(optionType: .fileImport, selectedIndex: selectedSegmentIndex)))
 	}
 	
 	private var flashToggleSettingEnabled: Bool = {
@@ -225,7 +225,7 @@ final class SettingsViewControllerTests: XCTestCase {
 	
 	private func getFileImportOptionIndex() -> Int? {
 		return contentData.firstIndex { section in
-			guard case .fileImportType = section else {
+			guard case .segmentedOption = section else {
 				return false
 			}
 			return true
@@ -688,7 +688,7 @@ extension SettingsViewControllerTests {
 			XCTFail("`fileImportType` option not found in sectionData")
 			return
 		}
-		guard case .fileImportType(var data) = contentData[index] else { return }
+		guard case .segmentedOption(var data) = contentData[index] else { return }
 		data.selectedIndex = 0
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
 		
@@ -702,7 +702,7 @@ extension SettingsViewControllerTests {
 			XCTFail("`fileImportType` option not found in sectionData")
 			return
 		}
-		guard case .fileImportType(var data) = contentData[index] else { return }
+		guard case .segmentedOption(var data) = contentData[index] else { return }
 		data.selectedIndex = 1
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
 		XCTAssertEqual(configuration.fileImportSupportedTypes,
@@ -715,7 +715,7 @@ extension SettingsViewControllerTests {
 			XCTFail("`fileImportType` option not found in sectionData")
 			return
 		}
-		guard case .fileImportType(var data) = contentData[index] else { return }
+		guard case .segmentedOption(var data) = contentData[index] else { return }
 		data.selectedIndex = 2
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
 		XCTAssertEqual(configuration.fileImportSupportedTypes,
