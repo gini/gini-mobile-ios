@@ -25,7 +25,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
     weak var delegate: OnboardingScreen?
     var currentPage = 0
 
-    lazy var pages: [OnboardingPageModel] = {
+    lazy var pageModels: [OnboardingPageModel] = {
         if let customPages = giniConfiguration.customOnboardingPages {
             return customPages.map { page in
                 return (page: page, illustrationAdapter: nil)
@@ -40,11 +40,11 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        pages.count
+        pageModels.count
     }
 
     private func configureCell(cell: OnboardingPageCell, indexPath: IndexPath) {
-        let pageModel = pages[indexPath.row]
+        let pageModel = pageModels[indexPath.row]
 
         if giniConfiguration.customOnboardingPages == nil {
             if let adapter = pageModel.illustrationAdapter {
@@ -112,7 +112,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         willDisplay cell: UICollectionViewCell,
                         forItemAt indexPath: IndexPath) {
-        let pageModel = pages[indexPath.row]
+        let pageModel = pageModels[indexPath.row]
         if let adapter = pageModel.illustrationAdapter {
             adapter.pageDidAppear()
         }
@@ -121,7 +121,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
     func collectionView( _ collectionView: UICollectionView,
                          didEndDisplaying cell: UICollectionViewCell,
                          forItemAt indexPath: IndexPath) {
-        let pageModel = pages[indexPath.row]
+        let pageModel = pageModels[indexPath.row]
         if let adapter = pageModel.illustrationAdapter {
             adapter.pageDidDisappear()
         }
