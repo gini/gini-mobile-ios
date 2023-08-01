@@ -213,6 +213,17 @@ final class SettingsViewControllerTests: XCTestCase {
 		default: return .none
 		}
 	}
+    
+    private func giniEntryPoint(selectedIndex: Int) -> GiniCaptureSDK.GiniConfiguration.GiniEntryPoint {
+        switch selectedIndex {
+        case 0:
+            return .button
+        case 1:
+            return .field
+        default:
+            return .button
+        }
+    }
 	
 	private func getSwitchOptionIndex(for type: SwitchOptionModel.OptionType) -> Int? {
 		return contentData.firstIndex { section in
@@ -231,6 +242,15 @@ final class SettingsViewControllerTests: XCTestCase {
 			return true
 		}
 	}
+    
+    private func getEntryPointIndex() -> Int? {
+        return contentData.firstIndex { section in
+            guard case .segmentedOption = section else {
+                return false
+            }
+            return true
+        }
+    }
 }
 
 // MARK: - Tests
@@ -684,7 +704,7 @@ extension SettingsViewControllerTests {
 	// MARK: - File Import options
 	
 	func testSegmentedControlNone() {
-		guard let index = getFileImportOptionIndex()else {
+		guard let index = getFileImportOptionIndex() else {
 			XCTFail("`fileImportType` option not found in sectionData")
 			return
 		}
@@ -698,7 +718,7 @@ extension SettingsViewControllerTests {
 	}
 	
 	func testSegmentedControlPDF() {
-		guard let index = getFileImportOptionIndex()else {
+		guard let index = getFileImportOptionIndex() else {
 			XCTFail("`fileImportType` option not found in sectionData")
 			return
 		}
@@ -711,7 +731,7 @@ extension SettingsViewControllerTests {
 	}
 	
 	func testSegmentedControlPDFAndImages() {
-		guard let index = getFileImportOptionIndex()else {
+		guard let index = getFileImportOptionIndex() else {
 			XCTFail("`fileImportType` option not found in sectionData")
 			return
 		}
@@ -722,6 +742,32 @@ extension SettingsViewControllerTests {
 					   .pdf_and_images,
 					   "pdf and image types should be supported in the gini configuration")
 	}
+    
+    func testButtonEntryPoint() {
+        guard let index = getEntryPointIndex() else {
+            XCTFail("`entryPoint` option not found in sectionData")
+            return
+        }
+        guard case .segmentedOption(var data) = contentData[index] else { return }
+        data.selectedIndex = 0
+        configuration.entryPoint = giniEntryPoint(selectedIndex: data.selectedIndex)
+        XCTAssertEqual(configuration.entryPoint,
+                       .button,
+                       "button entry point should be set in the gini configuration")
+    }
+    
+    func testFieldEntryPoint() {
+        guard let index = getEntryPointIndex() else {
+            XCTFail("`entryPoint` option not found in sectionData")
+            return
+        }
+        guard case .segmentedOption(var data) = contentData[index] else { return }
+        data.selectedIndex = 1
+        configuration.entryPoint = giniEntryPoint(selectedIndex: data.selectedIndex)
+        XCTAssertEqual(configuration.entryPoint,
+                       .field,
+                       "field entry point should be set in the gini configuration")
+    }
 	
 	// MARK: - OnboardingShowAtLaunch
 	
