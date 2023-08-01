@@ -85,7 +85,7 @@ public class OnboardingImageView: UIView {
      Sets up the view by adding an imageView to the view hierarchy.
      */
     public func setupView() {
-        // add injected view if exists
+        // add injected view if it wasn't added before
         if viewWithTag(injectedViewTag) == nil, let containerView = illustrationAdapter?.injectedView() {
             containerView.tag = injectedViewTag
             containerView.fixInView(self)
