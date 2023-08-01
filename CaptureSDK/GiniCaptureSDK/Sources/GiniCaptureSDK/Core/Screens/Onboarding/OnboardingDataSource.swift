@@ -80,17 +80,19 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         pageModels = [flatPaperPageModel, goodLightingPageModel]
 
         if giniConfiguration.multipageEnabled {
-            pageModels.append((page: OnboardingPage(imageName: DefaultOnboardingPage.multipage.imageName,
-                                                    title: DefaultOnboardingPage.multipage.title,
-                                                    description: DefaultOnboardingPage.multipage.description),
-                              illustrationAdapter: giniConfiguration.onboardingMultiPageIllustrationAdapter))
+            let multiPageModel = (page: OnboardingPage(imageName: DefaultOnboardingPage.multipage.imageName,
+                                                       title: DefaultOnboardingPage.multipage.title,
+                                                       description: DefaultOnboardingPage.multipage.description),
+                                  illustrationAdapter: giniConfiguration.onboardingMultiPageIllustrationAdapter)
+            pageModels.append(multiPageModel)
         }
 
         if giniConfiguration.qrCodeScanningEnabled {
-            pageModels.append((page: OnboardingPage(imageName: DefaultOnboardingPage.qrcode.imageName,
-                                                    title: DefaultOnboardingPage.qrcode.title,
-                                                    description: DefaultOnboardingPage.qrcode.description),
-                               illustrationAdapter: giniConfiguration.onboardingQRCodeIllustrationAdapter))
+            let qrCodePageModel = (page: OnboardingPage(imageName: DefaultOnboardingPage.qrcode.imageName,
+                                                        title: DefaultOnboardingPage.qrcode.title,
+                                                        description: DefaultOnboardingPage.qrcode.description),
+                                   illustrationAdapter: giniConfiguration.onboardingQRCodeIllustrationAdapter)
+            pageModels.append(qrCodePageModel)
         }
 
         return pageModels
