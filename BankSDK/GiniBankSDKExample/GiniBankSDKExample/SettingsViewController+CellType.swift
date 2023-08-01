@@ -9,6 +9,6 @@ extension SettingsViewController {
 	enum CellType {
 		case info(message: String)
 		case switchOption(data: SwitchOptionModel)
-		case fileImportType(data: SegmentedOptionModel)
+		case segmentedOption(data: SegmentedOptionModel)
 	}
 }
