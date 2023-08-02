@@ -450,9 +450,10 @@ public final class GiniBankConfiguration: NSObject {
 		giniBankConfiguration.onboardingAlignCornersIllustrationAdapter = configuration.onboardingAlignCornersIllustrationAdapter
         
         giniBankConfiguration.entryPoint = configuration.entryPoint
-
-		giniBankConfiguration.debugModeOn = configuration.debugModeOn
-		giniBankConfiguration.giniErrorLoggerIsOn = configuration.giniErrorLoggerIsOn
+		giniBankConfiguration.customOnboardingPages = configuration.customOnboardingPages
+        
+        giniBankConfiguration.debugModeOn = configuration.debugModeOn
+        giniBankConfiguration.giniErrorLoggerIsOn = configuration.giniErrorLoggerIsOn
     }
 
     // MARK: - Update to custom font

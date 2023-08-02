@@ -5,7 +5,6 @@
 //  Created by Nadya Karaban on 07.06.22.
 //
 
-import Foundation
 import UIKit
 
 class OnboardingViewController: UIViewController {
@@ -51,7 +50,7 @@ class OnboardingViewController: UIViewController {
                                                               dark: UIColor.GiniCapture.light1
                                                              ).uiColor()
         pageControl.addTarget(self, action: #selector(self.pageControlSelectionAction(_:)), for: .valueChanged)
-        pageControl.numberOfPages = dataSource.itemSections.count
+        pageControl.numberOfPages = dataSource.pageModels.count
         pageControl.isAccessibilityElement = true
     }
 
@@ -141,7 +140,7 @@ class OnboardingViewController: UIViewController {
     }
 
     @objc private func nextPage() {
-        if dataSource.currentPage < dataSource.itemSections.count - 1 {
+        if dataSource.currentPage < dataSource.pageModels.count - 1 {
             let index = IndexPath(item: dataSource.currentPage + 1, section: 0)
             pagesCollection.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
         } else {
@@ -167,7 +166,7 @@ class OnboardingViewController: UIViewController {
 extension OnboardingViewController: OnboardingScreen {
     func didScroll(page: Int) {
         switch page {
-        case dataSource.itemSections.count - 1:
+        case dataSource.pageModels.count - 1:
             if configuration.bottomNavigationBarEnabled,
                let bottomNavigationBar = bottomNavigationBar {
                 navigationBarBottomAdapter?.showButtons(
