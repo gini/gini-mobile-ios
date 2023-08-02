@@ -192,6 +192,15 @@ final class SettingsViewControllerTests: XCTestCase {
 			selectedSegmentIndex = 2
 		}
         contentData.append(.segmentedOption(data: SegmentedOptionModel(optionType: .fileImport, selectedIndex: selectedSegmentIndex)))
+        
+        var selectedEntryPointSegmentIndex = 0
+        switch configuration.entryPoint {
+        case .button:
+            selectedEntryPointSegmentIndex = 0
+        case .field:
+            selectedEntryPointSegmentIndex = 1
+        }
+        contentData.append(.segmentedOption(data: .init(optionType: .entryPoint, selectedIndex: selectedEntryPointSegmentIndex)))
 	}
 	
 	private var flashToggleSettingEnabled: Bool = {
