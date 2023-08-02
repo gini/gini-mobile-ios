@@ -276,10 +276,22 @@ final class SettingsViewController: UIViewController {
 				UserDefaults.standard.removeObject(forKey: "ginicapture.defaults.onboardingShowed")
 			}
 		case .customOnboardingPages:
-			let customPage = OnboardingPage(imageName: "captureSuggestion1",
-											title: "Page 1",
-											description: "Description for page 1")
-			let customOnboardingPages = data.isSwitchOn ? [customPage] : nil
+            let customPage1 = OnboardingPage(imageName: "captureSuggestion1",
+                                             title: "Page 1",
+                                             description: "Description for page 1")
+            let customPage2 = OnboardingPage(imageName: "captureSuggestion2",
+                                             title: "Page 2",
+                                             description: "Description for page 2")
+            let customPage3 = OnboardingPage(imageName: "captureSuggestion3",
+                                             title: "Page 3",
+                                             description: "Description for page 3")
+            let customPage4 = OnboardingPage(imageName: "captureSuggestion4",
+                                             title: "Page 4",
+                                             description: "Description for page 4")
+            let customPage5 = OnboardingPage(imageName: "captureSuggestion1",
+                                             title: "Page 5",
+                                             description: "Description for page 5")
+			let customOnboardingPages = data.isSwitchOn ? [customPage1, customPage2, customPage3, customPage4, customPage5] : nil
 			giniConfiguration.customOnboardingPages = customOnboardingPages
 		case .onboardingAlignCornersIllustrationAdapter:
 			let customAdapter = CustomOnboardingIllustrationAdapter(animationName: "page1Animation",
