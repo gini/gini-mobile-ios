@@ -708,7 +708,7 @@ extension SettingsViewControllerTests {
 			XCTFail("`fileImportType` option not found in sectionData")
 			return
 		}
-		guard case .segmentedOption(var data) = contentData[index] else { return }
+        guard case .segmentedOption(var data) = contentData[index], data.optionType == .fileImport  else { return }
 		data.selectedIndex = 0
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
 		
@@ -722,7 +722,7 @@ extension SettingsViewControllerTests {
 			XCTFail("`fileImportType` option not found in sectionData")
 			return
 		}
-		guard case .segmentedOption(var data) = contentData[index] else { return }
+		guard case .segmentedOption(var data) = contentData[index], data.optionType == .fileImport else { return }
 		data.selectedIndex = 1
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
 		XCTAssertEqual(configuration.fileImportSupportedTypes,
@@ -735,7 +735,7 @@ extension SettingsViewControllerTests {
 			XCTFail("`fileImportType` option not found in sectionData")
 			return
 		}
-		guard case .segmentedOption(var data) = contentData[index] else { return }
+		guard case .segmentedOption(var data) = contentData[index], data.optionType == .fileImport else { return }
 		data.selectedIndex = 2
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
 		XCTAssertEqual(configuration.fileImportSupportedTypes,
@@ -743,12 +743,14 @@ extension SettingsViewControllerTests {
 					   "pdf and image types should be supported in the gini configuration")
 	}
     
+    // MARK: - Entry point
+
     func testButtonEntryPoint() {
         guard let index = getEntryPointIndex() else {
             XCTFail("`entryPoint` option not found in sectionData")
             return
         }
-        guard case .segmentedOption(var data) = contentData[index] else { return }
+        guard case .segmentedOption(var data) = contentData[index], data.optionType == .entryPoint else { return }
         data.selectedIndex = 0
         configuration.entryPoint = giniEntryPoint(selectedIndex: data.selectedIndex)
         XCTAssertEqual(configuration.entryPoint,
@@ -761,7 +763,7 @@ extension SettingsViewControllerTests {
             XCTFail("`entryPoint` option not found in sectionData")
             return
         }
-        guard case .segmentedOption(var data) = contentData[index] else { return }
+        guard case .segmentedOption(var data) = contentData[index], data.optionType == .entryPoint else { return }
         data.selectedIndex = 1
         configuration.entryPoint = giniEntryPoint(selectedIndex: data.selectedIndex)
         XCTAssertEqual(configuration.entryPoint,
