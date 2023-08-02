@@ -41,7 +41,7 @@ final class ReviewCollectionCell: UICollectionViewCell {
 
     private func setActiveStatus(_ isActive: Bool) {
         documentImageView.layer.borderColor = isActive ? UIColor.GiniCapture.accent1.cgColor : UIColor.clear.cgColor
-        documentImageView.layer.borderWidth = isActive ? 2 : 0
+        documentImageView.layer.borderWidth = isActive ? Constants.documentBorderWidth : 0
         deleteButton.isHidden = !isActive
     }
 
@@ -53,9 +53,8 @@ final class ReviewCollectionCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(documentImageView)
-        addSubview(deleteButton)
-        bringSubviewToFront(deleteButton)
+        contentView.addSubview(documentImageView)
+        contentView.addSubview(deleteButton)
 
         addConstraints()
     }
@@ -67,15 +66,15 @@ final class ReviewCollectionCell: UICollectionViewCell {
     private func addConstraints() {
 
         NSLayoutConstraint.activate([
-            documentImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            documentImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            documentImageView.topAnchor.constraint(equalTo: topAnchor),
-            documentImageView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            documentImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            documentImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            documentImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            documentImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 
-            deleteButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            deleteButton.topAnchor.constraint(equalTo: topAnchor, constant: 16),
-            deleteButton.heightAnchor.constraint(equalToConstant: 44),
-            deleteButton.widthAnchor.constraint(equalToConstant: 44)
+            deleteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.deleteButtonWidthInset),
+            deleteButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.deleteButtonWidthInset),
+            deleteButton.heightAnchor.constraint(equalToConstant: Constants.deleteButtonHeight),
+            deleteButton.widthAnchor.constraint(equalToConstant: Constants.deleteButtonWidth)
         ])
     }
 
@@ -87,5 +86,14 @@ final class ReviewCollectionCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         isActive = false
+    }
+}
+
+extension ReviewCollectionCell {
+    private enum Constants {
+        static let deleteButtonHeight: CGFloat = 44
+        static let deleteButtonWidth: CGFloat = 44
+        static let deleteButtonWidthInset: CGFloat = 16
+        static let documentBorderWidth: CGFloat = 2
     }
 }

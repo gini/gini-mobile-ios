@@ -9,9 +9,6 @@ import UIKit
 
 final class ImagePickerCollectionViewCell: UICollectionViewCell {
     static let identifier = "ImagePickerCollectionViewCell"
-
-    let selectedCircleSize = CGSize(width: 25, height: 25)
-
     lazy var activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(style: .gray)
         indicator.translatesAutoresizingMaskIntoConstraints = false
@@ -48,8 +45,8 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
     lazy var checkCircleBackground: UIView = {
         let circleView = UIView()
         circleView.translatesAutoresizingMaskIntoConstraints = false
-        circleView.layer.borderWidth = 1
-        circleView.layer.cornerRadius = self.selectedCircleSize.width / 2
+        circleView.layer.borderWidth = Constants.circleBorder
+        circleView.layer.cornerRadius = Constants.selectedCircleSize.width / 2
         circleView.layer.borderColor = UIColor.GiniCapture.light1.cgColor
         return circleView
     }()
@@ -69,11 +66,11 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(galleryImage)
-        addSubview(selectedForegroundView)
-        addSubview(checkCircleBackground)
-        addSubview(activityIndicator)
-        addSubview(checkImage)
+        contentView.addSubview(galleryImage)
+        contentView.addSubview(selectedForegroundView)
+        contentView.addSubview(checkCircleBackground)
+        contentView.addSubview(activityIndicator)
+        contentView.addSubview(checkImage)
 
         setupConstraints()
     }
@@ -84,21 +81,22 @@ final class ImagePickerCollectionViewCell: UICollectionViewCell {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
-            activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor),
+            activityIndicator.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
 
-            galleryImage.topAnchor.constraint(equalTo: topAnchor),
-            galleryImage.leadingAnchor.constraint(equalTo: leadingAnchor),
-            galleryImage.centerXAnchor.constraint(equalTo: centerXAnchor),
-            galleryImage.centerYAnchor.constraint(equalTo: centerYAnchor),
+            galleryImage.topAnchor.constraint(equalTo: contentView.topAnchor),
+            galleryImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            galleryImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            galleryImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
 
-            selectedForegroundView.topAnchor.constraint(equalTo: topAnchor),
-            selectedForegroundView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            selectedForegroundView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            selectedForegroundView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            selectedForegroundView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            selectedForegroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            selectedForegroundView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            selectedForegroundView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
 
-            checkCircleBackground.topAnchor.constraint(equalTo: topAnchor, constant: Constants.circlePadding),
-            checkCircleBackground.trailingAnchor.constraint(equalTo: trailingAnchor,
+            checkCircleBackground.topAnchor.constraint(equalTo: contentView.topAnchor,
+                                                       constant: Constants.circlePadding),
+            checkCircleBackground.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
                                                             constant: -Constants.circlePadding),
             checkCircleBackground.widthAnchor.constraint(equalToConstant: Constants.selectedCircleSize.width),
             checkCircleBackground.heightAnchor.constraint(equalToConstant: Constants.selectedCircleSize.height),
@@ -155,5 +153,6 @@ extension ImagePickerCollectionViewCell {
         static let borderWidth: CGFloat = 2
         static let selectedCircleSize = CGSize(width: 25, height: 25)
         static let circlePadding: CGFloat = 5
+        static let circleBorder: CGFloat = 1
     }
 }
