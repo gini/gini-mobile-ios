@@ -191,7 +191,7 @@ final class SettingsViewControllerTests: XCTestCase {
 		case .pdf_and_images:
 			selectedSegmentIndex = 2
 		}
-        contentData.append(.segmentedOption(data: SegmentedOptionModel(optionType: .fileImport, selectedIndex: selectedSegmentIndex)))
+        contentData.append(.segmentedOption(data: .init(optionType: .fileImport, selectedIndex: selectedSegmentIndex)))
         
         var selectedEntryPointSegmentIndex = 0
         switch configuration.entryPoint {
