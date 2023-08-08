@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ggv-ZP-h5h">
-    <device id="retina6_72" orientation="portrait" appearance="light"/>
+    <device id="retina6_72" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
@@ -21,114 +21,90 @@
                         <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZlJ-hw-K1e" customClass="GiniButton" customModule="GiniBankSDKExample" customModuleProvider="target">
-                                <rect key="frame" x="94.666666666666671" y="534" width="240.66666666666663" height="40"/>
-                                <color key="backgroundColor" systemColor="quaternarySystemFillColor"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="N6f-jj-XUu">
+                                <rect key="frame" x="20" y="109" width="390" height="759"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gini_logo" translatesAutoresizingMaskIntoConstraints="NO" id="AaL-kG-aBp">
+                                        <rect key="frame" x="0.0" y="0.0" width="390" height="249.66666666666666"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="375" id="Gzs-5G-ueV"/>
+                                            <constraint firstAttribute="width" secondItem="AaL-kG-aBp" secondAttribute="height" multiplier="25:16" id="WPG-Db-3W9"/>
+                                        </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="Gzs-5G-ueV"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <mask key="constraints">
+                                                <include reference="Gzs-5G-ueV"/>
+                                            </mask>
+                                        </variation>
+                                    </imageView>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter IBAN" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lX1-CF-VFa">
+                                        <rect key="frame" x="39" y="311" width="312" height="34"/>
+                                        <color key="tintColor" red="0.27212664479999998" green="0.6108134985" blue="0.83924418690000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZlJ-hw-K1e" customClass="GiniButton" customModule="GiniBankSDKExample" customModuleProvider="target">
+                                        <rect key="frame" x="131" y="514" width="128" height="34"/>
+                                        <color key="backgroundColor" systemColor="quaternarySystemFillColor"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                        <state key="normal" title="Photo Payment">
+                                            <color key="titleColor" red="0.27212664479999998" green="0.6108134985" blue="0.83924418690000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                <real key="value" value="2"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="7"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="startSDK:" destination="Ggv-ZP-h5h" eventType="touchUpInside" id="qq6-dF-m7w"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="40A-WQ-jHQ">
+                                        <rect key="frame" x="159" y="709" width="72" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="6nH-wJ-Buy"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name=".SFNS-Regular" family=".AppleSystemUIFont" pointSize="9"/>
+                                        <state key="normal" title="GiniCaptureVersion">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="launchSettings:" destination="Ggv-ZP-h5h" eventType="touchUpInside" id="Tfb-tc-51t"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="gUM-tK-93r"/>
+                                    <constraint firstItem="lX1-CF-VFa" firstAttribute="width" secondItem="N6f-jj-XUu" secondAttribute="width" multiplier="0.8" id="4Jo-WM-sZU"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
-                                <state key="normal" title="Start Gini Bank SDK">
-                                    <color key="titleColor" red="0.27212664479999998" green="0.6108134985" blue="0.83924418690000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                        <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                        <real key="value" value="2"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="7"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="launchScreenAPI:" destination="Ggv-ZP-h5h" eventType="touchUpInside" id="qq6-dF-m7w"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Example" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MbF-2O-gGH">
-                                <rect key="frame" x="174.66666666666666" y="454" width="81" height="24"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="40A-WQ-jHQ">
-                                <rect key="frame" x="20" y="848" width="390" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="Fog-oi-12k"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name=".SFNS-Regular" family=".AppleSystemUIFont" pointSize="9"/>
-                                <state key="normal" title="GiniCaptureVersion">
-                                    <color key="titleColor" systemColor="labelColor"/>
-                                </state>
-                                <connections>
-                                    <action selector="launchSettings:" destination="Ggv-ZP-h5h" eventType="touchUpInside" id="Tfb-tc-51t"/>
-                                </connections>
-                            </button>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gini_logo" translatesAutoresizingMaskIntoConstraints="NO" id="AaL-kG-aBp">
-                                <rect key="frame" x="64.666666666666686" y="99.999999999999986" width="301" height="192.66666666666663"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="375" id="Gzs-5G-ueV"/>
-                                    <constraint firstAttribute="width" secondItem="AaL-kG-aBp" secondAttribute="height" multiplier="25:16" id="WPG-Db-3W9"/>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="Gzs-5G-ueV"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=regular">
-                                    <mask key="constraints">
-                                        <include reference="Gzs-5G-ueV"/>
-                                    </mask>
-                                </variation>
-                            </imageView>
+                            </stackView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="AaL-kG-aBp" firstAttribute="top" secondItem="08c-kU-hUA" secondAttribute="top" constant="100" id="0Da-gP-FEA"/>
-                            <constraint firstItem="ZlJ-hw-K1e" firstAttribute="width" secondItem="AaL-kG-aBp" secondAttribute="width" multiplier="0.8" id="4IJ-qX-VVY"/>
-                            <constraint firstItem="MbF-2O-gGH" firstAttribute="centerX" secondItem="08c-kU-hUA" secondAttribute="centerX" id="Dgb-4e-DiP"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="40A-WQ-jHQ" secondAttribute="trailing" id="ETe-SU-2Jb"/>
-                            <constraint firstItem="ZlJ-hw-K1e" firstAttribute="centerX" secondItem="08c-kU-hUA" secondAttribute="centerX" id="H1l-Ob-A4N"/>
-                            <constraint firstItem="AaL-kG-aBp" firstAttribute="height" secondItem="08c-kU-hUA" secondAttribute="height" id="Jzz-Gh-zUY"/>
-                            <constraint firstItem="40A-WQ-jHQ" firstAttribute="leading" secondItem="08c-kU-hUA" secondAttribute="leadingMargin" id="Nip-ZL-p0o"/>
-                            <constraint firstItem="ZlJ-hw-K1e" firstAttribute="top" secondItem="MbF-2O-gGH" secondAttribute="bottom" constant="56" id="S1q-wD-rzC"/>
-                            <constraint firstItem="MbF-2O-gGH" firstAttribute="centerY" secondItem="08c-kU-hUA" secondAttribute="centerY" id="SXP-8z-2si"/>
-                            <constraint firstItem="AaL-kG-aBp" firstAttribute="centerX" secondItem="08c-kU-hUA" secondAttribute="centerX" id="bFg-8z-IX0"/>
-                            <constraint firstItem="AaL-kG-aBp" firstAttribute="height" secondItem="08c-kU-hUA" secondAttribute="height" multiplier="0.3" id="dv1-Wj-qVx"/>
-                            <constraint firstItem="AaL-kG-aBp" firstAttribute="top" secondItem="a3q-Yk-YSo" secondAttribute="bottom" constant="20" id="qMe-dc-CVh"/>
-                            <constraint firstItem="AaL-kG-aBp" firstAttribute="width" secondItem="08c-kU-hUA" secondAttribute="width" multiplier="0.7" id="t2I-VX-I3y"/>
-                            <constraint firstItem="Z9y-Oh-GoV" firstAttribute="top" secondItem="40A-WQ-jHQ" secondAttribute="bottom" id="vfG-yL-e9u"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="N6f-jj-XUu" secondAttribute="bottom" constant="30" id="6gE-G4-xcx"/>
+                            <constraint firstAttribute="trailing" secondItem="N6f-jj-XUu" secondAttribute="trailing" constant="20" id="BfK-5X-zqV"/>
+                            <constraint firstItem="N6f-jj-XUu" firstAttribute="centerX" secondItem="08c-kU-hUA" secondAttribute="centerX" id="Fbw-7y-F8M"/>
+                            <constraint firstItem="N6f-jj-XUu" firstAttribute="top" secondItem="a3q-Yk-YSo" secondAttribute="bottom" constant="50" id="X3B-dN-Llb"/>
+                            <constraint firstItem="N6f-jj-XUu" firstAttribute="leading" secondItem="08c-kU-hUA" secondAttribute="leading" constant="20" id="fwd-BC-lUp"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="Jzz-Gh-zUY"/>
-                                <exclude reference="dv1-Wj-qVx"/>
-                                <exclude reference="qMe-dc-CVh"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=compact">
-                            <mask key="constraints">
-                                <exclude reference="0Da-gP-FEA"/>
-                                <exclude reference="Jzz-Gh-zUY"/>
-                                <include reference="dv1-Wj-qVx"/>
-                                <include reference="qMe-dc-CVh"/>
-                                <exclude reference="t2I-VX-I3y"/>
-                                <include reference="4IJ-qX-VVY"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular-widthClass=regular">
-                            <mask key="constraints">
-                                <exclude reference="t2I-VX-I3y"/>
-                            </mask>
-                        </variation>
                     </view>
                     <connections>
+                        <outlet property="ibanTextField" destination="lX1-CF-VFa" id="8XF-A3-aI2"/>
                         <outlet property="metaInformationButton" destination="40A-WQ-jHQ" id="S7F-xE-0Nc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VQd-cL-q81" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2422.265625" y="-255.63689604685212"/>
+            <point key="canvasLocation" x="2419.5348837209303" y="-256.22317596566523"/>
         </scene>
         <!--Result Table View Controller-->
         <scene sceneID="dA0-59-wBc">
@@ -218,7 +194,7 @@
     </scenes>
     <designables>
         <designable name="ZlJ-hw-K1e">
-            <size key="intrinsicContentSize" width="166" height="34"/>
+            <size key="intrinsicContentSize" width="128" height="34"/>
         </designable>
     </designables>
     <resources>
@@ -226,9 +202,6 @@
         <namedColor name="Accent01">
             <color red="0.039000000804662704" green="0.51800000667572021" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="labelColor">
-            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
         <systemColor name="opaqueSeparatorColor">
             <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
