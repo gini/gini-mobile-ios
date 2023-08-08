@@ -258,12 +258,6 @@ extension AppCoordinator: SelectAPIViewControllerDelegate {
         GiniBankConfiguration.shared.entryPoint = entryPoint
         showScreenAPI()
     }
-    
-	
-	func selectAPI(viewController: SelectAPIViewController, didSelectApi api: GiniPayBankApiType) {
-		guard case .screen = api else { return }
-		showScreenAPI()
-	}
 	
 	func selectAPI(viewController: SelectAPIViewController, didTapSettings: ()) {
 		showSettings()
