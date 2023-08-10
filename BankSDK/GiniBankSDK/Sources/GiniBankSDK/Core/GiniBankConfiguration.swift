@@ -1189,6 +1189,11 @@ public final class GiniBankConfiguration: NSObject {
      */
     public var localizedStringsTableName: String?
     
+    /**
+    Should be set if the main app's bundle is not used.
+    */
+    public var customResourceBundle: Bundle?
+    
     public func captureConfiguration() -> GiniConfiguration {
      let configuration = GiniConfiguration()
         
@@ -1332,6 +1337,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.nextButtonResource = self.nextButtonResource
         configuration.cancelButtonResource = self.cancelButtonResource
         configuration.localizedStringsTableName = self.localizedStringsTableName
+        configuration.customResourceBundle = self.customResourceBundle
         
         GiniCapture.setConfiguration(configuration)
         
@@ -1582,6 +1588,7 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.localizedStringsTableName = configuration.localizedStringsTableName
         
         giniBankConfiguration.albumsScreenSelectMorePhotosTextColor = configuration.albumsScreenSelectMorePhotosTextColor
+        giniBankConfiguration.customResourceBundle = configuration.customResourceBundle
         
         // Undocumented--Xamarin only
         giniBankConfiguration.closeButtonResource = configuration.closeButtonResource
