@@ -71,9 +71,10 @@ import UIKit
      
      - note: Screen API only.
      */
-    @available(*, unavailable,
-    message: "Use the screen specific background color instead e.g. onboardingScreenBackgroundColor")
-    @objc public var backgroundColor = UIColor.black
+    @available(iOS, unavailable, message: "Use the screen specific background color instead e.g. onboardingScreenBackgroundColor")
+    @objc public var backgroundColor: UIColor {
+        return UIColor.black
+    }
     
     /**
      Sets custom validations that can be done apart from the default ones (file size, file type...).
