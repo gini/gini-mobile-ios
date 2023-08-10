@@ -739,6 +739,11 @@ import UIKit
      Should be set if the default name "Localizable.strings" are not used.
      */
     public var localizedStringsTableName: String?
+    
+    /**
+    Should be set if the main app's bundle is not used.
+    */
+    public var customResourceBundle: Bundle?
 
     // Undocumented--Xamarin only
     @objc public var closeButtonResource: PreferredButtonResource?

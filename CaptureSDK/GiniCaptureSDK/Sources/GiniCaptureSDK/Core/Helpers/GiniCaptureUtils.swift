@@ -23,7 +23,15 @@ public func UIImageNamedPreferred(named name: String) -> UIImage? {
     if let clientImage = UIImage(named: name) {
         return clientImage
     }
-    return UIImage(named: name, in: giniCaptureBundle(), compatibleWith: nil)
+    return UIImage(named: name, in: prefferedBundle(), compatibleWith: nil)
+}
+
+private func prefferedBundle() -> Bundle {
+    if let customBundle = GiniConfiguration.shared.customResourceBundle {
+        return customBundle
+    } else {
+        return giniCaptureBundle()
+    }
 }
 
 /**
@@ -53,7 +61,7 @@ public func NSLocalizedStringPreferredFormat(_ key: String,
         && isCustomizable {
         format = clientString
     } else {
-        let bundle = giniCaptureBundle()
+        let bundle = prefferedBundle()
 
         var defaultFormat = NSLocalizedString(key, bundle: bundle, comment: comment)
         

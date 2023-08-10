@@ -35,11 +35,17 @@ class GiniPreferredButtonResource: PreferredButtonResource {
     private let localizedTextKey: String?
     private let localizedTextComment: String?
     private let localizedConfigEntry: String?
-    private let appBundle = Bundle.main
+    private var customBundle : Bundle {
+        guard let customBundle = GiniConfiguration.shared.customResourceBundle else {
+            return Bundle.main
+        }
+        return customBundle
+    }
+    
     private let libBundle = giniCaptureBundle()
     private var imageSource: ResourceOrigin {
         if let name = imageName {
-            if UIImage(named: name, in: appBundle, compatibleWith: nil) != nil {
+            if UIImage(named: name, in: customBundle, compatibleWith: nil) != nil {
                 return .custom
             } else if UIImage(named: name, in: libBundle, compatibleWith: nil) != nil {
                 return .library
