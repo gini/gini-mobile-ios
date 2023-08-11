@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SelectAPIViewController" customModule="GiniHealthSDKExample" customModuleProvider="target">
+            <connections>
+                <outlet property="activityIndicator" destination="Bin-b9-IZs" id="KkP-nk-Vpi"/>
+                <outlet property="metaInformationButton" destination="F9C-eh-tuY" id="VoV-Cz-x16"/>
+                <outlet property="startWithGiniCaptureButton" destination="pHg-uN-R4p" id="k9P-xH-9Y5"/>
+                <outlet property="startWithTestDocumentButton" destination="cYN-YX-Qgn" id="sTW-nq-Qtt"/>
+                <outlet property="view" destination="JbT-KQ-yrt" id="orl-Rr-DDy"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="JbT-KQ-yrt">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pHg-uN-R4p">
+                    <rect key="frame" x="108" y="673.66666666666663" width="177" height="40"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="8qZ-9q-rNE"/>
+                        <constraint firstAttribute="height" constant="40" id="NdI-jS-4gV"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                    <state key="normal" title="Start with Gini Capture">
+                        <color key="titleColor" red="0.0" green="0.61960784310000006" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="launchScreentAPI:" destination="-1" eventType="touchUpInside" id="Ug4-sE-aUm"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GiniHealth SDK Example" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0fx-iN-WeA">
+                    <rect key="frame" x="118" y="292" width="157" height="16"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F9C-eh-tuY">
+                    <rect key="frame" x="16" y="802" width="361" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="TH7-Gb-kGc"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="10"/>
+                    <state key="normal" title="GiniCaptureVersion">
+                        <color key="titleColor" systemColor="labelColor"/>
+                    </state>
+                </button>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="healthLogo" translatesAutoresizingMaskIntoConstraints="NO" id="b17-ET-hkd">
+                    <rect key="frame" x="59" y="100" width="275" height="176"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="375" id="Cyx-0K-Pbv"/>
+                        <constraint firstAttribute="width" secondItem="b17-ET-hkd" secondAttribute="height" multiplier="25:16" id="LKc-qZ-GrQ"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="Cyx-0K-Pbv"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <mask key="constraints">
+                            <include reference="Cyx-0K-Pbv"/>
+                        </mask>
+                    </variation>
+                </imageView>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Bin-b9-IZs">
+                    <rect key="frame" x="178" y="407.66666666666669" width="37" height="37"/>
+                </activityIndicatorView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cYN-YX-Qgn">
+                    <rect key="frame" x="99.666666666666686" y="717.66666666666663" width="194" height="40"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="sya-bP-dsm"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="zc0-9R-WrW"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                    <state key="normal" title="Start with test document">
+                        <color key="titleColor" red="0.0" green="0.61960784310000006" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="launchPaymentReview:" destination="-1" eventType="touchUpInside" id="iiP-Su-JuX"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="Mzt-46-aWr"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="b17-ET-hkd" firstAttribute="height" secondItem="JbT-KQ-yrt" secondAttribute="height" multiplier="0.3" id="22D-ZY-3M0"/>
+                <constraint firstItem="b17-ET-hkd" firstAttribute="height" secondItem="JbT-KQ-yrt" secondAttribute="height" id="8mH-gn-RzL"/>
+                <constraint firstItem="F9C-eh-tuY" firstAttribute="leading" secondItem="JbT-KQ-yrt" secondAttribute="leadingMargin" id="94r-5B-Bgu"/>
+                <constraint firstItem="F9C-eh-tuY" firstAttribute="top" secondItem="pHg-uN-R4p" secondAttribute="bottom" constant="88.5" id="9d4-4u-Flv"/>
+                <constraint firstAttribute="trailingMargin" secondItem="F9C-eh-tuY" secondAttribute="trailing" id="CiT-XG-EM4"/>
+                <constraint firstItem="b17-ET-hkd" firstAttribute="width" secondItem="JbT-KQ-yrt" secondAttribute="width" multiplier="0.7" id="Gsg-Dr-yDt"/>
+                <constraint firstItem="b17-ET-hkd" firstAttribute="centerX" secondItem="JbT-KQ-yrt" secondAttribute="centerX" id="IgY-dp-PQC"/>
+                <constraint firstItem="0fx-iN-WeA" firstAttribute="centerX" secondItem="JbT-KQ-yrt" secondAttribute="centerX" id="LkK-YG-gdO"/>
+                <constraint firstItem="cYN-YX-Qgn" firstAttribute="centerX" secondItem="Mzt-46-aWr" secondAttribute="centerX" id="LnM-3G-Mz1"/>
+                <constraint firstItem="0fx-iN-WeA" firstAttribute="top" secondItem="b17-ET-hkd" secondAttribute="bottom" constant="16" id="VKU-X1-wDH"/>
+                <constraint firstItem="cYN-YX-Qgn" firstAttribute="top" secondItem="pHg-uN-R4p" secondAttribute="bottom" constant="4" id="Vg2-6x-piu"/>
+                <constraint firstItem="Bin-b9-IZs" firstAttribute="centerX" secondItem="JbT-KQ-yrt" secondAttribute="centerX" id="XLP-Df-79z"/>
+                <constraint firstItem="Bin-b9-IZs" firstAttribute="centerY" secondItem="JbT-KQ-yrt" secondAttribute="centerY" id="iyM-EX-rNd"/>
+                <constraint firstItem="pHg-uN-R4p" firstAttribute="centerX" secondItem="JbT-KQ-yrt" secondAttribute="centerX" id="jQ4-x1-gwx"/>
+                <constraint firstItem="b17-ET-hkd" firstAttribute="top" secondItem="JbT-KQ-yrt" secondAttribute="top" constant="100" id="oHr-ZA-nW7"/>
+                <constraint firstAttribute="bottom" secondItem="F9C-eh-tuY" secondAttribute="bottom" id="znX-xx-RRT"/>
+            </constraints>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="22D-ZY-3M0"/>
+                    <exclude reference="8mH-gn-RzL"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=compact">
+                <mask key="constraints">
+                    <include reference="22D-ZY-3M0"/>
+                    <exclude reference="8mH-gn-RzL"/>
+                    <exclude reference="Gsg-Dr-yDt"/>
+                    <exclude reference="oHr-ZA-nW7"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=regular">
+                <mask key="constraints">
+                    <exclude reference="Gsg-Dr-yDt"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="138" y="20"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="healthLogo" width="182" height="65.333335876464844"/>
+        <systemColor name="labelColor">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		284A53502A86493100183EA7 /* SelectAPIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 284A534F2A86493100183EA7 /* SelectAPIViewController.xib */; };
 		F4206BBC2A1B9C6900E5E101 /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F4206BBB2A1B9C6900E5E101 /* GiniCaptureSDK */; };
 		F4206BBE2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4206BBD2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift */; };
 		F4206BC02A1BB86B00E5E101 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4206BBF2A1BB86B00E5E101 /* RootNavigationController.swift */; };
 		F4206BC22A1D012E00E5E101 /* HealthNetworkingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4206BC12A1D012E00E5E101 /* HealthNetworkingService.swift */; };
 		F42377262799ABB000FAC3D6 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42377252799ABB000FAC3D6 /* CloudKit.framework */; };
-		F43198332784BD570000D39C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F43198322784BD570000D39C /* Main.storyboard */; };
 		F464B17627CD2147001735B9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F464B17827CD2147001735B9 /* Localizable.strings */; };
 		F466A5DF270F2F9500FB1364 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F466A5E1270F2F9500FB1364 /* Localizable.strings */; };
 		F4C36A8C270C6EBF00CCC69C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C36A8B270C6EBF00CCC69C /* AppDelegate.swift */; };
@@ -60,11 +60,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		284A534F2A86493100183EA7 /* SelectAPIViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectAPIViewController.xib; sourceTree = "<group>"; };
 		F4206BBD2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
 		F4206BBF2A1BB86B00E5E101 /* RootNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
 		F4206BC12A1D012E00E5E101 /* HealthNetworkingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthNetworkingService.swift; sourceTree = "<group>"; };
 		F42377252799ABB000FAC3D6 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
-		F43198322784BD570000D39C /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		F4366E62273D183C0054923F /* GiniHealthSDKExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GiniHealthSDKExample.entitlements; sourceTree = "<group>"; };
 		F464B17727CD2147001735B9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F464B17927CD214A001735B9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -220,6 +220,7 @@
 				F4EC3906273C2621007045DC /* Coordinator.swift */,
 				F4EC3904273C2621007045DC /* PartialDocument.swift */,
 				F4EC3907273C2621007045DC /* SelectAPIViewController.swift */,
+				284A534F2A86493100183EA7 /* SelectAPIViewController.xib */,
 				F4EC3908273C2622007045DC /* UIViewController.swift */,
 				F4EC38F4273C2311007045DC /* Base.lproj */,
 				F4EC38F3273C2311007045DC /* Credentials.plist */,
@@ -228,7 +229,6 @@
 				F4EC38C3273C21E4007045DC /* SceneDelegate.swift */,
 				F4EC38C5273C21E4007045DC /* ViewController.swift */,
 				F4EC38CC273C21E5007045DC /* LaunchScreen.storyboard */,
-				F43198322784BD570000D39C /* Main.storyboard */,
 				F4EC38CF273C21E5007045DC /* Info.plist */,
 			);
 			path = GiniHealthSDKExample;
@@ -397,7 +397,7 @@
 				F464B17627CD2147001735B9 /* Localizable.strings in Resources */,
 				F4EC38FA273C2311007045DC /* Base.lproj in Resources */,
 				F4EC38F9273C2311007045DC /* Credentials.plist in Resources */,
-				F43198332784BD570000D39C /* Main.storyboard in Resources */,
+				284A53502A86493100183EA7 /* SelectAPIViewController.xib in Resources */,
 				F4EC3913273C2B41007045DC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -772,7 +772,6 @@
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "for importing images from photo library";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -816,7 +815,6 @@
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "for importing images from photo library";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
