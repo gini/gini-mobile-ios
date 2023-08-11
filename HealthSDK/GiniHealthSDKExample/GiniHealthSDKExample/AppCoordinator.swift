@@ -22,8 +22,7 @@ final class AppCoordinator: Coordinator {
         return selectAPIViewController
     }
     lazy var selectAPIViewController: SelectAPIViewController = {
-        let selectAPIViewController = (UIStoryboard(name: "Main", bundle: nil)
-            .instantiateViewController(withIdentifier: "selectAPIViewController") as? SelectAPIViewController)!
+        let selectAPIViewController = SelectAPIViewController()
         selectAPIViewController.delegate = self
         selectAPIViewController.clientId = self.client.id
         return selectAPIViewController
