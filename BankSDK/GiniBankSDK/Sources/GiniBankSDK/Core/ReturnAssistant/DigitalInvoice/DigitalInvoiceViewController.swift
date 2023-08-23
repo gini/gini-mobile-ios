@@ -320,7 +320,6 @@ extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
                                                with: returnReasons)
             } else {
                 self.viewModel.invoice?.lineItems[lineItemViewModel.index].selectedState = .deselected(reason: nil)
-                return
             }
         case .deselected:
             self.viewModel.invoice?.lineItems[lineItemViewModel.index].selectedState = .selected
