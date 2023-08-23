@@ -1,9 +1,9 @@
 name: Build BankSDK XCFrameworks
 on:
   push:
-  workflow_dispatch:
     tags:
-      - 'TestSignXCFramework;GiniBankSDK;v3'
+      - 'TestSignXCFramework;GiniBankSDK;v3' 
+  workflow_dispatch:
   workflow_call:
 jobs:
   prepare-frameworks:
