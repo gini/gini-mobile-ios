@@ -1,8 +1,6 @@
 name: Build BankSDK XCFrameworks
 on:
   push:
-    tags:
-      - 'TestSignXCFramework;GiniBankSDK;v1'
   workflow_call:
 jobs:
   prepare-frameworks:
@@ -75,17 +73,35 @@ jobs:
           -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniBankAPILibrary.framework \
           -output GiniBankAPILibrary.xcframework &&\
           \
-          xcodebuild -create-xcframework -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniCaptureSDK.framework -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniCaptureSDK.framework -output GiniCaptureSDK.xcframework &&\
+          xcodebuild -create-xcframework \
+          -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniCaptureSDK.framework \
+          -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniCaptureSDK.framework \
+          -output GiniCaptureSDK.xcframework &&\
           \
-          xcodebuild -create-xcframework -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniBankSDK.framework -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniBankSDK.framework -output GiniBankSDK.xcframework &&\
+          xcodebuild -create-xcframework \
+          -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniBankSDK.framework \
+          -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniBankSDK.framework \
+          -output GiniBankSDK.xcframework &&\
           \
-          xcodebuild -create-xcframework -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniBankAPILibraryPinning.framework -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniBankAPILibraryPinning.framework -output GiniBankAPILibraryPinning.xcframework && \
+          xcodebuild -create-xcframework \
+          -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniBankAPILibraryPinning.framework \
+          -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniBankAPILibraryPinning.framework \
+          -output GiniBankAPILibraryPinning.xcframework && \
           \
-          xcodebuild -create-xcframework -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniCaptureSDKPinning.framework -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniCaptureSDKPinning.framework -output GiniCaptureSDKPinning.xcframework && \
+          xcodebuild -create-xcframework \
+          -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniCaptureSDKPinning.framework \
+          -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniCaptureSDKPinning.framework \
+          -output GiniCaptureSDKPinning.xcframework && \
           \
-          xcodebuild -create-xcframework -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniBankSDKPinning.framework -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniBankSDKPinning.framework -output GiniBankSDKPinning.xcframework && \
+          xcodebuild -create-xcframework \
+          -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/GiniBankSDKPinning.framework \
+          -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/GiniBankSDKPinning.framework \
+          -output GiniBankSDKPinning.xcframework && \
           \
-          xcodebuild -create-xcframework -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/TrustKit.framework -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/TrustKit.framework -output TrustKit.xcframework
+          xcodebuild -create-xcframework \
+          -framework iphoneosPinning.xcarchive/Products/Library/Frameworks/TrustKit.framework \
+          -framework iphonesimulatorPinning.xcarchive/Products/Library/Frameworks/TrustKit.framework \
+          -output TrustKit.xcframework
        
       - name: Sign the XCFrameworks
         env:
@@ -114,7 +130,7 @@ jobs:
           # apply provisioning profile
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-          
+
           codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniBankAPILibrary.xcframework && \
           codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniCaptureSDK.xcframework && \
           codesign --timestamp -v --sign "Apple Distribution: Gini GmbH (JA825X8F7Z)" GiniBankSDK.xcframework && \
