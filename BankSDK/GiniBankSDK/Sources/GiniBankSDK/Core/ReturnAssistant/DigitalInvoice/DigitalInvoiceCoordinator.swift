@@ -24,12 +24,7 @@ final class DigitalInvoiceCoordinator: Coordinator {
     // TODO: This is to cope with the screen coordinator being inadequate at this point to support the return assistant step and needing a refactor.
     // Remove ASAP
     private var analysisDelegate: AnalysisDelegate
-    private var didShowOnboardInCurrentSession = false
 
-    private var onboardingWillBeShown: Bool {
-        let key = "ginibank.defaults.digitalInvoiceOnboardingShowed"
-        return UserDefaults.standard.object(forKey: key) == nil ? true : false
-    }
 
     weak var delegate: DigitalInvoiceCoordinatorDelegate?
     var rootViewController: UIViewController {
@@ -61,15 +56,12 @@ final class DigitalInvoiceCoordinator: Coordinator {
 
     private func showDigitalInvoiceOnboarding() {
         let onboardingViewControllerName = "digitalInvoiceOnboardingViewController"
-        if onboardingWillBeShown && !didShowOnboardInCurrentSession {
-            let storyboard = UIStoryboard(name: "DigitalInvoiceOnboarding", bundle: giniBankBundle())
-            let digitalInvoiceOnboardingViewController =
-                storyboard.instantiateViewController(withIdentifier: onboardingViewControllerName)
-                                                                as! DigitalInvoiceOnboardingViewController
-
-            navigationController.present(digitalInvoiceOnboardingViewController, animated: true)
-            didShowOnboardInCurrentSession = true
-        }
+        let storyboard = UIStoryboard(name: "DigitalInvoiceOnboarding", bundle: giniBankBundle())
+        let digitalInvoiceOnboardingViewController =
+        storyboard.instantiateViewController(withIdentifier: onboardingViewControllerName)
+        as! DigitalInvoiceOnboardingViewController
+        
+        navigationController.present(digitalInvoiceOnboardingViewController, animated: true)
     }
 }
 
