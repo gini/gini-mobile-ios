@@ -66,7 +66,7 @@ func prefferedImage(named name: String) -> UIImage? {
     if let mainBundleImage = UIImage(named: name, in: Bundle.main, compatibleWith: nil) {
         return mainBundleImage
     }
-    if let customBundle = GiniConfiguration.shared.customResourceBundle,
+    if let customBundle = GiniBankConfiguration.shared.customResourceBundle,
        let customBundleImage = UIImage(named: name, in: customBundle, compatibleWith: nil) {
         return customBundleImage
     }
