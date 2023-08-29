@@ -38,7 +38,7 @@ func NSLocalizedStringPreferredGiniBankFormat(_ key: String,
         && isCustomizable {
         format = clientString
     } else {
-        let bundle = prefferedBundle()
+        let bundle = giniBankBundle()
         var defaultFormat = NSLocalizedString(key, bundle: bundle, comment: comment)
         
         if defaultFormat.lowercased() == key.lowercased() {
@@ -63,18 +63,15 @@ func giniBankBundle() -> Bundle {
  - returns: Image if found with name.
  */
 func prefferedImage(named name: String) -> UIImage? {
-    if let clientImage = UIImage(named: name) {
-        return clientImage
+    if let mainBundleImage = UIImage(named: name, in: Bundle.main, compatibleWith: nil) {
+        return mainBundleImage
     }
-    return UIImage(named: name, in: prefferedBundle(), compatibleWith: nil)
-}
-
-private func prefferedBundle() -> Bundle {
-    if let customBundle = GiniBankConfiguration.shared.customResourceBundle {
-        return customBundle
-    } else {
-        return giniBankBundle()
+    if let customBundle = GiniConfiguration.shared.customResourceBundle,
+       let customBundleImage = UIImage(named: name, in: customBundle, compatibleWith: nil) {
+        return customBundleImage
     }
+    
+    return UIImage(named: name, in: giniBankBundle(), compatibleWith: nil)
 }
 
 /**
