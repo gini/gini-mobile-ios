@@ -67,15 +67,6 @@ import UIKit
     // MARK: General options
     
     /**
-     Sets the background color in all screens of the Gini Capture SDK to the specified color.
-     
-     - note: Screen API only.
-     */
-    @available(*, unavailable,
-    message: "Use the screen specific background color instead e.g. onboardingScreenBackgroundColor")
-    @objc public var backgroundColor = UIColor.black
-    
-    /**
      Sets custom validations that can be done apart from the default ones (file size, file type...).
      It should throw a `CustomDocumentValidationError` error.
      */
