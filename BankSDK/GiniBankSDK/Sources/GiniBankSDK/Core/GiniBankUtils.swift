@@ -19,9 +19,9 @@ public protocol GiniBankAnalysisDelegate : AnalysisDelegate {}
  - returns: String resource for the given key.
  */
 func NSLocalizedStringPreferredGiniBankFormat(_ key: String,
-                                      fallbackKey: String = "",
-                                      comment: String,
-                                      isCustomizable: Bool = true) -> String {
+                                              fallbackKey: String = "",
+                                              comment: String,
+                                              isCustomizable: Bool = true) -> String {
     var clientString: String
     var fallbackClientString: String
     if let localizedResourceName = GiniBankConfiguration.shared.localizedStringsTableName {
