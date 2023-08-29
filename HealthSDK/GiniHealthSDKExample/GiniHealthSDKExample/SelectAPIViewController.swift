@@ -44,6 +44,12 @@ final class SelectAPIViewController: UIViewController {
                 
         let metaTitle = "Gini Capture SDK: (\(GiniCapture.versionString)) / Client id: \(self.clientId ?? "")"
         metaInformationButton.setTitle(metaTitle, for: .normal)
+        
+        if #available(iOS 13.0, *) {
+            activityIndicator.style = .large
+        } else {
+            activityIndicator.style = .whiteLarge
+        }
     }
     
     // MARK: User interaction
