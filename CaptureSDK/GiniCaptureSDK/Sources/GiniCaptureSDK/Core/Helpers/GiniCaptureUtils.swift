@@ -40,9 +40,9 @@ public func UIImageNamedPreferred(named name: String) -> UIImage? {
  - returns: String resource for the given key.
  */
 public func NSLocalizedStringPreferredFormat(_ key: String,
-                                      fallbackKey: String = "",
-                                      comment: String,
-                                      isCustomizable: Bool = true) -> String {
+                                             fallbackKey: String = "",
+                                             comment: String,
+                                             isCustomizable: Bool = true) -> String {
     var clientString: String
     var fallbackClientString: String
     if let localizedResourceName = GiniConfiguration.shared.localizedStringsTableName {
@@ -85,14 +85,14 @@ public class Constraints {
     }
     
     public class func active(item view1: Any!,
-                      attr attr1: NSLayoutConstraint.Attribute,
-                      relatedBy relation: NSLayoutConstraint.Relation,
-                      to view2: Any?,
-                      attr attr2: NSLayoutConstraint.Attribute,
-                      multiplier: CGFloat = 1.0,
-                      constant: CGFloat = 0,
-                      priority: Float = 1000,
-                      identifier: String? = nil) {
+                             attr attr1: NSLayoutConstraint.Attribute,
+                             relatedBy relation: NSLayoutConstraint.Relation,
+                             to view2: Any?,
+                             attr attr2: NSLayoutConstraint.Attribute,
+                             multiplier: CGFloat = 1.0,
+                             constant: CGFloat = 0,
+                             priority: Float = 1000,
+                             identifier: String? = nil) {
         
         let constraint = NSLayoutConstraint(item: view1!,
                                             attribute: attr1,
