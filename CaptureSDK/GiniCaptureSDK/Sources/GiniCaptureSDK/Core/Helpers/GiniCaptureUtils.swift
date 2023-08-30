@@ -23,11 +23,12 @@ public func UIImageNamedPreferred(named name: String) -> UIImage? {
     if let mainBundleImage = UIImage(named: name, in: Bundle.main, compatibleWith: nil) {
         return mainBundleImage
     }
+    
     if let customBundle = GiniConfiguration.shared.customResourceBundle,
        let customBundleImage = UIImage(named: name, in: customBundle, compatibleWith: nil) {
         return customBundleImage
     }
-    
+   
     return UIImage(named: name, in: giniCaptureBundle(), compatibleWith: nil)
 }
 
