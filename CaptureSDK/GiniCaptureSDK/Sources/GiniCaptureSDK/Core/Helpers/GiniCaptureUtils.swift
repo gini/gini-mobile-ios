@@ -20,15 +20,20 @@ public func giniCaptureBundle() -> Bundle {
  - returns: Image if found with name.
  */
 public func UIImageNamedPreferred(named name: String) -> UIImage? {
-    if let mainBundleImage = UIImage(named: name, in: Bundle.main, compatibleWith: nil) {
-        return mainBundleImage
+//    if let mainBundleImage = UIImage(named: name, in: Bundle.main, compatibleWith: nil) {
+//        return mainBundleImage
+//    }
+    print("DEBUG - image name = ", name)
+    if let customBundle = GiniConfiguration.shared.customResourceBundle {
+        print("DEBUG - customResourceBundle =", customResourceBundle)
+        if let customBundleImage = UIImage(named: name, in: customBundle, compatibleWith: nil) {
+                return customBundleImage
+        } else {
+            return UIImage(named: name, in: giniCaptureBundle(), compatibleWith: nil)
+        }
     }
-    if let customBundle = GiniConfiguration.shared.customResourceBundle,
-       let customBundleImage = UIImage(named: name, in: customBundle, compatibleWith: nil) {
-        return customBundleImage
-    }
-    
-    return UIImage(named: name, in: giniCaptureBundle(), compatibleWith: nil)
+    return nil
+//    return UIImage(named: name, in: giniCaptureBundle(), compatibleWith: nil)
 }
 
 /**
