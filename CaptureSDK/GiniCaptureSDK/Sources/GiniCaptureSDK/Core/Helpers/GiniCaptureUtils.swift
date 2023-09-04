@@ -79,35 +79,71 @@ public func NSLocalizedStringPreferredFormat(_ key: String,
                                              fallbackKey: String = "",
                                              comment: String,
                                              isCustomizable: Bool = true) -> String {
-    var clientString: String
-    var fallbackClientString: String
+    if isCustomizable {
+        if let clientLocalizedStringMainBundle = clientLocalizedString(key,
+                                                                       fallbackKey: fallbackKey,
+                                                                       comment: comment,
+                                                                       bundle: .main) {
+            
+            return clientLocalizedStringMainBundle
+            
+        } else if let customBundle = GiniConfiguration.shared.customResourceBundle,
+                  let clientLocalizedStringCustomBundle = clientLocalizedString(key,
+                                                                                fallbackKey: fallbackKey,
+                                                                                comment: comment,
+                                                                                bundle: customBundle) {
+            
+            return clientLocalizedStringCustomBundle
+        }
+    }
+    
+    return giniLocalizedString(key, fallbackKey: fallbackKey, comment: comment)
+}
+
+private func giniLocalizedString(_ key: String,
+                                 fallbackKey: String,
+                                 comment: String) -> String {
+    let giniBundle = giniCaptureBundle()
+    
+    var defaultFormat = NSLocalizedString(key,
+                                          bundle: giniBundle,
+                                          comment: comment)
+    
+    if defaultFormat.lowercased() == key.lowercased() {
+        defaultFormat = NSLocalizedString(fallbackKey,
+                                          bundle: giniBundle,
+                                          comment: comment)
+    }
+    return defaultFormat
+}
+
+private func clientLocalizedString(_ key: String,
+                                   fallbackKey: String,
+                                   comment: String,
+                                   bundle: Bundle) -> String? {
+    var clientString = NSLocalizedString(key,
+                                         bundle: bundle,
+                                         comment: comment)
+    var fallbackClientString = NSLocalizedString(fallbackKey,
+                                                 bundle: bundle,
+                                                 comment: comment)
+    
     if let localizedResourceName = GiniConfiguration.shared.localizedStringsTableName {
-        clientString = NSLocalizedString(key, tableName: localizedResourceName, comment: comment)
+        clientString = NSLocalizedString(key,
+                                         tableName: localizedResourceName,
+                                         bundle: bundle,
+                                         comment: comment)
         fallbackClientString = NSLocalizedString(fallbackKey,
                                                  tableName: localizedResourceName,
+                                                 bundle: bundle,
                                                  comment: comment)
-    } else {
-        clientString = NSLocalizedString(key, comment: comment)
-        fallbackClientString = NSLocalizedString(fallbackKey, comment: comment)
     }
-
-    let format: String
-    if (clientString.lowercased() != key.lowercased() || fallbackClientString.lowercased() != fallbackKey.lowercased())
-        && isCustomizable {
-        format = clientString
-    } else {
-        let bundle = giniCaptureBundle()
-
-        var defaultFormat = NSLocalizedString(key, bundle: bundle, comment: comment)
-
-        if defaultFormat.lowercased() == key.lowercased() {
-            defaultFormat = NSLocalizedString(fallbackKey, bundle: bundle, comment: comment)
-        }
-
-        format = defaultFormat
+    
+    guard (clientString.lowercased() != key.lowercased() || fallbackClientString.lowercased() != fallbackKey.lowercased()) else {
+        return nil
     }
-
-    return format
+    
+    return clientString
 }
 
 struct AnimationDuration {
