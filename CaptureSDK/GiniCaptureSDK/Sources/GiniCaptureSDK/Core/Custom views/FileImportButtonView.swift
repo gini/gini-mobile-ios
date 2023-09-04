@@ -29,7 +29,7 @@ final class FileImportButtonView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = .localized(resource: CameraStrings.importFileButtonLabel)
-        label.font = GiniConfiguration.shared.customFont.with(weight: .regular, size: 12, style: .footnote)
+        label.font = GiniConfiguration.shared.textStyleFonts[.footnote]
         label.textAlignment = .center
         label.textColor = .white
         label.minimumScaleFactor = 10 / label.font.pointSize
