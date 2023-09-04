@@ -150,20 +150,6 @@ import GiniBankAPILibrary
                                 shadowRadius: 0,
                                 withBlurEffect: false)
 
-    // MARK: - TODO DELETE
-    /**
-     Sets the font used in the GiniCapture library by default.
-     */
-    @objc public lazy var customFont: GiniCaptureFont = GiniCaptureFont(regular: UIFont.systemFont(ofSize: 14,
-                                                                                                 weight: .regular),
-                                                                      bold: UIFont.systemFont(ofSize: 14,
-                                                                                              weight: .bold),
-                                                                      light: UIFont.systemFont(ofSize: 14,
-                                                                                               weight: .light),
-                                                                      thin: UIFont.systemFont(ofSize: 14,
-                                                                                              weight: .thin),
-                                                                      isEnabled: false)
-
     /**
      Can be turned on during development to unlock extra information and to save captured images to camera roll.
 
