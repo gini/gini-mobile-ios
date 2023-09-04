@@ -63,13 +63,22 @@ func giniBankBundle() -> Bundle {
  - returns: Image if found with name.
  */
 func prefferedImage(named name: String) -> UIImage? {
-    if let clientImage = UIImage(named: name) {
-        return clientImage
+    if let mainBundleImage = UIImage(named: name,
+                                     in: Bundle.main,
+                                     compatibleWith: nil) {
+        return mainBundleImage
     }
-    let bundle = giniBankBundle()
-    return UIImage(named: name, in: bundle, compatibleWith: nil)
+    if let customBundle = GiniBankConfiguration.shared.customResourceBundle,
+       let customBundleImage = UIImage(named: name,
+                                       in: customBundle,
+                                       compatibleWith: nil) {
+        return customBundleImage
+    }
+    
+    return UIImage(named: name,
+                   in: giniBankBundle(),
+                   compatibleWith: nil)
 }
-
 /**
  Returns an optional `UIColor` instance with the given `name` preferably from the client's bundle.
  
