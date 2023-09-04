@@ -19,36 +19,72 @@ public protocol GiniBankAnalysisDelegate: AnalysisDelegate {}
  - returns: String resource for the given key.
  */
 func NSLocalizedStringPreferredGiniBankFormat(_ key: String,
-                                              fallbackKey: String = "",
-                                              comment: String,
-                                              isCustomizable: Bool = true) -> String {
-    var clientString: String
-    var fallbackClientString: String
+                                               fallbackKey: String = "",
+                                               comment: String,
+                                               isCustomizable: Bool = true) -> String {
+     if isCustomizable {
+         if let clientLocalizedStringMainBundle = clientLocalizedString(key,
+                                                                        fallbackKey: fallbackKey,
+                                                                        comment: comment,
+                                                                        bundle: .main) {
+             return clientLocalizedStringMainBundle
+
+         } else if let customBundle = GiniBankConfiguration.shared.customResourceBundle,
+                   let clientLocalizedStringCustomBundle = clientLocalizedString(key,
+                                                                                 fallbackKey: fallbackKey,
+                                                                                 comment: comment,
+                                                                                 bundle: customBundle) {
+             return clientLocalizedStringCustomBundle
+         }
+     }
+     return giniLocalizedString(key, fallbackKey: fallbackKey, comment: comment)
+ }
+
+private func clientLocalizedString(_ key: String,
+                                   fallbackKey: String,
+                                   comment: String,
+                                   bundle: Bundle) -> String? {
+    var clientString = NSLocalizedString(key,
+                                         bundle: bundle,
+                                         comment: comment)
+    var fallbackClientString = NSLocalizedString(fallbackKey,
+                                                 bundle: bundle,
+                                                 comment: comment)
+    
     if let localizedResourceName = GiniBankConfiguration.shared.localizedStringsTableName {
-        clientString = NSLocalizedString(key, tableName: localizedResourceName, comment: comment)
-        fallbackClientString = NSLocalizedString(fallbackKey, tableName: localizedResourceName, comment: comment)
-    } else {
-        clientString = NSLocalizedString(key, comment: comment)
-        fallbackClientString = NSLocalizedString(fallbackKey, comment: comment)
+        clientString = NSLocalizedString(key,
+                                         tableName: localizedResourceName,
+                                         bundle: bundle,
+                                         comment: comment)
+        fallbackClientString = NSLocalizedString(fallbackKey,
+                                                 tableName: localizedResourceName,
+                                                 bundle: bundle,
+                                                 comment: comment)
     }
-
-    let format: String
-
-    if (clientString.lowercased() != key.lowercased() || fallbackClientString.lowercased() != fallbackKey.lowercased())
-        && isCustomizable {
-        format = clientString
-    } else {
-        let bundle = giniBankBundle()
-        var defaultFormat = NSLocalizedString(key, bundle: bundle, comment: comment)
-
-        if defaultFormat.lowercased() == key.lowercased() {
-            defaultFormat = NSLocalizedString(fallbackKey, bundle: bundle, comment: comment)
-        }
-
-        format = defaultFormat
+    
+    guard (clientString.lowercased() != key.lowercased() || fallbackClientString.lowercased() != fallbackKey.lowercased()) else {
+        return nil
     }
+    
+    return clientString
+}
 
-    return format
+private func giniLocalizedString(_ key: String,
+                                 fallbackKey: String,
+                                 comment: String) -> String {
+    let giniBundle = giniBankBundle()
+    
+    var defaultFormat = NSLocalizedString(key,
+                                          bundle: giniBundle,
+                                          comment: comment)
+    
+    if defaultFormat.lowercased() == key.lowercased() {
+        defaultFormat = NSLocalizedString(fallbackKey,
+                                          bundle: giniBundle,
+                                          comment: comment)
+    }
+    
+    return defaultFormat
 }
 
 func giniBankBundle() -> Bundle {
