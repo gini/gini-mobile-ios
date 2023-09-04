@@ -91,6 +91,11 @@ import GiniBankAPILibrary
         return CustomDocumentValidationResult.success()
     }
 
+    /**
+     Should be set if the main app's bundle is not used.
+     */
+     public var customResourceBundle: Bundle?
+
     // MARK: Button configuration options
 
     public lazy var primaryButtonConfiguration: ButtonConfiguration =

@@ -60,6 +60,11 @@ public final class GiniBankConfiguration: NSObject {
     public var customDocumentValidations: ((GiniCaptureDocument) -> CustomDocumentValidationResult) = { _ in
         return CustomDocumentValidationResult.success()
     }
+    
+    /**
+     Should be set if the main app's bundle is not used.
+     */
+     public var customResourceBundle: Bundle?
 
     // MARK: - Button configuration options
     /**
@@ -392,6 +397,7 @@ public final class GiniBankConfiguration: NSObject {
         configuration.cameraControlButtonConfiguration = self.cameraControlButtonConfiguration
         
         configuration.entryPoint = self.entryPoint
+        configuration.customResourceBundle = self.customResourceBundle
 
         GiniCapture.setConfiguration(configuration)
 
@@ -454,6 +460,7 @@ public final class GiniBankConfiguration: NSObject {
         
         giniBankConfiguration.debugModeOn = configuration.debugModeOn
         giniBankConfiguration.giniErrorLoggerIsOn = configuration.giniErrorLoggerIsOn
+        giniBankConfiguration.customResourceBundle = configuration.customResourceBundle
     }
 
     // MARK: - Update to custom font
