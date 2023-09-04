@@ -166,11 +166,6 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
         dismissViewController()
     }
 
-    @objc func hideAction(_ sender: UIButton!) {
-        UserDefaults.standard.set(true, forKey: "ginibank.defaults.digitalInvoiceOnboardingShowed")
-        dismissViewController()
-    }
-
     private func dismissViewController() {
         dismiss(animated: true)
     }
