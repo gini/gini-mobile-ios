@@ -20,10 +20,21 @@ public func giniCaptureBundle() -> Bundle {
  - returns: Image if found with name.
  */
 public func UIImageNamedPreferred(named name: String) -> UIImage? {
-    if let clientImage = UIImage(named: name) {
-        return clientImage
+    if let mainBundleImage = UIImage(named: name,
+                                     in: Bundle.main,
+                                     compatibleWith: nil) {
+        return mainBundleImage
     }
-    return UIImage(named: name, in: giniCaptureBundle(), compatibleWith: nil)
+    if let customBundle = GiniConfiguration.shared.customResourceBundle,
+       let customBundleImage = UIImage(named: name,
+                                       in: customBundle,
+                                       compatibleWith: nil) {
+        return customBundleImage
+    }
+    
+    return UIImage(named: name,
+                   in: giniCaptureBundle(),
+                   compatibleWith: nil)
 }
 
 /**
@@ -34,11 +45,22 @@ public func UIImageNamedPreferred(named name: String) -> UIImage? {
  - returns: color if found with name.
  */
 public func UIColorPreferred(named name: String) -> UIColor {
-    if let clientColor = UIColor(named: name) {
-        return clientColor
+    if let mainBundleColor = UIColor(named: name,
+                                     in: Bundle.main,
+                                     compatibleWith: nil) {
+        return mainBundleColor
     }
-
-    if let color = UIColor(named: name, in: giniCaptureBundle(), compatibleWith: nil) {
+    
+    if let customBundle = GiniConfiguration.shared.customResourceBundle,
+        let customBundleColor = UIColor(named: name,
+                                        in: customBundle,
+                                        compatibleWith: nil) {
+        return customBundleColor
+    }
+    
+    if let color = UIColor(named: name,
+                           in: giniCaptureBundle(),
+                           compatibleWith: nil) {
         return color
     } else {
         fatalError("The color named '\(name)' does not exist.")
