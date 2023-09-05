@@ -135,6 +135,7 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
             })
         }
 
+        self.trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .error))
         let viewController = ErrorScreenViewController(
             giniConfiguration: giniConfiguration,
             type: errorType,
@@ -165,7 +166,7 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
             let noResultsScreen = self.createImageAnalysisNoResultsScreen(type: type)
             DispatchQueue.main.async {
                 self.noResultsViewController = noResultsScreen
-                self.trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .error))
+                self.trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .noResults))
                 self.screenAPINavigationController.pushViewController(
                     noResultsScreen, animated: true)
             }
