@@ -22,8 +22,7 @@ final class AppCoordinator: Coordinator {
         return selectAPIViewController
     }
     lazy var selectAPIViewController: SelectAPIViewController = {
-        let selectAPIViewController = (UIStoryboard(name: "Main", bundle: nil)
-            .instantiateViewController(withIdentifier: "selectAPIViewController") as? SelectAPIViewController)!
+        let selectAPIViewController = SelectAPIViewController()
         selectAPIViewController.delegate = self
         selectAPIViewController.clientId = self.client.id
         return selectAPIViewController
@@ -180,10 +179,12 @@ final class AppCoordinator: Coordinator {
                 self.health.fetchDataForReview(documentId: document.id) { result in
                     switch result {
                     case .success(let data):
-                        let vc = PaymentReviewViewController.instantiate(with: self.health, data: data, trackingDelegate: self)
-                        self.rootViewController.present(vc, animated: true)
+                            let vc = PaymentReviewViewController.instantiate(with: self.health, data: data, trackingDelegate: self)
+                            vc.modalPresentationStyle = .overCurrentContext
+                            vc.modalTransitionStyle = .coverVertical
+                            self.rootViewController.present(vc, animated: true)
                     case .failure(let error):
-                        print("❌ Document data fetching failed: \(String(describing: error))")
+                            print("❌ Document data fetching failed: \(String(describing: error))")
                     }
                     self.selectAPIViewController.hideActivityIndicator()
                 }

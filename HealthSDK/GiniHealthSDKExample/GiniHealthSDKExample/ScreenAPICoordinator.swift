@@ -83,10 +83,12 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
             healthSdk.fetchDataForReview(documentId: docId) { result in
                 switch result {
                 case .success(let data):
-                    let vc = PaymentReviewViewController.instantiate(with: healthSdk, data: data, trackingDelegate: self)
-                    self.rootViewController.present(vc, animated: true)
+                        let vc = PaymentReviewViewController.instantiate(with: healthSdk, data: data, trackingDelegate: self)
+                        vc.modalTransitionStyle = .coverVertical
+                        vc.modalPresentationStyle = .overCurrentContext
+                        self.rootViewController.present(vc, animated: true)
                 case .failure(let error):
-                    print("❌ Document data fetching failed: \(String(describing: error))")
+                        print("❌ Document data fetching failed: \(String(describing: error))")
                 }
             }
         }

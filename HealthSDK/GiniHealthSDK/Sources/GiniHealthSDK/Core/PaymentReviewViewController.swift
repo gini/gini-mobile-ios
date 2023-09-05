@@ -211,6 +211,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         infoBar.backgroundColor = UIColor.from(giniColor: giniHealthConfiguration.infoBarBackgroundColor)
         infoBarLabel.textColor = UIColor.from(giniColor: giniHealthConfiguration.infoBarTextColor)
         infoBarLabel.font = giniHealthConfiguration.customFont.regular
+        infoBarLabel.adjustsFontForContentSizeCategory = true
         infoBarLabel.text = NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.infobar.message",
                                                              comment: "info bar message")
     }
@@ -265,6 +266,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             bankProviderButtonView.addGestureRecognizer(selectProviderTapRecognizer)
         }
         bankProviderLabel.font = giniHealthConfiguration.customFont.regular
+        bankProviderLabel.adjustsFontForContentSizeCategory = true
 
     }
     
