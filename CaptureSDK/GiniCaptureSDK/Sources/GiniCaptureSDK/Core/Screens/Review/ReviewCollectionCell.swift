@@ -71,8 +71,10 @@ final class ReviewCollectionCell: UICollectionViewCell {
             documentImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             documentImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 
-            deleteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.deleteButtonWidthInset),
-            deleteButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.deleteButtonWidthInset),
+            deleteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                   constant: -Constants.deleteButtonWidthInset),
+            deleteButton.topAnchor.constraint(equalTo: contentView.topAnchor,
+                                              constant: Constants.deleteButtonWidthInset),
             deleteButton.heightAnchor.constraint(equalToConstant: Constants.deleteButtonHeight),
             deleteButton.widthAnchor.constraint(equalToConstant: Constants.deleteButtonWidth)
         ])

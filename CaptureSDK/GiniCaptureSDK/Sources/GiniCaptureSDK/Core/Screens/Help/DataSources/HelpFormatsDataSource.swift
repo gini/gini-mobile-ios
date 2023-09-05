@@ -8,11 +8,9 @@
 
 import UIKit
 
-// swiftlint:disable large_tuple
 typealias HelpFormatsCollectionSection = (title: String,
                                           formats: [String],
                                           formatsImage: UIImage?)
-// swiftlint:enable large_tuple
 
 class HelpFormatsDataSource: HelpRoundedCornersDataSource<HelpFormatsCollectionSection, HelpFormatCell> {
 
