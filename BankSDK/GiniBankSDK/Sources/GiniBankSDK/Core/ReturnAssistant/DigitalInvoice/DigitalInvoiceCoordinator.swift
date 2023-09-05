@@ -25,7 +25,6 @@ final class DigitalInvoiceCoordinator: Coordinator {
     // Remove ASAP
     private var analysisDelegate: AnalysisDelegate
 
-
     weak var delegate: DigitalInvoiceCoordinatorDelegate?
     var rootViewController: UIViewController {
         guard let digitalInvoiceViewController = digitalInvoiceViewController else {
@@ -60,7 +59,7 @@ final class DigitalInvoiceCoordinator: Coordinator {
         let digitalInvoiceOnboardingViewController =
         storyboard.instantiateViewController(withIdentifier: onboardingViewControllerName)
         as! DigitalInvoiceOnboardingViewController
-        
+
         navigationController.present(digitalInvoiceOnboardingViewController, animated: true)
     }
 }
