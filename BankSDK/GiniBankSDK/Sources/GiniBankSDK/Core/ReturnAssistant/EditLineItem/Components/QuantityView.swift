@@ -102,7 +102,8 @@ final class QuantityView: UIView {
             titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: buttonContainerView.leadingAnchor,
                                                  constant: -Constants.padding),
 
-            quantityTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Constants.textFieldTopPadding),
+            quantityTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
+                                                   constant: Constants.textFieldTopPadding),
             quantityTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding),
             quantityTextField.trailingAnchor.constraint(lessThanOrEqualTo: buttonContainerView.leadingAnchor,
                                                         constant: -Constants.padding),
