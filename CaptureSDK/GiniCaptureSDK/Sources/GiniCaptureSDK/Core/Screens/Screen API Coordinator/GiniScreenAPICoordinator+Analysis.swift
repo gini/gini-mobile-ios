@@ -72,6 +72,7 @@ extension GiniScreenAPICoordinator {
         return BottomButtonsViewModel(
             retakeBlock: { [weak self] in
                 self?.pages = []
+                self?.trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .retry))
                 self?.backToCamera()
             },
             manuallyPressed: { [weak self] in
@@ -164,6 +165,7 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
             let noResultsScreen = self.createImageAnalysisNoResultsScreen(type: type)
             DispatchQueue.main.async {
                 self.noResultsViewController = noResultsScreen
+                self.trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .error))
                 self.screenAPINavigationController.pushViewController(
                     noResultsScreen, animated: true)
             }
