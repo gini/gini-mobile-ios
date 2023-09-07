@@ -30,8 +30,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F405E0E02AA9F87300F1E694 /* GiniHealthAPILibraryExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GiniHealthAPILibraryExample.entitlements; sourceTree = "<group>"; };
 		F466A5D7270F26B200FB1364 /* GiniHealthAPILibraryPinning */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GiniHealthAPILibraryPinning; path = ../GiniHealthAPILibraryPinning; sourceTree = "<group>"; };
-		F466A5DA270F27B300FB1364 /* HealthAPILibraryExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HealthAPILibraryExample.entitlements; sourceTree = "<group>"; };
 		F466A5DB270F27B300FB1364 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		F46DE0482705FC21002F7420 /* GiniHealthAPILibraryExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiniHealthAPILibraryExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F46DE04B2705FC21002F7420 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -89,7 +89,7 @@
 		F46DE04A2705FC21002F7420 /* GiniHealthAPILibraryExample */ = {
 			isa = PBXGroup;
 			children = (
-				F466A5DA270F27B300FB1364 /* HealthAPILibraryExample.entitlements */,
+				F405E0E02AA9F87300F1E694 /* GiniHealthAPILibraryExample.entitlements */,
 				F46DE04B2705FC21002F7420 /* AppDelegate.swift */,
 				F46DE04D2705FC21002F7420 /* SceneDelegate.swift */,
 				F46DE04F2705FC21002F7420 /* ViewController.swift */,
@@ -396,7 +396,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = HealthAPILibraryExample/HealthAPILibraryExample.entitlements;
+				CODE_SIGN_ENTITLEMENTS = GiniHealthAPILibraryExample/GiniHealthAPILibraryExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = JA825X8F7Z;
@@ -429,7 +429,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = HealthAPILibraryExample/HealthAPILibraryExample.entitlements;
+				CODE_SIGN_ENTITLEMENTS = GiniHealthAPILibraryExample/GiniHealthAPILibraryExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = JA825X8F7Z;
