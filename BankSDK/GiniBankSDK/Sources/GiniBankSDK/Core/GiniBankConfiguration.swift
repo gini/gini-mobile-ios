@@ -289,13 +289,12 @@ public final class GiniBankConfiguration: NSObject {
      Shows the return reasons dialog.
      */
     public var enableReturnReasons: Bool = true
-    
+
     /**
      Set the entry point used for launching the Gini Bank SDK.
      Default value is `GiniEntryPoint.button`.
      */
     public var entryPoint = GiniConfiguration.GiniEntryPoint.button
-
 
     // MARK: - Error Logger
     /**
@@ -384,13 +383,12 @@ public final class GiniBankConfiguration: NSObject {
                 configuration.updateFont(newFont, for: textStyle)
             }
         }
-
         configuration.primaryButtonConfiguration = self.primaryButtonConfiguration
         configuration.secondaryButtonConfiguration = self.secondaryButtonConfiguration
         configuration.transparentButtonConfiguration = self.transparentButtonConfiguration
         configuration.addPageButtonConfiguration = self.addPageButtonConfiguration
         configuration.cameraControlButtonConfiguration = self.cameraControlButtonConfiguration
-        
+
         configuration.entryPoint = self.entryPoint
 
         GiniCapture.setConfiguration(configuration)
@@ -448,10 +446,10 @@ public final class GiniBankConfiguration: NSObject {
 		giniBankConfiguration.onboardingMultiPageIllustrationAdapter = configuration.onboardingMultiPageIllustrationAdapter
 		giniBankConfiguration.onboardingNavigationBarBottomAdapter = configuration.onboardingNavigationBarBottomAdapter
 		giniBankConfiguration.onboardingAlignCornersIllustrationAdapter = configuration.onboardingAlignCornersIllustrationAdapter
-        
+
         giniBankConfiguration.entryPoint = configuration.entryPoint
 		giniBankConfiguration.customOnboardingPages = configuration.customOnboardingPages
-        
+
         giniBankConfiguration.debugModeOn = configuration.debugModeOn
         giniBankConfiguration.giniErrorLoggerIsOn = configuration.giniErrorLoggerIsOn
     }
