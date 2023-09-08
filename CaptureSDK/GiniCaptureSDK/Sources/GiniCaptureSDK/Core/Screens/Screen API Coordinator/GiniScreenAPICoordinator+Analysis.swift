@@ -103,6 +103,7 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
                 viewModel = BottomButtonsViewModel(
                     retakeBlock: { [weak self] in
                         self?.pages = []
+                        self?.trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .retry))
                         self?.backToCamera()
                     },
                     manuallyPressed: { [weak self] in
