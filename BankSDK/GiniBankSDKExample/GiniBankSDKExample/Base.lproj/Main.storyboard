@@ -21,39 +21,45 @@
                         <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="N6f-jj-XUu">
-                                <rect key="frame" x="20" y="109" width="390" height="759"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="N6f-jj-XUu">
+                                <rect key="frame" x="16" y="109" width="398" height="759"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gini_logo" translatesAutoresizingMaskIntoConstraints="NO" id="AaL-kG-aBp">
-                                        <rect key="frame" x="138.33333333333334" y="0.0" width="113.33333333333334" height="72"/>
+                                        <rect key="frame" x="142.33333333333334" y="0.0" width="113.33333333333334" height="224.66666666666666"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to Gini" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hUt-W2-LEO">
-                                        <rect key="frame" x="129.33333333333331" y="142.33333333333334" width="131.33333333333331" height="20.333333333333343"/>
+                                        <rect key="frame" x="133.33333333333331" y="224.66666666666671" width="131.33333333333331" height="63.333333333333343"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Example of Photo Payment integration in the banking app" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ygg-uD-f4I">
-                                        <rect key="frame" x="24.333333333333343" y="248.33333333333329" width="341.33333333333326" height="40.666666666666657"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Example of Photo Payment integration in the banking app" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ygg-uD-f4I">
+                                        <rect key="frame" x="50" y="288" width="298" height="127"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter IBAN" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lX1-CF-VFa">
-                                        <rect key="frame" x="39" y="368" width="312" height="34"/>
-                                        <color key="tintColor" red="0.27212664479999998" green="0.6108134985" blue="0.83924418690000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <rect key="frame" x="0.0" y="415" width="398" height="64"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="64" id="1sx-Hp-LcG"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="or use" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lfj-kB-doE">
-                                        <rect key="frame" x="171.33333333333334" y="491.33333333333337" width="47.333333333333343" height="20.333333333333314"/>
+                                        <rect key="frame" x="175.33333333333334" y="479" width="47.333333333333343" height="188"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZlJ-hw-K1e" customClass="GiniButton" customModule="GiniBankSDKExample" customModuleProvider="target">
-                                        <rect key="frame" x="133" y="600.66666666666663" width="124" height="34"/>
+                                        <rect key="frame" x="16" y="667" width="366" height="42"/>
                                         <color key="backgroundColor" systemColor="quaternarySystemFillColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="42" id="Wzw-xv-WoK"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                         <state key="normal" title="Photopayment">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -74,7 +80,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="40A-WQ-jHQ">
-                                        <rect key="frame" x="159" y="709" width="72" height="50"/>
+                                        <rect key="frame" x="163" y="709" width="72" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="6nH-wJ-Buy"/>
                                         </constraints>
@@ -88,22 +94,30 @@
                                     </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="lX1-CF-VFa" firstAttribute="width" secondItem="N6f-jj-XUu" secondAttribute="width" multiplier="0.8" id="4Jo-WM-sZU"/>
+                                    <constraint firstItem="ZlJ-hw-K1e" firstAttribute="leading" secondItem="N6f-jj-XUu" secondAttribute="leadingMargin" constant="16" id="9yX-Ix-TZP"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="Ygg-uD-f4I" secondAttribute="trailing" constant="50" id="CSM-b2-o22"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="ZlJ-hw-K1e" secondAttribute="trailing" constant="16" id="FUH-bU-Rmx"/>
+                                    <constraint firstItem="Ygg-uD-f4I" firstAttribute="leading" secondItem="N6f-jj-XUu" secondAttribute="leadingMargin" constant="50" id="NU1-AE-h2G"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="lX1-CF-VFa" secondAttribute="trailing" id="RJQ-uT-Aiv"/>
+                                    <constraint firstItem="lX1-CF-VFa" firstAttribute="leading" secondItem="N6f-jj-XUu" secondAttribute="leadingMargin" id="Tbh-an-DQb"/>
                                 </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="bottomMargin" secondItem="N6f-jj-XUu" secondAttribute="bottom" constant="30" id="6gE-G4-xcx"/>
-                            <constraint firstAttribute="trailing" secondItem="N6f-jj-XUu" secondAttribute="trailing" constant="20" id="BfK-5X-zqV"/>
+                            <constraint firstAttribute="trailing" secondItem="N6f-jj-XUu" secondAttribute="trailing" constant="16" id="BfK-5X-zqV"/>
                             <constraint firstItem="N6f-jj-XUu" firstAttribute="centerX" secondItem="08c-kU-hUA" secondAttribute="centerX" id="Fbw-7y-F8M"/>
                             <constraint firstItem="N6f-jj-XUu" firstAttribute="top" secondItem="a3q-Yk-YSo" secondAttribute="bottom" constant="50" id="X3B-dN-Llb"/>
-                            <constraint firstItem="N6f-jj-XUu" firstAttribute="leading" secondItem="08c-kU-hUA" secondAttribute="leading" constant="20" id="fwd-BC-lUp"/>
+                            <constraint firstItem="N6f-jj-XUu" firstAttribute="leading" secondItem="08c-kU-hUA" secondAttribute="leading" constant="16" id="fwd-BC-lUp"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="alternativeTitle" destination="Lfj-kB-doE" id="EHi-Oj-IKM"/>
+                        <outlet property="descriptionTitle" destination="Ygg-uD-f4I" id="gum-2X-ea1"/>
                         <outlet property="ibanTextField" destination="lX1-CF-VFa" id="8XF-A3-aI2"/>
                         <outlet property="metaInformationButton" destination="40A-WQ-jHQ" id="S7F-xE-0Nc"/>
+                        <outlet property="welcomeTitlte" destination="hUt-W2-LEO" id="PHL-LI-dul"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VQd-cL-q81" userLabel="First Responder" sceneMemberID="firstResponder"/>
