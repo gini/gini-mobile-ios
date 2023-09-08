@@ -83,6 +83,8 @@ public enum AnalysisScreenEventType: String {
     case error
     /// The user decided to retry after an analysis error.
     case retry
+    /// The analysis ended with empty extraction result. The  message is supplied under the "message" key.
+    case noResults
 }
 
 /**

@@ -24,7 +24,6 @@ protocol CameraLensSwitcherViewDelegate: AnyObject {
     func cameraLensSwitcherDidSwitchTo(lens: CameraLensesAvailable, on: CameraLensSwitcherView)
 }
 
-// swiftlint:disable type_body_length
 final class CameraLensSwitcherView: UIView {
     private lazy var buttonContainerView: UIView = {
         let view = UIView()
@@ -228,7 +227,6 @@ final class CameraLensSwitcherView: UIView {
                     teleButton.trailingAnchor.constraint(equalTo: buttonContainerView.trailingAnchor, constant: -Constants.interButtonSpacing)]
         }
     }()
-    // swiftlint:enable line_length
 
     // Constraints for wide and ultra wide button pair
     private lazy var wideAndUltraWideLayoutButtonConstraints: [NSLayoutConstraint] = {
