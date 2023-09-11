@@ -14,14 +14,3 @@ theme: Documentation/jazzy-theme/
 output: Documentation/Api
 github_url: https://github.com/gini/gini-mobile-ios.git
 hide_documentation_coverage: 'true'
-documentation: BankSDK/GiniBankSDK/Documentation/source/*.md
-abstract: BankSDK/GiniBankSDK/Documentation/Sections/*.md
-custom_categories:
-- name: Documentation
-  children:
-  - Getting started
-  - Features
-  - Integration
-  - Migration
-  - License
-  
