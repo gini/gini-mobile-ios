@@ -20,10 +20,21 @@ public func giniCaptureBundle() -> Bundle {
  - returns: Image if found with name.
  */
 public func UIImageNamedPreferred(named name: String) -> UIImage? {
-    if let clientImage = UIImage(named: name) {
-        return clientImage
+    if let mainBundleImage = UIImage(named: name,
+                                     in: Bundle.main,
+                                     compatibleWith: nil) {
+        return mainBundleImage
     }
-    return UIImage(named: name, in: giniCaptureBundle(), compatibleWith: nil)
+    if let customBundle = GiniConfiguration.shared.customResourceBundle,
+       let customBundleImage = UIImage(named: name,
+                                       in: customBundle,
+                                       compatibleWith: nil) {
+        return customBundleImage
+    }
+    
+    return UIImage(named: name,
+                   in: giniCaptureBundle(),
+                   compatibleWith: nil)
 }
 
 /**
@@ -34,11 +45,22 @@ public func UIImageNamedPreferred(named name: String) -> UIImage? {
  - returns: color if found with name.
  */
 public func UIColorPreferred(named name: String) -> UIColor {
-    if let clientColor = UIColor(named: name) {
-        return clientColor
+    if let mainBundleColor = UIColor(named: name,
+                                     in: Bundle.main,
+                                     compatibleWith: nil) {
+        return mainBundleColor
     }
-
-    if let color = UIColor(named: name, in: giniCaptureBundle(), compatibleWith: nil) {
+    
+    if let customBundle = GiniConfiguration.shared.customResourceBundle,
+        let customBundleColor = UIColor(named: name,
+                                        in: customBundle,
+                                        compatibleWith: nil) {
+        return customBundleColor
+    }
+    
+    if let color = UIColor(named: name,
+                           in: giniCaptureBundle(),
+                           compatibleWith: nil) {
         return color
     } else {
         fatalError("The color named '\(name)' does not exist.")
@@ -57,35 +79,71 @@ public func NSLocalizedStringPreferredFormat(_ key: String,
                                              fallbackKey: String = "",
                                              comment: String,
                                              isCustomizable: Bool = true) -> String {
-    var clientString: String
-    var fallbackClientString: String
+    if isCustomizable {
+        if let clientLocalizedStringMainBundle = clientLocalizedString(key,
+                                                                       fallbackKey: fallbackKey,
+                                                                       comment: comment,
+                                                                       bundle: .main) {
+            
+            return clientLocalizedStringMainBundle
+            
+        } else if let customBundle = GiniConfiguration.shared.customResourceBundle,
+                  let clientLocalizedStringCustomBundle = clientLocalizedString(key,
+                                                                                fallbackKey: fallbackKey,
+                                                                                comment: comment,
+                                                                                bundle: customBundle) {
+            
+            return clientLocalizedStringCustomBundle
+        }
+    }
+    
+    return giniLocalizedString(key, fallbackKey: fallbackKey, comment: comment)
+}
+
+private func giniLocalizedString(_ key: String,
+                                 fallbackKey: String,
+                                 comment: String) -> String {
+    let giniBundle = giniCaptureBundle()
+    
+    var defaultFormat = NSLocalizedString(key,
+                                          bundle: giniBundle,
+                                          comment: comment)
+    
+    if defaultFormat.lowercased() == key.lowercased() {
+        defaultFormat = NSLocalizedString(fallbackKey,
+                                          bundle: giniBundle,
+                                          comment: comment)
+    }
+    return defaultFormat
+}
+
+private func clientLocalizedString(_ key: String,
+                                   fallbackKey: String,
+                                   comment: String,
+                                   bundle: Bundle) -> String? {
+    var clientString = NSLocalizedString(key,
+                                         bundle: bundle,
+                                         comment: comment)
+    var fallbackClientString = NSLocalizedString(fallbackKey,
+                                                 bundle: bundle,
+                                                 comment: comment)
+    
     if let localizedResourceName = GiniConfiguration.shared.localizedStringsTableName {
-        clientString = NSLocalizedString(key, tableName: localizedResourceName, comment: comment)
+        clientString = NSLocalizedString(key,
+                                         tableName: localizedResourceName,
+                                         bundle: bundle,
+                                         comment: comment)
         fallbackClientString = NSLocalizedString(fallbackKey,
                                                  tableName: localizedResourceName,
+                                                 bundle: bundle,
                                                  comment: comment)
-    } else {
-        clientString = NSLocalizedString(key, comment: comment)
-        fallbackClientString = NSLocalizedString(fallbackKey, comment: comment)
     }
-
-    let format: String
-    if (clientString.lowercased() != key.lowercased() || fallbackClientString.lowercased() != fallbackKey.lowercased())
-        && isCustomizable {
-        format = clientString
-    } else {
-        let bundle = giniCaptureBundle()
-
-        var defaultFormat = NSLocalizedString(key, bundle: bundle, comment: comment)
-
-        if defaultFormat.lowercased() == key.lowercased() {
-            defaultFormat = NSLocalizedString(fallbackKey, bundle: bundle, comment: comment)
-        }
-
-        format = defaultFormat
+    
+    guard (clientString.lowercased() != key.lowercased() || fallbackClientString.lowercased() != fallbackKey.lowercased()) else {
+        return nil
     }
-
-    return format
+    
+    return clientString
 }
 
 struct AnimationDuration {
