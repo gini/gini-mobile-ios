@@ -2,19 +2,14 @@ name: Build BankSDK XCFrameworks
 on:
   push:
     tags:
-      - 'GiniBankSDK;[0-9]+.[0-9]+.[0-9]+;xcframeworks**'
-      - 'GiniBankSDK;[0-9]+.[0-9]+.[0-9]+-beta[0-9][0-9]+;xcframeworks**'
+      - 'TestSignXCFramework;GiniBankSDK;v3'
   workflow_dispatch:
   workflow_call:
 jobs:
   prepare-frameworks:
     name: Create Release
-    runs-on: macos-13
+    runs-on: macos-latest
     steps:
-      - uses: maxim-lobanov/setup-xcode@v1.5.1
-        with:
-          xcode-version: '14.3.1'
-
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -132,7 +127,7 @@ jobs:
 
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
 
-          # import certificate and provisioning profile from secrets
+          # import certificate from secrets
           echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode --output $CERTIFICATE_PATH
           echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode --output $PP_PATH1
           echo -n "$BUILD_PROVISION_PROFILE_EXTENSION_BASE64" | base64 --decode --output $PP_PATH2
@@ -171,4 +166,3 @@ jobs:
             GiniBankSDKPinning.xcframework
             GiniCaptureSDKPinning.xcframework
             GiniBankAPILibraryPinning.xcframework
-
