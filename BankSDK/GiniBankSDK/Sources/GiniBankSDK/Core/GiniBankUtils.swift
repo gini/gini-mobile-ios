@@ -19,36 +19,72 @@ public protocol GiniBankAnalysisDelegate: AnalysisDelegate {}
  - returns: String resource for the given key.
  */
 func NSLocalizedStringPreferredGiniBankFormat(_ key: String,
-                                              fallbackKey: String = "",
-                                              comment: String,
-                                              isCustomizable: Bool = true) -> String {
-    var clientString: String
-    var fallbackClientString: String
+                                               fallbackKey: String = "",
+                                               comment: String,
+                                               isCustomizable: Bool = true) -> String {
+     if isCustomizable {
+         if let clientLocalizedStringMainBundle = clientLocalizedString(key,
+                                                                        fallbackKey: fallbackKey,
+                                                                        comment: comment,
+                                                                        bundle: .main) {
+             return clientLocalizedStringMainBundle
+
+         } else if let customBundle = GiniBankConfiguration.shared.customResourceBundle,
+                   let clientLocalizedStringCustomBundle = clientLocalizedString(key,
+                                                                                 fallbackKey: fallbackKey,
+                                                                                 comment: comment,
+                                                                                 bundle: customBundle) {
+             return clientLocalizedStringCustomBundle
+         }
+     }
+     return giniLocalizedString(key, fallbackKey: fallbackKey, comment: comment)
+ }
+
+private func clientLocalizedString(_ key: String,
+                                   fallbackKey: String,
+                                   comment: String,
+                                   bundle: Bundle) -> String? {
+    var clientString = NSLocalizedString(key,
+                                         bundle: bundle,
+                                         comment: comment)
+    var fallbackClientString = NSLocalizedString(fallbackKey,
+                                                 bundle: bundle,
+                                                 comment: comment)
+    
     if let localizedResourceName = GiniBankConfiguration.shared.localizedStringsTableName {
-        clientString = NSLocalizedString(key, tableName: localizedResourceName, comment: comment)
-        fallbackClientString = NSLocalizedString(fallbackKey, tableName: localizedResourceName, comment: comment)
-    } else {
-        clientString = NSLocalizedString(key, comment: comment)
-        fallbackClientString = NSLocalizedString(fallbackKey, comment: comment)
+        clientString = NSLocalizedString(key,
+                                         tableName: localizedResourceName,
+                                         bundle: bundle,
+                                         comment: comment)
+        fallbackClientString = NSLocalizedString(fallbackKey,
+                                                 tableName: localizedResourceName,
+                                                 bundle: bundle,
+                                                 comment: comment)
     }
-
-    let format: String
-
-    if (clientString.lowercased() != key.lowercased() || fallbackClientString.lowercased() != fallbackKey.lowercased())
-        && isCustomizable {
-        format = clientString
-    } else {
-        let bundle = giniBankBundle()
-        var defaultFormat = NSLocalizedString(key, bundle: bundle, comment: comment)
-
-        if defaultFormat.lowercased() == key.lowercased() {
-            defaultFormat = NSLocalizedString(fallbackKey, bundle: bundle, comment: comment)
-        }
-
-        format = defaultFormat
+    
+    guard (clientString.lowercased() != key.lowercased() || fallbackClientString.lowercased() != fallbackKey.lowercased()) else {
+        return nil
     }
+    
+    return clientString
+}
 
-    return format
+private func giniLocalizedString(_ key: String,
+                                 fallbackKey: String,
+                                 comment: String) -> String {
+    let giniBundle = giniBankBundle()
+    
+    var defaultFormat = NSLocalizedString(key,
+                                          bundle: giniBundle,
+                                          comment: comment)
+    
+    if defaultFormat.lowercased() == key.lowercased() {
+        defaultFormat = NSLocalizedString(fallbackKey,
+                                          bundle: giniBundle,
+                                          comment: comment)
+    }
+    
+    return defaultFormat
 }
 
 func giniBankBundle() -> Bundle {
@@ -63,13 +99,22 @@ func giniBankBundle() -> Bundle {
  - returns: Image if found with name.
  */
 func prefferedImage(named name: String) -> UIImage? {
-    if let clientImage = UIImage(named: name) {
-        return clientImage
+    if let mainBundleImage = UIImage(named: name,
+                                     in: Bundle.main,
+                                     compatibleWith: nil) {
+        return mainBundleImage
     }
-    let bundle = giniBankBundle()
-    return UIImage(named: name, in: bundle, compatibleWith: nil)
+    if let customBundle = GiniBankConfiguration.shared.customResourceBundle,
+       let customBundleImage = UIImage(named: name,
+                                       in: customBundle,
+                                       compatibleWith: nil) {
+        return customBundleImage
+    }
+    
+    return UIImage(named: name,
+                   in: giniBankBundle(),
+                   compatibleWith: nil)
 }
-
 /**
  Returns an optional `UIColor` instance with the given `name` preferably from the client's bundle.
  
@@ -78,10 +123,22 @@ func prefferedImage(named name: String) -> UIImage? {
  - returns: UIColor if found with name.
  */
 func prefferedColor(named name: String) -> UIColor {
-    if let clientColor = UIColor(named: name) {
-        return clientColor
+    if let mainBundleColor = UIColor(named: name,
+                                     in: Bundle.main,
+                                     compatibleWith: nil) {
+        return mainBundleColor
     }
-    if let color = UIColor(named: name, in: giniBankBundle(), compatibleWith: nil) {
+    
+    if let customBundle = GiniBankConfiguration.shared.customResourceBundle,
+        let customBundleColor = UIColor(named: name,
+                                        in: customBundle,
+                                        compatibleWith: nil) {
+        return customBundleColor
+    }
+    
+    if let color = UIColor(named: name,
+                           in: giniBankBundle(),
+                           compatibleWith: nil) {
         return color
     } else {
         fatalError("The color named '\(name)' does not exist.")
