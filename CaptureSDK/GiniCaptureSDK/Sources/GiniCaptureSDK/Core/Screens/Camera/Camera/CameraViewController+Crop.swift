@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - Image Cropping
 
-extension Camera2ViewController {
+extension CameraViewController {
     // swiftlint:disable line_length
     func crop(image: UIImage) -> UIImage {
         let standardImageAspectRatio: CGFloat = 0.75 // Standard aspect ratio of a 3/4 image

@@ -10,7 +10,7 @@ import AVFoundation
 import UIKit
 
 // swiftlint:disable type_body_length
-public final class Camera2ViewController: UIViewController, CameraScreen {
+public final class CameraViewController: UIViewController, CameraScreen {
     /**
      The object that acts as the delegate of the camera view controller.
     */
@@ -64,7 +64,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         self.giniConfiguration = giniConfiguration
         self.cameraButtonsViewModel = viewModel
 
-        let availableLenses = Camera2ViewController.checkAvailableLenses()
+        let availableLenses = CameraViewController.checkAvailableLenses()
         self.cameraLensSwitcherView = CameraLensSwitcherView(availableLenses: availableLenses)
         self.cameraLensSwitcherView.isHidden = true
 
@@ -528,7 +528,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
 
 // MARK: - CameraPreviewViewControllerDelegate
 
-extension Camera2ViewController: CameraPreviewViewControllerDelegate {
+extension CameraViewController: CameraPreviewViewControllerDelegate {
 
     func cameraDidSetUp(_ viewController: CameraPreviewViewController, camera: CameraProtocol) {
         if !qrCodeScanningOnlyEnabled {
@@ -563,7 +563,7 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 
 // MARK: - CameraLensSwitcherViewDelegate
 
-extension Camera2ViewController: CameraLensSwitcherViewDelegate {
+extension CameraViewController: CameraLensSwitcherViewDelegate {
     func cameraLensSwitcherDidSwitchTo(lens: CameraLensesAvailable, on: CameraLensSwitcherView) {
         var device: AVCaptureDevice?
 
@@ -583,7 +583,7 @@ extension Camera2ViewController: CameraLensSwitcherViewDelegate {
     }
 }
 
-private extension Camera2ViewController {
+private extension CameraViewController {
     enum Constants {
         static let switcherPadding: CGFloat = 8
         static let phoneSwitcherSize: CGSize = CGSize(width: 124, height: 40)

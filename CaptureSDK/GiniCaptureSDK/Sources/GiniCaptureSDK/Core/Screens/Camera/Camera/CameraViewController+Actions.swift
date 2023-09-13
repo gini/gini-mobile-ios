@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - Toggle UI elements
 
-extension Camera2ViewController {
+extension CameraViewController {
 
     /**
      Show the capture button. Should be called when onboarding is dismissed.
