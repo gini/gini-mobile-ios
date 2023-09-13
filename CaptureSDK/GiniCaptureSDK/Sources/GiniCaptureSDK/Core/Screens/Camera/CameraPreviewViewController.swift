@@ -130,7 +130,7 @@ final class CameraPreviewViewController: UIViewController {
         addLoadingIndicator()
     }
 
-    public override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         camera.start()
         startLoadingIndicator()
@@ -193,12 +193,12 @@ final class CameraPreviewViewController: UIViewController {
         ])
     }
 
-    public override func viewWillDisappear(_ animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         camera.stop()
     }
 
-    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
         coordinator.animate(alongsideTransition: { [weak self] _ in
@@ -225,7 +225,7 @@ final class CameraPreviewViewController: UIViewController {
         }
     }
 
-    public override func viewWillLayoutSubviews() {
+    override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         spinner.center = previewView.center
     }
