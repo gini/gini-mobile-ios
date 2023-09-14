@@ -75,7 +75,6 @@
 		F441DCC325E56BF800AAB09A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F441DCC525E56BF800AAB09A /* LaunchScreen.xib */; };
 		F44AD01528D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44AD01428D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift */; };
 		F44AD01E28D4BBE7002BAD98 /* page1Animation.json in Resources */ = {isa = PBXBuildFile; fileRef = F44AD01D28D4BBE7002BAD98 /* page1Animation.json */; };
-		F45960702A813D0B004B0112 /* UIImage+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F459606F2A813D0B004B0112 /* UIImage+Utils.swift */; };
 		F45D7F0C2800566900C73C63 /* ExtractionFeedbackIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45D7F002800566900C73C63 /* ExtractionFeedbackIntegrationTest.swift */; };
 		F45D7F0D2800566900C73C63 /* ScreenAPICoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45D7F012800566900C73C63 /* ScreenAPICoordinatorTests.swift */; };
 		F45D7F0E2800566900C73C63 /* ScreenAPICoordinator+UI_Only.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45D7F022800566900C73C63 /* ScreenAPICoordinator+UI_Only.swift */; };
@@ -217,7 +216,6 @@
 		F441DD1225E5706F00AAB09A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F44AD01428D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOnboardingIllustrationAdapter.swift; sourceTree = "<group>"; };
 		F44AD01D28D4BBE7002BAD98 /* page1Animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = page1Animation.json; sourceTree = "<group>"; };
-		F459606F2A813D0B004B0112 /* UIImage+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Utils.swift"; sourceTree = "<group>"; };
 		F45D7F002800566900C73C63 /* ExtractionFeedbackIntegrationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtractionFeedbackIntegrationTest.swift; sourceTree = "<group>"; };
 		F45D7F012800566900C73C63 /* ScreenAPICoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinatorTests.swift; sourceTree = "<group>"; };
 		F45D7F022800566900C73C63 /* ScreenAPICoordinator+UI_Only.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ScreenAPICoordinator+UI_Only.swift"; sourceTree = "<group>"; };
@@ -444,7 +442,6 @@
 			isa = PBXGroup;
 			children = (
 				28DB2C812A39AF5000F5B304 /* GiniButton.swift */,
-				F459606F2A813D0B004B0112 /* UIImage+Utils.swift */,
 				28B5873B2A372790008CB210 /* UITableView+CellRegistration.swift */,
 				28B5873D2A3727F8008CB210 /* ReusableView.swift */,
 				28B1B3922A45DC4C0045B4A1 /* UIView+LoadNib.swift */,
@@ -868,7 +865,6 @@
 				28B5873E2A3727F8008CB210 /* ReusableView.swift in Sources */,
 				F4AD00C225DED43200C34E15 /* SelectAPIViewController.swift in Sources */,
 				28F62FA92AB319A000D47866 /* TextField.swift in Sources */,
-				F45960702A813D0B004B0112 /* UIImage+Utils.swift in Sources */,
 				28F62FA72AB2236500D47866 /* Device.swift in Sources */,
 				837EEFB5291D6ABE00DB781F /* CustomCameraBottomNavigationBarAdapter.swift in Sources */,
 				76610BE9298D5448004C1ECB /* CustomReviewScreenBottomNavigationBar.swift in Sources */,
