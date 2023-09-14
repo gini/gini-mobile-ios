@@ -26,6 +26,12 @@
 		28B5874D2A374730008CB210 /* SegmentedOptionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28B5874B2A374730008CB210 /* SegmentedOptionTableViewCell.xib */; };
 		28CDB8232A38A5E40016A81C /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CDB8222A38A5E40016A81C /* ColorPalette.swift */; };
 		28DB2C822A39AF5000F5B304 /* GiniButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DB2C812A39AF5000F5B304 /* GiniButton.swift */; };
+		28F62F992AB1C2CA00D47866 /* SelectAPIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F62F982AB1C2CA00D47866 /* SelectAPIViewController.xib */; };
+		28F62F9C2AB21ACE00D47866 /* Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F62F9B2AB21ACE00D47866 /* Localized.swift */; };
+		28F62F9E2AB21B1700D47866 /* SelectAPIStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F62F9D2AB21B1700D47866 /* SelectAPIStrings.swift */; };
+		28F62FA22AB21C2E00D47866 /* SelectAPI.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28F62FA42AB21C2E00D47866 /* SelectAPI.strings */; };
+		28F62FA72AB2236500D47866 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F62FA62AB2236500D47866 /* Device.swift */; };
+		28F62FA92AB319A000D47866 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F62FA82AB319A000D47866 /* TextField.swift */; };
 		3E7839CE29C9DBB700B42216 /* ResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7839CD29C9DBB700B42216 /* ResultTableViewCell.swift */; };
 		4C84B5DD264ED55100853F33 /* Credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4C84B5DC264ED55100853F33 /* Credentials.plist */; };
 		764E0AD228CF274A00F96503 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 764E0AD428CF274A00F96503 /* InfoPlist.strings */; };
@@ -162,6 +168,13 @@
 		28B5874B2A374730008CB210 /* SegmentedOptionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SegmentedOptionTableViewCell.xib; sourceTree = "<group>"; };
 		28CDB8222A38A5E40016A81C /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
 		28DB2C812A39AF5000F5B304 /* GiniButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniButton.swift; sourceTree = "<group>"; };
+		28F62F982AB1C2CA00D47866 /* SelectAPIViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectAPIViewController.xib; sourceTree = "<group>"; };
+		28F62F9B2AB21ACE00D47866 /* Localized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localized.swift; sourceTree = "<group>"; };
+		28F62F9D2AB21B1700D47866 /* SelectAPIStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAPIStrings.swift; sourceTree = "<group>"; };
+		28F62FA32AB21C2E00D47866 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SelectAPI.strings; sourceTree = "<group>"; };
+		28F62FA52AB21C3000D47866 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/SelectAPI.strings; sourceTree = "<group>"; };
+		28F62FA62AB2236500D47866 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		28F62FA82AB319A000D47866 /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		3E7839CD29C9DBB700B42216 /* ResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultTableViewCell.swift; sourceTree = "<group>"; };
 		4C84B5DC264ED55100853F33 /* Credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Credentials.plist; sourceTree = "<group>"; };
 		4C84B5DE2653FFF000853F33 /* Example Swift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Example Swift.entitlements"; sourceTree = "<group>"; };
@@ -293,6 +306,9 @@
 			children = (
 				83D02CDA290AC86300DA97F7 /* NibLoading.swift */,
 				28CDB8222A38A5E40016A81C /* ColorPalette.swift */,
+				28F62FA62AB2236500D47866 /* Device.swift */,
+				28F62FA82AB319A000D47866 /* TextField.swift */,
+				28F62F9A2AB21ABE00D47866 /* Localization */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -309,6 +325,24 @@
 				289D3DB22A4EC857002A6681 /* InfoTableViewCell.xib */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		28F62F9A2AB21ABE00D47866 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				28F62F9B2AB21ACE00D47866 /* Localized.swift */,
+				28F62F9D2AB21B1700D47866 /* SelectAPIStrings.swift */,
+				28F62F9F2AB21B3D00D47866 /* Strings */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
+		28F62F9F2AB21B3D00D47866 /* Strings */ = {
+			isa = PBXGroup;
+			children = (
+				28F62FA42AB21C2E00D47866 /* SelectAPI.strings */,
+			);
+			path = Strings;
 			sourceTree = "<group>";
 		};
 		76610BE4298D5403004C1ECB /* ReviewBottomNavigationBar */ = {
@@ -535,6 +569,7 @@
 				3E7839CD29C9DBB700B42216 /* ResultTableViewCell.swift */,
 				F4BB7CF126984E5D003FD77E /* CustomMenuItemViewController.swift */,
 				F4AD00C125DED43200C34E15 /* SelectAPIViewController.swift */,
+				28F62F982AB1C2CA00D47866 /* SelectAPIViewController.xib */,
 				F4AD00BB25DED33300C34E15 /* Coordinator.swift */,
 				F44AD01428D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift */,
 				F414A56225EBB87F00D04A80 /* DocumentAnalysisHelper.swift */,
@@ -718,6 +753,7 @@
 				833652FF28F0330B00B5A1CE /* CustomBottomNavigationBar.xib in Resources */,
 				76D245D3295201D500C9681D /* Gini_invoice_example_payment_reference.pdf in Resources */,
 				289570942A30CE2800CC2C56 /* SettingsViewController.xib in Resources */,
+				28F62FA22AB21C2E00D47866 /* SelectAPI.strings in Resources */,
 				837EEFB1291D6A5400DB781F /* CustomCameraBottomNavigationBar.xib in Resources */,
 				764E0AD228CF274A00F96503 /* InfoPlist.strings in Resources */,
 				28B5874D2A374730008CB210 /* SegmentedOptionTableViewCell.xib in Resources */,
@@ -726,6 +762,7 @@
 				8303F4EF28F9AD7700285599 /* magicAnimation.json in Resources */,
 				83D02CD7290AC43E00DA97F7 /* CustomOnboardingBottomNavigationBar.xib in Resources */,
 				F45D7F192800583800C73C63 /* Gini_invoice_example.pdf in Resources */,
+				28F62F992AB1C2CA00D47866 /* SelectAPIViewController.xib in Resources */,
 				F426ABF1289AB1D7007F4EB6 /* Colors.xcassets in Resources */,
 				F45D7F1A2800583B00C73C63 /* result_Gini_invoice_example_after_feedback.json in Resources */,
 				76610BE6298D542A004C1ECB /* CustomReviewScreenBottomNavigationBar.xib in Resources */,
@@ -826,10 +863,13 @@
 				F490C7E525DE873900D8CA6F /* AppDelegate.swift in Sources */,
 				834735F32940999500C3B5F3 /* CustomAnalysisError.swift in Sources */,
 				F4AD00DC25DFDCE400C34E15 /* ResultTableViewController.swift in Sources */,
+				28F62F9E2AB21B1700D47866 /* SelectAPIStrings.swift in Sources */,
 				F4DF824F25EFA8ED00A8D755 /* ScreenAPICoordinator.swift in Sources */,
 				28B5873E2A3727F8008CB210 /* ReusableView.swift in Sources */,
 				F4AD00C225DED43200C34E15 /* SelectAPIViewController.swift in Sources */,
+				28F62FA92AB319A000D47866 /* TextField.swift in Sources */,
 				F45960702A813D0B004B0112 /* UIImage+Utils.swift in Sources */,
+				28F62FA72AB2236500D47866 /* Device.swift in Sources */,
 				837EEFB5291D6ABE00DB781F /* CustomCameraBottomNavigationBarAdapter.swift in Sources */,
 				76610BE9298D5448004C1ECB /* CustomReviewScreenBottomNavigationBar.swift in Sources */,
 				F4AD00CC25DFDB4E00C34E15 /* CredentialsManager.swift in Sources */,
@@ -847,6 +887,7 @@
 				768100372996959800C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter.swift in Sources */,
 				28B587462A373A72008CB210 /* SwitchOptionTableViewCell.swift in Sources */,
 				289447732A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift in Sources */,
+				28F62F9C2AB21ACE00D47866 /* Localized.swift in Sources */,
 				28DB2C822A39AF5000F5B304 /* GiniButton.swift in Sources */,
 				28A411302A6EB9E500421033 /* SettingsViewController+DocumentValidationsState.swift in Sources */,
 				28CDB8232A38A5E40016A81C /* ColorPalette.swift in Sources */,
@@ -891,6 +932,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		28F62FA42AB21C2E00D47866 /* SelectAPI.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				28F62FA32AB21C2E00D47866 /* en */,
+				28F62FA52AB21C3000D47866 /* de */,
+			);
+			name = SelectAPI.strings;
+			sourceTree = "<group>";
+		};
 		764E0AD428CF274A00F96503 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

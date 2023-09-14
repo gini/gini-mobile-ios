@@ -1,0 +1,13 @@
+/* 
+  SelectAPI.strings
+  GiniBankSDKExample
+
+  Created by Valentina Iancu on 13.09.23.
+  
+*/
+
+"WELCOME_TITLE" = "Welcome to Gini";
+"SCREEN_DESCRIPTION" = "Example of Photo Payment integration in the banking app";
+"IBAN_TEXTFIELD_PLACEHOLDER" = "Enter your IBAN code";
+"PHOTO_PAYMENT_BUTTON_TITLE" = "Photopayment";
+"ALTERNATIVE_TEXT" = "or use";
