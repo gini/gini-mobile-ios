@@ -50,7 +50,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="daK-2Y-SOd">
-                            <rect key="frame" x="16" y="403" width="361" height="172"/>
+                            <rect key="frame" x="16" y="403" width="361" height="174"/>
                             <subviews>
                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter IBAN" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gd1-hD-wGc" customClass="TextField" customModule="GiniBankSDKExample" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="361" height="64"/>
@@ -68,10 +68,10 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RLh-IQ-fQj" customClass="GiniButton" customModule="GiniBankSDKExample" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="130" width="361" height="42"/>
+                                    <rect key="frame" x="0.0" y="130" width="361" height="44"/>
                                     <color key="backgroundColor" systemColor="quaternarySystemFillColor"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="42" id="WUp-Ao-RMT"/>
+                                        <constraint firstAttribute="height" constant="44" id="WUp-Ao-RMT"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                     <state key="normal" title="Photopayment">

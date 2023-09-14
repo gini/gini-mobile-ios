@@ -35,6 +35,7 @@ final class SelectAPIViewController: UIViewController {
     
     weak var delegate: SelectAPIViewControllerDelegate?
     private var focusedFormField: UITextField?
+    private var cameraImageView: UIImageView?
     
     var clientId: String?
     
@@ -64,6 +65,11 @@ final class SelectAPIViewController: UIViewController {
         addObservers()
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        cameraImageView?.image = cameraInputImage
+    }
+    
     // MARK: - Configure UI
     
     private func configureWelcomeTitle() {
@@ -72,14 +78,13 @@ final class SelectAPIViewController: UIViewController {
     }
     
     private func configureIbanTextField() {
-        if let cameraIcon = UIImage(named: "cameraInput") {
+        if let cameraIcon = cameraInputImage {
             ibanTextField.delegate = self
             ibanTextField.layer.cornerRadius = 8
-            ibanTextField.backgroundColor = GiniColor(light: giniCaptureColor("Light04"),
-                                                      dark: giniCaptureColor("Dark04")).uiColor()
+            ibanTextField.backgroundColor = itemBackgroundColor
             ibanTextField.attributedPlaceholder = NSAttributedString(
                 string: SelectAPIStrings.ibanTextFieldPlaceholder.localized,
-                attributes: [NSAttributedString.Key.foregroundColor: UIColor.white]
+                attributes: [NSAttributedString.Key.foregroundColor: textColor]
             )
             
             let mainView = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 64))
@@ -92,7 +97,7 @@ final class SelectAPIViewController: UIViewController {
             imageView.contentMode = .scaleAspectFit
             imageView.frame = CGRect(x: 12.0, y: 19.0, width: 24.0, height: 24.0)
             view.addSubview(imageView)
-            
+            cameraImageView = imageView
             mainView.addSubview(view)
             
             ibanTextField.rightViewMode = .always
@@ -105,24 +110,38 @@ final class SelectAPIViewController: UIViewController {
         }
     }
     
+    private let textColor = GiniColor(light: .black, dark: .white).uiColor()
+    private let iconColor = GiniColor(light: .black, dark: .white).uiColor()
+    private var itemBackgroundColor: UIColor {
+        return GiniColor(light: giniCaptureColor("Light04"),
+                         dark: giniCaptureColor("Dark04")).uiColor()
+    }
+    
+    private var cameraInputImage: UIImage? {
+        return UIImage(named: "cameraInput")?.tintedImageWithColor(iconColor)
+    }
+    
     private func configureAlternativeTitle() {
         alternativeTitle.text = SelectAPIStrings.alternativeText.localized
+        alternativeTitle.textColor = textColor
     }
     
     private func configurePhotoPaymentButton() {
-        photoPaymentButton.backgroundColor = GiniColor(light: giniCaptureColor("Light04"),
-                                                       dark: giniCaptureColor("Dark04")).uiColor()
+        photoPaymentButton.backgroundColor = itemBackgroundColor
         photoPaymentButton.setTitle(SelectAPIStrings.photoPaymentButtonTitle.localized, for: .normal)
+        photoPaymentButton.setTitleColor(textColor, for: .normal)
     }
     
     private func configureScreenDescriptionTitle() {
         descriptionTitle.text = SelectAPIStrings.screenDescription.localized
+        descriptionTitle.textColor = textColor
     }
   
     private func configureMetaTitle() {
         metaInformationLabel.isUserInteractionEnabled = true
         let metaTitle = "Gini Bank SDK: (\(GiniBankSDKVersion)) / Gini Capture SDK: (\(GiniCaptureSDKVersion)) / Client id: \(self.clientId ?? "")"
         metaInformationLabel.text = metaTitle
+        metaInformationLabel.textColor = textColor
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.launchSettings))
         metaInformationLabel.addGestureRecognizer(tapGesture)
     }
@@ -167,7 +186,6 @@ final class SelectAPIViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-    
     
     // MARK: - Keyboard handling
     
@@ -240,8 +258,8 @@ extension SelectAPIViewController: UITextFieldDelegate {
 private extension SelectAPIViewController {
     enum Constants {
         static let welcomeTitleTopConstant: CGFloat = Device.small ? 24 : UIDevice.current.isIpad ? 96 : 48
-        static let giniLogoTopConstant: CGFloat = Device.small ? 48 : UIDevice.current.isIpad ? 264 : 132
-        static let stackViewTopConstant: CGFloat = Device.small ? 24 : UIDevice.current.isIpad ? 144 : 72
+        static let giniLogoTopConstant: CGFloat = Device.small ? 48 : UIDevice.current.isIpad ? 180 : 132
+        static let stackViewTopConstant: CGFloat = Device.small ? 24 : UIDevice.current.isIpad ? 100 : 72
         static let stackViewMarginConstant: CGFloat = UIDevice.current.isIpad ? 64 : 16
     }
 }
