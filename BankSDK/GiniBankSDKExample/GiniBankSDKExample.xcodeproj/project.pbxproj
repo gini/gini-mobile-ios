@@ -26,6 +26,7 @@
 		28B5874D2A374730008CB210 /* SegmentedOptionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28B5874B2A374730008CB210 /* SegmentedOptionTableViewCell.xib */; };
 		28CDB8232A38A5E40016A81C /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CDB8222A38A5E40016A81C /* ColorPalette.swift */; };
 		28DB2C822A39AF5000F5B304 /* GiniButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DB2C812A39AF5000F5B304 /* GiniButton.swift */; };
+		28EC10732AB345400080FD4F /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EC10722AB345400080FD4F /* UIImage.swift */; };
 		28F62F992AB1C2CA00D47866 /* SelectAPIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F62F982AB1C2CA00D47866 /* SelectAPIViewController.xib */; };
 		28F62F9C2AB21ACE00D47866 /* Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F62F9B2AB21ACE00D47866 /* Localized.swift */; };
 		28F62F9E2AB21B1700D47866 /* SelectAPIStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F62F9D2AB21B1700D47866 /* SelectAPIStrings.swift */; };
@@ -167,6 +168,7 @@
 		28B5874B2A374730008CB210 /* SegmentedOptionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SegmentedOptionTableViewCell.xib; sourceTree = "<group>"; };
 		28CDB8222A38A5E40016A81C /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
 		28DB2C812A39AF5000F5B304 /* GiniButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniButton.swift; sourceTree = "<group>"; };
+		28EC10722AB345400080FD4F /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		28F62F982AB1C2CA00D47866 /* SelectAPIViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectAPIViewController.xib; sourceTree = "<group>"; };
 		28F62F9B2AB21ACE00D47866 /* Localized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localized.swift; sourceTree = "<group>"; };
 		28F62F9D2AB21B1700D47866 /* SelectAPIStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAPIStrings.swift; sourceTree = "<group>"; };
@@ -306,6 +308,7 @@
 				28CDB8222A38A5E40016A81C /* ColorPalette.swift */,
 				28F62FA62AB2236500D47866 /* Device.swift */,
 				28F62FA82AB319A000D47866 /* TextField.swift */,
+				28EC10722AB345400080FD4F /* UIImage.swift */,
 				28F62F9A2AB21ABE00D47866 /* Localization */,
 			);
 			path = Utils;
@@ -848,6 +851,7 @@
 				F4AD00B625DED1A000C34E15 /* AppCoordinator.swift in Sources */,
 				768B017E28D1E54E009A2124 /* CustomLoadingIndicator.swift in Sources */,
 				83D02CD9290AC49F00DA97F7 /* CustomOnboardingBottomNavigationBar.swift in Sources */,
+				28EC10732AB345400080FD4F /* UIImage.swift in Sources */,
 				83D02CDB290AC86300DA97F7 /* NibLoading.swift in Sources */,
 				76EFD4D629B0C5F800C26279 /* CustomDigitalInvoiceOverviewBottomNavigationBarAdapter.swift in Sources */,
 				76810039299696A900C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBar.swift in Sources */,
