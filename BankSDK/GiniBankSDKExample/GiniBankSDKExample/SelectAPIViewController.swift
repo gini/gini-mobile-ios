@@ -72,7 +72,7 @@ final class SelectAPIViewController: UIViewController {
     }
     
     private func configureIbanTextField() {
-        if let cameraIcon = UIImage(named: "cameraInput"){
+        if let cameraIcon = UIImage(named: "cameraInput") {
             ibanTextField.delegate = self
             ibanTextField.layer.cornerRadius = 8
             ibanTextField.backgroundColor = GiniColor(light: giniCaptureColor("Light04"),
@@ -81,6 +81,7 @@ final class SelectAPIViewController: UIViewController {
                 string: SelectAPIStrings.ibanTextFieldPlaceholder.localized,
                 attributes: [NSAttributedString.Key.foregroundColor: UIColor.white]
             )
+            
             let mainView = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 64))
             
             let view = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 64))
