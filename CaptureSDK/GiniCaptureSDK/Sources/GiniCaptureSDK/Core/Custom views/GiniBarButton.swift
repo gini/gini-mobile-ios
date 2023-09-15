@@ -145,7 +145,7 @@ public final class GiniBarButton {
             } else {
                 stackView.accessibilityValue = backString
             }
-            icon = UIImageNamedPreferred(named: "barButton_back")
+            icon = UIImageNamedPreferred(named: "barButton_back")?.tintedImageWithColor(.GiniCapture.accent1)
         case .done:
             buttonTitle = NSLocalizedStringPreferredFormat("ginicapture.imagepicker.openbutton",
                                                            comment: "Done")
