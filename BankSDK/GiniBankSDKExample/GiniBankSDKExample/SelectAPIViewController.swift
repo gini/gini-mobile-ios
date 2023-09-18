@@ -226,12 +226,6 @@ final class SelectAPIViewController: UIViewController {
         view.endEditing(true)
         focusedFormField = nil
     }
-    
-    // MARK: - Utils
-    
-    private func giniCaptureColor(_ name: String) -> UIColor {
-        return UIColor(named: name, in: GiniCaptureSDK.giniCaptureBundle(), compatibleWith: nil) ?? ColorPalette.defaultBackground
-    }
 }
 
 extension SelectAPIViewController: UITextFieldDelegate {
