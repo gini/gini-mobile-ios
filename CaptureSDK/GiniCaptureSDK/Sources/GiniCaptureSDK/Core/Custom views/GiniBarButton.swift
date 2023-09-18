@@ -160,7 +160,7 @@ public final class GiniBarButton {
                              " for the navigation bar button of type: \(type)")
         }
 
-        imageView.image = icon
+        imageView.image = icon?.tintedImageWithColor(.GiniCapture.accent1)
 
         if let buttonTitle = buttonTitle {
             titleLabel.attributedText = NSAttributedString(string: buttonTitle,
