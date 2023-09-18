@@ -1,5 +1,5 @@
 //
-//  SelectAPIStrings.swift
+//  DemoScreenStrings.swift
 //  GiniBankSDKExample
 //
 //  Created by Valentina Iancu on 13.09.23.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SelectAPIStrings: Localized {
+enum DemoScreenStrings: Localized {
     case welcomeTitle
     case screenDescription
     case ibanTextFieldPlaceholder
@@ -15,8 +15,8 @@ enum SelectAPIStrings: Localized {
     case alternativeText
 }
 
-extension SelectAPIStrings {
-    static var tableName: String? = "SelectAPI"
+extension DemoScreenStrings {
+    static var tableName: String? = "DemoScreen"
     
     var localizationKey: String {
         switch self {

@@ -1,6 +1,6 @@
 //
-//  ScreenApiViewController.swift
-//  Example Swift
+//  DemoViewController.swift
+//  GiniBankSDKExample
 //
 //  Created by Nadya Karaban on 18.02.21.
 //
@@ -9,16 +9,12 @@ import UIKit
 import GiniCaptureSDK
 import GiniBankSDK
 
-protocol SelectAPIViewControllerDelegate: AnyObject {
-    func selectAPI(viewController: SelectAPIViewController, didSelectEntryPoint entryPoint: GiniConfiguration.GiniEntryPoint)
-    func selectAPI(viewController: SelectAPIViewController, didTapSettings: ())
+protocol DemoViewControllerDelegate: AnyObject {
+    func didSelectEntryPoint(_ entryPoint: GiniCaptureSDK.GiniConfiguration.GiniEntryPoint)
+    func didSelectSettings()
 }
 
-/**
- View controller showing how to capture an image of a document using the Screen API of the Gini Capture SDK for iOS
- and how to process it using the Gini SDK for iOS.
- */
-final class SelectAPIViewController: UIViewController {
+final class DemoViewController: UIViewController {
     
     @IBOutlet private weak var contentView: UIView!
     @IBOutlet private weak var metaInformationLabel: UILabel!
@@ -33,7 +29,7 @@ final class SelectAPIViewController: UIViewController {
     @IBOutlet private weak var stackViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private var stackViewMarginConstraints: [NSLayoutConstraint]!
     
-    weak var delegate: SelectAPIViewControllerDelegate?
+    weak var delegate: DemoViewControllerDelegate?
     private var focusedFormField: UITextField?
     private var cameraImageView: UIImageView?
     
@@ -74,7 +70,7 @@ final class SelectAPIViewController: UIViewController {
     
     private func configureWelcomeTitle() {
         welcomeTitleTopConstraint.constant = Constants.welcomeTitleTopConstant
-        welcomeTitlte.text = SelectAPIStrings.welcomeTitle.localized
+        welcomeTitlte.text = DemoScreenStrings.welcomeTitle.localized
     }
     
     private func configureIbanTextField() {
@@ -83,7 +79,7 @@ final class SelectAPIViewController: UIViewController {
             ibanTextField.layer.cornerRadius = 8
             ibanTextField.backgroundColor = itemBackgroundColor
             ibanTextField.attributedPlaceholder = NSAttributedString(
-                string: SelectAPIStrings.ibanTextFieldPlaceholder.localized,
+                string: DemoScreenStrings.ibanTextFieldPlaceholder.localized,
                 attributes: [NSAttributedString.Key.foregroundColor: textColor]
             )
             
@@ -122,18 +118,18 @@ final class SelectAPIViewController: UIViewController {
     }
     
     private func configureAlternativeTitle() {
-        alternativeTitle.text = SelectAPIStrings.alternativeText.localized
+        alternativeTitle.text = DemoScreenStrings.alternativeText.localized
         alternativeTitle.textColor = textColor
     }
     
     private func configurePhotoPaymentButton() {
         photoPaymentButton.backgroundColor = itemBackgroundColor
-        photoPaymentButton.setTitle(SelectAPIStrings.photoPaymentButtonTitle.localized, for: .normal)
+        photoPaymentButton.setTitle(DemoScreenStrings.photoPaymentButtonTitle.localized, for: .normal)
         photoPaymentButton.setTitleColor(textColor, for: .normal)
     }
     
     private func configureScreenDescriptionTitle() {
-        descriptionTitle.text = SelectAPIStrings.screenDescription.localized
+        descriptionTitle.text = DemoScreenStrings.screenDescription.localized
         descriptionTitle.textColor = textColor
     }
   
@@ -151,13 +147,13 @@ final class SelectAPIViewController: UIViewController {
         removeObservers()
         // we should hide the keyboard if the SDK is presented
         dismissKeyboard()
-        delegate?.selectAPI(viewController: self, didSelectEntryPoint: entryPoint)
+        delegate?.didSelectEntryPoint(entryPoint)
     }
     
     // MARK: - User interactions
 
     @objc func launchSettings(_ sender: UITapGestureRecognizer) {
-        delegate?.selectAPI(viewController: self, didTapSettings: ())
+        delegate?.didSelectSettings()
     }
     
     @IBAction func photoPaymentButtonTapped(_ sender: Any) {
@@ -228,7 +224,7 @@ final class SelectAPIViewController: UIViewController {
     }
 }
 
-extension SelectAPIViewController: UITextFieldDelegate {
+extension DemoViewController: UITextFieldDelegate {
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
         focusedFormField = textField
@@ -249,7 +245,7 @@ extension SelectAPIViewController: UITextFieldDelegate {
     }
 }
 
-private extension SelectAPIViewController {
+private extension DemoViewController {
     enum Constants {
         static let welcomeTitleTopConstant: CGFloat = Device.small ? 24 : UIDevice.current.isIpad ? 96 : 48
         static let giniLogoTopConstant: CGFloat = Device.small ? 48 : UIDevice.current.isIpad ? 180 : 132
