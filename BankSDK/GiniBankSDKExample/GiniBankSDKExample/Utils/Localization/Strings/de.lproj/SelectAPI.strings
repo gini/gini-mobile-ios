@@ -6,8 +6,8 @@
   
 */
 
-"WELCOME_TITLE" = "Willkommen bei Gini";
-"SCREEN_DESCRIPTION" = "Beispiel für die Integration von Fotoüberweisung in der Banking-App";
-"IBAN_TEXTFIELD_PLACEHOLDER" = "Geben Sie Ihre IBAN ein";
-"PHOTO_PAYMENT_BUTTON_TITLE" = "nutzen Sie die Fotoüberweisung";
-"ALTERNATIVE_TEXT" = "oder";
+"welcome.title" = "Willkommen bei Gini";
+"screen.description" = "Beispiel für die Integration von Fotoüberweisung in der Banking-App";
+"iban.textfield.placeholder" = "Geben Sie Ihre IBAN ein";
+"photo.payment.button.title" = "Fotoüberweisung";
+"alternative.text" = "oder nutzen Sie die";
