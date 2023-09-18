@@ -17,13 +17,13 @@ final class AppCoordinator: Coordinator {
     fileprivate var screenAPIViewController: UIViewController?
     
     var rootViewController: UIViewController {
-        return selectAPIViewController
+        return demoViewController
     }
-    lazy var selectAPIViewController: SelectAPIViewController = {
-        let selectAPIViewController = SelectAPIViewController()
-        selectAPIViewController.delegate = self
-        selectAPIViewController.clientId = self.client.id
-        return selectAPIViewController
+    lazy var demoViewController: DemoViewController = {
+        let viewController = DemoViewController()
+        viewController.delegate = self
+        viewController.clientId = self.client.id
+        return viewController
     }()
 
     lazy var configuration: GiniBankConfiguration = {
@@ -77,7 +77,7 @@ final class AppCoordinator: Coordinator {
     }
     
     func start() {
-        self.showSelectAPIScreen()
+        self.showDemoScreen()
     }
     
     func processExternalDocument(withUrl url: URL, sourceApplication: String?) {
@@ -150,7 +150,7 @@ final class AppCoordinator: Coordinator {
 		rootViewController.present(alert, animated: true)
 	}
 	
-    fileprivate func showSelectAPIScreen() {
+    fileprivate func showDemoScreen() {
         self.window.rootViewController = rootViewController
         self.window.makeKeyAndVisible()
 		setSettingsButtonStates()
@@ -250,15 +250,15 @@ final class AppCoordinator: Coordinator {
     }
 }
 
-// MARK: SelectAPIViewControllerDelegate
+// MARK: - DemoViewControllerDelegate
 
-extension AppCoordinator: SelectAPIViewControllerDelegate {
-    func selectAPI(viewController: SelectAPIViewController, didSelectEntryPoint entryPoint: GiniCaptureSDK.GiniConfiguration.GiniEntryPoint) {
+extension AppCoordinator: DemoViewControllerDelegate {
+    func didSelectEntryPoint(_ entryPoint: GiniCaptureSDK.GiniConfiguration.GiniEntryPoint) {
         GiniBankConfiguration.shared.entryPoint = entryPoint
         showScreenAPI()
     }
 	
-	func selectAPI(viewController: SelectAPIViewController, didTapSettings: ()) {
+	func didSelectSettings() {
 		showSettings()
 	}
 }
