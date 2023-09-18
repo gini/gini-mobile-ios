@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2815B6F42A0CF51C004ABF06 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2815B6F32A0CF51C004ABF06 /* Lottie */; };
+		2883DE062AB89F4000AE3A9C /* GiniCaptureSDKColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2883DE052AB89F4000AE3A9C /* GiniCaptureSDKColors.swift */; };
 		289447712A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */; };
 		289447732A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */; };
 		289570932A30CD7600CC2C56 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289570912A30CD7600CC2C56 /* SettingsViewController.swift */; };
@@ -150,6 +151,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2883DE052AB89F4000AE3A9C /* GiniCaptureSDKColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniCaptureSDKColors.swift; sourceTree = "<group>"; };
 		289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SwitchOptionModel.swift"; sourceTree = "<group>"; };
 		289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SegmentedOptionModel.swift"; sourceTree = "<group>"; };
 		289570912A30CD7600CC2C56 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -308,6 +310,7 @@
 				28CDB8222A38A5E40016A81C /* ColorPalette.swift */,
 				28F62FA62AB2236500D47866 /* Device.swift */,
 				28F62FA82AB319A000D47866 /* TextField.swift */,
+				2883DE052AB89F4000AE3A9C /* GiniCaptureSDKColors.swift */,
 				28F62F9A2AB21ABE00D47866 /* Localization */,
 			);
 			path = Utils;
@@ -883,6 +886,7 @@
 				28A4112F2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift in Sources */,
 				833652FD28F0308B00B5A1CE /* CustomBottomNavigationBarAdapter.swift in Sources */,
 				289570932A30CD7600CC2C56 /* SettingsViewController.swift in Sources */,
+				2883DE062AB89F4000AE3A9C /* GiniCaptureSDKColors.swift in Sources */,
 				F4E0218827BD349A0042D000 /* Amount.swift in Sources */,
 				768100372996959800C52F87 /* CustomDigitalInvoiceOnboardingBottomNavigationBarAdapter.swift in Sources */,
 				28B587462A373A72008CB210 /* SwitchOptionTableViewCell.swift in Sources */,
