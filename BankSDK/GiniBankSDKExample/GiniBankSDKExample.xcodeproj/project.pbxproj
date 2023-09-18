@@ -308,7 +308,6 @@
 				28CDB8222A38A5E40016A81C /* ColorPalette.swift */,
 				28F62FA62AB2236500D47866 /* Device.swift */,
 				28F62FA82AB319A000D47866 /* TextField.swift */,
-				28EC10722AB345400080FD4F /* UIImage.swift */,
 				28F62F9A2AB21ABE00D47866 /* Localization */,
 			);
 			path = Utils;
@@ -444,6 +443,7 @@
 		F441DC9325E53A6F00AAB09A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				28EC10722AB345400080FD4F /* UIImage.swift */,
 				28DB2C812A39AF5000F5B304 /* GiniButton.swift */,
 				28B5873B2A372790008CB210 /* UITableView+CellRegistration.swift */,
 				28B5873D2A3727F8008CB210 /* ReusableView.swift */,
