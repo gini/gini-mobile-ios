@@ -6,8 +6,8 @@
   
 */
 
-"WELCOME_TITLE" = "Welcome to Gini";
-"SCREEN_DESCRIPTION" = "Example of Photo Payment integration in the banking app";
-"IBAN_TEXTFIELD_PLACEHOLDER" = "Enter your IBAN code";
-"PHOTO_PAYMENT_BUTTON_TITLE" = "Photopayment";
-"ALTERNATIVE_TEXT" = "or use";
+"welcome.title" = "Welcome to Gini";
+"screen.description" = "Example of Photo Payment integration in the banking app";
+"iban.textfield.placeholder" = "Enter your IBAN code";
+"photo.payment.button.title" = "Photopayment";
+"alternative.text" = "or use";

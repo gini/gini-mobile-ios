@@ -21,15 +21,15 @@ extension SelectAPIStrings {
     var localizationKey: String {
         switch self {
             case .welcomeTitle:
-                return "WELCOME_TITLE"
+                return "welcome.title"
             case .screenDescription:
-                return "SCREEN_DESCRIPTION"
+                return "screen.description"
             case .ibanTextFieldPlaceholder:
-                return "IBAN_TEXTFIELD_PLACEHOLDER"
+                return "iban.textfield.placeholder"
             case .photoPaymentButtonTitle:
-                return "PHOTO_PAYMENT_BUTTON_TITLE"
+                return "photo.payment.button.title"
             case .alternativeText:
-                return "ALTERNATIVE_TEXT"
+                return "alternative.text"
         }
     }
 }
