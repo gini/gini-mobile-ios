@@ -53,12 +53,12 @@ final class DemoViewController: UIViewController {
         configureAlternativeTitle()
         configureMetaTitle()
 
-        initializeHideKeyboard()
+        dismissKeyboardOnTap()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        addObservers()
+        subscribeOnNotifications()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -144,7 +144,7 @@ final class DemoViewController: UIViewController {
     
     private func startSDK(entryPoint: GiniConfiguration.GiniEntryPoint) {
         // we should remove keyboard observers to not interfere with others from the SDK
-        removeObservers()
+        unsubscribeFromKeyboardNotifications()
         // we should hide the keyboard if the SDK is presented
         dismissKeyboard()
         delegate?.didSelectEntryPoint(entryPoint)
@@ -166,7 +166,7 @@ final class DemoViewController: UIViewController {
     
     // MARK: - Notifications
     
-    private func addObservers() {
+    private func subscribeOnNotifications() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShow(notification:)),
                                                name: UIResponder.keyboardWillShowNotification,
@@ -178,7 +178,7 @@ final class DemoViewController: UIViewController {
                                                object: nil)
     }
     
-    private func removeObservers() {
+    private func unsubscribeFromKeyboardNotifications() {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -206,13 +206,9 @@ final class DemoViewController: UIViewController {
         }
     }
     
-    private func initializeHideKeyboard() {
-        //Declare a Tap Gesture Recognizer which will trigger our dismissMyKeyboard() function
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
-            target: self,
-            action: #selector(dismissKeyboard))
-        
-        //Add this tap gesture recognizer to the parent view
+    private func dismissKeyboardOnTap() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self,
+                                                                 action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
     }
     
