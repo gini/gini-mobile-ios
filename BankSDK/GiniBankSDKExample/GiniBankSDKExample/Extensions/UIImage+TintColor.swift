@@ -1,5 +1,5 @@
 //
-//  UIImage.swift
+//  UIImage+TintColor.swift
 //  GiniBankSDKExample
 //
 //  Created by Valentina Iancu on 14.09.23.
