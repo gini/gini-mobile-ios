@@ -58,7 +58,7 @@ final class DemoViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        subscribeOnNotifications()
+        subscribeOnKeyboardNotifications()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -166,7 +166,7 @@ final class DemoViewController: UIViewController {
     
     // MARK: - Notifications
     
-    private func subscribeOnNotifications() {
+    private func subscribeOnKeyboardNotifications() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShow(notification:)),
                                                name: UIResponder.keyboardWillShowNotification,
