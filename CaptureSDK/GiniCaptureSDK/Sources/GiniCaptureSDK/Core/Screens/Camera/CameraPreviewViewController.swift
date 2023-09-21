@@ -16,6 +16,8 @@ protocol CameraPreviewViewControllerDelegate: AnyObject {
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol)
     func notAuthorized()
+    func cameraPreview(_ viewController: CameraPreviewViewController,
+                       didDetectIBAN iban: String)
 }
 
 final class CameraPreviewViewController: UIViewController {

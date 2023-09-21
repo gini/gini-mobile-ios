@@ -10,7 +10,7 @@ import AVFoundation
 import UIKit
 
 // swiftlint:disable type_body_length
-public final class CameraViewController: UIViewController, CameraScreen {
+ final class CameraViewController: UIViewController, CameraScreen {
     /**
      The object that acts as the delegate of the camera view controller.
     */
@@ -325,7 +325,7 @@ public final class CameraViewController: UIViewController, CameraScreen {
                                                            for: .touchUpInside)
     }
 
-    public override func viewWillDisappear(_ animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         qrCodeOverLay.viewWillDisappear()
@@ -435,7 +435,7 @@ public final class CameraViewController: UIViewController, CameraScreen {
     }
 
     public func addValidationLoadingView() -> UIView {
-        let loadingIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        let loadingIndicator = UIActivityIndicatorView(style: .large)
         let blurredView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
         blurredView.alpha = 0
         blurredView.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin]
@@ -449,6 +449,11 @@ public final class CameraViewController: UIViewController, CameraScreen {
         })
         return blurredView
     }
+
+     private func showIBANFeedback(iban: String) {
+         showValidQRCodeFeedback()
+         qrCodeOverLay.configureQrCodeCorrectOverlay(message: iban)
+     }
 
     private func showQRCodeFeedback(for document: GiniQRCodeDocument, isValid: Bool) {
         guard !validQRCodeProcessing else { return }
@@ -529,6 +534,10 @@ public final class CameraViewController: UIViewController, CameraScreen {
 // MARK: - CameraPreviewViewControllerDelegate
 
 extension CameraViewController: CameraPreviewViewControllerDelegate {
+    func cameraPreview(_ viewController: CameraPreviewViewController,
+                       didDetectIBAN iban: String) {
+        showIBANFeedback(iban: iban)
+    }
 
     func cameraDidSetUp(_ viewController: CameraPreviewViewController, camera: CameraProtocol) {
         if !qrCodeScanningOnlyEnabled {
