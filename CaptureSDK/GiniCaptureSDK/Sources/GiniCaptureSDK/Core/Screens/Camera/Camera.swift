@@ -9,12 +9,15 @@
 import UIKit
 import AVFoundation
 import Photos
+import Vision
+import Foundation
 
 protocol CameraProtocol: AnyObject {
     var session: AVCaptureSession { get }
     var videoDeviceInput: AVCaptureDeviceInput? { get }
     var didDetectQR: ((GiniQRCodeDocument) -> Void)? { get set }
     var didDetectInvalidQR: ((GiniQRCodeDocument) -> Void)? { get set }
+    var didDetectIbanHandler: ((String?) -> Void)? { get set }
     var isFlashSupported: Bool { get }
     var isFlashOn: Bool { get set }
 
@@ -28,6 +31,7 @@ protocol CameraProtocol: AnyObject {
     func setupQRScanningOutput(completion: @escaping ((CameraError?) -> Void))
     func start()
     func stop()
+    func startOCR()
 }
 
 final class Camera: NSObject, CameraProtocol {
@@ -36,13 +40,17 @@ final class Camera: NSObject, CameraProtocol {
     var didDetectQR: ((GiniQRCodeDocument) -> Void)?
     var didDetectInvalidQR: ((GiniQRCodeDocument) -> Void)?
     var didCaptureImageHandler: ((Data?, CameraError?) -> Void)?
+    var didDetectIbanHandler: ((String?) -> Void)?
 
     // Session management
     var giniConfiguration: GiniConfiguration
     var isFlashOn: Bool
     var photoOutput: AVCapturePhotoOutput?
     var session: AVCaptureSession = AVCaptureSession()
+    let sessionQueue = DispatchQueue(label: "session queue")
     var videoDeviceInput: AVCaptureDeviceInput?
+    var videoDataOutput = AVCaptureVideoDataOutput()
+    let videoDataOutputQueue = DispatchQueue(label: "com.example.apple-samplecode.VideoDataOutputQueue")
 
     lazy var isFlashSupported: Bool = {
         #if targetEnvironment(simulator)
@@ -56,7 +64,10 @@ final class Camera: NSObject, CameraProtocol {
     }()
 
     fileprivate let application: UIApplication
-    fileprivate let sessionQueue = DispatchQueue(label: "session queue")
+
+    private var request: VNRecognizeTextRequest!
+    private var ocrStart: Date?
+    private var textOrientation = CGImagePropertyOrientation.up
 
     init(application: UIApplication = UIApplication.shared,
          giniConfiguration: GiniConfiguration) {
@@ -67,17 +78,22 @@ final class Camera: NSObject, CameraProtocol {
     }
 
     fileprivate func configureSession(completion: @escaping ((CameraError?) -> Void)) {
-        self.session.beginConfiguration()
-        self.setupInput()
-        self.setupPhotoCaptureOutput()
-        self.session.commitConfiguration()
+        session.beginConfiguration()
+        setupInput()
+        setupPhotoCaptureOutput()
+        configureVideoDataOutput()
+        session.commitConfiguration()
         if giniConfiguration.qrCodeScanningEnabled {
-            self.setupQRScanningOutput(completion: completion)
+            setupQRScanningOutput(completion: completion)
         } else {
             DispatchQueue.main.async {
                 completion(nil)
             }
         }
+    }
+
+    func startOCR() {
+        request = VNRecognizeTextRequest(completionHandler: recognizeTextHandler)
     }
 
     func switchTo(newVideoDevice: AVCaptureDevice) {
@@ -108,16 +124,41 @@ final class Camera: NSObject, CameraProtocol {
         }
     }
 
-    func setup(completion: @escaping ((CameraError?) -> Void)) {
+    private func setZoomForSmallText(captureDevice: AVCaptureDevice) {
+        // Set zoom and autofocus to help focus on very small text.
+        do {
+            try captureDevice.lockForConfiguration()
+            captureDevice.videoZoomFactor = 2
+            captureDevice.autoFocusRangeRestriction = .near
+            captureDevice.unlockForConfiguration()
+        } catch {
+            print("Could not set zoom level due to error: \(error)")
+            return
+        }
+    }
 
+    func setup(completion: @escaping ((CameraError?) -> Void)) {
+        // Set up vision request before letting ViewController set up the camera
+        // so that it exists when the first buffer is received.
         setupCaptureDevice { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .failure(let cameraError):
                 completion(cameraError)
             case .success(let captureDevice):
+                // NOTE:
+                // Requesting 4k buffers allows recognition of smaller text but will
+                // consume more power. Use the smallest buffer size necessary to keep
+                // down battery usage.
+                if captureDevice.supportsSessionPreset(.hd4K3840x2160) {
+                    session.sessionPreset = AVCaptureSession.Preset.hd4K3840x2160
+                } else {
+                    session.sessionPreset = AVCaptureSession.Preset.hd1920x1080
+                }
+
                 do {
                     self.videoDeviceInput = try AVCaptureDeviceInput(device: captureDevice)
+                    self.setZoomForSmallText(captureDevice: captureDevice)
                 } catch {
                     completion(.notAuthorizedToUseDevice) // shouldn't happen
                 }
@@ -294,6 +335,83 @@ fileprivate extension Camera {
         session.addOutput(output)
         photoOutput = output
     }
+
+    func configureVideoDataOutput() {
+        // Configure video data output.
+        videoDataOutput.alwaysDiscardsLateVideoFrames = true
+        videoDataOutput.setSampleBufferDelegate(self, queue: videoDataOutputQueue)
+        videoDataOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_420YpCbCr8BiPlanarFullRange]
+        if session.canAddOutput(videoDataOutput) {
+            session.addOutput(videoDataOutput)
+            // NOTE:
+            // There is a trade-off to be made here. Enabling stabilization will
+            // give temporally more stable results and should help the recognizer
+            // converge. But if it's enabled the VideoDataOutput buffers don't
+            // match what's displayed on screen, which makes drawing bounding
+            // boxes very hard. Disable it in this app to allow drawing detected
+            // bounding boxes on screen.
+            videoDataOutput.connection(with: AVMediaType.video)?.preferredVideoStabilizationMode = .off
+        } else {
+            print("Could not add VDO output")
+            return
+        }
+    }
+
+    // MARK: - Text recognition
+
+    // Vision recognition handler.
+    func recognizeTextHandler(request: VNRequest, error: Error?) {
+
+        if let ocrStart = ocrStart {
+            let ocrEnd = Date()
+            let executionTime = ocrEnd.timeIntervalSince(ocrStart)
+            print("OCR execution time: \(executionTime)")
+        }
+        var IBANs = Set<String>()
+
+        guard let results = request.results as? [VNRecognizedTextObservation] else {
+            return
+        }
+
+        let maximumCandidates = 1
+
+        var concatenated = ""
+
+        for visionResult in results {
+            guard let candidate = visionResult.topCandidates(maximumCandidates).first else { continue }
+
+            print(candidate.string)
+
+            if let box = try? candidate.boundingBox(for: candidate.string.startIndex..<candidate.string.endIndex)?.boundingBox {
+                print("Candidate \(candidate.string) : \(box.origin)")
+            }
+
+            for result in extractIBANS(string: candidate.string) {
+                IBANs.insert(result)
+            }
+
+            concatenated += candidate.string
+        }
+
+        for result in extractIBANS(string: concatenated) {
+            IBANs.insert(result)
+        }
+
+        if !IBANs.isEmpty {
+            let ibans = String(IBANs.reduce("", { (current, iban) -> String in
+                return current + iban + "\n"
+                }).dropLast())
+
+            // Found a definite number.
+            // Stop the camera synchronously to ensure that no further buffers are
+            // received. Then update the number view asynchronously.
+            sessionQueue.sync {
+                DispatchQueue.main.async {
+                    self.didDetectIbanHandler!(ibans)
+                }
+            }
+        }
+    }
 }
 
 // MARK: - AVCaptureMetadataOutputObjectsDelegate
@@ -338,4 +456,30 @@ extension Camera: AVCapturePhotoCaptureDelegate {
         }
     }
 
+}
+
+// MARK: - AVCaptureVideoDataOutputSampleBufferDelegate
+
+extension Camera: AVCaptureVideoDataOutputSampleBufferDelegate {
+
+    func captureOutput(_ output: AVCaptureOutput,
+                       didOutput sampleBuffer: CMSampleBuffer,
+                       from connection: AVCaptureConnection) {
+        guard (request != nil) else {return}
+        if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
+            // Configure for running in real-time.
+            request.recognitionLevel = .accurate
+            request.usesLanguageCorrection = false
+            let requestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer,
+                                                       orientation: textOrientation,
+                                                       options: [:])
+            do {
+                ocrStart = Date()
+                try requestHandler.perform([request])
+            } catch {
+                print(error)
+                return
+            }
+        }
+    }
 }

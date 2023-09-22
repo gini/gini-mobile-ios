@@ -7,6 +7,7 @@
 
 import UIKit
 import AVFoundation
+import Vision
 
 protocol CameraPreviewViewControllerDelegate: AnyObject {
     func cameraPreview(_ viewController: CameraPreviewViewController,
@@ -63,6 +64,13 @@ final class CameraPreviewViewController: UIViewController {
         return giniConfiguration.qrCodeScanningEnabled && giniConfiguration.onlyQRCodeScanningEnabled
     }()
 
+    // Transform from UI orientation to buffer orientation.
+    private var uiRotationTransform = CGAffineTransform.identity
+    // Transform bottom-left coordinates to top-left.
+    private var bottomToTopTransform = CGAffineTransform(scaleX: 1, y: -1).translatedBy(x: 0, y: -1)
+    // Transform coordinates in ROI to global coordinates (still normalized).
+    private var roiToGlobalTransform = CGAffineTransform.identity
+
     private var notAuthorizedView: UIView?
     private let giniConfiguration: GiniConfiguration
     private typealias FocusIndicator = UIImageView
@@ -89,8 +97,9 @@ final class CameraPreviewViewController: UIViewController {
             return UIImageNamedPreferred(named: "cameraDefaultDocumentImage")
         }
     }
-
-    var isAuthorized = false
+    // Vision -> AVF coordinate transform.
+    private var visionToAVFTransform = CGAffineTransform.identity
+    private var isAuthorized = false
 
     lazy var previewView: CameraPreviewView = {
         let previewView = CameraPreviewView()
@@ -140,7 +149,7 @@ final class CameraPreviewViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        camera.startOCR()
         setupConstraints()
     }
 
@@ -179,7 +188,7 @@ final class CameraPreviewViewController: UIViewController {
                                                         constant: -bottomControlHeight-Constants.padding),
                 cameraFrameView.widthAnchor.constraint(equalTo: cameraFrameView.heightAnchor,
                                                        multiplier: 1 / Constants.a4AspectRatio)
-                ])
+            ])
         }
 
         NSLayoutConstraint.activate([
@@ -216,6 +225,9 @@ final class CameraPreviewViewController: UIViewController {
             cameraFrameViewHeightAnchorPortrait.isActive = !isLandscape
             cameraFrameViewHeightAnchorLandscape.isActive = isLandscape
 
+            // Full Vision ROI to AVF transform.
+            visionToAVFTransform = roiToGlobalTransform.concatenating(bottomToTopTransform).concatenating(uiRotationTransform)
+
             if let image = cameraFrameView.image?.cgImage {
                 if isLandscape {
                     cameraFrameView.image = UIImage(cgImage: image, scale: 1.0, orientation: .left)
@@ -225,6 +237,8 @@ final class CameraPreviewViewController: UIViewController {
 
             }
         }
+        // Full Vision ROI to AVF transform.
+        visionToAVFTransform = roiToGlobalTransform.concatenating(bottomToTopTransform).concatenating(uiRotationTransform)
     }
 
     override func viewWillLayoutSubviews() {
@@ -307,6 +321,13 @@ final class CameraPreviewViewController: UIViewController {
             camera.didDetectInvalidQR = { [weak self] qrDocument in
                 guard let self = self else { return }
                 self.delegate?.cameraPreview(self, didDetectInvalid: qrDocument)
+            }
+        }
+
+        camera.didDetectIbanHandler = { [weak self] ibans in
+            guard let self = self else { return }
+            if let ibans = ibans {
+                self.delegate?.cameraPreview(self, didDetectIBAN: ibans)
             }
         }
     }
