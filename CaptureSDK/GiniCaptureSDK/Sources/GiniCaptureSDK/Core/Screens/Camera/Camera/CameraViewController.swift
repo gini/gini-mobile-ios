@@ -451,8 +451,7 @@ import UIKit
     }
 
      private func showIBANFeedback(iban: String) {
-         showValidQRCodeFeedback()
-         qrCodeOverLay.configureQrCodeCorrectOverlay(message: iban)
+         print(iban)
      }
 
     private func showQRCodeFeedback(for document: GiniQRCodeDocument, isValid: Bool) {
