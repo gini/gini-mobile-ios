@@ -132,7 +132,7 @@ final class Camera: NSObject, CameraProtocol {
             captureDevice.autoFocusRangeRestriction = .near
             captureDevice.unlockForConfiguration()
         } catch {
-            print("Could not set zoom level due to error: \(error)")
+            Log(message: "Could not lock device for configuration", event: .error)
             return
         }
     }
@@ -354,34 +354,20 @@ fileprivate extension Camera {
     // Vision recognition handler.
     func recognizeTextHandler(request: VNRequest, error: Error?) {
 
-        if let ocrStart = ocrStart {
-            let ocrEnd = Date()
-            let executionTime = ocrEnd.timeIntervalSince(ocrStart)
-            print("OCR execution time: \(executionTime)")
-        }
-        var IBANs = Set<String>()
-
         guard let results = request.results as? [VNRecognizedTextObservation] else {
             return
         }
 
+        var IBANs = Set<String>()
         let maximumCandidates = 1
-
         var concatenated = ""
 
         for visionResult in results {
             guard let candidate = visionResult.topCandidates(maximumCandidates).first else { continue }
 
-            print(candidate.string)
-
-            if let box = try? candidate.boundingBox(for: candidate.string.startIndex..<candidate.string.endIndex)?.boundingBox {
-                print("Candidate \(candidate.string) : \(box.origin)")
-            }
-
             for result in extractIBANS(string: candidate.string) {
                 IBANs.insert(result)
             }
-
             concatenated += candidate.string
         }
 
@@ -457,7 +443,7 @@ extension Camera: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput,
                        didOutput sampleBuffer: CMSampleBuffer,
                        from connection: AVCaptureConnection) {
-        guard (request != nil) else {return}
+        guard (request != nil) else { return }
         if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
             // Configure for running in real-time.
             request.recognitionLevel = .accurate
@@ -469,7 +455,7 @@ extension Camera: AVCaptureVideoDataOutputSampleBufferDelegate {
                 ocrStart = Date()
                 try requestHandler.perform([request])
             } catch {
-                print(error)
+                Log(message: "Could not perform ocr request", event: .error)
                 return
             }
         }
