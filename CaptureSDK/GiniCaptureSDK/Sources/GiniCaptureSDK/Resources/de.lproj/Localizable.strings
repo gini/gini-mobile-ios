@@ -35,10 +35,10 @@
 "ginicapture.camera.filepicker.errorPopup.cancelButton" = "Abbrechen";
 "ginicapture.camera.filepicker.errorPopup.confirmButton" = "OK";
 "ginicapture.camera.filepicker.errorPopup.grantAccessButton" = "Zugriff erteilen";
-"ginicapture.camera.documentValidationError.general" = "Ihre Datei konnte nicht geöffnet werden. Bitte versuchen sie es mit einer anderenDatei.";
+"ginicapture.camera.documentValidationError.general" = "Ihre Datei konnte nicht geöffnet werden. Bitte versuchen Sie es mit einer anderen Datei.";
 "ginicapture.camera.documentValidationError.excedeedFileSize" = "Diese Datei ist leider zu groß";
 "ginicapture.camera.documentValidationError.tooManyPages" = "Das Dokument darf nicht mehr als 10 Seiten haben.";
-"ginicapture.camera.documentValidationError.wrongFormat" = "Nur Dateien vom Format jpg, png, gif oder pdf können analysiert werden.";
+"ginicapture.camera.documentValidationError.wrongFormat" = "Nur Dateien vom Format jpg, png, gif oder PDF können analysiert werden.";
 "ginicapture.camera.documentValidationError.pdfPasswordProtected" = "Passwortgeschützte Dokumente können nicht analysiert werden.";
 "ginicapture.camera.fileImportButtonLabel" = "Dateien";
 "ginicapture.camera.flashButtonLabel.On.Voice.Over" = "Blitz an";
@@ -46,16 +46,16 @@
 "ginicapture.camera.flashButtonLabel.On" = "An";
 "ginicapture.camera.flashButtonLabel.Off" = "Aus";
 "ginicapture.camera.thumbnail.Voice.Over" = "Foto vorschaubild";
-"ginicapture.camera.capturebutton" = "Bild Aufnehmen";
-"ginicapture.camera.infoLabel.invoice.and.qr" = "Rechnung oder QR Code scannen";
+"ginicapture.camera.capturebutton" = "Bild aufnehmen";
+"ginicapture.camera.infoLabel.invoice.and.qr" = "Rechnung oder QR-Code scannen";
 "ginicapture.camera.infoLabel.only.invoice" = "Rechnung scannen";
-"ginicapture.camera.infoLabel.only.qr" = "QR Code scannen";
+"ginicapture.camera.infoLabel.only.qr" = "QR-Code scannen";
 "ginicapture.camera.capturedImagesStackLabel" = "Erfasste Dokumente";
 "ginicapture.camera.qrCodeDetectedPopup.message" = "QR verwenden?";
 "ginicapture.camera.unsupportedQrCodeDetectedPopup.message" = "Dieser QR-Code enthält keine Bezahlinformationen.";
 "ginicapture.camera.qrCodeDetectedPopup.buttonTitle" = "Hier geht’s weiter.";
 "ginicapture.camera.mixedarrayspopup.cancel" = "Abbrechen";
-"ginicapture.camera.mixedarrayspopup.usePhotos" = "Benutze Photos";
+"ginicapture.camera.mixedarrayspopup.usePhotos" = "Benutze Fotos";
 "ginicapture.camera.errorPopup.cancelButton" = "Abbrechen";
 "ginicapture.camera.errorPopup.pickanotherfileButton" = "Andere Datei wählen";
 "ginicapture.camera.errorPopup.pickAnotherFileButton" = "Andere Datei wählen";
@@ -77,13 +77,13 @@
 "ginicapture.onboarding.next" = "Weiter";
 "ginicapture.onboarding.skip"  = "Überspringen";
 "ginicapture.onboarding.flatPaper.title"  = "Dokument flach ausrichten";
-"ginicapture.onboarding.flatPaper.description"  = "Das Dokument sollte flach liegen und sich im Rahmen befinden";
+"ginicapture.onboarding.flatPaper.description"  = "Das Dokument muss flach liegen und sich innerhalb des Rahmens befinden";
 "ginicapture.onboarding.goodLighting.title" = "Gute Lichtverhältnisse";
-"ginicapture.onboarding.goodLighting.description" = "Gutes Licht führt zu besseren Ergebnisse als mit Blitz";
+"ginicapture.onboarding.goodLighting.description" = "Kein Blitz und gutes Licht führt zu besseren Ergebnissen";
 "ginicapture.onboarding.multiPages.title"  = "Mehrere Seiten";
-"ginicapture.onboarding.multiPages.description"  = "Es ist möglich mehrer Seiten eines Dokuments zu Scannen";
-"ginicapture.onboarding.qrCode.title"  = "QR Codes scannen";
-"ginicapture.onboarding.qrCode.description"  = "QR Codes werden automatisch erkannt und analysiert";
+"ginicapture.onboarding.multiPages.description"  = "Es ist möglich mehrere Seiten eines Dokuments zu scannen";
+"ginicapture.onboarding.qrCode.title"  = "QR-Codes scannen";
+"ginicapture.onboarding.qrCode.description"  = "QR-Codes werden automatisch erkannt und analysiert";
 "ginicapture.review.documentImageTitle" = "Dokument";
 "ginicapture.review.unknownError"       = "Auf dem Überprüfungsbildschirm ist ein unbekannter Fehler aufgetreten";
 "ginicapture.review.delete"             = "Seite löschen";
@@ -93,7 +93,7 @@
 "ginicapture.analysis.loadingText.pdf" = "%@\nwird analysiert";
 "ginicapture.analysis.section.header" = "Nützliche Tipps";
 "ginicapture.analysis.suggestion.1" = "Gute Lichtverhältnisse";
-"ginicapture.analysis.suggestion.1.details" = "Gutes Licht führt zu besseren Ergebnissen als mit Blitz";
+"ginicapture.analysis.suggestion.1.details" = "Kein Blitz und gutes Licht führt zu besseren Ergebnissen";
 
 "ginicapture.analysis.suggestion.2" = "Flach ausrichten";
 "ginicapture.analysis.suggestion.2.details" = "Flach gestrichene Dokumente erleichtern die Auswertung";
@@ -102,13 +102,13 @@
 "ginicapture.analysis.suggestion.4" = "Parallel";
 "ginicapture.analysis.suggestion.4.details" = "Das Handy sollte parallel über dem Dokument gehalten werden";
 "ginicapture.analysis.suggestion.5" = "Mehrere Seiten";
-"ginicapture.analysis.suggestion.5.details" = "Es ist nun möglich mehrere Seiten eines Dokuments zu scannen";
+"ginicapture.analysis.suggestion.5.details" = "Es ist möglich mehrere Seiten eines Dokuments zu scannen";
 
 "ginicapture.analysis.error.actionTitle" = "Wiederholen";
 "ginicapture.analysis.error.documentCreation" = "Beim Hochladen des Dokuments ist ein Fehler aufgetreten.";
 "ginicapture.analysis.error.analysis" = "Beim Analysieren des Dokuments ist ein Fehler aufgetreten.";
 "ginicapture.analysis.error.cancelled" = "Die Analyse wurde abgebrochen";
-"ginicapture.analysis.defaultPdfDokumentTitle" = "PDF Dokument";
+"ginicapture.analysis.defaultPdfDokumentTitle" = "PDF-Dokument";
 
 "ginicapture.help.openWithTutorial.title" = "Dokumente aus anderen Apps öffnen";
 
@@ -134,25 +134,25 @@
 "ginicapture.noresult.header.qrcode" = "Der QR-Code enthält keine Zahlungsinformationen";
 
 "ginicapture.error.enterManually" = "Manuell ausfüllen";
-"ginicapture.error.backToCamera" = "Neues Photo";
+"ginicapture.error.backToCamera" = "Neues Foto";
 "ginicapture.error.title" = "Error";
 "ginicapture.error.connection.content" = "Es konnte keine Verbindung zum Internet hergestellt werden. Bitte überprüfen Sie Ihre Netzwerkverbindung und wiederholen Sie den Vorgang.";
-"ginicapture.error.authentication.content" = "Upload des Dokuments ist fehlgeschlagen aufgrund eines Fehlers bei der Authentifizierung. Bitte versuchen Sie es später noch einmal.";
-"ginicapture.error.serverError.content" = "Upload des Dokuments ist fehlgeschlagen aufgrund eines Serverfehlers. Bitte versuchen Sie es später noch einmal.";
-"ginicapture.error.unexpected.content" = "Es scheint hier ist etwas schiefgelaufen. Bitte versuchen Sie es später noch einmal.";
+"ginicapture.error.authentication.content" = "Der Upload des Dokuments ist fehlgeschlagen aufgrund eines Fehlers bei der Authentifizierung. Bitte versuchen Sie es später noch einmal.";
+"ginicapture.error.serverError.content" = "Der Upload des Dokuments ist fehlgeschlagen aufgrund eines Serverfehlers. Bitte versuchen Sie es später noch einmal.";
+"ginicapture.error.unexpected.content" = "Es scheint, hier ist etwas schiefgelaufen. Bitte versuchen Sie es später noch einmal.";
 "ginicapture.error.connection.title" = "Überprüfen Sie Ihre Internetverbindung";
 "ginicapture.error.authentication.title" = "Authentifizierung fehlgeschlagen";
 "ginicapture.error.serverError.title" = "Dienst nicht verfügbar";
 "ginicapture.error.unexpected.title" = "Ein unbekannter Fehler ist aufgetreten.";
-"ginicapture.error.request.content" = "Das Dokument konnte nicht angenommen werden. Bitte überprüfen Sie, ob das Bild scharf ist, das Dokument Zahlungsinformationen enthält und im richtigen Dateiformat hochgeladen wird.";
-"ginicapture.error.request.title" = "Upload des Dokuments fehlgeschlagen";
+"ginicapture.error.request.content" = "Das Dokument konnte nicht verarbeitet werden. Bitte überprüfen Sie, ob das Bild scharf ist, das Dokument Zahlungsinformationen enthält und im richtigen Dateiformat hochgeladen wurde.";
+"ginicapture.error.request.title" = "Der Upload des Dokuments ist fehlgeschlagen!";
 
 "ginicapture.help.import.title" = "Importieren";
 "ginicapture.help.import.selectInvoice.title" = "Rechnung auswählen";
-"ginicapture.help.import.selectInvoice.desc" = "Bitte die PDF-Rechnung in der Email-App, PDF-Ordner oder einer anderen App aus dem Handy auswählen. Um das Dokument nun an die Banking App zu senden, sollte die “Teilen mit” Funktion benutzt werden, welche mit einem Rechteck und Pfeil nach oben zeigend dargestellt ist.";
+"ginicapture.help.import.selectInvoice.desc" = "Bitte wählen Sie die PDF-Rechnung in der E-Mail-App, im PDF-Ordner oder in einer anderen App aus. Um das Dokument nun an die Banking-App zu senden, verwenden Sie die Funktion \"Teilen mit\".";
 "ginicapture.help.import.selectInvoice.accessibility" = "Aktivieren Sie die Teilen-Funktion. Dazu wählen Sie eine Datei aus und verwenden anschließend die Teilen-Funktion, dargestellt als Viereck mit hoch-zeigendem Pfeil";
-"ginicapture.help.import.importtoapp.title" = "Aus der App importieren";
-"ginicapture.help.import.importtoapp.desc" = "Nun die Banking App aus der Liste auswählen, um das Dokument zum Analysieren weiterzuleiten.";
+"ginicapture.help.import.importtoapp.title" = "Aus der App heraus importieren";
+"ginicapture.help.import.importtoapp.desc" = "Nun die Banking App aus der angezeigten Liste auswählen, um das Dokument zum Analysieren weiterzuleiten.";
 "ginicapture.help.import.importtoapp.accessibility" = "Banking App auswählen. Wählen Sie nun die gewünschte App aus mit der das Dokument geteilt werden soll";
 "ginicapture.help.import.draganddrop.title" = "Drag & drop auf dem iPad";
 "ginicapture.help.import.draganddrop.desc" = "Auf dem iPad können Sie ab iOS 12 oder neuer PDFs oder Fotos bequem aus der Datei-Browser-App per “Drag and Drop” in die Banking App gezogen werden, um den Überweisungsprozess zu starten. Hierzu öffnen Sie zunächst Ihre Banking App und die Datei-Browser-App parallel auf Ihrem Bildschirm. Ziehen Sie dann die gewünschte Datei rüber in die Banking App.";
@@ -160,10 +160,10 @@
 
 "ginicapture.help.supportedFormats.title" = "Formate";
 "ginicapture.help.supportedFormats.section.1.title" = "Unterstützte Formate";
-"ginicapture.help.supportedFormats.section.1.item.1" = "Computer-generierte Rechnungen und Überweisungsträger";
-"ginicapture.help.supportedFormats.section.1.item.2" = "1-seitige Fotos im Format jpeg, png oder gif";
-"ginicapture.help.supportedFormats.section.1.item.3" = "PDF Dokumente bis zu 10 Seiten";
-"ginicapture.help.supportedFormats.section.1.item.4" = "QR Codes";
+"ginicapture.help.supportedFormats.section.1.item.1" = "Maschinell erstellte Rechnungen und Überweisungsträger";
+"ginicapture.help.supportedFormats.section.1.item.2" = "Einseitige Fotos im jpeg, png oder gif Format";
+"ginicapture.help.supportedFormats.section.1.item.3" = "PDF-Dokumente bis zu 10 Seiten";
+"ginicapture.help.supportedFormats.section.1.item.4" = "QR-Codes";
 "ginicapture.help.supportedFormats.section.1.item.5" = "Monitoraufnahmen oder Screenshots";
 "ginicapture.help.supportedFormats.section.2.title" = "Nicht unterstütztes Format";
 "ginicapture.help.supportedFormats.section.2.item.1" = "Handschrift";
@@ -197,7 +197,7 @@
 "ginicapture.albums.selectMorePhotosButton" = "Weitere Bilder auswählen";
 "ginicapture.albums.footer" = "Um weitere Fotos auszuwählen oder die Auswahl aufzuheben verwenden Sie \"Weitere Bilder auswählen\".";
 
-"ginicapture.QRscanning.correct" = "QR Code erkannt";
-"ginicapture.QRscanning.incorrect.title" = "Unbekannter QR code";
-"ginicapture.QRscanning.incorrect.description" = "Dieser Code enthält keine Zahlungsinformationen. Bitte anderen QR Code oder Rechnung abfotografieren.";
+"ginicapture.QRscanning.correct" = "QR-Code erkannt";
+"ginicapture.QRscanning.incorrect.title" = "Unbekannter QR-Code";
+"ginicapture.QRscanning.incorrect.description" = "Dieser Code enthält keine Zahlungsinformationen. Bitte anderen QR-Code oder Rechnung abfotografieren.";
 "ginicapture.QRscanning.loading" = "Rechnung wird übermittelt";
