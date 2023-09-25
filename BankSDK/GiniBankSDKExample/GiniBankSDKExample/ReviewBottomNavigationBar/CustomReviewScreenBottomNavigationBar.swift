@@ -23,7 +23,7 @@ final class CustomReviewScreenBottomNavigationBar: UIView {
     private var loadingIndicatorView: UIActivityIndicatorView = {
         let indicatorView = UIActivityIndicatorView()
         indicatorView.hidesWhenStopped = true
-        indicatorView.style = .whiteLarge
+        indicatorView.style = UIActivityIndicatorView.Style.large
         indicatorView.color = .white
         return indicatorView
     }()
