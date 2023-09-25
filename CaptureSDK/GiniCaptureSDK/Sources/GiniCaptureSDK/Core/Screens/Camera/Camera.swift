@@ -50,7 +50,7 @@ final class Camera: NSObject, CameraProtocol {
     let sessionQueue = DispatchQueue(label: "session queue")
     var videoDeviceInput: AVCaptureDeviceInput?
     var videoDataOutput = AVCaptureVideoDataOutput()
-    let videoDataOutputQueue = DispatchQueue(label: "com.example.apple-samplecode.VideoDataOutputQueue")
+    let videoDataOutputQueue = DispatchQueue(label: "ocr queue")
 
     lazy var isFlashSupported: Bool = {
         #if targetEnvironment(simulator)
@@ -341,20 +341,12 @@ fileprivate extension Camera {
         videoDataOutput.alwaysDiscardsLateVideoFrames = true
         videoDataOutput.setSampleBufferDelegate(self, queue: videoDataOutputQueue)
         videoDataOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_420YpCbCr8BiPlanarFullRange]
-        if session.canAddOutput(videoDataOutput) {
-            session.addOutput(videoDataOutput)
-            // NOTE:
-            // There is a trade-off to be made here. Enabling stabilization will
-            // give temporally more stable results and should help the recognizer
-            // converge. But if it's enabled the VideoDataOutput buffers don't
-            // match what's displayed on screen, which makes drawing bounding
-            // boxes very hard. Disable it in this app to allow drawing detected
-            // bounding boxes on screen.
-            videoDataOutput.connection(with: AVMediaType.video)?.preferredVideoStabilizationMode = .off
-        } else {
-            print("Could not add VDO output")
-            return
+        if !session.canAddOutput(videoDataOutput) {
+            for output in session.outputs {
+                session.removeOutput(output)
+            }
         }
+        session.addOutput(videoDataOutput)
     }
 
     // MARK: - Text recognition
