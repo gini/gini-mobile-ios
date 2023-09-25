@@ -79,6 +79,13 @@ final class DigitalInvoiceViewController: UIViewController {
         return label
     }()
 
+    private lazy var dividerView: UIView = {
+        let dividerView = UIView()
+        dividerView.backgroundColor = GiniColor(light: .GiniBank.light3, dark: .GiniBank.dark4).uiColor()
+        dividerView.translatesAutoresizingMaskIntoConstraints = false
+        return dividerView
+    }()
+
     private let viewModel: DigitalInvoiceViewModel
     private let configuration = GiniBankConfiguration.shared
 
@@ -117,9 +124,10 @@ final class DigitalInvoiceViewController: UIViewController {
         view.addSubview(tableView)
         view.addSubview(buttonContainerView)
 
-        buttonContainerView.addSubview(payButton)
+        buttonContainerView.addSubview(dividerView)
         buttonContainerView.addSubview(totalLabel)
         buttonContainerView.addSubview(totalValueLabel)
+        buttonContainerView.addSubview(payButton)
 
         setupBottomNavigationBar()
     }
@@ -134,13 +142,12 @@ final class DigitalInvoiceViewController: UIViewController {
             buttonContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             buttonContainerView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonContainerHeight),
 
-            payButton.bottomAnchor.constraint(equalTo: buttonContainerView.bottomAnchor,
-                                              constant: -Constants.labelPadding),
-            payButton.centerXAnchor.constraint(equalTo: buttonContainerView.centerXAnchor),
-            payButton.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
-            payButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.payButtonHeight),
+            dividerView.topAnchor.constraint(equalTo: buttonContainerView.topAnchor),
+            dividerView.leadingAnchor.constraint(equalTo: buttonContainerView.leadingAnchor),
+            dividerView.trailingAnchor.constraint(equalTo: buttonContainerView.trailingAnchor),
+            dividerView.heightAnchor.constraint(equalToConstant: Constants.dividerViewHeight),
 
-            totalLabel.topAnchor.constraint(equalTo: buttonContainerView.topAnchor,
+            totalLabel.topAnchor.constraint(equalTo: dividerView.bottomAnchor,
                                             constant: Constants.padding),
             totalLabel.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
             totalLabel.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
@@ -149,7 +156,13 @@ final class DigitalInvoiceViewController: UIViewController {
                                                  constant: Constants.padding / 2),
             totalValueLabel.leadingAnchor.constraint(equalTo: totalLabel.leadingAnchor),
             totalValueLabel.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
-            totalValueLabel.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: -Constants.labelPadding)
+
+            payButton.topAnchor.constraint(equalTo: totalValueLabel.bottomAnchor, constant: Constants.labelPadding),
+            payButton.bottomAnchor.constraint(equalTo: buttonContainerView.bottomAnchor,
+                                              constant: -Constants.labelPadding),
+            payButton.centerXAnchor.constraint(equalTo: buttonContainerView.centerXAnchor),
+            payButton.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
+            payButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.payButtonHeight)
         ])
 
         if UIDevice.current.isIpad {
@@ -359,5 +372,6 @@ private extension DigitalInvoiceViewController {
         static let tabletWidthMultiplier: CGFloat = 0.7
         static let buttonContainerHeight: CGFloat = 160
         static let payButtonHeight: CGFloat = 50
+        static let dividerViewHeight: CGFloat = 1
     }
 }
