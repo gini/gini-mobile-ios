@@ -151,9 +151,9 @@ final class Camera: NSObject, CameraProtocol {
                 // consume more power. Use the smallest buffer size necessary to keep
                 // down battery usage.
                 if captureDevice.supportsSessionPreset(.hd4K3840x2160) {
-                    session.sessionPreset = AVCaptureSession.Preset.hd4K3840x2160
+                    self.session.sessionPreset = AVCaptureSession.Preset.hd4K3840x2160
                 } else {
-                    session.sessionPreset = AVCaptureSession.Preset.hd1920x1080
+                    self.session.sessionPreset = AVCaptureSession.Preset.hd1920x1080
                 }
 
                 do {
