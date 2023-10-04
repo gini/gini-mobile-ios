@@ -25,8 +25,6 @@ final class ImagePickerViewController: UIViewController {
     fileprivate var indexesForSelectedCells: [IndexPath] = []
     fileprivate let galleryManager: GalleryManagerProtocol
     fileprivate let giniConfiguration: GiniConfiguration
-    private var isInitialized: Bool = false
-    private var isLayoutDone: Bool = false
     private var navigationBarBottomAdapter: ImagePickerBottomNavigationBarAdapter?
 
     // MARK: - Views
@@ -76,13 +74,8 @@ final class ImagePickerViewController: UIViewController {
         setupView()
         configureBottomNavigationBar()
         setupConstraints()
-    }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        scrollToBottomOnStartup()
-        isLayoutDone = true
+        scrollToBottom()
     }
 
     private func setupView() {
@@ -146,22 +139,18 @@ final class ImagePickerViewController: UIViewController {
         indexesToDeselect.append(contentsOf: indexesForSelectedCells)
 
         indexesForSelectedCells.removeAll()
-        self.collectionView.reloadItems(at: indexesToDeselect)
+        collectionView.reloadItems(at: indexesToDeselect)
     }
 
-    fileprivate func scrollToBottomOnStartup() {
-        guard isLayoutDone else { return }
-        // This tweak is needed to fix an issue with the UICollectionView. UICollectionView doesn't
-        // scroll to the bottom on `viewWillAppear`, which is right after `viewDidLayoutSubviews`.
-        // Since this method can be called several times during the lifecycle, there should be
-        // a one-time scrolling before the view appears for the first time.
-        if !isInitialized {
-            isInitialized = true
-            collectionView.scrollToItem(at: IndexPath(row: currentAlbum.count - 1,
-                                                      section: 0),
-                                        at: .bottom,
-                                        animated: false)
-        }
+    fileprivate func scrollToBottom() {
+        collectionView.performBatchUpdates({
+            self.collectionView.reloadData()
+        }, completion: { _ in
+            self.collectionView.scrollToItem(at: IndexPath(row: self.currentAlbum.count - 1,
+                                                           section: 0),
+                                             at: .bottom,
+                                             animated: false)
+        })
     }
 
     private func configureBottomNavigationBar() {
