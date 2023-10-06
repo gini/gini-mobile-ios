@@ -94,11 +94,6 @@ public final class DocumentPickerCoordinator: NSObject {
     let galleryCoordinator: GalleryCoordinator
     let giniConfiguration: GiniConfiguration
 
-    fileprivate lazy var navigationBarAppearance: UINavigationBar = .init()
-    fileprivate lazy var searchBarAppearance: UISearchBar = .init()
-    fileprivate lazy var barButtonItemAppearance: UIBarButtonItem = .init()
-    fileprivate lazy var barButtonItemAppearanceInSearchBar: UIBarButtonItem = .init()
-
     fileprivate var acceptedDocumentTypes: [String] {
         switch giniConfiguration.fileImportSupportedTypes {
         case .pdf_and_images:
@@ -176,20 +171,8 @@ public final class DocumentPickerCoordinator: NSObject {
         documentPicker.delegate = self
 
         documentPicker.allowsMultipleSelection = giniConfiguration.multipageEnabled
-
-        if let tintColor = giniConfiguration.documentPickerNavigationBarTintColor {
-            // Starting with iOS 11.0, the UIDocumentPickerViewController navigation bar almost can't be customized,
-            // only being possible to customize the tint color. To avoid issues with custom UIAppearance styles,
-            // this is reset to default, saving the current state in order to restore it during dismissal.
-            saveCurrentNavBarAppearance()
-            applyDefaultNavBarAppearance()
-
-            UINavigationBar.appearance().tintColor = tintColor
-            UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self])
-                .setTitleTextAttributes([.foregroundColor: tintColor],
-                                        for: .normal)
-        }
-
+        documentPicker.view.tintColor = .GiniCapture.accent1
+    
         currentPickerDismissesAutomatically = true
         currentPickerViewController = documentPicker
 
@@ -235,57 +218,6 @@ fileprivate extension DocumentPickerCoordinator {
 
         return (nil, nil)
     }
-
-    func saveCurrentNavBarAppearance() {
-        update(navigationBarAppearance, with: UINavigationBar.appearance())
-        update(searchBarAppearance, with: UISearchBar.appearance())
-        update(barButtonItemAppearance, with: UIBarButtonItem.appearance())
-        update(barButtonItemAppearanceInSearchBar,
-               with: UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]))
-    }
-
-    func applyDefaultNavBarAppearance() {
-        update(UINavigationBar.appearance(), with: nil)
-        update(UISearchBar.appearance(), with: nil)
-        update(UIBarButtonItem.appearance(), with: nil)
-        update(UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]),
-               with: nil)
-    }
-
-    func restoreSavedNavBarAppearance() {
-        update(UINavigationBar.appearance(), with: navigationBarAppearance)
-        update(UISearchBar.appearance(), with: searchBarAppearance)
-        update(UIBarButtonItem.appearance(), with: barButtonItemAppearance)
-        update(UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]),
-               with: barButtonItemAppearance)
-    }
-
-    func update(_ currentNavigationBar: UINavigationBar, with navigationBar: UINavigationBar?) {
-        currentNavigationBar.barTintColor = navigationBar?.barTintColor
-        currentNavigationBar.tintColor = navigationBar?.tintColor
-        currentNavigationBar.backgroundColor = navigationBar?.backgroundColor
-        currentNavigationBar.isTranslucent = navigationBar?.isTranslucent ?? true
-        currentNavigationBar.barStyle = navigationBar?.barStyle ?? .default
-        currentNavigationBar.shadowImage = navigationBar?.shadowImage
-        currentNavigationBar.setBackgroundImage(navigationBar?.backIndicatorImage, for: .default)
-    }
-
-    func update(_ currentSearchBar: UISearchBar, with searchBar: UISearchBar?) {
-        currentSearchBar.backgroundColor = searchBar?.backgroundColor
-        currentSearchBar.barTintColor = searchBar?.barTintColor
-        currentSearchBar.tintColor = searchBar?.tintColor
-        currentSearchBar.searchBarStyle = searchBar?.searchBarStyle ?? .default
-        currentSearchBar.setImage(searchBar?.image(for: .search, state: .normal), for: .search, state: .normal)
-    }
-
-    func update(_ currentBarButtonItem: UIBarButtonItem, with barButtonItem: UIBarButtonItem?) {
-        currentBarButtonItem.setTitleTextAttributes(barButtonItem?.titleTextAttributes(for: .normal),
-                                                    for: .normal)
-        currentBarButtonItem.setTitleTextAttributes(barButtonItem?.titleTextAttributes(for: .highlighted),
-                                                    for: .highlighted)
-        currentBarButtonItem.setTitleTextAttributes(barButtonItem?.titleTextAttributes(for: .selected),
-                                                    for: .selected)
-    }
 }
 
 // MARK: GalleryCoordinatorDelegate
@@ -314,10 +246,6 @@ extension DocumentPickerCoordinator: UIDocumentPickerDelegate {
             return
         }
 
-        if #available(iOS 12.0, *), giniConfiguration.documentPickerNavigationBarTintColor != nil {
-            restoreSavedNavBarAppearance()
-        }
-
         delegate?.documentPicker(self, didPick: documents)
     }
 
@@ -326,10 +254,6 @@ extension DocumentPickerCoordinator: UIDocumentPickerDelegate {
     }
 
     public func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        if #available(iOS 12.0, *), giniConfiguration.documentPickerNavigationBarTintColor != nil {
-            restoreSavedNavBarAppearance()
-        }
-
         controller.dismiss(animated: false, completion: nil)
     }
 }
