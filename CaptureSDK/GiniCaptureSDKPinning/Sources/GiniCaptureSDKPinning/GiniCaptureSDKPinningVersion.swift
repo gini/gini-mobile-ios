@@ -5,4 +5,4 @@
 //  Created by Nadya Karaban on 29.10.21.
 //
 
-public let GiniCaptureSDKPinningVersion = "3.3.0"
+public let GiniCaptureSDKPinningVersion = "3.4.0"
