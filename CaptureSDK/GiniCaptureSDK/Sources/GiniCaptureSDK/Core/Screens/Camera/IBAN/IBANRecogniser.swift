@@ -1,9 +1,7 @@
 //
-//  extractIBANS.swift
-//  gini-ios-ocr
+//  IBANRecogniser.swift
 //
-//  Created by Maciej Trybilo on 13.11.19.
-//  Copyright © 2019 Gini GmbH. All rights reserved.
+//  Copyright © 2023 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -39,11 +37,10 @@ func extractIBANS(string: String) -> [String] {
 
         results += strings.filter { string in
 
-            if !isValidIBANChecksum(iban: string) {
+            if !IBANValidator().isValid(iban: string) {
                 print("👹 invalid checksum: \(string)")
                 return false
             }
-
             return true
         }
     }
@@ -53,9 +50,7 @@ func extractIBANS(string: String) -> [String] {
 
 private func substitutingForAllowedCharacters(string: String, pattern: IBANPattern) -> String {
 
-    var conversionTable: [Character : Character] = [
-        "(": "0",
-    ]
+    var conversionTable: [Character : Character] = ["(": "0"]
     if pattern == .germany {
         conversionTable["p"] = "D"
     }
