@@ -66,7 +66,6 @@ final class Camera: NSObject, CameraProtocol {
     fileprivate let application: UIApplication
 
     private var request: VNRecognizeTextRequest!
-    private var ocrStart: Date?
     private var textOrientation = CGImagePropertyOrientation.up
 
     init(application: UIApplication = UIApplication.shared,
@@ -359,10 +358,11 @@ fileprivate extension Camera {
         }
 
         var IBANs = Set<String>()
-        let maximumCandidates = 1
+        let maximumCandidates = 10
         var concatenated = ""
 
         for visionResult in results {
+            // topCandidates return no more than N but can be less than N candidates. The maximum number of candidates returned cannot exceed 10 candidates.
             guard let candidate = visionResult.topCandidates(maximumCandidates).first else { continue }
 
             for result in extractIBANS(string: candidate.string) {
@@ -443,7 +443,7 @@ extension Camera: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput,
                        didOutput sampleBuffer: CMSampleBuffer,
                        from connection: AVCaptureConnection) {
-        guard (request != nil) else { return }
+        guard request != nil else { return }
         if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
             // Configure for running in real-time.
             request.recognitionLevel = .accurate
@@ -452,7 +452,6 @@ extension Camera: AVCaptureVideoDataOutputSampleBufferDelegate {
                                                        orientation: textOrientation,
                                                        options: [:])
             do {
-                ocrStart = Date()
                 try requestHandler.perform([request])
             } catch {
                 Log(message: "Could not perform ocr request", event: .error)
