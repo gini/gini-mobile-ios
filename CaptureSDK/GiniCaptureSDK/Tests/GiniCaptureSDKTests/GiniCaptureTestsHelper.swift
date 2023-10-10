@@ -66,4 +66,10 @@ final class GiniCaptureTestsHelper {
                 .path(forResource: name, ofType: fileExtension)
         return URL(fileURLWithPath: fileURLPath!)
     }
+
+    class func loadTextFromFile(named name: String, fileExtension: String = "txt") -> String {
+        let path = giniTestBundle().path(forResource: name, ofType: fileExtension) // file path for file "data.txt"
+        let string = (try? String(contentsOfFile: path!, encoding: String.Encoding.utf8)) ?? ""
+        return string
+    }
 }
