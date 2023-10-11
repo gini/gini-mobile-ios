@@ -11,7 +11,7 @@ import XCTest
 
 final class AccessTokenTests: XCTestCase {
 
-    func testValue() {
+    func testAccessToken() {
         let jsonReponse = """
                             {"access_token": "1eb7ca49-d99f-40cb-b86d-8dd689ca2345",
                              "token_type": "bearer",
