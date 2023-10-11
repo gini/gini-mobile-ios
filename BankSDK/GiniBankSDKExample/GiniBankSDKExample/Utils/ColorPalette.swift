@@ -8,6 +8,8 @@
 import UIKit
 
 enum ColorPalette {
-	static let raspberryPunch = UIColor(named: "raspberry-punch")
-	static let greySuit = UIColor(named: "grey-suit")
+	static let raspberryPunch = UIColor(named: "raspberry-punch")!
+	static let greySuit = UIColor(named: "grey-suit")!
+    static let giniBlue = UIColor(named: "gini-blue")!
+    static let defaultBackground = UIColor(named: "default-background")!
 }
