@@ -191,16 +191,7 @@ final class SettingsViewControllerTests: XCTestCase {
 		case .pdf_and_images:
 			selectedSegmentIndex = 2
 		}
-        contentData.append(.segmentedOption(data: .init(optionType: .fileImport, selectedIndex: selectedSegmentIndex)))
-        
-        var selectedEntryPointSegmentIndex = 0
-        switch configuration.entryPoint {
-        case .button:
-            selectedEntryPointSegmentIndex = 0
-        case .field:
-            selectedEntryPointSegmentIndex = 1
-        }
-        contentData.append(.segmentedOption(data: .init(optionType: .entryPoint, selectedIndex: selectedEntryPointSegmentIndex)))
+        contentData.append(.segmentedOption(data: .init(selectedIndex: selectedSegmentIndex)))
 	}
 	
 	private var flashToggleSettingEnabled: Bool = {
@@ -717,7 +708,7 @@ extension SettingsViewControllerTests {
 			XCTFail("`fileImportType` option not found in sectionData")
 			return
 		}
-        guard case .segmentedOption(var data) = contentData[index], data.optionType == .fileImport  else { return }
+        guard case .segmentedOption(var data) = contentData[index]  else { return }
 		data.selectedIndex = 0
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
 		
@@ -731,7 +722,7 @@ extension SettingsViewControllerTests {
 			XCTFail("`fileImportType` option not found in sectionData")
 			return
 		}
-		guard case .segmentedOption(var data) = contentData[index], data.optionType == .fileImport else { return }
+		guard case .segmentedOption(var data) = contentData[index] else { return }
 		data.selectedIndex = 1
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
 		XCTAssertEqual(configuration.fileImportSupportedTypes,
@@ -744,42 +735,14 @@ extension SettingsViewControllerTests {
 			XCTFail("`fileImportType` option not found in sectionData")
 			return
 		}
-		guard case .segmentedOption(var data) = contentData[index], data.optionType == .fileImport else { return }
+		guard case .segmentedOption(var data) = contentData[index] else { return }
 		data.selectedIndex = 2
 		configuration.fileImportSupportedTypes = giniImportFileType(selectedIndex: data.selectedIndex)
 		XCTAssertEqual(configuration.fileImportSupportedTypes,
 					   .pdf_and_images,
 					   "pdf and image types should be supported in the gini configuration")
 	}
-    
-    // MARK: - Entry point
 
-    func testButtonEntryPoint() {
-        guard let index = getEntryPointIndex() else {
-            XCTFail("`entryPoint` option not found in sectionData")
-            return
-        }
-        guard case .segmentedOption(var data) = contentData[index], data.optionType == .entryPoint else { return }
-        data.selectedIndex = 0
-        configuration.entryPoint = giniEntryPoint(selectedIndex: data.selectedIndex)
-        XCTAssertEqual(configuration.entryPoint,
-                       .button,
-                       "button entry point should be set in the gini configuration")
-    }
-    
-    func testFieldEntryPoint() {
-        guard let index = getEntryPointIndex() else {
-            XCTFail("`entryPoint` option not found in sectionData")
-            return
-        }
-        guard case .segmentedOption(var data) = contentData[index], data.optionType == .entryPoint else { return }
-        data.selectedIndex = 1
-        configuration.entryPoint = giniEntryPoint(selectedIndex: data.selectedIndex)
-        XCTAssertEqual(configuration.entryPoint,
-                       .field,
-                       "field entry point should be set in the gini configuration")
-    }
-	
 	// MARK: - OnboardingShowAtLaunch
 	
 	func testOnboardingShowAtLaunchSwitchOff() {
