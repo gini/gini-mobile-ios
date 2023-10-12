@@ -20,7 +20,7 @@ On *iPad* we support portrait and landscape orientations.
 
 ## Documentation
 
-Further documentation with installation, integration or customization guides can be found in our [website](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/).
+Further documentation with installation, integration or customization guides can be found in our [website](https://gini.atlassian.net/wiki/spaces/ICSV/overview).
 
 ## Requirements
 
@@ -39,6 +39,6 @@ Gini GmbH, hello@gini.net
 
 ## License
 
-The Gini Capture SDK Pinning for iOS is licensed under a Private License. See [the license](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/license.html) for more info.
+The Gini Capture SDK Pinning for iOS is licensed under a Private License. See [the license](https://gini.atlassian.net/wiki/spaces/ICSV/pages/13074449/License) for more info.
 
 **Important:** Always make sure to ship all license notices and permissions with your application.
