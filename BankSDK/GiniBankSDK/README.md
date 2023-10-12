@@ -16,7 +16,7 @@ By integrating this SDK into your application you can allow your users to easily
 
 ## Documentation
 
-Further documentation with installation, integration or customization guides can be found in our [website](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/).
+Further documentation with installation, integration or customization guides can be found in our [website](https://gini.atlassian.net/wiki/spaces/IBSV/overview).
 
 ## Example apps
 
@@ -61,6 +61,6 @@ Gini GmbH, hello@gini.net
 
 ## License
 
-The Gini Bank SDK for iOS is licensed under a Private License. See [the license](http://developer.gini.net/gini-mobile-ios/GiniBankSDK/license.html) for more info.
+The Gini Bank SDK for iOS is licensed under a Private License. See [the license](https://gini.atlassian.net/wiki/spaces/IBSV/pages/9863792/License) for more info.
 
 **Important:** Always make sure to ship all license notices and permissions with your application.
