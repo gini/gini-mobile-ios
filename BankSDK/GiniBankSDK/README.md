@@ -16,7 +16,7 @@ By integrating this SDK into your application you can allow your users to easily
 
 ## Documentation
 
-Further documentation with installation, integration or customization guides can be found in our [website](https://developer.gini.net/gini-mobile-ios/GiniBankSDK/).
+Further documentation with installation, integration or customization guides can be found in our [website](https://gini.atlassian.net/wiki/spaces/IBSV/overview).
 
 ## Example apps
 
@@ -36,7 +36,7 @@ The banking example app demonstrates how to integrate the Gini Bank SDK.
 To run the apps, clone the repo, open the project file and Resolve Package Versions in Xcode `File->Packages->Resolve Package Versions`.
 To inject your API credentials into the Health and Bank example apps you need to fill in your credentials in [`HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/Credentials.plist`](https://github.com/gini/gini-mobile-ios/blob/main/HealthSDK/GiniHealthSDKExample/GiniHealthSDKExample/Credentials.plist) and [`BankSDK/GiniBankSDKExample/GiniBankSDKExampleBank/Credentials.plist`](https://github.com/gini/gini-mobile-ios/blob/GiniBankSDK%3B3.3.0/BankSDK/GiniBankSDKExample/GiniBankSDKExampleBank/Credentials.plist/), respectively.
 
-An example health app is available under the link [Gini Health SDK's example](https://github.com/gini/gini-mobile-ios/blob/main/HealthSDK/GiniHeathSDKExample).
+An example health app is available under the link [Gini Health SDK's example](https://github.com/gini/gini-mobile-ios/blob/main/HealthSDK/GiniHealthSDKExample).
 You can use the same Gini Bank API client credentials in the health example app as in your app, if not otherwise specified.
 The example business app initiates the payment flow.
 
@@ -61,6 +61,6 @@ Gini GmbH, hello@gini.net
 
 ## License
 
-The Gini Bank SDK for iOS is licensed under a Private License. See [the license](http://developer.gini.net/gini-mobile-ios/GiniBankSDK/license.html) for more info.
+The Gini Bank SDK for iOS is licensed under a Private License. See [the license](https://gini.atlassian.net/wiki/spaces/IBSV/pages/9863792/License) for more info.
 
 **Important:** Always make sure to ship all license notices and permissions with your application.
