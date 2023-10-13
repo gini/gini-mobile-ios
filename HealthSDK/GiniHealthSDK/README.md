@@ -20,7 +20,7 @@ Further documentation with installation, integration or customization guides can
 
 ## Example apps
 
-We are providing example app for Swift. This app demonstrates how to integrate the Gini Health SDK with the Component API of [Gini Capture SDK](https://developer.gini.net/gini-mobile-ios/GiniCaptureSDK/index.html).
+We are providing example app for Swift. This app demonstrates how to integrate the Gini Health SDK with the [Gini Capture SDK](https://gini.atlassian.net/wiki/spaces/ICSV/overview).
 
 An example banking app is available in the [Gini Mobile iOS Monorepo](https://github.com/gini/gini-mobile-ios/tree/main/BankSDK/GiniBankSDKExample) repository.
 To check the redirection to the Banking app please run Bank example before the Health example. You can use the same Gini Health API client credentials in the example banking app as in your app, if not otherwise specified.
