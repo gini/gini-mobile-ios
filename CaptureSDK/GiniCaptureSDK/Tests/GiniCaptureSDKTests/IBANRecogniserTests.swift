@@ -43,12 +43,12 @@ final class IBANRecogniserTests: XCTestCase {
         XCTAssertEqual(extractedIBANs[0], expectedIBANS[0], "3 IBANs should be extracted")
     }
 
-//    func testIBANRecogniserPreferGermanIBAN() {
-//        let expectedIBANs : [String] = ["DE92680800300672270200"]
-//        let text = GiniCaptureTestsHelper.loadTextFromFile(named: "dookuid-1311")
-//        let extractedIBANs = extractIBANS(string: text)
-//        XCTAssertEqual(expectedIBANs, extractedIBANs, "German IBAN should be preffered")
-//    }
+    func testIBANRecogniserPreferGermanIBAN() {
+        let expectedIBANs : [String] = ["DE92680800300672270200"]
+        let text = GiniCaptureTestsHelper.loadTextFromFile(named: "dookuid-1311")
+        let extractedIBANs = extractIBANS(string: text)
+        XCTAssertEqual(expectedIBANs, extractedIBANs, "German IBAN should be preffered")
+    }
 
 }
 
