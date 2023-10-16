@@ -27,19 +27,19 @@ final class IBANKnowledge {
         return countryIbanDictionary.keys.map { "\($0.prefix(2))" }
     }
 
-    private var countryCodesRegex: NSRegularExpression {
+    var countryCodesRegex: NSRegularExpression {
         try! NSRegularExpression(pattern: "(?:\(countryCodes.joined(separator: "|")))")
     }
 
-    private var universalIBANRegex : NSRegularExpression {
-        try! NSRegularExpression(pattern: "\\b(\(countryCodesRegex.pattern)) ?(\\d ?\\d) ?([-\\p{Alnum} ]{11,50}\\p{Alnum}|[\\p{Alnum}]{11,30})\\b")
+    var universalIBANRegex : NSRegularExpression {
+        try! NSRegularExpression(pattern: "\\b(\(countryCodesRegex.pattern)) ?(\\d?\\d)?([-\\p{Alnum}]{11,50}\\p{Alnum}|[\\p{Alnum}]{11,30})\\b")
     }
 
-    private var ibanInBlocksRegex : NSRegularExpression {
+    var ibanInBlocksRegex : NSRegularExpression {
         try! NSRegularExpression(pattern: "\\b(\(countryCodesRegex.pattern)) ?\\d{2}(\\s{0,3}[a-zA-Z0-9]{4}){3,8}(\\s{0,3}[a-zA-Z0-9]{1,4})\\b")
     }
 
-    private var germanIBANRegex : NSRegularExpression {
+    var germanIBANRegex : NSRegularExpression {
         try! NSRegularExpression(pattern: "^DE\\d{\(countryIbanDictionary["DE"]! - 2)}$")
     }
 }
