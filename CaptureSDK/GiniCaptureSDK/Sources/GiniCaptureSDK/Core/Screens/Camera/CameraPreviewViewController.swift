@@ -18,7 +18,7 @@ protocol CameraPreviewViewControllerDelegate: AnyObject {
                         camera: CameraProtocol)
     func notAuthorized()
     func cameraPreview(_ viewController: CameraPreviewViewController,
-                       didDetectIBAN iban: String)
+                       didDetectIBANs IBANs: [String])
 }
 
 final class CameraPreviewViewController: UIViewController {
@@ -226,7 +226,8 @@ final class CameraPreviewViewController: UIViewController {
             cameraFrameViewHeightAnchorLandscape.isActive = isLandscape
 
             // Full Vision ROI to AVF transform.
-            visionToAVFTransform = roiToGlobalTransform.concatenating(bottomToTopTransform).concatenating(uiRotationTransform)
+            visionToAVFTransform = roiToGlobalTransform.concatenating(bottomToTopTransform)
+                                                       .concatenating(uiRotationTransform)
 
             if let image = cameraFrameView.image?.cgImage {
                 if isLandscape {
@@ -238,7 +239,8 @@ final class CameraPreviewViewController: UIViewController {
             }
         }
         // Full Vision ROI to AVF transform.
-        visionToAVFTransform = roiToGlobalTransform.concatenating(bottomToTopTransform).concatenating(uiRotationTransform)
+        visionToAVFTransform = roiToGlobalTransform.concatenating(bottomToTopTransform)
+                                                   .concatenating(uiRotationTransform)
     }
 
     override func viewWillLayoutSubviews() {
@@ -324,11 +326,9 @@ final class CameraPreviewViewController: UIViewController {
             }
         }
 
-        camera.didDetectIbanHandler = { [weak self] ibans in
+        camera.didDetectIBANs = { [weak self] IBANs in
             guard let self = self else { return }
-            if let ibans = ibans {
-                self.delegate?.cameraPreview(self, didDetectIBAN: ibans)
-            }
+            self.delegate?.cameraPreview(self, didDetectIBANs: IBANs)
         }
     }
 
@@ -358,6 +358,7 @@ final class CameraPreviewViewController: UIViewController {
         updateFrameOrientation(with: orientation)
     }
 
+    // TODO: check this
     func changeFrameColor(to color: UIColor) {
         cameraFrameView.image = cameraFrameView.image?.tintedImageWithColor(color)
         qrCodeFrameView.image = qrCodeFrameView.image?.tintedImageWithColor(color)

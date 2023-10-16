@@ -30,6 +30,13 @@ import UIKit
        return view
     }()
 
+     private lazy var ibanDetectionOverLay: IBANsDetectionOverlay = {
+         let view = IBANsDetectionOverlay()
+         view.isHidden = true
+         view.translatesAutoresizingMaskIntoConstraints = false
+         return view
+     }()
+
     private var resetTask: DispatchWorkItem?
     private var hideTask: DispatchWorkItem?
     private var validQRCodeProcessing: Bool = false
@@ -56,11 +63,9 @@ import UIKit
      - parameter giniConfiguration: `GiniConfiguration` instance.
      
      - returns: A view controller instance allowing the user to take a picture or pick a document.
-    */
-    public init(
-        giniConfiguration: GiniConfiguration,
-        viewModel: CameraButtonsViewModel
-    ) {
+     */
+     public init(giniConfiguration: GiniConfiguration,
+                 viewModel: CameraButtonsViewModel) {
         self.giniConfiguration = giniConfiguration
         self.cameraButtonsViewModel = viewModel
 
@@ -138,12 +143,14 @@ import UIKit
         cameraPreviewViewController.didMove(toParent: self)
         view.sendSubviewToBack(cameraPreviewViewController.view)
         view.addSubview(qrCodeOverLay)
+        view.addSubview(ibanDetectionOverLay)
         cameraLensSwitcherView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(cameraLensSwitcherView)
         configureConstraints()
         configureTitle()
 
         if qrCodeScanningOnlyEnabled {
+            // TODO: Check this when IBAN and QR in the screen
             cameraPane.alpha = 0
             if giniConfiguration.bottomNavigationBarEnabled {
                 configureCustomTopNavigationBar(containsImage: false)
@@ -329,6 +336,7 @@ import UIKit
         super.viewWillDisappear(animated)
 
         qrCodeOverLay.viewWillDisappear()
+        ibanDetectionOverLay.viewWillDisappear()
     }
 
     private func configureUploadButton() {
@@ -378,12 +386,20 @@ import UIKit
                                       on: cameraPreviewViewController)
         }
 
+       ibanDetectionOverLay.layoutViews(centeringBy: cameraPreviewViewController.cameraFrameView,
+                                         on: cameraPreviewViewController)
+
         NSLayoutConstraint.activate([
             qrCodeOverLay.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             qrCodeOverLay.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             qrCodeOverLay.topAnchor.constraint(equalTo: view.topAnchor),
             qrCodeOverLay.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 
+            ibanDetectionOverLay.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            ibanDetectionOverLay.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            ibanDetectionOverLay.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            ibanDetectionOverLay.topAnchor.constraint(equalTo: view.topAnchor),
+            
             cameraPreviewViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
             cameraPreviewViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             cameraPreviewViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -450,9 +466,49 @@ import UIKit
         return blurredView
     }
 
-     private func showIBANFeedback(iban: String) {
-         print(iban)
+     // MARK: - IBANs Detected
+     private func showIBANFeedback(_ IBANs: [String]) {
+         print(IBANs)
+         guard IBANs.isNotEmpty else {
+             hideIBANOverlay()
+             return
+        }
+
+         showIBANOverlay(with: IBANs)
      }
+
+     private func showIBANOverlay(with IBANs: [String]) {
+         // TODO: needs a way to update the text inside the green area when detecting a new IBAN ?!!
+         UIView.animate(withDuration: 0.3) {
+             self.ibanDetectionOverLay.isHidden = false
+
+             // this is the view with the white frames on top of the camera
+             self.cameraPreviewViewController.cameraFrameView.isHidden = true
+         }
+
+         //TODO: maybe we should remove this, but I'm keeping for now for testing
+         // Haptic feedback
+         let generator = UINotificationFeedbackGenerator()
+         generator.notificationOccurred(.success)
+
+         ibanDetectionOverLay.configureOverlay(hidden: false)
+
+         ibanDetectionOverLay.setupView(with: IBANs)
+     }
+
+     private func hideIBANOverlay() {
+         UIView.animate(withDuration: 0.3) {
+             self.ibanDetectionOverLay.isHidden = true
+             // TODO: check this with Android
+             // this is the view with the white frames on top of the camera - should be displayed once again?!!
+             self.cameraPreviewViewController.cameraFrameView.isHidden = false
+         }
+         ibanDetectionOverLay.configureOverlay(hidden: true)
+
+//         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: resetTask!) // ????
+     }
+
+     // MARK: - QR Detected
 
     private func showQRCodeFeedback(for document: GiniQRCodeDocument, isValid: Bool) {
         guard !validQRCodeProcessing else { return }
@@ -534,11 +590,12 @@ import UIKit
 
 extension CameraViewController: CameraPreviewViewControllerDelegate {
     func cameraPreview(_ viewController: CameraPreviewViewController,
-                       didDetectIBAN iban: String) {
-        showIBANFeedback(iban: iban)
+                       didDetectIBANs IBANs: [String]) {
+        showIBANFeedback(IBANs)
     }
 
-    func cameraDidSetUp(_ viewController: CameraPreviewViewController, camera: CameraProtocol) {
+    func cameraDidSetUp(_ viewController: CameraPreviewViewController,
+                        camera: CameraProtocol) {
         if !qrCodeScanningOnlyEnabled {
             cameraPreviewViewController.cameraFrameView.isHidden = false
             cameraPane.toggleCaptureButtonActivation(state: true)
@@ -558,7 +615,8 @@ extension CameraViewController: CameraPreviewViewControllerDelegate {
         showQRCodeFeedback(for: qrCodeDocument, isValid: false)
     }
 
-    func cameraPreview(_ viewController: CameraPreviewViewController, didDetect qrCodeDocument: GiniQRCodeDocument) {
+    func cameraPreview(_ viewController: CameraPreviewViewController,
+                       didDetect qrCodeDocument: GiniQRCodeDocument) {
         showQRCodeFeedback(for: qrCodeDocument, isValid: true)
     }
 
