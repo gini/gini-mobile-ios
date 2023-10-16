@@ -17,7 +17,7 @@ protocol CameraProtocol: AnyObject {
     var videoDeviceInput: AVCaptureDeviceInput? { get }
     var didDetectQR: ((GiniQRCodeDocument) -> Void)? { get set }
     var didDetectInvalidQR: ((GiniQRCodeDocument) -> Void)? { get set }
-    var didDetectIbanHandler: ((String?) -> Void)? { get set }
+    var didDetectIBANs: (([String]) -> Void)? { get set }
     var isFlashSupported: Bool { get }
     var isFlashOn: Bool { get set }
 
@@ -40,7 +40,7 @@ final class Camera: NSObject, CameraProtocol {
     var didDetectQR: ((GiniQRCodeDocument) -> Void)?
     var didDetectInvalidQR: ((GiniQRCodeDocument) -> Void)?
     var didCaptureImageHandler: ((Data?, CameraError?) -> Void)?
-    var didDetectIbanHandler: ((String?) -> Void)?
+    var didDetectIBANs: (([String]) -> Void)?
 
     // Session management
     var giniConfiguration: GiniConfiguration
@@ -375,20 +375,25 @@ fileprivate extension Camera {
             IBANs.insert(result)
         }
 
-        if !IBANs.isEmpty {
-            let ibans = String(IBANs.reduce("", { (current, iban) -> String in
-                return current + iban + "\n"
-                }).dropLast())
+        // TODO: check where we should move this check?! ->
+        // we need to remove iban detection overlay from the screen when no IBAN detected
+        // maybe is better to have a different delegate method for noIBANDetected????
+
+        if !IBANs.isNotEmpty {
+        }
+//            let ibans = String(IBANs.reduce("", { (current, iban) -> String in
+//                return current + iban + "\n"
+//                }).dropLast())
 
             // Found a definite number.
             // Stop the camera synchronously to ensure that no further buffers are
             // received. Then update the number view asynchronously.
             sessionQueue.sync {
                 DispatchQueue.main.async {
-                    self.didDetectIbanHandler!(ibans)
+                    self.didDetectIBANs!(Array(IBANs))
                 }
             }
-        }
+//        }
     }
 }
 
