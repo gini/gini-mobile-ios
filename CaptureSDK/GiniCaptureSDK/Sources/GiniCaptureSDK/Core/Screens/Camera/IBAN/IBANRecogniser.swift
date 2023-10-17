@@ -25,7 +25,7 @@ func extractIBANS(string: String) -> [String] {
                 let germanIBANs = IBANKnowledge().germanIBANRegex.matches(in: iban,
                                                                           options: [],
                                                                           range: NSRange(location: 0, length: iban.count))
-                if !germanIBANs.isEmpty && !prefferedIBANs.contains(iban) {
+                if !germanIBANs.isEmpty { //&& !prefferedIBANs.contains(iban)
                     prefferedIBANs.append(iban)
                 } else {
                     if !results.contains(iban){
@@ -35,5 +35,15 @@ func extractIBANS(string: String) -> [String] {
             }
         }
     }
+
+    prefferedIBANs = prefferedIBANs.uniqued()
+    
     return prefferedIBANs.isEmpty ? results : prefferedIBANs
+}
+
+extension Sequence where Element: Hashable {
+    func uniqued() -> [Element] {
+        var set = Set<Element>()
+        return filter { set.insert($0).inserted }
+    }
 }

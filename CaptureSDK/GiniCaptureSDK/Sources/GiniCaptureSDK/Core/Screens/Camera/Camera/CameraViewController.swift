@@ -451,8 +451,8 @@ import UIKit
     }
 
     public func addValidationLoadingView() -> UIView {
-        //TODO: 12 vs >= 13
-        let loadingIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        let loadingIndicator = UIActivityIndicatorView()
+        loadingIndicator.setLargeStyle()
         let blurredView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
         blurredView.alpha = 0
         blurredView.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin]
@@ -467,7 +467,7 @@ import UIKit
         return blurredView
     }
 
-     // MARK: - IBANs Detected
+     // MARK: - IBANs Detection
      private func showIBANFeedback(_ IBANs: [String]) {
          print(IBANs)
          guard IBANs.isNotEmpty else {
@@ -479,7 +479,6 @@ import UIKit
      }
 
      private func showIBANOverlay(with IBANs: [String]) {
-         // TODO: needs a way to update the text inside the green area when detecting a new IBAN ?!!
          UIView.animate(withDuration: 0.3) {
              self.ibanDetectionOverLay.isHidden = false
 
@@ -505,11 +504,9 @@ import UIKit
              self.cameraPreviewViewController.cameraFrameView.isHidden = false
          }
          ibanDetectionOverLay.configureOverlay(hidden: true)
-
-//         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: resetTask!) // ????
      }
 
-     // MARK: - QR Detected
+     // MARK: - QR Detection
 
     private func showQRCodeFeedback(for document: GiniQRCodeDocument, isValid: Bool) {
         guard !validQRCodeProcessing else { return }

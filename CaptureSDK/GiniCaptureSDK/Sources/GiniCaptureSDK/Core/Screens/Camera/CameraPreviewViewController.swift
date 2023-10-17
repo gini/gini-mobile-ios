@@ -38,8 +38,8 @@ final class CameraPreviewViewController: UIViewController {
     }
 
     private lazy var spinner: UIActivityIndicatorView = {
-        //TODO: 12 vs >= 13
-        let spinner = UIActivityIndicatorView(style: .whiteLarge)
+        let spinner = UIActivityIndicatorView()
+        spinner.setLargeStyle()
         spinner.color = self.giniConfiguration.cameraSetupLoadingIndicatorColor
         spinner.hidesWhenStopped = true
         return spinner
