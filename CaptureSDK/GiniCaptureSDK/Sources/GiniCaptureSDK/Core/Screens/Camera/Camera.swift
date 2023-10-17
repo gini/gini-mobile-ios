@@ -65,7 +65,8 @@ final class Camera: NSObject, CameraProtocol {
 
     fileprivate let application: UIApplication
 
-    private var request: VNRecognizeTextRequest!
+    private var request: VNImageBasedRequest?
+
     private var textOrientation = CGImagePropertyOrientation.up
 
     init(application: UIApplication = UIApplication.shared,
@@ -92,7 +93,11 @@ final class Camera: NSObject, CameraProtocol {
     }
 
     func startOCR() {
-        request = VNRecognizeTextRequest(completionHandler: recognizeTextHandler)
+        if #available(iOS 13.0, *) {
+            request = VNRecognizeTextRequest(completionHandler: recognizeTextHandler)
+        } else {
+            // Fallback on earlier versions
+        }
     }
 
     func switchTo(newVideoDevice: AVCaptureDevice) {
@@ -353,9 +358,10 @@ fileprivate extension Camera {
     // Vision recognition handler.
     func recognizeTextHandler(request: VNRequest, error: Error?) {
 
-        guard let results = request.results as? [VNRecognizedTextObservation] else {
-            return
-        }
+        if #available(iOS 13.0, *) {
+            guard let results = request.results as? [VNRecognizedTextObservation] else {
+                return
+            }
 
         var IBANs = Set<String>()
         let maximumCandidates = 10
@@ -379,8 +385,6 @@ fileprivate extension Camera {
         // we need to remove iban detection overlay from the screen when no IBAN detected
         // maybe is better to have a different delegate method for noIBANDetected????
 
-        if !IBANs.isNotEmpty {
-        }
 //            let ibans = String(IBANs.reduce("", { (current, iban) -> String in
 //                return current + iban + "\n"
 //                }).dropLast())
@@ -393,7 +397,10 @@ fileprivate extension Camera {
                     self.didDetectIBANs!(Array(IBANs))
                 }
             }
-//        }
+
+        } else {
+            // Fallback on earlier versions
+        }
     }
 }
 
@@ -448,20 +455,24 @@ extension Camera: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput,
                        didOutput sampleBuffer: CMSampleBuffer,
                        from connection: AVCaptureConnection) {
-        guard request != nil else { return }
-        if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
-            // Configure for running in real-time.
-            request.recognitionLevel = .accurate
-            request.usesLanguageCorrection = false
-            let requestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer,
-                                                       orientation: textOrientation,
-                                                       options: [:])
-            do {
-                try requestHandler.perform([request])
-            } catch {
-                Log(message: "Could not perform ocr request", event: .error)
-                return
+        if #available(iOS 13.0, *) {
+            guard let request = request as? VNRecognizeTextRequest else { return }
+            if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
+                // Configure for running in real-time.
+                request.recognitionLevel = .accurate
+                request.usesLanguageCorrection = false
+                let requestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer,
+                                                           orientation: textOrientation,
+                                                           options: [:])
+                do {
+                    try requestHandler.perform([request])
+                } catch {
+                    Log(message: "Could not perform ocr request", event: .error)
+                    return
+                }
             }
+        }  else {
+            // Fallback on earlier versions
         }
     }
 }

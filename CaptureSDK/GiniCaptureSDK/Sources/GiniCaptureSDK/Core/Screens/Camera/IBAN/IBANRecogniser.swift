@@ -21,7 +21,7 @@ func extractIBANS(string: String) -> [String] {
     for match in matches {
         if let range = Range(match.range, in: string) {
             let iban = String(string[range]).filter { !$0.isWhitespace }
-            if IBANValidator().isValid(iban: iban){
+            if IBANValidator().isValid(iban: iban) {
                 let germanIBANs = IBANKnowledge().germanIBANRegex.matches(in: iban,
                                                                           options: [],
                                                                           range: NSRange(location: 0, length: iban.count))
