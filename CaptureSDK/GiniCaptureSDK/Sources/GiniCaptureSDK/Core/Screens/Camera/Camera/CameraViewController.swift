@@ -451,7 +451,8 @@ import UIKit
     }
 
     public func addValidationLoadingView() -> UIView {
-        let loadingIndicator = UIActivityIndicatorView(style: .large)
+        //TODO: 12 vs >= 13
+        let loadingIndicator = UIActivityIndicatorView(style: .whiteLarge)
         let blurredView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
         blurredView.alpha = 0
         blurredView.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin]
