@@ -9,7 +9,6 @@ import UIKit
 
 final class IBANsDetectionOverlay: UIView {
     private let configuration = GiniConfiguration.shared
-
     private let textContainer = IBANsTextContainer()
 
     init() {
@@ -40,10 +39,6 @@ final class IBANsDetectionOverlay: UIView {
         ])
     }
 
-    func layoutViews(centeringBy cameraFrame: UIView, on viewController: UIViewController) {
-        layout(centeringBy: cameraFrame, on: viewController)
-    }
-
     private func layout(centeringBy cameraFrame: UIView, on viewController: UIViewController) {
         let correctQRCenterYAnchor = textContainer.centerYAnchor.constraint(equalTo: cameraFrame.topAnchor)
         correctQRCenterYAnchor.priority = .defaultLow
@@ -56,6 +51,10 @@ final class IBANsDetectionOverlay: UIView {
             textContainer.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor,
                                                    constant: 8)
         ])
+    }
+
+    func layoutViews(centeringBy cameraFrame: UIView, on viewController: UIViewController) {
+        layout(centeringBy: cameraFrame, on: viewController)
     }
 
     func setupView(with IBANs: [String]) {

@@ -26,20 +26,17 @@ final class IBANsTextContainer: UIView {
 
     private func setupTitleLabel() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.font = configuration.textStyleFonts[.caption2]
         titleLabel.numberOfLines = 0
-        titleLabel.textColor = .GiniCapture.light1
+        titleLabel.textAlignment = .center
+        titleLabel.font = configuration.textStyleFonts[.caption2]
+        titleLabel.textColor = UIColor.GiniCapture.light1
 
         titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.adjustsFontForContentSizeCategory = true
     }
 
     func setTitle(_ title: String) {
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.12
-        paragraphStyle.alignment = .center
-        let attributes: [NSAttributedString.Key: Any] = [.paragraphStyle: paragraphStyle]
-        titleLabel.attributedText = NSMutableAttributedString(string: title, attributes: attributes)
+        titleLabel.text = title
     }
 
     private func setupConstraints() {
