@@ -96,7 +96,7 @@ final class Camera: NSObject, CameraProtocol {
         if #available(iOS 13.0, *) {
             request = VNRecognizeTextRequest(completionHandler: recognizeTextHandler)
         } else {
-            // Fallback on earlier versions
+            Log(message: "IBAN detection is not supported for iOS 12 or older", event: .warning)
         }
     }
 
@@ -363,35 +363,24 @@ fileprivate extension Camera {
                 return
             }
 
-        var IBANs = Set<String>()
-        let maximumCandidates = 10
-        var concatenated = ""
+            var IBANs = Set<String>()
+            let maximumCandidates = 1
+            var concatenated = ""
 
-        for visionResult in results {
-            // topCandidates return no more than N but can be less than N candidates. The maximum number of candidates returned cannot exceed 10 candidates.
-            guard let candidate = visionResult.topCandidates(maximumCandidates).first else { continue }
+            for visionResult in results {
+                // topCandidates return no more than N but can be less than N candidates. The maximum number of candidates returned cannot exceed 10 candidates.
+                guard let candidate = visionResult.topCandidates(maximumCandidates).first else { continue }
 
-            for result in extractIBANS(string: candidate.string) {
+                for result in extractIBANS(string: candidate.string) {
+                    IBANs.insert(result)
+                }
+                concatenated += candidate.string
+            }
+
+            for result in extractIBANS(string: concatenated) {
                 IBANs.insert(result)
             }
-            concatenated += candidate.string
-        }
 
-        for result in extractIBANS(string: concatenated) {
-            IBANs.insert(result)
-        }
-
-        // TODO: check where we should move this check?! ->
-        // we need to remove iban detection overlay from the screen when no IBAN detected
-        // maybe is better to have a different delegate method for noIBANDetected????
-
-//            let ibans = String(IBANs.reduce("", { (current, iban) -> String in
-//                return current + iban + "\n"
-//                }).dropLast())
-
-            // Found a definite number.
-            // Stop the camera synchronously to ensure that no further buffers are
-            // received. Then update the number view asynchronously.
             sessionQueue.sync {
                 DispatchQueue.main.async {
                     self.didDetectIBANs!(Array(IBANs))
@@ -399,7 +388,7 @@ fileprivate extension Camera {
             }
 
         } else {
-            // Fallback on earlier versions
+            Log(message: "IBAN detection is not supported for iOS 12 or older", event: .warning)
         }
     }
 }
@@ -413,6 +402,7 @@ extension Camera: AVCaptureMetadataOutputObjectsDelegate {
         if metadataObjects.isEmpty {
             return
         }
+        print("DEBUG --- QR code started")
 
         if let metadataObj = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
            metadataObj.type == AVMetadataObject.ObjectType.qr, let metaString = metadataObj.stringValue {
@@ -456,6 +446,7 @@ extension Camera: AVCaptureVideoDataOutputSampleBufferDelegate {
                        didOutput sampleBuffer: CMSampleBuffer,
                        from connection: AVCaptureConnection) {
         if #available(iOS 13.0, *) {
+            print("DEBUG --- IBAN OCR started")
             guard let request = request as? VNRecognizeTextRequest else { return }
             if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
                 // Configure for running in real-time.
@@ -472,7 +463,7 @@ extension Camera: AVCaptureVideoDataOutputSampleBufferDelegate {
                 }
             }
         }  else {
-            // Fallback on earlier versions
+            Log(message: "IBAN detection is not supported for iOS 12 or older", event: .warning)
         }
     }
 }
