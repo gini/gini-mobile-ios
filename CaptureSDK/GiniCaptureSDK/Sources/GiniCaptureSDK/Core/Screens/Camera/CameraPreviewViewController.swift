@@ -150,7 +150,10 @@ final class CameraPreviewViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        camera.startOCR()
+
+        if giniConfiguration.entryPoint == .field {
+            camera.startOCR()
+        }
         setupConstraints()
     }
 
@@ -359,10 +362,13 @@ final class CameraPreviewViewController: UIViewController {
         updateFrameOrientation(with: orientation)
     }
 
-    // TODO: check this
-    func changeFrameColor(to color: UIColor) {
-        cameraFrameView.image = cameraFrameView.image?.tintedImageWithColor(color)
+    func changeQRFrameColor(to color: UIColor) {
+        changeCameraFrameColor(to: color)
         qrCodeFrameView.image = qrCodeFrameView.image?.tintedImageWithColor(color)
+    }
+
+    func changeCameraFrameColor(to color: UIColor) {
+        cameraFrameView.image = cameraFrameView.image?.tintedImageWithColor(color)
     }
 }
 

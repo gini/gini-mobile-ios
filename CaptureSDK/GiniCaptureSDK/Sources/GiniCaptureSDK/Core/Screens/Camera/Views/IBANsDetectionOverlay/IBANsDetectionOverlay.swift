@@ -40,12 +40,27 @@ final class IBANsDetectionOverlay: UIView {
     }
 
     private func layout(centeringBy cameraFrame: UIView, on viewController: UIViewController) {
-        let correctQRCenterYAnchor = textContainer.centerYAnchor.constraint(equalTo: cameraFrame.topAnchor)
-        correctQRCenterYAnchor.priority = .defaultLow
+        let textContainerCenterYAnchor = textContainer.centerYAnchor.constraint(equalTo: cameraFrame.topAnchor)
+        textContainerCenterYAnchor.priority = .defaultLow
 
+        let textContainerWidthConstraint = widthAnchor.constraint(equalToConstant: 189)
+        textContainerWidthConstraint.priority = .init(999)
+
+        let textContainerLeadingConstraint = textContainer.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                                                                   constant: Constants.margins)
+        textContainerLeadingConstraint.priority = .defaultHigh
+
+        //TODO: needs to be fixed!!! width is to big
         NSLayoutConstraint.activate([
+//            textContainer.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
+//            textContainerCenterYAnchor,
+//            textContainer.topAnchor.constraint(greaterThanOrEqualTo: viewController.view.topAnchor,
+//                                               constant: Constants.margins),
+//            textContainerWidthConstraint,
+//            textContainerLeadingConstraint
+
             textContainer.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
-            correctQRCenterYAnchor,
+            textContainerCenterYAnchor,
             textContainer.topAnchor.constraint(greaterThanOrEqualTo: viewController.view.topAnchor,
                                                constant: Constants.margins),
             textContainer.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor,
