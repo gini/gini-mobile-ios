@@ -402,7 +402,6 @@ extension Camera: AVCaptureMetadataOutputObjectsDelegate {
         if metadataObjects.isEmpty {
             return
         }
-        print("DEBUG --- QR code started")
 
         if let metadataObj = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
            metadataObj.type == AVMetadataObject.ObjectType.qr, let metaString = metadataObj.stringValue {
@@ -446,7 +445,6 @@ extension Camera: AVCaptureVideoDataOutputSampleBufferDelegate {
                        didOutput sampleBuffer: CMSampleBuffer,
                        from connection: AVCaptureConnection) {
         if #available(iOS 13.0, *) {
-            print("DEBUG --- IBAN OCR started")
             guard let request = request as? VNRecognizeTextRequest else { return }
             if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
                 // Configure for running in real-time.
