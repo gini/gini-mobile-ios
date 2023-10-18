@@ -174,37 +174,6 @@ import GiniBankAPILibrary
     @objc public var customNavigationController: UINavigationController?
 
     /**
-     Sets the tint color of the UIDocumentPickerViewController navigation bar.
-
-     - note: Use only if you have a custom `UIAppearance` for your UINavigationBar
-     */
-    @objc public var documentPickerNavigationBarTintColor: UIColor?
-
-    /**
-     Sets the background color of an informal notice. Notices are small pieces of
-     information appearing underneath the navigation bar.
-     */
-    @objc public var noticeInformationBackgroundColor = UIColor.black
-
-    /**
-     Sets the text color of an informal notice. Notices are small pieces of
-     information appearing underneath the navigation bar.
-     */
-    @objc public var noticeInformationTextColor = UIColor.white
-
-    /**
-     Sets the background color of an error notice. Notices are small pieces of
-     information appearing underneath the navigation bar.
-     */
-    @objc public var noticeErrorBackgroundColor = UIColor.red
-
-    /**
-     Sets the text color of an error notice. Notices are small pieces of
-     information appearing underneath the navigation bar.
-     */
-    @objc public var noticeErrorTextColor = UIColor.white
-
-    /**
      Indicates whether the open with feature is enabled or not. In case of `true`,
      a new option with the open with tutorial wil be shown in the Help menu.
      */
@@ -226,12 +195,6 @@ import GiniBankAPILibrary
     @objc public var statusBarStyle = UIStatusBarStyle.lightContent
 
     // MARK: Camera options
-
-    /**
-     Sets the color of the loading indicator on the camera screen to the specified color.
-     */
-    @objc public var cameraSetupLoadingIndicatorColor = UIColor.white
-
     /**
      Set the types supported by the file import feature. `GiniCaptureImportFileTypes.none` by default.
      */

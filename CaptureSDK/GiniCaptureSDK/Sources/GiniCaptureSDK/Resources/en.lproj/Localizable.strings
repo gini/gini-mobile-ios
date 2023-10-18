@@ -38,7 +38,7 @@
 "ginicapture.camera.documentValidationError.general" = "The document could not be opened. Please try a different document.";
 "ginicapture.camera.documentValidationError.excedeedFileSize" = "This file is too large.";
 "ginicapture.camera.documentValidationError.tooManyPages" = "The document can only have a maximum of 10 pages.";
-"ginicapture.camera.documentValidationError.wrongFormat" = "Only files of the formats jpg, png, gif or pdf can be analysed.";
+"ginicapture.camera.documentValidationError.wrongFormat" = "Only files of the formats jpg, png, gif or PDF can be analysed.";
 "ginicapture.camera.documentValidationError.pdfPasswordProtected" = "Password protected documents cannot be analysed.";
 "ginicapture.camera.fileImportButtonLabel" = "Files";
 "ginicapture.camera.flashButtonLabel.On.Voice.Over" = "Flash On";
@@ -47,12 +47,12 @@
 "ginicapture.camera.flashButtonLabel.Off" = "Off";
 "ginicapture.camera.thumbnail.Voice.Over" = "Photo review";
 "ginicapture.camera.capturebutton" = "Take picture";
-"ginicapture.camera.infoLabel.invoice.and.qr" = "Scan an invoice or a QR code";
-"ginicapture.camera.infoLabel.only.invoice" = "Scan an invoice";
-"ginicapture.camera.infoLabel.only.qr" = "Scan a QR code";
+"ginicapture.camera.infoLabel.invoice.and.qr" = "Scan invoice or QR code";
+"ginicapture.camera.infoLabel.only.invoice" = "Scan invoice";
+"ginicapture.camera.infoLabel.only.qr" = "Scan QR code";
 "ginicapture.camera.capturedImagesStackLabel" = "Captured documents";
 "ginicapture.camera.qrCodeDetectedPopup.message" = "Use QR code?";
-"ginicapture.camera.unsupportedQrCodeDetectedPopup.message" = "This QR Code does not contain any payment information.";
+"ginicapture.camera.unsupportedQrCodeDetectedPopup.message" = "This QR code does not contain any payment information.";
 "ginicapture.camera.qrCodeDetectedPopup.buttonTitle" = "Continue";
 "ginicapture.camera.mixedarrayspopup.cancel" = "Cancel";
 "ginicapture.camera.mixedarrayspopup.usePhotos" = "Use photos";
@@ -74,17 +74,16 @@
 "ginicapture.onboarding.secondPage" = "Flatten the page";
 "ginicapture.onboarding.thirdPage"  = "Capture the entire page within the frame shown on the camera screen";
 "ginicapture.onboarding.fourthPage" = "Ensure good lighting when photographing the invoice or remittance slip";
-"ginicapture.onboarding.fifthPage"  = "It's now possible to analyse an invoice with multiple pages!";
+"ginicapture.onboarding.fifthPage"  = "It's possible to scan an invoice with multiple pages!";
 
 "ginicapture.onboarding.flatPaper.title"  = "Flat paper within the frame";
 "ginicapture.onboarding.flatPaper.description"  = "Ensure that the document is flat, and positioned within the frame";
 "ginicapture.onboarding.goodLighting.title" = "Good lighting";
-"ginicapture.onboarding.goodLighting.description" = "Proper lighting leads to better results than flash";
+"ginicapture.onboarding.goodLighting.description" = "No flash and proper lighting leads to better results";
 "ginicapture.onboarding.multiPages.title"  = "Add multiple pages";
-"ginicapture.onboarding.multiPages.description"  = "It’s now possible to analyse an invoice with multiple pages";
+"ginicapture.onboarding.multiPages.description"  = "It’s possible to scan an invoice with multiple pages";
 "ginicapture.onboarding.qrCode.title"  = "QR codes supported";
-"ginicapture.onboarding.qrCode.description"  = "Besides invoices, QR codes
-are also supported";
+"ginicapture.onboarding.qrCode.description"  = "Besides invoices, QR codes are also supported";
 "ginicapture.review.documentImageTitle" = "Document";
 "ginicapture.review.unknownError"       = "An unknown error has occurred on the review screen";
 "ginicapture.review.delete"             = "Delete page";
@@ -93,7 +92,7 @@ are also supported";
 "ginicapture.analysis.loadingText" = "Analyzing documents";
 "ginicapture.analysis.loadingText.pdf" = "Analyzing\n%@";
 "ginicapture.analysis.suggestion.1" = "Good lighting";
-"ginicapture.analysis.suggestion.1.details" = "Proper lighting leads to better results than flash";
+"ginicapture.analysis.suggestion.1.details" = "No flash and proper lighting leads to better results";
 "ginicapture.analysis.suggestion.2" = "Flatten the page";
 "ginicapture.analysis.suggestion.2.details" = "A flat paper helps to receive better results";
 "ginicapture.analysis.suggestion.3" = "Position in the frame";
@@ -101,13 +100,13 @@ are also supported";
 "ginicapture.analysis.suggestion.4" = "Parallel";
 "ginicapture.analysis.suggestion.4.details" = "Hold the device parallel over the page";
 "ginicapture.analysis.suggestion.5" = "Multiple pages";
-"ginicapture.analysis.suggestion.5.details" = "It’s now possible to analyse an invoice with multiple pages";
+"ginicapture.analysis.suggestion.5.details" = "It’s possible to scan an invoice with multiple pages";
 "ginicapture.analysis.section.header" = "Useful Tips";
 "ginicapture.analysis.error.actionTitle" = "Retry";
 "ginicapture.analysis.error.documentCreation" = "An error occurred while uploading the document.";
 "ginicapture.analysis.error.analysis" = "An error occurred while parsing the document.";
 "ginicapture.analysis.error.cancelled" = "The analysis was cancelled";
-"ginicapture.analysis.defaultPdfDokumentTitle" = "PDF Document";
+"ginicapture.analysis.defaultPdfDokumentTitle" = "PDF document";
 
 "ginicapture.help.openWithTutorial.title" = "Open documents from other apps";
 
@@ -142,7 +141,7 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.help.supportedFormats.section.1.item.1" = "Computer-generated invoices and remittance slips";
 "ginicapture.help.supportedFormats.section.1.item.2" = "1-sided photos of format jpeg, png or gif";
 "ginicapture.help.supportedFormats.section.1.item.3" = "PDF documents of up to 10 pages";
-"ginicapture.help.supportedFormats.section.1.item.4" = "QR Codes";
+"ginicapture.help.supportedFormats.section.1.item.4" = "QR codes";
 "ginicapture.help.supportedFormats.section.1.item.5" = "Photos of monitors or screens";
 "ginicapture.help.supportedFormats.section.2.title" = "not supported formats";
 "ginicapture.help.supportedFormats.section.2.item.1" = "Handwriting";

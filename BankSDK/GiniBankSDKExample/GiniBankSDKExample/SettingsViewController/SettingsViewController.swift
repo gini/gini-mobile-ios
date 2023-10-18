@@ -103,7 +103,7 @@ final class SettingsViewController: UIViewController {
 		case .pdf_and_images:
 			selectedFileImportTypeSegmentIndex = 2
 		}
-        contentData.append(.segmentedOption(data: .init(optionType: .fileImport, selectedIndex: selectedFileImportTypeSegmentIndex)))
+        contentData.append(.segmentedOption(data: .init(selectedIndex: selectedFileImportTypeSegmentIndex)))
 		
 		contentData.append(.switchOption(data: .init(type: .bottomNavigationBar,
 													 isSwitchOn: giniConfiguration.bottomNavigationBarEnabled)))
@@ -193,16 +193,6 @@ final class SettingsViewController: UIViewController {
 		
 		contentData.append(.switchOption(data: .init(type: .debugModeOn,
 													 isSwitchOn: giniConfiguration.debugModeOn)))
-        var selectedEntryPointSegmentIndex = 0
-        switch giniConfiguration.entryPoint {
-        case .button:
-            selectedEntryPointSegmentIndex = 0
-        case .field:
-            selectedEntryPointSegmentIndex = 1
-        }
-        contentData.append(.segmentedOption(data: .init(optionType: .entryPoint, selectedIndex: selectedEntryPointSegmentIndex)))
-
-		
 		self.contentData = contentData
 	}
 	
@@ -538,10 +528,8 @@ extension SettingsViewController: SegmentedOptionTableViewCellDelegate {
 		let option = contentData[cell.tag]
 		guard case .segmentedOption(var data) = option else { return }
         data.selectedIndex = cell.selectedSegmentIndex
-
-        switch data.optionType {
-        case .fileImport:
-            switch data.selectedIndex {
+        
+        switch data.selectedIndex {
             case 0:
                 giniConfiguration.fileImportSupportedTypes = .none
             case 1:
@@ -549,17 +537,6 @@ extension SettingsViewController: SegmentedOptionTableViewCellDelegate {
             case 2:
                 giniConfiguration.fileImportSupportedTypes = .pdf_and_images
             default: return
-        }
-            
-        case .entryPoint:
-            switch data.selectedIndex {
-            case 0:
-                giniConfiguration.entryPoint = .button
-            case 1:
-                giniConfiguration.entryPoint = .field
-            default:
-                return
-            }
         }
 	}
 }
