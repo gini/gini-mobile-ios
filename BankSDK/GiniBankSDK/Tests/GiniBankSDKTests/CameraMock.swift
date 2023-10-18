@@ -10,7 +10,7 @@ import AVFoundation
 @testable import GiniCaptureSDK
 
 final class CameraMock: CameraProtocol {
-    var didDetectIbanHandler: ((String?) -> Void)?
+    var didDetectIBANs: (([String]) -> Void)?
 
     func startOCR() {
     }
