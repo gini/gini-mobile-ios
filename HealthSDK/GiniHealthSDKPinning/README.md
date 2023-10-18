@@ -20,7 +20,7 @@ Further documentation with installation, integration or customization guides can
 
 ## Example apps
 
-We are providing example app for Swift. This app demonstrates how to integrate the Gini Health SDK with the Component API of Gini Capture library.
+We are providing example app for Swift. This app demonstrates how to integrate the Gini Health SDK with the [Gini Capture SDK](https://gini.atlassian.net/wiki/spaces/ICSV/overview).
 Please, find more details [`here`](https://github.com/gini/gini-mobile-ios/tree/main/HealthSDK/GiniHealthSDK#example-apps)
 
 ## Requirements

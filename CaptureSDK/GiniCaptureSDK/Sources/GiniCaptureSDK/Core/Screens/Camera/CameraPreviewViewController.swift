@@ -40,7 +40,7 @@ final class CameraPreviewViewController: UIViewController {
     private lazy var spinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView()
         spinner.setLargeStyle()
-        spinner.color = self.giniConfiguration.cameraSetupLoadingIndicatorColor
+        spinner.color = GiniColor(light: .GiniCapture.light1, dark: .GiniCapture.dark1).uiColor()
         spinner.hidesWhenStopped = true
         return spinner
     }()
