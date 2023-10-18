@@ -471,12 +471,16 @@ import UIKit
 
      // MARK: - IBANs Detection
      private func showIBANFeedback(_ IBANs: [String]) {
+         isValidIBANDetected = !IBANs.isEmpty
          guard isValidIBANDetected else {
              hideIBANOverlay()
              return
         }
 
          if !validQRCodeProcessing {
+             if !qrCodeOverLay.isHidden {
+                 resetQRCodeScanning(isValid: false)
+             }
              showIBANOverlay(with: IBANs)
          }
      }
@@ -488,13 +492,7 @@ import UIKit
              self.cameraPreviewViewController.changeCameraFrameColor(to: .GiniCapture.success2)
          }
 
-         //TODO: maybe we should remove this, but I'm keeping for now for testing
-         // Haptic feedback
-         let generator = UINotificationFeedbackGenerator()
-         generator.notificationOccurred(.success)
-
          ibanDetectionOverLay.configureOverlay(hidden: false)
-
          ibanDetectionOverLay.setupView(with: IBANs)
      }
 
