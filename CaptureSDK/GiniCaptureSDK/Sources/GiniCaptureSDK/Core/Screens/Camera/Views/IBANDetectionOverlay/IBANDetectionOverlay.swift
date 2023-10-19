@@ -32,8 +32,7 @@ final class IBANDetectionOverlay: UIView {
     private func layout(centeringBy cameraFrame: UIView, on viewController: UIViewController) {
         NSLayoutConstraint.activate([
             textContainer.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
-            textContainer.topAnchor.constraint(greaterThanOrEqualTo: cameraFrame.topAnchor,
-                                               constant: Constants.margins),
+            textContainer.topAnchor.constraint(greaterThanOrEqualTo: cameraFrame.topAnchor),
             textContainer.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor,
                                                    constant: Constants.leadingMargin)
         ])
@@ -65,7 +64,6 @@ final class IBANDetectionOverlay: UIView {
     }
 
     private enum Constants {
-        static let margins: CGFloat = 16
         static let cornerRadius: CGFloat = 8
         static let leadingMargin: CGFloat = 8
     }
