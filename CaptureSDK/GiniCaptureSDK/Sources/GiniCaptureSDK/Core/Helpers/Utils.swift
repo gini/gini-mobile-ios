@@ -58,23 +58,3 @@ extension UIButton {
         effectView?.removeFromSuperview()
     }
 }
-
-extension UIActivityIndicatorView {
-    func setLargeStyle() {
-        if #available(iOS 13.0, *) {
-            self.style = .large
-        } else {
-            self.style = .whiteLarge
-        }
-    }
-}
-
-extension String {
-    func split(every length: Int, by separator: String = " ") -> String {
-        guard length > 0 && length < count else { return self }
-
-        return (0 ... (count - 1) / length).map {
-            dropFirst($0 * length).prefix(length)
-        }.joined(separator: separator)
-    }
-}

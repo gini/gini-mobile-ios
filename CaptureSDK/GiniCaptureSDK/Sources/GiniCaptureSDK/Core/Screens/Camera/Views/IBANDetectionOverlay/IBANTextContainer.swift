@@ -1,5 +1,5 @@
 //
-//  IBANsTextContainer.swift
+//  IBANTextContainer.swift
 //
 //
 //  Created by Valentina Iancu on 16.10.23.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class IBANsTextContainer: UIView {
+final class IBANTextContainer: UIView {
     private let configuration = GiniConfiguration.shared
 
     private let titleLabel = UILabel()
@@ -45,15 +45,15 @@ final class IBANsTextContainer: UIView {
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.titleTopBottomSpacing),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.titleLeftRightSpacing),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.labelTopMargin),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.labelLeftMargin),
             widthConstraint
         ])
     }
 
     private enum Constants {
-        static let titleLeftRightSpacing: CGFloat = 8
-        static let titleTopBottomSpacing: CGFloat = 12
+        static let labelLeftMargin: CGFloat = 8
+        static let labelTopMargin: CGFloat = 12
         static let labelWidth: CGFloat = UIDevice.current.isIpad ? 290 : 189
     }
 }

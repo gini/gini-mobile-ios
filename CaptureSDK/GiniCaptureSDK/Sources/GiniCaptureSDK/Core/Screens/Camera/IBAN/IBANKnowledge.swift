@@ -28,18 +28,20 @@ final class IBANKnowledge {
     }
 
     var countryCodesRegex: NSRegularExpression {
-        try! NSRegularExpression(pattern: "(?:\(countryCodes.joined(separator: "|")))")
+        return NSRegularExpression("(?:\(countryCodes.joined(separator: "|")))")
     }
 
-    var universalIBANRegex : NSRegularExpression {
-        try! NSRegularExpression(pattern: "\\b(\(countryCodesRegex.pattern)) ?(\\d?\\d)?([-\\p{Alnum}]{11,50}\\p{Alnum}|[\\p{Alnum}]{11,30})\\b")
+    var universalIBANRegex: NSRegularExpression {
+        let pattern = countryCodesRegex.pattern
+        return NSRegularExpression("\\b(\(pattern)) ?(\\d?\\d)?([-\\p{Alnum}]{11,50}\\p{Alnum}|[\\p{Alnum}]{11,30})\\b")
     }
 
-    var ibanInBlocksRegex : NSRegularExpression {
-        try! NSRegularExpression(pattern: "\\b(\(countryCodesRegex.pattern)) ?\\d{2}(\\s{0,3}[a-zA-Z0-9]{4}){3,8}(\\s{0,3}[a-zA-Z0-9]{1,4})\\b")
+    var ibanInBlocksRegex: NSRegularExpression {
+        let pattern = countryCodesRegex.pattern
+        return NSRegularExpression("\\b(\(pattern)) ?\\d{2}(\\s{0,3}[a-zA-Z0-9]{4}){3,8}(\\s{0,3}[a-zA-Z0-9]{1,4})\\b")
     }
 
-    var germanIBANRegex : NSRegularExpression {
-        try! NSRegularExpression(pattern: "^DE\\d{\(countryIbanDictionary["DE"]! - 2)}$")
+    var germanIBANRegex: NSRegularExpression {
+        return NSRegularExpression("^DE\\d{\(countryIbanDictionary["DE"]! - 2)}$")
     }
 }

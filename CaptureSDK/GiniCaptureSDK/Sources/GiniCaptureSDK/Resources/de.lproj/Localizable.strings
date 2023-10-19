@@ -202,5 +202,5 @@
 "ginicapture.QRscanning.incorrect.description" = "Dieser Code enthält keine Zahlungsinformationen. Bitte anderen QR-Code oder Rechnung abfotografieren.";
 "ginicapture.QRscanning.loading" = "Rechnung wird übermittelt";
 
-"ginicapture.IBANDetection.multipleIBANsDetected" = "IBAN erkannt";
-"ginicapture.IBANDetection.takePhoto" = "Machen Sie ein Foto";
+"ginicapture.ibandetection.multipleibansdetected" = "IBAN erkannt";
+"ginicapture.ibandetection.takephoto" = "Machen Sie ein Foto";
