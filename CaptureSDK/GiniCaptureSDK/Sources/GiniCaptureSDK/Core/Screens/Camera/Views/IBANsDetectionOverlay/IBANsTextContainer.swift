@@ -40,16 +40,20 @@ final class IBANsTextContainer: UIView {
     }
 
     private func setupConstraints() {
+        let widthConstraint = widthAnchor.constraint(equalToConstant: Constants.labelWidth)
+        widthConstraint.priority = .init(750)
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Constants.titleTopBottomSpacing),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.titleLeftRightSpacing)
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.titleLeftRightSpacing),
+            widthConstraint
         ])
     }
 
     private enum Constants {
         static let titleLeftRightSpacing: CGFloat = 8
         static let titleTopBottomSpacing: CGFloat = 12
+        static let labelWidth: CGFloat = UIDevice.current.isIpad ? 290 : 189
     }
 }

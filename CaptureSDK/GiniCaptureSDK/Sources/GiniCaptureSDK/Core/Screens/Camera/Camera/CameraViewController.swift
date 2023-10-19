@@ -153,7 +153,6 @@ import UIKit
         configureTitle()
 
         if qrCodeScanningOnlyEnabled {
-            // TODO: Check this when IBAN and QR in the screen
             cameraPane.alpha = 0
             if giniConfiguration.bottomNavigationBarEnabled {
                 configureCustomTopNavigationBar(containsImage: false)
@@ -401,7 +400,7 @@ import UIKit
             ibanDetectionOverLay.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             ibanDetectionOverLay.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             ibanDetectionOverLay.topAnchor.constraint(equalTo: view.topAnchor),
-            
+
             cameraPreviewViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
             cameraPreviewViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             cameraPreviewViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -500,7 +499,9 @@ import UIKit
          guard !ibanDetectionOverLay.isHidden else { return }
          UIView.animate(withDuration: 0.3) {
              self.ibanDetectionOverLay.isHidden = true
-             self.cameraPreviewViewController.changeCameraFrameColor(to: .GiniCapture.light1)
+             if self.qrCodeOverLay.isHidden {
+                 self.cameraPreviewViewController.changeCameraFrameColor(to: .GiniCapture.light1)
+             }
          }
          ibanDetectionOverLay.configureOverlay(hidden: true)
      }
