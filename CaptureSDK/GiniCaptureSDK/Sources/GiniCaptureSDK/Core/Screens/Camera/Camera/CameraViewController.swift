@@ -497,6 +497,7 @@ import UIKit
      }
 
      private func hideIBANOverlay() {
+         guard !ibanDetectionOverLay.isHidden else { return }
          UIView.animate(withDuration: 0.3) {
              self.ibanDetectionOverLay.isHidden = true
              self.cameraPreviewViewController.changeCameraFrameColor(to: .GiniCapture.light1)
