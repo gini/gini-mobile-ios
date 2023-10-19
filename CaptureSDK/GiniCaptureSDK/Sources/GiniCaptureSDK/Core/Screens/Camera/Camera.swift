@@ -10,7 +10,6 @@ import UIKit
 import AVFoundation
 import Photos
 import Vision
-import Foundation
 
 protocol CameraProtocol: AnyObject {
     var session: AVCaptureSession { get }
@@ -128,7 +127,7 @@ final class Camera: NSObject, CameraProtocol {
         }
     }
 
-    private func setZoomForSmallText(captureDevice: AVCaptureDevice) {
+    private func applyZoomForSmallText(captureDevice: AVCaptureDevice) {
         // Set zoom and autofocus to help focus on very small text.
         do {
             try captureDevice.lockForConfiguration()
@@ -162,7 +161,7 @@ final class Camera: NSObject, CameraProtocol {
 
                 do {
                     self.videoDeviceInput = try AVCaptureDeviceInput(device: captureDevice)
-                    self.setZoomForSmallText(captureDevice: captureDevice)
+                    self.applyZoomForSmallText(captureDevice: captureDevice)
                 } catch {
                     completion(.notAuthorizedToUseDevice) // shouldn't happen
                 }
@@ -363,27 +362,24 @@ fileprivate extension Camera {
                 return
             }
 
-            var IBANs = Set<String>()
+            var ibans = Set<String>()
             let maximumCandidates = 1
-            var concatenated = ""
 
             for visionResult in results {
                 // topCandidates return no more than N but can be less than N candidates. The maximum number of candidates returned cannot exceed 10 candidates.
                 guard let candidate = visionResult.topCandidates(maximumCandidates).first else { continue }
 
                 for result in extractIBANS(string: candidate.string) {
-                    IBANs.insert(result)
+                    ibans.insert(result)
                 }
-                concatenated += candidate.string
             }
 
-            for result in extractIBANS(string: concatenated) {
-                IBANs.insert(result)
-            }
-
+            // Found a definite number.
+            // Stop the camera synchronously to ensure that no further buffers are
+            // received. Then update the number view asynchronously.
             sessionQueue.sync {
                 DispatchQueue.main.async {
-                    self.didDetectIBANs!(Array(IBANs))
+                    self.didDetectIBANs!(Array(ibans))
                 }
             }
 

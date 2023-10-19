@@ -30,8 +30,8 @@ import UIKit
          return view
      }()
 
-     private lazy var ibanDetectionOverLay: IBANsDetectionOverlay = {
-         let view = IBANsDetectionOverlay()
+     private lazy var ibanDetectionOverLay: IBANDetectionOverlay = {
+         let view = IBANDetectionOverlay()
          view.isHidden = true
          view.translatesAutoresizingMaskIntoConstraints = false
          return view
@@ -453,7 +453,7 @@ import UIKit
 
     public func addValidationLoadingView() -> UIView {
         let loadingIndicator = UIActivityIndicatorView()
-        loadingIndicator.setLargeStyle()
+        loadingIndicator.applyLargeStyle()
         let blurredView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
         blurredView.alpha = 0
         blurredView.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin]
@@ -589,8 +589,8 @@ import UIKit
 
 extension CameraViewController: CameraPreviewViewControllerDelegate {
     func cameraPreview(_ viewController: CameraPreviewViewController,
-                       didDetectIBANs IBANs: [String]) {
-        showIBANFeedback(IBANs)
+                       didDetectIBANs ibans: [String]) {
+        showIBANFeedback(ibans)
     }
 
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,

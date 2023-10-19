@@ -18,7 +18,7 @@ protocol CameraPreviewViewControllerDelegate: AnyObject {
                         camera: CameraProtocol)
     func notAuthorized()
     func cameraPreview(_ viewController: CameraPreviewViewController,
-                       didDetectIBANs IBANs: [String])
+                       didDetectIBANs ibans: [String])
 }
 
 final class CameraPreviewViewController: UIViewController {
@@ -39,7 +39,7 @@ final class CameraPreviewViewController: UIViewController {
 
     private lazy var spinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView()
-        spinner.setLargeStyle()
+        spinner.applyLargeStyle()
         spinner.color = GiniColor(light: .GiniCapture.light1, dark: .GiniCapture.dark1).uiColor()
         spinner.hidesWhenStopped = true
         return spinner
@@ -229,10 +229,6 @@ final class CameraPreviewViewController: UIViewController {
             cameraFrameViewHeightAnchorPortrait.isActive = !isLandscape
             cameraFrameViewHeightAnchorLandscape.isActive = isLandscape
 
-            // Full Vision ROI to AVF transform.
-            visionToAVFTransform = roiToGlobalTransform.concatenating(bottomToTopTransform)
-                                                       .concatenating(uiRotationTransform)
-
             if let image = cameraFrameView.image?.cgImage {
                 if isLandscape {
                     cameraFrameView.image = UIImage(cgImage: image, scale: 1.0, orientation: .left)
@@ -330,9 +326,9 @@ final class CameraPreviewViewController: UIViewController {
             }
         }
 
-        camera.didDetectIBANs = { [weak self] IBANs in
+        camera.didDetectIBANs = { [weak self] ibans in
             guard let self = self else { return }
-            self.delegate?.cameraPreview(self, didDetectIBANs: IBANs)
+            self.delegate?.cameraPreview(self, didDetectIBANs: ibans)
         }
     }
 
