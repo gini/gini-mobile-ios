@@ -40,28 +40,9 @@ final class IBANsDetectionOverlay: UIView {
     }
 
     private func layout(centeringBy cameraFrame: UIView, on viewController: UIViewController) {
-        let textContainerCenterYAnchor = textContainer.centerYAnchor.constraint(equalTo: cameraFrame.topAnchor)
-        textContainerCenterYAnchor.priority = .defaultLow
-
-        let textContainerWidthConstraint = widthAnchor.constraint(equalToConstant: 189)
-        textContainerWidthConstraint.priority = .init(999)
-
-        let textContainerLeadingConstraint = textContainer.leadingAnchor.constraint(equalTo: leadingAnchor,
-                                                                                   constant: Constants.margins)
-        textContainerLeadingConstraint.priority = .defaultHigh
-
-        //TODO: needs to be fixed!!! width is to big
         NSLayoutConstraint.activate([
-//            textContainer.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
-//            textContainerCenterYAnchor,
-//            textContainer.topAnchor.constraint(greaterThanOrEqualTo: viewController.view.topAnchor,
-//                                               constant: Constants.margins),
-//            textContainerWidthConstraint,
-//            textContainerLeadingConstraint
-
             textContainer.centerXAnchor.constraint(equalTo: cameraFrame.centerXAnchor),
-            textContainerCenterYAnchor,
-            textContainer.topAnchor.constraint(greaterThanOrEqualTo: viewController.view.topAnchor,
+            textContainer.topAnchor.constraint(greaterThanOrEqualTo: cameraFrame.topAnchor,
                                                constant: Constants.margins),
             textContainer.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor,
                                                    constant: 8)
@@ -76,9 +57,12 @@ final class IBANsDetectionOverlay: UIView {
         let takePhotoString = NSLocalizedStringPreferredFormat("ginicapture.IBANDetection.takePhoto",
                                                                comment: "IBAN Detection")
         if IBANs.count == 1 {
-            textContainer.setTitle("\(IBANs[0])\n\n\(takePhotoString)")
+            let iban = IBANs[0].split(every: 4)
+            textContainer.setTitle("\(iban)\n\n\(takePhotoString)")
         } else {
-            textContainer.setTitle("IBAN Detected\n\n\(takePhotoString)")
+            let ibanDetectedString = NSLocalizedStringPreferredFormat("ginicapture.IBANDetection.multipleIBANsDetected",
+                                                                      comment: "Multiple IBAN detected")
+            textContainer.setTitle("\(ibanDetectedString)\n\n\(takePhotoString)")
         }
     }
 
