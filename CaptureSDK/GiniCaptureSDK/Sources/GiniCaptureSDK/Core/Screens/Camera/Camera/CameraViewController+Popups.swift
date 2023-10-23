@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - Document import
 
-extension Camera2ViewController {
+extension CameraViewController {
 
     @objc func showImportFileSheet() {
         let alertViewController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)

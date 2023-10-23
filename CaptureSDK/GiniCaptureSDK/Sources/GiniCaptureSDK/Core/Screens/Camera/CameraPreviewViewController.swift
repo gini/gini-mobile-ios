@@ -7,6 +7,7 @@
 
 import UIKit
 import AVFoundation
+import Vision
 
 protocol CameraPreviewViewControllerDelegate: AnyObject {
     func cameraPreview(_ viewController: CameraPreviewViewController,
@@ -16,6 +17,8 @@ protocol CameraPreviewViewControllerDelegate: AnyObject {
     func cameraDidSetUp(_ viewController: CameraPreviewViewController,
                         camera: CameraProtocol)
     func notAuthorized()
+    func cameraPreview(_ viewController: CameraPreviewViewController,
+                       didDetectIBANs ibans: [String])
 }
 
 final class CameraPreviewViewController: UIViewController {
@@ -35,7 +38,8 @@ final class CameraPreviewViewController: UIViewController {
     }
 
     private lazy var spinner: UIActivityIndicatorView = {
-        let spinner = UIActivityIndicatorView(style: .whiteLarge)
+        let spinner = UIActivityIndicatorView()
+        spinner.applyLargeStyle()
         spinner.color = GiniColor(light: .GiniCapture.light1, dark: .GiniCapture.dark1).uiColor()
         spinner.hidesWhenStopped = true
         return spinner
@@ -60,6 +64,13 @@ final class CameraPreviewViewController: UIViewController {
     private lazy var qrCodeScanningOnlyEnabled: Bool = {
         return giniConfiguration.qrCodeScanningEnabled && giniConfiguration.onlyQRCodeScanningEnabled
     }()
+
+    // Transform from UI orientation to buffer orientation.
+    private var uiRotationTransform = CGAffineTransform.identity
+    // Transform bottom-left coordinates to top-left.
+    private var bottomToTopTransform = CGAffineTransform(scaleX: 1, y: -1).translatedBy(x: 0, y: -1)
+    // Transform coordinates in ROI to global coordinates (still normalized).
+    private var roiToGlobalTransform = CGAffineTransform.identity
 
     private var notAuthorizedView: UIView?
     private let giniConfiguration: GiniConfiguration
@@ -87,8 +98,9 @@ final class CameraPreviewViewController: UIViewController {
             return UIImageNamedPreferred(named: "cameraDefaultDocumentImage")
         }
     }
-
-    var isAuthorized = false
+    // Vision -> AVF coordinate transform.
+    private var visionToAVFTransform = CGAffineTransform.identity
+    private var isAuthorized = false
 
     lazy var previewView: CameraPreviewView = {
         let previewView = CameraPreviewView()
@@ -130,7 +142,7 @@ final class CameraPreviewViewController: UIViewController {
         addLoadingIndicator()
     }
 
-    public override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         camera.start()
         startLoadingIndicator()
@@ -139,6 +151,9 @@ final class CameraPreviewViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if giniConfiguration.entryPoint == .field {
+            camera.startOCR()
+        }
         setupConstraints()
     }
 
@@ -177,7 +192,7 @@ final class CameraPreviewViewController: UIViewController {
                                                         constant: -bottomControlHeight-Constants.padding),
                 cameraFrameView.widthAnchor.constraint(equalTo: cameraFrameView.heightAnchor,
                                                        multiplier: 1 / Constants.a4AspectRatio)
-                ])
+            ])
         }
 
         NSLayoutConstraint.activate([
@@ -193,12 +208,12 @@ final class CameraPreviewViewController: UIViewController {
         ])
     }
 
-    public override func viewWillDisappear(_ animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         camera.stop()
     }
 
-    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
         coordinator.animate(alongsideTransition: { [weak self] _ in
@@ -223,9 +238,12 @@ final class CameraPreviewViewController: UIViewController {
 
             }
         }
+        // Full Vision ROI to AVF transform.
+        visionToAVFTransform = roiToGlobalTransform.concatenating(bottomToTopTransform)
+                                                   .concatenating(uiRotationTransform)
     }
 
-    public override func viewWillLayoutSubviews() {
+    override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         spinner.center = previewView.center
     }
@@ -307,6 +325,11 @@ final class CameraPreviewViewController: UIViewController {
                 self.delegate?.cameraPreview(self, didDetectInvalid: qrDocument)
             }
         }
+
+        camera.didDetectIBANs = { [weak self] ibans in
+            guard let self = self else { return }
+            self.delegate?.cameraPreview(self, didDetectIBANs: ibans)
+        }
     }
 
     func addLoadingIndicator() {
@@ -335,9 +358,13 @@ final class CameraPreviewViewController: UIViewController {
         updateFrameOrientation(with: orientation)
     }
 
-    func changeFrameColor(to color: UIColor) {
-        cameraFrameView.image = cameraFrameView.image?.tintedImageWithColor(color)
+    func changeQRFrameColor(to color: UIColor) {
+        changeCameraFrameColor(to: color)
         qrCodeFrameView.image = qrCodeFrameView.image?.tintedImageWithColor(color)
+    }
+
+    func changeCameraFrameColor(to color: UIColor) {
+        cameraFrameView.image = cameraFrameView.image?.tintedImageWithColor(color)
     }
 }
 

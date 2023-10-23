@@ -5,4 +5,4 @@
 //  Created by Nadya Karaban on 04.11.21.
 //
 
-public let GiniBankSDKVersion = "3.4.0"
+public let GiniBankSDKVersion = "3.5.0"
