@@ -11,7 +11,7 @@ func extractIBANS(string: String) -> [String] {
     var prefferedIBANs = [String]()
     let stringRange = NSRange(location: 0, length: string.count)
     let allIBANs = IBANKnowledge().universalIBANRegex.matches(in: string, options: [], range: stringRange)
-    let iBANsInBlocks = IBANKnowledge().ibanInBlocksRegex.matches(in: string,options: [], range: stringRange)
+    let iBANsInBlocks = IBANKnowledge().ibanInBlocksRegex.matches(in: string, options: [], range: stringRange)
     let matches = allIBANs + iBANsInBlocks
 
     for match in matches {
