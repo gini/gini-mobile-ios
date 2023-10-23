@@ -10,6 +10,11 @@ import AVFoundation
 @testable import GiniCaptureSDK
 
 final class CameraMock: CameraProtocol {
+    var didDetectIBANs: (([String]) -> Void)?
+
+    func startOCR() {
+    }
+
     var didDetectInvalidQR: ((GiniCaptureSDK.GiniQRCodeDocument) -> Void)?
     
     enum CameraAuthState {

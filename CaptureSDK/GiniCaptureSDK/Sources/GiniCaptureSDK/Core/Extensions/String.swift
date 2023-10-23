@@ -24,4 +24,12 @@ extension String {
             return String(format: resource.localizedFormat, arguments: args)
         }
     }
+
+    func split(every length: Int, by separator: String = " ") -> String {
+        guard length > 0 && length < count else { return self }
+
+        return (0 ... (count - 1) / length).map {
+            dropFirst($0 * length).prefix(length)
+        }.joined(separator: separator)
+    }
 }

@@ -90,7 +90,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
     func createCameraViewController() -> CameraScreen {
         let cameraButtonsViewModel = createCameraButtonsViewModel()
 
-        let cameraViewController = Camera2ViewController(
+        let cameraViewController = CameraViewController(
             giniConfiguration: giniConfiguration,
             viewModel: cameraButtonsViewModel
         )

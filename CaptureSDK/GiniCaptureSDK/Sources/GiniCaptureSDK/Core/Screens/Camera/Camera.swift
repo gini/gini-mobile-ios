@@ -9,12 +9,14 @@
 import UIKit
 import AVFoundation
 import Photos
+import Vision
 
 protocol CameraProtocol: AnyObject {
     var session: AVCaptureSession { get }
     var videoDeviceInput: AVCaptureDeviceInput? { get }
     var didDetectQR: ((GiniQRCodeDocument) -> Void)? { get set }
     var didDetectInvalidQR: ((GiniQRCodeDocument) -> Void)? { get set }
+    var didDetectIBANs: (([String]) -> Void)? { get set }
     var isFlashSupported: Bool { get }
     var isFlashOn: Bool { get set }
 
@@ -28,6 +30,7 @@ protocol CameraProtocol: AnyObject {
     func setupQRScanningOutput(completion: @escaping ((CameraError?) -> Void))
     func start()
     func stop()
+    func startOCR()
 }
 
 final class Camera: NSObject, CameraProtocol {
@@ -36,13 +39,17 @@ final class Camera: NSObject, CameraProtocol {
     var didDetectQR: ((GiniQRCodeDocument) -> Void)?
     var didDetectInvalidQR: ((GiniQRCodeDocument) -> Void)?
     var didCaptureImageHandler: ((Data?, CameraError?) -> Void)?
+    var didDetectIBANs: (([String]) -> Void)?
 
     // Session management
     var giniConfiguration: GiniConfiguration
     var isFlashOn: Bool
     var photoOutput: AVCapturePhotoOutput?
     var session: AVCaptureSession = AVCaptureSession()
+    let sessionQueue = DispatchQueue(label: "session queue")
     var videoDeviceInput: AVCaptureDeviceInput?
+    var videoDataOutput = AVCaptureVideoDataOutput()
+    let videoDataOutputQueue = DispatchQueue(label: "ocr queue")
 
     lazy var isFlashSupported: Bool = {
         #if targetEnvironment(simulator)
@@ -56,7 +63,10 @@ final class Camera: NSObject, CameraProtocol {
     }()
 
     fileprivate let application: UIApplication
-    fileprivate let sessionQueue = DispatchQueue(label: "session queue")
+
+    private var request: VNImageBasedRequest?
+
+    private var textOrientation = CGImagePropertyOrientation.up
 
     init(application: UIApplication = UIApplication.shared,
          giniConfiguration: GiniConfiguration) {
@@ -67,16 +77,25 @@ final class Camera: NSObject, CameraProtocol {
     }
 
     fileprivate func configureSession(completion: @escaping ((CameraError?) -> Void)) {
-        self.session.beginConfiguration()
-        self.setupInput()
-        self.setupPhotoCaptureOutput()
-        self.session.commitConfiguration()
+        session.beginConfiguration()
+        setupInput()
+        setupPhotoCaptureOutput()
+        configureVideoDataOutput()
+        session.commitConfiguration()
         if giniConfiguration.qrCodeScanningEnabled {
-            self.setupQRScanningOutput(completion: completion)
+            setupQRScanningOutput(completion: completion)
         } else {
             DispatchQueue.main.async {
                 completion(nil)
             }
+        }
+    }
+
+    func startOCR() {
+        if #available(iOS 13.0, *) {
+            request = VNRecognizeTextRequest(completionHandler: recognizeTextHandler)
+        } else {
+            Log(message: "IBAN detection is not supported for iOS 12 or older", event: .warning)
         }
     }
 
@@ -108,16 +127,41 @@ final class Camera: NSObject, CameraProtocol {
         }
     }
 
-    func setup(completion: @escaping ((CameraError?) -> Void)) {
+    private func applyZoomForSmallText(captureDevice: AVCaptureDevice) {
+        // Set zoom and autofocus to help focus on very small text.
+        do {
+            try captureDevice.lockForConfiguration()
+            captureDevice.videoZoomFactor = 2
+            captureDevice.autoFocusRangeRestriction = .near
+            captureDevice.unlockForConfiguration()
+        } catch {
+            Log(message: "Could not lock device for configuration", event: .error)
+            return
+        }
+    }
 
+    func setup(completion: @escaping ((CameraError?) -> Void)) {
+        // Set up vision request before letting ViewController set up the camera
+        // so that it exists when the first buffer is received.
         setupCaptureDevice { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .failure(let cameraError):
                 completion(cameraError)
             case .success(let captureDevice):
+                // NOTE:
+                // Requesting 4k buffers allows recognition of smaller text but will
+                // consume more power. Use the smallest buffer size necessary to keep
+                // down battery usage.
+                if captureDevice.supportsSessionPreset(.hd4K3840x2160) {
+                    self.session.sessionPreset = AVCaptureSession.Preset.hd4K3840x2160
+                } else {
+                    self.session.sessionPreset = AVCaptureSession.Preset.hd1920x1080
+                }
+
                 do {
                     self.videoDeviceInput = try AVCaptureDeviceInput(device: captureDevice)
+                    self.applyZoomForSmallText(captureDevice: captureDevice)
                 } catch {
                     completion(.notAuthorizedToUseDevice) // shouldn't happen
                 }
@@ -294,6 +338,55 @@ fileprivate extension Camera {
         session.addOutput(output)
         photoOutput = output
     }
+
+    func configureVideoDataOutput() {
+        // Configure video data output.
+        videoDataOutput.alwaysDiscardsLateVideoFrames = true
+        videoDataOutput.setSampleBufferDelegate(self, queue: videoDataOutputQueue)
+        videoDataOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_420YpCbCr8BiPlanarFullRange]
+        if !session.canAddOutput(videoDataOutput) {
+            for output in session.outputs {
+                session.removeOutput(output)
+            }
+        }
+        session.addOutput(videoDataOutput)
+    }
+
+    // MARK: - Text recognition
+
+    // Vision recognition handler.
+    func recognizeTextHandler(request: VNRequest, error: Error?) {
+
+        if #available(iOS 13.0, *) {
+            guard let results = request.results as? [VNRecognizedTextObservation] else {
+                return
+            }
+
+            var ibans = Set<String>()
+            let maximumCandidates = 1
+
+            for visionResult in results {
+                // topCandidates return no more than N but can be less than N candidates. The maximum number of candidates returned cannot exceed 10 candidates.
+                guard let candidate = visionResult.topCandidates(maximumCandidates).first else { continue }
+
+                for result in extractIBANS(string: candidate.string) {
+                    ibans.insert(result)
+                }
+            }
+
+            // Found a definite number.
+            // Stop the camera synchronously to ensure that no further buffers are
+            // received. Then update the number view asynchronously.
+            sessionQueue.sync {
+                DispatchQueue.main.async {
+                    self.didDetectIBANs!(Array(ibans))
+                }
+            }
+
+        } else {
+            Log(message: "IBAN detection is not supported for iOS 12 or older", event: .warning)
+        }
+    }
 }
 
 // MARK: - AVCaptureMetadataOutputObjectsDelegate
@@ -338,4 +431,33 @@ extension Camera: AVCapturePhotoCaptureDelegate {
         }
     }
 
+}
+
+// MARK: - AVCaptureVideoDataOutputSampleBufferDelegate
+
+extension Camera: AVCaptureVideoDataOutputSampleBufferDelegate {
+
+    func captureOutput(_ output: AVCaptureOutput,
+                       didOutput sampleBuffer: CMSampleBuffer,
+                       from connection: AVCaptureConnection) {
+        if #available(iOS 13.0, *) {
+            guard let request = request as? VNRecognizeTextRequest else { return }
+            if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
+                // Configure for running in real-time.
+                request.recognitionLevel = .accurate
+                request.usesLanguageCorrection = false
+                let requestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer,
+                                                           orientation: textOrientation,
+                                                           options: [:])
+                do {
+                    try requestHandler.perform([request])
+                } catch {
+                    Log(message: "Could not perform ocr request", event: .error)
+                    return
+                }
+            }
+        }  else {
+            Log(message: "IBAN detection is not supported for iOS 12 or older", event: .warning)
+        }
+    }
 }

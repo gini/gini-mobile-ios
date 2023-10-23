@@ -199,3 +199,6 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.QRscanning.incorrect.title" = "Unkown QR code";
 "ginicapture.QRscanning.incorrect.description" = "This code does not contain any payment details. Please use another QR code or take an image of your invoice.";
 "ginicapture.QRscanning.loading" = "Retrieving invoice";
+
+"ginicapture.ibandetection.multipleibansdetected" = "IBAN detected";
+"ginicapture.ibandetection.takephoto" = "Take a photo";

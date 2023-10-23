@@ -10,44 +10,54 @@ import AVFoundation
 import UIKit
 
 // swiftlint:disable type_body_length
-public final class Camera2ViewController: UIViewController, CameraScreen {
+ final class CameraViewController: UIViewController, CameraScreen {
     /**
      The object that acts as the delegate of the camera view controller.
     */
-    let giniConfiguration: GiniConfiguration
-    var detectedQRCodeDocument: GiniQRCodeDocument?
-    private var shouldShowQRCodeNext = false
-    lazy var cameraPreviewViewController: CameraPreviewViewController = {
-       let cameraPreviewViewController = CameraPreviewViewController()
-       cameraPreviewViewController.delegate = self
-       return cameraPreviewViewController
-    }()
+     let giniConfiguration: GiniConfiguration
+     var detectedQRCodeDocument: GiniQRCodeDocument?
 
-    private lazy var qrCodeOverLay: QRCodeOverlay = {
-        let view = QRCodeOverlay()
-        view.isHidden = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-       return view
-    }()
+     lazy var cameraPreviewViewController: CameraPreviewViewController = {
+         let cameraPreviewViewController = CameraPreviewViewController()
+         cameraPreviewViewController.delegate = self
+         return cameraPreviewViewController
+     }()
 
-    private var resetTask: DispatchWorkItem?
-    private var hideTask: DispatchWorkItem?
-    private var validQRCodeProcessing: Bool = false
-    public weak var delegate: CameraViewControllerDelegate?
+     private lazy var qrCodeOverLay: QRCodeOverlay = {
+         let view = QRCodeOverlay()
+         view.isHidden = true
+         view.translatesAutoresizingMaskIntoConstraints = false
+         return view
+     }()
 
-    private lazy var qrCodeScanningOnlyEnabled: Bool = {
-        return giniConfiguration.qrCodeScanningEnabled && giniConfiguration.onlyQRCodeScanningEnabled
-    }()
+     private lazy var ibanDetectionOverLay: IBANDetectionOverlay = {
+         let view = IBANDetectionOverlay()
+         view.isHidden = true
+         view.translatesAutoresizingMaskIntoConstraints = false
+         return view
+     }()
 
-    @IBOutlet weak var cameraPane: CameraPane!
-    private let cameraButtonsViewModel: CameraButtonsViewModel
-    private var navigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
-    private var bottomNavigationBar: UIView?
-    private let cameraLensSwitcherView: CameraLensSwitcherView
+     private var resetQRCodeTask: DispatchWorkItem?
+     private var hideQRCodeTask: DispatchWorkItem?
+     private var validQRCodeProcessing: Bool = false
 
-    @IBOutlet weak var iPadBottomPaneConstraint: NSLayoutConstraint!
-    @IBOutlet weak var bottomButtonsConstraints: NSLayoutConstraint!
-    @IBOutlet weak var bottomPaneConstraint: NSLayoutConstraint!
+     private var isValidIBANDetected: Bool = false
+
+     public weak var delegate: CameraViewControllerDelegate?
+
+     private lazy var qrCodeScanningOnlyEnabled: Bool = {
+         return giniConfiguration.qrCodeScanningEnabled && giniConfiguration.onlyQRCodeScanningEnabled
+     }()
+
+     @IBOutlet weak var cameraPane: CameraPane!
+     private let cameraButtonsViewModel: CameraButtonsViewModel
+     private var navigationBarBottomAdapter: CameraBottomNavigationBarAdapter?
+     private var bottomNavigationBar: UIView?
+     private let cameraLensSwitcherView: CameraLensSwitcherView
+
+     @IBOutlet weak var iPadBottomPaneConstraint: NSLayoutConstraint!
+     @IBOutlet weak var bottomButtonsConstraints: NSLayoutConstraint!
+     @IBOutlet weak var bottomPaneConstraint: NSLayoutConstraint!
     /**
      Designated initializer for the `CameraViewController` which allows
      to set the `GiniConfiguration for the camera screen`.
@@ -56,15 +66,13 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
      - parameter giniConfiguration: `GiniConfiguration` instance.
      
      - returns: A view controller instance allowing the user to take a picture or pick a document.
-    */
-    public init(
-        giniConfiguration: GiniConfiguration,
-        viewModel: CameraButtonsViewModel
-    ) {
+     */
+     public init(giniConfiguration: GiniConfiguration,
+                 viewModel: CameraButtonsViewModel) {
         self.giniConfiguration = giniConfiguration
         self.cameraButtonsViewModel = viewModel
 
-        let availableLenses = Camera2ViewController.checkAvailableLenses()
+        let availableLenses = CameraViewController.checkAvailableLenses()
         self.cameraLensSwitcherView = CameraLensSwitcherView(availableLenses: availableLenses)
         self.cameraLensSwitcherView.isHidden = true
 
@@ -138,6 +146,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         cameraPreviewViewController.didMove(toParent: self)
         view.sendSubviewToBack(cameraPreviewViewController.view)
         view.addSubview(qrCodeOverLay)
+        view.addSubview(ibanDetectionOverLay)
         cameraLensSwitcherView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(cameraLensSwitcherView)
         configureConstraints()
@@ -325,10 +334,11 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                                                            for: .touchUpInside)
     }
 
-    public override func viewWillDisappear(_ animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         qrCodeOverLay.viewWillDisappear()
+        ibanDetectionOverLay.viewWillDisappear()
     }
 
     private func configureUploadButton() {
@@ -378,11 +388,18 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
                                       on: cameraPreviewViewController)
         }
 
+       ibanDetectionOverLay.layoutViews(centeringBy: cameraPreviewViewController.cameraFrameView,
+                                         on: cameraPreviewViewController)
+
         NSLayoutConstraint.activate([
             qrCodeOverLay.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             qrCodeOverLay.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             qrCodeOverLay.topAnchor.constraint(equalTo: view.topAnchor),
             qrCodeOverLay.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+
+            ibanDetectionOverLay.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            ibanDetectionOverLay.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            ibanDetectionOverLay.topAnchor.constraint(equalTo: view.topAnchor),
 
             cameraPreviewViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
             cameraPreviewViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -435,7 +452,8 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
     }
 
     public func addValidationLoadingView() -> UIView {
-        let loadingIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        let loadingIndicator = UIActivityIndicatorView()
+        loadingIndicator.applyLargeStyle()
         let blurredView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
         blurredView.alpha = 0
         blurredView.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin]
@@ -450,15 +468,55 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         return blurredView
     }
 
-    private func showQRCodeFeedback(for document: GiniQRCodeDocument, isValid: Bool) {
+     // MARK: - IBANs Detection
+     private func showIBANFeedback(_ IBANs: [String]) {
+         isValidIBANDetected = !IBANs.isEmpty
+         guard isValidIBANDetected else {
+             hideIBANOverlay()
+             return
+        }
+
+         if !validQRCodeProcessing {
+             if !qrCodeOverLay.isHidden {
+                 resetQRCodeScanning(isValid: false)
+             }
+             showIBANOverlay(with: IBANs)
+         }
+     }
+
+     private func showIBANOverlay(with IBANs: [String]) {
+
+         UIView.animate(withDuration: 0.3) {
+             self.ibanDetectionOverLay.isHidden = false
+             self.cameraPreviewViewController.changeCameraFrameColor(to: .GiniCapture.success2)
+         }
+
+         ibanDetectionOverLay.configureOverlay(hidden: false)
+         ibanDetectionOverLay.setupView(with: IBANs)
+     }
+
+     private func hideIBANOverlay() {
+         guard !ibanDetectionOverLay.isHidden else { return }
+         UIView.animate(withDuration: 0.3) {
+             self.ibanDetectionOverLay.isHidden = true
+             if self.qrCodeOverLay.isHidden {
+                 self.cameraPreviewViewController.changeCameraFrameColor(to: .GiniCapture.light1)
+             }
+         }
+         ibanDetectionOverLay.configureOverlay(hidden: true)
+     }
+
+     // MARK: - QR Detection
+
+     private func showQRCodeFeedback(for document: GiniQRCodeDocument, isValid: Bool) {
         guard !validQRCodeProcessing else { return }
         guard detectedQRCodeDocument != document else { return }
 
-        hideTask?.cancel()
-        resetTask?.cancel()
+        hideQRCodeTask?.cancel()
+        resetQRCodeTask?.cancel()
         detectedQRCodeDocument = document
 
-        hideTask = DispatchWorkItem(block: {
+        hideQRCodeTask = DispatchWorkItem(block: {
             self.resetQRCodeScanning(isValid: isValid)
 
             if let QRDocument = self.detectedQRCodeDocument {
@@ -471,10 +529,11 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         if isValid {
             showValidQRCodeFeedback()
         } else {
-            showInvalidQRCodeFeedback()
+            if !isValidIBANDetected {
+                showInvalidQRCodeFeedback()
+            }
         }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: hideTask!)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: hideQRCodeTask!)
     }
 
     private func showValidQRCodeFeedback() {
@@ -486,7 +545,7 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         cameraPane.isUserInteractionEnabled = false
         UIView.animate(withDuration: 0.3) {
             self.qrCodeOverLay.isHidden = false
-            self.cameraPreviewViewController.changeFrameColor(to: .GiniCapture.success2)
+            self.cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.success2)
         }
 
         qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: true)
@@ -500,14 +559,14 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
         qrCodeOverLay.isUserInteractionEnabled = false
         UIView.animate(withDuration: 0.3) {
             self.qrCodeOverLay.isHidden = false
-            self.cameraPreviewViewController.changeFrameColor(to: .GiniCapture.warning3)
+            self.cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.warning3)
         }
 
         qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: false)
     }
 
     private func resetQRCodeScanning(isValid: Bool) {
-        resetTask = DispatchWorkItem(block: {
+        resetQRCodeTask = DispatchWorkItem(block: {
             self.detectedQRCodeDocument = nil
         })
 
@@ -516,21 +575,26 @@ public final class Camera2ViewController: UIViewController, CameraScreen {
             qrCodeOverLay.showAnimation()
         } else {
             UIView.animate(withDuration: 0.3) {
-                self.cameraPreviewViewController.changeFrameColor(to: .GiniCapture.light1)
+                self.cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.light1)
                 self.qrCodeOverLay.isHidden = true
                 self.cameraPane.isUserInteractionEnabled = true
             }
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: resetTask!)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: resetQRCodeTask!)
         }
     }
 }
 
 // MARK: - CameraPreviewViewControllerDelegate
 
-extension Camera2ViewController: CameraPreviewViewControllerDelegate {
+extension CameraViewController: CameraPreviewViewControllerDelegate {
+    func cameraPreview(_ viewController: CameraPreviewViewController,
+                       didDetectIBANs ibans: [String]) {
+        showIBANFeedback(ibans)
+    }
 
-    func cameraDidSetUp(_ viewController: CameraPreviewViewController, camera: CameraProtocol) {
+    func cameraDidSetUp(_ viewController: CameraPreviewViewController,
+                        camera: CameraProtocol) {
         if !qrCodeScanningOnlyEnabled {
             cameraPreviewViewController.cameraFrameView.isHidden = false
             cameraPane.toggleCaptureButtonActivation(state: true)
@@ -550,7 +614,8 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
         showQRCodeFeedback(for: qrCodeDocument, isValid: false)
     }
 
-    func cameraPreview(_ viewController: CameraPreviewViewController, didDetect qrCodeDocument: GiniQRCodeDocument) {
+    func cameraPreview(_ viewController: CameraPreviewViewController,
+                       didDetect qrCodeDocument: GiniQRCodeDocument) {
         showQRCodeFeedback(for: qrCodeDocument, isValid: true)
     }
 
@@ -563,7 +628,7 @@ extension Camera2ViewController: CameraPreviewViewControllerDelegate {
 
 // MARK: - CameraLensSwitcherViewDelegate
 
-extension Camera2ViewController: CameraLensSwitcherViewDelegate {
+extension CameraViewController: CameraLensSwitcherViewDelegate {
     func cameraLensSwitcherDidSwitchTo(lens: CameraLensesAvailable, on: CameraLensSwitcherView) {
         var device: AVCaptureDevice?
 
@@ -583,7 +648,7 @@ extension Camera2ViewController: CameraLensSwitcherViewDelegate {
     }
 }
 
-private extension Camera2ViewController {
+private extension CameraViewController {
     enum Constants {
         static let switcherPadding: CGFloat = 8
         static let phoneSwitcherSize: CGSize = CGSize(width: 124, height: 40)
