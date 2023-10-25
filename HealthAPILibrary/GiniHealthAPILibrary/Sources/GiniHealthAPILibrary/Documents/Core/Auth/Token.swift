@@ -35,8 +35,8 @@ extension Token: Decodable {
         let container = try decoder.container(keyedBy: Keys.self)
         let expiresIn = try container.decode(Double.self, forKey: .expiresIn) // seconds
         let expiration = Date(timeInterval: expiresIn, since: Date())
-        let scope = try container.decode(String.self, forKey: .scope)
-        let type = try container.decode(String.self, forKey: .type)
+        let scope = try container.decodeIfPresent(String.self, forKey: .scope)
+        let type = try container.decodeIfPresent(String.self, forKey: .type)
         let accessToken = try container.decode(String.self, forKey: .accessToken)
 
         self.init(expiration: expiration,
