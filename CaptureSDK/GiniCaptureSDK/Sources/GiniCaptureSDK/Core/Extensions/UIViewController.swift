@@ -79,3 +79,23 @@ extension UIViewController {
         return alertViewController
     }
 }
+
+extension UIViewController {
+
+    func add(asChildViewController viewController: UIViewController, sendToBackIfNeeded: Bool = false) {
+        add(childViewController: viewController, to: view, sendToBackIfNeeded: sendToBackIfNeeded)
+    }
+
+    private func add(childViewController: UIViewController, to view: UIView, sendToBackIfNeeded: Bool) {
+        // Add Child View Controller
+        addChild(childViewController)
+        // Add Child View as Subview
+        view.addSubview(childViewController.view)
+        // Notify Child View Controller
+        childViewController.didMove(toParent: self)
+
+        if sendToBackIfNeeded {
+            view.sendSubviewToBack(childViewController.view)
+        }
+    }
+}

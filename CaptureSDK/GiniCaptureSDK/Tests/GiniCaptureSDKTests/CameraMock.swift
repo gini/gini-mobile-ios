@@ -10,6 +10,13 @@ import AVFoundation
 @testable import GiniCaptureSDK
 
 final class CameraMock: CameraProtocol {
+    func setupIBANDetection(textOrientation: CGImagePropertyOrientation,
+                            regionOfInterest: CGRect?,
+                            videoPreviewLayer: AVCaptureVideoPreviewLayer?,
+                            visionToAVFTransform: CGAffineTransform) {
+        
+    }
+    
     var didDetectIBANs: (([String]) -> Void)?
 
     func startOCR() {
