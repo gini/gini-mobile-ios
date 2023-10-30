@@ -23,8 +23,8 @@ final class IBANRecogniserTests: XCTestCase {
     }
 
     func testShortIBANRecogniserWithManyWhiteSpaces() {
-        let expectedIBANs : [String] = ["BE34817181591890"]
-        let text = "BE34 8171 8159 1890"
+        let expectedIBANs : [String] = ["BE34817181591890", "NO9386011117947"]
+        let text = "BE34817181591890, NO93 8601 1117 947 "
         let extractedIBANs = extractIBANS(string: text)
         XCTAssertEqual(expectedIBANs, extractedIBANs, "IBANs should be equal")
     }
