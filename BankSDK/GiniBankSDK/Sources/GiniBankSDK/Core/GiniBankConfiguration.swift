@@ -472,7 +472,7 @@ public final class GiniBankConfiguration: NSObject {
         textStyleFonts[textStyle] = font
     }
 
-    // MARK: - Cleanup and feedback sending
+    // MARK: - Transaction summary sending and cleanup
     // swiftlint:disable function_parameter_count
     /// Function for clean up
     /// - Parameters:
@@ -481,6 +481,10 @@ public final class GiniBankConfiguration: NSObject {
     ///   - iban: iban description
     ///   - bic: bic description
     ///   - amountToPay: amountToPay description
+    // swiftlint:disable line_length
+    @available(*, deprecated, message: "Please use transferSummary() to provide the required transfer summary first (if the user has completed TAN verification) and then cleanup() to let the SDK free up used resources")
+    // swiftlint:enable line_length
+    // swiftlint:disable function_body_length
     public func cleanup(paymentRecipient: String,
                         paymentReference: String,
                         paymentPurpose: String,
@@ -542,7 +546,85 @@ public final class GiniBankConfiguration: NSObject {
         self.documentService = nil
         self.lineItems = nil
     }
+    // swiftlint:enable function_body_length
     // swiftlint:enable function_parameter_count
+    /**
+     Function for transaction summary.
+     Provides transfer summary to Gini.
+     Please provide the required transfer summary to improve the future extraction accuracy.
+
+     Please follow the recommendations below:
+     - Make sure to call this method before calling [releaseCapture] if the user has completed TAN verification.
+     - Provide values for all necessary fields, including those that were not extracted.
+     - Provide the final data approved by the user (and not the initially extracted only).
+     - Send the transfer summary after TAN verification and provide the extraction values the user has used.
+
+     - parameter paymentRecipient: paymentRecipient description
+     - parameter paymentReference: paymentReference description
+     - parameter iban: iban description
+     - parameter bic: bic description
+     - parameter amountToPay: amountToPay description
+     */
+    public func transactionSummary(paymentRecipient: String,
+                                   paymentReference: String,
+                                   paymentPurpose: String,
+                                   iban: String,
+                                   bic: String,
+                                   amountToPay: ExtractionAmount) {
+        guard let documentService = documentService else { return }
+
+        let formattedPriceValue = amountToPay.value.stringValue(withDecimalPoint: 2) ?? "\(amountToPay.value)"
+        let amountToPayString = "\(formattedPriceValue)" + ":" + amountToPay.currency.rawValue
+
+        let paymentRecipientExtraction = Extraction(box: nil,
+                                                    candidates: nil,
+                                                    entity: "companyname",
+                                                    value: paymentRecipient,
+                                                    name: "paymentRecipient")
+        let paymentReferenceExtraction = Extraction(box: nil,
+                                                    candidates: nil,
+                                                    entity: "reference",
+                                                    value: paymentReference,
+                                                    name: "paymentReference")
+        let paymentPurposeExtraction = Extraction(box: nil,
+                                                  candidates: nil,
+                                                  entity: "text",
+                                                  value: paymentPurpose,
+                                                  name: "paymentPurpose")
+        let ibanExtraction = Extraction(box: nil,
+                                        candidates: nil,
+                                        entity: "iban",
+                                        value: iban,
+                                        name: "iban")
+        let bicExtraction = Extraction(box: nil,
+                                       candidates: nil,
+                                       entity: "bic",
+                                       value: bic,
+                                       name: "bic")
+        let amountExtraction = Extraction(box: nil,
+                                          candidates: nil,
+                                          entity: "amount",
+                                          value: amountToPayString,
+                                          name: "amountToPay")
+
+        let updatedExtractions: [Extraction] = [paymentRecipientExtraction,
+                                                paymentReferenceExtraction,
+                                                paymentPurposeExtraction,
+                                                ibanExtraction,
+                                                bicExtraction,
+                                                amountExtraction]
+
+        documentService.sendFeedback(with: updatedExtractions, updatedCompoundExtractions: nil)
+    }
+
+    /**
+     Frees up resources used by the capture flow.
+     */
+    public func cleanup() {
+        guard let documentService = documentService else { return }
+        documentService.resetToInitialState()
+        self.documentService = nil
+    }
 
     // MARK: - Internal usage
     var documentService: DocumentServiceProtocol?
