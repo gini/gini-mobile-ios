@@ -109,12 +109,13 @@ extension ScreenAPICoordinator: UINavigationControllerDelegate {
 				extractionAmount = ExtractionAmount(value: Decimal(string: String(amountValue.split(separator: ":")[0])) ?? 0.0, currency: .EUR)
 			}
 		
-			visionConfiguration.cleanup(paymentRecipient: extractedResults.first(where: { $0.name == "paymentRecipient"})?.value ?? "",
+			visionConfiguration.transactionSummary(paymentRecipient: extractedResults.first(where: { $0.name == "paymentRecipient"})?.value ?? "",
 								  paymentReference: extractedResults.first(where: { $0.name == "paymentReference"})?.value ?? "",
 								  paymentPurpose: extractedResults.first(where: { $0.name == "paymentPurpose"})?.value ?? "",
 								  iban: extractedResults.first(where: { $0.name == "iban"})?.value ?? "",
 								  bic: extractedResults.first(where: { $0.name == "bic"})?.value ?? "",
 								  amountToPay: extractionAmount)
+            visionConfiguration.cleanup()
             delegate?.screenAPI(coordinator: self, didFinish: ())
         }
 
