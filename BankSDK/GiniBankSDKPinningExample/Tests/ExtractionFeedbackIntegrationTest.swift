@@ -179,9 +179,9 @@
 //                                                      document: self.giniCaptureSDKDocumentService?.document)
 //
 //                  delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
-//                  // 4. Send feedback for the extractions the user saw
+//                  // 4. Send transaction summary for the extractions the user saw
 //                  //    with the final (user confirmed or updated) extraction values
-//                  GiniBankConfiguration.shared.cleanup(paymentRecipient: extractions["paymentRecipient"]?.value ?? "",
+//                  GiniBankConfiguration.shared.transactionSummary(paymentRecipient: extractions["paymentRecipient"]?.value ?? "",
 //                                                       paymentReference: extractions["paymentReference"]?.value ?? "",
 //                                                       paymentPurpose: extractions["paymentPurpose"]?.value ?? "",
 //                                                       iban: extractions["iban"]?.value ?? "",
