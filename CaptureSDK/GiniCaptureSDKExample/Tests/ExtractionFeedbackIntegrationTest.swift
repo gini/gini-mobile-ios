@@ -163,7 +163,7 @@
 //                        delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
 //                        // 4. Send feedback for the extractions the user saw
 //                        //    with the final (user confirmed or updated) extraction values
-//                        GiniConfiguration.shared.transactionSummary(paymentRecipient: extractions["paymentRecipient"]?.value ?? "",
+//                        GiniConfiguration.shared.sendTransferSummary(paymentRecipient: extractions["paymentRecipient"]?.value ?? "",
 //                                                         paymentReference: extractions["paymentReference"]?.value ?? "",
 //                                                         paymentPurpose: extractions["paymentPurpose"]?.value ?? "",
 //                                                         iban: extractions["iban"]?.value ?? "",
