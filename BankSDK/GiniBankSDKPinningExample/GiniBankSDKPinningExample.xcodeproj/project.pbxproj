@@ -47,7 +47,7 @@
 		F4CBE30128216DFE00B28220 /* GiniBankAPILibraryPinning in Frameworks */ = {isa = PBXBuildFile; productRef = F4CBE30028216DFE00B28220 /* GiniBankAPILibraryPinning */; };
 		F4CBE30328216E1B00B28220 /* GiniCaptureSDKPinning in Frameworks */ = {isa = PBXBuildFile; productRef = F4CBE30228216E1B00B28220 /* GiniCaptureSDKPinning */; };
 		F4CBE30528216E2800B28220 /* GiniBankSDKPinning in Frameworks */ = {isa = PBXBuildFile; productRef = F4CBE30428216E2800B28220 /* GiniBankSDKPinning */; };
-		F4CBE34D2821878C00B28220 /* ExtractionFeedbackIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3412821878C00B28220 /* ExtractionFeedbackIntegrationTest.swift */; };
+		F4CBE34D2821878C00B28220 /* TransferSummaryIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3412821878C00B28220 /* TransferSummaryIntegrationTest.swift */; };
 		F4CBE34E2821878C00B28220 /* ScreenAPICoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3422821878C00B28220 /* ScreenAPICoordinatorTests.swift */; };
 		F4CBE34F2821878C00B28220 /* ScreenAPICoordinator+UI_Only.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3432821878C00B28220 /* ScreenAPICoordinator+UI_Only.swift */; };
 		F4CBE3512821878C00B28220 /* result_Gini_invoice_example.json in Resources */ = {isa = PBXBuildFile; fileRef = F4CBE3462821878C00B28220 /* result_Gini_invoice_example.json */; };
@@ -119,7 +119,7 @@
 		F4BB7CF126984E5D003FD77E /* CustomMenuItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMenuItemViewController.swift; sourceTree = "<group>"; };
 		F4CBE2FF2821611400B28220 /* GiniBankSDKPinning */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = GiniBankSDKPinning; path = ../GiniBankSDKPinning; sourceTree = "<group>"; };
 		F4CBE3372821876A00B28220 /* GiniBankSDKPinningExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniBankSDKPinningExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F4CBE3412821878C00B28220 /* ExtractionFeedbackIntegrationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 3; lastKnownFileType = sourcecode.swift; path = ExtractionFeedbackIntegrationTest.swift; sourceTree = "<group>"; };
+		F4CBE3412821878C00B28220 /* TransferSummaryIntegrationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 3; lastKnownFileType = sourcecode.swift; path = TransferSummaryIntegrationTest.swift; sourceTree = "<group>"; };
 		F4CBE3422821878C00B28220 /* ScreenAPICoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinatorTests.swift; sourceTree = "<group>"; };
 		F4CBE3432821878C00B28220 /* ScreenAPICoordinator+UI_Only.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ScreenAPICoordinator+UI_Only.swift"; sourceTree = "<group>"; };
 		F4CBE3462821878C00B28220 /* result_Gini_invoice_example.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example.json; sourceTree = "<group>"; };
@@ -296,7 +296,7 @@
 		F4CBE3402821878C00B28220 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				F4CBE3412821878C00B28220 /* ExtractionFeedbackIntegrationTest.swift */,
+				F4CBE3412821878C00B28220 /* TransferSummaryIntegrationTest.swift */,
 				F4CBE3422821878C00B28220 /* ScreenAPICoordinatorTests.swift */,
 				F4CBE3432821878C00B28220 /* ScreenAPICoordinator+UI_Only.swift */,
 				F4CBE3452821878C00B28220 /* Resources */,
@@ -511,7 +511,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4CBE3562821878C00B28220 /* SettingsViewControllerTests.swift in Sources */,
-				F4CBE34D2821878C00B28220 /* ExtractionFeedbackIntegrationTest.swift in Sources */,
+				F4CBE34D2821878C00B28220 /* TransferSummaryIntegrationTest.swift in Sources */,
 				F4CBE34F2821878C00B28220 /* ScreenAPICoordinator+UI_Only.swift in Sources */,
 				F4CBE34E2821878C00B28220 /* ScreenAPICoordinatorTests.swift in Sources */,
 			);
