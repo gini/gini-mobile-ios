@@ -51,7 +51,7 @@ class TransferSummaryIntegrationTest: XCTestCase {
         return data!
     }
 
-    func testSendExtractionFeedback() {
+    func testSendTransferSummary() {
         let expect = expectation(description: "transfer summary was correctly sent and extractions were updated")
 
         // 1. Upload a test document
