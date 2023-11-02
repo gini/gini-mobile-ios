@@ -472,7 +472,8 @@ public final class GiniBankConfiguration: NSObject {
         textStyleFonts[textStyle] = font
     }
 
-    // MARK: - Transaction summary sending and cleanup
+    // MARK: - Transfer summary sending and cleanup
+
     // swiftlint:disable function_parameter_count
     /// Function for clean up
     /// - Parameters:
@@ -482,7 +483,7 @@ public final class GiniBankConfiguration: NSObject {
     ///   - bic: bic description
     ///   - amountToPay: amountToPay description
     // swiftlint:disable line_length
-    @available(*, deprecated, message: "Please use transferSummary() to provide the required transfer summary first (if the user has completed TAN verification) and then cleanup() to let the SDK free up used resources")
+    @available(*, deprecated, message: "Please use sendTransferSummary() to provide the required transfer summary first (if the user has completed TAN verification) and then cleanup() to let the SDK free up used resources")
     // swiftlint:enable line_length
     // swiftlint:disable function_body_length
     public func cleanup(paymentRecipient: String,
@@ -549,12 +550,12 @@ public final class GiniBankConfiguration: NSObject {
     // swiftlint:enable function_body_length
     // swiftlint:enable function_parameter_count
     /**
-     Function for transaction summary.
+     Function for transfer summary.
      Provides transfer summary to Gini.
      Please provide the required transfer summary to improve the future extraction accuracy.
 
      Please follow the recommendations below:
-     - Make sure to call this method before calling [releaseCapture] if the user has completed TAN verification.
+     - Make sure to call this method before calling `cleanup()` if the user has completed TAN verification.
      - Provide values for all necessary fields, including those that were not extracted.
      - Provide the final data approved by the user (and not the initially extracted only).
      - Send the transfer summary after TAN verification and provide the extraction values the user has used.
@@ -565,7 +566,7 @@ public final class GiniBankConfiguration: NSObject {
      - parameter bic: bic description
      - parameter amountToPay: amountToPay description
      */
-    public func transactionSummary(paymentRecipient: String,
+    public func sendTransferSummary(paymentRecipient: String,
                                    paymentReference: String,
                                    paymentPurpose: String,
                                    iban: String,
@@ -614,7 +615,13 @@ public final class GiniBankConfiguration: NSObject {
                                                 bicExtraction,
                                                 amountExtraction]
 
-        documentService.sendFeedback(with: updatedExtractions, updatedCompoundExtractions: nil)
+        if let lineItems = lineItems {
+            documentService.sendFeedback(with: updatedExtractions,
+                                         updatedCompoundExtractions: ["lineItems": lineItems])
+        } else {
+            documentService.sendFeedback(with: updatedExtractions,
+                                         updatedCompoundExtractions: nil)
+        }
     }
 
     /**
@@ -624,6 +631,7 @@ public final class GiniBankConfiguration: NSObject {
         guard let documentService = documentService else { return }
         documentService.resetToInitialState()
         self.documentService = nil
+        self.lineItems = nil
     }
 
     // MARK: - Internal usage

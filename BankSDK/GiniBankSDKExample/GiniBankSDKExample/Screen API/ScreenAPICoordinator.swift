@@ -139,7 +139,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
             }
 		}
 	
-		configuration.transactionSummary(paymentRecipient: extractedResults.first(where: { $0.name == "paymentRecipient"})?.value ?? "",
+		configuration.sendTransferSummary(paymentRecipient: extractedResults.first(where: { $0.name == "paymentRecipient"})?.value ?? "",
                               paymentReference: extractedResults.first(where: { $0.name == "paymentReference"})?.value ?? "",
                               paymentPurpose: extractedResults.first(where: { $0.name == "paymentPurpose"})?.value ?? "",
                               iban: extractedResults.first(where: { $0.name == "iban"})?.value ?? "",
