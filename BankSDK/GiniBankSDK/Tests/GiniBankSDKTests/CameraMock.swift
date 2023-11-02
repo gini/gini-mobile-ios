@@ -14,7 +14,14 @@ final class CameraMock: CameraProtocol {
 
     func startOCR() {
     }
-    
+
+    func setupIBANDetection(textOrientation: CGImagePropertyOrientation,
+                            regionOfInterest: CGRect?,
+                            videoPreviewLayer: AVCaptureVideoPreviewLayer?,
+                            visionToAVFTransform: CGAffineTransform) {
+
+    }
+
     enum CameraAuthState {
         case authorized
         case unauthorized
