@@ -153,12 +153,25 @@ final class CameraPreviewViewController: UIViewController {
         super.viewDidLayoutSubviews()
 
         if isViewLoaded {
-            if cameraFrameView.frame != CGRect.zero && previewView.frame != CGRect.zero {
-                camera.setupIBANDetection(textOrientation: textOrientation,
-                                          regionOfInterest: cameraFrameView.frame,
-                                          videoPreviewLayer: previewView.videoPreviewLayer,
-                                          visionToAVFTransform: visionToAVFTransform)
-            }
+            setupIBANDetectionIfViewsAreLoaded()
+        }
+    }
+
+    private func setupIBANDetectionIfViewsAreLoaded() {
+        // this method is checking if both cameraFrameView and previewView are loaded in the screen
+        // in order to be able to set some parameters for the camera to be able to detect
+        // IBANs just in cameraFrameView frame
+
+        // textOrientation - to be able to set the correct orrientation for text recognition - this is importat mostly on iPad
+        // regionOfInterest - region of the screen in which IBANs can be detected
+        // videoPreviewLayer - used to translate detected IBANs bounding boxes to videoPreviewLayer frame coordinate system
+        // visionToAVFTransform - transform Vision coordinate into AVF coordinate
+
+        if cameraFrameView.frame != CGRect.zero && previewView.frame != CGRect.zero {
+            camera.setupIBANDetection(textOrientation: textOrientation,
+                                      regionOfInterest: cameraFrameView.frame,
+                                      videoPreviewLayer: previewView.videoPreviewLayer,
+                                      visionToAVFTransform: visionToAVFTransform)
         }
     }
 
