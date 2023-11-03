@@ -22,6 +22,13 @@ final class IBANRecogniserTests: XCTestCase {
         XCTAssertEqual(expectedIBANs, extractedIBANs, "IBANs should be equal")
     }
 
+    func testShortIBANRecogniserWithManyWhiteSpaces() {
+        let expectedIBANs : [String] = ["BE34817181591890", "NO9386011117947"]
+        let text = "BE34817181591890, NO93 8601 1117 947 "
+        let extractedIBANs = extractIBANS(string: text)
+        XCTAssertEqual(expectedIBANs, extractedIBANs, "IBANs should be equal")
+    }
+
     func testIBANRecogniserWithWhiteSpaces2() {
         let expectedIBANs : [String] = ["DE28430609672032163700"]
         let text = GiniCaptureTestsHelper.loadTextFromFile(named: "smantix_1756-dookuid-281")
