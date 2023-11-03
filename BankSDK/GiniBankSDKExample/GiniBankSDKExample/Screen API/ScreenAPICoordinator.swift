@@ -117,7 +117,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
             .rightBarButtonItem = UIBarButtonItem(title: title,
                                                   style: .plain,
                                                   target: self,
-                                                  action: #selector(closeSreenAPIAndSendFeedback))
+                                                  action: #selector(closeSreenAPIAndSendTransferSummary))
         DispatchQueue.main.async { [weak self] in
             if #available(iOS 15.0, *) {
                 if let config = self?.configuration.captureConfiguration(),
@@ -131,7 +131,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         }
     }
     
-    @objc private func closeSreenAPIAndSendFeedback() {
+    @objc private func closeSreenAPIAndSendTransferSummary() {
         var extractionAmount = ExtractionAmount(value: 0.0, currency: .EUR)
         if let amountValue = extractedResults.first(where: { $0.name == "amountToPay"})?.value {
             if amountValue.split(separator: ":").count > 0 {
