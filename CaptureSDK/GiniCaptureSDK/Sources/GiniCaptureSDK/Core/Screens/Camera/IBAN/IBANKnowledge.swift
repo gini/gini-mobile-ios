@@ -33,12 +33,15 @@ final class IBANKnowledge {
 
     var universalIBANRegex: NSRegularExpression {
         let pattern = countryCodesRegex.pattern
-        return NSRegularExpression("\\b(\(pattern)) ?(\\d?\\d)?([-\\p{Alnum}]{11,50}\\p{Alnum}|[\\p{Alnum}]{11,30})\\b")
+        return NSRegularExpression("(\(pattern)) ?(\\d ?\\d) ?([-\\p{Alnum} ]{11,50}\\p{Alnum}|[\\p{Alnum}]{11,30})\\b")
     }
 
+    /**
+     Regex for multi-line IBANs
+     */
     var ibanInBlocksRegex: NSRegularExpression {
         let pattern = countryCodesRegex.pattern
-        return NSRegularExpression("\\b(\(pattern)) ?\\d{2}(\\s{0,3}[a-zA-Z0-9]{4}){3,8}(\\s{0,3}[a-zA-Z0-9]{1,4})\\b")
+        return NSRegularExpression("\\b(\(pattern)) ?\\d{2}(\\s{0,3}[a-zA-Z0-9]{4}){2,8}(\\s{0,3}[a-zA-Z0-9]{1,4})\\b")
     }
 
     var germanIBANRegex: NSRegularExpression {
