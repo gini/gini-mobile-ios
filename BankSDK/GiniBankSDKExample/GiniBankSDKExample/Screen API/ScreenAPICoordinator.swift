@@ -132,19 +132,20 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
     }
     
     @objc private func closeSreenAPIAndSendFeedback() {
-		var extractionAmount = ExtractionAmount(value: 0.0, currency: .EUR)
-		if let amountValue = extractedResults.first(where: { $0.name == "amountToPay"})?.value {
+        var extractionAmount = ExtractionAmount(value: 0.0, currency: .EUR)
+        if let amountValue = extractedResults.first(where: { $0.name == "amountToPay"})?.value {
             if amountValue.split(separator: ":").count > 0 {
-                extractionAmount = ExtractionAmount(value: Decimal(string: String(amountValue.split(separator: ":")[0])) ?? 0.0, currency: .EUR)
+                extractionAmount = ExtractionAmount(value: Decimal(string: String(amountValue.split(separator: ":")[0])) ?? 0.0,
+                                                    currency: .EUR)
             }
-		}
-	
-		configuration.sendTransferSummary(paymentRecipient: extractedResults.first(where: { $0.name == "paymentRecipient"})?.value ?? "",
-                              paymentReference: extractedResults.first(where: { $0.name == "paymentReference"})?.value ?? "",
-                              paymentPurpose: extractedResults.first(where: { $0.name == "paymentPurpose"})?.value ?? "",
-                              iban: extractedResults.first(where: { $0.name == "iban"})?.value ?? "",
-                              bic: extractedResults.first(where: { $0.name == "bic"})?.value ?? "",
-                              amountToPay: extractionAmount)
+        }
+
+        configuration.sendTransferSummary(paymentRecipient: extractedResults.first(where: { $0.name == "paymentRecipient"})?.value ?? "",
+                                          paymentReference: extractedResults.first(where: { $0.name == "paymentReference"})?.value ?? "",
+                                          paymentPurpose: extractedResults.first(where: { $0.name == "paymentPurpose"})?.value ?? "",
+                                          iban: extractedResults.first(where: { $0.name == "iban"})?.value ?? "",
+                                          bic: extractedResults.first(where: { $0.name == "bic"})?.value ?? "",
+                                          amountToPay: extractionAmount)
         configuration.cleanup()
         delegate?.screenAPI(coordinator: self, didFinish: ())
     }
