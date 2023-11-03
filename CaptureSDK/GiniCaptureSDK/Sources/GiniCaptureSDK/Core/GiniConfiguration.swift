@@ -552,11 +552,11 @@ import GiniBankAPILibrary
      - parameter amountToPay: amountToPay description
      */
     public func sendTransferSummary(paymentRecipient: String,
-                                   paymentReference: String,
-                                   paymentPurpose: String,
-                                   iban: String,
-                                   bic: String,
-                                   amountToPay: ExtractionAmount) {
+                                    paymentReference: String,
+                                    paymentPurpose: String,
+                                    iban: String,
+                                    bic: String,
+                                    amountToPay: ExtractionAmount) {
         guard let documentService = documentService else { return }
 
         let formattedPriceValue = amountToPay.value.stringValue(withDecimalPoint: 2) ?? "\(amountToPay.value)"
