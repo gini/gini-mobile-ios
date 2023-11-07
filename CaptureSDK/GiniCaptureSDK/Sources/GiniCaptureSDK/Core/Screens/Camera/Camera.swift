@@ -30,7 +30,13 @@ protocol CameraProtocol: AnyObject {
     func setupQRScanningOutput(completion: @escaping ((CameraError?) -> Void))
     func start()
     func stop()
+
+    // IBAN detection
     func startOCR()
+    func setupIBANDetection(textOrientation: CGImagePropertyOrientation,
+                            regionOfInterest: CGRect?,
+                            videoPreviewLayer: AVCaptureVideoPreviewLayer?,
+                            visionToAVFTransform: CGAffineTransform)
 }
 
 final class Camera: NSObject, CameraProtocol {
@@ -64,9 +70,12 @@ final class Camera: NSObject, CameraProtocol {
 
     fileprivate let application: UIApplication
 
+    // IBAN detection
     private var request: VNImageBasedRequest?
-
     private var textOrientation = CGImagePropertyOrientation.up
+    private var regionOfInterest: CGRect?
+    private var videoPreviewLayer: AVCaptureVideoPreviewLayer?
+    private var visionToAVFTransform: CGAffineTransform = .identity
 
     init(application: UIApplication = UIApplication.shared,
          giniConfiguration: GiniConfiguration) {
@@ -74,6 +83,17 @@ final class Camera: NSObject, CameraProtocol {
         self.giniConfiguration = giniConfiguration
         self.isFlashOn = giniConfiguration.flashOnByDefault
         super.init()
+    }
+
+    func setupIBANDetection(textOrientation: CGImagePropertyOrientation,
+                            regionOfInterest: CGRect?,
+                            videoPreviewLayer: AVCaptureVideoPreviewLayer?,
+                            visionToAVFTransform: CGAffineTransform) {
+
+        self.textOrientation = textOrientation
+        self.regionOfInterest = regionOfInterest
+        self.videoPreviewLayer = videoPreviewLayer
+        self.visionToAVFTransform = visionToAVFTransform
     }
 
     fileprivate func configureSession(completion: @escaping ((CameraError?) -> Void)) {
@@ -91,6 +111,7 @@ final class Camera: NSObject, CameraProtocol {
         }
     }
 
+    // MARK: - Text detection
     func startOCR() {
         if #available(iOS 13.0, *) {
             request = VNRecognizeTextRequest(completionHandler: recognizeTextHandler)
@@ -356,9 +377,16 @@ fileprivate extension Camera {
 
     // Vision recognition handler.
     func recognizeTextHandler(request: VNRequest, error: Error?) {
-
         if #available(iOS 13.0, *) {
+            if let error = error as NSError? {
+                Log(message: "Error while recognizing IBAN in text due to error \(error.localizedDescription)",
+                    event: .error)
+                return
+            }
+
             guard let results = request.results as? [VNRecognizedTextObservation] else {
+                Log(message: "The observations are of an unexpected type.",
+                    event: .error)
                 return
             }
 
@@ -368,9 +396,14 @@ fileprivate extension Camera {
             for visionResult in results {
                 // topCandidates return no more than N but can be less than N candidates. The maximum number of candidates returned cannot exceed 10 candidates.
                 guard let candidate = visionResult.topCandidates(maximumCandidates).first else { continue }
-
                 for result in extractIBANS(string: candidate.string) {
-                    ibans.insert(result)
+                    let ibanRectTransformed = visionResult.boundingBox.applying(visionToAVFTransform)
+                    if let videoPreviewLayer = videoPreviewLayer, let regionOfInterest = regionOfInterest {
+                        let convertedRect = videoPreviewLayer.layerRectConverted(fromMetadataOutputRect: ibanRectTransformed)
+                        if regionOfInterest.contains(convertedRect) {
+                            ibans.insert(result)
+                        }
+                    }
                 }
             }
 
@@ -446,17 +479,19 @@ extension Camera: AVCaptureVideoDataOutputSampleBufferDelegate {
                 // Configure for running in real-time.
                 request.recognitionLevel = .accurate
                 request.usesLanguageCorrection = false
+
                 let requestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer,
                                                            orientation: textOrientation,
                                                            options: [:])
                 do {
                     try requestHandler.perform([request])
                 } catch {
-                    Log(message: "Could not perform ocr request", event: .error)
+                    Log(message: "Could not perform ocr request due to error \(error.localizedDescription)",
+                        event: .error)
                     return
                 }
             }
-        }  else {
+        } else {
             Log(message: "IBAN detection is not supported for iOS 12 or older", event: .warning)
         }
     }
