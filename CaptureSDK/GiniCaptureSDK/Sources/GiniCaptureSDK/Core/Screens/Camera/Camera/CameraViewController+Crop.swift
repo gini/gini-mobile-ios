@@ -1,5 +1,5 @@
 //
-//  Camera2ViewController + Crop.swift
+//  CameraViewController + Crop.swift
 //  
 //
 //  Created by David Vizaknai on 17.04.2023.
