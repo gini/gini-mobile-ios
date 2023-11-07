@@ -31,7 +31,7 @@
 		F4CBE3262821797A00B28220 /* GalleryCoordinatorDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3162821797A00B28220 /* GalleryCoordinatorDelegateTests.swift */; };
 		F4CBE3272821797A00B28220 /* AlbumsPickerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3172821797A00B28220 /* AlbumsPickerViewControllerTests.swift */; };
 		F4CBE3282821797A00B28220 /* ScreenAPICoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3182821797A00B28220 /* ScreenAPICoordinatorTests.swift */; };
-		F4CBE3292821797A00B28220 /* ExtractionFeedbackIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3192821797A00B28220 /* ExtractionFeedbackIntegrationTest.swift */; };
+		F4CBE3292821797A00B28220 /* TransferSummaryIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CBE3192821797A00B28220 /* TransferSummaryIntegrationTest.swift */; };
 		F4CBE32A2821797A00B28220 /* result_Gini_invoice_example.json in Resources */ = {isa = PBXBuildFile; fileRef = F4CBE31B2821797A00B28220 /* result_Gini_invoice_example.json */; };
 		F4CBE32B2821797A00B28220 /* testPDF.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4CBE31C2821797A00B28220 /* testPDF.pdf */; };
 		F4CBE32C2821797A00B28220 /* Gini_invoice_example.pdf in Resources */ = {isa = PBXBuildFile; fileRef = F4CBE31D2821797A00B28220 /* Gini_invoice_example.pdf */; };
@@ -88,7 +88,7 @@
 		F4CBE3162821797A00B28220 /* GalleryCoordinatorDelegateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GalleryCoordinatorDelegateTests.swift; path = Tests/GalleryCoordinatorDelegateTests.swift; sourceTree = SOURCE_ROOT; };
 		F4CBE3172821797A00B28220 /* AlbumsPickerViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlbumsPickerViewControllerTests.swift; path = Tests/AlbumsPickerViewControllerTests.swift; sourceTree = SOURCE_ROOT; };
 		F4CBE3182821797A00B28220 /* ScreenAPICoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScreenAPICoordinatorTests.swift; path = Tests/ScreenAPICoordinatorTests.swift; sourceTree = SOURCE_ROOT; };
-		F4CBE3192821797A00B28220 /* ExtractionFeedbackIntegrationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExtractionFeedbackIntegrationTest.swift; path = Tests/ExtractionFeedbackIntegrationTest.swift; sourceTree = SOURCE_ROOT; };
+		F4CBE3192821797A00B28220 /* TransferSummaryIntegrationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TransferSummaryIntegrationTest.swift; path = Tests/TransferSummaryIntegrationTest.swift; sourceTree = SOURCE_ROOT; };
 		F4CBE31B2821797A00B28220 /* result_Gini_invoice_example.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example.json; sourceTree = "<group>"; };
 		F4CBE31C2821797A00B28220 /* testPDF.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = testPDF.pdf; sourceTree = "<group>"; };
 		F4CBE31D2821797A00B28220 /* Gini_invoice_example.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example.pdf; sourceTree = "<group>"; };
@@ -209,7 +209,7 @@
 			children = (
 				F4CBE3212821797A00B28220 /* AlbumsPickerViewControllerDelegateTests.swift */,
 				F4CBE3172821797A00B28220 /* AlbumsPickerViewControllerTests.swift */,
-				F4CBE3192821797A00B28220 /* ExtractionFeedbackIntegrationTest.swift */,
+				F4CBE3192821797A00B28220 /* TransferSummaryIntegrationTest.swift */,
 				F4CBE3162821797A00B28220 /* GalleryCoordinatorDelegateTests.swift */,
 				F4CBE3202821797A00B28220 /* GalleryCoordinatorTests.swift */,
 				F4CBE3232821797A00B28220 /* GalleryManagerTests.swift */,
@@ -400,7 +400,7 @@
 				F4CBE3302821797A00B28220 /* AlbumsPickerViewControllerDelegateTests.swift in Sources */,
 				F4CBE3272821797A00B28220 /* AlbumsPickerViewControllerTests.swift in Sources */,
 				F4CBE3322821797A00B28220 /* GalleryManagerTests.swift in Sources */,
-				F4CBE3292821797A00B28220 /* ExtractionFeedbackIntegrationTest.swift in Sources */,
+				F4CBE3292821797A00B28220 /* TransferSummaryIntegrationTest.swift in Sources */,
 				F4CBE3312821797A00B28220 /* SettingsViewControllerTests.swift in Sources */,
 				F4CBE3262821797A00B28220 /* GalleryCoordinatorDelegateTests.swift in Sources */,
 				F4CBE3282821797A00B28220 /* ScreenAPICoordinatorTests.swift in Sources */,
