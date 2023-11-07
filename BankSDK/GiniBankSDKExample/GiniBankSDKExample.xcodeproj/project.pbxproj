@@ -76,7 +76,7 @@
 		F441DCC325E56BF800AAB09A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F441DCC525E56BF800AAB09A /* LaunchScreen.xib */; };
 		F44AD01528D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44AD01428D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift */; };
 		F44AD01E28D4BBE7002BAD98 /* page1Animation.json in Resources */ = {isa = PBXBuildFile; fileRef = F44AD01D28D4BBE7002BAD98 /* page1Animation.json */; };
-		F45D7F0C2800566900C73C63 /* ExtractionFeedbackIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45D7F002800566900C73C63 /* ExtractionFeedbackIntegrationTest.swift */; };
+		F45D7F0C2800566900C73C63 /* TransferSummaryIntegrationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45D7F002800566900C73C63 /* TransferSummaryIntegrationTest.swift */; };
 		F45D7F0D2800566900C73C63 /* ScreenAPICoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45D7F012800566900C73C63 /* ScreenAPICoordinatorTests.swift */; };
 		F45D7F0E2800566900C73C63 /* ScreenAPICoordinator+UI_Only.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45D7F022800566900C73C63 /* ScreenAPICoordinator+UI_Only.swift */; };
 		F45D7F102800566900C73C63 /* result_Gini_invoice_example.json in Resources */ = {isa = PBXBuildFile; fileRef = F45D7F052800566900C73C63 /* result_Gini_invoice_example.json */; };
@@ -220,7 +220,7 @@
 		F441DD1225E5706F00AAB09A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F44AD01428D499E6002BAD98 /* CustomOnboardingIllustrationAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOnboardingIllustrationAdapter.swift; sourceTree = "<group>"; };
 		F44AD01D28D4BBE7002BAD98 /* page1Animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = page1Animation.json; sourceTree = "<group>"; };
-		F45D7F002800566900C73C63 /* ExtractionFeedbackIntegrationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtractionFeedbackIntegrationTest.swift; sourceTree = "<group>"; };
+		F45D7F002800566900C73C63 /* TransferSummaryIntegrationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransferSummaryIntegrationTest.swift; sourceTree = "<group>"; };
 		F45D7F012800566900C73C63 /* ScreenAPICoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinatorTests.swift; sourceTree = "<group>"; };
 		F45D7F022800566900C73C63 /* ScreenAPICoordinator+UI_Only.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ScreenAPICoordinator+UI_Only.swift"; sourceTree = "<group>"; };
 		F45D7F052800566900C73C63 /* result_Gini_invoice_example.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example.json; sourceTree = "<group>"; };
@@ -472,7 +472,7 @@
 		F45D7EFF2800566900C73C63 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				F45D7F002800566900C73C63 /* ExtractionFeedbackIntegrationTest.swift */,
+				F45D7F002800566900C73C63 /* TransferSummaryIntegrationTest.swift */,
 				F45D7F012800566900C73C63 /* ScreenAPICoordinatorTests.swift */,
 				F45D7F022800566900C73C63 /* ScreenAPICoordinator+UI_Only.swift */,
 				F45D7F0A2800566900C73C63 /* SettingsViewControllerTests.swift */,
@@ -907,7 +907,7 @@
 			files = (
 				F45D7F0E2800566900C73C63 /* ScreenAPICoordinator+UI_Only.swift in Sources */,
 				F45D7F152800566900C73C63 /* SettingsViewControllerTests.swift in Sources */,
-				F45D7F0C2800566900C73C63 /* ExtractionFeedbackIntegrationTest.swift in Sources */,
+				F45D7F0C2800566900C73C63 /* TransferSummaryIntegrationTest.swift in Sources */,
 				F45D7F0D2800566900C73C63 /* ScreenAPICoordinatorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

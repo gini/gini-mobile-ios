@@ -117,7 +117,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
             .rightBarButtonItem = UIBarButtonItem(title: title,
                                                   style: .plain,
                                                   target: self,
-                                                  action: #selector(closeSreenAPIAndSendFeedback))
+                                                  action: #selector(closeSreenAPIAndSendTransferSummary))
         DispatchQueue.main.async { [weak self] in
             if #available(iOS 15.0, *) {
                 if let config = self?.configuration.captureConfiguration(),
@@ -131,20 +131,22 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
         }
     }
     
-    @objc private func closeSreenAPIAndSendFeedback() {
-		var extractionAmount = ExtractionAmount(value: 0.0, currency: .EUR)
-		if let amountValue = extractedResults.first(where: { $0.name == "amountToPay"})?.value {
+    @objc private func closeSreenAPIAndSendTransferSummary() {
+        var extractionAmount = ExtractionAmount(value: 0.0, currency: .EUR)
+        if let amountValue = extractedResults.first(where: { $0.name == "amountToPay"})?.value {
             if amountValue.split(separator: ":").count > 0 {
-                extractionAmount = ExtractionAmount(value: Decimal(string: String(amountValue.split(separator: ":")[0])) ?? 0.0, currency: .EUR)
+                extractionAmount = ExtractionAmount(value: Decimal(string: String(amountValue.split(separator: ":")[0])) ?? 0.0,
+                                                    currency: .EUR)
             }
-		}
-	
-		configuration.cleanup(paymentRecipient: extractedResults.first(where: { $0.name == "paymentRecipient"})?.value ?? "",
-                              paymentReference: extractedResults.first(where: { $0.name == "paymentReference"})?.value ?? "",
-                              paymentPurpose: extractedResults.first(where: { $0.name == "paymentPurpose"})?.value ?? "",
-                              iban: extractedResults.first(where: { $0.name == "iban"})?.value ?? "",
-                              bic: extractedResults.first(where: { $0.name == "bic"})?.value ?? "",
-                              amountToPay: extractionAmount)
+        }
+
+        configuration.sendTransferSummary(paymentRecipient: extractedResults.first(where: { $0.name == "paymentRecipient"})?.value ?? "",
+                                          paymentReference: extractedResults.first(where: { $0.name == "paymentReference"})?.value ?? "",
+                                          paymentPurpose: extractedResults.first(where: { $0.name == "paymentPurpose"})?.value ?? "",
+                                          iban: extractedResults.first(where: { $0.name == "iban"})?.value ?? "",
+                                          bic: extractedResults.first(where: { $0.name == "bic"})?.value ?? "",
+                                          amountToPay: extractionAmount)
+        configuration.cleanup()
         delegate?.screenAPI(coordinator: self, didFinish: ())
     }
 }
@@ -194,7 +196,10 @@ extension ScreenAPICoordinator: GiniCaptureNetworkService {
         let extractionQuantity = Extraction.init(box: nil, candidates: "", entity: "numeric", value: "1", name: "quantity")
 
         let lineItem = [extractionQuantity, extractionsBaseGross, extractionDescription, extractionArtNumber]
-        let extractionResult = ExtractionResult.init(extractions: [extractionPaymentPurpose,extractionAmountToPay,extractionIban,extractionPaymentRecipient], lineItems: [lineItem, lineItem] , returnReasons: [], candidates: [:])
+        let extractionResult = ExtractionResult.init(extractions: [extractionPaymentPurpose, extractionAmountToPay, extractionIban, extractionPaymentRecipient],
+                                                     lineItems: [lineItem, lineItem],
+                                                     returnReasons: [],
+                                                     candidates: [:])
         if let doc = self.manuallyCreatedDocument {
             let result = (document: doc, extractionResult: extractionResult)
             completion(.success(result))

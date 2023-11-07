@@ -192,15 +192,15 @@ documentService
 }
 ```
 
-### Sending feedback
+### Sending transfer summary 
 
-Depending on your use case your app probably presents the extractions to the user and gives them the opportunity to correct them. By sending us feedback for the extractions we are able to continuously improve the extraction quality.
+Depending on your use case your app probably presents the extractions to the user and gives them the opportunity to correct them. By sending us transfer summary for the extractions we are able to continuously improve the extraction quality.
 
-We provide a sample test case [here](https://github.com/gini/gini-mobile-ios/blob/main/BankAPILibrary/GiniBankAPILibraryExample/GiniBankAPILibraryExampleTests/ExtractionFeedbackIntegrationTest.swift) to verify that extraction feedback sending works. You may use it along with the example pdf and json files as a starting point to write your own test case.
+We provide a sample test case [here](https://github.com/gini/gini-mobile-ios/blob/main/BankAPILibrary/GiniBankAPILibraryExample/GiniBankAPILibraryExampleTests/TransferSummaryIntegrationTest.swift) to verify that extraction transfer summary sending works. You may use it along with the example pdf and json files as a starting point to write your own test case.
 
 The sample test case is based on the Bank API documentation's [recommended steps](https://pay-api.gini.net/documentation/#test-example) for testing extraction feedback sending.
 
-Your app should send feedback only for the extractions the user has seen and accepted. Feedback should be sent for corrected extractions and for correct extractions. The code example below shows how to correct extractions and send feedback.
+Your app should send transfer summary only for the extractions the user has seen and accepted. Transfer summary should be sent for corrected extractions and for correct extractions. The code example below shows how to correct extractions and send transfer summary.
 
 ```swift
 guard let document = document else { return }
