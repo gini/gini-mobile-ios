@@ -104,17 +104,18 @@ extension ScreenAPICoordinator: UINavigationControllerDelegate {
         // when it is necessary to go back, it dismiss the ScreenAPI so the Analysis screen is not shown again
 
         if fromVC is ResultTableViewController {
-			var extractionAmount = ExtractionAmount(value: 0.0, currency: .EUR)
-			if let amountValue = extractedResults.first(where: { $0.name == "amountToPay"})?.value {
-				extractionAmount = ExtractionAmount(value: Decimal(string: String(amountValue.split(separator: ":")[0])) ?? 0.0, currency: .EUR)
-			}
-		
-			visionConfiguration.cleanup(paymentRecipient: extractedResults.first(where: { $0.name == "paymentRecipient"})?.value ?? "",
-								  paymentReference: extractedResults.first(where: { $0.name == "paymentReference"})?.value ?? "",
-								  paymentPurpose: extractedResults.first(where: { $0.name == "paymentPurpose"})?.value ?? "",
-								  iban: extractedResults.first(where: { $0.name == "iban"})?.value ?? "",
-								  bic: extractedResults.first(where: { $0.name == "bic"})?.value ?? "",
-								  amountToPay: extractionAmount)
+            var extractionAmount = ExtractionAmount(value: 0.0, currency: .EUR)
+            if let amountValue = extractedResults.first(where: { $0.name == "amountToPay"})?.value {
+                extractionAmount = ExtractionAmount(value: Decimal(string: String(amountValue.split(separator: ":")[0])) ?? 0.0, currency: .EUR)
+            }
+
+            visionConfiguration.sendTransferSummary(paymentRecipient: extractedResults.first(where: { $0.name == "paymentRecipient"})?.value ?? "",
+                                                    paymentReference: extractedResults.first(where: { $0.name == "paymentReference"})?.value ?? "",
+                                                    paymentPurpose: extractedResults.first(where: { $0.name == "paymentPurpose"})?.value ?? "",
+                                                    iban: extractedResults.first(where: { $0.name == "iban"})?.value ?? "",
+                                                    bic: extractedResults.first(where: { $0.name == "bic"})?.value ?? "",
+                                                    amountToPay: extractionAmount)
+            visionConfiguration.cleanup()
             delegate?.screenAPI(coordinator: self, didFinish: ())
         }
 

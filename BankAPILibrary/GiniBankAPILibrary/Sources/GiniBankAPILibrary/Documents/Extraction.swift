@@ -63,12 +63,6 @@ import Foundation
     
 }
 
-// MARK: - Decodable
-
-//extension Extraction: Decodable {}
-//extension Extraction.Box: Decodable {}
-//extension Extraction.Candidate: Decodable {}
-
 // MARK: - isEqual
 
 extension Extraction {
