@@ -31,7 +31,7 @@ public func UIImageNamedPreferred(named name: String) -> UIImage? {
                                        compatibleWith: nil) {
         return customBundleImage
     }
-    
+
     return UIImage(named: name,
                    in: giniCaptureBundle(),
                    compatibleWith: nil)
@@ -50,14 +50,14 @@ public func UIColorPreferred(named name: String) -> UIColor {
                                      compatibleWith: nil) {
         return mainBundleColor
     }
-    
+
     if let customBundle = GiniConfiguration.shared.customResourceBundle,
         let customBundleColor = UIColor(named: name,
                                         in: customBundle,
                                         compatibleWith: nil) {
         return customBundleColor
     }
-    
+
     if let color = UIColor(named: name,
                            in: giniCaptureBundle(),
                            compatibleWith: nil) {
@@ -84,9 +84,8 @@ public func NSLocalizedStringPreferredFormat(_ key: String,
                                                                        fallbackKey: fallbackKey,
                                                                        comment: comment,
                                                                        bundle: .main) {
-            
             return clientLocalizedStringMainBundle
-            
+
         } else if let customBundle = GiniConfiguration.shared.customResourceBundle,
                   let clientLocalizedStringCustomBundle = clientLocalizedString(key,
                                                                                 fallbackKey: fallbackKey,
@@ -96,7 +95,7 @@ public func NSLocalizedStringPreferredFormat(_ key: String,
             return clientLocalizedStringCustomBundle
         }
     }
-    
+
     return giniLocalizedString(key, fallbackKey: fallbackKey, comment: comment)
 }
 
@@ -108,7 +107,7 @@ private func giniLocalizedString(_ key: String,
     var defaultFormat = NSLocalizedString(key,
                                           bundle: giniBundle,
                                           comment: comment)
-    
+
     if defaultFormat.lowercased() == key.lowercased() {
         defaultFormat = NSLocalizedString(fallbackKey,
                                           bundle: giniBundle,

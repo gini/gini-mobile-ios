@@ -65,13 +65,6 @@ final class CameraPreviewViewController: UIViewController {
         return giniConfiguration.qrCodeScanningEnabled && giniConfiguration.onlyQRCodeScanningEnabled
     }()
 
-    // Transform from UI orientation to buffer orientation.
-    private var uiRotationTransform = CGAffineTransform.identity
-    // Transform bottom-left coordinates to top-left.
-    private var bottomToTopTransform = CGAffineTransform(scaleX: 1, y: -1).translatedBy(x: 0, y: -1)
-    // Transform coordinates in ROI to global coordinates (still normalized).
-    private var roiToGlobalTransform = CGAffineTransform.identity
-
     private var notAuthorizedView: UIView?
     private let giniConfiguration: GiniConfiguration
     private typealias FocusIndicator = UIImageView
@@ -98,14 +91,12 @@ final class CameraPreviewViewController: UIViewController {
             return UIImageNamedPreferred(named: "cameraDefaultDocumentImage")
         }
     }
-    // Vision -> AVF coordinate transform.
-    private var visionToAVFTransform = CGAffineTransform.identity
     private var isAuthorized = false
 
     lazy var previewView: CameraPreviewView = {
         let previewView = CameraPreviewView()
         previewView.translatesAutoresizingMaskIntoConstraints = false
-        (previewView.layer as? AVCaptureVideoPreviewLayer)?.videoGravity = .resizeAspectFill
+        previewView.videoPreviewLayer.videoGravity = .resizeAspectFill
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(focusAndExposeTap))
         previewView.addGestureRecognizer(tapGesture)
         return previewView
@@ -135,6 +126,7 @@ final class CameraPreviewViewController: UIViewController {
                                                name: NSNotification.Name.AVCaptureDeviceSubjectAreaDidChange,
                                                object: camera.videoDeviceInput?.device)
         view.backgroundColor = GiniColor(light: UIColor.GiniCapture.dark1, dark: UIColor.GiniCapture.dark1).uiColor()
+
         view.insertSubview(previewView, at: 0)
         view.addSubview(qrCodeFrameView)
         view.addSubview(cameraFrameView)
@@ -155,6 +147,32 @@ final class CameraPreviewViewController: UIViewController {
             camera.startOCR()
         }
         setupConstraints()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if isViewLoaded {
+            setupIBANDetectionIfViewsAreLoaded()
+        }
+    }
+
+    private func setupIBANDetectionIfViewsAreLoaded() {
+        // this method is checking if both cameraFrameView and previewView are loaded in the screen
+        // in order to be able to set some parameters for the camera to be able to detect
+        // IBANs just in cameraFrameView frame
+
+        // textOrientation - to be able to set the correct orrientation for text recognition - this is importat mostly on iPad
+        // regionOfInterest - region of the screen in which IBANs can be detected
+        // videoPreviewLayer - used to translate detected IBANs bounding boxes to videoPreviewLayer frame coordinate system
+        // visionToAVFTransform - transform Vision coordinate into AVF coordinate
+
+        if cameraFrameView.frame != CGRect.zero && previewView.frame != CGRect.zero {
+            camera.setupIBANDetection(textOrientation: textOrientation,
+                                      regionOfInterest: cameraFrameView.frame,
+                                      videoPreviewLayer: previewView.videoPreviewLayer,
+                                      visionToAVFTransform: visionToAVFTransform)
+        }
     }
 
     private lazy var cameraFrameViewHeightAnchorPortrait =
@@ -238,9 +256,6 @@ final class CameraPreviewViewController: UIViewController {
 
             }
         }
-        // Full Vision ROI to AVF transform.
-        visionToAVFTransform = roiToGlobalTransform.concatenating(bottomToTopTransform)
-                                                   .concatenating(uiRotationTransform)
     }
 
     override func viewWillLayoutSubviews() {
@@ -345,16 +360,18 @@ final class CameraPreviewViewController: UIViewController {
     }
 
     func updatePreviewViewOrientation() {
+
         let orientation: AVCaptureVideoOrientation
         if UIDevice.current.isIpad {
             orientation = interfaceOrientationsMapping[UIApplication.shared.statusBarOrientation] ?? .portrait
+            currentOrientation = UIApplication.shared.statusBarOrientation
         } else {
             orientation = .portrait
+            currentOrientation = .portrait
         }
 
-        if let cameraLayer = previewView.layer as? AVCaptureVideoPreviewLayer {
-            cameraLayer.connection?.videoOrientation = orientation
-        }
+        setupOrientationAndTransform()
+        previewView.videoPreviewLayer.connection?.videoOrientation = orientation
         updateFrameOrientation(with: orientation)
     }
 
@@ -365,6 +382,48 @@ final class CameraPreviewViewController: UIViewController {
 
     func changeCameraFrameColor(to color: UIColor) {
         cameraFrameView.image = cameraFrameView.image?.tintedImageWithColor(color)
+    }
+
+    // MARK: - IBAN detection
+    private var textOrientation = CGImagePropertyOrientation.up
+    private var currentOrientation: UIInterfaceOrientation = .portrait
+    // Vision -> AVF coordinate transform.
+    private var visionToAVFTransform = CGAffineTransform.identity
+
+    private func setupOrientationAndTransform() {
+        // MARK: - Coordinate transforms
+        // Transform from UI orientation to buffer orientation.
+        var uiRotationTransform = CGAffineTransform.identity
+        // Transform bottom-left coordinates to top-left.
+        let bottomToTopTransform = CGAffineTransform(scaleX: 1, y: -1).translatedBy(x: 0, y: -1)
+        // Transform coordinates in ROI to global coordinates (still normalized).
+        var roiToGlobalTransform = CGAffineTransform.identity
+        // Region of video data output buffer that recognition should be run on.
+        // Gets recalculated once the bounds of the preview layer are known.
+        let roi = CGRect(x: 0, y: 0, width: 1, height: 1)
+        // Recalculate the affine transform between Vision coordinates and AVF coordinates.
+        roiToGlobalTransform = CGAffineTransform(translationX: roi.origin.x, y: roi.origin.y)
+            .scaledBy(x: roi.width, y: roi.height)
+
+        // Compensate for orientation (buffers always come in the same orientation).
+        switch currentOrientation {
+        case .landscapeLeft:
+            textOrientation = CGImagePropertyOrientation.up
+            uiRotationTransform = CGAffineTransform.identity
+        case .landscapeRight:
+            textOrientation = CGImagePropertyOrientation.down
+            uiRotationTransform = CGAffineTransform(translationX: 1, y: 1).rotated(by: CGFloat.pi)
+        case .portraitUpsideDown:
+            textOrientation = CGImagePropertyOrientation.left
+            uiRotationTransform = CGAffineTransform(translationX: 1, y: 0).rotated(by: CGFloat.pi / 2)
+        default: // everything else to .portraitUp
+            textOrientation = CGImagePropertyOrientation.right
+            uiRotationTransform = CGAffineTransform(translationX: 0, y: 1).rotated(by: -CGFloat.pi / 2)
+        }
+
+        // Full Vision ROI to AVF transform.
+        visionToAVFTransform = roiToGlobalTransform.concatenating(bottomToTopTransform)
+            .concatenating(uiRotationTransform)
     }
 }
 
@@ -411,15 +470,16 @@ extension CameraPreviewViewController {
 
 extension CameraPreviewViewController {
     @objc private func focusAndExposeTap(_ sender: UITapGestureRecognizer) {
-        guard let previewLayer = previewView.layer as? AVCaptureVideoPreviewLayer else { return }
-        let devicePoint = previewLayer.captureDevicePointConverted(fromLayerPoint: sender.location(in: sender.view))
+        let devicePoint = previewView.videoPreviewLayer
+                                    .captureDevicePointConverted(fromLayerPoint: sender.location(in: sender.view))
         camera.focus(withMode: .autoFocus,
                      exposeWithMode: .autoExpose,
                      atDevicePoint: devicePoint,
                      monitorSubjectAreaChange: true)
         let imageView =
             createFocusIndicator(withImage: cameraFocusSmall,
-                                 atPoint: previewLayer.layerPointConverted(fromCaptureDevicePoint: devicePoint))
+                                 atPoint: previewView.videoPreviewLayer
+                                            .layerPointConverted(fromCaptureDevicePoint: devicePoint))
         showFocusIndicator(imageView)
     }
 

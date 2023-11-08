@@ -141,14 +141,15 @@ import UIKit
         edgesForExtendedLayout = []
         view.backgroundColor = UIColor.GiniCapture.dark1
         cameraPreviewViewController.previewView.alpha = 0
-        addChild(cameraPreviewViewController)
-        view.addSubview(cameraPreviewViewController.view)
-        cameraPreviewViewController.didMove(toParent: self)
-        view.sendSubviewToBack(cameraPreviewViewController.view)
+
+        add(asChildViewController: cameraPreviewViewController, sendToBackIfNeeded: true)
+
         view.addSubview(qrCodeOverLay)
         view.addSubview(ibanDetectionOverLay)
+
         cameraLensSwitcherView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(cameraLensSwitcherView)
+
         configureConstraints()
         configureTitle()
 
