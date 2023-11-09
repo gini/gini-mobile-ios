@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 extension UIImage {
     convenience init?(qrData data: Data) {
@@ -155,5 +156,23 @@ extension UIImage {
 
         // If something failed -- return original
         return self
+    }
+}
+
+
+extension UIImage.Orientation {
+    init(_ cgOrientation: AVCaptureVideoOrientation) {
+        switch cgOrientation {
+            case .portrait:
+                self = .up
+            case .landscapeRight:
+                self = .right
+            case .landscapeLeft:
+                self = .left
+            case .portraitUpsideDown:
+                self = .down
+            @unknown default:
+                fatalError("Unknown AVCaptureVideoOrientation case encountered")
+        }
     }
 }
