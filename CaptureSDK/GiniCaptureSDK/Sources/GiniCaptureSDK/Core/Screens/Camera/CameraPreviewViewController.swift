@@ -45,9 +45,10 @@ final class CameraPreviewViewController: UIViewController {
         return spinner
     }()
 
+    private let cameraFocusImage = UIImageNamedPreferred(named: "cameraFocus")
     lazy var cameraFrameView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImageNamedPreferred(named: "cameraFocus")
+        imageView.image = cameraFocusImage
         imageView.contentMode = .scaleAspectFit
         imageView.isHidden = true
         return imageView
@@ -71,12 +72,6 @@ final class CameraPreviewViewController: UIViewController {
     private var camera: CameraProtocol
     private var defaultImageView: UIImageView?
     private var focusIndicatorImageView: UIImageView?
-    private let interfaceOrientationsMapping: [UIInterfaceOrientation: AVCaptureVideoOrientation] = [
-        .portrait: .portrait,
-        .landscapeRight: .landscapeRight,
-        .landscapeLeft: .landscapeLeft,
-        .portraitUpsideDown: .portraitUpsideDown
-    ]
 
     private var cameraFocusSmall: UIImage? {
         return UIImageNamedPreferred(named: "cameraFocusSmall")
@@ -240,20 +235,19 @@ final class CameraPreviewViewController: UIViewController {
     }
 
     private func updateFrameOrientation(with orientation: AVCaptureVideoOrientation) {
-        if UIDevice.current.isIpad {
-            NSLayoutConstraint.deactivate([cameraFrameViewHeightAnchorPortrait, cameraFrameViewHeightAnchorLandscape])
-
-            let isLandscape = orientation == .landscapeRight || orientation == .landscapeLeft
-            cameraFrameViewHeightAnchorPortrait.isActive = !isLandscape
-            cameraFrameViewHeightAnchorLandscape.isActive = isLandscape
-
-            if let image = cameraFrameView.image?.cgImage {
-                if isLandscape {
-                    cameraFrameView.image = UIImage(cgImage: image, scale: 1.0, orientation: .left)
-                } else {
-                    cameraFrameView.image = UIImage(cgImage: image, scale: 1.0, orientation: .up)
-                }
-
+        guard UIDevice.current.isIpad else { return }
+        let isLandscape = orientation == .landscapeRight || orientation == .landscapeLeft
+        if let image = cameraFocusImage?.cgImage {
+            NSLayoutConstraint.deactivate([
+                cameraFrameViewHeightAnchorPortrait,
+                cameraFrameViewHeightAnchorLandscape
+            ])
+            if isLandscape {
+                cameraFrameViewHeightAnchorLandscape.isActive = true
+                cameraFrameView.image = UIImage(cgImage: image, scale: 1.0, orientation: .left)
+            } else {
+                cameraFrameViewHeightAnchorPortrait.isActive = true
+                cameraFrameView.image = UIImage(cgImage: image, scale: 1.0, orientation: .up)
             }
         }
     }
@@ -361,18 +355,10 @@ final class CameraPreviewViewController: UIViewController {
 
     func updatePreviewViewOrientation() {
 
-        let orientation: AVCaptureVideoOrientation
-        if UIDevice.current.isIpad {
-            orientation = interfaceOrientationsMapping[UIApplication.shared.statusBarOrientation] ?? .portrait
-            currentOrientation = UIApplication.shared.statusBarOrientation
-        } else {
-            orientation = .portrait
-            currentOrientation = .portrait
-        }
-
+        let videoOrientation = AVCaptureVideoOrientation(Device.orientation)
+        previewView.videoPreviewLayer.connection?.videoOrientation = videoOrientation
         setupOrientationAndTransform()
-        previewView.videoPreviewLayer.connection?.videoOrientation = orientation
-        updateFrameOrientation(with: orientation)
+        updateFrameOrientation(with: videoOrientation)
     }
 
     func changeQRFrameColor(to color: UIColor) {
@@ -406,18 +392,18 @@ final class CameraPreviewViewController: UIViewController {
             .scaledBy(x: roi.width, y: roi.height)
 
         // Compensate for orientation (buffers always come in the same orientation).
-        switch currentOrientation {
+        switch Device.orientation {
         case .landscapeLeft:
-            textOrientation = CGImagePropertyOrientation.up
+            textOrientation = .up
             uiRotationTransform = CGAffineTransform.identity
         case .landscapeRight:
-            textOrientation = CGImagePropertyOrientation.down
+            textOrientation = .down
             uiRotationTransform = CGAffineTransform(translationX: 1, y: 1).rotated(by: CGFloat.pi)
         case .portraitUpsideDown:
-            textOrientation = CGImagePropertyOrientation.left
+            textOrientation = .left
             uiRotationTransform = CGAffineTransform(translationX: 1, y: 0).rotated(by: CGFloat.pi / 2)
         default: // everything else to .portraitUp
-            textOrientation = CGImagePropertyOrientation.right
+            textOrientation = .right
             uiRotationTransform = CGAffineTransform(translationX: 0, y: 1).rotated(by: -CGFloat.pi / 2)
         }
 
@@ -425,6 +411,7 @@ final class CameraPreviewViewController: UIViewController {
         visionToAVFTransform = roiToGlobalTransform.concatenating(bottomToTopTransform)
             .concatenating(uiRotationTransform)
     }
+
 }
 
 // MARK: - Default and not authorized views
