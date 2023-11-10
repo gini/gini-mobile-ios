@@ -23,7 +23,7 @@ enum Device {
         // UIDeviceOrientationLandscapeRights => UIInterfaceOrientationLandscapeLeft
         // UIDeviceOrientationLandscapeLeft => UIInterfaceOrientationLandscapeRight
 
-        let interfaceOrientation = UIApplication.shared.statusBarOrientation
+        let interfaceOrientation = UIWindow.orientation
         switch interfaceOrientation {
         case .landscapeLeft:
             return UIDeviceOrientation.landscapeRight
