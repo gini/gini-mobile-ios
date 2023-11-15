@@ -20,7 +20,7 @@ enum Device {
         // otherwise if there is flat (faceUp, faceDown), unknown orientation
         // try to get orientation from UIInterfaceOrientation
         // Notice that:
-        // UIDeviceOrientationLandscapeRights => UIInterfaceOrientationLandscapeLeft
+        // UIDeviceOrientationLandscapeRight => UIInterfaceOrientationLandscapeLeft
         // UIDeviceOrientationLandscapeLeft => UIInterfaceOrientationLandscapeRight
 
         let interfaceOrientation = UIWindow.orientation
