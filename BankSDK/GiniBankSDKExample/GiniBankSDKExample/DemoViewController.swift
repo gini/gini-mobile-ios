@@ -244,7 +244,7 @@ extension DemoViewController: UITextFieldDelegate {
 private extension DemoViewController {
     enum Constants {
         static let welcomeTitleTopConstant: CGFloat = Device.small ? 24 : UIDevice.current.isIpad ? 85 : 48
-        static let giniLogoTopConstant: CGFloat = Device.small ? 48 : UIDevice.current.isIpad ? 150 : 132
+        static let giniLogoTopConstant: CGFloat = Device.small ? 48 : UIDevice.current.isIpad ? 150 : 112
         static let stackViewTopConstant: CGFloat = 72
         static let stackViewMarginConstant: CGFloat = UIDevice.current.isIpad ? 64 : 16
     }
