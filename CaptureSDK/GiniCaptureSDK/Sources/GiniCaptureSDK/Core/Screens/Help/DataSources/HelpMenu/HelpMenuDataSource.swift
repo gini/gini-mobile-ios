@@ -45,7 +45,7 @@ final class HelpMenuDataSource: HelpRoundedCornersDataSource<HelpMenuItem, HelpM
         cell.titleLabel.numberOfLines = 0
         cell.titleLabel.font = giniConfiguration.textStyleFonts[.body]
         cell.titleLabel.adjustsFontForContentSizeCategory = true
-        let chevronImage = UIImageNamedPreferred(named: "chevron.png")
+        let chevronImage = UIImageNamedPreferred(named: "chevron")
         let chevronImageView = UIImageView(image: chevronImage)
         chevronImageView.image = chevronImage
         cell.accessoryView = chevronImageView
