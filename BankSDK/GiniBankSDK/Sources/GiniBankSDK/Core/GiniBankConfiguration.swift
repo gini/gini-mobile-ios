@@ -162,9 +162,9 @@ public final class GiniBankConfiguration: NSObject {
     public var flashToggleEnabled = false
 
     /**
-     When the flash toggle is enabled, this flag indicates if the flash is on by default.
+     Set whether the camera flash should be on or off when the SDK starts. The flash is off by default.
      */
-    public var flashOnByDefault = true
+    public var flashOnByDefault = false
 
     /**
      Set an adapter implementation to show a custom bottom navigation bar on the camera screen.

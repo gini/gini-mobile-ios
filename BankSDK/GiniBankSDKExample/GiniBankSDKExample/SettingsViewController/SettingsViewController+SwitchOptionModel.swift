@@ -62,9 +62,9 @@ struct SwitchOptionModel {
 			case .multipage:
 				return "Multipage"
 			case .flashToggle:
-				return "Flash toggle"
+				return "Display flash button"
 			case .flashOnByDefault:
-				return "Flash ON by default"
+				return "Flash default state"
 			case .bottomNavigationBar:
 				return "Bottom navigation bar"
 			case .helpNavigationBarBottomAdapter:
@@ -140,8 +140,10 @@ struct SwitchOptionModel {
 			switch self {
 			case .qrCodeScanningOnly:
 				return "This will work if the `QR code scanning` switch is also enabled."
+            case .flashToggle:
+                return "Display flash button in camera screen"
 			case .flashOnByDefault:
-				return "This will work if the `Flash toggle` switch is also enabled."
+				return "This will work if the `Flash button` switch is also enabled."
 			case .onButtonLoadingIndicator:
 				return "Set custom loading indicator on the buttons which support loading."
 			case .customLoadingIndicator:
