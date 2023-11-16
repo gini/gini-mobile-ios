@@ -24,13 +24,10 @@ let package = Package(
         
         .target(
             name: "GiniCaptureSDK",
-            dependencies: ["GiniBankAPILibrary"],
-            resources: [
-                .process("Sources/GiniCaptureSDK/Resources/"),
-            ]),
+            dependencies: ["GiniBankAPILibrary"]),
         .testTarget(
             name: "GiniCaptureSDKTests",
             dependencies: ["GiniCaptureSDK"],
-            resources: [.process("Sources/GiniCaptureSDK/Resources/")])
+            resources: [.process("Resources")])
     ]
 )
