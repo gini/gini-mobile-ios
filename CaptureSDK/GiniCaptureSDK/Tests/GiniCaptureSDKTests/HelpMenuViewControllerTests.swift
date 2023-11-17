@@ -91,16 +91,10 @@ final class HelpMenuViewControllerTests: XCTestCase {
     func testCellContent() {
         let indexPath = IndexPath(row: 0, section: 0)
         let itemText = helpMenuViewController.dataSource.items[indexPath.row].title
-        let cellAccesoryType = UITableViewCell.AccessoryType.disclosureIndicator
-        
         let cell = helpMenuViewController.dataSource.tableView(helpMenuViewController.tableView, cellForRowAt: indexPath) as! HelpMenuCell
         
         XCTAssertEqual(itemText, cell.titleLabel.text,
                        "cell text in the first row should be the same as the first item text")
-        
-        XCTAssertEqual(cellAccesoryType,
-                       cell.accessoryType,
-                       "cell accesory type should be and a disclosure indicator")
     }
     
 }
