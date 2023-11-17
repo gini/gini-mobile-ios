@@ -300,8 +300,7 @@ import UIKit
                 if let image = self.cameraButtonsViewModel.didCapture(imageData: data,
                                                                       processedImageData: processedImageData,
                                                                       error: error,
-                                                                      orientation:
-                                                                        UIApplication.shared.statusBarOrientation,
+                                                                      orientation: UIWindow.orientation,
                                                                       giniConfiguration: self.giniConfiguration) {
 
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
