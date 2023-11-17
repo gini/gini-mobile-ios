@@ -44,7 +44,7 @@ class OnboardingPageCell: UICollectionViewCell {
 
     override func layoutSubviews() {
         if UIDevice.current.isIpad {
-            if UIApplication.shared.statusBarOrientation.isLandscape {
+            if UIWindow.orientation.isLandscape {
                 topConstraint.constant = Constants.compactTopPadding
                 iconBottomConstraint.constant = calculateIconMargin()
             } else {

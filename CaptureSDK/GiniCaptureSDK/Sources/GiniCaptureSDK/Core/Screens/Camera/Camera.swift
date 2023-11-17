@@ -247,7 +247,7 @@ final class Camera: NSObject, CameraProtocol {
             // Set the orientation according to the current orientation of the interface
             DispatchQueue.main.sync { [weak self] in
                 guard let self = self else { return }
-                connection.videoOrientation = AVCaptureVideoOrientation(self.application.statusBarOrientation)
+                connection.videoOrientation = AVCaptureVideoOrientation(Device.orientation)
             }
 
             // Trigger photo capturing
