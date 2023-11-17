@@ -1,5 +1,5 @@
 //
-//  DeviceOrientation .swift
+//  DeviceOrientation.swift
 //
 //
 // Copyright © 2023 Gini GmbH. All rights reserved
