@@ -45,7 +45,10 @@ final class HelpMenuDataSource: HelpRoundedCornersDataSource<HelpMenuItem, HelpM
         cell.titleLabel.numberOfLines = 0
         cell.titleLabel.font = giniConfiguration.textStyleFonts[.body]
         cell.titleLabel.adjustsFontForContentSizeCategory = true
-        cell.accessoryType = .disclosureIndicator
+        let chevronImage = UIImageNamedPreferred(named: "chevron")
+        let chevronImageView = UIImageView(image: chevronImage)
+        chevronImageView.image = chevronImage
+        cell.accessoryView = chevronImageView
         cell.selectionStyle = .none
         cell.separatorView.backgroundColor = GiniColor(
             light: UIColor.GiniCapture.light3,
