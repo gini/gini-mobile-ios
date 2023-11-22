@@ -45,7 +45,10 @@ final class AlbumsPickerTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        accessoryType = .disclosureIndicator
+        let chevronImage = UIImageNamedPreferred(named: "chevron")
+        let chevronImageView = UIImageView(image: chevronImage)
+        chevronImageView.image = chevronImage
+        accessoryView = chevronImageView
         contentView.addSubview(albumThumbnailView)
         contentView.addSubview(albumTitleLabel)
         contentView.addSubview(albumSubTitleLabel)
