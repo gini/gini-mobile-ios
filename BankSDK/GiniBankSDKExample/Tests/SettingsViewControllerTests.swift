@@ -21,7 +21,7 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.onlyQRCodeScanningEnabled = false
 		configuration.multipageEnabled = true
 		configuration.flashToggleEnabled = true
-		configuration.flashOnByDefault = true
+		configuration.flashOnByDefault = false
 		configuration.bottomNavigationBarEnabled = false
 		configuration.helpNavigationBarBottomAdapter = nil
 		configuration.cameraNavigationBarBottomAdapter = nil
