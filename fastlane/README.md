@@ -113,6 +113,22 @@ Setup Manual Signing for project at path
 Add Resources to Project file
 
 
+### ios generate_sboms
+
+```sh
+[bundle exec] fastlane ios generate_sboms
+```
+
+Generate CycloneDX SBOMS for all swift packages. The SBOMs are zipped and uploaded to GitHub.
+
+Parameters:
+  swift_package_repo_urls     - the list of swift package repository urls
+  repo_user                   - the username to use for authentication
+  repo_password               - the password to use for authentication
+  ci                          - set to "true" if running on a CI machine
+
+
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
