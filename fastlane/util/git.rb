@@ -101,3 +101,22 @@ def did_folder_change_since_last_release(project_id, folder, ui)
       end
     end
 end
+
+##
+# Creates a fresh clone of a Git repository. If the target folder already exists it will be deleted.
+# 
+# Returns the relative path to the release repo.
+#
+def clone_repo(release_repo_url, repo_user, repo_password, depth = 0, target_dir = "")
+  repo_dir = if target_dir != ""
+    target_dir
+  else
+    release_repo_url.split("/").last.delete_suffix(".git")
+  end
+
+  sh("rm -rf #{repo_dir}")
+  release_repo_url["://"] = "://#{repo_user}:#{repo_password}@"
+  sh("git clone #{if depth > 0 then "--depth #{depth}" end} #{release_repo_url} #{target_dir}")
+  
+  repo_dir
+end
