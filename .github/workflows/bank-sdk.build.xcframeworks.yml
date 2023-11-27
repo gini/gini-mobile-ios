@@ -2,15 +2,17 @@ name: Build BankSDK XCFrameworks
 on:
   push:
     tags:
-      - 'GiniBankSDK;[0-9]+.[0-9]+.[0-9]+;xcframeworks**'
-      - 'GiniBankSDK;[0-9]+.[0-9]+.[0-9]+-beta[0-9][0-9]+;xcframeworks**'
+      - 'TestXCframeworks'
   workflow_dispatch:
   workflow_call:
 jobs:
   prepare-frameworks:
     name: Create Release
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.0.1'
       - name: Checkout repository
         uses: actions/checkout@v3
 
