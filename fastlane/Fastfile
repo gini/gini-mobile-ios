@@ -20,7 +20,7 @@ load "util/versions.rb"
 load "util/git.rb" 
 load "util/swift_package_releases.rb"
 load "util/add_files_to_project.rb"
-
+load "util/sbom.rb"
 
 platform :ios do
   desc <<~DOC
@@ -380,4 +380,52 @@ platform :ios do
     addFiles("#{resources_path}/*", resourcesgroup, targetSDK)
     project.save
   end
+
+  desc <<~DOC
+    Generate CycloneDX SBOMS for all swift packages. The SBOMs are zipped and uploaded to GitHub.
+    
+    Parameters:
+      swift_package_repo_urls     - the list of swift package repository urls
+      repo_user                   - the username to use for authentication
+      repo_password               - the password to use for authentication
+      ci                          - set to "true" if running on a CI machine
+
+  DOC
+  lane :generate_sboms do |options|
+    (swift_package_repo_urls, repo_user, repo_password, ci) = 
+      check_and_get_options(options, [:swift_package_repo_urls, :repo_user, :repo_password, :ci], UI)
+
+      UI.message <<~MESSAGE
+        Will generate CycloneDX SBOMs for swift packages:
+          * swift package repository urls  : #{swift_package_repo_urls}
+      MESSAGE
+
+      if ci
+        configure_git_on_ci_machines("Team Mobile Schorsch", "team-mobile@gini.net")
+      end
+
+      sbom_paths = []
+
+      swift_package_repos = swift_package_repo_urls.split(",").map(&:strip)
+
+      swift_package_repos.each do |repo_url|
+        release_repo_path = clone_repo(repo_url, repo_user, repo_password, 1)
+        sbom_path = generate_sbom(release_repo_path)
+
+        sbom_paths.push sbom_path
+      end
+
+      all_sboms_zip_file_name = "sbom-jsons.zip"
+      
+      sh("zip -rj #{all_sboms_zip_file_name} #{sbom_paths.join(" ")}")
+      
+      UI.success <<~MESSAGE
+        Successfully generated CycloneDX SBOMS for all swift packages:
+          * swift package repository urls   : #{swift_package_repo_urls}
+          * generated sbom paths                 : #{sbom_paths.map{ |path| "fastlane/#{path}" }.join(", ")}
+          * location of zip with all sboms  : "fastlane/#{all_sboms_zip_file_name}"
+      MESSAGE
+
+  end
+
 end
