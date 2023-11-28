@@ -35,7 +35,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
 
     // Screens
     var analysisViewController: AnalysisViewController?
-    weak var cameraScreen: CameraScreen?
+    weak var cameraScreen: CameraViewController?
     var noResultsViewController: NoResultScreenViewController?
     lazy var reviewViewController: ReviewViewController = {
         return self.createReviewScreenContainer(with: [])
@@ -200,7 +200,7 @@ extension GiniScreenAPICoordinator {
 
     @objc func back() {
         switch screenAPINavigationController.topViewController {
-        case is CameraScreen:
+        case is CameraViewController:
             trackingDelegate?.onCameraScreenEvent(event: Event(type: .exit))
 
             if pages.type == .qrcode {
@@ -294,7 +294,7 @@ extension GiniScreenAPICoordinator: UINavigationControllerDelegate {
             }
         }
 
-        if toVC is CameraScreen &&
+        if toVC is CameraViewController &&
             (fromVC is AnalysisViewController ||
              fromVC is NoResultScreenViewController) {
             // When going directly from the analysis or from the single page review screen to the camera the pages
@@ -302,7 +302,7 @@ extension GiniScreenAPICoordinator: UINavigationControllerDelegate {
             clearDocuments()
         }
 
-        if fromVC is ReviewViewController, let cameraVC = toVC as? CameraScreen {
+        if fromVC is ReviewViewController, let cameraVC = toVC as? CameraViewController {
             cameraVC.replaceCapturedStackImages(with: pages.compactMap { $0.document.previewImage })
         }
 

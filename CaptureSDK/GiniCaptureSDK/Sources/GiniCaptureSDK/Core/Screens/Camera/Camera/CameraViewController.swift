@@ -10,7 +10,7 @@ import AVFoundation
 import UIKit
 
 // swiftlint:disable type_body_length
- final class CameraViewController: UIViewController, CameraScreen {
+ final class CameraViewController: UIViewController {
     /**
      The object that acts as the delegate of the camera view controller.
     */
@@ -43,7 +43,7 @@ import UIKit
 
      private var isValidIBANDetected: Bool = false
 
-     public weak var delegate: CameraViewControllerDelegate?
+     weak var delegate: CameraViewControllerDelegate?
 
      private lazy var qrCodeScanningOnlyEnabled: Bool = {
          return giniConfiguration.qrCodeScanningEnabled && giniConfiguration.onlyQRCodeScanningEnabled
@@ -89,21 +89,21 @@ import UIKit
         fatalError("init(coder:) has not been implemented")
     }
 
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
     }
 
-    public override var preferredStatusBarStyle: UIStatusBarStyle {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
         return giniConfiguration.statusBarStyle
     }
 
-    public override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         cameraPane.toggleCaptureButtonActivation(state: true)
     }
 
-    public override func viewDidAppear(_ animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         validQRCodeProcessing = false
         delegate?.cameraDidAppear(self)
@@ -435,7 +435,7 @@ import UIKit
         delegate?.camera(self, didCapture: document)
     }
 
-    override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: nil)
     }
@@ -445,13 +445,13 @@ import UIKit
      
      - parameter images: New images to be shown in the stack. (Last image will be shown on top)
      */
-    public func replaceCapturedStackImages(with images: [UIImage]) {
+     func replaceCapturedStackImages(with images: [UIImage]) {
         if giniConfiguration.multipageEnabled {
             cameraButtonsViewModel.images = images
         }
     }
 
-    public func addValidationLoadingView() -> UIView {
+     func addValidationLoadingView() -> UIView {
         let loadingIndicator = UIActivityIndicatorView()
         loadingIndicator.applyLargeStyle()
         let blurredView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
