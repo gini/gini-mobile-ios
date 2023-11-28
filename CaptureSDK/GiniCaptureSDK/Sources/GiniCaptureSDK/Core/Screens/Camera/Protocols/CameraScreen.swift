@@ -10,11 +10,15 @@ import AVFoundation
 import Foundation
 import UIKit
 
-@objc public protocol CameraScreen: CameraTips where Self: UIViewController {
-    weak var delegate: CameraViewControllerDelegate? {get set}
-    func setupCamera()
-    func addValidationLoadingView() -> UIView
-    func replaceCapturedStackImages(with images: [UIImage])
+@objc public class CameraScreen: UIViewController, CameraTips {
+    public func hideCaptureButton() { }
+    
+    public func showCaptureButton() { }
+    
+    public weak var delegate: CameraViewControllerDelegate?
+    func setupCamera() { }
+    func addValidationLoadingView() -> UIView { UIView() }
+    func replaceCapturedStackImages(with images: [UIImage]) { }
 }
 
 @objc public protocol CameraTips {

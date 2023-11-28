@@ -12,21 +12,5 @@ import UIKit
 
 extension CameraViewController {
 
-    /**
-     Show the capture button. Should be called when onboarding is dismissed.
-     */
-    public func showCaptureButton() {
-        cameraPane.captureButton.alpha = 1
-    }
-
-    /**
-     Hide the capture button. Should be called when onboarding is presented.
-     */
-    public func hideCaptureButton() {
-        cameraPane.captureButton.alpha = 0
-    }
-
-    public func setupCamera() {
-        cameraPreviewViewController.setupCamera()
-    }
+    
 }

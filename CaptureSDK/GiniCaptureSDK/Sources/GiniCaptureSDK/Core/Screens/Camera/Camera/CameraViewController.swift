@@ -10,7 +10,7 @@ import AVFoundation
 import UIKit
 
 // swiftlint:disable type_body_length
- final class CameraViewController: UIViewController, CameraScreen {
+ final class CameraViewController: CameraScreen {
     /**
      The object that acts as the delegate of the camera view controller.
     */
@@ -42,8 +42,6 @@ import UIKit
      private var validQRCodeProcessing: Bool = false
 
      private var isValidIBANDetected: Bool = false
-
-     public weak var delegate: CameraViewControllerDelegate?
 
      private lazy var qrCodeScanningOnlyEnabled: Bool = {
          return giniConfiguration.qrCodeScanningEnabled && giniConfiguration.onlyQRCodeScanningEnabled
@@ -445,13 +443,13 @@ import UIKit
      
      - parameter images: New images to be shown in the stack. (Last image will be shown on top)
      */
-    public func replaceCapturedStackImages(with images: [UIImage]) {
+    override func replaceCapturedStackImages(with images: [UIImage]) {
         if giniConfiguration.multipageEnabled {
             cameraButtonsViewModel.images = images
         }
     }
 
-    public func addValidationLoadingView() -> UIView {
+    override func addValidationLoadingView() -> UIView {
         let loadingIndicator = UIActivityIndicatorView()
         loadingIndicator.applyLargeStyle()
         let blurredView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
@@ -583,6 +581,25 @@ import UIKit
             DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: resetQRCodeTask!)
         }
     }
+     
+    // MARK: - Actions
+     /**
+      Show the capture button. Should be called when onboarding is dismissed.
+      */
+     public override func showCaptureButton() {
+         cameraPane.captureButton.alpha = 1
+     }
+
+     /**
+      Hide the capture button. Should be called when onboarding is presented.
+      */
+     public override func hideCaptureButton() {
+         cameraPane.captureButton.alpha = 0
+     }
+
+     public override func setupCamera() {
+         cameraPreviewViewController.setupCamera()
+     }
 }
 
 // MARK: - CameraPreviewViewControllerDelegate
