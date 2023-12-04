@@ -1,11 +1,9 @@
 name: Generate SBOMs for all projects
 
-# TODO: remove push trigger after merging to main
 # TODO: add trigger to run after we have published a release
 # TODO: use GitHub's dependency submission API to submit the SBOMs to GitHub's dependency graph:
 #       https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/using-the-dependency-submission-api
 on:
-  push:
   workflow_dispatch:
 
 jobs:
