@@ -19,7 +19,7 @@ import GiniBankAPILibrary
 
 extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
 
-    public func camera(_ viewController: CameraScreen, didCapture document: GiniCaptureDocument) {
+   func camera(_ viewController: CameraViewController, didCapture document: GiniCaptureDocument) {
         let loadingView = viewController.addValidationLoadingView()
 
         validate([document]) { result in
@@ -50,7 +50,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         }
     }
 
-    public func camera(_ viewController: CameraScreen, didSelect documentPicker: DocumentPickerType) {
+    func camera(_ viewController: CameraViewController, didSelect documentPicker: DocumentPickerType) {
         switch documentPicker {
         case .gallery:
             documentPickerCoordinator.showGalleryPicker(from: viewController)
@@ -60,7 +60,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         }
     }
 
-    public func cameraDidAppear(_ viewController: CameraScreen) {
+    func cameraDidAppear(_ viewController: CameraViewController) {
         if shouldShowOnBoarding() {
             showOnboardingScreen(cameraViewController: viewController, completion: {
                 viewController.setupCamera()
@@ -70,7 +70,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         }
     }
 
-    public func cameraDidTapReviewButton(_ viewController: CameraScreen) {
+    func cameraDidTapReviewButton(_ viewController: CameraViewController) {
         popBackToReview()
     }
 
@@ -87,7 +87,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         return cameraButtonsViewModel
     }
 
-    func createCameraViewController() -> CameraScreen {
+    func createCameraViewController() -> CameraViewController {
         let cameraButtonsViewModel = createCameraButtonsViewModel()
 
         let cameraViewController = CameraViewController(
@@ -151,7 +151,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
     }
 
     private func showOnboardingScreen(
-        cameraViewController: CameraScreen,
+        cameraViewController: CameraViewController,
         completion: @escaping () -> Void) {
         cameraViewController.hideCaptureButton()
 
