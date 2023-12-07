@@ -1,0 +1,152 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankConfiguration.swift",
+      "line": 12,
+      "symbol": "GiniBankConfiguration",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankConfiguration.swift",
+      "line": 330,
+      "symbol": "GiniBankConfiguration.captureConfiguration()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankConfiguration.swift",
+      "line": 489,
+      "symbol": "GiniBankConfiguration.cleanup(paymentRecipient:paymentReference:paymentPurpose:iban:bic:amountToPay:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankNetworkingScreenApiCoordinator.swift",
+      "line": 18,
+      "symbol": "GiniBankNetworkingScreenApiCoordinator",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankNetworkingScreenApiCoordinator.swift",
+      "line": 117,
+      "symbol": "GiniBankNetworkingScreenApiCoordinator.init(client:resultsDelegate:configuration:documentMetadata:api:trackingDelegate:lib:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankNetworkingScreenApiCoordinator.swift",
+      "line": 139,
+      "symbol": "GiniBankNetworkingScreenApiCoordinator.init(resultsDelegate:configuration:documentMetadata:trackingDelegate:captureNetworkService:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankNetworkingScreenApiCoordinator.swift",
+      "line": 224,
+      "symbol": "GiniBankNetworkingScreenApiCoordinator",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankNetworkingScreenApiCoordinator.swift",
+      "line": 225,
+      "symbol": "GiniBankNetworkingScreenApiCoordinator.deliverWithReturnAssistant(result:analysisDelegate:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankNetworkingScreenApiCoordinator.swift",
+      "line": 255,
+      "symbol": "GiniBankNetworkingScreenApiCoordinator.showDigitalInvoiceScreen(digitalInvoice:analysisDelegate:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankNetworkingScreenApiCoordinator.swift",
+      "line": 264,
+      "symbol": "GiniBankNetworkingScreenApiCoordinator.startAnalysisWithReturnAssistant(networkDelegate:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/GiniBankUtils.swift",
+      "line": 11,
+      "symbol": "GiniBankAnalysisDelegate",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/Networking/GiniBank+Networking.swift",
+      "line": 81,
+      "symbol": "GiniBank.removeStoredCredentials(for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/Payment/PaymentInfo.swift",
+      "line": 14,
+      "symbol": "PaymentInfo.iban",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/Payment/PaymentInfo.swift",
+      "line": 14,
+      "symbol": "PaymentInfo.recipient",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/Payment/PaymentInfo.swift",
+      "line": 15,
+      "symbol": "PaymentInfo.bic",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/Payment/PaymentInfo.swift",
+      "line": 16,
+      "symbol": "PaymentInfo.amount",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/Payment/PaymentInfo.swift",
+      "line": 16,
+      "symbol": "PaymentInfo.purpose",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/Payment/PaymentInfo.swift",
+      "line": 18,
+      "symbol": "PaymentInfo.init(recipient:iban:bic:amount:purpose:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/String+Utils.swift",
+      "line": 12,
+      "symbol": "String.parseAmountStringToBackendFormat(string:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/Core/UITextField.swift",
+      "line": 11,
+      "symbol": "UITextField.moveSelectedTextRange(from:to:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios/BankSDK/GiniBankSDK/Sources/GiniBankSDK/GiniBankSDKVersion.swift",
+      "line": 8,
+      "symbol": "GiniBankSDKVersion",
+      "symbol_kind": "source.lang.swift.decl.var.global",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/runner/work/gini-mobile-ios/gini-mobile-ios"
+}
