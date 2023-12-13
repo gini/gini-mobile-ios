@@ -89,10 +89,7 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         selectionStyle = .none
 
         if viewModel?.index == 0 {
-            clipsToBounds = true
-            layer.cornerRadius = 8
-            layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-
+            round(corners: [.topLeft, .topRight], radius: 8)
             separatorView.isHidden = true
         }
 
@@ -112,6 +109,13 @@ class DigitalLineItemTableViewCell: UITableViewCell {
         nameLabel.font = configuration.textStyleFonts[.body]
         unitPriceLabel.font = configuration.textStyleFonts[.body]
         editButton.titleLabel?.font = configuration.textStyleFonts[.body]
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        // When reusing cells, reset the rounded corners and the separator view visibility to their default values
+        round(radius: 0)
+        separatorView.isHidden = false
     }
 
     @objc func modeSwitchValueChange(sender: UISwitch) {
