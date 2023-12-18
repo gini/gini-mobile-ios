@@ -218,10 +218,6 @@ final class DigitalInvoiceViewController: UIViewController {
 
         setupView()
         setupConstraints()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         viewModel.shouldShowOnboarding()
     }
 
