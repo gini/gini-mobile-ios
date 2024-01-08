@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		287091EB2B4C4E5A00506CBA /* GiniBankSDKExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287091EA2B4C4E5A00506CBA /* GiniBankSDKExampleUITests.swift */; };
+		287091ED2B4C4E5A00506CBA /* GiniBankSDKExampleUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287091EC2B4C4E5A00506CBA /* GiniBankSDKExampleUITestsLaunchTests.swift */; };
 		2883DE062AB89F4000AE3A9C /* GiniCaptureSDKColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2883DE052AB89F4000AE3A9C /* GiniCaptureSDKColors.swift */; };
 		289447712A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */; };
 		289447732A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */; };
@@ -120,6 +122,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		287091EE2B4C4E5A00506CBA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F490C7B725DE72E400D8CA6F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F490C7E125DE873900D8CA6F;
+			remoteInfo = GiniBankSDKExample;
+		};
 		F490C80C25DE87AF00D8CA6F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F490C7B725DE72E400D8CA6F /* Project object */;
@@ -151,6 +160,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		287091E82B4C4E5A00506CBA /* GiniBankSDKExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiniBankSDKExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		287091EA2B4C4E5A00506CBA /* GiniBankSDKExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniBankSDKExampleUITests.swift; sourceTree = "<group>"; };
+		287091EC2B4C4E5A00506CBA /* GiniBankSDKExampleUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniBankSDKExampleUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		2883DE052AB89F4000AE3A9C /* GiniCaptureSDKColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiniCaptureSDKColors.swift; sourceTree = "<group>"; };
 		289447702A3C8ECD00ED012E /* SettingsViewController+SwitchOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SwitchOptionModel.swift"; sourceTree = "<group>"; };
 		289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SegmentedOptionModel.swift"; sourceTree = "<group>"; };
@@ -267,6 +279,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		287091E52B4C4E5A00506CBA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4807C31263C20BA00F30FF3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -303,6 +322,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		287091E92B4C4E5A00506CBA /* GiniBankSDKExampleUITests */ = {
+			isa = PBXGroup;
+			children = (
+				287091EA2B4C4E5A00506CBA /* GiniBankSDKExampleUITests.swift */,
+				287091EC2B4C4E5A00506CBA /* GiniBankSDKExampleUITestsLaunchTests.swift */,
+			);
+			path = GiniBankSDKExampleUITests;
+			sourceTree = "<group>";
+		};
 		28B5873A2A37270F008CB210 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -534,6 +562,7 @@
 				F490C7E325DE873900D8CA6F /* GiniBankSDKExample */,
 				F4807C35263C20BA00F30FF3 /* GiniBankSDKExampleBank */,
 				F4C723AB28F8354400BDDEA7 /* GiniBankSDKShareExtension */,
+				287091E92B4C4E5A00506CBA /* GiniBankSDKExampleUITests */,
 				F490C7C125DE72E400D8CA6F /* Products */,
 				F439C21927355C310010D77D /* Frameworks */,
 			);
@@ -546,6 +575,7 @@
 				F490C7FD25DE87A900D8CA6F /* GiniBankSDKExampleTests.xctest */,
 				F4807C34263C20BA00F30FF3 /* GiniBankSDKExampleBank.app */,
 				F4C723AA28F8354400BDDEA7 /* GiniBankSDKShareExtension.appex */,
+				287091E82B4C4E5A00506CBA /* GiniBankSDKExampleUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -604,6 +634,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		287091E72B4C4E5A00506CBA /* GiniBankSDKExampleUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 287091F22B4C4E5B00506CBA /* Build configuration list for PBXNativeTarget "GiniBankSDKExampleUITests" */;
+			buildPhases = (
+				287091E42B4C4E5A00506CBA /* Sources */,
+				287091E52B4C4E5A00506CBA /* Frameworks */,
+				287091E62B4C4E5A00506CBA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				287091EF2B4C4E5A00506CBA /* PBXTargetDependency */,
+			);
+			name = GiniBankSDKExampleUITests;
+			productName = GiniBankSDKExampleUITests;
+			productReference = 287091E82B4C4E5A00506CBA /* GiniBankSDKExampleUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		F4807C33263C20BA00F30FF3 /* GiniBankSDKExampleBank */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4807C47263C20BB00F30FF3 /* Build configuration list for PBXNativeTarget "GiniBankSDKExampleBank" */;
@@ -691,9 +739,13 @@
 		F490C7B725DE72E400D8CA6F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1400;
+				LastSwiftUpdateCheck = 1510;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
+					287091E72B4C4E5A00506CBA = {
+						CreatedOnToolsVersion = 15.1;
+						TestTargetID = F490C7E125DE873900D8CA6F;
+					};
 					F4807C33263C20BA00F30FF3 = {
 						CreatedOnToolsVersion = 12.4;
 					};
@@ -730,11 +782,19 @@
 				F490C7FC25DE87A800D8CA6F /* GiniBankSDKExampleTests */,
 				F4807C33263C20BA00F30FF3 /* GiniBankSDKExampleBank */,
 				F4C723A928F8354400BDDEA7 /* GiniBankSDKShareExtension */,
+				287091E72B4C4E5A00506CBA /* GiniBankSDKExampleUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		287091E62B4C4E5A00506CBA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4807C32263C20BA00F30FF3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -831,6 +891,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		287091E42B4C4E5A00506CBA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				287091EB2B4C4E5A00506CBA /* GiniBankSDKExampleUITests.swift in Sources */,
+				287091ED2B4C4E5A00506CBA /* GiniBankSDKExampleUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4807C30263C20BA00F30FF3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -923,6 +992,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		287091EF2B4C4E5A00506CBA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F490C7E125DE873900D8CA6F /* GiniBankSDKExample */;
+			targetProxy = 287091EE2B4C4E5A00506CBA /* PBXContainerItemProxy */;
+		};
 		F490C80D25DE87AF00D8CA6F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F490C7E125DE873900D8CA6F /* GiniBankSDKExample */;
@@ -1024,6 +1098,59 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		287091F02B4C4E5B00506CBA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.gini.ios.GiniSDK-UITests.GiniBankSDKExampleUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GiniBankSDKExample;
+			};
+			name = Debug;
+		};
+		287091F12B4C4E5B00506CBA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JA825X8F7Z;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.gini.ios.GiniSDK-UITests.GiniBankSDKExampleUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GiniBankSDKExample;
+			};
+			name = Release;
+		};
 		F4807C45263C20BB00F30FF3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1381,6 +1508,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		287091F22B4C4E5B00506CBA /* Build configuration list for PBXNativeTarget "GiniBankSDKExampleUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				287091F02B4C4E5B00506CBA /* Debug */,
+				287091F12B4C4E5B00506CBA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F4807C47263C20BB00F30FF3 /* Build configuration list for PBXNativeTarget "GiniBankSDKExampleBank" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
