@@ -322,13 +322,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		287091E92B4C4E5A00506CBA /* GiniBankSDKExampleUITests */ = {
+		287091E92B4C4E5A00506CBA /* UITests */ = {
 			isa = PBXGroup;
 			children = (
 				287091EA2B4C4E5A00506CBA /* GiniBankSDKExampleUITests.swift */,
 				287091EC2B4C4E5A00506CBA /* GiniBankSDKExampleUITestsLaunchTests.swift */,
 			);
-			path = GiniBankSDKExampleUITests;
+			path = UITests;
 			sourceTree = "<group>";
 		};
 		28B5873A2A37270F008CB210 /* Utils */ = {
@@ -558,11 +558,11 @@
 			isa = PBXGroup;
 			children = (
 				F45D7EFF2800566900C73C63 /* Tests */,
+				287091E92B4C4E5A00506CBA /* UITests */,
 				F439C210273555B60010D77D /* Packages */,
 				F490C7E325DE873900D8CA6F /* GiniBankSDKExample */,
 				F4807C35263C20BA00F30FF3 /* GiniBankSDKExampleBank */,
 				F4C723AB28F8354400BDDEA7 /* GiniBankSDKShareExtension */,
-				287091E92B4C4E5A00506CBA /* GiniBankSDKExampleUITests */,
 				F490C7C125DE72E400D8CA6F /* Products */,
 				F439C21927355C310010D77D /* Frameworks */,
 			);
