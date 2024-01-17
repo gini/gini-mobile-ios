@@ -10,6 +10,7 @@ import UIKit
 import GiniHealthSDK
 import GiniHealthAPILibrary
 import GiniCaptureSDK
+import GiniBankAPILibrary
 
 protocol InvoicesCoordinatorProtocol: AnyObject {
 }
@@ -20,9 +21,25 @@ protocol InvoicesViewControllerProtocol: AnyObject {
     func reloadTableView()
 }
 
-struct DocumentWithExtractions {
-    var document: Document
-    var extractionResult: ExtractionResult
+struct DocumentWithExtractions: Codable {
+    var documentID: String
+    var amountToPay: String?
+    var paymentDueDate: String?
+    var recipient: String?
+    
+    init(documentID: String, extractionResult: GiniHealthAPILibrary.ExtractionResult) {
+        self.documentID = documentID
+        self.amountToPay = extractionResult.payment?.first?.first(where: {$0.name == "amount_to_pay"})?.value
+        self.paymentDueDate = extractionResult.extractions.first(where: {$0.name == "payment_due_date"})?.value
+        self.recipient = extractionResult.payment?.first?.first(where: {$0.name == "payment_recipient"})?.value
+    }
+    
+    init(documentID: String, extractions: [GiniBankAPILibrary.Extraction]) {
+        self.documentID = documentID
+        self.amountToPay = extractions.first(where: {$0.name == "amount_to_pay"})?.value
+        self.paymentDueDate = extractions.first(where: {$0.name == "payment_due_date"})?.value
+        self.recipient = extractions.first(where: {$0.name == "payment_recipient"})?.value
+    }
 }
 
 final class InvoicesListViewModel {
@@ -33,6 +50,7 @@ final class InvoicesListViewModel {
     
     private var hardcodedDocuments: [GiniHealthAPILibrary.Document]?
     private let dispatchGroup = DispatchGroup()
+    private let hardcodedInvoicesController: HardcodedInvoicesControllerProtocol
     
     var invoices: [DocumentWithExtractions] = []
     
@@ -45,17 +63,18 @@ final class InvoicesListViewModel {
     
     let tableViewCell: UITableViewCell.Type = InvoiceTableViewCell.self
     
-    init(coordinator: InvoicesListCoordinator, viewController: InvoicesViewControllerProtocol? = nil, invoices: [DocumentWithExtractions]? = nil, giniHealth: GiniHealth) {
+    init(coordinator: InvoicesListCoordinator, viewController: InvoicesViewControllerProtocol? = nil, invoices: [DocumentWithExtractions]? = nil, giniHealth: GiniHealth, hardcodedInvoicesController: HardcodedInvoicesControllerProtocol) {
         self.coordinator = coordinator
         self.viewController = viewController
-        self.invoices = invoices ?? []
+        self.hardcodedInvoicesController = hardcodedInvoicesController
+        self.invoices = invoices ?? hardcodedInvoicesController.getInvoicesWithExtractions()
         self.health = giniHealth
     }
     
     @objc
     func uploadInvoices() {
         viewController?.showActivityIndicator()
-        HardcodedInvoicesController().obtainInvoicesHardcoded { [weak self] invoicesData in
+        hardcodedInvoicesController.obtainInvoicePhotosHardcoded { [weak self] invoicesData in
             self?.uploadDocuments(dataDocuments: invoicesData)
         }
     }
@@ -74,7 +93,7 @@ final class InvoicesListViewModel {
                         switch result {
                         case let .success(extractionResult):
                             print("✅ Successfully fetched extractions for id: \(createdDocument.id)")
-                            self?.invoices.append(DocumentWithExtractions(document: createdDocument, extractionResult: extractionResult))
+                            self?.invoices.append(DocumentWithExtractions(documentID: createdDocument.id, extractionResult: extractionResult))
                         case let .failure(error):
                             print("❌ Setting document for review failed: \(String(describing: error))")
                         }
@@ -86,6 +105,7 @@ final class InvoicesListViewModel {
             }
         }
         dispatchGroup.notify(queue: .main) {
+            self.hardcodedInvoicesController.storeInvoicesWithExtractions(invoices: self.invoices)
             self.viewController?.hideActivityIndicator()
             self.viewController?.reloadTableView()
         }

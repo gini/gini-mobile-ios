@@ -17,6 +17,7 @@ final class InvoiceTableViewCell: UITableViewCell {
             dueDateLabel.text = cellViewModel?.dueDateText
             amountLabel.text = cellViewModel?.amountToPayText
             
+            recipientLabel.isHidden = cellViewModel?.isRecipientLabelHidden ?? false
             dueDateLabel.isHidden = cellViewModel?.isDueDataLabelHidden ?? false
         }
     }

@@ -21,11 +21,11 @@ final class InvoicesListCoordinator: NSObject, Coordinator {
     
     var invoicesListViewController: InvoicesListViewController?
     
-    func start(health: GiniHealth) {
+    func start(health: GiniHealth, hardcodedInvoicesController: HardcodedInvoicesControllerProtocol) {
         self.health = health
         
         invoicesListViewController = InvoicesListViewController()
-        invoicesListViewController?.viewModel = InvoicesListViewModel(coordinator: self, viewController: invoicesListViewController, giniHealth: health)
+        invoicesListViewController?.viewModel = InvoicesListViewModel(coordinator: self, viewController: invoicesListViewController, giniHealth: health, hardcodedInvoicesController: hardcodedInvoicesController)
         guard let invoicesListViewController = invoicesListViewController else { return }
         invoicesListNavigationController = RootNavigationController(rootViewController: invoicesListViewController)
         invoicesListNavigationController.interactivePopGestureRecognizer?.delegate = nil
