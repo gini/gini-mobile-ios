@@ -311,11 +311,6 @@ private extension SessionManager {
             completion(.failure(.badRequest(response: response, data: data)))
         case 401:
             if let authServiceType = resource.authServiceType, case .apiService = authServiceType {
-                do {
-                    // Remove current user
-                    try self.keyStore.remove(service: .auth, key: .userEmail)
-                    try self.keyStore.remove(service: .auth, key: .userPassword)
-                    
                     // Log in again
                     self.logIn { result in
                         switch result {
@@ -328,9 +323,6 @@ private extension SessionManager {
                             completion(.failure(.unauthorized(response: response, data: data)))
                         }
                     }
-                } catch {
-                    completion(.failure(.unauthorized(response: response, data: data)))
-                }
             } else {
                 completion(.failure(.unauthorized(response: response, data: data)))
             }
