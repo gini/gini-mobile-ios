@@ -8,6 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		284A53502A86493100183EA7 /* SelectAPIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 284A534F2A86493100183EA7 /* SelectAPIViewController.xib */; };
+		7DB661832B554622004537AA /* InvoicesListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB661822B554622004537AA /* InvoicesListCoordinator.swift */; };
+		7DB661862B554A6F004537AA /* InvoicesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB661842B554A6F004537AA /* InvoicesListViewController.swift */; };
+		7DB6618B2B554ADF004537AA /* InvoiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB661892B554ADF004537AA /* InvoiceTableViewCell.swift */; };
+		7DB6618C2B554ADF004537AA /* InvoiceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DB6618A2B554ADF004537AA /* InvoiceTableViewCell.xib */; };
+		7DB6618E2B5687B4004537AA /* HardcodedInvoices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6618D2B5687B4004537AA /* HardcodedInvoices.swift */; };
+		7DB661952B5687F7004537AA /* health-invoice-2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7DB661902B5687F7004537AA /* health-invoice-2.jpg */; };
+		7DB661962B5687F7004537AA /* health-invoice-3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7DB661912B5687F7004537AA /* health-invoice-3.jpg */; };
+		7DB661972B5687F7004537AA /* health-invoice-4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7DB661922B5687F7004537AA /* health-invoice-4.jpg */; };
+		7DB661982B5687F7004537AA /* health-invoice-1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7DB661932B5687F7004537AA /* health-invoice-1.jpg */; };
+		7DB661992B5687F7004537AA /* health-invoice-5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7DB661942B5687F7004537AA /* health-invoice-5.jpg */; };
+		7DB6619B2B56AE80004537AA /* InvoicesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6619A2B56AE80004537AA /* InvoicesListViewModel.swift */; };
+		7DB6619D2B56C0B7004537AA /* InvoiceTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6619C2B56C0B7004537AA /* InvoiceTableViewCellModel.swift */; };
+		7DB6619F2B56D287004537AA /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6619E2B56D287004537AA /* Date+Extensions.swift */; };
 		F4206BBC2A1B9C6900E5E101 /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F4206BBB2A1B9C6900E5E101 /* GiniCaptureSDK */; };
 		F4206BBE2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4206BBD2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift */; };
 		F4206BC02A1BB86B00E5E101 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4206BBF2A1BB86B00E5E101 /* RootNavigationController.swift */; };
@@ -61,6 +74,19 @@
 
 /* Begin PBXFileReference section */
 		284A534F2A86493100183EA7 /* SelectAPIViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectAPIViewController.xib; sourceTree = "<group>"; };
+		7DB661822B554622004537AA /* InvoicesListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesListCoordinator.swift; sourceTree = "<group>"; };
+		7DB661842B554A6F004537AA /* InvoicesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesListViewController.swift; sourceTree = "<group>"; };
+		7DB661892B554ADF004537AA /* InvoiceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceTableViewCell.swift; sourceTree = "<group>"; };
+		7DB6618A2B554ADF004537AA /* InvoiceTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvoiceTableViewCell.xib; sourceTree = "<group>"; };
+		7DB6618D2B5687B4004537AA /* HardcodedInvoices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HardcodedInvoices.swift; sourceTree = "<group>"; };
+		7DB661902B5687F7004537AA /* health-invoice-2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-2.jpg"; sourceTree = "<group>"; };
+		7DB661912B5687F7004537AA /* health-invoice-3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-3.jpg"; sourceTree = "<group>"; };
+		7DB661922B5687F7004537AA /* health-invoice-4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-4.jpg"; sourceTree = "<group>"; };
+		7DB661932B5687F7004537AA /* health-invoice-1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-1.jpg"; sourceTree = "<group>"; };
+		7DB661942B5687F7004537AA /* health-invoice-5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-5.jpg"; sourceTree = "<group>"; };
+		7DB6619A2B56AE80004537AA /* InvoicesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesListViewModel.swift; sourceTree = "<group>"; };
+		7DB6619C2B56C0B7004537AA /* InvoiceTableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceTableViewCellModel.swift; sourceTree = "<group>"; };
+		7DB6619E2B56D287004537AA /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		F4206BBD2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
 		F4206BBF2A1BB86B00E5E101 /* RootNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
 		F4206BC12A1D012E00E5E101 /* HealthNetworkingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthNetworkingService.swift; sourceTree = "<group>"; };
@@ -140,6 +166,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7DB661882B554A79004537AA /* InvoicesList */ = {
+			isa = PBXGroup;
+			children = (
+				7DB661822B554622004537AA /* InvoicesListCoordinator.swift */,
+				7DB661842B554A6F004537AA /* InvoicesListViewController.swift */,
+				7DB6619A2B56AE80004537AA /* InvoicesListViewModel.swift */,
+				7DB661892B554ADF004537AA /* InvoiceTableViewCell.swift */,
+				7DB6619C2B56C0B7004537AA /* InvoiceTableViewCellModel.swift */,
+				7DB6618A2B554ADF004537AA /* InvoiceTableViewCell.xib */,
+				7DB6618F2B5687EA004537AA /* HardcodedInvoices */,
+			);
+			path = InvoicesList;
+			sourceTree = "<group>";
+		};
+		7DB6618F2B5687EA004537AA /* HardcodedInvoices */ = {
+			isa = PBXGroup;
+			children = (
+				7DB6618D2B5687B4004537AA /* HardcodedInvoices.swift */,
+				7DB661932B5687F7004537AA /* health-invoice-1.jpg */,
+				7DB661902B5687F7004537AA /* health-invoice-2.jpg */,
+				7DB661912B5687F7004537AA /* health-invoice-3.jpg */,
+				7DB661922B5687F7004537AA /* health-invoice-4.jpg */,
+				7DB661942B5687F7004537AA /* health-invoice-5.jpg */,
+			);
+			path = HardcodedInvoices;
+			sourceTree = "<group>";
+		};
 		F4C36A7F270C6EBF00CCC69C = {
 			isa = PBXGroup;
 			children = (
@@ -221,11 +274,13 @@
 				F4EC3904273C2621007045DC /* PartialDocument.swift */,
 				F4EC3907273C2621007045DC /* SelectAPIViewController.swift */,
 				284A534F2A86493100183EA7 /* SelectAPIViewController.xib */,
+				7DB661882B554A79004537AA /* InvoicesList */,
 				F4EC3908273C2622007045DC /* UIViewController.swift */,
 				F4EC38F4273C2311007045DC /* Base.lproj */,
 				F4EC38F3273C2311007045DC /* Credentials.plist */,
 				F4EC38F2273C2311007045DC /* CredentialsManager.swift */,
 				F4EC38EF273C2310007045DC /* UIViewController+Utils.swift */,
+				7DB6619E2B56D287004537AA /* Date+Extensions.swift */,
 				F4EC38C3273C21E4007045DC /* SceneDelegate.swift */,
 				F4EC38C5273C21E4007045DC /* ViewController.swift */,
 				F4EC38CC273C21E5007045DC /* LaunchScreen.storyboard */,
@@ -394,11 +449,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4EC38CE273C21E5007045DC /* LaunchScreen.storyboard in Resources */,
+				7DB6618C2B554ADF004537AA /* InvoiceTableViewCell.xib in Resources */,
+				7DB661952B5687F7004537AA /* health-invoice-2.jpg in Resources */,
 				F464B17627CD2147001735B9 /* Localizable.strings in Resources */,
 				F4EC38FA273C2311007045DC /* Base.lproj in Resources */,
+				7DB661992B5687F7004537AA /* health-invoice-5.jpg in Resources */,
 				F4EC38F9273C2311007045DC /* Credentials.plist in Resources */,
 				284A53502A86493100183EA7 /* SelectAPIViewController.xib in Resources */,
 				F4EC3913273C2B41007045DC /* Assets.xcassets in Resources */,
+				7DB661982B5687F7004537AA /* health-invoice-1.jpg in Resources */,
+				7DB661972B5687F7004537AA /* health-invoice-4.jpg in Resources */,
+				7DB661962B5687F7004537AA /* health-invoice-3.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,19 +496,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7DB661832B554622004537AA /* InvoicesListCoordinator.swift in Sources */,
 				F4EC390B273C2622007045DC /* SelectAPIViewController.swift in Sources */,
 				F4206BC22A1D012E00E5E101 /* HealthNetworkingService.swift in Sources */,
 				F4EC390D273C2622007045DC /* Coordinator.swift in Sources */,
 				F4EC38F8273C2311007045DC /* CredentialsManager.swift in Sources */,
+				7DB6618B2B554ADF004537AA /* InvoiceTableViewCell.swift in Sources */,
 				F4EC38F5273C2311007045DC /* UIViewController+Utils.swift in Sources */,
 				F4EC38C6273C21E4007045DC /* ViewController.swift in Sources */,
+				7DB6618E2B5687B4004537AA /* HardcodedInvoices.swift in Sources */,
 				F4EC3910273C2622007045DC /* UIViewController.swift in Sources */,
+				7DB6619B2B56AE80004537AA /* InvoicesListViewModel.swift in Sources */,
 				F4206BC02A1BB86B00E5E101 /* RootNavigationController.swift in Sources */,
 				F4EC38C2273C21E4007045DC /* AppDelegate.swift in Sources */,
+				7DB6619F2B56D287004537AA /* Date+Extensions.swift in Sources */,
+				7DB661862B554A6F004537AA /* InvoicesListViewController.swift in Sources */,
 				F4EC38C4273C21E4007045DC /* SceneDelegate.swift in Sources */,
 				F4206BBE2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift in Sources */,
 				F4EC390A273C2622007045DC /* AppCoordinator.swift in Sources */,
 				F4EC390E273C2622007045DC /* PartialDocument.swift in Sources */,
+				7DB6619D2B56C0B7004537AA /* InvoiceTableViewCellModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

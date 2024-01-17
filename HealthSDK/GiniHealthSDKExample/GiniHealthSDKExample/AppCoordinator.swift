@@ -279,6 +279,13 @@ final class AppCoordinator: Coordinator {
             self.remove(childCoordinator: coordinator)
         }
     }
+    
+    fileprivate func showInvoicesList() {
+        let invoicesListCoordinator = InvoicesListCoordinator()
+        invoicesListCoordinator.start(health: health)
+        add(childCoordinator: invoicesListCoordinator)
+        rootViewController.present(invoicesListCoordinator.rootViewController, animated: true)
+    }
 }
 
 // MARK: SelectAPIViewControllerDelegate
@@ -292,6 +299,8 @@ extension AppCoordinator: SelectAPIViewControllerDelegate {
             break
         case .paymentReview:
             showPaymentReviewWithTestDocument()
+        case .invoicesList:
+            showInvoicesList()
         }
     }
 }
