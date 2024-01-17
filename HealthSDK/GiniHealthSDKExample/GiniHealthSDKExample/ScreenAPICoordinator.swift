@@ -32,6 +32,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
     var visionDocuments: [GiniCaptureDocument]?
     var visionConfiguration: GiniConfiguration
     private var captureExtractedResults: [GiniBankAPILibrary.Extraction] = []
+    var hardcodedInvoicesController: HardcodedInvoicesController
     
     // {extraction name} : {entity name}
     private let editableSpecificExtractions = ["paymentRecipient" : "companyname", "paymentReference" : "reference", "paymentPurpose" : "text", "iban" : "iban", "bic" : "bic", "amountToPay" : "amount"]
@@ -39,11 +40,13 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
     init(configuration: GiniConfiguration,
          importedDocuments documents: [GiniCaptureDocument]?,
          client: GiniBankAPILibrary.Client,
-         documentMetadata: GiniBankAPILibrary.Document.Metadata?) {
+         documentMetadata: GiniBankAPILibrary.Document.Metadata?,
+         hardcodedInvoicesController: HardcodedInvoicesController) {
         visionConfiguration = configuration
         visionDocuments = documents
         self.client = client
         self.documentMetadata = documentMetadata
+        self.hardcodedInvoicesController = hardcodedInvoicesController
         super.init()
     }
     
@@ -77,6 +80,9 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
         for extraction in captureExtractedResults {
             healthExtractions.append(GiniHealthAPILibrary.Extraction(box: nil, candidates: extraction.candidates, entity: extraction.entity, value: extraction.value, name: extraction.name))
         }
+        
+        // Store invoice/document into Invoices list
+        hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: DocumentWithExtractions(documentID: result.document?.id ?? "", extractions: captureExtractedResults))
         
         if let healthSdk = self.giniHealth, let docId = result.document?.id {
             // this step needed since we've got 2 different Document structures

@@ -20,7 +20,6 @@
 		7DB661992B5687F7004537AA /* health-invoice-5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7DB661942B5687F7004537AA /* health-invoice-5.jpg */; };
 		7DB6619B2B56AE80004537AA /* InvoicesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6619A2B56AE80004537AA /* InvoicesListViewModel.swift */; };
 		7DB6619D2B56C0B7004537AA /* InvoiceTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6619C2B56C0B7004537AA /* InvoiceTableViewCellModel.swift */; };
-		7DB6619F2B56D287004537AA /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6619E2B56D287004537AA /* Date+Extensions.swift */; };
 		F4206BBC2A1B9C6900E5E101 /* GiniCaptureSDK in Frameworks */ = {isa = PBXBuildFile; productRef = F4206BBB2A1B9C6900E5E101 /* GiniCaptureSDK */; };
 		F4206BBE2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4206BBD2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift */; };
 		F4206BC02A1BB86B00E5E101 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4206BBF2A1BB86B00E5E101 /* RootNavigationController.swift */; };
@@ -86,7 +85,6 @@
 		7DB661942B5687F7004537AA /* health-invoice-5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "health-invoice-5.jpg"; sourceTree = "<group>"; };
 		7DB6619A2B56AE80004537AA /* InvoicesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesListViewModel.swift; sourceTree = "<group>"; };
 		7DB6619C2B56C0B7004537AA /* InvoiceTableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceTableViewCellModel.swift; sourceTree = "<group>"; };
-		7DB6619E2B56D287004537AA /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		F4206BBD2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAPICoordinator.swift; sourceTree = "<group>"; };
 		F4206BBF2A1BB86B00E5E101 /* RootNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
 		F4206BC12A1D012E00E5E101 /* HealthNetworkingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthNetworkingService.swift; sourceTree = "<group>"; };
@@ -280,7 +278,6 @@
 				F4EC38F3273C2311007045DC /* Credentials.plist */,
 				F4EC38F2273C2311007045DC /* CredentialsManager.swift */,
 				F4EC38EF273C2310007045DC /* UIViewController+Utils.swift */,
-				7DB6619E2B56D287004537AA /* Date+Extensions.swift */,
 				F4EC38C3273C21E4007045DC /* SceneDelegate.swift */,
 				F4EC38C5273C21E4007045DC /* ViewController.swift */,
 				F4EC38CC273C21E5007045DC /* LaunchScreen.storyboard */,
@@ -509,7 +506,6 @@
 				7DB6619B2B56AE80004537AA /* InvoicesListViewModel.swift in Sources */,
 				F4206BC02A1BB86B00E5E101 /* RootNavigationController.swift in Sources */,
 				F4EC38C2273C21E4007045DC /* AppDelegate.swift in Sources */,
-				7DB6619F2B56D287004537AA /* Date+Extensions.swift in Sources */,
 				7DB661862B554A6F004537AA /* InvoicesListViewController.swift in Sources */,
 				F4EC38C4273C21E4007045DC /* SceneDelegate.swift in Sources */,
 				F4206BBE2A1BB7CC00E5E101 /* ScreenAPICoordinator.swift in Sources */,

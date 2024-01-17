@@ -18,24 +18,25 @@ final class InvoiceTableViewCellModel {
     }
     
     var recipientNameText: String {
-        invoice.extractionResult.payment?.first?.first(where: {$0.name == "payment_recipient"})?.value ?? ""
+        invoice.recipient ?? ""
     }
     
     var amountToPayText: String {
-        if let amountString = invoice.extractionResult.payment?.first?.first(where: {$0.name == "amount_to_pay"})?.value, let amountToPay = Price(extractionString: amountString) {
-            return amountToPay.string ?? ""
+        if let amoountToPay = invoice.amountToPay, let amountToPayFormatted = Price(extractionString: amoountToPay) {
+            return amountToPayFormatted.string ?? ""
         }
         return ""
     }
     
     var dueDateText: String {
-        if let dueDate = invoice.extractionResult.extractions.first(where: {$0.name == "payment_due_date"})?.value {
-            return dueDate
-        }
-        return ""
+        invoice.paymentDueDate ?? ""
     }
     
     var isDueDataLabelHidden: Bool {
-        return dueDateText.isEmpty
+        dueDateText.isEmpty
+    }
+    
+    var isRecipientLabelHidden: Bool {
+        recipientNameText.isEmpty
     }
 }

@@ -117,7 +117,7 @@ final class AppCoordinator: Coordinator {
                                                         client: GiniBankAPILibrary.Client(id: self.client.id,
                                                                                           secret: self.client.secret,
                                                                                           domain: self.client.domain),
-                                                        documentMetadata: metadata)
+                                                        documentMetadata: metadata, hardcodedInvoicesController: HardcodedInvoicesController())
         
         screenAPICoordinator.delegate = self
         
@@ -282,7 +282,7 @@ final class AppCoordinator: Coordinator {
     
     fileprivate func showInvoicesList() {
         let invoicesListCoordinator = InvoicesListCoordinator()
-        invoicesListCoordinator.start(health: health)
+        invoicesListCoordinator.start(health: health, hardcodedInvoicesController: HardcodedInvoicesController())
         add(childCoordinator: invoicesListCoordinator)
         rootViewController.present(invoicesListCoordinator.rootViewController, animated: true)
     }
