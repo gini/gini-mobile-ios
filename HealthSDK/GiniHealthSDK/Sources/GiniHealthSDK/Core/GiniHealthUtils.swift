@@ -80,7 +80,7 @@ func decimal(from inputFieldString: String) -> Decimal? {
    A help price structure with decimal value and currency code, used in amout inpur field.
  */
 
-struct Price {
+public struct Price {
     // Decimal value
     var value: Decimal
     // Currency code
@@ -103,7 +103,7 @@ struct Price {
      - parameter extractionString: extracted string
      */
     
-    init?(extractionString: String) {
+    public init?(extractionString: String) {
        
         let components = extractionString.components(separatedBy: ":")
         
@@ -130,7 +130,7 @@ struct Price {
     }
     
     // Formatted string with currency symbol
-    var string: String? {
+    public var string: String? {
         
         let result = (Price.stringWithoutSymbol(from: value) ?? "") + " " + (currencySymbol ?? "")
         
