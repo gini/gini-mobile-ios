@@ -37,12 +37,12 @@ extension GiniBank {
                                      userApi: UserDomain = .default,
                                      trackingDelegate: GiniCaptureTrackingDelegate? = nil) -> UIViewController {
         let screenCoordinator = GiniBankNetworkingScreenApiCoordinator(client: client,
-                                                                          resultsDelegate: resultsDelegate,
-                                                                          configuration: configuration,
-                                                                          documentMetadata: documentMetadata,
-                                                                          api: api,
-                                                                          userApi: userApi,
-                                                                          trackingDelegate: trackingDelegate)
+                                                                       resultsDelegate: resultsDelegate,
+                                                                       configuration: configuration,
+                                                                       documentMetadata: documentMetadata,
+                                                                       api: api,
+                                                                       userApi: userApi,
+                                                                       trackingDelegate: trackingDelegate)
         return screenCoordinator.start(withDocuments: importedDocuments)
     }
 
