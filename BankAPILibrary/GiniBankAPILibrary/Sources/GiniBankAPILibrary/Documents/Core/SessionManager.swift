@@ -57,7 +57,9 @@ final class SessionManager: NSObject {
     let alternativeTokenSource: AlternativeTokenSource?
     private let session: URLSession
     let userDomain: UserDomain
-    
+    var clientAccessToken: String?
+    var userAccessToken: String?
+
     enum TaskType {
         case data, download, upload(Data)
     }
@@ -153,15 +155,12 @@ private extension SessionManager {
                          completion: completion).resume()
             } else {
                 Log("Stored token is no longer valid", event: .warning)
-                handleError(resource: resource,
-                            statusCode: 401,
-                            response: nil,
-                            data: nil,
-                            taskType: taskType,
-                            cancellationToken: cancellationToken,
-                            completion: completion)
+                handleLoginFlow(resource: resource,
+                                taskType: taskType,
+                                cancellationToken: cancellationToken,
+                                completion: completion)
             }
-            
+
         } else {
             dataTask(for: resource,
                      finalRequest: resource.request,
@@ -299,6 +298,7 @@ private extension SessionManager {
         }
     }
     
+
     private func handleError<T: Resource>(resource: T,
                                           statusCode: Int,
                                           response: HTTPURLResponse?,
@@ -308,24 +308,18 @@ private extension SessionManager {
                                           completion: @escaping CompletionResult<T.ResponseType>) {
         switch statusCode {
         case 400:
-            completion(.failure(.badRequest(response: response, data: data)))
-        case 401:
-            if let authServiceType = resource.authServiceType, case .apiService = authServiceType {
-                    // Log in again
-                    self.logIn { result in
-                        switch result {
-                        case .success:
-                            self.load(resource: resource,
-                                      taskType: taskType,
-                                      cancellationToken: cancellationToken,
-                                      completion: completion)
-                        case .failure:
-                            completion(.failure(.unauthorized(response: response, data: data)))
-                        }
-                    }
-            } else {
+                guard let responseData = data else {
+                    completion(.failure(.badRequest(response: response, data: nil)))
+                    return
+                }
+                let errorInfo = try! JSONDecoder().decode([String: String].self, from: responseData)
+                guard errorInfo["error"] == "invalid_grant" else {
+                    completion(.failure(.badRequest(response: response, data: data)))
+                    return
+                }
                 completion(.failure(.unauthorized(response: response, data: data)))
-            }
+        case 401:
+            completion(.failure(.unauthorized(response: response, data: data)))
         case 404:
             completion(.failure(.notFound(response: response, data: data)))
         case 406:
@@ -336,5 +330,21 @@ private extension SessionManager {
             completion(.failure(.unknown(response: response, data: data)))
         }
     }
-    
+
+    private func handleLoginFlow<T: Resource>(resource: T,
+                                              taskType: TaskType,
+                                              cancellationToken: CancellationToken?,
+                                              completion: @escaping CompletionResult<T.ResponseType>) {
+        logIn { result in
+            switch result {
+                case .success:
+                    self.load(resource: resource,
+                              taskType: taskType,
+                              cancellationToken: cancellationToken,
+                              completion: completion)
+                case .failure(let error):
+                    completion(.failure(error))
+            }
+        }
+    }
 }
