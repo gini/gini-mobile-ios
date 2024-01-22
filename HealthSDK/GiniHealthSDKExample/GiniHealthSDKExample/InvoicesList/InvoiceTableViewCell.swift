@@ -30,23 +30,13 @@ final class InvoiceTableViewCell: UITableViewCell {
     
     var paymentComponentView: UIView?
 
-    @IBOutlet weak var recipientLabel: UILabel!
-    @IBOutlet weak var dueDateLabel: UILabel!
-    @IBOutlet weak var amountLabel: UILabel!
-    @IBOutlet weak var mainStackView: UIStackView!
+    @IBOutlet private weak var mainStackView: UIStackView!
+    @IBOutlet private weak var recipientLabel: UILabel!
+    @IBOutlet private weak var dueDateLabel: UILabel!
+    @IBOutlet private weak var amountLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
+        selectionStyle = .none
     }
 }

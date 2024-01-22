@@ -5,10 +5,9 @@
 //
 
 
-import Foundation
 import UIKit
+import GiniHealthAPILibrary
 import GiniHealthSDK
-import GiniCaptureSDK
 
 final class InvoicesListCoordinator: NSObject, Coordinator {
     
@@ -18,20 +17,17 @@ final class InvoicesListCoordinator: NSObject, Coordinator {
     }
     
     var invoicesListNavigationController: UINavigationController!
-    private var health: GiniHealth!
+    var invoicesListViewController: InvoicesListViewController!
     
-    var invoicesListViewController: InvoicesListViewController?
-    
-    func start(health: GiniHealth, hardcodedInvoicesController: HardcodedInvoicesControllerProtocol, giniConfiguration: GiniHealthConfiguration) {
-        self.health = health
-        
-        invoicesListViewController = InvoicesListViewController()
-        invoicesListViewController?.viewModel = InvoicesListViewModel(coordinator: self, viewController: invoicesListViewController, giniHealth: health, hardcodedInvoicesController: hardcodedInvoicesController, giniConfiguration: giniConfiguration)
-        guard let invoicesListViewController = invoicesListViewController else { return }
+    func start(documentService: DefaultDocumentService,
+               hardcodedInvoicesController: HardcodedInvoicesControllerProtocol,
+               giniHealthConfiguration: GiniHealthConfiguration) {
+        self.invoicesListViewController = InvoicesListViewController()
+        invoicesListViewController.viewModel = InvoicesListViewModel(coordinator: self,
+                                                                     documentService: documentService,
+                                                                     hardcodedInvoicesController: hardcodedInvoicesController,
+                                                                     giniHealthConfiguration: giniHealthConfiguration)
         invoicesListNavigationController = RootNavigationController(rootViewController: invoicesListViewController)
         invoicesListNavigationController.interactivePopGestureRecognizer?.delegate = nil
     }
-}
-
-extension InvoicesListCoordinator: InvoicesCoordinatorProtocol {
 }

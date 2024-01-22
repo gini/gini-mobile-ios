@@ -30,11 +30,11 @@ enum GiniCaptureAPIType {
  */
 final class SelectAPIViewController: UIViewController {
     
-    @IBOutlet weak var metaInformationButton: UIButton!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var startWithTestDocumentButton: UIButton!
-    @IBOutlet weak var startWithGiniCaptureButton: UIButton!
-    @IBOutlet weak var invoicesListButton: UIButton!
+    @IBOutlet private weak var metaInformationButton: UIButton!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var startWithTestDocumentButton: UIButton!
+    @IBOutlet private weak var startWithGiniCaptureButton: UIButton!
+    @IBOutlet private weak var invoicesListButton: UIButton!
     
     weak var delegate: SelectAPIViewControllerDelegate?
         
