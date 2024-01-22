@@ -1,4 +1,5 @@
 //
+//
 //  InvoicesListViewController.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
@@ -7,17 +8,28 @@
 
 import UIKit
 
+protocol InvoicesListViewControllerProtocol: AnyObject {
+    func showActivityIndicator()
+    func hideActivityIndicator()
+    func reloadTableView()
+}
+
 final class InvoicesListViewController: UIViewController {
     
     // MARK: - Variables
-    lazy var invoicesTableView: UITableView = {
+    lazy private var invoicesTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UINib(nibName: InvoiceTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: InvoiceTableViewCell.identifier)
-        tableView.contentInset = UIEdgeInsets(top: Constants.padding, left: 0, bottom: Constants.padding, right: 0)
-        tableView.separatorColor = viewModel.tableViewSeparatorCalor
+        tableView.register(UINib(nibName: InvoiceTableViewCell.identifier, 
+                                 bundle: nil), 
+                           forCellReuseIdentifier: InvoiceTableViewCell.identifier)
+        tableView.contentInset = UIEdgeInsets(top: Constants.padding,
+                                              left: 0,
+                                              bottom: Constants.padding,
+                                              right: 0)
+        tableView.separatorColor = viewModel.tableViewSeparatorColor
         tableView.estimatedRowHeight = Constants.rowHeight
         tableView.rowHeight = UITableView.automaticDimension
         tableView.tableFooterView = UIView()
@@ -25,7 +37,7 @@ final class InvoicesListViewController: UIViewController {
         return tableView
     }()
 
-    lazy var activityIndicator: UIActivityIndicatorView = {
+    lazy private var activityIndicator: UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView()
         if #available(iOS 13.0, *) {
             activityIndicator.style = .large
@@ -60,20 +72,26 @@ final class InvoicesListViewController: UIViewController {
         view.addSubview(invoicesTableView)
 
         NSLayoutConstraint.activate([
-            invoicesTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.padding * 2),
-            invoicesTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.padding * 2),
-            invoicesTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding * 2),
+            invoicesTableView.topAnchor.constraint(equalTo: view.topAnchor, 
+                                                   constant: Constants.padding * 2),
+            invoicesTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, 
+                                                       constant: Constants.padding * 2),
+            invoicesTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, 
+                                                        constant: -Constants.padding * 2),
             invoicesTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                    constant: -Constants.padding * 2)
+                                                      constant: -Constants.padding * 2)
         ])
     }
     
     private func setupNavigationBar() {
-        let uploadInvoiceItem = UIBarButtonItem(title: viewModel.uploadInvoicesText, style: .plain, target: self, action: #selector(uploadInvoices))
+        let uploadInvoiceItem = UIBarButtonItem(title: viewModel.uploadInvoicesText, 
+                                                style: .plain,
+                                                target: self,
+                                                action: #selector(uploadInvoicesButtonTapped))
         self.navigationItem.rightBarButtonItem = uploadInvoiceItem
     }
     
-    @objc func uploadInvoices() {
+    @objc func uploadInvoicesButtonTapped() {
         viewModel.uploadInvoices()
     }
 }
@@ -87,8 +105,7 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
         guard let cell = tableView.dequeueReusableCell(withIdentifier: InvoiceTableViewCell.identifier, for: indexPath) as? InvoiceTableViewCell else {
             return UITableViewCell()
         }
-        cell.selectionStyle = .none
-        cell.cellViewModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0, giniConfiguration: viewModel.giniConfiguration) }[indexPath.row]
+        cell.cellViewModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0, giniConfiguration: viewModel.giniHealthConfiguration) }[indexPath.row]
         return cell
     }
     
@@ -108,22 +125,18 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
     }
 }
 
-extension InvoicesListViewController: InvoicesViewControllerProtocol {
+extension InvoicesListViewController: InvoicesListViewControllerProtocol {
     func showActivityIndicator() {
         self.activityIndicator.startAnimating()
         self.view.addSubview(self.activityIndicator)
     }
     
     func hideActivityIndicator() {
-        DispatchQueue.main.async {
-            self.activityIndicator.stopAnimating()
-        }
+        self.activityIndicator.stopAnimating()
     }
     
     func reloadTableView() {
-        DispatchQueue.main.async {
-            self.invoicesTableView.reloadData()
-        }
+        self.invoicesTableView.reloadData()
     }
 }
 
