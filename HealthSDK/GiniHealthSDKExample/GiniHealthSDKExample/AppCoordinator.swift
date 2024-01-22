@@ -11,7 +11,6 @@ import UIKit
 import GiniCaptureSDK
 import GiniHealthAPILibrary
 import GiniHealthSDK
-import GiniBankAPILibrary
 
 final class AppCoordinator: Coordinator {
     
@@ -109,12 +108,12 @@ final class AppCoordinator: Coordinator {
     
     
     fileprivate func showScreenAPI(with pages: [GiniCapturePage]? = nil) {
-        let metadata = GiniBankAPILibrary.Document.Metadata(branchId: documentMetadataBranchId,
-                                                            additionalHeaders: [documentMetadataAppFlowKey: "ScreenAPI"])
-        
+        let metadata = GiniHealthAPILibrary.Document.Metadata(branchId: documentMetadataBranchId,
+                                                              additionalHeaders: [documentMetadataAppFlowKey: "ScreenAPI"])
+
         let screenAPICoordinator = ScreenAPICoordinator(configuration: giniConfiguration,
                                                         importedDocuments: pages?.map { $0.document },
-                                                        client: GiniBankAPILibrary.Client(id: self.client.id,
+                                                        client: GiniHealthAPILibrary.Client(id: self.client.id,
                                                                                           secret: self.client.secret,
                                                                                           domain: self.client.domain),
                                                         documentMetadata: metadata)
