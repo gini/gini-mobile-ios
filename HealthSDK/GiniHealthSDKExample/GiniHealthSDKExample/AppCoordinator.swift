@@ -155,7 +155,7 @@ final class AppCoordinator: Coordinator {
         // Font configuration
         let regularFont = UIFont(name: "Avenir", size: 15) ?? UIFont.systemFont(ofSize: 15)
         let boldFont = UIFont(name: "Avenir Heavy", size: 14) ?? UIFont.systemFont(ofSize: 15)
-        configuration.customFont = GiniFont(regular: regularFont, bold: boldFont, light: regularFont, thin: regularFont)
+        configuration.customFont = GiniFont(regular: regularFont, bold: boldFont, light: regularFont, thin: regularFont, medium: boldFont)
         // Pay button configuration
         configuration.payButtonTitleFont = boldFont
         // Uncomment to test disabled state
@@ -282,7 +282,8 @@ final class AppCoordinator: Coordinator {
     
     fileprivate func showInvoicesList() {
         let invoicesListCoordinator = InvoicesListCoordinator()
-        invoicesListCoordinator.start(health: health, hardcodedInvoicesController: HardcodedInvoicesController())
+        let healthGiniConfiguraiton = GiniHealthConfiguration()
+        invoicesListCoordinator.start(health: health, hardcodedInvoicesController: HardcodedInvoicesController(), giniConfiguration: healthGiniConfiguraiton)
         add(childCoordinator: invoicesListCoordinator)
         rootViewController.present(invoicesListCoordinator.rootViewController, animated: true)
     }

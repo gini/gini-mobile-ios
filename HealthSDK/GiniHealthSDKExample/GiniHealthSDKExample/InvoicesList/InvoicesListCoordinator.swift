@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import GiniHealthSDK
+import GiniCaptureSDK
 
 final class InvoicesListCoordinator: NSObject, Coordinator {
     
@@ -21,11 +22,11 @@ final class InvoicesListCoordinator: NSObject, Coordinator {
     
     var invoicesListViewController: InvoicesListViewController?
     
-    func start(health: GiniHealth, hardcodedInvoicesController: HardcodedInvoicesControllerProtocol) {
+    func start(health: GiniHealth, hardcodedInvoicesController: HardcodedInvoicesControllerProtocol, giniConfiguration: GiniHealthConfiguration) {
         self.health = health
         
         invoicesListViewController = InvoicesListViewController()
-        invoicesListViewController?.viewModel = InvoicesListViewModel(coordinator: self, viewController: invoicesListViewController, giniHealth: health, hardcodedInvoicesController: hardcodedInvoicesController)
+        invoicesListViewController?.viewModel = InvoicesListViewModel(coordinator: self, viewController: invoicesListViewController, giniHealth: health, hardcodedInvoicesController: hardcodedInvoicesController, giniConfiguration: giniConfiguration)
         guard let invoicesListViewController = invoicesListViewController else { return }
         invoicesListNavigationController = RootNavigationController(rootViewController: invoicesListViewController)
         invoicesListNavigationController.interactivePopGestureRecognizer?.delegate = nil

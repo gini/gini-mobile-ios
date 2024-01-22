@@ -47,6 +47,7 @@ final class InvoicesListViewModel {
     private let coordinator: InvoicesListCoordinator
     private weak var viewController: InvoicesViewControllerProtocol?
     private var health: GiniHealth
+    var giniConfiguration: GiniHealthConfiguration
     
     private var hardcodedDocuments: [GiniHealthAPILibrary.Document]?
     private let dispatchGroup = DispatchGroup()
@@ -63,12 +64,15 @@ final class InvoicesListViewModel {
     
     let tableViewCell: UITableViewCell.Type = InvoiceTableViewCell.self
     
-    init(coordinator: InvoicesListCoordinator, viewController: InvoicesViewControllerProtocol? = nil, invoices: [DocumentWithExtractions]? = nil, giniHealth: GiniHealth, hardcodedInvoicesController: HardcodedInvoicesControllerProtocol) {
+    let healthSDKBundle = GiniHealthSDK.giniHealthBundle()
+    
+    init(coordinator: InvoicesListCoordinator, viewController: InvoicesViewControllerProtocol? = nil, invoices: [DocumentWithExtractions]? = nil, giniHealth: GiniHealth, hardcodedInvoicesController: HardcodedInvoicesControllerProtocol, giniConfiguration: GiniHealthConfiguration) {
         self.coordinator = coordinator
         self.viewController = viewController
         self.hardcodedInvoicesController = hardcodedInvoicesController
         self.invoices = invoices ?? hardcodedInvoicesController.getInvoicesWithExtractions()
         self.health = giniHealth
+        self.giniConfiguration = giniConfiguration
     }
     
     @objc

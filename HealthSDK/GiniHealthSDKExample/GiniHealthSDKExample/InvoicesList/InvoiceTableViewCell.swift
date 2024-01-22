@@ -19,12 +19,21 @@ final class InvoiceTableViewCell: UITableViewCell {
             
             recipientLabel.isHidden = cellViewModel?.isRecipientLabelHidden ?? false
             dueDateLabel.isHidden = cellViewModel?.isDueDataLabelHidden ?? false
-        }
+            paymentComponentView = cellViewModel?.paymentComponentView
+            
+            guard let paymentComponentView = paymentComponentView else { return }
+            if mainStackView.arrangedSubviews.count == 1 {
+                mainStackView.addArrangedSubview(paymentComponentView)
+            }
+        }	
     }
+    
+    var paymentComponentView: UIView?
 
     @IBOutlet weak var recipientLabel: UILabel!
     @IBOutlet weak var dueDateLabel: UILabel!
     @IBOutlet weak var amountLabel: UILabel!
+    @IBOutlet weak var mainStackView: UIStackView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -37,4 +46,7 @@ final class InvoiceTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+    }
 }

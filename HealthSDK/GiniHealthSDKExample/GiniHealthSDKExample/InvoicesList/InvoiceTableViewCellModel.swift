@@ -8,13 +8,17 @@
 import Foundation
 import GiniHealthAPILibrary
 import GiniHealthSDK
+import GiniCaptureSDK
+import UIKit
 
 final class InvoiceTableViewCellModel {
     
     var invoice: DocumentWithExtractions
+    var giniConfiguration: GiniHealthConfiguration
     
-    init(invoice: DocumentWithExtractions) {
+    init(invoice: DocumentWithExtractions, giniConfiguration: GiniHealthConfiguration) {
         self.invoice = invoice
+        self.giniConfiguration = giniConfiguration
     }
     
     var recipientNameText: String {
@@ -38,5 +42,9 @@ final class InvoiceTableViewCellModel {
     
     var isRecipientLabelHidden: Bool {
         recipientNameText.isEmpty
+    }
+    
+    var paymentComponentView: UIView {
+        GiniHealthSDK.PaymentComponentController(giniConfiguration: giniConfiguration).getPaymentView()
     }
 }

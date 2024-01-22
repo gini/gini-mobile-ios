@@ -21,6 +21,7 @@ final class InvoicesListViewController: UIViewController {
         tableView.estimatedRowHeight = Constants.rowHeight
         tableView.rowHeight = UITableView.automaticDimension
         tableView.tableFooterView = UIView()
+//        tableView.register(UINib(nibName: "PaymentComponentView", bundle: viewModel.healthSDKBundle), forCellReuseIdentifier: InvoiceTableViewCell.identifier)
         return tableView
     }()
 
@@ -87,7 +88,7 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
             return UITableViewCell()
         }
         cell.selectionStyle = .none
-        cell.cellViewModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0) }[indexPath.row]
+        cell.cellViewModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0, giniConfiguration: viewModel.giniConfiguration) }[indexPath.row]
         return cell
     }
     
