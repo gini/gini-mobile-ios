@@ -6,7 +6,6 @@
 //  Copyright © 2017 Gini GmbH. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import GiniCaptureSDK
 import GiniHealthAPILibrary
@@ -49,7 +48,7 @@ final class AppCoordinator: Coordinator {
     }()
     
     private lazy var client: GiniHealthAPILibrary.Client = CredentialsManager.fetchClientFromBundle()
-    private lazy var apiLib = GiniHealthAPI.Builder(client: client).build()
+    private lazy var apiLib = GiniHealthAPI.Builder(client: client, logLevel: .debug).build()
     private lazy var health = GiniHealth(with: apiLib)
     
     private var documentMetadata: GiniHealthAPILibrary.Document.Metadata?
@@ -117,7 +116,8 @@ final class AppCoordinator: Coordinator {
                                                         client: GiniBankAPILibrary.Client(id: self.client.id,
                                                                                           secret: self.client.secret,
                                                                                           domain: self.client.domain),
-                                                        documentMetadata: metadata, hardcodedInvoicesController: HardcodedInvoicesController())
+                                                                                          documentMetadata: metadata,
+                                                                                          hardcodedInvoicesController: HardcodedInvoicesController())
         
         screenAPICoordinator.delegate = self
         
@@ -282,7 +282,7 @@ final class AppCoordinator: Coordinator {
     
     fileprivate func showInvoicesList() {
         let invoicesListCoordinator = InvoicesListCoordinator()
-        invoicesListCoordinator.start(health: health, hardcodedInvoicesController: HardcodedInvoicesController())
+        invoicesListCoordinator.start(documentService: health.documentService, hardcodedInvoicesController: HardcodedInvoicesController())
         add(childCoordinator: invoicesListCoordinator)
         rootViewController.present(invoicesListCoordinator.rootViewController, animated: true)
     }

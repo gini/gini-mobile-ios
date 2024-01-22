@@ -6,6 +6,7 @@
 
 
 import Foundation
+import GiniHealthAPILibrary
 
 protocol HardcodedInvoicesControllerProtocol: AnyObject {
     func obtainInvoicePhotosHardcoded(completion: @escaping (([Data]) -> Void))
@@ -24,13 +25,13 @@ final class HardcodedInvoicesController: HardcodedInvoicesControllerProtocol {
                     let invoiceData = try Data(contentsOf: fileURL)
                     invoicesData.append(invoiceData)
                 } catch {
-                    print("❌ Couldn't load data from \(invoiceTitle). Error: \(error.localizedDescription)")
+                    Log("Couldn't load data from \(invoiceTitle). Error: \(error.localizedDescription)", event: .error)
                 }
             } else {
-                print("❌ Invoice with name \(invoiceTitle) doesn't exist.")
+                Log("Invoice with name \(invoiceTitle) doesn't exist.", event: .warning)
             }
         }
-        print("✅ Successfully obtained \(invoicesData.count) invoices data")
+        Log("Successfully obtained \(invoicesData.count) invoices data", event: .success)
         completion(invoicesData)
     }
     
@@ -40,9 +41,9 @@ final class HardcodedInvoicesController: HardcodedInvoicesControllerProtocol {
             let encoder = JSONEncoder()
             let data = try encoder.encode(invoices)
             UserDefaults.standard.set(data, forKey: Constants.invoicesStoredKey)
-            print("✅ Successfully stored invoices in UserDefaults")
+            Log("Successfully stored invoices in UserDefaults", event: .success)
         } catch {
-            print("❌ Unable to Encode Invoices: (\(error))")
+            Log("Unable to Encode Invoices: (\(error))", event: .error)
         }
     }
     
@@ -51,10 +52,10 @@ final class HardcodedInvoicesController: HardcodedInvoicesControllerProtocol {
             do {
                 let decoder = JSONDecoder()
                 let invoices = try decoder.decode([DocumentWithExtractions].self, from: data)
-                print("✅ Successfully obtained invoices from UserDefaults")
+                Log("Successfully obtained invoices from UserDefaults", event: .success)
                 return invoices
             } catch {
-                print("❌ Unable to Decode Notes (\(error))")
+                Log("Unable to Decode Notes (\(error))", event: .error)
             }
         }
         return []
