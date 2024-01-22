@@ -40,9 +40,9 @@ final class InvoicesListViewModel {
     
     var invoices: [DocumentWithExtractions] = []
     
-    let noInvoicesText = "No Invoices"
-    let titleText = "Invoices List"
-    let uploadInvoicesText = "↑ invoices"
+    let noInvoicesText = NSLocalizedString("giniHealthSDKExample.invoicesList.missingInvoices.text", comment: "")
+    let titleText = NSLocalizedString("giniHealthSDKExample.invoicesList.title", comment: "")
+    let uploadInvoicesText = NSLocalizedString("giniHealthSDKExample.uploadInvoices.button.title", comment: "")
     
     let backgroundColor: UIColor = GiniColor(light: .white, 
                                              dark: .black).uiColor()
