@@ -152,3 +152,67 @@ public struct Price {
         return trimmedFormattedStringWithoutCurrency
     }
 }
+
+/**
+ Returns an optional `UIColor` instance with the given `name` preferably from the client's bundle.
+ 
+ - parameter name: The name of the UIColor from `GiniColors` asset catalog.
+ 
+ - returns: color if found with name.
+ */
+public func UIColorPreferred(named name: String) -> UIColor {
+    if let mainBundleColor = UIColor(named: name,
+                                     in: Bundle.main,
+                                     compatibleWith: nil) {
+        return mainBundleColor
+    }
+
+    if let customBundle = GiniHealthConfiguration.shared.customResourceBundle,
+        let customBundleColor = UIColor(named: name,
+                                        in: customBundle,
+                                        compatibleWith: nil) {
+        return customBundleColor
+    }
+
+    if let color = UIColor(named: name,
+                           in: giniCaptureBundle(),
+                           compatibleWith: nil) {
+        return color
+    } else {
+        fatalError("The color named '\(name)' does not exist.")
+    }
+}
+
+public func giniCaptureBundle() -> Bundle {
+    Bundle.resource
+}
+
+extension Foundation.Bundle {
+    /**
+     The resource bundle associated with the current module.
+     - important: When `GiniCaptureSDK` is distributed via Swift Package Manager, it will be synthesized automatically in the name of `Bundle.module`.
+     */
+    static var resource: Bundle = {
+        let moduleName = "GiniHealthSDK"
+        let bundleName = "\(moduleName)_\(moduleName)"
+        let candidates = [
+            // Bundle should be present here when the package is linked into an App.
+            Bundle.main.resourceURL,
+
+            // Bundle should be present here when the package is linked into a framework.
+            Bundle(for: CaptureSDKBundleFinder.self).resourceURL,
+
+            // For command-line tools.
+            Bundle.main.bundleURL]
+
+        for candidate in candidates {
+            let bundlePath = candidate?.appendingPathComponent(bundleName + ".bundle")
+            if let bundle = bundlePath.flatMap(Bundle.init(url:)) {
+                return bundle
+            }
+        }
+        return Bundle(for: GiniHealth.self)
+    }()
+}
+
+private class CaptureSDKBundleFinder {}

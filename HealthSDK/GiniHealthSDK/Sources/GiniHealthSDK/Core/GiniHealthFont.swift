@@ -22,13 +22,15 @@ public class GiniFont: NSObject {
     public var bold: UIFont
     public var light: UIFont
     public var thin: UIFont
+    public var medium: UIFont
     public private(set) var isEnabled: Bool
     
-    public init(regular: UIFont, bold: UIFont, light: UIFont, thin: UIFont, isEnabled: Bool = true) {
+    public init(regular: UIFont, bold: UIFont, light: UIFont, thin: UIFont, medium: UIFont, isEnabled: Bool = true) {
         self.regular = regular
         self.bold = bold
         self.light = light
         self.thin = thin
+        self.medium = medium
         self.isEnabled = isEnabled
     }
     
@@ -50,6 +52,8 @@ public class GiniFont: NSObject {
             return light
         case .thin:
             return thin
+        case .medium:
+            return medium
         default:
             assertionFailure("\(weight.rawValue) font weight is not supported")
             return regular

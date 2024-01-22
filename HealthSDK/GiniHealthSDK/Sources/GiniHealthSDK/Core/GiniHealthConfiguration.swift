@@ -26,6 +26,11 @@ public final class GiniHealthConfiguration: NSObject {
     static var shared = GiniHealthConfiguration()
     
     /**
+     Should be set if the main app's bundle is not used.
+     */
+     public var customResourceBundle: Bundle?
+    
+    /**
      Returns a `GiniHealthConfiguration` instance which allows to set individual configurations
      to change the look and feel of the Gini Health SDK.
      
@@ -231,7 +236,9 @@ public final class GiniHealthConfiguration: NSObject {
                                                                       light: UIFont.systemFont(ofSize: 14,
                                                                                                weight: .light),
                                                                       thin: UIFont.systemFont(ofSize: 14,
-                                                                                              weight: .thin),
+                                                                                              weight: .thin), 
+                                                                      medium: UIFont.systemFont(ofSize: 14,
+                                                                                                weight: .medium),
                                                                       isEnabled: false)
     /**
      Sets the color of the loading indicator to the specified color.
@@ -247,5 +254,12 @@ public final class GiniHealthConfiguration: NSObject {
      Sets the scale of the loading indicator.
      */
     @objc public var loadingIndicatorScale: CGFloat = 1.0
+    
+    var textStyleFonts: [UIFont.TextStyle: UIFont] = [
+    .caption1: UIFontMetrics(forTextStyle: .caption1).scaledFont(for: UIFont.systemFont(ofSize: 12)),
+    .caption2: UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 11)),
+    .linkBold: UIFontMetrics(forTextStyle: .callout).scaledFont(for: UIFont.systemFont(ofSize: 14)),
+    .subtitle2: UIFontMetrics(forTextStyle: .subheadline).scaledFont(for: UIFont.systemFont(ofSize: 14))
+    ]
     
 }
