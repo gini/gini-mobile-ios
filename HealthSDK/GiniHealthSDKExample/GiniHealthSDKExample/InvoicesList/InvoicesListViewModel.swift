@@ -49,7 +49,7 @@ final class InvoicesListViewModel {
     let tableViewSeparatorColor: UIColor = GiniColor(light: .lightGray, 
                                                      dark: .darkGray).uiColor()
     
-    let tableViewCell: UITableViewCell.Type = InvoiceTableViewCell.self
+    private let tableViewCell: UITableViewCell.Type = InvoiceTableViewCell.self
     
     init(coordinator: InvoicesListCoordinator,
          invoices: [DocumentWithExtractions]? = nil,
