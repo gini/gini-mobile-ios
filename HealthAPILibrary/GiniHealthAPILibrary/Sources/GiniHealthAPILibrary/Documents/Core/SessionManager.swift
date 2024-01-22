@@ -218,8 +218,13 @@ private extension SessionManager {
         return { [weak self] data, response, error in
             guard let self = self else { return }
             guard let response = response else {
-                completion(.failure(.noResponse)); return }
-            guard !(cancellationToken?.isCancelled ?? false) else { completion(.failure(.requestCancelled)); return }
+                completion(.failure(.noResponse))
+                return
+            }
+            guard !(cancellationToken?.isCancelled ?? false) else {
+                completion(.failure(.requestCancelled))
+                return
+            }
 
             if let response = response as? HTTPURLResponse {
                 switch response.statusCode {
