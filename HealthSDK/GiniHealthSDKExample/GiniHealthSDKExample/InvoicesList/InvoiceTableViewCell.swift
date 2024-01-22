@@ -22,19 +22,12 @@ final class InvoiceTableViewCell: UITableViewCell {
         }
     }
 
-    @IBOutlet weak var recipientLabel: UILabel!
-    @IBOutlet weak var dueDateLabel: UILabel!
-    @IBOutlet weak var amountLabel: UILabel!
+    @IBOutlet private weak var recipientLabel: UILabel!
+    @IBOutlet private weak var dueDateLabel: UILabel!
+    @IBOutlet private weak var amountLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        selectionStyle = .none
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
 }
