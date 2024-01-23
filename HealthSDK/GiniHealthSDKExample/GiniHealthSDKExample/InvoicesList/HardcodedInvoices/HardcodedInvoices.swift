@@ -40,7 +40,7 @@ final class HardcodedInvoicesController: HardcodedInvoicesControllerProtocol {
         do {
             let encoder = JSONEncoder()
             let data = try encoder.encode(invoices)
-            UserDefaults.standard.set(data, forKey: Constants.invoicesStoredKey)
+            UserDefaults.standard.set(data, forKey: Constants.storedInvoicesKey)
             Log("Successfully stored invoices in UserDefaults", event: .success)
         } catch {
             Log("Unable to Encode Invoices: (\(error))", event: .error)
@@ -48,7 +48,7 @@ final class HardcodedInvoicesController: HardcodedInvoicesControllerProtocol {
     }
     
     func getInvoicesWithExtractions() -> [DocumentWithExtractions]  {
-        if let data = UserDefaults.standard.data(forKey: Constants.invoicesStoredKey) {
+        if let data = UserDefaults.standard.data(forKey: Constants.storedInvoicesKey) {
             do {
                 let decoder = JSONDecoder()
                 let invoices = try decoder.decode([DocumentWithExtractions].self, from: data)
@@ -62,9 +62,9 @@ final class HardcodedInvoicesController: HardcodedInvoicesControllerProtocol {
     }
     
     func appendInvoiceWithExtractions(invoice: DocumentWithExtractions) {
-        var invoicesStored = getInvoicesWithExtractions()
-        invoicesStored.append(invoice)
-        storeInvoicesWithExtractions(invoices: invoicesStored)
+        var storedInvoices = getInvoicesWithExtractions()
+        storedInvoices.append(invoice)
+        storeInvoicesWithExtractions(invoices: storedInvoices)
     }
 }
 
@@ -73,6 +73,6 @@ extension HardcodedInvoicesController {
         static let numberOfInovices = 5
         static let invoiceTitle = "health-invoice-"
         static let invoiceFileFormat = "jpg"
-        static let invoicesStoredKey = "giniHealthSDKExample.invoicesWithExtractions"
+        static let storedInvoicesKey = "giniHealthSDKExample.invoicesWithExtractions"
     }
 }
