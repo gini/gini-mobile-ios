@@ -51,7 +51,7 @@ final class InvoicesListViewModel {
     let tableViewSeparatorColor: UIColor = GiniColor(light: .lightGray, 
                                                      dark: .darkGray).uiColor()
     
-    let tableViewCell: UITableViewCell.Type = InvoiceTableViewCell.self
+    private let tableViewCell: UITableViewCell.Type = InvoiceTableViewCell.self
     
     init(coordinator: InvoicesListCoordinator,
          invoices: [DocumentWithExtractions]? = nil,
@@ -78,14 +78,14 @@ final class InvoicesListViewModel {
         for giniDocument in dataDocuments {
             dispatchGroup.enter()
             self.documentService.createDocument(fileName: nil,
-                                                       docType: .invoice,
-                                                       type: .partial(giniDocument),
-                                                       metadata: nil) { [weak self] result in
+                                                docType: .invoice,
+                                                type: .partial(giniDocument),
+                                                metadata: nil) { [weak self] result in
                 switch result {
                 case .success(let createdDocument):
                     Log("Successfully created document with id: \(createdDocument.id)", event: .success)
-                    self?.documentService.extractions(for: createdDocument, 
-                                                             cancellationToken: CancellationToken()) { [weak self] result in
+                    self?.documentService.extractions(for: createdDocument,
+                                                      cancellationToken: CancellationToken()) { [weak self] result in
                         switch result {
                         case let .success(extractionResult):
                             Log("Successfully fetched extractions for id: \(createdDocument.id)", event: .success)
