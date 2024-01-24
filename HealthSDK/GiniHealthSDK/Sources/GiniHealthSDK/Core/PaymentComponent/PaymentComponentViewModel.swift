@@ -57,7 +57,9 @@ final class PaymentComponentViewModel {
     
     init(giniConfiguration: GiniHealthConfiguration, 
          bankName: String,
-         bankIconName: String) {
+         bankIconName: String, 
+         payInvoiceAccentColor: GiniColor,
+         payInvoiceTextColor: GiniColor) {
         self.giniConfiguration = giniConfiguration
         self.moreInformationLabelFont = giniConfiguration.customFont.with(weight: .regular, 
                                                                           size: 13,
@@ -73,8 +75,8 @@ final class PaymentComponentViewModel {
         self.bankNameLabelFont = giniConfiguration.customFont.with(weight: .medium,
                                                                    size: 16, 
                                                                    style: .input)
-        self.payInvoiceViewBackgroundColor = giniConfiguration.payInvoiceBackgroundColor.uiColor()
-        self.payInvoiceLabelAccentColor = giniConfiguration.payInvoiceTextColor.uiColor()
+        self.payInvoiceViewBackgroundColor = payInvoiceAccentColor.uiColor()
+        self.payInvoiceLabelAccentColor = payInvoiceTextColor.uiColor()
         self.payInvoiceLabelFont = giniConfiguration.customFont.with(weight: .bold, size: 16, style: .button)
     }
     

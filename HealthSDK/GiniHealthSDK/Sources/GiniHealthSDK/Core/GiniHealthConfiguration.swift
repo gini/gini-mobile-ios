@@ -222,19 +222,6 @@ public final class GiniHealthConfiguration: NSObject {
      */
     @objc public var infoBarCornerRadius: CGFloat = 12.0
     
-    // MARK: - Payment Component
-    /**
-     Sets the background color of the pay the invoice button
-     */
-    @objc public var payInvoiceBackgroundColor = GiniColor(lightModeColor: .red, darkModeColor: .red)
-    
-    /**
-     Sets the text color of the pay the invoice button
-     */
-    @objc public var payInvoiceTextColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
-    
-    
-    
     // MARK: - Shared properties
     
     /**
