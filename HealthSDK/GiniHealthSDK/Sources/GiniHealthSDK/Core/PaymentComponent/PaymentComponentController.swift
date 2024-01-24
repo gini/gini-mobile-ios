@@ -1,11 +1,10 @@
 //
-//  File.swift
+//  PaymentComponentController.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 
-import Foundation
 import UIKit
 
 public protocol PaymentComponentControllerProtocol: AnyObject, PaymentComponentViewModelProtocol {

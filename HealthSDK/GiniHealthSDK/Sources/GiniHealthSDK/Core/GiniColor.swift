@@ -25,11 +25,6 @@ import UIKit
         self.darkModeColor = darkModeColor
     }
     
-    public init(sameColor: UIColor) {
-        self.lightModeColor = sameColor
-        self.darkModeColor = sameColor
-    }
-    
     public func uiColor() -> UIColor {
         if #available(iOS 13, *) {
             return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
