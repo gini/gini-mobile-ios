@@ -8,6 +8,12 @@
 import Foundation
 import UIKit
 
+public protocol PaymentComponentViewModelProtocol: AnyObject {
+    func didTapOnMoreInformations()
+    func didTapOnBankPicker()
+    func didTapOnPayInvoice()
+}
+
 final class PaymentComponentViewModel {
     
     var giniConfiguration: GiniHealthConfiguration
@@ -37,11 +43,11 @@ final class PaymentComponentViewModel {
     let bankNameLabelAccentColor: UIColor = GiniColor(sameColor: UIColor.GiniColors.dark1).uiColor()
     let chevronDownIconName: String = "iconChevronDown"
     
-    // pay bill view
-    let payBillViewBackgroundColor: UIColor
-    let payBillLabelText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.payBill.label", comment: "")
-    let payBillLabelAccentColor: UIColor
-    let payBillLabelFont: UIFont
+    // pay invoice view
+    let payInvoiceViewBackgroundColor: UIColor
+    let payInvoiceLabelText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.payInvoice.label", comment: "")
+    let payInvoiceLabelAccentColor: UIColor
+    let payInvoiceLabelFont: UIFont
     
     // powered by Gini view
     let poweredByGiniLabelText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.poweredByGini.label", comment: "")
@@ -49,7 +55,11 @@ final class PaymentComponentViewModel {
     let poweredByGiniLabelAccentColor: UIColor = GiniColor(sameColor: UIColor.GiniColors.dark4).uiColor()
     let giniIconName: String = "giniLogo"
     
-    init(giniConfiguration: GiniHealthConfiguration) {
+    weak var delegate: PaymentComponentViewModelProtocol?
+    
+    init(giniConfiguration: GiniHealthConfiguration, 
+         bankName: String,
+         bankIconName: String) {
         self.giniConfiguration = giniConfiguration
         self.moreInformationLabelFont = giniConfiguration.customFont.with(weight: .regular, 
                                                                           size: 13,
@@ -60,30 +70,27 @@ final class PaymentComponentViewModel {
         self.selectBankLabelFont = giniConfiguration.customFont.with(weight: .medium, 
                                                                      size: 14,
                                                                      style: .subtitle2)
-        self.bankImageIconName = "bankIcon"
-        self.bankNameLabelText = "Sparkasse"
+        self.bankImageIconName = bankIconName
+        self.bankNameLabelText = bankName
         self.bankNameLabelFont = giniConfiguration.customFont.with(weight: .medium,
                                                                    size: 16, 
                                                                    style: .input)
-        self.payBillViewBackgroundColor = giniConfiguration.payBillBackgroundColor.uiColor()
-        self.payBillLabelAccentColor = giniConfiguration.payBillTextColor.uiColor()
-        self.payBillLabelFont = giniConfiguration.customFont.with(weight: .bold, size: 16, style: .button)
+        self.payInvoiceViewBackgroundColor = giniConfiguration.payInvoiceBackgroundColor.uiColor()
+        self.payInvoiceLabelAccentColor = giniConfiguration.payInvoiceTextColor.uiColor()
+        self.payInvoiceLabelFont = giniConfiguration.customFont.with(weight: .bold, size: 16, style: .button)
         self.poweredByGiniLabelFont = giniConfiguration.customFont.with(weight: .regular, size: 12, style: .caption2)
     }
     
     func tapOnMoreInformation() {
-        // MARK: - TODO
-        print("tap on More informations")
+        delegate?.didTapOnMoreInformations()
     }
     
     func tapOnBankPicker() {
-        // MARK: - TODO
-        print("tap on Bank Picker")
+        delegate?.didTapOnBankPicker()
     }
     
-    func tapOnPayBillView() {
-        // MARK: - TODO
-        print("tap on Pay Bill View")
+    func tapOnPayInvoiceView() {
+        delegate?.didTapOnPayInvoice()
     }
 }
 

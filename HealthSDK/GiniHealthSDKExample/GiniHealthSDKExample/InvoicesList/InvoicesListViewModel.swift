@@ -17,6 +17,9 @@ struct DocumentWithExtractions: Codable {
     var paymentDueDate: String?
     var recipient: String?
     var isPayable: Bool?
+    // TODO: - Will be replace in next task with real data
+    var bankName: String = "Sparkasse"
+    var bankIconName: String = "bankIcon"
     
     init(documentID: String, extractionResult: GiniHealthAPILibrary.ExtractionResult) {
         self.documentID = documentID

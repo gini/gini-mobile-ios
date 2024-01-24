@@ -49,6 +49,26 @@ final class InvoiceTableViewCellModel {
     }
     
     var paymentComponentView: UIView {
-        GiniHealthSDK.PaymentComponentController(giniConfiguration: giniConfiguration).getPaymentView()
+        let paymentComponentController = GiniHealthSDK.PaymentComponentController(giniConfiguration: giniConfiguration)
+        paymentComponentController.delegate = self
+        return paymentComponentController.getPaymentView(bankName: invoice.bankName,
+                            bankIconName: invoice.bankIconName)
+    }
+}
+
+extension InvoiceTableViewCellModel: PaymentComponentControllerProtocol {
+    public func didTapOnMoreInformations() {
+        // MARK: TODO in next tasks
+        Log("Tapped on More Information on :\(invoice.documentID)", event: .success)
+    }
+    
+    public func didTapOnBankPicker() {
+        // MARK: TODO in next tasks
+        Log("Tapped on Bank Picker on :\(invoice.documentID)", event: .success)
+    }
+    
+    public func didTapOnPayInvoice() {
+        // MARK: TODO in next tasks
+        Log("Tapped on Pay Invoice on :\(invoice.documentID)", event: .success)
     }
 }

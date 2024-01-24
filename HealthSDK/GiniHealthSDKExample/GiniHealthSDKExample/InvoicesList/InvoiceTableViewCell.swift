@@ -21,11 +21,12 @@ final class InvoiceTableViewCell: UITableViewCell {
             dueDateLabel.isHidden = cellViewModel?.isDueDataLabelHidden ?? false
             paymentComponentView = cellViewModel?.paymentComponentView
             
-            guard let paymentComponentView = paymentComponentView, cellViewModel?.shouldShowPaymentComponent ?? false else { return }
-            if mainStackView.arrangedSubviews.count == 1 {
+            mainStackView.distribution = cellViewModel?.shouldShowPaymentComponent ?? false ? .fillProportionally : .fill
+            paymentComponentView?.isHidden = !(cellViewModel?.shouldShowPaymentComponent ?? false)
+            if let paymentComponentView = cellViewModel?.paymentComponentView {
                 mainStackView.addArrangedSubview(paymentComponentView)
-            }
-        }	
+            } 
+        }
     }
     
     var paymentComponentView: UIView?
@@ -38,5 +39,12 @@ final class InvoiceTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        if mainStackView.arrangedSubviews.count > 1 {
+            mainStackView.arrangedSubviews.last?.removeFromSuperview()
+        }
     }
 }

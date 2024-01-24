@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		284A53502A86493100183EA7 /* SelectAPIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 284A534F2A86493100183EA7 /* SelectAPIViewController.xib */; };
-		7D70FBFD2B5E818400FA205A /* TestView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7D70FBFC2B5E818400FA205A /* TestView.xib */; };
 		7DB661832B554622004537AA /* InvoicesListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB661822B554622004537AA /* InvoicesListCoordinator.swift */; };
 		7DB661862B554A6F004537AA /* InvoicesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB661842B554A6F004537AA /* InvoicesListViewController.swift */; };
 		7DB6618B2B554ADF004537AA /* InvoiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB661892B554ADF004537AA /* InvoiceTableViewCell.swift */; };
@@ -74,7 +73,6 @@
 
 /* Begin PBXFileReference section */
 		284A534F2A86493100183EA7 /* SelectAPIViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectAPIViewController.xib; sourceTree = "<group>"; };
-		7D70FBFC2B5E818400FA205A /* TestView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TestView.xib; sourceTree = "<group>"; };
 		7DB661822B554622004537AA /* InvoicesListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesListCoordinator.swift; sourceTree = "<group>"; };
 		7DB661842B554A6F004537AA /* InvoicesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoicesListViewController.swift; sourceTree = "<group>"; };
 		7DB661892B554ADF004537AA /* InvoiceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceTableViewCell.swift; sourceTree = "<group>"; };
@@ -274,7 +272,6 @@
 				F4EC3904273C2621007045DC /* PartialDocument.swift */,
 				F4EC3907273C2621007045DC /* SelectAPIViewController.swift */,
 				284A534F2A86493100183EA7 /* SelectAPIViewController.xib */,
-				7D70FBFC2B5E818400FA205A /* TestView.xib */,
 				7DB661882B554A79004537AA /* InvoicesList */,
 				F4EC3908273C2622007045DC /* UIViewController.swift */,
 				F4EC38F4273C2311007045DC /* Base.lproj */,
@@ -453,7 +450,6 @@
 				7DB661952B5687F7004537AA /* health-invoice-2.jpg in Resources */,
 				F464B17627CD2147001735B9 /* Localizable.strings in Resources */,
 				F4EC38FA273C2311007045DC /* Base.lproj in Resources */,
-				7D70FBFD2B5E818400FA205A /* TestView.xib in Resources */,
 				7DB661992B5687F7004537AA /* health-invoice-5.jpg in Resources */,
 				F4EC38F9273C2311007045DC /* Credentials.plist in Resources */,
 				284A53502A86493100183EA7 /* SelectAPIViewController.xib in Resources */,
