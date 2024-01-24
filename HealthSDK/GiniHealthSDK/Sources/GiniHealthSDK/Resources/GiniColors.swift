@@ -1,11 +1,10 @@
 //
-//  File.swift
+//  GiniColors.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 
-import Foundation
 import UIKit
 
 extension UIColor {
@@ -36,6 +35,7 @@ extension UIColor {
         static let light4 = UIColorPreferred(named: "Light04")
         static let light5 = UIColorPreferred(named: "Light05")
         static let light6 = UIColorPreferred(named: "Light06")
+        static let light7 = UIColorPreferred(named: "Light07")
 
         static let success1 = UIColorPreferred(named: "Success01")
         static let success2 = UIColorPreferred(named: "Success02")

@@ -1,11 +1,10 @@
 //
-//  File.swift
+//  UIFont.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 
-import Foundation
 import UIKit
 
 extension UIFont.TextStyle {

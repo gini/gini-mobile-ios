@@ -5,7 +5,6 @@
 //
 
 
-import Foundation
 import UIKit
 
 public protocol PaymentComponentViewModelProtocol: AnyObject {
@@ -19,10 +18,10 @@ final class PaymentComponentViewModel {
     var giniConfiguration: GiniHealthConfiguration
     
     let backgroundColor: UIColor = UIColor.from(giniColor: GiniColor(lightModeColor: .clear, 
-                                                                     darkModeColor: .black))
+                                                                     darkModeColor: .clear))
     
     // More information part
-    let moreInformationAccentColor: UIColor = GiniColor(sameColor: UIColor.GiniColors.dark2).uiColor()
+    let moreInformationAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark2, darkModeColor: UIColor.GiniColors.light4).uiColor()
     let moreInformationLabelText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.moreInformation.label", comment: "")
     let moreInformationActionablePartText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.moreInformation.underlined.part", comment: "")
     var moreInformationLabelFont: UIFont
@@ -32,15 +31,19 @@ final class PaymentComponentViewModel {
     // Select bank label
     let selectBankLabelText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.selectBank.label", comment: "")
     let selectBankLabelFont: UIFont
-    let selectBankAccentColor: UIColor = GiniColor(sameColor: UIColor.GiniColors.dark1).uiColor()
+    let selectBankAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark1, 
+                                                   darkModeColor: UIColor.GiniColors.light1).uiColor()
     
     // Select bank picker
-    let selectBankPickerViewBackgroundColor: UIColor = GiniColor(sameColor: UIColor.GiniColors.dark6).uiColor()
-    let selectBankPickerViewBorderColor: UIColor = GiniColor(sameColor: UIColor.GiniColors.dark5).uiColor()
+    let selectBankPickerViewBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark6, 
+                                                                 darkModeColor: UIColor.GiniColors.light6).uiColor()
+    let selectBankPickerViewBorderColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark5,
+                                                             darkModeColor: UIColor.GiniColors.light5).uiColor()
     var bankImageIconName: String
     var bankNameLabelText: String
     var bankNameLabelFont: UIFont
-    let bankNameLabelAccentColor: UIColor = GiniColor(sameColor: UIColor.GiniColors.dark1).uiColor()
+    let bankNameLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark1, 
+                                                      darkModeColor: UIColor.GiniColors.light1).uiColor()
     let chevronDownIconName: String = "iconChevronDown"
     
     // pay invoice view
@@ -48,12 +51,6 @@ final class PaymentComponentViewModel {
     let payInvoiceLabelText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.payInvoice.label", comment: "")
     let payInvoiceLabelAccentColor: UIColor
     let payInvoiceLabelFont: UIFont
-    
-    // powered by Gini view
-    let poweredByGiniLabelText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.poweredByGini.label", comment: "")
-    let poweredByGiniLabelFont: UIFont
-    let poweredByGiniLabelAccentColor: UIColor = GiniColor(sameColor: UIColor.GiniColors.dark4).uiColor()
-    let giniIconName: String = "giniLogo"
     
     weak var delegate: PaymentComponentViewModelProtocol?
     
@@ -78,7 +75,6 @@ final class PaymentComponentViewModel {
         self.payInvoiceViewBackgroundColor = giniConfiguration.payInvoiceBackgroundColor.uiColor()
         self.payInvoiceLabelAccentColor = giniConfiguration.payInvoiceTextColor.uiColor()
         self.payInvoiceLabelFont = giniConfiguration.customFont.with(weight: .bold, size: 16, style: .button)
-        self.poweredByGiniLabelFont = giniConfiguration.customFont.with(weight: .regular, size: 12, style: .caption2)
     }
     
     func tapOnMoreInformation() {

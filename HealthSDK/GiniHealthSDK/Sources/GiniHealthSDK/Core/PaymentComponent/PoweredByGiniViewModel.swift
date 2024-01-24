@@ -12,7 +12,7 @@ final class PoweredByGiniViewModel {
     // powered by Gini view
     let poweredByGiniLabelText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.poweredByGini.label", comment: "")
     let poweredByGiniLabelFont: UIFont
-    let poweredByGiniLabelAccentColor: UIColor = GiniColor(sameColor: UIColor.GiniColors.dark4).uiColor()
+    let poweredByGiniLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark4, darkModeColor: UIColor.GiniColors.light4).uiColor()
     let giniIconName: String = "giniLogo"
     
     init(giniConfiguration: GiniHealthConfiguration) {
