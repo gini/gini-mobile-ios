@@ -48,6 +48,7 @@ final class InvoicesListViewModel {
     let noInvoicesText = NSLocalizedString("giniHealthSDKExample.invoicesList.missingInvoices.text", comment: "")
     let titleText = NSLocalizedString("giniHealthSDKExample.invoicesList.title", comment: "")
     let uploadInvoicesText = NSLocalizedString("giniHealthSDKExample.uploadInvoices.button.title", comment: "")
+    let errorUploadingTitleText = NSLocalizedString("giniHealthSDKExample.invoicesList.erorrUploading", comment: "")
     
     let backgroundColor: UIColor = GiniColor(light: .white, 
                                              dark: .black).uiColor()
@@ -55,6 +56,7 @@ final class InvoicesListViewModel {
                                                      dark: .darkGray).uiColor()
     
     private let tableViewCell: UITableViewCell.Type = InvoiceTableViewCell.self
+    private var errors: [GiniHealthAPILibrary.GiniError] = []
     
     init(coordinator: InvoicesListCoordinator,
          invoices: [DocumentWithExtractions]? = nil,
@@ -77,6 +79,7 @@ final class InvoicesListViewModel {
     }
     
     private func uploadDocuments(dataDocuments: [Data]) {
+        errors = []
         let dispatchGroup = DispatchGroup()
         for giniDocument in dataDocuments {
             dispatchGroup.enter()
@@ -96,16 +99,23 @@ final class InvoicesListViewModel {
                                                                           extractionResult: extractionResult))
                         case let .failure(error):
                             Log("Setting document for review failed: \(String(describing: error))", event: .error)
+                            self?.errors.append(error)
                         }
                         dispatchGroup.leave()
                     }
                 case .failure(let error):
                     Log("Document creation failed: \(String(describing: error))", event: .error)
+                    self?.errors.append(error)
                     dispatchGroup.leave()
                 }
             }
         }
         dispatchGroup.notify(queue: .main) {
+            if !self.errors.isEmpty {
+                let errorMessages = self.errors.map( { $0.message })
+                let uniqueErrorMessages = Array(Set(errorMessages))
+                self.coordinator.invoicesListViewController.showErrorAlertView(error: uniqueErrorMessages.joined(separator: ", "))
+            }
             self.hardcodedInvoicesController.storeInvoicesWithExtractions(invoices: self.invoices)
             self.coordinator.invoicesListViewController?.hideActivityIndicator()
             self.coordinator.invoicesListViewController?.reloadTableView()

@@ -12,6 +12,7 @@ protocol InvoicesListViewControllerProtocol: AnyObject {
     func showActivityIndicator()
     func hideActivityIndicator()
     func reloadTableView()
+    func showErrorAlertView(error: String)
 }
 
 final class InvoicesListViewController: UIViewController {
@@ -136,6 +137,14 @@ extension InvoicesListViewController: InvoicesListViewControllerProtocol {
     
     func reloadTableView() {
         self.invoicesTableView.reloadData()
+    }
+    
+    func showErrorAlertView(error: String) {
+        let alertController = UIAlertController(title: viewModel.errorUploadingTitleText, 
+                                                message: error,
+                                                preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: .default))
+        self.present(alertController, animated: true)
     }
 }
 
