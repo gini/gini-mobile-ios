@@ -9,3 +9,4 @@
 "giniHealthSDKExample.invoicesList.title" = "Invoices List";
 "giniHealthSDKExample.uploadInvoices.button.title" = "↑ invoices";
 "giniHealthSDKExample.invoicesList.missingInvoices.text" = "No invoices";
+"giniHealthSDKExample.invoicesList.erorrUploading" = "Uploading error";
