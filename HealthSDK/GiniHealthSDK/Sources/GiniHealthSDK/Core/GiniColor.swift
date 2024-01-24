@@ -25,7 +25,7 @@ import UIKit
         self.darkModeColor = darkModeColor
     }
     
-    public func uiColor() -> UIColor {
+    func uiColor() -> UIColor {
         if #available(iOS 13, *) {
             return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
                 if UITraitCollection.userInterfaceStyle == .dark {
