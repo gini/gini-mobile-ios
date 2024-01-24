@@ -15,10 +15,15 @@ final class InvoiceTableViewCellModel {
     
     var invoice: DocumentWithExtractions
     var giniConfiguration: GiniHealthConfiguration
-    
-    init(invoice: DocumentWithExtractions, giniConfiguration: GiniHealthConfiguration) {
+    var bankAccentColor: GiniHealthSDK.GiniColor
+    var bankTextColor: GiniHealthSDK.GiniColor
+
+    init(invoice: DocumentWithExtractions, 
+         giniConfiguration: GiniHealthConfiguration) {
         self.invoice = invoice
         self.giniConfiguration = giniConfiguration
+        self.bankAccentColor = invoice.bank.accentColor.giniColor
+        self.bankTextColor = invoice.bank.textColor.giniColor
     }
     
     var recipientNameText: String {
@@ -51,8 +56,10 @@ final class InvoiceTableViewCellModel {
     var paymentComponentView: UIView {
         let paymentComponentController = GiniHealthSDK.PaymentComponentController(giniConfiguration: giniConfiguration)
         paymentComponentController.delegate = self
-        return paymentComponentController.getPaymentView(bankName: invoice.bankName,
-                            bankIconName: invoice.bankIconName)
+        return paymentComponentController.getPaymentView(bankName: invoice.bank.name,
+                                                         bankIconName: invoice.bank.iconName,
+                                                         payInvoiceAccentColor: bankAccentColor,
+                                                         payInvoiceTextColor: bankTextColor)
     }
 }
 

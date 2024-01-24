@@ -23,11 +23,16 @@ public final class PaymentComponentController: NSObject, PaymentComponentControl
         self.giniConfiguration = giniConfiguration
     }
     
-    public func getPaymentView(bankName: String, bankIconName: String) -> UIView {
+    public func getPaymentView(bankName: String, 
+                               bankIconName: String,
+                               payInvoiceAccentColor: GiniColor,
+                               payInvoiceTextColor: GiniColor) -> UIView {
         let paymentComponentView = PaymentComponentView()
         let paymentComponentViewModel = PaymentComponentViewModel(giniConfiguration: giniConfiguration, 
                                                                   bankName: bankName,
-                                                                  bankIconName: bankIconName)
+                                                                  bankIconName: bankIconName,
+                                                                  payInvoiceAccentColor: payInvoiceAccentColor,
+                                                                  payInvoiceTextColor: payInvoiceTextColor)
         paymentComponentViewModel.delegate = delegate
         paymentComponentView.viewModel = paymentComponentViewModel
         return paymentComponentView
