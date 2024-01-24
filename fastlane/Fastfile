@@ -428,4 +428,42 @@ platform :ios do
 
   end
 
+  desc "Generate release podspecs for GiniBankSDK"
+  lane :generate_release_podspecs do |options|
+
+    xcframeworks_folder_path = options[:xcframeworks_folder_path]
+    podspecs_repo_folder_path = options[:podspecs_repo_folder_path]
+
+    # Get the latest Git tag
+    latest_tag = sh("git describe --tags --abbrev=0").strip
+
+    # Extract the version from the tag (assuming the tag format is "GiniBankSDK;X.X.X")
+    version_folder = latest_tag.match(/;(\d+\.\d+\.\d+)/).captures.first
+    
+    # Step 1: Compress the XCFrameworks into a zip file
+    zip_name = "GiniBankSDK-XCFrameworks.zip"
+    sh "cd #{xcframeworks_folder_path} && zip -r #{zip_name} ."
+    
+    # Step 2: Create a subfolder in GiniBankSDK named after the version
+    sdk_folder = "#{xcframeworks_folder_path}/#{version_folder}"
+    sh "mkdir -p #{sdk_folder}"
+
+    # Step 3: Copy the zip file and podspec into the new folder
+    sh "cp #{xcframeworks_folder_path}/#{zip_name} #{sdk_folder}/"
+    sh "cp ../BankSDK/GiniBankSDK/Pod/GiniBankSDK.podspec #{sdk_folder}/"
+    
+    # Step 4: Update the version in the podspec
+    podspec_file_path = "#{sdk_folder}/GiniBankSDK.podspec"
+    sh "sed -i '' 's/spec.version[[:space:]]*=[[:space:]]*\".*\"/spec.version = \"#{version_folder}\"/' #{podspec_file_path}"
+
+    # Step 5: Copy the recently created version folder (e.g. 3.7.2) in gini-podspecs repo folder
+    sh "cp -r #{sdk_folder} #{podspecs_repo_folder_path}/"
+
+    # Step 6: Commit and push the changes to gini-podspecs repo
+    sh "cd #{podspecs_repo_folder_path} && git add . && git commit -m '[Update] GiniBankSDK (#{version_folder})'" 
+
+    if UI.confirm("Do you realy want to commit this chnages to gini-podspecs repo?")
+      sh "git push origin master"
+    end
+  end
 end
