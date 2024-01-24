@@ -21,7 +21,7 @@ final class InvoiceTableViewCell: UITableViewCell {
             dueDateLabel.isHidden = cellViewModel?.isDueDataLabelHidden ?? false
             paymentComponentView = cellViewModel?.paymentComponentView
             
-            guard let paymentComponentView = paymentComponentView else { return }
+            guard let paymentComponentView = paymentComponentView, cellViewModel?.shouldShowPaymentComponent ?? false else { return }
             if mainStackView.arrangedSubviews.count == 1 {
                 mainStackView.addArrangedSubview(paymentComponentView)
             }

@@ -33,7 +33,6 @@ final class InvoicesListViewController: UIViewController {
         tableView.estimatedRowHeight = Constants.rowHeight
         tableView.rowHeight = UITableView.automaticDimension
         tableView.tableFooterView = UIView()
-//        tableView.register(UINib(nibName: "PaymentComponentView", bundle: viewModel.healthSDKBundle), forCellReuseIdentifier: InvoiceTableViewCell.identifier)
         return tableView
     }()
 
