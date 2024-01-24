@@ -16,12 +16,14 @@ struct DocumentWithExtractions: Codable {
     var amountToPay: String?
     var paymentDueDate: String?
     var recipient: String?
+    var isPayable: Bool?
     
     init(documentID: String, extractionResult: GiniHealthAPILibrary.ExtractionResult) {
         self.documentID = documentID
         self.amountToPay = extractionResult.payment?.first?.first(where: {$0.name == "amount_to_pay"})?.value
         self.paymentDueDate = extractionResult.extractions.first(where: {$0.name == "payment_due_date"})?.value
         self.recipient = extractionResult.payment?.first?.first(where: {$0.name == "payment_recipient"})?.value
+        self.isPayable = !(extractionResult.payment?.first?.first(where: {$0.name == "iban"})?.value.isEmpty ?? true)
     }
     
     init(documentID: String, extractions: [GiniBankAPILibrary.Extraction]) {
@@ -29,6 +31,7 @@ struct DocumentWithExtractions: Codable {
         self.amountToPay = extractions.first(where: {$0.name == "amount_to_pay"})?.value
         self.paymentDueDate = extractions.first(where: {$0.name == "payment_due_date"})?.value
         self.recipient = extractions.first(where: {$0.name == "payment_recipient"})?.value
+        self.isPayable = !(extractions.first(where: {$0.name == "iban"})?.value.isEmpty ?? true)
     }
 }
 

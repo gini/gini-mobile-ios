@@ -222,6 +222,18 @@ public final class GiniHealthConfiguration: NSObject {
      */
     @objc public var infoBarCornerRadius: CGFloat = 12.0
     
+    // MARK: - Payment Component
+    /**
+     Sets the background color of the pay the bill button
+     */
+    @objc public var payBillBackgroundColor = GiniColor(lightModeColor: .red, darkModeColor: .red)
+    
+    /**
+     Sets the text color of the pay the bill button
+     */
+    @objc public var payBillTextColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
+    
+    
     
     // MARK: - Shared properties
     
@@ -258,8 +270,10 @@ public final class GiniHealthConfiguration: NSObject {
     var textStyleFonts: [UIFont.TextStyle: UIFont] = [
     .caption1: UIFontMetrics(forTextStyle: .caption1).scaledFont(for: UIFont.systemFont(ofSize: 12)),
     .caption2: UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 11)),
-    .linkBold: UIFontMetrics(forTextStyle: .callout).scaledFont(for: UIFont.systemFont(ofSize: 14)),
-    .subtitle2: UIFontMetrics(forTextStyle: .subheadline).scaledFont(for: UIFont.systemFont(ofSize: 14))
+    .linkBold: UIFontMetrics(forTextStyle: .linkBold).scaledFont(for: UIFont.systemFont(ofSize: 14)),
+    .subtitle2: UIFontMetrics(forTextStyle: .subtitle2).scaledFont(for: UIFont.systemFont(ofSize: 14)),
+    .input: UIFontMetrics(forTextStyle: .input).scaledFont(for: UIFont.systemFont(ofSize: 16)),
+    .button: UIFontMetrics(forTextStyle: .button).scaledFont(for: UIFont.systemFont(ofSize: 16))
     ]
     
 }

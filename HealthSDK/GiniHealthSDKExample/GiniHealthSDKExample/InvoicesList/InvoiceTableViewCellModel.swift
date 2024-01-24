@@ -44,6 +44,10 @@ final class InvoiceTableViewCellModel {
         recipientNameText.isEmpty
     }
     
+    var shouldShowPaymentComponent: Bool {
+        invoice.isPayable ?? false
+    }
+    
     var paymentComponentView: UIView {
         GiniHealthSDK.PaymentComponentController(giniConfiguration: giniConfiguration).getPaymentView()
     }
