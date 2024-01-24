@@ -71,7 +71,6 @@ final class PoweredByGiniView: UIView {
             poweredByGiniView.bottomAnchor.constraint(equalTo: poweredByGiniView.bottomAnchor, constant: 0),
             giniImageView.heightAnchor.constraint(equalToConstant: giniImageView.frame.height),
             giniImageView.widthAnchor.constraint(equalToConstant: giniImageView.frame.width)
-            
         ])
     }
 }

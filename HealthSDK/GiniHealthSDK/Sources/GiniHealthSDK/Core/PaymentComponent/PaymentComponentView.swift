@@ -127,22 +127,22 @@ final class PaymentComponentView: UIView {
         return imageView
     }()
     
-    private lazy var payBillView: UIView = {
+    private lazy var payInvoiceView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.frame = CGRect(x: 0, y: 0, width: .max, height: 56)
         view.layer.cornerRadius = 12
-        view.backgroundColor = viewModel.payBillViewBackgroundColor
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnPayBillView)))
+        view.backgroundColor = viewModel.payInvoiceViewBackgroundColor
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnPayInvoiceView)))
         return view
     }()
     
-    private lazy var payBillLabel: UILabel = {
+    private lazy var payInvoiceLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = viewModel.payBillLabelText
-        label.textColor = viewModel.payBillLabelAccentColor
-        label.font = viewModel.payBillLabelFont
+        label.text = viewModel.payInvoiceLabelText
+        label.textColor = viewModel.payInvoiceLabelAccentColor
+        label.font = viewModel.payInvoiceLabelFont
         label.numberOfLines = 1
         label.adjustsFontSizeToFitWidth = true
         label.textAlignment = .center
@@ -185,7 +185,7 @@ final class PaymentComponentView: UIView {
         setupMoreInformationView()
         setupSelectBankView()
         setupBankPickerView()
-        setupPayBillView()
+        setupPayInvoiceView()
     }
     
     private func setupMoreInformationView() {
@@ -204,7 +204,7 @@ final class PaymentComponentView: UIView {
     private func setupSelectBankView() {
         selectBankView.addSubview(selectBankLabel)
         selectBankView.addSubview(selectBankPickerView)
-        selectBankView.addSubview(payBillView)
+        selectBankView.addSubview(payInvoiceView)
         selectBankView.addSubview(poweredByGiniView)
         
         NSLayoutConstraint.activate([
@@ -216,13 +216,13 @@ final class PaymentComponentView: UIView {
             selectBankPickerView.leadingAnchor.constraint(equalTo: selectBankView.leadingAnchor),
             selectBankPickerView.trailingAnchor.constraint(equalTo: selectBankView.trailingAnchor),
             selectBankPickerView.topAnchor.constraint(equalTo: selectBankLabel.bottomAnchor, constant: 4),
-            payBillView.heightAnchor.constraint(equalToConstant: payBillView.frame.height),
-            payBillView.leadingAnchor.constraint(equalTo: selectBankView.leadingAnchor),
-            payBillView.trailingAnchor.constraint(equalTo: selectBankView.trailingAnchor),
-            payBillView.topAnchor.constraint(equalTo: selectBankPickerView.bottomAnchor, constant: 8),
+            payInvoiceView.heightAnchor.constraint(equalToConstant: payInvoiceView.frame.height),
+            payInvoiceView.leadingAnchor.constraint(equalTo: selectBankView.leadingAnchor),
+            payInvoiceView.trailingAnchor.constraint(equalTo: selectBankView.trailingAnchor),
+            payInvoiceView.topAnchor.constraint(equalTo: selectBankPickerView.bottomAnchor, constant: 8),
             poweredByGiniView.heightAnchor.constraint(equalToConstant: poweredByGiniView.frame.height),
             poweredByGiniView.trailingAnchor.constraint(equalTo: selectBankView.trailingAnchor),
-            poweredByGiniView.topAnchor.constraint(equalTo: payBillView.bottomAnchor, constant: 4),
+            poweredByGiniView.topAnchor.constraint(equalTo: payInvoiceView.bottomAnchor, constant: 4),
         ])
     }
     
@@ -246,13 +246,13 @@ final class PaymentComponentView: UIView {
         ])
     }
     
-    private func setupPayBillView() {
-        payBillView.addSubview(payBillLabel)
+    private func setupPayInvoiceView() {
+        payInvoiceView.addSubview(payInvoiceLabel)
         
         NSLayoutConstraint.activate([
-            payBillView.centerYAnchor.constraint(equalTo: payBillLabel.centerYAnchor),
-            payBillView.leadingAnchor.constraint(equalTo: payBillLabel.leadingAnchor, constant: 10),
-            payBillView.trailingAnchor.constraint(equalTo: payBillLabel.trailingAnchor, constant: 10)
+            payInvoiceView.centerYAnchor.constraint(equalTo: payInvoiceLabel.centerYAnchor),
+            payInvoiceView.leadingAnchor.constraint(equalTo: payInvoiceLabel.leadingAnchor, constant: 10),
+            payInvoiceView.trailingAnchor.constraint(equalTo: payInvoiceLabel.trailingAnchor, constant: 10)
         ])
     }
     
@@ -270,7 +270,7 @@ final class PaymentComponentView: UIView {
     }
     
     @objc
-    private func tapOnPayBillView() {
-        viewModel.tapOnPayBillView()
+    private func tapOnPayInvoiceView() {
+        viewModel.tapOnPayInvoiceView()
     }
 }

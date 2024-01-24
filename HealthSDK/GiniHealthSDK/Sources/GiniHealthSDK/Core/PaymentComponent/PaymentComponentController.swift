@@ -8,11 +8,15 @@
 import Foundation
 import UIKit
 
-protocol PaymentComponentProtocol: AnyObject {
-    func getPaymentView() -> UIView
+public protocol PaymentComponentControllerProtocol: AnyObject, PaymentComponentViewModelProtocol {
+    func didTapOnMoreInformations()
+    func didTapOnBankPicker()
+    func didTapOnPayInvoice()
 }
 
-public final class PaymentComponentController: NSObject, PaymentComponentProtocol {
+public final class PaymentComponentController: NSObject, PaymentComponentControllerProtocol {
+    
+    public weak var delegate: PaymentComponentControllerProtocol?
     
     var giniConfiguration: GiniHealthConfiguration
     
@@ -20,9 +24,27 @@ public final class PaymentComponentController: NSObject, PaymentComponentProtoco
         self.giniConfiguration = giniConfiguration
     }
     
-    public func getPaymentView() -> UIView {
+    public func getPaymentView(bankName: String, bankIconName: String) -> UIView {
         let paymentComponentView = PaymentComponentView()
-        paymentComponentView.viewModel = PaymentComponentViewModel(giniConfiguration: giniConfiguration)
+        let paymentComponentViewModel = PaymentComponentViewModel(giniConfiguration: giniConfiguration, 
+                                                                  bankName: bankName,
+                                                                  bankIconName: bankIconName)
+        paymentComponentViewModel.delegate = delegate
+        paymentComponentView.viewModel = paymentComponentViewModel
         return paymentComponentView
+    }
+}
+
+extension PaymentComponentController: PaymentComponentViewModelProtocol {
+    public func didTapOnMoreInformations() {
+        delegate?.didTapOnMoreInformations()
+    }
+    
+    public func didTapOnBankPicker() {
+        delegate?.didTapOnBankPicker()
+    }
+    
+    public func didTapOnPayInvoice() {
+        delegate?.didTapOnPayInvoice()
     }
 }
