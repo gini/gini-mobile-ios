@@ -282,7 +282,9 @@ final class AppCoordinator: Coordinator {
     
     fileprivate func showInvoicesList() {
         let invoicesListCoordinator = InvoicesListCoordinator()
-        invoicesListCoordinator.start(documentService: health.documentService, hardcodedInvoicesController: HardcodedInvoicesController(), giniHealthConfiguration: GiniHealthConfiguration())
+        invoicesListCoordinator.start(documentService: health.documentService, 
+                                      hardcodedInvoicesController: HardcodedInvoicesController(),
+                                      giniHealthConfiguration: GiniHealthConfiguration())
         add(childCoordinator: invoicesListCoordinator)
         rootViewController.present(invoicesListCoordinator.rootViewController, animated: true)
     }
