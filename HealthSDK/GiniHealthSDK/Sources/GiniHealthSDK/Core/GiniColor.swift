@@ -11,10 +11,10 @@ import UIKit
  */
 
 public struct Color: Codable {
-    var red: CGFloat = 0.0
-    var green: CGFloat = 0.0
-    var blue: CGFloat = 0.0
-    var alpha: CGFloat = 0.0
+    private var red: CGFloat = 0.0
+    private var green: CGFloat = 0.0
+    private var blue: CGFloat = 0.0
+    private var alpha: CGFloat = 0.0
 
     public var uiColor: UIColor {
         UIColor(red: red,

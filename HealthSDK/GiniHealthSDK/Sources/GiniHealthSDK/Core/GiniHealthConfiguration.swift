@@ -28,8 +28,8 @@ public final class GiniHealthConfiguration: NSObject {
     /**
      Should be set if the main app's bundle is not used.
      */
-     var customResourceBundle: Bundle?
-    
+    var customResourceBundle: Bundle?
+
     /**
      Returns a `GiniHealthConfiguration` instance which allows to set individual configurations
      to change the look and feel of the Gini Health SDK.
@@ -254,7 +254,7 @@ public final class GiniHealthConfiguration: NSObject {
      */
     @objc public var loadingIndicatorScale: CGFloat = 1.0
     
-    var textStyleFonts: [UIFont.TextStyle: UIFont] = [
+    private var textStyleFonts: [UIFont.TextStyle: UIFont] = [
     .caption1: UIFontMetrics(forTextStyle: .caption1).scaledFont(for: UIFont.systemFont(ofSize: 12)),
     .caption2: UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 11)),
     .linkBold: UIFontMetrics(forTextStyle: .linkBold).scaledFont(for: UIFont.systemFont(ofSize: 14)),
