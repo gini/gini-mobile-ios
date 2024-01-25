@@ -160,7 +160,7 @@ public struct Price {
  
  - returns: color if found with name.
  */
-public func UIColorPreferred(named name: String) -> UIColor {
+func UIColorPreferred(named name: String) -> UIColor {
     if let mainBundleColor = UIColor(named: name,
                                      in: Bundle.main,
                                      compatibleWith: nil) {
@@ -183,7 +183,7 @@ public func UIColorPreferred(named name: String) -> UIColor {
     }
 }
 
-public func giniCaptureBundle() -> Bundle {
+func giniCaptureBundle() -> Bundle {
     Bundle.resource
 }
 

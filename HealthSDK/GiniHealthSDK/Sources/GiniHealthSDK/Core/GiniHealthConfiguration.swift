@@ -28,7 +28,7 @@ public final class GiniHealthConfiguration: NSObject {
     /**
      Should be set if the main app's bundle is not used.
      */
-     public var customResourceBundle: Bundle?
+     var customResourceBundle: Bundle?
     
     /**
      Returns a `GiniHealthConfiguration` instance which allows to set individual configurations
