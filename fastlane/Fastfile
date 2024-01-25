@@ -428,11 +428,12 @@ platform :ios do
 
   end
 
-  desc "Generate release podspecs for GiniBankSDK"
+  desc "Generate release podspecs"
   lane :generate_release_podspecs do |options|
 
     xcframeworks_folder_path = options[:xcframeworks_folder_path]
-    podspecs_repo_folder_path = options[:podspecs_repo_folder_path]
+    podspec_name = options[:podspec_name] #e.g: GiniBankSDK or GiniBankSDKPinning
+    podspecs_repo_sdk_folder_path = options[:podspecs_repo_sdk_folder_path]
 
     # Get the latest Git tag
     latest_tag = sh("git describe --tags --abbrev=0").strip
@@ -441,29 +442,30 @@ platform :ios do
     version_folder = latest_tag.match(/;(\d+\.\d+\.\d+)/).captures.first
     
     # Step 1: Compress the XCFrameworks into a zip file
-    zip_name = "GiniBankSDK-XCFrameworks.zip"
+    zip_name = "#{podspec_name}-XCFrameworks.zip" #e.g GiniBankSDK or GiniBankSDKPinning
     sh "cd #{xcframeworks_folder_path} && zip -r #{zip_name} ."
     
-    # Step 2: Create a subfolder in GiniBankSDK named after the version
+    # Step 2: Create a subfolder named after the version
     sdk_folder = "#{xcframeworks_folder_path}/#{version_folder}"
     sh "mkdir -p #{sdk_folder}"
 
     # Step 3: Copy the zip file and podspec into the new folder
     sh "cp #{xcframeworks_folder_path}/#{zip_name} #{sdk_folder}/"
-    sh "cp ../BankSDK/GiniBankSDK/Pod/GiniBankSDK.podspec #{sdk_folder}/"
+    sh "cp ../BankSDK/#{podspec_name}/Pod/#{podspec_name}.podspec #{sdk_folder}/" #e.g: BankSDK/GiniBankSDK or BankSDK/GiniBankSDKPinning
     
     # Step 4: Update the version in the podspec
-    podspec_file_path = "#{sdk_folder}/GiniBankSDK.podspec"
+    podspec_file_path = "#{sdk_folder}/#{podspec_name}.podspec"
     sh "sed -i '' 's/spec.version[[:space:]]*=[[:space:]]*\".*\"/spec.version = \"#{version_folder}\"/' #{podspec_file_path}"
 
     # Step 5: Copy the recently created version folder (e.g. 3.7.2) in gini-podspecs repo folder
-    sh "cp -r #{sdk_folder} #{podspecs_repo_folder_path}/"
+    sh "cp -r #{sdk_folder} #{podspecs_repo_sdk_folder_path}/"
 
-    # Step 6: Commit and push the changes to gini-podspecs repo
-    sh "cd #{podspecs_repo_folder_path} && git add . && git commit -m '[Update] GiniBankSDK (#{version_folder})'" 
+    # Step 6: Commit the changes to gini-podspecs repo
+    sh "cd #{podspecs_repo_sdk_folder_path} && git add . && git commit -m '[Update] #{podspec_name} (#{version_folder})'" 
 
-    if UI.confirm("Do you realy want to commit this chnages to gini-podspecs repo?")
-      sh "git push origin master"
+    # Step 7: Push the changes to gini-podspecs repo
+    if UI.confirm("Are you sure you want to commit this changes to gini-podspecs repo?")
+      sh "cd #{podspecs_repo_sdk_folder_path} && git push origin master"
     end
   end
 end
