@@ -29,7 +29,7 @@ final class InvoiceTableViewCell: UITableViewCell {
         }
     }
     
-    var paymentComponentView: UIView?
+    private var paymentComponentView: UIView?
 
     @IBOutlet private weak var mainStackView: UIStackView!
     @IBOutlet private weak var recipientLabel: UILabel!

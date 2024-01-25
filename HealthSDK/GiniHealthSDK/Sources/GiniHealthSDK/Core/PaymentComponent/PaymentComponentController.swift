@@ -17,7 +17,7 @@ public final class PaymentComponentController: NSObject, PaymentComponentControl
     
     public weak var delegate: PaymentComponentControllerProtocol?
     
-    var giniConfiguration: GiniHealthConfiguration
+    private var giniConfiguration: GiniHealthConfiguration
     
     public init(giniConfiguration: GiniHealthConfiguration) {
         self.giniConfiguration = giniConfiguration

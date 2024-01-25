@@ -16,7 +16,7 @@ public protocol PaymentComponentViewModelProtocol: AnyObject {
 final class PaymentComponentViewModel {
     
     var giniConfiguration: GiniHealthConfiguration
-    
+
     let backgroundColor: UIColor = UIColor.from(giniColor: GiniColor(lightModeColor: .clear, 
                                                                      darkModeColor: .clear))
     

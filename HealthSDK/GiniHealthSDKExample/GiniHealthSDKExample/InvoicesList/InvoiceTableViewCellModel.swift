@@ -13,10 +13,10 @@ import UIKit
 
 final class InvoiceTableViewCellModel {
     
-    var invoice: DocumentWithExtractions
-    var giniConfiguration: GiniHealthConfiguration
-    var bankAccentColor: GiniHealthSDK.GiniColor
-    var bankTextColor: GiniHealthSDK.GiniColor
+    private var invoice: DocumentWithExtractions
+    private var giniConfiguration: GiniHealthConfiguration
+    private var bankAccentColor: GiniHealthSDK.GiniColor
+    private var bankTextColor: GiniHealthSDK.GiniColor
 
     init(invoice: DocumentWithExtractions, 
          giniConfiguration: GiniHealthConfiguration) {
