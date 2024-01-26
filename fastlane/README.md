@@ -136,6 +136,10 @@ Parameters:
 ```
 
 Generate release podspecs
+Parameters:
+  xcframeworks_folder_path        - the path where all the needed framework are located
+  podspec_name                    - the name of the `.podspec` file, the zip file with all the needed frameworks and the destination folder in the `podspecs_repo` repo. The folder which contains all folders for each versions of the respectiv SDK.
+  podspecs_repo_sdk_folder_path   - the path for the `podspecs_repo` where the folder for the new verson of `.podspec` file and frameworks archived is located
 
 ----
 
