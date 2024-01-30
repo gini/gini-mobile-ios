@@ -21,12 +21,12 @@ final class InvoicesListCoordinator: NSObject, Coordinator {
     
     func start(documentService: DefaultDocumentService,
                hardcodedInvoicesController: HardcodedInvoicesControllerProtocol,
-               giniHealthConfiguration: GiniHealthConfiguration) {
+               paymentComponentsController: PaymentComponentsController) {
         self.invoicesListViewController = InvoicesListViewController()
         invoicesListViewController.viewModel = InvoicesListViewModel(coordinator: self,
                                                                      documentService: documentService,
                                                                      hardcodedInvoicesController: hardcodedInvoicesController,
-                                                                     giniHealthConfiguration: giniHealthConfiguration)
+                                                                     paymentComponentsController: paymentComponentsController)
         invoicesListNavigationController = RootNavigationController(rootViewController: invoicesListViewController)
         invoicesListNavigationController.interactivePopGestureRecognizer?.delegate = nil
     }

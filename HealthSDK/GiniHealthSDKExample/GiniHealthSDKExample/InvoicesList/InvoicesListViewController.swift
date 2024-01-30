@@ -105,7 +105,8 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
         guard let cell = tableView.dequeueReusableCell(withIdentifier: InvoiceTableViewCell.identifier, for: indexPath) as? InvoiceTableViewCell else {
             return UITableViewCell()
         }
-        cell.cellViewModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0, giniConfiguration: viewModel.giniHealthConfiguration) }[indexPath.row]
+        cell.cellViewModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0,
+                                                                                paymentComponentsController: viewModel.paymentComponentsController) }[indexPath.row]
         return cell
     }
     

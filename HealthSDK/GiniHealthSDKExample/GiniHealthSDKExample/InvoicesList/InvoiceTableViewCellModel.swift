@@ -12,18 +12,17 @@ import GiniCaptureSDK
 import UIKit
 
 final class InvoiceTableViewCellModel {
-    
     private var invoice: DocumentWithExtractions
-    private var giniConfiguration: GiniHealthConfiguration
     private var bankAccentColor: GiniHealthSDK.GiniColor
     private var bankTextColor: GiniHealthSDK.GiniColor
+    private var paymentComponentsController: PaymentComponentsController
 
-    init(invoice: DocumentWithExtractions, 
-         giniConfiguration: GiniHealthConfiguration) {
+    init(invoice: DocumentWithExtractions,
+         paymentComponentsController: PaymentComponentsController) {
         self.invoice = invoice
-        self.giniConfiguration = giniConfiguration
         self.bankAccentColor = invoice.bank.accentColor.giniColor
         self.bankTextColor = invoice.bank.textColor.giniColor
+        self.paymentComponentsController = paymentComponentsController
     }
     
     var recipientNameText: String {
@@ -54,9 +53,7 @@ final class InvoiceTableViewCellModel {
     }
     
     var paymentComponentView: UIView {
-        let paymentComponentController = GiniHealthSDK.PaymentComponentController(giniConfiguration: giniConfiguration)
-        paymentComponentController.delegate = self
-        return paymentComponentController.getPaymentView(bankName: invoice.bank.name,
+        return paymentComponentsController.getPaymentView(bankName: invoice.bank.name,
                                                          bankIconName: invoice.bank.iconName,
                                                          payInvoiceAccentColor: bankAccentColor,
                                                          payInvoiceTextColor: bankTextColor)
@@ -77,5 +74,10 @@ extension InvoiceTableViewCellModel: PaymentComponentControllerProtocol {
     public func didTapOnPayInvoice() {
         // MARK: TODO in next tasks
         Log("Tapped on Pay Invoice on :\(invoice.documentID)", event: .success)
+    }
+
+    public func isLoadingStateChanged(isLoading: Bool) {
+        // MARK: TODO in next tasks
+        Log("Is loading state: \(isLoading)", event: .success)
     }
 }

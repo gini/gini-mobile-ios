@@ -16,6 +16,7 @@ public protocol PaymentComponentViewModelProtocol: AnyObject {
 final class PaymentComponentViewModel {
     
     var giniConfiguration: GiniHealthConfiguration
+    var giniHealth: GiniHealth
 
     let backgroundColor: UIColor = UIColor.from(giniColor: GiniColor(lightModeColor: .clear, 
                                                                      darkModeColor: .clear))
@@ -59,9 +60,11 @@ final class PaymentComponentViewModel {
          bankName: String,
          bankIconName: String, 
          payInvoiceAccentColor: GiniColor,
-         payInvoiceTextColor: GiniColor) {
+         payInvoiceTextColor: GiniColor,
+         giniHealth: GiniHealth) {
         self.giniConfiguration = giniConfiguration
-        self.moreInformationLabelFont = giniConfiguration.customFont.with(weight: .regular, 
+        self.giniHealth = giniHealth
+        self.moreInformationLabelFont = giniConfiguration.customFont.with(weight: .regular,
                                                                           size: 13,
                                                                           style: .caption1)
         self.moreInformationLabelLinkFont = giniConfiguration.customFont.with(weight: .bold, 
