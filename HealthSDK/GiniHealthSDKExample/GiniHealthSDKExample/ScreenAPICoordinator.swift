@@ -84,7 +84,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
         // Store invoice/document into Invoices list
         hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: DocumentWithExtractions(documentID: result.document?.id ?? "", 
                                                                                                   extractions: captureExtractedResults,
-                                                                                                  bank: Bank()))
+                                                                                                  paymentProvider: nil))
 
         if let healthSdk = self.giniHealth, let docId = result.document?.id {
             // this step needed since we've got 2 different Document structures

@@ -41,23 +41,22 @@ struct DocumentWithExtractions: Codable {
     var paymentDueDate: String?
     var recipient: String?
     var isPayable: Bool?
-    // TODO: - Will be replace in next task with real data
-    var bank: Bank
+    var paymentProvider: PaymentProvider?
 
-    init(documentID: String, extractionResult: GiniHealthAPILibrary.ExtractionResult, bank: Bank) {
+    init(documentID: String, extractionResult: GiniHealthAPILibrary.ExtractionResult, paymentProvider: PaymentProvider?) {
         self.documentID = documentID
         self.amountToPay = extractionResult.payment?.first?.first(where: {$0.name == "amount_to_pay"})?.value
         self.paymentDueDate = extractionResult.extractions.first(where: {$0.name == "payment_due_date"})?.value
         self.recipient = extractionResult.payment?.first?.first(where: {$0.name == "payment_recipient"})?.value
-        self.bank = bank
+        self.paymentProvider = paymentProvider
     }
     
-    init(documentID: String, extractions: [GiniBankAPILibrary.Extraction], bank: Bank) {
+    init(documentID: String, extractions: [GiniBankAPILibrary.Extraction], paymentProvider: PaymentProvider?) {
         self.documentID = documentID
         self.amountToPay = extractions.first(where: {$0.name == "amount_to_pay"})?.value
         self.paymentDueDate = extractions.first(where: {$0.name == "payment_due_date"})?.value
         self.recipient = extractions.first(where: {$0.name == "payment_recipient"})?.value
-        self.bank = bank
+        self.paymentProvider = paymentProvider
     }
 }
 
@@ -70,13 +69,6 @@ final class InvoicesListViewModel {
     var paymentComponentsController: PaymentComponentsController
 
     var invoices: [DocumentWithExtractions]
-
-    // TODO: - Only for testing purpose - these values will come from API
-    let banks: [Bank] = [
-        Bank(name: "Sparkasse", iconName: "sparkasseBankIcon", accentColor: GiniHealthSDK.Color(uiColor: UIColor.red), textColor: GiniHealthSDK.Color(uiColor: .white)),
-        Bank(name: "Deutsche Kreditbank", iconName: "kreditBankIcon", accentColor: GiniHealthSDK.Color(uiColor: UIColor.systemBlue), textColor: GiniHealthSDK.Color(uiColor: .white)),
-        Bank(name: "Deutsche Bank", iconName: "deutscheBankIcon", accentColor: GiniHealthSDK.Color(uiColor: UIColor.blue), textColor: GiniHealthSDK.Color(uiColor: .white))
-    ]
 
     let noInvoicesText = NSLocalizedString("giniHealthSDKExample.invoicesList.missingInvoices.text", comment: "")
     let titleText = NSLocalizedString("giniHealthSDKExample.invoicesList.title", comment: "")
@@ -91,6 +83,8 @@ final class InvoicesListViewModel {
     private let tableViewCell: UITableViewCell.Type = InvoiceTableViewCell.self
     private var errors: [String] = []
 
+    let dispatchGroup = DispatchGroup()
+
     init(coordinator: InvoicesListCoordinator,
          invoices: [DocumentWithExtractions]? = nil,
          documentService: GiniHealthAPILibrary.DefaultDocumentService,
@@ -102,7 +96,34 @@ final class InvoicesListViewModel {
         self.documentService = documentService
         self.paymentComponentsController = paymentComponentsController
     }
-    
+
+    func viewDidLoad() {
+        loadPaymentProvidersIfMissingOnInvoices()
+    }
+
+    func loadPaymentProvidersIfMissingOnInvoices() {
+        if !invoices.isEmpty && invoices.contains(where: { $0.paymentProvider == nil }) {
+            coordinator.invoicesListViewController.showActivityIndicator()
+            loadPaymentProviders()
+            setDispatchGroupNotifier()
+        }
+    }
+
+    private func setDispatchGroupNotifier() {
+        dispatchGroup.notify(queue: .main) {
+            if !self.errors.isEmpty {
+                let uniqueErrorMessages = Array(Set(self.errors))
+                self.coordinator.invoicesListViewController.showErrorAlertView(error: uniqueErrorMessages.joined(separator: ", "))
+                self.errors = []
+            }
+            if !self.invoices.isEmpty {
+                self.hardcodedInvoicesController.storeInvoicesWithExtractions(invoices: self.invoices)
+                self.coordinator.invoicesListViewController?.hideActivityIndicator()
+                self.coordinator.invoicesListViewController?.reloadTableView()
+            }
+        }
+    }
+
     @objc
     func uploadInvoices() {
         coordinator.invoicesListViewController?.showActivityIndicator()
@@ -113,11 +134,26 @@ final class InvoicesListViewModel {
                 self?.coordinator.invoicesListViewController.hideActivityIndicator()
             }
         }
+        loadPaymentProviders()
+        setDispatchGroupNotifier()
     }
-    
+
+    private func loadPaymentProviders() {
+        dispatchGroup.enter()
+        paymentComponentsController.getPaymentProviders { [weak self] result in
+            switch result {
+            case .success(_):
+                for index in 0..<(self?.invoices.count ?? 0) {
+                    self?.invoices[index].paymentProvider = self?.paymentComponentsController.obtainFirstPaymentProvider()
+                }
+            case let .failure(error):
+                self?.errors.append(error.localizedDescription)
+            }
+            self?.dispatchGroup.leave()
+        }
+    }
+
     private func uploadDocuments(dataDocuments: [Data]) {
-        errors = []
-        let dispatchGroup = DispatchGroup()
         for giniDocument in dataDocuments {
             dispatchGroup.enter()
             self.documentService.createDocument(fileName: nil,
@@ -133,8 +169,8 @@ final class InvoicesListViewModel {
                         case let .success(extractionResult):
                             Log("Successfully fetched extractions for id: \(createdDocument.id)", event: .success)
                             self?.invoices.append(DocumentWithExtractions(documentID: createdDocument.id,
-                                                                          extractionResult: extractionResult, bank: self?.banks.randomElement() ?? Bank()))
-                            self?.paymentComponentsController.checkIfDocumentIsPayable(docId: createdDocument.id, completion: { result in
+                                                                          extractionResult: extractionResult, paymentProvider: self?.paymentComponentsController.obtainFirstPaymentProvider()))
+                            self?.paymentComponentsController.checkIfDocumentIsPayable(docId: createdDocument.id, completion: { [weak self] result in
                                 switch result {
                                 case let .success(isPayable):
                                     Log("Successfully checked if document \(createdDocument.id) is payable", event: .success)
@@ -145,29 +181,20 @@ final class InvoicesListViewModel {
                                     Log("Checking if document \(createdDocument.id) is payable failed with error: \(String(describing: error))", event: .error)
                                     self?.errors.append(error.localizedDescription)
                                 }
-                                dispatchGroup.leave()
+                                self?.dispatchGroup.leave()
                             })
                         case let .failure(error):
                             Log("Obtaining extractions from document with id \(createdDocument.id) failed with error: \(String(describing: error))", event: .error)
                             self?.errors.append(error.message)
-                            dispatchGroup.leave()
+                            self?.dispatchGroup.leave()
                         }
                     }
                 case .failure(let error):
                     Log("Document creation failed: \(String(describing: error))", event: .error)
                     self?.errors.append(error.message)
-                    dispatchGroup.leave()
+                    self?.dispatchGroup.leave()
                 }
             }
-        }
-        dispatchGroup.notify(queue: .main) {
-            if !self.errors.isEmpty {
-                let uniqueErrorMessages = Array(Set(self.errors))
-                self.coordinator.invoicesListViewController.showErrorAlertView(error: uniqueErrorMessages.joined(separator: ", "))
-            }
-            self.hardcodedInvoicesController.storeInvoicesWithExtractions(invoices: self.invoices)
-            self.coordinator.invoicesListViewController?.hideActivityIndicator()
-            self.coordinator.invoicesListViewController?.reloadTableView()
         }
     }
 }

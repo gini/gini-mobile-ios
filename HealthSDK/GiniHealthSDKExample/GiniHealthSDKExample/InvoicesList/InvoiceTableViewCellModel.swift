@@ -11,17 +11,23 @@ import GiniHealthSDK
 import GiniCaptureSDK
 import UIKit
 
+protocol InvoiceTableViewCellProtocol: AnyObject {
+    func isLoadingStateChanged(isLoading: Bool)
+}
+
 final class InvoiceTableViewCellModel {
     private var invoice: DocumentWithExtractions
-    private var bankAccentColor: GiniHealthSDK.GiniColor
-    private var bankTextColor: GiniHealthSDK.GiniColor
+    private var bankAccentColor: String?
+    private var bankTextColor: String?
     private var paymentComponentsController: PaymentComponentsController
+
+    weak var delegate: InvoiceTableViewCellProtocol?
 
     init(invoice: DocumentWithExtractions,
          paymentComponentsController: PaymentComponentsController) {
         self.invoice = invoice
-        self.bankAccentColor = invoice.bank.accentColor.giniColor
-        self.bankTextColor = invoice.bank.textColor.giniColor
+        self.bankAccentColor = invoice.paymentProvider?.colors.background
+        self.bankTextColor = invoice.paymentProvider?.colors.text
         self.paymentComponentsController = paymentComponentsController
     }
     
@@ -53,14 +59,12 @@ final class InvoiceTableViewCellModel {
     }
     
     var paymentComponentView: UIView {
-        return paymentComponentsController.getPaymentView(bankName: invoice.bank.name,
-                                                         bankIconName: invoice.bank.iconName,
-                                                         payInvoiceAccentColor: bankAccentColor,
-                                                         payInvoiceTextColor: bankTextColor)
+        paymentComponentsController.delegate = self
+        return paymentComponentsController.getPaymentView(paymentProvider: invoice.paymentProvider)
     }
 }
 
-extension InvoiceTableViewCellModel: PaymentComponentControllerProtocol {
+extension InvoiceTableViewCellModel: PaymentComponentsControllerProtocol {
     public func didTapOnMoreInformations() {
         // MARK: TODO in next tasks
         Log("Tapped on More Information on :\(invoice.documentID)", event: .success)
@@ -79,5 +83,6 @@ extension InvoiceTableViewCellModel: PaymentComponentControllerProtocol {
     public func isLoadingStateChanged(isLoading: Bool) {
         // MARK: TODO in next tasks
         Log("Is loading state: \(isLoading)", event: .success)
+        delegate?.isLoadingStateChanged(isLoading: isLoading)
     }
 }

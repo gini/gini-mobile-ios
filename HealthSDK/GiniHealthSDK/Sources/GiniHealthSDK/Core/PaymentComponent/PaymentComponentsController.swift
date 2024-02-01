@@ -8,20 +8,20 @@
 import UIKit
 import GiniHealthAPILibrary
 
-public protocol PaymentComponentControllerProtocol: AnyObject, PaymentComponentViewModelProtocol {
+public protocol PaymentComponentsControllerProtocol: AnyObject, PaymentComponentViewModelProtocol {
     func didTapOnMoreInformations()
     func didTapOnBankPicker()
     func didTapOnPayInvoice()
     func isLoadingStateChanged(isLoading: Bool) // Because we can't use Combine, iOS 11 supported
 }
 
-public final class PaymentComponentsController: NSObject, PaymentComponentControllerProtocol {
+public final class PaymentComponentsController: NSObject, PaymentComponentsControllerProtocol {
     
-    public weak var delegate: PaymentComponentControllerProtocol?
+    public weak var delegate: PaymentComponentsControllerProtocol?
     
     private var giniConfiguration: GiniHealthConfiguration
     private var giniHealth: GiniHealth
-    var paymentProviders: PaymentProviders = []
+    private var paymentProviders: PaymentProviders = []
 
     public init(giniConfiguration: GiniHealthConfiguration, giniHealth: GiniHealth) {
         self.giniConfiguration = giniConfiguration
@@ -36,20 +36,35 @@ public final class PaymentComponentsController: NSObject, PaymentComponentContro
 
     var paymentComponentView: PaymentComponentView!
 
+    public func getPaymentProviders(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void) {
+        giniHealth.checkIfAnyPaymentProviderAvailable { [weak self] result in
+            switch result {
+            case let .success(providers):
+                self?.paymentProviders = []
+                for provider in providers {
+                    if let url = URL(string: provider.appSchemeIOS), UIApplication.shared.canOpenURL(url) {
+                        self?.paymentProviders.append(provider)
+                    }
+                }
+            case .failure(_):
+               break
+            }
+            completion(result)
+        }
+    }
+
+    public func obtainFirstPaymentProvider() -> PaymentProvider? {
+        paymentProviders.first
+    }
+
     public func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
         giniHealth.checkIfDocumentIsPayable(docId: docId, completion: completion)
     }
 
-    public func getPaymentView(bankName: String, 
-                               bankIconName: String,
-                               payInvoiceAccentColor: GiniColor,
-                               payInvoiceTextColor: GiniColor) -> UIView {
+    public func getPaymentView(paymentProvider: PaymentProvider?) -> UIView {
         paymentComponentView = PaymentComponentView()
         let paymentComponentViewModel = PaymentComponentViewModel(giniConfiguration: giniConfiguration, 
-                                                                  bankName: bankName,
-                                                                  bankIconName: bankIconName,
-                                                                  payInvoiceAccentColor: payInvoiceAccentColor,
-                                                                  payInvoiceTextColor: payInvoiceTextColor,
+                                                                  paymentProvider: paymentProvider,
                                                                   giniHealth: giniHealth)
         paymentComponentViewModel.delegate = delegate
         paymentComponentView.viewModel = paymentComponentViewModel

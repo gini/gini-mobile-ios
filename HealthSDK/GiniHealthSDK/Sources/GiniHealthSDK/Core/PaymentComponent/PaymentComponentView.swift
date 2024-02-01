@@ -78,12 +78,12 @@ final class PaymentComponentView: UIView {
         return view
     }()
     
-    private lazy var selectBankLabel: UILabel = {
+    private lazy var selectYourBankLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = viewModel.selectBankLabelText
-        label.textColor = viewModel.selectBankAccentColor
-        label.font = viewModel.selectBankLabelFont
+        label.text = viewModel.selectYourBankLabelText
+        label.textColor = viewModel.selectYourBankAccentColor
+        label.font = viewModel.selectYourBankLabelFont
         label.numberOfLines = 0
         return label
     }()
@@ -101,7 +101,7 @@ final class PaymentComponentView: UIView {
     }()
     
     private lazy var bankImageView: UIImageView = {
-        let image = UIImageNamedPreferred(named: viewModel.bankImageIconName)
+        let image = viewModel.bankImageIcon
         let imageView = UIImageView(image: image)
         imageView.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -132,6 +132,7 @@ final class PaymentComponentView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.frame = CGRect(x: 0, y: 0, width: .max, height: 56)
         view.layer.cornerRadius = 12
+        view.isUserInteractionEnabled = viewModel.isPaymentProviderInstalled
         view.backgroundColor = viewModel.payInvoiceViewBackgroundColor
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnPayInvoiceView)))
         return view
@@ -202,20 +203,20 @@ final class PaymentComponentView: UIView {
     }
     
     private func setupSelectBankView() {
-        selectBankView.addSubview(selectBankLabel)
+        selectBankView.addSubview(selectYourBankLabel)
         selectBankView.addSubview(selectBankPickerView)
         selectBankView.addSubview(payInvoiceView)
         selectBankView.addSubview(poweredByGiniView)
         
         NSLayoutConstraint.activate([
             selectBankView.heightAnchor.constraint(equalToConstant: selectBankView.frame.height),
-            selectBankLabel.leadingAnchor.constraint(equalTo: selectBankView.leadingAnchor),
-            selectBankLabel.topAnchor.constraint(equalTo: selectBankView.topAnchor),
-            selectBankLabel.trailingAnchor.constraint(equalTo: selectBankView.trailingAnchor),
+            selectYourBankLabel.leadingAnchor.constraint(equalTo: selectBankView.leadingAnchor),
+            selectYourBankLabel.topAnchor.constraint(equalTo: selectBankView.topAnchor),
+            selectYourBankLabel.trailingAnchor.constraint(equalTo: selectBankView.trailingAnchor),
             selectBankPickerView.heightAnchor.constraint(equalToConstant: selectBankPickerView.frame.height),
             selectBankPickerView.leadingAnchor.constraint(equalTo: selectBankView.leadingAnchor),
             selectBankPickerView.trailingAnchor.constraint(equalTo: selectBankView.trailingAnchor),
-            selectBankPickerView.topAnchor.constraint(equalTo: selectBankLabel.bottomAnchor, constant: 4),
+            selectBankPickerView.topAnchor.constraint(equalTo: selectYourBankLabel.bottomAnchor, constant: 4),
             payInvoiceView.heightAnchor.constraint(equalToConstant: payInvoiceView.frame.height),
             payInvoiceView.leadingAnchor.constraint(equalTo: selectBankView.leadingAnchor),
             payInvoiceView.trailingAnchor.constraint(equalTo: selectBankView.trailingAnchor),
@@ -227,17 +228,25 @@ final class PaymentComponentView: UIView {
     }
     
     private func setupBankPickerView() {
-        selectBankPickerView.addSubview(bankImageView)
+        if viewModel.isPaymentProviderInstalled {
+            selectBankPickerView.addSubview(bankImageView)
+        }
         selectBankPickerView.addSubview(bankNameLabel)
         selectBankPickerView.addSubview(chevronDownIconView)
         
+
+        if viewModel.isPaymentProviderInstalled {
+            bankImageView.leadingAnchor.constraint(equalTo: selectBankPickerView.leadingAnchor, constant: 16).isActive = true
+            bankImageView.centerYAnchor.constraint(equalTo: selectBankPickerView.centerYAnchor).isActive = true
+            bankImageView.widthAnchor.constraint(equalToConstant: bankImageView.frame.width).isActive = true
+            bankImageView.heightAnchor.constraint(equalToConstant: bankImageView.frame.height).isActive = true
+            bankNameLabel.leadingAnchor.constraint(equalTo: bankImageView.trailingAnchor, constant: 16).isActive = true
+            bankImageView.centerYAnchor.constraint(equalTo: bankNameLabel.centerYAnchor).isActive = true
+        } else {
+            bankNameLabel.leadingAnchor.constraint(equalTo: selectBankPickerView.leadingAnchor, constant: 16).isActive = true
+            selectBankPickerView.centerYAnchor.constraint(equalTo: bankNameLabel.centerYAnchor).isActive = true
+        }
         NSLayoutConstraint.activate([
-            bankImageView.leadingAnchor.constraint(equalTo: selectBankPickerView.leadingAnchor, constant: 16),
-            bankImageView.centerYAnchor.constraint(equalTo: selectBankPickerView.centerYAnchor),
-            bankImageView.widthAnchor.constraint(equalToConstant: bankImageView.frame.width),
-            bankImageView.heightAnchor.constraint(equalToConstant: bankImageView.frame.height),
-            bankNameLabel.leadingAnchor.constraint(equalTo: bankImageView.trailingAnchor, constant: 16),
-            bankImageView.centerYAnchor.constraint(equalTo: bankNameLabel.centerYAnchor),
             chevronDownIconView.widthAnchor.constraint(equalToConstant: chevronDownIconView.frame.width),
             chevronDownIconView.heightAnchor.constraint(equalToConstant: chevronDownIconView.frame.height),
             selectBankPickerView.trailingAnchor.constraint(equalTo: chevronDownIconView.trailingAnchor, constant: 16),
