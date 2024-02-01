@@ -282,7 +282,7 @@ final class AppCoordinator: Coordinator {
     
     fileprivate func showInvoicesList() {
         let invoicesListCoordinator = InvoicesListCoordinator()
-        let paymentComponentsController = PaymentComponentsController(giniConfiguration: GiniHealthConfiguration(), giniHealth: health)
+        let paymentComponentsController = PaymentComponentsController(giniHealth: health)
         invoicesListCoordinator.start(documentService: health.documentService,
                                       hardcodedInvoicesController: HardcodedInvoicesController(),
                                       paymentComponentsController: paymentComponentsController)

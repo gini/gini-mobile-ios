@@ -14,9 +14,7 @@ public protocol PaymentComponentViewModelProtocol: AnyObject {
 }
 
 final class PaymentComponentViewModel {
-    
-    var giniConfiguration: GiniHealthConfiguration
-    var giniHealth: GiniHealth
+    private var giniHealth: GiniHealth
 
     let backgroundColor: UIColor = UIColor.from(giniColor: GiniColor(lightModeColor: .clear, 
                                                                      darkModeColor: .clear))
@@ -56,31 +54,29 @@ final class PaymentComponentViewModel {
     
     weak var delegate: PaymentComponentViewModelProtocol?
     
-    init(giniConfiguration: GiniHealthConfiguration, 
-         bankName: String,
+    init(bankName: String,
          bankIconName: String, 
          payInvoiceAccentColor: GiniColor,
          payInvoiceTextColor: GiniColor,
          giniHealth: GiniHealth) {
-        self.giniConfiguration = giniConfiguration
         self.giniHealth = giniHealth
-        self.moreInformationLabelFont = giniConfiguration.customFont.with(weight: .regular,
+        self.moreInformationLabelFont = GiniHealthConfiguration.shared.customFont.with(weight: .regular,
                                                                           size: 13,
                                                                           style: .caption1)
-        self.moreInformationLabelLinkFont = giniConfiguration.customFont.with(weight: .bold, 
+        self.moreInformationLabelLinkFont = GiniHealthConfiguration.shared.customFont.with(weight: .bold,
                                                                               size: 14,
                                                                               style: .linkBold)
-        self.selectBankLabelFont = giniConfiguration.customFont.with(weight: .medium, 
+        self.selectBankLabelFont = GiniHealthConfiguration.shared.customFont.with(weight: .medium,
                                                                      size: 14,
                                                                      style: .subtitle2)
         self.bankImageIconName = bankIconName
         self.bankNameLabelText = bankName
-        self.bankNameLabelFont = giniConfiguration.customFont.with(weight: .medium,
-                                                                   size: 16, 
+        self.bankNameLabelFont = GiniHealthConfiguration.shared.customFont.with(weight: .medium,
+                                                                   size: 16,
                                                                    style: .input)
         self.payInvoiceViewBackgroundColor = payInvoiceAccentColor.uiColor()
         self.payInvoiceLabelAccentColor = payInvoiceTextColor.uiColor()
-        self.payInvoiceLabelFont = giniConfiguration.customFont.with(weight: .bold, size: 16, style: .button)
+        self.payInvoiceLabelFont = GiniHealthConfiguration.shared.customFont.with(weight: .bold, size: 16, style: .button)
     }
     
     func tapOnMoreInformation() {

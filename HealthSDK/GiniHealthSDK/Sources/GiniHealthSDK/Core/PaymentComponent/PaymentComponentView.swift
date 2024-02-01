@@ -151,7 +151,7 @@ final class PaymentComponentView: UIView {
     
     private lazy var poweredByGiniView: PoweredByGiniView = {
         let view = PoweredByGiniView()
-        view.viewModel = PoweredByGiniViewModel(giniConfiguration: viewModel.giniConfiguration)
+        view.viewModel = PoweredByGiniViewModel()
         return view
     }()
 
