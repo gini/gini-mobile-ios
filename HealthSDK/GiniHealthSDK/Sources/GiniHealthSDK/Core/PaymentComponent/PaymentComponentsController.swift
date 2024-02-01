@@ -18,13 +18,11 @@ public protocol PaymentComponentControllerProtocol: AnyObject, PaymentComponentV
 public final class PaymentComponentsController: NSObject, PaymentComponentControllerProtocol {
     
     public weak var delegate: PaymentComponentControllerProtocol?
-    
-    private var giniConfiguration: GiniHealthConfiguration
+
     private var giniHealth: GiniHealth
     var paymentProviders: PaymentProviders = []
 
-    public init(giniConfiguration: GiniHealthConfiguration, giniHealth: GiniHealth) {
-        self.giniConfiguration = giniConfiguration
+    public init(giniHealth: GiniHealth) {
         self.giniHealth = giniHealth
     }
 
@@ -45,8 +43,7 @@ public final class PaymentComponentsController: NSObject, PaymentComponentContro
                                payInvoiceAccentColor: GiniColor,
                                payInvoiceTextColor: GiniColor) -> UIView {
         paymentComponentView = PaymentComponentView()
-        let paymentComponentViewModel = PaymentComponentViewModel(giniConfiguration: giniConfiguration, 
-                                                                  bankName: bankName,
+        let paymentComponentViewModel = PaymentComponentViewModel(bankName: bankName,
                                                                   bankIconName: bankIconName,
                                                                   payInvoiceAccentColor: payInvoiceAccentColor,
                                                                   payInvoiceTextColor: payInvoiceTextColor,

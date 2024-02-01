@@ -14,20 +14,20 @@ import GiniHealthSDK
 struct Bank: Codable {
     let name: String
     let iconName: String
-    let accentColor: GiniHealthSDK.Color
-    let textColor: GiniHealthSDK.Color
+    let accentColor: GiniHealthSDK.CodableColor
+    let textColor: GiniHealthSDK.CodableColor
 
     init() {
         name = "Sparkasse"
         iconName = "sparkasseBankIcon"
-        accentColor = GiniHealthSDK.Color(uiColor: .red)
-        textColor = GiniHealthSDK.Color(uiColor: .white)
+        accentColor = GiniHealthSDK.CodableColor(uiColor: .red)
+        textColor = GiniHealthSDK.CodableColor(uiColor: .white)
     }
 
     internal init(name: String, 
                   iconName: String,
-                  accentColor: Color,
-                  textColor: Color) {
+                  accentColor: CodableColor,
+                  textColor: CodableColor) {
         self.name = name
         self.iconName = iconName
         self.accentColor = accentColor
@@ -73,9 +73,9 @@ final class InvoicesListViewModel {
 
     // TODO: - Only for testing purpose - these values will come from API
     let banks: [Bank] = [
-        Bank(name: "Sparkasse", iconName: "sparkasseBankIcon", accentColor: GiniHealthSDK.Color(uiColor: UIColor.red), textColor: GiniHealthSDK.Color(uiColor: .white)),
-        Bank(name: "Deutsche Kreditbank", iconName: "kreditBankIcon", accentColor: GiniHealthSDK.Color(uiColor: UIColor.systemBlue), textColor: GiniHealthSDK.Color(uiColor: .white)),
-        Bank(name: "Deutsche Bank", iconName: "deutscheBankIcon", accentColor: GiniHealthSDK.Color(uiColor: UIColor.blue), textColor: GiniHealthSDK.Color(uiColor: .white))
+        Bank(name: "Sparkasse", iconName: "sparkasseBankIcon", accentColor: GiniHealthSDK.CodableColor(uiColor: UIColor.red), textColor: GiniHealthSDK.CodableColor(uiColor: .white)),
+        Bank(name: "Deutsche Kreditbank", iconName: "kreditBankIcon", accentColor: GiniHealthSDK.CodableColor(uiColor: UIColor.systemBlue), textColor: GiniHealthSDK.CodableColor(uiColor: .white)),
+        Bank(name: "Deutsche Bank", iconName: "deutscheBankIcon", accentColor: GiniHealthSDK.CodableColor(uiColor: UIColor.blue), textColor: GiniHealthSDK.CodableColor(uiColor: .white))
     ]
 
     let noInvoicesText = NSLocalizedString("giniHealthSDKExample.invoicesList.missingInvoices.text", comment: "")
