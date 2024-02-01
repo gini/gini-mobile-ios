@@ -54,8 +54,10 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
+                                    <constraint firstItem="mmw-vI-Tta" firstAttribute="top" relation="greaterThanOrEqual" secondItem="CPu-jh-GFv" secondAttribute="top" id="CzW-Q4-yQf"/>
                                     <constraint firstItem="mmw-vI-Tta" firstAttribute="leading" secondItem="CPu-jh-GFv" secondAttribute="leading" id="DnE-fP-ACk"/>
                                     <constraint firstAttribute="trailing" secondItem="mmw-vI-Tta" secondAttribute="trailing" id="S12-GV-WoN"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="mmw-vI-Tta" secondAttribute="bottom" id="dVQ-Yj-U3y"/>
                                     <constraint firstItem="mmw-vI-Tta" firstAttribute="centerY" secondItem="CPu-jh-GFv" secondAttribute="centerY" id="sxg-ez-1go"/>
                                 </constraints>
                             </view>
