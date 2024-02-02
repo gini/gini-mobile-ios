@@ -12,15 +12,15 @@ public extension UIColor {
             return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
                 if UITraitCollection.userInterfaceStyle == .dark {
                     /// Return the color for Dark Mode
-                    return giniColor.darkModeColor.uiColor
+                    return giniColor.darkModeColor
                 } else {
                     /// Return the color for Light Mode
-                    return giniColor.lightModeColor.uiColor
+                    return giniColor.lightModeColor
                 }
             }
         } else {
             /// Return a fallback color for iOS 12 and lower.
-            return giniColor.lightModeColor.uiColor
+            return giniColor.lightModeColor
         }
     }
     

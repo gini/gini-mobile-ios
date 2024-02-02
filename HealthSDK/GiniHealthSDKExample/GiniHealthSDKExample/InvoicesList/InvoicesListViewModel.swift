@@ -11,30 +11,6 @@ import GiniCaptureSDK
 import GiniBankAPILibrary
 import GiniHealthSDK
 
-struct Bank: Codable {
-    let name: String
-    let iconName: String
-    let accentColor: GiniHealthSDK.CodableColor
-    let textColor: GiniHealthSDK.CodableColor
-
-    init() {
-        name = "Sparkasse"
-        iconName = "sparkasseBankIcon"
-        accentColor = GiniHealthSDK.CodableColor(uiColor: .red)
-        textColor = GiniHealthSDK.CodableColor(uiColor: .white)
-    }
-
-    internal init(name: String, 
-                  iconName: String,
-                  accentColor: CodableColor,
-                  textColor: CodableColor) {
-        self.name = name
-        self.iconName = iconName
-        self.accentColor = accentColor
-        self.textColor = textColor
-    }
-}
-
 struct DocumentWithExtractions: Codable {
     var documentID: String
     var amountToPay: String?
@@ -168,8 +144,10 @@ final class InvoicesListViewModel {
                         switch result {
                         case let .success(extractionResult):
                             Log("Successfully fetched extractions for id: \(createdDocument.id)", event: .success)
+                            let firstPaymentProvider = self?.paymentComponentsController.obtainFirstPaymentProvider()
                             self?.invoices.append(DocumentWithExtractions(documentID: createdDocument.id,
-                                                                          extractionResult: extractionResult, paymentProvider: self?.paymentComponentsController.obtainFirstPaymentProvider()))
+                                                                          extractionResult: extractionResult, 
+                                                                          paymentProvider: firstPaymentProvider))
                             self?.paymentComponentsController.checkIfDocumentIsPayable(docId: createdDocument.id, completion: { [weak self] result in
                                 switch result {
                                 case let .success(isPayable):
