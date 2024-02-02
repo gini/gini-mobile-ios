@@ -57,6 +57,8 @@
                                             <constraint firstItem="mmw-vI-Tta" firstAttribute="leading" secondItem="CPu-jh-GFv" secondAttribute="leading" id="DnE-fP-ACk"/>
                                             <constraint firstItem="mmw-vI-Tta" firstAttribute="centerY" secondItem="CPu-jh-GFv" secondAttribute="centerY" id="N7x-4S-YUr"/>
                                             <constraint firstAttribute="trailing" secondItem="mmw-vI-Tta" secondAttribute="trailing" id="S12-GV-WoN"/>
+                                            <constraint firstItem="mmw-vI-Tta" firstAttribute="top" relation="greaterThanOrEqual" secondItem="CPu-jh-GFv" secondAttribute="top" id="SLX-CA-gA3"/>
+                                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="mmw-vI-Tta" secondAttribute="bottom" id="gMG-xc-Iz6"/>
                                         </constraints>
                                     </view>
                                 </subviews>

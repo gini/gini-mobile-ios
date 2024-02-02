@@ -10,7 +10,7 @@ import UIKit
  The `Color` class allows us decode and encode the color
  */
 
-public struct Color: Codable {
+public struct CodableColor: Codable {
     private var red: CGFloat = 0.0
     private var green: CGFloat = 0.0
     private var blue: CGFloat = 0.0
@@ -18,9 +18,9 @@ public struct Color: Codable {
 
     public var uiColor: UIColor {
         UIColor(red: red,
-                       green: green,
-                       blue: blue,
-                       alpha: alpha)
+                green: green,
+                blue: blue,
+                alpha: alpha)
     }
 
     public var giniColor: GiniColor {
@@ -41,8 +41,8 @@ public struct Color: Codable {
  */
 
 @objc public class GiniColor : NSObject, Codable {
-    var lightModeColor: Color
-    var darkModeColor: Color
+    var lightModeColor: CodableColor
+    var darkModeColor: CodableColor
 
     /**
      Creates a GiniColor with the colors for the light and dark modes
@@ -51,8 +51,8 @@ public struct Color: Codable {
      - parameter darkModeColor: color for the dark mode
      */
     public init(lightModeColor: UIColor, darkModeColor: UIColor) {
-        self.lightModeColor = Color(uiColor: lightModeColor)
-        self.darkModeColor = Color(uiColor: darkModeColor)
+        self.lightModeColor = CodableColor(uiColor: lightModeColor)
+        self.darkModeColor = CodableColor(uiColor: darkModeColor)
     }
     
     func uiColor() -> UIColor {

@@ -175,7 +175,7 @@ func UIColorPreferred(named name: String) -> UIColor {
     }
 
     if let color = UIColor(named: name,
-                           in: giniCaptureBundle(),
+                           in: giniHealthBundleResource(),
                            compatibleWith: nil) {
         return color
     } else {
@@ -183,7 +183,7 @@ func UIColorPreferred(named name: String) -> UIColor {
     }
 }
 
-func giniCaptureBundle() -> Bundle {
+func giniHealthBundleResource() -> Bundle {
     Bundle.resource
 }
 
@@ -200,7 +200,7 @@ extension Foundation.Bundle {
             Bundle.main.resourceURL,
 
             // Bundle should be present here when the package is linked into a framework.
-            Bundle(for: CaptureSDKBundleFinder.self).resourceURL,
+            Bundle(for: HealthSDKBundleFinder.self).resourceURL,
 
             // For command-line tools.
             Bundle.main.bundleURL]
@@ -215,4 +215,4 @@ extension Foundation.Bundle {
     }()
 }
 
-private class CaptureSDKBundleFinder {}
+private class HealthSDKBundleFinder {}
