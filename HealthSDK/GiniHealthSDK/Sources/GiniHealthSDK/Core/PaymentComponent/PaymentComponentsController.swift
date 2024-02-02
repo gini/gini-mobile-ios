@@ -16,15 +16,13 @@ public protocol PaymentComponentsControllerProtocol: AnyObject, PaymentComponent
 }
 
 public final class PaymentComponentsController: NSObject, PaymentComponentsControllerProtocol {
-    
+
     public weak var delegate: PaymentComponentsControllerProtocol?
-    
-    private var giniConfiguration: GiniHealthConfiguration
+
     private var giniHealth: GiniHealth
     private var paymentProviders: PaymentProviders = []
 
-    public init(giniConfiguration: GiniHealthConfiguration, giniHealth: GiniHealth) {
-        self.giniConfiguration = giniConfiguration
+    public init(giniHealth: GiniHealth) {
         self.giniHealth = giniHealth
     }
 
@@ -63,8 +61,7 @@ public final class PaymentComponentsController: NSObject, PaymentComponentsContr
 
     public func getPaymentView(paymentProvider: PaymentProvider?) -> UIView {
         paymentComponentView = PaymentComponentView()
-        let paymentComponentViewModel = PaymentComponentViewModel(giniConfiguration: giniConfiguration, 
-                                                                  paymentProvider: paymentProvider,
+        let paymentComponentViewModel = PaymentComponentViewModel(paymentProvider: paymentProvider,
                                                                   giniHealth: giniHealth)
         paymentComponentViewModel.delegate = delegate
         paymentComponentView.viewModel = paymentComponentViewModel

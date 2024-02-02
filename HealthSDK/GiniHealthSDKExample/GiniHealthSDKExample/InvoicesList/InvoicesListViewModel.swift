@@ -14,20 +14,20 @@ import GiniHealthSDK
 struct Bank: Codable {
     let name: String
     let iconName: String
-    let accentColor: GiniHealthSDK.Color
-    let textColor: GiniHealthSDK.Color
+    let accentColor: GiniHealthSDK.CodableColor
+    let textColor: GiniHealthSDK.CodableColor
 
     init() {
         name = "Sparkasse"
         iconName = "sparkasseBankIcon"
-        accentColor = GiniHealthSDK.Color(uiColor: .red)
-        textColor = GiniHealthSDK.Color(uiColor: .white)
+        accentColor = GiniHealthSDK.CodableColor(uiColor: .red)
+        textColor = GiniHealthSDK.CodableColor(uiColor: .white)
     }
 
     internal init(name: String, 
                   iconName: String,
-                  accentColor: Color,
-                  textColor: Color) {
+                  accentColor: CodableColor,
+                  textColor: CodableColor) {
         self.name = name
         self.iconName = iconName
         self.accentColor = accentColor

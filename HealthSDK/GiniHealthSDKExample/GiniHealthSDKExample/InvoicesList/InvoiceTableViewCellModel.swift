@@ -8,7 +8,6 @@
 import Foundation
 import GiniHealthAPILibrary
 import GiniHealthSDK
-import GiniCaptureSDK
 import UIKit
 
 protocol InvoiceTableViewCellProtocol: AnyObject {

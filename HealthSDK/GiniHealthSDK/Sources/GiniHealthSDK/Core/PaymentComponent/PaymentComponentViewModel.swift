@@ -15,9 +15,7 @@ public protocol PaymentComponentViewModelProtocol: AnyObject {
 }
 
 final class PaymentComponentViewModel {
-    
-    var giniConfiguration: GiniHealthConfiguration
-    var giniHealth: GiniHealth
+    private var giniHealth: GiniHealth
 
     let backgroundColor: UIColor = UIColor.from(giniColor: GiniColor(lightModeColor: .clear, 
                                                                      darkModeColor: .clear))
@@ -97,24 +95,24 @@ final class PaymentComponentViewModel {
 
     weak var delegate: PaymentComponentViewModelProtocol?
     
-    init(giniConfiguration: GiniHealthConfiguration, 
-         paymentProvider: PaymentProvider?,
+    init(paymentProvider: PaymentProvider?,
          giniHealth: GiniHealth) {
-        self.giniConfiguration = giniConfiguration
         self.giniHealth = giniHealth
-        self.moreInformationLabelFont = giniConfiguration.customFont.with(weight: .regular,
-                                                                          size: 13,
-                                                                          style: .caption1)
-        self.moreInformationLabelLinkFont = giniConfiguration.customFont.with(weight: .bold, 
-                                                                              size: 14,
-                                                                              style: .linkBold)
-        self.selectYourBankLabelFont = giniConfiguration.customFont.with(weight: .medium, 
-                                                                     size: 14,
-                                                                     style: .subtitle2)
-        self.bankNameLabelFont = giniConfiguration.customFont.with(weight: .medium,
-                                                                   size: 16, 
-                                                                   style: .input)
-        self.payInvoiceLabelFont = giniConfiguration.customFont.with(weight: .bold, size: 16, style: .button)
+        self.moreInformationLabelFont = GiniHealthConfiguration.shared.customFont.with(weight: .regular,
+                                                                                       size: 13,
+                                                                                       style: .caption1)
+        self.moreInformationLabelLinkFont = GiniHealthConfiguration.shared.customFont.with(weight: .bold,
+                                                                                           size: 14,
+                                                                                           style: .linkBold)
+        self.selectYourBankLabelFont = GiniHealthConfiguration.shared.customFont.with(weight: .medium,
+                                                                                      size: 14,
+                                                                                      style: .subtitle2)
+        self.bankNameLabelFont = GiniHealthConfiguration.shared.customFont.with(weight: .medium,
+                                                                                size: 16,
+                                                                                style: .input)
+        self.payInvoiceLabelFont = GiniHealthConfiguration.shared.customFont.with(weight: .bold,
+                                                                                  size: 16,
+                                                                                  style: .button)
         self.bankImageIconData = paymentProvider?.iconData
         self.bankName = paymentProvider?.name
         self.payInvoiceViewBackgroundColorString = paymentProvider?.colors.background
