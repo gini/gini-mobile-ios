@@ -6,43 +6,14 @@
 //
 
 import UIKit
-/**
- The `Color` class allows us decode and encode the color
- */
-
-public struct CodableColor: Codable {
-    private var red: CGFloat = 0.0
-    private var green: CGFloat = 0.0
-    private var blue: CGFloat = 0.0
-    private var alpha: CGFloat = 0.0
-
-    public var uiColor: UIColor {
-        UIColor(red: red,
-                green: green,
-                blue: blue,
-                alpha: alpha)
-    }
-
-    public var giniColor: GiniColor {
-        GiniColor(lightModeColor: uiColor, 
-                  darkModeColor: uiColor)
-    }
-
-    public init(uiColor: UIColor) {
-        uiColor.getRed(&red, 
-                       green: &green,
-                       blue: &blue,
-                       alpha: &alpha)
-    }
-}
 
 /**
  The `GiniColor` class allows to customize color for the light and the dark modes.
  */
 
-@objc public class GiniColor : NSObject, Codable {
-    var lightModeColor: CodableColor
-    var darkModeColor: CodableColor
+@objc public class GiniColor : NSObject {
+    var lightModeColor: UIColor
+    var darkModeColor: UIColor
 
     /**
      Creates a GiniColor with the colors for the light and dark modes
@@ -51,8 +22,8 @@ public struct CodableColor: Codable {
      - parameter darkModeColor: color for the dark mode
      */
     public init(lightModeColor: UIColor, darkModeColor: UIColor) {
-        self.lightModeColor = CodableColor(uiColor: lightModeColor)
-        self.darkModeColor = CodableColor(uiColor: darkModeColor)
+        self.lightModeColor = lightModeColor
+        self.darkModeColor = darkModeColor
     }
     
     func uiColor() -> UIColor {
@@ -60,15 +31,15 @@ public struct CodableColor: Codable {
             return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
                 if UITraitCollection.userInterfaceStyle == .dark {
                     /// Return the color for Dark Mode
-                    return self.darkModeColor.uiColor
+                    return self.darkModeColor
                 } else {
                     /// Return the color for Light Mode
-                    return self.lightModeColor.uiColor
+                    return self.lightModeColor
                 }
             }
         } else {
             /// Return a fallback color for iOS 12 and lower.
-            return self.lightModeColor.uiColor
+            return self.lightModeColor
         }
     }
 }
