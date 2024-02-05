@@ -473,7 +473,7 @@ platform :ios do
     sh "cd #{podspecs_repo_sdk_folder_path} && git add . && git commit -m '[Update] #{pod_name} (#{version_folder})'" 
 
     # Step 7: Push the changes to gini-podspecs repo
-    if UI.confirm("Are you sure you want to commit this changes to gini-podspecs repo?")
+    if if UI.confirm("Are you sure you want to push these changes to the https://github.com/gini/gini-podspecs repo?")
       sh "cd #{podspecs_repo_sdk_folder_path} && git push origin master"
     end
   end
