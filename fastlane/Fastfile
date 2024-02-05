@@ -448,7 +448,7 @@ platform :ios do
     latest_tag = sh("git describe --tags --abbrev=0").strip
 
     # Extract the version from the tag (assuming the tag format is "GiniBankSDK;X.X.X")
-    version_folder = latest_tag.match(/;(\d+\.\d+\.\d+)/).captures.first
+    version_folder = get_latest_version_from_release_tags(podspec_name, UI)
     
     # Step 1: Compress the XCFrameworks into a zip file
     zip_name = "#{podspec_name}-XCFrameworks.zip" #e.g GiniBankSDK or GiniBankSDKPinning
