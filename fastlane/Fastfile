@@ -438,7 +438,7 @@ platform :ios do
     template_podspec_path           - path to the template podspec file, which is modified and used for the new pod version
 
   DOC
-  lane :generate_release_podspecs do |options|
+  lane :publish_podspec do |options|
 
     xcframeworks_folder_path = options[:xcframeworks_folder_path]
     podspec_name = options[:podspec_name] #e.g: GiniBankSDK or GiniBankSDKPinning

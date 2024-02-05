@@ -132,7 +132,7 @@ Parameters:
 ### ios generate_release_podspecs
 
 ```sh
-[bundle exec] fastlane ios generate_release_podspecs
+[bundle exec] fastlane ios publish_podspec
 ```
 
 Generate a release podspec and publish it on https://github.com/gini/gini-podspecs.
