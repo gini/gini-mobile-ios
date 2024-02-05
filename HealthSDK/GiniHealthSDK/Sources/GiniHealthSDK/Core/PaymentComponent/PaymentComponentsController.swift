@@ -18,10 +18,22 @@ public protocol GiniDocument {
 }
 
 public protocol PaymentComponentsControllerProtocol: AnyObject, PaymentComponentViewModelProtocol {
-    func didTapOnMoreInformations()
-    func didTapOnBankPicker()
-    func didTapOnPayInvoice()
+    func didTapOnMoreInformations(documentID: String?)
+    func didTapOnBankPicker(documentID: String?)
+    func didTapOnPayInvoice(documentID: String?)
     func isLoadingStateChanged(isLoading: Bool) // Because we can't use Combine, iOS 11 supported
+}
+
+extension PaymentComponentsControllerProtocol {
+    public func didTapOnMoreInformations() {
+        didTapOnMoreInformations(documentID: nil)
+    }
+    public func didTapOnBankPicker() {
+        didTapOnBankPicker(documentID: nil)
+    }
+    public func didTapOnPayInvoice() {
+        didTapOnPayInvoice(documentID: nil)
+    }
 }
 
 public final class PaymentComponentsController: NSObject, PaymentComponentsControllerProtocol {
@@ -79,15 +91,15 @@ public final class PaymentComponentsController: NSObject, PaymentComponentsContr
 }
 
 extension PaymentComponentsController: PaymentComponentViewModelProtocol {
-    public func didTapOnMoreInformations() {
+    public func didTapOnMoreInformations(documentID: String?) {
         delegate?.didTapOnMoreInformations()
     }
     
-    public func didTapOnBankPicker() {
+    public func didTapOnBankPicker(documentID: String?) {
         delegate?.didTapOnBankPicker()
     }
     
-    public func didTapOnPayInvoice() {
+    public func didTapOnPayInvoice(documentID: String?) {
         delegate?.didTapOnPayInvoice()
     }
 
