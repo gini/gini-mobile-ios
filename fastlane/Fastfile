@@ -440,17 +440,17 @@ platform :ios do
   DOC
   lane :publish_podspec do |options|
 
-    (xcframeworks_folder_path, podspec_name, podspecs_repo_sdk_folder_path, template_podspec_path) = 
-      check_and_get_options(options, [:xcframeworks_folder_path, :podspec_name, :podspecs_repo_sdk_folder_path, :template_podspec_path], UI)
+    (xcframeworks_folder_path, pod_name, podspecs_repo_sdk_folder_path, template_podspec_path) = 
+      check_and_get_options(options, [:xcframeworks_folder_path, :pod_name, :podspecs_repo_sdk_folder_path, :template_podspec_path], UI)
 
     # Get the latest Git tag
     latest_tag = sh("git describe --tags --abbrev=0").strip
 
     # Extract the version from the tag (assuming the tag format is "GiniBankSDK;X.X.X")
-    version_folder = get_latest_version_from_release_tags(podspec_name, UI)
+    version_folder = get_latest_version_from_release_tags(pod_name, UI)
     
     # Step 1: Compress the XCFrameworks into a zip file
-    zip_name = "#{podspec_name}-XCFrameworks.zip" #e.g GiniBankSDK or GiniBankSDKPinning
+    zip_name = "#{pod_name}-XCFrameworks.zip" #e.g GiniBankSDK or GiniBankSDKPinning
     sh "cd #{xcframeworks_folder_path} && zip -r #{zip_name} ."
     
     # Step 2: Create a subfolder named after the version
@@ -459,17 +459,17 @@ platform :ios do
 
     # Step 3: Copy the zip file and podspec into the new folder
     sh "cp #{xcframeworks_folder_path}/#{zip_name} #{sdk_folder}/"
-    sh "cp ../BankSDK/#{podspec_name}/Pod/#{podspec_name}.podspec #{sdk_folder}/" #e.g: BankSDK/GiniBankSDK or BankSDK/GiniBankSDKPinning
+    sh "cp ../BankSDK/#{pod_name}/Pod/#{pod_name}.podspec #{sdk_folder}/" #e.g: BankSDK/GiniBankSDK or BankSDK/GiniBankSDKPinning
     
     # Step 4: Update the version in the podspec
-    podspec_file_path = "#{sdk_folder}/#{podspec_name}.podspec"
+    podspec_file_path = "#{sdk_folder}/#{pod_name}.podspec"
     sh "sed -i '' 's/spec.version[[:space:]]*=[[:space:]]*\".*\"/spec.version = \"#{version_folder}\"/' #{podspec_file_path}"
 
     # Step 5: Copy the recently created version folder (e.g. 3.7.2) in gini-podspecs repo folder
     sh "cp -r #{sdk_folder} #{podspecs_repo_sdk_folder_path}/"
 
     # Step 6: Commit the changes to gini-podspecs repo
-    sh "cd #{podspecs_repo_sdk_folder_path} && git add . && git commit -m '[Update] #{podspec_name} (#{version_folder})'" 
+    sh "cd #{podspecs_repo_sdk_folder_path} && git add . && git commit -m '[Update] #{pod_name} (#{version_folder})'" 
 
     # Step 7: Push the changes to gini-podspecs repo
     if UI.confirm("Are you sure you want to commit this changes to gini-podspecs repo?")
