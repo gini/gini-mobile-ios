@@ -440,9 +440,8 @@ platform :ios do
   DOC
   lane :publish_podspec do |options|
 
-    xcframeworks_folder_path = options[:xcframeworks_folder_path]
-    podspec_name = options[:podspec_name] #e.g: GiniBankSDK or GiniBankSDKPinning
-    podspecs_repo_sdk_folder_path = options[:podspecs_repo_sdk_folder_path]
+    (xcframeworks_folder_path, podspec_name, podspecs_repo_sdk_folder_path, template_podspec_path) = 
+      check_and_get_options(options, [:xcframeworks_folder_path, :podspec_name, :podspecs_repo_sdk_folder_path, :template_podspec_path], UI)
 
     # Get the latest Git tag
     latest_tag = sh("git describe --tags --abbrev=0").strip
