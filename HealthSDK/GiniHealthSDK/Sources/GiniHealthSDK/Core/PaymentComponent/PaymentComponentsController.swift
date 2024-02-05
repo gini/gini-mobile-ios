@@ -8,6 +8,15 @@
 import UIKit
 import GiniHealthAPILibrary
 
+public protocol GiniDocument {
+    var documentID: String { get set }
+    var amountToPay: String? { get set }
+    var paymentDueDate: String? { get set }
+    var recipient: String? { get set }
+    var isPayable: Bool? { get set }
+    var paymentProvider: PaymentProvider? { get set }
+}
+
 public protocol PaymentComponentsControllerProtocol: AnyObject, PaymentComponentViewModelProtocol {
     func didTapOnMoreInformations()
     func didTapOnBankPicker()

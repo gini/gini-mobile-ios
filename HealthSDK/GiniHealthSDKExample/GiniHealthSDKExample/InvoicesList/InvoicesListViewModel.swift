@@ -11,7 +11,7 @@ import GiniCaptureSDK
 import GiniBankAPILibrary
 import GiniHealthSDK
 
-struct DocumentWithExtractions: Codable {
+struct DocumentWithExtractions: GiniDocument, Codable {
     var documentID: String
     var amountToPay: String?
     var paymentDueDate: String?
