@@ -135,12 +135,13 @@ Parameters:
 [bundle exec] fastlane ios generate_release_podspecs
 ```
 
-Generate release podspecs
-Parameters:
-  xcframeworks_folder_path        - the path where all the needed framework are located
-  podspec_name                    - the name of the `.podspec` file, the zip file with all the needed frameworks and the destination folder in the `podspecs_repo` repo. The folder which contains all folders for each versions of the respectiv SDK.
-  podspecs_repo_sdk_folder_path   - the path for the `podspecs_repo` where the folder for the new verson of `.podspec` file and frameworks archived is located
+Generate a release podspec and publish it on https://github.com/gini/gini-podspecs.
 
+Parameters:
+      xcframeworks_folder_path        - path to the folder which contains the .xcframeworks files
+      pod_name                        - name of the pod, usually the same as the Swift package name, e.g. GiniBankSDK or GiniCaptureSDKPinning
+      podspecs_repo_sdk_folder_path   - path to the folder which contains the local clone of the https://github.com/gini/gini-podspecs repo
+      template_podspec_path           - path to the template podspec file, which is modified and used for the new pod version
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
