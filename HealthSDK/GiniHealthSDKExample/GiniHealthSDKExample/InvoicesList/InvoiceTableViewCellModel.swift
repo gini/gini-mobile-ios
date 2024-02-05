@@ -10,17 +10,13 @@ import GiniHealthAPILibrary
 import GiniHealthSDK
 import UIKit
 
-protocol InvoiceTableViewCellProtocol: AnyObject {
-    func isLoadingStateChanged(isLoading: Bool)
-}
-
 final class InvoiceTableViewCellModel {
     private var invoice: DocumentWithExtractions
     private var bankAccentColor: String?
     private var bankTextColor: String?
     private var paymentComponentsController: PaymentComponentsController
 
-    weak var delegate: InvoiceTableViewCellProtocol?
+    weak var delegate: PaymentComponentsControllerProtocol?
 
     init(invoice: DocumentWithExtractions,
          paymentComponentsController: PaymentComponentsController) {
@@ -64,24 +60,20 @@ final class InvoiceTableViewCellModel {
 }
 
 extension InvoiceTableViewCellModel: PaymentComponentsControllerProtocol {
-    public func didTapOnMoreInformations() {
-        // MARK: TODO in next tasks
-        Log("Tapped on More Information on :\(invoice.documentID)", event: .success)
+    public func didTapOnMoreInformations(documentID: String?) {
+        delegate?.didTapOnMoreInformations(documentID: invoice.documentID)
     }
     
-    public func didTapOnBankPicker() {
-        // MARK: TODO in next tasks
-        Log("Tapped on Bank Picker on :\(invoice.documentID)", event: .success)
+    public func didTapOnBankPicker(documentID: String?) {
+        delegate?.didTapOnMoreInformations(documentID: invoice.documentID)
     }
     
-    public func didTapOnPayInvoice() {
-        // MARK: TODO in next tasks
-        Log("Tapped on Pay Invoice on :\(invoice.documentID)", event: .success)
+    public func didTapOnPayInvoice(documentID: String?) {
+        delegate?.didTapOnBankPicker(documentID: invoice.documentID)
     }
 
     public func isLoadingStateChanged(isLoading: Bool) {
-        // MARK: TODO in next tasks
-        Log("Is loading state: \(isLoading)", event: .success)
+        Log("Payment component controller is loading state: \(isLoading)", event: .success)
         delegate?.isLoadingStateChanged(isLoading: isLoading)
     }
 }

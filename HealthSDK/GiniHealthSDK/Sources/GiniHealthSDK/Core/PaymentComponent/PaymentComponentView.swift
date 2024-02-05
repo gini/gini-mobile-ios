@@ -54,7 +54,7 @@ final class PaymentComponentView: UIView {
         label.attributedText = moreInformationActionableAttributtedString
 
         let tapOnMoreInformation = UITapGestureRecognizer(target: self, 
-                                                          action: #selector(tapOnMoreInformationAction(gesture:)))
+                                                          action: #selector(tapOnMoreInformationLabelAction(gesture:)))
         label.isUserInteractionEnabled = true
         label.addGestureRecognizer(tapOnMoreInformation)
         
@@ -68,6 +68,7 @@ final class PaymentComponentView: UIView {
         let image = UIImageNamedPreferred(named: viewModel.moreInformationIconName)
         button.setImage(image, for: .normal)
         button.tintColor = viewModel.moreInformationAccentColor
+        button.addTarget(self, action: #selector(tapOnMoreInformationButtonAction), for: .touchUpInside)
         return button
     }()
     
@@ -266,13 +267,18 @@ final class PaymentComponentView: UIView {
     }
     
     @objc
-    private func tapOnMoreInformationAction(gesture: UITapGestureRecognizer) {
+    private func tapOnMoreInformationLabelAction(gesture: UITapGestureRecognizer) {
         if gesture.didTapAttributedTextInLabel(label: moreInformationLabel,
                                                targetText: viewModel.moreInformationActionablePartText) {
             viewModel.tapOnMoreInformation()
         }
     }
-    
+
+    @objc
+    private func tapOnMoreInformationButtonAction(gesture: UITapGestureRecognizer) {
+        viewModel.tapOnMoreInformation()
+    }
+
     @objc
     private func tapOnBankPicker() {
         viewModel.tapOnBankPicker()

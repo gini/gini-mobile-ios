@@ -176,3 +176,31 @@ final class InvoicesListViewModel {
         }
     }
 }
+
+extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
+    func didTapOnMoreInformations(documentID: String?) {
+        // MARK: TODO in next tasks
+        guard let documentID else { return }
+        Log("Tapped on More Information on :\(documentID)", event: .success)
+    }
+    
+    func didTapOnBankPicker(documentID: String?) {
+        // MARK: TODO in next tasks
+        guard let documentID else { return }
+        Log("Tapped on Bank Picker on :\(documentID)", event: .success)
+    }
+    
+    func didTapOnPayInvoice(documentID: String?) {
+        // MARK: TODO in next tasks
+        guard let documentID else { return }
+        Log("Tapped on Pay Invoice on :\(documentID)", event: .success)
+    }
+    
+    func isLoadingStateChanged(isLoading: Bool) {
+        if isLoading {
+            self.coordinator.invoicesListViewController.showActivityIndicator()
+        } else {
+            self.coordinator.invoicesListViewController.hideActivityIndicator()
+        }
+    }
+}

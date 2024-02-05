@@ -108,7 +108,7 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
         }
         let invoiceTableViewCellModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0,
                                                                                            paymentComponentsController: viewModel.paymentComponentsController) }[indexPath.row]
-        invoiceTableViewCellModel.delegate = self
+        invoiceTableViewCellModel.delegate = viewModel
         cell.cellViewModel = invoiceTableViewCellModel
         return cell
     }
@@ -149,16 +149,6 @@ extension InvoicesListViewController: InvoicesListViewControllerProtocol {
                                                 preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: .default))
         self.present(alertController, animated: true)
-    }
-}
-
-extension InvoicesListViewController: InvoiceTableViewCellProtocol {
-    func isLoadingStateChanged(isLoading: Bool) {
-        if isLoading {
-            showActivityIndicator()
-        } else {
-            hideActivityIndicator()
-        }
     }
 }
 
