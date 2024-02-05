@@ -435,7 +435,7 @@ platform :ios do
     xcframeworks_folder_path        - path to the folder which contains the .xcframeworks files
     pod_name                        - name of the pod, usually the same as the Swift package name, e.g. GiniBankSDK or GiniCaptureSDKPinning
     podspecs_repo_sdk_folder_path   - path to the folder which contains the local clone of the https://github.com/gini/gini-podspecs repo
-    template_podspec_path           - path to the template podspec file, which is modified and used for the new pod version
+    template_podspec_path           - path to the template podspec file, which is modified and used for the new pod version e.g: BankSDK/GiniBankSDK/Pod/GiniBankSDK.podspec
 
   DOC
   lane :publish_podspec do |options|
@@ -459,7 +459,8 @@ platform :ios do
 
     # Step 3: Copy the zip file and podspec into the new folder
     sh "cp #{xcframeworks_folder_path}/#{zip_name} #{sdk_folder}/"
-    sh "cp ../BankSDK/#{pod_name}/Pod/#{pod_name}.podspec #{sdk_folder}/" #e.g: BankSDK/GiniBankSDK or BankSDK/GiniBankSDKPinning
+    # template_podspec_path sould look like: BankSDK/GiniBankSDK/Pod/GiniBankSDK.podspec or BankSDK/GiniBankSDKPinning/Pod/GiniBankSDKPinning.podspec
+    sh "cp #{template_podspec_path} #{sdk_folder}/"
     
     # Step 4: Update the version in the podspec
     podspec_file_path = "#{sdk_folder}/#{pod_name}.podspec"
