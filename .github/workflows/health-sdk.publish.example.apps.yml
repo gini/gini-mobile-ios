@@ -26,7 +26,7 @@ jobs:
         env:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE }}
           P12_PASSWORD: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE_SECRET }}
-          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.TODO_GINI_BANK_SDK_EXAMPLE_ADHOC_DISTRIBUTION_PROVISION_PROFILE }}
+          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.GINI_HEALTH_SDK_EXAMPLE_APP_ADHOC_DISTRIBUTION_PROVISION_PROFILE }}
           KEYCHAIN_PASSWORD: ${{ secrets.GINI_DISTRIBUTION_CERTIFICATE_SECRET }}
         run: |
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
@@ -65,7 +65,7 @@ jobs:
               "team_id":"JA825X8F7Z",
               "target":"GiniHealthSDKExample",
               "bundle_identifier": "net.gini.healthsdk.example",
-              "profile_name": "TODO Gini Bank SDK Example App Ad-Hoc Distribution",
+              "profile_name": "Gini Health SDK Example App Ad-Hoc Distribution",
               "entitlements_file_path": "GiniHealthSDKExample/GiniHealthSDKExample.entitlements", 
               "ci": "true"
             }
@@ -112,5 +112,5 @@ jobs:
           token: ${{ secrets.GINI_APPCENTER_API_TOKEN }}
           path: GiniHealthSDKExample.ipa
           app: Gini-Team-Organization/Business-Example
-          group: 'Internal'
+          group: 'Public'
           release_notes: ${{ format('{{ {0} {1} }}', github.ref, github.sha) }}
