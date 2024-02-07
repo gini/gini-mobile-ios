@@ -16,7 +16,7 @@ final class InvoiceTableViewCellModel {
     private var bankTextColor: String?
     private var paymentComponentsController: PaymentComponentsController
 
-    weak var delegate: PaymentComponentsControllerProtocol?
+    weak var viewDelegate: PaymentComponentViewProtocol?
 
     init(invoice: DocumentWithExtractions,
          paymentComponentsController: PaymentComponentsController) {
@@ -54,26 +54,21 @@ final class InvoiceTableViewCellModel {
     }
     
     var paymentComponentView: UIView {
-        paymentComponentsController.delegate = self
+        paymentComponentsController.viewDelegate = self
         return paymentComponentsController.getPaymentView(paymentProvider: invoice.paymentProvider)
     }
 }
 
-extension InvoiceTableViewCellModel: PaymentComponentsControllerProtocol {
-    public func didTapOnMoreInformations(documentID: String?) {
-        delegate?.didTapOnMoreInformations(documentID: invoice.documentID)
+extension InvoiceTableViewCellModel: PaymentComponentViewProtocol {
+    public func didTapOnMoreInformation(documentID: String?) {
+        viewDelegate?.didTapOnMoreInformation(documentID: invoice.documentID)
     }
     
     public func didTapOnBankPicker(documentID: String?) {
-        delegate?.didTapOnMoreInformations(documentID: invoice.documentID)
+        viewDelegate?.didTapOnMoreInformation(documentID: invoice.documentID)
     }
     
     public func didTapOnPayInvoice(documentID: String?) {
-        delegate?.didTapOnBankPicker(documentID: invoice.documentID)
-    }
-
-    public func isLoadingStateChanged(isLoading: Bool) {
-        Log("Payment component controller is loading state: \(isLoading)", event: .success)
-        delegate?.isLoadingStateChanged(isLoading: isLoading)
+        viewDelegate?.didTapOnBankPicker(documentID: invoice.documentID)
     }
 }

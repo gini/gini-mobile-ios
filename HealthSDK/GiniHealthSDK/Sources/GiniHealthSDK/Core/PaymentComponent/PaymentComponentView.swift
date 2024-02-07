@@ -99,7 +99,7 @@ final class PaymentComponentView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.selectBankViewHeight)
         view.layer.cornerRadius = Constants.cornerRadius
-        view.layer.borderWidth = 1
+        view.layer.borderWidth = Constants.borderWidth
         view.layer.borderColor = viewModel.selectBankPickerViewBorderColor.cgColor
         view.backgroundColor = viewModel.selectBankPickerViewBackgroundColor
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnBankPicker)))
@@ -194,16 +194,30 @@ final class PaymentComponentView: UIView {
         selectBankPickerView.addSubview(chevronDownIconView)
         payInvoiceView.addSubview(payInvoiceLabel)
 
-        activateConstraints()
+        activateAllConstraints()
     }
 
-    private func activateConstraints() {
+    private func activateAllConstraints() {
+        activateContentStackViewConstraints()
+        activateBankViewConstraints()
+        activatePayInvoiceViewConstraints()
+        activatePoweredByGiniViewConstraints()
+        activateMoreInformationViewConstraints()
+        activateBankImageViewConstraints()
+    }
+
+    private func activateContentStackViewConstraints() {
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: frame.height),
             contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.contentTopPadding),
-            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.contentBottomPadding),
+            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.contentBottomPadding)
+        ])
+    }
+
+    private func activateBankViewConstraints() {
+        NSLayoutConstraint.activate([
             selectBankView.heightAnchor.constraint(equalToConstant: selectBankView.frame.height),
             selectYourBankLabel.leadingAnchor.constraint(equalTo: selectBankView.leadingAnchor),
             selectYourBankLabel.topAnchor.constraint(equalTo: selectBankView.topAnchor),
@@ -212,26 +226,43 @@ final class PaymentComponentView: UIView {
             selectBankPickerView.leadingAnchor.constraint(equalTo: selectBankView.leadingAnchor),
             selectBankPickerView.trailingAnchor.constraint(equalTo: selectBankView.trailingAnchor),
             selectBankPickerView.topAnchor.constraint(equalTo: selectYourBankLabel.bottomAnchor, constant: Constants.contentBottomPadding),
-            payInvoiceView.heightAnchor.constraint(equalToConstant: payInvoiceView.frame.height),
-            payInvoiceView.leadingAnchor.constraint(equalTo: selectBankView.leadingAnchor),
-            payInvoiceView.trailingAnchor.constraint(equalTo: selectBankView.trailingAnchor),
-            payInvoiceView.topAnchor.constraint(equalTo: selectBankPickerView.bottomAnchor, constant: Constants.invoicePickerBankPadding),
-            poweredByGiniView.heightAnchor.constraint(equalToConstant: poweredByGiniView.frame.height),
-            poweredByGiniView.trailingAnchor.constraint(equalTo: selectBankView.trailingAnchor),
-            poweredByGiniView.topAnchor.constraint(equalTo: payInvoiceView.bottomAnchor, constant: Constants.contentBottomPadding),
-            moreInformationLabel.leadingAnchor.constraint(equalTo: moreInformationLabelView.leadingAnchor),
-            moreInformationLabel.trailingAnchor.constraint(equalTo: moreInformationLabelView.trailingAnchor),
-            moreInformationLabel.centerYAnchor.constraint(equalTo: moreInformationLabelView.centerYAnchor),
             chevronDownIconView.widthAnchor.constraint(equalToConstant: chevronDownIconView.frame.width),
             chevronDownIconView.heightAnchor.constraint(equalToConstant: chevronDownIconView.frame.height),
             selectBankPickerView.trailingAnchor.constraint(equalTo: chevronDownIconView.trailingAnchor, constant: Constants.contentTrailingPadding),
             chevronDownIconView.centerYAnchor.constraint(equalTo: selectBankPickerView.centerYAnchor),
-            bankNameLabel.trailingAnchor.constraint(greaterThanOrEqualTo: chevronDownIconView.leadingAnchor, constant: Constants.bankNameChevronIconPadding),
+            bankNameLabel.trailingAnchor.constraint(greaterThanOrEqualTo: chevronDownIconView.leadingAnchor, constant: Constants.bankNameChevronIconPadding)
+        ])
+    }
+
+    private func activatePayInvoiceViewConstraints() {
+        NSLayoutConstraint.activate([
+            payInvoiceView.heightAnchor.constraint(equalToConstant: payInvoiceView.frame.height),
+            payInvoiceView.leadingAnchor.constraint(equalTo: selectBankView.leadingAnchor),
+            payInvoiceView.trailingAnchor.constraint(equalTo: selectBankView.trailingAnchor),
+            payInvoiceView.topAnchor.constraint(equalTo: selectBankPickerView.bottomAnchor, constant: Constants.invoicePickerBankPadding),
             payInvoiceView.centerYAnchor.constraint(equalTo: payInvoiceLabel.centerYAnchor),
             payInvoiceView.leadingAnchor.constraint(equalTo: payInvoiceLabel.leadingAnchor, constant: Constants.payInvoiceLabelPadding),
             payInvoiceView.trailingAnchor.constraint(equalTo: payInvoiceLabel.trailingAnchor, constant: Constants.payInvoiceLabelPadding)
         ])
+    }
 
+    private func activatePoweredByGiniViewConstraints() {
+        NSLayoutConstraint.activate([
+            poweredByGiniView.heightAnchor.constraint(equalToConstant: poweredByGiniView.frame.height),
+            poweredByGiniView.trailingAnchor.constraint(equalTo: selectBankView.trailingAnchor),
+            poweredByGiniView.topAnchor.constraint(equalTo: payInvoiceView.bottomAnchor, constant: Constants.contentBottomPadding)
+        ])
+    }
+
+    private func activateMoreInformationViewConstraints() {
+        NSLayoutConstraint.activate([
+            moreInformationLabel.leadingAnchor.constraint(equalTo: moreInformationLabelView.leadingAnchor),
+            moreInformationLabel.trailingAnchor.constraint(equalTo: moreInformationLabelView.trailingAnchor),
+            moreInformationLabel.centerYAnchor.constraint(equalTo: moreInformationLabelView.centerYAnchor)
+        ])
+    }
+
+    private func activateBankImageViewConstraints() {
         if viewModel.isPaymentProviderInstalled {
             bankImageView.leadingAnchor.constraint(equalTo: selectBankPickerView.leadingAnchor, constant: Constants.contentLeadingPadding).isActive = true
             bankImageView.centerYAnchor.constraint(equalTo: selectBankPickerView.centerYAnchor).isActive = true
@@ -286,5 +317,6 @@ extension PaymentComponentView {
         static let bankNameChevronIconPadding: CGFloat = 10
         static let payInvoiceLabelPadding: CGFloat = 10
         static let cornerRadius: CGFloat = 12
+        static let borderWidth: CGFloat = 1
     }
 }

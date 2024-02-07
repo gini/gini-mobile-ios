@@ -71,32 +71,25 @@ final class InvoicesListViewModel {
         self.invoices = invoices ?? hardcodedInvoicesController.getInvoicesWithExtractions()
         self.documentService = documentService
         self.paymentComponentsController = paymentComponentsController
-    }
-
-    func viewDidLoad() {
-        loadPaymentProvidersIfMissingOnInvoices()
-    }
-
-    func loadPaymentProvidersIfMissingOnInvoices() {
-        if !invoices.isEmpty && invoices.contains(where: { $0.paymentProvider == nil }) {
-            coordinator.invoicesListViewController.showActivityIndicator()
-            loadPaymentProviders()
-            setDispatchGroupNotifier()
-        }
+        self.paymentComponentsController.delegate = self
     }
 
     private func setDispatchGroupNotifier() {
         dispatchGroup.notify(queue: .main) {
-            if !self.errors.isEmpty {
-                let uniqueErrorMessages = Array(Set(self.errors))
-                self.coordinator.invoicesListViewController.showErrorAlertView(error: uniqueErrorMessages.joined(separator: ", "))
-                self.errors = []
-            }
+            self.showErrorsIfAny()
             if !self.invoices.isEmpty {
                 self.hardcodedInvoicesController.storeInvoicesWithExtractions(invoices: self.invoices)
                 self.coordinator.invoicesListViewController?.hideActivityIndicator()
                 self.coordinator.invoicesListViewController?.reloadTableView()
             }
+        }
+    }
+
+    private func showErrorsIfAny() {
+        if !errors.isEmpty {
+            let uniqueErrorMessages = Array(Set(errors))
+            coordinator.invoicesListViewController.showErrorAlertView(error: uniqueErrorMessages.joined(separator: ", "))
+            errors = []
         }
     }
 
@@ -110,23 +103,7 @@ final class InvoicesListViewModel {
                 self?.coordinator.invoicesListViewController.hideActivityIndicator()
             }
         }
-        loadPaymentProviders()
         setDispatchGroupNotifier()
-    }
-
-    private func loadPaymentProviders() {
-        dispatchGroup.enter()
-        paymentComponentsController.getPaymentProviders { [weak self] result in
-            switch result {
-            case .success(_):
-                for index in 0..<(self?.invoices.count ?? 0) {
-                    self?.invoices[index].paymentProvider = self?.paymentComponentsController.obtainFirstPaymentProvider()
-                }
-            case let .failure(error):
-                self?.errors.append(error.localizedDescription)
-            }
-            self?.dispatchGroup.leave()
-        }
     }
 
     private func uploadDocuments(dataDocuments: [Data]) {
@@ -177,8 +154,8 @@ final class InvoicesListViewModel {
     }
 }
 
-extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
-    func didTapOnMoreInformations(documentID: String?) {
+extension InvoicesListViewModel: PaymentComponentViewProtocol {
+    func didTapOnMoreInformation(documentID: String?) {
         // MARK: TODO in next tasks
         guard let documentID else { return }
         Log("Tapped on More Information on :\(documentID)", event: .success)
@@ -195,7 +172,23 @@ extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
         guard let documentID else { return }
         Log("Tapped on Pay Invoice on :\(documentID)", event: .success)
     }
+}
+
+extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
+    func didFetchedPaymentProviders(_ paymentProviders: GiniHealthAPILibrary.PaymentProviders) {
+        if !invoices.isEmpty && invoices.contains(where: { $0.paymentProvider == nil }) {
+            for index in 0..<invoices.count {
+                invoices[index].paymentProvider = paymentComponentsController.obtainFirstPaymentProvider()
+                coordinator.invoicesListViewController.reloadTableView()
+            }
+        }
+    }
     
+    func didReceivedErrorOnPaymentProviders(_ error: GiniHealthSDK.GiniHealthError) {
+        errors.append(error.localizedDescription)
+        showErrorsIfAny()
+    }
+
     func isLoadingStateChanged(isLoading: Bool) {
         if isLoading {
             self.coordinator.invoicesListViewController.showActivityIndicator()

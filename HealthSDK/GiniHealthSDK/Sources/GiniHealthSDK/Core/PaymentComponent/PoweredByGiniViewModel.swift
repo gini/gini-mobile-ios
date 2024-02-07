@@ -15,8 +15,8 @@ final class PoweredByGiniViewModel {
     let poweredByGiniLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark4, 
                                                            darkModeColor: UIColor.GiniColors.light4).uiColor()
     let giniIconName: String = "giniLogo"
-    
+
     init() {
-        self.poweredByGiniLabelFont = GiniHealthConfiguration.shared.customFont.with(weight: .regular, size: 12, style: .caption2)
+        self.poweredByGiniLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.caption2] ?? GiniHealthConfiguration.shared.customFont.regular
     }
 }
