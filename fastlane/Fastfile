@@ -343,8 +343,13 @@ platform :ios do
     Setup Manual Signing for project at path
   DOC
   lane :setup_manual_signing do |options|
-    (project_path, team_id, target, target_extension, bundle_identifier, bundle_identifier_extension, profile_name, profile_name_extension, entitlements_file_path, entitlements_file_path_extension, ci) = 
-      check_and_get_options(options, [:project_path, :team_id, :target, :target_extension, :bundle_identifier, :bundle_identifier_extension, :profile_name, :profile_name_extension, :entitlements_file_path, :entitlements_file_path_extension, :ci], UI)
+    (project_path, team_id, target, bundle_identifier, profile_name, entitlements_file_path, ci) = 
+      check_and_get_options(options, [:project_path, :team_id, :target, :bundle_identifier, :profile_name, :entitlements_file_path, :ci], UI)
+    # Optional options
+    target_extension = options[:target_extension]
+    bundle_identifier_extension = options[:bundle_identifier_extension]
+    profile_name_extension = options[:profile_name_extension]
+    entitlements_file_path_extension = options[:entitlements_file_path_extension]
 
     update_code_signing_settings(
       use_automatic_signing: false,
@@ -355,7 +360,8 @@ platform :ios do
       profile_name: profile_name,
       entitlements_file_path: entitlements_file_path
     )
-
+    
+    If !(target_extension.nil? || bundle_identifier_extension.nil? || profile_name_extension.nil? || entitlements_file_path_extension.nil?)
     update_code_signing_settings(
       use_automatic_signing: false,
       path: project_path,
