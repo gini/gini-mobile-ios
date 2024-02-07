@@ -254,6 +254,9 @@ public final class GiniHealthConfiguration: NSObject {
      */
     @objc public var loadingIndicatorScale: CGFloat = 1.0
     
+    /**
+     Set dictionary of fonts for available text styles. Used internally.
+     */
     var textStyleFonts: [UIFont.TextStyle: UIFont] = [
         .caption1: UIFontMetrics(forTextStyle: .caption1).scaledFont(for: UIFont.systemFont(ofSize: 13, weight: .regular)),
         .caption2: UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 12, weight: .regular)),
@@ -262,5 +265,4 @@ public final class GiniHealthConfiguration: NSObject {
         .input: UIFontMetrics(forTextStyle: .input).scaledFont(for: UIFont.systemFont(ofSize: 16, weight: .medium)),
         .button: UIFontMetrics(forTextStyle: .button).scaledFont(for: UIFont.systemFont(ofSize: 16, weight: .bold))
     ]
-    
 }
