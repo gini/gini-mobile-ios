@@ -293,7 +293,7 @@ final class CameraPreviewViewController: UIViewController {
         if AVCaptureDevice.authorizationStatus(for: .video) != .authorized {
             #if !targetEnvironment(simulator)
             self.addNotAuthorizedView()
-            self.delegate?.notAuthorized()
+            self.viewDelegate?.notAuthorized()
             #endif
         }
 

@@ -52,12 +52,6 @@ final class InvoicesListViewController: UIViewController {
     var viewModel: InvoicesListViewModel!
     
     // MARK: - Functions
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        viewModel.viewDidLoad()
-    }
-
     override func loadView() {
         super.loadView()
         title = viewModel.titleText
@@ -108,7 +102,7 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
         }
         let invoiceTableViewCellModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0,
                                                                                            paymentComponentsController: viewModel.paymentComponentsController) }[indexPath.row]
-        invoiceTableViewCellModel.delegate = viewModel
+        invoiceTableViewCellModel.viewDelegate = viewModel
         cell.cellViewModel = invoiceTableViewCellModel
         return cell
     }
