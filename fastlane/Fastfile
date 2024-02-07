@@ -360,8 +360,8 @@ platform :ios do
       profile_name: profile_name,
       entitlements_file_path: entitlements_file_path
     )
-    
-    If !(target_extension.nil? || bundle_identifier_extension.nil? || profile_name_extension.nil? || entitlements_file_path_extension.nil?)
+
+    if (target_extension || bundle_identifier_extension || profile_name_extension || entitlements_file_path_extension)
     update_code_signing_settings(
       use_automatic_signing: false,
       path: project_path,
@@ -371,6 +371,7 @@ platform :ios do
       profile_name: profile_name_extension,
       entitlements_file_path: entitlements_file_path_extension
     )
+    end
   end
   
   desc <<~DOC
