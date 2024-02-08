@@ -190,7 +190,7 @@ func giniHealthBundleResource() -> Bundle {
 extension Foundation.Bundle {
     /**
      The resource bundle associated with the current module.
-     - important: When `GiniCaptureSDK` is distributed via Swift Package Manager, it will be synthesized automatically in the name of `Bundle.module`.
+     - important: When `GiniHealthSDK` is distributed via Swift Package Manager, it will be synthesized automatically in the name of `Bundle.module`.
      */
     static var resource: Bundle = {
         let moduleName = "GiniHealthSDK"

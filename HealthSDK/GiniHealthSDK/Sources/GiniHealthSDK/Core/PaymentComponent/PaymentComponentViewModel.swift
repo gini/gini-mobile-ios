@@ -61,22 +61,24 @@ final class PaymentComponentViewModel {
          giniHealth: GiniHealth) {
         self.giniHealth = giniHealth
         self.moreInformationLabelFont = GiniHealthConfiguration.shared.customFont.with(weight: .regular,
-                                                                          size: 13,
-                                                                          style: .caption1)
+                                                                                       size: 13,
+                                                                                       style: .caption1)
         self.moreInformationLabelLinkFont = GiniHealthConfiguration.shared.customFont.with(weight: .bold,
-                                                                              size: 14,
-                                                                              style: .linkBold)
+                                                                                           size: 14,
+                                                                                           style: .linkBold)
         self.selectBankLabelFont = GiniHealthConfiguration.shared.customFont.with(weight: .medium,
-                                                                     size: 14,
-                                                                     style: .subtitle2)
+                                                                                  size: 14,
+                                                                                  style: .subtitle2)
         self.bankImageIconName = bankIconName
         self.bankNameLabelText = bankName
         self.bankNameLabelFont = GiniHealthConfiguration.shared.customFont.with(weight: .medium,
-                                                                   size: 16,
-                                                                   style: .input)
+                                                                                size: 16,
+                                                                                style: .input)
         self.payInvoiceViewBackgroundColor = payInvoiceAccentColor.uiColor()
         self.payInvoiceLabelAccentColor = payInvoiceTextColor.uiColor()
-        self.payInvoiceLabelFont = GiniHealthConfiguration.shared.customFont.with(weight: .bold, size: 16, style: .button)
+        self.payInvoiceLabelFont = GiniHealthConfiguration.shared.customFont.with(weight: .bold, 
+                                                                                  size: 16,
+                                                                                  style: .button)
     }
     
     func tapOnMoreInformation() {
