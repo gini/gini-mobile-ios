@@ -53,9 +53,9 @@ final class InvoiceTableViewCellModel {
     
     var paymentComponentView: UIView {
         return paymentComponentsController.getPaymentView(bankName: invoice.bank.name,
-                                                         bankIconName: invoice.bank.iconName,
-                                                         payInvoiceAccentColor: bankAccentColor,
-                                                         payInvoiceTextColor: bankTextColor)
+                                                          bankIconName: invoice.bank.iconName,
+                                                          payInvoiceAccentColor: bankAccentColor,
+                                                          payInvoiceTextColor: bankTextColor)
     }
 }
 
