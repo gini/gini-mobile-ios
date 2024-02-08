@@ -442,10 +442,7 @@ platform :ios do
 
     (xcframeworks_folder_path, pod_name, podspecs_repo_sdk_folder_path, template_podspec_path) = 
       check_and_get_options(options, [:xcframeworks_folder_path, :pod_name, :podspecs_repo_sdk_folder_path, :template_podspec_path], UI)
-
-    # Get the latest Git tag
-    latest_tag = sh("git describe --tags --abbrev=0").strip
-
+    
     # Extract the version from the tag (assuming the tag format is "GiniBankSDK;X.X.X")
     # Remove "Pinning" suffix, if needed, because we don't tag pinning releases separately (pinning version is released together with the non-pinning version)
     project_id = pod_name.sub('Pinning', '') 
