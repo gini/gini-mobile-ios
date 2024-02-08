@@ -110,3 +110,70 @@ config.loadingIndicatorColor = .black
 .
 healthSDK.setConfiguration(config)
 ```
+
+## Payment component view initialization
+We provide a custom payment component view meant to help user to pay the invoice/document.
+Payment component looks like this: 
+<br>
+<center><img src="img/Customization guide/PaymentComponentView.PNG" height="400"/></center>
+</br>
+
+##### Steps to integrate payment component view:
+
+##### 1. You need to instantiate a `PaymentComponentsController` class with a `GiniHealth` as parameter.
+```swift
+let paymentComponentsController = PaymentComponentsController(giniHealth: health)
+```
+
+##### 2. You need to pass this `paymentComponentsController` to the invoices/documents controller. 
+There you should have a list of invoices/documents that conform to this structure: `GiniDocument`. 
+```swift
+public protocol GiniDocument {
+    /// The document's unique identifier.
+    var documentID: String { get set }
+    /// The document's amount to pay.
+    var amountToPay: String? { get set }
+    /// The document's payment due date.
+    var paymentDueDate: String? { get set }
+    /// The document's recipient name.
+    var recipient: String? { get set }
+    /// Boolean value that indicates if the document is payable. This is obtained by calling the checkIfDocumentIsPayable method.
+    var isPayable: Bool? { get set }
+    /// Store payment provider for each document/invoice. Payment provider is obtained by PaymentComponentsController and it's only stored here if the payment provider is installed
+    var paymentProvider: PaymentProvider? { get set }
+}
+```
+
+##### 3. For each invoice/document, you need to call the `checkIfDocumentIsPayable` function from the `paymentComponentsController` and store the value for each invoice in the `isPayable` field.
+> - We recommend using a `DispatchGroup` for these requests and wait till all of them are ready. Then, reload the list.
+```swift
+public func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
+```
+
+##### 4. Also, after `paymentComponentsController` is instantiated, he will load in the background the list of payment providers available on your device. You should store for each invoice/document, in the `paymentProvider` variable, the first payment provider from the list. 
+You can obtain that by calling: 
+```swift
+public func obtainFirstPaymentProvider() -> PaymentProvider?
+```
+> - You might have payment providers, or you may not. We also handle the missing payment provider state.
+> - Based on the payment provider's colors, the `UIView` will automatically change it's color.
+
+##### 5. Based on the `isPayable` value, you should add to your cells the payment component view that is obtained through this function:
+```swift
+public func getPaymentView(paymentProvider: PaymentProvider?) -> UIView
+```
+> - We recommend adding this `UIView` to a Vertical `UIStackView` and in every cell's `prepareForReuse()` function, remove the payment component view if it's present.
+> - We also recommend using an automatic dimension height in the `UITableView` that is holding the cells
+
+##### 6. `PaymentComponentsController` has 2 delegates that you can listen to: `PaymentComponentsControllerProtocol` and the `PaymentComponentViewProtocol`
+
+* `PaymentComponentsControllerProtocol` provides informations when the `PaymentComponentsController` is loading. You can show/hide an `UIActivityIndicator` based on that.
+* `PaymentComponentsControllerProtocol` provides completion handlers when `PaymentComponentsController` fetched successfully payment providers or when it failed with an error.
+
+* `PaymentComponentViewProtocol` is the view protocol and provides events when the user tapped on various areas on the payment component view. Such as: More information label or more information icon, bank/payment provider picker or when it tapped on the pay invoice button.
+
+> - Make sure you link this delegates in a proper way in order to get notified.
+
+<br>
+<center><img src="img/Customization guide/PaymentComponentScreen.PNG" height="500"/></center>
+</br>
