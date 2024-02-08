@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name               = "GiniBankSDKPinning"
-  spec.version            = "3.7.1"
+  spec.version            = "3.7.2"
   spec.summary            = "Gini Bank SDK for iOS with certificate pinning"
   spec.description        = "The Gini Bank SDK provides components for capturing, reviewing and analyzing photos of invoices and remittance slips."
   spec.homepage           = "gini.net"
