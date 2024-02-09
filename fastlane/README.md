@@ -129,6 +129,22 @@ Parameters:
 
 
 
+### ios publish_podspec
+
+```sh
+[bundle exec] fastlane ios publish_podspec
+```
+
+Generate a release podspec and publish it on https://github.com/gini/gini-podspecs.
+
+Parameters:
+  xcframeworks_folder_path        - path to the folder which contains the .xcframeworks files
+  pod_name                        - name of the pod, usually the same as the Swift package name, e.g. GiniBankSDK or GiniCaptureSDKPinning
+  podspecs_repo_sdk_folder_path   - path to the folder which contains the local clone of the https://github.com/gini/gini-podspecs repo
+  template_podspec_path           - path to the template podspec file, which is modified and used for the new pod version e.g: BankSDK/GiniBankSDK/Pod/GiniBankSDK.podspec
+
+
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
