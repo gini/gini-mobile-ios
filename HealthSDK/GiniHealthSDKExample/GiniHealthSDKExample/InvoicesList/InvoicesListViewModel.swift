@@ -40,7 +40,7 @@ struct DocumentWithExtractions: Codable {
     var amountToPay: String?
     var paymentDueDate: String?
     var recipient: String?
-    var isPayable: Bool?
+    var isPayable: Bool = false
     // TODO: - Will be replace in next task with real data
     var bank: Bank
 
