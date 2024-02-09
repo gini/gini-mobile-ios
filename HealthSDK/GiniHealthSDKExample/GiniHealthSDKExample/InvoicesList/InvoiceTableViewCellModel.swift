@@ -50,7 +50,7 @@ final class InvoiceTableViewCellModel {
     }
     
     var shouldShowPaymentComponent: Bool {
-        invoice.isPayable ?? false
+        invoice.isPayable
     }
     
     var paymentComponentView: UIView {
