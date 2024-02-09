@@ -16,7 +16,7 @@ struct DocumentWithExtractions: GiniDocument, Codable {
     var amountToPay: String?
     var paymentDueDate: String?
     var recipient: String?
-    var isPayable: Bool?
+    var isPayable: Bool = false
     var paymentProvider: PaymentProvider?
 
     init(documentID: String, extractionResult: GiniHealthAPILibrary.ExtractionResult, paymentProvider: PaymentProvider?) {

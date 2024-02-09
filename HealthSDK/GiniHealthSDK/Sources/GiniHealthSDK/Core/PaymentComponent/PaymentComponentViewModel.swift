@@ -97,7 +97,9 @@ final class PaymentComponentViewModel {
                                                       darkModeColor: UIColor.GiniColors.light1).uiColor()
     private let placeholderBankNameText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.selectBank.label", comment: "")
     let chevronDownIconName: String = "iconChevronDown"
-    
+    let chevronDownIconColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.light7,
+                                                  darkModeColor: UIColor.GiniColors.light1).uiColor()
+
     // pay invoice view background color
     var payInvoiceViewBackgroundColor: UIColor {
         if let payInvoiceViewBackgroundColorString, let backgroundHexColor = payInvoiceViewBackgroundColorString.toColor() {
