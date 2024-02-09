@@ -127,7 +127,8 @@ final class PaymentComponentView: UIView {
     
     private lazy var chevronDownIconView: UIImageView = {
         let image = UIImageNamedPreferred(named: viewModel.chevronDownIconName)
-        let imageView = UIImageView(image: image)
+        let imageView = UIImageView(image: image?.withRenderingMode(.alwaysTemplate))
+        imageView.tintColor = viewModel.chevronDownIconColor
         imageView.frame = CGRect(x: 0, y: 0, width: Constants.chevronIconSize, height: Constants.chevronIconSize)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
