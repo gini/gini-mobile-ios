@@ -360,8 +360,8 @@ platform :ios do
       profile_name: profile_name,
       entitlements_file_path: entitlements_file_path
     )
-
-    if (target_extension || bundle_identifier_extension || profile_name_extension || entitlements_file_path_extension)
+    # For signing an extension you need to pass the following params: target_extension, bundle_identifier_extension, profile_name_extension, entitlements_file_path_extension
+    if (target_extension && bundle_identifier_extension && profile_name_extension && entitlements_file_path_extension)
     update_code_signing_settings(
       use_automatic_signing: false,
       path: project_path,
