@@ -121,7 +121,7 @@ final class PaymentComponentView: UIView {
         label.textColor = viewModel.bankNameLabelAccentColor
         label.font = viewModel.bankNameLabelFont
         label.numberOfLines = 1
-        label.adjustsFontSizeToFitWidth = true
+        label.lineBreakMode = .byTruncatingTail
         return label
     }()
     
@@ -230,7 +230,7 @@ final class PaymentComponentView: UIView {
             chevronDownIconView.heightAnchor.constraint(equalToConstant: chevronDownIconView.frame.height),
             selectBankPickerView.trailingAnchor.constraint(equalTo: chevronDownIconView.trailingAnchor, constant: Constants.contentTrailingPadding),
             chevronDownIconView.centerYAnchor.constraint(equalTo: selectBankPickerView.centerYAnchor),
-            bankNameLabel.trailingAnchor.constraint(greaterThanOrEqualTo: chevronDownIconView.leadingAnchor, constant: Constants.bankNameChevronIconPadding)
+            chevronDownIconView.leadingAnchor.constraint(equalTo: bankNameLabel.trailingAnchor, constant: Constants.bankNameChevronIconPadding)
         ])
     }
 
@@ -241,8 +241,8 @@ final class PaymentComponentView: UIView {
             payInvoiceView.trailingAnchor.constraint(equalTo: selectBankView.trailingAnchor),
             payInvoiceView.topAnchor.constraint(equalTo: selectBankPickerView.bottomAnchor, constant: Constants.invoicePickerBankPadding),
             payInvoiceView.centerYAnchor.constraint(equalTo: payInvoiceLabel.centerYAnchor),
-            payInvoiceView.leadingAnchor.constraint(equalTo: payInvoiceLabel.leadingAnchor, constant: Constants.payInvoiceLabelPadding),
-            payInvoiceView.trailingAnchor.constraint(equalTo: payInvoiceLabel.trailingAnchor, constant: Constants.payInvoiceLabelPadding)
+            payInvoiceView.leadingAnchor.constraint(equalTo: payInvoiceLabel.leadingAnchor),
+            payInvoiceView.trailingAnchor.constraint(equalTo: payInvoiceLabel.trailingAnchor)
         ])
     }
 
@@ -268,10 +268,14 @@ final class PaymentComponentView: UIView {
             bankImageView.centerYAnchor.constraint(equalTo: selectBankPickerView.centerYAnchor).isActive = true
             bankImageView.widthAnchor.constraint(equalToConstant: bankImageView.frame.width).isActive = true
             bankImageView.heightAnchor.constraint(equalToConstant: bankImageView.frame.height).isActive = true
-            bankNameLabel.leadingAnchor.constraint(equalTo: bankImageView.trailingAnchor, constant: Constants.contentLeadingPadding).isActive = true
+            let bankNameBankViewConstraint = bankNameLabel.leadingAnchor.constraint(equalTo: bankImageView.trailingAnchor, constant: Constants.contentLeadingPadding)
+            bankNameBankViewConstraint.priority = .required - 1 // fix needed because of embeded views in cells issue. We need this to silent the "Unable to simultaneously satisfy constraints" warning
+            bankNameBankViewConstraint.isActive = true
             bankImageView.centerYAnchor.constraint(equalTo: bankNameLabel.centerYAnchor).isActive = true
         } else {
-            bankNameLabel.leadingAnchor.constraint(equalTo: selectBankPickerView.leadingAnchor, constant: Constants.contentLeadingPadding).isActive = true
+            let bankNameLeadingSuperviewConstraint = bankNameLabel.leadingAnchor.constraint(equalTo: selectBankPickerView.leadingAnchor, constant: Constants.contentLeadingPadding)
+            bankNameLeadingSuperviewConstraint.priority = .required - 1
+            bankNameLeadingSuperviewConstraint.isActive = true
             selectBankPickerView.centerYAnchor.constraint(equalTo: bankNameLabel.centerYAnchor).isActive = true
         }
     }
