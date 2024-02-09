@@ -428,4 +428,52 @@ platform :ios do
 
   end
 
+  desc <<~DOC
+  Generate a release podspec and publish it on https://github.com/gini/gini-podspecs.
+  
+  Parameters:
+    xcframeworks_folder_path        - path to the folder which contains the .xcframeworks files
+    pod_name                        - name of the pod, usually the same as the Swift package name, e.g. GiniBankSDK or GiniCaptureSDKPinning
+    podspecs_repo_sdk_folder_path   - path to the folder which contains the local clone of the https://github.com/gini/gini-podspecs repo
+    template_podspec_path           - path to the template podspec file, which is modified and used for the new pod version e.g: BankSDK/GiniBankSDK/Pod/GiniBankSDK.podspec
+
+  DOC
+  lane :publish_podspec do |options|
+
+    (xcframeworks_folder_path, pod_name, podspecs_repo_sdk_folder_path, template_podspec_path) = 
+      check_and_get_options(options, [:xcframeworks_folder_path, :pod_name, :podspecs_repo_sdk_folder_path, :template_podspec_path], UI)
+    
+    # Extract the version from the tag (assuming the tag format is "GiniBankSDK;X.X.X")
+    # Remove "Pinning" suffix, if needed, because we don't tag pinning releases separately (pinning version is released together with the non-pinning version)
+    project_id = pod_name.sub('Pinning', '') 
+    version_folder = get_latest_version_from_release_tags(project_id, UI)
+    
+    # Step 1: Compress the XCFrameworks into a zip file
+    zip_name = "#{pod_name}-XCFrameworks.zip" #e.g GiniBankSDK or GiniBankSDKPinning
+    sh "cd #{xcframeworks_folder_path} && zip -r #{zip_name} ."
+    
+    # Step 2: Create a subfolder named after the version
+    sdk_folder = "#{xcframeworks_folder_path}/#{version_folder}"
+    sh "mkdir -p #{sdk_folder}"
+
+    # Step 3: Copy the zip file and podspec into the new folder
+    sh "cp #{xcframeworks_folder_path}/#{zip_name} #{sdk_folder}/"
+    # template_podspec_path sould look like: BankSDK/GiniBankSDK/Pod/GiniBankSDK.podspec or BankSDK/GiniBankSDKPinning/Pod/GiniBankSDKPinning.podspec
+    sh "cp #{template_podspec_path} #{sdk_folder}/"
+    
+    # Step 4: Update the version in the podspec
+    podspec_file_path = "#{sdk_folder}/#{pod_name}.podspec"
+    sh "sed -i '' 's/spec.version[[:space:]]*=[[:space:]]*\".*\"/spec.version = \"#{version_folder}\"/' #{podspec_file_path}"
+
+    # Step 5: Copy the recently created version folder (e.g. 3.7.2) in gini-podspecs repo folder
+    sh "cp -r #{sdk_folder} #{podspecs_repo_sdk_folder_path}/"
+
+    # Step 6: Commit the changes to gini-podspecs repo
+    sh "cd #{podspecs_repo_sdk_folder_path} && git add . && git commit -m '[Update] #{pod_name} (#{version_folder})'" 
+
+    # Step 7: Push the changes to gini-podspecs repo
+    if UI.confirm("Are you sure you want to push these changes to the https://github.com/gini/gini-podspecs repo?")
+      sh "cd #{podspecs_repo_sdk_folder_path} && git push origin master"
+    end
+  end
 end
