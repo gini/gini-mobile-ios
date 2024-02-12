@@ -22,13 +22,13 @@ public protocol GiniDocument {
     var recipient: String? { get set }
     /// Boolean value that indicates if the document is payable. This is obtained by calling the checkIfDocumentIsPayable method.
     var isPayable: Bool { get set }
-    /// Store payment provider for each document/invoice. Payment provider is obtained by PaymentComponentsController and it's only stored here if the payment provider is installed
+    /// Stored payment provider for each document/invoice. PaymentComponentsController obtains the payment provider and it's only stored here if the payment provider is installed
     var paymentProvider: PaymentProvider? { get set }
 }
 
 /**
- Delegate to inform about the current status of the Payment Components Controller.
- Makes use of callback for handling payment providers request.
+ Protocol used to provide updates on the current status of the Payment Components Controller.
+ Uses a callback mechanism to handle payment provider requests.
  */
 public protocol PaymentComponentsControllerProtocol: AnyObject {
     func isLoadingStateChanged(isLoading: Bool) // Because we can't use Combine, iOS 11 supported
@@ -49,10 +49,13 @@ public final class PaymentComponentsController: NSObject {
     private var paymentProviders: PaymentProviders = []
 
     /**
-     Returns a Payment Component Controller instance
-     - parameter giniHealth: GiniHealth initialized with GiniHealthAPI
+     Initializer of the Payment Component Controller class.
 
-     - note: Also, instantiating of this class do load the payment providers available and stores them internally for later use.
+     - Parameters:
+        - giniHealth: An instance of GiniHealth initialized with GiniHealthAPI.
+     - note: Instantiating this class also triggers the loading of available payment providers, which are stored internally for future use.
+     - Returns:
+        - instance of the payment component controller class
      */
     public init(giniHealth: GiniHealth) {
         self.giniHealth = giniHealth
@@ -80,7 +83,7 @@ public final class PaymentComponentsController: NSObject {
     }
 
     /**
-     Returing the first payment provider installed if is available and installed
+     Retrieve the first installed payment provider, if available.
      - Returns: a Payment Provider object.
      */
     public func obtainFirstPaymentProvider() -> PaymentProvider? {
@@ -88,13 +91,13 @@ public final class PaymentComponentsController: NSObject {
     }
 
     /**
-     Checks if the document is payable which looks for iban extraction.
+     Checks if the document is payable by extracting the IBAN.
 
      - Parameters:
-        - docId: Id of uploaded document.
-        - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case. Completion block called on main thread.
-        In success case it includes a boolean value and returns true if iban was extracted.
-        In case of failure in case of failure error from the server side.
+         - docId: The ID of the uploaded document.
+         - completion: A closure for processing asynchronous data received from the service. It has a Result type parameter, representing either success or failure. The completion block is called on the main thread.
+         In the case of success, it includes a boolean value indicating whether the IBAN was extracted successfully.
+         In case of failure, it returns an error from the server side.
      */
     public func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
         giniHealth.checkIfDocumentIsPayable(docId: docId, completion: completion)
