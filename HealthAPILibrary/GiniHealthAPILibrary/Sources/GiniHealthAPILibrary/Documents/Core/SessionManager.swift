@@ -57,7 +57,9 @@ final class SessionManager: NSObject {
     let alternativeTokenSource: AlternativeTokenSource?
     private let session: URLSession
     let userDomain: UserDomain
-    
+    var clientAccessToken: String?
+    var userAccessToken: String?
+
     enum TaskType {
         case data, download, upload(Data)
     }
@@ -126,24 +128,24 @@ private extension SessionManager {
                            cancellationToken: CancellationToken?,
                            completion: @escaping CompletionResult<T.ResponseType>) {
         if let authServiceType = resource.authServiceType {
-            var value: String?
+            var accessToken: String?
             var authType: AuthType?
             switch authServiceType {
             case .apiService:
-                value = keyStore.fetch(service: .auth, key: .userAccessToken)
+                accessToken = self.userAccessToken
                 authType = .bearer
             case .userService(let type):
                 if case .basic = type {
-                    value = AuthHelper.encoded(client)
+                    accessToken = AuthHelper.encoded(client)
                 } else if case .bearer = type {
-                    value = keyStore.fetch(service: .auth, key: .clientAccessToken)
+                    accessToken = self.clientAccessToken
                 }
                 authType = type
             }
             
-            if let value = value, let header = authType {
+            if let accessToken = accessToken, let header = authType {
                 var request = resource.request
-                let authHeader = AuthHelper.authorizationHeader(for: value, headerType: header)
+                let authHeader = AuthHelper.authorizationHeader(for: accessToken, headerType: header)
                 request.addValue(authHeader.value, forHTTPHeaderField: authHeader.key)
                 
                 dataTask(for: resource,
@@ -153,13 +155,10 @@ private extension SessionManager {
                          completion: completion).resume()
             } else {
                 Log("Stored token is no longer valid", event: .warning)
-                handleError(resource: resource,
-                            statusCode: 401,
-                            response: nil,
-                            data: nil,
-                            taskType: taskType,
-                            cancellationToken: cancellationToken,
-                            completion: completion)
+                handleLoginFlow(resource: resource,
+                                taskType: taskType,
+                                cancellationToken: cancellationToken,
+                                completion: completion)
             }
             
         } else {
@@ -219,8 +218,13 @@ private extension SessionManager {
         return { [weak self] data, response, error in
             guard let self = self else { return }
             guard let response = response else {
-                completion(.failure(.noResponse)); return }
-            guard !(cancellationToken?.isCancelled ?? false) else { completion(.failure(.requestCancelled)); return }
+                completion(.failure(.noResponse))
+                return
+            }
+            guard !(cancellationToken?.isCancelled ?? false) else {
+                completion(.failure(.requestCancelled))
+                return
+            }
 
             if let response = response as? HTTPURLResponse {
                 switch response.statusCode {
@@ -308,32 +312,19 @@ private extension SessionManager {
                                           completion: @escaping CompletionResult<T.ResponseType>) {
         switch statusCode {
         case 400:
+            guard let responseData = data else {
+                completion(.failure(.badRequest(response: response, data: nil)))
+                return
+            }
+
+            guard let errorInfo = try? JSONDecoder().decode([String: String].self, from: responseData),
+                  errorInfo["error"] == "invalid_grant" else {
+                completion(.failure(.badRequest(response: response, data: data)))
+                return
+            }
             completion(.failure(.badRequest(response: response, data: data)))
         case 401:
-            if let authServiceType = resource.authServiceType, case .apiService = authServiceType {
-                do {
-                    // Remove current user
-                    try self.keyStore.remove(service: .auth, key: .userEmail)
-                    try self.keyStore.remove(service: .auth, key: .userPassword)
-                    
-                    // Log in again
-                    self.logIn { result in
-                        switch result {
-                        case .success:
-                            self.load(resource: resource,
-                                      taskType: taskType,
-                                      cancellationToken: cancellationToken,
-                                      completion: completion)
-                        case .failure:
-                            completion(.failure(.unauthorized(response: response, data: data)))
-                        }
-                    }
-                } catch {
-                    completion(.failure(.unauthorized(response: response, data: data)))
-                }
-            } else {
-                completion(.failure(.unauthorized(response: response, data: data)))
-            }
+            completion(.failure(.unauthorized(response: response, data: data)))
         case 404:
             completion(.failure(.notFound(response: response, data: data)))
         case 406:
@@ -344,5 +335,21 @@ private extension SessionManager {
             completion(.failure(.unknown(response: response, data: data)))
         }
     }
-    
+
+    private func handleLoginFlow<T: Resource>(resource: T,
+                                              taskType: TaskType,
+                                              cancellationToken: CancellationToken?,
+                                              completion: @escaping CompletionResult<T.ResponseType>) {
+        logIn { result in
+            switch result {
+                case .success:
+                    self.load(resource: resource,
+                              taskType: taskType,
+                              cancellationToken: cancellationToken,
+                              completion: completion)
+                case .failure(let error):
+                    completion(.failure(error))
+            }
+        }
+    }
 }
