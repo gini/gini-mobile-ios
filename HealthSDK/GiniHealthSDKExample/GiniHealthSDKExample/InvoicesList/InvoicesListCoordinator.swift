@@ -28,6 +28,7 @@ final class InvoicesListCoordinator: NSObject, Coordinator {
                                                                      hardcodedInvoicesController: hardcodedInvoicesController,
                                                                      paymentComponentsController: paymentComponentsController)
         invoicesListNavigationController = RootNavigationController(rootViewController: invoicesListViewController)
+        invoicesListNavigationController.modalPresentationStyle = .fullScreen
         invoicesListNavigationController.interactivePopGestureRecognizer?.delegate = nil
     }
 }

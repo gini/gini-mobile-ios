@@ -49,6 +49,7 @@ final class InvoicesListViewModel {
     let noInvoicesText = NSLocalizedString("giniHealthSDKExample.invoicesList.missingInvoices.text", comment: "")
     let titleText = NSLocalizedString("giniHealthSDKExample.invoicesList.title", comment: "")
     let uploadInvoicesText = NSLocalizedString("giniHealthSDKExample.uploadInvoices.button.title", comment: "")
+    let cancelText = NSLocalizedString("giniHealthSDKExample.cancel.button.title", comment: "")
     let errorUploadingTitleText = NSLocalizedString("giniHealthSDKExample.invoicesList.erorrUploading", comment: "")
     
     let backgroundColor: UIColor = GiniColor(light: .white, 
@@ -165,6 +166,8 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
         // MARK: TODO in next tasks
         guard let documentID else { return }
         Log("Tapped on Bank Picker on :\(documentID)", event: .success)
+        let paymentProvidersBottomView = paymentComponentsController.getPaymentsProvidersBottomViewController()
+        self.coordinator.invoicesListViewController.present(paymentProvidersBottomView, animated: true)
     }
     
     func didTapOnPayInvoice(documentID: String?) {
