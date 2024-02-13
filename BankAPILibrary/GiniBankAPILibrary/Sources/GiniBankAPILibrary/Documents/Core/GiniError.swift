@@ -78,7 +78,7 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
              .parseError(_, let response, _),
              .tooManyRequests(let response, _),
              .unauthorized(let response, _),
-            .unknown(let response, _):
+             .unknown(let response, _):
             return response
         default:
             return nil
