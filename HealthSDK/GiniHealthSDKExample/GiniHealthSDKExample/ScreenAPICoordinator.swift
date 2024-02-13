@@ -26,8 +26,8 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
     var giniHealth: GiniHealth?
     var screenAPIViewController: UINavigationController!
     
-    let client: GiniBankAPILibrary.Client
-    let documentMetadata: GiniBankAPILibrary.Document.Metadata?
+    let client: GiniHealthAPILibrary.Client
+    let documentMetadata: GiniHealthAPILibrary.Document.Metadata?
     weak var analysisDelegate: AnalysisDelegate?
     var visionDocuments: [GiniCaptureDocument]?
     var visionConfiguration: GiniConfiguration
@@ -39,8 +39,8 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
     
     init(configuration: GiniConfiguration,
          importedDocuments documents: [GiniCaptureDocument]?,
-         client: GiniBankAPILibrary.Client,
-         documentMetadata: GiniBankAPILibrary.Document.Metadata?,
+         client: GiniHealthAPILibrary.Client,
+         documentMetadata: GiniHealthAPILibrary.Document.Metadata?,
          hardcodedInvoicesController: HardcodedInvoicesController) {
         visionConfiguration = configuration
         visionDocuments = documents
