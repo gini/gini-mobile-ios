@@ -80,8 +80,9 @@ final class InvoicesListViewModel {
     let noInvoicesText = NSLocalizedString("giniHealthSDKExample.invoicesList.missingInvoices.text", comment: "")
     let titleText = NSLocalizedString("giniHealthSDKExample.invoicesList.title", comment: "")
     let uploadInvoicesText = NSLocalizedString("giniHealthSDKExample.uploadInvoices.button.title", comment: "")
-    let errorUploadingTitleText = NSLocalizedString("giniHealthSDKExample.invoicesList.erorrUploading", comment: "")
-    
+    let cancelText = NSLocalizedString("giniHealthSDKExample.cancel.button.title", comment: "")
+    let errorTitleText = NSLocalizedString("giniHealthSDKExample.invoicesList.error", comment: "")
+
     let backgroundColor: UIColor = GiniColor(light: .white, 
                                              dark: .black).uiColor()
     let tableViewSeparatorColor: UIColor = GiniColor(light: .lightGray, 

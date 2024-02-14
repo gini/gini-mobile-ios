@@ -89,10 +89,20 @@ final class InvoicesListViewController: UIViewController {
                                                 target: self,
                                                 action: #selector(uploadInvoicesButtonTapped))
         self.navigationItem.rightBarButtonItem = uploadInvoiceItem
+
+        let cancelItem = UIBarButtonItem(title: viewModel.cancelText,
+                                         style: .plain,
+                                         target: self,
+                                         action: #selector(dismissViewControllerTapped))
+        self.navigationItem.leftBarButtonItem = cancelItem
     }
     
     @objc func uploadInvoicesButtonTapped() {
         viewModel.uploadInvoices()
+    }
+
+    @objc func dismissViewControllerTapped() {
+        self.dismiss(animated: true)
     }
 }
 
@@ -141,7 +151,7 @@ extension InvoicesListViewController: InvoicesListViewControllerProtocol {
     }
     
     func showErrorAlertView(error: String) {
-        let alertController = UIAlertController(title: viewModel.errorUploadingTitleText, 
+        let alertController = UIAlertController(title: viewModel.errorTitleText, 
                                                 message: error,
                                                 preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: .default))
