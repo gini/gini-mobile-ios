@@ -80,23 +80,24 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
         for extraction in captureExtractedResults {
             healthExtractions.append(GiniHealthAPILibrary.Extraction(box: nil, candidates: extraction.candidates, entity: extraction.entity, value: extraction.value, name: extraction.name))
         }
-        
-        // Store invoice/document into Invoices list
-        hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: DocumentWithExtractions(documentID: result.document?.id ?? "", 
-                                                                                                  extractions: captureExtractedResults,
-                                                                                                  bank: Bank()))
 
         if let healthSdk = self.giniHealth, let docId = result.document?.id {
             // this step needed since we've got 2 different Document structures
-            healthSdk.fetchDataForReview(documentId: docId) { result in
-                switch result {
+            healthSdk.fetchDataForReview(documentId: docId) { [weak self] resultReview in
+                switch resultReview {
                 case .success(let data):
-                        let vc = PaymentReviewViewController.instantiate(with: healthSdk, data: data, trackingDelegate: self)
-                        vc.modalTransitionStyle = .coverVertical
-                        vc.modalPresentationStyle = .overCurrentContext
-                        self.rootViewController.present(vc, animated: true)
+                    // Store invoice/document into Invoices list
+                    let invoice = DocumentWithExtractions(documentID: result.document?.id ?? "",
+                                                          extractions: data.extractions,
+                                                          bank: Bank())
+                    self?.hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: invoice)
+
+                    let vc = PaymentReviewViewController.instantiate(with: healthSdk, data: data, trackingDelegate: self)
+                    vc.modalTransitionStyle = .coverVertical
+                    vc.modalPresentationStyle = .overCurrentContext
+                    self?.rootViewController.present(vc, animated: true)
                 case .failure(let error):
-                        print("❌ Document data fetching failed: \(String(describing: error))")
+                    print("❌ Document data fetching failed: \(String(describing: error))")
                 }
             }
         }

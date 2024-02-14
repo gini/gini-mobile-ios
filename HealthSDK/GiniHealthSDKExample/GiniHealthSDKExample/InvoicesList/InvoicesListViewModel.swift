@@ -8,7 +8,6 @@
 import UIKit
 import GiniHealthAPILibrary
 import GiniCaptureSDK
-import GiniBankAPILibrary
 import GiniHealthSDK
 
 struct Bank: Codable {
@@ -52,7 +51,7 @@ struct DocumentWithExtractions: Codable {
         self.bank = bank
     }
     
-    init(documentID: String, extractions: [GiniBankAPILibrary.Extraction], bank: Bank) {
+    init(documentID: String, extractions: [GiniHealthAPILibrary.Extraction], bank: Bank) {
         self.documentID = documentID
         self.amountToPay = extractions.first(where: {$0.name == "amount_to_pay"})?.value
         self.paymentDueDate = extractions.first(where: {$0.name == "payment_due_date"})?.value
