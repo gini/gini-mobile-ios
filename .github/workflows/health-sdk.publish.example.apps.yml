@@ -95,7 +95,7 @@ jobs:
             -exportArchive \
             -archivePath GiniHealthSDKExample.xcarchive \
             -exportPath . \
-            -exportOptionsPlist ExportOptions.plist \
+            -exportOptionsPlist ExportOptionsHealthExample.plist \
             -destination "generic/platform=iOS" \
             CODE_SIGNING_REQUIRED=YES \
             ONLY_ACTIVE_ARCH=NO \
