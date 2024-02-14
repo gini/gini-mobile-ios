@@ -50,7 +50,7 @@ final class InvoicesListViewModel {
     let titleText = NSLocalizedString("giniHealthSDKExample.invoicesList.title", comment: "")
     let uploadInvoicesText = NSLocalizedString("giniHealthSDKExample.uploadInvoices.button.title", comment: "")
     let cancelText = NSLocalizedString("giniHealthSDKExample.cancel.button.title", comment: "")
-    let errorUploadingTitleText = NSLocalizedString("giniHealthSDKExample.invoicesList.erorrUploading", comment: "")
+    let errorTitleText = NSLocalizedString("giniHealthSDKExample.invoicesList.erorrUploading", comment: "")
     
     let backgroundColor: UIColor = GiniColor(light: .white, 
                                              dark: .black).uiColor()
@@ -188,7 +188,7 @@ extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
     }
     
     func didReceivedErrorOnPaymentProviders(_ error: GiniHealthSDK.GiniHealthError) {
-        errors.append(error.localizedDescription)
+        errors.append(error.errorMessage)
         showErrorsIfAny()
     }
 

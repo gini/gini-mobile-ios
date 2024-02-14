@@ -8,14 +8,17 @@
 import UIKit
 
 final class PaymentProvidersBottomViewController: UIViewController {
-    var bottomSheet: PaymentProvidersBottomView!
+    var bottomSheet: PaymentProvidersBottomView! {
+        didSet {
+            setupLayout()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .blue
         setupViewHierarchy()
         setupViewAttributes()
-        setupLayout()
     }
 
     func setupViewHierarchy(){
@@ -30,9 +33,9 @@ final class PaymentProvidersBottomViewController: UIViewController {
     func setupLayout(){
         NSLayoutConstraint.activate([
             bottomSheet.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            bottomSheet.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -200),
+            bottomSheet.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -(bottomSheet.viewModel.heightBottomSheet - 200)),
             bottomSheet.widthAnchor.constraint(equalToConstant: self.view.frame.width),
-            bottomSheet.heightAnchor.constraint(equalToConstant: 400)
+            bottomSheet.heightAnchor.constraint(equalToConstant: bottomSheet.viewModel.heightBottomSheet)
         ])
     }
 }
