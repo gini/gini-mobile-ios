@@ -40,6 +40,17 @@ public enum GiniHealthError: Error {
     case apiError(GiniError)
     /// Error thrown when api didn't returns payment extractions.
     case noPaymentDataExtracted
+
+    public var errorMessage: String {
+        switch self {
+        case .noInstalledApps:
+            return "No installed apps"
+        case .apiError(let error):
+            return error.localizedDescription
+        case .noPaymentDataExtracted:
+            return "No payment data extracted"
+        }
+    }
 }
 /**
  Data structure for Payment Review Screen initialization.

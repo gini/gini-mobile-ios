@@ -148,7 +148,7 @@ extension InvoicesListViewController: InvoicesListViewControllerProtocol {
     }
     
     func showErrorAlertView(error: String) {
-        let alertController = UIAlertController(title: viewModel.errorUploadingTitleText, 
+        let alertController = UIAlertController(title: viewModel.errorTitleText, 
                                                 message: error,
                                                 preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: .default))

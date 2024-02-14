@@ -10,4 +10,4 @@
 "giniHealthSDKExample.uploadInvoices.button.title" = "↑ Invoices";
 "giniHealthSDKExample.cancel.button.title" = "Cancel";
 "giniHealthSDKExample.invoicesList.missingInvoices.text" = "No invoices";
-"giniHealthSDKExample.invoicesList.erorrUploading" = "Uploading error";
+"giniHealthSDKExample.invoicesList.erorrUploading" = "Error";
