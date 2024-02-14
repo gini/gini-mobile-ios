@@ -25,7 +25,6 @@ import GiniBankAPILibrary
     case serverError
     case authentication
     case unexpected
-    case importError
 
     /**
      Initializes a new instance of the `ErrorType` enum based on the given `GiniError`.
@@ -72,8 +71,6 @@ import GiniBankAPILibrary
             return "errorCloud"
         case .unexpected:
             return "alertTriangle"
-        case .importError:
-            return "alertTriangle"
         }
     }
 
@@ -99,10 +96,6 @@ import GiniBankAPILibrary
             return NSLocalizedStringPreferredFormat(
                 "ginicapture.error.unexpected.content",
                 comment: "Unexpected error")
-        case .importError:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.importError.content",
-                comment: "Import error")
         }
     }
 
@@ -127,10 +120,6 @@ import GiniBankAPILibrary
         case .request:
             return NSLocalizedStringPreferredFormat(
                 "ginicapture.error.request.title",
-                comment: "Upload error")
-        case .importError:
-            return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.importError.title",
                 comment: "Upload error")
         }
     }
