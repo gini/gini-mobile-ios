@@ -36,7 +36,7 @@ import GiniBankAPILibrary
      */
     public init(error: GiniError) {
         switch error {
-        case .unauthorized(_, _):
+        case .unauthorized:
             self = .authentication
         case .noResponse:
             self = .connection
