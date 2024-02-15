@@ -26,6 +26,7 @@ import GiniBankAPILibrary
     case authentication
     case unexpected
     case maintenance
+    case outage
 
     /**
      Initializes a new instance of the `ErrorType` enum based on the given `GiniError`.
@@ -48,7 +49,7 @@ import GiniBankAPILibrary
                     self = .request
                 case 401:
                     self = .authentication
-                case let code where code >= 500 && code != 503:
+                case let code where code > 500 && code != 503:
                     self = .serverError
                 default:
                     self = .unexpected
@@ -56,8 +57,11 @@ import GiniBankAPILibrary
             } else {
                 self = .serverError
             }
+
         case .maintenance:
             self = .maintenance
+        case .outage:
+            self = .outage
         default:
             self = .unexpected
         }
@@ -71,7 +75,7 @@ import GiniBankAPILibrary
             return "errorUpload"
         case .authentication:
             return "errorAuth"
-        case .serverError:
+        case .serverError, .outage:
             return "errorCloud"
         case .unexpected:
             return "alertTriangle"
@@ -106,6 +110,10 @@ import GiniBankAPILibrary
             return NSLocalizedStringPreferredFormat(
                 "ginicapture.error.maintenance.content",
                 comment: "Maintenance error")
+        case .outage:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.outage.content",
+                comment: "Outage error")
         }
     }
 
@@ -135,6 +143,10 @@ import GiniBankAPILibrary
             return NSLocalizedStringPreferredFormat(
                 "ginicapture.error.maintenance.title",
                 comment: "Maintenance error")
+        case .outage:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.outage.title",
+                comment: "Outage error")
         }
     }
 }

@@ -189,6 +189,8 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.error.request.title" = "There was a problem with the upload";
 "ginicapture.error.maintenance.title" = "Maintenance is in progress.";
 "ginicapture.error.maintenance.content" = "We are maintaining our system. Please retry shortly. We appreciate your understanding.";
+"ginicapture.error.outage.title" = "Service is unavailable.";
+"ginicapture.error.outage.content" = "The service is unavailable. Please try again later. We appreciate your understanding.";
 
 "ginicapture.images.backToAlbums" = "Albums";
 "ginicapture.images.openWithTutorialStep1" = "openWithTutorialStep1_en";

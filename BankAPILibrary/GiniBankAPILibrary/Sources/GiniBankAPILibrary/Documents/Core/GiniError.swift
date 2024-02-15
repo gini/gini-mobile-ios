@@ -34,6 +34,7 @@ public protocol GiniErrorProtocol {
  - tooManyRequests: Error indicating that too many requests have been made.
  - unauthorized: Error indicating that the request was unauthorized.
  - maintenance: Error indicating that the system is under maintenance.
+ - outage: Error indicating that the service is unavailable due to outage.
  - unknown: An unknown error occurred.
  */
 
@@ -47,6 +48,7 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
     case tooManyRequests(response: HTTPURLResponse? = nil, data: Data? = nil)
     case unauthorized(response: HTTPURLResponse? = nil, data: Data? = nil)
     case maintenance
+    case outage
     case unknown(response: HTTPURLResponse? = nil, data: Data? = nil)
     
     public var message: String {
@@ -69,6 +71,8 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
             return "Unauthorized"
         case .maintenance:
             return "Maintenance is in progress"
+        case .outage:
+            return "Service is unavailable"
         case .unknown:
             return "Unknown"
         }

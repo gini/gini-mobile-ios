@@ -245,7 +245,7 @@ private extension SessionManager {
                         completion(.failure(.unknown(response: response, data: nil)))
                     }
 
-                case 400..<500, 503:
+                case 400...500, 503:
                     Log("""
                         Failure: \(request.httpMethod!) - \(request.url!) - \(response.statusCode)
                         Data content: \(String(describing: String(data: data ?? Data(count: 0), encoding: .utf8)))
@@ -333,6 +333,8 @@ private extension SessionManager {
             completion(.failure(.tooManyRequests(response: response, data: data)))
         case 503:
             completion(.failure(.maintenance))
+        case 500:
+            completion(.failure(.outage))
         default:
             completion(.failure(.unknown(response: response, data: data)))
         }
