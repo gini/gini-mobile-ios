@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="InvoiceTableViewCell" customModule="GiniHealthSDKExample" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" restorationIdentifier="InvoiceTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="InvoiceTableViewCell" rowHeight="80" id="KGk-i7-Jjw" customClass="InvoiceTableViewCell" customModule="GiniHealthSDKExample" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="wCb-NR-BJ9">
+                        <rect key="frame" x="16" y="4" width="288" height="72"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="doh-SV-RC8">
+                                <rect key="frame" x="0.0" y="0.0" width="85.666666666666671" height="72"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Recipient " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wi4-Z7-eRK">
+                                        <rect key="frame" x="0.0" y="0.0" width="85.666666666666671" height="54"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="19"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Due date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IyQ-jU-9a9">
+                                        <rect key="frame" x="0.0" y="54" width="85.666666666666671" height="18"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="18" id="yHq-pJ-Wml"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="15"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CPu-jh-GFv">
+                                <rect key="frame" x="95.666666666666671" y="0.0" width="192.33333333333331" height="72"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Amount" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mmw-vI-Tta">
+                                        <rect key="frame" x="0.0" y="24.666666666666671" width="192.33333333333334" height="23"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
+                                        <color key="textColor" name="Accent01"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="mmw-vI-Tta" firstAttribute="top" relation="greaterThanOrEqual" secondItem="CPu-jh-GFv" secondAttribute="top" id="CzW-Q4-yQf"/>
+                                    <constraint firstItem="mmw-vI-Tta" firstAttribute="leading" secondItem="CPu-jh-GFv" secondAttribute="leading" id="DnE-fP-ACk"/>
+                                    <constraint firstAttribute="trailing" secondItem="mmw-vI-Tta" secondAttribute="trailing" id="S12-GV-WoN"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="mmw-vI-Tta" secondAttribute="bottom" id="dVQ-Yj-U3y"/>
+                                    <constraint firstItem="mmw-vI-Tta" firstAttribute="centerY" secondItem="CPu-jh-GFv" secondAttribute="centerY" id="sxg-ez-1go"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="wCb-NR-BJ9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="ADX-8Q-9e4"/>
+                    <constraint firstAttribute="bottom" secondItem="wCb-NR-BJ9" secondAttribute="bottom" constant="4" id="EkK-AI-gNW"/>
+                    <constraint firstAttribute="trailing" secondItem="wCb-NR-BJ9" secondAttribute="trailing" constant="16" id="Ilj-R6-NAU"/>
+                    <constraint firstItem="wCb-NR-BJ9" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="4" id="RPE-iQ-pvA"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="amountLabel" destination="mmw-vI-Tta" id="FX0-Be-5LT"/>
+                <outlet property="dueDateLabel" destination="IyQ-jU-9a9" id="ym8-oo-HTp"/>
+                <outlet property="recipientLabel" destination="wi4-Z7-eRK" id="sYf-w5-hT8"/>
+            </connections>
+            <point key="canvasLocation" x="138.93129770992365" y="32.394366197183103"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="Accent01">
+            <color red="0.039000000804662704" green="0.51800000667572021" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

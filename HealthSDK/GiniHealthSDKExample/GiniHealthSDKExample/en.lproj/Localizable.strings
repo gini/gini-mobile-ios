@@ -5,3 +5,8 @@
   Created by Nadya Karaban on 28.02.22.
   
 */
+
+"giniHealthSDKExample.invoicesList.title" = "Invoices List";
+"giniHealthSDKExample.uploadInvoices.button.title" = "↑ Invoices";
+"giniHealthSDKExample.invoicesList.missingInvoices.text" = "No invoices";
+"giniHealthSDKExample.invoicesList.erorrUploading" = "Uploading error";

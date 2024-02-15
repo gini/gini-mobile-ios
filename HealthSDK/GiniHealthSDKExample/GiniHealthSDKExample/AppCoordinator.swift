@@ -6,7 +6,6 @@
 //  Copyright © 2017 Gini GmbH. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import GiniCaptureSDK
 import GiniHealthAPILibrary
@@ -48,7 +47,7 @@ final class AppCoordinator: Coordinator {
     }()
     
     private lazy var client: GiniHealthAPILibrary.Client = CredentialsManager.fetchClientFromBundle()
-    private lazy var apiLib = GiniHealthAPI.Builder(client: client).build()
+    private lazy var apiLib = GiniHealthAPI.Builder(client: client, logLevel: .debug).build()
     private lazy var health = GiniHealth(with: apiLib)
     
     private var documentMetadata: GiniHealthAPILibrary.Document.Metadata?
@@ -116,7 +115,8 @@ final class AppCoordinator: Coordinator {
                                                         client: GiniHealthAPILibrary.Client(id: self.client.id,
                                                                                           secret: self.client.secret,
                                                                                           domain: self.client.domain),
-                                                        documentMetadata: metadata)
+                                                                                          documentMetadata: metadata,
+                                                                                          hardcodedInvoicesController: HardcodedInvoicesController())
         
         screenAPICoordinator.delegate = self
         
@@ -278,6 +278,13 @@ final class AppCoordinator: Coordinator {
             self.remove(childCoordinator: coordinator)
         }
     }
+    
+    fileprivate func showInvoicesList() {
+        let invoicesListCoordinator = InvoicesListCoordinator()
+        invoicesListCoordinator.start(documentService: health.documentService, hardcodedInvoicesController: HardcodedInvoicesController())
+        add(childCoordinator: invoicesListCoordinator)
+        rootViewController.present(invoicesListCoordinator.rootViewController, animated: true)
+    }
 }
 
 // MARK: SelectAPIViewControllerDelegate
@@ -291,6 +298,8 @@ extension AppCoordinator: SelectAPIViewControllerDelegate {
             break
         case .paymentReview:
             showPaymentReviewWithTestDocument()
+        case .invoicesList:
+            showInvoicesList()
         }
     }
 }
