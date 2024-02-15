@@ -146,6 +146,8 @@
 "ginicapture.error.unexpected.title" = "Ein unbekannter Fehler ist aufgetreten.";
 "ginicapture.error.request.content" = "Das Dokument konnte nicht verarbeitet werden. Bitte überprüfen Sie, ob das Bild scharf ist, das Dokument Zahlungsinformationen enthält und im richtigen Dateiformat hochgeladen wurde.";
 "ginicapture.error.request.title" = "Der Upload des Dokuments ist fehlgeschlagen!";
+"ginicapture.error.maintenance.title" = "Wartungsarbeiten sind im Gange.";
+"ginicapture.error.maintenance.content" = "Wir führen Wartungsarbeiten an unserem System durch. Bitte versuchen Sie es in Kürze erneut. Wir danken Ihnen für Ihr Verständnis.";
 
 "ginicapture.help.import.title" = "Importieren";
 "ginicapture.help.import.selectInvoice.title" = "Rechnung auswählen";
