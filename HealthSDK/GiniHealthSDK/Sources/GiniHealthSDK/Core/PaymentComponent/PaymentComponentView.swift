@@ -165,19 +165,25 @@ final class PaymentComponentView: UIView {
     
     private func setupView() {
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.frame = CGRect(x: 0, y: 0, width: .max, height: 240)
-        
+        self.frame = CGRect(x: 0, y: 0, width: .max, height: 220)
+
         self.backgroundColor = viewModel.backgroundColor
         
         self.addSubview(contentStackView)
         
         // Content StackView Constraints
+        let contentViewHeightConstraint = heightAnchor.constraint(equalToConstant: frame.height)
+        contentViewHeightConstraint.priority = .required - 1 // We need this to silent warnings
+        contentViewHeightConstraint.isActive = true
+
+        let contentViewBottomAnchorConstraint = contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 4)
+        contentViewBottomAnchorConstraint.priority = .required - 1
+        contentViewBottomAnchorConstraint.isActive = true
+
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: frame.height),
             contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
-            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 4)
         ])
 
         contentStackView.addArrangedSubview(moreInformationStackView)
@@ -207,8 +213,12 @@ final class PaymentComponentView: UIView {
         selectBankView.addSubview(payInvoiceView)
         selectBankView.addSubview(poweredByGiniView)
         
+        let selectBankViewHeightConstraint = selectBankView.heightAnchor.constraint(equalToConstant: selectBankView.frame.height)
+        selectBankViewHeightConstraint.priority = .required - 1
+        selectBankViewHeightConstraint.isActive = true
+
         NSLayoutConstraint.activate([
-            selectBankView.heightAnchor.constraint(equalToConstant: selectBankView.frame.height),
+
             selectBankLabel.leadingAnchor.constraint(equalTo: selectBankView.leadingAnchor),
             selectBankLabel.topAnchor.constraint(equalTo: selectBankView.topAnchor),
             selectBankLabel.trailingAnchor.constraint(equalTo: selectBankView.trailingAnchor),
