@@ -38,6 +38,8 @@ import GiniBankAPILibrary
         switch error {
         case .unauthorized:
             self = .authentication
+        case .noInternetConnection:
+            self = .connection
         case .noResponse:
             self = .connection
         case .notAcceptable(let response, _), .tooManyRequests(let response, _),
@@ -55,7 +57,7 @@ import GiniBankAPILibrary
                     self = .unexpected
                 }
             } else {
-                self = .serverError
+                self = .unexpected
             }
 
         case .maintenance:

@@ -50,7 +50,8 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
     case maintenance
     case outage
     case unknown(response: HTTPURLResponse? = nil, data: Data? = nil)
-    
+    case noInternetConnection
+
     public var message: String {
         switch self {
         case .badRequest:
@@ -73,6 +74,8 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
             return "Maintenance is in progress"
         case .outage:
             return "Service is unavailable"
+        case .noInternetConnection:
+            return "No internet connection"
         case .unknown:
             return "Unknown"
         }

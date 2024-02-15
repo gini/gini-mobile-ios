@@ -216,6 +216,13 @@ private extension SessionManager {
         completion: @escaping CompletionResult<T.ResponseType>) -> ((Data?, URLResponse?, Error?) -> Void) {
         return { [weak self] data, response, error in
             guard let self = self else { return }
+
+            if let nsError = error as NSError? {
+                if nsError.domain == NSURLErrorDomain, nsError.code == NSURLErrorNotConnectedToInternet {
+                    return completion(.failure(.noInternetConnection))
+                }
+            }
+
             guard let response = response else {
                 completion(.failure(.noResponse))
                 return
