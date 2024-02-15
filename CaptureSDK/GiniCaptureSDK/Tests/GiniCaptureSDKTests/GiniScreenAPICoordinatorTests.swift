@@ -176,7 +176,6 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
 
         let rootViewController = coordinator.start(withDocuments: capturedImages)
         _ = rootViewController.view
-        let response = HTTPURLResponse(url: URL(string: "example")!, statusCode: 503, httpVersion: "", headerFields: [:])
         let errorType = ErrorType(error: .maintenance)
         coordinator.displayError(errorType: errorType, animated: false)
         let screenNavigator = rootViewController.children.first as? UINavigationController
@@ -187,6 +186,25 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
             "first view controller is not a ErrorScreenViewController")
         XCTAssertTrue(errorScreen?.errorHeader.headerLabel.text == ErrorType.maintenance.title(), "Error title should match server error type")
         XCTAssertTrue(errorScreen?.errorContent.text == ErrorType.maintenance.content(), "Error content should match server error type")
+
+    }
+
+    func testOutageError() {
+        giniConfiguration.multipageEnabled = false
+        let capturedImages = [GiniCaptureTestsHelper.loadImageDocument(named: "invoice")]
+
+        let rootViewController = coordinator.start(withDocuments: capturedImages)
+        _ = rootViewController.view
+        let errorType = ErrorType(error: .outage)
+        coordinator.displayError(errorType: errorType, animated: false)
+        let screenNavigator = rootViewController.children.first as? UINavigationController
+        let errorScreen = screenNavigator?.viewControllers.last as? ErrorScreenViewController
+        errorScreen?.setupView()
+        XCTAssertNotNil(
+            errorScreen,
+            "first view controller is not a ErrorScreenViewController")
+        XCTAssertTrue(errorScreen?.errorHeader.headerLabel.text == ErrorType.outage.title(), "Error title should match server error type")
+        XCTAssertTrue(errorScreen?.errorContent.text == ErrorType.outage.content(), "Error content should match server error type")
 
     }
 }

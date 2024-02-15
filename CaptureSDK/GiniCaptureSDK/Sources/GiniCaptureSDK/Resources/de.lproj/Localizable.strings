@@ -148,6 +148,8 @@
 "ginicapture.error.request.title" = "Der Upload des Dokuments ist fehlgeschlagen!";
 "ginicapture.error.maintenance.title" = "Wartungsarbeiten sind im Gange.";
 "ginicapture.error.maintenance.content" = "Wir führen Wartungsarbeiten an unserem System durch. Bitte versuchen Sie es in Kürze erneut. Wir danken Ihnen für Ihr Verständnis.";
+"ginicapture.error.outage.title" = "Der Dienst ist nicht verfügbar.";
+"ginicapture.error.outage.content" = "Der Dienst ist nicht verfügbar. Bitte versuchen Sie es später erneut. Wir danken Ihnen für Ihr Verständnis.";
 
 "ginicapture.help.import.title" = "Importieren";
 "ginicapture.help.import.selectInvoice.title" = "Rechnung auswählen";
