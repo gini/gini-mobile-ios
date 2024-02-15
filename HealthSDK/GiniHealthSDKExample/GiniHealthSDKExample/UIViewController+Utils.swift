@@ -5,7 +5,6 @@
 //  Created by Nadya Karaban on 16.04.21.
 //
 
-import Foundation
 import UIKit
 extension UIViewController {
     func showError(_ title: String? = nil, message: String) {
