@@ -20,7 +20,7 @@ final class InvoiceTableViewCell: UITableViewCell {
             recipientLabel.isHidden = cellViewModel?.isRecipientLabelHidden ?? false
             dueDateLabel.isHidden = cellViewModel?.isDueDataLabelHidden ?? false
             
-            if cellViewModel?.shouldShowPaymentComponent ?? false, let paymentComponentView = cellViewModel?.paymentComponentView{
+            if cellViewModel?.shouldShowPaymentComponent ?? false, let paymentComponentView = cellViewModel?.paymentComponentView {
                 mainStackView.addArrangedSubview(paymentComponentView)
             }
         }
