@@ -174,16 +174,16 @@ final class PaymentComponentView: UIView {
         // Content StackView Constraints
         let contentViewHeightConstraint = heightAnchor.constraint(equalToConstant: frame.height)
         contentViewHeightConstraint.priority = .required - 1 // We need this to silent warnings
-        contentViewHeightConstraint.isActive = true
 
         let contentViewBottomAnchorConstraint = contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 4)
         contentViewBottomAnchorConstraint.priority = .required - 1
-        contentViewBottomAnchorConstraint.isActive = true
 
         NSLayoutConstraint.activate([
+            contentViewHeightConstraint,
             contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            contentViewBottomAnchorConstraint
         ])
 
         contentStackView.addArrangedSubview(moreInformationStackView)
@@ -215,10 +215,9 @@ final class PaymentComponentView: UIView {
         
         let selectBankViewHeightConstraint = selectBankView.heightAnchor.constraint(equalToConstant: selectBankView.frame.height)
         selectBankViewHeightConstraint.priority = .required - 1
-        selectBankViewHeightConstraint.isActive = true
 
         NSLayoutConstraint.activate([
-
+            selectBankViewHeightConstraint,
             selectBankLabel.leadingAnchor.constraint(equalTo: selectBankView.leadingAnchor),
             selectBankLabel.topAnchor.constraint(equalTo: selectBankView.topAnchor),
             selectBankLabel.trailingAnchor.constraint(equalTo: selectBankView.trailingAnchor),
