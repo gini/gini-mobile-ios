@@ -100,7 +100,6 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
                         }
                     })
                     
-
                     let vc = PaymentReviewViewController.instantiate(with: healthSdk, data: data, trackingDelegate: self)
                     vc.modalTransitionStyle = .coverVertical
                     vc.modalPresentationStyle = .overCurrentContext
