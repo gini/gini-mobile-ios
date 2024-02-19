@@ -51,7 +51,7 @@ class PinningWrongCertificatesIntegrationTests: XCTestCase {
             case .success(_):
                 XCTFail("resolving the payment request should have failed due to wrong pinning certificates")
             case .failure(let error):
-                XCTAssertEqual(error, GiniBankAPILibrary.GiniError.noResponse)
+                XCTAssertEqual(error, GiniBankAPILibrary.GiniError.unknown())
                 expect.fulfill()
             }
         }
