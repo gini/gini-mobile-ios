@@ -55,6 +55,7 @@ final class InvoicesListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.viewDidLoad()
     }
     
     override func loadView() {
