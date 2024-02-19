@@ -39,7 +39,7 @@ struct DocumentWithExtractions: Codable {
     var amountToPay: String?
     var paymentDueDate: String?
     var recipient: String?
-    var isPayable: Bool = false
+    var isPayable: Bool?
     // TODO: - Will be replace in next task with real data
     var bank: Bank
 
@@ -51,11 +51,12 @@ struct DocumentWithExtractions: Codable {
         self.bank = bank
     }
     
-    init(documentID: String, extractions: [GiniHealthAPILibrary.Extraction], bank: Bank) {
+    init(documentID: String, extractions: [GiniHealthAPILibrary.Extraction], isPayable: Bool, bank: Bank) {
         self.documentID = documentID
         self.amountToPay = extractions.first(where: {$0.name == "amount_to_pay"})?.value
         self.paymentDueDate = extractions.first(where: {$0.name == "payment_due_date"})?.value
         self.recipient = extractions.first(where: {$0.name == "payment_recipient"})?.value
+        self.isPayable = isPayable
         self.bank = bank
     }
 }
@@ -101,6 +102,9 @@ final class InvoicesListViewModel {
         self.invoices = invoices ?? hardcodedInvoicesController.getInvoicesWithExtractions()
         self.documentService = documentService
         self.paymentComponentsController = paymentComponentsController
+    }
+    
+    func viewDidLoad() {
     }
     
     @objc

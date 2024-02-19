@@ -87,10 +87,19 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
                 switch resultReview {
                 case .success(let data):
                     // Store invoice/document into Invoices list
-                    let invoice = DocumentWithExtractions(documentID: result.document?.id ?? "",
-                                                          extractions: data.extractions,
-                                                          bank: Bank())
-                    self?.hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: invoice)
+                    self?.giniHealth?.checkIfDocumentIsPayable(docId: result.document?.id ?? "", completion: { [weak self] resultPayable in
+                        switch resultPayable {
+                        case .success(let isPayable):
+                            let invoice = DocumentWithExtractions(documentID: result.document?.id ?? "",
+                                                                  extractions: data.extractions,
+                                                                  isPayable: isPayable,
+                                                                  bank: Bank())
+                            self?.hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: invoice)
+                        case .failure(let error):
+                            print("❌ Checking if document is payable failed: \(String(describing: error))")
+                        }
+                    })
+                    
 
                     let vc = PaymentReviewViewController.instantiate(with: healthSdk, data: data, trackingDelegate: self)
                     vc.modalTransitionStyle = .coverVertical
