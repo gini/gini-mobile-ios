@@ -19,17 +19,12 @@ final class InvoiceTableViewCell: UITableViewCell {
             
             recipientLabel.isHidden = cellViewModel?.isRecipientLabelHidden ?? false
             dueDateLabel.isHidden = cellViewModel?.isDueDataLabelHidden ?? false
-            paymentComponentView = cellViewModel?.paymentComponentView
             
-            mainStackView.distribution = cellViewModel?.shouldShowPaymentComponent ?? false ? .fillProportionally : .fill
-            paymentComponentView?.isHidden = !(cellViewModel?.shouldShowPaymentComponent ?? false)
-            if let paymentComponentView = cellViewModel?.paymentComponentView {
+            if cellViewModel?.shouldShowPaymentComponent ?? false, let paymentComponentView = cellViewModel?.paymentComponentView {
                 mainStackView.addArrangedSubview(paymentComponentView)
-            } 
+            }
         }
     }
-    
-    private var paymentComponentView: UIView?
 
     @IBOutlet private weak var mainStackView: UIStackView!
     @IBOutlet private weak var recipientLabel: UILabel!
