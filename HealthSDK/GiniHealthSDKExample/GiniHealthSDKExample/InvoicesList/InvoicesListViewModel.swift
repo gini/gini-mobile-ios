@@ -8,7 +8,6 @@
 import UIKit
 import GiniHealthAPILibrary
 import GiniCaptureSDK
-import GiniBankAPILibrary
 import GiniHealthSDK
 
 struct DocumentWithExtractions: GiniDocument, Codable {
@@ -16,7 +15,7 @@ struct DocumentWithExtractions: GiniDocument, Codable {
     var amountToPay: String?
     var paymentDueDate: String?
     var recipient: String?
-    var isPayable: Bool = false
+    var isPayable: Bool?
     var paymentProvider: PaymentProvider?
 
     init(documentID: String, extractionResult: GiniHealthAPILibrary.ExtractionResult, paymentProvider: PaymentProvider?) {
@@ -27,11 +26,12 @@ struct DocumentWithExtractions: GiniDocument, Codable {
         self.paymentProvider = paymentProvider
     }
     
-    init(documentID: String, extractions: [GiniBankAPILibrary.Extraction], paymentProvider: PaymentProvider?) {
+    init(documentID: String, extractions: [GiniHealthAPILibrary.Extraction], isPayable: Bool, paymentProvider: PaymentProvider?) {
         self.documentID = documentID
         self.amountToPay = extractions.first(where: {$0.name == "amount_to_pay"})?.value
         self.paymentDueDate = extractions.first(where: {$0.name == "payment_due_date"})?.value
         self.recipient = extractions.first(where: {$0.name == "payment_recipient"})?.value
+        self.isPayable = isPayable
         self.paymentProvider = paymentProvider
     }
 }
@@ -49,8 +49,9 @@ final class InvoicesListViewModel {
     let noInvoicesText = NSLocalizedString("giniHealthSDKExample.invoicesList.missingInvoices.text", comment: "")
     let titleText = NSLocalizedString("giniHealthSDKExample.invoicesList.title", comment: "")
     let uploadInvoicesText = NSLocalizedString("giniHealthSDKExample.uploadInvoices.button.title", comment: "")
-    let errorUploadingTitleText = NSLocalizedString("giniHealthSDKExample.invoicesList.erorrUploading", comment: "")
-    
+    let cancelText = NSLocalizedString("giniHealthSDKExample.cancel.button.title", comment: "")
+    let errorTitleText = NSLocalizedString("giniHealthSDKExample.invoicesList.error", comment: "")
+
     let backgroundColor: UIColor = GiniColor(light: .white, 
                                              dark: .black).uiColor()
     let tableViewSeparatorColor: UIColor = GiniColor(light: .lightGray, 
@@ -72,6 +73,9 @@ final class InvoicesListViewModel {
         self.documentService = documentService
         self.paymentComponentsController = paymentComponentsController
         self.paymentComponentsController.delegate = self
+    }
+    
+    func viewDidLoad() {
     }
 
     private func setDispatchGroupNotifier() {
