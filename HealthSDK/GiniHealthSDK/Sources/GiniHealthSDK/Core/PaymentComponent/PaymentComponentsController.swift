@@ -13,7 +13,7 @@ public protocol GiniDocument {
     var amountToPay: String? { get set }
     var paymentDueDate: String? { get set }
     var recipient: String? { get set }
-    var isPayable: Bool { get set }
+    var isPayable: Bool? { get set }
     var paymentProvider: PaymentProvider? { get set }
 }
 

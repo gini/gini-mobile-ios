@@ -65,10 +65,10 @@ extension InvoiceTableViewCellModel: PaymentComponentViewProtocol {
     }
     
     public func didTapOnBankPicker(documentID: String?) {
-        viewDelegate?.didTapOnMoreInformation(documentID: invoice.documentID)
+        viewDelegate?.didTapOnBankPicker(documentID: invoice.documentID)
     }
     
     public func didTapOnPayInvoice(documentID: String?) {
-        viewDelegate?.didTapOnBankPicker(documentID: invoice.documentID)
+        viewDelegate?.didTapOnPayInvoice(documentID: invoice.documentID)
     }
 }
