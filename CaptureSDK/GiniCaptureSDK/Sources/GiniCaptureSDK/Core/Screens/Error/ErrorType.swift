@@ -41,7 +41,7 @@ import GiniBankAPILibrary
         case .noInternetConnection:
             self = .connection
         case .noResponse:
-            self = .connection
+            self = .unexpected
         case .notAcceptable(let response, _), .tooManyRequests(let response, _),
              .parseError(_, let response, _), .badRequest(let response, _),
              .notFound(let response, _):
