@@ -208,18 +208,28 @@ final class PaymentComponentView: UIView {
     }
 
     private func activateContentStackViewConstraints() {
+        // Content StackView Constraints
+        let contentViewHeightConstraint = heightAnchor.constraint(equalToConstant: frame.height)
+        contentViewHeightConstraint.priority = .required - 1 // We need this to silent warnings
+
+        let contentViewBottomAnchorConstraint = contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 4)
+        contentViewBottomAnchorConstraint.priority = .required - 1
+
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: frame.height),
+            contentViewHeightConstraint,
             contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.contentTopPadding),
-            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.contentBottomPadding)
+            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.contentBottomPadding),
+            contentViewBottomAnchorConstraint
         ])
     }
 
     private func activateBankViewConstraints() {
+        let selectBankViewHeightConstraint = selectBankView.heightAnchor.constraint(equalToConstant: selectBankView.frame.height)
+        selectBankViewHeightConstraint.priority = .required - 1
         NSLayoutConstraint.activate([
-            selectBankView.heightAnchor.constraint(equalToConstant: selectBankView.frame.height),
+            selectBankViewHeightConstraint,
             selectYourBankLabel.leadingAnchor.constraint(equalTo: selectBankView.leadingAnchor),
             selectYourBankLabel.topAnchor.constraint(equalTo: selectBankView.topAnchor),
             selectYourBankLabel.trailingAnchor.constraint(equalTo: selectBankView.trailingAnchor),
