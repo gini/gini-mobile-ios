@@ -29,25 +29,8 @@ public final class PaymentComponentsController: NSObject {
 
     private var giniHealth: GiniHealth
     private var paymentProviders: PaymentProviders = []
-
-    public init(giniHealth: GiniHealth) {
-        self.giniHealth = giniHealth
-        super.init()
-        DispatchQueue.main.async {
-            self.isLoading = true
-            self.giniHealth.checkIfAnyPaymentProviderAvailable { [weak self] result in
-                self?.isLoading = false
-                switch result {
-                case let .success(paymentProviders):
-                    self?.paymentProviders = paymentProviders
-                    self?.delegate?.didFetchedPaymentProviders(paymentProviders)
-                case let .failure(error):
-                    self?.delegate?.didReceivedErrorOnPaymentProviders(error)
-                }
-            }
-        }
-    }
-
+    private var installedPaymentProviders: PaymentProviders = []
+    
     var isLoading: Bool = false {
         didSet {
             delegate?.isLoadingStateChanged(isLoading: isLoading)
@@ -56,8 +39,37 @@ public final class PaymentComponentsController: NSObject {
 
     var paymentComponentView: PaymentComponentView!
 
-    public func obtainFirstPaymentProvider() -> PaymentProvider? {
-        paymentProviders.first
+    public init(giniHealth: GiniHealth) {
+        self.giniHealth = giniHealth
+    }
+    
+    public func loadPaymentProviders() {
+        self.isLoading = true
+        self.giniHealth.getBankingApps { [weak self] result in
+            self?.isLoading = false
+            switch result {
+            case let .success(paymentProviders):
+                self?.paymentProviders = paymentProviders
+                self?.checkInstalledPaymentProviders()
+                self?.delegate?.didFetchedPaymentProviders(paymentProviders)
+            case let .failure(error):
+                print("Couldn't load payment providers: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func checkInstalledPaymentProviders() {
+        for paymentProvider in paymentProviders {
+            if let url = URL(string: paymentProvider.appSchemeIOS) {
+                if UIApplication.shared.canOpenURL(url) {
+                    self.installedPaymentProviders.append(paymentProvider)
+                }
+            }
+        }
+    }
+
+    public func obtainFirstInstalledPaymentProvider() -> PaymentProvider? {
+        installedPaymentProviders.first
     }
 
     public func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {

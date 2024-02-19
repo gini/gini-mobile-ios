@@ -76,6 +76,7 @@ final class InvoicesListViewModel {
     }
     
     func viewDidLoad() {
+        paymentComponentsController.loadPaymentProviders()
     }
 
     private func setDispatchGroupNotifier() {
@@ -92,7 +93,9 @@ final class InvoicesListViewModel {
     private func showErrorsIfAny() {
         if !errors.isEmpty {
             let uniqueErrorMessages = Array(Set(errors))
-            coordinator.invoicesListViewController.showErrorAlertView(error: uniqueErrorMessages.joined(separator: ", "))
+            DispatchQueue.main.async {
+                self.coordinator.invoicesListViewController.showErrorAlertView(error: uniqueErrorMessages.joined(separator: ", "))
+            }
             errors = []
         }
     }
@@ -125,7 +128,7 @@ final class InvoicesListViewModel {
                         switch result {
                         case let .success(extractionResult):
                             Log("Successfully fetched extractions for id: \(createdDocument.id)", event: .success)
-                            let firstPaymentProvider = self?.paymentComponentsController.obtainFirstPaymentProvider()
+                            let firstPaymentProvider = self?.paymentComponentsController.obtainFirstInstalledPaymentProvider()
                             self?.invoices.append(DocumentWithExtractions(documentID: createdDocument.id,
                                                                           extractionResult: extractionResult, 
                                                                           paymentProvider: firstPaymentProvider))
@@ -181,9 +184,11 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
 extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
     func didFetchedPaymentProviders(_ paymentProviders: GiniHealthAPILibrary.PaymentProviders) {
         if !invoices.isEmpty && invoices.contains(where: { $0.paymentProvider == nil }) {
-            for index in 0..<invoices.count {
-                invoices[index].paymentProvider = paymentComponentsController.obtainFirstPaymentProvider()
-                coordinator.invoicesListViewController.reloadTableView()
+            DispatchQueue.main.async {
+                for index in 0..<self.invoices.count {
+                    self.invoices[index].paymentProvider = self.paymentComponentsController.obtainFirstInstalledPaymentProvider()
+                    self.coordinator.invoicesListViewController.reloadTableView()
+                }
             }
         }
     }
@@ -194,10 +199,12 @@ extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
     }
 
     func isLoadingStateChanged(isLoading: Bool) {
-        if isLoading {
-            self.coordinator.invoicesListViewController.showActivityIndicator()
-        } else {
-            self.coordinator.invoicesListViewController.hideActivityIndicator()
+        DispatchQueue.main.async {
+            if isLoading {
+                self.coordinator.invoicesListViewController.showActivityIndicator()
+            } else {
+                self.coordinator.invoicesListViewController.hideActivityIndicator()
+            }
         }
     }
 }
