@@ -21,16 +21,16 @@ final class PaymentProvidersBottomViewController: UIViewController {
         setupViewAttributes()
     }
 
-    func setupViewHierarchy(){
+    func setupViewHierarchy() {
         self.view.addSubview(bottomSheet)
     }
 
-    func setupViewAttributes(){
+    func setupViewAttributes() {
         self.view.backgroundColor = .clear
         bottomSheet.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    func setupLayout(){
+    func setupLayout() {
         NSLayoutConstraint.activate([
             bottomSheet.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             bottomSheet.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -(bottomSheet.viewModel.heightBottomSheet - 200)),

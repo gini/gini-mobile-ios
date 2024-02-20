@@ -86,9 +86,10 @@ class PaymentProvidersBottomView: UIView {
         setupViewHierarchy()
         setupViewAttributes()
         setupLayout()
+        setupPaymentsProvidersTableView()
     }
 
-    private func setupViewHierarchy(){
+    private func setupViewHierarchy() {
         self.addSubview(rectangleTopView)
         self.addSubview(titleView)
         titleView.addSubview(titleLabel)
@@ -98,17 +99,22 @@ class PaymentProvidersBottomView: UIView {
         self.addSubview(poweredByGiniView)
     }
 
-    private func setupViewAttributes(){
+    private func setupViewAttributes() {
         self.backgroundColor = viewModel.backgroundColor
         self.layer.cornerRadius = Constants.cornerRadiusView
     }
 
-    private func setupLayout(){
+    private func setupLayout() {
         setupTopRectangleConstraints()
         setupTitleViewConstraints()
         setupDescriptionConstraints()
         setupTableViewConstraints()
         setupPoweredByGiniConstraints()
+    }
+
+    private func setupPaymentsProvidersTableView() {
+        paymentProvidersTableView.register(PaymentProviderBottomTableViewCell.self, forCellReuseIdentifier: PaymentProviderBottomTableViewCell.identifier)
+        
     }
 
     private func setupTopRectangleConstraints() {
@@ -152,16 +158,17 @@ class PaymentProvidersBottomView: UIView {
             paymentProvidersTableView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.viewPaddingConstraint),
             self.trailingAnchor.constraint(equalTo: paymentProvidersTableView.trailingAnchor, constant: Constants.viewPaddingConstraint),
             paymentProvidersTableView.heightAnchor.constraint(equalToConstant: viewModel.heightTableView)
-//            self.bottomAnchor.constraint(equalTo: paymentProvidersTableView.bottomAnchor, constant: Constants.viewPaddingConstraint * 2)
         ])
     }
 
     private func setupPoweredByGiniConstraints() {
+        let poweredByGiniBottomAnchorConstraint = poweredByGiniView.bottomAnchor.constraint(equalTo: poweredByGiniView.bottomAnchor, constant: Constants.viewPaddingConstraint)
+        poweredByGiniBottomAnchorConstraint.priority = .required - 1
         NSLayoutConstraint.activate([
             poweredByGiniView.topAnchor.constraint(equalTo: paymentProvidersTableView.bottomAnchor, constant: Constants.viewPaddingConstraint),
             poweredByGiniView.heightAnchor.constraint(equalToConstant: poweredByGiniView.frame.height),
             poweredByGiniView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            poweredByGiniView.bottomAnchor.constraint(equalTo: poweredByGiniView.bottomAnchor, constant: Constants.viewPaddingConstraint)
+            poweredByGiniBottomAnchorConstraint
         ])
     }
 }
@@ -183,14 +190,20 @@ extension PaymentProvidersBottomView {
 
 extension PaymentProvidersBottomView: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.paymentProviders.count
+        viewModel.paymentProviders.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.backgroundColor = .blue
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: PaymentProviderBottomTableViewCell.identifier, for: indexPath) as? PaymentProviderBottomTableViewCell else {
+            return UITableViewCell()
+        }
+        let invoiceTableViewCellModel = viewModel.paymentProviders.map { PaymentProviderBottomTableViewCellModel(isSelected: false, isPaymentProviderInstalled: false, paymentProvider: $0) }[indexPath.row]
+//        invoiceTableViewCellModel.viewDelegate = viewModel
+        cell.cellViewModel = invoiceTableViewCellModel
         return cell
     }
     
-
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        56.0
+    }
 }
