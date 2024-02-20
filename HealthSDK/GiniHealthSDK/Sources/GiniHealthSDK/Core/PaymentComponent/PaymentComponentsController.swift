@@ -21,7 +21,7 @@ public protocol GiniDocument {
     /// The document's recipient name.
     var recipient: String? { get set }
     /// Boolean value that indicates if the document is payable. This is obtained by calling the checkIfDocumentIsPayable method.
-    var isPayable: Bool { get set }
+    var isPayable: Bool? { get set }
     /// Stored payment provider for each document/invoice. PaymentComponentsController obtains the payment provider and it's only stored here if the payment provider is installed
     var paymentProvider: PaymentProvider? { get set }
 }
@@ -47,47 +47,64 @@ public final class PaymentComponentsController: NSObject {
 
     private var giniHealth: GiniHealth
     private var paymentProviders: PaymentProviders = []
+    private var installedPaymentProviders: PaymentProviders = []
+    
+    /// reponsible for storing the loading state of the controller and passing it to the delegate listeners
+    var isLoading: Bool = false {
+        didSet {
+            delegate?.isLoadingStateChanged(isLoading: isLoading)
+        }
+    }
+    
+    var paymentComponentView: PaymentComponentView!
 
     /**
      Initializer of the Payment Component Controller class.
 
      - Parameters:
         - giniHealth: An instance of GiniHealth initialized with GiniHealthAPI.
-     - note: Instantiating this class also triggers the loading of available payment providers, which are stored internally for future use.
      - Returns:
         - instance of the payment component controller class
      */
     public init(giniHealth: GiniHealth) {
         self.giniHealth = giniHealth
-        super.init()
-        DispatchQueue.main.async {
-            self.isLoading = true
-            self.giniHealth.checkIfAnyPaymentProviderAvailable { [weak self] result in
-                self?.isLoading = false
-                switch result {
-                case let .success(paymentProviders):
-                    self?.paymentProviders = paymentProviders
-                    self?.delegate?.didFetchedPaymentProviders(paymentProviders)
-                case let .failure(error):
-                    self?.delegate?.didReceivedErrorOnPaymentProviders(error)
-                }
-            }
-        }
     }
-
-    /// reponsible for storing the loading state of the controller and passing it to the delegate listeners
-    private var isLoading: Bool = false {
-        didSet {
-            delegate?.isLoadingStateChanged(isLoading: isLoading)
-        }
-    }
-
+    
     /**
      Retrieve the first installed payment provider, if available.
      - Returns: a Payment Provider object.
      */
-    public func obtainFirstPaymentProvider() -> PaymentProvider? {
-        paymentProviders.first
+    public func obtainFirstInstalledPaymentProvider() -> PaymentProvider? {
+        installedPaymentProviders.first
+    }
+    
+    /**
+     Loads the payment providers list and stores them.
+     - note: Also triggers a function that checks if the payment providers are installed.
+     */
+    public func loadPaymentProviders() {
+        self.isLoading = true
+        self.giniHealth.getBankingApps { [weak self] result in
+            self?.isLoading = false
+            switch result {
+            case let .success(paymentProviders):
+                self?.paymentProviders = paymentProviders
+                self?.checkInstalledPaymentProviders()
+                self?.delegate?.didFetchedPaymentProviders(self?.installedPaymentProviders ?? [])
+            case let .failure(error):
+                print("Couldn't load payment providers: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func checkInstalledPaymentProviders() {
+        for paymentProvider in paymentProviders {
+            if let url = URL(string: paymentProvider.appSchemeIOS) {
+                if UIApplication.shared.canOpenURL(url) {
+                    self.installedPaymentProviders.append(paymentProvider)
+                }
+            }
+        }
     }
 
     /**
