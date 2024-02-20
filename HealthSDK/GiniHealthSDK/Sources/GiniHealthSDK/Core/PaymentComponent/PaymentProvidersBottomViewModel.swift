@@ -11,7 +11,7 @@ import GiniHealthAPILibrary
 final class PaymentProvidersBottomViewModel {
     
     var heightBottomSheet: CGFloat { 
-        480 + heightTableView
+        400 + heightTableView
     }
     var heightTableView: CGFloat {
         (CGFloat(paymentProviders.count) * 56.0) + (CGFloat(paymentProviders.count - 1) * 8)
