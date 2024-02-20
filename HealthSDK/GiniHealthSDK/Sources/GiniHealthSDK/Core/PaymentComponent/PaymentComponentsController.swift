@@ -75,7 +75,7 @@ public final class PaymentComponentsController: NSObject {
      - Returns: a Payment Provider object.
      */
     public func obtainFirstInstalledPaymentProvider() -> PaymentProvider? {
-        paymentProviders.first
+        installedPaymentProviders.first
     }
     
     /**
@@ -90,7 +90,7 @@ public final class PaymentComponentsController: NSObject {
             case let .success(paymentProviders):
                 self?.paymentProviders = paymentProviders
                 self?.checkInstalledPaymentProviders()
-                self?.delegate?.didFetchedPaymentProviders(paymentProviders)
+                self?.delegate?.didFetchedPaymentProviders(self?.installedPaymentProviders ?? [])
             case let .failure(error):
                 print("Couldn't load payment providers: \(error.localizedDescription)")
             }
