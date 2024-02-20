@@ -61,6 +61,12 @@ final class PaymentProvidersBottomViewModel {
         self.calculateHeights()
     }
     
+    func updatePaymentProvidersInstalledState() {
+        for index in 0 ..< paymentProviders.count {
+            self.paymentProviders[index].isInstalled = isPaymentProviderInstalled(paymentProvider: paymentProviders[index].paymentProvider)
+        }
+    }
+    
     private func calculateHeights() {
         let totalTableViewHeight = CGFloat(self.paymentProviders.count) * Constants.cellSizeHeight
         let totalBottomViewHeight = Constants.blankBottomViewHeight + totalTableViewHeight

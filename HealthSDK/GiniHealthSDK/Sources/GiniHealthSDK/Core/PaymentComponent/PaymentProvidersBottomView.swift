@@ -93,6 +93,7 @@ class PaymentProvidersBottomView: UIView {
         setupViewHierarchy()
         setupViewAttributes()
         setupLayout()
+        setupListeners()
     }
 
     private func setupViewHierarchy() {
@@ -120,6 +121,18 @@ class PaymentProvidersBottomView: UIView {
         setupDescriptionConstraints()
         setupTableViewConstraints()
         setupPoweredByGiniConstraints()
+    }
+    
+    private func setupListeners() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(willEnterForeground),
+                                               name: UIApplication.willEnterForegroundNotification,
+                                               object: nil)
+    }
+    
+    @objc private func willEnterForeground() {
+        viewModel.updatePaymentProvidersInstalledState()
+        paymentProvidersTableView.reloadData()
     }
 
     private func setupTopRectangleConstraints() {
