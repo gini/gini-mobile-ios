@@ -10,4 +10,5 @@
 "giniHealthSDKExample.uploadInvoices.button.title" = "↑ Rechnungen";
 "giniHealthSDKExample.cancel.button.title" = "Stornieren";
 "giniHealthSDKExample.invoicesList.missingInvoices.text" = "Keine Rechnungen";
-"giniHealthSDKExample.invoicesList.erorrUploading" = "Fehler beim Hochladen";
+"giniHealthSDKExample.invoicesList.error" = "Fehler";
+"giniHealthSDKExample.cancel.button.title" = "Stornieren";
