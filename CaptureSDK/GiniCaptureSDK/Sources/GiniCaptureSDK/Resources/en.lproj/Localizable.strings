@@ -185,7 +185,7 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.error.authentication.content" = "Upload failed due to authentication error. Please try again later.";
 
 "ginicapture.error.serverError.title" = "An unexpected error occurred.";
-"ginicapture.error.serverError.content" = "Something went wrong. There was no expected response from the service. Please retry shortly. We appreciate your understanding.";
+"ginicapture.error.serverError.content" = "Something went wrong. There was an unexpected response from the service. Please retry shortly. We appreciate your understanding.";
 
 "ginicapture.error.unexpected.title" = "An unexpected error occurred";
 "ginicapture.error.unexpected.content" = "Something went wrong. Please retry shortly. We appreciate your understanding.";
