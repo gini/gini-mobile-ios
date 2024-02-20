@@ -144,7 +144,7 @@
 "ginicapture.error.authentication.content" = "Der Upload des Dokuments ist fehlgeschlagen aufgrund eines Fehlers bei der Authentifizierung. Bitte versuchen Sie es später noch einmal.";
 
 "ginicapture.error.serverError.title" = "Ein unerwarteter Fehler ist aufgetreten.";
-"ginicapture.error.serverError.content" = "Etwas ist schiefgelaufen. Es gab keine erwartete Antwort vom Service. Bitte versuchen Sie es in Kürze erneut. Wir danken Ihnen für Ihr Verständnis.";
+"ginicapture.error.serverError.content" = "Etwas ist schiefgelaufen. Es gab eine unerwartete Antwort vom Service. Bitte versuchen Sie es in Kürze erneut. Wir danken Ihnen für Ihr Verständnis.";
 
 "ginicapture.error.unexpected.title" = "Ein unerwarteter Fehler ist aufgetreten.";
 "ginicapture.error.unexpected.content" = "Etwas ist schiefgelaufen. Bitte versuchen Sie es in Kürze erneut. Wir danken Ihnen für Ihr Verständnis.";
