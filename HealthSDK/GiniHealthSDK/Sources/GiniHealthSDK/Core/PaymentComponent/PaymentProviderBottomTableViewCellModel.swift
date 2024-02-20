@@ -41,13 +41,11 @@ final class PaymentProviderBottomTableViewCellModel {
     let notSelectedBankBorderColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark5,
                                                         darkModeColor: UIColor.GiniColors.light5).uiColor()
 
-    init(isSelected: Bool,
-         isPaymentProviderInstalled: Bool,
-         paymentProvider: PaymentProvider) {
-        self.isSelected = isSelected
-        self.isPaymentProviderInstalled = isPaymentProviderInstalled
-        self.bankImageIconData = paymentProvider.iconData
-        self.bankName = paymentProvider.name
+    init(paymentProvider: PaymentProviderAdditionalInfo) {
+        self.isSelected = paymentProvider.isSelected
+        self.isPaymentProviderInstalled = paymentProvider.isInstalled
+        self.bankImageIconData = paymentProvider.paymentProvider.iconData
+        self.bankName = paymentProvider.paymentProvider.name
 
         let defaultRegularFont: UIFont = GiniHealthConfiguration.shared.customFont.regular
         self.bankNameLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.body1] ?? defaultRegularFont

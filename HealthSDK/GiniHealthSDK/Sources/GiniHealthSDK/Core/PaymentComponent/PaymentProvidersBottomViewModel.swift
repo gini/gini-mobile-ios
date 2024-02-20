@@ -8,16 +8,27 @@
 import UIKit
 import GiniHealthAPILibrary
 
+public protocol PaymentProvidersBottomViewProtocol: AnyObject {
+    func didSelectPaymentProvider(paymentProvider: PaymentProvider)
+}
+
+struct PaymentProviderAdditionalInfo {
+    var isSelected: Bool
+    var isInstalled: Bool
+    let paymentProvider: PaymentProvider
+}
+
 final class PaymentProvidersBottomViewModel {
     
-    var heightBottomSheet: CGFloat { 
-        400 + heightTableView
-    }
-    var heightTableView: CGFloat {
-        (CGFloat(paymentProviders.count) * 56.0) + (CGFloat(paymentProviders.count - 1) * 8)
-    }
+    weak var viewDelegate: PaymentProvidersBottomViewProtocol?
 
-    var paymentProviders: PaymentProviders
+    var paymentProviders: [PaymentProviderAdditionalInfo] = []
+    var selectedPaymentProvider: PaymentProvider? = nil
+    
+    let maximumViewHeight: CGFloat = UIScreen.main.bounds.height - Constants.topPaddingView
+    let rowHeight: CGFloat = Constants.cellSizeHeight
+    var bottomViewHeight: CGFloat = 0
+    var heightTableView: CGFloat = 0
 
     let backgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark7,
                                              darkModeColor: UIColor.GiniColors.light7).uiColor()
@@ -36,15 +47,50 @@ final class PaymentProvidersBottomViewModel {
                                                         darkModeColor: UIColor.GiniColors.light3).uiColor()
     var descriptionLabelFont: UIFont
 
-    init(paymentProviders: PaymentProviders) {
-        self.paymentProviders = paymentProviders
-
+    init(paymentProviders: PaymentProviders, selectedPaymentProvider: PaymentProvider) {
+        self.selectedPaymentProvider = selectedPaymentProvider
+        
         let defaultRegularFont: UIFont = GiniHealthConfiguration.shared.customFont.regular
         let defaultBoldFont: UIFont = GiniHealthConfiguration.shared.customFont.regular
-        let defaultMediumFont: UIFont = GiniHealthConfiguration.shared.customFont.medium
 
         self.selectBankLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.subtitle1] ?? defaultBoldFont
         self.descriptionLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.caption1] ?? defaultRegularFont
+        
+        self.paymentProviders = paymentProviders.map({ PaymentProviderAdditionalInfo(isSelected: $0.id == selectedPaymentProvider.id, isInstalled: isPaymentProviderInstalled(paymentProvider: $0), paymentProvider: $0)})
+        
+        self.calculateHeights()
+    }
+    
+    private func calculateHeights() {
+        let totalTableViewHeight = CGFloat(self.paymentProviders.count) * Constants.cellSizeHeight
+        let totalBottomViewHeight = Constants.blankBottomViewHeight + totalTableViewHeight
+        if totalBottomViewHeight > maximumViewHeight {
+            self.heightTableView = maximumViewHeight - Constants.blankBottomViewHeight
+            self.bottomViewHeight = maximumViewHeight
+        } else {
+            self.heightTableView = totalTableViewHeight
+            self.bottomViewHeight = totalTableViewHeight + Constants.blankBottomViewHeight
+        }
     }
 
+    func paymentProvidersViewModel(paymentProvider: PaymentProviderAdditionalInfo) -> PaymentProviderBottomTableViewCellModel {
+        PaymentProviderBottomTableViewCellModel(paymentProvider: paymentProvider)
+    }
+    
+    private func isPaymentProviderInstalled(paymentProvider: PaymentProvider) -> Bool {
+        if let url = URL(string: paymentProvider.appSchemeIOS) {
+            if UIApplication.shared.canOpenURL(url) {
+                return true
+            }
+        }
+        return false
+    }
+}
+
+extension PaymentProvidersBottomViewModel {
+    enum Constants {
+        static let blankBottomViewHeight: CGFloat = 200.0
+        static let cellSizeHeight: CGFloat = 64.0
+        static let topPaddingView: CGFloat = 100.0
+    }
 }
