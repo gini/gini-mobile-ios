@@ -113,10 +113,10 @@ final class AppCoordinator: Coordinator {
         let screenAPICoordinator = ScreenAPICoordinator(configuration: giniConfiguration,
                                                         importedDocuments: pages?.map { $0.document },
                                                         client: GiniHealthAPILibrary.Client(id: self.client.id,
-                                                                                          secret: self.client.secret,
-                                                                                          domain: self.client.domain),
-                                                                                          documentMetadata: metadata,
-                                                                                          hardcodedInvoicesController: HardcodedInvoicesController())
+                                                                                            secret: self.client.secret,
+                                                                                            domain: self.client.domain),
+                                                                                            documentMetadata: metadata,
+                                                                                            hardcodedInvoicesController: HardcodedInvoicesController())
         
         screenAPICoordinator.delegate = self
         
