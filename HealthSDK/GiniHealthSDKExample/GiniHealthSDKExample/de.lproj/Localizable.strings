@@ -12,3 +12,4 @@
 "giniHealthSDKExample.invoicesList.missingInvoices.text" = "Keine Rechnungen";
 "giniHealthSDKExample.invoicesList.error" = "Fehler";
 "giniHealthSDKExample.cancel.button.title" = "Stornieren";
+

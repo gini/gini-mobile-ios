@@ -196,7 +196,7 @@ extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
     }
     
     func didReceivedErrorOnPaymentProviders(_ error: GiniHealthSDK.GiniHealthError) {
-        errors.append(error.localizedDescription)
+        errors.append(error.errorMessage)
         showErrorsIfAny()
     }
 
