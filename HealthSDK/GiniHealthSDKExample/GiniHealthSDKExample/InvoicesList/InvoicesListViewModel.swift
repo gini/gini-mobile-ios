@@ -216,6 +216,12 @@ extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
 
 extension InvoicesListViewModel: PaymentProvidersBottomViewProtocol {
     func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
-        print("paymentProvider selected: \(paymentProvider.name)")
+        for index in 0 ..< invoices.count {
+            invoices[index].paymentProvider = paymentProvider
+        }
+        DispatchQueue.main.async {
+            self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
+            self.coordinator.invoicesListViewController.reloadTableView()
+        }
     }
 }
