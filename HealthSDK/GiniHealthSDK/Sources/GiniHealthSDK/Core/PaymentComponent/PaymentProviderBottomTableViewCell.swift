@@ -22,22 +22,22 @@ class PaymentProviderBottomTableViewCell: UITableViewCell {
             setBorder(isSelected: cellViewModel.shouldShowSelectionIcon,
                       selectedBorderColor: cellViewModel.selectedBankBorderColor,
                       notSelectedBorderColor: cellViewModel.notSelectedBankBorderColor)
+            
+            appStoreImageView.isHidden = !cellViewModel.shouldShowAppStoreIcon
+            selectionIndicatorImageView.isHidden = !cellViewModel.shouldShowSelectionIcon
 
-            appStoreImageView.isHidden = cellViewModel.shouldShowAppStoreIcon
-            selectionIndicatorImageView.isHidden = cellViewModel.shouldShowSelectionIcon
-
-            appStoreBankNameSpacingConstraint.priority = cellViewModel.shouldShowAppStoreIcon ? .required - 1 : .required
-            selectionIndicatorBankNameSpacingConstraint.priority = cellViewModel.shouldShowSelectionIcon ? .required - 1 : .required
+            appStoreBankNameSpacingConstraint.priority = !cellViewModel.shouldShowAppStoreIcon ? .required - 1 : .required
+            selectionIndicatorBankNameSpacingConstraint.priority = !cellViewModel.shouldShowSelectionIcon ? .required - 1 : .required
         }
     }
 
-    @IBOutlet weak var cellView: UIView!
-    @IBOutlet weak var bankImageView: UIImageView!
-    @IBOutlet weak var bankNameLabel: UILabel!
-    @IBOutlet weak var appStoreImageView: UIImageView!
-    @IBOutlet weak var selectionIndicatorImageView: UIImageView!
-    @IBOutlet weak var appStoreBankNameSpacingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var selectionIndicatorBankNameSpacingConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var cellView: UIView!
+    @IBOutlet private weak var bankImageView: UIImageView!
+    @IBOutlet private weak var bankNameLabel: UILabel!
+    @IBOutlet private weak var appStoreImageView: UIImageView!
+    @IBOutlet private weak var selectionIndicatorImageView: UIImageView!
+    @IBOutlet private weak var appStoreBankNameSpacingConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var selectionIndicatorBankNameSpacingConstraint: NSLayoutConstraint!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -53,6 +53,12 @@ class PaymentProviderBottomTableViewCell: UITableViewCell {
             cellView.layer.borderColor = notSelectedBorderColor.cgColor
             cellView.layer.borderWidth = Constants.notSelectedBorderWidth
         }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        appStoreBankNameSpacingConstraint.priority = .required - 1
+        selectionIndicatorBankNameSpacingConstraint.priority = .required - 1
     }
 }
 

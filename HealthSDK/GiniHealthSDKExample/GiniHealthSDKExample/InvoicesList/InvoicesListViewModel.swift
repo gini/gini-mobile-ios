@@ -73,6 +73,7 @@ final class InvoicesListViewModel {
         self.documentService = documentService
         self.paymentComponentsController = paymentComponentsController
         self.paymentComponentsController.delegate = self
+        self.paymentComponentsController.bottomViewDelegate = self
     }
     
     func viewDidLoad() {
@@ -172,8 +173,10 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
         // MARK: TODO in next tasks
         guard let documentID else { return }
         Log("Tapped on Bank Picker on :\(documentID)", event: .success)
-        let paymentProvidersBottomView = paymentComponentsController.getPaymentsProvidersBottomViewController()
-        self.coordinator.invoicesListViewController.present(paymentProvidersBottomView, animated: true)
+        if let selectedPaymentProvider = invoices.first(where: { $0.documentID == documentID})?.paymentProvider {
+            let paymentProvidersBottomView = paymentComponentsController.getPaymentsProvidersBottomViewController(selectedPaymentProvider: selectedPaymentProvider)
+            self.coordinator.invoicesListViewController.present(paymentProvidersBottomView, animated: true)
+        }
     }
     
     func didTapOnPayInvoice(documentID: String?) {
@@ -208,5 +211,11 @@ extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
                 self.coordinator.invoicesListViewController.hideActivityIndicator()
             }
         }
+    }
+}
+
+extension InvoicesListViewModel: PaymentProvidersBottomViewProtocol {
+    func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
+        print("paymentProvider selected: \(paymentProvider.name)")
     }
 }

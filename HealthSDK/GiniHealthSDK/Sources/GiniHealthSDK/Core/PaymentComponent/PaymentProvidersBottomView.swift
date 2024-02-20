@@ -61,10 +61,17 @@ class PaymentProvidersBottomView: UIView {
     }()
 
     private lazy var paymentProvidersTableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.register(UINib(nibName: PaymentProviderBottomTableViewCell.identifier,
+                                 bundle: Bundle.resource),
+                           forCellReuseIdentifier: PaymentProviderBottomTableViewCell.identifier)
+        tableView.estimatedRowHeight = viewModel.rowHeight
+        tableView.rowHeight = viewModel.rowHeight
+        tableView.separatorStyle = .none
+        tableView.tableFooterView = UIView()
         return tableView
     }()
 
@@ -86,7 +93,6 @@ class PaymentProvidersBottomView: UIView {
         setupViewHierarchy()
         setupViewAttributes()
         setupLayout()
-        setupPaymentsProvidersTableView()
     }
 
     private func setupViewHierarchy() {
@@ -102,6 +108,10 @@ class PaymentProvidersBottomView: UIView {
     private func setupViewAttributes() {
         self.backgroundColor = viewModel.backgroundColor
         self.layer.cornerRadius = Constants.cornerRadiusView
+        
+        let isFullScreen = viewModel.bottomViewHeight >= viewModel.maximumViewHeight
+        paymentProvidersTableView.showsVerticalScrollIndicator = isFullScreen
+        paymentProvidersTableView.isScrollEnabled = isFullScreen
     }
 
     private func setupLayout() {
@@ -110,11 +120,6 @@ class PaymentProvidersBottomView: UIView {
         setupDescriptionConstraints()
         setupTableViewConstraints()
         setupPoweredByGiniConstraints()
-    }
-
-    private func setupPaymentsProvidersTableView() {
-        paymentProvidersTableView.register(PaymentProviderBottomTableViewCell.self, forCellReuseIdentifier: PaymentProviderBottomTableViewCell.identifier)
-        
     }
 
     private func setupTopRectangleConstraints() {
@@ -171,6 +176,16 @@ class PaymentProvidersBottomView: UIView {
             poweredByGiniBottomAnchorConstraint
         ])
     }
+    
+    private func openPaymentProvidersAppStoreLink(urlString: String?) {
+        guard let urlString = urlString else {
+            print("AppStore link unavailable for this payment provider")
+            return
+        }
+        if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
+    }
 }
 
 extension PaymentProvidersBottomView {
@@ -194,16 +209,24 @@ extension PaymentProvidersBottomView: UITableViewDataSource, UITableViewDelegate
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: PaymentProviderBottomTableViewCell.identifier, for: indexPath) as? PaymentProviderBottomTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: PaymentProviderBottomTableViewCell.identifier, 
+                                                       for: indexPath) as? PaymentProviderBottomTableViewCell else {
             return UITableViewCell()
         }
-        let invoiceTableViewCellModel = viewModel.paymentProviders.map { PaymentProviderBottomTableViewCellModel(isSelected: false, isPaymentProviderInstalled: false, paymentProvider: $0) }[indexPath.row]
-//        invoiceTableViewCellModel.viewDelegate = viewModel
+        let invoiceTableViewCellModel = viewModel.paymentProvidersViewModel(paymentProvider: viewModel.paymentProviders[indexPath.row])
         cell.cellViewModel = invoiceTableViewCellModel
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        56.0
+        viewModel.rowHeight
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if viewModel.paymentProviders[indexPath.row].isInstalled {
+            viewModel.viewDelegate?.didSelectPaymentProvider(paymentProvider: viewModel.paymentProviders[indexPath.row].paymentProvider)
+        } else {
+            openPaymentProvidersAppStoreLink(urlString: viewModel.paymentProviders[indexPath.row].paymentProvider.appStoreUrlIOS)
+        }
     }
 }

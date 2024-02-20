@@ -44,6 +44,8 @@ public final class PaymentComponentsController: NSObject {
     public weak var delegate: PaymentComponentsControllerProtocol?
     /// handling the Payment Component view delegate
     public weak var viewDelegate: PaymentComponentViewProtocol?
+    /// handling the Payment Bottom view delegate
+    public weak var bottomViewDelegate: PaymentProvidersBottomViewProtocol?
 
     private var giniHealth: GiniHealth
     private var paymentProviders: PaymentProviders = []
@@ -136,9 +138,11 @@ public final class PaymentComponentsController: NSObject {
         return paymentComponentView
     }
 
-    public func getPaymentsProvidersBottomViewController() -> UIViewController {
+    public func getPaymentsProvidersBottomViewController(selectedPaymentProvider: PaymentProvider) -> UIViewController {
         let paymentProvidersBottomView = PaymentProvidersBottomView()
-        let paymentProvidersBottomViewModel = PaymentProvidersBottomViewModel(paymentProviders: paymentProviders)
+        let paymentProvidersBottomViewModel = PaymentProvidersBottomViewModel(paymentProviders: paymentProviders,
+                                                                              selectedPaymentProvider: selectedPaymentProvider)
+        paymentProvidersBottomViewModel.viewDelegate = bottomViewDelegate
         paymentProvidersBottomView.viewModel = paymentProvidersBottomViewModel
         let paymentProvidersBottomViewController = PaymentProvidersBottomViewController()
         paymentProvidersBottomViewController.bottomSheet = paymentProvidersBottomView
@@ -157,5 +161,11 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     
     public func didTapOnPayInvoice(documentID: String?) {
         viewDelegate?.didTapOnPayInvoice()
+    }
+}
+
+extension PaymentComponentsController: PaymentProvidersBottomViewProtocol {
+    public func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
+        bottomViewDelegate?.didSelectPaymentProvider(paymentProvider: paymentProvider)
     }
 }
