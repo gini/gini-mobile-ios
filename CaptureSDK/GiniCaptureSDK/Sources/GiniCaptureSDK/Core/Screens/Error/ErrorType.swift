@@ -16,7 +16,7 @@ import GiniBankAPILibrary
  - serverError: Error returned by the server.
  - authentication: Error related to authentication.
  - unexpected: Unexpected error that is not covered by the other cases.
- - maintenance: Error indicating that the system is under maintenance.
+ - maintenance: Error returned when the system is under maintenance.
  */
 
 @objc public enum ErrorType: Int {
