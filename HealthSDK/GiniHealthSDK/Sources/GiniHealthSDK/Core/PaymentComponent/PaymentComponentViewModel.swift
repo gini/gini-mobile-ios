@@ -53,6 +53,7 @@ extension PaymentComponentViewProtocol {
 
 final class PaymentComponentViewModel {
     private var giniHealth: GiniHealth
+    var giniHealthConfiguration = GiniHealthConfiguration.shared
 
     let backgroundColor: UIColor = UIColor.from(giniColor: GiniColor(lightModeColor: .clear, 
                                                                      darkModeColor: .clear))
@@ -70,13 +71,9 @@ final class PaymentComponentViewModel {
     let selectYourBankLabelText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.selectYourBank.label", comment: "")
     let selectYourBankLabelFont: UIFont
     let selectYourBankAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark1,
-                                                   darkModeColor: UIColor.GiniColors.light1).uiColor()
+                                                       darkModeColor: UIColor.GiniColors.light1).uiColor()
     
-    // Select bank picker
-    let selectBankPickerViewBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark6, 
-                                                                 darkModeColor: UIColor.GiniColors.light6).uiColor()
-    let selectBankPickerViewBorderColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark5,
-                                                             darkModeColor: UIColor.GiniColors.light5).uiColor()
+    // Bank image icon
     private var bankImageIconData: Data?
     var bankImageIcon: UIImage {
         if let bankImageIconData {
@@ -85,6 +82,7 @@ final class PaymentComponentViewModel {
         return UIImage()
     }
 
+    // Bank name label
     private var bankName: String?
     var bankNameLabelText: String {
         if let bankName, !bankName.isEmpty {
@@ -92,38 +90,19 @@ final class PaymentComponentViewModel {
         }
         return placeholderBankNameText
     }
-    var bankNameLabelFont: UIFont
-    let bankNameLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark1,
-                                                      darkModeColor: UIColor.GiniColors.light1).uiColor()
     private let placeholderBankNameText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.selectBank.label", comment: "")
+    
     let chevronDownIconName: String = "iconChevronDown"
     let chevronDownIconColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.light7,
                                                   darkModeColor: UIColor.GiniColors.light1).uiColor()
+    
+    // Payment provider colors
+    var paymentProviderColors: ProviderColors?
 
-    // pay invoice view background color
-    var payInvoiceViewBackgroundColor: UIColor {
-        if let payInvoiceViewBackgroundColorString, let backgroundHexColor = payInvoiceViewBackgroundColorString.toColor() {
-            return isPaymentProviderInstalled ? backgroundHexColor : defaultPayInvoiceViewBackgroundColor.withAlphaComponent(0.4)
-        }
-        return defaultPayInvoiceViewBackgroundColor.withAlphaComponent(0.4)
-    }
-    private let payInvoiceViewBackgroundColorString: String?
-    private let defaultPayInvoiceViewBackgroundColor: UIColor = UIColor.GiniColors.accent1
-
-    // pay invoice view text color
+    // Pay invoice label
     let payInvoiceLabelText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.payInvoice.label", comment: "")
-    var payInvoiceLabelAccentColor: UIColor {
-        if let payInvoiceLabelAccentColorString, let textHexColor = payInvoiceLabelAccentColorString.toColor() {
-            return textHexColor
-        }
-        return defaultpayInvoiceLabelAccentColorString
-    }
-    private let payInvoiceLabelAccentColorString: String?
-    private let defaultpayInvoiceLabelAccentColorString: UIColor = UIColor.GiniColors.dark7
 
-    // pay invoice view font
-    let payInvoiceLabelFont: UIFont
-
+    // Payment provider installation status
     var isPaymentProviderInstalled: Bool {
         if let paymentProviderScheme, let url = URL(string: paymentProviderScheme), UIApplication.shared.canOpenURL(url) {
             return true
@@ -134,23 +113,19 @@ final class PaymentComponentViewModel {
 
     weak var delegate: PaymentComponentViewProtocol?
     
-    init(paymentProvider: PaymentProvider?,
-         giniHealth: GiniHealth) {
+    init(paymentProvider: PaymentProvider?, giniHealth: GiniHealth) {
         self.giniHealth = giniHealth
 
-        let defaultRegularFont: UIFont = GiniHealthConfiguration.shared.customFont.regular
-        let defaultBoldFont: UIFont = GiniHealthConfiguration.shared.customFont.regular
-        let defaultMediumFont: UIFont = GiniHealthConfiguration.shared.customFont.medium
-        self.moreInformationLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.caption1] ?? defaultRegularFont
-        self.moreInformationLabelLinkFont = GiniHealthConfiguration.shared.textStyleFonts[.linkBold] ?? defaultBoldFont
-        self.selectYourBankLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.subtitle2] ?? defaultMediumFont
-        self.bankNameLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.input] ?? defaultMediumFont
-        self.payInvoiceLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.button] ?? defaultBoldFont
+        let defaultRegularFont: UIFont = giniHealthConfiguration.customFont.regular
+        let defaultBoldFont: UIFont = giniHealthConfiguration.customFont.regular
+        let defaultMediumFont: UIFont = giniHealthConfiguration.customFont.medium
+        self.moreInformationLabelFont = giniHealthConfiguration.textStyleFonts[.caption1] ?? defaultRegularFont
+        self.moreInformationLabelLinkFont = giniHealthConfiguration.textStyleFonts[.linkBold] ?? defaultBoldFont
+        self.selectYourBankLabelFont = giniHealthConfiguration.textStyleFonts[.subtitle2] ?? defaultMediumFont
         
         self.bankImageIconData = paymentProvider?.iconData
         self.bankName = paymentProvider?.name
-        self.payInvoiceViewBackgroundColorString = paymentProvider?.colors.background
-        self.payInvoiceLabelAccentColorString = paymentProvider?.colors.text
+        self.paymentProviderColors = paymentProvider?.colors
         self.paymentProviderScheme = paymentProvider?.appSchemeIOS
     }
     
@@ -166,4 +141,3 @@ final class PaymentComponentViewModel {
         delegate?.didTapOnPayInvoice()
     }
 }
-
