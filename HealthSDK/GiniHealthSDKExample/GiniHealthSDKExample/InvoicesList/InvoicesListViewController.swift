@@ -1,4 +1,5 @@
 //
+//
 //  InvoicesListViewController.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
@@ -54,6 +55,7 @@ final class InvoicesListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.viewDidLoad()
     }
     
     override func loadView() {
@@ -88,10 +90,20 @@ final class InvoicesListViewController: UIViewController {
                                                 target: self,
                                                 action: #selector(uploadInvoicesButtonTapped))
         self.navigationItem.rightBarButtonItem = uploadInvoiceItem
+
+        let cancelItem = UIBarButtonItem(title: viewModel.cancelText,
+                                         style: .plain,
+                                         target: self,
+                                         action: #selector(dismissViewControllerTapped))
+        self.navigationItem.leftBarButtonItem = cancelItem
     }
     
     @objc func uploadInvoicesButtonTapped() {
         viewModel.uploadInvoices()
+    }
+
+    @objc func dismissViewControllerTapped() {
+        self.dismiss(animated: true)
     }
 }
 
@@ -104,7 +116,8 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
         guard let cell = tableView.dequeueReusableCell(withIdentifier: InvoiceTableViewCell.identifier, for: indexPath) as? InvoiceTableViewCell else {
             return UITableViewCell()
         }
-        cell.cellViewModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0) }[indexPath.row]
+        cell.cellViewModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0,
+                                                                                paymentComponentsController: viewModel.paymentComponentsController) }[indexPath.row]
         return cell
     }
     
@@ -139,7 +152,7 @@ extension InvoicesListViewController: InvoicesListViewControllerProtocol {
     }
     
     func showErrorAlertView(error: String) {
-        let alertController = UIAlertController(title: viewModel.errorUploadingTitleText, 
+        let alertController = UIAlertController(title: viewModel.errorTitleText, 
                                                 message: error,
                                                 preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: .default))
