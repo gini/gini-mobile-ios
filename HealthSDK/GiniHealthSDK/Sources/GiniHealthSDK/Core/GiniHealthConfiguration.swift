@@ -222,6 +222,33 @@ public final class GiniHealthConfiguration: NSObject {
      */
     @objc public var infoBarCornerRadius: CGFloat = 12.0
     
+    // MARK: - Button configuration options
+    /**
+     A configuration that defines the appearance of the primary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different screens: `PaymentComponentView`
+     */
+    public lazy var primaryButtonConfiguration = ButtonConfiguration(backgroundColor: .GiniColors.accent1,
+                                                                     borderColor: .clear,
+                                                                     titleColor: .white,
+                                                                     shadowColor: .clear,
+                                                                     cornerRadius: 12,
+                                                                     borderWidth: 0,
+                                                                     shadowRadius: 0,
+                                                                     withBlurEffect: false)
+    /**
+     A configuration that defines the appearance of the secondary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different screens: `PaymentComponentView`
+     */
+    public lazy var secondaryButtonConfiguration = ButtonConfiguration(backgroundColor: GiniColor(lightModeColor: UIColor.GiniColors.dark6,
+                                                                                                  darkModeColor: UIColor.GiniColors.light6).uiColor(),
+                                                                       borderColor: GiniColor(lightModeColor: UIColor.GiniColors.dark5,
+                                                                                              darkModeColor: UIColor.GiniColors.light5).uiColor(),
+                                                                       titleColor: GiniColor(lightModeColor: UIColor.GiniColors.dark1,
+                                                                                             darkModeColor: UIColor.GiniColors.light1).uiColor(),
+                                                                       shadowColor: .clear,
+                                                                       cornerRadius: 12,
+                                                                       borderWidth: 1,
+                                                                       shadowRadius: 0,
+                                                                       withBlurEffect: true)
+    
     // MARK: - Shared properties
     
     /**
@@ -229,16 +256,16 @@ public final class GiniHealthConfiguration: NSObject {
      */
     
     @objc public lazy var customFont = GiniFont(regular: UIFont.systemFont(ofSize: 14,
-                                                                                                 weight: .regular),
-                                                                      bold: UIFont.systemFont(ofSize: 14,
-                                                                                              weight: .bold),
-                                                                      light: UIFont.systemFont(ofSize: 14,
-                                                                                               weight: .light),
-                                                                      thin: UIFont.systemFont(ofSize: 14,
-                                                                                              weight: .thin), 
-                                                                      medium: UIFont.systemFont(ofSize: 14,
-                                                                                                weight: .medium),
-                                                                      isEnabled: false)
+                                                                           weight: .regular),
+                                                bold: UIFont.systemFont(ofSize: 14,
+                                                                        weight: .bold),
+                                                light: UIFont.systemFont(ofSize: 14,
+                                                                         weight: .light),
+                                                thin: UIFont.systemFont(ofSize: 14,
+                                                                        weight: .thin),
+                                                medium: UIFont.systemFont(ofSize: 14,
+                                                                          weight: .medium),
+                                                isEnabled: false)
     /**
      Sets the color of the loading indicator to the specified color.
      */
