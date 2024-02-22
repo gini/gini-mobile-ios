@@ -1,12 +1,25 @@
 {
   "images" : [
     {
-      "filename" : "Group.pdf",
+      "filename" : "Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917 2.svg",
       "idiom" : "universal"
+    },
+    {
+      "filename" : "Download_on_the_App_Store_Badge_DE_RGB_blk_092917.svg",
+      "idiom" : "universal",
+      "locale" : "de"
+    },
+    {
+      "filename" : "Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917 1.svg",
+      "idiom" : "universal",
+      "locale" : "en"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "localizable" : true
   }
 }
