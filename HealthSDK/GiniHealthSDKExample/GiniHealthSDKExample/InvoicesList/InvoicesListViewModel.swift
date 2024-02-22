@@ -174,8 +174,9 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
         guard let documentID else { return }
         Log("Tapped on Bank Picker on :\(documentID)", event: .success)
         if let selectedPaymentProvider = invoices.first(where: { $0.documentID == documentID})?.paymentProvider {
-            let paymentProvidersBottomView = paymentComponentsController.getPaymentsProvidersBottomViewController(selectedPaymentProvider: selectedPaymentProvider)
-            self.coordinator.invoicesListViewController.present(paymentProvidersBottomView, animated: true)
+            let paymentProvidersBottomViewController = paymentComponentsController.getPaymentsProvidersBottomViewController(selectedPaymentProvider: selectedPaymentProvider)
+            paymentProvidersBottomViewController.modalPresentationStyle = .overFullScreen
+            self.coordinator.invoicesListViewController.present(paymentProvidersBottomViewController, animated: true)
         }
     }
     
@@ -222,6 +223,12 @@ extension InvoicesListViewModel: PaymentProvidersBottomViewProtocol {
         DispatchQueue.main.async {
             self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
             self.coordinator.invoicesListViewController.reloadTableView()
+        }
+    }
+    
+    func didTapOnClose() {
+        DispatchQueue.main.async {
+            self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
         }
     }
 }

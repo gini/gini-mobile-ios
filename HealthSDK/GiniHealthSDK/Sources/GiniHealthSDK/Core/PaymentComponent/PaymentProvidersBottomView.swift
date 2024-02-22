@@ -47,6 +47,8 @@ class PaymentProvidersBottomView: UIView {
         let imageView = UIImageView(image: viewModel.closeTitleIcon)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.frame = CGRect(x: 0, y: 0, width: Constants.closeIconSize, height: Constants.closeIconSize)
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnCloseIcon)))
         return imageView
     }()
 
@@ -188,6 +190,11 @@ class PaymentProvidersBottomView: UIView {
             poweredByGiniView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             poweredByGiniBottomAnchorConstraint
         ])
+    }
+    
+    @objc
+    private func tapOnCloseIcon() {
+        viewModel.didTapOnClose()
     }
     
     private func openPaymentProvidersAppStoreLink(urlString: String?) {
