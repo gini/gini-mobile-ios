@@ -40,7 +40,7 @@ final class PaymentComponentView: UIView {
     private lazy var moreInformationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = viewModel.moreInformationAccentColor
+        label.textColor = viewModel.moreInformationLabelTextColor
         label.font = viewModel.moreInformationLabelFont
         label.numberOfLines = 0
         label.text = viewModel.moreInformationLabelText
@@ -48,7 +48,7 @@ final class PaymentComponentView: UIView {
         let moreInformationActionableAttributtedString = NSMutableAttributedString(string: viewModel.moreInformationLabelText)
         let moreInformationPartString = (viewModel.moreInformationLabelText as NSString).range(of: viewModel.moreInformationActionablePartText)
         moreInformationActionableAttributtedString.addAttribute(.foregroundColor,
-                                                                value: viewModel.moreInformationAccentColor,
+                                                                value: viewModel.moreInformationLabelTextColor,
                                                                 range: moreInformationPartString)
         moreInformationActionableAttributtedString.addAttribute(NSAttributedString.Key.underlineStyle,
                                                                 value: NSUnderlineStyle.single.rawValue,

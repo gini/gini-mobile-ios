@@ -35,6 +35,8 @@ final class PaymentComponentViewModel {
 
     // More information part
     let moreInformationAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark2, 
+                                                        darkModeColor: UIColor.GiniColors.light2).uiColor()
+    let moreInformationLabelTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark4,
                                                         darkModeColor: UIColor.GiniColors.light4).uiColor()
     let moreInformationLabelText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.moreInformation.label", comment: "")
     let moreInformationActionablePartText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.moreInformation.underlined.part", comment: "")
