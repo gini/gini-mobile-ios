@@ -164,10 +164,10 @@ dispatchGroup.notify(queue: .main) {
 }
 ```
 
-#### 4. You have to load the payment providers by calling the `loadPaymentProviders` function from the `PaymentComponentsController` and listen to the `PaymentComponentsControllerProtocol`. Store for each invoice/document, in the `paymentProvider` variable, the first payment provider from the list. 
+#### 4. You have to load the payment providers by calling the `loadPaymentProviders` function from the `PaymentComponentsController` and listen to the `PaymentComponentsControllerProtocol`. Store for each invoice/document, in the `paymentProvider` variable, the default payment provider from the list. If there isn't one already selected, function will provide the first installed payment provider.
 That can be achieved by calling:
 ```swift
-public func obtainFirstPaymentProvider() -> PaymentProvider?
+public func obtainDefaultPaymentProvider() -> PaymentProvider?
 ```
 > - We effectively manage situations where there are no payment providers available.
 > - Based on the payment provider's colors, the `UIView` will automatically change it's color.

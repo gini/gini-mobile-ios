@@ -73,11 +73,11 @@ public final class PaymentComponentsController: NSObject {
     }
     
     /**
-     Retrieve the first installed payment provider, if available.
+     Retrieve the default installed payment provider, if available.
      - Returns: a Payment Provider object.
      */
-    public func obtainFirstInstalledPaymentProvider() -> PaymentProvider? {
-        installedPaymentProviders.first
+    public func obtainDefaultInstalledPaymentProvider() -> PaymentProvider? {
+        getDefaultPaymentProvider() ?? installedPaymentProviders.first
     }
     
     /**
@@ -107,6 +107,29 @@ public final class PaymentComponentsController: NSObject {
                 }
             }
         }
+    }
+    
+    private func storeDefaultPaymentProvider(paymentProvider: PaymentProvider) {
+        do {
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(paymentProvider)
+            UserDefaults.standard.set(data, forKey: Constants.kDefaultPaymentProvider)
+        } catch {
+            print("Unable to encode payment provider: (\(error))")
+        }
+    }
+    
+    private func getDefaultPaymentProvider() -> PaymentProvider? {
+        if let data = UserDefaults.standard.data(forKey: Constants.kDefaultPaymentProvider) {
+            do {
+                let decoder = JSONDecoder()
+                let paymentProvider = try decoder.decode(PaymentProvider.self, from: data)
+                return paymentProvider
+            } catch {
+                print("Unable to decode payment provider: (\(error))")
+            }
+        }
+        return nil
     }
 
     /**
@@ -166,10 +189,17 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
 
 extension PaymentComponentsController: PaymentProvidersBottomViewProtocol {
     public func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
+        storeDefaultPaymentProvider(paymentProvider: paymentProvider)
         bottomViewDelegate?.didSelectPaymentProvider(paymentProvider: paymentProvider)
     }
     
     public func didTapOnClose() {
         bottomViewDelegate?.didTapOnClose()
+    }
+}
+
+extension PaymentComponentsController {
+    private enum Constants {
+        static let kDefaultPaymentProvider = "defaultPaymentProvider"
     }
 }

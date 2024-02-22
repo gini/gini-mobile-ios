@@ -59,19 +59,23 @@ final class PaymentProvidersBottomViewModel {
         self.selectBankLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.subtitle1] ?? defaultBoldFont
         self.descriptionLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.caption1] ?? defaultRegularFont
         
-        self.paymentProviders = paymentProviders.map({ PaymentProviderAdditionalInfo(isSelected: $0.id == selectedPaymentProvider.id, isInstalled: isPaymentProviderInstalled(paymentProvider: $0), paymentProvider: $0)})
+        self.paymentProviders = paymentProviders
+            .filter({ $0.appStoreUrlIOS != nil })
+            .map({ PaymentProviderAdditionalInfo(isSelected: $0.id == selectedPaymentProvider.id,
+                                                 isInstalled: isPaymentProviderInstalled(paymentProvider: $0),
+                                                 paymentProvider: $0)})
         
         self.calculateHeights()
     }
     
     func updatePaymentProvidersInstalledState() {
         for index in 0 ..< paymentProviders.count {
-            self.paymentProviders[index].isInstalled = isPaymentProviderInstalled(paymentProvider: paymentProviders[index].paymentProvider)
+            paymentProviders[index].isInstalled = isPaymentProviderInstalled(paymentProvider: paymentProviders[index].paymentProvider)
         }
     }
     
     private func calculateHeights() {
-        let totalTableViewHeight = CGFloat(self.paymentProviders.count) * Constants.cellSizeHeight
+        let totalTableViewHeight = CGFloat(paymentProviders.count) * Constants.cellSizeHeight
         let totalBottomViewHeight = Constants.blankBottomViewHeight + totalTableViewHeight
         if totalBottomViewHeight > maximumViewHeight {
             self.heightTableView = maximumViewHeight - Constants.blankBottomViewHeight
