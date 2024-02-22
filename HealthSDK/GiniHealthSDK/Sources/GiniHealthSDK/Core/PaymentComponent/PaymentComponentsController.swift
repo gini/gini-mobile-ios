@@ -168,4 +168,8 @@ extension PaymentComponentsController: PaymentProvidersBottomViewProtocol {
     public func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
         bottomViewDelegate?.didSelectPaymentProvider(paymentProvider: paymentProvider)
     }
+    
+    public func didTapOnClose() {
+        bottomViewDelegate?.didTapOnClose()
+    }
 }

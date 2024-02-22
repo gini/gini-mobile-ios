@@ -10,6 +10,7 @@ import GiniHealthAPILibrary
 
 public protocol PaymentProvidersBottomViewProtocol: AnyObject {
     func didSelectPaymentProvider(paymentProvider: PaymentProvider)
+    func didTapOnClose()
 }
 
 struct PaymentProviderAdditionalInfo {
@@ -34,6 +35,8 @@ final class PaymentProvidersBottomViewModel {
                                              darkModeColor: UIColor.GiniColors.light7).uiColor()
     let rectangleColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark5,
                                             darkModeColor: UIColor.GiniColors.light5).uiColor()
+    let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.light7,
+                                                    darkModeColor: UIColor.GiniColors.dark7).uiColor().withAlphaComponent(0.1)
 
     let selectBankTitleText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.selectBank.label", comment: "")
     let selectBankLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark2,
@@ -81,6 +84,10 @@ final class PaymentProvidersBottomViewModel {
 
     func paymentProvidersViewModel(paymentProvider: PaymentProviderAdditionalInfo) -> PaymentProviderBottomTableViewCellModel {
         PaymentProviderBottomTableViewCellModel(paymentProvider: paymentProvider)
+    }
+    
+    func didTapOnClose() {
+        viewDelegate?.didTapOnClose()
     }
     
     private func isPaymentProviderInstalled(paymentProvider: PaymentProvider) -> Bool {

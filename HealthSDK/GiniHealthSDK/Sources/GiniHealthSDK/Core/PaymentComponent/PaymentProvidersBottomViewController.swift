@@ -16,19 +16,29 @@ final class PaymentProvidersBottomViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .blue
         setupViewHierarchy()
         setupViewAttributes()
     }
 
     func setupViewHierarchy() {
-        self.view.addSubview(bottomSheet)
+        view.addSubview(bottomSheet)
     }
 
     func setupViewAttributes() {
-        self.view.backgroundColor = .clear
-        self.view.roundCorners(corners: .allCorners, radius: 40)
+        definesPresentationContext = true
+        view.backgroundColor = bottomSheet.viewModel.dimmingBackgroundColor
+        
         bottomSheet.translatesAutoresizingMaskIntoConstraints = false
+        
+        let gesture = UISwipeGestureRecognizer(target: self, action: #selector(dismissViewController))
+        gesture.direction = .down
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(gesture)
+    }
+    
+    @objc
+    private func dismissViewController() {
+        bottomSheet.viewModel.didTapOnClose()
     }
 
     func setupLayout() {
