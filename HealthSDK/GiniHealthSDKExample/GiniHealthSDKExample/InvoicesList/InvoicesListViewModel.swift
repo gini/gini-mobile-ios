@@ -129,10 +129,10 @@ final class InvoicesListViewModel {
                         switch result {
                         case let .success(extractionResult):
                             Log("Successfully fetched extractions for id: \(createdDocument.id)", event: .success)
-                            let firstPaymentProvider = self?.paymentComponentsController.obtainFirstInstalledPaymentProvider()
+                            let defaultPaymentProvider = self?.paymentComponentsController.obtainDefaultInstalledPaymentProvider()
                             self?.invoices.append(DocumentWithExtractions(documentID: createdDocument.id,
                                                                           extractionResult: extractionResult, 
-                                                                          paymentProvider: firstPaymentProvider))
+                                                                          paymentProvider: defaultPaymentProvider))
                             self?.paymentComponentsController.checkIfDocumentIsPayable(docId: createdDocument.id, completion: { [weak self] result in
                                 switch result {
                                 case let .success(isPayable):
@@ -192,7 +192,7 @@ extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
         if !invoices.isEmpty && invoices.contains(where: { $0.paymentProvider == nil }) {
             DispatchQueue.main.async {
                 for index in 0..<self.invoices.count {
-                    self.invoices[index].paymentProvider = self.paymentComponentsController.obtainFirstInstalledPaymentProvider()
+                    self.invoices[index].paymentProvider = self.paymentComponentsController.obtainDefaultInstalledPaymentProvider()
                     self.coordinator.invoicesListViewController.reloadTableView()
                 }
             }
@@ -222,6 +222,7 @@ extension InvoicesListViewModel: PaymentProvidersBottomViewProtocol {
         }
         DispatchQueue.main.async {
             self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
+            self.hardcodedInvoicesController.storeInvoicesWithExtractions(invoices: self.invoices)
             self.coordinator.invoicesListViewController.reloadTableView()
         }
     }
