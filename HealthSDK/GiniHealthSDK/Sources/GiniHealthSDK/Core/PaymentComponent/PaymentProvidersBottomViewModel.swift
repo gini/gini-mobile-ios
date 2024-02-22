@@ -36,7 +36,7 @@ final class PaymentProvidersBottomViewModel {
     let rectangleColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark5,
                                             darkModeColor: UIColor.GiniColors.light5).uiColor()
     let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.light7,
-                                                    darkModeColor: UIColor.GiniColors.dark7).uiColor().withAlphaComponent(0.1)
+                                                    darkModeColor: UIColor.GiniColors.dark7).uiColor().withAlphaComponent(0.3)
 
     let selectBankTitleText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.selectBank.label", comment: "")
     let selectBankLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark2,
