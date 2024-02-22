@@ -24,3 +24,9 @@
 "ginihealth.alert.ok.title" = "OK";
 
 "ginihealth.bankprovidersscreen.title" = "Select Banking-App";
+
+"ginihealth.paymentcomponent.moreInformation.label" = "Transfer payment data to the banking app and pay there directly. More information.";
+"ginihealth.paymentcomponent.moreInformation.underlined.part" = "More information.";
+"ginihealth.paymentcomponent.selectBank.label" = "Select your bank";
+"ginihealth.paymentcomponent.payInvoice.label" = "Pay the invoice";
+"ginihealth.paymentcomponent.poweredByGini.label" = "Payment powered by";

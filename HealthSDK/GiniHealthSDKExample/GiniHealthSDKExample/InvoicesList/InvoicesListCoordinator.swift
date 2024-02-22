@@ -7,6 +7,7 @@
 
 import UIKit
 import GiniHealthAPILibrary
+import GiniHealthSDK
 
 final class InvoicesListCoordinator: NSObject, Coordinator {
     
@@ -18,12 +19,16 @@ final class InvoicesListCoordinator: NSObject, Coordinator {
     var invoicesListNavigationController: UINavigationController!
     var invoicesListViewController: InvoicesListViewController!
     
-    func start(documentService: DefaultDocumentService, hardcodedInvoicesController: HardcodedInvoicesControllerProtocol) {
+    func start(documentService: DefaultDocumentService,
+               hardcodedInvoicesController: HardcodedInvoicesControllerProtocol,
+               paymentComponentsController: PaymentComponentsController) {
         self.invoicesListViewController = InvoicesListViewController()
         invoicesListViewController.viewModel = InvoicesListViewModel(coordinator: self,
                                                                      documentService: documentService,
-                                                                     hardcodedInvoicesController: hardcodedInvoicesController)
+                                                                     hardcodedInvoicesController: hardcodedInvoicesController,
+                                                                     paymentComponentsController: paymentComponentsController)
         invoicesListNavigationController = RootNavigationController(rootViewController: invoicesListViewController)
+        invoicesListNavigationController.modalPresentationStyle = .fullScreen
         invoicesListNavigationController.interactivePopGestureRecognizer?.delegate = nil
     }
 }

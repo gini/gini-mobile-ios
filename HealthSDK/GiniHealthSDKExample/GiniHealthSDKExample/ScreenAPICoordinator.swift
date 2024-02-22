@@ -80,21 +80,33 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
         for extraction in captureExtractedResults {
             healthExtractions.append(GiniHealthAPILibrary.Extraction(box: nil, candidates: extraction.candidates, entity: extraction.entity, value: extraction.value, name: extraction.name))
         }
-        
-        // Store invoice/document into Invoices list
-        hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: DocumentWithExtractions(documentID: result.document?.id ?? "", extractions: captureExtractedResults))
-        
+
         if let healthSdk = self.giniHealth, let docId = result.document?.id {
             // this step needed since we've got 2 different Document structures
-            healthSdk.fetchDataForReview(documentId: docId) { result in
-                switch result {
+            healthSdk.fetchDataForReview(documentId: docId) { [weak self] resultReview in
+                switch resultReview {
                 case .success(let data):
-                        let vc = PaymentReviewViewController.instantiate(with: healthSdk, data: data, trackingDelegate: self)
-                        vc.modalTransitionStyle = .coverVertical
-                        vc.modalPresentationStyle = .overCurrentContext
-                        self.rootViewController.present(vc, animated: true)
+                    // Store invoice/document into Invoices list
+                    self?.giniHealth?.checkIfDocumentIsPayable(docId: result.document?.id ?? "", completion: { [weak self] resultPayable in
+                        switch resultPayable {
+                        case .success(let isPayable):
+                            let invoice = DocumentWithExtractions(documentID: result.document?.id ?? "",
+                                                                  extractions: data.extractions,
+                                                                  isPayable: isPayable,
+                                                                  bank: Bank())
+                            self?.hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: invoice)
+                        case .failure(let error):
+                            print("❌ Checking if document is payable failed: \(String(describing: error))")
+                        }
+                    })
+                    
+
+                    let vc = PaymentReviewViewController.instantiate(with: healthSdk, data: data, trackingDelegate: self)
+                    vc.modalTransitionStyle = .coverVertical
+                    vc.modalPresentationStyle = .overCurrentContext
+                    self?.rootViewController.present(vc, animated: true)
                 case .failure(let error):
-                        print("❌ Document data fetching failed: \(String(describing: error))")
+                    print("❌ Document data fetching failed: \(String(describing: error))")
                 }
             }
         }
