@@ -43,7 +43,9 @@ final class PaymentProvidersBottomViewModel {
                                                         darkModeColor: UIColor.GiniColors.light2).uiColor()
     var selectBankLabelFont: UIFont
 
-    var closeTitleIcon: UIImage = UIImageNamedPreferred(named: "ic_close") ?? UIImage()
+    let closeTitleIcon: UIImage = UIImageNamedPreferred(named: "ic_close") ?? UIImage()
+    let closeIconAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark2,
+                                                        darkModeColor: UIColor.GiniColors.light2).uiColor()
 
     let descriptionText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentproviderslist.description", comment: "")
     let descriptionLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark3,

@@ -44,9 +44,10 @@ class PaymentProvidersBottomView: UIView {
     }()
 
     private lazy var closeTitleIconImageView: UIImageView = {
-        let imageView = UIImageView(image: viewModel.closeTitleIcon)
+        let imageView = UIImageView(image: viewModel.closeTitleIcon.withRenderingMode(.alwaysTemplate))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.frame = CGRect(x: 0, y: 0, width: Constants.closeIconSize, height: Constants.closeIconSize)
+        imageView.tintColor = viewModel.closeIconAccentColor
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnCloseIcon)))
         return imageView
