@@ -302,6 +302,11 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     fileprivate func configurePayButtonInitialState() {
+        let payButtonView = PaymentPrimaryButton()
+        payButtonView.translatesAutoresizingMaskIntoConstraints = false
+        payButtonView.configure(with: GiniHealthConfiguration.shared.primaryButtonConfiguration)
+
+        payButton.addSubview(payButtonView)
         payButton.disabledBackgroundColor = UIColor.from(giniColor: giniHealthConfiguration.payButtonDisabledBackgroundColor)
         payButton.isEnabled = false
         payButton.disabledTextColor = UIColor.from(giniColor: giniHealthConfiguration.payButtonDisabledTextColor)
@@ -341,11 +346,13 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     fileprivate func configureScreenBackgroundColor() {
-        let screenBackgroundColor = UIColor.from(giniColor:giniHealthConfiguration.paymentScreenBackgroundColor)
+        let screenBackgroundColor =  GiniColor(lightModeColor: UIColor.GiniHealthColors.light7,
+                                               darkModeColor: UIColor.GiniHealthColors.light7).uiColor()
         mainView.backgroundColor = screenBackgroundColor
         collectionView.backgroundColor = screenBackgroundColor
         pageControl.backgroundColor = screenBackgroundColor
-        inputContainer.backgroundColor = UIColor.from(giniColor:giniHealthConfiguration.inputFieldsContainerBackgroundColor)
+        inputContainer.backgroundColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark7,
+                                                   darkModeColor: UIColor.GiniHealthColors.dark7).uiColor()
     }
     
     // MARK: - Input fields configuration
