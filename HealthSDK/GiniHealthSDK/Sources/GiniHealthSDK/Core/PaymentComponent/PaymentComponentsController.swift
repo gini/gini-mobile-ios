@@ -86,7 +86,7 @@ public final class PaymentComponentsController: NSObject {
      */
     public func loadPaymentProviders() {
         self.isLoading = true
-        self.giniHealth.getBankingApps { [weak self] result in
+        self.giniHealth.fetchBankingApps { [weak self] result in
             self?.isLoading = false
             switch result {
             case let .success(paymentProviders):
@@ -153,9 +153,8 @@ public final class PaymentComponentsController: NSObject {
      - Returns: an custom view
      */
     public func getPaymentView(paymentProvider: PaymentProvider?) -> UIView {
-        let paymentComponentView = PaymentComponentView()
-        let paymentComponentViewModel = PaymentComponentViewModel(paymentProvider: paymentProvider,
-                                                                  giniHealth: giniHealth)
+        paymentComponentView = PaymentComponentView()
+        let paymentComponentViewModel = PaymentComponentViewModel(paymentProvider: paymentProvider)
         paymentComponentViewModel.delegate = viewDelegate
         paymentComponentView.viewModel = paymentComponentViewModel
         return paymentComponentView

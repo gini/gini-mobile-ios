@@ -224,9 +224,9 @@ public final class GiniHealthConfiguration: NSObject {
     
     // MARK: - Button configuration options
     /**
-     A configuration that defines the appearance of the primary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different screens: `PaymentComponentView`
+     A configuration that defines the appearance of the primary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different UI elements: Payment Component View, Payment Review Screen.
      */
-    public lazy var primaryButtonConfiguration = ButtonConfiguration(backgroundColor: .GiniColors.accent1,
+    public lazy var primaryButtonConfiguration = ButtonConfiguration(backgroundColor: .GiniHealthColors.accent1,
                                                                      borderColor: .clear,
                                                                      titleColor: .white,
                                                                      shadowColor: .clear,
@@ -235,14 +235,14 @@ public final class GiniHealthConfiguration: NSObject {
                                                                      shadowRadius: 0,
                                                                      withBlurEffect: false)
     /**
-     A configuration that defines the appearance of the secondary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different screens: `PaymentComponentView`
+     A configuration that defines the appearance of the secondary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different UI elements: Payment Component View.
      */
-    public lazy var secondaryButtonConfiguration = ButtonConfiguration(backgroundColor: GiniColor(lightModeColor: UIColor.GiniColors.dark6,
-                                                                                                  darkModeColor: UIColor.GiniColors.light6).uiColor(),
-                                                                       borderColor: GiniColor(lightModeColor: UIColor.GiniColors.dark5,
-                                                                                              darkModeColor: UIColor.GiniColors.light5).uiColor(),
-                                                                       titleColor: GiniColor(lightModeColor: UIColor.GiniColors.dark1,
-                                                                                             darkModeColor: UIColor.GiniColors.light1).uiColor(),
+    public lazy var secondaryButtonConfiguration = ButtonConfiguration(backgroundColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.dark6,
+                                                                                                  darkModeColor: UIColor.GiniHealthColors.light6).uiColor(),
+                                                                       borderColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.dark5,
+                                                                                              darkModeColor: UIColor.GiniHealthColors.light5).uiColor(),
+                                                                       titleColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.dark1,
+                                                                                             darkModeColor: UIColor.GiniHealthColors.light1).uiColor(),
                                                                        shadowColor: .clear,
                                                                        cornerRadius: 12,
                                                                        borderWidth: 1,
