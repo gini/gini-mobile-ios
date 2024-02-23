@@ -98,8 +98,8 @@ public struct DataForReview {
      In case of failure error that there are no supported banking apps installed.
      
      */
-    private func getInstalledBankingApps(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void) {
-        getBankingApps { result in
+    private func fetchInstalledBankingApps(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void) {
+        fetchBankingApps { result in
             switch result {
             case .success(let providers):
                 for provider in providers {
@@ -136,7 +136,7 @@ public struct DataForReview {
      In case of failure error provided by API.
      */
     
-    public func getBankingApps(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void) {
+    public func fetchBankingApps(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void) {
         paymentService.paymentProviders { result in
             switch result {
             case let .success(providers):
@@ -157,7 +157,7 @@ public struct DataForReview {
         In case of failure error that there are no supported banking apps installed.
      */
     public func checkIfAnyPaymentProviderAvailable(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void){
-        self.getInstalledBankingApps(completion: completion)
+        self.fetchInstalledBankingApps(completion: completion)
     }
     
     /**
