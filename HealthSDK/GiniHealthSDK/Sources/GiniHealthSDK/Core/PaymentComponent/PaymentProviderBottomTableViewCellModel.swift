@@ -20,8 +20,8 @@ final class PaymentProviderBottomTableViewCellModel {
         isPaymentProviderInstalled && isSelected
     }
 
-    let backgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark7,
-                                             darkModeColor: UIColor.GiniColors.light7).uiColor()
+    let backgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark7,
+                                             darkModeColor: UIColor.GiniHealthColors.light7).uiColor()
 
     private var bankImageIconData: Data?
     var bankImageIcon: UIImage {
@@ -33,13 +33,13 @@ final class PaymentProviderBottomTableViewCellModel {
 
     var bankName: String
     var bankNameLabelFont: UIFont
-    let bankNameLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark1,
-                                                      darkModeColor: UIColor.GiniColors.light1).uiColor()
+    let bankNameLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark1,
+                                                      darkModeColor: UIColor.GiniHealthColors.light1).uiColor()
 
-    let selectedBankBorderColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.accent1,
-                                                     darkModeColor: UIColor.GiniColors.accent1).uiColor()
-    let notSelectedBankBorderColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark5,
-                                                        darkModeColor: UIColor.GiniColors.light5).uiColor()
+    let selectedBankBorderColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.accent1,
+                                                     darkModeColor: UIColor.GiniHealthColors.accent1).uiColor()
+    let notSelectedBankBorderColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark5,
+                                                        darkModeColor: UIColor.GiniHealthColors.light5).uiColor()
 
     init(paymentProvider: PaymentProviderAdditionalInfo) {
         self.isSelected = paymentProvider.isSelected
