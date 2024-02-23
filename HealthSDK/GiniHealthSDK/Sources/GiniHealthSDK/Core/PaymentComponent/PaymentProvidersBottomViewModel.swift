@@ -31,25 +31,25 @@ final class PaymentProvidersBottomViewModel {
     var bottomViewHeight: CGFloat = 0
     var heightTableView: CGFloat = 0
 
-    let backgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark7,
-                                             darkModeColor: UIColor.GiniColors.light7).uiColor()
-    let rectangleColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark5,
-                                            darkModeColor: UIColor.GiniColors.light5).uiColor()
-    let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.light7,
-                                                    darkModeColor: UIColor.GiniColors.dark7).uiColor().withAlphaComponent(0.3)
+    let backgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark7,
+                                             darkModeColor: UIColor.GiniHealthColors.light7).uiColor()
+    let rectangleColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark5,
+                                            darkModeColor: UIColor.GiniHealthColors.light5).uiColor()
+    let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.light7,
+                                                    darkModeColor: UIColor.GiniHealthColors.dark7).uiColor().withAlphaComponent(0.3)
 
     let selectBankTitleText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.selectBank.label", comment: "")
-    let selectBankLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark2,
-                                                        darkModeColor: UIColor.GiniColors.light2).uiColor()
+    let selectBankLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark2,
+                                                        darkModeColor: UIColor.GiniHealthColors.light2).uiColor()
     var selectBankLabelFont: UIFont
 
     let closeTitleIcon: UIImage = UIImageNamedPreferred(named: "ic_close") ?? UIImage()
-    let closeIconAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark2,
-                                                        darkModeColor: UIColor.GiniColors.light2).uiColor()
+    let closeIconAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark2,
+                                                        darkModeColor: UIColor.GiniHealthColors.light2).uiColor()
 
     let descriptionText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentproviderslist.description", comment: "")
-    let descriptionLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniColors.dark3,
-                                                        darkModeColor: UIColor.GiniColors.light3).uiColor()
+    let descriptionLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark3,
+                                                        darkModeColor: UIColor.GiniHealthColors.light3).uiColor()
     var descriptionLabelFont: UIFont
 
     init(paymentProviders: PaymentProviders, selectedPaymentProvider: PaymentProvider) {
