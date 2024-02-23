@@ -106,7 +106,7 @@ extension PaymentSecondaryButton {
         }
     }
     
-    func customConfigure(labelText: String, leftImageIcon: UIImage?, rightImageIcon: String?, rightImageTintColor: UIColor, isPaymentProviderInstalled: Bool) {
+    func customConfigure(labelText: String, leftImageIcon: UIImage?, rightImageIcon: String?, rightImageTintColor: UIColor, isPaymentProviderInstalled: Bool, notInstalledTextColor: UIColor) {
         if let leftImageIcon, isPaymentProviderInstalled {
             leftImageView.image = leftImageIcon
             leftImageView.isHidden = false
@@ -121,6 +121,9 @@ extension PaymentSecondaryButton {
             rightImageView.isHidden = true
         }
         titleLabel.text = labelText
+        if !isPaymentProviderInstalled {
+            titleLabel.textColor = notInstalledTextColor
+        }
         activateBankImageViewConstraints(isPaymentProviderInstalled: isPaymentProviderInstalled)
     }
 }

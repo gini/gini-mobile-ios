@@ -69,7 +69,9 @@ final class PaymentComponentViewModel {
         }
         return placeholderBankNameText
     }
-    private let placeholderBankNameText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.selectBank.label", 
+    let notInstalledBankTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark4,
+                                                       darkModeColor: UIColor.GiniHealthColors.light4).uiColor()
+    private let placeholderBankNameText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.selectBank.label",
                                                                                    comment: "Placeholder text used when there isn't a payment provider app installed")
     
     let chevronDownIconName: String = "iconChevronDown"

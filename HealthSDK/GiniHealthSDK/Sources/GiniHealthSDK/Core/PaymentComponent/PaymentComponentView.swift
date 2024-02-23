@@ -103,7 +103,8 @@ final class PaymentComponentView: UIView {
                                leftImageIcon: viewModel.bankImageIcon,
                                rightImageIcon: viewModel.chevronDownIconName,
                                rightImageTintColor: viewModel.chevronDownIconColor,
-                               isPaymentProviderInstalled: viewModel.isPaymentProviderInstalled)
+                               isPaymentProviderInstalled: viewModel.isPaymentProviderInstalled,
+                               notInstalledTextColor: viewModel.notInstalledBankTextColor)
         return button
     }()
     
