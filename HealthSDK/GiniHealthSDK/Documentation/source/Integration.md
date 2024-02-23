@@ -112,7 +112,7 @@ healthSDK.setConfiguration(config)
 ```
 
 ## Payment component view initialization
-We provide a custom payment component view meant to help user to pay the invoice/document.
+We provide a custom payment component view to help users pay the invoice/document.
 Payment component looks like this: 
 <br>
 <center><img src="img/Customization guide/PaymentComponentView.PNG" height="400"/></center>
@@ -121,12 +121,14 @@ Payment component looks like this:
 ### Steps to integrate payment component view:
 
 #### 1. You need to create an instance of the `PaymentComponentsController` class with a `GiniHealth` as parameter.
+
 ```swift
 let paymentComponentsController = PaymentComponentsController(giniHealth: health)
 ```
 
-#### 2. You need to pass this `paymentComponentsController` to the invoices/documents controller. 
-There you should have a list of invoices/documents that conform toGiniDocument protocol.
+#### 2. Pass the `paymentComponentsController` to the invoices/documents controller. 
+You should have a list of invoices/documents that confirm the `GiniDocument` protocol.
+
 ```swift
 public protocol GiniDocument {
     /// The document's unique identifier.
@@ -139,16 +141,19 @@ public protocol GiniDocument {
     var recipient: String? { get set }
     /// Boolean value that indicates if the document is payable. This is obtained by calling the checkIfDocumentIsPayable method.
     var isPayable: Bool? { get set }
-    /// Stored payment provider for each document/invoice. Payment provider is obtained by PaymentComponentsController and it's only stored here if the payment provider is installed
+    /// Stored payment provider
     var paymentProvider: PaymentProvider? { get set }
 }
 ```
 
 #### 3. For each invoice/document, you need to call the `checkIfDocumentIsPayable` function from the `PaymentComponentsController` and store the value for each invoice in the `isPayable` field.
+
 ```swift
 public func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
 ```
-> - We recommend using a `DispatchGroup` for these requests and wait till all of them are ready. Then, reload the list.
+
+> - We recommend using a `DispatchGroup` for these requests, waiting till all of them are ready, and then, reloading the list.
+
 ```swift
 for giniDocument in dataDocuments {
    dispatchGroup.enter()
@@ -164,29 +169,33 @@ dispatchGroup.notify(queue: .main) {
 }
 ```
 
-#### 4. You have to load the payment providers by calling the `loadPaymentProviders` function from the `PaymentComponentsController` and listen to the `PaymentComponentsControllerProtocol`. Store for each invoice/document, in the `paymentProvider` variable, the default payment provider from the list. If there isn't one already selected, function will provide the first installed payment provider.
+#### 4. You have to load the payment providers by calling the `loadPaymentProviders` function from the `PaymentComponentsController` and listen to the `PaymentComponentsControllerProtocol`. Store the default payment provider from the list, in the `paymentProvider` variable for each invoice/document.  If there isn't one already selected, function will provide the first installed payment provider.
 That can be achieved by calling:
+
 ```swift
 public func obtainDefaultPaymentProvider() -> PaymentProvider?
 ```
-> - We effectively manage situations where there are no payment providers available.
-> - Based on the payment provider's colors, the `UIView` will automatically change it's color.
+
+> - We effectively handle situations where there are no payment providers available.
+> - Based on the payment provider's colors, the `UIView` will automatically change its color.
 
 #### 5. Depending on the value of `isPayable`, incorporate the corresponding payment component view into your cells using this function:
+
 ```swift
 public func getPaymentView(paymentProvider: PaymentProvider?) -> UIView
 ```
+
 > - We suggest placing this `UIView` within a vertical `UIStackView`. Additionally, in the `prepareForReuse()` function of each cell, remove the payment component view if it exists.
 > - Furthermore, employing automatic dimension height in the `UITableView` containing the cells is recommended.
 
 #### 6. `PaymentComponentsController` has 2 delegates that you can listen to: `PaymentComponentsControllerProtocol` and the `PaymentComponentViewProtocol`
 
-* `PaymentComponentsControllerProtocol` provides informations when the `PaymentComponentsController` is loading. You can show/hide an `UIActivityIndicator` based on that.
+* `PaymentComponentsControllerProtocol` provides information when the `PaymentComponentsController` is loading. You can show/hide an `UIActivityIndicator` based on that.
 * `PaymentComponentsControllerProtocol` provides completion handlers when `PaymentComponentsController` fetched successfully payment providers or when it failed with an error.
 
-* `PaymentComponentViewProtocol` is the view protocol and provides events when the user tapped on various areas on the payment component view. Such as: More information label or more information icon, bank/payment provider picker or when it tapped on the pay invoice button.
+* `PaymentComponentViewProtocol` is the view protocol and provides events handlers when the user tapped on various areas on the payment component view (more information icon, bank/payment provider picker, the pay invoice button and etc.).
 
-> - Make sure you link this delegates in a proper way in order to get notified.
+> - Make sure you properly link these delegates to get notified.
 
 <br>
 <center><img src="img/Customization guide/PaymentComponentScreen.PNG" height="500"/></center>

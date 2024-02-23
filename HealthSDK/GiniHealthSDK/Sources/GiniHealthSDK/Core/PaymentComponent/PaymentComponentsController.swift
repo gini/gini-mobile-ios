@@ -22,7 +22,7 @@ public protocol GiniDocument {
     var recipient: String? { get set }
     /// Boolean value that indicates if the document is payable. This is obtained by calling the checkIfDocumentIsPayable method.
     var isPayable: Bool? { get set }
-    /// Stored payment provider for each document/invoice. PaymentComponentsController obtains the payment provider and it's only stored here if the payment provider is installed
+    /// Stored payment provider
     var paymentProvider: PaymentProvider? { get set }
 }
 
