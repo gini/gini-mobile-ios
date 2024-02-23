@@ -43,12 +43,12 @@ public final class GiniHealthConfiguration: NSObject {
     /**
      Sets the backgroundColor on the payment review screen
      */
-    @objc public var paymentScreenBackgroundColor = GiniColor(lightModeColor: UIColor.black, darkModeColor: UIColor.black)
+    //@objc public var paymentScreenBackgroundColor = GiniColor(lightModeColor: UIColor.black, darkModeColor: UIColor.black)
     
     /**
      Sets the backgroundColor on the payment review screen for input fields container
      */
-    @objc public var inputFieldsContainerBackgroundColor = GiniColor(lightModeColor: UIColor.white, darkModeColor: UIColor.white)
+    //@objc public var inputFieldsContainerBackgroundColor = GiniColor(lightModeColor: UIColor.white, darkModeColor: UIColor.white)
     
     /**
      Sets the backgroundColor on the payment review screen for pay button when it's disabled
