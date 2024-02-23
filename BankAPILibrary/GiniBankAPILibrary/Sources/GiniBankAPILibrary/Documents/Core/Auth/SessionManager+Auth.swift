@@ -59,7 +59,7 @@ extension SessionManager: SessionAuthenticationProtocol {
                                     }
                                 }
                             } else {
-                                completion(.failure(.unknown(response: error.response, data: nil)))
+                                completion(.failure(error))
                             }
                     }
                 }
