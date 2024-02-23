@@ -107,7 +107,7 @@ extension PaymentSecondaryButton {
     }
     
     func customConfigure(labelText: String, leftImageIcon: UIImage?, rightImageIcon: String?, rightImageTintColor: UIColor, isPaymentProviderInstalled: Bool) {
-        if let leftImageIcon {
+        if let leftImageIcon, isPaymentProviderInstalled {
             leftImageView.image = leftImageIcon
             leftImageView.isHidden = false
         } else {
