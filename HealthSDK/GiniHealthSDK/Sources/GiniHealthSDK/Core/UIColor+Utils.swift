@@ -59,7 +59,7 @@ public extension UIColor {
         return nil
     }
 
-    struct GiniColors {
+    struct GiniHealthColors {
         static let accent1 = UIColorPreferred(named: "Accent01")
         static let accent2 = UIColorPreferred(named: "Accent02")
         static let accent3 = UIColorPreferred(named: "Accent03")
