@@ -125,8 +125,8 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
         XCTAssertNotNil(
             errorScreen,
             "first view controller is not a ErrorScreenViewController")
-        XCTAssertTrue(errorScreen?.errorHeader.headerLabel.text == ErrorType.connection.title(), "Error title should match no response error type")
-        XCTAssertTrue(errorScreen?.errorContent.text == ErrorType.connection.content(), "Error content should match no response error type")
+        XCTAssertTrue(errorScreen?.errorHeader.headerLabel.text == ErrorType.unexpected.title(), "Error title should match no response error type")
+        XCTAssertTrue(errorScreen?.errorContent.text == ErrorType.unexpected.content(), "Error content should match no response error type")
         
     }
     
