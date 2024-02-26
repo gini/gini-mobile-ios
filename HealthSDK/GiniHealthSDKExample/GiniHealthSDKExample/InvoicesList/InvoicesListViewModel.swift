@@ -168,7 +168,7 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
         // MARK: TODO in next tasks
         guard let documentID else { return }
         Log("Tapped on Bank Picker on :\(documentID)", event: .success)
-        let paymentProvidersBottomViewController = paymentComponentsController.getPaymentsProvidersBottomViewController(selectedPaymentProvider: paymentComponentsController.selectedPaymentProvider)
+        let paymentProvidersBottomViewController = paymentComponentsController.getPaymentsProvidersBottomViewController()
         paymentProvidersBottomViewController.modalPresentationStyle = .overFullScreen
         self.coordinator.invoicesListViewController.present(paymentProvidersBottomViewController, animated: true)
     }

@@ -24,7 +24,7 @@ final class PaymentProvidersBottomViewModel {
     weak var viewDelegate: PaymentProvidersBottomViewProtocol?
 
     var paymentProviders: [PaymentProviderAdditionalInfo] = []
-    var selectedPaymentProvider: PaymentProvider?
+    private var selectedPaymentProvider: PaymentProvider?
     
     let maximumViewHeight: CGFloat = UIScreen.main.bounds.height - Constants.topPaddingView
     let rowHeight: CGFloat = Constants.cellSizeHeight
@@ -38,18 +38,20 @@ final class PaymentProvidersBottomViewModel {
     let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.light7,
                                                     darkModeColor: UIColor.GiniHealthColors.dark7).uiColor().withAlphaComponent(0.3)
 
-    let selectBankTitleText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.selectBank.label", comment: "")
+    let selectBankTitleText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.selectBank.label", 
+                                                                       comment: "Select bank text from the top label on payment providers bottom sheet")
     let selectBankLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark2,
                                                         darkModeColor: UIColor.GiniHealthColors.light2).uiColor()
     var selectBankLabelFont: UIFont
 
     let closeTitleIcon: UIImage = UIImageNamedPreferred(named: "ic_close") ?? UIImage()
     let closeIconAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark2,
-                                                        darkModeColor: UIColor.GiniHealthColors.light2).uiColor()
+                                                  darkModeColor: UIColor.GiniHealthColors.light2).uiColor()
 
-    let descriptionText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentproviderslist.description", comment: "")
+    let descriptionText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentproviderslist.description", 
+                                                                   comment: "Top description text on payment providers bottom sheet")
     let descriptionLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark3,
-                                                        darkModeColor: UIColor.GiniHealthColors.light3).uiColor()
+                                                         darkModeColor: UIColor.GiniHealthColors.light3).uiColor()
     var descriptionLabelFont: UIFont
 
     init(paymentProviders: PaymentProviders, selectedPaymentProvider: PaymentProvider?) {
