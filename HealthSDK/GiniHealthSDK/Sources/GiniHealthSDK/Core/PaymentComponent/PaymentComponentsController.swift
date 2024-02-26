@@ -18,7 +18,7 @@ public protocol GiniDocument {
 
 public protocol PaymentComponentsControllerProtocol: AnyObject {
     func isLoadingStateChanged(isLoading: Bool) // Because we can't use Combine, iOS 11 supported
-    func didFetchedPaymentProviders(_ paymentProviders: PaymentProviders)
+    func didFetchedPaymentProviders()
     func didReceivedErrorOnPaymentProviders(_ error: GiniHealthError)
 }
 
@@ -30,6 +30,8 @@ public final class PaymentComponentsController: NSObject {
     private var paymentProviders: PaymentProviders = []
     private var installedPaymentProviders: PaymentProviders = []
     
+    public var selectedPaymentProvider: PaymentProvider?
+    
     var isLoading: Bool = false {
         didSet {
             delegate?.isLoadingStateChanged(isLoading: isLoading)
@@ -40,6 +42,19 @@ public final class PaymentComponentsController: NSObject {
 
     public init(giniHealth: GiniHealth) {
         self.giniHealth = giniHealth
+        super.init()
+        setupListeners()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    private func setupListeners() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(willEnterForeground),
+                                               name: UIApplication.willEnterForegroundNotification,
+                                               object: nil)
     }
     
     public func loadPaymentProviders() {
@@ -50,24 +65,38 @@ public final class PaymentComponentsController: NSObject {
             case let .success(paymentProviders):
                 self?.paymentProviders = paymentProviders
                 self?.checkInstalledPaymentProviders()
-                self?.delegate?.didFetchedPaymentProviders(self?.installedPaymentProviders ?? [])
+                self?.selectedPaymentProvider = self?.obtainFirstInstalledPaymentProvider()
+                self?.delegate?.didFetchedPaymentProviders()
             case let .failure(error):
                 print("Couldn't load payment providers: \(error.localizedDescription)")
             }
         }
     }
     
+    @objc
+    private func willEnterForeground() {
+        if !checkPaymentProviderIsInstalled(paymentProvider: selectedPaymentProvider) {
+            loadPaymentProviders()
+        }
+    }
+    
     private func checkInstalledPaymentProviders() {
+        installedPaymentProviders = []
         for paymentProvider in paymentProviders {
-            if let url = URL(string: paymentProvider.appSchemeIOS) {
-                if UIApplication.shared.canOpenURL(url) {
-                    self.installedPaymentProviders.append(paymentProvider)
-                }
+            if checkPaymentProviderIsInstalled(paymentProvider: paymentProvider) {
+                self.installedPaymentProviders.append(paymentProvider)
             }
         }
     }
+    
+    private func checkPaymentProviderIsInstalled(paymentProvider: PaymentProvider?) -> Bool {
+        if let appSchemeIOS = paymentProvider?.appSchemeIOS, let url = URL(string: appSchemeIOS) {
+            return UIApplication.shared.canOpenURL(url)
+        }
+        return false
+    }
 
-    public func obtainFirstInstalledPaymentProvider() -> PaymentProvider? {
+    private func obtainFirstInstalledPaymentProvider() -> PaymentProvider? {
         installedPaymentProviders.first
     }
 
@@ -75,9 +104,9 @@ public final class PaymentComponentsController: NSObject {
         giniHealth.checkIfDocumentIsPayable(docId: docId, completion: completion)
     }
 
-    public func getPaymentView(paymentProvider: PaymentProvider?) -> UIView {
+    public func getPaymentView() -> UIView {
         paymentComponentView = PaymentComponentView()
-        let paymentComponentViewModel = PaymentComponentViewModel(paymentProvider: paymentProvider)
+        let paymentComponentViewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider)
         paymentComponentViewModel.delegate = viewDelegate
         paymentComponentView.viewModel = paymentComponentViewModel
         return paymentComponentView
