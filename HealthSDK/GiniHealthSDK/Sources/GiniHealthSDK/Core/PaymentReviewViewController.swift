@@ -208,8 +208,8 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
 
     fileprivate func configureInfoBar() {
         infoBar.roundCorners(corners: [.topLeft, .topRight], radius: giniHealthConfiguration.infoBarCornerRadius)
-        infoBar.backgroundColor = UIColor.from(giniColor: giniHealthConfiguration.infoBarBackgroundColor)
-        infoBarLabel.textColor = UIColor.from(giniColor: giniHealthConfiguration.infoBarTextColor)
+        infoBar.backgroundColor = UIColor.GiniHealthColors.success1
+        infoBarLabel.textColor = UIColor.GiniHealthColors.dark7
         infoBarLabel.font = giniHealthConfiguration.customFont.regular
         infoBarLabel.adjustsFontForContentSizeCategory = true
         infoBarLabel.text = NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.infobar.message",
@@ -292,11 +292,13 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     fileprivate func configurePayButton(paymentProvider: PaymentProvider) {
         let backgroundColorString = String.rgbaHexFrom(rgbHex: paymentProvider.colors.background)
         if let backgroundHexColor = UIColor(hex: backgroundColorString) {
-            payButton.defaultBackgroundColor  = UIColor.from(giniColor: GiniColor(lightModeColor: backgroundHexColor, darkModeColor: backgroundHexColor))
+            payButton.defaultBackgroundColor  = GiniColor(lightModeColor: backgroundHexColor,
+                                                          darkModeColor: backgroundHexColor).uiColor()
         }
         let textColorString = String.rgbaHexFrom(rgbHex: paymentProvider.colors.text)
         if let textHexColor = UIColor(hex: textColorString) {
-            payButton.textColor = UIColor.from(giniColor: GiniColor(lightModeColor: textHexColor, darkModeColor: textHexColor))
+            payButton.textColor = GiniColor(lightModeColor: textHexColor,
+                                            darkModeColor: textHexColor).uiColor()
         }
         disablePayButtonIfNeeded()
     }
@@ -307,9 +309,9 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         payButtonView.configure(with: GiniHealthConfiguration.shared.primaryButtonConfiguration)
 
         payButton.addSubview(payButtonView)
-        payButton.disabledBackgroundColor = UIColor.from(giniColor: giniHealthConfiguration.payButtonDisabledBackgroundColor)
+        payButton.disabledBackgroundColor = UIColor.GiniHealthColors.light4
         payButton.isEnabled = false
-        payButton.disabledTextColor = UIColor.from(giniColor: giniHealthConfiguration.payButtonDisabledTextColor)
+        payButton.disabledTextColor = UIColor.GiniHealthColors.dark7
         payButton.layer.cornerRadius = giniHealthConfiguration.payButtonCornerRadius
         payButton.titleLabel?.font = giniHealthConfiguration.payButtonTitleFont
         payButton.setTitle( NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.next.button.title",
@@ -329,8 +331,10 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     fileprivate func configurePageControl() {
         pageControl.layer.zPosition = 10
-        pageControl.pageIndicatorTintColor = UIColor.from(giniColor:giniHealthConfiguration.pageIndicatorTintColor)
-        pageControl.currentPageIndicatorTintColor = UIColor.from(giniColor:giniHealthConfiguration.currentPageIndicatorTintColor)
+        pageControl.pageIndicatorTintColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark4,
+                                                       darkModeColor: UIColor.GiniHealthColors.light4).uiColor()
+        pageControl.currentPageIndicatorTintColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark2,
+                                                              darkModeColor: UIColor.GiniHealthColors.light5).uiColor()
         pageControl.hidesForSinglePage = true
         pageControl.numberOfPages = model?.document.pageCount ?? 1
         if pageControl.numberOfPages == 1 {
@@ -364,20 +368,22 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         field.rightViewMode = .always
         field.layer.cornerRadius = self.giniHealthConfiguration.paymentInputFieldCornerRadius
         field.layer.borderWidth = giniHealthConfiguration.paymentInputFieldBorderWidth
-        field.backgroundColor = UIColor.from(giniColor: giniHealthConfiguration.paymentInputFieldBackgroundColor)
+        field.backgroundColor = UIColor.GiniHealthColors.dark6
         field.font = giniHealthConfiguration.customFont.regular
-        field.textColor = UIColor.from(giniColor: giniHealthConfiguration.paymentInputFieldTextColor)
+        field.textColor = UIColor.GiniHealthColors.dark1
         let placeholderText = inputFieldPlaceholderText(field)
-        field.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: [NSAttributedString.Key.foregroundColor: UIColor.from(giniColor: giniHealthConfiguration.paymentInputFieldPlaceholderTextColor), NSAttributedString.Key.font: giniHealthConfiguration.customFont.regular])
+        field.attributedPlaceholder = NSAttributedString(string: placeholderText,
+                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.GiniHealthColors.dark4,
+                                                                      NSAttributedString.Key.font: giniHealthConfiguration.customFont.regular])
         field.layer.masksToBounds = true
     }
 
     fileprivate func applyErrorStyle(_ textField: UITextField) {
         UIView.animate(withDuration: 0.3) {
             textField.layer.cornerRadius = self.giniHealthConfiguration.paymentInputFieldCornerRadius
-            textField.backgroundColor = UIColor.from(giniColor: self.giniHealthConfiguration.paymentInputFieldBackgroundColor)
+            textField.backgroundColor = UIColor.GiniHealthColors.dark6
             textField.layer.borderWidth = self.giniHealthConfiguration.paymentInputFieldErrorStyleBorderWidth
-            textField.layer.borderColor = UIColor.from(giniColor: self.giniHealthConfiguration.paymentInputFieldErrorStyleColor).cgColor
+            textField.layer.borderColor = UIColor.GiniHealthColors.feedback1.cgColor
             textField.layer.masksToBounds = true
         }
     }
@@ -385,9 +391,9 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     fileprivate func applySelectionStyle(_ textField: UITextField) {
         UIView.animate(withDuration: 0.3) {
             textField.layer.cornerRadius = self.giniHealthConfiguration.paymentInputFieldCornerRadius
-            textField.backgroundColor = UIColor.from(giniColor: self.giniHealthConfiguration.paymentInputFieldSelectionBackgroundColor)
+            textField.backgroundColor = UIColor.GiniHealthColors.dark7
             textField.layer.borderWidth = self.giniHealthConfiguration.paymentInputFieldSelectionStyleBorderWidth
-            textField.layer.borderColor = UIColor.from(giniColor: self.giniHealthConfiguration.paymentInputFieldSelectionStyleColor).cgColor
+            textField.layer.borderColor = UIColor.GiniHealthColors.accent1.cgColor
             textField.layer.masksToBounds = true
         }
     }
@@ -546,7 +552,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
         if errorLabel.isHidden {
             errorLabel.isHidden = false
-            errorLabel.textColor = UIColor.from(giniColor: giniHealthConfiguration.paymentInputFieldErrorStyleColor)
+            errorLabel.textColor = UIColor.GiniHealthColors.feedback1
             errorLabel.text = errorMessage
         }
     }
@@ -569,7 +575,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
         if errorLabel.isHidden {
             errorLabel.isHidden = false
-            errorLabel.textColor = UIColor.from(giniColor: giniHealthConfiguration.paymentInputFieldErrorStyleColor)
+            errorLabel.textColor = UIColor.GiniHealthColors.feedback1
             errorLabel.text = errorMessage
         }
     }
