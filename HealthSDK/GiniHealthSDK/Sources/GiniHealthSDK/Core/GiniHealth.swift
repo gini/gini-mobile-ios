@@ -87,11 +87,10 @@ public struct DataForReview {
      In case of failure error that there are no supported banking apps installed.
      
      */
-    private func getInstalledBankingApps(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void){
-        paymentService.paymentProviders { result in
+    private func fetchInstalledBankingApps(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void) {
+        fetchBankingApps { result in
             switch result {
-            case let .success(providers):
-                self.bankProviders = []
+            case .success(let providers):
                 for provider in providers {
                     DispatchQueue.main.async {
                         if let url = URL(string:provider.appSchemeIOS) {
@@ -110,9 +109,30 @@ public struct DataForReview {
                 }
             case let .failure(error):
                 DispatchQueue.main.async {
-                    completion(.failure(.apiError(error)))
-                    
+                    completion(.failure(error))
                 }
+            }
+        }
+    }
+    
+    /**
+     Getting a list of the banking apps supported by SDK
+     
+     - Parameters:
+        - completion: An action for processing asynchronous data received from the service with Result type as a paramater.
+     Result is a value that represents either a success or a failure, including an associated value in each case.
+     In success case it includes array of payment providers supported by SDK.
+     In case of failure error provided by API.
+     */
+    
+    public func fetchBankingApps(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void) {
+        paymentService.paymentProviders { result in
+            switch result {
+            case let .success(providers):
+                self.bankProviders = providers
+                completion(.success(self.bankProviders))
+            case let .failure(error):
+                completion(.failure(.apiError(error)))
             }
         }
     }
@@ -126,7 +146,7 @@ public struct DataForReview {
         In case of failure error that there are no supported banking apps installed.
      */
     public func checkIfAnyPaymentProviderAvailable(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void){
-        self.getInstalledBankingApps(completion: completion)
+        self.fetchInstalledBankingApps(completion: completion)
     }
     
     /**

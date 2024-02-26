@@ -52,12 +52,11 @@ final class InvoicesListViewController: UIViewController {
     var viewModel: InvoicesListViewModel!
     
     // MARK: - Functions
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.viewDidLoad()
     }
-    
+
     override func loadView() {
         super.loadView()
         title = viewModel.titleText
@@ -116,8 +115,10 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
         guard let cell = tableView.dequeueReusableCell(withIdentifier: InvoiceTableViewCell.identifier, for: indexPath) as? InvoiceTableViewCell else {
             return UITableViewCell()
         }
-        cell.cellViewModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0,
-                                                                                paymentComponentsController: viewModel.paymentComponentsController) }[indexPath.row]
+        let invoiceTableViewCellModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0,
+                                                                                           paymentComponentsController: viewModel.paymentComponentsController) }[indexPath.row]
+        invoiceTableViewCellModel.viewDelegate = viewModel
+        cell.cellViewModel = invoiceTableViewCellModel
         return cell
     }
     
@@ -164,6 +165,6 @@ extension InvoicesListViewController {
     private enum Constants {
         static let padding: CGFloat = 8
         static let cornerRadius: CGFloat = 16
-        static let rowHeight: CGFloat = 80
+        static let rowHeight: CGFloat = 40
     }
 }
