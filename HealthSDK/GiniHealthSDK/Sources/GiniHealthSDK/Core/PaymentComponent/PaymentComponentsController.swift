@@ -14,7 +14,6 @@ public protocol GiniDocument {
     var paymentDueDate: String? { get set }
     var recipient: String? { get set }
     var isPayable: Bool? { get set }
-    var paymentProvider: PaymentProvider? { get set }
 }
 
 public protocol PaymentComponentsControllerProtocol: AnyObject {

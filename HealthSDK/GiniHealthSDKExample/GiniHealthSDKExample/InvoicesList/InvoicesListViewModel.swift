@@ -16,14 +16,12 @@ struct DocumentWithExtractions: GiniDocument, Codable {
     var paymentDueDate: String?
     var recipient: String?
     var isPayable: Bool?
-    var paymentProvider: PaymentProvider?
 
     init(documentID: String, extractionResult: GiniHealthAPILibrary.ExtractionResult, paymentProvider: PaymentProvider?) {
         self.documentID = documentID
         self.amountToPay = extractionResult.payment?.first?.first(where: {$0.name == "amount_to_pay"})?.value
         self.paymentDueDate = extractionResult.extractions.first(where: {$0.name == "payment_due_date"})?.value
         self.recipient = extractionResult.payment?.first?.first(where: {$0.name == "payment_recipient"})?.value
-        self.paymentProvider = paymentProvider
     }
     
     init(documentID: String, extractions: [GiniHealthAPILibrary.Extraction], isPayable: Bool, paymentProvider: PaymentProvider?) {
@@ -32,7 +30,6 @@ struct DocumentWithExtractions: GiniDocument, Codable {
         self.paymentDueDate = extractions.first(where: {$0.name == "payment_due_date"})?.value
         self.recipient = extractions.first(where: {$0.name == "payment_recipient"})?.value
         self.isPayable = isPayable
-        self.paymentProvider = paymentProvider
     }
 }
 
@@ -45,6 +42,7 @@ final class InvoicesListViewModel {
     var paymentComponentsController: PaymentComponentsController
 
     var invoices: [DocumentWithExtractions]
+    var selectedPaymentProvider: PaymentProvider?
 
     let noInvoicesText = NSLocalizedString("giniHealthSDKExample.invoicesList.missingInvoices.text", comment: "")
     let titleText = NSLocalizedString("giniHealthSDKExample.invoicesList.title", comment: "")
@@ -183,13 +181,9 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
 
 extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
     func didFetchedPaymentProviders(_ paymentProviders: GiniHealthAPILibrary.PaymentProviders) {
-        if !invoices.isEmpty && invoices.contains(where: { $0.paymentProvider == nil }) {
-            DispatchQueue.main.async {
-                for index in 0..<self.invoices.count {
-                    self.invoices[index].paymentProvider = self.paymentComponentsController.obtainFirstInstalledPaymentProvider()
-                    self.coordinator.invoicesListViewController.reloadTableView()
-                }
-            }
+        self.selectedPaymentProvider = self.paymentComponentsController.obtainFirstInstalledPaymentProvider()
+        DispatchQueue.main.async {
+            self.coordinator.invoicesListViewController.reloadTableView()
         }
     }
     

@@ -116,6 +116,7 @@ extension InvoicesListViewController: UITableViewDelegate, UITableViewDataSource
             return UITableViewCell()
         }
         let invoiceTableViewCellModel = viewModel.invoices.map { InvoiceTableViewCellModel(invoice: $0,
+                                                                                           paymentProvider: viewModel.selectedPaymentProvider,
                                                                                            paymentComponentsController: viewModel.paymentComponentsController) }[indexPath.row]
         invoiceTableViewCellModel.viewDelegate = viewModel
         cell.cellViewModel = invoiceTableViewCellModel
