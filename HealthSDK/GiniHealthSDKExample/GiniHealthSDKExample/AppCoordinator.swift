@@ -157,12 +157,6 @@ final class AppCoordinator: Coordinator {
         configuration.customFont = GiniFont(regular: regularFont, bold: boldFont, light: regularFont, thin: regularFont, medium: boldFont)
         // Pay button configuration
         configuration.payButtonTitleFont = boldFont
-        // Uncomment to test disabled state
-        //configuration.payButtonDisabledTextColor = GiniColor(lightModeColor: .yellow, darkModeColor: .yellow)
-        //configuration.payButtonDisabledBackgroundColor =  GiniColor(lightModeColor: .red, darkModeColor: .red)
-        // Page indicator color configuration
-        configuration.currentPageIndicatorTintColor = GiniColor(lightModeColor: .systemBlue, darkModeColor: .systemBlue)
-        configuration.pageIndicatorTintColor = GiniColor(lightModeColor: .darkGray, darkModeColor: .darkGray)
         
         // Show the close button to dismiss the payment review screen
         configuration.showPaymentReviewCloseButton = true
