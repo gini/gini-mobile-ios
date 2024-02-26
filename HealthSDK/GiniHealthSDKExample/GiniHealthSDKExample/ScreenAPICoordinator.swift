@@ -92,8 +92,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
                         case .success(let isPayable):
                             let invoice = DocumentWithExtractions(documentID: result.document?.id ?? "",
                                                                   extractions: data.extractions,
-                                                                  isPayable: isPayable,
-                                                                  paymentProvider: nil)
+                                                                  isPayable: isPayable)
                             self?.hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: invoice)
                         case .failure(let error):
                             print("❌ Checking if document is payable failed: \(String(describing: error))")
