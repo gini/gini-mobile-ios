@@ -16,23 +16,20 @@ struct DocumentWithExtractions: GiniDocument, Codable {
     var paymentDueDate: String?
     var recipient: String?
     var isPayable: Bool?
-    var paymentProvider: PaymentProvider?
 
-    init(documentID: String, extractionResult: GiniHealthAPILibrary.ExtractionResult, paymentProvider: PaymentProvider?) {
+    init(documentID: String, extractionResult: GiniHealthAPILibrary.ExtractionResult) {
         self.documentID = documentID
         self.amountToPay = extractionResult.payment?.first?.first(where: {$0.name == "amount_to_pay"})?.value
         self.paymentDueDate = extractionResult.extractions.first(where: {$0.name == "payment_due_date"})?.value
         self.recipient = extractionResult.payment?.first?.first(where: {$0.name == "payment_recipient"})?.value
-        self.paymentProvider = paymentProvider
     }
     
-    init(documentID: String, extractions: [GiniHealthAPILibrary.Extraction], isPayable: Bool, paymentProvider: PaymentProvider?) {
+    init(documentID: String, extractions: [GiniHealthAPILibrary.Extraction], isPayable: Bool) {
         self.documentID = documentID
         self.amountToPay = extractions.first(where: {$0.name == "amount_to_pay"})?.value
         self.paymentDueDate = extractions.first(where: {$0.name == "payment_due_date"})?.value
         self.recipient = extractions.first(where: {$0.name == "payment_recipient"})?.value
         self.isPayable = isPayable
-        self.paymentProvider = paymentProvider
     }
 }
 
@@ -129,10 +126,8 @@ final class InvoicesListViewModel {
                         switch result {
                         case let .success(extractionResult):
                             Log("Successfully fetched extractions for id: \(createdDocument.id)", event: .success)
-                            let defaultPaymentProvider = self?.paymentComponentsController.obtainDefaultInstalledPaymentProvider()
                             self?.invoices.append(DocumentWithExtractions(documentID: createdDocument.id,
-                                                                          extractionResult: extractionResult, 
-                                                                          paymentProvider: defaultPaymentProvider))
+                                                                          extractionResult: extractionResult))
                             self?.paymentComponentsController.checkIfDocumentIsPayable(docId: createdDocument.id, completion: { [weak self] result in
                                 switch result {
                                 case let .success(isPayable):
@@ -173,7 +168,7 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
         // MARK: TODO in next tasks
         guard let documentID else { return }
         Log("Tapped on Bank Picker on :\(documentID)", event: .success)
-        if let selectedPaymentProvider = invoices.first(where: { $0.documentID == documentID})?.paymentProvider {
+        if let selectedPaymentProvider = paymentComponentsController.selectedPaymentProvider {
             let paymentProvidersBottomViewController = paymentComponentsController.getPaymentsProvidersBottomViewController(selectedPaymentProvider: selectedPaymentProvider)
             paymentProvidersBottomViewController.modalPresentationStyle = .overFullScreen
             self.coordinator.invoicesListViewController.present(paymentProvidersBottomViewController, animated: true)
@@ -188,14 +183,9 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
 }
 
 extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
-    func didFetchedPaymentProviders(_ paymentProviders: GiniHealthAPILibrary.PaymentProviders) {
-        if !invoices.isEmpty && invoices.contains(where: { $0.paymentProvider == nil }) {
-            DispatchQueue.main.async {
-                for index in 0..<self.invoices.count {
-                    self.invoices[index].paymentProvider = self.paymentComponentsController.obtainDefaultInstalledPaymentProvider()
-                    self.coordinator.invoicesListViewController.reloadTableView()
-                }
-            }
+    func didFetchedPaymentProviders() {
+        DispatchQueue.main.async {
+            self.coordinator.invoicesListViewController.reloadTableView()
         }
     }
     
@@ -217,9 +207,6 @@ extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
 
 extension InvoicesListViewModel: PaymentProvidersBottomViewProtocol {
     func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
-        for index in 0 ..< invoices.count {
-            invoices[index].paymentProvider = paymentProvider
-        }
         DispatchQueue.main.async {
             self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
             self.hardcodedInvoicesController.storeInvoicesWithExtractions(invoices: self.invoices)
