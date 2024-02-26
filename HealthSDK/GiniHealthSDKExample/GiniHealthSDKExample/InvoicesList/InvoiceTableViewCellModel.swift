@@ -21,9 +21,9 @@ final class InvoiceTableViewCellModel {
     init(invoice: DocumentWithExtractions,
          paymentComponentsController: PaymentComponentsController) {
         self.invoice = invoice
-        self.bankAccentColor = invoice.paymentProvider?.colors.background
-        self.bankTextColor = invoice.paymentProvider?.colors.text
         self.paymentComponentsController = paymentComponentsController
+        self.bankAccentColor = paymentComponentsController.selectedPaymentProvider?.colors.background
+        self.bankTextColor = paymentComponentsController.selectedPaymentProvider?.colors.text
     }
     
     var recipientNameText: String {
@@ -55,7 +55,7 @@ final class InvoiceTableViewCellModel {
     
     var paymentComponentView: UIView {
         paymentComponentsController.viewDelegate = self
-        return paymentComponentsController.getPaymentView(paymentProvider: invoice.paymentProvider)
+        return paymentComponentsController.getPaymentView()
     }
 }
 
