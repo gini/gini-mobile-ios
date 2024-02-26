@@ -17,14 +17,14 @@ struct DocumentWithExtractions: GiniDocument, Codable {
     var recipient: String?
     var isPayable: Bool?
 
-    init(documentID: String, extractionResult: GiniHealthAPILibrary.ExtractionResult, paymentProvider: PaymentProvider?) {
+    init(documentID: String, extractionResult: GiniHealthAPILibrary.ExtractionResult) {
         self.documentID = documentID
         self.amountToPay = extractionResult.payment?.first?.first(where: {$0.name == "amount_to_pay"})?.value
         self.paymentDueDate = extractionResult.extractions.first(where: {$0.name == "payment_due_date"})?.value
         self.recipient = extractionResult.payment?.first?.first(where: {$0.name == "payment_recipient"})?.value
     }
     
-    init(documentID: String, extractions: [GiniHealthAPILibrary.Extraction], isPayable: Bool, paymentProvider: PaymentProvider?) {
+    init(documentID: String, extractions: [GiniHealthAPILibrary.Extraction], isPayable: Bool) {
         self.documentID = documentID
         self.amountToPay = extractions.first(where: {$0.name == "amount_to_pay"})?.value
         self.paymentDueDate = extractions.first(where: {$0.name == "payment_due_date"})?.value
@@ -42,7 +42,6 @@ final class InvoicesListViewModel {
     var paymentComponentsController: PaymentComponentsController
 
     var invoices: [DocumentWithExtractions]
-    var selectedPaymentProvider: PaymentProvider?
 
     let noInvoicesText = NSLocalizedString("giniHealthSDKExample.invoicesList.missingInvoices.text", comment: "")
     let titleText = NSLocalizedString("giniHealthSDKExample.invoicesList.title", comment: "")
@@ -126,10 +125,8 @@ final class InvoicesListViewModel {
                         switch result {
                         case let .success(extractionResult):
                             Log("Successfully fetched extractions for id: \(createdDocument.id)", event: .success)
-                            let firstPaymentProvider = self?.paymentComponentsController.obtainFirstInstalledPaymentProvider()
                             self?.invoices.append(DocumentWithExtractions(documentID: createdDocument.id,
-                                                                          extractionResult: extractionResult, 
-                                                                          paymentProvider: firstPaymentProvider))
+                                                                          extractionResult: extractionResult))
                             self?.paymentComponentsController.checkIfDocumentIsPayable(docId: createdDocument.id, completion: { [weak self] result in
                                 switch result {
                                 case let .success(isPayable):
@@ -180,8 +177,7 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
 }
 
 extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
-    func didFetchedPaymentProviders(_ paymentProviders: GiniHealthAPILibrary.PaymentProviders) {
-        self.selectedPaymentProvider = self.paymentComponentsController.obtainFirstInstalledPaymentProvider()
+    func didFetchedPaymentProviders() {
         DispatchQueue.main.async {
             self.coordinator.invoicesListViewController.reloadTableView()
         }

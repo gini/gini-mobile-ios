@@ -12,7 +12,6 @@ import UIKit
 
 final class InvoiceTableViewCellModel {
     private var invoice: DocumentWithExtractions
-    private var paymentProvider: PaymentProvider?
     private var bankAccentColor: String?
     private var bankTextColor: String?
     private var paymentComponentsController: PaymentComponentsController
@@ -20,13 +19,11 @@ final class InvoiceTableViewCellModel {
     weak var viewDelegate: PaymentComponentViewProtocol?
 
     init(invoice: DocumentWithExtractions,
-         paymentProvider: PaymentProvider?,
          paymentComponentsController: PaymentComponentsController) {
         self.invoice = invoice
-        self.paymentProvider = paymentProvider
-        self.bankAccentColor = paymentProvider?.colors.background
-        self.bankTextColor = paymentProvider?.colors.text
         self.paymentComponentsController = paymentComponentsController
+        self.bankAccentColor = paymentComponentsController.selectedPaymentProvider?.colors.background
+        self.bankTextColor = paymentComponentsController.selectedPaymentProvider?.colors.text
     }
     
     var recipientNameText: String {
@@ -58,7 +55,7 @@ final class InvoiceTableViewCellModel {
     
     var paymentComponentView: UIView {
         paymentComponentsController.viewDelegate = self
-        return paymentComponentsController.getPaymentView(paymentProvider: paymentProvider)
+        return paymentComponentsController.getPaymentView()
     }
 }
 
