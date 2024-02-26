@@ -186,7 +186,7 @@ public final class PaymentComponentsController: NSObject {
         return paymentComponentView
     }
 
-    public func getPaymentsProvidersBottomViewController(selectedPaymentProvider: PaymentProvider) -> UIViewController {
+    public func getPaymentsProvidersBottomViewController(selectedPaymentProvider: PaymentProvider?) -> UIViewController {
         let paymentProvidersBottomView = PaymentProvidersBottomView()
         let paymentProvidersBottomViewModel = PaymentProvidersBottomViewModel(paymentProviders: paymentProviders,
                                                                               selectedPaymentProvider: selectedPaymentProvider)

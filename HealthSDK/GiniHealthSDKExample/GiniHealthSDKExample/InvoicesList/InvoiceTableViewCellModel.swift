@@ -20,8 +20,6 @@ final class InvoiceTableViewCellModel {
          paymentComponentsController: PaymentComponentsController) {
         self.invoice = invoice
         self.paymentComponentsController = paymentComponentsController
-        self.bankAccentColor = paymentComponentsController.selectedPaymentProvider?.colors.background
-        self.bankTextColor = paymentComponentsController.selectedPaymentProvider?.colors.text
     }
     
     var recipientNameText: String {

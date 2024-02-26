@@ -24,7 +24,7 @@ final class PaymentProvidersBottomViewModel {
     weak var viewDelegate: PaymentProvidersBottomViewProtocol?
 
     var paymentProviders: [PaymentProviderAdditionalInfo] = []
-    var selectedPaymentProvider: PaymentProvider? = nil
+    var selectedPaymentProvider: PaymentProvider?
     
     let maximumViewHeight: CGFloat = UIScreen.main.bounds.height - Constants.topPaddingView
     let rowHeight: CGFloat = Constants.cellSizeHeight
@@ -52,7 +52,7 @@ final class PaymentProvidersBottomViewModel {
                                                         darkModeColor: UIColor.GiniHealthColors.light3).uiColor()
     var descriptionLabelFont: UIFont
 
-    init(paymentProviders: PaymentProviders, selectedPaymentProvider: PaymentProvider) {
+    init(paymentProviders: PaymentProviders, selectedPaymentProvider: PaymentProvider?) {
         self.selectedPaymentProvider = selectedPaymentProvider
         
         let defaultRegularFont: UIFont = GiniHealthConfiguration.shared.customFont.regular
@@ -63,7 +63,7 @@ final class PaymentProvidersBottomViewModel {
         
         self.paymentProviders = paymentProviders
             .filter({ $0.appStoreUrlIOS != nil || isPaymentProviderInstalled(paymentProvider: $0) })
-            .map({ PaymentProviderAdditionalInfo(isSelected: $0.id == selectedPaymentProvider.id,
+            .map({ PaymentProviderAdditionalInfo(isSelected: $0.id == selectedPaymentProvider?.id,
                                                  isInstalled: isPaymentProviderInstalled(paymentProvider: $0),
                                                  paymentProvider: $0)})
         
