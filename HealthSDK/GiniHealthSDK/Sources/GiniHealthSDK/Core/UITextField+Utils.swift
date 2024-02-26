@@ -18,3 +18,15 @@ public extension UITextField {
         }
     }
 }
+
+extension UITextField {
+    func configureWith(configuration: TextFieldConfiguration){
+        self.layer.cornerRadius = configuration.cornerRadius
+        self.layer.borderWidth = configuration.borderWidth
+        self.layer.borderColor = configuration.borderColor.cgColor
+        self.backgroundColor = configuration.backgroundColor
+        self.textColor = configuration.textColor
+        self.attributedPlaceholder = NSAttributedString(string: "",
+                                                        attributes: [NSAttributedString.Key.foregroundColor: configuration.placeholderForegroundColor])
+    }
+}
