@@ -141,8 +141,6 @@ public protocol GiniDocument {
     var recipient: String? { get set }
     /// Boolean value that indicates if the document is payable. This is obtained by calling the checkIfDocumentIsPayable method.
     var isPayable: Bool? { get set }
-    /// Stored payment provider
-    var paymentProvider: PaymentProvider? { get set }
 }
 ```
 
@@ -169,12 +167,7 @@ dispatchGroup.notify(queue: .main) {
 }
 ```
 
-#### 4. You have to load the payment providers by calling the `loadPaymentProviders` function from the `PaymentComponentsController` and listen to the `PaymentComponentsControllerProtocol`. Store the first payment provider from the list, in the `paymentProvider` variable for each invoice/document. 
-That can be achieved by calling:
-
-```swift
-public func obtainFirstPaymentProvider() -> PaymentProvider?
-```
+#### 4. You have to load the payment providers by calling the `loadPaymentProviders` function from the `PaymentComponentsController` and listen to the `PaymentComponentsControllerProtocol`.
 
 > - We effectively handle situations where there are no payment providers available.
 > - Based on the payment provider's colors, the `UIView` will automatically change its color.
