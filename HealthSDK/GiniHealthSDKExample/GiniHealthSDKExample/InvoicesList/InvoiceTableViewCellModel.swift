@@ -12,16 +12,18 @@ import UIKit
 
 final class InvoiceTableViewCellModel {
     private var invoice: DocumentWithExtractions
-    private var bankAccentColor: GiniHealthSDK.GiniColor
-    private var bankTextColor: GiniHealthSDK.GiniColor
+    private var bankAccentColor: String?
+    private var bankTextColor: String?
     private var paymentComponentsController: PaymentComponentsController
+
+    weak var viewDelegate: PaymentComponentViewProtocol?
 
     init(invoice: DocumentWithExtractions,
          paymentComponentsController: PaymentComponentsController) {
         self.invoice = invoice
-        self.bankAccentColor = invoice.bank.accentColor.giniColor
-        self.bankTextColor = invoice.bank.textColor.giniColor
         self.paymentComponentsController = paymentComponentsController
+        self.bankAccentColor = paymentComponentsController.selectedPaymentProvider?.colors.background
+        self.bankTextColor = paymentComponentsController.selectedPaymentProvider?.colors.text
     }
     
     var recipientNameText: String {
@@ -52,31 +54,21 @@ final class InvoiceTableViewCellModel {
     }
     
     var paymentComponentView: UIView {
-        return paymentComponentsController.getPaymentView(bankName: invoice.bank.name,
-                                                          bankIconName: invoice.bank.iconName,
-                                                          payInvoiceAccentColor: bankAccentColor,
-                                                          payInvoiceTextColor: bankTextColor)
+        paymentComponentsController.viewDelegate = self
+        return paymentComponentsController.getPaymentView()
     }
 }
 
-extension InvoiceTableViewCellModel: PaymentComponentControllerProtocol {
-    public func didTapOnMoreInformations() {
-        // MARK: TODO in next tasks
-        Log("Tapped on More Information on :\(invoice.documentID)", event: .success)
+extension InvoiceTableViewCellModel: PaymentComponentViewProtocol {
+    public func didTapOnMoreInformation(documentID: String?) {
+        viewDelegate?.didTapOnMoreInformation(documentID: invoice.documentID)
     }
     
-    public func didTapOnBankPicker() {
-        // MARK: TODO in next tasks
-        Log("Tapped on Bank Picker on :\(invoice.documentID)", event: .success)
+    public func didTapOnBankPicker(documentID: String?) {
+        viewDelegate?.didTapOnBankPicker(documentID: invoice.documentID)
     }
     
-    public func didTapOnPayInvoice() {
-        // MARK: TODO in next tasks
-        Log("Tapped on Pay Invoice on :\(invoice.documentID)", event: .success)
-    }
-
-    public func isLoadingStateChanged(isLoading: Bool) {
-        // MARK: TODO in next tasks
-        Log("Is loading state: \(isLoading)", event: .success)
+    public func didTapOnPayInvoice(documentID: String?) {
+        viewDelegate?.didTapOnPayInvoice(documentID: invoice.documentID)
     }
 }
