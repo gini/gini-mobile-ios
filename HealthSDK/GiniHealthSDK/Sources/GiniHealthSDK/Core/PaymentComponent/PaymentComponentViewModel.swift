@@ -8,12 +8,37 @@
 import UIKit
 import GiniHealthAPILibrary
 
+/**
+ Delegate to inform about the actions happened of the custom payment component view.
+ You may find out when the user tapped on more information area, on the payment provider picker or on the pay invoice button
+
+ */
 public protocol PaymentComponentViewProtocol: AnyObject {
+    /**
+     Called when the user tapped on the more information actionable label or the information icon
+
+     - parameter documentID: Id of document
+     */
     func didTapOnMoreInformation(documentID: String?)
+
+    /**
+     Called when the user tapped on payment provider picker to change the selected payment provider or install it
+
+     - parameter documentID: Id of document
+     */
     func didTapOnBankPicker(documentID: String?)
+
+    /**
+     Called when the user tapped on the pay the invoice button to pay the invoice/document
+     - parameter documentID: Id of document
+     */
     func didTapOnPayInvoice(documentID: String?)
 }
 
+/**
+ Helping extension for using the PaymentComponentViewProtocol methods without the document ID. This should be kept by the document view model and passed hierarchically from there.
+
+ */
 extension PaymentComponentViewProtocol {
     public func didTapOnMoreInformation() {
         didTapOnMoreInformation(documentID: nil)
