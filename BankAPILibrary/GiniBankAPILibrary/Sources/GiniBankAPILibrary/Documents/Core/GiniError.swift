@@ -35,6 +35,7 @@ public protocol GiniErrorProtocol {
  - unauthorized: Error indicating that the request was unauthorized.
  - maintenance: Error indicating that the system is under maintenance.
  - outage: Error indicating that the service is unavailable due to outage.
+ - server: Error indicating that the server is unavailable.
  - unknown: An unknown error occurred.
  */
 
@@ -49,6 +50,7 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
     case unauthorized(response: HTTPURLResponse? = nil, data: Data? = nil)
     case maintenance
     case outage
+    case server
     case unknown(response: HTTPURLResponse? = nil, data: Data? = nil)
     case noInternetConnection
 
@@ -74,6 +76,8 @@ public enum GiniError: Error, GiniErrorProtocol, Equatable {
             return "Maintenance is in progress"
         case .outage:
             return "Service is unavailable"
+        case .server:
+            return "An unexpected server error occurred"
         case .noInternetConnection:
             return "No internet connection"
         case .unknown:
