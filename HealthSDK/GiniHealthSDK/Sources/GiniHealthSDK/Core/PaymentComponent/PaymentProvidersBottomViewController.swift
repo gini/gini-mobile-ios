@@ -20,11 +20,11 @@ final class PaymentProvidersBottomViewController: UIViewController {
         setupViewAttributes()
     }
 
-    func setupViewHierarchy() {
+    private func setupViewHierarchy() {
         view.addSubview(bottomSheet)
     }
 
-    func setupViewAttributes() {
+    private func setupViewAttributes() {
         definesPresentationContext = true
         view.backgroundColor = bottomSheet.viewModel.dimmingBackgroundColor
         
@@ -41,7 +41,7 @@ final class PaymentProvidersBottomViewController: UIViewController {
         bottomSheet.viewModel.didTapOnClose()
     }
 
-    func setupLayout() {
+    private func setupLayout() {
         NSLayoutConstraint.activate([
             bottomSheet.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             bottomSheet.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -(bottomSheet.viewModel.bottomViewHeight)),
