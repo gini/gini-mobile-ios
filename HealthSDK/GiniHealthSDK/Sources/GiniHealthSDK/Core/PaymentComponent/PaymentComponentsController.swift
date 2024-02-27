@@ -196,6 +196,27 @@ public final class PaymentComponentsController: NSObject {
         paymentProvidersBottomViewController.bottomSheet = paymentProvidersBottomView
         return paymentProvidersBottomViewController
     }
+    
+    public func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
+        self.isLoading = true
+        self.giniHealth.fetchDataForReview(documentId: documentID) { [weak self] result in
+            self?.isLoading = false
+            switch result {
+            case .success(let data):
+                guard let self else {
+                    completion(nil, nil)
+                    return
+                }
+                let vc = PaymentReviewViewController.instantiate(with: self.giniHealth, 
+                                                                 data: data,
+                                                                 selectedPaymentProvider: self.selectedPaymentProvider, 
+                                                                 trackingDelegate: trackingDelegate)
+                completion(vc, nil)
+            case .failure(let error):
+                completion(nil, error)
+            }
+        }
+    }
 }
 
 extension PaymentComponentsController: PaymentComponentViewProtocol {

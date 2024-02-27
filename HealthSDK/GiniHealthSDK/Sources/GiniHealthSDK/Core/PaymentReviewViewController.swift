@@ -76,10 +76,10 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         return vc
     }
     
-    public static func instantiate(with giniHealth: GiniHealth, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
+    public static func instantiate(with giniHealth: GiniHealth, data: DataForReview, selectedPaymentProvider: PaymentProvider?, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
         let vc = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
-        vc.model = PaymentReviewModel(with: giniHealth, document: document, extractions: extractions)
+        vc.model = PaymentReviewModel(with: giniHealth, document: data.document, extractions: data.extractions)
         vc.trackingDelegate = trackingDelegate
         vc.selectedPaymentProvider = selectedPaymentProvider
         return vc
