@@ -85,7 +85,7 @@ public final class PaymentComponentsController: NSObject {
     }
     
     /**
-     Retrieve the first installed payment provider, if available.
+     Retrieves the first installed payment provider, if available.
      - Returns: a Payment Provider object.
      */
     private func obtainFirstInstalledPaymentProvider() -> PaymentProvider? {
