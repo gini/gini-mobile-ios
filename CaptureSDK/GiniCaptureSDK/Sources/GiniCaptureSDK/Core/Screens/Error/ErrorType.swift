@@ -59,7 +59,8 @@ import GiniBankAPILibrary
             } else {
                 self = .unexpected
             }
-
+        case .server:
+            self = .serverError
         case .maintenance:
             self = .maintenance
         case .outage:
