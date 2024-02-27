@@ -265,6 +265,13 @@ private extension SessionManager {
                                      taskType: taskType,
                                      cancellationToken: cancellationToken,
                                      completion: completion)
+                case 501, 502,504...599:
+                    Log("""
+                    Failure: \(request.httpMethod!) - \(request.url!) - \(response.statusCode)
+                    Data content: \(String(describing: String(data: data ?? Data(count: 0), encoding: .utf8)))
+                    """,
+                        event: .error)
+                    completion(.failure(.server))
                 default:
                     if let data = data {
                         Log("""
