@@ -111,7 +111,7 @@ class PaymentProvidersBottomView: UIView {
 
     private func setupViewAttributes() {
         self.backgroundColor = viewModel.backgroundColor
-        self.layer.cornerRadius = Constants.cornerRadiusView
+        self.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadiusView)
         
         let isFullScreen = viewModel.bottomViewHeight >= viewModel.maximumViewHeight
         paymentProvidersTableView.showsVerticalScrollIndicator = isFullScreen

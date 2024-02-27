@@ -22,8 +22,6 @@ public protocol GiniDocument {
     var recipient: String? { get set }
     /// Boolean value that indicates if the document is payable. This is obtained by calling the checkIfDocumentIsPayable method.
     var isPayable: Bool? { get set }
-    /// Stored payment provider
-    var paymentProvider: PaymentProvider? { get set }
 }
 
 /**
@@ -32,7 +30,7 @@ public protocol GiniDocument {
  */
 public protocol PaymentComponentsControllerProtocol: AnyObject {
     func isLoadingStateChanged(isLoading: Bool) // Because we can't use Combine, iOS 11 supported
-    func didFetchedPaymentProviders(_ paymentProviders: PaymentProviders)
+    func didFetchedPaymentProviders()
     func didReceivedErrorOnPaymentProviders(_ error: GiniHealthError)
 }
 
@@ -51,6 +49,9 @@ public final class PaymentComponentsController: NSObject {
     private var paymentProviders: PaymentProviders = []
     private var installedPaymentProviders: PaymentProviders = []
     
+    /// storing the current selected payment provider
+    public var selectedPaymentProvider: PaymentProvider?
+
     /// reponsible for storing the loading state of the controller and passing it to the delegate listeners
     var isLoading: Bool = false {
         didSet {
@@ -70,13 +71,26 @@ public final class PaymentComponentsController: NSObject {
      */
     public init(giniHealth: GiniHealth) {
         self.giniHealth = giniHealth
+        super.init()
+        setupListeners()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    private func setupListeners() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(willEnterForeground),
+                                               name: UIApplication.willEnterForegroundNotification,
+                                               object: nil)
     }
     
     /**
      Retrieve the default installed payment provider, if available.
      - Returns: a Payment Provider object.
      */
-    public func obtainDefaultInstalledPaymentProvider() -> PaymentProvider? {
+    private func obtainDefaultInstalledPaymentProvider() -> PaymentProvider? {
         getDefaultPaymentProvider() ?? installedPaymentProviders.first
     }
     
@@ -92,19 +106,26 @@ public final class PaymentComponentsController: NSObject {
             case let .success(paymentProviders):
                 self?.paymentProviders = paymentProviders
                 self?.checkInstalledPaymentProviders()
-                self?.delegate?.didFetchedPaymentProviders(self?.installedPaymentProviders ?? [])
+                self?.selectedPaymentProvider = self?.obtainDefaultInstalledPaymentProvider()
+                self?.delegate?.didFetchedPaymentProviders()
             case let .failure(error):
                 print("Couldn't load payment providers: \(error.localizedDescription)")
             }
         }
     }
     
+    @objc
+    private func willEnterForeground() {
+        if !checkPaymentProviderIsInstalled(paymentProvider: selectedPaymentProvider) {
+            loadPaymentProviders()
+        }
+    }
+    
     private func checkInstalledPaymentProviders() {
+        installedPaymentProviders = []
         for paymentProvider in paymentProviders {
-            if let url = URL(string: paymentProvider.appSchemeIOS) {
-                if UIApplication.shared.canOpenURL(url) {
-                    self.installedPaymentProviders.append(paymentProvider)
-                }
+            if checkPaymentProviderIsInstalled(paymentProvider: paymentProvider) {
+                self.installedPaymentProviders.append(paymentProvider)
             }
         }
     }
@@ -131,10 +152,16 @@ public final class PaymentComponentsController: NSObject {
         }
         return nil
     }
+    
+    private func checkPaymentProviderIsInstalled(paymentProvider: PaymentProvider?) -> Bool {
+        if let appSchemeIOS = paymentProvider?.appSchemeIOS, let url = URL(string: appSchemeIOS) {
+            return UIApplication.shared.canOpenURL(url)
+        }
+        return false
+    }
 
     /**
      Checks if the document is payable by extracting the IBAN.
-
      - Parameters:
          - docId: The ID of the uploaded document.
          - completion: A closure for processing asynchronous data received from the service. It has a Result type parameter, representing either success or failure. The completion block is called on the main thread.
@@ -149,18 +176,17 @@ public final class PaymentComponentsController: NSObject {
      Provides a custom Gini view that contains more information, bank selection if available and a tappable button to pay the document/invoice
 
      - Parameters:
-        - paymentProvider: A Payment Provider object if is available and installed
-     - Returns: an custom view
+     - Returns: a custom view
      */
-    public func getPaymentView(paymentProvider: PaymentProvider?) -> UIView {
+    public func getPaymentView() -> UIView {
         paymentComponentView = PaymentComponentView()
-        let paymentComponentViewModel = PaymentComponentViewModel(paymentProvider: paymentProvider)
+        let paymentComponentViewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider)
         paymentComponentViewModel.delegate = viewDelegate
         paymentComponentView.viewModel = paymentComponentViewModel
         return paymentComponentView
     }
 
-    public func getPaymentsProvidersBottomViewController(selectedPaymentProvider: PaymentProvider) -> UIViewController {
+    public func getPaymentsProvidersBottomViewController() -> UIViewController {
         let paymentProvidersBottomView = PaymentProvidersBottomView()
         let paymentProvidersBottomViewModel = PaymentProvidersBottomViewModel(paymentProviders: paymentProviders,
                                                                               selectedPaymentProvider: selectedPaymentProvider)
@@ -188,6 +214,7 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
 
 extension PaymentComponentsController: PaymentProvidersBottomViewProtocol {
     public func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
+        selectedPaymentProvider = paymentProvider
         storeDefaultPaymentProvider(paymentProvider: paymentProvider)
         bottomViewDelegate?.didSelectPaymentProvider(paymentProvider: paymentProvider)
     }

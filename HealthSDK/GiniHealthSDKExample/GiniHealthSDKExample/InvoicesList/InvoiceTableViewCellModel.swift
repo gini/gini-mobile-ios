@@ -51,7 +51,7 @@ final class InvoiceTableViewCellModel {
     
     var paymentComponentView: UIView {
         paymentComponentsController.viewDelegate = self
-        return paymentComponentsController.getPaymentView(paymentProvider: invoice.paymentProvider)
+        return paymentComponentsController.getPaymentView()
     }
 }
 
