@@ -144,7 +144,9 @@ public final class PaymentComponentsController: NSObject {
             do {
                 let decoder = JSONDecoder()
                 let paymentProvider = try decoder.decode(PaymentProvider.self, from: data)
-                return paymentProvider
+                if self.installedPaymentProviders.contains(where: { $0.id == paymentProvider.id }) {
+                    return paymentProvider
+                }
             } catch {
                 print("Unable to decode payment provider: (\(error))")
             }
