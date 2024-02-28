@@ -8,7 +8,7 @@
 import UIKit
 
 final class BankSelectionBottomSheet: UIViewController {
-    var bottomSheet: PaymentProvidersBottomView! {
+    var bottomSheet: BanksBottomView! {
         didSet {
             setupLayout()
         }
