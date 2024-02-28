@@ -90,8 +90,8 @@ final class PaymentProvidersBottomViewModel {
         }
     }
 
-    func paymentProvidersViewModel(paymentProvider: PaymentProviderAdditionalInfo) -> PaymentProviderBottomTableViewCellModel {
-        PaymentProviderBottomTableViewCellModel(paymentProvider: paymentProvider)
+    func paymentProvidersViewModel(paymentProvider: PaymentProviderAdditionalInfo) -> BankSelectionTableViewCellModel {
+        BankSelectionTableViewCellModel(paymentProvider: paymentProvider)
     }
     
     func didTapOnClose() {

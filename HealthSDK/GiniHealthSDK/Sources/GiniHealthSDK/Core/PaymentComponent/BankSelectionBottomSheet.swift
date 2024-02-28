@@ -1,5 +1,5 @@
 //
-//  PaymentProvidersBottomViewController.swift
+//  BankSelectionBottomSheet.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PaymentProvidersBottomViewController: UIViewController {
+final class BankSelectionBottomSheet: UIViewController {
     var bottomSheet: PaymentProvidersBottomView! {
         didSet {
             setupLayout()
