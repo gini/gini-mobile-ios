@@ -7,9 +7,9 @@
 
 import UIKit
 
-class PaymentProvidersBottomView: UIView {
+class BanksBottomView: UIView {
 
-    var viewModel: PaymentProvidersBottomViewModel! {
+    var viewModel: BanksBottomViewModel! {
         didSet {
             setupView()
         }
@@ -209,7 +209,7 @@ class PaymentProvidersBottomView: UIView {
     }
 }
 
-extension PaymentProvidersBottomView {
+extension BanksBottomView {
     enum Constants {
         static let cornerRadiusView = 40.0
         static let cornerRadiusTopRectangle = 2.0
@@ -224,7 +224,7 @@ extension PaymentProvidersBottomView {
     }
 }
 
-extension PaymentProvidersBottomView: UITableViewDataSource, UITableViewDelegate {
+extension BanksBottomView: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.paymentProviders.count
     }
