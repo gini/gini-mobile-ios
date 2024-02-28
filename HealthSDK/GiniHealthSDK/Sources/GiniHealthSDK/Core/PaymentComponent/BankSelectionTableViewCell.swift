@@ -1,5 +1,5 @@
 //
-//  PaymentProviderBottomTableViewCell.swift
+//  BankSelectionTableViewCell.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -7,10 +7,10 @@
 
 import UIKit
 
-class PaymentProviderBottomTableViewCell: UITableViewCell {
-    static let identifier = "PaymentProviderBottomTableViewCell"
+class BankSelectionTableViewCell: UITableViewCell {
+    static let identifier = "BankSelectionTableViewCell"
 
-    var cellViewModel: PaymentProviderBottomTableViewCellModel? {
+    var cellViewModel: BankSelectionTableViewCellModel? {
         didSet {
             guard let cellViewModel else { return }
             cellView.backgroundColor = cellViewModel.backgroundColor
@@ -62,7 +62,7 @@ class PaymentProviderBottomTableViewCell: UITableViewCell {
     }
 }
 
-extension PaymentProviderBottomTableViewCell {
+extension BankSelectionTableViewCell {
     private enum Constants {
         static let viewCornerRadius = 8.0
         static let selectedBorderWidth = 3.0

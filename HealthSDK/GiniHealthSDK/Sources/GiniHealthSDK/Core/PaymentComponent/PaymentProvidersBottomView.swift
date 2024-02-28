@@ -68,9 +68,9 @@ class PaymentProvidersBottomView: UIView {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UINib(nibName: PaymentProviderBottomTableViewCell.identifier,
+        tableView.register(UINib(nibName: BankSelectionTableViewCell.identifier,
                                  bundle: Bundle.resource),
-                           forCellReuseIdentifier: PaymentProviderBottomTableViewCell.identifier)
+                           forCellReuseIdentifier: BankSelectionTableViewCell.identifier)
         tableView.estimatedRowHeight = viewModel.rowHeight
         tableView.rowHeight = viewModel.rowHeight
         tableView.separatorStyle = .none
@@ -230,8 +230,8 @@ extension PaymentProvidersBottomView: UITableViewDataSource, UITableViewDelegate
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: PaymentProviderBottomTableViewCell.identifier, 
-                                                       for: indexPath) as? PaymentProviderBottomTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: BankSelectionTableViewCell.identifier, 
+                                                       for: indexPath) as? BankSelectionTableViewCell else {
             return UITableViewCell()
         }
         let invoiceTableViewCellModel = viewModel.paymentProvidersViewModel(paymentProvider: viewModel.paymentProviders[indexPath.row])

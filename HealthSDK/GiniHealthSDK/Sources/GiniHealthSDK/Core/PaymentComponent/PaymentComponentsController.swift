@@ -31,7 +31,6 @@ public protocol GiniDocument {
 public protocol PaymentComponentsControllerProtocol: AnyObject {
     func isLoadingStateChanged(isLoading: Bool) // Because we can't use Combine, iOS 11 supported
     func didFetchedPaymentProviders()
-    func didReceivedErrorOnPaymentProviders(_ error: GiniHealthError)
 }
 
 /**
@@ -90,8 +89,8 @@ public final class PaymentComponentsController: NSObject {
      Retrieve the default installed payment provider, if available.
      - Returns: a Payment Provider object.
      */
-    private func obtainDefaultInstalledPaymentProvider() -> PaymentProvider? {
-        getDefaultPaymentProvider() ?? installedPaymentProviders.first
+    private func defaultInstalledPaymentProvider() -> PaymentProvider? {
+        savedPaymentProvider() ?? installedPaymentProviders.first
     }
     
     /**
@@ -106,7 +105,7 @@ public final class PaymentComponentsController: NSObject {
             case let .success(paymentProviders):
                 self?.paymentProviders = paymentProviders
                 self?.checkInstalledPaymentProviders()
-                self?.selectedPaymentProvider = self?.obtainDefaultInstalledPaymentProvider()
+                self?.selectedPaymentProvider = self?.defaultInstalledPaymentProvider()
                 self?.delegate?.didFetchedPaymentProviders()
             case let .failure(error):
                 print("Couldn't load payment providers: \(error.localizedDescription)")
@@ -140,7 +139,7 @@ public final class PaymentComponentsController: NSObject {
         }
     }
     
-    private func getDefaultPaymentProvider() -> PaymentProvider? {
+    private func savedPaymentProvider() -> PaymentProvider? {
         if let data = UserDefaults.standard.data(forKey: Constants.kDefaultPaymentProvider) {
             do {
                 let decoder = JSONDecoder()
@@ -178,7 +177,7 @@ public final class PaymentComponentsController: NSObject {
      - Parameters:
      - Returns: a custom view
      */
-    public func getPaymentView() -> UIView {
+    public func paymentView() -> UIView {
         paymentComponentView = PaymentComponentView()
         let paymentComponentViewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider)
         paymentComponentViewModel.delegate = viewDelegate
@@ -186,15 +185,15 @@ public final class PaymentComponentsController: NSObject {
         return paymentComponentView
     }
 
-    public func getPaymentsProvidersBottomViewController() -> UIViewController {
+    public func bankSelectionBottomSheet() -> UIViewController {
         let paymentProvidersBottomView = PaymentProvidersBottomView()
         let paymentProvidersBottomViewModel = PaymentProvidersBottomViewModel(paymentProviders: paymentProviders,
                                                                               selectedPaymentProvider: selectedPaymentProvider)
         paymentProvidersBottomViewModel.viewDelegate = self
         paymentProvidersBottomView.viewModel = paymentProvidersBottomViewModel
-        let paymentProvidersBottomViewController = PaymentProvidersBottomViewController()
-        paymentProvidersBottomViewController.bottomSheet = paymentProvidersBottomView
-        return paymentProvidersBottomViewController
+        let bankSelectionBottomSheet = BankSelectionBottomSheet()
+        bankSelectionBottomSheet.bottomSheet = paymentProvidersBottomView
+        return bankSelectionBottomSheet
     }
 }
 

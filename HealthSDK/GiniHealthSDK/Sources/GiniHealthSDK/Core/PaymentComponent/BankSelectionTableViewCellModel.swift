@@ -1,5 +1,5 @@
 //
-//  PaymentProviderBottomTableViewCellModel.swift
+//  BankSelectionTableViewCellModel.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -8,7 +8,7 @@
 import UIKit
 import GiniHealthAPILibrary
 
-final class PaymentProviderBottomTableViewCellModel {
+final class BankSelectionTableViewCellModel {
 
     private var isSelected: Bool = false
     private var isPaymentProviderInstalled = false
