@@ -361,41 +361,39 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     // MARK: - Input fields configuration
 
-    fileprivate func applyDefaultStyle(_ field: UITextField) {
-        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: field.frame.height))
-        field.leftViewMode = .always
-        field.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: field.frame.height))
-        field.rightViewMode = .always
-        field.layer.cornerRadius = self.giniHealthConfiguration.paymentInputFieldCornerRadius
-        field.layer.borderWidth = giniHealthConfiguration.paymentInputFieldBorderWidth
-        field.backgroundColor = UIColor.GiniHealthColors.dark6
-        field.font = giniHealthConfiguration.customFont.regular
-        field.textColor = UIColor.GiniHealthColors.dark1
-        let placeholderText = inputFieldPlaceholderText(field)
-        field.attributedPlaceholder = NSAttributedString(string: placeholderText,
-                                                         attributes: [NSAttributedString.Key.foregroundColor: UIColor.GiniHealthColors.dark4,
-                                                                      NSAttributedString.Key.font: giniHealthConfiguration.customFont.regular])
-        field.layer.masksToBounds = true
+    fileprivate func applyDefaultStyle(_ textField: UITextField) {
+        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: textField.frame.height))
+        textField.leftViewMode = .always
+        textField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: textField.frame.height))
+        textField.rightViewMode = .always
+        textField.configureWith(configuration: giniHealthConfiguration.defaultStyleInputFieldConfiguration)
+        textField.font = giniHealthConfiguration.textStyleFonts[.input]
+        configureAttributedPlaceholderStyle(textField)
+        textField.layer.masksToBounds = true
     }
 
     fileprivate func applyErrorStyle(_ textField: UITextField) {
         UIView.animate(withDuration: 0.3) {
-            textField.layer.cornerRadius = self.giniHealthConfiguration.paymentInputFieldCornerRadius
-            textField.backgroundColor = UIColor.GiniHealthColors.dark6
-            textField.layer.borderWidth = self.giniHealthConfiguration.paymentInputFieldErrorStyleBorderWidth
-            textField.layer.borderColor = UIColor.GiniHealthColors.feedback1.cgColor
+            textField.configureWith(configuration: self.giniHealthConfiguration.errorStyleInputFieldConfiguration)
+            let placeholderText = self.inputFieldPlaceholderText(textField)
             textField.layer.masksToBounds = true
         }
     }
 
     fileprivate func applySelectionStyle(_ textField: UITextField) {
-        UIView.animate(withDuration: 0.3) {
-            textField.layer.cornerRadius = self.giniHealthConfiguration.paymentInputFieldCornerRadius
-            textField.backgroundColor = UIColor.GiniHealthColors.dark7
-            textField.layer.borderWidth = self.giniHealthConfiguration.paymentInputFieldSelectionStyleBorderWidth
-            textField.layer.borderColor = UIColor.GiniHealthColors.accent1.cgColor
+        UIView.animate(withDuration: 0.3) { [self] in
+            textField.configureWith(configuration: self.giniHealthConfiguration.selectionStyleInputFieldConfiguration)
+            configureAttributedPlaceholderStyle(textField)
+
             textField.layer.masksToBounds = true
         }
+    }
+
+    private func configureAttributedPlaceholderStyle(_ textField: UITextField) {
+        let placeholderText = self.inputFieldPlaceholderText(textField)
+        textField.attributedPlaceholder = NSAttributedString(string: placeholderText,
+                                                             attributes: [NSAttributedString.Key.foregroundColor: GiniColor(lightModeColor: .GiniHealthColors.dark4, darkModeColor: .GiniHealthColors.light4).uiColor(),
+                                                                          NSAttributedString.Key.font: self.giniHealthConfiguration.textStyleFonts[.caption2] ?? self.giniHealthConfiguration.customFont.regular])
     }
     
     @objc fileprivate func doneWithAmountInputButtonTapped() {
