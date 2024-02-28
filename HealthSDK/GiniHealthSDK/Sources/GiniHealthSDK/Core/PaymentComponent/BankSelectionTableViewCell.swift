@@ -15,6 +15,9 @@ class BankSelectionTableViewCell: UITableViewCell {
             guard let cellViewModel else { return }
             cellView.backgroundColor = cellViewModel.backgroundColor
             bankImageView.image = cellViewModel.bankImageIcon
+            bankImageView.layer.cornerRadius = Constants.bankIconCornerRadius
+            bankImageView.layer.borderWidth = Constants.bankIconBorderWidth
+            bankImageView.layer.borderColor = cellViewModel.bankIconBorderColor.cgColor
             bankNameLabel.text = cellViewModel.bankName
             bankNameLabel.font = cellViewModel.bankNameLabelFont
             bankNameLabel.textColor = cellViewModel.bankNameLabelAccentColor
@@ -67,5 +70,7 @@ extension BankSelectionTableViewCell {
         static let viewCornerRadius = 8.0
         static let selectedBorderWidth = 3.0
         static let notSelectedBorderWidth = 1.0
+        static let bankIconBorderWidth = 1.0
+        static let bankIconCornerRadius = 8.0
     }
 }
