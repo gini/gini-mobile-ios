@@ -180,7 +180,34 @@ public final class GiniHealthConfiguration: NSObject {
                                                                        withBlurEffect: true)
     
     // MARK: - Shared properties
-    
+
+    /**
+     A default style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
+     */
+    public lazy var defaultStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: UIColor.GiniHealthColors.dark6,
+                                                                                  borderColor: .clear,
+                                                                                  textColor: UIColor.GiniHealthColors.dark1,
+                                                                                  cornerRadius: 12.0,
+                                                                                  borderWidth: 0.0,
+                                                                                  placeholderForegroundColor: UIColor.GiniHealthColors.dark4)
+    /**
+     A error style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
+     */
+    public lazy var errorStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: UIColor.GiniHealthColors.dark6,
+                                                                                     borderColor: UIColor.GiniHealthColors.feedback1,
+                                                                                     textColor: UIColor.GiniHealthColors.dark1,
+                                                                                     cornerRadius: 12.0,
+                                                                                     borderWidth: 1.0,
+                                                                                     placeholderForegroundColor: UIColor.GiniHealthColors.dark4)
+    /**
+     A selection style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
+     */
+    public lazy var selectionStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: UIColor.GiniHealthColors.dark7,
+                                                                                     borderColor: UIColor.GiniHealthColors.accent1,
+                                                                                     textColor: UIColor.GiniHealthColors.dark1,
+                                                                                     cornerRadius: 12.0,
+                                                                                     borderWidth: 1.0,
+                                                                                     placeholderForegroundColor: UIColor.GiniHealthColors.dark4)
     /**
      Sets the font used in the screens by default.
      */
