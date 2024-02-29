@@ -159,7 +159,6 @@ final class InvoicesListViewModel {
 
 extension InvoicesListViewModel: PaymentComponentViewProtocol {
     func didTapOnMoreInformation(documentID: String?) {
-        // MARK: TODO in next tasks
         guard let documentID else { return }
         Log("Tapped on More Information on :\(documentID)", event: .success)
     }
@@ -167,7 +166,7 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
     func didTapOnBankPicker(documentID: String?) {
         guard let documentID else { return }
         Log("Tapped on Bank Picker on :\(documentID)", event: .success)
-        let paymentProvidersBottomViewController = paymentComponentsController.getPaymentsProvidersBottomViewController()
+        let paymentProvidersBottomViewController = paymentComponentsController.bankSelectionBottomSheet()
         paymentProvidersBottomViewController.modalPresentationStyle = .overFullScreen
         self.coordinator.invoicesListViewController.present(paymentProvidersBottomViewController, animated: true)
     }
@@ -193,11 +192,6 @@ extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
         DispatchQueue.main.async {
             self.coordinator.invoicesListViewController.reloadTableView()
         }
-    }
-    
-    func didReceivedErrorOnPaymentProviders(_ error: GiniHealthSDK.GiniHealthError) {
-        errors.append(error.errorMessage)
-        showErrorsIfAny()
     }
 
     func isLoadingStateChanged(isLoading: Bool) {

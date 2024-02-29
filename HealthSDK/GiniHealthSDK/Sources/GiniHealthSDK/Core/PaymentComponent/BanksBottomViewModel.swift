@@ -1,5 +1,5 @@
 //
-//  PaymentProvidersBottomViewModel.swift
+//  BanksBottomViewModel.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -19,7 +19,7 @@ struct PaymentProviderAdditionalInfo {
     let paymentProvider: PaymentProvider
 }
 
-final class PaymentProvidersBottomViewModel {
+final class BanksBottomViewModel {
     
     weak var viewDelegate: PaymentProvidersBottomViewProtocol?
 
@@ -90,8 +90,8 @@ final class PaymentProvidersBottomViewModel {
         }
     }
 
-    func paymentProvidersViewModel(paymentProvider: PaymentProviderAdditionalInfo) -> PaymentProviderBottomTableViewCellModel {
-        PaymentProviderBottomTableViewCellModel(paymentProvider: paymentProvider)
+    func paymentProvidersViewModel(paymentProvider: PaymentProviderAdditionalInfo) -> BankSelectionTableViewCellModel {
+        BankSelectionTableViewCellModel(paymentProvider: paymentProvider)
     }
     
     func didTapOnClose() {
@@ -108,7 +108,7 @@ final class PaymentProvidersBottomViewModel {
     }
 }
 
-extension PaymentProvidersBottomViewModel {
+extension BanksBottomViewModel {
     enum Constants {
         static let blankBottomViewHeight: CGFloat = 200.0
         static let cellSizeHeight: CGFloat = 64.0

@@ -7,9 +7,9 @@
 
 import UIKit
 
-class PaymentProvidersBottomView: UIView {
+class BanksBottomView: UIView {
 
-    var viewModel: PaymentProvidersBottomViewModel! {
+    var viewModel: BanksBottomViewModel! {
         didSet {
             setupView()
         }
@@ -68,9 +68,9 @@ class PaymentProvidersBottomView: UIView {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UINib(nibName: PaymentProviderBottomTableViewCell.identifier,
+        tableView.register(UINib(nibName: BankSelectionTableViewCell.identifier,
                                  bundle: Bundle.resource),
-                           forCellReuseIdentifier: PaymentProviderBottomTableViewCell.identifier)
+                           forCellReuseIdentifier: BankSelectionTableViewCell.identifier)
         tableView.estimatedRowHeight = viewModel.rowHeight
         tableView.rowHeight = viewModel.rowHeight
         tableView.separatorStyle = .none
@@ -209,7 +209,7 @@ class PaymentProvidersBottomView: UIView {
     }
 }
 
-extension PaymentProvidersBottomView {
+extension BanksBottomView {
     enum Constants {
         static let cornerRadiusView = 40.0
         static let cornerRadiusTopRectangle = 2.0
@@ -224,14 +224,14 @@ extension PaymentProvidersBottomView {
     }
 }
 
-extension PaymentProvidersBottomView: UITableViewDataSource, UITableViewDelegate {
+extension BanksBottomView: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.paymentProviders.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: PaymentProviderBottomTableViewCell.identifier, 
-                                                       for: indexPath) as? PaymentProviderBottomTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: BankSelectionTableViewCell.identifier, 
+                                                       for: indexPath) as? BankSelectionTableViewCell else {
             return UITableViewCell()
         }
         let invoiceTableViewCellModel = viewModel.paymentProvidersViewModel(paymentProvider: viewModel.paymentProviders[indexPath.row])

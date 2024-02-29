@@ -175,7 +175,7 @@ dispatchGroup.notify(queue: .main) {
 #### 5. Depending on the value of `isPayable`, incorporate the corresponding payment component view into your cells using this function:
 
 ```swift
-public func getPaymentView(paymentProvider: PaymentProvider?) -> UIView
+public func paymentView(paymentProvider: PaymentProvider?) -> UIView
 ```
 
 > - We suggest placing this `UIView` within a vertical `UIStackView`. Additionally, in the `prepareForReuse()` function of each cell, remove the payment component view if it exists.

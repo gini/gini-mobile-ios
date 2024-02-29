@@ -8,7 +8,6 @@
 
 "giniHealthSDKExample.invoicesList.title" = "Invoices List";
 "giniHealthSDKExample.uploadInvoices.button.title" = "↑ Invoices";
-"giniHealthSDKExample.cancel.button.title" = "Cancel";
 "giniHealthSDKExample.invoicesList.missingInvoices.text" = "No invoices";
 "giniHealthSDKExample.invoicesList.error" = "Error";
 "giniHealthSDKExample.cancel.button.title" = "Cancel";
