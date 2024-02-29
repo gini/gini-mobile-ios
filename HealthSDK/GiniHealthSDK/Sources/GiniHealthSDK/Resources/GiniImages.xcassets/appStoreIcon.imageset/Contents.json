@@ -1,16 +1,16 @@
 {
   "images" : [
     {
-      "filename" : "Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917 2.svg",
+      "filename" : "img_button_app_store_english.pdf",
       "idiom" : "universal"
     },
     {
-      "filename" : "Download_on_the_App_Store_Badge_DE_RGB_blk_092917.svg",
+      "filename" : "img_button_app_store_german.pdf",
       "idiom" : "universal",
       "locale" : "de"
     },
     {
-      "filename" : "Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917 1.svg",
+      "filename" : "img_button_app_store_english 1.pdf",
       "idiom" : "universal",
       "locale" : "en"
     }
