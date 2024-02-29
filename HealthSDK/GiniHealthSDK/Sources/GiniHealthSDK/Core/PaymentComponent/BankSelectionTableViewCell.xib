@@ -10,7 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PaymentProviderBottomTableViewCell" rowHeight="67" id="P0O-tO-qfG" customClass="PaymentProviderBottomTableViewCell" customModule="GiniHealthSDK">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BankSelectionTableViewCell" rowHeight="67" id="P0O-tO-qfG" customClass="BankSelectionTableViewCell" customModule="GiniHealthSDK">
             <rect key="frame" x="0.0" y="0.0" width="393" height="59"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="P0O-tO-qfG" id="nmL-Fb-dcq">
@@ -85,7 +85,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="appStoreIcon" width="114" height="38"/>
+        <image name="appStoreIcon" width="119.66407012939453" height="40"/>
         <image name="selectionIndicator" width="24" height="24"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

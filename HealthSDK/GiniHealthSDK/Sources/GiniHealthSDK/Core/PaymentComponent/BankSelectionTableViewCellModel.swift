@@ -1,5 +1,5 @@
 //
-//  PaymentProviderBottomTableViewCellModel.swift
+//  BankSelectionTableViewCellModel.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -8,7 +8,7 @@
 import UIKit
 import GiniHealthAPILibrary
 
-final class PaymentProviderBottomTableViewCellModel {
+final class BankSelectionTableViewCellModel {
 
     private var isSelected: Bool = false
     private var isPaymentProviderInstalled = false
@@ -30,6 +30,8 @@ final class PaymentProviderBottomTableViewCellModel {
         }
         return UIImage()
     }
+    var bankIconBorderColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.light7,
+                                        darkModeColor: UIColor.GiniHealthColors.light7).uiColor().withAlphaComponent(0.1)
 
     var bankName: String
     var bankNameLabelFont: UIFont
