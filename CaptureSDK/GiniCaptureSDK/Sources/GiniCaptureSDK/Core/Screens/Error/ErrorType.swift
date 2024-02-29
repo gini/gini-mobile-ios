@@ -42,23 +42,10 @@ import GiniBankAPILibrary
             self = .connection
         case .noResponse:
             self = .unexpected
-        case .notAcceptable(let response, _), .tooManyRequests(let response, _),
-             .parseError(_, let response, _), .badRequest(let response, _),
-             .notFound(let response, _):
-            if let status = response?.statusCode {
-                switch status {
-                case 400, 402 ... 499:
-                    self = .request
-                case 401:
-                    self = .authentication
-                case let code where code > 500 && code != 503:
-                    self = .serverError
-                default:
-                    self = .unexpected
-                }
-            } else {
-                self = .unexpected
-            }
+        case .notAcceptable, .tooManyRequests,
+             .parseError, .badRequest,
+             .notFound:
+            self = .request
         case .server:
             self = .serverError
         case .maintenance:
