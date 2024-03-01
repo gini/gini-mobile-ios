@@ -207,10 +207,10 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     // MARK: - Info bar
 
     fileprivate func configureInfoBar() {
-        infoBar.roundCorners(corners: [.topLeft, .topRight], radius: giniHealthConfiguration.infoBarCornerRadius)
+        infoBar.roundCorners(corners: [.topLeft, .topRight], radius: 12.0)
         infoBar.backgroundColor = UIColor.GiniHealthColors.success1
         infoBarLabel.textColor = UIColor.GiniHealthColors.dark7
-        infoBarLabel.font = giniHealthConfiguration.customFont.regular
+        infoBarLabel.font = giniHealthConfiguration.textStyleFonts[.body]
         infoBarLabel.adjustsFontForContentSizeCategory = true
         infoBarLabel.text = NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.infobar.message",
                                                              comment: "info bar message")
@@ -224,7 +224,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
                        delay: 0, usingSpringWithDamping: 1.0,
                        initialSpringVelocity: 1.0,
                        options: [], animations: {
-                           self.infoBar.frame = CGRect(x: 0, y: self.inputContainer.frame.minY + self.giniHealthConfiguration.infoBarCornerRadius - self.infoBar.frame.height, width: screenSize.width, height: self.infoBar.frame.height)
+                           self.infoBar.frame = CGRect(x: 0, y: self.inputContainer.frame.minY + 12 - self.infoBar.frame.height, width: screenSize.width, height: self.infoBar.frame.height)
                        }, completion: nil)
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             self.animateSlideDownInfoBar()
@@ -245,49 +245,49 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
 
     // MARK: - ConfigureBankProviderView
     
-    fileprivate func configureBankProviderView(paymentProvider: PaymentProvider) {
-        bankProviderButtonView.backgroundColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonBackgroundColor)
-        bankProviderButtonView.layer.cornerRadius = giniHealthConfiguration.bankButtonCornerRadius
-        bankProviderButtonView.layer.borderWidth = giniHealthConfiguration.bankButtonBorderWidth
-        bankProviderButtonView.layer.borderColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonBorderColor).cgColor
-
-        bankProviderLabel.textColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonTextColor)
-        bankProviderLabel.text = paymentProvider.name
-
-        let imageData =  paymentProvider.iconData
-        if let image = UIImage(data: imageData){
-            bankProviderImage.image = image
-        }
-        
-        if let templateImage = UIImageNamedPreferred(named: "editIcon"), self.paymentProviders.count > 1 {
-            bankProviderEditIcon.image = templateImage.withRenderingMode(.alwaysTemplate)
-            bankProviderEditIcon.tintColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonEditIconColor)
-            let selectProviderTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(selectBankProviderTapped))
-            bankProviderButtonView.addGestureRecognizer(selectProviderTapRecognizer)
-        }
-        bankProviderLabel.font = giniHealthConfiguration.customFont.regular
-        bankProviderLabel.adjustsFontForContentSizeCategory = true
-
-    }
+//    fileprivate func configureBankProviderView(paymentProvider: PaymentProvider) {
+//        bankProviderButtonView.backgroundColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonBackgroundColor)
+//        bankProviderButtonView.layer.cornerRadius = giniHealthConfiguration.bankButtonCornerRadius
+//        bankProviderButtonView.layer.borderWidth = giniHealthConfiguration.bankButtonBorderWidth
+//        bankProviderButtonView.layer.borderColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonBorderColor).cgColor
+//
+//        bankProviderLabel.textColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonTextColor)
+//        bankProviderLabel.text = paymentProvider.name
+//
+//        let imageData =  paymentProvider.iconData
+//        if let image = UIImage(data: imageData){
+//            bankProviderImage.image = image
+//        }
+//        
+//        if let templateImage = UIImageNamedPreferred(named: "editIcon"), self.paymentProviders.count > 1 {
+//            bankProviderEditIcon.image = templateImage.withRenderingMode(.alwaysTemplate)
+//            bankProviderEditIcon.tintColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonEditIconColor)
+//            let selectProviderTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(selectBankProviderTapped))
+//            bankProviderButtonView.addGestureRecognizer(selectProviderTapRecognizer)
+//        }
+//        bankProviderLabel.font = giniHealthConfiguration.customFont.regular
+//        bankProviderLabel.adjustsFontForContentSizeCategory = true
+//
+//    }
     
     fileprivate func updateUIWithDefaultPaymentProvider(provider: PaymentProvider){
-        self.configureBankProviderView(paymentProvider: provider)
+       // self.configureBankProviderView(paymentProvider: provider)
         self.configurePayButton(paymentProvider: provider)
     }
 
-    fileprivate func presentBankSelectionViewController() {
-       
-       let availableProviders = self.paymentProviders
-        if availableProviders.count > 1 {
-            let bankSelectionViewController = BankProviderViewController.instantiate(with: availableProviders)
-            bankSelectionViewController.onSelectedProviderDidChanged = { provider in
-                self.selectedPaymentProvider = provider
-            }
-            bankSelectionViewController.modalPresentationStyle = .overCurrentContext
-            bankSelectionViewController.modalTransitionStyle = .crossDissolve
-            present(bankSelectionViewController, animated: true)
-        }
-    }
+//    fileprivate func presentBankSelectionViewController() {
+//       
+//       let availableProviders = self.paymentProviders
+//        if availableProviders.count > 1 {
+//            let bankSelectionViewController = BankProviderViewController.instantiate(with: availableProviders)
+//            bankSelectionViewController.onSelectedProviderDidChanged = { provider in
+//                self.selectedPaymentProvider = provider
+//            }
+//            bankSelectionViewController.modalPresentationStyle = .overCurrentContext
+//            bankSelectionViewController.modalTransitionStyle = .crossDissolve
+//            present(bankSelectionViewController, animated: true)
+//        }
+//    }
 
     fileprivate func configurePayButton(paymentProvider: PaymentProvider) {
         let backgroundColorString = String.rgbaHexFrom(rgbHex: paymentProvider.colors.background)
@@ -312,8 +312,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         payButton.disabledBackgroundColor = UIColor.GiniHealthColors.light4
         payButton.isEnabled = false
         payButton.disabledTextColor = UIColor.GiniHealthColors.dark7
-        payButton.layer.cornerRadius = giniHealthConfiguration.payButtonCornerRadius
-        payButton.titleLabel?.font = giniHealthConfiguration.payButtonTitleFont
+        payButton.titleLabel?.font = giniHealthConfiguration.textStyleFonts[.input]
         payButton.setTitle( NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.next.button.title",
                                                              comment: "next button title"), for: .normal)
     }
@@ -393,7 +392,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         let placeholderText = self.inputFieldPlaceholderText(textField)
         textField.attributedPlaceholder = NSAttributedString(string: placeholderText,
                                                              attributes: [NSAttributedString.Key.foregroundColor: GiniColor(lightModeColor: .GiniHealthColors.dark4, darkModeColor: .GiniHealthColors.light4).uiColor(),
-                                                                          NSAttributedString.Key.font: self.giniHealthConfiguration.textStyleFonts[.caption2] ?? self.giniHealthConfiguration.customFont.regular])
+                                                                          NSAttributedString.Key.font: self.giniHealthConfiguration.textStyleFonts[.caption2] ?? UIFont.systemFont(ofSize: 12, weight: .regular)])
     }
     
     @objc fileprivate func doneWithAmountInputButtonTapped() {
@@ -608,7 +607,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         UIView.animate(withDuration: 0.5) {
             self.bankProviderButtonView.alpha = 1.0
         }
-        presentBankSelectionViewController()
+       // presentBankSelectionViewController()
     }
     
     @IBAction func payButtonClicked(_ sender: Any) {

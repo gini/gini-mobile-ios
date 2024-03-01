@@ -151,12 +151,6 @@ final class AppCoordinator: Coordinator {
     
     fileprivate func showPaymentReviewWithTestDocument() {
         let configuration = GiniHealthConfiguration()
-        // Font configuration
-        let regularFont = UIFont(name: "Avenir", size: 15) ?? UIFont.systemFont(ofSize: 15)
-        let boldFont = UIFont(name: "Avenir Heavy", size: 14) ?? UIFont.systemFont(ofSize: 15)
-        configuration.customFont = GiniFont(regular: regularFont, bold: boldFont, light: regularFont, thin: regularFont, medium: boldFont)
-        // Pay button configuration
-        configuration.payButtonTitleFont = boldFont
         
         // Show the close button to dismiss the payment review screen
         configuration.showPaymentReviewCloseButton = true

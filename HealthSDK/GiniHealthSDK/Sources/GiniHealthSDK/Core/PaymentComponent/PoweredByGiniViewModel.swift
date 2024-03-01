@@ -17,6 +17,6 @@ final class PoweredByGiniViewModel {
     let giniIconName: String = "giniLogo"
 
     init() {
-        self.poweredByGiniLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.caption2] ?? GiniHealthConfiguration.shared.customFont.regular
+        self.poweredByGiniLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.caption2] ?? UIFont.systemFont(ofSize: 12, weight: .regular)
     }
 }
