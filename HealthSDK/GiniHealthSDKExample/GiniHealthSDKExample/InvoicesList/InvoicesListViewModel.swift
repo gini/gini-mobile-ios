@@ -176,7 +176,7 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
         Log("Tapped on Pay Invoice on :\(documentID)", event: .success)
         paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentID, trackingDelegate: self) { [weak self] viewController, error in
             if let error {
-                self?.errors.append(error.errorMessage)
+                self?.errors.append(error.localizedDescription)
                 self?.showErrorsIfAny()
             } else if let viewController {
                 viewController.modalTransitionStyle = .coverVertical
