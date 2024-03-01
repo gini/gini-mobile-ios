@@ -32,3 +32,6 @@
 "ginihealth.paymentcomponent.poweredByGini.label" = "Powered by";
 "ginihealth.paymentcomponent.selectBank.label" = "Bank auswählen";
 "ginihealth.paymentcomponent.paymentproviderslist.description" = "Sie können die Rechnung nur bezahlen, wenn Sie ein Konto bei einer der unten aufgeführten Banken haben.";
+"ginihealth.paymentcomponent.paymentinfo.title.label" = "Mehr Informationen";
+"ginihealth.paymentcomponent.paymentinfo.payBills.title.label" = "Pay bills easily with the banking app.";
+"ginihealth.paymentcomponent.paymentinfo.payBills.description.label" = "Arztrechnungen und andere eingereichte Belege können jetzt ganz einfach bezahlt werden.\nDie Bezahldaten wie IBAN, Betrag, Empfänger und Verwendungszweck werden nahtlos in die Banking-App übergeben und dort nur noch bestätigt.\nSie können die Rechnung auch parken und innerhalb von 3 Monaten nach Upload begleichen.\nDie Daten werden verschlüsselt und sicher an Ihre Banking-App übertragen. Es gelten die Datenschutzbestimmungen Ihrer Bank.\nUnterstützt von den größten Bankinstituten. Integration durch Gini.";
