@@ -156,8 +156,7 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
 
         let rootViewController = coordinator.start(withDocuments: capturedImages)
         _ = rootViewController.view
-        let response = HTTPURLResponse(url: URL(string: "example")!, statusCode: 501, httpVersion: "", headerFields: [:])
-        let errorType = ErrorType(error: .notAcceptable(response: response, data: Data()))
+        let errorType = ErrorType(error: .server)
         coordinator.displayError(errorType: errorType, animated: false)
         let screenNavigator = rootViewController.children.first as? UINavigationController
         let errorScreen = screenNavigator?.viewControllers.last as? ErrorScreenViewController
