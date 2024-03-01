@@ -147,9 +147,27 @@ final class GiniScreenAPICoordinatorTests: XCTestCase {
             "first view controller is not a ErrorScreenViewController")
         XCTAssertTrue(errorScreen?.errorHeader.headerLabel.text == ErrorType.request.title(), "Error title should match no response error type")
         XCTAssertTrue(errorScreen?.errorContent.text == ErrorType.request.content(), "Error content should match no response error type")
-        
     }
     
+    func testUnauthorizedError() {
+        giniConfiguration.multipageEnabled = false
+        let capturedImages = [GiniCaptureTestsHelper.loadImageDocument(named: "invoice")]
+
+        let rootViewController = coordinator.start(withDocuments: capturedImages)
+        _ = rootViewController.view
+        let response = HTTPURLResponse(url: URL(string: "example")!, statusCode: 401, httpVersion: "", headerFields: [:])
+        let errorType = ErrorType(error: .unauthorized(response: response, data: Data()))
+        coordinator.displayError(errorType: errorType, animated: false)
+        let screenNavigator = rootViewController.children.first as? UINavigationController
+        let errorScreen = screenNavigator?.viewControllers.last as? ErrorScreenViewController
+        errorScreen?.setupView()
+        XCTAssertNotNil(
+            errorScreen,
+            "first view controller is not a ErrorScreenViewController")
+        XCTAssertTrue(errorScreen?.errorHeader.headerLabel.text == ErrorType.authentication.title(), "Error title should match unauthorized error type")
+        XCTAssertTrue(errorScreen?.errorContent.text == ErrorType.authentication.content(), "Error content should match unauthorized error type")
+    }
+
     func testErrorServerError() {
         giniConfiguration.multipageEnabled = false
         let capturedImages = [GiniCaptureTestsHelper.loadImageDocument(named: "invoice")]
