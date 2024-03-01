@@ -39,66 +39,6 @@ public final class GiniHealthConfiguration: NSObject {
     public override init() {}
     
     // MARK: - Payment review screen
-    
-    /**
-     Sets the corner radius of the pay button on the payment review screen
-     */
-    @objc public var payButtonCornerRadius: CGFloat = 6.0
-    
-    /**
-     Sets the font of the pay button title on the payment review screen
-     */
-    @objc public var payButtonTitleFont: UIFont = UIFont.systemFont(ofSize: 14,
-                                                                    weight: .bold)
-    /**
-     Sets the corner radius of the payment input fields on the payment review screen
-     */
-    @objc public var paymentInputFieldCornerRadius: CGFloat = 6.0
-    
-    /**
-     Sets the border width of the payment input fields on the payment review screen
-     */
-    @objc public var paymentInputFieldBorderWidth: CGFloat = 0.0
-    
-    /**
-     Sets the border width of the payment input field with selection style on the payment review screen
-     */
-    @objc public var paymentInputFieldSelectionStyleBorderWidth: CGFloat = 1.0
-    
-    /**
-     Sets the border width of the payment input field with error style on the payment review screen
-     */
-    @objc public var paymentInputFieldErrorStyleBorderWidth: CGFloat = 1.0
-    
-    /**
-     Sets the text color of the bank selection button on the payment review screen
-     */
-    @objc public var bankButtonTextColor = GiniColor(lightModeColor: UIColor.from(hex: 0x33406F), darkModeColor: UIColor.from(hex: 0x33406F))
-    
-    /**
-     Sets the background color of the bank selection button on the payment review screen
-     */
-    @objc public var bankButtonBackgroundColor = GiniColor(lightModeColor: .white, darkModeColor: .white)
-    
-    /**
-     Sets the border width of the the bank button on the payment review screen
-     */
-    @objc public var bankButtonBorderWidth: CGFloat = 1.0
-    
-    /**
-     Sets the border color of the bank selection button on the payment review screen
-     */
-    @objc public var bankButtonBorderColor = GiniColor(lightModeColor: UIColor.from(hex: 0xE6E7ED), darkModeColor: UIColor.from(hex: 0xE6E7ED))
-    
-    /**
-     Sets the corner radius of the bank selection button on the payment review screen
-     */
-    @objc public var bankButtonCornerRadius: CGFloat = 6.0
-    
-    /**
-     Sets the edit icon color  of the bank selection button on the payment review screen
-     */
-    @objc public var bankButtonEditIconColor = GiniColor(lightModeColor: UIColor.from(hex: 0x222222), darkModeColor: UIColor.from(hex: 0x222222))
 
     /**
      Set to `true` to show a close button on the payment review screen.
@@ -109,48 +49,6 @@ public final class GiniHealthConfiguration: NSObject {
      Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in info.plist.
      */
     @objc public var paymentReviewStatusBarStyle: UIStatusBarStyle = .default
-    
-    // MARK: - Bank selection screen
-    
-    /**
-     Sets the backgroundColor on the bank selection screen.
-     */
-    @objc public var bankSelectionScreenBackgroundColor = GiniColor(lightModeColor: UIColor.white, darkModeColor: UIColor.white)
-    
-    /**
-     Sets the backgroundColor of the dimmend overlay on the bank selection screen.
-     */
-    @objc public var bankSelectionDimmedOverlayBackgroundColor = GiniColor(lightModeColor: UIColor.from(hex: 0x00104B66).withAlphaComponent(0.4), darkModeColor: UIColor.from(hex: 0x00104B66).withAlphaComponent(0.4))
-    
-    /**
-     Sets the color of the scroll down view on the bank selection screen.
-     */
-    @objc public var bankSelectionScrollDownIndicatorViewColor = GiniColor(lightModeColor: UIColor.from(hex: 0xCCCFDB), darkModeColor: UIColor.from(hex: 0xCCCFDB))
-    
-    /**
-     Sets the text color of the title on the bank selection screen.
-     */
-    @objc public var bankSelectionTitleTextColor = GiniColor(lightModeColor: UIColor.from(hex: 0x00104B), darkModeColor: UIColor.from(hex: 0x00104B))
-    
-    /**
-     Sets the color of the cells separator view on the bank selection screen.
-     */
-    @objc public var bankSelectionCellSeparatorColor = GiniColor(lightModeColor: UIColor.from(hex: 0xE6E7ED), darkModeColor: UIColor.from(hex: 0xE6E7ED))
-    
-    /**
-     Sets the text color of the cells on the bank selection screen.
-     */
-    @objc public var bankSelectionCellTextColor = GiniColor(lightModeColor: UIColor.from(hex: 0x00104B), darkModeColor: UIColor.from(hex: 0x00104B))
-    
-    /**
-     Sets the corner radius of the bank icons on the bank selection screen.
-     */
-    @objc public var bankSelectionCellIconCornerRadius: CGFloat = 0.0
-    
-    /**
-     Sets the corner radius of the info bar on the payment review screen.
-     */
-    @objc public var infoBarCornerRadius: CGFloat = 12.0
     
     // MARK: - Button configuration options
     /**
@@ -208,21 +106,7 @@ public final class GiniHealthConfiguration: NSObject {
                                                                                      cornerRadius: 12.0,
                                                                                      borderWidth: 1.0,
                                                                                      placeholderForegroundColor: UIColor.GiniHealthColors.dark4)
-    /**
-     Sets the font used in the screens by default.
-     */
-    
-    @objc public lazy var customFont = GiniFont(regular: UIFont.systemFont(ofSize: 14,
-                                                                           weight: .regular),
-                                                bold: UIFont.systemFont(ofSize: 14,
-                                                                        weight: .bold),
-                                                light: UIFont.systemFont(ofSize: 14,
-                                                                         weight: .light),
-                                                thin: UIFont.systemFont(ofSize: 14,
-                                                                        weight: .thin),
-                                                medium: UIFont.systemFont(ofSize: 14,
-                                                                          weight: .medium),
-                                                isEnabled: false)
+
     /**
      Sets the color of the loading indicator to the specified color.
      */
@@ -237,7 +121,10 @@ public final class GiniHealthConfiguration: NSObject {
      Sets the scale of the loading indicator.
      */
     @objc public var loadingIndicatorScale: CGFloat = 1.0
-    
+
+    /**
+     Set dictionary of fonts for available text styles. Used internally.
+     */
     var textStyleFonts: [UIFont.TextStyle: UIFont] = [
         .caption1: UIFontMetrics(forTextStyle: .caption1).scaledFont(for: UIFont.systemFont(ofSize: 13, weight: .regular)),
         .caption2: UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 12, weight: .regular)),
@@ -246,5 +133,16 @@ public final class GiniHealthConfiguration: NSObject {
         .input: UIFontMetrics(forTextStyle: .input).scaledFont(for: UIFont.systemFont(ofSize: 16, weight: .medium)),
         .button: UIFontMetrics(forTextStyle: .button).scaledFont(for: UIFont.systemFont(ofSize: 16, weight: .bold))
     ]
-    
+
+    // MARK: - Update to custom font
+    /**
+     Allows setting a custom font for specific text styles. The change will affect all screens where a specific text style was used.
+
+     - parameter font: Font that is going to be assosiated with specific text style. You can use scaled font or scale your font with our util method `UIFont.scaledFont(_ font: UIFont, textStyle: UIFont.TextStyle)`
+     - parameter textStyle: Constants that describe the preferred styles for fonts. Please, find additional information [here](https://developer.apple.com/documentation/uikit/uifont/textstyle)
+     */
+    public func updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle) {
+        textStyleFonts[textStyle] = font
+    }
+
 }

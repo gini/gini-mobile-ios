@@ -97,9 +97,9 @@ final class PaymentComponentViewModel {
     weak var delegate: PaymentComponentViewProtocol?
     
     init(paymentProvider: PaymentProvider?) {
-        let defaultRegularFont: UIFont = giniHealthConfiguration.customFont.regular
-        let defaultBoldFont: UIFont = giniHealthConfiguration.customFont.regular
-        let defaultMediumFont: UIFont = giniHealthConfiguration.customFont.medium
+        let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
+        let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
+        let defaultMediumFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .medium)
         self.moreInformationLabelFont = giniHealthConfiguration.textStyleFonts[.caption1] ?? defaultRegularFont
         self.moreInformationLabelLinkFont = giniHealthConfiguration.textStyleFonts[.linkBold] ?? defaultBoldFont
         self.selectYourBankLabelFont = giniHealthConfiguration.textStyleFonts[.subtitle2] ?? defaultMediumFont
