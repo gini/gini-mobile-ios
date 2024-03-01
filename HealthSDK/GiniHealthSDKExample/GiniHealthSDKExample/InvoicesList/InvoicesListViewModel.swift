@@ -71,6 +71,7 @@ final class InvoicesListViewModel {
         self.paymentComponentsController = paymentComponentsController
         self.paymentComponentsController.delegate = self
         self.paymentComponentsController.bottomViewDelegate = self
+        self.paymentComponentsController.infoViewDelegate = self
     }
     
     func viewDidLoad() {
@@ -161,6 +162,9 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
     func didTapOnMoreInformation(documentID: String?) {
         guard let documentID else { return }
         Log("Tapped on More Information on :\(documentID)", event: .success)
+        let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
+        paymentInfoViewController.modalPresentationStyle = .overFullScreen
+        self.coordinator.invoicesListViewController.present(paymentInfoViewController, animated: true)
     }
     
     func didTapOnBankPicker(documentID: String?) {
@@ -176,7 +180,7 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
         Log("Tapped on Pay Invoice on :\(documentID)", event: .success)
         paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentID, trackingDelegate: self) { [weak self] viewController, error in
             if let error {
-                self?.errors.append(error.errorMessage)
+                self?.errors.append(error.localizedDescription)
                 self?.showErrorsIfAny()
             } else if let viewController {
                 viewController.modalTransitionStyle = .coverVertical
@@ -232,6 +236,14 @@ extension InvoicesListViewModel: GiniHealthTrackingDelegate {
             Log("Close keyboard was triggered", event: .success)
         case .onBankSelectionButtonClicked:
             Log("Bank selection button was tapped,\(String(describing: event.info))", event: .success)
+        }
+    }
+}
+
+extension InvoicesListViewModel: PaymentInfoViewProtocol {
+    func didTapOnCloseOnInfoView() {
+        DispatchQueue.main.async {
+            self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
         }
     }
 }
