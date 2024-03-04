@@ -163,8 +163,7 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
         guard let documentID else { return }
         Log("Tapped on More Information on :\(documentID)", event: .success)
         let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
-        paymentInfoViewController.modalPresentationStyle = .overFullScreen
-        self.coordinator.invoicesListViewController.present(paymentInfoViewController, animated: true)
+        self.coordinator.invoicesListViewController.navigationController?.pushViewController(paymentInfoViewController, animated: true)
     }
     
     func didTapOnBankPicker(documentID: String?) {

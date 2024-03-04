@@ -75,6 +75,7 @@ class BanksBottomView: UIView {
         tableView.rowHeight = viewModel.rowHeight
         tableView.separatorStyle = .none
         tableView.tableFooterView = UIView()
+        tableView.backgroundColor = .clear
         return tableView
     }()
 

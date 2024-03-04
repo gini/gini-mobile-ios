@@ -28,13 +28,6 @@ final class PaymentInfoViewModel {
     
     let titleText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.title.label", 
                                                              comment: "Payment Info title label text")
-    let titleFont: UIFont
-    let titleTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark1,
-                                            darkModeColor: UIColor.GiniHealthColors.light1).uiColor()
-    
-    let closeTitleIcon: UIImage = UIImageNamedPreferred(named: "ic_close") ?? UIImage()
-    let closeIconAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark2,
-                                                  darkModeColor: UIColor.GiniHealthColors.light2).uiColor()
     
     let payBillsTitleText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.payBills.title.label", 
                                                                      comment: "Payment Info pay bills title label text")
@@ -67,7 +60,6 @@ final class PaymentInfoViewModel {
         let defaultRegularFont: UIFont = giniHealthConfiguration.customFont.regular
         let defaultBoldFont: UIFont = giniHealthConfiguration.customFont.bold
         
-        titleFont = giniHealthConfiguration.textStyleFonts[.headline3] ?? defaultBoldFont
         payBillsTitleFont = giniHealthConfiguration.textStyleFonts[.subtitle1] ?? defaultBoldFont
         payBillsDescriptionFont = giniHealthConfiguration.textStyleFonts[.body2] ?? defaultRegularFont
         questionsTitleFont = giniHealthConfiguration.textStyleFonts[.subtitle1] ?? defaultBoldFont
