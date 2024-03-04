@@ -30,33 +30,6 @@ class PaymentInfoViewController: UIViewController {
         return contentView
     }()
     
-    private lazy var titleView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.heightTitleView)
-        view.backgroundColor = .clear
-        return view
-    }()
-    
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = viewModel.titleText
-        label.font = viewModel.titleFont
-        label.textColor = viewModel.titleTextColor
-        return label
-    }()
-    
-    private lazy var closeTitleIconImageView: UIImageView = {
-        let imageView = UIImageView(image: viewModel.closeTitleIcon.withRenderingMode(.alwaysTemplate))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.frame = CGRect(x: 0, y: 0, width: Constants.closeIconSize, height: Constants.closeIconSize)
-        imageView.tintColor = viewModel.closeIconAccentColor
-        imageView.isUserInteractionEnabled = true
-        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnCloseIcon)))
-        return imageView
-    }()
-    
     private lazy var bankIconsCollectionView: UICollectionView = {
         let collectionLayout = UICollectionViewFlowLayout()
         collectionLayout.scrollDirection = .horizontal
@@ -153,6 +126,7 @@ class PaymentInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = viewModel.titleText
     }
     
     private func setupView() {
@@ -162,10 +136,6 @@ class PaymentInfoViewController: UIViewController {
     }
     
     private func setupViewHierarchy() {
-        view.addSubview(titleView)
-        titleView.addSubview(titleLabel)
-        titleView.addSubview(closeTitleIconImageView)
-        
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(bankIconsCollectionView)
@@ -181,7 +151,6 @@ class PaymentInfoViewController: UIViewController {
     }
     
     private func setupViewConstraints() {
-        setupTitleViewConstraints()
         setupContentViewConstraints()
         setupBankIconsCollectionViewConstraints()
         setupPoweredByGiniConstraints()
@@ -189,24 +158,9 @@ class PaymentInfoViewController: UIViewController {
         setupQuestionsConstraints()
     }
     
-    private func setupTitleViewConstraints() {
-        NSLayoutConstraint.activate([
-            titleView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            titleView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            titleView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            titleView.heightAnchor.constraint(equalToConstant: titleView.frame.height),
-            titleLabel.topAnchor.constraint(equalTo: titleView.topAnchor, constant: Constants.titleTopPadding),
-            titleLabel.centerXAnchor.constraint(equalTo: titleView.centerXAnchor),
-            closeTitleIconImageView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            closeTitleIconImageView.heightAnchor.constraint(equalToConstant: closeTitleIconImageView.frame.height),
-            closeTitleIconImageView.widthAnchor.constraint(equalToConstant: closeTitleIconImageView.frame.width),
-            closeTitleIconImageView.leadingAnchor.constraint(equalTo: titleView.leadingAnchor, constant: Constants.leftRightPadding)
-        ])
-    }
-    
     private func setupContentViewConstraints() {
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: titleView.bottomAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.leftRightPadding),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.leftRightPadding),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
@@ -260,11 +214,6 @@ class PaymentInfoViewController: UIViewController {
             questionsTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: Double(viewModel.questions.count) * Constants.questionTitleHeight),
             questionsTableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.leftRightPadding)
         ])
-    }
-    
-    @objc
-    private func tapOnCloseIcon() {
-        viewModel.didTapOnClose()
     }
     
     private func extended(section: Int) {
@@ -377,11 +326,6 @@ extension PaymentInfoViewController: UITableViewDelegate, UITableViewDataSource 
 extension PaymentInfoViewController {
     private enum Constants {
         static let paragraphSpacing = 10.0
-        
-        static let heightTitleView = 48.0
-        static let titleTopPadding = 6.0
-        
-        static let closeIconSize = 24.0
         
         static let leftRightPadding = 16.0
         
