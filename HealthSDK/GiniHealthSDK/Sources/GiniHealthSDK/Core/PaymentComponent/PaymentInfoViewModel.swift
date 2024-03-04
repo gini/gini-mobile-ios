@@ -35,20 +35,25 @@ final class PaymentInfoViewModel {
     let payBillsTitleTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark1,
                                                     darkModeColor: UIColor.GiniHealthColors.light1).uiColor()
     
-    let payBillsDescriptionText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.payBills.description.label", 
+    private let payBillsDescriptionText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.payBills.description.label",
                                                                            comment: "Payment Info pay bills description text")
+    var payBillsDescriptionAttributedText: NSMutableAttributedString?
     let payBillsDescriptionFont: UIFont
     let payBillsDescriptionTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark1,
                                                           darkModeColor: UIColor.GiniHealthColors.light1).uiColor()
+    let giniWebsiteText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.payBills.description.clickable.text",
+                                                           comment: "Word range that's clickable in pay bills description")
+    private let giniFont: UIFont
+    private let giniURLText = Constants.giniURL
     
     let questionsTitleText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.questions.title.label",
-                                                                     comment: "Payment Info questions title label text")
+                                                                      comment: "Payment Info questions title label text")
     let questionsTitleFont: UIFont
     let questionsTitleTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark1,
                                                      darkModeColor: UIColor.GiniHealthColors.light1).uiColor()
     
     let separatorColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark5,
-                                              darkModeColor: UIColor.GiniHealthColors.light5).uiColor()
+                                            darkModeColor: UIColor.GiniHealthColors.light5).uiColor()
     
     var questions: [QuestionSection] = []
     
@@ -63,8 +68,10 @@ final class PaymentInfoViewModel {
         payBillsTitleFont = giniHealthConfiguration.textStyleFonts[.subtitle1] ?? defaultBoldFont
         payBillsDescriptionFont = giniHealthConfiguration.textStyleFonts[.body2] ?? defaultRegularFont
         questionsTitleFont = giniHealthConfiguration.textStyleFonts[.subtitle1] ?? defaultBoldFont
+        giniFont = giniHealthConfiguration.textStyleFonts[.button] ?? defaultBoldFont
         
         setupQuestions()
+        self.configureClickableTexts()
     }
     
     func didTapOnClose() {
@@ -80,5 +87,46 @@ final class PaymentInfoViewModel {
                                                   isExtended: false)
             questions.append(questionSection)
         }
+    }
+    
+    private func configureClickableTexts() {
+        configurePayBillsGiniLink()
+    }
+    
+    private func configurePayBillsGiniLink() {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = Constants.payBillsDescriptionLineHeight
+        paragraphStyle.paragraphSpacing = Constants.payBillsParagraphSpacing
+        self.payBillsDescriptionAttributedText = NSMutableAttributedString(string: payBillsDescriptionText,
+                                                                           attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        let giniRange = (payBillsDescriptionText as NSString).range(of: giniWebsiteText)
+        if let giniUrl = URL(string: giniURLText) {
+            let attributes: [NSAttributedString.Key: Any] = [
+                .link: giniUrl,
+                .foregroundColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.accent1,
+                                            darkModeColor: UIColor.GiniHealthColors.accent1).uiColor(),
+                .font: giniFont
+            ]
+            payBillsDescriptionAttributedText?.addAttributes(attributes, range: giniRange)
+        }
+    }
+    
+    func tapOnGiniWebsite() {
+        openLink(urlString: giniURLText)
+    }
+    
+    private func openLink(urlString: String) {
+        if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
+    }
+}
+
+extension PaymentInfoViewModel {
+    private enum Constants {
+        static let payBillsDescriptionLineHeight = 1.32
+        static let payBillsParagraphSpacing = 10.0
+        
+        static let giniURL = "https://gini.net/"
     }
 }

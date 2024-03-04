@@ -34,7 +34,8 @@
 "ginihealth.paymentcomponent.paymentproviderslist.description" = "You can only pay the bill if you have an account with one of the banks listed below.";
 "ginihealth.paymentcomponent.paymentinfo.title.label" = "More information";
 "ginihealth.paymentcomponent.paymentinfo.payBills.title.label" = "Pay bills easily with the banking app.";
-"ginihealth.paymentcomponent.paymentinfo.payBills.description.label" = "Medical bills and other submitted receipts can now be paid easily.\nThe payment data such as IBAN, amount, recipient and intended use are seamlessly transferred to the banking app and only confirmed there.\nYou can also park the invoice and pay it within 3 months of upload.\nThe data is encrypted and transferred securely to your banking app. Your bank’s data protection regulations apply.\nSupported by the largest banking institutions. Integration by Gini.";
+"ginihealth.paymentcomponent.paymentinfo.payBills.description.label" = "Medical bills and other submitted receipts can now be paid very easily.\nThe payment data such as IBAN, amount, recipient and purpose are seamlessly transferred to the banking app, and the payment only needs to be confirmed there.\nYou can also park the invoice and pay it within 3 months after uploading.\nThe data is encrypted and transferred securely to your banking app. The data protection regulations of your bank apply.\nSupported by the largest banks. Integration by Gini.";
+"ginihealth.paymentcomponent.paymentinfo.payBills.description.clickable.text" = "Gini";
 "ginihealth.paymentcomponent.paymentinfo.questions.title.label" = "Frequently asked questions";
 "ginihealth.paymentcomponent.paymentinfo.questions.question.1" = "Who or What is Gini?";
 "ginihealth.paymentcomponent.paymentinfo.questions.question.2" = "Can I submit bills and pay later?";
