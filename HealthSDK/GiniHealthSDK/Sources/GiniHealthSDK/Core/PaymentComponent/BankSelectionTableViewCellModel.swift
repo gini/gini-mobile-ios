@@ -30,8 +30,8 @@ final class BankSelectionTableViewCellModel {
         }
         return UIImage()
     }
-    var bankIconBorderColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.light7,
-                                        darkModeColor: UIColor.GiniHealthColors.light7).uiColor().withAlphaComponent(0.1)
+    var bankIconBorderColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark5,
+                                        darkModeColor: UIColor.GiniHealthColors.light5).uiColor()
 
     var bankName: String
     var bankNameLabelFont: UIFont
