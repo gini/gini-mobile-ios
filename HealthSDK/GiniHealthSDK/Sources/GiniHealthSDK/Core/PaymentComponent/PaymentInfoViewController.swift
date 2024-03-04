@@ -78,11 +78,10 @@ class PaymentInfoViewController: UIViewController {
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
         label.textAlignment = .left
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = Constants.payBillsDescriptionLineHeight
-        paragraphStyle.paragraphSpacing = Constants.paragraphSpacing
-        label.attributedText = NSMutableAttributedString(string: viewModel.payBillsDescriptionText,
-                                                         attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        label.isUserInteractionEnabled = true
+        label.attributedText = viewModel.payBillsDescriptionAttributedText
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        label.addGestureRecognizer(tapGesture)
         return label
     }()
     
@@ -223,6 +222,14 @@ class PaymentInfoViewController: UIViewController {
         questionsTableView.layoutIfNeeded()
         questionsTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: questionsTableView.contentSize.height).isActive = true
     }
+    
+    @objc
+    private func handleTap(gesture: UITapGestureRecognizer) {
+        if gesture.didTapAttributedTextInLabel(label: payBillsDescriptionLabel,
+                                               targetText: viewModel.giniWebsiteText) {
+            viewModel.tapOnGiniWebsite()
+        }
+    }
 }
 
 extension PaymentInfoViewController: UICollectionViewDataSource {
@@ -340,7 +347,6 @@ extension PaymentInfoViewController {
         static let maxPayBillsTitleHeight = 100.0
         static let payBillsDescriptionTopPadding = 8.0
         static let payBillsDescriptionRightPadding = 15.0
-        static let payBillsDescriptionLineHeight = 1.32
         static let minPayBillsDescriptionHeight = 100.0
         
         static let questionsTitleTopPadding = 24.0
