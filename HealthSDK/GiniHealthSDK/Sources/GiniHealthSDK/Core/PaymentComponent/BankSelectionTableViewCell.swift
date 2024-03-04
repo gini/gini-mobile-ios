@@ -71,6 +71,6 @@ extension BankSelectionTableViewCell {
         static let selectedBorderWidth = 3.0
         static let notSelectedBorderWidth = 1.0
         static let bankIconBorderWidth = 1.0
-        static let bankIconCornerRadius = 8.0
+        static let bankIconCornerRadius = 6.0
     }
 }
