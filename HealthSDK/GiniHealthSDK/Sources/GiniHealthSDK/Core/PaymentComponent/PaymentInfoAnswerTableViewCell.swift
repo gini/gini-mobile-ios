@@ -17,6 +17,8 @@ final class PaymentInfoAnswerTableViewCell: UITableViewCell {
         textView.isEditable = false
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
+        textView.isUserInteractionEnabled = true
+        textView.backgroundColor = .clear
         return textView
     }()
     
@@ -28,6 +30,7 @@ final class PaymentInfoAnswerTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.backgroundColor = .clear
         contentView.addSubview(textView)
         setupConstraints()
     }
@@ -52,33 +55,18 @@ final class PaymentInfoAnswerTableViewCell: UITableViewCell {
     }
 }
 
-
 struct PaymentInfoAnswerTableViewModel {
     let answerAttributedText: NSAttributedString
-    private var answerFont: UIFont
     let answerTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark1,
-                                            darkModeColor: UIColor.GiniHealthColors.light1).uiColor()
-    
-    init(answerText: String) {
-        let giniConfiguration = GiniHealthConfiguration.shared
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = Constants.lineHeight
-        paragraphStyle.paragraphSpacing = Constants.paragraphSpacing
-        self.answerFont = giniConfiguration.textStyleFonts[.body2] ?? giniConfiguration.customFont.regular
-        self.answerAttributedText = NSAttributedString(string: answerText,
-                                             attributes: [.font: answerFont, .paragraphStyle: paragraphStyle])
+                                             darkModeColor: UIColor.GiniHealthColors.light1).uiColor()
+
+    init(answerAttributedText: NSAttributedString) {
+        self.answerAttributedText = answerAttributedText
     }
 }
 
 extension PaymentInfoAnswerTableViewCell {
     private enum Constants {
         static let bottomPadding = 16.0
-    }
-}
-
-extension PaymentInfoAnswerTableViewModel {
-    private enum Constants {
-        static let lineHeight = 1.32
-        static let paragraphSpacing = 10.0
     }
 }
