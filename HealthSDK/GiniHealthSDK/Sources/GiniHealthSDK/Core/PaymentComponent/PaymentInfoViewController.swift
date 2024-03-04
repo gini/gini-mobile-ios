@@ -70,19 +70,17 @@ class PaymentInfoViewController: UIViewController {
         return label
     }()
     
-    private lazy var payBillsDescriptionLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = viewModel.payBillsDescriptionFont
-        label.textColor = viewModel.payBillsDescriptionTextColor
-        label.lineBreakMode = .byWordWrapping
-        label.numberOfLines = 0
-        label.textAlignment = .left
-        label.isUserInteractionEnabled = true
-        label.attributedText = viewModel.payBillsDescriptionAttributedText
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        label.addGestureRecognizer(tapGesture)
-        return label
+    private lazy var payBillsDescriptionTextView: UITextView = {
+        let textView = UITextView()
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.isScrollEnabled = false
+        textView.isEditable = false
+        textView.textContainerInset = .zero
+        textView.textContainer.lineFragmentPadding = 0
+        textView.isUserInteractionEnabled = true
+        textView.backgroundColor = .clear
+        textView.attributedText = viewModel.payBillsDescriptionAttributedText
+        return textView
     }()
     
     private lazy var questionsTitleLabel: UILabel = {
@@ -140,7 +138,7 @@ class PaymentInfoViewController: UIViewController {
         contentView.addSubview(bankIconsCollectionView)
         contentView.addSubview(poweredByGiniView)
         contentView.addSubview(payBillsTitleLabel)
-        contentView.addSubview(payBillsDescriptionLabel)
+        contentView.addSubview(payBillsDescriptionTextView)
         contentView.addSubview(questionsTitleLabel)
         contentView.addSubview(questionsTableView)
     }
@@ -195,16 +193,16 @@ class PaymentInfoViewController: UIViewController {
             payBillsTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             payBillsTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             payBillsTitleLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.maxPayBillsTitleHeight),
-            payBillsDescriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            payBillsDescriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.payBillsDescriptionRightPadding),
-            payBillsDescriptionLabel.topAnchor.constraint(equalTo: payBillsTitleLabel.bottomAnchor, constant: Constants.payBillsDescriptionTopPadding),
-            payBillsDescriptionLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.minPayBillsDescriptionHeight),
+            payBillsDescriptionTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            payBillsDescriptionTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.payBillsDescriptionRightPadding),
+            payBillsDescriptionTextView.topAnchor.constraint(equalTo: payBillsTitleLabel.bottomAnchor, constant: Constants.payBillsDescriptionTopPadding),
+            payBillsDescriptionTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.minPayBillsDescriptionHeight),
         ])
     }
     
     private func setupQuestionsConstraints() {
         NSLayoutConstraint.activate([
-            questionsTitleLabel.topAnchor.constraint(equalTo: payBillsDescriptionLabel.bottomAnchor, constant: Constants.questionsTitleTopPadding),
+            questionsTitleLabel.topAnchor.constraint(equalTo: payBillsDescriptionTextView.bottomAnchor, constant: Constants.questionsTitleTopPadding),
             questionsTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             questionsTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             questionsTableView.topAnchor.constraint(equalTo: questionsTitleLabel.bottomAnchor),
@@ -221,14 +219,6 @@ class PaymentInfoViewController: UIViewController {
         questionsTableView.reloadData()
         questionsTableView.layoutIfNeeded()
         questionsTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: questionsTableView.contentSize.height).isActive = true
-    }
-    
-    @objc
-    private func handleTap(gesture: UITapGestureRecognizer) {
-        if gesture.didTapAttributedTextInLabel(label: payBillsDescriptionLabel,
-                                               targetText: viewModel.giniWebsiteText) {
-            viewModel.tapOnGiniWebsite()
-        }
     }
 }
 
@@ -293,7 +283,7 @@ extension PaymentInfoViewController: UITableViewDelegate, UITableViewDataSource 
                                                        for: indexPath) as? PaymentInfoAnswerTableViewCell else {
             return UITableViewCell()
         }
-        let answerTableViewCellModel = PaymentInfoAnswerTableViewModel(answerText: viewModel.questions[indexPath.section].description)
+        let answerTableViewCellModel = PaymentInfoAnswerTableViewModel(answerAttributedText: viewModel.questions[indexPath.section].description)
         cell.cellViewModel = answerTableViewCellModel
         return cell
     }

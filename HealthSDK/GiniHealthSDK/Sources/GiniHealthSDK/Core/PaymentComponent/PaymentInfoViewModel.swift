@@ -14,7 +14,7 @@ public protocol PaymentInfoViewProtocol: AnyObject {
 
 struct QuestionSection {
     let title: String
-    let description: String
+    var description: NSAttributedString
     var isExtended: Bool
 }
 
@@ -36,21 +36,29 @@ final class PaymentInfoViewModel {
                                                     darkModeColor: UIColor.GiniHealthColors.light1).uiColor()
     
     private let payBillsDescriptionText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.payBills.description.label",
-                                                                           comment: "Payment Info pay bills description text")
-    var payBillsDescriptionAttributedText: NSMutableAttributedString?
-    let payBillsDescriptionFont: UIFont
-    let payBillsDescriptionTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark1,
-                                                          darkModeColor: UIColor.GiniHealthColors.light1).uiColor()
-    let giniWebsiteText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.payBills.description.clickable.text",
-                                                           comment: "Word range that's clickable in pay bills description")
+                                                                                   comment: "Payment Info pay bills description text")
+    var payBillsDescriptionAttributedText: NSMutableAttributedString = NSMutableAttributedString()
+    private let payBillsDescriptionFont: UIFont
+    private let payBillsDescriptionTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark1,
+                                                                  darkModeColor: UIColor.GiniHealthColors.light1).uiColor()
+    private let giniWebsiteText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.payBills.description.clickable.text",
+                                                                   comment: "Word range that's clickable in pay bills description")
     private let giniFont: UIFont
-    private let giniURLText = Constants.giniURL
+    private let giniURLText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.gini.link", 
+                                                               comment: "Gini website link url")
     
     let questionsTitleText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.questions.title.label",
                                                                       comment: "Payment Info questions title label text")
     let questionsTitleFont: UIFont
     let questionsTitleTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark1,
                                                      darkModeColor: UIColor.GiniHealthColors.light1).uiColor()
+    
+    private var answersFont: UIFont
+    private let answerPrivacyPolicyText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.questions.answer.clickable.text", comment: "Payment info answers clickable privacy policy")
+    private let privacyPolicyURLText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.gini.privacypolicy.link", comment: "Gini privacy policy link url")
+    private var linkableFont: UIFont
+    private let linkableTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.accent1,
+                                                       darkModeColor: UIColor.GiniHealthColors.accent1).uiColor()
     
     let separatorColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark5,
                                             darkModeColor: UIColor.GiniHealthColors.light5).uiColor()
@@ -69,64 +77,91 @@ final class PaymentInfoViewModel {
         payBillsDescriptionFont = giniHealthConfiguration.textStyleFonts[.body2] ?? defaultRegularFont
         questionsTitleFont = giniHealthConfiguration.textStyleFonts[.subtitle1] ?? defaultBoldFont
         giniFont = giniHealthConfiguration.textStyleFonts[.button] ?? defaultBoldFont
+        answersFont = giniHealthConfiguration.textStyleFonts[.body2] ?? defaultRegularFont
+        linkableFont = giniHealthConfiguration.textStyleFonts[.linkBold] ?? defaultBoldFont
         
+        configurePayBillsGiniLink()
         setupQuestions()
-        self.configureClickableTexts()
-    }
-    
-    func didTapOnClose() {
-        viewDelegate?.didTapOnCloseOnInfoView()
     }
     
     private func setupQuestions() {
-        for index in 1 ... 5 {
+        for index in 1 ... Constants.numberOfQuestions {
+            let answerAttributedString = answerWithAttributes(answer: NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.questions.answer.\(index)",
+                                                                                                       comment: "Answers description"))
             let questionSection = QuestionSection(title: NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.questions.question.\(index)",
                                                                                           comment: "Questions titles"),
-                                                  description: NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.questions.answer.\(index)",
-                                                                                                comment: "Answers subtitles"),
+                                                  description: textWithLinks(linkFont: linkableFont, 
+                                                                             attributedString: answerAttributedString),
                                                   isExtended: false)
             questions.append(questionSection)
         }
-    }
-    
-    private func configureClickableTexts() {
-        configurePayBillsGiniLink()
     }
     
     private func configurePayBillsGiniLink() {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = Constants.payBillsDescriptionLineHeight
         paragraphStyle.paragraphSpacing = Constants.payBillsParagraphSpacing
-        self.payBillsDescriptionAttributedText = NSMutableAttributedString(string: payBillsDescriptionText,
-                                                                           attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
-        let giniRange = (payBillsDescriptionText as NSString).range(of: giniWebsiteText)
-        if let giniUrl = URL(string: giniURLText) {
-            let attributes: [NSAttributedString.Key: Any] = [
-                .link: giniUrl,
-                .foregroundColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.accent1,
-                                            darkModeColor: UIColor.GiniHealthColors.accent1).uiColor(),
-                .font: giniFont
-            ]
-            payBillsDescriptionAttributedText?.addAttributes(attributes, range: giniRange)
-        }
+        payBillsDescriptionAttributedText = NSMutableAttributedString(string: payBillsDescriptionText,
+                                                                      attributes: [.paragraphStyle: paragraphStyle,
+                                                                                   .font: payBillsDescriptionFont,
+                                                                                   .foregroundColor: payBillsTitleTextColor])
+        payBillsDescriptionAttributedText = textWithLinks(linkFont: giniFont, 
+                                                          attributedString: payBillsDescriptionAttributedText)
     }
     
-    func tapOnGiniWebsite() {
-        openLink(urlString: giniURLText)
+    private func answerWithAttributes(answer: String) -> NSMutableAttributedString {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = Constants.answersLineHeight
+        paragraphStyle.paragraphSpacing = Constants.answersParagraphSpacing
+        let answerAttributedText = NSMutableAttributedString(string: answer,
+                                                             attributes: [.font: answersFont, .paragraphStyle: paragraphStyle])
+        return answerAttributedText
     }
     
-    private func openLink(urlString: String) {
-        if let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url)
+    private func textWithLinks(linkFont: UIFont, attributedString: NSMutableAttributedString) -> NSMutableAttributedString {
+        var attributedString = attributedString
+        let giniRange = (attributedString.string as NSString).range(of: giniWebsiteText)
+        attributedString = addLinkToRange(attributedString: attributedString, 
+                                          link: giniURLText,
+                                          range: giniRange,
+                                          linkFont: linkFont)
+        let privacyPolicyRange = (attributedString.string as NSString).range(of: answerPrivacyPolicyText)
+        attributedString = addLinkToRange(attributedString: attributedString, 
+                                          link: privacyPolicyURLText,
+                                          range: privacyPolicyRange,
+                                          linkFont: linkFont)
+        return attributedString
+    }
+    
+    private func addLinkToRange(attributedString: NSMutableAttributedString, link: String, range: NSRange, linkFont: UIFont) -> NSMutableAttributedString {
+        var attributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: linkableTextColor,
+            .font: linkFont
+        ]
+        if range.length > 0 {
+            if let url = URL(string: link) {
+                attributes[.link] = url
+                attributedString.addAttributes(attributes, range: range)
+                attributedString.mutableString.replaceOccurrences(of: Constants.linkTextToRemove, 
+                                                                  with: "",
+                                                                  options: .caseInsensitive,
+                                                                  range: range)
+            }
         }
+        return attributedString
     }
 }
 
 extension PaymentInfoViewModel {
     private enum Constants {
+        static let numberOfQuestions = 6
+        
         static let payBillsDescriptionLineHeight = 1.32
         static let payBillsParagraphSpacing = 10.0
         
-        static let giniURL = "https://gini.net/"
+        static let answersLineHeight = 1.32
+        static let answersParagraphSpacing = 10.0
+        
+        static let linkTextToRemove = "[LINK]"
     }
 }
