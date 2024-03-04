@@ -12,6 +12,12 @@ public protocol PaymentInfoViewProtocol: AnyObject {
     func didTapOnCloseOnInfoView()
 }
 
+struct QuestionSection {
+    let title: String
+    let description: String
+    var isExtended: Bool
+}
+
 final class PaymentInfoViewModel {
     
     weak var viewDelegate: PaymentInfoViewProtocol?
@@ -42,6 +48,17 @@ final class PaymentInfoViewModel {
     let payBillsDescriptionTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark1,
                                                           darkModeColor: UIColor.GiniHealthColors.light1).uiColor()
     
+    let questionsTitleText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.questions.title.label",
+                                                                     comment: "Payment Info questions title label text")
+    let questionsTitleFont: UIFont
+    let questionsTitleTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark1,
+                                                     darkModeColor: UIColor.GiniHealthColors.light1).uiColor()
+    
+    let separatorColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark5,
+                                              darkModeColor: UIColor.GiniHealthColors.light5).uiColor()
+    
+    var questions: [QuestionSection] = []
+    
     init(paymentProviders: PaymentProviders) {
         self.paymentProviders = paymentProviders
         
@@ -53,9 +70,23 @@ final class PaymentInfoViewModel {
         titleFont = giniHealthConfiguration.textStyleFonts[.headline3] ?? defaultBoldFont
         payBillsTitleFont = giniHealthConfiguration.textStyleFonts[.subtitle1] ?? defaultBoldFont
         payBillsDescriptionFont = giniHealthConfiguration.textStyleFonts[.body2] ?? defaultRegularFont
+        questionsTitleFont = giniHealthConfiguration.textStyleFonts[.subtitle1] ?? defaultBoldFont
+        
+        setupQuestions()
     }
     
     func didTapOnClose() {
         viewDelegate?.didTapOnCloseOnInfoView()
+    }
+    
+    private func setupQuestions() {
+        for index in 1 ... 5 {
+            let questionSection = QuestionSection(title: NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.questions.question.\(index)",
+                                                                                          comment: "Questions titles"),
+                                                  description: NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.questions.answer.\(index)",
+                                                                                                comment: "Answers subtitles"),
+                                                  isExtended: false)
+            questions.append(questionSection)
+        }
     }
 }

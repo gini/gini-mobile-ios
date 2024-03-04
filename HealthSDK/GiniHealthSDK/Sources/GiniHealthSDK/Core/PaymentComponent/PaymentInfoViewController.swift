@@ -113,6 +113,44 @@ class PaymentInfoViewController: UIViewController {
         return label
     }()
     
+    private lazy var questionsTitleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = viewModel.questionsTitleFont
+        label.textColor = viewModel.questionsTitleTextColor
+        label.lineBreakMode = .byWordWrapping
+        label.numberOfLines = 0
+        label.textAlignment = .left
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = Constants.questionsTitleLineHeight
+        label.attributedText = NSMutableAttributedString(string: viewModel.questionsTitleText,
+                                                         attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        return label
+    }()
+    
+    private lazy var questionsTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(PaymentInfoAnswerTableViewCell.self,
+                           forCellReuseIdentifier: PaymentInfoAnswerTableViewCell.identifier)
+        tableView.separatorStyle = .singleLine
+        tableView.backgroundColor = .clear
+        tableView.showsVerticalScrollIndicator = false
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.isScrollEnabled = false
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = Constants.questionTitleHeight
+        tableView.estimatedSectionHeaderHeight = Constants.questionTitleHeight
+        tableView.estimatedSectionFooterHeight = 1.0
+        if #available(iOS 15.0, *) {
+            tableView.sectionHeaderTopPadding = 0
+        } else {
+            // Fallback on earlier versions
+        }
+        return tableView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -134,6 +172,8 @@ class PaymentInfoViewController: UIViewController {
         contentView.addSubview(poweredByGiniView)
         contentView.addSubview(payBillsTitleLabel)
         contentView.addSubview(payBillsDescriptionLabel)
+        contentView.addSubview(questionsTitleLabel)
+        contentView.addSubview(questionsTableView)
     }
     
     private func setupViewAttributes() {
@@ -146,6 +186,7 @@ class PaymentInfoViewController: UIViewController {
         setupBankIconsCollectionViewConstraints()
         setupPoweredByGiniConstraints()
         setupPayBillsConstraints()
+        setupQuestionsConstraints()
     }
     
     private func setupTitleViewConstraints() {
@@ -205,13 +246,33 @@ class PaymentInfoViewController: UIViewController {
             payBillsDescriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.payBillsDescriptionRightPadding),
             payBillsDescriptionLabel.topAnchor.constraint(equalTo: payBillsTitleLabel.bottomAnchor, constant: Constants.payBillsDescriptionTopPadding),
             payBillsDescriptionLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.minPayBillsDescriptionHeight),
-            payBillsDescriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.leftRightPadding) // TODO
+        ])
+    }
+    
+    private func setupQuestionsConstraints() {
+        NSLayoutConstraint.activate([
+            questionsTitleLabel.topAnchor.constraint(equalTo: payBillsDescriptionLabel.bottomAnchor, constant: Constants.questionsTitleTopPadding),
+            questionsTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            questionsTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            questionsTableView.topAnchor.constraint(equalTo: questionsTitleLabel.bottomAnchor),
+            questionsTableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            questionsTableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            questionsTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: Double(viewModel.questions.count) * Constants.questionTitleHeight),
+            questionsTableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.leftRightPadding)
         ])
     }
     
     @objc
     private func tapOnCloseIcon() {
         viewModel.didTapOnClose()
+    }
+    
+    private func extended(section: Int) {
+        let isExtended = viewModel.questions[section].isExtended
+        viewModel.questions[section].isExtended = !isExtended
+        questionsTableView.reloadData()
+        questionsTableView.layoutIfNeeded()
+        questionsTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: questionsTableView.contentSize.height).isActive = true
     }
 }
 
@@ -263,6 +324,56 @@ extension PaymentInfoViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+extension PaymentInfoViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if viewModel.questions[section].isExtended {
+            return 1
+        }
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: PaymentInfoAnswerTableViewCell.identifier,
+                                                       for: indexPath) as? PaymentInfoAnswerTableViewCell else {
+            return UITableViewCell()
+        }
+        let answerTableViewCellModel = PaymentInfoAnswerTableViewModel(answerText: viewModel.questions[indexPath.section].description)
+        cell.cellViewModel = answerTableViewCellModel
+        return cell
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        viewModel.questions.count
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let viewHeader = PaymentInfoQuestionHeaderViewCell(frame: CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.questionTitleHeight))
+        viewHeader.headerViewModel = PaymentInfoQuestionHeaderViewModel(title: viewModel.questions[section].title, isExtended: viewModel.questions[section].isExtended)
+        viewHeader.didTapSelectButton = { [weak self] in
+            self?.extended(section: section)
+        }
+        return viewHeader
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        Constants.questionTitleHeight
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let separatorView = UIView(frame: CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.questionSectionSeparatorHeight))
+        separatorView.backgroundColor = viewModel.separatorColor
+        return separatorView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        Constants.questionSectionSeparatorHeight
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
+    }
+}
+
 extension PaymentInfoViewController {
     private enum Constants {
         static let paragraphSpacing = 10.0
@@ -287,5 +398,12 @@ extension PaymentInfoViewController {
         static let payBillsDescriptionRightPadding = 15.0
         static let payBillsDescriptionLineHeight = 1.32
         static let minPayBillsDescriptionHeight = 100.0
+        
+        static let questionsTitleTopPadding = 24.0
+        static let questionsTitleLineHeight = 1.28
+        
+        static let questionTitleHeight = 72.0
+        static let questionSectionSeparatorHeight = 1.0
+        
     }
 }
