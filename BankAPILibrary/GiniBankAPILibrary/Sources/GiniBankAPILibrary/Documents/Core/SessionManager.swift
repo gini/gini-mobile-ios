@@ -314,7 +314,7 @@ private extension SessionManager {
             completion(.failure(.maintenance))
         case 500:
             completion(.failure(.outage))
-        case 501, 502,504...599:
+        case 501, 502, 504...599:
             completion(.failure(.server))
         default:
             completion(.failure(.unknown(response: response, data: data)))
