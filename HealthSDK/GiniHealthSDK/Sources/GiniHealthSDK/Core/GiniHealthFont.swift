@@ -15,7 +15,8 @@ import UIKit
  * bold
  * light
  * thin
- 
+ * medium
+
  */
 public class GiniFont: NSObject {
     public var regular: UIFont

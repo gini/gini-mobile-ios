@@ -121,7 +121,7 @@ public final class GiniHealthConfiguration: NSObject {
      Sets the scale of the loading indicator.
      */
     @objc public var loadingIndicatorScale: CGFloat = 1.0
-
+    
     /**
      Set dictionary of fonts for available text styles. Used internally.
      */
@@ -129,20 +129,10 @@ public final class GiniHealthConfiguration: NSObject {
         .caption1: UIFontMetrics(forTextStyle: .caption1).scaledFont(for: UIFont.systemFont(ofSize: 13, weight: .regular)),
         .caption2: UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 12, weight: .regular)),
         .linkBold: UIFontMetrics(forTextStyle: .linkBold).scaledFont(for: UIFont.systemFont(ofSize: 14, weight: .bold)),
+        .subtitle1: UIFontMetrics(forTextStyle: .subtitle1).scaledFont(for: UIFont.systemFont(ofSize: 16, weight: .bold)),
         .subtitle2: UIFontMetrics(forTextStyle: .subtitle2).scaledFont(for: UIFont.systemFont(ofSize: 14, weight: .medium)),
         .input: UIFontMetrics(forTextStyle: .input).scaledFont(for: UIFont.systemFont(ofSize: 16, weight: .medium)),
-        .button: UIFontMetrics(forTextStyle: .button).scaledFont(for: UIFont.systemFont(ofSize: 16, weight: .bold))
+        .button: UIFontMetrics(forTextStyle: .button).scaledFont(for: UIFont.systemFont(ofSize: 16, weight: .bold)),
+        .body1: UIFontMetrics(forTextStyle: .body1).scaledFont(for: UIFont.systemFont(ofSize: 16, weight: .regular))
     ]
-
-    // MARK: - Update to custom font
-    /**
-     Allows setting a custom font for specific text styles. The change will affect all screens where a specific text style was used.
-
-     - parameter font: Font that is going to be assosiated with specific text style. You can use scaled font or scale your font with our util method `UIFont.scaledFont(_ font: UIFont, textStyle: UIFont.TextStyle)`
-     - parameter textStyle: Constants that describe the preferred styles for fonts. Please, find additional information [here](https://developer.apple.com/documentation/uikit/uifont/textstyle)
-     */
-    public func updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle) {
-        textStyleFonts[textStyle] = font
-    }
-
 }
