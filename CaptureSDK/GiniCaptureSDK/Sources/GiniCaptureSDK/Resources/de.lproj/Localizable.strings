@@ -136,16 +136,27 @@
 "ginicapture.error.enterManually" = "Manuell ausfüllen";
 "ginicapture.error.backToCamera" = "Neues Foto";
 "ginicapture.error.title" = "Error";
+
+"ginicapture.error.connection.title" = "Überprüfen Sie Ihre Internetverbindung.";
 "ginicapture.error.connection.content" = "Es konnte keine Verbindung zum Internet hergestellt werden. Bitte überprüfen Sie Ihre Netzwerkverbindung und wiederholen Sie den Vorgang.";
+
+"ginicapture.error.authentication.title" = "Authentifizierung fehlgeschlagen.";
 "ginicapture.error.authentication.content" = "Der Upload des Dokuments ist fehlgeschlagen aufgrund eines Fehlers bei der Authentifizierung. Bitte versuchen Sie es später noch einmal.";
-"ginicapture.error.serverError.content" = "Der Upload des Dokuments ist fehlgeschlagen aufgrund eines Serverfehlers. Bitte versuchen Sie es später noch einmal.";
-"ginicapture.error.unexpected.content" = "Es scheint, hier ist etwas schiefgelaufen. Bitte versuchen Sie es später noch einmal.";
-"ginicapture.error.connection.title" = "Überprüfen Sie Ihre Internetverbindung";
-"ginicapture.error.authentication.title" = "Authentifizierung fehlgeschlagen";
-"ginicapture.error.serverError.title" = "Dienst nicht verfügbar";
-"ginicapture.error.unexpected.title" = "Ein unbekannter Fehler ist aufgetreten.";
+
+"ginicapture.error.serverError.title" = "Ein unerwarteter Fehler ist aufgetreten.";
+"ginicapture.error.serverError.content" = "Etwas ist schiefgelaufen. Es gab eine unerwartete Antwort vom Service. Bitte versuchen Sie es in Kürze erneut. Wir danken Ihnen für Ihr Verständnis.";
+
+"ginicapture.error.unexpected.title" = "Ein unerwarteter Fehler ist aufgetreten.";
+"ginicapture.error.unexpected.content" = "Etwas ist schiefgelaufen. Bitte versuchen Sie es in Kürze erneut. Wir danken Ihnen für Ihr Verständnis.";
+
+"ginicapture.error.request.title" = "Der Upload des Dokuments ist fehlgeschlagen.";
 "ginicapture.error.request.content" = "Das Dokument konnte nicht verarbeitet werden. Bitte überprüfen Sie, ob das Bild scharf ist, das Dokument Zahlungsinformationen enthält und im richtigen Dateiformat hochgeladen wurde.";
-"ginicapture.error.request.title" = "Der Upload des Dokuments ist fehlgeschlagen!";
+
+"ginicapture.error.maintenance.title" = "Wartungsarbeiten sind im Gange.";
+"ginicapture.error.maintenance.content" = "Wir führen Wartungsarbeiten an unserem System durch. Bitte versuchen Sie es in Kürze erneut. Wir danken Ihnen für Ihr Verständnis.";
+
+"ginicapture.error.outage.title" = "Der Dienst ist nicht verfügbar.";
+"ginicapture.error.outage.content" = "Der Dienst ist nicht verfügbar. Bitte versuchen Sie es später erneut. Wir danken Ihnen für Ihr Verständnis.";
 
 "ginicapture.help.import.title" = "Importieren";
 "ginicapture.help.import.selectInvoice.title" = "Rechnung auswählen";

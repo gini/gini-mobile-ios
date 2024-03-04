@@ -177,16 +177,27 @@ conveniently drag-and-drop PDFs from the iOS Files app to your Banking App to st
 "ginicapture.error.enterManually" = "Enter manually";
 "ginicapture.error.backToCamera" = "Back to camera";
 "ginicapture.error.title" = "Error";
+
+"ginicapture.error.connection.title" = "There was a problem connecting to the internet.";
 "ginicapture.error.connection.content" = "Please check your internet connection and try again later on.";
+
+"ginicapture.error.authentication.title" = "There has been an authentication error.";
 "ginicapture.error.authentication.content" = "Upload failed due to authentication error. Please try again later.";
-"ginicapture.error.serverError.content" = "Upload failed due to a server error. Please try again later.";
-"ginicapture.error.unexpected.content" = "It seems something went wrong. Please try again later.";
-"ginicapture.error.connection.title" = "There was a problem connecting to the internet";
-"ginicapture.error.authentication.title" = "There has been an authentication error";
-"ginicapture.error.serverError.title" = "Service unavailable";
-"ginicapture.error.unexpected.title" = "An unknown error occurred.";
+
+"ginicapture.error.serverError.title" = "An unexpected error occurred.";
+"ginicapture.error.serverError.content" = "Something went wrong. There was an unexpected response from the service. Please retry shortly. We appreciate your understanding.";
+
+"ginicapture.error.unexpected.title" = "An unexpected error occurred.";
+"ginicapture.error.unexpected.content" = "Something went wrong. Please retry shortly. We appreciate your understanding.";
+
+"ginicapture.error.request.title" = "There was a problem with the upload.";
 "ginicapture.error.request.content" = "The document couldn’t be accepted. Please check if the image is sharp, the document contains payment information and has the right file type.";
-"ginicapture.error.request.title" = "There was a problem with the upload";
+
+"ginicapture.error.maintenance.title" = "Maintenance is in progress.";
+"ginicapture.error.maintenance.content" = "We are maintaining our system. Please retry shortly. We appreciate your understanding.";
+
+"ginicapture.error.outage.title" = "Service is unavailable.";
+"ginicapture.error.outage.content" = "The service is unavailable. Please try again later. We appreciate your understanding.";
 
 "ginicapture.images.backToAlbums" = "Albums";
 "ginicapture.images.openWithTutorialStep1" = "openWithTutorialStep1_en";
