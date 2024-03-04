@@ -16,23 +16,20 @@ struct DocumentWithExtractions: GiniDocument, Codable {
     var paymentDueDate: String?
     var recipient: String?
     var isPayable: Bool?
-    var paymentProvider: PaymentProvider?
 
-    init(documentID: String, extractionResult: GiniHealthAPILibrary.ExtractionResult, paymentProvider: PaymentProvider?) {
+    init(documentID: String, extractionResult: GiniHealthAPILibrary.ExtractionResult) {
         self.documentID = documentID
         self.amountToPay = extractionResult.payment?.first?.first(where: {$0.name == "amount_to_pay"})?.value
         self.paymentDueDate = extractionResult.extractions.first(where: {$0.name == "payment_due_date"})?.value
         self.recipient = extractionResult.payment?.first?.first(where: {$0.name == "payment_recipient"})?.value
-        self.paymentProvider = paymentProvider
     }
     
-    init(documentID: String, extractions: [GiniHealthAPILibrary.Extraction], isPayable: Bool, paymentProvider: PaymentProvider?) {
+    init(documentID: String, extractions: [GiniHealthAPILibrary.Extraction], isPayable: Bool) {
         self.documentID = documentID
         self.amountToPay = extractions.first(where: {$0.name == "amount_to_pay"})?.value
         self.paymentDueDate = extractions.first(where: {$0.name == "payment_due_date"})?.value
         self.recipient = extractions.first(where: {$0.name == "payment_recipient"})?.value
         self.isPayable = isPayable
-        self.paymentProvider = paymentProvider
     }
 }
 
@@ -73,6 +70,7 @@ final class InvoicesListViewModel {
         self.documentService = documentService
         self.paymentComponentsController = paymentComponentsController
         self.paymentComponentsController.delegate = self
+        self.paymentComponentsController.bottomViewDelegate = self
     }
     
     func viewDidLoad() {
@@ -128,10 +126,8 @@ final class InvoicesListViewModel {
                         switch result {
                         case let .success(extractionResult):
                             Log("Successfully fetched extractions for id: \(createdDocument.id)", event: .success)
-                            let firstPaymentProvider = self?.paymentComponentsController.obtainFirstInstalledPaymentProvider()
                             self?.invoices.append(DocumentWithExtractions(documentID: createdDocument.id,
-                                                                          extractionResult: extractionResult, 
-                                                                          paymentProvider: firstPaymentProvider))
+                                                                          extractionResult: extractionResult))
                             self?.paymentComponentsController.checkIfDocumentIsPayable(docId: createdDocument.id, completion: { [weak self] result in
                                 switch result {
                                 case let .success(isPayable):
@@ -163,39 +159,39 @@ final class InvoicesListViewModel {
 
 extension InvoicesListViewModel: PaymentComponentViewProtocol {
     func didTapOnMoreInformation(documentID: String?) {
-        // MARK: TODO in next tasks
         guard let documentID else { return }
         Log("Tapped on More Information on :\(documentID)", event: .success)
     }
     
     func didTapOnBankPicker(documentID: String?) {
-        // MARK: TODO in next tasks
         guard let documentID else { return }
         Log("Tapped on Bank Picker on :\(documentID)", event: .success)
+        let paymentProvidersBottomViewController = paymentComponentsController.bankSelectionBottomSheet()
+        paymentProvidersBottomViewController.modalPresentationStyle = .overFullScreen
+        self.coordinator.invoicesListViewController.present(paymentProvidersBottomViewController, animated: true)
     }
     
     func didTapOnPayInvoice(documentID: String?) {
-        // MARK: TODO in next tasks
         guard let documentID else { return }
         Log("Tapped on Pay Invoice on :\(documentID)", event: .success)
+        paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentID, trackingDelegate: self) { [weak self] viewController, error in
+            if let error {
+                self?.errors.append(error.localizedDescription)
+                self?.showErrorsIfAny()
+            } else if let viewController {
+                viewController.modalTransitionStyle = .coverVertical
+                viewController.modalPresentationStyle = .overCurrentContext
+                self?.coordinator.invoicesListViewController.present(viewController, animated: true)
+            }
+        }
     }
 }
 
 extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
-    func didFetchedPaymentProviders(_ paymentProviders: GiniHealthAPILibrary.PaymentProviders) {
-        if !invoices.isEmpty && invoices.contains(where: { $0.paymentProvider == nil }) {
-            DispatchQueue.main.async {
-                for index in 0..<self.invoices.count {
-                    self.invoices[index].paymentProvider = self.paymentComponentsController.obtainFirstInstalledPaymentProvider()
-                    self.coordinator.invoicesListViewController.reloadTableView()
-                }
-            }
+    func didFetchedPaymentProviders() {
+        DispatchQueue.main.async {
+            self.coordinator.invoicesListViewController.reloadTableView()
         }
-    }
-    
-    func didReceivedErrorOnPaymentProviders(_ error: GiniHealthSDK.GiniHealthError) {
-        errors.append(error.localizedDescription)
-        showErrorsIfAny()
     }
 
     func isLoadingStateChanged(isLoading: Bool) {
@@ -205,6 +201,37 @@ extension InvoicesListViewModel: PaymentComponentsControllerProtocol {
             } else {
                 self.coordinator.invoicesListViewController.hideActivityIndicator()
             }
+        }
+    }
+}
+
+extension InvoicesListViewModel: PaymentProvidersBottomViewProtocol {
+    func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
+        DispatchQueue.main.async {
+            self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
+            self.hardcodedInvoicesController.storeInvoicesWithExtractions(invoices: self.invoices)
+            self.coordinator.invoicesListViewController.reloadTableView()
+        }
+    }
+    
+    func didTapOnClose() {
+        DispatchQueue.main.async {
+            self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
+        }
+    }
+}
+
+extension InvoicesListViewModel: GiniHealthTrackingDelegate {
+    func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {
+        switch event.type {
+        case .onNextButtonClicked:
+            Log("Next button was tapped,\(String(describing: event.info))", event: .success)
+        case .onCloseButtonClicked:
+            Log("Close screen was triggered", event: .success)
+        case .onCloseKeyboardButtonClicked:
+            Log("Close keyboard was triggered", event: .success)
+        case .onBankSelectionButtonClicked:
+            Log("Bank selection button was tapped,\(String(describing: event.info))", event: .success)
         }
     }
 }
