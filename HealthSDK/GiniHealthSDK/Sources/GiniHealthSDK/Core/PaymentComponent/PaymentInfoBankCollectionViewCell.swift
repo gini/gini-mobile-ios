@@ -15,6 +15,7 @@ final class PaymentInfoBankCollectionViewCell: UICollectionViewCell {
         didSet {
             guard let cellViewModel else { return }
             bankIconImageView.image = cellViewModel.bankImageIcon
+            bankIconImageView.layer.borderColor = cellViewModel.borderColor.cgColor
         }
     }
 
@@ -25,6 +26,7 @@ final class PaymentInfoBankCollectionViewCell: UICollectionViewCell {
         imageView.clipsToBounds = true
         imageView.backgroundColor = .clear
         imageView.roundCorners(corners: .allCorners, radius: Constants.bankIconCornerRadius)
+        imageView.layer.borderWidth = Constants.bankIconBorderWidth
         return imageView
     }()
 
@@ -57,6 +59,9 @@ final class PaymentInfoBankCollectionViewCellModel {
         return UIImage()
     }
     
+    var borderColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark5,
+                                         darkModeColor: UIColor.GiniHealthColors.light5).uiColor()
+    
     init(bankImageIconData: Data?) {
         self.bankImageIconData = bankImageIconData
     }
@@ -64,6 +69,7 @@ final class PaymentInfoBankCollectionViewCellModel {
 
 extension PaymentInfoBankCollectionViewCell {
     private enum Constants {
-        static let bankIconCornerRadius = 4.0
+        static let bankIconCornerRadius = 6.0
+        static let bankIconBorderWidth = 1.0
     }
 }
