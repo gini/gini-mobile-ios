@@ -22,8 +22,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     @IBOutlet var ibanErrorLabel: UILabel!
     @IBOutlet var recipientErrorLabel: UILabel!
     @IBOutlet var paymentInputFields: [UITextField]!
-    @IBOutlet var bankProviderButtonView: UIView!
-    @IBOutlet weak var bankProviderLabel: UILabel!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet var inputContainer: UIView!
     @IBOutlet var containerCollectionView: UIView!
@@ -31,16 +29,15 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet weak var closeButton: UIButton!
     
-    @IBOutlet weak var bankProviderEditIcon: UIImageView!
-    
-    @IBOutlet weak var bankProviderImage: UIImageView!
+
     @IBOutlet weak var infoBar: UIView!
     @IBOutlet weak var infoBarLabel: UILabel!
     var model: PaymentReviewModel?
     var paymentProviders: [PaymentProvider] = []
     private var amountToPay = Price(value: 0, currencyCode: "EUR")
     private var lastValidatedIBAN = ""
-    
+    private var payButtonView = PaymentPrimaryButton()
+
     private var selectedPaymentProvider: PaymentProvider? {
         didSet {
             if let provider = selectedPaymentProvider {
@@ -251,79 +248,40 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
                            self.infoBar.isHidden = true
                        })
     }
-
-    // MARK: - ConfigureBankProviderView
-    
-//    fileprivate func configureBankProviderView(paymentProvider: PaymentProvider) {
-//        bankProviderButtonView.backgroundColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonBackgroundColor)
-//        bankProviderButtonView.layer.cornerRadius = giniHealthConfiguration.bankButtonCornerRadius
-//        bankProviderButtonView.layer.borderWidth = giniHealthConfiguration.bankButtonBorderWidth
-//        bankProviderButtonView.layer.borderColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonBorderColor).cgColor
-//
-//        bankProviderLabel.textColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonTextColor)
-//        bankProviderLabel.text = paymentProvider.name
-//
-//        let imageData =  paymentProvider.iconData
-//        if let image = UIImage(data: imageData){
-//            bankProviderImage.image = image
-//        }
-//        
-//        if let templateImage = UIImageNamedPreferred(named: "editIcon"), self.paymentProviders.count > 1 {
-//            bankProviderEditIcon.image = templateImage.withRenderingMode(.alwaysTemplate)
-//            bankProviderEditIcon.tintColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonEditIconColor)
-//            let selectProviderTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(selectBankProviderTapped))
-//            bankProviderButtonView.addGestureRecognizer(selectProviderTapRecognizer)
-//        }
-//        bankProviderLabel.font = giniHealthConfiguration.customFont.regular
-//        bankProviderLabel.adjustsFontForContentSizeCategory = true
-//
-//    }
     
     fileprivate func updateUIWithDefaultPaymentProvider(provider: PaymentProvider){
-       // self.configureBankProviderView(paymentProvider: provider)
         self.configurePayButton(paymentProvider: provider)
     }
 
-//    fileprivate func presentBankSelectionViewController() {
-//       
-//       let availableProviders = self.paymentProviders
-//        if availableProviders.count > 1 {
-//            let bankSelectionViewController = BankProviderViewController.instantiate(with: availableProviders)
-//            bankSelectionViewController.onSelectedProviderDidChanged = { provider in
-//                self.selectedPaymentProvider = provider
-//            }
-//            bankSelectionViewController.modalPresentationStyle = .overCurrentContext
-//            bankSelectionViewController.modalTransitionStyle = .crossDissolve
-//            present(bankSelectionViewController, animated: true)
-//        }
-//    }
-
     fileprivate func configurePayButton(paymentProvider: PaymentProvider) {
-        let backgroundColorString = String.rgbaHexFrom(rgbHex: paymentProvider.colors.background)
-        if let backgroundHexColor = UIColor(hex: backgroundColorString) {
-            payButton.defaultBackgroundColor  = GiniColor(lightModeColor: backgroundHexColor,
-                                                          darkModeColor: backgroundHexColor).uiColor()
-        }
-        let textColorString = String.rgbaHexFrom(rgbHex: paymentProvider.colors.text)
-        if let textHexColor = UIColor(hex: textColorString) {
-            payButton.textColor = GiniColor(lightModeColor: textHexColor,
-                                            darkModeColor: textHexColor).uiColor()
-        }
+        payButtonView.customConfigure(paymentProviderColors: ProviderColors(background: paymentProvider.colors.background, text: paymentProvider.colors.text),
+                               isPaymentProviderInstalled: true,
+                               text: "Zur Banking App")
+        payButton.leftImage(image: UIImage(data: paymentProvider.iconData) ?? UIImage())
+        payButton.setTitle( NSLocalizedStringPreferredFormat("Zur Banking App",
+                                                             comment: "next button title"), for: .normal)
         disablePayButtonIfNeeded()
     }
     
     fileprivate func configurePayButtonInitialState() {
-        let payButtonView = PaymentPrimaryButton()
         payButtonView.translatesAutoresizingMaskIntoConstraints = false
-        payButtonView.configure(with: GiniHealthConfiguration.shared.primaryButtonConfiguration)
+        let disabledStatePayButtonConfiguration = ButtonConfiguration(backgroundColor: .GiniHealthColors.light4,
+                                                                         borderColor: .clear,
+                                                                         titleColor: .GiniHealthColors.dark7,
+                                                                         shadowColor: .clear,
+                                                                         cornerRadius: 12,
+                                                                         borderWidth: 0,
+                                                                         shadowRadius: 0,
+                                                                         withBlurEffect: false)
+        payButtonView.configure(with: disabledStatePayButtonConfiguration)
 
         payButton.addSubview(payButtonView)
-        payButton.disabledBackgroundColor = UIColor.GiniHealthColors.light4
+
         payButton.isEnabled = false
-        payButton.disabledTextColor = UIColor.GiniHealthColors.dark7
         payButton.titleLabel?.font = giniHealthConfiguration.textStyleFonts[.input]
         payButton.setTitle( NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.next.button.title",
                                                              comment: "next button title"), for: .normal)
+        payButton.layer.cornerRadius = disabledStatePayButtonConfiguration.cornerRadius
     }
     
     fileprivate func configurePaymentInputFields() {
@@ -605,19 +563,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     // MARK: - IBAction
-    
-    @objc func selectBankProviderTapped() {
-        var event = TrackingEvent.init(type: PaymentReviewScreenEventType.onBankSelectionButtonClicked)
-        if let selectedPaymentProviderName = selectedPaymentProvider?.name {
-            event.info = ["paymentProvider" : selectedPaymentProviderName]
-        }
-        trackingDelegate?.onPaymentReviewScreenEvent(event: event)
-        bankProviderButtonView.alpha = 0.5
-        UIView.animate(withDuration: 0.5) {
-            self.bankProviderButtonView.alpha = 1.0
-        }
-       // presentBankSelectionViewController()
-    }
     
     @IBAction func payButtonClicked(_ sender: Any) {
         var event = TrackingEvent.init(type: PaymentReviewScreenEventType.onNextButtonClicked)

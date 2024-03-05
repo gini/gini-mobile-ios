@@ -35,3 +35,12 @@ class GiniCustomButton: UIButton {
         }
     }
 }
+
+extension GiniCustomButton {
+
+  /// Add image on left view
+  func leftImage(image: UIImage) {
+    self.setImage(image, for: .normal)
+    self.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 32)
+  }
+}
