@@ -57,8 +57,8 @@ final class BanksBottomViewModel {
     init(paymentProviders: PaymentProviders, selectedPaymentProvider: PaymentProvider?) {
         self.selectedPaymentProvider = selectedPaymentProvider
         
-        let defaultRegularFont: UIFont = GiniHealthConfiguration.shared.customFont.regular
-        let defaultBoldFont: UIFont = GiniHealthConfiguration.shared.customFont.regular
+        let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .regular)
+        let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
 
         self.selectBankLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.subtitle1] ?? defaultBoldFont
         self.descriptionLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.caption1] ?? defaultRegularFont

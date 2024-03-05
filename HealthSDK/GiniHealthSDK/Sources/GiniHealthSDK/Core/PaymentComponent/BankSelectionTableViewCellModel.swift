@@ -49,7 +49,7 @@ final class BankSelectionTableViewCellModel {
         self.bankImageIconData = paymentProvider.paymentProvider.iconData
         self.bankName = paymentProvider.paymentProvider.name
 
-        let defaultRegularFont: UIFont = GiniHealthConfiguration.shared.customFont.regular
+        let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .regular)
         self.bankNameLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.body1] ?? defaultRegularFont
     }
 }
