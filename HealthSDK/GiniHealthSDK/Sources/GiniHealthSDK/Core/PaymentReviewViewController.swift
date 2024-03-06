@@ -30,14 +30,22 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var infoBar: UIView!
     @IBOutlet weak var infoBarLabel: UILabel!
+    @IBOutlet weak var bottomView: UIView!
     var model: PaymentReviewModel?
     private var amountToPay = Price(value: 0, currencyCode: "€")
     private var lastValidatedIBAN = ""
+    
     private lazy var payInvoiceButton: PaymentPrimaryButton = {
         let button = PaymentPrimaryButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.buttonViewHeight)
         return button
+    }()
+    
+    private lazy var poweredByGiniView: PoweredByGiniView = {
+        let view = PoweredByGiniView()
+        view.viewModel = PoweredByGiniViewModel()
+        return view
     }()
 
     private var selectedPaymentProvider: PaymentProvider?
@@ -171,6 +179,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         configurePageControl()
         configureCloseButton()
         configurePayButtonInitialState()
+        configurePoweredByGiniView()
         hideErrorLabels()
         fillInInputFields()
         addDoneButtonForNumPad(amountTextFieldView)
@@ -262,6 +271,22 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         pageControl.backgroundColor = screenBackgroundColor
         inputContainer.backgroundColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark7,
                                                    darkModeColor: UIColor.GiniHealthColors.dark7).uiColor()
+    }
+    
+    fileprivate func configurePoweredByGiniView() {
+        bottomView.addSubview(poweredByGiniView)
+        setupPoweredByGiniConstraints()
+    }
+    
+    private func setupPoweredByGiniConstraints() {
+        let poweredByGiniBottomAnchorConstraint = poweredByGiniView.bottomAnchor.constraint(equalTo: poweredByGiniView.bottomAnchor)
+        poweredByGiniBottomAnchorConstraint.priority = .required - 1
+        NSLayoutConstraint.activate([
+            poweredByGiniView.topAnchor.constraint(equalTo: bottomView.topAnchor),
+            poweredByGiniView.heightAnchor.constraint(equalToConstant: poweredByGiniView.frame.height),
+            poweredByGiniView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor),
+            poweredByGiniBottomAnchorConstraint
+        ])
     }
     
     // MARK: - Input fields configuration

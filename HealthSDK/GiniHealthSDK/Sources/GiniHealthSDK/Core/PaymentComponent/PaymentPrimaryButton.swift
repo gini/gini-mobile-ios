@@ -100,6 +100,7 @@ extension PaymentPrimaryButton {
         if let leftImageData {
             contentView.addSubview(leftImageView)
             setupLeftImageConstraints()
+            leftImageView.roundCorners(corners: .allCorners, radius: Constants.bankIconCornerRadius)
             leftImageView.image = UIImage(data: leftImageData)
             if isPaymentProviderInstalled == false {
                 leftImageView.alpha = 0.4
@@ -113,6 +114,7 @@ extension PaymentPrimaryButton {
 extension PaymentPrimaryButton {
     private enum Constants {
         static let bankIconSize: CGFloat = 36
+        static let bankIconCornerRadius: CGFloat = 8
         static let contentLeadingPadding: CGFloat = 19
     }
 }
