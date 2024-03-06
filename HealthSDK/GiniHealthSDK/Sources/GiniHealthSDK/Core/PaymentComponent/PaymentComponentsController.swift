@@ -43,8 +43,6 @@ public final class PaymentComponentsController: NSObject {
     public weak var viewDelegate: PaymentComponentViewProtocol?
     /// handling the Payment Bottom view delegate
     public weak var bottomViewDelegate: PaymentProvidersBottomViewProtocol?
-    /// handling the Payment Info view delegate
-    public weak var infoViewDelegate: PaymentInfoViewProtocol?
 
     private var giniHealth: GiniHealth
     private var paymentProviders: PaymentProviders = []
@@ -224,7 +222,6 @@ public final class PaymentComponentsController: NSObject {
     public func paymentInfoViewController() -> UIViewController {
         let paymentInfoViewController = PaymentInfoViewController()
         let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders)
-        paymentInfoViewModel.viewDelegate = self
         paymentInfoViewController.viewModel = paymentInfoViewModel
         return paymentInfoViewController
     }
@@ -253,12 +250,6 @@ extension PaymentComponentsController: PaymentProvidersBottomViewProtocol {
     
     public func didTapOnClose() {
         bottomViewDelegate?.didTapOnClose()
-    }
-}
-
-extension PaymentComponentsController: PaymentInfoViewProtocol {
-    public func didTapOnCloseOnInfoView() {
-        infoViewDelegate?.didTapOnCloseOnInfoView()
     }
 }
 
