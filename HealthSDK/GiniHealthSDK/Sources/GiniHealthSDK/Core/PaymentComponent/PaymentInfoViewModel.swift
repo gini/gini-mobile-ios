@@ -65,8 +65,8 @@ final class PaymentInfoViewModel {
         
         let giniHealthConfiguration = GiniHealthConfiguration.shared
         
-        let defaultRegularFont: UIFont = giniHealthConfiguration.customFont.regular
-        let defaultBoldFont: UIFont = giniHealthConfiguration.customFont.bold
+        let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
+        let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .bold)
         
         payBillsTitleFont = giniHealthConfiguration.textStyleFonts[.subtitle1] ?? defaultBoldFont
         payBillsDescriptionFont = giniHealthConfiguration.textStyleFonts[.body2] ?? defaultRegularFont
