@@ -17,22 +17,22 @@ public protocol PaymentComponentViewProtocol: AnyObject {
     /**
      Called when the user tapped on the more information actionable label or the information icon
 
-     - parameter documentID: Id of document
+     - parameter documentId: Id of document
      */
-    func didTapOnMoreInformation(documentID: String?)
+    func didTapOnMoreInformation(documentId: String?)
 
     /**
      Called when the user tapped on payment provider picker to change the selected payment provider or install it
 
-     - parameter documentID: Id of document
+     - parameter documentId: Id of document
      */
-    func didTapOnBankPicker(documentID: String?)
+    func didTapOnBankPicker(documentId: String?)
 
     /**
      Called when the user tapped on the pay the invoice button to pay the invoice/document
-     - parameter documentID: Id of document
+     - parameter documentId: Id of document
      */
-    func didTapOnPayInvoice(documentID: String?)
+    func didTapOnPayInvoice(documentId: String?)
 }
 
 /**
@@ -41,13 +41,13 @@ public protocol PaymentComponentViewProtocol: AnyObject {
  */
 extension PaymentComponentViewProtocol {
     public func didTapOnMoreInformation() {
-        didTapOnMoreInformation(documentID: nil)
+        didTapOnMoreInformation(documentId: nil)
     }
     public func didTapOnBankPicker() {
-        didTapOnBankPicker(documentID: nil)
+        didTapOnBankPicker(documentId: nil)
     }
     public func didTapOnPayInvoice() {
-        didTapOnPayInvoice(documentID: nil)
+        didTapOnPayInvoice(documentId: nil)
     }
 }
 
@@ -121,6 +121,8 @@ final class PaymentComponentViewModel {
 
     weak var delegate: PaymentComponentViewProtocol?
     
+    var documentId: String?
+    
     init(paymentProvider: PaymentProvider?) {
         let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
         let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
@@ -136,14 +138,14 @@ final class PaymentComponentViewModel {
     }
     
     func tapOnMoreInformation() {
-        delegate?.didTapOnMoreInformation()
+        delegate?.didTapOnMoreInformation(documentId: documentId)
     }
     
     func tapOnBankPicker() {
-        delegate?.didTapOnBankPicker()
+        delegate?.didTapOnBankPicker(documentId: documentId)
     }
     
     func tapOnPayInvoiceView() {
-        delegate?.didTapOnPayInvoice()
+        delegate?.didTapOnPayInvoice(documentId: documentId)
     }
 }

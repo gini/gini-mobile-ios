@@ -14,8 +14,6 @@ final class InvoiceTableViewCellModel {
     private var invoice: DocumentWithExtractions
     private var paymentComponentsController: PaymentComponentsController
 
-    weak var viewDelegate: PaymentComponentViewProtocol?
-
     init(invoice: DocumentWithExtractions,
          paymentComponentsController: PaymentComponentsController) {
         self.invoice = invoice
@@ -50,21 +48,6 @@ final class InvoiceTableViewCellModel {
     }
     
     var paymentComponentView: UIView {
-        paymentComponentsController.viewDelegate = self
-        return paymentComponentsController.paymentView()
-    }
-}
-
-extension InvoiceTableViewCellModel: PaymentComponentViewProtocol {
-    public func didTapOnMoreInformation(documentID: String?) {
-        viewDelegate?.didTapOnMoreInformation(documentID: invoice.documentID)
-    }
-    
-    public func didTapOnBankPicker(documentID: String?) {
-        viewDelegate?.didTapOnBankPicker(documentID: invoice.documentID)
-    }
-    
-    public func didTapOnPayInvoice(documentID: String?) {
-        viewDelegate?.didTapOnPayInvoice(documentID: invoice.documentID)
+        return paymentComponentsController.paymentView(documentId: invoice.documentID)
     }
 }
