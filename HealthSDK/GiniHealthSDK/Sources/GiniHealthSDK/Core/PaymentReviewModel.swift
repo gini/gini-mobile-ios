@@ -67,6 +67,10 @@ public class PaymentReviewModel: NSObject {
             self.updateImagesLoadingStatus()
         }
     }
+    
+    // Pay invoice label
+    let payInvoiceLabelText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.payInvoice.label",
+                                                                       comment: "Title label used for the pay invoice button")
 
     public init(with giniHealth: GiniHealth, document: Document, extractions: [Extraction]) {
         self.healthSDK = giniHealth
@@ -81,19 +85,6 @@ public class PaymentReviewModel: NSObject {
 
     private func createCellViewModel(previewImage: UIImage) -> PageCollectionCellViewModel {
         return PageCollectionCellViewModel(preview: previewImage)
-    }
-
-    func checkIfAnyPaymentProviderAvailable() {
-        healthSDK.checkIfAnyPaymentProviderAvailable {[weak self] result in
-            switch result {
-            case let .success(providers):
-                self?.onPaymentProvidersFetched(providers)
-            case let .failure(error):
-                if let delegate = self?.healthSDK.delegate, delegate.shouldHandleErrorInternally(error: error) {
-                    self?.onNoAppsErrorHandling(error)
-                }
-            }
-        }
     }
 
     func sendFeedback(updatedExtractions: [Extraction]) {
