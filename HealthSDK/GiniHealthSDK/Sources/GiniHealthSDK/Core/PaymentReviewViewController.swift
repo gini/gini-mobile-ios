@@ -15,7 +15,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     @IBOutlet var ibanField: UITextField!
     @IBOutlet var amountField: UITextField!
     @IBOutlet var usageField: UITextField!
-    @IBOutlet var payButton: GiniCustomButton!
+    @IBOutlet weak var payButtonStackView: UIStackView!
     @IBOutlet var paymentInputFieldsErrorLabels: [UILabel]!
     @IBOutlet var usageErrorLabel: UILabel!
     @IBOutlet var amountErrorLabel: UILabel!
@@ -33,20 +33,16 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     @IBOutlet weak var infoBar: UIView!
     @IBOutlet weak var infoBarLabel: UILabel!
     var model: PaymentReviewModel?
-    var paymentProviders: [PaymentProvider] = []
     private var amountToPay = Price(value: 0, currencyCode: "EUR")
     private var lastValidatedIBAN = ""
-    private var payButtonView = PaymentPrimaryButton()
+    private lazy var payInvoiceButton: PaymentPrimaryButton = {
+        let button = PaymentPrimaryButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.buttonViewHeight)
+        return button
+    }()
 
-    private var selectedPaymentProvider: PaymentProvider? {
-        didSet {
-            if let provider = selectedPaymentProvider {
-                DispatchQueue.main.async {
-                    self.updateUIWithDefaultPaymentProvider(provider: provider)
-                }
-            }
-        }
-    }
+    private var selectedPaymentProvider: PaymentProvider?
     
     public weak var trackingDelegate: GiniHealthTrackingDelegate?
     
@@ -112,20 +108,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             }
         }
         
-        model?.onPaymentProvidersFetched = {[weak self] providers in
-            DispatchQueue.main.async { [weak self] in
-                self?.paymentProviders.append(contentsOf: providers)
-                if let paymentProviders = self?.paymentProviders, paymentProviders.count > 0 {
-                    let providerId = UserDefaults.standard.string(forKey: "ginihealth.defaultPaymentProviderId")
-                    let provider = paymentProviders.first(where: { $0.id == providerId }) ?? paymentProviders[0]
-                    self?.selectedPaymentProvider = provider
-                }
-            }
-        }
-        
-        model?.checkIfAnyPaymentProviderAvailable()
-
-        
         model?.updateImagesLoadingStatus = { [weak self] () in
             DispatchQueue.main.async { [weak self] in
                 let isLoading = self?.model?.isImagesLoading ?? false
@@ -164,12 +146,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             DispatchQueue.main.async {
                 self?.showError(message: NSLocalizedStringPreferredFormat("ginihealth.errors.default",
                                                                          comment: "default error message") )
-            }
-        }
-        
-        model?.onBankSelection = {[weak self] provider in
-            DispatchQueue.main.async {
-                self?.updateUIWithDefaultPaymentProvider(provider: provider)
             }
         }
         
@@ -249,39 +225,12 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
                        })
     }
     
-    fileprivate func updateUIWithDefaultPaymentProvider(provider: PaymentProvider){
-        self.configurePayButton(paymentProvider: provider)
-    }
-
-    fileprivate func configurePayButton(paymentProvider: PaymentProvider) {
-        payButtonView.customConfigure(paymentProviderColors: ProviderColors(background: paymentProvider.colors.background, text: paymentProvider.colors.text),
-                               isPaymentProviderInstalled: true,
-                               text: "Zur Banking App")
-        payButton.leftImage(image: UIImage(data: paymentProvider.iconData) ?? UIImage())
-        payButton.setTitle( NSLocalizedStringPreferredFormat("Zur Banking App",
-                                                             comment: "next button title"), for: .normal)
-        disablePayButtonIfNeeded()
-    }
-    
     fileprivate func configurePayButtonInitialState() {
-        payButtonView.translatesAutoresizingMaskIntoConstraints = false
-        let disabledStatePayButtonConfiguration = ButtonConfiguration(backgroundColor: .GiniHealthColors.light4,
-                                                                         borderColor: .clear,
-                                                                         titleColor: .GiniHealthColors.dark7,
-                                                                         shadowColor: .clear,
-                                                                         cornerRadius: 12,
-                                                                         borderWidth: 0,
-                                                                         shadowRadius: 0,
-                                                                         withBlurEffect: false)
-        payButtonView.configure(with: disabledStatePayButtonConfiguration)
-
-        payButton.addSubview(payButtonView)
-
-        payButton.isEnabled = false
-        payButton.titleLabel?.font = giniHealthConfiguration.textStyleFonts[.input]
-        payButton.setTitle( NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.next.button.title",
-                                                             comment: "next button title"), for: .normal)
-        payButton.layer.cornerRadius = disabledStatePayButtonConfiguration.cornerRadius
+        payButtonStackView.addArrangedSubview(payInvoiceButton)
+        disablePayButtonIfNeeded()
+        payInvoiceButton.didTapButton = { [weak self] in
+            self?.payButtonClicked()
+        }
     }
     
     fileprivate func configurePaymentInputFields() {
@@ -341,7 +290,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     fileprivate func applyErrorStyle(_ textField: UITextField) {
         UIView.animate(withDuration: 0.3) {
             textField.configureWith(configuration: self.giniHealthConfiguration.errorStyleInputFieldConfiguration)
-            let placeholderText = self.inputFieldPlaceholderText(textField)
+            _ = self.inputFieldPlaceholderText(textField)
             textField.layer.masksToBounds = true
         }
     }
@@ -489,7 +438,19 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     fileprivate func disablePayButtonIfNeeded() {
-        payButton.isEnabled = paymentInputFields.allSatisfy { !$0.isReallyEmpty } && !paymentProviders.isEmpty && amountToPay.value > 0
+        payInvoiceButton.configure(with: giniHealthConfiguration.primaryButtonConfiguration)
+        guard let model else { return }
+        if paymentInputFields.allSatisfy { !$0.isReallyEmpty } && amountToPay.value > 0 {
+            payInvoiceButton.customConfigure(paymentProviderColors: selectedPaymentProvider?.colors,
+                                             isPaymentProviderInstalled: true,
+                                             text: model.payInvoiceLabelText,
+                                             leftImageData: selectedPaymentProvider?.iconData)
+        } else {
+            payInvoiceButton.customConfigure(paymentProviderColors: selectedPaymentProvider?.colors,
+                                             isPaymentProviderInstalled: false,
+                                             text: model.payInvoiceLabelText,
+                                             leftImageData: selectedPaymentProvider?.iconData)
+        }
     }
 
 
@@ -562,12 +523,11 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         disablePayButtonIfNeeded()
     }
     
-    // MARK: - IBAction
-    
-    @IBAction func payButtonClicked(_ sender: Any) {
+    // MARK: - Pay Button Action
+    func payButtonClicked() {
         var event = TrackingEvent.init(type: PaymentReviewScreenEventType.onNextButtonClicked)
         if let selectedPaymentProviderName = selectedPaymentProvider?.name {
-            event.info = ["paymentProvider" : selectedPaymentProviderName]
+            event.info = ["paymentProvider": selectedPaymentProviderName]
         }
         trackingDelegate?.onPaymentReviewScreenEvent(event: event)
         view.endEditing(true)
@@ -579,11 +539,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
 
         // check if no errors labels are shown
         if (paymentInputFieldsErrorLabels.allSatisfy { $0.isHidden }) {
-            
-            // check for the 1st run where no provider where selected and saved yet
-            if self.selectedPaymentProvider == nil {
-                self.selectedPaymentProvider = paymentProviders.first
-            }
             if let selectedProvider = selectedPaymentProvider, !amountField.isReallyEmpty
             {
                 let amountText = amountToPay.extractionString
@@ -821,5 +776,11 @@ extension PaymentReviewViewController {
                                                                              comment: "ok title for action"), style: .default, handler: nil)
         alertController.addAction(OKAction)
         present(alertController, animated: true, completion: nil)
+    }
+}
+
+extension PaymentReviewViewController {
+    private enum Constants {
+        static let buttonViewHeight: CGFloat = 56
     }
 }

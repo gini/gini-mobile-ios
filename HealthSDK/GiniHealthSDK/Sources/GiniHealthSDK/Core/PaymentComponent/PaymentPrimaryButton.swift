@@ -30,6 +30,13 @@ final class PaymentPrimaryButton: UIView {
         return label
     }()
     
+    private lazy var leftImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.frame = CGRect(x: 0, y: 0, width: Constants.bankIconSize, height: Constants.bankIconSize)
+        return imageView
+    }()
+    
     init() {
         super.init(frame: .zero)
         addSubview(contentView)
@@ -53,6 +60,12 @@ final class PaymentPrimaryButton: UIView {
         ])
     }
         
+    private func setupLeftImageConstraints() {
+        leftImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.contentLeadingPadding).isActive = true
+        leftImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        leftImageView.widthAnchor.constraint(equalToConstant: leftImageView.frame.width).isActive = true
+        leftImageView.heightAnchor.constraint(equalToConstant: leftImageView.frame.height).isActive = true
+    }
         
     @objc private func tapOnPayInvoiceView() {
         didTapButton?()
@@ -73,7 +86,7 @@ extension PaymentPrimaryButton {
         }
     }
     
-    func customConfigure(paymentProviderColors: ProviderColors?, isPaymentProviderInstalled: Bool, text: String) {
+    func customConfigure(paymentProviderColors: ProviderColors?, isPaymentProviderInstalled: Bool, text: String, leftImageData: Data? = nil) {
         if let backgroundHexColor = paymentProviderColors?.background.toColor(), isPaymentProviderInstalled {
             contentView.backgroundColor = backgroundHexColor
         }
@@ -83,5 +96,23 @@ extension PaymentPrimaryButton {
         if let textHexColor = paymentProviderColors?.text.toColor() {
             titleLabel.textColor = textHexColor
         }
+        // Left image appears only on Payment Review Screen
+        if let leftImageData {
+            contentView.addSubview(leftImageView)
+            setupLeftImageConstraints()
+            leftImageView.image = UIImage(data: leftImageData)
+            if isPaymentProviderInstalled == false {
+                leftImageView.alpha = 0.4
+            } else {
+                leftImageView.alpha = 1.0
+            }
+        }
+    }
+}
+
+extension PaymentPrimaryButton {
+    private enum Constants {
+        static let bankIconSize: CGFloat = 36
+        static let contentLeadingPadding: CGFloat = 19
     }
 }
