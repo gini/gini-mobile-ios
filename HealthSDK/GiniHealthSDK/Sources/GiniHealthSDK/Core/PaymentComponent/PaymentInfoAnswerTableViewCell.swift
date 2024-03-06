@@ -10,7 +10,7 @@ import UIKit
 final class PaymentInfoAnswerTableViewCell: UITableViewCell {
     static let identifier = "PaymentInfoAnswerTableViewCell"
     
-    let textView: UITextView = {
+    lazy private var textView: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.isScrollEnabled = false

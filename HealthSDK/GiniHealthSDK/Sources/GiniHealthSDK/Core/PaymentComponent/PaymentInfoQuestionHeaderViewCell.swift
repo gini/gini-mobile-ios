@@ -17,7 +17,7 @@ final class PaymentInfoQuestionHeaderViewCell: UIView {
         }
     }
     
-    lazy var titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.lineBreakMode = .byWordWrapping
@@ -26,7 +26,7 @@ final class PaymentInfoQuestionHeaderViewCell: UIView {
         return label
     }()
     
-    lazy var extendedImageView: UIImageView = {
+    private lazy var extendedImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
@@ -66,7 +66,7 @@ final class PaymentInfoQuestionHeaderViewCell: UIView {
         ])
     }
     
-    @objc func tappedOnView() {
+    @objc private func tappedOnView() {
         didTapSelectButton()
     }
 
