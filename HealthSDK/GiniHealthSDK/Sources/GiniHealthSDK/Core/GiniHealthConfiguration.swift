@@ -82,30 +82,42 @@ public final class GiniHealthConfiguration: NSObject {
     /**
      A default style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
-    public lazy var defaultStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: UIColor.GiniHealthColors.dark6,
-                                                                                  borderColor: .clear,
-                                                                                  textColor: UIColor.GiniHealthColors.dark1,
-                                                                                  cornerRadius: 12.0,
-                                                                                  borderWidth: 0.0,
-                                                                                  placeholderForegroundColor: UIColor.GiniHealthColors.dark4)
+    public lazy var defaultStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.dark6,
+                                                                                                            darkModeColor: UIColor.GiniHealthColors.light6).uiColor(),
+                                                                                 borderColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.dark5,
+                                                                                                        darkModeColor: UIColor.GiniHealthColors.light5).uiColor(),
+                                                                                 textColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.dark1,
+                                                                                                      darkModeColor: UIColor.GiniHealthColors.light1).uiColor(),
+                                                                                 cornerRadius: 12.0,
+                                                                                 borderWidth: 1.0,
+                                                                                 placeholderForegroundColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.dark4,
+                                                                                                                       darkModeColor: UIColor.GiniHealthColors.light4).uiColor())
     /**
      A error style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
-    public lazy var errorStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: UIColor.GiniHealthColors.dark6,
-                                                                                     borderColor: UIColor.GiniHealthColors.feedback1,
-                                                                                     textColor: UIColor.GiniHealthColors.dark1,
+    public lazy var errorStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.dark6,
+                                                                                                          darkModeColor: UIColor.GiniHealthColors.light6).uiColor(),
+                                                                                     borderColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.feedback1,
+                                                                                                            darkModeColor: UIColor.GiniHealthColors.feedback1).uiColor(),
+                                                                                     textColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.dark1,
+                                                                                                          darkModeColor: UIColor.GiniHealthColors.light1).uiColor(),
                                                                                      cornerRadius: 12.0,
                                                                                      borderWidth: 1.0,
-                                                                                     placeholderForegroundColor: UIColor.GiniHealthColors.dark4)
+                                                                                     placeholderForegroundColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.dark4,
+                                                                                                                           darkModeColor: UIColor.GiniHealthColors.light4).uiColor())
     /**
      A selection style configuration that defines the appearance of the text field, including its background color, border color, text color, corner radius, border width and the placeholder foreground color. It is used for input text fields on  Payment Review Screen.
      */
-    public lazy var selectionStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: UIColor.GiniHealthColors.dark7,
-                                                                                     borderColor: UIColor.GiniHealthColors.accent1,
-                                                                                     textColor: UIColor.GiniHealthColors.dark1,
+    public lazy var selectionStyleInputFieldConfiguration = TextFieldConfiguration(backgroundColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.dark6,
+                                                                                                              darkModeColor: UIColor.GiniHealthColors.light6).uiColor(),
+                                                                                     borderColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.accent1,
+                                                                                                            darkModeColor: UIColor.GiniHealthColors.accent1).uiColor(),
+                                                                                     textColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.dark1,
+                                                                                                          darkModeColor: UIColor.GiniHealthColors.light1).uiColor(),
                                                                                      cornerRadius: 12.0,
                                                                                      borderWidth: 1.0,
-                                                                                     placeholderForegroundColor: UIColor.GiniHealthColors.dark4)
+                                                                                     placeholderForegroundColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.accent1,
+                                                                                                                           darkModeColor: UIColor.GiniHealthColors.accent1).uiColor())
 
     /**
      Sets the color of the loading indicator to the specified color.

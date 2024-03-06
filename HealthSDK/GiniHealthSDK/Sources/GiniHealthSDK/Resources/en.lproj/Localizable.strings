@@ -7,7 +7,7 @@
 */
 "ginihealth.reviewscreen.recipient.placeholder" = "Recipient";
 "ginihealth.reviewscreen.iban.placeholder" = "IBAN";
-"ginihealth.reviewscreen.amount.placeholder" = "0,00 €";
+"ginihealth.reviewscreen.amount.placeholder" = "Amount";
 "ginihealth.reviewscreen.usage.placeholder" = "Purpose";
 "ginihealth.reviewscreen.next.button.title" = "Next";
 "ginihealth.errors.no.banking.app.installed" = "Your banking app does not support this service. Have you tried ING app yet?";

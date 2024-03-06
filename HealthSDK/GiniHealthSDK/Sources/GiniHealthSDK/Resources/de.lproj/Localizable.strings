@@ -7,7 +7,7 @@
 */
 "ginihealth.reviewscreen.recipient.placeholder" = "Empfänger";
 "ginihealth.reviewscreen.iban.placeholder" = "IBAN";
-"ginihealth.reviewscreen.amount.placeholder" = "0,00 €";
+"ginihealth.reviewscreen.amount.placeholder" = "Betrag";
 "ginihealth.reviewscreen.usage.placeholder" = "Verwendungszweck";
 "ginihealth.reviewscreen.infobar.message" = "Bitte prüfe die vorausgefüllten Daten";
 "ginihealth.reviewscreen.next.button.title" = "Weiter";
