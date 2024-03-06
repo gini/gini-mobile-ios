@@ -19,7 +19,7 @@ final class PaymentInfoBankCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    lazy var bankIconImageView: UIImageView = {
+    lazy private var bankIconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
