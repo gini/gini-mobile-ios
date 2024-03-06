@@ -87,7 +87,7 @@ final class PaymentInfoQuestionHeaderViewModel {
     init(title: String, isExtended: Bool) {
         self.titleText = title
         let giniConfiguration = GiniHealthConfiguration.shared
-        self.titleFont = giniConfiguration.textStyleFonts[.body1] ?? giniConfiguration.customFont.regular
+        self.titleFont = giniConfiguration.textStyleFonts[.body1] ?? UIFont.systemFont(ofSize: 16)
         self.extendedIconName = isExtended ? minusIcon : plusIcon
     }
 }
