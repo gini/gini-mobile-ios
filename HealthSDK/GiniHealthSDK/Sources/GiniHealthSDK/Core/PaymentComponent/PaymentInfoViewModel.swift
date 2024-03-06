@@ -8,10 +8,6 @@
 import UIKit
 import GiniHealthAPILibrary
 
-public protocol PaymentInfoViewProtocol: AnyObject {
-    func didTapOnCloseOnInfoView()
-}
-
 struct QuestionSection {
     let title: String
     var description: NSAttributedString
@@ -20,7 +16,6 @@ struct QuestionSection {
 
 final class PaymentInfoViewModel {
     
-    weak var viewDelegate: PaymentInfoViewProtocol?
     var paymentProviders: PaymentProviders
     
     let backgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark7,

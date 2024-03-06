@@ -71,7 +71,6 @@ final class InvoicesListViewModel {
         self.paymentComponentsController = paymentComponentsController
         self.paymentComponentsController.delegate = self
         self.paymentComponentsController.bottomViewDelegate = self
-        self.paymentComponentsController.infoViewDelegate = self
     }
     
     func viewDidLoad() {
@@ -235,14 +234,6 @@ extension InvoicesListViewModel: GiniHealthTrackingDelegate {
             Log("Close keyboard was triggered", event: .success)
         case .onBankSelectionButtonClicked:
             Log("Bank selection button was tapped,\(String(describing: event.info))", event: .success)
-        }
-    }
-}
-
-extension InvoicesListViewModel: PaymentInfoViewProtocol {
-    func didTapOnCloseOnInfoView() {
-        DispatchQueue.main.async {
-            self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
         }
     }
 }
