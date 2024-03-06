@@ -226,6 +226,12 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     fileprivate func configurePayButtonInitialState() {
         payButtonStackView.addArrangedSubview(payInvoiceButton)
+        guard let model else { return }
+        payInvoiceButton.configure(with: giniHealthConfiguration.primaryButtonConfiguration)
+        payInvoiceButton.customConfigure(paymentProviderColors: selectedPaymentProvider?.colors,
+                                         isPaymentProviderInstalled: true,
+                                         text: model.payInvoiceLabelText,
+                                         leftImageData: selectedPaymentProvider?.iconData)
         disablePayButtonIfNeeded()
         payInvoiceButton.didTapButton = { [weak self] in
             self?.payButtonClicked()
@@ -447,19 +453,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     fileprivate func disablePayButtonIfNeeded() {
-        payInvoiceButton.configure(with: giniHealthConfiguration.primaryButtonConfiguration)
-        guard let model else { return }
-        if paymentInputFields.allSatisfy({ !$0.textField.isReallyEmpty }) && amountToPay.value > 0 {
-            payInvoiceButton.customConfigure(paymentProviderColors: selectedPaymentProvider?.colors,
-                                             isPaymentProviderInstalled: true,
-                                             text: model.payInvoiceLabelText,
-                                             leftImageData: selectedPaymentProvider?.iconData)
-        } else {
-            payInvoiceButton.customConfigure(paymentProviderColors: selectedPaymentProvider?.colors,
-                                             isPaymentProviderInstalled: false,
-                                             text: model.payInvoiceLabelText,
-                                             leftImageData: selectedPaymentProvider?.iconData)
-        }
+        payInvoiceButton.superview?.alpha = paymentInputFields.allSatisfy({ !$0.textField.isReallyEmpty }) && amountToPay.value > 0 ? 1 : 0.4
     }
 
 

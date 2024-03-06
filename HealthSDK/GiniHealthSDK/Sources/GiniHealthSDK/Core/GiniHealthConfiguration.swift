@@ -116,8 +116,8 @@ public final class GiniHealthConfiguration: NSObject {
                                                                                                           darkModeColor: UIColor.GiniHealthColors.light1).uiColor(),
                                                                                      cornerRadius: 12.0,
                                                                                      borderWidth: 1.0,
-                                                                                     placeholderForegroundColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.accent1,
-                                                                                                                           darkModeColor: UIColor.GiniHealthColors.accent1).uiColor())
+                                                                                     placeholderForegroundColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.dark4,
+                                                                                                                           darkModeColor: UIColor.GiniHealthColors.light4).uiColor())
 
     /**
      Sets the color of the loading indicator to the specified color.

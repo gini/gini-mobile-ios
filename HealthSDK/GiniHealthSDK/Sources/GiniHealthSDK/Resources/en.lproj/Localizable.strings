@@ -17,7 +17,7 @@
 "ginihealth.errors.failed.recipient.non.empty.check" = "Recipient is required.";
 "ginihealth.errors.failed.iban.non.empty.check" = "IBAN is required.";
 "ginihealth.errors.failed.iban.validation.check" = "IBAN is not valid";
-"ginihealth.errors.failed.amount.non.empty.check" = "Amount can't be 0";
+"ginihealth.errors.failed.amount.non.empty.check" = "Invalid.";
 "ginihealth.errors.failed.purpose.non.empty.check" = "Purpose is required.";
 "ginihealth.errors.failed.default.textfield.validation.check" = "The field is not valid";
 
