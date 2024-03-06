@@ -268,6 +268,14 @@ final class AppCoordinator: Coordinator {
     }
     
     fileprivate func showInvoicesList() {
+        let configuration = GiniHealthConfiguration()
+        
+        // Show the close button to dismiss the payment review screen
+        configuration.showPaymentReviewCloseButton = true
+        configuration.paymentReviewStatusBarStyle = .lightContent
+        
+        health.setConfiguration(configuration)
+        
         let invoicesListCoordinator = InvoicesListCoordinator()
         let paymentComponentsController = PaymentComponentsController(giniHealth: health)
         invoicesListCoordinator.start(documentService: health.documentService,
