@@ -102,11 +102,6 @@ extension PaymentPrimaryButton {
             setupLeftImageConstraints()
             leftImageView.roundCorners(corners: .allCorners, radius: Constants.bankIconCornerRadius)
             leftImageView.image = UIImage(data: leftImageData)
-            if isPaymentProviderInstalled == false {
-                leftImageView.alpha = 0.4
-            } else {
-                leftImageView.alpha = 1.0
-            }
         }
     }
 }
