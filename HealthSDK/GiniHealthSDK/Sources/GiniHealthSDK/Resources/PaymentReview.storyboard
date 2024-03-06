@@ -23,7 +23,7 @@
                                 <rect key="frame" x="0.0" y="-8" width="375" height="726"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="47Q-Qq-7ja">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="381"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="351"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="336-lO-5Qn">
                                                 <rect key="frame" x="67" y="160" width="240" height="128"/>
@@ -31,13 +31,13 @@
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             </view>
                                             <pageControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="iQ0-i0-82S">
-                                                <rect key="frame" x="0.0" y="361" width="375" height="20"/>
+                                                <rect key="frame" x="0.0" y="331" width="375" height="20"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="20" id="rHy-jF-qFa"/>
                                                 </constraints>
                                             </pageControl>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VtW-En-y6v">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="381"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="351"/>
                                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Zec-6e-m0t" customClass="CollectionFlowLayout" customModule="GiniHealthSDK">
                                                     <size key="itemSize" width="348" height="408.66666666666669"/>
                                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -46,7 +46,7 @@
                                                 </collectionViewFlowLayout>
                                                 <cells>
                                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" reuseIdentifier="pageCellIdentifier" id="c1L-5D-aNE" customClass="PageCollectionViewCell" customModule="GiniHealthSDK">
-                                                        <rect key="frame" x="0.0" y="-14" width="348" height="408.66666666666669"/>
+                                                        <rect key="frame" x="0.0" y="-29" width="348" height="408.66666666666669"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Ucj-NS-kFh">
                                                             <rect key="frame" x="0.0" y="0.0" width="348" height="408.66666666666669"/>
@@ -68,10 +68,10 @@
                                         </constraints>
                                     </view>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yz2-tA-K7L">
-                                        <rect key="frame" x="0.0" y="381" width="375" height="60"/>
+                                        <rect key="frame" x="0.0" y="351" width="375" height="60"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="Bitte prüfe die vorausgefüllten Daten" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="7Xh-Jx-2wM">
-                                                <rect key="frame" x="48" y="7.9999999999999991" width="279" height="20.333333333333329"/>
+                                                <rect key="frame" x="48" y="7.9999999999999982" width="279" height="20.333333333333329"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -85,10 +85,10 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="ekk-cJ-hxZ">
-                                        <rect key="frame" x="0.0" y="381" width="375" height="345"/>
+                                        <rect key="frame" x="0.0" y="351" width="375" height="375"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="zSd-H8-kmA">
-                                                <rect key="frame" x="16" y="16" width="343" height="284"/>
+                                                <rect key="frame" x="16" y="16" width="343" height="314"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5XG-ol-bs7">
                                                         <rect key="frame" x="0.0" y="0.0" width="343" height="68"/>
@@ -200,6 +200,18 @@
                                                             </stackView>
                                                         </subviews>
                                                     </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Vwp-Iu-tQF">
+                                                        <rect key="frame" x="0.0" y="292" width="343" height="22"/>
+                                                        <subviews>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xc1-Fl-fUM">
+                                                                <rect key="frame" x="0.0" y="0.0" width="343" height="22"/>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="22" id="Oag-7O-4Eq"/>
+                                                                </constraints>
+                                                            </view>
+                                                        </subviews>
+                                                    </stackView>
                                                 </subviews>
                                             </stackView>
                                         </subviews>
@@ -252,6 +264,7 @@
                     <connections>
                         <outlet property="amountErrorLabel" destination="wY3-gK-QNl" id="nPj-i5-ZHW"/>
                         <outlet property="amountTextFieldView" destination="Fk2-ou-Ni3" id="aZ4-s9-r26"/>
+                        <outlet property="bottomView" destination="xc1-Fl-fUM" id="qH2-b6-8QL"/>
                         <outlet property="closeButton" destination="wxg-Qb-D9U" id="T8m-hf-wQa"/>
                         <outlet property="collectionView" destination="VtW-En-y6v" id="Ax4-fE-dDV"/>
                         <outlet property="containerCollectionView" destination="47Q-Qq-7ja" id="wB1-BT-kZG"/>
