@@ -70,6 +70,7 @@ final class InvoicesListViewModel {
         self.documentService = documentService
         self.paymentComponentsController = paymentComponentsController
         self.paymentComponentsController.delegate = self
+        self.paymentComponentsController.viewDelegate = self
         self.paymentComponentsController.bottomViewDelegate = self
     }
     
@@ -158,25 +159,26 @@ final class InvoicesListViewModel {
 }
 
 extension InvoicesListViewModel: PaymentComponentViewProtocol {
-    func didTapOnMoreInformation(documentID: String?) {
-        guard let documentID else { return }
-        Log("Tapped on More Information on :\(documentID)", event: .success)
+
+    func didTapOnMoreInformation(documentId: String?) {
+        guard let documentId else { return }
+        Log("Tapped on More Information on :\(documentId)", event: .success)
         let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
         self.coordinator.invoicesListViewController.navigationController?.pushViewController(paymentInfoViewController, animated: true)
     }
     
-    func didTapOnBankPicker(documentID: String?) {
-        guard let documentID else { return }
-        Log("Tapped on Bank Picker on :\(documentID)", event: .success)
+    func didTapOnBankPicker(documentId: String?) {
+        guard let documentId else { return }
+        Log("Tapped on Bank Picker on :\(documentId)", event: .success)
         let paymentProvidersBottomViewController = paymentComponentsController.bankSelectionBottomSheet()
         paymentProvidersBottomViewController.modalPresentationStyle = .overFullScreen
         self.coordinator.invoicesListViewController.present(paymentProvidersBottomViewController, animated: true)
     }
     
-    func didTapOnPayInvoice(documentID: String?) {
-        guard let documentID else { return }
-        Log("Tapped on Pay Invoice on :\(documentID)", event: .success)
-        paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentID, trackingDelegate: self) { [weak self] viewController, error in
+    func didTapOnPayInvoice(documentId: String?) {
+        guard let documentId else { return }
+        Log("Tapped on Pay Invoice on :\(documentId)", event: .success)
+        paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, trackingDelegate: self) { [weak self] viewController, error in
             if let error {
                 self?.errors.append(error.localizedDescription)
                 self?.showErrorsIfAny()

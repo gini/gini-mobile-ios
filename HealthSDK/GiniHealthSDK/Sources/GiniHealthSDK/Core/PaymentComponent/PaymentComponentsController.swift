@@ -179,10 +179,11 @@ public final class PaymentComponentsController: NSObject {
      - Parameters:
      - Returns: a custom view
      */
-    public func paymentView() -> UIView {
+    public func paymentView(documentId: String) -> UIView {
         paymentComponentView = PaymentComponentView()
         let paymentComponentViewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider)
         paymentComponentViewModel.delegate = viewDelegate
+        paymentComponentViewModel.documentId = documentId
         paymentComponentView.viewModel = paymentComponentViewModel
         return paymentComponentView
     }
@@ -228,15 +229,15 @@ public final class PaymentComponentsController: NSObject {
 }
 
 extension PaymentComponentsController: PaymentComponentViewProtocol {
-    public func didTapOnMoreInformation(documentID: String?) {
+    public func didTapOnMoreInformation(documentId: String?) {
         viewDelegate?.didTapOnMoreInformation()
     }
     
-    public func didTapOnBankPicker(documentID: String?) {
+    public func didTapOnBankPicker(documentId: String?) {
         viewDelegate?.didTapOnBankPicker()
     }
     
-    public func didTapOnPayInvoice(documentID: String?) {
+    public func didTapOnPayInvoice(documentId: String?) {
         viewDelegate?.didTapOnPayInvoice()
     }
 }
