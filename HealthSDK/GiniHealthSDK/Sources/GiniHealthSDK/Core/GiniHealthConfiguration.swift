@@ -138,6 +138,9 @@ public final class GiniHealthConfiguration: NSObject {
      Set dictionary of fonts for available text styles. Used internally.
      */
     var textStyleFonts: [UIFont.TextStyle: UIFont] = [
+        .headline1: UIFontMetrics(forTextStyle: .headline1).scaledFont(for: UIFont.systemFont(ofSize: 26, weight: .regular)),
+        .headline2: UIFontMetrics(forTextStyle: .headline2).scaledFont(for: UIFont.systemFont(ofSize: 20, weight: .bold)),
+        .headline3: UIFontMetrics(forTextStyle: .headline3).scaledFont(for: UIFont.systemFont(ofSize: 18, weight: .bold)),
         .caption1: UIFontMetrics(forTextStyle: .caption1).scaledFont(for: UIFont.systemFont(ofSize: 13, weight: .regular)),
         .caption2: UIFontMetrics(forTextStyle: .caption2).scaledFont(for: UIFont.systemFont(ofSize: 12, weight: .regular)),
         .linkBold: UIFontMetrics(forTextStyle: .linkBold).scaledFont(for: UIFont.systemFont(ofSize: 14, weight: .bold)),
@@ -145,6 +148,7 @@ public final class GiniHealthConfiguration: NSObject {
         .subtitle2: UIFontMetrics(forTextStyle: .subtitle2).scaledFont(for: UIFont.systemFont(ofSize: 14, weight: .medium)),
         .input: UIFontMetrics(forTextStyle: .input).scaledFont(for: UIFont.systemFont(ofSize: 16, weight: .medium)),
         .button: UIFontMetrics(forTextStyle: .button).scaledFont(for: UIFont.systemFont(ofSize: 16, weight: .bold)),
-        .body1: UIFontMetrics(forTextStyle: .body1).scaledFont(for: UIFont.systemFont(ofSize: 16, weight: .regular))
+        .body1: UIFontMetrics(forTextStyle: .body1).scaledFont(for: UIFont.systemFont(ofSize: 16, weight: .regular)),
+        .body2: UIFontMetrics(forTextStyle: .body2).scaledFont(for: UIFont.systemFont(ofSize: 14, weight: .regular)),
     ]
 }

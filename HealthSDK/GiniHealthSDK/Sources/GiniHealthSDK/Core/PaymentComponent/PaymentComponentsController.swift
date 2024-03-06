@@ -218,6 +218,13 @@ public final class PaymentComponentsController: NSObject {
             }
         }
     }
+    
+    public func paymentInfoViewController() -> UIViewController {
+        let paymentInfoViewController = PaymentInfoViewController()
+        let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders)
+        paymentInfoViewController.viewModel = paymentInfoViewModel
+        return paymentInfoViewController
+    }
 }
 
 extension PaymentComponentsController: PaymentComponentViewProtocol {
@@ -251,3 +258,4 @@ extension PaymentComponentsController {
         static let kDefaultPaymentProvider = "defaultPaymentProvider"
     }
 }
+
