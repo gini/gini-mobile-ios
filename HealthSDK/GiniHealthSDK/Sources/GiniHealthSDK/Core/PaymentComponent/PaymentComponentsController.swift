@@ -31,7 +31,6 @@ public protocol GiniDocument {
 public protocol PaymentComponentsControllerProtocol: AnyObject {
     func isLoadingStateChanged(isLoading: Bool) // Because we can't use Combine, iOS 11 supported
     func didFetchedPaymentProviders()
-    func didReceivedErrorOnPaymentProviders(_ error: GiniHealthError)
 }
 
 /**
@@ -42,6 +41,8 @@ public final class PaymentComponentsController: NSObject {
     public weak var delegate: PaymentComponentsControllerProtocol?
     /// handling the Payment Component view delegate
     public weak var viewDelegate: PaymentComponentViewProtocol?
+    /// handling the Payment Bottom view delegate
+    public weak var bottomViewDelegate: PaymentProvidersBottomViewProtocol?
 
     private var giniHealth: GiniHealth
     private var paymentProviders: PaymentProviders = []
@@ -85,11 +86,11 @@ public final class PaymentComponentsController: NSObject {
     }
     
     /**
-     Retrieves the first installed payment provider, if available.
+     Retrieves the default installed payment provider, if available.
      - Returns: a Payment Provider object.
      */
-    private func obtainFirstInstalledPaymentProvider() -> PaymentProvider? {
-        installedPaymentProviders.first
+    private func defaultInstalledPaymentProvider() -> PaymentProvider? {
+        savedPaymentProvider() ?? installedPaymentProviders.first
     }
     
     /**
@@ -104,7 +105,7 @@ public final class PaymentComponentsController: NSObject {
             case let .success(paymentProviders):
                 self?.paymentProviders = paymentProviders
                 self?.checkInstalledPaymentProviders()
-                self?.selectedPaymentProvider = self?.obtainFirstInstalledPaymentProvider()
+                self?.selectedPaymentProvider = self?.defaultInstalledPaymentProvider()
                 self?.delegate?.didFetchedPaymentProviders()
             case let .failure(error):
                 print("Couldn't load payment providers: \(error.localizedDescription)")
@@ -126,6 +127,31 @@ public final class PaymentComponentsController: NSObject {
                 self.installedPaymentProviders.append(paymentProvider)
             }
         }
+    }
+    
+    private func storeDefaultPaymentProvider(paymentProvider: PaymentProvider) {
+        do {
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(paymentProvider)
+            UserDefaults.standard.set(data, forKey: Constants.kDefaultPaymentProvider)
+        } catch {
+            print("Unable to encode payment provider: (\(error))")
+        }
+    }
+    
+    private func savedPaymentProvider() -> PaymentProvider? {
+        if let data = UserDefaults.standard.data(forKey: Constants.kDefaultPaymentProvider) {
+            do {
+                let decoder = JSONDecoder()
+                let paymentProvider = try decoder.decode(PaymentProvider.self, from: data)
+                if self.installedPaymentProviders.contains(where: { $0.id == paymentProvider.id }) {
+                    return paymentProvider
+                }
+            } catch {
+                print("Unable to decode payment provider: (\(error))")
+            }
+        }
+        return nil
     }
     
     private func checkPaymentProviderIsInstalled(paymentProvider: PaymentProvider?) -> Bool {
@@ -153,12 +179,23 @@ public final class PaymentComponentsController: NSObject {
      - Parameters:
      - Returns: a custom view
      */
-    public func getPaymentView() -> UIView {
+    public func paymentView() -> UIView {
         paymentComponentView = PaymentComponentView()
         let paymentComponentViewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider)
         paymentComponentViewModel.delegate = viewDelegate
         paymentComponentView.viewModel = paymentComponentViewModel
         return paymentComponentView
+    }
+
+    public func bankSelectionBottomSheet() -> UIViewController {
+        let paymentProvidersBottomView = BanksBottomView()
+        let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
+                                                                              selectedPaymentProvider: selectedPaymentProvider)
+        paymentProvidersBottomViewModel.viewDelegate = self
+        paymentProvidersBottomView.viewModel = paymentProvidersBottomViewModel
+        let bankSelectionBottomSheet = BankSelectionBottomSheet()
+        bankSelectionBottomSheet.bottomSheet = paymentProvidersBottomView
+        return bankSelectionBottomSheet
     }
 }
 
@@ -173,5 +210,23 @@ extension PaymentComponentsController: PaymentComponentViewProtocol {
     
     public func didTapOnPayInvoice(documentID: String?) {
         viewDelegate?.didTapOnPayInvoice()
+    }
+}
+
+extension PaymentComponentsController: PaymentProvidersBottomViewProtocol {
+    public func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
+        selectedPaymentProvider = paymentProvider
+        storeDefaultPaymentProvider(paymentProvider: paymentProvider)
+        bottomViewDelegate?.didSelectPaymentProvider(paymentProvider: paymentProvider)
+    }
+    
+    public func didTapOnClose() {
+        bottomViewDelegate?.didTapOnClose()
+    }
+}
+
+extension PaymentComponentsController {
+    private enum Constants {
+        static let kDefaultPaymentProvider = "defaultPaymentProvider"
     }
 }
