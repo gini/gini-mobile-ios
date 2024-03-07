@@ -31,3 +31,4 @@
 "ginihealth.paymentcomponent.payInvoice.label" = "Rechnung bezahlen";
 "ginihealth.paymentcomponent.poweredByGini.label" = "Powered by";
 "ginihealth.paymentcomponent.selectBank.label" = "Bank auswählen";
+"ginihealth.paymentcomponent.paymentproviderslist.description" = "Sie können die Rechnung nur bezahlen, wenn Sie ein Konto bei einer der unten aufgeführten Banken haben.";

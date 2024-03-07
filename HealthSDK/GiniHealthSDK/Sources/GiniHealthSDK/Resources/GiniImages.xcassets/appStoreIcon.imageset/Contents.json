@@ -1,0 +1,25 @@
+{
+  "images" : [
+    {
+      "filename" : "img_button_app_store_english.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "filename" : "img_button_app_store_german.pdf",
+      "idiom" : "universal",
+      "locale" : "de"
+    },
+    {
+      "filename" : "img_button_app_store_english 1.pdf",
+      "idiom" : "universal",
+      "locale" : "en"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "localizable" : true
+  }
+}
