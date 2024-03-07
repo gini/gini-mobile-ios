@@ -76,6 +76,7 @@ class BanksBottomView: UIView {
         tableView.separatorStyle = .none
         tableView.tableFooterView = UIView()
         tableView.backgroundColor = .clear
+        tableView.showsVerticalScrollIndicator = false
         return tableView
     }()
 
@@ -115,7 +116,6 @@ class BanksBottomView: UIView {
         self.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadiusView)
         
         let isFullScreen = viewModel.bottomViewHeight >= viewModel.maximumViewHeight
-        paymentProvidersTableView.showsVerticalScrollIndicator = isFullScreen
         paymentProvidersTableView.isScrollEnabled = isFullScreen
     }
 
