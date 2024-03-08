@@ -270,13 +270,13 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     fileprivate func configureScreenBackgroundColor() {
-        let screenBackgroundColor =  GiniColor(lightModeColor: UIColor.GiniHealthColors.light7,
+        let screenBackgroundColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.light7,
                                                darkModeColor: UIColor.GiniHealthColors.light7).uiColor()
         mainView.backgroundColor = screenBackgroundColor
         collectionView.backgroundColor = screenBackgroundColor
         pageControl.backgroundColor = screenBackgroundColor
         inputContainer.backgroundColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark7,
-                                                   darkModeColor: UIColor.GiniHealthColors.dark7).uiColor()
+                                                   darkModeColor: UIColor.GiniHealthColors.light7).uiColor()
     }
     
     fileprivate func configurePoweredByGiniView() {
