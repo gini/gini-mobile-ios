@@ -6,6 +6,17 @@ on:
       - 'GiniBankSDK;[0-9]+.[0-9]+.[0-9]+-beta[0-9][0-9]+;xcframeworks**'
   workflow_dispatch:
   workflow_call:
+    secrets:
+      BUILD_CERTIFICATE_BASE64:
+        required: true
+      P12_PASSWORD:
+        required: true
+      BUILD_PROVISION_PROFILE_BASE64:
+        required: true
+      BUILD_PROVISION_PROFILE_EXTENSION_BASE64:
+        required: true
+      KEYCHAIN_PASSWORD:
+        required: true
 jobs:
   prepare-frameworks:
     name: Create Release
