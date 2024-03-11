@@ -10,7 +10,7 @@ import GiniHealthAPILibrary
 import GiniCaptureSDK
 import GiniHealthSDK
 
-struct DocumentWithExtractions: GiniDocument, Codable {
+struct DocumentWithExtractions: Codable {
     var documentID: String
     var amountToPay: String?
     var paymentDueDate: String?
