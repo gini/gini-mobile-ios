@@ -43,6 +43,10 @@ final class PaymentInfoQuestionHeaderViewCell: UIView {
         setupConstraints()
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedOnView)))
     }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
 
     private func configureView(viewModel: PaymentInfoQuestionHeaderViewModel) {
         let paragraphStyle = NSMutableParagraphStyle()
@@ -68,10 +72,6 @@ final class PaymentInfoQuestionHeaderViewCell: UIView {
     
     @objc private func tappedOnView() {
         didTapSelectButton()
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
     }
 }
 

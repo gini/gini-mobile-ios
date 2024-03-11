@@ -37,7 +37,7 @@ class PaymentInfoViewController: UIViewController {
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionLayout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.bankIconsHeight)
+        collectionView.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.bankIconsWidth)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .clear
@@ -80,6 +80,7 @@ class PaymentInfoViewController: UIViewController {
         textView.isUserInteractionEnabled = true
         textView.backgroundColor = .clear
         textView.attributedText = viewModel.payBillsDescriptionAttributedText
+        textView.linkTextAttributes = viewModel.payBillsDescriptionLinkAttributes
         return textView
     }()
     
@@ -115,11 +116,11 @@ class PaymentInfoViewController: UIViewController {
         tableView.estimatedSectionFooterHeight = 1.0
         if #available(iOS 15.0, *) {
             tableView.sectionHeaderTopPadding = 0
-        } else {
-            // Fallback on earlier versions
         }
         return tableView
     }()
+    
+    private var heightsQuestionsTableView: [NSLayoutConstraint] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -158,22 +159,22 @@ class PaymentInfoViewController: UIViewController {
     private func setupContentViewConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.leftRightPadding),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.leftRightPadding),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: Constants.leftRightPadding),
-            contentView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -Constants.leftRightPadding),
+            contentView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor),
+            contentView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor),
         ])
     }
     
     private func setupBankIconsCollectionViewConstraints() {
         NSLayoutConstraint.activate([
-            bankIconsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.leftRightPadding),
-            view.trailingAnchor.constraint(equalTo: bankIconsCollectionView.trailingAnchor, constant: Constants.leftRightPadding),
+            bankIconsCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            bankIconsCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             bankIconsCollectionView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.bankIconsTopSpacing),
             bankIconsCollectionView.heightAnchor.constraint(equalToConstant: bankIconsCollectionView.frame.height)
         ])
@@ -190,10 +191,10 @@ class PaymentInfoViewController: UIViewController {
     private func setupPayBillsConstraints() {
         NSLayoutConstraint.activate([
             payBillsTitleLabel.topAnchor.constraint(equalTo: poweredByGiniView.bottomAnchor, constant: Constants.payBillsTitleTopPadding),
-            payBillsTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            payBillsTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            payBillsTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.leftRightPadding),
+            payBillsTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.leftRightPadding),
             payBillsTitleLabel.heightAnchor.constraint(lessThanOrEqualToConstant: Constants.maxPayBillsTitleHeight),
-            payBillsDescriptionTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            payBillsDescriptionTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.leftRightPadding),
             payBillsDescriptionTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.payBillsDescriptionRightPadding),
             payBillsDescriptionTextView.topAnchor.constraint(equalTo: payBillsTitleLabel.bottomAnchor, constant: Constants.payBillsDescriptionTopPadding),
             payBillsDescriptionTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.minPayBillsDescriptionHeight),
@@ -203,11 +204,11 @@ class PaymentInfoViewController: UIViewController {
     private func setupQuestionsConstraints() {
         NSLayoutConstraint.activate([
             questionsTitleLabel.topAnchor.constraint(equalTo: payBillsDescriptionTextView.bottomAnchor, constant: Constants.questionsTitleTopPadding),
-            questionsTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            questionsTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            questionsTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.leftRightPadding),
+            questionsTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.leftRightPadding),
             questionsTableView.topAnchor.constraint(equalTo: questionsTitleLabel.bottomAnchor),
-            questionsTableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            questionsTableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            questionsTableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.leftRightPadding),
+            questionsTableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.leftRightPadding),
             questionsTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: Double(viewModel.questions.count) * Constants.questionTitleHeight),
             questionsTableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.leftRightPadding)
         ])
@@ -218,7 +219,10 @@ class PaymentInfoViewController: UIViewController {
         viewModel.questions[section].isExtended = !isExtended
         questionsTableView.reloadData()
         questionsTableView.layoutIfNeeded()
-        questionsTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: questionsTableView.contentSize.height).isActive = true
+        // Small hack needed to satisfy automatic dimension table view inside scrollView
+        NSLayoutConstraint.deactivate(heightsQuestionsTableView)
+        heightsQuestionsTableView = [questionsTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: questionsTableView.contentSize.height)]
+        NSLayoutConstraint.activate(heightsQuestionsTableView)
     }
 }
 
@@ -246,25 +250,23 @@ extension PaymentInfoViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: Constants.bankIconsHeight, height: Constants.bankIconsHeight)
+        return CGSize(width: Constants.bankIconsWidth, height: Constants.bankIconsHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        let cellCount = CGFloat(viewModel.paymentProviders.count)
+        let cellCount = Double(viewModel.paymentProviders.count)
         if cellCount > 0 {
-            if let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout {
-                let cellWidth = flowLayout.itemSize.width + flowLayout.minimumInteritemSpacing
+                let cellWidth = Constants.bankIconsWidth
                 
-                let totalCellWidth = cellWidth*cellCount + Constants.bankIconsSpacing * (cellCount - 1)
+                let totalCellWidth = cellWidth * cellCount + Constants.bankIconsSpacing * (cellCount - 1)
                 let contentWidth = collectionView.frame.size.width - (2 * Constants.leftRightPadding)
                 
-                if (totalCellWidth < contentWidth) {
+                if totalCellWidth < contentWidth {
                     let padding = (contentWidth - totalCellWidth) / 2.0
                     return UIEdgeInsets(top: 0, left: padding, bottom: 0, right: padding)
                 } else {
                     return UIEdgeInsets.zero
                 }
-            }
         }
         return UIEdgeInsets.zero
     }
@@ -318,6 +320,10 @@ extension PaymentInfoViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         UITableView.automaticDimension
     }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        Constants.estimatedAnswerHeight
+    }
 }
 
 extension PaymentInfoViewController {
@@ -328,6 +334,7 @@ extension PaymentInfoViewController {
         
         static let bankIconsSpacing = 5.0
         static let bankIconsTopSpacing = 15.0
+        static let bankIconsWidth = 36.0
         static let bankIconsHeight = 36.0
         
         static let poweredByGiniTopPadding = 7.0
@@ -336,7 +343,7 @@ extension PaymentInfoViewController {
         static let payBillsTitleLineHeight = 1.26
         static let maxPayBillsTitleHeight = 100.0
         static let payBillsDescriptionTopPadding = 8.0
-        static let payBillsDescriptionRightPadding = 15.0
+        static let payBillsDescriptionRightPadding = 31.0
         static let minPayBillsDescriptionHeight = 100.0
         
         static let questionsTitleTopPadding = 24.0
@@ -345,5 +352,6 @@ extension PaymentInfoViewController {
         static let questionTitleHeight = 72.0
         static let questionSectionSeparatorHeight = 1.0
         
+        static let estimatedAnswerHeight = 250.0
     }
 }
