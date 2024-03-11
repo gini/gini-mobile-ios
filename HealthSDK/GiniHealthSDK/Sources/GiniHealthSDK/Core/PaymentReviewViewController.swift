@@ -163,7 +163,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     override public func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        inputContainer.roundCorners(corners: [.topLeft, .topRight], radius: 12)
+        inputContainer.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadiusInputContainer)
     }
     
     public override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -188,7 +188,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     // MARK: - Info bar
 
     fileprivate func configureInfoBar() {
-        infoBar.roundCorners(corners: [.topLeft, .topRight], radius: 12.0)
+        infoBar.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadiusInfoBar)
         infoBar.backgroundColor = UIColor.GiniHealthColors.success1
         infoBarLabel.textColor = UIColor.GiniHealthColors.dark7
         infoBarLabel.font = giniHealthConfiguration.textStyleFonts[.caption1]
@@ -201,11 +201,11 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         configureInfoBar()
         infoBar.isHidden = false
         let screenSize = UIScreen.main.bounds.size
-        UIView.animate(withDuration: 0.5,
+        UIView.animate(withDuration: Constants.animationDuration,
                        delay: 0, usingSpringWithDamping: 1.0,
                        initialSpringVelocity: 1.0,
                        options: [], animations: {
-                           self.infoBar.frame = CGRect(x: 0, y: self.inputContainer.frame.minY + 32 - self.infoBar.frame.height, width: screenSize.width, height: self.infoBar.frame.height)
+            self.infoBar.frame = CGRect(x: 0, y: self.inputContainer.frame.minY + Constants.moveHeightInfoBar - self.infoBar.frame.height, width: screenSize.width, height: self.infoBar.frame.height)
                        }, completion: nil)
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             self.animateSlideDownInfoBar()
@@ -214,7 +214,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     fileprivate func animateSlideDownInfoBar() {
         let screenSize = UIScreen.main.bounds.size
-        UIView.animate(withDuration: 0.5,
+        UIView.animate(withDuration: Constants.animationDuration,
                        delay: 0, usingSpringWithDamping: 1.0,
                        initialSpringVelocity: 1.0,
                        options: [], animations: {
@@ -250,7 +250,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     fileprivate func configurePageControl() {
-        pageControl.layer.zPosition = 10
+        pageControl.layer.zPosition = Constants.zPositionPageControl
         pageControl.pageIndicatorTintColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark4,
                                                        darkModeColor: UIColor.GiniHealthColors.light4).uiColor()
         pageControl.currentPageIndicatorTintColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark2,
@@ -260,7 +260,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         if pageControl.numberOfPages == 1 {
             pageControlHeightConstraint.constant = 0
         } else {
-            pageControlHeightConstraint.constant = 20
+            pageControlHeightConstraint.constant = Constants.heightPageControl
         }
     }
     
@@ -306,14 +306,14 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
 
     fileprivate func applyErrorStyle(_ textFieldView: TextFieldWithLabelView) {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: Constants.animationDuration) {
             textFieldView.configure(configuration: self.giniHealthConfiguration.errorStyleInputFieldConfiguration)
             textFieldView.layer.masksToBounds = true
         }
     }
 
     fileprivate func applySelectionStyle(_ textFieldView: TextFieldWithLabelView) {
-        UIView.animate(withDuration: 0.3) { [self] in
+        UIView.animate(withDuration: Constants.animationDuration) { [self] in
             textFieldView.configure(configuration: self.giniHealthConfiguration.selectionStyleInputFieldConfiguration)
             textFieldView.layer.masksToBounds = true
         }
@@ -329,7 +329,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
 
      func addDoneButtonForNumPad(_ textFieldView: TextFieldWithLabelView) {
-         let toolbarDone = UIToolbar(frame:CGRect(x: 0, y: 0, width: view.frame.width, height: 40))
+         let toolbarDone = UIToolbar(frame:CGRect(x: 0, y: 0, width: view.frame.width, height: Constants.heightToolbar))
          toolbarDone.sizeToFit()
          let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
          let barBtnDone = UIBarButtonItem.init(barButtonSystemItem: UIBarButtonItem.SystemItem.done,
@@ -611,7 +611,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
-        let animationDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.3
+        let animationDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? Constants.animationDuration
         let animationCurve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt ?? UInt(UIView.AnimationCurve.easeOut.rawValue)
         
         self.keyboardWillShowCalled = false
@@ -767,7 +767,7 @@ extension PaymentReviewViewController: UICollectionViewDelegate, UICollectionVie
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "pageCellIdentifier", for: indexPath) as! PageCollectionViewCell
         cell.pageImageView.frame = CGRect(x: 0, y: 0, width: collectionView.frame.width, height: collectionView.frame.height)
-        cell.pageImageView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 20.0, right: 0.0)
+        cell.pageImageView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: Constants.bottomPaddingPageImageView, right: 0.0)
         let cellModel = model?.getCellViewModel(at: indexPath)
         cell.pageImageView.display(image: cellModel?.preview ?? UIImage())
         return cell
@@ -804,5 +804,12 @@ extension PaymentReviewViewController {
     private enum Constants {
         static let buttonViewHeight: CGFloat = 56
         static let animationDuration: CGFloat = 0.3
+        static let cornerRadiusInputContainer = 12.0
+        static let cornerRadiusInfoBar = 12.0
+        static let moveHeightInfoBar = 32.0
+        static let zPositionPageControl = 10.0
+        static let heightPageControl = 20.0
+        static let heightToolbar = 40.0
+        static let bottomPaddingPageImageView = 20.0
     }
 }
