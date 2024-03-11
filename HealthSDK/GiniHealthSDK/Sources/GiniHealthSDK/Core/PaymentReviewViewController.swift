@@ -60,28 +60,28 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     public static func instantiate(with giniHealth: GiniHealth, document: Document, extractions: [Extraction], trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
-        let vc = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
+        let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
-        vc.model = PaymentReviewModel(with: giniHealth, document: document, extractions: extractions)
-        vc.trackingDelegate = trackingDelegate
-        return vc
+        viewController.model = PaymentReviewModel(with: giniHealth, document: document, extractions: extractions)
+        viewController.trackingDelegate = trackingDelegate
+        return viewController
     }
     
     public static func instantiate(with giniHealth: GiniHealth, data: DataForReview, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
-        let vc = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
+        let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
-        vc.model = PaymentReviewModel(with: giniHealth, document: data.document, extractions: data.extractions)
-        vc.trackingDelegate = trackingDelegate
-        return vc
+        viewController.model = PaymentReviewModel(with: giniHealth, document: data.document, extractions: data.extractions)
+        viewController.trackingDelegate = trackingDelegate
+        return viewController
     }
     
     public static func instantiate(with giniHealth: GiniHealth, data: DataForReview, selectedPaymentProvider: PaymentProvider?, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
-        let vc = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
+        let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
-        vc.model = PaymentReviewModel(with: giniHealth, document: data.document, extractions: data.extractions)
-        vc.trackingDelegate = trackingDelegate
-        vc.selectedPaymentProvider = selectedPaymentProvider
-        return vc
+        viewController.model = PaymentReviewModel(with: giniHealth, document: data.document, extractions: data.extractions)
+        viewController.trackingDelegate = trackingDelegate
+        viewController.selectedPaymentProvider = selectedPaymentProvider
+        return viewController
     }
 
     var giniHealthConfiguration = GiniHealthConfiguration.shared

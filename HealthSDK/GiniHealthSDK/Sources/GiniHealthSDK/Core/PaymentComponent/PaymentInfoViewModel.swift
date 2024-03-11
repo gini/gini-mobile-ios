@@ -1,5 +1,5 @@
 //
-//  PaymentInfoViewModel q.swift
+//  PaymentInfoViewModel.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -8,7 +8,7 @@
 import UIKit
 import GiniHealthAPILibrary
 
-struct QuestionSection {
+struct FAQSection {
     let title: String
     var description: NSAttributedString
     var isExtended: Bool
@@ -33,6 +33,7 @@ final class PaymentInfoViewModel {
     private let payBillsDescriptionText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.payBills.description.label",
                                                                                    comment: "Payment Info pay bills description text")
     var payBillsDescriptionAttributedText: NSMutableAttributedString = NSMutableAttributedString()
+    var payBillsDescriptionLinkAttributes: [NSAttributedString.Key: Any]
     private let payBillsDescriptionFont: UIFont
     private let payBillsDescriptionTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark1,
                                                                   darkModeColor: UIColor.GiniHealthColors.light1).uiColor()
@@ -49,16 +50,18 @@ final class PaymentInfoViewModel {
                                                      darkModeColor: UIColor.GiniHealthColors.light1).uiColor()
     
     private var answersFont: UIFont
-    private let answerPrivacyPolicyText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.questions.answer.clickable.text", comment: "Payment info answers clickable privacy policy")
-    private let privacyPolicyURLText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.gini.privacypolicy.link", comment: "Gini privacy policy link url")
-    private var linkableFont: UIFont
-    private let linkableTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.accent1,
+    private let answerPrivacyPolicyText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.questions.answer.clickable.text",
+                                                                           comment: "Payment info answers clickable privacy policy")
+    private let privacyPolicyURLText = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.gini.privacypolicy.link",
+                                                                        comment: "Gini privacy policy link url")
+    private var linksFont: UIFont
+    private let linksTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.accent1,
                                                        darkModeColor: UIColor.GiniHealthColors.accent1).uiColor()
     
     let separatorColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark5,
                                             darkModeColor: UIColor.GiniHealthColors.light5).uiColor()
     
-    var questions: [QuestionSection] = []
+    var questions: [FAQSection] = []
     
     init(paymentProviders: PaymentProviders) {
         self.paymentProviders = paymentProviders
@@ -73,7 +76,9 @@ final class PaymentInfoViewModel {
         questionsTitleFont = giniHealthConfiguration.textStyleFonts[.subtitle1] ?? defaultBoldFont
         giniFont = giniHealthConfiguration.textStyleFonts[.button] ?? defaultBoldFont
         answersFont = giniHealthConfiguration.textStyleFonts[.body2] ?? defaultRegularFont
-        linkableFont = giniHealthConfiguration.textStyleFonts[.linkBold] ?? defaultBoldFont
+        linksFont = giniHealthConfiguration.textStyleFonts[.linkBold] ?? defaultBoldFont
+        
+        payBillsDescriptionLinkAttributes = [.foregroundColor: linksTextColor]
         
         configurePayBillsGiniLink()
         setupQuestions()
@@ -83,9 +88,9 @@ final class PaymentInfoViewModel {
         for index in 1 ... Constants.numberOfQuestions {
             let answerAttributedString = answerWithAttributes(answer: NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.questions.answer.\(index)",
                                                                                                        comment: "Answers description"))
-            let questionSection = QuestionSection(title: NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.questions.question.\(index)",
+            let questionSection = FAQSection(title: NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentinfo.questions.question.\(index)",
                                                                                           comment: "Questions titles"),
-                                                  description: textWithLinks(linkFont: linkableFont, 
+                                                  description: textWithLinks(linkFont: linksFont, 
                                                                              attributedString: answerAttributedString),
                                                   isExtended: false)
             questions.append(questionSection)
@@ -116,33 +121,15 @@ final class PaymentInfoViewModel {
     private func textWithLinks(linkFont: UIFont, attributedString: NSMutableAttributedString) -> NSMutableAttributedString {
         var attributedString = attributedString
         let giniRange = (attributedString.string as NSString).range(of: giniWebsiteText)
-        attributedString = addLinkToRange(attributedString: attributedString, 
-                                          link: giniURLText,
-                                          range: giniRange,
-                                          linkFont: linkFont)
+        attributedString.addLinkToRange(link: giniURLText,
+                                        range: giniRange,
+                                        linkFont: linkFont,
+                                        textToRemove: Constants.linkTextToRemove)
         let privacyPolicyRange = (attributedString.string as NSString).range(of: answerPrivacyPolicyText)
-        attributedString = addLinkToRange(attributedString: attributedString, 
-                                          link: privacyPolicyURLText,
-                                          range: privacyPolicyRange,
-                                          linkFont: linkFont)
-        return attributedString
-    }
-    
-    private func addLinkToRange(attributedString: NSMutableAttributedString, link: String, range: NSRange, linkFont: UIFont) -> NSMutableAttributedString {
-        var attributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: linkableTextColor,
-            .font: linkFont
-        ]
-        if range.length > 0 {
-            if let url = URL(string: link) {
-                attributes[.link] = url
-                attributedString.addAttributes(attributes, range: range)
-                attributedString.mutableString.replaceOccurrences(of: Constants.linkTextToRemove, 
-                                                                  with: "",
-                                                                  options: .caseInsensitive,
-                                                                  range: range)
-            }
-        }
+        attributedString.addLinkToRange(link: privacyPolicyURLText,
+                                        range: privacyPolicyRange,
+                                        linkFont: linkFont,
+                                        textToRemove: Constants.linkTextToRemove)
         return attributedString
     }
 }

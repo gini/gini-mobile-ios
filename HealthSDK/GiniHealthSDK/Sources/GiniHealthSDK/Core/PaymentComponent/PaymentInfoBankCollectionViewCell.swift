@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  PaymentInfoBankCollectionViewCell.swift
 //
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
@@ -19,7 +19,7 @@ final class PaymentInfoBankCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    lazy private var bankIconImageView: UIImageView = {
+    private lazy var bankIconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
