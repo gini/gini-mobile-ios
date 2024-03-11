@@ -170,9 +170,9 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
     func didTapOnBankPicker(documentId: String?) {
         guard let documentId else { return }
         Log("Tapped on Bank Picker on :\(documentId)", event: .success)
-        let paymentProvidersBottomViewController = paymentComponentsController.bankSelectionBottomSheet()
-        paymentProvidersBottomViewController.modalPresentationStyle = .overFullScreen
-        self.coordinator.invoicesListViewController.present(paymentProvidersBottomViewController, animated: true)
+        let bankSelectionBottomSheet = paymentComponentsController.bankSelectionBottomSheet()
+        bankSelectionBottomSheet.modalPresentationStyle = .overFullScreen
+        self.coordinator.invoicesListViewController.present(bankSelectionBottomSheet, animated: true)
     }
     
     func didTapOnPayInvoice(documentId: String?) {
