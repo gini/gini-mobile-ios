@@ -18,7 +18,7 @@ protocol InvoicesListViewControllerProtocol: AnyObject {
 final class InvoicesListViewController: UIViewController {
     
     // MARK: - Variables
-    lazy private var invoicesTableView: UITableView = {
+    private lazy var invoicesTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
@@ -37,7 +37,7 @@ final class InvoicesListViewController: UIViewController {
         return tableView
     }()
 
-    lazy private var activityIndicator: UIActivityIndicatorView = {
+    private lazy var activityIndicator: UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView()
         if #available(iOS 13.0, *) {
             activityIndicator.style = .large

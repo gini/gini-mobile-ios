@@ -10,7 +10,7 @@ import UIKit
 final class PaymentInfoAnswerTableViewCell: UITableViewCell {
     static let identifier = "PaymentInfoAnswerTableViewCell"
     
-    lazy private var textView: UITextView = {
+    private lazy var textView: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.isScrollEnabled = false
@@ -35,6 +35,10 @@ final class PaymentInfoAnswerTableViewCell: UITableViewCell {
         setupConstraints()
     }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             textView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -43,15 +47,13 @@ final class PaymentInfoAnswerTableViewCell: UITableViewCell {
             textView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.bottomPadding)
         ])
     }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+
     private func configure() {
         guard let cellViewModel = cellViewModel else { return }
         textView.attributedText = cellViewModel.answerAttributedText
         textView.textColor = cellViewModel.answerTextColor
+        textView.linkTextAttributes = cellViewModel.answerLinkAttributes
+        textView.layoutIfNeeded()
     }
 }
 
@@ -59,9 +61,13 @@ struct PaymentInfoAnswerTableViewModel {
     let answerAttributedText: NSAttributedString
     let answerTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark1,
                                              darkModeColor: UIColor.GiniHealthColors.light1).uiColor()
+    let answerLinkColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.accent1,
+                                             darkModeColor: UIColor.GiniHealthColors.accent1).uiColor()
+    let answerLinkAttributes: [NSAttributedString.Key: Any]
 
     init(answerAttributedText: NSAttributedString) {
         self.answerAttributedText = answerAttributedText
+        self.answerLinkAttributes = [.foregroundColor: answerLinkColor]
     }
 }
 
