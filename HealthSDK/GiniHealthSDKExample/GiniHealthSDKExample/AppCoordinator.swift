@@ -310,6 +310,10 @@ extension AppCoordinator: ScreenAPICoordinatorDelegate {
         coordinator.rootViewController.dismiss(animated: true)
         self.remove(childCoordinator: coordinator)
     }
+    
+    func openInvoicesList() {
+        showInvoicesList()
+    }
 }
 
 // MARK: GiniHealthDelegate
