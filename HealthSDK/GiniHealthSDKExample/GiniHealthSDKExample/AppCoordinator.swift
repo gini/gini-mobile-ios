@@ -49,6 +49,7 @@ final class AppCoordinator: Coordinator {
     private lazy var client: GiniHealthAPILibrary.Client = CredentialsManager.fetchClientFromBundle()
     private lazy var apiLib = GiniHealthAPI.Builder(client: client, logLevel: .debug).build()
     private lazy var health = GiniHealth(with: apiLib)
+    private lazy var paymentComponentsController = PaymentComponentsController(giniHealth: health)
     
     private var documentMetadata: GiniHealthAPILibrary.Document.Metadata?
     private let documentMetadataBranchId = "GiniHealthExampleIOS"
@@ -65,6 +66,8 @@ final class AppCoordinator: Coordinator {
     
     func start() {
         self.showSelectAPIScreen()
+        paymentComponentsController.delegate = self
+        paymentComponentsController.loadPaymentProviders()
     }
     
     func processExternalDocument(withUrl url: URL, sourceApplication: String?) {
@@ -116,7 +119,8 @@ final class AppCoordinator: Coordinator {
                                                                                             secret: self.client.secret,
                                                                                             domain: self.client.domain),
                                                                                             documentMetadata: metadata,
-                                                                                            hardcodedInvoicesController: HardcodedInvoicesController())
+                                                        hardcodedInvoicesController: HardcodedInvoicesController(),
+                                                        paymentComponentController: paymentComponentsController)
         
         screenAPICoordinator.delegate = self
         
@@ -166,7 +170,10 @@ final class AppCoordinator: Coordinator {
                 self.health.fetchDataForReview(documentId: document.id) { result in
                     switch result {
                     case .success(let data):
-                            let vc = PaymentReviewViewController.instantiate(with: self.health, data: data, trackingDelegate: self)
+                        let vc = PaymentReviewViewController.instantiate(with: self.health, 
+                                                                         data: data,
+                                                                         selectedPaymentProvider: self.paymentComponentsController.selectedPaymentProvider,
+                                                                         trackingDelegate: self)
                             vc.modalPresentationStyle = .overCurrentContext
                             vc.modalTransitionStyle = .coverVertical
                             self.rootViewController.present(vc, animated: true)
@@ -202,7 +209,11 @@ final class AppCoordinator: Coordinator {
                                         self.testDocumentExtractions = extractions
                                         
                                         // Show the payment review screen
-                                        let vc = PaymentReviewViewController.instantiate(with: self.health, document: compositeDocument, extractions: extractions, trackingDelegate: self)
+                                        let vc = PaymentReviewViewController.instantiate(with: self.health, 
+                                                                                         document: compositeDocument,
+                                                                                         extractions: extractions,
+                                                                                         selectedPaymentProvider: self.paymentComponentsController.selectedPaymentProvider,
+                                                                                         trackingDelegate: self)
                                         self.rootViewController.present(vc, animated: true)
                                     case .failure(let error):
                                         print("❌ Setting document for review failed: \(String(describing: error))")
@@ -277,7 +288,7 @@ final class AppCoordinator: Coordinator {
         health.setConfiguration(configuration)
         
         let invoicesListCoordinator = InvoicesListCoordinator()
-        let paymentComponentsController = PaymentComponentsController(giniHealth: health)
+        paymentComponentsController = PaymentComponentsController(giniHealth: health)
         invoicesListCoordinator.start(documentService: health.documentService,
                                       hardcodedInvoicesController: HardcodedInvoicesController(),
                                       paymentComponentsController: paymentComponentsController)
@@ -310,10 +321,6 @@ extension AppCoordinator: ScreenAPICoordinatorDelegate {
         coordinator.rootViewController.dismiss(animated: true)
         self.remove(childCoordinator: coordinator)
     }
-    
-    func openInvoicesList() {
-        showInvoicesList()
-    }
 }
 
 // MARK: GiniHealthDelegate
@@ -342,5 +349,21 @@ extension AppCoordinator: GiniHealthTrackingDelegate {
         case .onBankSelectionButtonClicked:
             print("📝 Bank selection button was tapped,\(String(describing: event.info))")
         }
+    }
+}
+
+// MARK: PaymentComponentControllerDelegate
+
+extension AppCoordinator: PaymentComponentsControllerProtocol {
+    func isLoadingStateChanged(isLoading: Bool) {
+        if isLoading {
+            selectAPIViewController.showActivityIndicator()
+        } else {
+            selectAPIViewController.hideActivityIndicator()
+        }
+    }
+    
+    func didFetchedPaymentProviders() {
+        //
     }
 }

@@ -59,19 +59,12 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         case usageFieldTag
     }
     
-    public static func instantiate(with giniHealth: GiniHealth, document: Document, extractions: [Extraction], trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
+    public static func instantiate(with giniHealth: GiniHealth, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider?, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
         let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
         viewController.model = PaymentReviewModel(with: giniHealth, document: document, extractions: extractions)
         viewController.trackingDelegate = trackingDelegate
-        return viewController
-    }
-    
-    public static func instantiate(with giniHealth: GiniHealth, data: DataForReview, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
-        let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
-            .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
-        viewController.model = PaymentReviewModel(with: giniHealth, document: data.document, extractions: data.extractions)
-        viewController.trackingDelegate = trackingDelegate
+        viewController.selectedPaymentProvider = selectedPaymentProvider
         return viewController
     }
     
