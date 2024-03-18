@@ -265,7 +265,7 @@ extension PaymentInfoViewController: UICollectionViewDelegateFlowLayout {
                     let padding = (contentWidth - totalCellWidth) / 2.0
                     return UIEdgeInsets(top: 0, left: padding, bottom: 0, right: padding)
                 } else {
-                    return UIEdgeInsets.zero
+                    return UIEdgeInsets(top: 0, left: Constants.leftRightPadding, bottom: 0, right: 0)
                 }
         }
         return UIEdgeInsets.zero
@@ -308,6 +308,7 @@ extension PaymentInfoViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard section < viewModel.questions.count - 1 else { return UIView() }
         let separatorView = UIView(frame: CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.questionSectionSeparatorHeight))
         separatorView.backgroundColor = viewModel.separatorColor
         return separatorView
