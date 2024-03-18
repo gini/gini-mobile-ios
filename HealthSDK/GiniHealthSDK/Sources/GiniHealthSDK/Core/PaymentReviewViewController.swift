@@ -34,6 +34,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     var model: PaymentReviewModel?
     private var amountToPay = Price(value: 0, currencyCode: "€")
     private var lastValidatedIBAN = ""
+    private var showInfoBarOnce = true
     
     private lazy var payInvoiceButton: PaymentPrimaryButton = {
         let button = PaymentPrimaryButton()
@@ -89,7 +90,10 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        showInfoBar()
+        if showInfoBarOnce {
+            showInfoBar()
+            showInfoBarOnce = false
+        }
     }
     
     fileprivate func setupViewModel() {
