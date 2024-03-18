@@ -308,6 +308,7 @@ extension PaymentInfoViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard section < viewModel.questions.count - 1 else { return UIView() }
         let separatorView = UIView(frame: CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.questionSectionSeparatorHeight))
         separatorView.backgroundColor = viewModel.separatorColor
         return separatorView
