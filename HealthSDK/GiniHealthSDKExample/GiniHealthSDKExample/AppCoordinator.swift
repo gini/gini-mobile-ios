@@ -279,6 +279,7 @@ final class AppCoordinator: Coordinator {
     }
     
     fileprivate func showInvoicesList() {
+        self.selectAPIViewController.hideActivityIndicator()
         let configuration = GiniHealthConfiguration()
         
         // Show the close button to dismiss the payment review screen

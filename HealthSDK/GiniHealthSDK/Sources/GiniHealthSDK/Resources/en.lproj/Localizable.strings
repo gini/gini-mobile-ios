@@ -8,10 +8,11 @@
 "ginihealth.reviewscreen.recipient.placeholder" = "Recipient";
 "ginihealth.reviewscreen.iban.placeholder" = "IBAN";
 "ginihealth.reviewscreen.amount.placeholder" = "Amount";
-"ginihealth.reviewscreen.usage.placeholder" = "Purpose";
+"ginihealth.reviewscreen.usage.placeholder" = "Reference number";
 "ginihealth.reviewscreen.next.button.title" = "Next";
+"ginihealth.reviewscreen.banking.app.button.label" = "To the banking app";
 "ginihealth.errors.no.banking.app.installed" = "Your banking app does not support this service. Have you tried ING app yet?";
-"ginihealth.reviewscreen.infobar.message" = "Please review the extracted information below";
+"ginihealth.reviewscreen.infobar.message" = "Please check the pre-filled data.";
 "ginihealth.errors.default" = "Oops something went wrong. Please try again.";
 "ginihealth.errors.failed.payment.request.creation" = "Oops something went wrong. Please try again.";
 "ginihealth.errors.failed.recipient.non.empty.check" = "Recipient is required.";
