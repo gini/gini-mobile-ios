@@ -13,6 +13,7 @@ import UIKit
 
 protocol ScreenAPICoordinatorDelegate: AnyObject {
     func screenAPI(coordinator: ScreenAPICoordinator, didFinish: ())
+    func presentInvoicesList(invoices: [DocumentWithExtractions]?)
 }
 
 final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDelegate, GiniCaptureResultsDelegate {
@@ -97,18 +98,13 @@ final class ScreenAPICoordinator: NSObject, Coordinator, GiniHealthTrackingDeleg
                                                                   extractions: data.extractions,
                                                                   isPayable: isPayable)
                             self?.hardcodedInvoicesController.appendInvoiceWithExtractions(invoice: invoice)
-
+                            self?.rootViewController.dismiss(animated: true, completion: {
+                                self?.delegate?.presentInvoicesList(invoices: [invoice])
+                            })
                         case .failure(let error):
                             print("❌ Checking if document is payable failed: \(String(describing: error))")
                         }
                     })
-                    let vc = PaymentReviewViewController.instantiate(with: healthSdk, 
-                                                                     data: data,
-                                                                     selectedPaymentProvider: self?.paymentComponentController.selectedPaymentProvider,
-                                                                     trackingDelegate: self)
-                    vc.modalTransitionStyle = .coverVertical
-                    vc.modalPresentationStyle = .overCurrentContext
-                    self?.rootViewController.present(vc, animated: true)
                 case .failure(let error):
                     print("❌ Document data fetching failed: \(String(describing: error))")
                 }
