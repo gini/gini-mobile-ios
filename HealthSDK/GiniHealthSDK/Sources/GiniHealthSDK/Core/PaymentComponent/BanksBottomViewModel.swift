@@ -99,12 +99,7 @@ final class BanksBottomViewModel {
     }
     
     private func isPaymentProviderInstalled(paymentProvider: PaymentProvider) -> Bool {
-        if let url = URL(string: paymentProvider.appSchemeIOS) {
-            if UIApplication.shared.canOpenURL(url) {
-                return true
-            }
-        }
-        return false
+        paymentProvider.appSchemeIOS.canOpenURLString()
     }
 }
 

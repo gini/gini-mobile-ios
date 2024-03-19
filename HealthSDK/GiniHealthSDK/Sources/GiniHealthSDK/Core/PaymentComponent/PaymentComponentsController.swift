@@ -174,7 +174,7 @@ public final class PaymentComponentsController: NSObject {
     public func bankSelectionBottomSheet() -> UIViewController {
         let paymentProvidersBottomView = BanksBottomView()
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
-                                                                              selectedPaymentProvider: selectedPaymentProvider)
+                                                                   selectedPaymentProvider: selectedPaymentProvider)
         paymentProvidersBottomViewModel.viewDelegate = self
         paymentProvidersBottomView.viewModel = paymentProvidersBottomViewModel
         let bankSelectionBottomSheet = BankSelectionBottomSheet()
