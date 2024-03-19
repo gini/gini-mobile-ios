@@ -136,35 +136,6 @@ public struct DataForReview {
             }
         }
     }
-
-    /**
-     Checks if there are any banking app which support Gini Pay Connect functionality installed.
-     
-     - Parameters:
-        - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case. Completion block called on main thread.
-        In success case it includes array of payment providers.
-        In case of failure error that there are no supported banking apps installed.
-     */
-    public func checkIfAnyPaymentProviderAvailable(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void){
-        self.fetchInstalledBankingApps(completion: completion)
-    }
-    
-    /**
-     Checks if there is any banking app which can support Gini Pay Connect functionality installed.
-     - Parameters:
-        -  appSchemes: A list of [LSApplicationQueriesSchemes] added in Info.plist. Scheme format: ginipay-bank://
-     - Returns: a boolean value.
-     */
-    public func isAnyBankingAppInstalled(appSchemes: [String]) -> Bool {
-        for scheme in appSchemes {
-            if let url = URL(string:scheme) {
-                if UIApplication.shared.canOpenURL(url) {
-                    return true
-                }
-            }
-        }
-        return false
-    }
     
     /**
      Sets a configuration which is used to customize the look of the Gini Health SDK,

@@ -21,9 +21,11 @@ final class InvoicesListCoordinator: NSObject, Coordinator {
     
     func start(documentService: DefaultDocumentService,
                hardcodedInvoicesController: HardcodedInvoicesControllerProtocol,
-               paymentComponentsController: PaymentComponentsController) {
+               paymentComponentsController: PaymentComponentsController,
+               invoices: [DocumentWithExtractions]? = nil) {
         self.invoicesListViewController = InvoicesListViewController()
         invoicesListViewController.viewModel = InvoicesListViewModel(coordinator: self,
+                                                                     invoices: invoices,
                                                                      documentService: documentService,
                                                                      hardcodedInvoicesController: hardcodedInvoicesController,
                                                                      paymentComponentsController: paymentComponentsController)
