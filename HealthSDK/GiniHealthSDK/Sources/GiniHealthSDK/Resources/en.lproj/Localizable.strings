@@ -9,22 +9,18 @@
 "ginihealth.reviewscreen.iban.placeholder" = "IBAN";
 "ginihealth.reviewscreen.amount.placeholder" = "Amount";
 "ginihealth.reviewscreen.usage.placeholder" = "Reference number";
-"ginihealth.reviewscreen.next.button.title" = "Next";
 "ginihealth.reviewscreen.banking.app.button.label" = "To the banking app";
-"ginihealth.errors.no.banking.app.installed" = "Your banking app does not support this service. Have you tried ING app yet?";
 "ginihealth.reviewscreen.infobar.message" = "Please check the pre-filled data.";
 "ginihealth.errors.default" = "Oops something went wrong. Please try again.";
 "ginihealth.errors.failed.payment.request.creation" = "Oops something went wrong. Please try again.";
 "ginihealth.errors.failed.recipient.non.empty.check" = "Recipient is required.";
 "ginihealth.errors.failed.iban.non.empty.check" = "IBAN is required.";
-"ginihealth.errors.failed.iban.validation.check" = "IBAN is not valid";
+"ginihealth.errors.failed.iban.validation.check" = "IBAN is not valid.";
 "ginihealth.errors.failed.amount.non.empty.check" = "Invalid.";
 "ginihealth.errors.failed.purpose.non.empty.check" = "Purpose is required.";
-"ginihealth.errors.failed.default.textfield.validation.check" = "The field is not valid";
+"ginihealth.errors.failed.default.textfield.validation.check" = "The field is not valid.";
 
 "ginihealth.alert.ok.title" = "OK";
-
-"ginihealth.bankprovidersscreen.title" = "Select Banking-App";
 
 "ginihealth.paymentcomponent.moreInformation.label" = "Transfer payment data to the banking app and pay there directly. More information.";
 "ginihealth.paymentcomponent.moreInformation.underlined.part" = "More information.";
