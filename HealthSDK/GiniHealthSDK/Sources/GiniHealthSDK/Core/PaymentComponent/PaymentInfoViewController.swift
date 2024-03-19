@@ -265,7 +265,7 @@ extension PaymentInfoViewController: UICollectionViewDelegateFlowLayout {
                     let padding = (contentWidth - totalCellWidth) / 2.0
                     return UIEdgeInsets(top: 0, left: padding, bottom: 0, right: padding)
                 } else {
-                    return UIEdgeInsets(top: 0, left: Constants.leftRightPadding, bottom: 0, right: 0)
+                    return UIEdgeInsets(top: 0, left: Constants.leftRightPadding, bottom: 0, right: Constants.leftRightPadding)
                 }
         }
         return UIEdgeInsets.zero
