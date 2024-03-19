@@ -65,6 +65,7 @@ final class PaymentInfoViewModel {
     
     init(paymentProviders: PaymentProviders) {
         self.paymentProviders = paymentProviders
+            .filter({ $0.appStoreUrlIOS != nil || $0.appStoreUrlIOS?.canOpenURLString() ?? false })
         
         let giniHealthConfiguration = GiniHealthConfiguration.shared
         
