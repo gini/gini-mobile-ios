@@ -11,8 +11,6 @@
 "ginihealth.reviewscreen.usage.placeholder" = "Verwendungszweck";
 "ginihealth.reviewscreen.infobar.message" = "Bitte prüfen Sie die vorausgefüllten Daten.";
 "ginihealth.reviewscreen.banking.app.button.label" = "Zur Banking App";
-"ginihealth.reviewscreen.next.button.title" = "Weiter";
-"ginihealth.errors.no.banking.app.installed" = "Leider unterstützt deine Banking App diese Funktion noch nicht. Probier doch mal die ING App.";
 "ginihealth.errors.default" = "Oh da ist was schief gelaufen. Probiere es noch einmal.";
 "ginihealth.errors.failed.payment.request.creation" = "Oh da ist was schief gelaufen. Probiere es noch einmal.";
 "ginihealth.errors.failed.recipient.non.empty.check" = "Empfänger ist notwendig.";
@@ -20,11 +18,9 @@
 "ginihealth.errors.failed.iban.validation.check" = "IBAN ist ungültig.";
 "ginihealth.errors.failed.amount.non.empty.check" = "Ungültig.";
 "ginihealth.errors.failed.purpose.non.empty.check" = "Verwendungszweck ist notwendig.";
-"ginihealth.errors.failed.default.textfield.validation.check" = "Das Feld ist ungültig";
+"ginihealth.errors.failed.default.textfield.validation.check" = "Das Feld ist ungültig.";
 
 "ginihealth.alert.ok.title" = "OK";
-
-"ginihealth.bankprovidersscreen.title" = "Banking-App auswählen";
 
 "ginihealth.paymentcomponent.moreInformation.label" = "Bezahldaten an Banking-App übergeben und dort direkt bezahlen. Mehr Informationen.";
 "ginihealth.paymentcomponent.moreInformation.underlined.part" = "Mehr Informationen.";

@@ -76,7 +76,7 @@ let partialDocs = [PartialDocumentInfo(document: createdDocument.links.document)
 
 ##  Check preconditions
 
-There is one method in GiniHealth:
+There is a method in GiniHealth:
 
 * `healthSDK.checkIfDocumentIsPayable(docId: String)` returns true if Iban was extracted.
 
