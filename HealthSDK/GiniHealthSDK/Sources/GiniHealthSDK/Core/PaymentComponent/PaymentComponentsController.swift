@@ -190,12 +190,40 @@ public final class PaymentComponentsController: NSObject {
     public func bankSelectionBottomSheet() -> UIViewController {
         let paymentProvidersBottomView = BanksBottomView()
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
-                                                                              selectedPaymentProvider: selectedPaymentProvider)
+                                                                   selectedPaymentProvider: selectedPaymentProvider)
         paymentProvidersBottomViewModel.viewDelegate = self
         paymentProvidersBottomView.viewModel = paymentProvidersBottomViewModel
         let bankSelectionBottomSheet = BankSelectionBottomSheet()
         bankSelectionBottomSheet.bottomSheet = paymentProvidersBottomView
         return bankSelectionBottomSheet
+    }
+    
+    public func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
+        self.isLoading = true
+        self.giniHealth.fetchDataForReview(documentId: documentID) { [weak self] result in
+            self?.isLoading = false
+            switch result {
+            case .success(let data):
+                guard let self else {
+                    completion(nil, nil)
+                    return
+                }
+                let vc = PaymentReviewViewController.instantiate(with: self.giniHealth, 
+                                                                 data: data,
+                                                                 selectedPaymentProvider: self.selectedPaymentProvider, 
+                                                                 trackingDelegate: trackingDelegate)
+                completion(vc, nil)
+            case .failure(let error):
+                completion(nil, error)
+            }
+        }
+    }
+    
+    public func paymentInfoViewController() -> UIViewController {
+        let paymentInfoViewController = PaymentInfoViewController()
+        let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders)
+        paymentInfoViewController.viewModel = paymentInfoViewModel
+        return paymentInfoViewController
     }
 }
 
@@ -230,3 +258,4 @@ extension PaymentComponentsController {
         static let kDefaultPaymentProvider = "defaultPaymentProvider"
     }
 }
+
