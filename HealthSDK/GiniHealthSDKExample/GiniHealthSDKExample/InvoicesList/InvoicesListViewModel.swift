@@ -161,6 +161,8 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
     func didTapOnMoreInformation(documentID: String?) {
         guard let documentID else { return }
         Log("Tapped on More Information on :\(documentID)", event: .success)
+        let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
+        self.coordinator.invoicesListViewController.navigationController?.pushViewController(paymentInfoViewController, animated: true)
     }
     
     func didTapOnBankPicker(documentID: String?) {
@@ -172,9 +174,18 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
     }
     
     func didTapOnPayInvoice(documentID: String?) {
-        // MARK: TODO in next tasks
         guard let documentID else { return }
         Log("Tapped on Pay Invoice on :\(documentID)", event: .success)
+        paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentID, trackingDelegate: self) { [weak self] viewController, error in
+            if let error {
+                self?.errors.append(error.localizedDescription)
+                self?.showErrorsIfAny()
+            } else if let viewController {
+                viewController.modalTransitionStyle = .coverVertical
+                viewController.modalPresentationStyle = .overCurrentContext
+                self?.coordinator.invoicesListViewController.present(viewController, animated: true)
+            }
+        }
     }
 }
 
@@ -208,6 +219,21 @@ extension InvoicesListViewModel: PaymentProvidersBottomViewProtocol {
     func didTapOnClose() {
         DispatchQueue.main.async {
             self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
+        }
+    }
+}
+
+extension InvoicesListViewModel: GiniHealthTrackingDelegate {
+    func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {
+        switch event.type {
+        case .onNextButtonClicked:
+            Log("Next button was tapped,\(String(describing: event.info))", event: .success)
+        case .onCloseButtonClicked:
+            Log("Close screen was triggered", event: .success)
+        case .onCloseKeyboardButtonClicked:
+            Log("Close keyboard was triggered", event: .success)
+        case .onBankSelectionButtonClicked:
+            Log("Bank selection button was tapped,\(String(describing: event.info))", event: .success)
         }
     }
 }

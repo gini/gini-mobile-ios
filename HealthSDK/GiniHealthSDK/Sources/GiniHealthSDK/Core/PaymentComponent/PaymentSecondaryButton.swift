@@ -100,6 +100,10 @@ extension PaymentSecondaryButton {
         contentView.layer.borderColor = configuration.borderColor.cgColor
         contentView.backgroundColor = configuration.backgroundColor
         
+        leftImageView.layer.borderColor = configuration.borderColor.cgColor
+        leftImageView.layer.borderWidth = configuration.borderWidth
+        leftImageView.roundCorners(corners: .allCorners, radius: Constants.bankIconCornerRadius)
+        
         titleLabel.textColor = configuration.titleColor
         if let inputFont = giniHealthConfiguration.textStyleFonts[.input] {
             titleLabel.font = inputFont
@@ -131,6 +135,7 @@ extension PaymentSecondaryButton {
 extension PaymentSecondaryButton {
     enum Constants {
         static let bankIconSize: CGFloat = 32
+        static let bankIconCornerRadius: CGFloat = 6
         static let chevronIconSize: CGFloat = 24
         static let contentTrailingPadding: CGFloat = 16
         static let bankNameChevronIconPadding: CGFloat = 10
