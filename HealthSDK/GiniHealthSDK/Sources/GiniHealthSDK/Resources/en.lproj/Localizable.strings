@@ -48,4 +48,4 @@
 "ginihealth.paymentcomponent.paymentinfo.questions.answer.6" = "The banks that support the Gini payment function are displayed in the bank selection menu. To use it, you must have installed your bank's mobile banking app on the same smartphone or tablet on which you use the insurance app. If you have not installed any of the banking apps, you can download them from the Apple App Store or Google Playstore. Subsequent activation of the banking app may be necessary.";
 "ginihealth.paymentcomponent.paymentinfo.questions.answer.clickable.text" = "privacy policy[LINK]";
 "ginihealth.paymentcomponent.paymentinfo.gini.link" = "https://gini.net/en/";
-"ginihealth.paymentcomponent.paymentinfo.gini.privacypolicy.link" = "https://gini.net/en/privacy-policy/";
+"ginihealth.paymentcomponent.paymentinfo.gini.privacypolicy.link" = "";
