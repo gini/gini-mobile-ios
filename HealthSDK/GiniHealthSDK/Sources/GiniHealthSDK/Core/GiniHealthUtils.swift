@@ -126,7 +126,7 @@ public struct Price {
     // Currency symbol
     var currencySymbol: String? {
         return (Locale.current as NSLocale).displayName(forKey: NSLocale.Key.currencySymbol,
-                                                        value: currencyCode)
+                                                        value: currencyCode.uppercased())
     }
     
     // Formatted string with currency symbol

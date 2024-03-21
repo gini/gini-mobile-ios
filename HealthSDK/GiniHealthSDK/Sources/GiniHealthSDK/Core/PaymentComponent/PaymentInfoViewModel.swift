@@ -69,8 +69,8 @@ final class PaymentInfoViewModel {
         
         let giniHealthConfiguration = GiniHealthConfiguration.shared
         
-        let defaultRegularFont: UIFont = giniHealthConfiguration.customFont.regular
-        let defaultBoldFont: UIFont = giniHealthConfiguration.customFont.bold
+        let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
+        let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .bold)
         
         payBillsTitleFont = giniHealthConfiguration.textStyleFonts[.subtitle1] ?? defaultBoldFont
         payBillsDescriptionFont = giniHealthConfiguration.textStyleFonts[.body2] ?? defaultRegularFont
@@ -120,7 +120,7 @@ final class PaymentInfoViewModel {
     }
     
     private func textWithLinks(linkFont: UIFont, attributedString: NSMutableAttributedString) -> NSMutableAttributedString {
-        var attributedString = attributedString
+        let attributedString = attributedString
         let giniRange = (attributedString.string as NSString).range(of: giniWebsiteText)
         attributedString.addLinkToRange(link: giniURLText,
                                         range: giniRange,

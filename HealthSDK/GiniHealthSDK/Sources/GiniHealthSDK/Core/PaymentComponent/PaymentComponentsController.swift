@@ -7,23 +7,6 @@
 
 import UIKit
 import GiniHealthAPILibrary
-
-/**
- Data structure protocol for the stored invoices/documents needed for Payment Component Controller
- */
-public protocol GiniDocument {
-    /// The document's unique identifier.
-    var documentID: String { get set }
-    /// The document's amount to pay.
-    var amountToPay: String? { get set }
-    /// The document's payment due date.
-    var paymentDueDate: String? { get set }
-    /// The document's recipient name.
-    var recipient: String? { get set }
-    /// Boolean value that indicates if the document is payable. This is obtained by calling the checkIfDocumentIsPayable method.
-    var isPayable: Bool? { get set }
-}
-
 /**
  Protocol used to provide updates on the current status of the Payment Components Controller.
  Uses a callback mechanism to handle payment provider requests.
@@ -179,10 +162,11 @@ public final class PaymentComponentsController: NSObject {
      - Parameters:
      - Returns: a custom view
      */
-    public func paymentView() -> UIView {
+    public func paymentView(documentId: String) -> UIView {
         paymentComponentView = PaymentComponentView()
         let paymentComponentViewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider)
         paymentComponentViewModel.delegate = viewDelegate
+        paymentComponentViewModel.documentId = documentId
         paymentComponentView.viewModel = paymentComponentViewModel
         return paymentComponentView
     }
@@ -228,15 +212,15 @@ public final class PaymentComponentsController: NSObject {
 }
 
 extension PaymentComponentsController: PaymentComponentViewProtocol {
-    public func didTapOnMoreInformation(documentID: String?) {
+    public func didTapOnMoreInformation(documentId: String?) {
         viewDelegate?.didTapOnMoreInformation()
     }
     
-    public func didTapOnBankPicker(documentID: String?) {
+    public func didTapOnBankPicker(documentId: String?) {
         viewDelegate?.didTapOnBankPicker()
     }
     
-    public func didTapOnPayInvoice(documentID: String?) {
+    public func didTapOnPayInvoice(documentId: String?) {
         viewDelegate?.didTapOnPayInvoice()
     }
 }
