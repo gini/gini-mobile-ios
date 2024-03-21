@@ -7,11 +7,16 @@
 
 import Foundation
 
+public protocol HealthAPI {    
+    func documentService<T: DocumentService>() -> T
+    func paymentService() -> PaymentService
+}
+
 /// The Gini Health API Library
-public final class GiniHealthAPI {
+public final class GiniHealthAPI: HealthAPI {
     
-    private let docService: DocumentService!
-    private let payService: PaymentService?
+    public var docService: DocumentService!
+    public var payService: PaymentService?
     static var logLevel: LogLevel = .none
     public var sessionDelegate: URLSessionDelegate? = nil
 
