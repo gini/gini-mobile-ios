@@ -57,7 +57,7 @@ public struct DataForReview {
  */
 @objc public final class GiniHealth: NSObject {
     /// reponsible for interaction with Gini Health backend .
-    public var giniApiLib: GiniHealthAPI
+    public var giniApiLib: HealthAPI
     /// reponsible for the whole document processing.
     public var documentService: DefaultDocumentService
     /// reponsible for the payment processing.
@@ -70,7 +70,7 @@ public struct DataForReview {
      
      - parameter giniApiLib: GiniHealthAPI initialized with client's credentials
      */
-    public init(with giniApiLib: GiniHealthAPI){
+    public init(with giniApiLib: HealthAPI){
         self.giniApiLib = giniApiLib
         self.documentService = giniApiLib.documentService()
         self.paymentService = giniApiLib.paymentService()
@@ -169,7 +169,7 @@ public struct DataForReview {
                         switch result {
                         case let .success(extractionResult):
                             if let paymentExtractions = extractionResult.payment?.first, let iban = paymentExtractions.first(where: { $0.name == "iban" })?.value, !iban.isEmpty {
-                            completion(.success(true))
+                                completion(.success(true))
                             } else {
                                 completion(.success(false))
                             }
