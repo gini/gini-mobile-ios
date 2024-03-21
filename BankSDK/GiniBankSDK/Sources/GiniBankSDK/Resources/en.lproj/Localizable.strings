@@ -70,7 +70,7 @@
 "ginibank.digitalinvoice.lineitem.includevattitle" = "Incl. tax";
 
 "ginibank.digitalinvoice.addonname.discount" = "Discount";
-"ginibank.digitalinvoice.addonname.giftcard" = "Giftcard";
+"ginibank.digitalinvoice.addonname.giftcard" = "Gift card";
 "ginibank.digitalinvoice.addonname.otherdiscounts" = "Other discounts";
 "ginibank.digitalinvoice.addonname.othercharges" = "Other charges";
 "ginibank.digitalinvoice.addonname.shipment" = "Shipment";
