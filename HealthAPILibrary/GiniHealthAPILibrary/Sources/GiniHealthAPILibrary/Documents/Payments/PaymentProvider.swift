@@ -14,7 +14,7 @@ public struct PaymentProvider: Codable {
     public var name: String
     public var appSchemeIOS: String
     public var colors: ProviderColors
-    var minAppVersion: MinAppVersions?
+    public var minAppVersion: MinAppVersions?
     public var iconData: Data
     public var appStoreUrlIOS: String?
 

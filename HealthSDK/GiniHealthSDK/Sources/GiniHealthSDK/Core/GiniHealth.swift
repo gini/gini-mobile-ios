@@ -170,6 +170,8 @@ public struct DataForReview {
                         case let .success(extractionResult):
                             if let paymentExtractions = extractionResult.payment?.first, let iban = paymentExtractions.first(where: { $0.name == "iban" })?.value, !iban.isEmpty {
                                 completion(.success(true))
+                            } else if let ibanExtraction = extractionResult.extractions.first(where: { $0.name == "iban"})?.value, !ibanExtraction.isEmpty {
+                                completion(.success(true))
                             } else {
                                 completion(.success(false))
                             }

@@ -8,7 +8,7 @@ final class GiniHealthTests: XCTestCase {
     var giniHealth: GiniHealth!
     
     override func setUp() {
-        let sessionManagerMock = SessionManagerMock()
+        let sessionManagerMock = MockSessionManager()
         let documentService = DefaultDocumentService(sessionManager: sessionManagerMock)
         let paymentService = PaymentService(sessionManager: sessionManagerMock)
         giniHealthAPI = MockHealthAPI(docService: documentService, payService: paymentService)
@@ -30,45 +30,94 @@ final class GiniHealthTests: XCTestCase {
         // Then
         XCTAssertEqual(GiniHealthConfiguration.shared, configuration)
     }
-}
+    
+    func testFetchBankingApps_Success() {
+        // Given
+        let expectedProviders: [PaymentProvider] = loadProviders()
+        
+        // When
+        let expectation = self.expectation(description: "Fetching banking apps")
+        var receivedProviders: [PaymentProvider]?
+        giniHealth.fetchBankingApps { result in
+            switch result {
+            case .success(let providers):
+                receivedProviders = providers
+            case .failure(_):
+                receivedProviders = nil
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+        
+        // Then
+        XCTAssertNotNil(receivedProviders)
+        XCTAssertEqual(receivedProviders?.count, expectedProviders.count)
+    }
 
-class MockHealthAPI: HealthAPI {
-    func documentService<T>() -> T where T : GiniHealthAPILibrary.DocumentService {
-        return docService as! T
-    }
-    
-    func paymentService() -> GiniHealthAPILibrary.PaymentService {
-        payService!
-    }
-    
-    public var docService: DocumentService!
-    public var payService: PaymentService?
-    
-    init(docService: DocumentService!, payService: PaymentService? = nil) {
-        self.docService = docService
-        self.payService = payService
-    }
-}
+    func testCheckIfDocumentIsPayable_Success() {
+        // Given
+        let expectedExtractions: ExtractionsContainer = loadExtractionResults(fileName: "result_Gini_invoice_example", type: "json")
+        let expectedExtractionsResult = ExtractionResult(extractionsContainer: expectedExtractions)
+        let expectedIsPayable = expectedExtractionsResult.extractions.first(where: { $0.name == "iban" })?.value.isNotEmpty
+        
+        // When
+        let expectation = self.expectation(description: "Checking if document is payable")
+        var isDocumentPayable: Bool?
+        giniHealth.checkIfDocumentIsPayable(docId: MockSessionManager.payableDocumentID) { result in
+            switch result {
+            case .success(let isPayable):
+                isDocumentPayable = isPayable
+            case .failure(_):
+                isDocumentPayable = nil
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
 
-final class SessionManagerMock: SessionManagerProtocol {
-    func upload<T>(resource: T, data: Data, cancellationToken: GiniHealthAPILibrary.CancellationToken?, completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T : GiniHealthAPILibrary.Resource {
-        //
+        // Then
+        XCTAssertEqual(expectedIsPayable, isDocumentPayable)
     }
     
-    func download<T>(resource: T, cancellationToken: GiniHealthAPILibrary.CancellationToken?, completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T : GiniHealthAPILibrary.Resource {
-        //
+    func testCheckIfDocumentIsNotPayable_Success() {
+        // Given
+        let expectedExtractions: ExtractionsContainer = loadExtractionResults(fileName: "result_Gini_invoice_example", type: "json")
+        let expectedExtractionsResult = ExtractionResult(extractionsContainer: expectedExtractions)
+        let expectedIsPayable = expectedExtractionsResult.extractions.first(where: { $0.name == "iban" })?.value.isEmpty
+        
+        // When
+        let expectation = self.expectation(description: "Checking if document is not payable")
+        var isDocumentPayable: Bool?
+        giniHealth.checkIfDocumentIsPayable(docId: MockSessionManager.notPayableDocumentID) { result in
+            switch result {
+            case .success(let isPayable):
+                isDocumentPayable = isPayable
+            case .failure(_):
+                isDocumentPayable = nil
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+
+        // Then
+        XCTAssertEqual(expectedIsPayable, isDocumentPayable)
     }
     
-    func logIn(completion: @escaping (Result<GiniHealthAPILibrary.Token, GiniHealthAPILibrary.GiniError>) -> Void) {
-        //
+    func testCheckIfDocumentIsPayable_Failure() {
+        // When
+        let expectation = self.expectation(description: "Checking if request fails")
+        var isDocumentPayable: Bool?
+        giniHealth.checkIfDocumentIsPayable(docId: MockSessionManager.failurePayableDocumentID) { result in
+            switch result {
+            case .success(let isPayable):
+                isDocumentPayable = isPayable
+            case .failure(_):
+                isDocumentPayable = nil
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+
+        // Then
+        XCTAssertNil(isDocumentPayable)
     }
-    
-    func logOut() {
-        //
-    }
-    
-    func data<T>(resource: T, cancellationToken: GiniHealthAPILibrary.CancellationToken?, completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T : GiniHealthAPILibrary.Resource {
-        //
-    }
-    
 }

@@ -11,7 +11,12 @@ typealias ResourceDataHandler<T: Resource> = (T, @escaping CompletionResult<T.Re
 typealias CancellableResourceDataHandler<T: Resource> = (T, CancellationToken?,
     @escaping CompletionResult<T.ResponseType>) -> Void
 
-public protocol DocumentService: AnyObject {
+public protocol DocumentServiceProtocol: AnyObject {
+    func fetchDocument(with id: String,
+                       completion: @escaping CompletionResult<Document>)
+}
+
+public protocol DocumentService: DocumentServiceProtocol {
     
     var apiDomain: APIDomain { get }
     
