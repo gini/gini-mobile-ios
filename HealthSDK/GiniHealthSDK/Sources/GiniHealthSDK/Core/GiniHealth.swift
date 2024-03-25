@@ -222,32 +222,32 @@ public struct DataForReview {
      
      */
     public func getExtractions(docId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void){
-            documentService.fetchDocument(with: docId) { result in
-                switch result {
-                case let .success(createdDocument):
-                    self.documentService
-                            .extractions(for: createdDocument,
-                                         cancellationToken: CancellationToken()) { result in
-                                DispatchQueue.main.async {
-                                    switch result {
-                                    case let .success(extractionResult):
-                                        if let paymentExtractionsContainer = extractionResult.payment, let paymentExtractions = paymentExtractionsContainer.first {
-                                            completion(.success(paymentExtractions))
-                                        } else {
-                                            completion(.failure(.noPaymentDataExtracted))
-                                        }
-                                    case let .failure(error):
-                                        completion(.failure(.apiError(error)))
+        documentService.fetchDocument(with: docId) { result in
+            switch result {
+            case let .success(createdDocument):
+                self.documentService
+                        .extractions(for: createdDocument,
+                                     cancellationToken: CancellationToken()) { result in
+                            DispatchQueue.main.async {
+                                switch result {
+                                case let .success(extractionResult):
+                                    if let paymentExtractionsContainer = extractionResult.payment, let paymentExtractions = paymentExtractionsContainer.first {
+                                        completion(.success(paymentExtractions))
+                                    } else {
+                                        completion(.failure(.noPaymentDataExtracted))
                                     }
+                                case let .failure(error):
+                                    completion(.failure(.apiError(error)))
                                 }
                             }
-                case let .failure(error):
-                    DispatchQueue.main.async {
-                        completion(.failure(.apiError(error)))
-                    }
+                        }
+            case let .failure(error):
+                DispatchQueue.main.async {
+                    completion(.failure(.apiError(error)))
                 }
             }
         }
+    }
         
     /**
      Creates a payment request

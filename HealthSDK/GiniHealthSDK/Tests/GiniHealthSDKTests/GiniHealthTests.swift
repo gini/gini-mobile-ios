@@ -52,11 +52,12 @@ final class GiniHealthTests: XCTestCase {
         // Then
         XCTAssertNotNil(receivedProviders)
         XCTAssertEqual(receivedProviders?.count, expectedProviders.count)
+        XCTAssertEqual(receivedProviders, expectedProviders)
     }
 
     func testCheckIfDocumentIsPayable_Success() {
         // Given
-        let expectedExtractions: ExtractionsContainer = loadExtractionResults(fileName: "result_Gini_invoice_example", type: "json")
+        let expectedExtractions: ExtractionsContainer = loadExtractionResults(fileName: "extractionResultWithIBAN", type: "json")
         let expectedExtractionsResult = ExtractionResult(extractionsContainer: expectedExtractions)
         let expectedIsPayable = expectedExtractionsResult.extractions.first(where: { $0.name == "iban" })?.value.isNotEmpty
         
@@ -80,7 +81,7 @@ final class GiniHealthTests: XCTestCase {
     
     func testCheckIfDocumentIsNotPayable_Success() {
         // Given
-        let expectedExtractions: ExtractionsContainer = loadExtractionResults(fileName: "result_Gini_invoice_example", type: "json")
+        let expectedExtractions: ExtractionsContainer = loadExtractionResults(fileName: "extractionResultWithIBAN", type: "json")
         let expectedExtractionsResult = ExtractionResult(extractionsContainer: expectedExtractions)
         let expectedIsPayable = expectedExtractionsResult.extractions.first(where: { $0.name == "iban" })?.value.isEmpty
         
@@ -119,5 +120,71 @@ final class GiniHealthTests: XCTestCase {
 
         // Then
         XCTAssertNil(isDocumentPayable)
+    }
+    
+    func testPollDocument_Success() {
+        // Given
+        let expectedDocument: Document = loadDocument(fileName: "document1", type: "json")
+
+        // When
+        let expectation = self.expectation(description: "Polling document")
+        var receivedDocument: Document?
+        giniHealth.pollDocument(docId: MockSessionManager.payableDocumentID) { result in
+            switch result {
+            case .success(let document):
+                receivedDocument = document
+            case .failure(_):
+                receivedDocument = nil
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+
+        // Then
+        XCTAssertNotNil(receivedDocument)
+        XCTAssertEqual(receivedDocument!, expectedDocument)
+    }
+    
+    func testPollDocument_Failure() {
+        // When
+        let expectation = self.expectation(description: "Polling failure document")
+        var receivedDocument: Document?
+        giniHealth.pollDocument(docId: MockSessionManager.missingDocumentID) { result in
+            switch result {
+            case .success(let document):
+                receivedDocument = document
+            case .failure(_):
+                receivedDocument = nil
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+
+        // Then
+        XCTAssertNil(receivedDocument)
+    }
+    
+    func testGetExtractions_Success() {
+        // Given
+        let expectedExtractionContainer: ExtractionsContainer = loadExtractionResults(fileName: "extractionsWithPayment", type: "json")
+        let expectedExtractions: [Extraction] = ExtractionResult(extractionsContainer: expectedExtractionContainer).payment?.first ?? []
+
+        // When
+        let expectation = self.expectation(description: "Getting extractions")
+        var receivedExtractions: [Extraction]?
+        giniHealth.getExtractions(docId: MockSessionManager.extractionsWithPaymentDocumentID) { result in
+            switch result {
+            case .success(let extractions):
+                receivedExtractions = extractions
+            case .failure(_):
+                receivedExtractions = nil
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+
+        // Then
+        XCTAssertNotNil(receivedExtractions)
+        XCTAssertEqual(receivedExtractions!.count, expectedExtractions.count)
     }
 }

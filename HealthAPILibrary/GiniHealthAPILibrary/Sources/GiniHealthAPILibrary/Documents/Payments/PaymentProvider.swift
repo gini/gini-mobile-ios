@@ -29,3 +29,9 @@ public struct PaymentProvider: Codable {
     }
 }
 public typealias PaymentProviders = [PaymentProvider]
+
+extension PaymentProvider: Equatable {
+    public static func == (lhs: PaymentProvider, rhs: PaymentProvider) -> Bool {
+        lhs.id == rhs.id
+    }
+}
