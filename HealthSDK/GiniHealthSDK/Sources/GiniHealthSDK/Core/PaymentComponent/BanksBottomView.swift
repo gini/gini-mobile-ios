@@ -212,7 +212,7 @@ class BanksBottomView: UIView {
 
 extension BanksBottomView {
     enum Constants {
-        static let cornerRadiusView = 40.0
+        static let cornerRadiusView = 12.0
         static let cornerRadiusTopRectangle = 2.0
         static let widthTopRectangle = 48
         static let heightTopRectangle = 4
