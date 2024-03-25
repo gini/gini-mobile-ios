@@ -98,8 +98,10 @@ public final class PaymentComponentsController: NSObject {
     
     @objc
     private func willEnterForeground() {
-        if !checkPaymentProviderIsInstalled(paymentProvider: selectedPaymentProvider) {
-            loadPaymentProviders()
+        DispatchQueue.main.async {
+            if !self.checkPaymentProviderIsInstalled(paymentProvider: self.selectedPaymentProvider) {
+                self.loadPaymentProviders()
+            }
         }
     }
     
