@@ -12,11 +12,13 @@
 		289447732A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */; };
 		289570932A30CD7600CC2C56 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289570912A30CD7600CC2C56 /* SettingsViewController.swift */; };
 		289570942A30CE2800CC2C56 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289570922A30CD7600CC2C56 /* SettingsViewController.xib */; };
+		289918002BAB0B1900F5D214 /* DigitalInvoiceViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289917FF2BAB0B1900F5D214 /* DigitalInvoiceViewControllerTests.swift */; };
 		289D3DB32A4EC857002A6681 /* InfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289D3DB12A4EC857002A6681 /* InfoTableViewCell.swift */; };
 		289D3DB42A4EC857002A6681 /* InfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289D3DB22A4EC857002A6681 /* InfoTableViewCell.xib */; };
 		28A4112F2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A4112D2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift */; };
 		28A411302A6EB9E500421033 /* SettingsViewController+DocumentValidationsState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A4112E2A6EB9E500421033 /* SettingsViewController+DocumentValidationsState.swift */; };
 		28B1B3932A45DC4C0045B4A1 /* UIView+LoadNib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B1B3922A45DC4C0045B4A1 /* UIView+LoadNib.swift */; };
+		28B203FF2BB2E78B00C78740 /* FileLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B203FC2BB2E6EE00C78740 /* FileLoader.swift */; };
 		28B5873C2A372790008CB210 /* UITableView+CellRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B5873B2A372790008CB210 /* UITableView+CellRegistration.swift */; };
 		28B5873E2A3727F8008CB210 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B5873D2A3727F8008CB210 /* ReusableView.swift */; };
 		28B587462A373A72008CB210 /* SwitchOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B587442A373A72008CB210 /* SwitchOptionTableViewCell.swift */; };
@@ -24,6 +26,10 @@
 		28B587492A373FCB008CB210 /* SettingsViewController+CellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B587482A373FCB008CB210 /* SettingsViewController+CellType.swift */; };
 		28B5874C2A374730008CB210 /* SegmentedOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B5874A2A374730008CB210 /* SegmentedOptionTableViewCell.swift */; };
 		28B5874D2A374730008CB210 /* SegmentedOptionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28B5874B2A374730008CB210 /* SegmentedOptionTableViewCell.xib */; };
+		28C8E4B12BAC4EE700832ECA /* Gini_invoice_example_line_items_with_discount.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28C8E4AF2BAC4EE700832ECA /* Gini_invoice_example_line_items_with_discount.pdf */; };
+		28C8E4B22BAC4EE700832ECA /* Gini_invoice_example_line_items_with_discount.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 28C8E4AF2BAC4EE700832ECA /* Gini_invoice_example_line_items_with_discount.pdf */; };
+		28C8E4B32BAC4EE700832ECA /* result_Gini_invoice_example_line_items_with_discount.json in Resources */ = {isa = PBXBuildFile; fileRef = 28C8E4B02BAC4EE700832ECA /* result_Gini_invoice_example_line_items_with_discount.json */; };
+		28C8E4B42BAC4EE700832ECA /* result_Gini_invoice_example_line_items_with_discount.json in Resources */ = {isa = PBXBuildFile; fileRef = 28C8E4B02BAC4EE700832ECA /* result_Gini_invoice_example_line_items_with_discount.json */; };
 		28CDB8232A38A5E40016A81C /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CDB8222A38A5E40016A81C /* ColorPalette.swift */; };
 		28DB2C822A39AF5000F5B304 /* GiniButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DB2C812A39AF5000F5B304 /* GiniButton.swift */; };
 		28EC10732AB345400080FD4F /* UIImage+TintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EC10722AB345400080FD4F /* UIImage+TintColor.swift */; };
@@ -156,11 +162,13 @@
 		289447722A3C8F0C00ED012E /* SettingsViewController+SegmentedOptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SegmentedOptionModel.swift"; sourceTree = "<group>"; };
 		289570912A30CD7600CC2C56 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		289570922A30CD7600CC2C56 /* SettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
+		289917FF2BAB0B1900F5D214 /* DigitalInvoiceViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitalInvoiceViewControllerTests.swift; sourceTree = "<group>"; };
 		289D3DB12A4EC857002A6681 /* InfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTableViewCell.swift; sourceTree = "<group>"; };
 		289D3DB22A4EC857002A6681 /* InfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InfoTableViewCell.xib; sourceTree = "<group>"; };
 		28A4112D2A6EB9E500421033 /* SettingsViewController+SettingsButtonStates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+SettingsButtonStates.swift"; sourceTree = "<group>"; };
 		28A4112E2A6EB9E500421033 /* SettingsViewController+DocumentValidationsState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+DocumentValidationsState.swift"; sourceTree = "<group>"; };
 		28B1B3922A45DC4C0045B4A1 /* UIView+LoadNib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+LoadNib.swift"; sourceTree = "<group>"; };
+		28B203FC2BB2E6EE00C78740 /* FileLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileLoader.swift; sourceTree = "<group>"; };
 		28B5873B2A372790008CB210 /* UITableView+CellRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+CellRegistration.swift"; sourceTree = "<group>"; };
 		28B5873D2A3727F8008CB210 /* ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableView.swift; sourceTree = "<group>"; };
 		28B587442A373A72008CB210 /* SwitchOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchOptionTableViewCell.swift; sourceTree = "<group>"; };
@@ -168,6 +176,8 @@
 		28B587482A373FCB008CB210 /* SettingsViewController+CellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+CellType.swift"; sourceTree = "<group>"; };
 		28B5874A2A374730008CB210 /* SegmentedOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedOptionTableViewCell.swift; sourceTree = "<group>"; };
 		28B5874B2A374730008CB210 /* SegmentedOptionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SegmentedOptionTableViewCell.xib; sourceTree = "<group>"; };
+		28C8E4AF2BAC4EE700832ECA /* Gini_invoice_example_line_items_with_discount.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Gini_invoice_example_line_items_with_discount.pdf; sourceTree = "<group>"; };
+		28C8E4B02BAC4EE700832ECA /* result_Gini_invoice_example_line_items_with_discount.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result_Gini_invoice_example_line_items_with_discount.json; sourceTree = "<group>"; };
 		28CDB8222A38A5E40016A81C /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
 		28DB2C812A39AF5000F5B304 /* GiniButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiniButton.swift; sourceTree = "<group>"; };
 		28EC10722AB345400080FD4F /* UIImage+TintColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+TintColor.swift"; sourceTree = "<group>"; };
@@ -472,10 +482,12 @@
 		F45D7EFF2800566900C73C63 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				289917FF2BAB0B1900F5D214 /* DigitalInvoiceViewControllerTests.swift */,
 				F45D7F002800566900C73C63 /* TransferSummaryIntegrationTest.swift */,
 				F45D7F012800566900C73C63 /* ScreenAPICoordinatorTests.swift */,
 				F45D7F022800566900C73C63 /* ScreenAPICoordinator+UI_Only.swift */,
 				F45D7F0A2800566900C73C63 /* SettingsViewControllerTests.swift */,
+				28B203FC2BB2E6EE00C78740 /* FileLoader.swift */,
 				F45D7F0B2800566900C73C63 /* Info.plist */,
 				F45D7F042800566900C73C63 /* Resources */,
 			);
@@ -485,6 +497,8 @@
 		F45D7F042800566900C73C63 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				28C8E4AF2BAC4EE700832ECA /* Gini_invoice_example_line_items_with_discount.pdf */,
+				28C8E4B02BAC4EE700832ECA /* result_Gini_invoice_example_line_items_with_discount.json */,
 				F45D7F052800566900C73C63 /* result_Gini_invoice_example.json */,
 				76D245CC295201D400C9681D /* result_Gini_invoice_example_payment_reference_after_feedback.json */,
 				76D245CD295201D400C9681D /* result_Gini_invoice_example_payment_reference.json */,
@@ -759,6 +773,8 @@
 				28F62FA22AB21C2E00D47866 /* DemoScreen.strings in Resources */,
 				837EEFB1291D6A5400DB781F /* CustomCameraBottomNavigationBar.xib in Resources */,
 				764E0AD228CF274A00F96503 /* InfoPlist.strings in Resources */,
+				28C8E4B32BAC4EE700832ECA /* result_Gini_invoice_example_line_items_with_discount.json in Resources */,
+				28C8E4B12BAC4EE700832ECA /* Gini_invoice_example_line_items_with_discount.pdf in Resources */,
 				28B5874D2A374730008CB210 /* SegmentedOptionTableViewCell.xib in Resources */,
 				76D245D1295201D500C9681D /* result_Gini_invoice_example_payment_reference.json in Resources */,
 				289D3DB42A4EC857002A6681 /* InfoTableViewCell.xib in Resources */,
@@ -790,7 +806,9 @@
 			files = (
 				76D245D0295201D500C9681D /* result_Gini_invoice_example_payment_reference_after_feedback.json in Resources */,
 				F45D7F132800566900C73C63 /* result_Gini_invoice_example_after_feedback.json in Resources */,
+				28C8E4B22BAC4EE700832ECA /* Gini_invoice_example_line_items_with_discount.pdf in Resources */,
 				F45D7F102800566900C73C63 /* result_Gini_invoice_example.json in Resources */,
+				28C8E4B42BAC4EE700832ECA /* result_Gini_invoice_example_line_items_with_discount.json in Resources */,
 				76D245D4295201D500C9681D /* Gini_invoice_example_payment_reference.pdf in Resources */,
 				F45D7F112800566900C73C63 /* testPDF.pdf in Resources */,
 				F45D7F122800566900C73C63 /* Gini_invoice_example.pdf in Resources */,
@@ -905,10 +923,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28B203FF2BB2E78B00C78740 /* FileLoader.swift in Sources */,
 				F45D7F0E2800566900C73C63 /* ScreenAPICoordinator+UI_Only.swift in Sources */,
 				F45D7F152800566900C73C63 /* SettingsViewControllerTests.swift in Sources */,
 				F45D7F0C2800566900C73C63 /* TransferSummaryIntegrationTest.swift in Sources */,
 				F45D7F0D2800566900C73C63 /* ScreenAPICoordinatorTests.swift in Sources */,
+				289918002BAB0B1900F5D214 /* DigitalInvoiceViewControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -30,14 +30,6 @@ class TransferSummaryIntegrationTest: XCTestCase {
         giniBankAPIDocumentService = giniBankAPILib.documentService()
     }
 
-    func loadFile(withName name: String, ofType type: String) -> Data {
-        let fileURLPath: String? = Bundle.main
-            .path(forResource: name, ofType: type)
-        let data = try? Data(contentsOf: URL(fileURLWithPath: fileURLPath!))
-
-        return data!
-    }
-
     func testSendTransferSummaryFeedback() {
         let expect = expectation(description: "transfer summary was correctly sent and extractions were updated")
 
@@ -63,8 +55,11 @@ class TransferSummaryIntegrationTest: XCTestCase {
 
         func giniCaptureAnalysisDidFinishWith(result: AnalysisResult) {
             // 1b. Received the extractions for the uploaded document
-            let fixtureExtractionsJson = self.integrationTest.loadFile(withName: "result_Gini_invoice_example_payment_reference", ofType: "json")
-
+            let fileName = "result_Gini_invoice_example_payment_reference"
+           guard let fixtureExtractionsJson = FileLoader.loadFile(withName: fileName, ofType: "json") else {
+                XCTFail("Error loading file: `\(fileName).json`")
+                return
+            }
             let fixtureExtractionsContainer = try! JSONDecoder().decode(ExtractionsContainer.self, from: fixtureExtractionsJson)
 
             // 2. Verify we received the correct extractions for this test
@@ -92,42 +87,47 @@ class TransferSummaryIntegrationTest: XCTestCase {
                     self.integrationTest.getUpdatedExtractionsFromGiniBankSDK(for: result.document!) { result in
                         switch result {
                         case let .success(extractionResult):
-                            let extractionsAfterFeedback = extractionResult.extractions
+                                let extractionsAfterFeedback = extractionResult.extractions
 
+                                let fileName = "result_Gini_invoice_example_payment_reference_after_feedback"
+                                guard let fixtureExtractionsAfterFeedbackJson = FileLoader.loadFile(withName: fileName,
+                                                                                                    ofType: "json") else {
+                                    XCTFail("Error loading file: `\(fileName).json`")
+                                    return
+                                }
+                                let fixtureExtractionsAfterFeedbackContainer = try! JSONDecoder().decode(ExtractionsContainer.self,
+                                                                                                         from: fixtureExtractionsAfterFeedbackJson)
 
-                            let fixtureExtractionsAfterFeedbackJson = self.integrationTest.loadFile(withName: "result_Gini_invoice_example_payment_reference_after_feedback", ofType: "json")
-                            let fixtureExtractionsAfterFeedbackContainer = try! JSONDecoder().decode(ExtractionsContainer.self, from: fixtureExtractionsAfterFeedbackJson)
+                                XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "iban" })?.value,
+                                               extractionsAfterFeedback.first(where: { $0.name == "iban" })?.value)
+                                XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "paymentRecipient" })?.value,
+                                               extractionsAfterFeedback.first(where: { $0.name == "paymentRecipient" })?.value)
+                                //                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "paymentPurpose" })?.value,
+                                //                                           extractionsAfterFeedback.first(where: { $0.name == "paymentPurpose" })?.value)
+                                XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "bic" })?.value,
+                                               extractionsAfterFeedback.first(where: { $0.name == "bic" })?.value)
+                                XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
+                                               extractionsAfterFeedback.first(where: { $0.name == "amountToPay" })?.value)
 
-                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "iban" })?.value,
-                                           extractionsAfterFeedback.first(where: { $0.name == "iban" })?.value)
-                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "paymentRecipient" })?.value,
-                                           extractionsAfterFeedback.first(where: { $0.name == "paymentRecipient" })?.value)
-//                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "paymentPurpose" })?.value,
-//                                           extractionsAfterFeedback.first(where: { $0.name == "paymentPurpose" })?.value)
-                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "bic" })?.value,
-                                           extractionsAfterFeedback.first(where: { $0.name == "bic" })?.value)
-                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
-                                           extractionsAfterFeedback.first(where: { $0.name == "amountToPay" })?.value)
+                                let fixtureLineItems = fixtureExtractionsAfterFeedbackContainer.compoundExtractions?["lineItems"]
 
-                            let fixtureLineItems = fixtureExtractionsAfterFeedbackContainer.compoundExtractions?["lineItems"]
+                                if let firstLineItemAfterFeedback = extractionResult.lineItems?.first, let fixtureLineItem = fixtureLineItems?.first {
+                                    XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "baseGross" })?.value,
+                                                   firstLineItemAfterFeedback.first(where: { $0.name == "baseGross" })?.value)
+                                    XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "description" })?.value,
+                                                   firstLineItemAfterFeedback.first(where: { $0.name == "description" })?.value)
+                                    XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "quantity" })?.value,
+                                                   firstLineItemAfterFeedback.first(where: { $0.name == "quantity" })?.value)
+                                    XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "artNumber" })?.value,
+                                                   firstLineItemAfterFeedback.first(where: { $0.name == "artNumber" })?.value)
+                                }
 
-                            if let firstLineItemAfterFeedback = extractionResult.lineItems?.first, let fixtureLineItem = fixtureLineItems?.first {
-                                XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "baseGross" })?.value,
-                                               firstLineItemAfterFeedback.first(where: { $0.name == "baseGross" })?.value)
-                                XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "description" })?.value,
-                                               firstLineItemAfterFeedback.first(where: { $0.name == "description" })?.value)
-                                XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "quantity" })?.value,
-                                               firstLineItemAfterFeedback.first(where: { $0.name == "quantity" })?.value)
-                                XCTAssertEqual(fixtureLineItem.first(where: { $0.name == "artNumber" })?.value,
-                                               firstLineItemAfterFeedback.first(where: { $0.name == "artNumber" })?.value)
-                            }
-
-                            // 6. Free up resources after TAN verification
-                            GiniBankConfiguration.shared.cleanup()
-                            XCTAssertNil(GiniBankConfiguration.shared.documentService)
-                            self.expect.fulfill()
+                                // 6. Free up resources after TAN verification
+                                GiniBankConfiguration.shared.cleanup()
+                                XCTAssertNil(GiniBankConfiguration.shared.documentService)
+                                self.expect.fulfill()
                         case let .failure(error):
-                            XCTFail(String(describing: error))
+                                XCTFail(String(describing: error))
                         }
                     }
                 })
@@ -151,10 +151,14 @@ class TransferSummaryIntegrationTest: XCTestCase {
       * Interaction with the network service is handled by the Bank SDK internally.
       */
     private func getExtractionsFromGiniBankSDK(delegate: GiniCaptureResultsDelegate) {
-        let testDocumentData = self.loadFile(withName: "Gini_invoice_example_payment_reference", ofType: "pdf")
+        let fileName = "Gini_invoice_example_payment_reference"
+        guard let testDocumentData = FileLoader.loadFile(withName: fileName, ofType: "pdf") else {
+            XCTFail("Error loading file: `\(fileName).pdf`")
+            return
+        }
         let builder = GiniCaptureDocumentBuilder(documentSource: .appName(name: "GiniBankSDKExample"))
         let captureDocument = builder.build(with: testDocumentData,
-                                            fileName: "Gini_invoice_example_payment_reference.pdf")!
+                                            fileName: "\(fileName).pdf")!
 
         GiniBankConfiguration.shared.documentService = giniCaptureSDKDocumentService
 
