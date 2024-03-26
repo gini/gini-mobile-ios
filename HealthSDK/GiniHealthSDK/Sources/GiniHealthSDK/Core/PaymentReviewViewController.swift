@@ -545,7 +545,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
                                               iban: ibanTextFieldView.text ?? "",
                                               bic: "", amount: amountText,
                                               purpose: usageTextFieldView.text ?? "",
-                                              paymentProviderScheme: selectedProvider.appSchemeIOS,
+                                              paymentUniversalLink: selectedProvider.universalLinkIOS,
                                               paymentProviderId: selectedProvider.id)
                 model?.createPaymentRequest(paymentInfo: paymentInfo)
                 let paymentRecipientExtraction = Extraction(box: nil, 

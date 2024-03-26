@@ -16,7 +16,7 @@ import GiniBankAPILibrary
  - serverError: Error returned by the server.
  - authentication: Error related to authentication.
  - unexpected: Unexpected error that is not covered by the other cases.
- - importError: Error related to importing documents.
+ - maintenance: Error returned when the system is under maintenance.
  */
 
 @objc public enum ErrorType: Int {
@@ -25,7 +25,8 @@ import GiniBankAPILibrary
     case serverError
     case authentication
     case unexpected
-    case importError
+    case maintenance
+    case outage
 
     /**
      Initializes a new instance of the `ErrorType` enum based on the given `GiniError`.
@@ -35,26 +36,22 @@ import GiniBankAPILibrary
      */
     public init(error: GiniError) {
         switch error {
-        case .unauthorized(_, _):
+        case .unauthorized:
             self = .authentication
-        case .noResponse:
+        case .noInternetConnection:
             self = .connection
-        case .notAcceptable(let response, _), .tooManyRequests(let response, _),
-                .parseError(_, let response, _), .badRequest(let response, _), .notFound(let response, _):
-            if let status = response?.statusCode {
-                switch status {
-                case 400, 402 ... 499:
-                    self = .request
-                case 401:
-                    self = .authentication
-                case let code where code >= 500:
-                    self = .serverError
-                default:
-                    self = .unexpected
-                }
-            } else {
-                self = .serverError
-            }
+        case .noResponse:
+            self = .unexpected
+        case .notAcceptable, .tooManyRequests,
+             .parseError, .badRequest,
+             .notFound:
+            self = .request
+        case .server:
+            self = .serverError
+        case .maintenance:
+            self = .maintenance
+        case .outage:
+            self = .outage
         default:
             self = .unexpected
         }
@@ -68,12 +65,12 @@ import GiniBankAPILibrary
             return "errorUpload"
         case .authentication:
             return "errorAuth"
-        case .serverError:
+        case .serverError, .outage:
             return "errorCloud"
         case .unexpected:
             return "alertTriangle"
-        case .importError:
-            return "alertTriangle"
+        case .maintenance:
+            return "errorMaintenance"
         }
     }
 
@@ -99,10 +96,14 @@ import GiniBankAPILibrary
             return NSLocalizedStringPreferredFormat(
                 "ginicapture.error.unexpected.content",
                 comment: "Unexpected error")
-        case .importError:
+        case .maintenance:
             return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.importError.content",
-                comment: "Import error")
+                "ginicapture.error.maintenance.content",
+                comment: "Maintenance error")
+        case .outage:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.outage.content",
+                comment: "Outage error")
         }
     }
 
@@ -128,10 +129,14 @@ import GiniBankAPILibrary
             return NSLocalizedStringPreferredFormat(
                 "ginicapture.error.request.title",
                 comment: "Upload error")
-        case .importError:
+        case .maintenance:
             return NSLocalizedStringPreferredFormat(
-                "ginicapture.error.importError.title",
-                comment: "Upload error")
+                "ginicapture.error.maintenance.title",
+                comment: "Maintenance error")
+        case .outage:
+            return NSLocalizedStringPreferredFormat(
+                "ginicapture.error.outage.title",
+                comment: "Outage error")
         }
     }
 }

@@ -17,8 +17,9 @@ public struct PaymentProvider: Codable {
     public var minAppVersion: MinAppVersions?
     public var iconData: Data
     public var appStoreUrlIOS: String?
+    public var universalLinkIOS: String
 
-    public init(id: String, name: String, appSchemeIOS: String, minAppVersion: MinAppVersions?, colors: ProviderColors, iconData: Data, appStoreUrlIOS: String?) {
+    public init(id: String, name: String, appSchemeIOS: String, minAppVersion: MinAppVersions?, colors: ProviderColors, iconData: Data, appStoreUrlIOS: String?, universalLinkIOS: String) {
         self.id = id
         self.name = name
         self.appSchemeIOS = appSchemeIOS
@@ -26,6 +27,7 @@ public struct PaymentProvider: Codable {
         self.colors = colors
         self.iconData = iconData
         self.appStoreUrlIOS = appStoreUrlIOS
+        self.universalLinkIOS = universalLinkIOS
     }
 }
 public typealias PaymentProviders = [PaymentProvider]
