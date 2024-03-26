@@ -280,12 +280,12 @@ public struct DataForReview {
      
      - Parameters:
         - requestID: Id of the created payment request.
-        - appScheme: App scheme for the selected payment provider
+        - universalLink: Universal link for the selected payment provider
      
      */
-    public func openPaymentProviderApp(requestID: String, appScheme: String) {
+    public func openPaymentProviderApp(requestID: String, universalLink: String) {
         let queryItems = [URLQueryItem(name: "id", value: requestID)]
-        let urlString = appScheme + "://payment"
+        let urlString = universalLink + "://payment"
         var urlComponents = URLComponents(string: urlString)!
         urlComponents.queryItems = queryItems
         let resultUrl = urlComponents.url!

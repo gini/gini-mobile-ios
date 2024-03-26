@@ -62,7 +62,7 @@ class GiniHealthSDKPinningExampleWrongCertificatesTests: XCTestCase {
             case .success:
                 XCTFail("creating a payment request should have failed due to wrong pinning certificates")
             case let .failure(error):
-                XCTAssertEqual(error, GiniError.unknown())
+                XCTAssertEqual(error, GiniError.noResponse)
                 expect.fulfill()
             }
         }
