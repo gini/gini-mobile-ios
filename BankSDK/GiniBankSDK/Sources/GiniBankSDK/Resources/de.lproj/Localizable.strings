@@ -38,7 +38,7 @@
 "ginibank.digitalinvoice.headermessage.primary" = "Scan war erfolgreich!";
 "ginibank.digitalinvoice.headermessage.secondary" = "Du kannst nun die Artikel abwählen, die du zurückschicken willst.";
 "ginibank.digitalinvoice.total.addArticleButtonTitle" = "Artikel hinzufügen";
-"ginibank.digitalinvoice.total.accessibilitylabel" = "Total: %@";
+"ginibank.digitalinvoice.total.accessibilitylabel" = "Gesamtpreis: %@";
 
 "ginibank.digitalinvoice.edit.unitPrice" = "Einzelpreis";
 "ginibank.digitalinvoice.edit.name" = "Name";
@@ -58,7 +58,7 @@
 "ginibank.digitalinvoice.lineitem.quantitytextfieldtitle" = "Anzahl";
 "ginibank.digitalinvoice.lineitem.pricetextfieldtitle" = "Artikelpreis";
 "ginibank.digitalinvoice.lineitem.multiplication.accessibilitylabel" = "mal";
-"ginibank.digitalinvoice.lineitem.totalpricetitle" = "Total";
+"ginibank.digitalinvoice.lineitem.totalpricetitle" = "Gesamtpreis";
 "ginibank.digitalinvoice.lineitem.includevattitle" = "Inkl. MwSt.";
 
 "ginibank.digitalinvoice.addonname.discount" = "Rabatt";
@@ -76,10 +76,10 @@
 "ginibank.digitalinvoice.help.backToInvoice" = "Digitale Rechnung";
 "ginibank.digitalinvoice.help.title1" = "1. Wie funktioniert die Digitale Rechnung?";
 "ginibank.digitalinvoice.help.description1" = "Wir lesen alle Artikel aus der Rechnung aus und listen diese für Sie auf. Falls Sie einige Artikel zurücksenden oder die Rechnung nur teilweise bezahlen möchten, wählen Sie einfach die Artikel ab, die Sie zurücksenden und wir berechnen den zu zahlenden Betrag für Sie neu.";
-"ginibank.digitalinvoice.help.title2" = "2. Wie kann ich Artikel bearbeiten";
+"ginibank.digitalinvoice.help.title2" = "2. Wie kann ich Artikel bearbeiten?";
 "ginibank.digitalinvoice.help.description2" = "Mit einem Klick auf “Bearbeiten” neben dem entsprechenden Artikel haben Sie anschließend die Möglichkeit die Beschreibung, Anzahl und Preis zu bearbeiten. Bitte beachten Sie, dass der Preis pro Stück die Mehrwertsteuer bereits enthält. ";
 "ginibank.digitalinvoice.help.title3" = "3. Welche Onlineshops werden unterstützt?";
-"ginibank.digitalinvoice.help.description3" = "Wir bieten die Funktion moment für die fünf größten Onlineshops im Markt an. Weitere Shops werden in naher Zukunft hinzukommen.";
+"ginibank.digitalinvoice.help.description3" = "Wir konzentrieren uns derzeit auf die beliebtesten Online-Händler auf dem Markt. Weitere Einzelhändler werden in Zukunft hinzukommen.";
 "ginibank.digitalinvoice.info.hidebutton" = "Schließen";
 
 "ginibank.digitalinvoice.edit.name.error" = "Bitte geben Sie den Artikelnamen ein.";
