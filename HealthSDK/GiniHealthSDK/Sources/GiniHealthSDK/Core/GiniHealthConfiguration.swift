@@ -118,16 +118,6 @@ public final class GiniHealthConfiguration: NSObject {
                                                                                      borderWidth: 1.0,
                                                                                      placeholderForegroundColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.dark4,
                                                                                                                            darkModeColor: UIColor.GiniHealthColors.light4).uiColor())
-
-    /**
-     Sets the style of the loading indicator.
-     */
-    @objc public var loadingIndicatorStyle: UIActivityIndicatorView.Style = .whiteLarge
-    
-    /**
-     Sets the scale of the loading indicator.
-     */
-    @objc public var loadingIndicatorScale: CGFloat = 1.0
     
     /**
      Set dictionary of fonts for available text styles. Used internally.
