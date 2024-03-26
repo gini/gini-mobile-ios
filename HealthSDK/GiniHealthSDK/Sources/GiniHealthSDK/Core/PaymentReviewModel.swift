@@ -102,7 +102,7 @@ public class PaymentReviewModel: NSObject {
             switch result {
             case let .success(requestId):
                     self?.isLoading = false
-                    self?.openPaymentProviderApp(requestId: requestId, appScheme: paymentInfo.paymentProviderScheme)
+                    self?.openPaymentProviderApp(requestId: requestId, universalLink: paymentInfo.paymentUniversalLink)
             case let .failure(error):
                     self?.isLoading = false
                 if let delegate = self?.healthSDK.delegate, delegate.shouldHandleErrorInternally(error: error) {
@@ -112,8 +112,8 @@ public class PaymentReviewModel: NSObject {
         }
     }
 
-    func openPaymentProviderApp(requestId: String, appScheme: String) {
-        healthSDK.openPaymentProviderApp(requestID: requestId, appScheme: appScheme)
+    func openPaymentProviderApp(requestId: String, universalLink: String) {
+        healthSDK.openPaymentProviderApp(requestID: requestId, universalLink: universalLink)
     }
     
     func fetchImages() {
