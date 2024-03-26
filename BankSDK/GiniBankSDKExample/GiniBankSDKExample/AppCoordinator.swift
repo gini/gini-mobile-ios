@@ -35,6 +35,7 @@ final class AppCoordinator: Coordinator {
         configuration.multipageEnabled = true
         configuration.flashToggleEnabled = true
         configuration.localizedStringsTableName = "LocalizableCustomName"
+        configuration.onboardingShowAtLaunch = true //for demo purposes User Journey Funnel
         configuration.customDocumentValidations = { document in
             // As an example of custom document validation, we add a more strict check for file size
             let maxFileSize = 5 * 1024 * 1024
