@@ -27,6 +27,7 @@ class BankSelectionTableViewCell: UITableViewCell {
                       notSelectedBorderColor: cellViewModel.notSelectedBankBorderColor)
             
             appStoreImageView.isHidden = !cellViewModel.shouldShowAppStoreIcon
+            selectionIndicatorImageView.image = cellViewModel.selectionIndicatorImage
             selectionIndicatorImageView.isHidden = !cellViewModel.shouldShowSelectionIcon
 
             appStoreBankNameSpacingConstraint.priority = !cellViewModel.shouldShowAppStoreIcon ? .required - 1 : .required
