@@ -70,7 +70,7 @@
 "ginibank.digitalinvoice.lineitem.includevattitle" = "Incl. tax";
 
 "ginibank.digitalinvoice.addonname.discount" = "Discount";
-"ginibank.digitalinvoice.addonname.giftcard" = "Giftcard";
+"ginibank.digitalinvoice.addonname.giftcard" = "Gift card";
 "ginibank.digitalinvoice.addonname.otherdiscounts" = "Other discounts";
 "ginibank.digitalinvoice.addonname.othercharges" = "Other charges";
 "ginibank.digitalinvoice.addonname.shipment" = "Shipment";
@@ -87,7 +87,7 @@
 "ginibank.digitalinvoice.help.title2" = "2. How can I edit an article?";
 "ginibank.digitalinvoice.help.description2" = "By clicking an article, you are able to edit its description, quantity and price per item. Please note that the price per item needs to include tax.";
 "ginibank.digitalinvoice.help.title3" = "3. Which online shops are supported?";
-"ginibank.digitalinvoice.help.description3" = "We are currently focused on the top five online merchants in the market. More retailers will be added in the future.";
+"ginibank.digitalinvoice.help.description3" = "We are currently focused on the most popular online merchants in the market. More retailers will be added in the future.";
 "ginibank.digitalinvoice.info.hidebutton" = "Close";
 
 "ginibank.digitalinvoice.edit.name.error" = "Please enter the article name.";
