@@ -42,6 +42,8 @@ final class BankSelectionTableViewCellModel {
                                                      darkModeColor: UIColor.GiniHealthColors.accent1).uiColor()
     let notSelectedBankBorderColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark5,
                                                         darkModeColor: UIColor.GiniHealthColors.light5).uiColor()
+    
+    let selectionIndicatorImage = UIImageNamedPreferred(named: "selectionIndicator")
 
     init(paymentProvider: PaymentProviderAdditionalInfo) {
         self.isSelected = paymentProvider.isSelected
