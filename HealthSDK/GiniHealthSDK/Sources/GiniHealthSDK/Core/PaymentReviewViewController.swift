@@ -107,7 +107,9 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             DispatchQueue.main.async { [weak self] in
                 let isLoading = self?.model?.isImagesLoading ?? false
                 if isLoading {
-                    self?.collectionView.showLoading(style: self?.giniHealthConfiguration.loadingIndicatorStyle, color: UIColor.from(giniColor: self?.giniHealthConfiguration.loadingIndicatorColor ?? GiniHealthConfiguration.shared.loadingIndicatorColor), scale: self?.giniHealthConfiguration.loadingIndicatorScale)
+                    self?.collectionView.showLoading(style: self?.giniHealthConfiguration.loadingIndicatorStyle,
+                                                     color: UIColor.GiniHealthColors.accent1,
+                                                     scale: self?.giniHealthConfiguration.loadingIndicatorScale)
                 } else {
                     self?.collectionView.stopLoading()
                 }
@@ -118,7 +120,9 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             DispatchQueue.main.async { [weak self] in
                 let isLoading = self?.model?.isLoading ?? false
                 if isLoading {
-                    self?.view.showLoading(style: self?.giniHealthConfiguration.loadingIndicatorStyle, color: UIColor.from(giniColor: self?.giniHealthConfiguration.loadingIndicatorColor ?? GiniHealthConfiguration.shared.loadingIndicatorColor), scale: self?.giniHealthConfiguration.loadingIndicatorScale)
+                    self?.view.showLoading(style: self?.giniHealthConfiguration.loadingIndicatorStyle,
+                                           color: UIColor.GiniHealthColors.accent1,
+                                           scale: self?.giniHealthConfiguration.loadingIndicatorScale)
                 } else {
                     self?.view.stopLoading()
                 }

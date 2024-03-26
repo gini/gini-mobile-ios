@@ -120,11 +120,6 @@ public final class GiniHealthConfiguration: NSObject {
                                                                                                                            darkModeColor: UIColor.GiniHealthColors.light4).uiColor())
 
     /**
-     Sets the color of the loading indicator to the specified color.
-     */
-    @objc public var loadingIndicatorColor = GiniColor(lightModeColor: .orange, darkModeColor: .orange)
-    
-    /**
      Sets the style of the loading indicator.
      */
     @objc public var loadingIndicatorStyle: UIActivityIndicatorView.Style = .whiteLarge
