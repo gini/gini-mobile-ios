@@ -16,7 +16,7 @@ The Gini Health API provides an information extraction service for analyzing hea
 ## Requirements
 
 - iOS 11.0+
-- Xcode 12.0+
+- Xcode 15.3+
 
 **Note:**
 In order to have better analysis results it is highly recommended to enable only devices with 8MP camera and flash. These devices would be:
