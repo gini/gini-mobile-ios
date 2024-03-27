@@ -206,4 +206,55 @@ final class GiniHealthTests: XCTestCase {
         // Then
         XCTAssertNil(receivedExtractions)
     }
+    
+    func testCreatePaymentRequest_Success() {
+        // Given
+        let expectedPaymentRequestID = MockSessionManager.paymentRequestId
+
+        // When
+        let expectation = self.expectation(description: "Creating payment request")
+        var receivedRequestId: String?
+        let paymentInfo = PaymentInfo(recipient: "Uno Flüchtlingshilfe", iban: "DE78370501980020008850", bic: "COLSDE33", amount: "1.00:EUR", purpose: "ReNr 12345", paymentUniversalLink: "ginipay-test://paymentRequester", paymentProviderId: "b09ef70a-490f-11eb-952e-9bc6f4646c57")
+        giniHealth.createPaymentRequest(paymentInfo: paymentInfo, completion: { result in
+            switch result {
+            case .success(let requestId):
+                receivedRequestId = requestId
+            case .failure(_):
+                receivedRequestId = nil
+            }
+            expectation.fulfill()
+        })
+        waitForExpectations(timeout: 1, handler: nil)
+
+        // Then
+        XCTAssertNotNil(receivedRequestId)
+        XCTAssertEqual(receivedRequestId!, expectedPaymentRequestID)
+    }
+    
+    func testOpenWebsite_Success() {
+        let mockUIApplication = MockUIApplication(canOpen: true)
+        let urlOpener = URLOpener(mockUIApplication)
+        let waitForWebsiteOpen = expectation(description: "Web site was opened!")
+
+        giniHealth.openPaymentProviderApp(requestID: "123", universalLink: "ginipay-bank://", urlOpener: urlOpener, completion: { open in
+            waitForWebsiteOpen.fulfill()
+            XCTAssert(open == true, "testOpenWebsite - FAILED to open web site")
+        })
+
+        waitForExpectations(timeout: 0.1, handler: nil)
+    }
+    
+    func testOpenWebsite_Failure() {
+        let mockUIApplication = MockUIApplication(canOpen: false)
+        let urlOpener = URLOpener(mockUIApplication)
+        let waitForWebsiteOpen = expectation(description: "Web site was not opened!")
+
+        giniHealth.openPaymentProviderApp(requestID: "123", universalLink: "ginipay-bank://", urlOpener: urlOpener, completion: { open in
+            waitForWebsiteOpen.fulfill()
+            XCTAssert(open == false, "testOpenWebsite - MANAGED to open web site")
+        })
+
+        waitForExpectations(timeout: 0.1, handler: nil)
+    }
 }
+

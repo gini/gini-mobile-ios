@@ -62,3 +62,10 @@ func load<T: Decodable>(fromFile named: String, type: String) -> T {
     
     return (try? JSONDecoder().decode(T.self, from: jsonData))!
 }
+
+func loadPaymentRequest() -> PaymentRequest {
+    let fileURLPath: String? = Bundle.module
+        .path(forResource: "paymentRequest", ofType: "json")
+    let jsonData = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
+        return try! JSONDecoder().decode(PaymentRequest.self, from: jsonData!)
+}

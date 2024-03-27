@@ -14,6 +14,7 @@ final class MockSessionManager: SessionManagerProtocol {
     static let failurePayableDocumentID = "626626a0-749f-11e2-bfd6-000000000003"
     static let missingDocumentID = "626626a0-749f-11e2-bfd6-000000000000"
     static let extractionsWithPaymentDocumentID = "626626a0-749f-11e2-bfd6-000000000004"
+    static let paymentRequestId = "b09ef70a-490f-11eb-952e-9bc6f4646c57"
     
     func upload<T>(resource: T, data: Data, cancellationToken: GiniHealthAPILibrary.CancellationToken?, completion: @escaping GiniHealthAPILibrary.CompletionResult<T.ResponseType>) where T : GiniHealthAPILibrary.Resource {
         //
@@ -78,8 +79,8 @@ final class MockSessionManager: SessionManagerProtocol {
                 }
 //            case .createDocument(_, _, _, _):
 //                completion(.success(SessionManagerMock.compositeDocumentId as! T.ResponseType))
-//            case .createPaymentRequest:
-//                completion(.success(SessionManagerMock.paymentRequestId as! T.ResponseType))
+            case .createPaymentRequest:
+                completion(.success(MockSessionManager.paymentRequestId as! T.ResponseType))
             case .paymentProvider(_):
                 let providerResponse: PaymentProviderResponse = loadProviderResponse()
                 completion(.success(providerResponse as! T.ResponseType))

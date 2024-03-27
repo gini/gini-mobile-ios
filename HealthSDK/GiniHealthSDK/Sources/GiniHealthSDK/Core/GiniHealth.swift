@@ -283,14 +283,14 @@ public struct DataForReview {
         - universalLink: Universal link for the selected payment provider
      
      */
-    public func openPaymentProviderApp(requestID: String, universalLink: String) {
+    public func openPaymentProviderApp(requestID: String, universalLink: String, urlOpener: URLOpener = URLOpener(UIApplication.shared), completion: ((Bool) -> Void)? = nil) {
         let queryItems = [URLQueryItem(name: "id", value: requestID)]
         let urlString = universalLink + "://payment"
         var urlComponents = URLComponents(string: urlString)!
         urlComponents.queryItems = queryItems
         let resultUrl = urlComponents.url!
         DispatchQueue.main.async {
-            UIApplication.shared.open(resultUrl, options: [:], completionHandler: nil)
+            urlOpener.openWebsite(url: resultUrl, completion: completion)
         }
     }
     
@@ -367,3 +367,4 @@ public struct DataForReview {
         }
     }
 }
+
