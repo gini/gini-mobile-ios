@@ -107,7 +107,9 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             DispatchQueue.main.async { [weak self] in
                 let isLoading = self?.model?.isImagesLoading ?? false
                 if isLoading {
-                    self?.collectionView.showLoading(style: self?.giniHealthConfiguration.loadingIndicatorStyle, color: UIColor.from(giniColor: self?.giniHealthConfiguration.loadingIndicatorColor ?? GiniHealthConfiguration.shared.loadingIndicatorColor), scale: self?.giniHealthConfiguration.loadingIndicatorScale)
+                    self?.collectionView.showLoading(style: .whiteLarge,
+                                                     color: UIColor.GiniHealthColors.accent1,
+                                                     scale: Constants.loadingIndicatorScale)
                 } else {
                     self?.collectionView.stopLoading()
                 }
@@ -118,7 +120,15 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             DispatchQueue.main.async { [weak self] in
                 let isLoading = self?.model?.isLoading ?? false
                 if isLoading {
-                    self?.view.showLoading(style: self?.giniHealthConfiguration.loadingIndicatorStyle, color: UIColor.from(giniColor: self?.giniHealthConfiguration.loadingIndicatorColor ?? GiniHealthConfiguration.shared.loadingIndicatorColor), scale: self?.giniHealthConfiguration.loadingIndicatorScale)
+                    if #available(iOS 13.0, *) {
+                        self?.view.showLoading(style: Constants.loadingIndicatorStyle,
+                                               color: UIColor.GiniHealthColors.accent1,
+                                               scale: Constants.loadingIndicatorScale)
+                    } else {
+                        self?.view.showLoading(style: .whiteLarge,
+                                               color: UIColor.GiniHealthColors.accent1,
+                                               scale: Constants.loadingIndicatorScale)
+                    }
                 } else {
                     self?.view.stopLoading()
                 }
@@ -808,5 +818,8 @@ extension PaymentReviewViewController {
         static let heightPageControl = 20.0
         static let heightToolbar = 40.0
         static let bottomPaddingPageImageView = 20.0
+        static let loadingIndicatorScale = 1.0
+        @available(iOS 13.0, *)
+        static let loadingIndicatorStyle = UIActivityIndicatorView.Style.large
     }
 }
