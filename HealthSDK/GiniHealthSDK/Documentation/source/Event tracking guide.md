@@ -4,10 +4,8 @@ Event Tracking
 The Gini Health SDK has the ability to track user events. In order to receive the events, implement the `GiniHealthTrackingDelegate` protocol and supply the delegate when initializing `PaymentReviewViewController`. For example:
 
 ```swift
-let viewController = PaymentReviewViewController.instantiate(with: self.health,
-                                                         document: document,
-                                                      extractions: extractions,
-                                                 trackingDelegate: self)
+let viewController = paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId,
+                                                                            trackingDelegate: self)
 ```
 
 ## Events
