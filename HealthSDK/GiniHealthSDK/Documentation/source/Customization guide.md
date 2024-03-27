@@ -4,6 +4,9 @@ Customization guide
 The Gini Health SDK components can be customized either through the `GiniHealthConfiguration`, the `Localizable.string` file or through the assets. Here you can find a complete guide with the reference to every customizable item.
 
 - [Overview of the UI customization options](#overview-of-the-ui-customization-options)
+- [Payment Component](#payment-component)
+- [Bank Selection Bottom Sheet](#bank-selection-bottom-sheet)
+- [Payment Feature Info Screen](#payment-feature-info-screen)
 - [Payment Review screen](#payment-review-screen)
 
 
