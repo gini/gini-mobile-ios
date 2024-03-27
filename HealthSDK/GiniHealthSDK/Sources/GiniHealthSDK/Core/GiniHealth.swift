@@ -150,8 +150,8 @@ public struct DataForReview {
     }
     
     /**
-     Checks if the document is payable which looks for iban extraction.
-     
+     Checks if the document is payable, looks for iban extraction.
+
      - Parameters:
         - docId: Id of uploaded document.
         - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case. Completion block called on main thread.
