@@ -167,13 +167,6 @@ func UIColorPreferred(named name: String) -> UIColor {
         return mainBundleColor
     }
 
-    if let customBundle = GiniHealthConfiguration.shared.customResourceBundle,
-        let customBundleColor = UIColor(named: name,
-                                        in: customBundle,
-                                        compatibleWith: nil) {
-        return customBundleColor
-    }
-
     if let color = UIColor(named: name,
                            in: giniHealthBundleResource(),
                            compatibleWith: nil) {

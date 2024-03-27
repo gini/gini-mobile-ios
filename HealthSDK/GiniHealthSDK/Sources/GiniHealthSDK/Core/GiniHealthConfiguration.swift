@@ -26,11 +26,6 @@ public final class GiniHealthConfiguration: NSObject {
     static var shared = GiniHealthConfiguration()
     
     /**
-     Should be set if the main app's bundle is not used.
-     */
-    var customResourceBundle: Bundle?
-
-    /**
      Returns a `GiniHealthConfiguration` instance which allows to set individual configurations
      to change the look and feel of the Gini Health SDK.
      
