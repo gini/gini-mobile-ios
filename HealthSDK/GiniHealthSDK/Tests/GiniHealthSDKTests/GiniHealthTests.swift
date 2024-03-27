@@ -187,4 +187,23 @@ final class GiniHealthTests: XCTestCase {
         XCTAssertNotNil(receivedExtractions)
         XCTAssertEqual(receivedExtractions!.count, expectedExtractions.count)
     }
+    
+    func testGetExtractions_Failure() {
+        // When
+        let expectation = self.expectation(description: "Extraction failure")
+        var receivedExtractions: [Extraction]?
+        giniHealth.getExtractions(docId: MockSessionManager.failurePayableDocumentID) { result in
+            switch result {
+            case .success(let extractions):
+                receivedExtractions = extractions
+            case .failure(_):
+                receivedExtractions = nil
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+
+        // Then
+        XCTAssertNil(receivedExtractions)
+    }
 }
