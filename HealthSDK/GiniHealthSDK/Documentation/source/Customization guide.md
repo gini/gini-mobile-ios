@@ -58,11 +58,17 @@ We support dark mode in our SDK. If you decide to customize the color palette, p
  
 You can also view the UI customisation guide in Figma [here](https://www.figma.com/file/rnNBzzwk41f7mB6z58oqV8/iOS-Gini-Health-SDK-4.0.0-UI-Customisation?type=design&node-id=8987%3A2854&mode=design&t=o5dQ7ZlNOfbapxmp-1).
 
+**Note:**
+To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
+
 <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FrnNBzzwk41f7mB6z58oqV8%2FiOS-Gini-Health-SDK-4.0.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D8987%253A2854%26mode%3Ddesign%26t%3Do5dQ7ZlNOfbapxmp-1" allowfullscreen></iframe>
 
 ## Bank Selection Bottom Sheet
 
 You can also view the UI customisation guide in Figma [here](https://www.figma.com/file/rnNBzzwk41f7mB6z58oqV8/iOS-Gini-Health-SDK-4.0.0-UI-Customisation?type=design&node-id=9008%3A1654&mode=design&t=o5dQ7ZlNOfbapxmp-1).
+
+**Note:**
+To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
 <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FrnNBzzwk41f7mB6z58oqV8%2FiOS-Gini-Health-SDK-4.0.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D9008%253A1654%26mode%3Ddesign%26t%3Do5dQ7ZlNOfbapxmp-1" allowfullscreen></iframe>
 
@@ -70,11 +76,17 @@ You can also view the UI customisation guide in Figma [here](https://www.figma.c
 
 You can also view the UI customisation guide in Figma [here](https://www.figma.com/file/rnNBzzwk41f7mB6z58oqV8/iOS-Gini-Health-SDK-4.0.0-UI-Customisation?type=design&node-id=9044%3A1582&mode=design&t=o5dQ7ZlNOfbapxmp-1).
 
+**Note:**
+To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
+
 <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FrnNBzzwk41f7mB6z58oqV8%2FiOS-Gini-Health-SDK-4.0.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D9044%253A1582%26mode%3Ddesign%26t%3Do5dQ7ZlNOfbapxmp-1" allowfullscreen></iframe>
 
 ## Payment Review screen
  
 You can also view the UI customisation guide in Figma [here](https://www.figma.com/file/rnNBzzwk41f7mB6z58oqV8/iOS-Gini-Health-SDK-4.0.0-UI-Customisation?type=design&node-id=9008%3A1300&mode=design&t=o5dQ7ZlNOfbapxmp-1).
+
+**Note:**
+To copy text from Figma you need to have a Figma account. If you don't have one, you can create one for free.
 
 <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FrnNBzzwk41f7mB6z58oqV8%2FiOS-Gini-Health-SDK-4.0.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D9008%253A1300%26mode%3Ddesign%26t%3Do5dQ7ZlNOfbapxmp-1" allowfullscreen></iframe>
 
