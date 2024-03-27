@@ -35,8 +35,8 @@ final class BanksBottomViewModel {
                                              darkModeColor: UIColor.GiniHealthColors.light7).uiColor()
     let rectangleColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark5,
                                             darkModeColor: UIColor.GiniHealthColors.light5).uiColor()
-    let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.light7,
-                                                    darkModeColor: UIColor.GiniHealthColors.dark7).uiColor().withAlphaComponent(0.3)
+    let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.black,
+                                                    darkModeColor: UIColor.white).uiColor().withAlphaComponent(0.4)
 
     let selectBankTitleText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.selectBank.label", 
                                                                        comment: "Select bank text from the top label on payment providers bottom sheet")
