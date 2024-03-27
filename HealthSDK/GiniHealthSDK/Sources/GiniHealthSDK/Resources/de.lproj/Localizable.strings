@@ -2,8 +2,8 @@
   File.strings
   Pods
 
-  Created by Nadya Karaban on 08.04.21.
-  
+ //  Copyright © 2024 Gini GmbH. All rights reserved.
+
 */
 "ginihealth.reviewscreen.recipient.placeholder" = "Empfänger";
 "ginihealth.reviewscreen.iban.placeholder" = "IBAN";
