@@ -2,7 +2,7 @@
 //  ScreenAPICoordinator.swift
 //  GiniHealthSDKExample
 //
-//  Created by Nadya Karaban on 22.05.23.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import GiniBankAPILibrary
