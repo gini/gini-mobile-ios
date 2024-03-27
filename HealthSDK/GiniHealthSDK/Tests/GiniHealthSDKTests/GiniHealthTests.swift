@@ -256,5 +256,75 @@ final class GiniHealthTests: XCTestCase {
 
         waitForExpectations(timeout: 0.1, handler: nil)
     }
+    
+    func testSetDocumentForReview_Success() {
+        // Given
+        let expectedExtractionContainer: ExtractionsContainer = loadExtractionResults(fileName: "extractionsWithPayment", type: "json")
+        let expectedExtractions: [Extraction] = ExtractionResult(extractionsContainer: expectedExtractionContainer).payment?.first ?? []
+
+        // When
+        let expectation = self.expectation(description: "Setting document for review")
+        var receivedExtractions: [Extraction]?
+        giniHealth.setDocumentForReview(documentId: MockSessionManager.extractionsWithPaymentDocumentID) { result in
+            switch result {
+            case .success(let extractions):
+                receivedExtractions = extractions
+            case .failure(_):
+                receivedExtractions = nil
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+
+        // Then
+        XCTAssertNotNil(receivedExtractions)
+        XCTAssertEqual(receivedExtractions!.count, expectedExtractions.count)
+    }
+    
+    func testFetchDataForReview_Success() {
+        // Given
+        let expectedExtractionContainer: ExtractionsContainer = loadExtractionResults(fileName: "extractionsWithPayment", type: "json")
+        let expectedExtractions: [Extraction] = ExtractionResult(extractionsContainer: expectedExtractionContainer).payment?.first ?? []
+        let expectedDocument: Document = loadDocument(fileName: "document4", type: "json")
+        let expectedDatForReview = DataForReview(document: expectedDocument, extractions: expectedExtractions)
+
+        // When
+        let expectation = self.expectation(description: "Fetching data for review")
+        var receivedDataForReview: DataForReview?
+        giniHealth.fetchDataForReview(documentId: MockSessionManager.extractionsWithPaymentDocumentID) { result in
+            switch result {
+            case .success(let dataForReview):
+                receivedDataForReview = dataForReview
+            case .failure(_):
+                receivedDataForReview = nil
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+
+        // Then
+        XCTAssertNotNil(receivedDataForReview)
+        XCTAssertEqual(receivedDataForReview!.document, expectedDatForReview.document)
+        XCTAssertEqual(receivedDataForReview!.extractions.count, expectedDatForReview.extractions.count)
+    }
+    
+    func testFetchDataForReview_Failure() {
+        // When
+        let expectation = self.expectation(description: "Failure fetching data for review")
+        var receivedError: GiniHealthError?
+        giniHealth.fetchDataForReview(documentId: MockSessionManager.missingDocumentID) { result in
+            switch result {
+            case .success(_):
+                receivedError = nil
+            case .failure(let error):
+                receivedError = error
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
+
+        // Then
+        XCTAssertNotNil(receivedError)
+    }
 }
 

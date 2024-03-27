@@ -59,26 +59,9 @@ final class MockSessionManager: SessionManagerProtocol {
                 case (MockSessionManager.extractionsWithPaymentDocumentID, .get):
                     let document: Document = load(fromFile: "document4", type: "json")
                     completion(.success(document as! T.ResponseType))
-//                case (SessionManagerMock.v3DocumentId, .delete):
-//                    documents.removeAll(where: { $0.id == id })
-//                    completion(.success("Deleted" as! T.ResponseType))
-//                case (SessionManagerMock.partialDocumentId, .get):
-//                    let document: Document = load(fromFile: "partialDocument", type: "json")
-//                    completion(.success(document as! T.ResponseType))
-//                case (SessionManagerMock.partialDocumentId, .delete):
-//                    documents.removeAll(where: { $0.id == id })
-//                    completion(.success("Deleted" as! T.ResponseType))
-//                case (SessionManagerMock.compositeDocumentId, .get):
-//                    let document: Document = load(fromFile: "compositeDocument", type: "json")
-//                    completion(.success(document as! T.ResponseType))
-//                case (SessionManagerMock.compositeDocumentId, .delete):
-//                    documents.removeAll(where: { $0.id == id })
-//                    completion(.success("Deleted" as! T.ResponseType))
                 default:
                     fatalError("Document id not found in tests")
                 }
-//            case .createDocument(_, _, _, _):
-//                completion(.success(SessionManagerMock.compositeDocumentId as! T.ResponseType))
             case .createPaymentRequest:
                 completion(.success(MockSessionManager.paymentRequestId as! T.ResponseType))
             case .paymentProvider(_):
@@ -87,12 +70,6 @@ final class MockSessionManager: SessionManagerProtocol {
             case .paymentProviders:
                 let paymentProvidersResponse: [PaymentProviderResponse] = loadProvidersResponse()
                 completion(.success(paymentProvidersResponse as! T.ResponseType))
-//            case .paymentRequest(_):
-//                let paymentRequest: PaymentRequest = loadPaymentRequest()
-//                completion(.success(paymentRequest as! T.ResponseType))
-//            case .feedback(_):
-//                extractionFeedbackBody = resource.request.httpBody ?? nil
-//                completion(.success("Feedback was sent" as! T.ResponseType))
             case .extractions(let documentId):
                 switch (documentId, resource.params.method) {
                 case (MockSessionManager.payableDocumentID, .get):
