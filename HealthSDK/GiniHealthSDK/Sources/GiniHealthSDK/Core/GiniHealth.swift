@@ -2,7 +2,7 @@
 //  GiniHealth.swift
 //  GiniHealth
 //
-//  Created by Nadya Karaban on 18.02.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -87,11 +87,10 @@ public struct DataForReview {
      In case of failure error that there are no supported banking apps installed.
      
      */
-    private func getInstalledBankingApps(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void){
-        paymentService.paymentProviders { result in
+    private func fetchInstalledBankingApps(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void) {
+        fetchBankingApps { result in
             switch result {
-            case let .success(providers):
-                self.bankProviders = []
+            case .success(let providers):
                 for provider in providers {
                     DispatchQueue.main.async {
                         if let url = URL(string:provider.appSchemeIOS) {
@@ -110,40 +109,32 @@ public struct DataForReview {
                 }
             case let .failure(error):
                 DispatchQueue.main.async {
-                    completion(.failure(.apiError(error)))
-                    
+                    completion(.failure(error))
                 }
             }
         }
-    }
-
-    /**
-     Checks if there are any banking app which support Gini Pay Connect functionality installed.
-     
-     - Parameters:
-        - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case. Completion block called on main thread.
-        In success case it includes array of payment providers.
-        In case of failure error that there are no supported banking apps installed.
-     */
-    public func checkIfAnyPaymentProviderAvailable(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void){
-        self.getInstalledBankingApps(completion: completion)
     }
     
     /**
-     Checks if there is any banking app which can support Gini Pay Connect functionality installed.
+     Getting a list of the banking apps supported by SDK
+     
      - Parameters:
-        -  appSchemes: A list of [LSApplicationQueriesSchemes] added in Info.plist. Scheme format: ginipay-bank://
-     - Returns: a boolean value.
+        - completion: An action for processing asynchronous data received from the service with Result type as a paramater.
+     Result is a value that represents either a success or a failure, including an associated value in each case.
+     In success case it includes array of payment providers supported by SDK.
+     In case of failure error provided by API.
      */
-    public func isAnyBankingAppInstalled(appSchemes: [String]) -> Bool {
-        for scheme in appSchemes {
-            if let url = URL(string:scheme) {
-                if UIApplication.shared.canOpenURL(url) {
-                    return true
-                }
+    
+    public func fetchBankingApps(completion: @escaping (Result<PaymentProviders, GiniHealthError>) -> Void) {
+        paymentService.paymentProviders { result in
+            switch result {
+            case let .success(providers):
+                self.bankProviders = providers
+                completion(.success(self.bankProviders))
+            case let .failure(error):
+                completion(.failure(.apiError(error)))
             }
         }
-        return false
     }
     
     /**
@@ -159,8 +150,8 @@ public struct DataForReview {
     }
     
     /**
-     Checks if the document is payable which looks for iban extraction.
-     
+     Checks if the document is payable, looks for iban extraction.
+
      - Parameters:
         - docId: Id of uploaded document.
         - completion: An action for processing asynchronous data received from the service with Result type as a paramater. Result is a value that represents either a success or a failure, including an associated value in each case. Completion block called on main thread.
@@ -287,12 +278,12 @@ public struct DataForReview {
      
      - Parameters:
         - requestID: Id of the created payment request.
-        - appScheme: App scheme for the selected payment provider
+        - universalLink: Universal link for the selected payment provider
      
      */
-    public func openPaymentProviderApp(requestID: String, appScheme: String) {
+    public func openPaymentProviderApp(requestID: String, universalLink: String) {
         let queryItems = [URLQueryItem(name: "id", value: requestID)]
-        let urlString = appScheme + "://payment"
+        let urlString = universalLink + "://payment"
         var urlComponents = URLComponents(string: urlString)!
         urlComponents.queryItems = queryItems
         let resultUrl = urlComponents.url!

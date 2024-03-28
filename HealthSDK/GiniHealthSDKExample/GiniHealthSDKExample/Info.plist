@@ -57,8 +57,14 @@
 	</array>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>ginipay-insurance-bank-mock</string>
+		<string>ginipay-cbwm</string>
+		<string>ginipay-consorsbank</string>
 		<string>ginipay-bank</string>
 		<string>ginipay-ginibank</string>
+		<string>ginipay-consorsbank</string>
+		<string>ginipay-cbwm</string>
+		<string></string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
