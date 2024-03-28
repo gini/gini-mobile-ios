@@ -36,8 +36,8 @@ In the example below you can see to override a font for `.body1`
 
 ```swift
 let configuration = GiniHealthConfiguration()
-        
-configuration.textStyleFonts[.body1] = UIFont.systemFont(ofSize: 20, weight: .bold)
+
+configuration.updateFont(UIFont(name: "Impact", size: 15)!, for: .body1)     
 health.setConfiguration(configuration)
 ```
 
