@@ -535,7 +535,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     // MARK: - Pay Button Action
     func payButtonClicked() {
-        var event = TrackingEvent.init(type: PaymentReviewScreenEventType.onNextButtonClicked)
+        var event = TrackingEvent.init(type: PaymentReviewScreenEventType.onToTheBankButtonClicked)
         if let selectedPaymentProviderName = selectedPaymentProvider?.name {
             event.info = ["paymentProvider": selectedPaymentProviderName]
         }

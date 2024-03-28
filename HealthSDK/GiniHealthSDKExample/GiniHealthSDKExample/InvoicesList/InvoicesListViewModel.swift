@@ -228,14 +228,12 @@ extension InvoicesListViewModel: PaymentProvidersBottomViewProtocol {
 extension InvoicesListViewModel: GiniHealthTrackingDelegate {
     func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {
         switch event.type {
-        case .onNextButtonClicked:
-            Log("Next button was tapped,\(String(describing: event.info))", event: .success)
+        case .onToTheBankButtonClicked:
+            Log("To the banking app button was tapped,\(String(describing: event.info))", event: .success)
         case .onCloseButtonClicked:
             Log("Close screen was triggered", event: .success)
         case .onCloseKeyboardButtonClicked:
             Log("Close keyboard was triggered", event: .success)
-        case .onBankSelectionButtonClicked:
-            Log("Bank selection button was tapped,\(String(describing: event.info))", event: .success)
         }
     }
 }
