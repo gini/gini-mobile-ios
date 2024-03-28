@@ -2,7 +2,7 @@
 //  GiniHealthUtils.swift
 //  GiniHealth
 //
-//  Created by Nadya Karaban on 15.04.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -165,13 +165,6 @@ func UIColorPreferred(named name: String) -> UIColor {
                                      in: Bundle.main,
                                      compatibleWith: nil) {
         return mainBundleColor
-    }
-
-    if let customBundle = GiniHealthConfiguration.shared.customResourceBundle,
-        let customBundleColor = UIColor(named: name,
-                                        in: customBundle,
-                                        compatibleWith: nil) {
-        return customBundleColor
     }
 
     if let color = UIColor(named: name,

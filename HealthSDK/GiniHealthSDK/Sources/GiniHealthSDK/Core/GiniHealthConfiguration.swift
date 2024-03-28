@@ -2,7 +2,7 @@
 //  GiniHealthConfiguration.swift
 //  GiniHealth
 //
-//  Created by Nadya Karaban on 30.03.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -25,11 +25,6 @@ public final class GiniHealthConfiguration: NSObject {
      */
     static var shared = GiniHealthConfiguration()
     
-    /**
-     Should be set if the main app's bundle is not used.
-     */
-    var customResourceBundle: Bundle?
-
     /**
      Returns a `GiniHealthConfiguration` instance which allows to set individual configurations
      to change the look and feel of the Gini Health SDK.
@@ -118,21 +113,17 @@ public final class GiniHealthConfiguration: NSObject {
                                                                                      borderWidth: 1.0,
                                                                                      placeholderForegroundColor: GiniColor(lightModeColor: UIColor.GiniHealthColors.dark4,
                                                                                                                            darkModeColor: UIColor.GiniHealthColors.light4).uiColor())
+    
+    // MARK: - Update to custom font
+    /**
+     Allows setting a custom font for specific text styles. The change will affect all screens where a specific text style was used.
 
-    /**
-     Sets the color of the loading indicator to the specified color.
+     - parameter font: Font that is going to be assosiated with specific text style. You can use scaled font or scale your font with our util method `UIFont.scaledFont(_ font: UIFont, textStyle: UIFont.TextStyle)`
+     - parameter textStyle: Constants that describe the preferred styles for fonts. Please, find additional information [here](https://developer.apple.com/documentation/uikit/uifont/textstyle)
      */
-    @objc public var loadingIndicatorColor = GiniColor(lightModeColor: .orange, darkModeColor: .orange)
-    
-    /**
-     Sets the style of the loading indicator.
-     */
-    @objc public var loadingIndicatorStyle: UIActivityIndicatorView.Style = .whiteLarge
-    
-    /**
-     Sets the scale of the loading indicator.
-     */
-    @objc public var loadingIndicatorScale: CGFloat = 1.0
+    public func updateFont(_ font: UIFont, for textStyle: UIFont.TextStyle) {
+        textStyleFonts[textStyle] = font
+    }
     
     /**
      Set dictionary of fonts for available text styles. Used internally.
