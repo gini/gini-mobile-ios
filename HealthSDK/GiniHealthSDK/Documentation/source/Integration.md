@@ -221,7 +221,8 @@ The `PaymentReviewViewController` presentation requires a `PaymentComponentsCont
 ```
 
 > **Note:** 
-> - PaymentReviewViewController contains the following configuration option:
+> - PaymentReviewViewController contains the following configuration options:
+> - paymentReviewStatusBarStyle: Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in `Info.plist`.
 > - showPaymentReviewCloseButton: If set to true, a floating close button will be shown in the top right corner of the screen.
 Default value is false.
 

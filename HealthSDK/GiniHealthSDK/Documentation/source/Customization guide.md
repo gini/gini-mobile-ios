@@ -90,3 +90,17 @@ To copy text from Figma you need to have a Figma account. If you don't have one,
 
 <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FrnNBzzwk41f7mB6z58oqV8%2FiOS-Gini-Health-SDK-4.0.0-UI-Customisation%3Ftype%3Ddesign%26node-id%3D9008%253A1300%26mode%3Ddesign%26t%3Do5dQ7ZlNOfbapxmp-1" allowfullscreen></iframe>
 
+> **Note:** 
+> - PaymentReviewViewController contains the following configuration options:
+> - paymentReviewStatusBarStyle: Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in `Info.plist`.
+> - showPaymentReviewCloseButton: If set to true, a floating close button will be shown in the top right corner of the screen.
+Default value is false.
+
+For enabling `showPaymentReviewCloseButton`:
+
+```swift
+let giniConfiguration = GiniHealthConfiguration()
+config.showPaymentReviewCloseButton =  true
+healthSDK.setConfiguration(config)
+```
+
