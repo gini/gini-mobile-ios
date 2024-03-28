@@ -5,9 +5,11 @@ Testing
 
 In order for banking apps to be able to return the user to your app after the payment has been resolved you need register a scheme for your app to respond to a deep link scheme known by the Gini Bank API.
 
+>  **Info:**
 You should already have a scheme and host from us. Please contact us in case you don't have them.
 
-The following is an example for the deep link gini-pay://payment-requester:
+The following is an example for the deep link `gini-pay://payment-requester`:
+
 <br>
 <center><img src="img/Integration guide/SchemeExample.png" width="600"/></center>
 </br>
@@ -27,7 +29,7 @@ After you've set the client credentials in the example banking app and installed
 
 #### Payment component
 
-After following the integration steps above you'll arrive at the `Invoice list screen` which already has integrated the `Payment Component`.
+After following the integration steps above you'll arrive at the `Payment Invoice list screen`, which already has integrated the `Payment Component`.
 The following screenshot shows a sample list of invoices where the `PaymentComponent` is shown for each invoice.
 
 <br>
@@ -36,7 +38,7 @@ The following screenshot shows a sample list of invoices where the `PaymentCompo
 
 #### Bank Selection Bottom sheet 
 
-You should see the `Gini-Test-Payment-Provider` preselected in every payment component view. By clicking the picker you should see the `BankSelectionBottomSheet` with the list of available banking apps (including Gini-Test-Payment-Provider and other testing and production apps)
+You should see the `Gini-Test-Payment-Provider` preselected in every payment component view. By clicking the picker you should see the `BankSelectionBottomSheet` with the list of available banking apps (including `Gini-Test-Payment-Provider` and other testing and production apps).
 
 <br>
 <center><img src="img/Integration guide/BankSelectionBottomSheet.png" height="500"/></center>
@@ -44,7 +46,7 @@ You should see the `Gini-Test-Payment-Provider` preselected in every payment com
 
 #### More information and FAQ
 
-By clicking either the more information or the info icon on the payment component view you should see the Payment feature Info screen with information about the payment feature and an FAQ section.
+By clicking either the more information or the info icon on the `Payment Component` view you should see the `Payment feature Info screen` with information about the payment feature and an FAQ section.
 
 <br>
 <center><img src="img/Integration guide/PaymentFeatureInformationScreen.png" height="500"/></center>
@@ -52,7 +54,7 @@ By clicking either the more information or the info icon on the payment componen
 
 #### Payment Review
 
-By clicking the `Pay the invoice` button on a payment component view you should see the ReviewFragment, which shows the invoice's pages and the payment information. It also allows editing the payment information. The `To the banking app` button should have the icon and colors of the banking app, which was selected in the payment component view.
+By clicking the `Pay the invoice` button on a `Payment Component` view you should see the `Payment Review screen`, which shows the invoice's pages and the payment information. It also allows editing the payment information. The `To the banking app` button should have the icon and colors of the banking app, which was selected in the payment component view.
 
 Check that the extractions and the document preview are shown and then press the `Pay` button:
 
