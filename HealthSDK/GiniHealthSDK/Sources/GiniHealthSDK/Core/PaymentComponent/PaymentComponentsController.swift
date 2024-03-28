@@ -12,7 +12,7 @@ import GiniHealthAPILibrary
  Uses a callback mechanism to handle payment provider requests.
  */
 public protocol PaymentComponentsControllerProtocol: AnyObject {
-    func isLoadingStateChanged(isLoading: Bool) // Because we can't use Combine, iOS 11 supported
+    func isLoadingStateChanged(isLoading: Bool) // Because we can't use Combine
     func didFetchedPaymentProviders()
 }
 

@@ -2,8 +2,8 @@
   Localizable.strings
   GiniHealthSDKExample
 
-  Created by Nadya Karaban on 28.02.22.
-  
+ //  Copyright © 2024 Gini GmbH. All rights reserved.
+
 */
 
 "giniHealthSDKExample.invoicesList.title" = "Rechnungsliste";

@@ -35,8 +35,8 @@ final class BanksBottomViewModel {
                                              darkModeColor: UIColor.GiniHealthColors.light7).uiColor()
     let rectangleColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark5,
                                             darkModeColor: UIColor.GiniHealthColors.light5).uiColor()
-    let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.light7,
-                                                    darkModeColor: UIColor.GiniHealthColors.dark7).uiColor().withAlphaComponent(0.3)
+    let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.black,
+                                                    darkModeColor: UIColor.white).uiColor().withAlphaComponent(0.4)
 
     let selectBankTitleText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.selectBank.label", 
                                                                        comment: "Select bank text from the top label on payment providers bottom sheet")
@@ -75,6 +75,12 @@ final class BanksBottomViewModel {
     func updatePaymentProvidersInstalledState() {
         for index in 0 ..< paymentProviders.count {
             paymentProviders[index].isInstalled = isPaymentProviderInstalled(paymentProvider: paymentProviders[index].paymentProvider)
+        }
+        if selectedPaymentProvider == nil {
+            selectedPaymentProvider = paymentProviders.first(where: { $0.isInstalled == true })?.paymentProvider
+            if let indexSelected = paymentProviders.firstIndex(where: { $0.paymentProvider.id == selectedPaymentProvider?.id }) {
+                paymentProviders[indexSelected].isSelected = true
+            }
         }
     }
     
