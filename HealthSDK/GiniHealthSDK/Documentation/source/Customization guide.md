@@ -22,7 +22,7 @@ Find the names of the color resources in the color palette (you can also view it
 
 ### Images
 
-Customizing of images is done via overriding of color sets. 
+Customizing of images is done via overriding of image sets. 
 If you want to override specific SDK images:
 1. Create an asset catalog for images called `GiniImages.xcassets` in your app.
 2. Add your own images to `GiniImages.xcassets` using the image names from the SDK's UI customization guide. It is important to name the images you wish to override exactly as shown in the UI customization guide, otherwise overriding won’t work.

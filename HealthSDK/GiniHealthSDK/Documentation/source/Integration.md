@@ -177,7 +177,7 @@ If a banking app is not installed it will also display its AppStore link.
 The `BankSelectionBottomSheet` presentation requires a `PaymentComponentsController` instance from the `Integrate the Payment component` step 1.
 
 > **Note:** 
-> - The `BankSelectionBottomSheet` can be presented modally, used in a container view or pushed to a navigation view controller. Make sure to add your own navigation around the provided views.
+> - We strongly recommend to present `BankSelectionBottomSheet` modally with a `.overFullScreen` presentation style.
 
 > ⚠️  **Important:**
 > - The `BankSelectionBottomSheet` presentation should happen in `func didTapOnBankPicker(documentId: String?)` inside
