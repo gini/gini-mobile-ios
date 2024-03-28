@@ -5,12 +5,20 @@ The Gini Health SDK for iOS provides all the UI and functionality needed to use 
 
 The Gini Health API provides an information extraction service for analyzing health invoices. Specifically, it extracts information such as the document sender or the payment relevant information (amount to pay, IBAN, etc.). In addition it also provides a secure channel for sharing payment related information between clients. 
 
-**Note** For supporting each payment provider you need to specify `LSApplicationQueriesSchemes` in your `Info.plist` file. App schemes for specification will be provided by Gini.
+> ⚠️  **Important:**
+For supporting each payment provider you need to specify `LSApplicationQueriesSchemes` in your `Info.plist` file. App schemes for specification will be provided by Gini.
 
 
 ## GiniHealthAPI initialization
 
+> ⚠️  **Important:**
 You should have received Gini Health API client credentials from us. Please get in touch with us in case you don't have them.
+
+You can easy initialize `GiniHealthAPI` with the client credentials:
+
+```swift
+let apiLib = GiniHealthAPI.Builder(client: client).build()
+```
 
 If you want to use a transparent proxy with your own authentication you can specify your own domain and add `AlternativeTokenSource` protocol implementation:
 
@@ -25,7 +33,7 @@ The token your provide will be added as a bearer token to all api.custom.net req
 
 If you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information)
 ```swift
-    let giniApiLib = GiniHealthAPI
+    let apiLib = GiniHealthAPI
         .Builder(client: Client(id: "your-id",
                                 secret: "your-secret",
                                 domain: "your-domain"),
@@ -33,19 +41,17 @@ If you want to use _Certificate pinning_, provide metadata for the upload proces
                  pinningConfig: yourPublicPinningConfig)
         .build()
 ```
-> ⚠️  **Important**
-> - The document metadata for the upload process is intended to be used for reporting.
 
 ## GiniHealth initialization
 
-Now that the `GiniHealthAPI` has been initialized, you can initialize `GiniHealth`
+Now that the `GiniHealthAPI` has been initialized, you can initialize `GiniHealth`:
 
 ```swift
  let healthSDK = GiniHealth(with: giniApiLib)
 ```
 ## Document upload
  
-and upload your document if you plan to do it with `GiniHealth`. First you need get document service and create partial document.
+For the document upload if you plan to do it with `GiniHealth`. First you need get document service and create partial document.
 
 ```swift
 let documentService: DefaultDocumentService = healthSDK.documentService()
@@ -70,7 +76,7 @@ self.healthSDK.documentService
 
 ## Check which documents/invoices are payable
 
-There is a method in GiniHealth:
+GiniHealth provides a method for checking if the document is payable or not.
 
 ```swift
 healthSDK.checkIfDocumentIsPayable(docId: String,
@@ -101,13 +107,15 @@ dispatchGroup.notify(queue: .main) {
 We provide a custom payment component view to help users pay the invoice/document.
 Please follow the steps below for the payment component integration.
 
-### 1. Create an instance of the `PaymentComponentsController` class with a `GiniHealth` as parameter.
+### 1. Create an instance of the `PaymentComponentsController`.
 
 ```swift
 let paymentComponentsController = PaymentComponentsController(giniHealth: health)
 ```
 
-### 2. Load the payment providers by calling the `loadPaymentProviders` function from the `PaymentComponentsController` and listen to the `PaymentComponentsControllerProtocol`.
+### 2. Load the payment providers
+
+You will load the list of the payment providers by calling the `loadPaymentProviders` function from the `PaymentComponentsController` and conform to the `PaymentComponentsControllerProtocol`.
 
 ```swift
 paymentComponentsController.delegate = self // where self is your viewController
@@ -119,13 +127,15 @@ You can show/hide an `UIActivityIndicator` based on that.
 
 * `PaymentComponentsControllerProtocol` provides completion handlers when `PaymentComponentsController` fetched successfully payment providers or when it failed with an error.
 
-**Note:**
+>  **Note:**
 It should be sufficient to call paymentComponentsController.loadPaymentProviderApps() only once when your app starts.
 
 > - We effectively handle situations where there are no payment providers available.
 > - Based on the payment provider's colors, the `UIView` will automatically change its color.
 
-### 3. Show the Payment Component view and listen to the `PaymentComponentViewProtocol`.
+### 3. Show the Payment Component view
+
+In this step you will show a payment component view and conform to the `PaymentComponentViewProtocol`.
 
 Depending on the value of `isPayable`, incorporate the corresponding payment component view into your cells using this function:
 
@@ -138,7 +148,7 @@ public func paymentView(documentId: String) -> UIView
 
 * `PaymentComponentViewProtocol` is the view protocol and provides events handlers when the user tapped on various areas on the payment component view (more information icon, bank/payment provider picker, the pay invoice button and etc.).
 
-> - Make sure you properly link these delegates to get notified.
+> - Make sure you properly link `PaymentComponentsControllerProtocol` and `PaymentComponentViewProtocol` delegates to get notified.
 
 ## Show PaymentInfoViewController
 
@@ -146,9 +156,9 @@ The `PaymentInfoViewController` displays information and an FAQ section about th
 It requires a `PaymentComponentsController` instance (see `Integrate the Payment component` step 1).
 
 > **Note:** 
-> - The `PaymentInfoViewController` can be presented modally, used in a container view or pushed to a navigation view controller. Make sure to add your own navigational elements around the provided views.
+> - The `PaymentInfoViewController` can be presented modally, used in a container view or pushed to a navigation view controller. Make sure to add your own navigation around the provided views.
 
-> **Important:** 
+> ⚠️  **Important:**
 > - The `PaymentInfoViewController` presentation should happen in `func didTapOnMoreInformation(documentId: String?)` inside
 `PaymentComponentViewProtocol` implementation.(`Integrate the Payment component` step 3).
 
@@ -167,9 +177,9 @@ If a banking app is not installed it will also display its AppStore link.
 The `BankSelectionBottomSheet` presentation requires a `PaymentComponentsController` instance from the `Integrate the Payment component` step 1.
 
 > **Note:** 
-> - The `BankSelectionBottomSheet` can be presented modally, used in a container view or pushed to a navigation view controller. Make sure to add your own navigational elements around the provided views.
+> - The `BankSelectionBottomSheet` can be presented modally, used in a container view or pushed to a navigation view controller. Make sure to add your own navigation around the provided views.
 
-> **Important:** 
+> ⚠️  **Important:**
 > - The `BankSelectionBottomSheet` presentation should happen in `func didTapOnBankPicker(documentId: String?)` inside
 `PaymentComponentViewProtocol` implementation (see `Integrate the Payment component` step 3).
 
@@ -189,9 +199,9 @@ The `PaymentReviewViewController` displays an invoice's pages and extractions. I
 The `PaymentReviewViewController` presentation requires a `PaymentComponentsController` instance from the `Integrate the Payment component` step 1 and `documentId`.
 
 > **Note:** 
-> - The `PaymentReviewViewController` can be presented modally, used in a container view or pushed to a navigation view controller. Make sure to add your own navigational elements around the provided views.
+> - The `PaymentReviewViewController` can be presented modally, used in a container view or pushed to a navigation view controller. Make sure to add your own navigation around the provided views.
 
-> **Important:** 
+> ⚠️  **Important:**
 > - The `PaymentReviewViewController` presentation should happen in `func didTapOnBankPicker(documentId: String?)` inside
 `PaymentComponentViewProtocol` implementation (see `Integrate the Payment component` step 3).
 
