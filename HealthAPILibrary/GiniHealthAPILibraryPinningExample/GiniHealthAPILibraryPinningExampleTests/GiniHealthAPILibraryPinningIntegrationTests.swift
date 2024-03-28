@@ -2,7 +2,7 @@
 //  GiniHealthAPILibraryPinningIntegrationTests.swift
 //  GiniHealthAPILibraryPinningExampleTests
 //
-//  Created by Nadya Karaban on 17.05.22.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import XCTest
