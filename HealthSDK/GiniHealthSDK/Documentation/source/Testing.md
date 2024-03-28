@@ -77,7 +77,7 @@ After you press the `Pay` button the Gini Bank SDK resolves the payment and allo
 
 #### Return to your app
 
-After the test payment has been executed, the example banking app should show a "Return to Business" button which should take you back to your app.
+After the test payment has been executed, the example banking app should show a "Return to Health app" button which should take you back to your app.
 
 For handling incoming url in your app after redirecting back from the banking app you need to implement to handle the incoming url:
 The following is an example for the url `gini-pay://payment-requester`:
