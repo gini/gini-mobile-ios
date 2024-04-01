@@ -41,6 +41,8 @@ public enum GiniHealthError: Error {
     /// Error thrown when api didn't returns payment extractions.
     case noPaymentDataExtracted
 }
+
+extension GiniHealthError: Equatable {}
 /**
  Data structure for Payment Review Screen initialization.
  */
