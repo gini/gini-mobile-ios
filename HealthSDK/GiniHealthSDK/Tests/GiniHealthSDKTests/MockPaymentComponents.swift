@@ -5,7 +5,7 @@
 //
 
 
-import Foundation
+import UIKit
 @testable import GiniHealthSDK
 @testable import GiniHealthAPILibrary
 
@@ -26,5 +26,54 @@ class MockPaymentComponents: PaymentComponentsProtocol {
         isLoading = false
         let paymentProviderResponse = loadProviderResponse()
         selectedPaymentProvider = PaymentProvider(id: paymentProviderResponse.id, name: paymentProviderResponse.name, appSchemeIOS: paymentProviderResponse.appSchemeIOS, minAppVersion: paymentProviderResponse.minAppVersion, colors: paymentProviderResponse.colors, iconData: Data(url: URL(string: paymentProviderResponse.iconLocation))!, appStoreUrlIOS: paymentProviderResponse.appStoreUrlIOS, universalLinkIOS: paymentProviderResponse.universalLinkIOS)
+    }
+    
+    func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {
+        switch docId {
+        case MockSessionManager.payableDocumentID:
+            completion(.success(true))
+        case MockSessionManager.notPayableDocumentID:
+            completion(.success(false))
+        case MockSessionManager.missingDocumentID:
+            completion(.failure(.apiError(.noResponse)))
+        default:
+            fatalError("Document id not handled in tests")
+        }
+    }
+    
+    func paymentView(documentId: String) -> UIView {
+        let viewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider)
+        viewModel.documentId = documentId
+        let view = PaymentComponentView()
+        view.viewModel = viewModel
+        return view
+    }
+    
+    func bankSelectionBottomSheet() -> UIViewController {
+        let paymentProvidersBottomView = BanksBottomView()
+        let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
+                                                                   selectedPaymentProvider: selectedPaymentProvider)
+        paymentProvidersBottomView.viewModel = paymentProvidersBottomViewModel
+        let bankSelectionBottomSheet = BankSelectionBottomSheet()
+        bankSelectionBottomSheet.bottomSheet = paymentProvidersBottomView
+        return bankSelectionBottomSheet
+    }
+    
+    func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: (any GiniHealthTrackingDelegate)?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
+        switch documentID {
+        case MockSessionManager.payableDocumentID:
+            completion(PaymentReviewViewController(), nil)
+        case MockSessionManager.missingDocumentID:
+            completion(nil, .apiError(.noResponse))
+        default:
+            fatalError("Document id not handled in tests")
+        }
+    }
+    
+    func paymentInfoViewController() -> UIViewController {
+        let paymentInfoViewController = PaymentInfoViewController()
+        let paymentInfoViewModel = PaymentInfoViewModel(paymentProviders: paymentProviders)
+        paymentInfoViewController.viewModel = paymentInfoViewModel
+        return paymentInfoViewController
     }
 }

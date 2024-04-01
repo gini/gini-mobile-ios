@@ -20,6 +20,11 @@ protocol PaymentComponentsProtocol {
     var isLoading: Bool { get set }
     var selectedPaymentProvider: PaymentProvider? { get set }
     func loadPaymentProviders()
+    func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
+    func paymentView(documentId: String) -> UIView
+    func bankSelectionBottomSheet() -> UIViewController
+    func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void)
+    func paymentInfoViewController() -> UIViewController
 }
 
 /**
