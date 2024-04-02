@@ -15,8 +15,8 @@ public protocol HealthAPI {
 /// The Gini Health API Library
 public final class GiniHealthAPI: HealthAPI {
     
-    public var docService: DocumentService!
-    public var payService: PaymentService?
+    private var docService: DocumentService!
+    private var payService: PaymentService?
     static var logLevel: LogLevel = .none
     public var sessionDelegate: URLSessionDelegate? = nil
 

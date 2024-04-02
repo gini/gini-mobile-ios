@@ -16,8 +16,8 @@ class MockHealthAPI: HealthAPI {
         payService!
     }
     
-    public var docService: DocumentService!
-    public var payService: PaymentService?
+    private var docService: DocumentService!
+    private var payService: PaymentService?
     var paymentProvidersResult: Result<PaymentProviders, Error> = .success([])
     
     init(docService: DocumentService!, payService: PaymentService? = nil) {
