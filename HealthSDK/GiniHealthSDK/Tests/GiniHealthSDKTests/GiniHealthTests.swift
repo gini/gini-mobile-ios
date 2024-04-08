@@ -4,14 +4,14 @@ import XCTest
 
 final class GiniHealthTests: XCTestCase {
     
-    var giniHealthAPI: HealthAPI!
+    var giniHealthAPI: GiniHealthAPI!
     var giniHealth: GiniHealth!
     
     override func setUp() {
         let sessionManagerMock = MockSessionManager()
         let documentService = DefaultDocumentService(sessionManager: sessionManagerMock)
         let paymentService = PaymentService(sessionManager: sessionManagerMock)
-        giniHealthAPI = MockHealthAPI(docService: documentService, payService: paymentService)
+        giniHealthAPI = GiniHealthAPI(documentService: documentService, paymentService: paymentService)
         giniHealth = GiniHealth(with: giniHealthAPI)
     }
 
