@@ -292,7 +292,7 @@ public struct DataForReview {
         urlComponents.queryItems = queryItems
         let resultUrl = urlComponents.url!
         DispatchQueue.main.async {
-            urlOpener.openWebsite(url: resultUrl, completion: completion)
+            urlOpener.openLink(url: resultUrl, completion: completion)
         }
     }
     
