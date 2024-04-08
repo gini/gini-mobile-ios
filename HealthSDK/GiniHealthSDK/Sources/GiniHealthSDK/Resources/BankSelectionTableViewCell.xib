@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -34,15 +34,8 @@
                                     <constraint firstAttribute="width" constant="24" id="EfC-ZK-wdF"/>
                                 </constraints>
                             </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="appStoreIcon" translatesAutoresizingMaskIntoConstraints="NO" id="65l-X7-BGU">
-                                <rect key="frame" x="263" y="6.6666666666666679" width="114" height="38"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="38" id="3pn-8t-2Rh"/>
-                                    <constraint firstAttribute="width" constant="114" id="uP9-tJ-6gC"/>
-                                </constraints>
-                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bank name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oVR-oD-7XV">
-                                <rect key="frame" x="60" y="15" width="193" height="21"/>
+                                <rect key="frame" x="60" y="15" width="283" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -50,13 +43,10 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="65l-X7-BGU" firstAttribute="centerY" secondItem="Ib2-Tc-2W4" secondAttribute="centerY" id="5bG-Eb-UAa"/>
                             <constraint firstItem="brl-6B-Unt" firstAttribute="leading" secondItem="Ib2-Tc-2W4" secondAttribute="leading" constant="12" id="Ely-Mm-wdS"/>
-                            <constraint firstItem="dDz-HO-7hV" firstAttribute="leading" secondItem="oVR-oD-7XV" secondAttribute="trailing" priority="999" constant="10" id="FVd-j0-UHx"/>
+                            <constraint firstItem="dDz-HO-7hV" firstAttribute="leading" secondItem="oVR-oD-7XV" secondAttribute="trailing" constant="10" id="FVd-j0-UHx"/>
                             <constraint firstItem="dDz-HO-7hV" firstAttribute="centerY" secondItem="Ib2-Tc-2W4" secondAttribute="centerY" id="ITQ-NB-G8p"/>
                             <constraint firstAttribute="trailing" secondItem="dDz-HO-7hV" secondAttribute="trailing" constant="16" id="Ig0-mW-2B5"/>
-                            <constraint firstItem="65l-X7-BGU" firstAttribute="leading" secondItem="oVR-oD-7XV" secondAttribute="trailing" priority="999" constant="10" id="Q74-qH-aUf"/>
-                            <constraint firstAttribute="trailing" secondItem="65l-X7-BGU" secondAttribute="trailing" constant="16" id="cdV-dp-4Mi"/>
                             <constraint firstItem="oVR-oD-7XV" firstAttribute="leading" secondItem="brl-6B-Unt" secondAttribute="trailing" constant="16" id="dws-aP-nQO"/>
                             <constraint firstItem="brl-6B-Unt" firstAttribute="centerY" secondItem="Ib2-Tc-2W4" secondAttribute="centerY" id="v9T-YV-e9t"/>
                             <constraint firstItem="oVR-oD-7XV" firstAttribute="centerY" secondItem="Ib2-Tc-2W4" secondAttribute="centerY" id="ywf-w7-KwQ"/>
@@ -73,19 +63,15 @@
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
-                <outlet property="appStoreBankNameSpacingConstraint" destination="Q74-qH-aUf" id="0AT-o0-R9v"/>
-                <outlet property="appStoreImageView" destination="65l-X7-BGU" id="MKP-hr-sE3"/>
                 <outlet property="bankImageView" destination="brl-6B-Unt" id="2Fu-fU-jqx"/>
                 <outlet property="bankNameLabel" destination="oVR-oD-7XV" id="et3-aE-mW4"/>
                 <outlet property="cellView" destination="Ib2-Tc-2W4" id="Xsl-PS-09d"/>
-                <outlet property="selectionIndicatorBankNameSpacingConstraint" destination="FVd-j0-UHx" id="K8f-L1-OOQ"/>
                 <outlet property="selectionIndicatorImageView" destination="dDz-HO-7hV" id="v26-8C-WQn"/>
             </connections>
             <point key="canvasLocation" x="72.51908396946564" y="25"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="appStoreIcon" width="119.66407012939453" height="40"/>
         <image name="selectionIndicator" width="24" height="24"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

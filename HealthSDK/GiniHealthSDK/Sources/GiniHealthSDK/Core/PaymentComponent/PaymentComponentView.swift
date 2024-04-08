@@ -103,7 +103,7 @@ final class PaymentComponentView: UIView {
                                leftImageIcon: viewModel.bankImageIcon,
                                rightImageIcon: viewModel.chevronDownIconName,
                                rightImageTintColor: viewModel.chevronDownIconColor,
-                               isPaymentProviderInstalled: viewModel.isPaymentProviderInstalled,
+                               isPaymentProviderInstalled: true,
                                notInstalledTextColor: viewModel.notInstalledBankTextColor)
         return button
     }()
@@ -114,7 +114,7 @@ final class PaymentComponentView: UIView {
         button.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.buttonViewHeight)
         button.configure(with: viewModel.giniHealthConfiguration.primaryButtonConfiguration)
         button.customConfigure(paymentProviderColors: viewModel.paymentProviderColors, 
-                               isPaymentProviderInstalled: viewModel.isPaymentProviderInstalled,
+                               isPaymentProviderInstalled: true,
                                text: viewModel.payInvoiceLabelText)
         return button
     }()
