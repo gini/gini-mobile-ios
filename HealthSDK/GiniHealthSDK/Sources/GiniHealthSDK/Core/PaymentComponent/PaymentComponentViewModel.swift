@@ -90,7 +90,7 @@ final class PaymentComponentViewModel {
     private var bankName: String?
     var bankNameLabelText: String {
         if let bankName, !bankName.isEmpty {
-            return isPaymentProviderInstalled ? bankName : placeholderBankNameText
+            return bankName
         }
         return placeholderBankNameText
     }
@@ -110,13 +110,6 @@ final class PaymentComponentViewModel {
     let payInvoiceLabelText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.payInvoice.label", 
                                                                        comment: "Title label used for the pay invoice button")
 
-    // Payment provider installation status
-    var isPaymentProviderInstalled: Bool {
-        if let paymentProviderScheme, let url = URL(string: paymentProviderScheme), UIApplication.shared.canOpenURL(url) {
-            return true
-        }
-        return false
-    }
     private var paymentProviderScheme: String?
 
     weak var delegate: PaymentComponentViewProtocol?

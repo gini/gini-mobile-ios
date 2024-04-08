@@ -72,18 +72,6 @@ final class BanksBottomViewModel {
         self.calculateHeights()
     }
     
-    func updatePaymentProvidersInstalledState() {
-        for index in 0 ..< paymentProviders.count {
-            paymentProviders[index].isInstalled = isPaymentProviderInstalled(paymentProvider: paymentProviders[index].paymentProvider)
-        }
-        if selectedPaymentProvider == nil {
-            selectedPaymentProvider = paymentProviders.first(where: { $0.isInstalled == true })?.paymentProvider
-            if let indexSelected = paymentProviders.firstIndex(where: { $0.paymentProvider.id == selectedPaymentProvider?.id }) {
-                paymentProviders[indexSelected].isSelected = true
-            }
-        }
-    }
-    
     private func calculateHeights() {
         let totalTableViewHeight = CGFloat(paymentProviders.count) * Constants.cellSizeHeight
         let totalBottomViewHeight = Constants.blankBottomViewHeight + totalTableViewHeight
