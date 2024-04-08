@@ -10,7 +10,7 @@ import XCTest
 @testable import GiniHealthAPILibrary
 
 final class PaymentComponentsControllerTests: XCTestCase {
-    var giniHealthAPI: HealthAPI!
+    var giniHealthAPI: GiniHealthAPI!
     var mockPaymentComponentsController: PaymentComponentsProtocol!
 
     override func setUp() {
@@ -18,7 +18,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
         let sessionManagerMock = MockSessionManager()
         let documentService = DefaultDocumentService(sessionManager: sessionManagerMock)
         let paymentService = PaymentService(sessionManager: sessionManagerMock)
-        giniHealthAPI = MockHealthAPI(docService: documentService, payService: paymentService)
+        giniHealthAPI = GiniHealthAPI(documentService: documentService, paymentService: paymentService)
         let giniHealth = GiniHealth(with: giniHealthAPI)
         mockPaymentComponentsController = MockPaymentComponents(giniHealthSDK: giniHealth)
     }
