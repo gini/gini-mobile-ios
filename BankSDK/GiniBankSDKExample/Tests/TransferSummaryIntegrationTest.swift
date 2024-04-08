@@ -67,8 +67,6 @@ class TransferSummaryIntegrationTest: XCTestCase {
                            result.extractions["iban"]?.value)
             XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "paymentRecipient" })?.value,
                            result.extractions["paymentRecipient"]?.value)
-//            XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "paymentPurpose" })?.value,
-//                           result.extractions["paymentPurpose"]?.value)
             XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "bic" })?.value,
                            result.extractions["bic"]?.value)
             XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
@@ -102,8 +100,6 @@ class TransferSummaryIntegrationTest: XCTestCase {
                                                extractionsAfterFeedback.first(where: { $0.name == "iban" })?.value)
                                 XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "paymentRecipient" })?.value,
                                                extractionsAfterFeedback.first(where: { $0.name == "paymentRecipient" })?.value)
-                                //                            XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "paymentPurpose" })?.value,
-                                //                                           extractionsAfterFeedback.first(where: { $0.name == "paymentPurpose" })?.value)
                                 XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "bic" })?.value,
                                                extractionsAfterFeedback.first(where: { $0.name == "bic" })?.value)
                                 XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
