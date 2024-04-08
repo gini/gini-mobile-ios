@@ -13,7 +13,7 @@ public struct URLOpener {
         self.application = application
     }
 
-    func openWebsite(url: URL, completion: ((Bool) -> Void)?) {
+    func openLink(url: URL, completion: ((Bool) -> Void)?) {
         if application.canOpenURL(url) {
             application.open(url, options: [:], completionHandler: completion)
         } else {
