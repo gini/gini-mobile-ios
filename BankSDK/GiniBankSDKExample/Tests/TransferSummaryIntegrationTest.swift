@@ -11,23 +11,11 @@ import XCTest
 @testable import GiniBankSDK
 
 class TransferSummaryIntegrationTest: XCTestCase {
-    let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]!
-    let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]!
-    var giniBankAPILib: GiniBankAPI!
-    var giniCaptureSDKDocumentService: GiniCaptureSDK.DocumentService!
-    var giniBankAPIDocumentService: GiniBankAPILibrary.DefaultDocumentService!
+    lazy var giniHelper = GiniSetupHelper()
 
     override func setUp() {
-        let client = Client(id: clientId,
-                            secret: clientSecret,
-                            domain: "bank-sdk-example")
-        giniBankAPILib = GiniBankAPI
-            .Builder(client: client)
-            .build()
 
-        giniCaptureSDKDocumentService = DocumentService(lib: giniBankAPILib, metadata: nil)
-
-        giniBankAPIDocumentService = giniBankAPILib.documentService()
+        giniHelper.setup()
     }
 
     func testSendTransferSummaryFeedback() {
@@ -156,14 +144,14 @@ class TransferSummaryIntegrationTest: XCTestCase {
         let captureDocument = builder.build(with: testDocumentData,
                                             fileName: "\(fileName).pdf")!
 
-        GiniBankConfiguration.shared.documentService = giniCaptureSDKDocumentService
+        GiniBankConfiguration.shared.documentService = giniHelper.giniCaptureSDKDocumentService
 
         // Upload a test document
-        giniCaptureSDKDocumentService.upload(document: captureDocument) { result in
+        giniHelper.giniCaptureSDKDocumentService.upload(document: captureDocument) { result in
             switch result {
             case .success(_):
                 // Analyze the uploaded test document
-                self.giniCaptureSDKDocumentService?.startAnalysis { result in
+                    self.giniHelper.giniCaptureSDKDocumentService?.startAnalysis { result in
                     switch result {
                     case let .success(extractionResult):
                         let extractions: [String: Extraction] = Dictionary(uniqueKeysWithValues: extractionResult.extractions.compactMap {
@@ -175,7 +163,7 @@ class TransferSummaryIntegrationTest: XCTestCase {
                         let analysisResult = AnalysisResult(extractions: extractions,
                                                             lineItems: extractionResult.lineItems,
                                                             images: [],
-                                                            document: self.giniCaptureSDKDocumentService?.document,
+                                                            document: self.giniHelper.giniCaptureSDKDocumentService?.document,
                                                             candidates: [:])
 
                         delegate.giniCaptureAnalysisDidFinishWith(result: analysisResult)
@@ -206,8 +194,8 @@ class TransferSummaryIntegrationTest: XCTestCase {
       * Interaction with the network service is handled by the Bank SDK internally.
       */
     private func getUpdatedExtractionsFromGiniBankSDK(for document: Document, completion: @escaping AnalysisCompletion){
-        self.giniBankAPIDocumentService.extractions(for: document,
-                                                    cancellationToken: CancellationToken()) { result in
+        self.giniHelper.giniBankAPIDocumentService.extractions(for: document,
+                                                               cancellationToken: CancellationToken()) { result in
             switch result {
             case let .success(extractionResult):
                 completion(.success(extractionResult))
