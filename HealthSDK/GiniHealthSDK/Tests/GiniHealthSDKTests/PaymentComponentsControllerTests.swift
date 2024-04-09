@@ -147,4 +147,15 @@ final class PaymentComponentsControllerTests: XCTestCase {
         let paymentInfoViewModel = paymentInfoVC.viewModel!
         XCTAssertEqual(paymentInfoViewModel.paymentProviders, [])
     }
+    
+    func testPaymentProvidersSorting() {
+        let givenPaymentProviders = loadProviders(fileName: "notSortedBanks")
+        
+        let expectedPaymentProviders = loadProviders(fileName: "sortedBanks")
+        
+        let bottomViewModel = BanksBottomViewModel(paymentProviders: givenPaymentProviders, selectedPaymentProvider: nil, urlOpener: URLOpener(MockUIApplication(canOpen: false)))
+        
+        XCTAssertEqual(bottomViewModel.paymentProviders.count, 11)
+        XCTAssertEqual(bottomViewModel.paymentProviders.map { $0.paymentProvider }, expectedPaymentProviders)
+    }
 }
