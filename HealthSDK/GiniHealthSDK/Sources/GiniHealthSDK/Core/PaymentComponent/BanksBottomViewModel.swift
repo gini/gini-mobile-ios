@@ -53,9 +53,12 @@ final class BanksBottomViewModel {
     let descriptionLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark3,
                                                          darkModeColor: UIColor.GiniHealthColors.light3).uiColor()
     var descriptionLabelFont: UIFont
+    
+    private var urlOpener: URLOpener
 
-    init(paymentProviders: PaymentProviders, selectedPaymentProvider: PaymentProvider?) {
+    init(paymentProviders: PaymentProviders, selectedPaymentProvider: PaymentProvider?, urlOpener: URLOpener = URLOpener(UIApplication.shared)) {
         self.selectedPaymentProvider = selectedPaymentProvider
+        self.urlOpener = urlOpener
         
         let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .regular)
         let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
@@ -67,8 +70,7 @@ final class BanksBottomViewModel {
             .map({ PaymentProviderAdditionalInfo(isSelected: $0.id == selectedPaymentProvider?.id,
                                                  isInstalled: isPaymentProviderInstalled(paymentProvider: $0),
                                                  paymentProvider: $0)})
-        self.paymentProviders.sort { isPaymentProviderInstalled(paymentProvider: $0.paymentProvider) && !isPaymentProviderInstalled(paymentProvider: $1.paymentProvider) }
-
+            .sorted(by: { $0.isInstalled && !$1.isInstalled })
         self.calculateHeights()
     }
     
@@ -93,7 +95,10 @@ final class BanksBottomViewModel {
     }
     
     private func isPaymentProviderInstalled(paymentProvider: PaymentProvider) -> Bool {
-        paymentProvider.appSchemeIOS.canOpenURLString()
+        if let urlAppScheme = URL(string: paymentProvider.appSchemeIOS) {
+            return urlOpener.canOpenLink(url: urlAppScheme)
+        }
+        return false
     }
 }
 

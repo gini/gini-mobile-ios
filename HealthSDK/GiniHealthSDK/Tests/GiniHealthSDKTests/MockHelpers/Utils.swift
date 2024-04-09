@@ -23,10 +23,10 @@ func loadProvidersResponse() -> [PaymentProviderResponse] {
     return (try? JSONDecoder().decode([PaymentProviderResponse].self, from: jsonData!))!
 }
 
-func loadProviders() -> PaymentProviders {
+func loadProviders(fileName: String = "providers") -> PaymentProviders {
     var providers: PaymentProviders = []
     let fileURLPath: String? = Bundle.module
-        .path(forResource: "providers", ofType: "json")
+        .path(forResource: fileName, ofType: "json")
     let jsonData = try? Data.init(contentsOf: URL(fileURLWithPath: fileURLPath!))
     let providersResponse = try! JSONDecoder().decode([PaymentProviderResponse].self, from: jsonData!)
     for providerResponse in providersResponse {
