@@ -16,12 +16,11 @@ class OnboardingViewController: UIViewController {
     private var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
     private var bottomNavigationBar: UIView?
 
-    lazy var skipButton = UIBarButtonItem(title: NSLocalizedStringPreferredFormat(
-        "ginicapture.onboarding.skip",
-        comment: "Skip button"),
+    lazy var skipButton = UIBarButtonItem(title: NSLocalizedStringPreferredFormat("ginicapture.onboarding.skip",
+                                                                                  comment: "Skip button"),
                                           style: .plain,
-                              target: self,
-                              action: #selector(close))
+                                          target: self,
+                                          action: #selector(skipTapped))
     init() {
         dataSource = OnboardingDataSource(configuration: configuration)
         super.init(nibName: "OnboardingViewController", bundle: giniCaptureBundle())
@@ -117,9 +116,9 @@ class OnboardingViewController: UIViewController {
             layoutBottomNavigationBar(navigationBar)
             navigationBarBottomAdapter?.showButtons(navigationButtons: [.skip, .next], navigationBar: navigationBar)
 
-            nextButton.setTitle(NSLocalizedStringPreferredFormat(
-                "ginicapture.onboarding.next",
-                comment: "Next button"), for: .normal)
+            nextButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.onboarding.next",
+                                                                 comment: "Next button"),
+                                for: .normal)
 
             nextButton.addTarget(self, action: #selector(nextPage), for: .touchUpInside)
             navigationItem.rightBarButtonItem = skipButton
@@ -130,7 +129,14 @@ class OnboardingViewController: UIViewController {
         nextButton.removeFromSuperview()
     }
 
-    @objc private func close() {
+    @objc private func skipTapped() {
+        if let currentPageScreenName = dataSource.pageModels[dataSource.currentPageIndex].page.analyticsScreen {
+            AnalyticsManager.track(event: AnalyticsEvent.skipTapped, screenName: currentPageScreenName)
+        }
+        close()
+    }
+
+    private func close() {
         dismiss(animated: true)
     }
 
@@ -140,10 +146,19 @@ class OnboardingViewController: UIViewController {
     }
 
     @objc private func nextPage() {
-        if dataSource.currentPage < dataSource.pageModels.count - 1 {
-            let index = IndexPath(item: dataSource.currentPage + 1, section: 0)
+        if dataSource.currentPageIndex < dataSource.pageModels.count - 1 {
+            // Next  button tapped
+            if let currentPageScreenName = dataSource.pageModels[dataSource.currentPageIndex].page.analyticsScreen {
+                AnalyticsManager.track(event: AnalyticsEvent.nextStepTapped, screenName: currentPageScreenName)
+
+            }
+            let index = IndexPath(item: dataSource.currentPageIndex + 1, section: 0)
             pagesCollection.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
         } else {
+            // Get started button tapped
+            if let currentPageScreenName = dataSource.pageModels[dataSource.currentPageIndex].page.analyticsScreen {
+                AnalyticsManager.track(event: AnalyticsEvent.getStartedTapped, screenName: currentPageScreenName)
+            }
             close()
         }
     }
@@ -169,34 +184,28 @@ extension OnboardingViewController: OnboardingScreen {
         case dataSource.pageModels.count - 1:
             if configuration.bottomNavigationBarEnabled,
                let bottomNavigationBar = bottomNavigationBar {
-                navigationBarBottomAdapter?.showButtons(
-                    navigationButtons: [.getStarted],
-                    navigationBar: bottomNavigationBar)
+                navigationBarBottomAdapter?.showButtons(navigationButtons: [.getStarted],
+                                                        navigationBar: bottomNavigationBar)
             } else {
                 navigationItem.rightBarButtonItem = nil
                 if nextButton != nil {
-                    nextButton.setTitle(NSLocalizedStringPreferredFormat(
-                        "ginicapture.onboarding.getstarted",
-                        comment: "Get Started button"), for: .normal)
-                    nextButton.accessibilityValue = NSLocalizedStringPreferredFormat(
-                                                    "ginicapture.onboarding.getstarted",
-                                                    comment: "Get Started button")
+                    nextButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.onboarding.getstarted",
+                                                                         comment: "Get Started button"), for: .normal)
+                    nextButton.accessibilityValue = NSLocalizedStringPreferredFormat("ginicapture.onboarding.getstarted",
+                                                                                     comment: "Get Started button")
                 }
             }
         default:
             if configuration.bottomNavigationBarEnabled,
                let bottomNavigationBar = bottomNavigationBar {
-                navigationBarBottomAdapter?.showButtons(
-                    navigationButtons: [.skip, .next],
-                    navigationBar: bottomNavigationBar)
+                navigationBarBottomAdapter?.showButtons(navigationButtons: [.skip, .next],
+                                                        navigationBar: bottomNavigationBar)
             } else {
                 navigationItem.rightBarButtonItem = skipButton
                 if nextButton != nil {
-                    nextButton.setTitle(
-                        NSLocalizedStringPreferredFormat(
-                            "ginicapture.onboarding.next",
-                            comment: "Next button"),
-                        for: .normal)
+                    nextButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.onboarding.next",
+                                                                         comment: "Next button"),
+                                        for: .normal)
                 }
             }
         }

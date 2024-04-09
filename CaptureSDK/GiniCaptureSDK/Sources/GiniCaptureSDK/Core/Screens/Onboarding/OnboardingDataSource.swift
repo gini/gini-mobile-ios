@@ -23,7 +23,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
     typealias OnboardingPageModel = (page: OnboardingPage, illustrationAdapter: OnboardingIllustrationAdapter?)
     private let giniConfiguration: GiniConfiguration
     weak var delegate: OnboardingScreen?
-    var currentPage = 0
+    var currentPageIndex = 0
 
     lazy var pageModels: [OnboardingPageModel] = {
         if let customPages = giniConfiguration.customOnboardingPages {
@@ -66,31 +66,40 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
 
     private func defaultOnboardingPagesDataSource() -> [OnboardingPageModel] {
         var pageModels = [OnboardingPageModel]()
-
-        let flatPaperPageModel = (page: OnboardingPage(imageName: DefaultOnboardingPage.flatPaper.imageName,
-                                                       title: DefaultOnboardingPage.flatPaper.title,
-                                                       description: DefaultOnboardingPage.flatPaper.description),
+        var flatPaperPage = OnboardingPage(imageName: DefaultOnboardingPage.flatPaper.imageName,
+                                           title: DefaultOnboardingPage.flatPaper.title,
+                                           description: DefaultOnboardingPage.flatPaper.description)
+        flatPaperPage.analyticsScreen = AnalyticsScreen.onboardingFlatPaper
+        let flatPaperPageModel = (page: flatPaperPage,
                                   illustrationAdapter: giniConfiguration.onboardingAlignCornersIllustrationAdapter)
 
-        let goodLightingPageModel = (page: OnboardingPage(imageName: DefaultOnboardingPage.lighting.imageName,
-                                                          title: DefaultOnboardingPage.lighting.title,
-                                                          description: DefaultOnboardingPage.lighting.description),
+        var goodLightingPage = OnboardingPage(imageName: DefaultOnboardingPage.lighting.imageName,
+                                              title: DefaultOnboardingPage.lighting.title,
+                                              description: DefaultOnboardingPage.lighting.description)
+        goodLightingPage.analyticsScreen = AnalyticsScreen.onboardingLighting
+
+        let goodLightingPageModel = (page: goodLightingPage,
                                      illustrationAdapter: giniConfiguration.onboardingLightingIllustrationAdapter)
 
         pageModels = [flatPaperPageModel, goodLightingPageModel]
 
         if giniConfiguration.multipageEnabled {
-            let multiPageModel = (page: OnboardingPage(imageName: DefaultOnboardingPage.multipage.imageName,
-                                                       title: DefaultOnboardingPage.multipage.title,
-                                                       description: DefaultOnboardingPage.multipage.description),
+            var multiPage = OnboardingPage(imageName: DefaultOnboardingPage.multipage.imageName,
+                                           title: DefaultOnboardingPage.multipage.title,
+                                           description: DefaultOnboardingPage.multipage.description)
+            multiPage.analyticsScreen = AnalyticsScreen.onboardingMultipage
+
+            let multiPageModel = (page: multiPage,
                                   illustrationAdapter: giniConfiguration.onboardingMultiPageIllustrationAdapter)
             pageModels.append(multiPageModel)
         }
 
         if giniConfiguration.qrCodeScanningEnabled {
-            let qrCodePageModel = (page: OnboardingPage(imageName: DefaultOnboardingPage.qrcode.imageName,
-                                                        title: DefaultOnboardingPage.qrcode.title,
-                                                        description: DefaultOnboardingPage.qrcode.description),
+            var qrCodePage = OnboardingPage(imageName: DefaultOnboardingPage.qrcode.imageName,
+                                            title: DefaultOnboardingPage.qrcode.title,
+                                            description: DefaultOnboardingPage.qrcode.description)
+            qrCodePage.analyticsScreen = AnalyticsScreen.onboardingQRcode
+            let qrCodePageModel = (page: qrCodePage,
                                    illustrationAdapter: giniConfiguration.onboardingQRCodeIllustrationAdapter)
             pageModels.append(qrCodePageModel)
         }
@@ -129,16 +138,43 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView,
                         targetContentOffsetForProposedContentOffset proposedContentOffset: CGPoint) -> CGPoint {
-        let index = IndexPath(row: currentPage, section: 0)
+        let index = IndexPath(row: currentPageIndex, section: 0)
         let attr = collectionView.layoutAttributesForItem(at: index)
         return attr?.frame.origin ?? CGPoint.zero
     }
 
+    private var isInitialScroll = true
+
     // MARK: - Display the page number in page controll of collection view Cell
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // this method is called twice when the screen is displyed for the first time
+        guard !isInitialScroll else {
+            isInitialScroll = false
+            return
+        }
+
         let page = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
-        currentPage = page
+        currentPageIndex = page
         delegate?.didScroll(page: page)
+    }
+
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        print("DEBUG - scrollViewDidEndDecelerating")
+        let pageWidth = scrollView.frame.size.width
+        let currentPage = Int(scrollView.contentOffset.x / pageWidth)
+
+        // Track an event for the current page
+        trackEventForPage(currentPage)
+    }
+
+    func trackEventForPage(_ page: Int) {
+        // Track your event based on the page
+        // Trigger your event tracking code here
+        if let nextPageAnalyticsScreen = pageModels[page].page.analyticsScreen{
+            AnalyticsManager.trackScreenShown(screenName: nextPageAnalyticsScreen)
+//            print("DEBUG - trackEventForPage =", nextPageAnalyticsScreen)
+            //TODO: need to keep track of the event already sent because when the user reaches the last page can still scroll and because of the bounce we send more events
+        }
     }
 
     // MARK: - UICollectionViewDelegateFlowLayout
@@ -146,60 +182,5 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
                                layout collectionViewLayout: UICollectionViewLayout,
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
         return collectionView.bounds.size
-    }
-
-}
-
-enum DefaultOnboardingPage {
-    case flatPaper
-    case lighting
-    case multipage
-    case qrcode
-
-    var imageName: String {
-        switch self {
-        case .flatPaper:
-            return "onboardingFlatPaper"
-        case .lighting:
-            return "onboardingGoodLighting"
-        case .multipage:
-            return "onboardingMultiPages"
-        case .qrcode:
-            return "onboardingQRCode"
-        }
-    }
-
-    var title: String {
-        switch self {
-        case .flatPaper:
-            return NSLocalizedStringPreferredFormat("ginicapture.onboarding.flatPaper.title",
-                                                    comment: "onboarding flat paper title")
-        case .lighting:
-            return NSLocalizedStringPreferredFormat("ginicapture.onboarding.goodLighting.title",
-                                                    comment: "onboarding good lighting title")
-        case .multipage:
-            return NSLocalizedStringPreferredFormat("ginicapture.onboarding.multiPages.title",
-                                                    comment: "onboarding multi pages title")
-        case .qrcode:
-            return NSLocalizedStringPreferredFormat("ginicapture.onboarding.qrCode.title",
-                                                    comment: "onboarding qrcode title")
-        }
-    }
-
-    var description: String {
-        switch self {
-        case .flatPaper:
-            return NSLocalizedStringPreferredFormat("ginicapture.onboarding.flatPaper.description",
-                                                    comment: "onboarding flat paper description")
-        case .lighting:
-            return NSLocalizedStringPreferredFormat("ginicapture.onboarding.goodLighting.description",
-                                                    comment: "onboarding good lighting description")
-        case .multipage:
-            return NSLocalizedStringPreferredFormat("ginicapture.onboarding.multiPages.description",
-                                                    comment: "onboarding multi pages description")
-        case .qrcode:
-            return NSLocalizedStringPreferredFormat("ginicapture.onboarding.qrCode.description",
-                                                    comment: "onboarding qrcode description")
-        }
     }
 }
