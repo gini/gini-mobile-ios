@@ -64,11 +64,11 @@ final class BanksBottomViewModel {
         self.descriptionLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.caption1] ?? defaultRegularFont
         
         self.paymentProviders = paymentProviders
-            .filter({ $0.appStoreUrlIOS != nil || isPaymentProviderInstalled(paymentProvider: $0) })
             .map({ PaymentProviderAdditionalInfo(isSelected: $0.id == selectedPaymentProvider?.id,
                                                  isInstalled: isPaymentProviderInstalled(paymentProvider: $0),
                                                  paymentProvider: $0)})
-        
+        self.paymentProviders.sort { isPaymentProviderInstalled(paymentProvider: $0.paymentProvider) && !isPaymentProviderInstalled(paymentProvider: $1.paymentProvider) }
+
         self.calculateHeights()
     }
     
