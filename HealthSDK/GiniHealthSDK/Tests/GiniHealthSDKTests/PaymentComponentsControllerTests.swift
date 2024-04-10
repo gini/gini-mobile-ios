@@ -86,7 +86,11 @@ final class PaymentComponentsControllerTests: XCTestCase {
 
         // Then
         XCTAssertTrue(view is PaymentComponentView)
-        XCTAssertEqual((view as! PaymentComponentView).viewModel?.documentId, documentId)
+        guard let view = view as? PaymentComponentView else {
+            XCTFail("Error finding correct view.")
+            return
+        }
+        XCTAssertEqual(view.viewModel?.documentId, documentId)
     }
     
     func testBankSelectionBottomSheet_ReturnsViewController() {
@@ -95,8 +99,11 @@ final class PaymentComponentsControllerTests: XCTestCase {
 
         // Then
         XCTAssertTrue(viewController is BankSelectionBottomSheet)
-        let bottomSheet = viewController as! BankSelectionBottomSheet
-        XCTAssertTrue(bottomSheet.bottomSheet != nil)
+        guard let bottomSheet = viewController as? BankSelectionBottomSheet else {
+            XCTFail("Error finding correct viewController.")
+            return
+        }
+        XCTAssertNotNil(bottomSheet.bottomSheet)
     }
     
     func testLoadPaymentReviewScreenFor_Success() {
@@ -141,10 +148,15 @@ final class PaymentComponentsControllerTests: XCTestCase {
 
         // Then
         XCTAssertTrue(viewController is PaymentInfoViewController)
-        let paymentInfoVC = viewController as! PaymentInfoViewController
+        guard let paymentInfoVC = viewController as? PaymentInfoViewController else {
+            XCTFail("Error finding correct viewController.")
+            return
+        }
         XCTAssertNotNil(paymentInfoVC.viewModel)
-        XCTAssertTrue(paymentInfoVC.viewModel != nil)
-        let paymentInfoViewModel = paymentInfoVC.viewModel!
+        guard let paymentInfoViewModel = paymentInfoVC.viewModel else {
+            XCTFail("Error finding payment info viewModel.")
+            return
+        }
         XCTAssertEqual(paymentInfoViewModel.paymentProviders, [])
     }
 }
