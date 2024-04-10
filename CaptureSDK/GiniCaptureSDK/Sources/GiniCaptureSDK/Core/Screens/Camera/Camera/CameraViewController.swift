@@ -42,6 +42,9 @@ final class CameraViewController: UIViewController {
     private var validQRCodeProcessing: Bool = false
 
     private var isValidIBANDetected: Bool = false
+    // Analytics
+    private var invalidQRCodeOverlayFirstAppearance: Bool = true
+    private var ibanOverlayFirstAppearance: Bool = true
 
     weak var delegate: CameraViewControllerDelegate?
 
@@ -92,6 +95,7 @@ final class CameraViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        AnalyticsManager.trackScreenShown(screenName: .camera)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -285,6 +289,7 @@ final class CameraViewController: UIViewController {
         cameraPane.setupAuthorization(isHidden: false)
         configureLeftButtons()
         cameraButtonsViewModel.captureAction = { [weak self] in
+            self?.sendAnalyticsEventCapture()
             self?.cameraPane.toggleCaptureButtonActivation(state: false)
             self?.cameraPreviewViewController.captureImage { [weak self] data, error in
                 guard let self = self else { return }
@@ -332,6 +337,16 @@ final class CameraViewController: UIViewController {
         cameraPane.thumbnailView.thumbnailButton.addTarget(cameraButtonsViewModel,
                                                            action: #selector(cameraButtonsViewModel.thumbnailPressed),
                                                            for: .touchUpInside)
+    }
+
+    private func sendAnalyticsEventCapture() {
+        let eventProperties = [AnalyticsProperty(key: .ibanDetectionLayerVisible,
+                                                 value: !ibanDetectionOverLay.isHidden)]
+
+        AnalyticsManager.track(event: .captureTapped,
+                               screenName: .camera,
+                               properties: eventProperties)
+
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -485,14 +500,20 @@ final class CameraViewController: UIViewController {
     }
 
     private func showIBANOverlay(with IBANs: [String]) {
-
         UIView.animate(withDuration: 0.3) {
             self.ibanDetectionOverLay.isHidden = false
             self.cameraPreviewViewController.changeCameraFrameColor(to: .GiniCapture.success2)
         }
 
+        sendAnalyticsEventIBANDetection()
         ibanDetectionOverLay.configureOverlay(hidden: false)
         ibanDetectionOverLay.setupView(with: IBANs)
+    }
+
+    private func sendAnalyticsEventIBANDetection () {
+        guard ibanOverlayFirstAppearance else { return }
+        AnalyticsManager.track(event: .ibanDetected, screenName: .camera)
+        ibanOverlayFirstAppearance = false
     }
 
     private func hideIBANOverlay() {
@@ -548,6 +569,10 @@ final class CameraViewController: UIViewController {
             self.cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.success2)
         }
 
+        // this event is sent once per SDK session since the message can be displayed often in the same session
+        AnalyticsManager.track(event: .qr_code_scanned,
+                               screenName: .camera,
+                               properties: [AnalyticsProperty(key: .qrCodeValid, value: true)])
         qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: true)
     }
 
@@ -561,8 +586,17 @@ final class CameraViewController: UIViewController {
             self.qrCodeOverLay.isHidden = false
             self.cameraPreviewViewController.changeQRFrameColor(to: .GiniCapture.warning3)
         }
-
+        sendAnalyticsEventForInvalidQRCode()
         qrCodeOverLay.configureQrCodeOverlay(withCorrectQrCode: false)
+    }
+
+    private func sendAnalyticsEventForInvalidQRCode() {
+        guard invalidQRCodeOverlayFirstAppearance else { return }
+        // this event is sent once per SDK session since the message can be displayed often in the same session
+        AnalyticsManager.track(event: .qr_code_scanned,
+                               screenName: .camera,
+                               properties: [AnalyticsProperty(key: .qrCodeValid, value: false)])
+        invalidQRCodeOverlayFirstAppearance = false
     }
 
     private func resetQRCodeScanning(isValid: Bool) {
