@@ -24,8 +24,12 @@ class MockPaymentComponents: PaymentComponentsProtocol {
     
     func loadPaymentProviders() {
         isLoading = false
-        let paymentProviderResponse = loadProviderResponse()
-        selectedPaymentProvider = PaymentProvider(id: paymentProviderResponse.id, name: paymentProviderResponse.name, appSchemeIOS: paymentProviderResponse.appSchemeIOS, minAppVersion: paymentProviderResponse.minAppVersion, colors: paymentProviderResponse.colors, iconData: Data(url: URL(string: paymentProviderResponse.iconLocation))!, appStoreUrlIOS: paymentProviderResponse.appStoreUrlIOS, universalLinkIOS: paymentProviderResponse.universalLinkIOS)
+        guard let paymentProviderResponse: PaymentProviderResponse = load(fromFile: "provider") else {
+            return
+        }
+        if let iconData = Data(url: URL(string: paymentProviderResponse.iconLocation)) {
+            selectedPaymentProvider = PaymentProvider(id: paymentProviderResponse.id, name: paymentProviderResponse.name, appSchemeIOS: paymentProviderResponse.appSchemeIOS, minAppVersion: paymentProviderResponse.minAppVersion, colors: paymentProviderResponse.colors, iconData: iconData, appStoreUrlIOS: paymentProviderResponse.appStoreUrlIOS, universalLinkIOS: paymentProviderResponse.universalLinkIOS)
+        }
     }
     
     func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void) {

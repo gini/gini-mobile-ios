@@ -25,7 +25,9 @@ final class MockSessionManager: SessionManagerProtocol {
             switch apiMethod {
             case .file(_):
                 let imageData = UIImage(named: "Gini-Test-Payment-Provider", in: Bundle.module, compatibleWith: nil)?.pngData()
-                completion(.success(imageData as! T.ResponseType))
+                if let imageData = imageData as? T.ResponseType {
+                    completion(.success(imageData))
+                }
             default:
                 break
             }
@@ -46,43 +48,63 @@ final class MockSessionManager: SessionManagerProtocol {
             case .document(let id):
                 switch (id, resource.params.method) {
                 case (MockSessionManager.payableDocumentID, .get):
-                    let document: Document = load(fromFile: "document1", type: "json")
-                    completion(.success(document as! T.ResponseType))
+                    let document: Document? = load(fromFile: "document1", type: "json")
+                    if let document = document as? T.ResponseType {
+                        completion(.success(document))
+                    }
                 case (MockSessionManager.notPayableDocumentID, .get):
-                    let document: Document = load(fromFile: "document2", type: "json")
-                    completion(.success(document as! T.ResponseType))
+                    let document: Document? = load(fromFile: "document2", type: "json")
+                    if let document = document as? T.ResponseType {
+                        completion(.success(document))
+                    }
                 case (MockSessionManager.failurePayableDocumentID, .get):
-                    let document: Document = load(fromFile: "document3", type: "json")
-                    completion(.success(document as! T.ResponseType))
+                    let document: Document? = load(fromFile: "document3", type: "json")
+                    if let document = document as? T.ResponseType {
+                        completion(.success(document))
+                    }
                 case (MockSessionManager.missingDocumentID, .get):
                     completion(.failure(.notFound(response: nil, data: nil)))
                 case (MockSessionManager.extractionsWithPaymentDocumentID, .get):
-                    let document: Document = load(fromFile: "document4", type: "json")
-                    completion(.success(document as! T.ResponseType))
+                    let document: Document? = load(fromFile: "document4", type: "json")
+                    if let document = document as? T.ResponseType {
+                        completion(.success(document))
+                    }
                 default:
                     fatalError("Document id not found in tests")
                 }
             case .createPaymentRequest:
-                completion(.success(MockSessionManager.paymentRequestId as! T.ResponseType))
+                if let paymentRequestId = MockSessionManager.paymentRequestId as? T.ResponseType {
+                    completion(.success(paymentRequestId))
+                }
             case .paymentProvider(_):
-                let providerResponse: PaymentProviderResponse = loadProviderResponse()
-                completion(.success(providerResponse as! T.ResponseType))
+                let providerResponse: PaymentProviderResponse? = load(fromFile: "provider")
+                if let providerResponse = providerResponse as? T.ResponseType {
+                    completion(.success(providerResponse))
+                }
             case .paymentProviders:
-                let paymentProvidersResponse: [PaymentProviderResponse] = loadProvidersResponse()
-                completion(.success(paymentProvidersResponse as! T.ResponseType))
+                let paymentProvidersResponse: [PaymentProviderResponse]? = load(fromFile: "providers")
+                if let paymentProvidersResponse = paymentProvidersResponse as? T.ResponseType {
+                    completion(.success(paymentProvidersResponse))
+                }
             case .extractions(let documentId):
                 switch (documentId, resource.params.method) {
                 case (MockSessionManager.payableDocumentID, .get):
-                    let extractionResults: ExtractionsContainer = loadExtractionResults(fileName: "extractionResultWithIBAN", type: "json")
-                    completion(.success(extractionResults as! T.ResponseType))
+                    let extractionResults: ExtractionsContainer? = load(fromFile: "extractionResultWithIBAN")
+                    if let extractionResults = extractionResults as? T.ResponseType {
+                        completion(.success(extractionResults))
+                    }
                 case (MockSessionManager.notPayableDocumentID, .get):
-                    let extractionResults: ExtractionsContainer = loadExtractionResults(fileName: "extractionResultWithoutIBAN", type: "json")
-                    completion(.success(extractionResults as! T.ResponseType))
+                    let extractionResults: ExtractionsContainer? = load(fromFile: "extractionResultWithoutIBAN")
+                    if let extractionResults = extractionResults as? T.ResponseType {
+                        completion(.success(extractionResults))
+                    }
                 case (MockSessionManager.failurePayableDocumentID, .get):
                     completion(.failure(.noResponse))
                 case (MockSessionManager.extractionsWithPaymentDocumentID, .get):
-                    let extractionResults: ExtractionsContainer = loadExtractionResults(fileName: "extractionsWithPayment", type: "json")
-                    completion(.success(extractionResults as! T.ResponseType))
+                    let extractionResults: ExtractionsContainer? = load(fromFile: "extractionsWithPayment")
+                    if let extractionResults = extractionResults as? T.ResponseType {
+                        completion(.success(extractionResults))
+                    }
                 default:
                     fatalError("Document id not found in tests")
                 }
