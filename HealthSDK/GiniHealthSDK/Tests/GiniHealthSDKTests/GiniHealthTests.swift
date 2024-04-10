@@ -33,7 +33,7 @@ final class GiniHealthTests: XCTestCase {
     
     func testFetchBankingApps_Success() {
         // Given
-        let expectedProviders: [PaymentProvider] = loadProviders()
+        let expectedProviders: [PaymentProvider]? = loadProviders()
         
         // When
         let expectation = self.expectation(description: "Fetching banking apps")
@@ -51,13 +51,18 @@ final class GiniHealthTests: XCTestCase {
         
         // Then
         XCTAssertNotNil(receivedProviders)
-        XCTAssertEqual(receivedProviders?.count, expectedProviders.count)
+        XCTAssertEqual(receivedProviders?.count, expectedProviders?.count)
         XCTAssertEqual(receivedProviders, expectedProviders)
     }
 
     func testCheckIfDocumentIsPayable_Success() {
         // Given
-        let expectedExtractions: ExtractionsContainer = loadExtractionResults(fileName: "extractionResultWithIBAN", type: "json")
+        let fileName = "extractionResultWithIBAN"
+        let expectedExtractions: ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
+        guard let expectedExtractions else {
+            XCTFail("Error loading file: `\(fileName).json`")
+            return
+        }
         let expectedExtractionsResult = ExtractionResult(extractionsContainer: expectedExtractions)
         let expectedIsPayable = expectedExtractionsResult.extractions.first(where: { $0.name == "iban" })?.value.isNotEmpty
         
@@ -81,7 +86,12 @@ final class GiniHealthTests: XCTestCase {
     
     func testCheckIfDocumentIsNotPayable_Success() {
         // Given
-        let expectedExtractions: ExtractionsContainer = loadExtractionResults(fileName: "extractionResultWithIBAN", type: "json")
+        let fileName = "extractionResultWithIBAN"
+        let expectedExtractions: ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
+        guard let expectedExtractions else {
+            XCTFail("Error loading file: `\(fileName).json`")
+            return
+        }
         let expectedExtractionsResult = ExtractionResult(extractionsContainer: expectedExtractions)
         let expectedIsPayable = expectedExtractionsResult.extractions.first(where: { $0.name == "iban" })?.value.isEmpty
         
@@ -124,7 +134,7 @@ final class GiniHealthTests: XCTestCase {
     
     func testPollDocument_Success() {
         // Given
-        let expectedDocument: Document = loadDocument(fileName: "document1", type: "json")
+        let expectedDocument: Document? = GiniHealthSDKTests.load(fromFile: "document1")
 
         // When
         let expectation = self.expectation(description: "Polling document")
@@ -142,7 +152,7 @@ final class GiniHealthTests: XCTestCase {
 
         // Then
         XCTAssertNotNil(receivedDocument)
-        XCTAssertEqual(receivedDocument!, expectedDocument)
+        XCTAssertEqual(receivedDocument, expectedDocument)
     }
     
     func testPollDocument_Failure() {
@@ -166,7 +176,12 @@ final class GiniHealthTests: XCTestCase {
     
     func testGetExtractions_Success() {
         // Given
-        let expectedExtractionContainer: ExtractionsContainer = loadExtractionResults(fileName: "extractionsWithPayment", type: "json")
+        let fileName = "extractionsWithPayment"
+        let expectedExtractionContainer: ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
+        guard let expectedExtractionContainer else {
+            XCTFail("Error loading file: `\(fileName).json`")
+            return
+        }
         let expectedExtractions: [Extraction] = ExtractionResult(extractionsContainer: expectedExtractionContainer).payment?.first ?? []
 
         // When
@@ -185,7 +200,7 @@ final class GiniHealthTests: XCTestCase {
 
         // Then
         XCTAssertNotNil(receivedExtractions)
-        XCTAssertEqual(receivedExtractions!.count, expectedExtractions.count)
+        XCTAssertEqual(receivedExtractions?.count, expectedExtractions.count)
     }
     
     func testGetExtractions_Failure() {
@@ -228,13 +243,13 @@ final class GiniHealthTests: XCTestCase {
 
         // Then
         XCTAssertNotNil(receivedRequestId)
-        XCTAssertEqual(receivedRequestId!, expectedPaymentRequestID)
+        XCTAssertEqual(receivedRequestId, expectedPaymentRequestID)
     }
     
     func testOpenLink_Success() {
         let mockUIApplication = MockUIApplication(canOpen: true)
         let urlOpener = URLOpener(mockUIApplication)
-        let waitForWebsiteOpen = expectation(description: "Link was opened!")
+        let waitForWebsiteOpen = expectation(description: "Link was opened")
 
         giniHealth.openPaymentProviderApp(requestID: "123", universalLink: "ginipay-bank://", urlOpener: urlOpener, completion: { open in
             waitForWebsiteOpen.fulfill()
@@ -247,7 +262,7 @@ final class GiniHealthTests: XCTestCase {
     func testOpenLink_Failure() {
         let mockUIApplication = MockUIApplication(canOpen: false)
         let urlOpener = URLOpener(mockUIApplication)
-        let waitForWebsiteOpen = expectation(description: "Link was not opened!")
+        let waitForWebsiteOpen = expectation(description: "Link was not opened")
 
         giniHealth.openPaymentProviderApp(requestID: "123", universalLink: "ginipay-bank://", urlOpener: urlOpener, completion: { open in
             waitForWebsiteOpen.fulfill()
@@ -259,7 +274,12 @@ final class GiniHealthTests: XCTestCase {
     
     func testSetDocumentForReview_Success() {
         // Given
-        let expectedExtractionContainer: ExtractionsContainer = loadExtractionResults(fileName: "extractionsWithPayment", type: "json")
+        let fileName = "extractionsWithPayment"
+        let expectedExtractionContainer: ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
+        guard let expectedExtractionContainer else {
+            XCTFail("Error loading file: `\(fileName).json`")
+            return
+        }
         let expectedExtractions: [Extraction] = ExtractionResult(extractionsContainer: expectedExtractionContainer).payment?.first ?? []
 
         // When
@@ -278,14 +298,24 @@ final class GiniHealthTests: XCTestCase {
 
         // Then
         XCTAssertNotNil(receivedExtractions)
-        XCTAssertEqual(receivedExtractions!.count, expectedExtractions.count)
+        XCTAssertEqual(receivedExtractions?.count, expectedExtractions.count)
     }
     
     func testFetchDataForReview_Success() {
         // Given
-        let expectedExtractionContainer: ExtractionsContainer = loadExtractionResults(fileName: "extractionsWithPayment", type: "json")
+        let fileName = "extractionsWithPayment"
+        let expectedExtractionContainer: ExtractionsContainer? = GiniHealthSDKTests.load(fromFile: fileName)
+        guard let expectedExtractionContainer else {
+            XCTFail("Error loading file: `\(fileName).json`")
+            return
+        }
         let expectedExtractions: [Extraction] = ExtractionResult(extractionsContainer: expectedExtractionContainer).payment?.first ?? []
-        let expectedDocument: Document = loadDocument(fileName: "document4", type: "json")
+        let documentFileName = "document4"
+        let expectedDocument: Document? = GiniHealthSDKTests.load(fromFile: documentFileName)
+        guard let expectedDocument else {
+            XCTFail("Error loading file: `\(documentFileName).json`")
+            return
+        }
         let expectedDatForReview = DataForReview(document: expectedDocument, extractions: expectedExtractions)
 
         // When
@@ -304,8 +334,8 @@ final class GiniHealthTests: XCTestCase {
 
         // Then
         XCTAssertNotNil(receivedDataForReview)
-        XCTAssertEqual(receivedDataForReview!.document, expectedDatForReview.document)
-        XCTAssertEqual(receivedDataForReview!.extractions.count, expectedDatForReview.extractions.count)
+        XCTAssertEqual(receivedDataForReview?.document, expectedDatForReview.document)
+        XCTAssertEqual(receivedDataForReview?.extractions.count, expectedDatForReview.extractions.count)
     }
     
     func testFetchDataForReview_Failure() {
@@ -327,4 +357,3 @@ final class GiniHealthTests: XCTestCase {
         XCTAssertNotNil(receivedError)
     }
 }
-
