@@ -161,7 +161,11 @@ final class PaymentComponentsControllerTests: XCTestCase {
     }
     
     func testPaymentProvidersSorting() {
-        let givenPaymentProviders = loadProviders(fileName: "notSortedBanks")
+        let fileName = "notSortedBanks"
+        guard let givenPaymentProviders = loadProviders(fileName: fileName) else {
+            XCTFail("Error loading file: `\(fileName).json`")
+            return
+        }
         
         let expectedPaymentProviders = loadProviders(fileName: "sortedBanks")
         
