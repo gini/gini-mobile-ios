@@ -667,14 +667,14 @@ extension CameraViewController: CameraLensSwitcherViewDelegate {
         var device: AVCaptureDevice?
 
         switch lens {
-            case .ultraWide:
-                if #available(iOS 13.0, *) {
-                    device = AVCaptureDevice.default(.builtInUltraWideCamera, for: .video, position: .back)
-                }
-            case .wide:
-                device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
-            case .tele:
-                device = AVCaptureDevice.default(.builtInTelephotoCamera, for: .video, position: .back)
+        case .ultraWide:
+            if #available(iOS 13.0, *) {
+                device = AVCaptureDevice.default(.builtInUltraWideCamera, for: .video, position: .back)
+            }
+        case .wide:
+            device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
+        case .tele:
+            device = AVCaptureDevice.default(.builtInTelephotoCamera, for: .video, position: .back)
         }
 
         guard let device = device else { return }

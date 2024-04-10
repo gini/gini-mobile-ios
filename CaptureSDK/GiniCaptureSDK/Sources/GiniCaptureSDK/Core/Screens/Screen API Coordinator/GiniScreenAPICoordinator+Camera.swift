@@ -238,7 +238,7 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
                 }
                 if coordinator.currentPickerDismissesAutomatically {
                     self.cameraScreen?.showErrorDialog(for: error,
-                                                               positiveAction: positiveAction)
+                                                       positiveAction: positiveAction)
                 } else {
                     coordinator.currentPickerViewController?.showErrorDialog(for: error,
                                                                              positiveAction: positiveAction)
@@ -247,16 +247,16 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
         }
     }
 
-    public func documentPicker(_ coordinator: DocumentPickerCoordinator, failedToPickDocumentsAt urls: [URL]) {
-        let error = FilePickerError.failedToOpenDocument
-        if coordinator.currentPickerDismissesAutomatically {
-            self.cameraScreen?.showErrorDialog(for: error,
-                                                       positiveAction: nil)
-        } else {
-            coordinator.currentPickerViewController?.showErrorDialog(for: error,
-                                                                     positiveAction: nil)
+        public func documentPicker(_ coordinator: DocumentPickerCoordinator, failedToPickDocumentsAt urls: [URL]) {
+            let error = FilePickerError.failedToOpenDocument
+            if coordinator.currentPickerDismissesAutomatically {
+                self.cameraScreen?.showErrorDialog(for: error,
+                                                   positiveAction: nil)
+            } else {
+                coordinator.currentPickerViewController?.showErrorDialog(for: error,
+                                                                         positiveAction: nil)
+            }
         }
-    }
 
     fileprivate func addDropInteraction(forView view: UIView, with delegate: UIDropInteractionDelegate) {
         let dropInteraction = UIDropInteraction(delegate: delegate)

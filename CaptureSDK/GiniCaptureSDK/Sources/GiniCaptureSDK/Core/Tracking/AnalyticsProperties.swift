@@ -4,7 +4,6 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-
 import Foundation
 struct AnalyticsProperty {
     let key: AnalyticsPropertyKey
@@ -27,20 +26,8 @@ extension Int: AnalyticsPropertyValue {
     }
 }
 
-extension UInt: AnalyticsPropertyValue {
-    func analyticsPropertyValue() -> UInt {
-        return self
-    }
-}
-
 extension Bool: AnalyticsPropertyValue {
     func analyticsPropertyValue() -> Bool {
-        return self
-    }
-}
-
-extension Double: AnalyticsPropertyValue {
-    func analyticsPropertyValue() -> Double {
         return self
     }
 }
