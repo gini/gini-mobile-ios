@@ -159,4 +159,19 @@ final class PaymentComponentsControllerTests: XCTestCase {
         }
         XCTAssertEqual(paymentInfoViewModel.paymentProviders, [])
     }
+    
+    func testPaymentProvidersSorting() {
+        let fileName = "notSortedBanks"
+        guard let givenPaymentProviders = loadProviders(fileName: fileName) else {
+            XCTFail("Error loading file: `\(fileName).json`")
+            return
+        }
+        
+        let expectedPaymentProviders = loadProviders(fileName: "sortedBanks")
+        
+        let bottomViewModel = BanksBottomViewModel(paymentProviders: givenPaymentProviders, selectedPaymentProvider: nil, urlOpener: URLOpener(MockUIApplication(canOpen: false)))
+        
+        XCTAssertEqual(bottomViewModel.paymentProviders.count, 11)
+        XCTAssertEqual(bottomViewModel.paymentProviders.map { $0.paymentProvider }, expectedPaymentProviders)
+    }
 }

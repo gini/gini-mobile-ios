@@ -8,9 +8,9 @@
 import UIKit
 import GiniHealthAPILibrary
 
-func loadProviders() -> PaymentProviders? {
+func loadProviders(fileName: String = "providers") -> PaymentProviders? {
     var providers: PaymentProviders = []
-    let providersResponse: [PaymentProviderResponse]? = load(fromFile: "providers")
+    let providersResponse: [PaymentProviderResponse]? = load(fromFile: fileName)
     guard let providersResponse else { return nil }
     for providerResponse in providersResponse {
         let imageData = UIImage(named: "Gini-Test-Payment-Provider", in: Bundle.module, compatibleWith: nil)?.pngData()
