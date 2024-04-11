@@ -86,11 +86,11 @@ extension PaymentPrimaryButton {
         }
     }
     
-    func customConfigure(paymentProviderColors: ProviderColors?, isPaymentProviderInstalled: Bool, text: String, leftImageData: Data? = nil) {
-        if let backgroundHexColor = paymentProviderColors?.background.toColor(), isPaymentProviderInstalled {
+    func customConfigure(paymentProviderColors: ProviderColors?, text: String, leftImageData: Data? = nil) {
+        if let backgroundHexColor = paymentProviderColors?.background.toColor() {
             contentView.backgroundColor = backgroundHexColor
         }
-        contentView.isUserInteractionEnabled = isPaymentProviderInstalled
+        contentView.isUserInteractionEnabled = true
         
         titleLabel.text = text
         if let textHexColor = paymentProviderColors?.text.toColor() {
