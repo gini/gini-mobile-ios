@@ -222,6 +222,7 @@ extension GiniScreenAPICoordinator {
             }
         case is AnalysisViewController:
             trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .cancel))
+            AnalyticsManager.track(event: .closeTapped, screenName: .analysis)
             screenAPINavigationController.dismiss(animated: true)
         default:
             if screenAPINavigationController.viewControllers.count > 1 {
