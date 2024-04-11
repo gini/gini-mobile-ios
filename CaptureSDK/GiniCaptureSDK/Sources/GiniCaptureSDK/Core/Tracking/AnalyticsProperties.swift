@@ -37,7 +37,7 @@ enum AnalyticsPropertyKey: String {
 
     case flashActive = "flash_active"
     case qrCodeValid = "qr_code_valid"
-    case numberOfPagesScanned = "number_of_pages_scanned"
+    case documentPageNumber = "document_page_number"
     case ibanDetectionLayerVisible = "iban_detection_layer_visible"
 
     case errorMessage = "error_message"

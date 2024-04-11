@@ -53,7 +53,7 @@ public final class CameraButtonsViewModel {
     @objc func thumbnailPressed() {
         AnalyticsManager.track(event: .multiplePagesCapturedTapped,
                                screenName: .camera,
-                               properties: [AnalyticsProperty(key: .numberOfPagesScanned, value: images.count)])
+                               properties: [AnalyticsProperty(key: .documentPageNumber, value: images.count)])
         imageStackAction?()
     }
 

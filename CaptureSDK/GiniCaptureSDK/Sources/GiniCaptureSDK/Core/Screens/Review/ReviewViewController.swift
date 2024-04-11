@@ -179,8 +179,7 @@ public final class ReviewViewController: UIViewController {
         addPagesButton.configure(with: giniConfiguration.addPageButtonConfiguration)
         addPagesButton.didTapButton = { [weak self] in
             guard let self = self else { return }
-            self.setCellStatus(for: self.currentPage, isActive: false)
-            self.delegate?.reviewDidTapAddImage(self)
+            self.didTapAddPages()
         }
         addPagesButton.isAccessibilityElement = true
         addPagesButton.accessibilityTraits = .button
@@ -362,6 +361,8 @@ extension ReviewViewController {
             setCellStatus(for: currentPage, isActive: true)
         }
         collectionView.reloadData()
+
+        AnalyticsManager.trackScreenShown(screenName: .review)
     }
 
     public override func viewWillLayoutSubviews() {
@@ -542,6 +543,12 @@ extension ReviewViewController {
 
     @objc
     private func didTapProcessDocument() {
+        let eventProperties = [AnalyticsProperty(key: .documentPageNumber,
+                                                 value: pages.count)]
+
+        AnalyticsManager.track(event: .processTapped,
+                               screenName: .review,
+                               properties: eventProperties)
         delegate?.reviewDidTapProcess(self)
     }
 
@@ -550,6 +557,12 @@ extension ReviewViewController {
         pages.remove(at: indexPath.row)
         collectionView.deleteItems(at: [indexPath])
         delegate?.review(self, didDelete: pageToDelete)
+    }
+
+    private func didTapAddPages() {
+        AnalyticsManager.track(event: .addPagesTapped, screenName: .review)
+        setCellStatus(for: currentPage, isActive: false)
+        delegate?.reviewDidTapAddImage(self)
     }
 
     @objc
@@ -562,6 +575,9 @@ extension ReviewViewController {
             collectionView.scrollToItem(at: IndexPath(row: currentPage, section: 0),
                                         at: .centeredHorizontally, animated: true)
             pageControl.currentPage = currentPage
+
+            AnalyticsManager.track(event: .swipePages, screenName: .review)
+
         } else if sender.direction == .right {
             guard currentPage > 0 else { return }
             setCellStatus(for: currentPage, isActive: false)
@@ -569,6 +585,8 @@ extension ReviewViewController {
             collectionView.scrollToItem(at: IndexPath(row: currentPage, section: 0),
                                         at: .centeredHorizontally, animated: true)
             pageControl.currentPage = currentPage
+
+            AnalyticsManager.track(event: .swipePages, screenName: .review)
         }
     }
 
@@ -682,7 +700,7 @@ extension ReviewViewController: ReviewCollectionViewDelegate {
     func didTapDelete(on cell: ReviewCollectionCell) {
         guard let indexpath = collectionView.indexPath(for: cell) else { return }
         deleteItem(at: indexpath)
-
+        AnalyticsManager.track(event: .deletePagesTapped, screenName: .review)
         setCurrentPage(basedOn: collectionView)
     }
 }
