@@ -87,10 +87,8 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
         super.init()
     }
 
-    public func start(
-        withDocuments documents: [GiniCaptureDocument]?,
-        animated: Bool = false
-    ) -> UIViewController {
+    public func start(withDocuments documents: [GiniCaptureDocument]?,
+                      animated: Bool = false) -> UIViewController {
         var viewControllers: [UIViewController] = []
 
         if let documents = documents, !documents.isEmpty {
@@ -142,8 +140,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
         }
 
         if pages.type == .image {
-            reviewViewController =
-                createReviewScreenContainer(with: pages)
+            reviewViewController = createReviewScreenContainer(with: pages)
 
             return [reviewViewController]
         } else {
@@ -202,6 +199,10 @@ extension GiniScreenAPICoordinator {
         switch screenAPINavigationController.topViewController {
         case is CameraViewController:
             trackingDelegate?.onCameraScreenEvent(event: Event(type: .exit))
+            //TODO: rethink this when you add Camera access screen events!
+            //is also accessed from that screen
+            //do we need a different name for the screen in that case?
+            AnalyticsManager.track(event: .closeTapped, screenName: .camera)
 
             if pages.type == .qrcode {
                 screenAPINavigationController.dismiss(animated: true)
@@ -218,6 +219,7 @@ extension GiniScreenAPICoordinator {
             }
         case is AnalysisViewController:
             trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .cancel))
+            AnalyticsManager.track(event: .closeTapped, screenName: .analysis)
             screenAPINavigationController.dismiss(animated: true)
         default:
             if screenAPINavigationController.viewControllers.count > 1 {
@@ -233,6 +235,11 @@ extension GiniScreenAPICoordinator {
     }
 
     @objc func showHelpMenuScreen() {
+        //TODO: rethink this when you add Camera access screen events!
+        //is also accessed from that screen
+        //do we need a different name for the screen in that case?
+        AnalyticsManager.track(event: .helpTapped, screenName: .camera)
+        
         let helpMenuViewController = HelpMenuViewController(
             giniConfiguration: giniConfiguration
         )
@@ -282,11 +289,10 @@ extension GiniScreenAPICoordinator {
 // MARK: - Navigation delegate
 
 extension GiniScreenAPICoordinator: UINavigationControllerDelegate {
-    public func navigationController(
-        _ navigationController: UINavigationController,
-        animationControllerFor operation: UINavigationController.Operation,
-        from fromVC: UIViewController,
-        to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func navigationController(_ navigationController: UINavigationController,
+                                     animationControllerFor operation: UINavigationController.Operation,
+                                     from fromVC: UIViewController,
+                                     to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if fromVC is AnalysisViewController {
             analysisViewController = nil
             if operation == .pop {
