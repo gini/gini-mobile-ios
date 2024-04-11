@@ -87,10 +87,8 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
         super.init()
     }
 
-    public func start(
-        withDocuments documents: [GiniCaptureDocument]?,
-        animated: Bool = false
-    ) -> UIViewController {
+    public func start(withDocuments documents: [GiniCaptureDocument]?,
+                      animated: Bool = false) -> UIViewController {
         var viewControllers: [UIViewController] = []
 
         if let documents = documents, !documents.isEmpty {
@@ -142,8 +140,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
         }
 
         if pages.type == .image {
-            reviewViewController =
-                createReviewScreenContainer(with: pages)
+            reviewViewController = createReviewScreenContainer(with: pages)
 
             return [reviewViewController]
         } else {
@@ -292,11 +289,10 @@ extension GiniScreenAPICoordinator {
 // MARK: - Navigation delegate
 
 extension GiniScreenAPICoordinator: UINavigationControllerDelegate {
-    public func navigationController(
-        _ navigationController: UINavigationController,
-        animationControllerFor operation: UINavigationController.Operation,
-        from fromVC: UIViewController,
-        to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func navigationController(_ navigationController: UINavigationController,
+                                     animationControllerFor operation: UINavigationController.Operation,
+                                     from fromVC: UIViewController,
+                                     to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if fromVC is AnalysisViewController {
             analysisViewController = nil
             if operation == .pop {
