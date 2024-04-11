@@ -49,3 +49,4 @@
 "ginihealth.paymentcomponent.paymentinfo.questions.answer.clickable.text" = "privacy policy[LINK]";
 "ginihealth.paymentcomponent.paymentinfo.gini.link" = "https://gini.net/en/";
 "ginihealth.paymentcomponent.paymentinfo.gini.privacypolicy.link" = "";
+"ginihealth.paymentcomponent.installAppBottom.title" = "Billing data ready to share with the savings bank";
