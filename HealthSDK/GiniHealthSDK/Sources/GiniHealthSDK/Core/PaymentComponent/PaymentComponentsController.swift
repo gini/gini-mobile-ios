@@ -40,7 +40,6 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
 
     private var giniHealth: GiniHealth
     private var paymentProviders: PaymentProviders = []
-    private var installedPaymentProviders: PaymentProviders = []
     
     /// storing the current selected payment provider
     public var selectedPaymentProvider: PaymentProvider?
@@ -83,7 +82,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
      - Returns: a Payment Provider object.
      */
     private func defaultInstalledPaymentProvider() -> PaymentProvider? {
-        savedPaymentProvider() ?? installedPaymentProviders.first
+        savedPaymentProvider() ?? paymentProviders.first
     }
     
     /**
@@ -97,7 +96,6 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
             switch result {
             case let .success(paymentProviders):
                 self?.paymentProviders = paymentProviders
-                self?.checkInstalledPaymentProviders()
                 self?.selectedPaymentProvider = self?.defaultInstalledPaymentProvider()
                 self?.delegate?.didFetchedPaymentProviders()
             case let .failure(error):
@@ -111,15 +109,6 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
         DispatchQueue.main.async {
             if !self.checkPaymentProviderIsInstalled(paymentProvider: self.selectedPaymentProvider) {
                 self.loadPaymentProviders()
-            }
-        }
-    }
-    
-    private func checkInstalledPaymentProviders() {
-        installedPaymentProviders = []
-        for paymentProvider in paymentProviders {
-            if checkPaymentProviderIsInstalled(paymentProvider: paymentProvider) {
-                self.installedPaymentProviders.append(paymentProvider)
             }
         }
     }
@@ -139,7 +128,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
             do {
                 let decoder = JSONDecoder()
                 let paymentProvider = try decoder.decode(PaymentProvider.self, from: data)
-                if self.installedPaymentProviders.contains(where: { $0.id == paymentProvider.id }) {
+                if self.paymentProviders.contains(where: { $0.id == paymentProvider.id }) {
                     return paymentProvider
                 }
             } catch {
