@@ -214,7 +214,6 @@ extension InvoicesListViewModel: PaymentProvidersBottomViewProtocol {
     func didSelectPaymentProvider(paymentProvider: PaymentProvider) {
         DispatchQueue.main.async {
             self.coordinator.invoicesListViewController.presentedViewController?.dismiss(animated: true)
-            self.hardcodedInvoicesController.storeInvoicesWithExtractions(invoices: self.invoices)
             self.coordinator.invoicesListViewController.reloadTableView()
         }
     }

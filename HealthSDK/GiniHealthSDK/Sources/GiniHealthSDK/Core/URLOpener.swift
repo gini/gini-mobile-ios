@@ -29,6 +29,10 @@ public struct URLOpener {
             completion?(false)
         }
     }
+    
+    func canOpenLink(url: URL) -> Bool {
+        application.canOpenURL(url)
+    }
 }
 
 public protocol URLOpenerProtocol {
