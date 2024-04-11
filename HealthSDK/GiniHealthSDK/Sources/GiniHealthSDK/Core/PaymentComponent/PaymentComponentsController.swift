@@ -23,6 +23,7 @@ protocol PaymentComponentsProtocol {
     func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
     func paymentView(documentId: String) -> UIView
     func bankSelectionBottomSheet() -> UIViewController
+    func installAppBottomSheet() -> UIViewController
     func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void)
     func paymentInfoViewController() -> UIViewController
 }
@@ -192,6 +193,17 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
         let bankSelectionBottomSheet = BankSelectionBottomSheet()
         bankSelectionBottomSheet.bottomSheet = paymentProvidersBottomView
         return bankSelectionBottomSheet
+    }
+    
+    public func installAppBottomSheet() -> UIViewController {
+        let installAppBottomView = InstallAppBottomView()
+        let installAppBottomViewModel = InstallAppBottomViewModel(paymentProviders: paymentProviders,
+                                                                        selectedPaymentProvider: selectedPaymentProvider)
+        installAppBottomViewModel.viewDelegate = self
+        installAppBottomView.viewModel = installAppBottomViewModel
+        let installAppBottomSheet = InstallAppBottomSheet()
+        installAppBottomSheet.bottomSheet = installAppBottomView
+        return installAppBottomSheet
     }
     
     public func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {

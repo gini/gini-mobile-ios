@@ -178,6 +178,7 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
     func didTapOnPayInvoice(documentId: String?) {
         guard let documentId else { return }
         Log("Tapped on Pay Invoice on :\(documentId)", event: .success)
+        if paymentComponentsController.selectedPaymentProvider
         paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, trackingDelegate: self) { [weak self] viewController, error in
             if let error {
                 self?.errors.append(error.localizedDescription)

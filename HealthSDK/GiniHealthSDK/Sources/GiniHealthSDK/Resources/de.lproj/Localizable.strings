@@ -49,3 +49,4 @@
 "ginihealth.paymentcomponent.paymentinfo.questions.answer.clickable.text" = "Datenschutzerklärung[LINK]";
 "ginihealth.paymentcomponent.paymentinfo.gini.link" = "https://gini.net/";
 "ginihealth.paymentcomponent.paymentinfo.gini.privacypolicy.link" = "";
+"ginihealth.paymentcomponent.installAppBottom.title" = "Rechnungsdaten bereit zum Teilen mit der Sparkasse";
