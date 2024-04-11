@@ -69,22 +69,15 @@ final class PaymentSecondaryButton: UIView {
         ])
     }
     
-    private func activateBankImageViewConstraints(isPaymentProviderInstalled: Bool) {
-        if isPaymentProviderInstalled {
-            leftImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.contentLeadingPadding).isActive = true
-            leftImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-            leftImageView.widthAnchor.constraint(equalToConstant: leftImageView.frame.width).isActive = true
-            leftImageView.heightAnchor.constraint(equalToConstant: leftImageView.frame.height).isActive = true
-            let bankNameBankViewConstraint = titleLabel.leadingAnchor.constraint(equalTo: leftImageView.trailingAnchor, constant: Constants.contentLeadingPadding)
-            bankNameBankViewConstraint.priority = .required - 1 // fix needed because of embeded views in cells issue. We need this to silent the "Unable to simultaneously satisfy constraints" warning
-            bankNameBankViewConstraint.isActive = true
-            leftImageView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor).isActive = true
-        } else {
-            let bankNameLeadingSuperviewConstraint = titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.contentLeadingPadding)
-            bankNameLeadingSuperviewConstraint.priority = .required - 1
-            bankNameLeadingSuperviewConstraint.isActive = true
-            contentView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor).isActive = true
-        }
+    private func activateBankImageViewConstraints() {
+        leftImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.contentLeadingPadding).isActive = true
+        leftImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        leftImageView.widthAnchor.constraint(equalToConstant: leftImageView.frame.width).isActive = true
+        leftImageView.heightAnchor.constraint(equalToConstant: leftImageView.frame.height).isActive = true
+        let bankNameBankViewConstraint = titleLabel.leadingAnchor.constraint(equalTo: leftImageView.trailingAnchor, constant: Constants.contentLeadingPadding)
+        bankNameBankViewConstraint.priority = .required - 1 // fix needed because of embeded views in cells issue. We need this to silent the "Unable to simultaneously satisfy constraints" warning
+        bankNameBankViewConstraint.isActive = true
+        leftImageView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor).isActive = true
     }
     
     @objc
@@ -110,8 +103,8 @@ extension PaymentSecondaryButton {
         }
     }
     
-    func customConfigure(labelText: String, leftImageIcon: UIImage?, rightImageIcon: String?, rightImageTintColor: UIColor, isPaymentProviderInstalled: Bool, notInstalledTextColor: UIColor) {
-        if let leftImageIcon, isPaymentProviderInstalled {
+    func customConfigure(labelText: String, leftImageIcon: UIImage?, rightImageIcon: String?, rightImageTintColor: UIColor) {
+        if let leftImageIcon {
             leftImageView.image = leftImageIcon
             leftImageView.isHidden = false
         } else {
@@ -125,10 +118,7 @@ extension PaymentSecondaryButton {
             rightImageView.isHidden = true
         }
         titleLabel.text = labelText
-        if !isPaymentProviderInstalled {
-            titleLabel.textColor = notInstalledTextColor
-        }
-        activateBankImageViewConstraints(isPaymentProviderInstalled: isPaymentProviderInstalled)
+        activateBankImageViewConstraints()
     }
 }
 
