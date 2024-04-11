@@ -16,10 +16,21 @@ public protocol PaymentComponentsControllerProtocol: AnyObject {
     func didFetchedPaymentProviders()
 }
 
+protocol PaymentComponentsProtocol {
+    var isLoading: Bool { get set }
+    var selectedPaymentProvider: PaymentProvider? { get set }
+    func loadPaymentProviders()
+    func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
+    func paymentView(documentId: String) -> UIView
+    func bankSelectionBottomSheet() -> UIViewController
+    func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void)
+    func paymentInfoViewController() -> UIViewController
+}
+
 /**
  The `PaymentComponentsController` class allows control over the payment components.
  */
-public final class PaymentComponentsController: NSObject {
+public final class PaymentComponentsController: PaymentComponentsProtocol {
     /// handling the Payment Component Controller delegate
     public weak var delegate: PaymentComponentsControllerProtocol?
     /// handling the Payment Component view delegate
@@ -53,7 +64,6 @@ public final class PaymentComponentsController: NSObject {
      */
     public init(giniHealth: GiniHealth) {
         self.giniHealth = giniHealth
-        super.init()
         setupListeners()
     }
     

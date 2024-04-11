@@ -14,7 +14,7 @@ public struct PaymentProvider: Codable {
     public var name: String
     public var appSchemeIOS: String
     public var colors: ProviderColors
-    var minAppVersion: MinAppVersions?
+    public var minAppVersion: MinAppVersions?
     public var iconData: Data
     public var appStoreUrlIOS: String?
     public var universalLinkIOS: String
@@ -31,3 +31,9 @@ public struct PaymentProvider: Codable {
     }
 }
 public typealias PaymentProviders = [PaymentProvider]
+
+extension PaymentProvider: Equatable {
+    public static func == (lhs: PaymentProvider, rhs: PaymentProvider) -> Bool {
+        lhs.id == rhs.id
+    }
+}
