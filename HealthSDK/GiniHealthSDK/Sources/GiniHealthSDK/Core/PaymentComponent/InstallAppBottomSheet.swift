@@ -38,7 +38,7 @@ final class InstallAppBottomSheet: UIViewController {
     
     @objc
     private func dismissViewController() {
-        bottomSheet.viewModel.didTapOnClose()
+        self.dismiss(animated: true)
     }
 
     private func setupLayout() {

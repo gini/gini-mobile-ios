@@ -50,3 +50,6 @@
 "ginihealth.paymentcomponent.paymentinfo.gini.link" = "https://gini.net/";
 "ginihealth.paymentcomponent.paymentinfo.gini.privacypolicy.link" = "";
 "ginihealth.paymentcomponent.installAppBottom.title" = "Rechnungsdaten bereit zum Teilen mit der Sparkasse";
+"ginihealth.paymentcomponent.installAppBottom.notes.description" = "Hinweise: Bitte aktualisieren oder installieren Sie zunächst die Sparkassen-App aus dem App-Store.";
+"ginihealth.paymentcomponent.installAppBottom.tip.description" = "Tipp: Tippen Sie auf 'Weiter', um die Zahlung in der Sparkassen-App abzuschließen.";
+"ginihealth.paymentcomponent.installAppBottom.continue.button.text" = "Weiter";

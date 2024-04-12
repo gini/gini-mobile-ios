@@ -63,7 +63,11 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     public static func instantiate(with giniHealth: GiniHealth, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider?, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
         let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
-        viewController.model = PaymentReviewModel(with: giniHealth, document: document, extractions: extractions)
+        let viewModel = PaymentReviewModel(with: giniHealth,
+                                           document: document,
+                                           extractions: extractions,
+                                           selectedPaymentProvider: selectedPaymentProvider)
+        viewController.model = viewModel
         viewController.trackingDelegate = trackingDelegate
         viewController.selectedPaymentProvider = selectedPaymentProvider
         return viewController
@@ -72,7 +76,11 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     public static func instantiate(with giniHealth: GiniHealth, data: DataForReview, selectedPaymentProvider: PaymentProvider?, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
         let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
-        viewController.model = PaymentReviewModel(with: giniHealth, document: data.document, extractions: data.extractions)
+        let viewModel = PaymentReviewModel(with: giniHealth,
+                                           document: data.document,
+                                           extractions: data.extractions,
+                                           selectedPaymentProvider: selectedPaymentProvider)
+        viewController.model = viewModel
         viewController.trackingDelegate = trackingDelegate
         viewController.selectedPaymentProvider = selectedPaymentProvider
         return viewController
@@ -162,6 +170,8 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
         
         model?.fetchImages()
+        
+        model?.viewModelDelegate = self
     }
 
     override public func viewDidDisappear(_ animated: Bool) {
@@ -545,37 +555,46 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         if let iban = ibanTextFieldView.text {
             lastValidatedIBAN = iban
         }
+        
+        guard selectedPaymentProvider?.appSchemeIOS.canOpenURLString() ?? false else {
+            model?.openInstallAppBottomSheet()
+            return
+        }
 
+        checkForErrorsAndCreatePaymentRequest()
+    }
+    
+    private func checkForErrorsAndCreatePaymentRequest() {
         // check if no errors labels are shown
         if (paymentInputFieldsErrorLabels.allSatisfy { $0.isHidden }) {
             if let selectedProvider = selectedPaymentProvider, !amountTextFieldView.textField.isReallyEmpty {
                 let amountText = amountToPay.extractionString
-                let paymentInfo = PaymentInfo(recipient: recipientTextFieldView.text ?? "", 
+                let paymentInfo = PaymentInfo(recipient: recipientTextFieldView.text ?? "",
                                               iban: ibanTextFieldView.text ?? "",
                                               bic: "", amount: amountText,
                                               purpose: usageTextFieldView.text ?? "",
                                               paymentUniversalLink: selectedProvider.universalLinkIOS,
                                               paymentProviderId: selectedProvider.id)
                 model?.createPaymentRequest(paymentInfo: paymentInfo)
-                let paymentRecipientExtraction = Extraction(box: nil, 
+                let paymentRecipientExtraction = Extraction(box: nil,
                                                             candidates: "",
                                                             entity: "text",
                                                             value: recipientTextFieldView.text ?? "",
                                                             name: "payment_recipient")
-                let ibanExtraction = Extraction(box: nil, 
+                let ibanExtraction = Extraction(box: nil,
                                                 candidates: "",
                                                 entity: "iban",
                                                 value: paymentInfo.iban,
                                                 name: "iban")
-                let referenceExtraction = Extraction(box: nil, 
+                let referenceExtraction = Extraction(box: nil,
                                                      candidates: "",
-                                                     entity: "text", value:
-                                                        paymentInfo.purpose,
+                                                     entity: "text",
+                                                     value: paymentInfo.purpose,
                                                      name: "payment_purpose")
-                let amoutToPayExtraction = Extraction(box: nil, 
+                let amoutToPayExtraction = Extraction(box: nil,
                                                       candidates: "",
-                                                      entity: "amount", value:
-                                                        paymentInfo.amount,
+                                                      entity: "amount",
+                                                      value: paymentInfo.amount,
                                                       name: "amount_to_pay")
                 let updatedExtractions = [paymentRecipientExtraction, ibanExtraction, referenceExtraction, amoutToPayExtraction]
                 model?.sendFeedback(updatedExtractions: updatedExtractions)
@@ -803,6 +822,17 @@ extension PaymentReviewViewController {
                                                                              comment: "ok title for action"), style: .default, handler: nil)
         alertController.addAction(OKAction)
         present(alertController, animated: true, completion: nil)
+    }
+}
+
+extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
+    func presentInstallAppBottomSheet(bottomSheet: UIViewController) {
+        self.present(bottomSheet, animated: true)
+    }
+    
+    func createPaymentRequestAndOpenBankApp() {
+        self.presentedViewController?.dismiss(animated: true)
+        checkForErrorsAndCreatePaymentRequest()
     }
 }
 

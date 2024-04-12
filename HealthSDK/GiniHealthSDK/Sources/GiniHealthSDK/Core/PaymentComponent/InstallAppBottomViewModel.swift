@@ -8,17 +8,22 @@
 import UIKit
 import GiniHealthAPILibrary
 
+protocol InstallAppBottomViewProtocol: AnyObject {
+    func didTapOnContinue()
+}
+
 final class InstallAppBottomViewModel {
     
-    weak var viewDelegate: PaymentProvidersBottomViewProtocol?
-
-    var paymentProviders: [PaymentProviderAdditionalInfo] = []
-    private var selectedPaymentProvider: PaymentProvider?
+    var giniHealthConfiguration = GiniHealthConfiguration.shared
+    
+    var selectedPaymentProvider: PaymentProvider?
+    // Payment provider colors
+    var paymentProviderColors: ProviderColors?
+    
+    weak var viewDelegate: InstallAppBottomViewProtocol?
     
     let maximumViewHeight: CGFloat = UIScreen.main.bounds.height - Constants.topPaddingView
-    let rowHeight: CGFloat = Constants.cellSizeHeight
     var bottomViewHeight: CGFloat = 0
-    var heightTableView: CGFloat = 0
 
     let backgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark7,
                                              darkModeColor: UIColor.GiniHealthColors.light7).uiColor()
@@ -43,68 +48,63 @@ final class InstallAppBottomViewModel {
     var bankIconBorderColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark5,
                                         darkModeColor: UIColor.GiniHealthColors.light5).uiColor()
 
-    let descriptionText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.paymentproviderslist.description",
-                                                                   comment: "Top description text on payment providers bottom sheet")
-    let descriptionLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark3,
-                                                         darkModeColor: UIColor.GiniHealthColors.light3).uiColor()
-    var descriptionLabelFont: UIFont
+    // More information part
+    let moreInformationLabelTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark3,
+                                                           darkModeColor: UIColor.GiniHealthColors.light3).uiColor()
+    let moreInformationAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark3,
+                                                        darkModeColor: UIColor.GiniHealthColors.light3).uiColor()
+    var moreInformationLabelText: String {
+        isBankInstalled ? 
+        NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.installAppBottom.tip.description",
+                                         comment: "Text for tip information label") :
+        NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.installAppBottom.notes.description",
+                                         comment: "Text for notes information label")
+    }
 
-    init(paymentProviders: PaymentProviders, selectedPaymentProvider: PaymentProvider?) {
+    var moreInformationLabelFont: UIFont
+    let moreInformationIconName = "info.circle"
+    
+    // Pay invoice label
+    let continueLabelText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.installAppBottom.continue.button.text",
+                                                                     comment: "Title label used for the Continue button")
+    
+    var appStoreImageIconName = "appStoreIcon"
+    
+    var isBankInstalled: Bool {
+        selectedPaymentProvider?.appSchemeIOS.canOpenURLString() ?? false
+    }
+
+    init(selectedPaymentProvider: PaymentProvider?) {
         self.selectedPaymentProvider = selectedPaymentProvider
         self.bankImageIconData = selectedPaymentProvider?.iconData
+        self.paymentProviderColors = selectedPaymentProvider?.colors
         
         let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .regular)
         let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
 
-        self.titleLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.subtitle1] ?? defaultBoldFont
-        self.descriptionLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.caption1] ?? defaultRegularFont
-        
-        self.paymentProviders = []
+        self.titleLabelFont = giniHealthConfiguration.textStyleFonts[.subtitle1] ?? defaultBoldFont
+        self.moreInformationLabelFont = giniHealthConfiguration.textStyleFonts[.caption1] ?? defaultRegularFont
         
         self.calculateHeights()
     }
     
-    func updatePaymentProvidersInstalledState() {
-        for index in 0 ..< paymentProviders.count {
-            paymentProviders[index].isInstalled = isPaymentProviderInstalled(paymentProvider: paymentProviders[index].paymentProvider)
-        }
-        if selectedPaymentProvider == nil {
-            selectedPaymentProvider = paymentProviders.first(where: { $0.isInstalled == true })?.paymentProvider
-            if let indexSelected = paymentProviders.firstIndex(where: { $0.paymentProvider.id == selectedPaymentProvider?.id }) {
-                paymentProviders[indexSelected].isSelected = true
-            }
-        }
-    }
-    
     private func calculateHeights() {
-        let totalTableViewHeight = CGFloat(paymentProviders.count) * Constants.cellSizeHeight
-        let totalBottomViewHeight = Constants.blankBottomViewHeight + totalTableViewHeight
+        let totalBottomViewHeight = Constants.blankBottomViewHeight
         if totalBottomViewHeight > maximumViewHeight {
-            self.heightTableView = maximumViewHeight - Constants.blankBottomViewHeight
             self.bottomViewHeight = maximumViewHeight
         } else {
-            self.heightTableView = totalTableViewHeight
-            self.bottomViewHeight = totalTableViewHeight + Constants.blankBottomViewHeight
+            self.bottomViewHeight = Constants.blankBottomViewHeight
         }
     }
-
-    func paymentProvidersViewModel(paymentProvider: PaymentProviderAdditionalInfo) -> BankSelectionTableViewCellModel {
-        BankSelectionTableViewCellModel(paymentProvider: paymentProvider)
-    }
     
-    func didTapOnClose() {
-        viewDelegate?.didTapOnClose()
-    }
-    
-    private func isPaymentProviderInstalled(paymentProvider: PaymentProvider) -> Bool {
-        paymentProvider.appSchemeIOS.canOpenURLString()
+    func didTapOnContinue() {
+        viewDelegate?.didTapOnContinue()
     }
 }
 
 extension InstallAppBottomViewModel {
     enum Constants {
-        static let blankBottomViewHeight: CGFloat = 200.0
-        static let cellSizeHeight: CGFloat = 64.0
+        static let blankBottomViewHeight: CGFloat = 320.0
         static let topPaddingView: CGFloat = 100.0
     }
 }
