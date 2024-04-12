@@ -96,11 +96,9 @@ final class NoResultScreenViewController: UIViewController {
         }).count
     }
 
-    public init(
-        giniConfiguration: GiniConfiguration,
-        type: NoResultType,
-        viewModel: BottomButtonsViewModel
-    ) {
+    public init(giniConfiguration: GiniConfiguration,
+                type: NoResultType,
+                viewModel: BottomButtonsViewModel) {
         self.giniConfiguration = giniConfiguration
         self.type = type
         switch type {
@@ -169,26 +167,21 @@ final class NoResultScreenViewController: UIViewController {
     }
 
     private func configureMainView() {
-        title = NSLocalizedStringPreferredFormat(
-            "ginicapture.noresult.title",
-            comment: "No result screen title")
-        header.iconImageView.accessibilityLabel = NSLocalizedStringPreferredFormat(
-            "ginicapture.noresult.title",
-            comment: "No result screen title")
+        title = NSLocalizedStringPreferredFormat("ginicapture.noresult.title",
+                                                 comment: "No result screen title")
+        header.iconImageView.accessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.noresult.title",
+                                                                                   comment: "No result screen title")
         header.headerLabel.text = type.description
         header.headerLabel.font = giniConfiguration.textStyleFonts[.subheadline]
-        header.headerLabel.textColor = GiniColor(
-            light: UIColor.GiniCapture.dark1,
-            dark: UIColor.GiniCapture.light1
-        ).uiColor()
-        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2, dark: UIColor.GiniCapture.dark2).uiColor()
+        header.headerLabel.textColor = GiniColor(light: UIColor.GiniCapture.dark1,
+                                                 dark: UIColor.GiniCapture.light1).uiColor()
+        view.backgroundColor = GiniColor(light: UIColor.GiniCapture.light2,
+                                         dark: UIColor.GiniCapture.dark2).uiColor()
         view.addSubview(header)
         view.addSubview(tableView)
         view.addSubview(buttonsView)
-        header.backgroundColor = GiniColor(
-            light: UIColor.GiniCapture.error4,
-            dark: UIColor.GiniCapture.error1
-        ).uiColor()
+        header.backgroundColor = GiniColor(light: UIColor.GiniCapture.error4,
+                                           dark: UIColor.GiniCapture.error1).uiColor()
     }
 
     private func configureCustomTopNavigationBar() {
@@ -258,14 +251,14 @@ final class NoResultScreenViewController: UIViewController {
     }
 
     private func configureButtons() {
-        buttonsView.enterButton.addTarget(
-            viewModel,
-            action: #selector(viewModel.didPressEnterManually),
-            for: .touchUpInside)
-        buttonsView.retakeButton.addTarget(
-            viewModel,
-            action: #selector(viewModel.didPressRetake),
-            for: .touchUpInside)
+        buttonsView.enterButton.addTarget(self,
+                                          action: #selector(didPressEnterManually),
+                                          for: .touchUpInside)
+        buttonsView.retakeButton.addTarget(self,
+                                           action: #selector(didPressRetake),
+                                           for: .touchUpInside)
+    }
+
     @objc func didPressEnterManually() {
         AnalyticsManager.track(event: .enterManuallyTapped, screenName: .noResults)
         viewModel.didPressEnterManually()
