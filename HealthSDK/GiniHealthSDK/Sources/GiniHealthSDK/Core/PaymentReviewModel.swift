@@ -7,12 +7,17 @@
 
 import GiniHealthAPILibrary
 import UIKit
+
+protocol PaymentReviewViewModelDelegate: AnyObject {
+    func presentInstallAppBottomSheet(bottomSheet: UIViewController)
+    func createPaymentRequestAndOpenBankApp()
+}
+
 /**
  View model class for review screen
   */
 public class PaymentReviewModel: NSObject {
     var onDocumentUpdated: () -> Void = {}
-    var onPaymentProvidersFetched: (_ provider: PaymentProviders) -> Void = { _ in }
 
     var onExtractionFetched: () -> Void = {}
     var onExtractionUpdated: () -> Void = {}
@@ -28,14 +33,14 @@ public class PaymentReviewModel: NSObject {
     var onCreatePaymentRequestErrorHandling: () -> Void = {}
     
     var onBankSelection: (_ provider: PaymentProvider) -> Void = { _ in }
+    
+    weak var viewModelDelegate: PaymentReviewViewModelDelegate?
 
     public var document: Document {
         didSet {
             self.onDocumentUpdated()
         }
     }
-
-    private var providers: PaymentProviders = []
 
     public var extractions: [Extraction] {
         didSet {
@@ -45,6 +50,7 @@ public class PaymentReviewModel: NSObject {
 
     public var documentId: String
     private var healthSDK: GiniHealth
+    private var selectedPaymentProvider: PaymentProvider?
 
     private var cellViewModels: [PageCollectionCellViewModel] = [PageCollectionCellViewModel]() {
         didSet {
@@ -72,11 +78,12 @@ public class PaymentReviewModel: NSObject {
     let payInvoiceLabelText: String = NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.banking.app.button.label",
                                                                        comment: "Title label used for the pay invoice button")
 
-    public init(with giniHealth: GiniHealth, document: Document, extractions: [Extraction]) {
+    public init(with giniHealth: GiniHealth, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider?) {
         self.healthSDK = giniHealth
         self.documentId = document.id
         self.document = document
         self.extractions = extractions
+        self.selectedPaymentProvider = selectedPaymentProvider
     }
 
     func getCellViewModel(at indexPath: IndexPath) -> PageCollectionCellViewModel {
@@ -110,6 +117,12 @@ public class PaymentReviewModel: NSObject {
                 }
             }
         }
+    }
+    
+    func openInstallAppBottomSheet() {
+        let installAppBottomSheet = installAppBottomSheet()
+        installAppBottomSheet.modalPresentationStyle = .overFullScreen
+        viewModelDelegate?.presentInstallAppBottomSheet(bottomSheet: installAppBottomSheet)
     }
 
     func openPaymentProviderApp(requestId: String, universalLink: String) {
@@ -151,6 +164,22 @@ public class PaymentReviewModel: NSObject {
                 }
             }
         }
+    }
+    
+    func installAppBottomSheet() -> UIViewController {
+        let installAppBottomView = InstallAppBottomView()
+        let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
+        installAppBottomViewModel.viewDelegate = self
+        installAppBottomView.viewModel = installAppBottomViewModel
+        let installAppBottomSheet = InstallAppBottomSheet()
+        installAppBottomSheet.bottomSheet = installAppBottomView
+        return installAppBottomSheet
+    }
+}
+
+extension PaymentReviewModel: InstallAppBottomViewProtocol {
+    func didTapOnContinue() {
+        viewModelDelegate?.createPaymentRequestAndOpenBankApp()
     }
 }
 

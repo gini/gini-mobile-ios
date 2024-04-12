@@ -50,3 +50,6 @@
 "ginihealth.paymentcomponent.paymentinfo.gini.link" = "https://gini.net/en/";
 "ginihealth.paymentcomponent.paymentinfo.gini.privacypolicy.link" = "";
 "ginihealth.paymentcomponent.installAppBottom.title" = "Billing data ready to share with the savings bank";
+"ginihealth.paymentcomponent.installAppBottom.notes.description" = "Notes: Please first update or install the Sparkasse app from the App Store.";
+"ginihealth.paymentcomponent.installAppBottom.tip.description" = "Tip: Tap 'Continue' to complete the payment in the Sparkasse app.";
+"ginihealth.paymentcomponent.installAppBottom.continue.button.text" = "Continue";

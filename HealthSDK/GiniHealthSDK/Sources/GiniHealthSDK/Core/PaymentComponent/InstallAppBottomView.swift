@@ -47,39 +47,64 @@ class InstallAppBottomView: UIView {
         let imageView = UIImageView(image: viewModel.bankImageIcon)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.frame = CGRect(x: 0, y: 0, width: Constants.bankIconSize, height: Constants.bankIconSize)
-        imageView.layer.cornerRadius = Constants.bankIconCornerRadius
+        imageView.roundCorners(corners: .allCorners, radius: Constants.bankIconCornerRadius)
         imageView.layer.borderWidth = Constants.bankIconBorderWidth
         imageView.layer.borderColor = viewModel.bankIconBorderColor.cgColor
-        imageView.isUserInteractionEnabled = true
-        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnCloseIcon)))
         return imageView
     }()
-
-    private lazy var descriptionLabel: UILabel = {
+    
+    private lazy var moreInformationStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.spacing = Constants.viewPaddingConstraint
+        stackView.axis = .horizontal
+        stackView.distribution = .fillProportionally
+        return stackView
+    }()
+    
+    // We need our label into a view for layout purposes. Stackviews require views in order to satisfy all dynamic constraints
+    private lazy var moreInformationLabelView: UIView = {
+        return UIView()
+    }()
+    
+    private lazy var moreInformationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = viewModel.descriptionText
-        label.textColor = viewModel.descriptionLabelAccentColor
-        label.font = viewModel.descriptionLabelFont
+        label.textColor = viewModel.moreInformationLabelTextColor
+        label.font = viewModel.moreInformationLabelFont
         label.numberOfLines = 0
+        label.text = viewModel.moreInformationLabelText
         return label
     }()
-
-    private lazy var paymentProvidersTableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .plain)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(UINib(nibName: BankSelectionTableViewCell.identifier,
-                                 bundle: Bundle.resource),
-                           forCellReuseIdentifier: BankSelectionTableViewCell.identifier)
-        tableView.estimatedRowHeight = viewModel.rowHeight
-        tableView.rowHeight = viewModel.rowHeight
-        tableView.separatorStyle = .none
-        tableView.tableFooterView = UIView()
-        tableView.backgroundColor = .clear
-        tableView.showsVerticalScrollIndicator = false
-        return tableView
+    
+    private lazy var moreInformationButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let image = UIImageNamedPreferred(named: viewModel.moreInformationIconName)
+        button.setImage(image, for: .normal)
+        button.tintColor = viewModel.moreInformationAccentColor
+        return button
+    }()
+    
+    private lazy var continueButton: PaymentPrimaryButton = {
+        let button = PaymentPrimaryButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.buttonViewHeight)
+        button.configure(with: viewModel.giniHealthConfiguration.primaryButtonConfiguration)
+        button.customConfigure(paymentProviderColors: viewModel.paymentProviderColors,
+                               text: viewModel.continueLabelText)
+        return button
+    }()
+    
+    private lazy var appStoreImageView: UIButton = {
+        let button = UIButton(type: .custom)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.appStoreImageViewHeight)
+        let image = UIImageNamedPreferred(named: viewModel.appStoreImageIconName)
+        button.setImage(image, for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.addTarget(self, action: #selector(tapOnAppStoreButton), for: .touchUpInside)
+        return button
     }()
 
     private lazy var poweredByGiniView: PoweredByGiniView = {
@@ -101,6 +126,7 @@ class InstallAppBottomView: UIView {
         setupViewAttributes()
         setupLayout()
         setupListeners()
+        setButtonsState()
     }
 
     private func setupViewHierarchy() {
@@ -108,25 +134,27 @@ class InstallAppBottomView: UIView {
         self.addSubview(titleView)
         titleView.addSubview(titleLabel)
         self.addSubview(bankIconImageView)
-        self.addSubview(descriptionLabel)
-        self.addSubview(paymentProvidersTableView)
+        moreInformationLabelView.addSubview(moreInformationLabel)
+        moreInformationStackView.addArrangedSubview(moreInformationButton)
+        moreInformationStackView.addArrangedSubview(moreInformationLabelView)
+        self.addSubview(moreInformationStackView)
+        self.addSubview(continueButton)
         self.addSubview(poweredByGiniView)
+        self.addSubview(appStoreImageView)
     }
 
     private func setupViewAttributes() {
         self.backgroundColor = viewModel.backgroundColor
         self.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadiusView)
-        
-        let isFullScreen = viewModel.bottomViewHeight >= viewModel.maximumViewHeight
-        paymentProvidersTableView.isScrollEnabled = isFullScreen
     }
 
     private func setupLayout() {
         setupTopRectangleConstraints()
         setupTitleViewConstraints()
         setupBankImageConstraints()
-        setupDescriptionConstraints()
-        setupTableViewConstraints()
+        setupMoreInformationConstraints()
+        setupContinueButtonConstraints()
+        setupAppStoreButtonConstraints()
         setupPoweredByGiniConstraints()
     }
     
@@ -138,8 +166,17 @@ class InstallAppBottomView: UIView {
     }
     
     @objc private func willEnterForeground() {
-        viewModel.updatePaymentProvidersInstalledState()
-        paymentProvidersTableView.reloadData()
+        setButtonsState()
+    }
+    
+    private func setButtonsState() {
+        appStoreImageView.isHidden = viewModel.isBankInstalled
+        continueButton.isHidden = !viewModel.isBankInstalled
+        moreInformationLabel.textColor = viewModel.moreInformationLabelTextColor
+        
+        continueButton.didTapButton = { [weak self] in
+            self?.tapOnContinueButton()
+        }
     }
 
     private func setupTopRectangleConstraints() {
@@ -158,6 +195,7 @@ class InstallAppBottomView: UIView {
             self.trailingAnchor.constraint(equalTo: titleView.trailingAnchor, constant: Constants.viewPaddingConstraint),
             titleView.topAnchor.constraint(equalTo: self.topAnchor, constant: Constants.topAnchorTitleView),
             titleLabel.leadingAnchor.constraint(equalTo: titleView.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: titleView.trailingAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: titleView.centerYAnchor)
         ])
     }
@@ -171,20 +209,33 @@ class InstallAppBottomView: UIView {
         ])
     }
     
-    private func setupDescriptionConstraints() {
+    private func setupMoreInformationConstraints() {
         NSLayoutConstraint.activate([
-            descriptionLabel.topAnchor.constraint(equalTo: titleView.bottomAnchor),
-            descriptionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.viewPaddingConstraint),
-            self.trailingAnchor.constraint(equalTo: descriptionLabel.trailingAnchor, constant: Constants.viewPaddingConstraint)
+            moreInformationStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            moreInformationStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+            moreInformationStackView.topAnchor.constraint(equalTo: bankIconImageView.bottomAnchor, constant: Constants.viewPaddingConstraint),
+            moreInformationLabel.leadingAnchor.constraint(equalTo: moreInformationLabelView.leadingAnchor),
+            moreInformationLabel.trailingAnchor.constraint(equalTo: moreInformationLabelView.trailingAnchor),
+            moreInformationLabel.centerYAnchor.constraint(equalTo: moreInformationLabelView.centerYAnchor)
         ])
     }
-
-    private func setupTableViewConstraints() {
+    
+    private func setupContinueButtonConstraints() {
         NSLayoutConstraint.activate([
-            paymentProvidersTableView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Constants.viewPaddingConstraint),
-            paymentProvidersTableView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.viewPaddingConstraint),
-            self.trailingAnchor.constraint(equalTo: paymentProvidersTableView.trailingAnchor, constant: Constants.viewPaddingConstraint),
-            paymentProvidersTableView.heightAnchor.constraint(equalToConstant: viewModel.heightTableView)
+            continueButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            continueButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+            continueButton.heightAnchor.constraint(equalToConstant: continueButton.frame.height),
+            continueButton.topAnchor.constraint(equalTo: moreInformationStackView.bottomAnchor, constant: Constants.continueButtonTopAnchor)
+        ])
+    }
+    
+    private func setupAppStoreButtonConstraints() {
+        NSLayoutConstraint.activate([
+            appStoreImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            appStoreImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+            appStoreImageView.heightAnchor.constraint(equalToConstant: appStoreImageView.frame.height),
+            appStoreImageView.topAnchor.constraint(equalTo: moreInformationStackView.bottomAnchor, constant: Constants.continueButtonTopAnchor),
+            appStoreImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor)
         ])
     }
 
@@ -192,16 +243,21 @@ class InstallAppBottomView: UIView {
         let poweredByGiniBottomAnchorConstraint = poweredByGiniView.bottomAnchor.constraint(equalTo: poweredByGiniView.bottomAnchor, constant: Constants.viewPaddingConstraint)
         poweredByGiniBottomAnchorConstraint.priority = .required - 1
         NSLayoutConstraint.activate([
-            poweredByGiniView.topAnchor.constraint(equalTo: paymentProvidersTableView.bottomAnchor, constant: Constants.viewPaddingConstraint),
+            poweredByGiniView.topAnchor.constraint(equalTo: continueButton.bottomAnchor, constant: Constants.viewPaddingConstraint),
             poweredByGiniView.heightAnchor.constraint(equalToConstant: poweredByGiniView.frame.height),
-            poweredByGiniView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            poweredByGiniView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.viewPaddingConstraint),
             poweredByGiniBottomAnchorConstraint
         ])
     }
     
     @objc
-    private func tapOnCloseIcon() {
-        viewModel.didTapOnClose()
+    private func tapOnContinueButton() {
+        viewModel.didTapOnContinue()
+    }
+
+    @objc
+    private func tapOnAppStoreButton() {
+        openPaymentProvidersAppStoreLink(urlString: viewModel.selectedPaymentProvider?.appStoreUrlIOS)
     }
     
     private func openPaymentProvidersAppStoreLink(urlString: String?) {
@@ -230,33 +286,8 @@ extension InstallAppBottomView {
         static let bankIconCornerRadius = 6.0
         static let bankIconBorderWidth = 1.0
         static let topAnchorBankImage = 10.0
-    }
-}
-
-extension InstallAppBottomView: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.paymentProviders.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: BankSelectionTableViewCell.identifier,
-                                                       for: indexPath) as? BankSelectionTableViewCell else {
-            return UITableViewCell()
-        }
-        let invoiceTableViewCellModel = viewModel.paymentProvidersViewModel(paymentProvider: viewModel.paymentProviders[indexPath.row])
-        cell.cellViewModel = invoiceTableViewCellModel
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        viewModel.rowHeight
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if viewModel.paymentProviders[indexPath.row].isInstalled {
-            viewModel.viewDelegate?.didSelectPaymentProvider(paymentProvider: viewModel.paymentProviders[indexPath.row].paymentProvider)
-        } else {
-            openPaymentProvidersAppStoreLink(urlString: viewModel.paymentProviders[indexPath.row].paymentProvider.appStoreUrlIOS)
-        }
+        static let buttonViewHeight: CGFloat = 56
+        static let continueButtonTopAnchor = 24.0
+        static let appStoreImageViewHeight = 44.0
     }
 }

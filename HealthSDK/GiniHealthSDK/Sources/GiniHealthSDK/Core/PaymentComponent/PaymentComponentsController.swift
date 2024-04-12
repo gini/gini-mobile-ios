@@ -23,7 +23,6 @@ protocol PaymentComponentsProtocol {
     func checkIfDocumentIsPayable(docId: String, completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
     func paymentView(documentId: String) -> UIView
     func bankSelectionBottomSheet() -> UIViewController
-    func installAppBottomSheet() -> UIViewController
     func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void)
     func paymentInfoViewController() -> UIViewController
 }
@@ -64,18 +63,6 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
      */
     public init(giniHealth: GiniHealth) {
         self.giniHealth = giniHealth
-        setupListeners()
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    private func setupListeners() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(willEnterForeground),
-                                               name: UIApplication.willEnterForegroundNotification,
-                                               object: nil)
     }
     
     /**
@@ -101,15 +88,6 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
                 self?.delegate?.didFetchedPaymentProviders()
             case let .failure(error):
                 print("Couldn't load payment providers: \(error.localizedDescription)")
-            }
-        }
-    }
-    
-    @objc
-    private func willEnterForeground() {
-        DispatchQueue.main.async {
-            if !self.checkPaymentProviderIsInstalled(paymentProvider: self.selectedPaymentProvider) {
-                self.loadPaymentProviders()
             }
         }
     }
@@ -184,17 +162,6 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
         return bankSelectionBottomSheet
     }
     
-    public func installAppBottomSheet() -> UIViewController {
-        let installAppBottomView = InstallAppBottomView()
-        let installAppBottomViewModel = InstallAppBottomViewModel(paymentProviders: paymentProviders,
-                                                                        selectedPaymentProvider: selectedPaymentProvider)
-        installAppBottomViewModel.viewDelegate = self
-        installAppBottomView.viewModel = installAppBottomViewModel
-        let installAppBottomSheet = InstallAppBottomSheet()
-        installAppBottomSheet.bottomSheet = installAppBottomView
-        return installAppBottomSheet
-    }
-    
     public func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
         self.isLoading = true
         self.giniHealth.fetchDataForReview(documentId: documentID) { [weak self] result in
@@ -255,4 +222,3 @@ extension PaymentComponentsController {
         static let kDefaultPaymentProvider = "defaultPaymentProvider"
     }
 }
-
