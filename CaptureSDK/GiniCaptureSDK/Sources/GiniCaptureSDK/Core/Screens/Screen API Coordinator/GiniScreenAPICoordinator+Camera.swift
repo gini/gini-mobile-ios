@@ -73,6 +73,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
     }
 
     func cameraDidTapReviewButton(_ viewController: CameraViewController) {
+        // TODO: do we need back to review event ?
         popBackToReview()
     }
 
@@ -238,7 +239,7 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
                 }
                 if coordinator.currentPickerDismissesAutomatically {
                     self.cameraScreen?.showErrorDialog(for: error,
-                                                               positiveAction: positiveAction)
+                                                       positiveAction: positiveAction)
                 } else {
                     coordinator.currentPickerViewController?.showErrorDialog(for: error,
                                                                              positiveAction: positiveAction)
@@ -247,16 +248,16 @@ extension GiniScreenAPICoordinator: DocumentPickerCoordinatorDelegate {
         }
     }
 
-    public func documentPicker(_ coordinator: DocumentPickerCoordinator, failedToPickDocumentsAt urls: [URL]) {
-        let error = FilePickerError.failedToOpenDocument
-        if coordinator.currentPickerDismissesAutomatically {
-            self.cameraScreen?.showErrorDialog(for: error,
-                                                       positiveAction: nil)
-        } else {
-            coordinator.currentPickerViewController?.showErrorDialog(for: error,
-                                                                     positiveAction: nil)
+        public func documentPicker(_ coordinator: DocumentPickerCoordinator, failedToPickDocumentsAt urls: [URL]) {
+            let error = FilePickerError.failedToOpenDocument
+            if coordinator.currentPickerDismissesAutomatically {
+                self.cameraScreen?.showErrorDialog(for: error,
+                                                   positiveAction: nil)
+            } else {
+                coordinator.currentPickerViewController?.showErrorDialog(for: error,
+                                                                         positiveAction: nil)
+            }
         }
-    }
 
     fileprivate func addDropInteraction(forView view: UIView, with delegate: UIDropInteractionDelegate) {
         let dropInteraction = UIDropInteraction(delegate: delegate)
@@ -334,9 +335,8 @@ extension GiniScreenAPICoordinator: UploadDelegate {
             guard let self = self else { return }
             self.update(document, withError: error, isUploaded: false)
 
-            let errorLog = ErrorLog(
-                description: String(describing: error),
-                error: error)
+            let errorLog = ErrorLog(description: String(describing: error),
+                                    error: error)
             self.giniConfiguration.errorLogger.handleErrorLog(error: errorLog)
             guard let giniError = error as? GiniError, giniError != .requestCancelled else { return }
             self.displayError(errorType: ErrorType(error: giniError), animated: true)

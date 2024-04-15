@@ -39,17 +39,26 @@ public final class CameraButtonsViewModel {
     @objc func toggleFlash() {
         isFlashOn = !isFlashOn
         flashAction?(isFlashOn)
+
+        AnalyticsManager.track(event: .flashTapped,
+                               screenName: .camera,
+                               properties: [AnalyticsProperty(key: .flashActive, value: isFlashOn)])
     }
 
     @objc func importPressed() {
+        AnalyticsManager.track(event: .importFilesTapped, screenName: .camera)
         importAction?()
     }
 
     @objc func thumbnailPressed() {
+        AnalyticsManager.track(event: .multiplePagesCapturedTapped,
+                               screenName: .camera,
+                               properties: [AnalyticsProperty(key: .documentPageNumber, value: images.count)])
         imageStackAction?()
     }
 
     @objc func cancelPressed() {
+        AnalyticsManager.track(event: .closeTapped, screenName: .camera)
         cancelAction?()
     }
 

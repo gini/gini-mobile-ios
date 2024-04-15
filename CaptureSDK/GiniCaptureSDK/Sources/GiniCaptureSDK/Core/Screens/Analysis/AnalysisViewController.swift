@@ -142,6 +142,8 @@ import UIKit
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         didShowAnalysis?()
+
+        AnalyticsManager.trackScreenShown(screenName: .analysis)
     }
 
     // MARK: Toggle animation
