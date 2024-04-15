@@ -107,7 +107,8 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
                         } else {
                             self?.screenAPINavigationController.dismiss(animated: animated)
                         }
-                    }, cancelPressed: { [weak self] in
+                    }, 
+                    cancelPressed: { [weak self] in
                         self?.closeScreenApi()
                 })
             } else {
@@ -118,7 +119,8 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
                         } else {
                             self?.screenAPINavigationController.dismiss(animated: animated)
                         }
-                    }, cancelPressed: { [weak self] in
+                    }, 
+                    cancelPressed: { [weak self] in
                     self?.closeScreenApi()
                 })
             }
@@ -126,17 +128,18 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
             viewModel = BottomButtonsViewModel(
                 manuallyPressed: { [weak self] in
                     self?.screenAPINavigationController.dismiss(animated: true)
-                }, cancelPressed: { [weak self] in
+                }, 
+                cancelPressed: { [weak self] in
                 self?.closeScreenApi()
             })
         }
 
         self.trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .error))
-        let viewController = ErrorScreenViewController(
-            giniConfiguration: giniConfiguration,
-            type: errorType,
-            documentType: pages.type ?? .pdf,
-            viewModel: viewModel)
+        let viewController = ErrorScreenViewController(giniConfiguration: giniConfiguration,
+                                                       type: errorType,
+                                                       documentType: pages.type ?? .pdf,
+                                                       viewModel: viewModel, 
+                                                       errorAnalytics: ErrorAnalytics(type: ""))
 
         screenAPINavigationController.pushViewController(viewController, animated: animated)
     }

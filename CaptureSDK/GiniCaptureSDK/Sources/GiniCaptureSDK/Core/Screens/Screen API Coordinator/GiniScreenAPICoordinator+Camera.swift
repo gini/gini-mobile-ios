@@ -335,9 +335,8 @@ extension GiniScreenAPICoordinator: UploadDelegate {
             guard let self = self else { return }
             self.update(document, withError: error, isUploaded: false)
 
-            let errorLog = ErrorLog(
-                description: String(describing: error),
-                error: error)
+            let errorLog = ErrorLog(description: String(describing: error),
+                                    error: error)
             self.giniConfiguration.errorLogger.handleErrorLog(error: errorLog)
             guard let giniError = error as? GiniError, giniError != .requestCancelled else { return }
             self.displayError(errorType: ErrorType(error: giniError), animated: true)
