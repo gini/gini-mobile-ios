@@ -40,6 +40,9 @@ enum AnalyticsPropertyKey: String {
     case documentPageNumber = "document_page_number"
     case ibanDetectionLayerVisible = "iban_detection_layer_visible"
 
+    case documentId = "document_id"
     case errorMessage = "error_message"
-    case noResultType = "no_result_type"
+    case documentType = "document_type"
+    case errorCode = "error_code"
+    case errorType = "error_type"
 }
