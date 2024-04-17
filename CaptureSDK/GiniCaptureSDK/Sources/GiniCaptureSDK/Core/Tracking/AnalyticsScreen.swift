@@ -17,4 +17,5 @@ enum AnalyticsScreen: String {
     case onboardingLighting = "onboarding_lighting"
     case onboardingMultipage = "onboarding_multiple_pages"
     case onboardingQRcode = "onboarding_qr_code"
+    case help
 }

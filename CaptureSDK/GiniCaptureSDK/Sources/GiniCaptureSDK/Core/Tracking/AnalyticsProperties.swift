@@ -32,6 +32,12 @@ extension Bool: AnalyticsPropertyValue {
     }
 }
 
+extension Array: AnalyticsPropertyValue where Element == String {
+    func analyticsPropertyValue() -> [String] {
+        return self
+    }
+}
+
 enum AnalyticsPropertyKey: String {
     case screenName = "screen_name"
 
@@ -45,4 +51,8 @@ enum AnalyticsPropertyKey: String {
     case documentType = "document_type"
     case errorCode = "error_code"
     case errorType = "error_type"
+
+    case hasCustomItems = "has_custom_items"
+    case helpItems = "help_items"
+    case itemTapped = "item_tapped"
 }
