@@ -32,4 +32,7 @@ enum AnalyticsEvent: String {
     case enterManuallyTapped = "enter_manually_tapped"
     case retakeImagesTapped = "retake_images_tapped"
     case backToCameraTapped = "back_to_camera_tapped"
+
+    // MARK: - Help
+    case helpItemTapped = "help_item_tapped"
 }
