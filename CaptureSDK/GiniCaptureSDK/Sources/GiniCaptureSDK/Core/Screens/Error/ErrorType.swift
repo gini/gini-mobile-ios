@@ -17,6 +17,7 @@ import GiniBankAPILibrary
  - authentication: Error related to authentication.
  - unexpected: Unexpected error that is not covered by the other cases.
  - maintenance: Error returned when the system is under maintenance.
+ - outage: Error indicating that the service is unavailable due to outage.
  */
 
 @objc public enum ErrorType: Int {
@@ -27,6 +28,9 @@ import GiniBankAPILibrary
     case unexpected
     case maintenance
     case outage
+
+    // Dictionary to store ErrorAnalytics for each case
+    private static var errorAnalyticsDictionary: [ErrorType: ErrorAnalytics] = [:]
 
     /**
      Initializes a new instance of the `ErrorType` enum based on the given `GiniError`.
@@ -55,6 +59,11 @@ import GiniBankAPILibrary
         default:
             self = .unexpected
         }
+
+        // Generate error analytics using AnalyticsMapper
+        let errorAnalytics = AnalyticsMapper.errorAnalytics(from: error)
+        // Store error analytics in the dictionary
+        ErrorType.errorAnalyticsDictionary[self] = errorAnalytics
     }
 
     func iconName() -> String {
@@ -138,5 +147,16 @@ import GiniBankAPILibrary
                 "ginicapture.error.outage.title",
                 comment: "Outage error")
         }
+    }
+
+    /**
+     Get the error analytics for the current `ErrorType`.
+
+     - Returns: An `ErrorAnalytics` object representing the analytics for the error.
+     */
+    func errorAnalytics() -> ErrorAnalytics {
+        let unknownError = ErrorAnalytics(type: "", code: nil,
+                                          reason: "Error analytics not found for \(self)")
+        return ErrorType.errorAnalyticsDictionary[self] ?? unknownError
     }
 }
