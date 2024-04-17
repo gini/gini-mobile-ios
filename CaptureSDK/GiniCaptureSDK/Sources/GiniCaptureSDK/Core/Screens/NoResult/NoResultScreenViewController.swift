@@ -30,6 +30,19 @@ final class NoResultScreenViewController: UIViewController {
                 return text
             }
         }
+
+        var analyticsValue: String {
+            switch self {
+            case .pdf:
+                return "pdf"
+            case .image:
+                return "image"
+            case .qrCode:
+                return "qrCode"
+            default:
+                return "unknown"
+            }
+        }
     }
 
     lazy var tableView: UITableView = {
@@ -113,6 +126,11 @@ final class NoResultScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupView()
+
+        let eventProperties = [AnalyticsProperty(key: .noResultType,
+                                                 value: type.analyticsValue)]
+        AnalyticsManager.trackScreenShown(screenName: .noResults,
+                                          properties: eventProperties)
     }
 
     override func viewDidLayoutSubviews() {
@@ -175,7 +193,7 @@ final class NoResultScreenViewController: UIViewController {
 
     private func configureCustomTopNavigationBar() {
         let cancelButton = GiniBarButton(ofType: .cancel)
-        cancelButton.addAction(viewModel, #selector(viewModel.didPressCancell))
+        cancelButton.addAction(self, #selector(didPressCancel))
 
         if giniConfiguration.bottomNavigationBarEnabled {
             navigationItem.rightBarButtonItem = cancelButton.barButton
@@ -240,14 +258,27 @@ final class NoResultScreenViewController: UIViewController {
     }
 
     private func configureButtons() {
-        buttonsView.enterButton.addTarget(
-            viewModel,
-            action: #selector(viewModel.didPressEnterManually),
-            for: .touchUpInside)
-        buttonsView.retakeButton.addTarget(
-            viewModel,
-            action: #selector(viewModel.didPressRetake),
-            for: .touchUpInside)
+        buttonsView.enterButton.addTarget(self,
+                                          action: #selector(didPressEnterManually),
+                                          for: .touchUpInside)
+        buttonsView.retakeButton.addTarget(self,
+                                           action: #selector(didPressRetake),
+                                           for: .touchUpInside)
+    }
+
+    @objc func didPressEnterManually() {
+        AnalyticsManager.track(event: .enterManuallyTapped, screenName: .noResults)
+        viewModel.didPressEnterManually()
+    }
+
+    @objc func didPressRetake() {
+        AnalyticsManager.track(event: .retakeImagesTapped, screenName: .noResults)
+        viewModel.didPressRetake()
+    }
+
+    @objc func didPressCancel() {
+        AnalyticsManager.track(event: .closeTapped, screenName: .noResults)
+        viewModel.didPressCancel()
     }
 
     private func configureHeaderContraints() {
