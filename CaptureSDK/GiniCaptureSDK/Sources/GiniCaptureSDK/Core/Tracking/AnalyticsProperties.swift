@@ -54,4 +54,7 @@ enum AnalyticsPropertyKey: String {
     case ibanDetectionLayerVisible = "iban_detection_layer_visible"
 
     case errorMessage = "error_message"
+    case documentType = "document_type"
+    case errorCode = "error_code"
+    case errorType = "error_type"
 }

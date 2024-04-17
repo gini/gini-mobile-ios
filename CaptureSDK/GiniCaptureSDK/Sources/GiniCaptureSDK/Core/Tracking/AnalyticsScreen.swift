@@ -4,7 +4,6 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-
 import Foundation
 
 enum AnalyticsScreen: String {
@@ -13,4 +12,5 @@ enum AnalyticsScreen: String {
     case review
     case analysis
     case noResults = "no_results"
+    case error
 }
