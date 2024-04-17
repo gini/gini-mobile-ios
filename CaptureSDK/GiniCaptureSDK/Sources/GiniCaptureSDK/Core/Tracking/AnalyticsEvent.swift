@@ -21,4 +21,10 @@ enum AnalyticsEvent: String {
     case errorDialogShown = "error_dialog_shown"
     case ibanDetected = "iban_detected"
     case qr_code_scanned = "qr_code_scanned"
+
+    // MARK: - Review
+    case processTapped = "process_tapped"
+    case deletePagesTapped = "delete_pages_tapped"
+    case addPagesTapped = "add_pages_tapped"
+    case swipePages = "swipe_pages"
 }
