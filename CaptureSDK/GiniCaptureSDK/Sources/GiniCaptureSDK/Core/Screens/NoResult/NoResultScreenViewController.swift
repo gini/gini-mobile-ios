@@ -30,19 +30,6 @@ final class NoResultScreenViewController: UIViewController {
                 return text
             }
         }
-
-        var analyticsValue: String {
-            switch self {
-            case .pdf:
-                return "pdf"
-            case .image:
-                return "image"
-            case .qrCode:
-                return "qrCode"
-            default:
-                return "unknown"
-            }
-        }
     }
 
     lazy var tableView: UITableView = {
@@ -125,8 +112,8 @@ final class NoResultScreenViewController: UIViewController {
         super.viewDidLoad()
         self.setupView()
 
-        let eventProperties = [AnalyticsProperty(key: .noResultType,
-                                                 value: type.analyticsValue)]
+        let eventProperties = [AnalyticsProperty(key: .documentType,
+                                                 value: AnalyticsMapper.documentTypeAnalytics(from: type))]
         AnalyticsManager.trackScreenShown(screenName: .noResults,
                                           properties: eventProperties)
     }
