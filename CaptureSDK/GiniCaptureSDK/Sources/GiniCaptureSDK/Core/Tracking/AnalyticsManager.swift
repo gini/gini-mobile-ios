@@ -8,10 +8,8 @@ import UIKit
 import Mixpanel
 
 class AnalyticsManager {
-    private static let mixPanelToken = "6262hhdfhdb929321222"
+    private static let mixPanelToken = "6262hhdfhdb929321222" // this id is fake we need to replace it
     static var mixpanelInstance: MixpanelInstance?
-
-    static var adjustProperties: [AnalyticsProperty]?
 
     static func initializeAnalytics() {
         mixpanelInstance = Mixpanel.initialize(token: mixPanelToken, trackAutomaticEvents: false)
