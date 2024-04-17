@@ -199,9 +199,9 @@ extension GiniScreenAPICoordinator {
         switch screenAPINavigationController.topViewController {
         case is CameraViewController:
             trackingDelegate?.onCameraScreenEvent(event: Event(type: .exit))
-            //TODO: rethink this when you add Camera access screen events!
-            //is also accessed from that screen
-            //do we need a different name for the screen in that case?
+            // TODO: rethink this when you add Camera access screen events!
+            // is also accessed from that screen
+            // do we need a different name for the screen in that case?
             AnalyticsManager.track(event: .closeTapped, screenName: .camera)
 
             if pages.type == .qrcode {
@@ -235,9 +235,9 @@ extension GiniScreenAPICoordinator {
     }
 
     @objc func showHelpMenuScreen() {
-        //TODO: rethink this when you add Camera access screen events!
-        //is also accessed from that screen
-        //do we need a different name for the screen in that case?
+        // TODO: rethink this when you add Camera access screen events!
+        // is also accessed from that screen
+        // do we need a different name for the screen in that case?
         AnalyticsManager.track(event: .helpTapped, screenName: .camera)
         
         let helpMenuViewController = HelpMenuViewController(
