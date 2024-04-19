@@ -120,7 +120,6 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         AnalyticsManager.trackScreenShown(screenNameString: pageModel.analyticsScreen,
                                           properties: eventProperties)
         pagesCounter.markPageAsSeen(pageModel)
-        print("DEBUG --- trackScreenShown on currentPageScreenName = ", pageModel.analyticsScreen)
     }
 
     func collectionView(_ collectionView: UICollectionView,

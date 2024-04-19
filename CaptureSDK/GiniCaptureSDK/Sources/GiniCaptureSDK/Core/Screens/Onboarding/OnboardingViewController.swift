@@ -130,7 +130,6 @@ class OnboardingViewController: UIViewController {
 
     @objc private func skipTapped() {
         let currentPageScreenName = dataSource.pageModels[dataSource.currentPageIndex].analyticsScreen
-        print("DEBUG --- skipTapped on currentPageScreenName = ", currentPageScreenName)
         AnalyticsManager.track(event: .skipTapped, screenNameString: currentPageScreenName)
         close()
     }
@@ -149,14 +148,12 @@ class OnboardingViewController: UIViewController {
             // Next  button tapped
             let currentPageScreenName = dataSource.pageModels[dataSource.currentPageIndex].analyticsScreen
             AnalyticsManager.track(event: .nextStepTapped, screenNameString: currentPageScreenName)
-            print("DEBUG --- nextStepTapped on currentPageScreenName = ", currentPageScreenName)
             let index = IndexPath(item: dataSource.currentPageIndex + 1, section: 0)
             pagesCollection.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
         } else {
             // Get started button tapped
             let currentPageScreenName = dataSource.pageModels[dataSource.currentPageIndex].analyticsScreen
             AnalyticsManager.track(event: .getStartedTapped, screenNameString: currentPageScreenName)
-            print("DEBUG --- getStartedTapped on currentPageScreenName = ", currentPageScreenName)
             close()
         }
     }
