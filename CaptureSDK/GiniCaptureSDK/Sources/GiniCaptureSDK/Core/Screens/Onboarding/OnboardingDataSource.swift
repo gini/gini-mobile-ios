@@ -1,17 +1,16 @@
 //
 //  OnboardingPagesDataSource.swift
-//  
 //
-//  Created by Nadya Karaban on 14.09.22.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 
 protocol BaseCollectionViewDataSource: UICollectionViewDelegate,
-    UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    init(
-        configuration: GiniConfiguration
-    )
+                                       UICollectionViewDataSource,
+                                       UICollectionViewDelegateFlowLayout {
+
+    init(configuration: GiniConfiguration)
 }
 
 protocol OnboardingScreen: AnyObject {

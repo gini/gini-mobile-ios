@@ -1,8 +1,7 @@
 //
 //  GiniScreenAPICoordinator+Analysis.swift
-//  GiniCapture
 //
-//  Created by Enrique del Pozo Gómez on 4/4/18.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
