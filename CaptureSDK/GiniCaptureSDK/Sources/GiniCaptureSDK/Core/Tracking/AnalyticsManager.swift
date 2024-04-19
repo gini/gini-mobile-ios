@@ -19,6 +19,7 @@ class AnalyticsManager {
         mixpanelInstance?.identify(distinctId: deviceID ?? "")
     }
 
+    // MARK: - Track screen shown
     static func trackScreenShown(screenName: AnalyticsScreen,
                                  properties: [AnalyticsProperty] = []) {
         track(event: AnalyticsEvent.screenShown,
@@ -26,13 +27,29 @@ class AnalyticsManager {
               properties: properties)
     }
 
+    static func trackScreenShown(screenNameString: String,
+                                 properties: [AnalyticsProperty] = []) {
+        track(event: AnalyticsEvent.screenShown,
+              screenNameString: screenNameString,
+              properties: properties)
+    }
+
+    // MARK: - Track event on screen
     static func track(event: AnalyticsEvent,
                       screenName: AnalyticsScreen? = nil,
                       properties: [AnalyticsProperty] = []) {
+        track(event: event, 
+              screenNameString: screenName?.rawValue,
+              properties: properties)
+    }
+
+    static func track(event: AnalyticsEvent,
+                      screenNameString: String? = nil,
+                      properties: [AnalyticsProperty] = []) {
         var eventProperties: [String: String] = [:]
 
-        if let screenName = screenName {
-            eventProperties[AnalyticsPropertyKey.screenName.rawValue] = screenName.rawValue
+        if let screenName = screenNameString {
+            eventProperties[AnalyticsPropertyKey.screenName.rawValue] = screenName
         }
 
         for property in properties {
@@ -57,6 +74,7 @@ class AnalyticsManager {
         mixpanelInstance?.track(event: event.rawValue, properties: eventProperties)
     }
 
+    // MARK: - Helper methods
     private static func analyticsString(from original: Bool) -> String {
         guard original else { return "no" }
 
