@@ -55,4 +55,5 @@ enum AnalyticsPropertyKey: String {
     case hasCustomItems = "has_custom_items"
     case helpItems = "help_items"
     case itemTapped = "item_tapped"
+    case customOnboardingTitle = "custom_onboarding_title"
 }
