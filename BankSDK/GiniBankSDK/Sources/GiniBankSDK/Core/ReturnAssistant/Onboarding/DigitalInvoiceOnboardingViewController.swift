@@ -51,9 +51,12 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
                                                         comment: "title for digital invoice onboarding screen")
     }
 
+    private var doneButtonTapped: Bool = false
+
     override public func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        AnalyticsManager.trackScreenShown(screenName: .onboardingDigitalInvoice)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -68,9 +71,17 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
 
         let configuration = GiniBankConfiguration.shared
         configuration.digitalInvoiceOnboardingIllustrationAdapter?.pageDidDisappear()
+
+        // this screen can be dismissed by tapping on the getStarted button or
+        // can be dismissed by dragging the screen from top to bottom.
+
+        if doneButtonTapped {
+            AnalyticsManager.track(event: .getStartedTapped, screenName: .onboardingDigitalInvoice)
+        } else {
+            AnalyticsManager.track(event: .dragToDismiss, screenName: .onboardingDigitalInvoice)
+        }
     }
 
-    // swiftlint:disable function_body_length
     private func configureUI() {
         let configuration = GiniBankConfiguration.shared
 
@@ -115,6 +126,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
             }
 
             navigationBarBottomAdapter?.setGetStartedButtonClickedActionCallback { [weak self] in
+                self?.doneButtonTapped = true
                 self?.dismissViewController()
             }
 
@@ -163,6 +175,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     }
 
     @objc func doneAction(_ sender: UIButton!) {
+        doneButtonTapped = true
         dismissViewController()
     }
 

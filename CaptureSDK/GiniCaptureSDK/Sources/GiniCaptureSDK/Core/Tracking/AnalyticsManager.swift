@@ -20,8 +20,8 @@ class AnalyticsManager {
     }
 
     // MARK: - Track screen shown
-    static func trackScreenShown(screenName: AnalyticsScreen,
-                                 properties: [AnalyticsProperty] = []) {
+    public static func trackScreenShown(screenName: AnalyticsScreen,
+                                        properties: [AnalyticsProperty] = []) {
         track(event: AnalyticsEvent.screenShown,
               screenName: screenName,
               properties: properties)
@@ -35,9 +35,9 @@ class AnalyticsManager {
     }
 
     // MARK: - Track event on screen
-    static func track(event: AnalyticsEvent,
-                      screenName: AnalyticsScreen? = nil,
-                      properties: [AnalyticsProperty] = []) {
+    public static func track(event: AnalyticsEvent,
+                             screenName: AnalyticsScreen? = nil,
+                             properties: [AnalyticsProperty] = []) {
         track(event: event, 
               screenNameString: screenName?.rawValue,
               properties: properties)
