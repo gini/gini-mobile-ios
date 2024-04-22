@@ -4,9 +4,9 @@
 //  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-
 import Foundation
-struct AnalyticsProperty {
+
+public struct AnalyticsProperty {
     let key: AnalyticsPropertyKey
     var value: AnalyticsPropertyValue
 }
@@ -39,7 +39,7 @@ extension Array: AnalyticsPropertyValue where Element == String {
     }
 }
 
-enum AnalyticsPropertyKey: String {
+public enum AnalyticsPropertyKey: String {
     case screenName = "screen_name"
 
     case flashActive = "flash_active"
