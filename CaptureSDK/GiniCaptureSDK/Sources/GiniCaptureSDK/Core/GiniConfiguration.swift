@@ -94,7 +94,12 @@ import GiniBankAPILibrary
     /**
      Should be set if the main app's bundle is not used.
      */
-     public var customResourceBundle: Bundle?
+    public var customResourceBundle: Bundle?
+
+    /**
+     Enables the customization of resources to override the default Gini resources. The change will affect all screens.
+     */
+    public var customResourceProvider: CustomResourceProvider?
 
     // MARK: Button configuration options
 
