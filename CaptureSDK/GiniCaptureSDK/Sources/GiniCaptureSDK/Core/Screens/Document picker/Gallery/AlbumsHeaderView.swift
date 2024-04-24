@@ -26,6 +26,7 @@ final class AlbumsHeaderView: UITableViewHeaderFooterView {
         selectPhotosButton.setTitleColor(.GiniCapture.accent1, for: .normal)
         selectPhotosButton.sizeToFit()
         selectPhotosButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        selectPhotosButton.isExclusiveTouch = true
     }
 
     override init(reuseIdentifier: String?) {
