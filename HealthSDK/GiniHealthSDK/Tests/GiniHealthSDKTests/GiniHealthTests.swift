@@ -33,7 +33,7 @@ final class GiniHealthTests: XCTestCase {
     
     func testFetchBankingApps_Success() {
         // Given
-        let expectedProviders: [PaymentProvider]? = loadProviders()
+        let expectedProviders: [PaymentProvider]? = loadProviders(fileName: "providers")
         
         // When
         let expectation = self.expectation(description: "Fetching banking apps")
