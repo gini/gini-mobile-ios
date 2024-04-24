@@ -8,7 +8,8 @@
 import UIKit
 import GiniHealthAPILibrary
 
-func loadProviders(fileName: String = "providers") -> PaymentProviders? {
+
+func loadProviders(fileName: String) -> PaymentProviders? {
     var providers: PaymentProviders = []
     let providersResponse: [PaymentProviderResponse]? = load(fromFile: fileName)
     guard let providersResponse else { return nil }
