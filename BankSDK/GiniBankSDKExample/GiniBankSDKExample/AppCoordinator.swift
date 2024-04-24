@@ -46,7 +46,7 @@ final class AppCoordinator: Coordinator {
         }
 		// Note: more examples of how the GiniBankConfiguration options can be configured can be found
 		// in SettingsViewController
-		
+
     // If you need to scale your font please use our method `scaledFont()`. Please, find the example below.
 //    let customFontToBeScaled = UIFont.scaledFont(UIFont(name: "Avenir", size: 20) ?? UIFont.systemFont(ofSize: 7, weight: .regular), textStyle: .caption1)
 //    configuration.updateFont(customFontToBeScaled, for: .caption1)
