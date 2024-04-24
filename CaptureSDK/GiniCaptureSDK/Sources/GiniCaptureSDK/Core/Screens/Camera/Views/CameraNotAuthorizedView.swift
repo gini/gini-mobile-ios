@@ -59,6 +59,7 @@ final class CameraNotAuthorizedView: UIView {
                                         .limitingFontSize(to: Constants.maximumFontSize)
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
+        button.isExclusiveTouch = true
         return button
     }()
 
