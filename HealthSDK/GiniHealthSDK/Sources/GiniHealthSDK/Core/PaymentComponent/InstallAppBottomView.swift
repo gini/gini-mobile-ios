@@ -172,7 +172,7 @@ class InstallAppBottomView: UIView {
     private func setButtonsState() {
         appStoreImageView.isHidden = viewModel.isBankInstalled
         continueButton.isHidden = !viewModel.isBankInstalled
-        moreInformationLabel.textColor = viewModel.moreInformationLabelTextColor
+        moreInformationLabel.text = viewModel.moreInformationLabelText
         
         continueButton.didTapButton = { [weak self] in
             self?.tapOnContinueButton()

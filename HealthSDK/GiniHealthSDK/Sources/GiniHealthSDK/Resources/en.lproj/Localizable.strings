@@ -49,7 +49,7 @@
 "ginihealth.paymentcomponent.paymentinfo.questions.answer.clickable.text" = "privacy policy[LINK]";
 "ginihealth.paymentcomponent.paymentinfo.gini.link" = "https://gini.net/en/";
 "ginihealth.paymentcomponent.paymentinfo.gini.privacypolicy.link" = "";
-"ginihealth.paymentcomponent.installAppBottom.title" = "Billing data ready to share with the savings bank";
-"ginihealth.paymentcomponent.installAppBottom.notes.description" = "Notes: Please first update or install the Sparkasse app from the App Store.";
-"ginihealth.paymentcomponent.installAppBottom.tip.description" = "Tip: Tap 'Continue' to complete the payment in the Sparkasse app.";
-"ginihealth.paymentcomponent.installAppBottom.continue.button.text" = "Continue";
+"ginihealth.paymentcomponent.installAppBottom.title" = "Billing data ready to share with the [BANK] bank";
+"ginihealth.paymentcomponent.installAppBottom.notes.description" = "Note: You must first download the [BANK] app from the store";
+"ginihealth.paymentcomponent.installAppBottom.tip.description" = "Tip: Tap 'Forward' to complete the payment. The [BANK] app will open automatically, for you to confirm the transaction. Thank you!";
+"ginihealth.paymentcomponent.installAppBottom.continue.button.text" = "Forward";
