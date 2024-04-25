@@ -104,7 +104,7 @@ final class InstallAppBottomViewModel {
 
 extension InstallAppBottomViewModel {
     enum Constants {
-        static let blankBottomViewHeight: CGFloat = 320.0
+        static let blankBottomViewHeight: CGFloat = 340.0
         static let topPaddingView: CGFloat = 100.0
     }
 }
