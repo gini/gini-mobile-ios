@@ -32,10 +32,10 @@ final class InstallAppBottomViewModel {
     let dimmingBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.black,
                                                     darkModeColor: UIColor.white).uiColor().withAlphaComponent(0.4)
 
-    let titleText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.installAppBottom.title",
-                                                                       comment: "Install App Bottom sheet title")
+    var titleText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.installAppBottom.title",
+                                                             comment: "Install App Bottom sheet title")
     let titleLabelAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark2,
-                                                        darkModeColor: UIColor.GiniHealthColors.light2).uiColor()
+                                                   darkModeColor: UIColor.GiniHealthColors.light2).uiColor()
     var titleLabelFont: UIFont
 
     private var bankImageIconData: Data?
@@ -56,10 +56,13 @@ final class InstallAppBottomViewModel {
     var moreInformationLabelText: String {
         isBankInstalled ? 
         NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.installAppBottom.tip.description",
-                                         comment: "Text for tip information label") :
+                                         comment: "Text for tip information label").replacingOccurrences(of: bankToReplaceString, 
+                                                                                                         with: selectedPaymentProvider?.name ?? "") :
         NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.installAppBottom.notes.description",
-                                         comment: "Text for notes information label")
+                                         comment: "Text for notes information label").replacingOccurrences(of: bankToReplaceString, 
+                                                                                                           with: selectedPaymentProvider?.name ?? "")
     }
+    
 
     var moreInformationLabelFont: UIFont
     let moreInformationIconName = "info.circle"
@@ -69,6 +72,7 @@ final class InstallAppBottomViewModel {
                                                                      comment: "Title label used for the Continue button")
     
     var appStoreImageIconName = "appStoreIcon"
+    let bankToReplaceString = "[BANK]"
     
     var isBankInstalled: Bool {
         selectedPaymentProvider?.appSchemeIOS.canOpenURLString() ?? false
@@ -78,6 +82,8 @@ final class InstallAppBottomViewModel {
         self.selectedPaymentProvider = selectedPaymentProvider
         self.bankImageIconData = selectedPaymentProvider?.iconData
         self.paymentProviderColors = selectedPaymentProvider?.colors
+        
+        titleText = titleText.replacingOccurrences(of: bankToReplaceString, with: selectedPaymentProvider?.name ?? "")
         
         let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .regular)
         let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
