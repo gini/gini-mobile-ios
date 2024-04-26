@@ -50,6 +50,7 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.giniErrorLoggerIsOn = true
 		configuration.customGiniErrorLoggerDelegate = self
 		configuration.debugModeOn = true
+        configuration.customResourceProvider = nil
 		return configuration
 	}()
 	
@@ -181,7 +182,10 @@ final class SettingsViewControllerTests: XCTestCase {
 													 isSwitchOn: configuration.customGiniErrorLoggerDelegate != nil)))
 		contentData.append(.switchOption(data: .init(type: .debugModeOn,
 													 isSwitchOn: configuration.debugModeOn)))
-		
+
+        contentData.append(.switchOption(data: .init(type: .customResourceProvider,
+                                                     isSwitchOn: configuration.customResourceProvider != nil)))
+
 		var selectedSegmentIndex = 0
 		switch configuration.fileImportSupportedTypes {
 		case .none:
