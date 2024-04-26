@@ -236,7 +236,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         guard let model else { return }
         payInvoiceButton.configure(with: giniHealthConfiguration.primaryButtonConfiguration)
         payInvoiceButton.customConfigure(paymentProviderColors: selectedPaymentProvider?.colors,
-                                         isPaymentProviderInstalled: true,
                                          text: model.payInvoiceLabelText,
                                          leftImageData: selectedPaymentProvider?.iconData)
         disablePayButtonIfNeeded()
