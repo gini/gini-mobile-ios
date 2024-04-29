@@ -123,17 +123,17 @@ func prefferedImage(named name: String) -> UIImage? {
  - returns: UIColor if found with name.
  */
 func prefferedColor(named name: String) -> UIColor {
+    if let mainBundleColor = UIColor(named: name,
+                                     in: Bundle.main,
+                                     compatibleWith: nil) {
+        return mainBundleColor
+    }
+
     if let customBundle = GiniBankConfiguration.shared.customResourceBundle,
        let customBundleColor = UIColor(named: name,
                                        in: customBundle,
                                        compatibleWith: nil) {
         return customBundleColor
-    }
-
-    if let mainBundleColor = UIColor(named: name,
-                                     in: Bundle.main,
-                                     compatibleWith: nil) {
-        return mainBundleColor
     }
 
     if let color = UIColor(named: name,
