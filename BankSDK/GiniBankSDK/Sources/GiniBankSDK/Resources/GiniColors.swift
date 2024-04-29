@@ -42,7 +42,7 @@ public enum GiniBankColors: String, CaseIterable {
     case warning05 = "Warning05"
 
     // Convert enum case to UIColor
-    public var toUIColor: UIColor {
+    var toUIColor: UIColor {
         return prefferedColorByProvider(named: rawValue)
     }
 }
