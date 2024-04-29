@@ -12,7 +12,8 @@ on:
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET:
         required: true
-  
+  workflow_dispatch:
+    
 jobs:
   check:
     runs-on: macos-latest
