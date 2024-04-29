@@ -12,7 +12,8 @@ on:
     secrets:
       GINI_MOBILE_TEST_CLIENT_SECRET:
         required: true
-  
+  workflow_dispatch:
+ 
 jobs:
   check:
     runs-on: macos-latest
@@ -23,7 +24,7 @@ jobs:
     steps:
     - uses: maxim-lobanov/setup-xcode@v1.5.1
       with:
-        xcode-version: '14.2'
+        xcode-version: '14.3.1'
 
     - name: Checkout
       uses: actions/checkout@v3
