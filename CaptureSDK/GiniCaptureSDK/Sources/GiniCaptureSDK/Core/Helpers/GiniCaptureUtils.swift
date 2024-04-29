@@ -45,18 +45,17 @@ public func UIImageNamedPreferred(named name: String) -> UIImage? {
  - returns: color if found with name.
  */
 public func UIColorPreferred(named name: String) -> UIColor {
+    if let mainBundleColor = UIColor(named: name,
+                                     in: Bundle.main,
+                                     compatibleWith: nil) {
+        return mainBundleColor
+    }
 
     if let customBundle = GiniConfiguration.shared.customResourceBundle,
        let customBundleColor = UIColor(named: name,
                                        in: customBundle,
                                        compatibleWith: nil) {
         return customBundleColor
-    }
-
-    if let mainBundleColor = UIColor(named: name,
-                                     in: Bundle.main,
-                                     compatibleWith: nil) {
-        return mainBundleColor
     }
 
     if let color = UIColor(named: name,
