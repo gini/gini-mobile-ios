@@ -34,7 +34,7 @@ public final class DocumentService: DocumentServiceProtocol {
     }
     
     public func upload(document: GiniCaptureDocument,
-                completion: UploadDocumentCompletion?) {
+                       completion: UploadDocumentCompletion?) {
         self.partialDocuments[document.id] =
             PartialDocument(info: (PartialDocumentInfo(document: nil, rotationDelta: 0)),
                             document: nil,
