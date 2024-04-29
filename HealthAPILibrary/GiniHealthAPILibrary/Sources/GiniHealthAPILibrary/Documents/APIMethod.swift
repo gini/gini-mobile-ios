@@ -2,7 +2,7 @@
 //  APIMethod.swift
 //  GiniHealthAPI
 //
-//  Created by Enrique del Pozo Gómez on 3/4/19.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
