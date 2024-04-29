@@ -2,7 +2,7 @@
 //  GiniScreenAPICoordinator+Camera.swift
 //  GiniCapture
 //
-//  Created by Enrique del Pozo Gómez on 4/4/18.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -26,13 +26,15 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
             loadingView.removeFromSuperview()
             switch result {
             case .success(let validatedPages):
-                let validatedPage = validatedPages[0]
-                self.addToDocuments(new: [validatedPage])
-                self.didCaptureAndValidate(document)
                 if document.type == .qrcode {
+                    self.didCaptureAndValidate(document)
                     // Skip the analysis screen and validate the QR code on the same screen
                     return
                 }
+
+                let validatedPage = validatedPages[0]
+                self.addToDocuments(new: [validatedPage])
+                self.didCaptureAndValidate(document)
                 self.showNextScreenAfterPicking(pages: [validatedPage])
             case .failure(let error):
                 var errorMessage = String(describing: error)
@@ -268,23 +270,32 @@ extension GiniScreenAPICoordinator {
 
     fileprivate func validate(_ documents: [GiniCaptureDocument],
                               completion: @escaping (Result<[GiniCapturePage], Error>) -> Void) {
+        var documentsToValidate = documents + pages.map { $0.document }
 
-        guard !(documents + pages.map {$0.document}).containsDifferentTypes else {
+        for document in documentsToValidate where document.type == .qrcode {
+            // Scanning a QR code takes priority, even if the user has already taken some pictures.
+            // we should discard the pages that have already been scanned and keep the document generated after scanning the QR code
+            // We should proceed with the QR code flow.
+            documentsToValidate = [document]
+            break
+        }
+
+        guard !documentsToValidate.containsDifferentTypes else {
             completion(.failure(FilePickerError.mixedDocumentsUnsupported))
             return
         }
 
-        guard (documents.filter({ $0.type == .pdf }) +
-               pages.map({ $0.document }).filter({ $0.type == .pdf })).count <= 1 else {
+        guard documentsToValidate.filter({ $0.type == .pdf }).count <= 1 else {
             completion(.failure(FilePickerError.multiplePdfsUnsupported))
             return
         }
 
-        guard (documents.count + pages.count) <= GiniCaptureDocumentValidator.maxPagesCount else {
+        guard documentsToValidate.count <= GiniCaptureDocumentValidator.maxPagesCount else {
             completion(.failure(FilePickerError.maxFilesPickedCountExceeded))
             return
         }
-        self.validate(importedDocuments: documents) { validatedDocuments in
+
+        self.validate(importedDocuments: documentsToValidate) { validatedDocuments in
             let elementsWithError = validatedDocuments.filter { $0.error != nil }
             if let firstElement = elementsWithError.first,
                 let error = firstElement.error {
@@ -303,7 +314,7 @@ extension GiniScreenAPICoordinator {
                 var documentError: Error?
                 do {
                     try GiniCaptureDocumentValidator.validate(document,
-                                                             withConfig: self.giniConfiguration)
+                                                              withConfig: self.giniConfiguration)
                 } catch let error {
                     documentError = error
                 }
