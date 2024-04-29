@@ -43,10 +43,12 @@ extension UIColor {
         case warning05 = "Warning05"
 
         // Convert enum case to UIColor
-        public var toUIColor: UIColor {
+        var toUIColor: UIColor {
             return UIColorPreferredByProvider(named: rawValue)
         }
     }
+}
+extension UIColor {
     public struct GiniCapture {
         public static var accent1: UIColor {
             return GiniCaptureColors.accent01.toUIColor
