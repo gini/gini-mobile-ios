@@ -272,8 +272,8 @@ extension GiniScreenAPICoordinator {
 
         for document in documentsToValidate where document.type == .qrcode {
             // Scanning a QR code takes priority, even if the user has already taken some pictures.
-            // we should discard the pages that have already been scanned and keep the document generated after scanning the QR code
-            // We should proceed with the QR code flow.
+            // All the pages that have already been scanned should be discarded and keep the document generated after scanning the QR code.
+            // The flow of the QR code scanning process should be followed
             documentsToValidate = [document]
             break
         }

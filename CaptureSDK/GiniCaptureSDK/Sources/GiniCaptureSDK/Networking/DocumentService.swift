@@ -57,8 +57,8 @@ public final class DocumentService: DocumentServiceProtocol {
 
     private func updatePartialDocuments(for document: GiniCaptureDocument, with createdDocument: Document) {
         // Scanning a QR code takes priority, even if the user has already taken some pictures.
-        // we should discard all the pages that have already been scanned and keep the document generated after scanning the QR code
-        // composite document should be created just with he document generated after scanning the QR cod
+        // All the pages that have already been scanned should be discarded and keep the document generated after scanning the QR code.
+        // The composite document should be created just with the document generated after scanning the QR cod
         if document.type == .qrcode && partialDocuments.isNotEmpty {
             partialDocuments.removeAll()
         }
