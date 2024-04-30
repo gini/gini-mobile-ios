@@ -119,6 +119,15 @@ class PaymentViewController: UIViewController {
             field.attributedPlaceholder = NSAttributedString(string: placeholderText)
         }
         payButton.isEnabled = false
+
+        let payButtonTitle = NSLocalizedString("ginipaybank.reviewscreen.payButton.title",
+                                                             comment: "Pay button")
+        payButton.setTitle(payButtonTitle, for: .normal)
+
+        let backToBusinessButtonTitle = NSLocalizedString("ginipaybank.reviewscreen.backToInsurance.title",
+                                                             comment: "Back to insurance")
+        backToBusinessButton.setTitle(backToBusinessButtonTitle, for: .normal)
+
         backToBusinessButton.isHidden = true
     }
     
