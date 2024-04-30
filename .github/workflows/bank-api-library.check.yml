@@ -39,14 +39,6 @@ jobs:
            cd BankAPILibrary/GiniBankAPILibraryPinning
            swift package update
 
-    - name: Link to 15.0 Simulators
-      if: matrix.destination == 'platform=iOS Simulator,OS=15.0,name=iPhone 11'
-      run: |
-        echo "Creating Runtimes folder if needed..."
-        sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
-        echo "Creating symlink of the iOS 15.0 runtime..."
-        sudo ln -s /Applications/Xcode_13.1.app/Contents/Developer/Platforms/iPhoneOS.platform/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS.simruntime /Library/Developer/CoreSimulator/Profiles/Runtimes/iOS\ 15.0.simruntime
-
     - name: Build sdk targets
       run: |
         xcodebuild -workspace GiniMobile.xcworkspace -scheme "${{ matrix.target }}" -destination "${{ matrix.destination }}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
