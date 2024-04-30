@@ -41,6 +41,8 @@ public enum GiniHealthError: Error {
     /// Error thrown when api didn't returns payment extractions.
     case noPaymentDataExtracted
 }
+
+extension GiniHealthError: Equatable {}
 /**
  Data structure for Payment Review Screen initialization.
  */
@@ -169,7 +171,9 @@ public struct DataForReview {
                         switch result {
                         case let .success(extractionResult):
                             if let paymentExtractions = extractionResult.payment?.first, let iban = paymentExtractions.first(where: { $0.name == "iban" })?.value, !iban.isEmpty {
-                            completion(.success(true))
+                                completion(.success(true))
+                            } else if let ibanExtraction = extractionResult.extractions.first(where: { $0.name == "iban"})?.value, !ibanExtraction.isEmpty {
+                                completion(.success(true))
                             } else {
                                 completion(.success(false))
                             }
@@ -220,32 +224,32 @@ public struct DataForReview {
      
      */
     public func getExtractions(docId: String, completion: @escaping (Result<[Extraction], GiniHealthError>) -> Void){
-            documentService.fetchDocument(with: docId) { result in
-                switch result {
-                case let .success(createdDocument):
-                    self.documentService
-                            .extractions(for: createdDocument,
-                                         cancellationToken: CancellationToken()) { result in
-                                DispatchQueue.main.async {
-                                    switch result {
-                                    case let .success(extractionResult):
-                                        if let paymentExtractionsContainer = extractionResult.payment, let paymentExtractions = paymentExtractionsContainer.first {
-                                            completion(.success(paymentExtractions))
-                                        } else {
-                                            completion(.failure(.noPaymentDataExtracted))
-                                        }
-                                    case let .failure(error):
-                                        completion(.failure(.apiError(error)))
+        documentService.fetchDocument(with: docId) { result in
+            switch result {
+            case let .success(createdDocument):
+                self.documentService
+                        .extractions(for: createdDocument,
+                                     cancellationToken: CancellationToken()) { result in
+                            DispatchQueue.main.async {
+                                switch result {
+                                case let .success(extractionResult):
+                                    if let paymentExtractionsContainer = extractionResult.payment, let paymentExtractions = paymentExtractionsContainer.first {
+                                        completion(.success(paymentExtractions))
+                                    } else {
+                                        completion(.failure(.noPaymentDataExtracted))
                                     }
+                                case let .failure(error):
+                                    completion(.failure(.apiError(error)))
                                 }
                             }
-                case let .failure(error):
-                    DispatchQueue.main.async {
-                        completion(.failure(.apiError(error)))
-                    }
+                        }
+            case let .failure(error):
+                DispatchQueue.main.async {
+                    completion(.failure(.apiError(error)))
                 }
             }
         }
+    }
         
     /**
      Creates a payment request
@@ -279,16 +283,15 @@ public struct DataForReview {
      - Parameters:
         - requestID: Id of the created payment request.
         - universalLink: Universal link for the selected payment provider
-     
      */
-    public func openPaymentProviderApp(requestID: String, universalLink: String) {
+    public func openPaymentProviderApp(requestID: String, universalLink: String, urlOpener: URLOpener = URLOpener(UIApplication.shared), completion: ((Bool) -> Void)? = nil) {
         let queryItems = [URLQueryItem(name: "id", value: requestID)]
         let urlString = universalLink + "://payment"
         var urlComponents = URLComponents(string: urlString)!
         urlComponents.queryItems = queryItems
         let resultUrl = urlComponents.url!
         DispatchQueue.main.async {
-            UIApplication.shared.open(resultUrl, options: [:], completionHandler: nil)
+            urlOpener.openLink(url: resultUrl, completion: completion)
         }
     }
     
@@ -365,3 +368,4 @@ public struct DataForReview {
         }
     }
 }
+
