@@ -35,16 +35,11 @@ public final class DocumentService: DocumentServiceProtocol {
     
     public func upload(document: GiniCaptureDocument,
                        completion: UploadDocumentCompletion?) {
-        self.partialDocuments[document.id] =
-            PartialDocument(info: (PartialDocumentInfo(document: nil, rotationDelta: 0)),
-                            document: nil,
-                            order: self.partialDocuments.count)
+
         captureNetworkService.upload(document: document, metadata: metadata) { result in
             switch result {
             case .success(let createdDocument):
-                self.partialDocuments[document.id]?.document = createdDocument
-                self.partialDocuments[document.id]?.info.document = createdDocument.links.document
-                
+                self.updatePartialDocuments(for: document, with: createdDocument)
                 completion?(.success(createdDocument))
             case .failure(let error):
                 DispatchQueue.main.async {
@@ -59,9 +54,20 @@ public final class DocumentService: DocumentServiceProtocol {
             }
         }
     }
-    
-    
-    
+
+    private func updatePartialDocuments(for document: GiniCaptureDocument, with createdDocument: Document) {
+        // Scanning a QR code takes priority, even if the user has already taken some pictures.
+        // we should discard all the pages that have already been scanned and keep the document generated after scanning the QR code
+        // composite document should be created just with he document generated after scanning the QR cod
+        if document.type == .qrcode && partialDocuments.isNotEmpty {
+            partialDocuments.removeAll()
+        }
+        let partialDocumentInfo = PartialDocumentInfo(document: createdDocument.links.document, rotationDelta: 0)
+        partialDocuments[document.id] = PartialDocument(info: partialDocumentInfo,
+                                                        document: createdDocument,
+                                                        order: partialDocuments.count)
+    }
+
     public func startAnalysis(completion: @escaping AnalysisCompletion) {
         let partialDocumentsInfoSorted = partialDocuments
             .lazy
