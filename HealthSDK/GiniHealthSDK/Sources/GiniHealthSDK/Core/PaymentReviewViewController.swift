@@ -556,6 +556,11 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             lastValidatedIBAN = iban
         }
         
+        guard selectedPaymentProvider?.gpcSupported ?? false else {
+            model?.openShareInvoiceBottomSheet()
+            return
+        }
+        
         guard selectedPaymentProvider?.appSchemeIOS.canOpenURLString() ?? false else {
             model?.openInstallAppBottomSheet()
             return
@@ -833,6 +838,43 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     func createPaymentRequestAndOpenBankApp() {
         self.presentedViewController?.dismiss(animated: true)
         checkForErrorsAndCreatePaymentRequest()
+    }
+    
+    func presentShareInvoiceBottomSheet(bottomSheet: BottomSheetViewController) {
+        presentBottomSheet(viewController: bottomSheet)
+    }
+    
+    func sharePDFActivityUI() {
+        // TODO: Load PDF from backend then...
+        self.presentedViewController?.dismiss(animated: true, completion: {
+            self.sharePDF()
+        })
+    }
+    
+    func sharePDF() {
+        // Load your PDF file
+        guard let pdfURL = Bundle.main.url(forResource: "test_pdf", withExtension: "pdf") else {
+            print("PDF file not found.")
+            return
+        }
+        
+        // Create UIActivityViewController with the PDF file
+        let activityViewController = UIActivityViewController(activityItems: [pdfURL], applicationActivities: nil)
+        
+        // Exclude some activities if needed
+        activityViewController.excludedActivityTypes = [
+            .addToReadingList,
+            .assignToContact
+        ]
+        
+        // Present the UIActivityViewController
+        if let popoverController = activityViewController.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
+        
+        present(activityViewController, animated: true, completion: nil)
     }
 }
 

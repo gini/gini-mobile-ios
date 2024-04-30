@@ -10,7 +10,9 @@ import UIKit
 
 protocol PaymentReviewViewModelDelegate: AnyObject {
     func presentInstallAppBottomSheet(bottomSheet: UIViewController)
+    func presentShareInvoiceBottomSheet(bottomSheet: BottomSheetViewController)
     func createPaymentRequestAndOpenBankApp()
+    func sharePDFActivityUI()
 }
 
 /**
@@ -124,6 +126,12 @@ public class PaymentReviewModel: NSObject {
         installAppBottomSheet.modalPresentationStyle = .overFullScreen
         viewModelDelegate?.presentInstallAppBottomSheet(bottomSheet: installAppBottomSheet)
     }
+    
+    func openShareInvoiceBottomSheet() {
+        let shareInvoiceBottomSheet = shareInvoiceBottomSheet()
+        shareInvoiceBottomSheet.modalPresentationStyle = .overFullScreen
+        viewModelDelegate?.presentShareInvoiceBottomSheet(bottomSheet: shareInvoiceBottomSheet)
+    }
 
     func openPaymentProviderApp(requestId: String, universalLink: String) {
         healthSDK.openPaymentProviderApp(requestID: requestId, universalLink: universalLink)
@@ -175,11 +183,25 @@ public class PaymentReviewModel: NSObject {
         installAppBottomSheet.bottomSheet = installAppBottomView
         return installAppBottomSheet
     }
+    
+    func shareInvoiceBottomSheet() -> BottomSheetViewController {
+        let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
+        shareInvoiceBottomViewModel.viewDelegate = self
+        let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel)
+        shareInvoiceBottomView.viewModel = shareInvoiceBottomViewModel
+        return shareInvoiceBottomView
+    }
 }
 
 extension PaymentReviewModel: InstallAppBottomViewProtocol {
     func didTapOnContinue() {
         viewModelDelegate?.createPaymentRequestAndOpenBankApp()
+    }
+}
+
+extension PaymentReviewModel: ShareInvoiceBottomViewProtocol {
+    func didTapOnContinueToShareInvoice() {
+        viewModelDelegate?.sharePDFActivityUI()
     }
 }
 
