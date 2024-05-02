@@ -9,6 +9,10 @@ import UIKit
 import GiniCaptureSDK
 
 // swiftlint:disable implicit_getter
+protocol DigitalInvoiceOnboardingViewControllerDelegate: AnyObject {
+    func dismissViewController()
+}
+
 final class DigitalInvoiceOnboardingViewController: UIViewController {
     @IBOutlet var contentView: UIView!
     @IBOutlet var topImageView: OnboardingImageView!
@@ -19,6 +23,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     @IBOutlet weak var scrollViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollViewBottomAnchor: NSLayoutConstraint!
 
+    weak var delegate: DigitalInvoiceOnboardingViewControllerDelegate!
     private lazy var scrollViewWidthAnchor = scrollView.widthAnchor.constraint(equalTo: view.widthAnchor)
 
     private var widthMultiplier: CGFloat = 0.6
@@ -180,6 +185,10 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     }
 
     private func dismissViewController() {
-        dismiss(animated: true)
+        dismiss(animated: true) {
+            self.delegate?.dismissViewController()
+        }
+    }
+}
     }
 }
