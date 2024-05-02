@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+//  DigitalInvoiceCoordinator.swift
 //
-//  Created by David Vizaknai on 24.02.2023.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import GiniCaptureSDK
@@ -21,6 +20,7 @@ final class DigitalInvoiceCoordinator: Coordinator {
     private var digitalInvoiceViewController: DigitalInvoiceViewController?
     private var digitalInvoiceViewModel: DigitalInvoiceViewModel?
 
+    // TODO: do we still need this?!
     // TODO: This is to cope with the screen coordinator being inadequate at this point to support the return assistant step and needing a refactor.
     // Remove ASAP
     private var analysisDelegate: AnalysisDelegate
@@ -59,9 +59,11 @@ final class DigitalInvoiceCoordinator: Coordinator {
         let digitalInvoiceOnboardingViewController =
         storyboard.instantiateViewController(withIdentifier: onboardingViewControllerName)
         as! DigitalInvoiceOnboardingViewController
-
+        digitalInvoiceOnboardingViewController.delegate = digitalInvoiceViewController
         navigationController.present(digitalInvoiceOnboardingViewController, animated: true)
     }
+
+    // swiftlint:enable force_cast
 }
 
 extension DigitalInvoiceCoordinator: DigitalInvoiceViewModelDelagate {

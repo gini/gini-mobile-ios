@@ -222,6 +222,7 @@ final class DigitalInvoiceViewController: UIViewController {
     }
 
     @objc func payButtonTapped() {
+        AnalyticsManager.track(event: .processTapped, screenName: .digitalInvoice)
         viewModel.didTapPay()
     }
 
@@ -250,6 +251,7 @@ final class DigitalInvoiceViewController: UIViewController {
     }
 
     @objc func closeReturnAssistantOverview() {
+        AnalyticsManager.track(event: .closeTapped, screenName: .digitalInvoice)
         viewModel.didTapCancel()
     }
 }
@@ -358,6 +360,17 @@ extension DigitalInvoiceViewController {
                 self.updateValues()
             }
         }
+    }
+}
+
+extension DigitalInvoiceViewController: DigitalInvoiceOnboardingViewControllerDelegate {
+    func dismissViewController() {
+        // after dismissing the oboarding screen, screen_shown event can be sent
+        var eventProperties: [AnalyticsProperty] = []
+        if let documentId = configuration.documentService?.document?.id {
+            eventProperties.append(AnalyticsProperty(key: .documentId, value: documentId))
+        }
+        AnalyticsManager.trackScreenShown(screenName: .digitalInvoice, properties: eventProperties)
     }
 }
 
