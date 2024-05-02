@@ -113,7 +113,11 @@ jobs:
         uses: andstor/file-existence-action@v2
         with:
           files: "*.ipa"
-      
+    
+      - name: Install appcenter-cli
+        run: |
+            npm install -g appcenter-cli
+    
       - name: Distribute ipa to App Center
         uses: akiojin/appcenter-distribute-github-action@v1.4.11
         with:
