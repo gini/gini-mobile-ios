@@ -20,4 +20,5 @@ public enum AnalyticsScreen: String {
     case onboardingQRcode = "onboarding_qr_code"
     case onboardingCustom = "onboarding_custom_" // e.g: onboarding_custom_1, onboarding_custom_2
     case onboardingDigitalInvoice = "onboarding_digital_invoice"
+    case digitalInvoice = "digital_invoice"
 }

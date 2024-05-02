@@ -7,34 +7,39 @@
 import Foundation
 
 public struct AnalyticsProperty {
-    let key: AnalyticsPropertyKey
-    var value: AnalyticsPropertyValue
+    public let key: AnalyticsPropertyKey
+    public var value: AnalyticsPropertyValue
+
+    public init(key: AnalyticsPropertyKey, value: AnalyticsPropertyValue) {
+        self.key = key
+        self.value = value
+    }
 }
 
-protocol AnalyticsPropertyValue {
+public protocol AnalyticsPropertyValue {
     func analyticsPropertyValue() -> Self
 }
 
 extension String: AnalyticsPropertyValue {
-    func analyticsPropertyValue() -> String {
+    public func analyticsPropertyValue() -> String {
         return self
     }
 }
 
 extension Int: AnalyticsPropertyValue {
-    func analyticsPropertyValue() -> Int {
+    public func analyticsPropertyValue() -> Int {
         return self
     }
 }
 
 extension Bool: AnalyticsPropertyValue {
-    func analyticsPropertyValue() -> Bool {
+    public func analyticsPropertyValue() -> Bool {
         return self
     }
 }
 
 extension Array: AnalyticsPropertyValue where Element == String {
-    func analyticsPropertyValue() -> [String] {
+    public func analyticsPropertyValue() -> [String] {
         return self
     }
 }
@@ -56,4 +61,5 @@ public enum AnalyticsPropertyKey: String {
     case helpItems = "help_items"
     case itemTapped = "item_tapped"
     case customOnboardingTitle = "custom_onboarding_title"
+    case documentId = "document-id"
 }
