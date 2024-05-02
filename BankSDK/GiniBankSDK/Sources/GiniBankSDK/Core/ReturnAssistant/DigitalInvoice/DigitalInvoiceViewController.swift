@@ -1,8 +1,7 @@
 //
 //  DigitalInvoiceViewController.swift
-// GiniBank
 //
-//  Created by Maciej Trybilo on 20.11.19.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
