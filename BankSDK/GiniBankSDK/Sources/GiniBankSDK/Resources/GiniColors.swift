@@ -45,6 +45,10 @@ public enum GiniBankColors: String, CaseIterable {
     var toUIColor: UIColor {
         return prefferedColorByProvider(named: rawValue)
     }
+
+    public var preferredUIColor: UIColor {
+        return prefferedColor(named: rawValue)
+    }
 }
 
 extension UIColor {
