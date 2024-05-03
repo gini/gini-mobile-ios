@@ -45,8 +45,25 @@ final class AppCoordinator: Coordinator {
             return CustomDocumentValidationResult.success()
         }
 		// Note: more examples of how the GiniBankConfiguration options can be configured can be found
-		// in SettingsViewController
+        // in SettingsViewController
 
+        // NOTE: if you use customResourceProvider please initialise it before adding custom implementation for the Gini buttons
+        let customProvider = GiniBankCustomResourceProvider()
+        configuration.customResourceProvider = customProvider
+        // 1. primaryButtonConfiguration
+        // 2. secondaryButtonConfiguration
+        // 3. transparentButtonConfiguration
+        // 4. cameraControlButtonConfiguration
+        // 5. addPageButtonConfiguration
+        // See here an example
+//        configuration.primaryButtonConfiguration = ButtonConfiguration(backgroundColor: .GiniBank.warning3,
+//                                                                       borderColor: .GiniBank.dark6,
+//                                                                       titleColor: .green,
+//                                                                       shadowColor: .GiniBank.warning2,
+//                                                                       cornerRadius: 16,
+//                                                                       borderWidth: 3,
+//                                                                       shadowRadius: 8,
+//                                                                       withBlurEffect: false)
     // If you need to scale your font please use our method `scaledFont()`. Please, find the example below.
 //    let customFontToBeScaled = UIFont.scaledFont(UIFont(name: "Avenir", size: 20) ?? UIFont.systemFont(ofSize: 7, weight: .regular), textStyle: .caption1)
 //    configuration.updateFont(customFontToBeScaled, for: .caption1)
