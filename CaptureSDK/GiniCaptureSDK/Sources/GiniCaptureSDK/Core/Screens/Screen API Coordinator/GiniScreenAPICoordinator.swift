@@ -233,6 +233,11 @@ extension GiniScreenAPICoordinator {
     }
 
     @objc func showHelpMenuScreen() {
+        let topMostViewController = screenAPINavigationController.topViewController
+        guard topMostViewController is CameraViewController else {
+            return
+        }
+
         let helpMenuViewController = HelpMenuViewController(
             giniConfiguration: giniConfiguration
         )
