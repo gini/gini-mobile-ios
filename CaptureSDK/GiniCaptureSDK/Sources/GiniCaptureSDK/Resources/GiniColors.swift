@@ -46,6 +46,8 @@ public enum GiniCaptureColors: String, CaseIterable {
         return UIColorPreferredByProvider(named: rawValue)
     }
 
+    public var preferredUIColor: UIColor {
+        return UIColorPreferred(named: rawValue)
     }
 }
 
