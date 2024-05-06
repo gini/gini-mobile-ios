@@ -293,7 +293,7 @@ extension GiniScreenAPICoordinator {
             return
         }
 
-        self.validate(importedDocuments: documentsToValidate) { validatedDocuments in
+        self.validate(importedDocuments: documents) { validatedDocuments in
             let elementsWithError = validatedDocuments.filter { $0.error != nil }
             if let firstElement = elementsWithError.first,
                 let error = firstElement.error {
