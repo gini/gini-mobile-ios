@@ -11,26 +11,14 @@ import GiniCaptureSDK
 
 class GiniBankCustomResourceProvider: CustomResourceProvider {
     func customPrefferedColor(name: String) -> UIColor {
-        for color in GiniBankColors.allCases {
+        for color in GiniBankColors.allCases where color.rawValue == name {
             switch color {
                 case .accent01:
-                    return UIColor(hex: "#C4DDF7")!
-                case .accent02:
-                    return UIColor(hex: "#FFFFFF")!
-                case .warning01:
-                    return UIColor.GiniBank.accent1
-                case .warning02:
-                    return UIColor.GiniBank.accent2
-                case .warning03:
-                    return UIColor.GiniBank.accent3
-                case .warning04:
-                    return UIColor.GiniBank.accent4
-                case .warning05:
-                    return UIColor.GiniBank.accent5
+                    return .magenta
                 default:
-                    return prefferedColorByProvider(named: name)
+                    return color.preferredUIColor
             }
         }
-        return UIColor.GiniBank.accent1
+        return .brown
     }
 }

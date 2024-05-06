@@ -68,6 +68,8 @@ public final class GiniBankConfiguration: NSObject {
 
     /**
      Enables the customization of resources to override the default Gini resources. The change will affect all screens.
+
+     - Important: To ensure proper customization, set this property before configuring any custom Gini button configurations, such as `primaryButtonConfiguration`, `secondaryButtonConfiguration`, `transparentButtonConfiguration`, `cameraControlButtonConfiguration` and `addPageButtonConfiguration`.
      */
     public var customResourceProvider: CustomResourceProvider?
 
