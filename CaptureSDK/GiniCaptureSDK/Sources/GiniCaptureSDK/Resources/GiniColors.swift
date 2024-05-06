@@ -46,6 +46,7 @@ public enum GiniCaptureColors: String, CaseIterable {
         return UIColorPreferredByProvider(named: rawValue)
     }
 
+    // This property provides a convenient way to access the UIColor corresponding to the raw value of the GiniCaptureColors enum.
     public var preferredUIColor: UIColor {
         return UIColorPreferred(named: rawValue)
     }
