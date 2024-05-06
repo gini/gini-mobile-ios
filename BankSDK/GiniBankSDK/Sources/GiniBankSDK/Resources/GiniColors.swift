@@ -46,6 +46,7 @@ public enum GiniBankColors: String, CaseIterable {
         return prefferedColorByProvider(named: rawValue)
     }
 
+    // This property provides a convenient way to access the UIColor corresponding to the raw value of the GiniBankColors enum.
     public var preferredUIColor: UIColor {
         return prefferedColor(named: rawValue)
     }
