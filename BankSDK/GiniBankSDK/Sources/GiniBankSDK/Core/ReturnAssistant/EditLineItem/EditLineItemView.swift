@@ -19,6 +19,7 @@ final class EditLineItemView: UIView {
                                   for: .normal)
         button.setTitle(title, for: .normal)
         button.addTarget(self, action: #selector(didTapCancel), for: .touchUpInside)
+        button.isExclusiveTouch = true
         // The color is set twice because in some iOS versions the `setTitleColor` does not change the color
         button.setTitleColor(.GiniBank.accent1, for: .normal)
         button.titleLabel?.textColor = .GiniBank.accent1
@@ -47,6 +48,7 @@ final class EditLineItemView: UIView {
         button.setAttributedTitle(NSAttributedString(string: title, attributes: textAttributes(for: .bodyBold)),
                                   for: .normal)
         button.addTarget(self, action: #selector(didTapSave), for: .touchUpInside)
+        button.isExclusiveTouch = true
         // The color is set twice because in some iOS versions the `setTitleColor` does not change the color
         button.setTitleColor(.GiniBank.accent1, for: .normal)
         button.titleLabel?.textColor = .GiniBank.accent1

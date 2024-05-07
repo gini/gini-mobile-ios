@@ -94,7 +94,14 @@ import GiniBankAPILibrary
     /**
      Should be set if the main app's bundle is not used.
      */
-     public var customResourceBundle: Bundle?
+    public var customResourceBundle: Bundle?
+
+    /**
+     Enables the customization of resources to override the default Gini resources. The change will affect all screens.
+
+     - Important: To ensure proper customization, set this property before configuring any custom Gini button configurations, such as `primaryButtonConfiguration`, `secondaryButtonConfiguration`, `transparentButtonConfiguration`, `cameraControlButtonConfiguration` and `addPageButtonConfiguration`.
+     */
+    public var customResourceProvider: CustomResourceProvider?
 
     // MARK: Button configuration options
 

@@ -15,6 +15,7 @@ final class BottomLabelButton: UIView {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(didPressButton(_:)), for: .touchUpInside)
+        button.isExclusiveTouch = true
         return button
     }()
 
