@@ -30,14 +30,17 @@ final class OnboardingBottomNavigationBar: UIView {
         nextButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         nextButton.configure(with: configuration.primaryButtonConfiguration)
         nextButton.isAccessibilityElement = true
+        nextButton.isExclusiveTouch = true
 
         skipButton.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         skipButton.configure(with: configuration.transparentButtonConfiguration)
         skipButton.isAccessibilityElement = true
+        skipButton.isExclusiveTouch = true
 
         getStarted.titleLabel?.font = configuration.textStyleFonts[.bodyBold]
         getStarted.configure(with: configuration.primaryButtonConfiguration)
         getStarted.isAccessibilityElement = true
+        getStarted.isExclusiveTouch = true
 
         skipButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.onboarding.skip",
                                                              comment: "Skip button"), for: .normal)
