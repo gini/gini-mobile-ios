@@ -49,7 +49,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         return view
     }()
 
-    private var selectedPaymentProvider: PaymentProvider?
+    private var selectedPaymentProvider: PaymentProvider!
     
     public weak var trackingDelegate: GiniHealthTrackingDelegate?
     
@@ -60,7 +60,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         case usageFieldTag
     }
     
-    public static func instantiate(with giniHealth: GiniHealth, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider?, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
+    public static func instantiate(with giniHealth: GiniHealth, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
         let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
         let viewModel = PaymentReviewModel(with: giniHealth,
@@ -73,7 +73,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         return viewController
     }
     
-    public static func instantiate(with giniHealth: GiniHealth, data: DataForReview, selectedPaymentProvider: PaymentProvider?, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
+    public static func instantiate(with giniHealth: GiniHealth, data: DataForReview, selectedPaymentProvider: PaymentProvider, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
         let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
         let viewModel = PaymentReviewModel(with: giniHealth,
@@ -245,9 +245,9 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         payButtonStackView.addArrangedSubview(payInvoiceButton)
         guard let model else { return }
         payInvoiceButton.configure(with: giniHealthConfiguration.primaryButtonConfiguration)
-        payInvoiceButton.customConfigure(paymentProviderColors: selectedPaymentProvider?.colors,
+        payInvoiceButton.customConfigure(paymentProviderColors: selectedPaymentProvider.colors,
                                          text: model.payInvoiceLabelText,
-                                         leftImageData: selectedPaymentProvider?.iconData)
+                                         leftImageData: selectedPaymentProvider.iconData)
         disablePayButtonIfNeeded()
         payInvoiceButton.didTapButton = { [weak self] in
             self?.payButtonClicked()
@@ -545,9 +545,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     // MARK: - Pay Button Action
     func payButtonClicked() {
         var event = TrackingEvent.init(type: PaymentReviewScreenEventType.onToTheBankButtonClicked)
-        if let selectedPaymentProviderName = selectedPaymentProvider?.name {
-            event.info = ["paymentProvider": selectedPaymentProviderName]
-        }
+        event.info = ["paymentProvider": selectedPaymentProvider.name]
         trackingDelegate?.onPaymentReviewScreenEvent(event: event)
         view.endEditing(true)
         validateAllInputFields()
@@ -556,7 +554,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             lastValidatedIBAN = iban
         }
         
-        guard selectedPaymentProvider?.appSchemeIOS.canOpenURLString() ?? false else {
+        guard selectedPaymentProvider.appSchemeIOS.canOpenURLString() else {
             model?.openInstallAppBottomSheet()
             return
         }
@@ -572,14 +570,14 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     private func createPaymentRequest() {
-        if let selectedProvider = selectedPaymentProvider, !amountTextFieldView.textField.isReallyEmpty {
+        if !amountTextFieldView.textField.isReallyEmpty {
             let amountText = amountToPay.extractionString
             let paymentInfo = PaymentInfo(recipient: recipientTextFieldView.text ?? "",
                                           iban: ibanTextFieldView.text ?? "",
                                           bic: "", amount: amountText,
                                           purpose: usageTextFieldView.text ?? "",
-                                          paymentUniversalLink: selectedProvider.universalLinkIOS,
-                                          paymentProviderId: selectedProvider.id)
+                                          paymentUniversalLink: selectedPaymentProvider.universalLinkIOS,
+                                          paymentProviderId: selectedPaymentProvider.id)
             model?.createPaymentRequest(paymentInfo: paymentInfo)
             let paymentRecipientExtraction = Extraction(box: nil,
                                                         candidates: "",
