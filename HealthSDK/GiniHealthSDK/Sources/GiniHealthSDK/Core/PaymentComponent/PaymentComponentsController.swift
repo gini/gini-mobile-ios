@@ -172,9 +172,13 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
                     completion(nil, nil)
                     return
                 }
-                let vc = PaymentReviewViewController.instantiate(with: self.giniHealth, 
+                guard let selectedPaymentProvider else {
+                    completion(nil, nil)
+                    return
+                }
+                let vc = PaymentReviewViewController.instantiate(with: self.giniHealth,
                                                                  data: data,
-                                                                 selectedPaymentProvider: self.selectedPaymentProvider, 
+                                                                 selectedPaymentProvider: selectedPaymentProvider,
                                                                  trackingDelegate: trackingDelegate)
                 completion(vc, nil)
             case .failure(let error):
