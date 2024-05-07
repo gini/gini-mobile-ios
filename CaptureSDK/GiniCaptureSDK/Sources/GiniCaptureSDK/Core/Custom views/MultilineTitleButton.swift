@@ -40,6 +40,7 @@ public class MultilineTitleButton: UIButton {
         titleLabel?.textAlignment = .center
         setContentHuggingPriority(UILayoutPriority.defaultLow + 1, for: .vertical)
         setContentHuggingPriority(UILayoutPriority.defaultLow + 1, for: .horizontal)
+        isExclusiveTouch = true
     }
 
     /**
