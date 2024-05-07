@@ -14,6 +14,7 @@ class BottomSheetViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = backgroundColor
+        view.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadiusView)
         view.layer.cornerRadius = Constants.cornerRadiusView
         view.clipsToBounds = true
         return view
