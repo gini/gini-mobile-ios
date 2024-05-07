@@ -86,7 +86,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         return viewController
     }
 
-    var giniHealthConfiguration = GiniHealthConfiguration.shared
+    let giniHealthConfiguration = GiniHealthConfiguration.shared
     
     override public func viewDidLoad() {
         super.viewDidLoad()
