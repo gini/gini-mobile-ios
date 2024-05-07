@@ -561,44 +561,48 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             return
         }
 
-        checkForErrorsAndCreatePaymentRequest()
+        checkForErrors()
     }
     
-    private func checkForErrorsAndCreatePaymentRequest() {
+    private func checkForErrors() {
         // check if no errors labels are shown
         if (paymentInputFieldsErrorLabels.allSatisfy { $0.isHidden }) {
-            if let selectedProvider = selectedPaymentProvider, !amountTextFieldView.textField.isReallyEmpty {
-                let amountText = amountToPay.extractionString
-                let paymentInfo = PaymentInfo(recipient: recipientTextFieldView.text ?? "",
-                                              iban: ibanTextFieldView.text ?? "",
-                                              bic: "", amount: amountText,
-                                              purpose: usageTextFieldView.text ?? "",
-                                              paymentUniversalLink: selectedProvider.universalLinkIOS,
-                                              paymentProviderId: selectedProvider.id)
-                model?.createPaymentRequest(paymentInfo: paymentInfo)
-                let paymentRecipientExtraction = Extraction(box: nil,
-                                                            candidates: "",
-                                                            entity: "text",
-                                                            value: recipientTextFieldView.text ?? "",
-                                                            name: "payment_recipient")
-                let ibanExtraction = Extraction(box: nil,
-                                                candidates: "",
-                                                entity: "iban",
-                                                value: paymentInfo.iban,
-                                                name: "iban")
-                let referenceExtraction = Extraction(box: nil,
-                                                     candidates: "",
-                                                     entity: "text",
-                                                     value: paymentInfo.purpose,
-                                                     name: "payment_purpose")
-                let amoutToPayExtraction = Extraction(box: nil,
-                                                      candidates: "",
-                                                      entity: "amount",
-                                                      value: paymentInfo.amount,
-                                                      name: "amount_to_pay")
-                let updatedExtractions = [paymentRecipientExtraction, ibanExtraction, referenceExtraction, amoutToPayExtraction]
-                model?.sendFeedback(updatedExtractions: updatedExtractions)
-            }
+            createPaymentRequest()
+        }
+    }
+    
+    private func createPaymentRequest() {
+        if let selectedProvider = selectedPaymentProvider, !amountTextFieldView.textField.isReallyEmpty {
+            let amountText = amountToPay.extractionString
+            let paymentInfo = PaymentInfo(recipient: recipientTextFieldView.text ?? "",
+                                          iban: ibanTextFieldView.text ?? "",
+                                          bic: "", amount: amountText,
+                                          purpose: usageTextFieldView.text ?? "",
+                                          paymentUniversalLink: selectedProvider.universalLinkIOS,
+                                          paymentProviderId: selectedProvider.id)
+            model?.createPaymentRequest(paymentInfo: paymentInfo)
+            let paymentRecipientExtraction = Extraction(box: nil,
+                                                        candidates: "",
+                                                        entity: "text",
+                                                        value: recipientTextFieldView.text ?? "",
+                                                        name: "payment_recipient")
+            let ibanExtraction = Extraction(box: nil,
+                                            candidates: "",
+                                            entity: "iban",
+                                            value: paymentInfo.iban,
+                                            name: "iban")
+            let referenceExtraction = Extraction(box: nil,
+                                                 candidates: "",
+                                                 entity: "text",
+                                                 value: paymentInfo.purpose,
+                                                 name: "payment_purpose")
+            let amoutToPayExtraction = Extraction(box: nil,
+                                                  candidates: "",
+                                                  entity: "amount",
+                                                  value: paymentInfo.amount,
+                                                  name: "amount_to_pay")
+            let updatedExtractions = [paymentRecipientExtraction, ibanExtraction, referenceExtraction, amoutToPayExtraction]
+            model?.sendFeedback(updatedExtractions: updatedExtractions)
         }
     }
     
@@ -832,7 +836,7 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     
     func createPaymentRequestAndOpenBankApp() {
         self.presentedViewController?.dismiss(animated: true)
-        checkForErrorsAndCreatePaymentRequest()
+        checkForErrors()
     }
 }
 
