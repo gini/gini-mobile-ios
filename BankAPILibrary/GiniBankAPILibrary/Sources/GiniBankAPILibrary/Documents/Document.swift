@@ -48,16 +48,16 @@ public struct Document {
     }
     
     init(compositeDocuments: [CompositeDocument]?,
-                creationDate: Date,
-                id: String,
-                name: String,
-                origin: Origin,
-                pageCount: Int,
-                pages: [Page]?,
-                links: Links,
-                partialDocuments: [PartialDocumentInfo]?,
-                progress: Progress,
-                sourceClassification: SourceClassification){
+         creationDate: Date,
+         id: String,
+         name: String,
+         origin: Origin,
+         pageCount: Int,
+         pages: [Page]?,
+         links: Links,
+         partialDocuments: [PartialDocumentInfo]?,
+         progress: Progress,
+         sourceClassification: SourceClassification) {
         self.compositeDocuments = compositeDocuments
         self.creationDate = creationDate
         self.id = id
@@ -83,11 +83,21 @@ public struct Document {
      - note: Screen API with custom networking only.
      */
     public init(creationDate: Date,
-                     id: String,
-                     name: String,
-                     links: Links,
-                     sourceClassification: SourceClassification) {
-        self.init(compositeDocuments: [], creationDate: creationDate, id: id, name: name, origin: .upload, pageCount: 1, pages: [], links: links, partialDocuments: [], progress: .completed, sourceClassification: sourceClassification)
+                id: String,
+                name: String,
+                links: Links,
+                sourceClassification: SourceClassification) {
+        self.init(compositeDocuments: [], 
+                  creationDate: creationDate, 
+                  id: id, 
+                  name: name,
+                  origin: .upload,
+                  pageCount: 1, 
+                  pages: [],
+                  links: links,
+                  partialDocuments: [],
+                  progress: .completed, 
+                  sourceClassification: sourceClassification)
     }
 }
 
