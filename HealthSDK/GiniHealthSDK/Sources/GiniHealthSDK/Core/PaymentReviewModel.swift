@@ -127,7 +127,7 @@ public class PaymentReviewModel: NSObject {
         viewModelDelegate?.presentInstallAppBottomSheet(bottomSheet: installAppBottomSheet)
     }
     
-    func openShareInvoiceBottomSheet() {
+    func openOnboardingShareInvoiceBottomSheet() {
         let shareInvoiceBottomSheet = shareInvoiceBottomSheet()
         shareInvoiceBottomSheet.modalPresentationStyle = .overFullScreen
         viewModelDelegate?.presentShareInvoiceBottomSheet(bottomSheet: shareInvoiceBottomSheet)
@@ -135,6 +135,17 @@ public class PaymentReviewModel: NSObject {
 
     func openPaymentProviderApp(requestId: String, universalLink: String) {
         healthSDK.openPaymentProviderApp(requestID: requestId, universalLink: universalLink)
+    }
+    
+    func shouldShowOnboardingScreenFor(paymentProvider: PaymentProvider) -> Bool {
+        let onboardingCounts = OnboardingShareInvoiceScreenCount.load()
+        let count = onboardingCounts.presentationCount(forProvider: paymentProvider.name)
+        return count < GiniHealthConfiguration.shared.numberOfTimesOnboardingShareScreenShouldAppear
+    }
+    
+    func incrementOnboardingCountFor(paymentProvider: PaymentProvider) {
+        var onboardingCounts = OnboardingShareInvoiceScreenCount.load()
+        onboardingCounts.incrementPresentationCount(forProvider: paymentProvider.name)
     }
     
     func fetchImages() {

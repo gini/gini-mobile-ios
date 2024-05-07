@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "Lottie",
+        "repositoryURL": "https://github.com/airbnb/lottie-ios.git",
+        "state": {
+          "branch": null,
+          "revision": "d6feea26a370019b4d3a85f5984cb95a2734776f",
+          "version": "4.2.0"
+        }
+      },
+      {
         "package": "TrustKit",
         "repositoryURL": "https://github.com/datatheorem/TrustKit.git",
         "state": {
