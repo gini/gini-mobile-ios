@@ -555,7 +555,11 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
         
         guard selectedPaymentProvider.gpcSupported else {
-            model?.openShareInvoiceBottomSheet()
+            if model?.shouldShowOnboardingScreenFor(paymentProvider: selectedPaymentProvider) ?? false {
+                model?.openOnboardingShareInvoiceBottomSheet()
+            } else {
+                sharePDF()
+            }
             return
         }
         
@@ -844,6 +848,7 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     
     func presentShareInvoiceBottomSheet(bottomSheet: BottomSheetViewController) {
         presentBottomSheet(viewController: bottomSheet)
+        model?.incrementOnboardingCountFor(paymentProvider: selectedPaymentProvider)
     }
     
     func sharePDFActivityUI() {

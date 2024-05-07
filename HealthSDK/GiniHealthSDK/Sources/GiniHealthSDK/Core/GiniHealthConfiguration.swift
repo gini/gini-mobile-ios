@@ -45,6 +45,11 @@ public final class GiniHealthConfiguration: NSObject {
      */
     @objc public var paymentReviewStatusBarStyle: UIStatusBarStyle = .default
     
+    /**
+    Sets the number of times the onboarding share invoice screen should appear for each payment provider before the native one appears
+     */
+    public var numberOfTimesOnboardingShareScreenShouldAppear = 3
+    
     // MARK: - Button configuration options
     /**
      A configuration that defines the appearance of the primary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different UI elements: Payment Component View, Payment Review Screen.
