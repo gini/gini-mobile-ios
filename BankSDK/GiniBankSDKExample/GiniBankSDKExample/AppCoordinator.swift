@@ -48,8 +48,8 @@ final class AppCoordinator: Coordinator {
         // in SettingsViewController
 
         // NOTE: if you use customResourceProvider please initialise it before adding custom implementation for the Gini buttons
-        let customProvider = GiniBankCustomResourceProvider()
-        configuration.customResourceProvider = customProvider
+//        let customProvider = GiniBankCustomResourceProvider()
+//        configuration.customResourceProvider = customProvider
         // 1. primaryButtonConfiguration
         // 2. secondaryButtonConfiguration
         // 3. transparentButtonConfiguration
