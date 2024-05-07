@@ -10,7 +10,7 @@ import GiniHealthAPILibrary
 
 final class PaymentPrimaryButton: UIView {
     
-    private var giniHealthConfiguration = GiniHealthConfiguration.shared
+    private let giniHealthConfiguration = GiniHealthConfiguration.shared
     
     var didTapButton: (() -> Void)?
     

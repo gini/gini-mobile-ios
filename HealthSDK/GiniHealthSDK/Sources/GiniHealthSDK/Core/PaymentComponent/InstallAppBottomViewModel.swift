@@ -14,7 +14,7 @@ protocol InstallAppBottomViewProtocol: AnyObject {
 
 final class InstallAppBottomViewModel {
     
-    var giniHealthConfiguration = GiniHealthConfiguration.shared
+    let giniHealthConfiguration = GiniHealthConfiguration.shared
     
     var selectedPaymentProvider: PaymentProvider?
     // Payment provider colors

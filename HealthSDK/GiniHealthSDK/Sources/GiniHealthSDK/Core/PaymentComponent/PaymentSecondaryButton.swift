@@ -9,7 +9,7 @@ import UIKit
 
 final class PaymentSecondaryButton: UIView {
     
-    private var giniHealthConfiguration = GiniHealthConfiguration.shared
+    private let giniHealthConfiguration = GiniHealthConfiguration.shared
     
     var didTapButton: (() -> Void)?
     
