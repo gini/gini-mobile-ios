@@ -96,11 +96,6 @@ class ShareInvoiceBottomView: BottomSheetViewController {
         return stackView
     }()
     
-    // We need our label into a view for layout purposes. Stackviews require views in order to satisfy all dynamic constraints
-    private lazy var tipLabelView: UIView = {
-        return UIView()
-    }()
-    
     private lazy var tipLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -284,7 +279,7 @@ class ShareInvoiceBottomView: BottomSheetViewController {
         NSLayoutConstraint.activate([
             continueButton.leadingAnchor.constraint(equalTo: continueView.leadingAnchor, constant: Constants.viewPaddingConstraint),
             continueButton.trailingAnchor.constraint(equalTo: continueView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-            continueButton.heightAnchor.constraint(equalToConstant: Constants.buttonViewHeight),
+            continueButton.heightAnchor.constraint(equalToConstant: Constants.continueButtonViewHeight),
             continueButton.topAnchor.constraint(equalTo: continueView.topAnchor, constant: Constants.topBottomPaddingConstraint),
             continueButton.bottomAnchor.constraint(equalTo: continueView.bottomAnchor)
         ])
@@ -341,23 +336,13 @@ class ShareInvoiceBottomView: BottomSheetViewController {
 
 extension ShareInvoiceBottomView {
     enum Constants {
-        static let cornerRadiusView = 12.0
-        static let cornerRadiusTopRectangle = 2.0
-        static let widthTopRectangle = 48
-        static let heightTopRectangle = 4
-        static let topAnchorTopRectangle = 16.0
         static let viewPaddingConstraint = 16.0
         static let topBottomPaddingConstraint = 10.0
         static let bottomDescriptionConstraint = 20.0
         static let bankIconSize = 36
-        static let titleViewTitleIconSpacing = 10.0
         static let bankIconCornerRadius = 6.0
         static let bankIconBorderWidth = 1.0
-        static let topAnchorBankImage = 10.0
-        static let buttonViewHeight: CGFloat = 56
-        static let continueButtonTopAnchor = 24.0
-        static let appStoreImageViewHeight = 44.0
-        static let contentStackViewSpacing: CGFloat = 12
+        static let continueButtonViewHeight = 56.0
         static let appsViewSpacing: CGFloat = 4.0
         static let appsViewHeight: CGFloat = 112.0
         static let topAnchorAppsViewConstraint = 20.0

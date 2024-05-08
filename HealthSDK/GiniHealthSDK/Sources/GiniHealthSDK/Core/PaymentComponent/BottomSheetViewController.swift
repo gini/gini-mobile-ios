@@ -90,11 +90,14 @@ class BottomSheetViewController: UIViewController {
         NSLayoutConstraint.activate([
             mainContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             mainContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            mainContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            mainContainerView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: Constants.minTopSpacing)
+            mainContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         if minHeight > 0 {
-            mainContainerView.topAnchor.constraint(lessThanOrEqualTo: view.topAnchor, constant: minHeight).isActive = true
+            let extraBottomSafeAreaConstant = UIApplication.shared.keyWindow?.safeAreaInsets.bottom == 0 ? Constants.safeAreaBottomPadding : 0 // fix for small devices
+            let topAnchorWithMinHeightConstant = (view.frame.height) - minHeight + extraBottomSafeAreaConstant
+            mainContainerView.topAnchor.constraint(lessThanOrEqualTo: view.topAnchor, constant: topAnchorWithMinHeightConstant).isActive = true
+        } else {
+            mainContainerView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: Constants.minTopSpacing).isActive = true
         }
         
         // Top draggable bar view
@@ -216,6 +219,7 @@ extension BottomSheetViewController {
         static let widthTopRectangle = 48.0
         static let heightTopRectangle = 4.0
         static let bottomPaddingConstraint = 34.0
+        static let safeAreaBottomPadding = 32.0
     }
 }
 

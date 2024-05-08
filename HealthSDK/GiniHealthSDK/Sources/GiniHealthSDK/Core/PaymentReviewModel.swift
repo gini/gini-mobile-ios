@@ -9,7 +9,7 @@ import GiniHealthAPILibrary
 import UIKit
 
 protocol PaymentReviewViewModelDelegate: AnyObject {
-    func presentInstallAppBottomSheet(bottomSheet: UIViewController)
+    func presentInstallAppBottomSheet(bottomSheet: BottomSheetViewController)
     func presentShareInvoiceBottomSheet(bottomSheet: BottomSheetViewController)
     func createPaymentRequestAndOpenBankApp()
     func sharePDFActivityUI()
@@ -185,21 +185,17 @@ public class PaymentReviewModel: NSObject {
         }
     }
     
-    func installAppBottomSheet() -> UIViewController {
-        let installAppBottomView = InstallAppBottomView()
+    func installAppBottomSheet() -> BottomSheetViewController {
         let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
         installAppBottomViewModel.viewDelegate = self
-        installAppBottomView.viewModel = installAppBottomViewModel
-        let installAppBottomSheet = InstallAppBottomSheet()
-        installAppBottomSheet.bottomSheet = installAppBottomView
-        return installAppBottomSheet
+        let installAppBottomView = InstallAppBottomView(viewModel: installAppBottomViewModel)
+        return installAppBottomView
     }
     
     func shareInvoiceBottomSheet() -> BottomSheetViewController {
         let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
         shareInvoiceBottomViewModel.viewDelegate = self
         let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel)
-        shareInvoiceBottomView.viewModel = shareInvoiceBottomViewModel
         return shareInvoiceBottomView
     }
 }

@@ -837,8 +837,9 @@ extension PaymentReviewViewController {
 }
 
 extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
-    func presentInstallAppBottomSheet(bottomSheet: UIViewController) {
-        self.present(bottomSheet, animated: true)
+    func presentInstallAppBottomSheet(bottomSheet: BottomSheetViewController) {
+        bottomSheet.minHeight = inputContainer.frame.height
+        presentBottomSheet(viewController: bottomSheet)
     }
     
     func createPaymentRequestAndOpenBankApp() {
@@ -847,6 +848,7 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     }
     
     func presentShareInvoiceBottomSheet(bottomSheet: BottomSheetViewController) {
+        bottomSheet.minHeight = inputContainer.frame.height
         presentBottomSheet(viewController: bottomSheet)
         model?.incrementOnboardingCountFor(paymentProvider: selectedPaymentProvider)
     }
