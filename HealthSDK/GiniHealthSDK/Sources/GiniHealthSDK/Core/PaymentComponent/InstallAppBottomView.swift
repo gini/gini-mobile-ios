@@ -7,27 +7,20 @@
 
 import UIKit
 
-class InstallAppBottomView: UIView {
+class InstallAppBottomView: BottomSheetViewController {
 
-    var viewModel: InstallAppBottomViewModel! {
-        didSet {
-            setupView()
-        }
-    }
-
-    private lazy var rectangleTopView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.frame = CGRect(x: 0, y: 0, width: Constants.widthTopRectangle, height: Constants.heightTopRectangle)
-        view.roundCorners(corners: .allCorners, radius: Constants.cornerRadiusTopRectangle)
-        view.backgroundColor = viewModel.rectangleColor
-        return view
+    var viewModel: InstallAppBottomViewModel
+    
+    private lazy var contentStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        return stackView
     }()
 
     private lazy var titleView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.heightTitleView)
         view.backgroundColor = .clear
         return view
     }()
@@ -43,14 +36,27 @@ class InstallAppBottomView: UIView {
         return label
     }()
     
+    private lazy var bankView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+        return view
+    }()
+    
     private lazy var bankIconImageView: UIImageView = {
         let imageView = UIImageView(image: viewModel.bankImageIcon)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.frame = CGRect(x: 0, y: 0, width: Constants.bankIconSize, height: Constants.bankIconSize)
         imageView.roundCorners(corners: .allCorners, radius: Constants.bankIconCornerRadius)
         imageView.layer.borderWidth = Constants.bankIconBorderWidth
         imageView.layer.borderColor = viewModel.bankIconBorderColor.cgColor
         return imageView
+    }()
+    
+    private lazy var moreInformationView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+        return view
     }()
     
     private lazy var moreInformationStackView: UIStackView = {
@@ -60,11 +66,6 @@ class InstallAppBottomView: UIView {
         stackView.axis = .horizontal
         stackView.distribution = .fillProportionally
         return stackView
-    }()
-    
-    // We need our label into a view for layout purposes. Stackviews require views in order to satisfy all dynamic constraints
-    private lazy var moreInformationLabelView: UIView = {
-        return UIView()
     }()
     
     private lazy var moreInformationLabel: UILabel = {
@@ -83,13 +84,13 @@ class InstallAppBottomView: UIView {
         let image = UIImageNamedPreferred(named: viewModel.moreInformationIconName)
         button.setImage(image, for: .normal)
         button.tintColor = viewModel.moreInformationAccentColor
+        button.isUserInteractionEnabled = false
         return button
     }()
     
     private lazy var continueButton: PaymentPrimaryButton = {
         let button = PaymentPrimaryButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.buttonViewHeight)
         button.configure(with: viewModel.giniHealthConfiguration.primaryButtonConfiguration)
         button.customConfigure(paymentProviderColors: viewModel.paymentProviderColors,
                                text: viewModel.continueLabelText)
@@ -99,12 +100,32 @@ class InstallAppBottomView: UIView {
     private lazy var appStoreImageView: UIButton = {
         let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.appStoreImageViewHeight)
         let image = UIImageNamedPreferred(named: viewModel.appStoreImageIconName)
         button.setImage(image, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(tapOnAppStoreButton), for: .touchUpInside)
         return button
+    }()
+    
+    private lazy var buttonsView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+        return view
+    }()
+    
+    private lazy var bottomView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+        return view
+    }()
+    
+    private lazy var bottomStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        return stackView
     }()
 
     private lazy var poweredByGiniView: PoweredByGiniView = {
@@ -112,44 +133,49 @@ class InstallAppBottomView: UIView {
         view.viewModel = PoweredByGiniViewModel()
         return view
     }()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupView()
     }
-
+    
+    init(viewModel: InstallAppBottomViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     private func setupView() {
         setupViewHierarchy()
-        setupViewAttributes()
         setupLayout()
         setupListeners()
         setButtonsState()
     }
 
     private func setupViewHierarchy() {
-        self.addSubview(rectangleTopView)
-        self.addSubview(titleView)
         titleView.addSubview(titleLabel)
-        self.addSubview(bankIconImageView)
-        moreInformationLabelView.addSubview(moreInformationLabel)
+        contentStackView.addArrangedSubview(titleView)
+        bankView.addSubview(bankIconImageView)
+        contentStackView.addArrangedSubview(bankView)
         moreInformationStackView.addArrangedSubview(moreInformationButton)
-        moreInformationStackView.addArrangedSubview(moreInformationLabelView)
-        self.addSubview(moreInformationStackView)
-        self.addSubview(continueButton)
-        self.addSubview(poweredByGiniView)
-        self.addSubview(appStoreImageView)
-    }
-
-    private func setupViewAttributes() {
-        self.backgroundColor = viewModel.backgroundColor
-        self.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadiusView)
+        moreInformationStackView.addArrangedSubview(moreInformationLabel)
+        moreInformationView.addSubview(moreInformationStackView)
+        contentStackView.addArrangedSubview(moreInformationView)
+        buttonsView.addSubview(continueButton)
+        buttonsView.addSubview(appStoreImageView)
+        contentStackView.addArrangedSubview(buttonsView)
+        contentStackView.addArrangedSubview(UIView())
+        bottomStackView.addArrangedSubview(UIView())
+        bottomStackView.addArrangedSubview(poweredByGiniView)
+        bottomView.addSubview(bottomStackView)
+        contentStackView.addArrangedSubview(bottomView)
+        self.setContent(content: contentStackView)
     }
 
     private func setupLayout() {
-        setupTopRectangleConstraints()
         setupTitleViewConstraints()
         setupBankImageConstraints()
         setupMoreInformationConstraints()
@@ -179,74 +205,63 @@ class InstallAppBottomView: UIView {
         }
     }
 
-    private func setupTopRectangleConstraints() {
-        NSLayoutConstraint.activate([
-            rectangleTopView.heightAnchor.constraint(equalToConstant: rectangleTopView.frame.height),
-            rectangleTopView.widthAnchor.constraint(equalToConstant: rectangleTopView.frame.width),
-            rectangleTopView.topAnchor.constraint(equalTo: self.topAnchor, constant: Constants.topAnchorTopRectangle),
-            rectangleTopView.centerXAnchor.constraint(equalTo: self.centerXAnchor)
-        ])
-    }
-
     private func setupTitleViewConstraints() {
         NSLayoutConstraint.activate([
-            titleView.heightAnchor.constraint(equalToConstant: titleView.frame.height),
-            titleView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.viewPaddingConstraint),
-            self.trailingAnchor.constraint(equalTo: titleView.trailingAnchor, constant: Constants.viewPaddingConstraint),
-            titleView.topAnchor.constraint(equalTo: self.topAnchor, constant: Constants.topAnchorTitleView),
-            titleLabel.leadingAnchor.constraint(equalTo: titleView.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: titleView.trailingAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: titleView.centerYAnchor)
+            titleLabel.leadingAnchor.constraint(equalTo: titleView.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            titleLabel.trailingAnchor.constraint(equalTo: titleView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+            titleLabel.topAnchor.constraint(equalTo: titleView.topAnchor, constant: Constants.topBottomPaddingConstraint),
+            titleLabel.bottomAnchor.constraint(equalTo: titleView.bottomAnchor, constant: -Constants.topBottomPaddingConstraint)
         ])
     }
 
     private func setupBankImageConstraints() {
         NSLayoutConstraint.activate([
-            bankIconImageView.heightAnchor.constraint(equalToConstant: bankIconImageView.frame.height),
-            bankIconImageView.widthAnchor.constraint(equalToConstant: bankIconImageView.frame.width),
-            bankIconImageView.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: Constants.topAnchorBankImage),
-            bankIconImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+            bankIconImageView.heightAnchor.constraint(equalToConstant: Constants.bankIconSize),
+            bankIconImageView.widthAnchor.constraint(equalToConstant: Constants.bankIconSize),
+            bankIconImageView.topAnchor.constraint(equalTo: bankView.topAnchor),
+            bankIconImageView.bottomAnchor.constraint(equalTo: bankView.bottomAnchor),
+            bankIconImageView.centerXAnchor.constraint(equalTo: bankView.centerXAnchor),
+            
         ])
     }
     
     private func setupMoreInformationConstraints() {
         NSLayoutConstraint.activate([
-            moreInformationStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.viewPaddingConstraint),
-            moreInformationStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-            moreInformationStackView.topAnchor.constraint(equalTo: bankIconImageView.bottomAnchor, constant: Constants.viewPaddingConstraint),
-            moreInformationLabel.leadingAnchor.constraint(equalTo: moreInformationLabelView.leadingAnchor),
-            moreInformationLabel.trailingAnchor.constraint(equalTo: moreInformationLabelView.trailingAnchor),
-            moreInformationLabel.centerYAnchor.constraint(equalTo: moreInformationLabelView.centerYAnchor)
+            moreInformationStackView.leadingAnchor.constraint(equalTo: moreInformationView.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            moreInformationStackView.trailingAnchor.constraint(equalTo: moreInformationView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+            moreInformationStackView.topAnchor.constraint(equalTo: moreInformationView.topAnchor, constant: Constants.viewPaddingConstraint),
+            moreInformationStackView.bottomAnchor.constraint(equalTo: moreInformationView.bottomAnchor, constant: Constants.moreInformationBottomAnchorConstraint),
+            moreInformationButton.widthAnchor.constraint(equalToConstant: Constants.infoIconSize)
         ])
     }
     
     private func setupContinueButtonConstraints() {
         NSLayoutConstraint.activate([
-            continueButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.viewPaddingConstraint),
-            continueButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-            continueButton.heightAnchor.constraint(equalToConstant: continueButton.frame.height),
-            continueButton.topAnchor.constraint(equalTo: moreInformationStackView.bottomAnchor, constant: Constants.continueButtonTopAnchor)
+            continueButton.leadingAnchor.constraint(equalTo: buttonsView.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            continueButton.trailingAnchor.constraint(equalTo: buttonsView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+            continueButton.heightAnchor.constraint(equalToConstant: Constants.continueButtonViewHeight),
+            continueButton.topAnchor.constraint(equalTo: buttonsView.topAnchor, constant: Constants.continueButtonTopAnchor),
+            continueButton.bottomAnchor.constraint(equalTo: buttonsView.bottomAnchor, constant: -Constants.continueButtonBottomAnchor)
         ])
     }
     
     private func setupAppStoreButtonConstraints() {
         NSLayoutConstraint.activate([
-            appStoreImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.viewPaddingConstraint),
-            appStoreImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-            appStoreImageView.heightAnchor.constraint(equalToConstant: appStoreImageView.frame.height),
-            appStoreImageView.topAnchor.constraint(equalTo: moreInformationStackView.bottomAnchor, constant: Constants.continueButtonTopAnchor),
-            appStoreImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+            appStoreImageView.leadingAnchor.constraint(equalTo: buttonsView.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            appStoreImageView.trailingAnchor.constraint(equalTo: buttonsView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+            appStoreImageView.heightAnchor.constraint(equalToConstant: Constants.appStoreImageViewHeight),
+            appStoreImageView.topAnchor.constraint(equalTo: buttonsView.topAnchor, constant: Constants.continueButtonTopAnchor),
+            appStoreImageView.centerXAnchor.constraint(equalTo: buttonsView.centerXAnchor),
+            appStoreImageView.bottomAnchor.constraint(equalTo: buttonsView.bottomAnchor, constant: -Constants.appStoreBottomAnchor)
         ])
     }
 
     private func setupPoweredByGiniConstraints() {
-        let poweredByGiniBottomAnchorConstraint = poweredByGiniView.bottomAnchor.constraint(equalTo: poweredByGiniView.bottomAnchor, constant: Constants.viewPaddingConstraint)
-        poweredByGiniBottomAnchorConstraint.priority = .required - 1
         NSLayoutConstraint.activate([
-            poweredByGiniView.topAnchor.constraint(equalTo: continueButton.bottomAnchor, constant: Constants.viewPaddingConstraint),
-            poweredByGiniView.heightAnchor.constraint(equalToConstant: poweredByGiniView.frame.height),
-            poweredByGiniView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.viewPaddingConstraint),
-            poweredByGiniBottomAnchorConstraint
+            bottomStackView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            bottomStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -Constants.viewPaddingConstraint),
+            bottomStackView.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: Constants.topAnchorPoweredByGiniConstraint),
+            bottomStackView.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor)
         ])
     }
     
@@ -273,21 +288,18 @@ class InstallAppBottomView: UIView {
 
 extension InstallAppBottomView {
     enum Constants {
-        static let cornerRadiusView = 12.0
-        static let cornerRadiusTopRectangle = 2.0
-        static let widthTopRectangle = 48
-        static let heightTopRectangle = 4
-        static let topAnchorTopRectangle = 16.0
-        static let heightTitleView = 48.0
         static let viewPaddingConstraint = 16.0
-        static let topAnchorTitleView = 32.0
-        static let bankIconSize = 36
-        static let titleViewTitleIconSpacing = 10.0
+        static let bankIconSize = 36.0
         static let bankIconCornerRadius = 6.0
         static let bankIconBorderWidth = 1.0
-        static let topAnchorBankImage = 10.0
-        static let buttonViewHeight: CGFloat = 56
-        static let continueButtonTopAnchor = 24.0
+        static let continueButtonViewHeight = 56.0
+        static let continueButtonTopAnchor = 16.0
+        static let continueButtonBottomAnchor = 4.0
+        static let appStoreBottomAnchor = 16.0
         static let appStoreImageViewHeight = 44.0
+        static let topBottomPaddingConstraint = 10.0
+        static let topAnchorPoweredByGiniConstraint = 5.0
+        static let moreInformationBottomAnchorConstraint = 8.0
+        static let infoIconSize = 24.0
     }
 }
