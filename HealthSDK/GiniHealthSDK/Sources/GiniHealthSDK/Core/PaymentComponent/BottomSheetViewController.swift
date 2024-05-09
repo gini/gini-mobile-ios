@@ -20,7 +20,7 @@ class BottomSheetViewController: UIViewController {
         return view
     }()
     
-    /// View to to hold dynamic content
+    /// View to hold dynamic content
     private lazy var contentView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -94,7 +94,7 @@ class BottomSheetViewController: UIViewController {
         ])
         if minHeight > 0 {
             let extraBottomSafeAreaConstant = UIApplication.shared.keyWindow?.safeAreaInsets.bottom == 0 ? Constants.safeAreaBottomPadding : 0 // fix for small devices
-            let topAnchorWithMinHeightConstant = (view.frame.height) - minHeight + extraBottomSafeAreaConstant
+            let topAnchorWithMinHeightConstant = view.frame.height - minHeight + extraBottomSafeAreaConstant
             mainContainerView.topAnchor.constraint(lessThanOrEqualTo: view.topAnchor, constant: topAnchorWithMinHeightConstant).isActive = true
         } else {
             mainContainerView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: Constants.minTopSpacing).isActive = true

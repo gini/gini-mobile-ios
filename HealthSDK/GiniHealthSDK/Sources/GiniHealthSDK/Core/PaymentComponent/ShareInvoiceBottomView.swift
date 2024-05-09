@@ -107,14 +107,14 @@ class ShareInvoiceBottomView: BottomSheetViewController {
         let tipActionableAttributtedString = NSMutableAttributedString(string: viewModel.tipLabelText)
         let tipPartString = (viewModel.tipLabelText as NSString).range(of: viewModel.tipActionablePartText)
         tipActionableAttributtedString.addAttribute(.foregroundColor,
-                                                                value: viewModel.tipAccentColor,
-                                                                range: tipPartString)
+                                                    value: viewModel.tipAccentColor,
+                                                    range: tipPartString)
         tipActionableAttributtedString.addAttribute(NSAttributedString.Key.underlineStyle,
-                                                                value: NSUnderlineStyle.single.rawValue,
-                                                                range: tipPartString)
+                                                    value: NSUnderlineStyle.single.rawValue,
+                                                    range: tipPartString)
         tipActionableAttributtedString.addAttribute(NSAttributedString.Key.font,
-                                                                value: viewModel.tipLabelLinkFont,
-                                                                range: tipPartString)
+                                                    value: viewModel.tipLabelLinkFont,
+                                                    range: tipPartString)
         let tapOnMoreInformation = UITapGestureRecognizer(target: self,
                                                           action: #selector(tapOnLabelAction(gesture:)))
         label.isUserInteractionEnabled = true
@@ -169,15 +169,6 @@ class ShareInvoiceBottomView: BottomSheetViewController {
         view.viewModel = PoweredByGiniViewModel()
         return view
     }()
-    
-    override var minHeight: CGFloat {
-        get {
-            return 0
-        }
-        set {
-            super.minHeight = newValue
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -308,7 +299,6 @@ class ShareInvoiceBottomView: BottomSheetViewController {
     private func tapOnLabelAction(gesture: UITapGestureRecognizer) {
         if gesture.didTapAttributedTextInLabel(label: tipLabel,
                                                targetText: viewModel.tipActionablePartText) {
-
             tapOnAppStoreButton()
         }
     }
