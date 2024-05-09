@@ -52,7 +52,7 @@ extension PaymentComponentViewProtocol {
 }
 
 final class PaymentComponentViewModel {
-    var giniHealthConfiguration = GiniHealthConfiguration.shared
+    let giniHealthConfiguration = GiniHealthConfiguration.shared
 
     let backgroundColor: UIColor = UIColor.from(giniColor: GiniColor(lightModeColor: .clear, 
                                                                      darkModeColor: .clear))

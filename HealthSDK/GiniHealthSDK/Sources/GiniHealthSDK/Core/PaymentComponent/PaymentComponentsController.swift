@@ -63,18 +63,6 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
      */
     public init(giniHealth: GiniHealth) {
         self.giniHealth = giniHealth
-        setupListeners()
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    private func setupListeners() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(willEnterForeground),
-                                               name: UIApplication.willEnterForegroundNotification,
-                                               object: nil)
     }
     
     /**
@@ -100,15 +88,6 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
                 self?.delegate?.didFetchedPaymentProviders()
             case let .failure(error):
                 print("Couldn't load payment providers: \(error.localizedDescription)")
-            }
-        }
-    }
-    
-    @objc
-    private func willEnterForeground() {
-        DispatchQueue.main.async {
-            if !self.checkPaymentProviderIsInstalled(paymentProvider: self.selectedPaymentProvider) {
-                self.loadPaymentProviders()
             }
         }
     }
@@ -193,9 +172,13 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
                     completion(nil, nil)
                     return
                 }
-                let vc = PaymentReviewViewController.instantiate(with: self.giniHealth, 
+                guard let selectedPaymentProvider else {
+                    completion(nil, nil)
+                    return
+                }
+                let vc = PaymentReviewViewController.instantiate(with: self.giniHealth,
                                                                  data: data,
-                                                                 selectedPaymentProvider: self.selectedPaymentProvider, 
+                                                                 selectedPaymentProvider: selectedPaymentProvider,
                                                                  trackingDelegate: trackingDelegate)
                 completion(vc, nil)
             case .failure(let error):
@@ -243,4 +226,3 @@ extension PaymentComponentsController {
         static let kDefaultPaymentProvider = "defaultPaymentProvider"
     }
 }
-

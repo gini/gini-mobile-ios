@@ -49,7 +49,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         return view
     }()
 
-    private var selectedPaymentProvider: PaymentProvider?
+    private var selectedPaymentProvider: PaymentProvider!
     
     public weak var trackingDelegate: GiniHealthTrackingDelegate?
     
@@ -60,25 +60,33 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         case usageFieldTag
     }
     
-    public static func instantiate(with giniHealth: GiniHealth, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider?, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
+    public static func instantiate(with giniHealth: GiniHealth, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
         let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
-        viewController.model = PaymentReviewModel(with: giniHealth, document: document, extractions: extractions)
+        let viewModel = PaymentReviewModel(with: giniHealth,
+                                           document: document,
+                                           extractions: extractions,
+                                           selectedPaymentProvider: selectedPaymentProvider)
+        viewController.model = viewModel
         viewController.trackingDelegate = trackingDelegate
         viewController.selectedPaymentProvider = selectedPaymentProvider
         return viewController
     }
     
-    public static func instantiate(with giniHealth: GiniHealth, data: DataForReview, selectedPaymentProvider: PaymentProvider?, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
+    public static func instantiate(with giniHealth: GiniHealth, data: DataForReview, selectedPaymentProvider: PaymentProvider, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
         let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
-        viewController.model = PaymentReviewModel(with: giniHealth, document: data.document, extractions: data.extractions)
+        let viewModel = PaymentReviewModel(with: giniHealth,
+                                           document: data.document,
+                                           extractions: data.extractions,
+                                           selectedPaymentProvider: selectedPaymentProvider)
+        viewController.model = viewModel
         viewController.trackingDelegate = trackingDelegate
         viewController.selectedPaymentProvider = selectedPaymentProvider
         return viewController
     }
 
-    var giniHealthConfiguration = GiniHealthConfiguration.shared
+    let giniHealthConfiguration = GiniHealthConfiguration.shared
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -162,6 +170,8 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
         
         model?.fetchImages()
+        
+        model?.viewModelDelegate = self
     }
 
     override public func viewDidDisappear(_ animated: Bool) {
@@ -235,9 +245,9 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         payButtonStackView.addArrangedSubview(payInvoiceButton)
         guard let model else { return }
         payInvoiceButton.configure(with: giniHealthConfiguration.primaryButtonConfiguration)
-        payInvoiceButton.customConfigure(paymentProviderColors: selectedPaymentProvider?.colors,
+        payInvoiceButton.customConfigure(paymentProviderColors: selectedPaymentProvider.colors,
                                          text: model.payInvoiceLabelText,
-                                         leftImageData: selectedPaymentProvider?.iconData)
+                                         leftImageData: selectedPaymentProvider.iconData)
         disablePayButtonIfNeeded()
         payInvoiceButton.didTapButton = { [weak self] in
             self?.payButtonClicked()
@@ -535,9 +545,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     // MARK: - Pay Button Action
     func payButtonClicked() {
         var event = TrackingEvent.init(type: PaymentReviewScreenEventType.onToTheBankButtonClicked)
-        if let selectedPaymentProviderName = selectedPaymentProvider?.name {
-            event.info = ["paymentProvider": selectedPaymentProviderName]
-        }
+        event.info = ["paymentProvider": selectedPaymentProvider.name]
         trackingDelegate?.onPaymentReviewScreenEvent(event: event)
         view.endEditing(true)
         validateAllInputFields()
@@ -545,41 +553,54 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         if let iban = ibanTextFieldView.text {
             lastValidatedIBAN = iban
         }
+        
+        guard selectedPaymentProvider.appSchemeIOS.canOpenURLString() else {
+            model?.openInstallAppBottomSheet()
+            return
+        }
 
+        checkForErrors()
+    }
+    
+    private func checkForErrors() {
         // check if no errors labels are shown
         if (paymentInputFieldsErrorLabels.allSatisfy { $0.isHidden }) {
-            if let selectedProvider = selectedPaymentProvider, !amountTextFieldView.textField.isReallyEmpty {
-                let amountText = amountToPay.extractionString
-                let paymentInfo = PaymentInfo(recipient: recipientTextFieldView.text ?? "", 
-                                              iban: ibanTextFieldView.text ?? "",
-                                              bic: "", amount: amountText,
-                                              purpose: usageTextFieldView.text ?? "",
-                                              paymentUniversalLink: selectedProvider.universalLinkIOS,
-                                              paymentProviderId: selectedProvider.id)
-                model?.createPaymentRequest(paymentInfo: paymentInfo)
-                let paymentRecipientExtraction = Extraction(box: nil, 
-                                                            candidates: "",
-                                                            entity: "text",
-                                                            value: recipientTextFieldView.text ?? "",
-                                                            name: "payment_recipient")
-                let ibanExtraction = Extraction(box: nil, 
-                                                candidates: "",
-                                                entity: "iban",
-                                                value: paymentInfo.iban,
-                                                name: "iban")
-                let referenceExtraction = Extraction(box: nil, 
-                                                     candidates: "",
-                                                     entity: "text", value:
-                                                        paymentInfo.purpose,
-                                                     name: "payment_purpose")
-                let amoutToPayExtraction = Extraction(box: nil, 
-                                                      candidates: "",
-                                                      entity: "amount", value:
-                                                        paymentInfo.amount,
-                                                      name: "amount_to_pay")
-                let updatedExtractions = [paymentRecipientExtraction, ibanExtraction, referenceExtraction, amoutToPayExtraction]
-                model?.sendFeedback(updatedExtractions: updatedExtractions)
-            }
+            createPaymentRequest()
+        }
+    }
+    
+    private func createPaymentRequest() {
+        if !amountTextFieldView.textField.isReallyEmpty {
+            let amountText = amountToPay.extractionString
+            let paymentInfo = PaymentInfo(recipient: recipientTextFieldView.text ?? "",
+                                          iban: ibanTextFieldView.text ?? "",
+                                          bic: "", amount: amountText,
+                                          purpose: usageTextFieldView.text ?? "",
+                                          paymentUniversalLink: selectedPaymentProvider.universalLinkIOS,
+                                          paymentProviderId: selectedPaymentProvider.id)
+            model?.createPaymentRequest(paymentInfo: paymentInfo)
+            let paymentRecipientExtraction = Extraction(box: nil,
+                                                        candidates: "",
+                                                        entity: "text",
+                                                        value: recipientTextFieldView.text ?? "",
+                                                        name: "payment_recipient")
+            let ibanExtraction = Extraction(box: nil,
+                                            candidates: "",
+                                            entity: "iban",
+                                            value: paymentInfo.iban,
+                                            name: "iban")
+            let referenceExtraction = Extraction(box: nil,
+                                                 candidates: "",
+                                                 entity: "text",
+                                                 value: paymentInfo.purpose,
+                                                 name: "payment_purpose")
+            let amoutToPayExtraction = Extraction(box: nil,
+                                                  candidates: "",
+                                                  entity: "amount",
+                                                  value: paymentInfo.amount,
+                                                  name: "amount_to_pay")
+            let updatedExtractions = [paymentRecipientExtraction, ibanExtraction, referenceExtraction, amoutToPayExtraction]
+            model?.sendFeedback(updatedExtractions: updatedExtractions)
         }
     }
     
@@ -803,6 +824,17 @@ extension PaymentReviewViewController {
                                                                              comment: "ok title for action"), style: .default, handler: nil)
         alertController.addAction(OKAction)
         present(alertController, animated: true, completion: nil)
+    }
+}
+
+extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
+    func presentInstallAppBottomSheet(bottomSheet: UIViewController) {
+        self.present(bottomSheet, animated: true)
+    }
+    
+    func createPaymentRequestAndOpenBankApp() {
+        self.presentedViewController?.dismiss(animated: true)
+        checkForErrors()
     }
 }
 
