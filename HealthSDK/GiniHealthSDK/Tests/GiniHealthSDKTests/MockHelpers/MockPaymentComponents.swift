@@ -28,7 +28,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
             return
         }
         if let iconData = Data(url: URL(string: paymentProviderResponse.iconLocation)) {
-            selectedPaymentProvider = PaymentProvider(id: paymentProviderResponse.id, name: paymentProviderResponse.name, appSchemeIOS: paymentProviderResponse.appSchemeIOS, minAppVersion: paymentProviderResponse.minAppVersion, colors: paymentProviderResponse.colors, iconData: iconData, appStoreUrlIOS: paymentProviderResponse.appStoreUrlIOS, universalLinkIOS: paymentProviderResponse.universalLinkIOS)
+            selectedPaymentProvider = PaymentProvider(id: paymentProviderResponse.id, name: paymentProviderResponse.name, appSchemeIOS: paymentProviderResponse.appSchemeIOS, minAppVersion: paymentProviderResponse.minAppVersion, colors: paymentProviderResponse.colors, iconData: iconData, appStoreUrlIOS: paymentProviderResponse.appStoreUrlIOS, universalLinkIOS: paymentProviderResponse.universalLinkIOS, index: paymentProviderResponse.index)
         }
     }
     
@@ -54,13 +54,10 @@ class MockPaymentComponents: PaymentComponentsProtocol {
     }
     
     func bankSelectionBottomSheet() -> UIViewController {
-        let paymentProvidersBottomView = BanksBottomView()
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
                                                                    selectedPaymentProvider: selectedPaymentProvider)
-        paymentProvidersBottomView.viewModel = paymentProvidersBottomViewModel
-        let bankSelectionBottomSheet = BankSelectionBottomSheet()
-        bankSelectionBottomSheet.bottomSheet = paymentProvidersBottomView
-        return bankSelectionBottomSheet
+        let paymentProvidersBottomView = BanksBottomView(viewModel: paymentProvidersBottomViewModel)
+        return paymentProvidersBottomView
     }
     
     func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: (any GiniHealthTrackingDelegate)?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {

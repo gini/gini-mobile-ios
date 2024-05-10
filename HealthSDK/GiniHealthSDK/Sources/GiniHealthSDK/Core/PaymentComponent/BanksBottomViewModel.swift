@@ -69,12 +69,14 @@ final class BanksBottomViewModel {
         self.selectBankLabelFont = giniHealthConfiguration.textStyleFonts[.subtitle1] ?? defaultBoldFont
         self.descriptionLabelFont = giniHealthConfiguration.textStyleFonts[.caption1] ?? defaultRegularFont
         
+        print("paymentProviders unsorted: \(paymentProviders.map { $0.name })- \(paymentProviders.map { $0.index })")
         self.paymentProviders = paymentProviders
             .map({ PaymentProviderAdditionalInfo(isSelected: $0.id == selectedPaymentProvider?.id,
                                                  isInstalled: isPaymentProviderInstalled(paymentProvider: $0),
                                                  paymentProvider: $0)})
-            .sorted(by: { $0.isInstalled && !$1.isInstalled })
-        self.paymentProviders.append(contentsOf: self.paymentProviders)
+            .sorted(by: { ($0.paymentProvider.index < $1.paymentProvider.index) })
+            .sorted(by: { ($0.isInstalled && !$1.isInstalled) })
+        print("paymentProviders sorted: \(self.paymentProviders.map { $0.paymentProvider.name }) - \(self.paymentProviders.map { $0.paymentProvider.index })")
         self.calculateHeights()
     }
     
