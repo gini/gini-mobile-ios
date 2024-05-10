@@ -86,8 +86,8 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
                 self?.paymentProviders = paymentProviders
                 // TODO: - Remove fake GPC datas - only for testing purposes
                 if paymentProviders.count > 2 {
-                    self?.paymentProviders[1].gpcSupported = false
-                    self?.paymentProviders[2].gpcSupported = false
+                    self?.paymentProviders[4].gpcSupported = false
+                    self?.paymentProviders[5].gpcSupported = false
                 }
                 self?.selectedPaymentProvider = self?.defaultInstalledPaymentProvider()
                 self?.delegate?.didFetchedPaymentProviders()
