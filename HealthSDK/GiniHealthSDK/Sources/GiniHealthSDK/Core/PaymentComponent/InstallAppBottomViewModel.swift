@@ -21,9 +21,6 @@ final class InstallAppBottomViewModel {
     var paymentProviderColors: ProviderColors?
     
     weak var viewDelegate: InstallAppBottomViewProtocol?
-    
-    let maximumViewHeight: CGFloat = UIScreen.main.bounds.height - Constants.topPaddingView
-    var bottomViewHeight: CGFloat = 0
 
     let backgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark7,
                                              darkModeColor: UIColor.GiniHealthColors.light7).uiColor()
@@ -90,27 +87,9 @@ final class InstallAppBottomViewModel {
 
         self.titleLabelFont = giniHealthConfiguration.textStyleFonts[.subtitle1] ?? defaultBoldFont
         self.moreInformationLabelFont = giniHealthConfiguration.textStyleFonts[.caption1] ?? defaultRegularFont
-        
-        self.calculateHeights()
-    }
-    
-    private func calculateHeights() {
-        let totalBottomViewHeight = Constants.blankBottomViewHeight
-        if totalBottomViewHeight > maximumViewHeight {
-            self.bottomViewHeight = maximumViewHeight
-        } else {
-            self.bottomViewHeight = Constants.blankBottomViewHeight
-        }
     }
     
     func didTapOnContinue() {
         viewDelegate?.didTapOnContinue()
-    }
-}
-
-extension InstallAppBottomViewModel {
-    enum Constants {
-        static let blankBottomViewHeight: CGFloat = 340.0
-        static let topPaddingView: CGFloat = 100.0
     }
 }
