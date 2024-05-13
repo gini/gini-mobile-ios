@@ -84,11 +84,6 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
             switch result {
             case let .success(paymentProviders):
                 self?.paymentProviders = paymentProviders
-                // TODO: - Remove fake GPC datas - only for testing purposes
-                if paymentProviders.count > 2 {
-                    self?.paymentProviders[4].gpcSupported = false
-                    self?.paymentProviders[5].gpcSupported = false
-                }
                 self?.selectedPaymentProvider = self?.defaultInstalledPaymentProvider()
                 self?.delegate?.didFetchedPaymentProviders()
             case let .failure(error):
