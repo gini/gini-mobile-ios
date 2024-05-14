@@ -233,6 +233,11 @@ extension GiniScreenAPICoordinator {
     }
 
     @objc func showHelpMenuScreen() {
+        let topViewController = screenAPINavigationController.topViewController
+        guard topViewController is CameraViewController else {
+            return
+        }
+
         let helpMenuViewController = HelpMenuViewController(
             giniConfiguration: giniConfiguration
         )
@@ -247,14 +252,12 @@ extension GiniScreenAPICoordinator {
 
         // In case of 1 menu item it's better to show the item immediately without any selection
 
-        if helpMenuViewController.dataSource.items.count == 1 {
-            screenAPINavigationController
-                .pushViewController(helpItemViewController(for: helpMenuViewController.dataSource.items[0]),
-                                    animated: true)
-        } else {
-            screenAPINavigationController
-                .pushViewController(helpMenuViewController, animated: true)
-        }
+        let menuItems = helpMenuViewController.dataSource.items
+        let helpViewControllerForOneItem = helpItemViewController(for: helpMenuViewController.dataSource.items[0])
+        let helpViewControllerToPush = menuItems.count == 1 ? helpViewControllerForOneItem : helpMenuViewController
+
+        screenAPINavigationController.pushViewController(helpViewControllerToPush, animated: true)
+
     }
 
     @objc func showAnalysisScreen() {

@@ -2,7 +2,7 @@
 //  GiniScreenAPICoordinator+Camera.swift
 //  GiniCapture
 //
-//  Created by Enrique del Pozo Gómez on 4/4/18.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -268,22 +268,31 @@ extension GiniScreenAPICoordinator {
 
     fileprivate func validate(_ documents: [GiniCaptureDocument],
                               completion: @escaping (Result<[GiniCapturePage], Error>) -> Void) {
+        var documentsToValidate = documents + pages.map { $0.document }
 
-        guard !(documents + pages.map {$0.document}).containsDifferentTypes else {
+        for document in documentsToValidate where document.type == .qrcode {
+            // Scanning a QR code takes priority, even if the user has already taken some pictures.
+            // All the pages that have already been scanned should be discarded and keep the document generated after scanning the QR code.
+            // The flow of the QR code scanning process should be followed
+            documentsToValidate = [document]
+            break
+        }
+
+        guard !documentsToValidate.containsDifferentTypes else {
             completion(.failure(FilePickerError.mixedDocumentsUnsupported))
             return
         }
 
-        guard (documents.filter({ $0.type == .pdf }) +
-               pages.map({ $0.document }).filter({ $0.type == .pdf })).count <= 1 else {
+        guard documentsToValidate.filter({ $0.type == .pdf }).count <= 1 else {
             completion(.failure(FilePickerError.multiplePdfsUnsupported))
             return
         }
 
-        guard (documents.count + pages.count) <= GiniCaptureDocumentValidator.maxPagesCount else {
+        guard documentsToValidate.count <= GiniCaptureDocumentValidator.maxPagesCount else {
             completion(.failure(FilePickerError.maxFilesPickedCountExceeded))
             return
         }
+
         self.validate(importedDocuments: documents) { validatedDocuments in
             let elementsWithError = validatedDocuments.filter { $0.error != nil }
             if let firstElement = elementsWithError.first,
@@ -303,7 +312,7 @@ extension GiniScreenAPICoordinator {
                 var documentError: Error?
                 do {
                     try GiniCaptureDocumentValidator.validate(document,
-                                                             withConfig: self.giniConfiguration)
+                                                              withConfig: self.giniConfiguration)
                 } catch let error {
                     documentError = error
                 }
