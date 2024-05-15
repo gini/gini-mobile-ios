@@ -29,9 +29,7 @@ extension GiniScreenAPICoordinator {
 // MARK: - ImageAnalysisNoResults screen
 
 extension GiniScreenAPICoordinator {
-    func createImageAnalysisNoResultsScreen(
-            type: NoResultScreenViewController.NoResultType
-        ) -> NoResultScreenViewController {
+    func createImageAnalysisNoResultsScreen(type: NoResultScreenViewController.NoResultType) -> NoResultScreenViewController {
         let viewModel: BottomButtonsViewModel
         let viewController: NoResultScreenViewController
         switch type {
@@ -90,10 +88,7 @@ extension GiniScreenAPICoordinator {
 
 extension GiniScreenAPICoordinator: AnalysisDelegate {
 
-    public func displayError(
-        errorType: ErrorType,
-        animated: Bool
-    ) {
+    public func displayError(errorType: ErrorType,animated: Bool) {
         let viewModel: BottomButtonsViewModel
         switch pages.type {
         case .image:
