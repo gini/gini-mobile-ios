@@ -177,7 +177,7 @@ extension OnboardingViewController: OnboardingScreen {
     func didScroll(pageIndex: Int) {
         guard pageControl.currentPage != pageIndex else { return }
         let pageModel = dataSource.pageModels[pageIndex]
-        AnalyticsManager.track(event: .swipePages, screenNameString: pageModel.analyticsScreen)
+        AnalyticsManager.track(event: .pageSwiped, screenNameString: pageModel.analyticsScreen)
         switch pageIndex {
         case dataSource.pageModels.count - 1:
             if configuration.bottomNavigationBarEnabled,

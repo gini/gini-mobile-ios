@@ -575,7 +575,7 @@ extension ReviewViewController {
                                         at: .centeredHorizontally, animated: true)
             pageControl.currentPage = currentPage
 
-            AnalyticsManager.track(event: .swipePages, screenName: .review)
+            AnalyticsManager.track(event: .pageSwiped, screenName: .review)
 
         } else if sender.direction == .right {
             guard currentPage > 0 else { return }
@@ -585,7 +585,7 @@ extension ReviewViewController {
                                         at: .centeredHorizontally, animated: true)
             pageControl.currentPage = currentPage
 
-            AnalyticsManager.track(event: .swipePages, screenName: .review)
+            AnalyticsManager.track(event: .pageSwiped, screenName: .review)
         }
     }
 
