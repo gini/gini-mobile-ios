@@ -1,6 +1,6 @@
 //
-//  Camera2ViewController+Extension.swift
-//  
+//  CameraViewController+Extension.swift
+//
 //
 //  Created by Krzysztof Kryniecki on 14/09/2022.
 //  Copyright © 2022 Gini GmbH. All rights reserved.
