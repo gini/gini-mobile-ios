@@ -19,8 +19,8 @@ Further documentation with information about how install and integrate it can be
 
 ## Requirements
 
-- iOS 11+
-- Xcode 12+
+- iOS 12+
+- Xcode 15+
 
 ## Author
 
@@ -30,5 +30,5 @@ Gini GmbH, hello@gini.net
 
 The Gini Health API Library for iOS is licensed under a Private License. See [the license](https://developer.gini.net/gini-mobile-ios/GiniHealthAPILibrary/license.html) for more info.
 
-**Important:** Always make sure to ship all license notices and permissions with your application.
+> ⚠️  **Important:** Always make sure to ship all license notices and permissions with your application.
 

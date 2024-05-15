@@ -52,9 +52,9 @@ public func UIColorPreferred(named name: String) -> UIColor {
     }
 
     if let customBundle = GiniConfiguration.shared.customResourceBundle,
-        let customBundleColor = UIColor(named: name,
-                                        in: customBundle,
-                                        compatibleWith: nil) {
+       let customBundleColor = UIColor(named: name,
+                                       in: customBundle,
+                                       compatibleWith: nil) {
         return customBundleColor
     }
 
@@ -65,6 +65,21 @@ public func UIColorPreferred(named name: String) -> UIColor {
     } else {
         fatalError("The color named '\(name)' does not exist.")
     }
+}
+
+/**
+ Returns an optional `UIColor` instance with the given `name` preferably from the client's custom resources provider.
+
+ - parameter name: The name of the UIColor.
+
+ - returns: UIColor if found with name.
+ */
+
+public func UIColorPreferredByProvider(named name: String) -> UIColor {
+    if let customProvider = GiniConfiguration.shared.customResourceProvider {
+        return customProvider.customPrefferedColor(name: name)
+    }
+    return UIColorPreferred(named: name)
 }
 
 /**
@@ -91,7 +106,7 @@ public func NSLocalizedStringPreferredFormat(_ key: String,
                                                                                 fallbackKey: fallbackKey,
                                                                                 comment: comment,
                                                                                 bundle: customBundle) {
-            
+         
             return clientLocalizedStringCustomBundle
         }
     }

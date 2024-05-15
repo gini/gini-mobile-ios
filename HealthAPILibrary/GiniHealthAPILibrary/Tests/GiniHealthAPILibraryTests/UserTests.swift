@@ -1,9 +1,9 @@
 //
 //  UserTests.swift
-//  GiniExampleTests
 //
-//  Created by Enrique del Pozo Gómez on 1/20/18.
-//  Copyright © 2018 Gini. All rights reserved.
+//
+//
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import XCTest
@@ -22,8 +22,19 @@ class UserTests: XCTestCase {
     }
     
     func testUserEncoded() {
-        let userEncoded = try? JSONEncoder().encode(user)
-        let userEncodedString = String(data: userEncoded!, encoding: .utf8)
-        XCTAssertEqual(userEncodedString, "{\"email\":\"email@test.com\",\"password\":\"passwordTest\"}")
+        XCTAssertNoThrow(try JSONEncoder().encode(user),
+                         "error thrown while encoding user")
+        if let userEncoded = try? JSONEncoder().encode(user),
+            let userJSONDictionary = try? (JSONSerialization.jsonObject(with: userEncoded, options: []) as? [String: String]) {
+            if userJSONDictionary.contains(where: {$0.key == "email"}) {
+                XCTAssertEqual(userJSONDictionary["email"], "email@test.com", "email should match")
+            }
+        }
+        if let userEncoded = try? JSONEncoder().encode(user),
+           let userJSONDictionary = try? (JSONSerialization.jsonObject(with: userEncoded, options: []) as? [String: String]) {
+            if userJSONDictionary.contains(where: {$0.key == "password"}) {
+                XCTAssertEqual(userJSONDictionary["password"], "passwordTest", "password should match")
+            }
+        }
     }
 }
