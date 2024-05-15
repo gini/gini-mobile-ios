@@ -64,4 +64,5 @@ public enum AnalyticsPropertyKey: String {
     case documentId = "document-id"
 
     case itemsChanged = "items_changed"
+    case switchActive = "switch_active"
 }

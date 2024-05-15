@@ -44,4 +44,6 @@ public enum AnalyticsEvent: String {
     // MARK: - Digital invoice
     case dismissed
     case saveTapped = "save_tapped"
+    case editTapped = "edit_tapped"
+    case itemSwitchTapped = "item_switch_tapped"
 }
