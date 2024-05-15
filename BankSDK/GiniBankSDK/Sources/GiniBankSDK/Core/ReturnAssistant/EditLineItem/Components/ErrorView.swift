@@ -1,8 +1,7 @@
 //
 //  ErrorView.swift
-//  
 //
-//  Created by Valentina Iancu on 04.07.23.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
