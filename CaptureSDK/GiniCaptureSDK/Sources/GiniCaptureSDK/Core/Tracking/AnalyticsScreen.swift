@@ -10,6 +10,7 @@ public enum AnalyticsScreen: String {
     case none
     case camera
     case review
+    case reviewZoom = "review_zoom"
     case analysis
     case noResults = "no_results"
     case error

@@ -18,7 +18,10 @@ final class ReviewZoomViewController: UIViewController {
         closeButton.addTarget(self, action: #selector(didTapCloseButton), for: .touchUpInside)
         return closeButton
     }()
+
     private var page: GiniCapturePage
+
+    private var zoomAnalyticsEventSent: Bool = false
 
     // MARK: - Init
 
@@ -40,6 +43,7 @@ final class ReviewZoomViewController: UIViewController {
         setupView()
         setupLayout()
         setupImage(page.document.previewImage)
+        AnalyticsManager.trackScreenShown(screenName: .reviewZoom)
     }
 
     override func viewWillLayoutSubviews() {
@@ -117,6 +121,7 @@ final class ReviewZoomViewController: UIViewController {
 
     @objc
     private func didTapCloseButton() {
+        AnalyticsManager.track(event: .closeTapped, screenName: .reviewZoom)
         dismiss(animated: true)
     }
 
@@ -160,6 +165,10 @@ extension ReviewZoomViewController: UIScrollViewDelegate {
     }
 
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        if !zoomAnalyticsEventSent {
+            zoomAnalyticsEventSent = true
+            AnalyticsManager.track(event: .previewZoomed, screenName: .reviewZoom)
+        }
         adjustImageToCenter()
     }
 }
