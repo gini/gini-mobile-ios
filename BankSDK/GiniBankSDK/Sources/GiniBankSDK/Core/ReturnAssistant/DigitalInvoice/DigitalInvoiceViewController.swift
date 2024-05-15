@@ -220,6 +220,16 @@ final class DigitalInvoiceViewController: UIViewController {
         viewModel.shouldShowOnboarding()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if presentedViewController == nil {
+            // Send a 'screenShown' event when returning from the help screen or any other screen
+            // that was pushed over this view controller.
+            // It's not called initially due to the onboarding screen displayed as a modal on top.
+            sendAnalyticsScreenShown()
+        }
+    }
+    
     @objc func payButtonTapped() {
         AnalyticsManager.track(event: .processTapped, screenName: .digitalInvoice)
         viewModel.didTapPay()
@@ -252,6 +262,14 @@ final class DigitalInvoiceViewController: UIViewController {
     @objc func closeReturnAssistantOverview() {
         AnalyticsManager.track(event: .closeTapped, screenName: .digitalInvoice)
         viewModel.didTapCancel()
+    }
+
+    func sendAnalyticsScreenShown() {
+        var eventProperties: [AnalyticsProperty] = []
+        if let documentId = configuration.documentService?.document?.id {
+            eventProperties.append(AnalyticsProperty(key: .documentId, value: documentId))
+        }
+        AnalyticsManager.trackScreenShown(screenName: .digitalInvoice, properties: eventProperties)
     }
 }
 
@@ -365,11 +383,7 @@ extension DigitalInvoiceViewController {
 extension DigitalInvoiceViewController: DigitalInvoiceOnboardingViewControllerDelegate {
     func dismissViewController() {
         // after dismissing the oboarding screen, screen_shown event can be sent
-        var eventProperties: [AnalyticsProperty] = []
-        if let documentId = configuration.documentService?.document?.id {
-            eventProperties.append(AnalyticsProperty(key: .documentId, value: documentId))
-        }
-        AnalyticsManager.trackScreenShown(screenName: .digitalInvoice, properties: eventProperties)
+        sendAnalyticsScreenShown()
     }
 }
 
