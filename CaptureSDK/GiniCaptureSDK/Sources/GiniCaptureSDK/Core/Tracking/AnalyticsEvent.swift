@@ -26,5 +26,5 @@ enum AnalyticsEvent: String {
     case processTapped = "process_tapped"
     case deletePagesTapped = "delete_pages_tapped"
     case addPagesTapped = "add_pages_tapped"
-    case swipePages = "swipe_pages"
+    case pageSwiped = "page_swiped"
 }
