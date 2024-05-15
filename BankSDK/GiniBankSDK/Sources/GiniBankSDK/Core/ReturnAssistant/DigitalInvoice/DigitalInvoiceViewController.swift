@@ -225,11 +225,11 @@ final class DigitalInvoiceViewController: UIViewController {
         if presentedViewController == nil {
             // Send a 'screenShown' event when returning from the help screen or any other screen
             // that was pushed over this view controller.
-            // It's not called initially due to the onboarding screen displayed as a modal on top.
+            // It's not called initially due to the onboarding screen displayed as a modal view on top.
             sendAnalyticsScreenShown()
         }
     }
-    
+
     @objc func payButtonTapped() {
         AnalyticsManager.track(event: .processTapped, screenName: .digitalInvoice)
         viewModel.didTapPay()
@@ -256,6 +256,7 @@ final class DigitalInvoiceViewController: UIViewController {
     }
 
     @objc func helpButtonTapped(source: UIButton) {
+        AnalyticsManager.track(event: .helpTapped, screenName: .digitalInvoice)
         viewModel.didTapHelp()
     }
 
@@ -340,28 +341,42 @@ extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
                                 lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
 
         guard let invoice = viewModel.invoice else { return }
-        switch invoice.lineItems[lineItemViewModel.index].selectedState {
+        let selectedLineItem = invoice.lineItems[lineItemViewModel.index]
+        var isSelected = true
+        switch selectedLineItem.selectedState {
         case .selected:
             if let returnReasons = self.viewModel.invoice?.returnReasons, configuration.enableReturnReasons {
                 presentReturnReasonActionSheet(for: lineItemViewModel.index,
                                                source: cell.modeSwitch,
-                                               with: returnReasons)
+                                               with: returnReasons, isSelected: &isSelected)
             } else {
                 self.viewModel.invoice?.lineItems[lineItemViewModel.index].selectedState = .deselected(reason: nil)
+                isSelected = false
             }
         case .deselected:
             self.viewModel.invoice?.lineItems[lineItemViewModel.index].selectedState = .selected
+            isSelected = true
+
         }
+
+        AnalyticsManager.track(event: .itemSwitchTapped,
+                               screenName: .digitalInvoice,
+                               properties: [AnalyticsProperty(key: .switchActive, value: isSelected)])
         updateValues()
     }
 
     func editTapped(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
+        AnalyticsManager.track(event: .editTapped, screenName: .digitalInvoice)
         viewModel.didTapEdit(on: lineItemViewModel)
     }
 }
 
 extension DigitalInvoiceViewController {
-    private func presentReturnReasonActionSheet(for index: Int, source: UIView, with returnReasons: [ReturnReason]) {
+    private func presentReturnReasonActionSheet(for index: Int,
+                                                source: UIView,
+                                                with returnReasons: [ReturnReason],
+                                                isSelected: inout Bool) {
+        var selected = isSelected
         DeselectLineItemActionSheet().present(from: self,
                                               source: source,
                                               returnReasons: returnReasons) { [weak self] selectedState in
@@ -369,14 +384,16 @@ extension DigitalInvoiceViewController {
             switch selectedState {
             case .selected:
                 self.viewModel.invoice?.lineItems[index].selectedState = .selected
+                selected = true
             case .deselected(let reason):
                 self.viewModel.invoice?.lineItems[index].selectedState = .deselected(reason: reason)
+                selected = false
             }
-
             DispatchQueue.main.async {
                 self.updateValues()
             }
         }
+        isSelected = selected
     }
 }
 
