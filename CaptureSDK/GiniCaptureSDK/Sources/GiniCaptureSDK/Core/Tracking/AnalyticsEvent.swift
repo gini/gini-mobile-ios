@@ -27,6 +27,7 @@ public enum AnalyticsEvent: String {
     case deletePagesTapped = "delete_pages_tapped"
     case addPagesTapped = "add_pages_tapped"
     case swipePages = "swipe_pages"
+    case previewZoomed = "preview_zoomed"
 
     // MARK: - No Results and Error
     case enterManuallyTapped = "enter_manually_tapped"
