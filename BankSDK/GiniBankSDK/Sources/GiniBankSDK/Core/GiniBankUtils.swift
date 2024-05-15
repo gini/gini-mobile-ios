@@ -110,7 +110,7 @@ func prefferedImage(named name: String) -> UIImage? {
                                        compatibleWith: nil) {
         return customBundleImage
     }
-    
+
     return UIImage(named: name,
                    in: giniBankBundle(),
                    compatibleWith: nil)
@@ -128,14 +128,14 @@ func prefferedColor(named name: String) -> UIColor {
                                      compatibleWith: nil) {
         return mainBundleColor
     }
-    
+
     if let customBundle = GiniBankConfiguration.shared.customResourceBundle,
-        let customBundleColor = UIColor(named: name,
-                                        in: customBundle,
-                                        compatibleWith: nil) {
+       let customBundleColor = UIColor(named: name,
+                                       in: customBundle,
+                                       compatibleWith: nil) {
         return customBundleColor
     }
-    
+
     if let color = UIColor(named: name,
                            in: giniBankBundle(),
                            compatibleWith: nil) {
@@ -143,6 +143,21 @@ func prefferedColor(named name: String) -> UIColor {
     } else {
         fatalError("The color named '\(name)' does not exist.")
     }
+}
+
+/**
+ Returns an optional `UIColor` instance with the given `name` preferably from the client's custom resources provider.
+
+ - parameter name: The name of the UIColor.
+
+ - returns: UIColor if found with name.
+ */
+
+public func prefferedColorByProvider(named name: String) -> UIColor {
+    if let customProvider = GiniBankConfiguration.shared.customResourceProvider {
+        return customProvider.customPrefferedColor(name: name)
+    }
+    return prefferedColor(named: name)
 }
 
 /**

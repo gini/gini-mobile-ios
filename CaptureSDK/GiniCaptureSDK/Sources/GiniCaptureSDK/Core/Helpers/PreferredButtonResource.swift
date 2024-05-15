@@ -37,7 +37,7 @@ class GiniPreferredButtonResource: PreferredButtonResource {
     private let localizedConfigEntry: String?
     private let appBundle = Bundle.main
     private let libBundle = giniCaptureBundle()
-    private var customBundle : Bundle {
+    private var customBundle: Bundle {
          guard let customBundle = GiniConfiguration.shared.customResourceBundle else {
              return Bundle.main
          }

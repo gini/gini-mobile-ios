@@ -29,6 +29,7 @@ final class CameraPane: UIView {
             light: UIColor.GiniCapture.dark1,
             dark: UIColor.GiniCapture.dark1).uiColor().withAlphaComponent(0.4)
         captureButton.setTitle("", for: .normal)
+        captureButton.isExclusiveTouch = true
         thumbnailView.isHidden = true
         fileUploadButton.setupButton(with: UIImageNamedPreferred(named: "folder") ?? UIImage(),
                                      name: NSLocalizedStringPreferredFormat("ginicapture.camera.fileImportButtonLabel",
