@@ -64,6 +64,7 @@ final class EditLineItemViewController: UIViewController {
         setupConstraints()
         setupPanGesture()
         setupTapGesture()
+        AnalyticsManager.trackScreenShown(screenName: .editDigitalInvoice)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -168,6 +169,7 @@ final class EditLineItemViewController: UIViewController {
     }
 
     private func animateDismissView() {
+        editLineItemView.viewModel?.didTapCancel()
         editLineItemView.hideKeyBoard()
         UIView.animate(withDuration: Constants.animationDuration) {
             self.containerViewBottomConstraint?.constant = self.defaultHeight
