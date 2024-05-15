@@ -1,8 +1,7 @@
 //
 //  ReviewZoomViewController.swift
-//  
 //
-//  Created by David Vizaknai on 04.10.2022.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -87,10 +86,12 @@ final class ReviewZoomViewController: UIViewController {
         imageView.frame = scrollView.bounds
 
         NSLayoutConstraint.activate([
-            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            closeButton.heightAnchor.constraint(equalToConstant: 44),
-            closeButton.widthAnchor.constraint(equalToConstant: 44)
+            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                             constant: Constants.buttonPadding),
+            closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                 constant: Constants.buttonPadding),
+            closeButton.heightAnchor.constraint(equalToConstant: Constants.buttonSize),
+            closeButton.widthAnchor.constraint(equalToConstant: Constants.buttonSize)
         ])
     }
 
@@ -170,5 +171,12 @@ extension ReviewZoomViewController: UIScrollViewDelegate {
             AnalyticsManager.track(event: .previewZoomed, screenName: .reviewZoom)
         }
         adjustImageToCenter()
+    }
+}
+
+private extension ReviewZoomViewController {
+    enum Constants {
+        static let buttonSize: CGFloat = 44
+        static let buttonPadding: CGFloat = 16
     }
 }
