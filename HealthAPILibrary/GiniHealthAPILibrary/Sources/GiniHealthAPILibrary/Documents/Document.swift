@@ -271,3 +271,9 @@ extension Document.Links: Decodable {
 extension Document.Layout: Decodable {
     
 }
+
+extension Document: Equatable {
+    public static func == (lhs: Document, rhs: Document) -> Bool {
+        lhs.id == rhs.id
+    }    
+}

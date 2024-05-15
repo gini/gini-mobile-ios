@@ -2,7 +2,7 @@
 //  GiniHealthSDKExampleTests.swift
 //  GiniHealthSDKExampleTests
 //
-//  Created by Nadya Karaban on 10.11.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import XCTest
