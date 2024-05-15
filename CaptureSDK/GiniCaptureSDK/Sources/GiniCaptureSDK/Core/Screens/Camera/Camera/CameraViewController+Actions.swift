@@ -1,5 +1,5 @@
 //
-//  Camera2ViewController+Actions.swift
+//  CameraViewController+Actions.swift
 //  
 //
 //  Created by Krzysztof Kryniecki on 14/09/2022.
