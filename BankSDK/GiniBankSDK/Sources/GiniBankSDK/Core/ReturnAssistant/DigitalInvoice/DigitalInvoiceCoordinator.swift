@@ -111,11 +111,14 @@ extension DigitalInvoiceCoordinator: EditLineItemViewModelDelegate {
         }
 
         digitalInvoiceViewController?.updateValues()
-
-        navigationController.dismiss(animated: true)
+        navigationController.dismiss(animated: true) {
+            self.digitalInvoiceViewController?.sendAnalyticsScreenShown()
+        }
     }
 
     func didCancel(on viewModel: EditLineItemViewModel) {
-        navigationController.dismiss(animated: true)
+        navigationController.dismiss(animated: true) {
+            self.digitalInvoiceViewController?.sendAnalyticsScreenShown()
+        }
     }
 }
