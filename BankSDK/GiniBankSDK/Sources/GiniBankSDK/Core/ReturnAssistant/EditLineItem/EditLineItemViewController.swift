@@ -1,9 +1,9 @@
 //
 //  EditLineItemViewController.swift
-//  
 //
-//  Created by David Vizaknai on 06.03.2023.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
+
 import GiniCaptureSDK
 import UIKit
 
