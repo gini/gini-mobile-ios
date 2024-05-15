@@ -117,6 +117,7 @@ extension DigitalInvoiceCoordinator: EditLineItemViewModelDelegate {
     }
 
     func didCancel(on viewModel: EditLineItemViewModel) {
+        AnalyticsManager.track(event: .closeTapped, screenName: .editDigitalInvoice)
         navigationController.dismiss(animated: true) {
             self.digitalInvoiceViewController?.sendAnalyticsScreenShown()
         }
