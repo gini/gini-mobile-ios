@@ -38,7 +38,7 @@ class AnalyticsManager {
     public static func track(event: AnalyticsEvent,
                              screenName: AnalyticsScreen? = nil,
                              properties: [AnalyticsProperty] = []) {
-        track(event: event, 
+        track(event: event,
               screenNameString: screenName?.rawValue,
               properties: properties)
     }
