@@ -79,7 +79,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
         if doneButtonTapped {
             AnalyticsManager.track(event: .getStartedTapped, screenName: .onboardingDigitalInvoice)
         } else {
-            AnalyticsManager.track(event: .dragToDismiss, screenName: .onboardingDigitalInvoice)
+            AnalyticsManager.track(event: .dismissed, screenName: .onboardingDigitalInvoice)
         }
     }
 
