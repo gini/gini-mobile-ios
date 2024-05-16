@@ -2,7 +2,7 @@
 //  GiniHealthTrackingDelegate.swift
 //  
 //
-//  Created by Nadya Karaban on 05.01.22.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -22,14 +22,12 @@ public protocol GiniHealthTrackingDelegate:
 Event types relating to the payment review screen.
 */
 public enum PaymentReviewScreenEventType: String {
-    /// User tapped "next"  button and ready to be redirected to the banking app
-    case onNextButtonClicked
+    /// User tapped "To the banking app"  button and ready to be redirected to the banking app
+    case onToTheBankButtonClicked
     /// User tapped "close" button and closed the screen
     case onCloseButtonClicked
     /// User tapped "close" button and keyboard will be hidden
     case onCloseKeyboardButtonClicked
-    /// User tapped on the bankSelection button
-    case onBankSelectionButtonClicked
 }
 
 /**

@@ -33,6 +33,7 @@ final class ReviewCollectionCell: UICollectionViewCell {
         button.setImage(deleteIcon, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(didTapDelete), for: .touchUpInside)
+        button.isExclusiveTouch = true
         button.isHidden = true
         button.isAccessibilityElement = true
         button.accessibilityLabel = NSLocalizedStringPreferredFormat("ginicapture.review.delete", comment: "Delete")

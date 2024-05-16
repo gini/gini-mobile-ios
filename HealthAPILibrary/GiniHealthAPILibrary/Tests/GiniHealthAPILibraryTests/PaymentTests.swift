@@ -2,7 +2,7 @@
 //  PaymentTests.swift
 //  GiniHealthAPI-Unit-Tests
 //
-//  Created by Nadya Karaban on 15.03.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import XCTest
