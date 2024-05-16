@@ -13,7 +13,7 @@ class AnalyticsManager {
 
     static func initializeAnalytics() {
         mixpanelInstance = Mixpanel.initialize(token: mixPanelToken, trackAutomaticEvents: false)
-        
+
         // Identify the user with the deviceID
         let deviceID = UIDevice.current.identifierForVendor?.uuidString
         mixpanelInstance?.identify(distinctId: deviceID ?? "")
@@ -43,6 +43,10 @@ class AnalyticsManager {
 
             if let propertyValue = propertyValue as? String {
                 eventProperties[property.key.rawValue] = propertyValue
+            }
+
+            if let propertyValue = propertyValue as? Int {
+                eventProperties[property.key.rawValue] = "\(propertyValue)"
             }
         }
 

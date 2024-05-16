@@ -47,4 +47,11 @@ extension Double: AnalyticsPropertyValue {
 
 enum AnalyticsPropertyKey: String {
     case screenName = "screen_name"
+
+    case flashActive = "flash_active"
+    case qrCodeValid = "qr_code_valid"
+    case numberOfPagesScanned = "number_of_pages_scanned"
+    case ibanDetectionLayerVisible = "iban_detection_layer_visible"
+
+    case errorMessage = "error_message"
 }
