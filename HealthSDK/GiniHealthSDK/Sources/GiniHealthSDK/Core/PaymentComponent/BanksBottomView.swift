@@ -19,10 +19,8 @@ class BanksBottomView: BottomSheetViewController {
     }()
 
     private lazy var titleView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
+        let view = EmptyView()
         view.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.heightTitleView)
-        view.backgroundColor = .clear
         return view
     }()
 

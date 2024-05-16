@@ -19,10 +19,7 @@ class ShareInvoiceBottomView: BottomSheetViewController {
     }()
 
     private lazy var titleView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .clear
-        return view
+        EmptyView()
     }()
 
     private lazy var titleLabel: UILabel = {
@@ -37,10 +34,7 @@ class ShareInvoiceBottomView: BottomSheetViewController {
     }()
     
     private lazy var descriptionView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .clear
-        return view
+        EmptyView()
     }()
 
     private lazy var descriptionLabel: UILabel = {
@@ -81,10 +75,7 @@ class ShareInvoiceBottomView: BottomSheetViewController {
     }()
     
     private lazy var tipView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .clear
-        return view
+        EmptyView()
     }()
     
     private lazy var tipStackView: UIStackView = {
@@ -135,10 +126,7 @@ class ShareInvoiceBottomView: BottomSheetViewController {
     }()
     
     private lazy var continueView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .clear
-        return view
+        EmptyView()
     }()
     
     private lazy var continueButton: PaymentPrimaryButton = {
@@ -151,10 +139,7 @@ class ShareInvoiceBottomView: BottomSheetViewController {
     }()
 
     private lazy var bottomView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .clear
-        return view
+        EmptyView()
     }()
     
     private lazy var bottomStackView: UIStackView = {
@@ -313,10 +298,10 @@ class ShareInvoiceBottomView: BottomSheetViewController {
         }
     }
     
-    private func generateAppViews() -> [SingleAppView] {
-        var viewsToReturn: [SingleAppView] = []
+    private func generateAppViews() -> [ShareInvoiceSingleAppView] {
+        var viewsToReturn: [ShareInvoiceSingleAppView] = []
         viewModel.appsMocked.forEach { singleApp in
-            let view = SingleAppView()
+            let view = ShareInvoiceSingleAppView()
             view.configure(image: singleApp.image, title: singleApp.title)
             viewsToReturn.append(view)
         }
@@ -340,72 +325,5 @@ extension ShareInvoiceBottomView {
         static let topAnchorTipViewConstraint = 5.0
         static let topAnchorPoweredByGiniConstraint = 5.0
         static let tipIconSize = 24.0
-    }
-}
-
-class SingleAppView: UIView {
-    // Subviews
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.backgroundColor = GiniColor(lightModeColor: .white,
-                                              darkModeColor: UIColor.GiniHealthColors.light3).uiColor()
-        imageView.contentMode = .scaleAspectFit
-        imageView.roundCorners(corners: .allCorners, radius: Constants.imageViewCornerRardius)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.textColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark3,
-                                    darkModeColor: UIColor.GiniHealthColors.light3).uiColor()
-        label.font = GiniHealthConfiguration.shared.textStyleFonts[.caption2] ?? UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.numberOfLines = 0
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    // Initializer
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupViews()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setupViews()
-    }
-    
-    // Setup views and constraints
-    private func setupViews() {
-        addSubview(imageView)
-        addSubview(titleLabel)
-        
-        NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: topAnchor),
-            imageView.heightAnchor.constraint(equalToConstant: Constants.imageViewHeight),
-            imageView.widthAnchor.constraint(equalToConstant: Constants.imageViewHeight),
-            imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            
-            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: Constants.topAnchorTitleLabelConstraint),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
-    }
-    
-    // Function to configure view
-    func configure(image: UIImage?, title: String?) {
-        imageView.image = image
-        titleLabel.text = title
-    }
-}
-
-extension SingleAppView {
-    enum Constants {
-        static let imageViewHeight = 36.0
-        static let topAnchorTitleLabelConstraint = 8.0
-        static let imageViewCornerRardius = 6.0
     }
 }
