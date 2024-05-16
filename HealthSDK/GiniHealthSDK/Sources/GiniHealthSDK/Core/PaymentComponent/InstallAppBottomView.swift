@@ -19,10 +19,7 @@ class InstallAppBottomView: BottomSheetViewController {
     }()
 
     private lazy var titleView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .clear
-        return view
+        EmptyView()
     }()
 
     private lazy var titleLabel: UILabel = {
@@ -37,10 +34,7 @@ class InstallAppBottomView: BottomSheetViewController {
     }()
     
     private lazy var bankView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .clear
-        return view
+        EmptyView()
     }()
     
     private lazy var bankIconImageView: UIImageView = {
@@ -53,10 +47,7 @@ class InstallAppBottomView: BottomSheetViewController {
     }()
     
     private lazy var moreInformationView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .clear
-        return view
+        EmptyView()
     }()
     
     private lazy var moreInformationStackView: UIStackView = {
@@ -108,17 +99,11 @@ class InstallAppBottomView: BottomSheetViewController {
     }()
     
     private lazy var buttonsView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .clear
-        return view
+        EmptyView()
     }()
     
     private lazy var bottomView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .clear
-        return view
+        EmptyView()
     }()
     
     private lazy var bottomStackView: UIStackView = {
@@ -133,7 +118,7 @@ class InstallAppBottomView: BottomSheetViewController {
         view.viewModel = PoweredByGiniViewModel()
         return view
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()

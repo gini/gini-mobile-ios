@@ -29,10 +29,7 @@ class BottomSheetViewController: UIViewController {
     
     /// Top bar view that draggable to dismiss
     private lazy var topBarView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .clear
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
+        EmptyView()
     }()
     
     /// Top view bar
