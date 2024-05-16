@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22152" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22127"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -23,7 +23,7 @@
                                 <rect key="frame" x="0.0" y="-8" width="375" height="726"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="47Q-Qq-7ja">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="443"/>
+                                        <rect key="frame" x="0.0" y="8" width="375" height="343"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="336-lO-5Qn">
                                                 <rect key="frame" x="67" y="160" width="240" height="128"/>
@@ -31,13 +31,13 @@
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             </view>
                                             <pageControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="iQ0-i0-82S">
-                                                <rect key="frame" x="0.0" y="423" width="375" height="20"/>
+                                                <rect key="frame" x="0.0" y="323" width="375" height="20"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="20" id="rHy-jF-qFa"/>
                                                 </constraints>
                                             </pageControl>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VtW-En-y6v">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="443"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="343"/>
                                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Zec-6e-m0t" customClass="CollectionFlowLayout" customModule="GiniHealthSDK">
                                                     <size key="itemSize" width="348" height="408.66666666666669"/>
                                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -46,7 +46,7 @@
                                                 </collectionViewFlowLayout>
                                                 <cells>
                                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" reuseIdentifier="pageCellIdentifier" id="c1L-5D-aNE" customClass="PageCollectionViewCell" customModule="GiniHealthSDK">
-                                                        <rect key="frame" x="0.0" y="17" width="348" height="408.66666666666669"/>
+                                                        <rect key="frame" x="0.0" y="-33" width="348" height="408.66666666666669"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Ucj-NS-kFh">
                                                             <rect key="frame" x="0.0" y="0.0" width="348" height="408.66666666666669"/>
@@ -68,10 +68,10 @@
                                         </constraints>
                                     </view>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yz2-tA-K7L">
-                                        <rect key="frame" x="0.0" y="443" width="375" height="60"/>
+                                        <rect key="frame" x="0.0" y="351" width="375" height="60"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="Bitte prüfe die vorausgefüllten Daten" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="7Xh-Jx-2wM">
-                                                <rect key="frame" x="48" y="15.666666666666627" width="279" height="20.333333333333329"/>
+                                                <rect key="frame" x="48" y="7.9999999999999982" width="279" height="20.333333333333329"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -80,34 +80,28 @@
                                         <color key="backgroundColor" systemColor="systemIndigoColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="8i7-Yk-RKe"/>
-                                            <constraint firstAttribute="bottomMargin" secondItem="7Xh-Jx-2wM" secondAttribute="bottomMargin" constant="24" id="Kd7-fa-RuF"/>
+                                            <constraint firstItem="7Xh-Jx-2wM" firstAttribute="top" secondItem="yz2-tA-K7L" secondAttribute="top" constant="8" id="WfH-9X-BF7"/>
                                             <constraint firstItem="7Xh-Jx-2wM" firstAttribute="centerX" secondItem="yz2-tA-K7L" secondAttribute="centerX" id="cvH-ik-6iD"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="ekk-cJ-hxZ">
-                                        <rect key="frame" x="0.0" y="443" width="375" height="283"/>
+                                        <rect key="frame" x="0.0" y="351" width="375" height="375"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="zSd-H8-kmA">
-                                                <rect key="frame" x="16" y="16" width="343" height="222"/>
+                                                <rect key="frame" x="16" y="16" width="343" height="314"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5XG-ol-bs7">
-                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="52"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="68"/>
                                                         <subviews>
-                                                            <textField opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" allowsEditingTextAttributes="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nY6-4z-tMv">
-                                                                <rect key="frame" x="0.0" y="0.0" width="343" height="40"/>
-                                                                <color key="backgroundColor" red="0.94869893790000004" green="0.95254844429999996" blue="0.96328574420000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k5O-13-8jM" userLabel="Recipient View" customClass="TextFieldWithLabelView" customModule="GiniHealthSDK">
+                                                                <rect key="frame" x="0.0" y="0.0" width="343" height="56"/>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="height" constant="40" id="Y8l-fS-Utn"/>
+                                                                    <constraint firstAttribute="height" constant="56" id="CAN-nR-5Xy"/>
                                                                 </constraints>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                                <textInputTraits key="textInputTraits" keyboardType="alphabet"/>
-                                                                <connections>
-                                                                    <action selector="textFieldChanged:" destination="QI6-9C-Fdg" eventType="editingChanged" id="9Jd-yx-Mrd"/>
-                                                                    <outlet property="delegate" destination="QI6-9C-Fdg" id="0iu-pw-xsY"/>
-                                                                </connections>
-                                                            </textField>
+                                                            </view>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kqb-0c-wKT">
-                                                                <rect key="frame" x="0.0" y="40" width="343" height="12"/>
+                                                                <rect key="frame" x="0.0" y="56" width="343" height="12"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="12" id="WkD-mD-BDY"/>
                                                                 </constraints>
@@ -118,42 +112,27 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="oIP-kJ-fqk">
-                                                        <rect key="frame" x="0.0" y="60" width="343" height="52"/>
+                                                        <rect key="frame" x="0.0" y="76" width="343" height="68"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="VVv-3T-au1">
-                                                                <rect key="frame" x="0.0" y="0.0" width="343" height="40"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="343" height="56"/>
                                                                 <subviews>
-                                                                    <textField opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" allowsEditingTextAttributes="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QXh-1z-x7c">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="237" height="40"/>
-                                                                        <color key="backgroundColor" red="0.94869893790000004" green="0.95254844429999996" blue="0.96328574420000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LLb-wJ-3tH" customClass="TextFieldWithLabelView" customModule="GiniHealthSDK">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="240" height="56"/>
+                                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    </view>
+                                                                    <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fk2-ou-Ni3" customClass="TextFieldWithLabelView" customModule="GiniHealthSDK">
+                                                                        <rect key="frame" x="248" y="0.0" width="95" height="56"/>
+                                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <constraints>
-                                                                            <constraint firstAttribute="height" constant="40" id="s8g-RQ-L0J"/>
+                                                                            <constraint firstAttribute="height" constant="56" id="ROf-HB-Ncq"/>
+                                                                            <constraint firstAttribute="width" constant="95" id="lji-Pj-JUR"/>
                                                                         </constraints>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                                        <textInputTraits key="textInputTraits"/>
-                                                                        <connections>
-                                                                            <action selector="textFieldChanged:" destination="QI6-9C-Fdg" eventType="editingChanged" id="aeK-1h-LVL"/>
-                                                                            <outlet property="delegate" destination="QI6-9C-Fdg" id="m7I-0l-hOv"/>
-                                                                        </connections>
-                                                                    </textField>
-                                                                    <textField opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" allowsEditingTextAttributes="YES" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="geq-YB-UG4">
-                                                                        <rect key="frame" x="245" y="0.0" width="98" height="40"/>
-                                                                        <color key="backgroundColor" red="0.94869893790000004" green="0.95254844429999996" blue="0.96328574420000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="width" constant="98" id="tdO-fQ-wea"/>
-                                                                            <constraint firstAttribute="height" constant="40" id="vsb-by-xk7"/>
-                                                                        </constraints>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                                        <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
-                                                                        <connections>
-                                                                            <action selector="textFieldChanged:" destination="QI6-9C-Fdg" eventType="editingChanged" id="9nT-5u-bfz"/>
-                                                                            <outlet property="delegate" destination="QI6-9C-Fdg" id="WY5-0t-Qu7"/>
-                                                                        </connections>
-                                                                    </textField>
+                                                                    </view>
                                                                 </subviews>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="YqE-rW-daU">
-                                                                <rect key="frame" x="0.0" y="40" width="343" height="12"/>
+                                                                <rect key="frame" x="0.0" y="56" width="343" height="12"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="XoX-Nk-SrJ">
                                                                         <rect key="frame" x="0.0" y="0.0" width="240" height="12"/>
@@ -189,23 +168,17 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="g4d-M4-bf3">
-                                                        <rect key="frame" x="0.0" y="120" width="343" height="52"/>
+                                                        <rect key="frame" x="0.0" y="152" width="343" height="68"/>
                                                         <subviews>
-                                                            <textField opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" allowsEditingTextAttributes="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Q26-IJ-H5m">
-                                                                <rect key="frame" x="0.0" y="0.0" width="343" height="40"/>
-                                                                <color key="backgroundColor" red="0.94869893790000004" green="0.95254844429999996" blue="0.96328574420000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <view tag="4" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="etw-ud-Tvt" customClass="TextFieldWithLabelView" customModule="GiniHealthSDK">
+                                                                <rect key="frame" x="0.0" y="0.0" width="343" height="56"/>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="height" constant="40" id="qPe-e1-GG0"/>
+                                                                    <constraint firstAttribute="height" constant="56" id="lyy-Bi-fQy"/>
                                                                 </constraints>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                                <textInputTraits key="textInputTraits" keyboardType="alphabet"/>
-                                                                <connections>
-                                                                    <action selector="textFieldChanged:" destination="QI6-9C-Fdg" eventType="editingChanged" id="e77-jX-ySK"/>
-                                                                    <outlet property="delegate" destination="QI6-9C-Fdg" id="Ycx-5r-Ckx"/>
-                                                                </connections>
-                                                            </textField>
+                                                            </view>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ahO-LM-1VW">
-                                                                <rect key="frame" x="0.0" y="40" width="343" height="12"/>
+                                                                <rect key="frame" x="0.0" y="56" width="343" height="12"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="12" id="ZNT-9d-FXm"/>
@@ -217,58 +190,26 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="oJ7-KE-2mu">
-                                                        <rect key="frame" x="0.0" y="180" width="343" height="42"/>
+                                                        <rect key="frame" x="0.0" y="228" width="343" height="56"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="NlK-Il-yC8">
-                                                                <rect key="frame" x="0.0" y="0.0" width="343" height="42"/>
-                                                                <subviews>
-                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j0P-vj-5g4">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="163.66666666666666" height="42"/>
-                                                                        <subviews>
-                                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bank" translatesAutoresizingMaskIntoConstraints="NO" id="ROx-mF-STW">
-                                                                                <rect key="frame" x="12" y="11" width="20" height="20"/>
-                                                                                <constraints>
-                                                                                    <constraint firstAttribute="width" constant="20" id="IVB-KM-Fwl"/>
-                                                                                    <constraint firstAttribute="height" constant="20" id="dnT-5r-giw"/>
-                                                                                </constraints>
-                                                                            </imageView>
-                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="natural" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="gKK-IC-PHC">
-                                                                                <rect key="frame" x="44" y="14" width="55.666666666666657" height="14.333333333333336"/>
-                                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                                <nil key="highlightedColor"/>
-                                                                            </label>
-                                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UBV-zg-FCh">
-                                                                                <rect key="frame" x="147.66666666666666" y="4" width="12" height="12"/>
-                                                                                <constraints>
-                                                                                    <constraint firstAttribute="width" constant="12" id="MCG-iw-BMk"/>
-                                                                                    <constraint firstAttribute="height" constant="12" id="ii7-Wu-uwf"/>
-                                                                                </constraints>
-                                                                            </imageView>
-                                                                        </subviews>
-                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                        <constraints>
-                                                                            <constraint firstItem="ROx-mF-STW" firstAttribute="leading" secondItem="j0P-vj-5g4" secondAttribute="leading" constant="12" id="43y-qI-xRk"/>
-                                                                            <constraint firstItem="gKK-IC-PHC" firstAttribute="leading" secondItem="ROx-mF-STW" secondAttribute="trailing" constant="12" id="Flm-lZ-qh1"/>
-                                                                            <constraint firstItem="UBV-zg-FCh" firstAttribute="top" secondItem="j0P-vj-5g4" secondAttribute="top" constant="4" id="Jdk-CA-i2c"/>
-                                                                            <constraint firstAttribute="trailing" secondItem="UBV-zg-FCh" secondAttribute="trailing" constant="4" id="QEx-jn-GZt"/>
-                                                                            <constraint firstItem="gKK-IC-PHC" firstAttribute="centerY" secondItem="j0P-vj-5g4" secondAttribute="centerY" id="VgP-Pz-P0k"/>
-                                                                            <constraint firstItem="ROx-mF-STW" firstAttribute="centerY" secondItem="j0P-vj-5g4" secondAttribute="centerY" id="it6-CF-ehT"/>
-                                                                            <constraint firstItem="UBV-zg-FCh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gKK-IC-PHC" secondAttribute="trailing" constant="4" id="sC3-KT-PM2"/>
-                                                                        </constraints>
-                                                                    </view>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8gp-kV-rnt" customClass="GiniCustomButton" customModule="GiniHealthSDK">
-                                                                        <rect key="frame" x="179.66666666666663" y="0.0" width="163.33333333333337" height="42"/>
-                                                                        <connections>
-                                                                            <action selector="payButtonClicked:" destination="QI6-9C-Fdg" eventType="touchUpInside" id="Yxh-V6-oc5"/>
-                                                                        </connections>
-                                                                    </button>
-                                                                </subviews>
+                                                                <rect key="frame" x="0.0" y="0.0" width="343" height="56"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="height" constant="42" id="aAr-hJ-eF8"/>
-                                                                    <constraint firstItem="8gp-kV-rnt" firstAttribute="leading" secondItem="j0P-vj-5g4" secondAttribute="trailing" constant="16" id="enW-gg-ITX"/>
+                                                                    <constraint firstAttribute="height" constant="56" id="aAr-hJ-eF8"/>
                                                                 </constraints>
                                                             </stackView>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Vwp-Iu-tQF">
+                                                        <rect key="frame" x="0.0" y="292" width="343" height="22"/>
+                                                        <subviews>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xc1-Fl-fUM">
+                                                                <rect key="frame" x="0.0" y="0.0" width="343" height="22"/>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="22" id="Oag-7O-4Eq"/>
+                                                                </constraints>
+                                                            </view>
                                                         </subviews>
                                                     </stackView>
                                                 </subviews>
@@ -286,7 +227,6 @@
                                 <constraints>
                                     <constraint firstItem="ekk-cJ-hxZ" firstAttribute="centerX" secondItem="X5k-EE-UQ6" secondAttribute="centerX" id="3Up-qV-3Sl"/>
                                     <constraint firstItem="ekk-cJ-hxZ" firstAttribute="leading" secondItem="X5k-EE-UQ6" secondAttribute="leading" id="3vD-Rk-Xvs"/>
-                                    <constraint firstItem="47Q-Qq-7ja" firstAttribute="topMargin" secondItem="X5k-EE-UQ6" secondAttribute="topMargin" id="CHQ-Ph-a8J"/>
                                     <constraint firstItem="yz2-tA-K7L" firstAttribute="leading" secondItem="X5k-EE-UQ6" secondAttribute="leading" id="U3K-kW-Vot"/>
                                     <constraint firstItem="ekk-cJ-hxZ" firstAttribute="top" secondItem="47Q-Qq-7ja" secondAttribute="bottom" id="Um0-7i-L3I"/>
                                     <constraint firstAttribute="trailing" secondItem="ekk-cJ-hxZ" secondAttribute="trailing" id="ZOM-nK-AJs"/>
@@ -317,41 +257,39 @@
                             <constraint firstItem="X5k-EE-UQ6" firstAttribute="centerX" secondItem="bnf-9Y-Eta" secondAttribute="centerX" id="eQ2-K2-0z8"/>
                             <constraint firstItem="bnf-9Y-Eta" firstAttribute="bottom" secondItem="X5k-EE-UQ6" secondAttribute="bottom" constant="-34" id="fa8-8k-ztT"/>
                             <constraint firstItem="wxg-Qb-D9U" firstAttribute="top" secondItem="bnf-9Y-Eta" secondAttribute="top" constant="12" id="ic9-9P-aT8"/>
+                            <constraint firstItem="bnf-9Y-Eta" firstAttribute="top" secondItem="47Q-Qq-7ja" secondAttribute="top" id="oIc-a6-GLG"/>
                         </constraints>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO"/>
                     <connections>
                         <outlet property="amountErrorLabel" destination="wY3-gK-QNl" id="nPj-i5-ZHW"/>
-                        <outlet property="amountField" destination="geq-YB-UG4" id="EiD-o0-BCl"/>
-                        <outlet property="bankProviderButtonView" destination="j0P-vj-5g4" id="BaI-j5-hFv"/>
-                        <outlet property="bankProviderEditIcon" destination="UBV-zg-FCh" id="Ofp-0P-qQ5"/>
-                        <outlet property="bankProviderImage" destination="ROx-mF-STW" id="je5-Qo-Jgh"/>
-                        <outlet property="bankProviderLabel" destination="gKK-IC-PHC" id="EIG-gW-PJG"/>
+                        <outlet property="amountTextFieldView" destination="Fk2-ou-Ni3" id="aZ4-s9-r26"/>
+                        <outlet property="bottomView" destination="xc1-Fl-fUM" id="qH2-b6-8QL"/>
                         <outlet property="closeButton" destination="wxg-Qb-D9U" id="T8m-hf-wQa"/>
                         <outlet property="collectionView" destination="VtW-En-y6v" id="Ax4-fE-dDV"/>
                         <outlet property="containerCollectionView" destination="47Q-Qq-7ja" id="wB1-BT-kZG"/>
                         <outlet property="ibanErrorLabel" destination="G08-A3-0LA" id="Hta-8O-0sR"/>
-                        <outlet property="ibanField" destination="QXh-1z-x7c" id="h9e-5R-vDG"/>
+                        <outlet property="ibanTextFieldView" destination="LLb-wJ-3tH" id="I0w-gq-yEE"/>
                         <outlet property="infoBar" destination="yz2-tA-K7L" id="aac-Mr-aby"/>
                         <outlet property="infoBarLabel" destination="7Xh-Jx-2wM" id="p7A-UT-op3"/>
                         <outlet property="inputContainer" destination="ekk-cJ-hxZ" id="u67-4P-g7n"/>
                         <outlet property="mainView" destination="X5k-EE-UQ6" id="zmB-Eu-v9s"/>
                         <outlet property="pageControl" destination="iQ0-i0-82S" id="fMQ-TQ-oje"/>
                         <outlet property="pageControlHeightConstraint" destination="rHy-jF-qFa" id="7d0-Yl-tNo"/>
-                        <outlet property="payButton" destination="8gp-kV-rnt" id="cPq-ak-UqU"/>
+                        <outlet property="payButtonStackView" destination="NlK-Il-yC8" id="hO4-S9-KwD"/>
                         <outlet property="paymentInfoStackView" destination="zSd-H8-kmA" id="PRh-zO-bRo"/>
                         <outlet property="recipientErrorLabel" destination="kqb-0c-wKT" id="CjE-9D-Fsc"/>
-                        <outlet property="recipientField" destination="nY6-4z-tMv" id="9mh-qO-ACX"/>
+                        <outlet property="recipientTextFieldView" destination="k5O-13-8jM" id="SdJ-Th-yOv"/>
                         <outlet property="usageErrorLabel" destination="ahO-LM-1VW" id="quH-jP-ZsQ"/>
-                        <outlet property="usageField" destination="Q26-IJ-H5m" id="3Dp-JO-WL4"/>
-                        <outletCollection property="paymentInputFields" destination="geq-YB-UG4" collectionClass="NSMutableArray" id="pGo-FF-Peu"/>
-                        <outletCollection property="paymentInputFields" destination="QXh-1z-x7c" collectionClass="NSMutableArray" id="n3n-KC-F0H"/>
+                        <outlet property="usageTextFieldView" destination="etw-ud-Tvt" id="fY2-1t-3XU"/>
                         <outletCollection property="paymentInputFieldsErrorLabels" destination="ahO-LM-1VW" collectionClass="NSMutableArray" id="Q8d-v0-uH8"/>
                         <outletCollection property="paymentInputFieldsErrorLabels" destination="wY3-gK-QNl" collectionClass="NSMutableArray" id="C6j-ie-KUh"/>
-                        <outletCollection property="paymentInputFields" destination="Q26-IJ-H5m" collectionClass="NSMutableArray" id="bfj-RH-qza"/>
                         <outletCollection property="paymentInputFieldsErrorLabels" destination="G08-A3-0LA" collectionClass="NSMutableArray" id="WCc-kV-rQZ"/>
-                        <outletCollection property="paymentInputFields" destination="nY6-4z-tMv" collectionClass="NSMutableArray" id="IuO-rC-sJh"/>
                         <outletCollection property="paymentInputFieldsErrorLabels" destination="kqb-0c-wKT" collectionClass="NSMutableArray" id="uLd-8t-g9S"/>
+                        <outletCollection property="paymentInputFields" destination="k5O-13-8jM" collectionClass="NSMutableArray" id="he4-zg-2FZ"/>
+                        <outletCollection property="paymentInputFields" destination="LLb-wJ-3tH" collectionClass="NSMutableArray" id="2xy-aQ-JdB"/>
+                        <outletCollection property="paymentInputFields" destination="Fk2-ou-Ni3" collectionClass="NSMutableArray" id="xws-f2-jHr"/>
+                        <outletCollection property="paymentInputFields" destination="etw-ud-Tvt" collectionClass="NSMutableArray" id="rpA-Uv-YYd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="veK-zc-MaM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -360,7 +298,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="bank" width="20" height="20"/>
         <image name="paymentReviewCloseButton" width="48" height="48"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

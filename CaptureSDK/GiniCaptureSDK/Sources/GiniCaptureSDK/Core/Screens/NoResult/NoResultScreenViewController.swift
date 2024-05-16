@@ -125,7 +125,7 @@ final class NoResultScreenViewController: UIViewController {
         super.viewDidLoad()
         self.setupView()
 
-        let eventProperties = [AnalyticsProperty(key: .noResultType,
+        let eventProperties = [AnalyticsProperty(key: .documentType,
                                                  value: type.analyticsValue)]
         AnalyticsManager.trackScreenShown(screenName: .noResults,
                                           properties: eventProperties)
