@@ -17,3 +17,6 @@
 "ginipaybank.errors.failed.amount.non.empty.check" = "Amount can't be 0";
 "ginipaybank.errors.failed.purpose.non.empty.check" = "Purpose is required.";
 "ginipaybank.errors.failed.default.textfield.validation.check" = "The field is not valid";
+
+"ginipaybank.reviewscreen.payButton.title" = "Pay";
+"ginipaybank.reviewscreen.backToInsurance.title" = "Return to Health app";

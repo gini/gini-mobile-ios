@@ -2,7 +2,7 @@
 //  PaymentService.swift
 //  GiniHealthAPI
 //
-//  Created by Nadya Karaban on 15.03.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -181,7 +181,7 @@ extension PaymentService {
                     self.file(urlString: providerResponse.iconLocation) { result in
                         switch result {
                         case let .success(imageData):
-                            let provider = PaymentProvider(id: providerResponse.id, name: providerResponse.name, appSchemeIOS: providerResponse.appSchemeIOS, minAppVersion: providerResponse.minAppVersion, colors: providerResponse.colors, iconData: imageData)
+                            let provider = PaymentProvider(id: providerResponse.id, name: providerResponse.name, appSchemeIOS: providerResponse.appSchemeIOS, minAppVersion: providerResponse.minAppVersion, colors: providerResponse.colors, iconData: imageData, appStoreUrlIOS: providerResponse.appStoreUrlIOS, universalLinkIOS: providerResponse.universalLinkIOS)
                              providers.append(provider)
                         case let .failure(error):
                             completion(.failure(error))
@@ -210,7 +210,7 @@ extension PaymentService {
                 self.file(urlString: providerResponse.iconLocation) { result in
                     switch result {
                     case let .success(imageData):
-                        let provider = PaymentProvider(id: providerResponse.id, name: providerResponse.name, appSchemeIOS: providerResponse.appSchemeIOS, minAppVersion: providerResponse.minAppVersion, colors: providerResponse.colors, iconData: imageData)
+                        let provider = PaymentProvider(id: providerResponse.id, name: providerResponse.name, appSchemeIOS: providerResponse.appSchemeIOS, minAppVersion: providerResponse.minAppVersion, colors: providerResponse.colors, iconData: imageData, appStoreUrlIOS: providerResponse.appStoreUrlIOS, universalLinkIOS: providerResponse.universalLinkIOS)
                         completion(.success(provider))
                     case let .failure(error):
                         completion(.failure(error))

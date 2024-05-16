@@ -93,7 +93,8 @@ final class SettingsViewController: UIViewController {
 			contentData.append(.switchOption(data: .init(type: .flashOnByDefault,
 														 isSwitchOn: giniConfiguration.flashOnByDefault)))
 		}
-		
+        contentData.append(.switchOption(data: .init(type: .customResourceProvider,
+                                                     isSwitchOn: giniConfiguration.customResourceProvider != nil)))
 		var selectedFileImportTypeSegmentIndex = 0
 		switch giniConfiguration.fileImportSupportedTypes {
 		case .none:
@@ -252,6 +253,9 @@ final class SettingsViewController: UIViewController {
 				cell.isSwitchOn = data.isSwitchOn
 				giniConfiguration.flashToggleEnabled = data.isSwitchOn
 			}
+        case .customResourceProvider:
+            let customProvider = GiniBankCustomResourceProvider()
+            giniConfiguration.customResourceProvider = data.isSwitchOn ? customProvider : nil
 		case .bottomNavigationBar:
 			giniConfiguration.bottomNavigationBarEnabled = data.isSwitchOn
 		case .helpNavigationBarBottomAdapter:

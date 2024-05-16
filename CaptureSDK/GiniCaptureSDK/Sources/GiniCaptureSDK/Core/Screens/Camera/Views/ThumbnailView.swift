@@ -23,6 +23,7 @@ final class ThumbnailView: UIView {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(thumbnailButtonAction), for: .touchUpInside)
+        button.isExclusiveTouch = true
         return button
     }()
 
