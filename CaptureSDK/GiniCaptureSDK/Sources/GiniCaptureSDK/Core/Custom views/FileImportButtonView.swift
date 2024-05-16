@@ -21,6 +21,7 @@ final class FileImportButtonView: UIView {
         button.setImage(self.documentImportButtonImage, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(showImportFileSheet), for: .touchUpInside)
+        button.isExclusiveTouch = true
         button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         return button
     }()

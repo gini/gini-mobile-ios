@@ -2,7 +2,7 @@
 //  HealthNetworkingService.swift
 //  GiniHealthSDKExample
 //
-//  Created by Nadya Karaban on 23.05.23.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation

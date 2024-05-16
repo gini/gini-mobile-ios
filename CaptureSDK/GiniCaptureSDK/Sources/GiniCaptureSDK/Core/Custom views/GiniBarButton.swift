@@ -56,6 +56,7 @@ public final class GiniBarButton {
     public func addAction(_ target: Any?, _ action: Selector) {
         let tapRecognizer = UITapGestureRecognizer(target: target, action: action)
         stackView.addGestureRecognizer(tapRecognizer)
+        stackView.isExclusiveTouch = true
     }
 
     /**

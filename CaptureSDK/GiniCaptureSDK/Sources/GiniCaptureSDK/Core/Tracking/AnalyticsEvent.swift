@@ -19,7 +19,6 @@ enum AnalyticsEvent: String {
     case helpTapped = "help_tapped"
     case multiplePagesCapturedTapped = "multiple_pages_captured_tapped"
     case errorDialogShown = "error_dialog_shown"
-    case ibanDetected = "iban_detected"
     case qr_code_scanned = "qr_code_scanned"
 
     // MARK: - Review
