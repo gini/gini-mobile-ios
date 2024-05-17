@@ -22,4 +22,6 @@ public enum AnalyticsScreen: String {
     case onboardingDigitalInvoice = "onboarding_digital_invoice"
     case digitalInvoice = "digital_invoice"
     case editDigitalInvoice = "edit_digital_invoice"
+    case cameraPermissionView = "camera_permission_view"
+    case cameraAccess = "camera_access"
 }
