@@ -22,6 +22,9 @@ public enum AnalyticsEvent: String {
     case ibanDetected = "iban_detected"
     case qr_code_scanned = "qr_code_scanned"
 
+    // MARK:
+    case cameraPermissionShown = "camera_permission_shown"
+    case cameraPermissionTapped = "camera_permission_tapped"
     // MARK: - Review
     case processTapped = "process_tapped"
     case deletePagesTapped = "delete_pages_tapped"
