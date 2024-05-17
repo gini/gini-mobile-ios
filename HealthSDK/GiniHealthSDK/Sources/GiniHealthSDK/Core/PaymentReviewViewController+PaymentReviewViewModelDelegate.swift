@@ -43,7 +43,21 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
         // Exclude some activities if needed
         activityViewController.excludedActivityTypes = [
             .addToReadingList,
-            .assignToContact
+            .assignToContact,
+            .airDrop,
+            .mail,
+            .message,
+            .postToFacebook,
+            .postToVimeo,
+            .postToWeibo,
+            .postToFlickr,
+            .postToTwitter,
+            .postToTencentWeibo,
+            .copyToPasteboard,
+            .markupAsPDF,
+            .openInIBooks,
+            .print,
+            .saveToCameraRoll
         ]
 
         // Present the UIActivityViewController
