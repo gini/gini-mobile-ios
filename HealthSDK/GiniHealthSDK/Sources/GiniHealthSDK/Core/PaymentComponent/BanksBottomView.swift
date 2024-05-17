@@ -12,10 +12,7 @@ class BanksBottomView: BottomSheetViewController {
     var viewModel: BanksBottomViewModel
     
     private lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        return stackView
+        EmptyStackView(orientation: .vertical)
     }()
 
     private lazy var titleView: UIView = {
@@ -45,10 +42,7 @@ class BanksBottomView: BottomSheetViewController {
     }()
     
     private lazy var descriptionView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .clear
-        return view
+        EmptyView()
     }()
 
     private lazy var descriptionLabel: UILabel = {
@@ -62,10 +56,7 @@ class BanksBottomView: BottomSheetViewController {
     }()
     
     private lazy var paymentProvidersView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .clear
-        return view
+        EmptyView()
     }()
 
     private lazy var paymentProvidersTableView: UITableView = {
@@ -86,17 +77,11 @@ class BanksBottomView: BottomSheetViewController {
     }()
     
     private lazy var bottomView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .clear
-        return view
+        EmptyView()
     }()
     
     private lazy var bottomStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        return stackView
+        EmptyStackView(orientation: .horizontal)
     }()
     
     private lazy var moreInformationView: MoreInformationView = {

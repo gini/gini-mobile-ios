@@ -16,18 +16,14 @@ final class PaymentComponentView: UIView {
     }
     
     private lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
+        let stackView = EmptyStackView(orientation: .vertical)
         stackView.distribution = .fillProportionally
         stackView.spacing = Constants.contentStackViewSpacing
         return stackView
     }()
     
     private lazy var moreInformationStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
+        let stackView = EmptyStackView(orientation: .horizontal)
         stackView.distribution = .fillProportionally
         return stackView
     }()
