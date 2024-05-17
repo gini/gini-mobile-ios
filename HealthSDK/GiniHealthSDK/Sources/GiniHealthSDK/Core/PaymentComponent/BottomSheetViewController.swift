@@ -146,7 +146,6 @@ class BottomSheetViewController: UIViewController {
         // get drag direction
         let isDraggingDown = translation.y > 0
         guard isDraggingDown else { return }
-        
         let pannedHeight = translation.y
         let currentY = self.view.frame.height - self.mainContainerView.frame.height
         // handle gesture state
@@ -175,8 +174,7 @@ class BottomSheetViewController: UIViewController {
         }
         // add more animation duration for smoothness
         UIView.animate(withDuration: 0.4) { [weak self] in
-            guard let self = self else { return }
-            self.dimmedView.alpha = Constants.maxDimmedAlpha
+            self?.dimmedView.alpha = Constants.maxDimmedAlpha
         }
     }
 

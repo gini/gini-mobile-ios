@@ -20,7 +20,7 @@ extension PaymentReviewViewController: UITextFieldDelegate {
     /**
      Updates amoutToPay, formated string with a currency and removes "0.00" value
      */
-    internal func updateAmoutToPayWithCurrencyFormat() {
+    func updateAmoutToPayWithCurrencyFormat() {
         if amountTextFieldView.textField.hasText, let amountFieldText = amountTextFieldView.text {
             if let priceValue = decimal(from: amountFieldText ) {
                 amountToPay.value = priceValue
