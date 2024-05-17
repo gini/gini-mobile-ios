@@ -42,9 +42,9 @@ public struct PaymentProviderResponse: Codable {
     public var iconLocation: String
     public var appStoreUrlIOS: String?
     public var universalLinkIOS: String
-    public var index: Int
+    public var index: Int?
 
-    public init(id: String, name: String, appSchemeIOS: String, minAppVersion: MinAppVersions?, colors: ProviderColors, iconLocation: String, appStoreUrlIOS: String?, universalLinkIOS: String, index: Int) {
+    public init(id: String, name: String, appSchemeIOS: String, minAppVersion: MinAppVersions?, colors: ProviderColors, iconLocation: String, appStoreUrlIOS: String?, universalLinkIOS: String, index: Int?) {
         self.id = id
         self.name = name
         self.appSchemeIOS = appSchemeIOS

@@ -19,9 +19,9 @@ public struct PaymentProvider: Codable {
     public var appStoreUrlIOS: String?
     public var universalLinkIOS: String
     public var gpcSupported: Bool = true
-    public var index: Int
+    public var index: Int?
 
-    public init(id: String, name: String, appSchemeIOS: String, minAppVersion: MinAppVersions?, colors: ProviderColors, iconData: Data, appStoreUrlIOS: String?, universalLinkIOS: String, index: Int) {
+    public init(id: String, name: String, appSchemeIOS: String, minAppVersion: MinAppVersions?, colors: ProviderColors, iconData: Data, appStoreUrlIOS: String?, universalLinkIOS: String, index: Int?) {
         self.id = id
         self.name = name
         self.appSchemeIOS = appSchemeIOS
