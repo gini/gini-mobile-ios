@@ -32,8 +32,8 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     @IBOutlet weak var infoBarLabel: UILabel!
     @IBOutlet weak var bottomView: UIView!
     var model: PaymentReviewModel?
-    internal var amountToPay = Price(value: 0, currencyCode: "€")
-    internal var lastValidatedIBAN = ""
+    var amountToPay = Price(value: 0, currencyCode: "€")
+    var lastValidatedIBAN = ""
     private var showInfoBarOnce = true
     
     private lazy var payInvoiceButton: PaymentPrimaryButton = {
@@ -49,7 +49,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         return view
     }()
 
-    internal var selectedPaymentProvider: PaymentProvider!
+    var selectedPaymentProvider: PaymentProvider!
     
     public weak var trackingDelegate: GiniHealthTrackingDelegate?
     
@@ -328,7 +328,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
     }
 
-    internal func applySelectionStyle(_ textFieldView: TextFieldWithLabelView) {
+    func applySelectionStyle(_ textFieldView: TextFieldWithLabelView) {
         UIView.animate(withDuration: Constants.animationDuration) { [self] in
             textFieldView.configure(configuration: self.giniHealthConfiguration.selectionStyleInputFieldConfiguration)
             textFieldView.layer.masksToBounds = true
@@ -382,7 +382,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         disablePayButtonIfNeeded()
     }
     
-    internal func validateTextField(_ textFieldViewTag: Int) {
+    func validateTextField(_ textFieldViewTag: Int) {
         let textFieldView = textFieldViewWithTag(tag: textFieldViewTag)
         if let fieldIdentifier = TextFieldType(rawValue: textFieldViewTag) {
             switch fieldIdentifier {
@@ -413,7 +413,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
     }
     
-    internal func textFieldViewWithTag(tag: Int) -> TextFieldWithLabelView {
+    func textFieldViewWithTag(tag: Int) -> TextFieldWithLabelView {
         paymentInputFields.first(where: { $0.tag == tag }) ?? TextFieldWithLabelView()
     }
     
@@ -432,7 +432,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
     }
     
-    internal func showIBANValidationErrorIfNeeded(){
+    func showIBANValidationErrorIfNeeded(){
         if IBANValidator().isValid(iban: lastValidatedIBAN) {
             applyDefaultStyle(ibanTextFieldView)
             hideErrorLabel(textFieldTag: .ibanFieldTag)
@@ -468,7 +468,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         disablePayButtonIfNeeded()
     }
     
-    internal func disablePayButtonIfNeeded() {
+    func disablePayButtonIfNeeded() {
         payInvoiceButton.superview?.alpha = paymentInputFields.allSatisfy({ !$0.textField.isReallyEmpty }) && amountToPay.value > 0 ? 1 : 0.4
     }
 
@@ -524,7 +524,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
     }
 
-    internal func hideErrorLabel(textFieldTag: TextFieldType) {
+    func hideErrorLabel(textFieldTag: TextFieldType) {
         var errorLabel = UILabel()
         switch textFieldTag {
         case .recipientFieldTag:
@@ -571,7 +571,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         checkForErrors()
     }
     
-    internal func checkForErrors() {
+    func checkForErrors() {
         // check if no errors labels are shown
         if (paymentInputFieldsErrorLabels.allSatisfy { $0.isHidden }) {
             createPaymentRequest()
@@ -714,7 +714,7 @@ extension PaymentReviewViewController {
 
 
 extension PaymentReviewViewController {
-    internal enum Constants {
+    enum Constants {
         static let buttonViewHeight: CGFloat = 56
         static let animationDuration: CGFloat = 0.3
         static let cornerRadiusInputContainer = 12.0

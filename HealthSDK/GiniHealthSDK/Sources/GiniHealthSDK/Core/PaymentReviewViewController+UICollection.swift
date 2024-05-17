@@ -23,6 +23,7 @@ extension PaymentReviewViewController: UICollectionViewDelegate, UICollectionVie
         cell.pageImageView.display(image: cellModel?.preview ?? UIImage())
         return cell
     }
+    
     // MARK: - UICollectionViewDelegateFlowLayout
 
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
