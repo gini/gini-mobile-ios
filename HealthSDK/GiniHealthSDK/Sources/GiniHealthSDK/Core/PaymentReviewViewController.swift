@@ -32,8 +32,8 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     @IBOutlet weak var infoBarLabel: UILabel!
     @IBOutlet weak var bottomView: UIView!
     var model: PaymentReviewModel?
-    private var amountToPay = Price(value: 0, currencyCode: "€")
-    private var lastValidatedIBAN = ""
+    var amountToPay = Price(value: 0, currencyCode: "€")
+    var lastValidatedIBAN = ""
     private var showInfoBarOnce = true
     
     private lazy var payInvoiceButton: PaymentPrimaryButton = {
@@ -49,7 +49,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         return view
     }()
 
-    private var selectedPaymentProvider: PaymentProvider!
+    var selectedPaymentProvider: PaymentProvider!
     
     public weak var trackingDelegate: GiniHealthTrackingDelegate?
     
@@ -328,7 +328,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
     }
 
-    fileprivate func applySelectionStyle(_ textFieldView: TextFieldWithLabelView) {
+    func applySelectionStyle(_ textFieldView: TextFieldWithLabelView) {
         UIView.animate(withDuration: Constants.animationDuration) { [self] in
             textFieldView.configure(configuration: self.giniHealthConfiguration.selectionStyleInputFieldConfiguration)
             textFieldView.layer.masksToBounds = true
@@ -382,7 +382,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         disablePayButtonIfNeeded()
     }
     
-    fileprivate func validateTextField(_ textFieldViewTag: Int) {
+    func validateTextField(_ textFieldViewTag: Int) {
         let textFieldView = textFieldViewWithTag(tag: textFieldViewTag)
         if let fieldIdentifier = TextFieldType(rawValue: textFieldViewTag) {
             switch fieldIdentifier {
@@ -413,7 +413,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
     }
     
-    fileprivate func textFieldViewWithTag(tag: Int) -> TextFieldWithLabelView {
+    func textFieldViewWithTag(tag: Int) -> TextFieldWithLabelView {
         paymentInputFields.first(where: { $0.tag == tag }) ?? TextFieldWithLabelView()
     }
     
@@ -432,7 +432,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
     }
     
-    fileprivate func showIBANValidationErrorIfNeeded(){
+    func showIBANValidationErrorIfNeeded(){
         if IBANValidator().isValid(iban: lastValidatedIBAN) {
             applyDefaultStyle(ibanTextFieldView)
             hideErrorLabel(textFieldTag: .ibanFieldTag)
@@ -468,7 +468,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         disablePayButtonIfNeeded()
     }
     
-    fileprivate func disablePayButtonIfNeeded() {
+    func disablePayButtonIfNeeded() {
         payInvoiceButton.superview?.alpha = paymentInputFields.allSatisfy({ !$0.textField.isReallyEmpty }) && amountToPay.value > 0 ? 1 : 0.4
     }
 
@@ -524,7 +524,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
     }
 
-    fileprivate func hideErrorLabel(textFieldTag: TextFieldType) {
+    func hideErrorLabel(textFieldTag: TextFieldType) {
         var errorLabel = UILabel()
         switch textFieldTag {
         case .recipientFieldTag:
@@ -554,6 +554,15 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             lastValidatedIBAN = iban
         }
         
+        guard selectedPaymentProvider.gpcSupported else {
+            if model?.shouldShowOnboardingScreenFor(paymentProvider: selectedPaymentProvider) ?? false {
+                model?.openOnboardingShareInvoiceBottomSheet()
+            } else {
+                sharePDF()
+            }
+            return
+        }
+        
         guard selectedPaymentProvider.appSchemeIOS.canOpenURLString() else {
             model?.openInstallAppBottomSheet()
             return
@@ -562,7 +571,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         checkForErrors()
     }
     
-    private func checkForErrors() {
+    func checkForErrors() {
         // check if no errors labels are shown
         if (paymentInputFieldsErrorLabels.allSatisfy { $0.isHidden }) {
             createPaymentRequest()
@@ -690,131 +699,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
 }
 
-// MARK: - UITextFieldDelegate
-
-extension PaymentReviewViewController: UITextFieldDelegate {
-    /**
-     Dissmiss the keyboard when return key pressed
-     */
-    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-
-    /**
-     Updates amoutToPay, formated string with a currency and removes "0.00" value
-     */
-    fileprivate func updateAmoutToPayWithCurrencyFormat() {
-        if amountTextFieldView.textField.hasText, let amountFieldText = amountTextFieldView.text {
-            if let priceValue = decimal(from: amountFieldText ) {
-                amountToPay.value = priceValue
-                if priceValue > 0 {
-                    let amountToPayText = amountToPay.string
-                    amountTextFieldView.text = amountToPayText
-                } else {
-                    amountTextFieldView.text = ""
-                }
-            }
-        }
-    }
-    public func textFieldDidBeginEditing(_ textField: UITextField) {
-        applySelectionStyle(textFieldViewWithTag(tag: textField.tag))
-        
-        // remove currency symbol and whitespaces for edit mode
-        if let fieldIdentifier = TextFieldType(rawValue: textField.tag) {
-            hideErrorLabel(textFieldTag: fieldIdentifier)
-            
-            if fieldIdentifier == .amountFieldTag {
-                let amountToPayText = amountToPay.stringWithoutSymbol
-                amountTextFieldView.text = amountToPayText
-            }
-        }
-    }
-    
-    public func textFieldDidEndEditing(_ textField: UITextField) {
-        // add currency format when edit is finished
-        if TextFieldType(rawValue: textField.tag) == .amountFieldTag {
-            updateAmoutToPayWithCurrencyFormat()
-        }
-        validateTextField(textField.tag)
-        if TextFieldType(rawValue: textField.tag) == .ibanFieldTag {
-            if textField.text == lastValidatedIBAN {
-                showIBANValidationErrorIfNeeded()
-            }
-        }
-        disablePayButtonIfNeeded()
-    }
-    
-    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if TextFieldType(rawValue: textField.tag) == .amountFieldTag,
-           let text = textField.text,
-           let textRange = Range(range, in: text) {
-            let updatedText = text.replacingCharacters(in: textRange, with: string)
-            
-            // Limit length to 7 digits
-            let onlyDigits = String(updatedText
-                                        .trimmingCharacters(in: .whitespaces)
-                                        .filter { c in c != "," && c != "."}
-                                        .prefix(7))
-            
-            if let decimal = Decimal(string: onlyDigits) {
-                let decimalWithFraction = decimal / 100
-                
-                if let newAmount = Price.stringWithoutSymbol(from: decimalWithFraction)?.trimmingCharacters(in: .whitespaces) {
-                    // Save the selected text range to restore the cursor position after replacing the text
-                    let selectedRange = textField.selectedTextRange
-                    
-                    textField.text = newAmount
-                    amountToPay.value = decimalWithFraction
-                    
-                    // Move the cursor position after the inserted character
-                    if let selectedRange = selectedRange {
-                        let countDelta = newAmount.count - text.count
-                        let offset = countDelta == 0 ? 1 : countDelta
-                        textField.moveSelectedTextRange(from: selectedRange.start, to: offset)
-                    }
-                }
-            }
-            disablePayButtonIfNeeded()
-            return false
-           }
-        return true
-    }
-}
-
-// MARK: - UICollectionViewDelegate, UICollectionViewDataSource
-
-extension PaymentReviewViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { 1 }
-
-    public func numberOfSections(in collectionView: UICollectionView) -> Int {
-        model?.numberOfCells ?? 1
-    }
-
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "pageCellIdentifier", for: indexPath) as! PageCollectionViewCell
-        cell.pageImageView.frame = CGRect(x: 0, y: 0, width: collectionView.frame.width, height: collectionView.frame.height)
-        cell.pageImageView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: Constants.bottomPaddingPageImageView, right: 0.0)
-        let cellModel = model?.getCellViewModel(at: indexPath)
-        cell.pageImageView.display(image: cellModel?.preview ?? UIImage())
-        return cell
-    }
-    // MARK: - UICollectionViewDelegateFlowLayout
-    
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let height = collectionView.frame.height
-        let width = collectionView.frame.width
-        return CGSize(width: width, height: height)
-    }
-
-    // MARK: - For Display the page number in page controll of collection view Cell
-
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        pageControl.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
-    }
-    
-}
-
 extension PaymentReviewViewController {
     func showError(_ title: String? = nil, message: String) {
         let alertController = UIAlertController(title: title,
@@ -827,19 +711,10 @@ extension PaymentReviewViewController {
     }
 }
 
-extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
-    func presentInstallAppBottomSheet(bottomSheet: UIViewController) {
-        self.present(bottomSheet, animated: true)
-    }
-    
-    func createPaymentRequestAndOpenBankApp() {
-        self.presentedViewController?.dismiss(animated: true)
-        checkForErrors()
-    }
-}
+
 
 extension PaymentReviewViewController {
-    private enum Constants {
+    enum Constants {
         static let buttonViewHeight: CGFloat = 56
         static let animationDuration: CGFloat = 0.3
         static let cornerRadiusInputContainer = 12.0

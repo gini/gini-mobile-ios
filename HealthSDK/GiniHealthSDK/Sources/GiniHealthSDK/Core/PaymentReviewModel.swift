@@ -9,8 +9,10 @@ import GiniHealthAPILibrary
 import UIKit
 
 protocol PaymentReviewViewModelDelegate: AnyObject {
-    func presentInstallAppBottomSheet(bottomSheet: UIViewController)
+    func presentInstallAppBottomSheet(bottomSheet: BottomSheetViewController)
+    func presentShareInvoiceBottomSheet(bottomSheet: BottomSheetViewController)
     func createPaymentRequestAndOpenBankApp()
+    func sharePDFActivityUI()
 }
 
 /**
@@ -124,9 +126,26 @@ public class PaymentReviewModel: NSObject {
         installAppBottomSheet.modalPresentationStyle = .overFullScreen
         viewModelDelegate?.presentInstallAppBottomSheet(bottomSheet: installAppBottomSheet)
     }
+    
+    func openOnboardingShareInvoiceBottomSheet() {
+        let shareInvoiceBottomSheet = shareInvoiceBottomSheet()
+        shareInvoiceBottomSheet.modalPresentationStyle = .overFullScreen
+        viewModelDelegate?.presentShareInvoiceBottomSheet(bottomSheet: shareInvoiceBottomSheet)
+    }
 
     func openPaymentProviderApp(requestId: String, universalLink: String) {
         healthSDK.openPaymentProviderApp(requestID: requestId, universalLink: universalLink)
+    }
+    
+    func shouldShowOnboardingScreenFor(paymentProvider: PaymentProvider) -> Bool {
+        let onboardingCounts = OnboardingShareInvoiceScreenCount.load()
+        let count = onboardingCounts.presentationCount(forProvider: paymentProvider.name)
+        return count < GiniHealthConfiguration.shared.numberOfTimesOnboardingShareScreenShouldAppear
+    }
+    
+    func incrementOnboardingCountFor(paymentProvider: PaymentProvider) {
+        var onboardingCounts = OnboardingShareInvoiceScreenCount.load()
+        onboardingCounts.incrementPresentationCount(forProvider: paymentProvider.name)
     }
     
     func fetchImages() {
@@ -166,20 +185,30 @@ public class PaymentReviewModel: NSObject {
         }
     }
     
-    func installAppBottomSheet() -> UIViewController {
-        let installAppBottomView = InstallAppBottomView()
+    func installAppBottomSheet() -> BottomSheetViewController {
         let installAppBottomViewModel = InstallAppBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
         installAppBottomViewModel.viewDelegate = self
-        installAppBottomView.viewModel = installAppBottomViewModel
-        let installAppBottomSheet = InstallAppBottomSheet()
-        installAppBottomSheet.bottomSheet = installAppBottomView
-        return installAppBottomSheet
+        let installAppBottomView = InstallAppBottomView(viewModel: installAppBottomViewModel)
+        return installAppBottomView
+    }
+    
+    func shareInvoiceBottomSheet() -> BottomSheetViewController {
+        let shareInvoiceBottomViewModel = ShareInvoiceBottomViewModel(selectedPaymentProvider: selectedPaymentProvider)
+        shareInvoiceBottomViewModel.viewDelegate = self
+        let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel)
+        return shareInvoiceBottomView
     }
 }
 
 extension PaymentReviewModel: InstallAppBottomViewProtocol {
     func didTapOnContinue() {
         viewModelDelegate?.createPaymentRequestAndOpenBankApp()
+    }
+}
+
+extension PaymentReviewModel: ShareInvoiceBottomViewProtocol {
+    func didTapOnContinueToShareInvoice() {
+        viewModelDelegate?.sharePDFActivityUI()
     }
 }
 
