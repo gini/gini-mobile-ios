@@ -70,7 +70,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
      - Returns: a Payment Provider object.
      */
     private func defaultInstalledPaymentProvider() -> PaymentProvider? {
-        savedPaymentProvider() ?? paymentProviders.first
+        savedPaymentProvider()
     }
     
     /**
