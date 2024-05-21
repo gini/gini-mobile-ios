@@ -15,13 +15,13 @@ The Gini Health API provides an information extraction service for analyzing hea
 
 ## Requirements
 
-- iOS 11.0+
-- Xcode 12.0+
+- iOS 12.0+
+- Xcode 15.3+
 
 **Note:**
 In order to have better analysis results it is highly recommended to enable only devices with 8MP camera and flash. These devices would be:
 
-* iPhones with iOS 11 or higher.
+* iPhones with iOS 12 or higher.
 * iPad Pro devices (iPad Air 2 and iPad Mini 4 have 8MP camera but no flash).
 
 ## Author
@@ -32,4 +32,4 @@ Gini GmbH, hello@gini.net
 
 The Gini Health SDK for iOS is licensed under a Private License. See [the license](https://developer.gini.net/gini-mobile-ios/GiniHealthSDK/license.html) for more info.
 
-**Important:** Always make sure to ship all license notices and permissions with your application.
+> ⚠️  **Important:** Always make sure to ship all license notices and permissions with your application.
