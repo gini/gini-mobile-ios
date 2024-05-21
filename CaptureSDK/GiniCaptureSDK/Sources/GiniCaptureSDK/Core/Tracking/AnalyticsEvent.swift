@@ -27,4 +27,8 @@ enum AnalyticsEvent: String {
     case addPagesTapped = "add_pages_tapped"
     case pageSwiped = "page_swiped"
     case fullScreenPageTapped = "full_screen_page_tapped"
+
+    // MARK: - No Results and Error
+    case enterManuallyTapped = "enter_manually_tapped"
+    case retakeImagesTapped = "retake_images_tapped"
 }
