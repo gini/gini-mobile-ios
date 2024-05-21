@@ -22,9 +22,7 @@ class BottomSheetViewController: UIViewController {
     
     /// View to hold dynamic content
     private lazy var contentView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
+        EmptyView()
     }()
     
     /// Top bar view that draggable to dismiss

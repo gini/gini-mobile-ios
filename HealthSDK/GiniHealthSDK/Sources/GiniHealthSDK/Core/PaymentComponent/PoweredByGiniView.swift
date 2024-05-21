@@ -16,10 +16,7 @@ final class PoweredByGiniView: UIView {
     }
     
     private lazy var poweredByGiniView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.frame = CGRect(x: 0, y: 0, width: .leastNormalMagnitude, height: Constants.heightView)
-        return view
+        EmptyView()
     }()
     
     private lazy var poweredByGiniLabel: UILabel = {
@@ -79,7 +76,6 @@ extension PoweredByGiniView {
     private enum Constants {
         static let imageTopBottomPadding = 3.0
         static let spacingImageText = 4.0
-        static let heightView = 22.0
         static let widthGiniLogo = 28.0
         static let heightGiniLogo = 18.0
         static let textNumberOfLines = 1
