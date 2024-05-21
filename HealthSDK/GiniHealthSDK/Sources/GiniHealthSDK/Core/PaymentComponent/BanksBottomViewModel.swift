@@ -11,6 +11,7 @@ import GiniHealthAPILibrary
 public protocol PaymentProvidersBottomViewProtocol: AnyObject {
     func didSelectPaymentProvider(paymentProvider: PaymentProvider)
     func didTapOnClose()
+    func didTapOnMoreInformation()
 }
 
 struct PaymentProviderAdditionalInfo {
@@ -62,15 +63,18 @@ final class BanksBottomViewModel {
         
         let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .regular)
         let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
-
-        self.selectBankLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.subtitle1] ?? defaultBoldFont
-        self.descriptionLabelFont = GiniHealthConfiguration.shared.textStyleFonts[.caption1] ?? defaultRegularFont
         
+        let giniHealthConfiguration = GiniHealthConfiguration.shared
+
+        self.selectBankLabelFont = giniHealthConfiguration.textStyleFonts[.subtitle1] ?? defaultBoldFont
+        self.descriptionLabelFont = giniHealthConfiguration.textStyleFonts[.caption1] ?? defaultRegularFont
+
         self.paymentProviders = paymentProviders
             .map({ PaymentProviderAdditionalInfo(isSelected: $0.id == selectedPaymentProvider?.id,
                                                  isInstalled: isPaymentProviderInstalled(paymentProvider: $0),
                                                  paymentProvider: $0)})
-            .sorted(by: { $0.isInstalled && !$1.isInstalled })
+            .sorted(by: { ($0.paymentProvider.index ?? 0 < $1.paymentProvider.index ?? 0) })
+            .sorted(by: { ($0.isInstalled && !$1.isInstalled) })
         self.calculateHeights()
     }
     
@@ -92,6 +96,10 @@ final class BanksBottomViewModel {
     
     func didTapOnClose() {
         viewDelegate?.didTapOnClose()
+    }
+    
+    func didTapOnMoreInformation() {
+        viewDelegate?.didTapOnMoreInformation()
     }
     
     private func isPaymentProviderInstalled(paymentProvider: PaymentProvider) -> Bool {
