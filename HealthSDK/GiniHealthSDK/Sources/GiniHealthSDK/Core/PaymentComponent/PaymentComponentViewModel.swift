@@ -79,18 +79,16 @@ final class PaymentComponentViewModel {
     
     // Bank image icon
     private var bankImageIconData: Data?
-    var bankImageIcon: UIImage {
-        if let bankImageIconData {
-            return UIImage(data: bankImageIconData) ?? UIImage()
-        }
-        return UIImage()
+    var bankImageIcon: UIImage? {
+        guard let bankImageIconData else { return nil }
+        return UIImage(data: bankImageIconData)
     }
 
     // Bank name label
     private var bankName: String?
-    var bankNameLabelText: String {
+    var bankNameLabelText: String? {
         if let bankName, !bankName.isEmpty {
-            return bankName
+            return nil
         }
         return placeholderBankNameText
     }
@@ -116,6 +114,13 @@ final class PaymentComponentViewModel {
     
     var documentId: String?
     
+    var minimumButtonsHeight: CGFloat
+    
+    private let paymentComponentViewUsedKey = "kPaymentComponentViewUsed"
+    var hasBankSelected: Bool {
+        return !(bankName?.isEmpty ?? true)
+    }
+    
     init(paymentProvider: PaymentProvider?) {
         let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
         let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
@@ -128,6 +133,8 @@ final class PaymentComponentViewModel {
         self.bankName = paymentProvider?.name
         self.paymentProviderColors = paymentProvider?.colors
         self.paymentProviderScheme = paymentProvider?.appSchemeIOS
+        
+        self.minimumButtonsHeight = giniHealthConfiguration.heightButtonsPaymentComponentView
     }
     
     func tapOnMoreInformation() {
@@ -139,6 +146,17 @@ final class PaymentComponentViewModel {
     }
     
     func tapOnPayInvoiceView() {
+        savePaymentCompoentnViewUsageStatus()
         delegate?.didTapOnPayInvoice(documentId: documentId)
+    }
+    
+    // Function to check if Payment was used at least once
+    func wasPaymentComponentViewUsed() -> Bool {
+        return UserDefaults.standard.bool(forKey: paymentComponentViewUsedKey)
+    }
+    
+    // Function to save the boolean value indicating whether Payment was used
+    private func savePaymentCompoentnViewUsageStatus() {
+        UserDefaults.standard.set(true, forKey: paymentComponentViewUsedKey)
     }
 }

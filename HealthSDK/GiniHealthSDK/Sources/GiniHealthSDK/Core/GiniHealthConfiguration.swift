@@ -50,6 +50,17 @@ public final class GiniHealthConfiguration: NSObject {
      */
     public var numberOfTimesOnboardingShareScreenShouldAppear = 3
     
+    /**
+    Height of the buttons from the Payment Component View
+     */
+    public var heightButtonsPaymentComponentView: CGFloat = Constants.defaultHeightButtons {
+        didSet {
+            if heightButtonsPaymentComponentView < Constants.minimumHeightButtons {
+                heightButtonsPaymentComponentView = Constants.minimumHeightButtons
+            }
+        }
+    }
+    
     // MARK: - Button configuration options
     /**
      A configuration that defines the appearance of the primary button, including its background color, border color, title color, shadow color, corner radius, border width, shadow radius, and whether to apply a blur effect. It is used for buttons on different UI elements: Payment Component View, Payment Review Screen.
@@ -147,4 +158,11 @@ public final class GiniHealthConfiguration: NSObject {
         .body1: UIFontMetrics(forTextStyle: .body1).scaledFont(for: UIFont.systemFont(ofSize: 16, weight: .regular)),
         .body2: UIFontMetrics(forTextStyle: .body2).scaledFont(for: UIFont.systemFont(ofSize: 14, weight: .regular)),
     ]
+}
+
+extension GiniHealthConfiguration {
+    private enum Constants {
+        static let defaultHeightButtons = 56.0
+        static let minimumHeightButtons = 44.0
+    }
 }

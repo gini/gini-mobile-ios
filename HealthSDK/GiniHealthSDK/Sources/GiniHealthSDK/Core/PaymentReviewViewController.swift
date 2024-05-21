@@ -301,13 +301,10 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     private func setupPoweredByGiniConstraints() {
-        let poweredByGiniBottomAnchorConstraint = poweredByGiniView.bottomAnchor.constraint(equalTo: poweredByGiniView.bottomAnchor)
-        poweredByGiniBottomAnchorConstraint.priority = .required - 1
         NSLayoutConstraint.activate([
             poweredByGiniView.topAnchor.constraint(equalTo: bottomView.topAnchor),
-            poweredByGiniView.heightAnchor.constraint(equalToConstant: poweredByGiniView.frame.height),
             poweredByGiniView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor),
-            poweredByGiniBottomAnchorConstraint
+            poweredByGiniView.bottomAnchor.constraint(equalTo: poweredByGiniView.bottomAnchor)
         ])
     }
     

@@ -77,8 +77,6 @@ final class MoreInformationView: UIView {
             moreInformationButton.centerYAnchor.constraint(equalTo: moreInformationView.centerYAnchor),
             moreInformationButton.widthAnchor.constraint(equalToConstant: Constants.infoIconSize),
             moreInformationButton.heightAnchor.constraint(equalToConstant: Constants.infoIconSize),
-            moreInformationButton.topAnchor.constraint(equalTo: moreInformationView.topAnchor, constant: Constants.buttonPadding),
-            moreInformationButton.bottomAnchor.constraint(equalTo: moreInformationView.bottomAnchor, constant: -Constants.buttonPadding),
             moreInformationLabel.leadingAnchor.constraint(equalTo: moreInformationButton.trailingAnchor, constant: Constants.spacingPadding),
             moreInformationLabel.centerYAnchor.constraint(equalTo: moreInformationButton.centerYAnchor),
             moreInformationLabel.trailingAnchor.constraint(greaterThanOrEqualTo: moreInformationView.trailingAnchor),
