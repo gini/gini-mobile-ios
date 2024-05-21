@@ -46,11 +46,6 @@ public final class GiniHealthConfiguration: NSObject {
     @objc public var paymentReviewStatusBarStyle: UIStatusBarStyle = .default
     
     /**
-    Sets the number of times the onboarding share invoice screen should appear for each payment provider before the native one appears
-     */
-    public var numberOfTimesOnboardingShareScreenShouldAppear = 3
-    
-    /**
     Height of the buttons from the Payment Component View
      */
     public var heightButtonsPaymentComponentView: CGFloat = Constants.defaultHeightButtons {
