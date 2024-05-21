@@ -80,7 +80,7 @@ final class PaymentSecondaryButton: UIView {
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.contentPadding).isActive = true
             titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         }
-        if titleLabel.isHidden == true {
+        if titleLabel.isHidden {
             rightImageView.leadingAnchor.constraint(equalTo: leftImageView.trailingAnchor, constant: Constants.bankIconChevronIconPadding).isActive = true
         } else {
             rightImageView.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor).isActive = true
