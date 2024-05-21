@@ -116,7 +116,6 @@ final class PaymentComponentViewModel {
     
     var minimumButtonsHeight: CGFloat
     
-    private let paymentComponentViewUsedKey = "kPaymentComponentViewUsed"
     var hasBankSelected: Bool {
         return !(bankName?.isEmpty ?? true)
     }
@@ -146,17 +145,23 @@ final class PaymentComponentViewModel {
     }
     
     func tapOnPayInvoiceView() {
-        savePaymentCompoentnViewUsageStatus()
+        savePaymentComponentViewUsageStatus()
         delegate?.didTapOnPayInvoice(documentId: documentId)
     }
     
     // Function to check if Payment was used at least once
     func wasPaymentComponentViewUsed() -> Bool {
-        return UserDefaults.standard.bool(forKey: paymentComponentViewUsedKey)
+        return UserDefaults.standard.bool(forKey: Constants.paymentComponentViewUsedKey)
     }
     
     // Function to save the boolean value indicating whether Payment was used
-    private func savePaymentCompoentnViewUsageStatus() {
-        UserDefaults.standard.set(true, forKey: paymentComponentViewUsedKey)
+    private func savePaymentComponentViewUsageStatus() {
+        UserDefaults.standard.set(true, forKey: Constants.paymentComponentViewUsedKey)
+    }
+}
+
+extension PaymentComponentViewModel {
+    private enum Constants {
+        static let paymentComponentViewUsedKey = "kPaymentComponentViewUsed"
     }
 }
