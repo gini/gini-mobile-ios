@@ -14,8 +14,7 @@ final class PaymentSecondaryButton: UIView {
     var didTapButton: (() -> Void)?
     
     private lazy var contentView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
+        let view = EmptyView()
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapOnBankPicker)))
         return view
     }()

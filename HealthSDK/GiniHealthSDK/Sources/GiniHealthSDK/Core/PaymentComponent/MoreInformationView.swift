@@ -15,10 +15,7 @@ final class MoreInformationView: UIView {
     }
     
     private lazy var moreInformationView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .clear
-        return view
+        EmptyView()
     }()
     
     private lazy var moreInformationLabel: UILabel = {
