@@ -12,7 +12,8 @@
             "background": "009EDC",
             "text": "FFFFFF"
         },
-        "iconLocation": "https://pay-api.gini.net/paymentProviders/b09ef70a-490f-11eb-952e-9bc6f4646c57/icon"
+        "iconLocation": "https://pay-api.gini.net/paymentProviders/b09ef70a-490f-11eb-952e-9bc6f4646c57/icon",
+        "universalLinkIOS": "ginipay-bank://"
     },
     {
         "id": "dbe3a2ca-c9df-11eb-a1d8-a7efff6e88b7",
@@ -27,7 +28,8 @@
             "background": "daa520",
             "text": "54f1db"
         },
-        "iconLocation": "https://pay-api.gini.net/paymentProviders/dbe3a2ca-c9df-11eb-a1d8-a7efff6e88b7/icon"
+        "iconLocation": "https://pay-api.gini.net/paymentProviders/dbe3a2ca-c9df-11eb-a1d8-a7efff6e88b7/icon",
+        "universalLinkIOS": "ginipay-ingdiba://"
     },
     {
         "id": "f7d06ee0-51fd-11ec-8216-97f0937beb16",
@@ -42,7 +44,8 @@
             "background": "FFFFFF",
             "text": "009EDC"
         },
-        "iconLocation": "https://pay-api.gini.net/paymentProviders/f7d06ee0-51fd-11ec-8216-97f0937beb16/icon"
+        "iconLocation": "https://pay-api.gini.net/paymentProviders/f7d06ee0-51fd-11ec-8216-97f0937beb16/icon",
+        "universalLinkIOS": "ginipay-ginibank://"
     },
     {
         "id": "a65b0646-51fe-11ec-8736-c338396b2f09",
@@ -57,6 +60,7 @@
             "background": "4DBED3",
             "text": "FFFFFF"
         },
-        "iconLocation": "https://pay-api.gini.net/paymentProviders/a65b0646-51fe-11ec-8736-c338396b2f09/icon"
+        "iconLocation": "https://pay-api.gini.net/paymentProviders/a65b0646-51fe-11ec-8736-c338396b2f09/icon",
+        "universalLinkIOS": "ginipay-consorsbank://"
     }
 ]
