@@ -161,10 +161,15 @@ final class InvoicesListViewModel {
 extension InvoicesListViewModel: PaymentComponentViewProtocol {
 
     func didTapOnMoreInformation(documentId: String?) {
-        guard let documentId else { return }
-        Log("Tapped on More Information on :\(documentId)", event: .success)
+        Log("Tapped on More Information", event: .success)
         let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
-        self.coordinator.invoicesListViewController.navigationController?.pushViewController(paymentInfoViewController, animated: true)
+        if let presentedViewController = self.coordinator.invoicesListViewController.presentedViewController {
+            presentedViewController.dismiss(animated: true) {
+                self.coordinator.invoicesListViewController.navigationController?.pushViewController(paymentInfoViewController, animated: true)
+            }
+        } else {
+            self.coordinator.invoicesListViewController.navigationController?.pushViewController(paymentInfoViewController, animated: true)
+        }
     }
     
     func didTapOnBankPicker(documentId: String?) {
@@ -172,9 +177,9 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
         Log("Tapped on Bank Picker on :\(documentId)", event: .success)
         let bankSelectionBottomSheet = paymentComponentsController.bankSelectionBottomSheet()
         bankSelectionBottomSheet.modalPresentationStyle = .overFullScreen
-        self.coordinator.invoicesListViewController.present(bankSelectionBottomSheet, animated: true)
+        self.coordinator.invoicesListViewController.present(bankSelectionBottomSheet, animated: false)
     }
-    
+
     func didTapOnPayInvoice(documentId: String?) {
         guard let documentId else { return }
         Log("Tapped on Pay Invoice on :\(documentId)", event: .success)

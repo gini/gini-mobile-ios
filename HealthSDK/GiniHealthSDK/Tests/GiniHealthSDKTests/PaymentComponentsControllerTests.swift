@@ -98,12 +98,12 @@ final class PaymentComponentsControllerTests: XCTestCase {
         let viewController = mockPaymentComponentsController.bankSelectionBottomSheet()
 
         // Then
-        XCTAssertTrue(viewController is BankSelectionBottomSheet)
-        guard let bottomSheet = viewController as? BankSelectionBottomSheet else {
+        XCTAssertTrue(viewController is BanksBottomView)
+        guard let bottomSheet = viewController as? BanksBottomView else {
             XCTFail("Error finding correct viewController.")
             return
         }
-        XCTAssertNotNil(bottomSheet.bottomSheet)
+        XCTAssertNotNil(bottomSheet.viewModel)
     }
     
     func testLoadPaymentReviewScreenFor_Success() {

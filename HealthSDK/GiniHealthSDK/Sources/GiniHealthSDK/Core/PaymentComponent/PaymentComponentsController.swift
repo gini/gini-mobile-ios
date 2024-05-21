@@ -84,11 +84,6 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
             switch result {
             case let .success(paymentProviders):
                 self?.paymentProviders = paymentProviders
-                // TODO: - Remove fake GPC datas - only for testing purposes
-                if paymentProviders.count > 2 {
-                    self?.paymentProviders[1].gpcSupported = false
-                    self?.paymentProviders[2].gpcSupported = false
-                }
                 self?.selectedPaymentProvider = self?.defaultInstalledPaymentProvider()
                 self?.delegate?.didFetchedPaymentProviders()
             case let .failure(error):
@@ -157,14 +152,12 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     }
 
     public func bankSelectionBottomSheet() -> UIViewController {
-        let paymentProvidersBottomView = BanksBottomView()
         let paymentProvidersBottomViewModel = BanksBottomViewModel(paymentProviders: paymentProviders,
                                                                    selectedPaymentProvider: selectedPaymentProvider)
+        let paymentProvidersBottomView = BanksBottomView(viewModel: paymentProvidersBottomViewModel)
         paymentProvidersBottomViewModel.viewDelegate = self
         paymentProvidersBottomView.viewModel = paymentProvidersBottomViewModel
-        let bankSelectionBottomSheet = BankSelectionBottomSheet()
-        bankSelectionBottomSheet.bottomSheet = paymentProvidersBottomView
-        return bankSelectionBottomSheet
+        return paymentProvidersBottomView
     }
     
     public func loadPaymentReviewScreenFor(documentID: String, trackingDelegate: GiniHealthTrackingDelegate?, completion: @escaping (UIViewController?, GiniHealthError?) -> Void) {
@@ -223,6 +216,10 @@ extension PaymentComponentsController: PaymentProvidersBottomViewProtocol {
     
     public func didTapOnClose() {
         bottomViewDelegate?.didTapOnClose()
+    }
+    
+    public func didTapOnMoreInformation() {
+        viewDelegate?.didTapOnMoreInformation()
     }
 }
 
