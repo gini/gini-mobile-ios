@@ -11,4 +11,5 @@ enum AnalyticsScreen: String {
     case camera
     case review
     case analysis
+    case noResults = "no_results"
 }
