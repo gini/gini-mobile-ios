@@ -124,7 +124,7 @@ final class PaymentComponentViewModel {
         self.paymentProviderColors = paymentProvider?.colors
         self.paymentProviderScheme = paymentProvider?.appSchemeIOS
         
-        self.minimumButtonsHeight = giniHealthConfiguration.heightButtonsPaymentComponentView
+        self.minimumButtonsHeight = giniHealthConfiguration.paymentComponentButtonsHeight
     }
     
     func tapOnMoreInformation() {

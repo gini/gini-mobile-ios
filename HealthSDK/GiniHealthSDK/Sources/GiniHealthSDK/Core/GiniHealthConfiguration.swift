@@ -48,10 +48,10 @@ public final class GiniHealthConfiguration: NSObject {
     /**
     Height of the buttons from the Payment Component View
      */
-    public var heightButtonsPaymentComponentView: CGFloat = Constants.defaultHeightButtons {
+    public var paymentComponentButtonsHeight: CGFloat = Constants.defaultButtonsHeight {
         didSet {
-            if heightButtonsPaymentComponentView < Constants.minimumHeightButtons {
-                heightButtonsPaymentComponentView = Constants.minimumHeightButtons
+            if paymentComponentButtonsHeight < Constants.minimumButtonsHeight {
+                paymentComponentButtonsHeight = Constants.minimumButtonsHeight
             }
         }
     }
@@ -157,7 +157,7 @@ public final class GiniHealthConfiguration: NSObject {
 
 extension GiniHealthConfiguration {
     private enum Constants {
-        static let defaultHeightButtons = 56.0
-        static let minimumHeightButtons = 44.0
+        static let defaultButtonsHeight = 56.0
+        static let minimumButtonsHeight = 44.0
     }
 }
