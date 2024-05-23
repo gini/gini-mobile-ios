@@ -12,7 +12,7 @@ import XCTest
 final class RequestTests: XCTestCase {
 
     let requestParameters = RequestParameters(method: .get,
-                                    headers: ["Accept": "application/vnd.gini.v3+json"])
+                                    headers: ["Accept": "application/vnd.gini.v4+json"])
         
     func testMethodInitialization() {
         let method: HTTPMethod = .get
@@ -20,7 +20,7 @@ final class RequestTests: XCTestCase {
     }
     
     func testHeadersInitialization() {
-        let headers: HTTPHeaders = ["Accept": "application/vnd.gini.v3+json"]
+        let headers: HTTPHeaders = ["Accept": "application/vnd.gini.v4+json"]
         XCTAssertEqual(requestParameters.headers, headers, "both headers should match")
     }
 }

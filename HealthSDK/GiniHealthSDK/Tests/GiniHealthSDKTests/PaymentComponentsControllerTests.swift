@@ -35,7 +35,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
 
         // Then
         XCTAssertFalse(mockPaymentComponentsController.isLoading)
-        XCTAssertNotNil(mockPaymentComponentsController.selectedPaymentProvider)
+        XCTAssertNil(mockPaymentComponentsController.selectedPaymentProvider)
     }
     
     func testCheckIfDocumentIsPayable_Success() {
