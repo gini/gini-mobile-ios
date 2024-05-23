@@ -28,7 +28,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
             return
         }
         if let iconData = Data(url: URL(string: paymentProviderResponse.iconLocation)) {
-            selectedPaymentProvider = PaymentProvider(id: paymentProviderResponse.id, name: paymentProviderResponse.name, appSchemeIOS: paymentProviderResponse.appSchemeIOS, minAppVersion: paymentProviderResponse.minAppVersion, colors: paymentProviderResponse.colors, iconData: iconData, appStoreUrlIOS: paymentProviderResponse.appStoreUrlIOS, universalLinkIOS: paymentProviderResponse.universalLinkIOS, index: paymentProviderResponse.index)
+            selectedPaymentProvider = PaymentProvider(id: paymentProviderResponse.id, name: paymentProviderResponse.name, appSchemeIOS: paymentProviderResponse.appSchemeIOS, minAppVersion: paymentProviderResponse.minAppVersion, colors: paymentProviderResponse.colors, iconData: iconData, appStoreUrlIOS: paymentProviderResponse.appStoreUrlIOS, universalLinkIOS: paymentProviderResponse.universalLinkIOS, index: paymentProviderResponse.index, gpcSupportedPlatforms: paymentProviderResponse.gpcSupportedPlatforms, openWithSupportedPlatforms: paymentProviderResponse.openWithSupportedPlatforms)
         }
     }
     
