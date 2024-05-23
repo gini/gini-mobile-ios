@@ -55,4 +55,6 @@ enum AnalyticsPropertyKey: String {
 
     case errorMessage = "error_message"
     case documentType = "document_type"
+    case errorCode = "error_code"
+    case errorType = "error_type"
 }

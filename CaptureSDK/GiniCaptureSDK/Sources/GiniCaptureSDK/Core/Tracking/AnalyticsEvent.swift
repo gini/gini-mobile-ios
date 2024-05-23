@@ -31,4 +31,5 @@ enum AnalyticsEvent: String {
     // MARK: - No Results and Error
     case enterManuallyTapped = "enter_manually_tapped"
     case retakeImagesTapped = "retake_images_tapped"
+    case backToCameraTapped = "back_to_camera_tapped"
 }
