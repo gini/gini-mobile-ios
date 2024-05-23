@@ -30,6 +30,11 @@ public struct ProviderColors: Codable {
         self.text = text
     }
 }
+
+public enum PlatformSupported: String, Codable {
+    case ios
+    case android
+}
 /**
  Struct for payment provider response
  */
@@ -43,8 +48,10 @@ public struct PaymentProviderResponse: Codable {
     public var appStoreUrlIOS: String?
     public var universalLinkIOS: String
     public var index: Int?
+    public var gpcSupportedPlatforms: [PlatformSupported]
+    public var openWithSupportedPlatforms: [PlatformSupported]
 
-    public init(id: String, name: String, appSchemeIOS: String, minAppVersion: MinAppVersions?, colors: ProviderColors, iconLocation: String, appStoreUrlIOS: String?, universalLinkIOS: String, index: Int?) {
+    public init(id: String, name: String, appSchemeIOS: String, minAppVersion: MinAppVersions?, colors: ProviderColors, iconLocation: String, appStoreUrlIOS: String?, universalLinkIOS: String, index: Int?, gpcSupportedPlatforms: [PlatformSupported], openWithSupportedPlatforms: [PlatformSupported]) {
         self.id = id
         self.name = name
         self.appSchemeIOS = appSchemeIOS
@@ -54,5 +61,7 @@ public struct PaymentProviderResponse: Codable {
         self.appStoreUrlIOS = appStoreUrlIOS
         self.universalLinkIOS = universalLinkIOS
         self.index = index
+        self.gpcSupportedPlatforms = gpcSupportedPlatforms
+        self.openWithSupportedPlatforms = openWithSupportedPlatforms
     }
 }

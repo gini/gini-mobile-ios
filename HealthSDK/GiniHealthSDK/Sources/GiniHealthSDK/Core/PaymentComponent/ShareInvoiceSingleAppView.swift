@@ -11,9 +11,6 @@ class ShareInvoiceSingleAppView: UIView {
     // Subviews
     private let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = GiniColor(lightModeColor: .white,
-                                              darkModeColor: UIColor.GiniHealthColors.light3).uiColor()
-        imageView.contentMode = .scaleAspectFit
         imageView.roundCorners(corners: .allCorners, radius: Constants.imageViewCornerRardius)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -60,9 +57,15 @@ class ShareInvoiceSingleAppView: UIView {
     }
 
     // Function to configure view
-    func configure(image: UIImage?, title: String?) {
+    func configure(image: UIImage?, title: String?, isMoreButton: Bool) {
         imageView.image = image
         titleLabel.text = title
+        imageView.layer.borderColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark3,
+                                                darkModeColor: UIColor.GiniHealthColors.light3).uiColor().cgColor
+        imageView.layer.borderWidth = isMoreButton ? 1 : 0
+        imageView.backgroundColor = isMoreButton ? .clear : GiniColor(lightModeColor: .white,
+                                                                      darkModeColor: UIColor.GiniHealthColors.light3).uiColor()
+        imageView.contentMode = isMoreButton ? .center : .scaleAspectFit
     }
 }
 
