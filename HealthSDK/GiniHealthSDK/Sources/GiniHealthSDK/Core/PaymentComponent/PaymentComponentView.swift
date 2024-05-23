@@ -137,10 +137,11 @@ final class PaymentComponentView: UIView {
     }
     
     private func updateButtonsViews() {
-        selectBankButton.customConfigure(labelText: viewModel.bankNameLabelText,
+        selectBankButton.customConfigure(labelText: viewModel.placeholderBankNameText,
                                          leftImageIcon: viewModel.bankImageIcon,
                                          rightImageIcon: viewModel.chevronDownIconName,
-                                         rightImageTintColor: viewModel.chevronDownIconColor)
+                                         rightImageTintColor: viewModel.chevronDownIconColor,
+                                         shouldShowLabel: !viewModel.hasBankSelected)
         payInvoiceButton.isHidden = !viewModel.hasBankSelected
     }
 

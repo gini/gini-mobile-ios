@@ -84,17 +84,10 @@ final class PaymentComponentViewModel {
         return UIImage(data: bankImageIconData)
     }
 
-    // Bank name label
-    private var bankName: String?
-    var bankNameLabelText: String? {
-        if let bankName, !bankName.isEmpty {
-            return nil
-        }
-        return placeholderBankNameText
-    }
+    // Primary button
     let notInstalledBankTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark4,
                                                        darkModeColor: UIColor.GiniHealthColors.light4).uiColor()
-    private let placeholderBankNameText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.selectBank.label",
+    let placeholderBankNameText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.selectBank.label",
                                                                                    comment: "Placeholder text used when there isn't a payment provider app installed")
     
     let chevronDownIconName: String = "iconChevronDown"
@@ -116,9 +109,7 @@ final class PaymentComponentViewModel {
     
     var minimumButtonsHeight: CGFloat
     
-    var hasBankSelected: Bool {
-        return !(bankName?.isEmpty ?? true)
-    }
+    var hasBankSelected: Bool
     
     init(paymentProvider: PaymentProvider?) {
         let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
@@ -128,8 +119,8 @@ final class PaymentComponentViewModel {
         self.moreInformationLabelLinkFont = giniHealthConfiguration.textStyleFonts[.linkBold] ?? defaultBoldFont
         self.selectYourBankLabelFont = giniHealthConfiguration.textStyleFonts[.subtitle2] ?? defaultMediumFont
         
+        self.hasBankSelected = paymentProvider != nil
         self.bankImageIconData = paymentProvider?.iconData
-        self.bankName = paymentProvider?.name
         self.paymentProviderColors = paymentProvider?.colors
         self.paymentProviderScheme = paymentProvider?.appSchemeIOS
         
