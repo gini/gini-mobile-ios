@@ -150,7 +150,7 @@ final class PaymentComponentViewModel {
     }
     
     // Function to check if Payment was used at least once
-    func wasPaymentComponentViewUsed() -> Bool {
+    func isPaymentComponentUsed() -> Bool {
         return UserDefaults.standard.bool(forKey: Constants.paymentComponentViewUsedKey)
     }
     
