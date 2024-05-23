@@ -551,21 +551,20 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             lastValidatedIBAN = iban
         }
         
-        guard selectedPaymentProvider.gpcSupported else {
+        if selectedPaymentProvider.gpcSupportedPlatforms.contains(.ios) {
+            guard selectedPaymentProvider.appSchemeIOS.canOpenURLString() else {
+                model?.openInstallAppBottomSheet()
+                return
+            }
+
+            checkForErrors()
+        } else if selectedPaymentProvider.openWithSupportedPlatforms.contains(.ios) {
             if model?.shouldShowOnboardingScreenFor(paymentProvider: selectedPaymentProvider) ?? false {
                 model?.openOnboardingShareInvoiceBottomSheet()
             } else {
                 sharePDF()
             }
-            return
         }
-        
-        guard selectedPaymentProvider.appSchemeIOS.canOpenURLString() else {
-            model?.openInstallAppBottomSheet()
-            return
-        }
-
-        checkForErrors()
     }
     
     func checkForErrors() {

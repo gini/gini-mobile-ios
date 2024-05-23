@@ -15,6 +15,7 @@ protocol ShareInvoiceBottomViewProtocol: AnyObject {
 struct SingleApp {
     var title: String
     var image: UIImage?
+    var isMoreButton: Bool
 }
 
 final class ShareInvoiceBottomViewModel {
@@ -65,6 +66,7 @@ final class ShareInvoiceBottomViewModel {
     // Apps View
     let appsBackgroundColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark6,
                                                  darkModeColor: UIColor.GiniHealthColors.light6).uiColor()
+    let moreIconName: String = "more_vertical"
     
     // Tip label
     let tipAccentColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark2,
@@ -108,11 +110,13 @@ final class ShareInvoiceBottomViewModel {
     }
     
     private func generateAppMockedElements() {
-        for _ in 0..<3 {
-            self.appsMocked.append(SingleApp(title: NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.shareInvoiceBottomSheet.app", comment: "")))
+        for _ in 0..<2 {
+            self.appsMocked.append(SingleApp(title: NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.shareInvoiceBottomSheet.app", comment: ""), isMoreButton: false))
         }
-        self.appsMocked.append(SingleApp(title: selectedPaymentProvider?.name ?? "", image: bankImageIcon))
-        self.appsMocked.append(SingleApp(title: NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.shareInvoiceBottomSheet.app", comment: "")))
+        self.appsMocked.append(SingleApp(title: selectedPaymentProvider?.name ?? "", image: bankImageIcon, isMoreButton: false))
+        self.appsMocked.append(SingleApp(title: NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.shareInvoiceBottomSheet.app", comment: ""), isMoreButton: false))
+        self.appsMocked.append(SingleApp(title: NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.shareInvoiceBottomSheet.more", comment: ""), image: UIImageNamedPreferred(named: moreIconName), isMoreButton: true))
+        
     }
     
     func didTapOnContinue() {
