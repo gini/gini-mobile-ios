@@ -41,7 +41,7 @@ public enum AnalyticsEvent: String {
     case nextStepTapped = "next_step_tapped"
     case getStartedTapped = "get_started_tapped"
 
-    // MARK: - Digital invoice
+    // MARK: - Return assistant
     case dismissed
     case saveTapped = "save_tapped"
     case editTapped = "edit_tapped"
