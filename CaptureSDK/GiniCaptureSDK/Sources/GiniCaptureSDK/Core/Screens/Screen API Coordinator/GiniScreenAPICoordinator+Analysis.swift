@@ -131,11 +131,10 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
         }
 
         self.trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .error))
-        let viewController = ErrorScreenViewController(
-            giniConfiguration: giniConfiguration,
-            type: errorType,
-            documentType: pages.type ?? .pdf,
-            viewModel: viewModel)
+        let viewController = ErrorScreenViewController(giniConfiguration: giniConfiguration,
+                                                       type: errorType,
+                                                       documentType: pages.type ?? .pdf,
+                                                       viewModel: viewModel)
 
         screenAPINavigationController.pushViewController(viewController, animated: animated)
     }
