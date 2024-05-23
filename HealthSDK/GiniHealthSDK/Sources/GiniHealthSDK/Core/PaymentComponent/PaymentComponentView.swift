@@ -131,9 +131,9 @@ final class PaymentComponentView: UIView {
     }
     
     private func updateAvailableViews() {
-        let wasPaymentComponentViewUsed = viewModel.wasPaymentComponentViewUsed()
-        selectYourBankView.isHidden = wasPaymentComponentViewUsed
-        moreInformationView.isHidden = wasPaymentComponentViewUsed
+        let isPaymentComponentUsed = viewModel.isPaymentComponentUsed()
+        selectYourBankView.isHidden = isPaymentComponentUsed
+        moreInformationView.isHidden = isPaymentComponentUsed
     }
     
     private func updateButtonsViews() {
