@@ -64,7 +64,14 @@ public final class GiniBankConfiguration: NSObject {
     /**
      Should be set if the main app's bundle is not used.
      */
-     public var customResourceBundle: Bundle?
+    public var customResourceBundle: Bundle?
+
+    /**
+     Enables the customization of resources to override the default Gini resources. The change will affect all screens.
+
+     - Important: To ensure proper customization, set this property before configuring any custom Gini button configurations, such as `primaryButtonConfiguration`, `secondaryButtonConfiguration`, `transparentButtonConfiguration`, `cameraControlButtonConfiguration` and `addPageButtonConfiguration`.
+     */
+    public var customResourceProvider: CustomResourceProvider?
 
     // MARK: - Button configuration options
     /**
@@ -397,6 +404,7 @@ public final class GiniBankConfiguration: NSObject {
 
         configuration.entryPoint = self.entryPoint
         configuration.customResourceBundle = self.customResourceBundle
+        configuration.customResourceProvider = self.customResourceProvider
 
         GiniCapture.setConfiguration(configuration)
 
@@ -460,6 +468,7 @@ public final class GiniBankConfiguration: NSObject {
         giniBankConfiguration.debugModeOn = configuration.debugModeOn
         giniBankConfiguration.giniErrorLoggerIsOn = configuration.giniErrorLoggerIsOn
         giniBankConfiguration.customResourceBundle = configuration.customResourceBundle
+        giniBankConfiguration.customResourceProvider = configuration.customResourceProvider
     }
 
     // MARK: - Update to custom font

@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  HealthAPILibraryExample
 //
-//  Created by Nadya Karaban on 30.09.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit

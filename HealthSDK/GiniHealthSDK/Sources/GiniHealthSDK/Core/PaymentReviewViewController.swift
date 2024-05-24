@@ -2,7 +2,7 @@
 //  PaymentReviewViewController.swift
 //  GiniHealth
 //
-//  Created by Nadya Karaban on 30.03.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -11,45 +11,45 @@ import GiniHealthAPILibrary
 public final class PaymentReviewViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet var pageControl: UIPageControl!
     @IBOutlet weak var pageControlHeightConstraint: NSLayoutConstraint!
-    @IBOutlet var recipientField: UITextField!
-    @IBOutlet var ibanField: UITextField!
-    @IBOutlet var amountField: UITextField!
-    @IBOutlet var usageField: UITextField!
-    @IBOutlet var payButton: GiniCustomButton!
+    @IBOutlet weak var recipientTextFieldView: TextFieldWithLabelView!
+    @IBOutlet weak var ibanTextFieldView: TextFieldWithLabelView!
+    @IBOutlet weak var amountTextFieldView: TextFieldWithLabelView!
+    @IBOutlet weak var usageTextFieldView: TextFieldWithLabelView!
+    @IBOutlet weak var payButtonStackView: UIStackView!
     @IBOutlet var paymentInputFieldsErrorLabels: [UILabel]!
     @IBOutlet var usageErrorLabel: UILabel!
     @IBOutlet var amountErrorLabel: UILabel!
     @IBOutlet var ibanErrorLabel: UILabel!
     @IBOutlet var recipientErrorLabel: UILabel!
-    @IBOutlet var paymentInputFields: [UITextField]!
-    @IBOutlet var bankProviderButtonView: UIView!
-    @IBOutlet weak var bankProviderLabel: UILabel!
+    @IBOutlet var paymentInputFields: [TextFieldWithLabelView]!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet var inputContainer: UIView!
     @IBOutlet var containerCollectionView: UIView!
     @IBOutlet var paymentInfoStackView: UIStackView!
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet weak var closeButton: UIButton!
-    
-    @IBOutlet weak var bankProviderEditIcon: UIImageView!
-    
-    @IBOutlet weak var bankProviderImage: UIImageView!
     @IBOutlet weak var infoBar: UIView!
     @IBOutlet weak var infoBarLabel: UILabel!
+    @IBOutlet weak var bottomView: UIView!
     var model: PaymentReviewModel?
-    var paymentProviders: [PaymentProvider] = []
-    private var amountToPay = Price(value: 0, currencyCode: "EUR")
+    private var amountToPay = Price(value: 0, currencyCode: "€")
     private var lastValidatedIBAN = ""
+    private var showInfoBarOnce = true
     
-    private var selectedPaymentProvider: PaymentProvider? {
-        didSet {
-            if let provider = selectedPaymentProvider {
-                DispatchQueue.main.async {
-                    self.updateUIWithDefaultPaymentProvider(provider: provider)
-                }
-            }
-        }
-    }
+    private lazy var payInvoiceButton: PaymentPrimaryButton = {
+        let button = PaymentPrimaryButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.frame = CGRect(x: 0, y: 0, width: .greatestFiniteMagnitude, height: Constants.buttonViewHeight)
+        return button
+    }()
+    
+    private lazy var poweredByGiniView: PoweredByGiniView = {
+        let view = PoweredByGiniView()
+        view.viewModel = PoweredByGiniViewModel()
+        return view
+    }()
+
+    private var selectedPaymentProvider: PaymentProvider?
     
     public weak var trackingDelegate: GiniHealthTrackingDelegate?
     
@@ -60,20 +60,22 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         case usageFieldTag
     }
     
-    public static func instantiate(with giniHealth: GiniHealth, document: Document, extractions: [Extraction], trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
-        let vc = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
+    public static func instantiate(with giniHealth: GiniHealth, document: Document, extractions: [Extraction], selectedPaymentProvider: PaymentProvider?, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
+        let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
-        vc.model = PaymentReviewModel(with: giniHealth, document: document, extractions: extractions )
-        vc.trackingDelegate = trackingDelegate
-        return vc
+        viewController.model = PaymentReviewModel(with: giniHealth, document: document, extractions: extractions)
+        viewController.trackingDelegate = trackingDelegate
+        viewController.selectedPaymentProvider = selectedPaymentProvider
+        return viewController
     }
     
-    public static func instantiate(with giniHealth: GiniHealth, data: DataForReview, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
-        let vc = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
+    public static func instantiate(with giniHealth: GiniHealth, data: DataForReview, selectedPaymentProvider: PaymentProvider?, trackingDelegate: GiniHealthTrackingDelegate? = nil) -> PaymentReviewViewController {
+        let viewController = (UIStoryboard(name: "PaymentReview", bundle: giniHealthBundle())
             .instantiateViewController(withIdentifier: "paymentReviewViewController") as? PaymentReviewViewController)!
-        vc.model = PaymentReviewModel(with: giniHealth, document: data.document, extractions: data.extractions)
-        vc.trackingDelegate = trackingDelegate
-        return vc
+        viewController.model = PaymentReviewModel(with: giniHealth, document: data.document, extractions: data.extractions)
+        viewController.trackingDelegate = trackingDelegate
+        viewController.selectedPaymentProvider = selectedPaymentProvider
+        return viewController
     }
 
     var giniHealthConfiguration = GiniHealthConfiguration.shared
@@ -88,43 +90,26 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        showInfoBar()
+        if showInfoBarOnce {
+            showInfoBar()
+            showInfoBarOnce = false
+        }
     }
     
     fileprivate func setupViewModel() {
-        
-        model?.onNoAppsErrorHandling = {[weak self] error in
-            DispatchQueue.main.async {
-                self?.showError(message: NSLocalizedStringPreferredFormat("ginihealth.errors.no.banking.app.installed",
-                                                                         comment: "no bank apps installed") )
-            }
-        }
-        
         model?.onExtractionFetched = { [weak self] () in
             DispatchQueue.main.async {
                 self?.fillInInputFields()
             }
         }
         
-        model?.onPaymentProvidersFetched = {[weak self] providers in
-            DispatchQueue.main.async { [weak self] in
-                self?.paymentProviders.append(contentsOf: providers)
-                if let paymentProviders = self?.paymentProviders, paymentProviders.count > 0 {
-                    let providerId = UserDefaults.standard.string(forKey: "ginihealth.defaultPaymentProviderId")
-                    let provider = paymentProviders.first(where: { $0.id == providerId }) ?? paymentProviders[0]
-                    self?.selectedPaymentProvider = provider
-                }
-            }
-        }
-        
-        model?.checkIfAnyPaymentProviderAvailable()
-
-        
         model?.updateImagesLoadingStatus = { [weak self] () in
             DispatchQueue.main.async { [weak self] in
                 let isLoading = self?.model?.isImagesLoading ?? false
                 if isLoading {
-                    self?.collectionView.showLoading(style: self?.giniHealthConfiguration.loadingIndicatorStyle, color: UIColor.from(giniColor: self?.giniHealthConfiguration.loadingIndicatorColor ?? GiniHealthConfiguration.shared.loadingIndicatorColor), scale: self?.giniHealthConfiguration.loadingIndicatorScale)
+                    self?.collectionView.showLoading(style: .whiteLarge,
+                                                     color: UIColor.GiniHealthColors.accent1,
+                                                     scale: Constants.loadingIndicatorScale)
                 } else {
                     self?.collectionView.stopLoading()
                 }
@@ -135,7 +120,15 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             DispatchQueue.main.async { [weak self] in
                 let isLoading = self?.model?.isLoading ?? false
                 if isLoading {
-                    self?.view.showLoading(style: self?.giniHealthConfiguration.loadingIndicatorStyle, color: UIColor.from(giniColor: self?.giniHealthConfiguration.loadingIndicatorColor ?? GiniHealthConfiguration.shared.loadingIndicatorColor), scale: self?.giniHealthConfiguration.loadingIndicatorScale)
+                    if #available(iOS 13.0, *) {
+                        self?.view.showLoading(style: Constants.loadingIndicatorStyle,
+                                               color: UIColor.GiniHealthColors.accent1,
+                                               scale: Constants.loadingIndicatorScale)
+                    } else {
+                        self?.view.showLoading(style: .whiteLarge,
+                                               color: UIColor.GiniHealthColors.accent1,
+                                               scale: Constants.loadingIndicatorScale)
+                    }
                 } else {
                     self?.view.stopLoading()
                 }
@@ -161,12 +154,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             }
         }
         
-        model?.onBankSelection = {[weak self] provider in
-            DispatchQueue.main.async {
-                self?.updateUIWithDefaultPaymentProvider(provider: provider)
-            }
-        }
-        
         model?.onCreatePaymentRequestErrorHandling = {[weak self] () in
             DispatchQueue.main.async {
                 self?.showError(message: NSLocalizedStringPreferredFormat("ginihealth.errors.failed.payment.request.creation",
@@ -183,7 +170,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     override public func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        inputContainer.roundCorners(corners: [.topLeft, .topRight], radius: 12)
+        inputContainer.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadiusInputContainer)
     }
     
     public override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -199,18 +186,19 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         configurePageControl()
         configureCloseButton()
         configurePayButtonInitialState()
+        configurePoweredByGiniView()
         hideErrorLabels()
         fillInInputFields()
-        addDoneButtonForNumPad(amountField)
+        addDoneButtonForNumPad(amountTextFieldView)
     }
     
     // MARK: - Info bar
 
     fileprivate func configureInfoBar() {
-        infoBar.roundCorners(corners: [.topLeft, .topRight], radius: giniHealthConfiguration.infoBarCornerRadius)
-        infoBar.backgroundColor = UIColor.from(giniColor: giniHealthConfiguration.infoBarBackgroundColor)
-        infoBarLabel.textColor = UIColor.from(giniColor: giniHealthConfiguration.infoBarTextColor)
-        infoBarLabel.font = giniHealthConfiguration.customFont.regular
+        infoBar.roundCorners(corners: [.topLeft, .topRight], radius: Constants.cornerRadiusInfoBar)
+        infoBar.backgroundColor = UIColor.GiniHealthColors.success1
+        infoBarLabel.textColor = UIColor.GiniHealthColors.dark7
+        infoBarLabel.font = giniHealthConfiguration.textStyleFonts[.caption1]
         infoBarLabel.adjustsFontForContentSizeCategory = true
         infoBarLabel.text = NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.infobar.message",
                                                              comment: "info bar message")
@@ -220,11 +208,11 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         configureInfoBar()
         infoBar.isHidden = false
         let screenSize = UIScreen.main.bounds.size
-        UIView.animate(withDuration: 0.5,
+        UIView.animate(withDuration: Constants.animationDuration,
                        delay: 0, usingSpringWithDamping: 1.0,
                        initialSpringVelocity: 1.0,
                        options: [], animations: {
-                           self.infoBar.frame = CGRect(x: 0, y: self.inputContainer.frame.minY + self.giniHealthConfiguration.infoBarCornerRadius - self.infoBar.frame.height, width: screenSize.width, height: self.infoBar.frame.height)
+            self.infoBar.frame = CGRect(x: 0, y: self.inputContainer.frame.minY + Constants.moveHeightInfoBar - self.infoBar.frame.height, width: screenSize.width, height: self.infoBar.frame.height)
                        }, completion: nil)
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             self.animateSlideDownInfoBar()
@@ -233,7 +221,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     fileprivate func animateSlideDownInfoBar() {
         let screenSize = UIScreen.main.bounds.size
-        UIView.animate(withDuration: 0.5,
+        UIView.animate(withDuration: Constants.animationDuration,
                        delay: 0, usingSpringWithDamping: 1.0,
                        initialSpringVelocity: 1.0,
                        options: [], animations: {
@@ -242,73 +230,19 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
                            self.infoBar.isHidden = true
                        })
     }
-
-    // MARK: - ConfigureBankProviderView
-    
-    fileprivate func configureBankProviderView(paymentProvider: PaymentProvider) {
-        bankProviderButtonView.backgroundColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonBackgroundColor)
-        bankProviderButtonView.layer.cornerRadius = giniHealthConfiguration.bankButtonCornerRadius
-        bankProviderButtonView.layer.borderWidth = giniHealthConfiguration.bankButtonBorderWidth
-        bankProviderButtonView.layer.borderColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonBorderColor).cgColor
-
-        bankProviderLabel.textColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonTextColor)
-        bankProviderLabel.text = paymentProvider.name
-
-        let imageData =  paymentProvider.iconData
-        if let image = UIImage(data: imageData){
-            bankProviderImage.image = image
-        }
-        
-        if let templateImage = UIImageNamedPreferred(named: "editIcon"), self.paymentProviders.count > 1 {
-            bankProviderEditIcon.image = templateImage.withRenderingMode(.alwaysTemplate)
-            bankProviderEditIcon.tintColor = UIColor.from(giniColor: giniHealthConfiguration.bankButtonEditIconColor)
-            let selectProviderTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(selectBankProviderTapped))
-            bankProviderButtonView.addGestureRecognizer(selectProviderTapRecognizer)
-        }
-        bankProviderLabel.font = giniHealthConfiguration.customFont.regular
-        bankProviderLabel.adjustsFontForContentSizeCategory = true
-
-    }
-    
-    fileprivate func updateUIWithDefaultPaymentProvider(provider: PaymentProvider){
-        self.configureBankProviderView(paymentProvider: provider)
-        self.configurePayButton(paymentProvider: provider)
-    }
-
-    fileprivate func presentBankSelectionViewController() {
-       
-       let availableProviders = self.paymentProviders
-        if availableProviders.count > 1 {
-            let bankSelectionViewController = BankProviderViewController.instantiate(with: availableProviders)
-            bankSelectionViewController.onSelectedProviderDidChanged = { provider in
-                self.selectedPaymentProvider = provider
-            }
-            bankSelectionViewController.modalPresentationStyle = .overCurrentContext
-            bankSelectionViewController.modalTransitionStyle = .crossDissolve
-            present(bankSelectionViewController, animated: true)
-        }
-    }
-
-    fileprivate func configurePayButton(paymentProvider: PaymentProvider) {
-        let backgroundColorString = String.rgbaHexFrom(rgbHex: paymentProvider.colors.background)
-        if let backgroundHexColor = UIColor(hex: backgroundColorString) {
-            payButton.defaultBackgroundColor  = UIColor.from(giniColor: GiniColor(lightModeColor: backgroundHexColor, darkModeColor: backgroundHexColor))
-        }
-        let textColorString = String.rgbaHexFrom(rgbHex: paymentProvider.colors.text)
-        if let textHexColor = UIColor(hex: textColorString) {
-            payButton.textColor = UIColor.from(giniColor: GiniColor(lightModeColor: textHexColor, darkModeColor: textHexColor))
-        }
-        disablePayButtonIfNeeded()
-    }
     
     fileprivate func configurePayButtonInitialState() {
-        payButton.disabledBackgroundColor = UIColor.from(giniColor: giniHealthConfiguration.payButtonDisabledBackgroundColor)
-        payButton.isEnabled = false
-        payButton.disabledTextColor = UIColor.from(giniColor: giniHealthConfiguration.payButtonDisabledTextColor)
-        payButton.layer.cornerRadius = giniHealthConfiguration.payButtonCornerRadius
-        payButton.titleLabel?.font = giniHealthConfiguration.payButtonTitleFont
-        payButton.setTitle( NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.next.button.title",
-                                                             comment: "next button title"), for: .normal)
+        payButtonStackView.addArrangedSubview(payInvoiceButton)
+        guard let model else { return }
+        payInvoiceButton.configure(with: giniHealthConfiguration.primaryButtonConfiguration)
+        payInvoiceButton.customConfigure(paymentProviderColors: selectedPaymentProvider?.colors,
+                                         isPaymentProviderInstalled: true,
+                                         text: model.payInvoiceLabelText,
+                                         leftImageData: selectedPaymentProvider?.iconData)
+        disablePayButtonIfNeeded()
+        payInvoiceButton.didTapButton = { [weak self] in
+            self?.payButtonClicked()
+        }
     }
     
     fileprivate func configurePaymentInputFields() {
@@ -323,15 +257,17 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     fileprivate func configurePageControl() {
-        pageControl.layer.zPosition = 10
-        pageControl.pageIndicatorTintColor = UIColor.from(giniColor:giniHealthConfiguration.pageIndicatorTintColor)
-        pageControl.currentPageIndicatorTintColor = UIColor.from(giniColor:giniHealthConfiguration.currentPageIndicatorTintColor)
+        pageControl.layer.zPosition = Constants.zPositionPageControl
+        pageControl.pageIndicatorTintColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark4,
+                                                       darkModeColor: UIColor.GiniHealthColors.light4).uiColor()
+        pageControl.currentPageIndicatorTintColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark2,
+                                                              darkModeColor: UIColor.GiniHealthColors.light5).uiColor()
         pageControl.hidesForSinglePage = true
         pageControl.numberOfPages = model?.document.pageCount ?? 1
         if pageControl.numberOfPages == 1 {
             pageControlHeightConstraint.constant = 0
         } else {
-            pageControlHeightConstraint.constant = 20
+            pageControlHeightConstraint.constant = Constants.heightPageControl
         }
     }
     
@@ -341,72 +277,78 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     fileprivate func configureScreenBackgroundColor() {
-        let screenBackgroundColor = UIColor.from(giniColor:giniHealthConfiguration.paymentScreenBackgroundColor)
+        let screenBackgroundColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.light7,
+                                               darkModeColor: UIColor.GiniHealthColors.light7).uiColor()
         mainView.backgroundColor = screenBackgroundColor
         collectionView.backgroundColor = screenBackgroundColor
         pageControl.backgroundColor = screenBackgroundColor
-        inputContainer.backgroundColor = UIColor.from(giniColor:giniHealthConfiguration.inputFieldsContainerBackgroundColor)
+        inputContainer.backgroundColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark7,
+                                                   darkModeColor: UIColor.GiniHealthColors.light7).uiColor()
+    }
+    
+    fileprivate func configurePoweredByGiniView() {
+        bottomView.addSubview(poweredByGiniView)
+        setupPoweredByGiniConstraints()
+    }
+    
+    private func setupPoweredByGiniConstraints() {
+        let poweredByGiniBottomAnchorConstraint = poweredByGiniView.bottomAnchor.constraint(equalTo: poweredByGiniView.bottomAnchor)
+        poweredByGiniBottomAnchorConstraint.priority = .required - 1
+        NSLayoutConstraint.activate([
+            poweredByGiniView.topAnchor.constraint(equalTo: bottomView.topAnchor),
+            poweredByGiniView.heightAnchor.constraint(equalToConstant: poweredByGiniView.frame.height),
+            poweredByGiniView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor),
+            poweredByGiniBottomAnchorConstraint
+        ])
     }
     
     // MARK: - Input fields configuration
 
-    fileprivate func applyDefaultStyle(_ field: UITextField) {
-        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: field.frame.height))
-        field.leftViewMode = .always
-        field.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: field.frame.height))
-        field.rightViewMode = .always
-        field.layer.cornerRadius = self.giniHealthConfiguration.paymentInputFieldCornerRadius
-        field.layer.borderWidth = giniHealthConfiguration.paymentInputFieldBorderWidth
-        field.backgroundColor = UIColor.from(giniColor: giniHealthConfiguration.paymentInputFieldBackgroundColor)
-        field.font = giniHealthConfiguration.customFont.regular
-        field.textColor = UIColor.from(giniColor: giniHealthConfiguration.paymentInputFieldTextColor)
-        let placeholderText = inputFieldPlaceholderText(field)
-        field.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: [NSAttributedString.Key.foregroundColor: UIColor.from(giniColor: giniHealthConfiguration.paymentInputFieldPlaceholderTextColor), NSAttributedString.Key.font: giniHealthConfiguration.customFont.regular])
-        field.layer.masksToBounds = true
+    fileprivate func applyDefaultStyle(_ textFieldView: TextFieldWithLabelView) {
+        textFieldView.configure(configuration: giniHealthConfiguration.defaultStyleInputFieldConfiguration)
+        textFieldView.customConfigure(labelTitle: inputFieldPlaceholderText(textFieldView))
+        textFieldView.textField.delegate = self
+        textFieldView.textField.tag = textFieldView.tag
+        textFieldView.layer.masksToBounds = true
     }
 
-    fileprivate func applyErrorStyle(_ textField: UITextField) {
-        UIView.animate(withDuration: 0.3) {
-            textField.layer.cornerRadius = self.giniHealthConfiguration.paymentInputFieldCornerRadius
-            textField.backgroundColor = UIColor.from(giniColor: self.giniHealthConfiguration.paymentInputFieldBackgroundColor)
-            textField.layer.borderWidth = self.giniHealthConfiguration.paymentInputFieldErrorStyleBorderWidth
-            textField.layer.borderColor = UIColor.from(giniColor: self.giniHealthConfiguration.paymentInputFieldErrorStyleColor).cgColor
-            textField.layer.masksToBounds = true
+    fileprivate func applyErrorStyle(_ textFieldView: TextFieldWithLabelView) {
+        UIView.animate(withDuration: Constants.animationDuration) {
+            textFieldView.configure(configuration: self.giniHealthConfiguration.errorStyleInputFieldConfiguration)
+            textFieldView.layer.masksToBounds = true
         }
     }
 
-    fileprivate func applySelectionStyle(_ textField: UITextField) {
-        UIView.animate(withDuration: 0.3) {
-            textField.layer.cornerRadius = self.giniHealthConfiguration.paymentInputFieldCornerRadius
-            textField.backgroundColor = UIColor.from(giniColor: self.giniHealthConfiguration.paymentInputFieldSelectionBackgroundColor)
-            textField.layer.borderWidth = self.giniHealthConfiguration.paymentInputFieldSelectionStyleBorderWidth
-            textField.layer.borderColor = UIColor.from(giniColor: self.giniHealthConfiguration.paymentInputFieldSelectionStyleColor).cgColor
-            textField.layer.masksToBounds = true
+    fileprivate func applySelectionStyle(_ textFieldView: TextFieldWithLabelView) {
+        UIView.animate(withDuration: Constants.animationDuration) { [self] in
+            textFieldView.configure(configuration: self.giniHealthConfiguration.selectionStyleInputFieldConfiguration)
+            textFieldView.layer.masksToBounds = true
         }
     }
-    
+
     @objc fileprivate func doneWithAmountInputButtonTapped() {
-        amountField.endEditing(true)
-        amountField.resignFirstResponder()
+        amountTextFieldView.textField.endEditing(true)
+        amountTextFieldView.textField.resignFirstResponder()
         
-        if amountField.hasText && !amountField.isReallyEmpty {
+        if amountTextFieldView.textField.hasText && !amountTextFieldView.textField.isReallyEmpty {
             updateAmoutToPayWithCurrencyFormat()
         }
     }
 
-     func addDoneButtonForNumPad(_ textField: UITextField) {
-        let toolbarDone = UIToolbar(frame:CGRect(x:0, y:0, width:view.frame.width, height:40))
-        toolbarDone.sizeToFit()
-        let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let barBtnDone = UIBarButtonItem.init(barButtonSystemItem: UIBarButtonItem.SystemItem.done,
-                                              target: self, action: #selector(PaymentReviewViewController.doneWithAmountInputButtonTapped))
+     func addDoneButtonForNumPad(_ textFieldView: TextFieldWithLabelView) {
+         let toolbarDone = UIToolbar(frame:CGRect(x: 0, y: 0, width: view.frame.width, height: Constants.heightToolbar))
+         toolbarDone.sizeToFit()
+         let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+         let barBtnDone = UIBarButtonItem.init(barButtonSystemItem: UIBarButtonItem.SystemItem.done,
+                                               target: self, 
+                                               action: #selector(PaymentReviewViewController.doneWithAmountInputButtonTapped))
         
-        toolbarDone.items = [flexBarButton, barBtnDone]
-        textField.inputAccessoryView = toolbarDone
+         toolbarDone.items = [flexBarButton, barBtnDone]
+         textFieldView.textField.inputAccessoryView = toolbarDone
     }
     
-    fileprivate func inputFieldPlaceholderText(_ textField: UITextField) -> String {
-        if let fieldIdentifier = TextFieldType(rawValue: textField.tag) {
+    fileprivate func inputFieldPlaceholderText(_ textFieldView: TextFieldWithLabelView) -> String {
+        if let fieldIdentifier = TextFieldType(rawValue: textFieldView.tag) {
             switch fieldIdentifier {
             case .recipientFieldTag:
                 return NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.recipient.placeholder",
@@ -431,64 +373,69 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         disablePayButtonIfNeeded()
     }
     
-    fileprivate func validateTextField(_ textField: UITextField) {
-        if let fieldIdentifier = TextFieldType(rawValue: textField.tag) {
+    fileprivate func validateTextField(_ textFieldViewTag: Int) {
+        let textFieldView = textFieldViewWithTag(tag: textFieldViewTag)
+        if let fieldIdentifier = TextFieldType(rawValue: textFieldViewTag) {
             switch fieldIdentifier {
             case .amountFieldTag:
-                if amountField.hasText && !amountField.isReallyEmpty  {
+                if amountTextFieldView.textField.hasText && !amountTextFieldView.textField.isReallyEmpty  {
                     let decimalPart = amountToPay.value
                     if decimalPart > 0 {
-                        applyDefaultStyle(textField)
+                        applyDefaultStyle(textFieldView)
                         hideErrorLabel(textFieldTag: fieldIdentifier)
                     } else {
-                        amountField.text = ""
-                        applyErrorStyle(textField)
+                        amountTextFieldView.text = ""
+                        applyErrorStyle(textFieldView)
                         showErrorLabel(textFieldTag: fieldIdentifier)
                     }
                 } else {
-                    applyErrorStyle(textField)
+                    applyErrorStyle(textFieldView)
                     showErrorLabel(textFieldTag: fieldIdentifier)
                 }
             case .ibanFieldTag, .recipientFieldTag, .usageFieldTag:
-                if textField.hasText && !textField.isReallyEmpty {
-                    applyDefaultStyle(textField)
+                if textFieldView.textField.hasText && !textFieldView.textField.isReallyEmpty {
+                    applyDefaultStyle(textFieldView)
                     hideErrorLabel(textFieldTag: fieldIdentifier)
                 } else {
-                    applyErrorStyle(textField)
+                    applyErrorStyle(textFieldView)
                     showErrorLabel(textFieldTag: fieldIdentifier)
                 }
             }
         }
     }
     
+    fileprivate func textFieldViewWithTag(tag: Int) -> TextFieldWithLabelView {
+        paymentInputFields.first(where: { $0.tag == tag }) ?? TextFieldWithLabelView()
+    }
+    
     fileprivate func validateIBANTextField(){
-        if let ibanText = ibanField.text, ibanField.hasText {
+        if let ibanText = ibanTextFieldView.textField.text, ibanTextFieldView.textField.hasText {
             if IBANValidator().isValid(iban: ibanText) {
-                applyDefaultStyle(ibanField)
+                applyDefaultStyle(ibanTextFieldView)
                 hideErrorLabel(textFieldTag: .ibanFieldTag)
             } else {
-                applyErrorStyle(ibanField)
+                applyErrorStyle(ibanTextFieldView)
                 showValidationErrorLabel(textFieldTag: .ibanFieldTag)
             }
         } else {
-            applyErrorStyle(ibanField)
+            applyErrorStyle(ibanTextFieldView)
             showErrorLabel(textFieldTag: .ibanFieldTag)
         }
     }
     
     fileprivate func showIBANValidationErrorIfNeeded(){
         if IBANValidator().isValid(iban: lastValidatedIBAN) {
-            applyDefaultStyle(ibanField)
+            applyDefaultStyle(ibanTextFieldView)
             hideErrorLabel(textFieldTag: .ibanFieldTag)
         } else {
-            applyErrorStyle(ibanField)
+            applyErrorStyle(ibanTextFieldView)
             showValidationErrorLabel(textFieldTag: .ibanFieldTag)
         }
     }
 
     fileprivate func validateAllInputFields() {
         for textField in paymentInputFields {
-            validateTextField(textField)
+            validateTextField(textField.tag)
         }
     }
     
@@ -499,20 +446,21 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
     
     fileprivate func fillInInputFields() {
-        recipientField.text = model?.extractions.first(where: {$0.name == "payment_recipient"})?.value
-        ibanField.text = model?.extractions.first(where: {$0.name == "iban"})?.value
-        usageField.text = model?.extractions.first(where: {$0.name == "payment_purpose"})?.value
-        if let amountString = model?.extractions.first(where: {$0.name == "amount_to_pay"})?.value, let amountToPay = Price(extractionString: amountString) {
+        guard let model else { return }
+        recipientTextFieldView.text = model.extractions.first(where: {$0.name == "payment_recipient"})?.value
+        ibanTextFieldView.text = model.extractions.first(where: {$0.name == "iban"})?.value
+        usageTextFieldView.text = model.extractions.first(where: {$0.name == "payment_purpose"})?.value
+        if let amountString = model.extractions.first(where: {$0.name == "amount_to_pay"})?.value, let amountToPay = Price(extractionString: amountString) {
             self.amountToPay = amountToPay
             let amountToPayText = amountToPay.string
-            amountField.text = amountToPayText
+            amountTextFieldView.text = amountToPayText
         }
         validateAllInputFields()
         disablePayButtonIfNeeded()
     }
     
     fileprivate func disablePayButtonIfNeeded() {
-        payButton.isEnabled = paymentInputFields.allSatisfy { !$0.isReallyEmpty } && !paymentProviders.isEmpty && amountToPay.value > 0
+        payInvoiceButton.superview?.alpha = paymentInputFields.allSatisfy({ !$0.textField.isReallyEmpty }) && amountToPay.value > 0 ? 1 : 0.4
     }
 
 
@@ -539,7 +487,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
         if errorLabel.isHidden {
             errorLabel.isHidden = false
-            errorLabel.textColor = UIColor.from(giniColor: giniHealthConfiguration.paymentInputFieldErrorStyleColor)
+            errorLabel.textColor = UIColor.GiniHealthColors.feedback1
             errorLabel.text = errorMessage
         }
     }
@@ -562,7 +510,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         }
         if errorLabel.isHidden {
             errorLabel.isHidden = false
-            errorLabel.textColor = UIColor.from(giniColor: giniHealthConfiguration.paymentInputFieldErrorStyleColor)
+            errorLabel.textColor = UIColor.GiniHealthColors.feedback1
             errorLabel.text = errorMessage
         }
     }
@@ -585,50 +533,51 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         disablePayButtonIfNeeded()
     }
     
-    // MARK: - IBAction
-    
-    @objc func selectBankProviderTapped() {
-        var event = TrackingEvent.init(type: PaymentReviewScreenEventType.onBankSelectionButtonClicked)
+    // MARK: - Pay Button Action
+    func payButtonClicked() {
+        var event = TrackingEvent.init(type: PaymentReviewScreenEventType.onToTheBankButtonClicked)
         if let selectedPaymentProviderName = selectedPaymentProvider?.name {
-            event.info = ["paymentProvider" : selectedPaymentProviderName]
-        }
-        trackingDelegate?.onPaymentReviewScreenEvent(event: event)
-        bankProviderButtonView.alpha = 0.5
-        UIView.animate(withDuration: 0.5) {
-            self.bankProviderButtonView.alpha = 1.0
-        }
-        presentBankSelectionViewController()
-    }
-    
-    @IBAction func payButtonClicked(_ sender: Any) {
-        var event = TrackingEvent.init(type: PaymentReviewScreenEventType.onNextButtonClicked)
-        if let selectedPaymentProviderName = selectedPaymentProvider?.name {
-            event.info = ["paymentProvider" : selectedPaymentProviderName]
+            event.info = ["paymentProvider": selectedPaymentProviderName]
         }
         trackingDelegate?.onPaymentReviewScreenEvent(event: event)
         view.endEditing(true)
         validateAllInputFields()
         validateIBANTextField()
-        if let iban = ibanField.text {
+        if let iban = ibanTextFieldView.text {
             lastValidatedIBAN = iban
         }
 
         // check if no errors labels are shown
         if (paymentInputFieldsErrorLabels.allSatisfy { $0.isHidden }) {
-            
-            // check for the 1st run where no provider where selected and saved yet
-            if self.selectedPaymentProvider == nil {
-                self.selectedPaymentProvider = paymentProviders.first
-            }
-            if let selectedProvider = selectedPaymentProvider, !amountField.isReallyEmpty
-            {
+            if let selectedProvider = selectedPaymentProvider, !amountTextFieldView.textField.isReallyEmpty {
                 let amountText = amountToPay.extractionString
-                let paymentInfo = PaymentInfo(recipient: recipientField.text ?? "", iban: ibanField.text ?? "", bic: "", amount: amountText, purpose: usageField.text ?? "", paymentProviderScheme: selectedProvider.appSchemeIOS, paymentProviderId: selectedProvider.id)
+                let paymentInfo = PaymentInfo(recipient: recipientTextFieldView.text ?? "", 
+                                              iban: ibanTextFieldView.text ?? "",
+                                              bic: "", amount: amountText,
+                                              purpose: usageTextFieldView.text ?? "",
+                                              paymentUniversalLink: selectedProvider.universalLinkIOS,
+                                              paymentProviderId: selectedProvider.id)
                 model?.createPaymentRequest(paymentInfo: paymentInfo)
-                let paymentRecipientExtraction = Extraction(box: nil, candidates: "", entity: "text", value: recipientField.text ?? "", name: "payment_recipient")
-                let ibanExtraction = Extraction(box: nil, candidates: "", entity: "iban", value: paymentInfo.iban, name: "iban")
-                let referenceExtraction = Extraction(box: nil, candidates: "", entity: "text", value: paymentInfo.purpose, name: "payment_purpose")
-                let amoutToPayExtraction = Extraction(box: nil, candidates: "", entity: "amount", value: paymentInfo.amount, name: "amount_to_pay")
+                let paymentRecipientExtraction = Extraction(box: nil, 
+                                                            candidates: "",
+                                                            entity: "text",
+                                                            value: recipientTextFieldView.text ?? "",
+                                                            name: "payment_recipient")
+                let ibanExtraction = Extraction(box: nil, 
+                                                candidates: "",
+                                                entity: "iban",
+                                                value: paymentInfo.iban,
+                                                name: "iban")
+                let referenceExtraction = Extraction(box: nil, 
+                                                     candidates: "",
+                                                     entity: "text", value:
+                                                        paymentInfo.purpose,
+                                                     name: "payment_purpose")
+                let amoutToPayExtraction = Extraction(box: nil, 
+                                                      candidates: "",
+                                                      entity: "amount", value:
+                                                        paymentInfo.amount,
+                                                      name: "amount_to_pay")
                 let updatedExtractions = [paymentRecipientExtraction, ibanExtraction, referenceExtraction, amoutToPayExtraction]
                 model?.sendFeedback(updatedExtractions: updatedExtractions)
             }
@@ -669,7 +618,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
-        let animationDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.3
+        let animationDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? Constants.animationDuration
         let animationCurve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt ?? UInt(UIView.AnimationCurve.easeOut.rawValue)
         
         self.keyboardWillShowCalled = false
@@ -736,36 +685,20 @@ extension PaymentReviewViewController: UITextFieldDelegate {
      Updates amoutToPay, formated string with a currency and removes "0.00" value
      */
     fileprivate func updateAmoutToPayWithCurrencyFormat() {
-        if amountField.hasText, let amountFieldText = amountField.text {
+        if amountTextFieldView.textField.hasText, let amountFieldText = amountTextFieldView.text {
             if let priceValue = decimal(from: amountFieldText ) {
                 amountToPay.value = priceValue
                 if priceValue > 0 {
                     let amountToPayText = amountToPay.string
-                    amountField.text = amountToPayText
+                    amountTextFieldView.text = amountToPayText
                 } else {
-                    amountField.text = ""
+                    amountTextFieldView.text = ""
                 }
             }
         }
     }
-    
-    public func textFieldDidEndEditing(_ textField: UITextField) {
-        
-        // add currency format when edit is finished
-        if TextFieldType(rawValue: textField.tag) == .amountFieldTag {
-            updateAmoutToPayWithCurrencyFormat()
-        }
-        validateTextField(textField)
-        if TextFieldType(rawValue: textField.tag) == .ibanFieldTag {
-            if textField.text == lastValidatedIBAN {
-                showIBANValidationErrorIfNeeded()
-            }
-        }
-        disablePayButtonIfNeeded()
-    }
-
     public func textFieldDidBeginEditing(_ textField: UITextField) {
-        applySelectionStyle(textField)
+        applySelectionStyle(textFieldViewWithTag(tag: textField.tag))
         
         // remove currency symbol and whitespaces for edit mode
         if let fieldIdentifier = TextFieldType(rawValue: textField.tag) {
@@ -773,9 +706,23 @@ extension PaymentReviewViewController: UITextFieldDelegate {
             
             if fieldIdentifier == .amountFieldTag {
                 let amountToPayText = amountToPay.stringWithoutSymbol
-                amountField.text = amountToPayText
+                amountTextFieldView.text = amountToPayText
             }
         }
+    }
+    
+    public func textFieldDidEndEditing(_ textField: UITextField) {
+        // add currency format when edit is finished
+        if TextFieldType(rawValue: textField.tag) == .amountFieldTag {
+            updateAmoutToPayWithCurrencyFormat()
+        }
+        validateTextField(textField.tag)
+        if TextFieldType(rawValue: textField.tag) == .ibanFieldTag {
+            if textField.text == lastValidatedIBAN {
+                showIBANValidationErrorIfNeeded()
+            }
+        }
+        disablePayButtonIfNeeded()
     }
     
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -827,7 +774,7 @@ extension PaymentReviewViewController: UICollectionViewDelegate, UICollectionVie
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "pageCellIdentifier", for: indexPath) as! PageCollectionViewCell
         cell.pageImageView.frame = CGRect(x: 0, y: 0, width: collectionView.frame.width, height: collectionView.frame.height)
-        cell.pageImageView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 20.0, right: 0.0)
+        cell.pageImageView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: Constants.bottomPaddingPageImageView, right: 0.0)
         let cellModel = model?.getCellViewModel(at: indexPath)
         cell.pageImageView.display(image: cellModel?.preview ?? UIImage())
         return cell
@@ -857,5 +804,22 @@ extension PaymentReviewViewController {
                                                                              comment: "ok title for action"), style: .default, handler: nil)
         alertController.addAction(OKAction)
         present(alertController, animated: true, completion: nil)
+    }
+}
+
+extension PaymentReviewViewController {
+    private enum Constants {
+        static let buttonViewHeight: CGFloat = 56
+        static let animationDuration: CGFloat = 0.3
+        static let cornerRadiusInputContainer = 12.0
+        static let cornerRadiusInfoBar = 12.0
+        static let moveHeightInfoBar = 32.0
+        static let zPositionPageControl = 10.0
+        static let heightPageControl = 20.0
+        static let heightToolbar = 40.0
+        static let bottomPaddingPageImageView = 20.0
+        static let loadingIndicatorScale = 1.0
+        @available(iOS 13.0, *)
+        static let loadingIndicatorStyle = UIActivityIndicatorView.Style.large
     }
 }

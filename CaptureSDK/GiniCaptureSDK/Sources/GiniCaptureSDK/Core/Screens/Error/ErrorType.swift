@@ -152,11 +152,13 @@ import GiniBankAPILibrary
     /**
      Get the error analytics for the current `ErrorType`.
 
-     - Returns: An `ErrorAnalytics` object representing the analytics for the error.
+     - Returns: An `ErrorAnalytics` object representing the error for the analytics
      */
     func errorAnalytics() -> ErrorAnalytics {
-        let unknownError = ErrorAnalytics(type: "", code: nil,
+        // Define a default unknown error
+        let unknownError = ErrorAnalytics(type: "Unknown", code: nil,
                                           reason: "Error analytics not found for \(self)")
+        // Attempt to retrieve the error analytics from the dictionary
         return ErrorType.errorAnalyticsDictionary[self] ?? unknownError
     }
 }
