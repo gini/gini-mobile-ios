@@ -65,13 +65,12 @@ final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewCo
     }
 
     private func sendAnalyticsEventScreenShown() {
+        guard dataSource.helpItemsAnalyticsValues.isNotEmpty else { return }
         var eventProperties = [AnalyticsProperty(key: .hasCustomItems,
                                                  value: giniConfiguration.customMenuItems.isNotEmpty)]
 
-        if dataSource.helpItemsAnalyticsValues.isNotEmpty {
-            eventProperties.append(AnalyticsProperty(key: .helpItems,
+        eventProperties.append(AnalyticsProperty(key: .helpItems,
                                                      value: dataSource.helpItemsAnalyticsValues))
-        }
         AnalyticsManager.trackScreenShown(screenName: .help,
                                           properties: eventProperties)
     }
