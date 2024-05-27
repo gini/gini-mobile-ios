@@ -254,7 +254,7 @@ extension GiniScreenAPICoordinator {
         let backButtonTitle = NSLocalizedStringPreferredFormat("ginicapture.navigationbar.help.backToCamera",
                                                                comment: "Camera")
         let barButton = GiniBarButton(ofType: .back(title: backButtonTitle))
-        barButton.addAction(self, #selector(back))
+        barButton.addAction(self, #selector(backToCameraTapped))
         helpMenuViewController.navigationItem.leftBarButtonItem = barButton.barButton
 
         // In case of 1 menu item it's better to show the item immediately without any selection
@@ -265,6 +265,11 @@ extension GiniScreenAPICoordinator {
 
         screenAPINavigationController.pushViewController(helpViewControllerToPush, animated: true)
 
+    }
+
+    @objc func backToCameraTapped() {
+        AnalyticsManager.track(event: .closeTapped, screenName: .help)
+        back()
     }
 
     @objc func showAnalysisScreen() {

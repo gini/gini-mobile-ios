@@ -48,6 +48,10 @@ class AnalyticsManager {
             if let propertyValue = propertyValue as? Int {
                 eventProperties[property.key.rawValue] = "\(propertyValue)"
             }
+
+            if let propertyValue = propertyValue as? [String] {
+                eventProperties[property.key.rawValue] = arrayToString(from: propertyValue)
+            }
         }
 
         mixpanelInstance?.track(event: event.rawValue, properties: eventProperties)
@@ -57,5 +61,12 @@ class AnalyticsManager {
         guard original else { return "no" }
 
         return "yes"
+    }
+
+    private static func arrayToString(from original: [String]) -> String {
+        var result = "["
+        result += original.map { "\"\($0)\"" }.joined(separator: ", ")
+        result += "]"
+        return result
     }
 }
