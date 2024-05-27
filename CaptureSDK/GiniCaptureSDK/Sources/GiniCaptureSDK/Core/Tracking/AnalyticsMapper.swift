@@ -32,6 +32,15 @@ class AnalyticsMapper {
             return "qrCode"
         }
     }
+    
+    static func entryPointAnalytics(from entryPoint: GiniConfiguration.GiniEntryPoint) -> String {
+        switch entryPoint {
+        case .button:
+            return "button"
+        case .field:
+            return "field"
+        }
+    }
 
     static func errorAnalytics(from error: GiniError) -> ErrorAnalytics {
         switch error {
