@@ -231,7 +231,7 @@ final class DigitalInvoiceViewController: UIViewController {
     }
 
     @objc func payButtonTapped() {
-        AnalyticsManager.track(event: .processTapped, screenName: .returnAssitant)
+        AnalyticsManager.track(event: .proceedTapped, screenName: .returnAssitant)
         viewModel.didTapPay()
     }
 
