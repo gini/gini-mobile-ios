@@ -83,7 +83,7 @@ class AnalyticsManager {
 
     private static func arrayToString(from original: [String]) -> String {
         var result = "["
-        result += original.joined(separator: ", ")
+        result += original.map { "\"\($0)\"" }.joined(separator: ", ")
         result += "]"
         return result
     }

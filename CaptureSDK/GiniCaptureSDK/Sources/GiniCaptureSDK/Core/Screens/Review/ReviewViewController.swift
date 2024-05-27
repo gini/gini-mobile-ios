@@ -672,6 +672,7 @@ extension ReviewViewController: UICollectionViewDelegateFlowLayout {
 
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let page = pages[indexPath.row]
+        AnalyticsManager.track(event: .fullScreenPageTapped, screenName: .review)
         delegate?.review(self, didSelectPage: page)
     }
 
