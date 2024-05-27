@@ -132,7 +132,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         GiniBank.setConfiguration(configuration)
         giniBankConfiguration = configuration
         giniBankConfiguration.documentService = documentService
-        AnalyticsManager.initializeAnalytics()
         AnalyticsManager.trackUserProperties([.giniClientID: client.id,
                                               .returnAssistantEnabled: configuration.returnAssistantEnabled,
                                               .returnReasonsEnabled: configuration.enableReturnReasons])
