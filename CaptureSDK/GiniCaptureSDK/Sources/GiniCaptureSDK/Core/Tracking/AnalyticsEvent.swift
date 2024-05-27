@@ -46,4 +46,5 @@ public enum AnalyticsEvent: String {
     case saveTapped = "save_tapped"
     case editTapped = "edit_tapped"
     case itemSwitchTapped = "item_switch_tapped"
+    case proceedTapped = "proceed_tapped"
 }
