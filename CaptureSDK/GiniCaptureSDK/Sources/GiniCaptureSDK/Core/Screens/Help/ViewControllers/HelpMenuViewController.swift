@@ -58,6 +58,23 @@ final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewCo
         setupView()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        sendAnalyticsEventScreenShown()
+    }
+
+    private func sendAnalyticsEventScreenShown() {
+        guard dataSource.helpItemsAnalyticsValues.isNotEmpty else { return }
+        var eventProperties = [AnalyticsProperty(key: .hasCustomItems,
+                                                 value: giniConfiguration.customMenuItems.isNotEmpty)]
+
+        eventProperties.append(AnalyticsProperty(key: .helpItems,
+                                                     value: dataSource.helpItemsAnalyticsValues))
+        AnalyticsManager.trackScreenShown(screenName: .help,
+                                          properties: eventProperties)
+    }
+
     private func setupView() {
         configureMainView()
         configureTableView()
@@ -135,7 +152,12 @@ final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewCo
 // MARK: - HelpMenuDataSourceDelegate
 
 extension HelpMenuViewController: HelpMenuDataSourceDelegate {
-    func didSelectHelpItem(didSelect item: HelpMenuItem) {
+    func didSelectHelpItem(at index: Int) {
+        let item = dataSource.items[index]
+        AnalyticsManager.track(event: .helpItemTapped,
+                               screenName: .help,
+                               properties: [AnalyticsProperty(key: .itemTapped,
+                                                             value: item.title)])
         delegate?.help(self, didSelect: item)
     }
 }

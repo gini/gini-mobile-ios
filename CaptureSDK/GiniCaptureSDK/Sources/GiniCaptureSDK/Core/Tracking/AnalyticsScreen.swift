@@ -12,4 +12,5 @@ enum AnalyticsScreen: String {
     case analysis
     case noResults = "no_results"
     case error
+    case help
 }
