@@ -46,34 +46,31 @@ public class AnalyticsManager {
               properties: properties)
     }
 
-    static func track(event: AnalyticsEvent,
-                      screenNameString: String? = nil,
-                      properties: [AnalyticsProperty] = []) {
+    public static func track(event: AnalyticsEvent,
+                             screenNameString: String? = nil,
+                             properties: [AnalyticsProperty] = []) {
         var eventProperties: [String: String] = [:]
 
         if let screenName = screenNameString {
             eventProperties[AnalyticsPropertyKey.screenName.rawValue] = screenName
         }
 
-        var propertiesDict: [String: AnalyticsPropertyValue] = [:]
         for property in properties {
-            propertiesDict[property.key.rawValue] = property.value.analyticsPropertyValue()
+            let propertyValue = property.value.analyticsPropertyValue()
+            eventProperties[property.key.rawValue] = convertPropertyValueToString(propertyValue)
         }
-
-        let convertedProperties = convertPropertiesToDict(propertiesDict)
-        eventProperties.merge(convertedProperties) { (current, _) in current }
 
         mixpanelInstance?.track(event: event.rawValue, properties: eventProperties)
     }
 
     public static func trackUserProperties(_ properties: [AnalyticsUserProperty: AnalyticsPropertyValue]) {
-        var propertiesDict: [String: AnalyticsPropertyValue] = [:]
+        var propertiesToTrack: [String: String] = [:]
+
         for (property, value) in properties {
-            propertiesDict[property.rawValue] = value
+            propertiesToTrack[property.rawValue] = convertPropertyValueToString(value)
         }
 
-        let convertedProperties = convertPropertiesToDict(propertiesDict)
-        mixpanelInstance?.people.set(properties: convertedProperties)
+        mixpanelInstance?.people.set(properties: propertiesToTrack)
     }
 
     private static func trackAccessibilityUserPropertiesAtInitialization() {
@@ -104,25 +101,17 @@ public class AnalyticsManager {
         return result
     }
 
-    private static func convertPropertiesToDict(_ properties: [String: AnalyticsPropertyValue]) -> [String: String] {
-        var propertiesToTrack: [String: String] = [:]
-
-        for (key, value) in properties {
-            var propertyValueString = ""
-
-            if let value = value as? Bool {
-                propertyValueString = analyticsString(from: value)
-            } else if let value = value as? String {
-                propertyValueString = value
-            } else if let value = value as? Int {
-                propertyValueString = "\(value)"
-            } else if let value = value as? [String] {
-                propertyValueString = arrayToString(from: value)
-            }
-
-            propertiesToTrack[key] = propertyValueString
+    private static func convertPropertyValueToString(_ value: AnalyticsPropertyValue) -> String {
+        if let value = value as? Bool {
+            return analyticsString(from: value)
+        } else if let value = value as? String {
+            return value
+        } else if let value = value as? Int {
+            return "\(value)"
+        } else if let value = value as? [String] {
+            return arrayToString(from: value)
+        } else {
+            return ""
         }
-
-        return propertiesToTrack
     }
 }
