@@ -11,13 +11,15 @@ public class AnalyticsManager {
     private static let mixPanelToken = "6262hhdfhdb929321222" // this id is fake we need to replace it
     private static var mixpanelInstance: MixpanelInstance?
 
-    static func initializeAnalytics() {
+    public static func initializeAnalytics() {
         mixpanelInstance = Mixpanel.initialize(token: mixPanelToken, trackAutomaticEvents: false)
 
         // Identify the user with the deviceID
         let deviceID = UIDevice.current.identifierForVendor?.uuidString
         mixpanelInstance?.identify(distinctId: deviceID ?? "")
         trackAccessibilityUserPropertiesAtInitialization()
+        // TODO: Where to check open_with
+        trackUserProperties([.entryPoint: AnalyticsMapper.entryPointAnalytics(from: GiniConfiguration.shared.entryPoint)])
     }
 
     // MARK: - Track screen shown
