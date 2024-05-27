@@ -17,6 +17,7 @@ public class AnalyticsManager {
         // Identify the user with the deviceID
         let deviceID = UIDevice.current.identifierForVendor?.uuidString
         mixpanelInstance?.identify(distinctId: deviceID ?? "")
+        trackAccessibilityUserPropertiesAtInitialization()
     }
 
     // MARK: - Track screen shown
@@ -52,26 +53,39 @@ public class AnalyticsManager {
             eventProperties[AnalyticsPropertyKey.screenName.rawValue] = screenName
         }
 
+        var propertiesDict: [String: AnalyticsPropertyValue] = [:]
         for property in properties {
-            let propertyValue = property.value.analyticsPropertyValue()
-            if let propertyValue = propertyValue as? Bool {
-                eventProperties[property.key.rawValue] = analyticsString(from: propertyValue)
-            }
-
-            if let propertyValue = propertyValue as? String {
-                eventProperties[property.key.rawValue] = propertyValue
-            }
-
-            if let propertyValue = propertyValue as? Int {
-                eventProperties[property.key.rawValue] = "\(propertyValue)"
-            }
-
-            if let propertyValue = propertyValue as? [String] {
-                eventProperties[property.key.rawValue] = arrayToString(from: propertyValue)
-            }
+            propertiesDict[property.key.rawValue] = property.value.analyticsPropertyValue()
         }
 
+        let convertedProperties = convertPropertiesToDict(propertiesDict)
+        eventProperties.merge(convertedProperties) { (current, _) in current }
+
         mixpanelInstance?.track(event: event.rawValue, properties: eventProperties)
+    }
+
+    public static func trackUserProperties(_ properties: [AnalyticsUserProperty: AnalyticsPropertyValue]) {
+        var propertiesDict: [String: AnalyticsPropertyValue] = [:]
+        for (property, value) in properties {
+            propertiesDict[property.rawValue] = value
+        }
+
+        let convertedProperties = convertPropertiesToDict(propertiesDict)
+        mixpanelInstance?.people.set(properties: convertedProperties)
+    }
+
+    private static func trackAccessibilityUserPropertiesAtInitialization() {
+        let accessibilityProperties: [AnalyticsUserProperty: AnalyticsPropertyValue] = [
+            .isVoiceOverRunning: UIAccessibility.isVoiceOverRunning,
+            .isGuidedAccessEnabled: UIAccessibility.isGuidedAccessEnabled,
+            .isBoldTextEnabled: UIAccessibility.isBoldTextEnabled,
+            .isGrayscaleEnabled: UIAccessibility.isGrayscaleEnabled,
+            .isSpeakSelectionEnabled: UIAccessibility.isSpeakSelectionEnabled,
+            .isSpeakScreenEnabled: UIAccessibility.isSpeakScreenEnabled,
+            .isAssistiveTouchRunning: UIAccessibility.isAssistiveTouchRunning
+        ]
+
+        trackUserProperties(accessibilityProperties)
     }
 
     // MARK: - Helper methods
@@ -86,5 +100,27 @@ public class AnalyticsManager {
         result += original.joined(separator: ", ")
         result += "]"
         return result
+    }
+
+    private static func convertPropertiesToDict(_ properties: [String: AnalyticsPropertyValue]) -> [String: String] {
+        var propertiesToTrack: [String: String] = [:]
+
+        for (key, value) in properties {
+            var propertyValueString = ""
+
+            if let value = value as? Bool {
+                propertyValueString = analyticsString(from: value)
+            } else if let value = value as? String {
+                propertyValueString = value
+            } else if let value = value as? Int {
+                propertyValueString = "\(value)"
+            } else if let value = value as? [String] {
+                propertyValueString = arrayToString(from: value)
+            }
+
+            propertiesToTrack[key] = propertyValueString
+        }
+
+        return propertiesToTrack
     }
 }
