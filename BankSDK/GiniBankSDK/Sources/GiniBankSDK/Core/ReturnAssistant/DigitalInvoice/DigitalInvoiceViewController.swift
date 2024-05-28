@@ -223,9 +223,8 @@ final class DigitalInvoiceViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if presentedViewController == nil {
-            // Send a 'screenShown' event when returning from the help screen or any other screen
-            // that was pushed over this view controller.
-            // It's not called initially due to the onboarding screen displayed as a modal view on top.
+            // Send a 'screenShown' event when returning back from `Help` screen.
+            // This is not called initially due to the onboarding screen being displayed as a modal view on top.
             sendAnalyticsScreenShown()
         }
     }
