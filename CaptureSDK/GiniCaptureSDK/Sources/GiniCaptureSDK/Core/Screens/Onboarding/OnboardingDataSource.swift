@@ -22,6 +22,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
     private let giniConfiguration: GiniConfiguration
     weak var delegate: OnboardingScreen?
     private (set) var currentPageIndex = 0
+    private var isInitialScroll = true
 
     lazy var pageModels: [OnboardingPageModel] = {
         if let customPages = giniConfiguration.customOnboardingPages {
@@ -163,8 +164,6 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         let attr = collectionView.layoutAttributesForItem(at: index)
         return attr?.frame.origin ?? CGPoint.zero
     }
-
-    private var isInitialScroll = true
 
     // MARK: - Display the page number in page control of collection view Cell
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
