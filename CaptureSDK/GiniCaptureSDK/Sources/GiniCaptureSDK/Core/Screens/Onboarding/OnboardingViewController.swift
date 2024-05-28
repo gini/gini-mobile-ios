@@ -178,17 +178,22 @@ extension OnboardingViewController: OnboardingScreen {
         guard pageControl.currentPage != pageIndex else { return }
         let pageModel = dataSource.pageModels[pageIndex]
         AnalyticsManager.track(event: .pageSwiped, screenNameString: pageModel.analyticsScreen)
+        configureNavigationButtons(for: pageIndex)
+        pageControl.currentPage = pageIndex
+    }
+
+    private func configureNavigationButtons(for pageIndex: Int) {
         switch pageIndex {
         case dataSource.pageModels.count - 1:
             if configuration.bottomNavigationBarEnabled,
-               let bottomNavigationBar = bottomNavigationBar {
+                let bottomNavigationBar = bottomNavigationBar {
                 navigationBarBottomAdapter?.showButtons(navigationButtons: [.getStarted],
                                                         navigationBar: bottomNavigationBar)
             } else {
                 navigationItem.rightBarButtonItem = nil
                 if nextButton != nil {
                     nextButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.onboarding.getstarted",
-                                                                         comment: "Get Started button"), 
+                                                                         comment: "Get Started button"),
                                         for: .normal)
                     nextButton.accessibilityValue = NSLocalizedStringPreferredFormat("ginicapture.onboarding.getstarted",
                                                                                      comment: "Get Started button")
@@ -196,7 +201,7 @@ extension OnboardingViewController: OnboardingScreen {
             }
         default:
             if configuration.bottomNavigationBarEnabled,
-               let bottomNavigationBar = bottomNavigationBar {
+                let bottomNavigationBar = bottomNavigationBar {
                 navigationBarBottomAdapter?.showButtons(navigationButtons: [.skip, .next],
                                                         navigationBar: bottomNavigationBar)
             } else {
@@ -208,7 +213,6 @@ extension OnboardingViewController: OnboardingScreen {
                 }
             }
         }
-        pageControl.currentPage = pageIndex
     }
 }
 
