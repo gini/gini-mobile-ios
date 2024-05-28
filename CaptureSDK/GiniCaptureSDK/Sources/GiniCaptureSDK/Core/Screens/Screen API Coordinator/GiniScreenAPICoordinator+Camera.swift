@@ -60,8 +60,6 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
     }
 
     func cameraDidAppear(_ viewController: CameraViewController) {
-        //TODO: check where to place this best since openWith is starting differently
-        AnalyticsManager.initializeAnalytics()
         if shouldShowOnboarding() {
             showOnboardingScreen(cameraViewController: viewController, completion: {
                 viewController.setupCamera()
