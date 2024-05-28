@@ -79,24 +79,15 @@ final class PaymentComponentViewModel {
     
     // Bank image icon
     private var bankImageIconData: Data?
-    var bankImageIcon: UIImage {
-        if let bankImageIconData {
-            return UIImage(data: bankImageIconData) ?? UIImage()
-        }
-        return UIImage()
+    var bankImageIcon: UIImage? {
+        guard let bankImageIconData else { return nil }
+        return UIImage(data: bankImageIconData)
     }
 
-    // Bank name label
-    private var bankName: String?
-    var bankNameLabelText: String {
-        if let bankName, !bankName.isEmpty {
-            return bankName
-        }
-        return placeholderBankNameText
-    }
+    // Primary button
     let notInstalledBankTextColor: UIColor = GiniColor(lightModeColor: UIColor.GiniHealthColors.dark4,
                                                        darkModeColor: UIColor.GiniHealthColors.light4).uiColor()
-    private let placeholderBankNameText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.selectBank.label",
+    let placeholderBankNameText: String = NSLocalizedStringPreferredFormat("ginihealth.paymentcomponent.selectBank.label",
                                                                                    comment: "Placeholder text used when there isn't a payment provider app installed")
     
     let chevronDownIconName: String = "iconChevronDown"
@@ -116,6 +107,10 @@ final class PaymentComponentViewModel {
     
     var documentId: String?
     
+    var minimumButtonsHeight: CGFloat
+    
+    var hasBankSelected: Bool
+    
     init(paymentProvider: PaymentProvider?) {
         let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
         let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
@@ -124,10 +119,12 @@ final class PaymentComponentViewModel {
         self.moreInformationLabelLinkFont = giniHealthConfiguration.textStyleFonts[.linkBold] ?? defaultBoldFont
         self.selectYourBankLabelFont = giniHealthConfiguration.textStyleFonts[.subtitle2] ?? defaultMediumFont
         
+        self.hasBankSelected = paymentProvider != nil
         self.bankImageIconData = paymentProvider?.iconData
-        self.bankName = paymentProvider?.name
         self.paymentProviderColors = paymentProvider?.colors
         self.paymentProviderScheme = paymentProvider?.appSchemeIOS
+        
+        self.minimumButtonsHeight = giniHealthConfiguration.paymentComponentButtonsHeight
     }
     
     func tapOnMoreInformation() {
@@ -139,6 +136,23 @@ final class PaymentComponentViewModel {
     }
     
     func tapOnPayInvoiceView() {
+        savePaymentComponentViewUsageStatus()
         delegate?.didTapOnPayInvoice(documentId: documentId)
+    }
+    
+    // Function to check if Payment was used at least once
+    func isPaymentComponentUsed() -> Bool {
+        return UserDefaults.standard.bool(forKey: Constants.paymentComponentViewUsedKey)
+    }
+    
+    // Function to save the boolean value indicating whether Payment was used
+    private func savePaymentComponentViewUsageStatus() {
+        UserDefaults.standard.set(true, forKey: Constants.paymentComponentViewUsedKey)
+    }
+}
+
+extension PaymentComponentViewModel {
+    private enum Constants {
+        static let paymentComponentViewUsedKey = "kPaymentComponentViewUsed"
     }
 }

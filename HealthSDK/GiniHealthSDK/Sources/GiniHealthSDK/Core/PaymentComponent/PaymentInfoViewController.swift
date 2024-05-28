@@ -183,7 +183,6 @@ class PaymentInfoViewController: UIViewController {
     private func setupPoweredByGiniConstraints() {
         NSLayoutConstraint.activate([
             poweredByGiniView.topAnchor.constraint(equalTo: bankIconsCollectionView.bottomAnchor, constant: Constants.poweredByGiniTopPadding),
-            poweredByGiniView.heightAnchor.constraint(equalToConstant: poweredByGiniView.frame.height),
             poweredByGiniView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
@@ -338,7 +337,7 @@ extension PaymentInfoViewController {
         static let bankIconsWidth = 36.0
         static let bankIconsHeight = 36.0
         
-        static let poweredByGiniTopPadding = 7.0
+        static let poweredByGiniTopPadding = 16.0
         
         static let payBillsTitleTopPadding = 16.0
         static let payBillsTitleLineHeight = 1.26

@@ -46,9 +46,15 @@ public final class GiniHealthConfiguration: NSObject {
     @objc public var paymentReviewStatusBarStyle: UIStatusBarStyle = .default
     
     /**
-    Sets the number of times the onboarding share invoice screen should appear for each payment provider before the native one appears
+    Height of the buttons from the Payment Component View
      */
-    public var numberOfTimesOnboardingShareScreenShouldAppear = 3
+    public var paymentComponentButtonsHeight: CGFloat = Constants.defaultButtonsHeight {
+        didSet {
+            if paymentComponentButtonsHeight < Constants.minimumButtonsHeight {
+                paymentComponentButtonsHeight = Constants.minimumButtonsHeight
+            }
+        }
+    }
     
     // MARK: - Button configuration options
     /**
@@ -147,4 +153,11 @@ public final class GiniHealthConfiguration: NSObject {
         .body1: UIFontMetrics(forTextStyle: .body1).scaledFont(for: UIFont.systemFont(ofSize: 16, weight: .regular)),
         .body2: UIFontMetrics(forTextStyle: .body2).scaledFont(for: UIFont.systemFont(ofSize: 14, weight: .regular)),
     ]
+}
+
+extension GiniHealthConfiguration {
+    private enum Constants {
+        static let defaultButtonsHeight = 56.0
+        static let minimumButtonsHeight = 44.0
+    }
 }

@@ -140,7 +140,7 @@ public class PaymentReviewModel: NSObject {
     func shouldShowOnboardingScreenFor(paymentProvider: PaymentProvider) -> Bool {
         let onboardingCounts = OnboardingShareInvoiceScreenCount.load()
         let count = onboardingCounts.presentationCount(forProvider: paymentProvider.name)
-        return count < GiniHealthConfiguration.shared.numberOfTimesOnboardingShareScreenShouldAppear
+        return count < Constants.numberOfTimesOnboardingShareScreenShouldAppear
     }
     
     func incrementOnboardingCountFor(paymentProvider: PaymentProvider) {
@@ -218,4 +218,10 @@ extension PaymentReviewModel: ShareInvoiceBottomViewProtocol {
   */
 public struct PageCollectionCellViewModel {
     let preview: UIImage
+}
+
+extension PaymentReviewModel {
+    private enum Constants {
+        static let numberOfTimesOnboardingShareScreenShouldAppear = 3
+    }
 }

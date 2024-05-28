@@ -24,10 +24,10 @@
 
 "ginihealth.paymentcomponent.moreInformation.label" = "Bezahldaten an Banking-App übergeben und dort direkt bezahlen. Mehr Informationen.";
 "ginihealth.paymentcomponent.moreInformation.underlined.part" = "Mehr Informationen.";
-"ginihealth.paymentcomponent.selectYourBank.label" = "Wählen Sie Ihre Bank aus";
+"ginihealth.paymentcomponent.selectYourBank.label" = "Bank auswählen und bezahlen";
 "ginihealth.paymentcomponent.payInvoice.label" = "Rechnung bezahlen";
 "ginihealth.paymentcomponent.poweredByGini.label" = "Powered by";
-"ginihealth.paymentcomponent.selectBank.label" = "Bank auswählen";
+"ginihealth.paymentcomponent.selectBank.label" = "Ihre Bank";
 "ginihealth.paymentcomponent.paymentproviderslist.description" = "Sie können die Rechnung nur bezahlen, wenn Sie ein Konto bei einer der unten aufgeführten Banken haben.";
 "ginihealth.paymentcomponent.paymentinfo.title.label" = "Mehr Informationen";
 "ginihealth.paymentcomponent.paymentinfo.payBills.title.label" = "Rechnungen ganz einfach mit der Banking-App bezahlen.";
