@@ -21,7 +21,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
 
     private let giniConfiguration: GiniConfiguration
     weak var delegate: OnboardingScreen?
-    var currentPageIndex = 0
+    private (set) var currentPageIndex = 0
 
     lazy var pageModels: [OnboardingPageModel] = {
         if let customPages = giniConfiguration.customOnboardingPages {
