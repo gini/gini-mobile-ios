@@ -154,7 +154,9 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         giniBankConfiguration = configuration
         giniBankConfiguration.documentService = documentService
         GiniBank.setConfiguration(configuration)
-
+        // TODO: No clientID user property for custom networking init
+        AnalyticsManager.userProperties = [.returnAssistantEnabled: configuration.returnAssistantEnabled,
+                                           .returnReasonsEnabled: configuration.enableReturnReasons]
         visionDelegate = self
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
