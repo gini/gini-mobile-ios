@@ -13,7 +13,9 @@ public class AnalyticsManager {
     public static var userProperties: [AnalyticsUserProperty: AnalyticsPropertyValue] = [:]
 
     public static func initializeAnalytics() {
-        mixpanelInstance = Mixpanel.initialize(token: mixPanelToken, trackAutomaticEvents: false)
+        mixpanelInstance = Mixpanel.initialize(token: mixPanelToken, 
+                                               trackAutomaticEvents: false,
+                                               serverURL: "https://api-eu.mixpanel.com")
 
         // Identify the user with the deviceID
         let deviceID = UIDevice.current.identifierForVendor?.uuidString
