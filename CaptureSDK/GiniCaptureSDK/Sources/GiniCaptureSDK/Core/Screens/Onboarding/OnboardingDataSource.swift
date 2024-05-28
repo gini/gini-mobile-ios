@@ -25,12 +25,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
 
     lazy var pageModels: [OnboardingPageModel] = {
         if let customPages = giniConfiguration.customOnboardingPages {
-            return customPages.enumerated().map { index, page in
-                let analyticsScreen = "\(AnalyticsScreen.onboardingCustom.rawValue)\(index + 1)"
-                return OnboardingPageModel(page: page,
-                                           analyticsScreen: analyticsScreen,
-                                           isCustom: true)
-            }
+            return customOnboardingPagesDataSource(from: customPages)
         } else {
             return defaultOnboardingPagesDataSource()
         }
@@ -108,6 +103,15 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         }
 
         return pageModels
+    }
+
+    private func customOnboardingPagesDataSource(from customPages: [OnboardingPage]) -> [OnboardingPageModel] {
+        return customPages.enumerated().map { index, page in
+            let analyticsScreen = "\(AnalyticsScreen.onboardingCustom.rawValue)\(index + 1)"
+            return OnboardingPageModel(page: page,
+                                       analyticsScreen: analyticsScreen,
+                                       isCustom: true)
+        }
     }
 
     private func trackEventForPage(_ pageModel: OnboardingPageModel) {
