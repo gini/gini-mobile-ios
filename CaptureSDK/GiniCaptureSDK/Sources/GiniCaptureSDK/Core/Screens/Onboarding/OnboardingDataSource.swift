@@ -32,8 +32,8 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         }
     }()
 
-    private lazy var pagesCounter: OnboardingPageSeenCounter = {
-        return OnboardingPageSeenCounter(pages: pageModels)
+    private lazy var pagesTracker: OnboardingPageTracker = {
+        return OnboardingPageTracker(pages: pageModels)
     }()
 
     required init(configuration: GiniConfiguration) {
@@ -116,15 +116,15 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
     }
 
     private func trackEventForPage(_ pageModel: OnboardingPageModel) {
-        guard !pagesCounter.seenAllPages else { return }
-        guard pagesCounter.pageNotSeen(pageModel) else { return }
+        guard !pagesTracker.seenAllPages else { return }
+        guard pagesTracker.isPageNotSeen(pageModel) else { return }
         var eventProperties = [AnalyticsProperty]()
         if pageModel.isCustom {
             eventProperties.append(.init(key: .customOnboardingTitle, value: pageModel.page.title))
         }
         AnalyticsManager.trackScreenShown(screenNameString: pageModel.analyticsScreen,
                                           properties: eventProperties)
-        pagesCounter.markPageAsSeen(pageModel)
+        pagesTracker.markPageAsSeen(pageModel)
     }
 
     func collectionView(_ collectionView: UICollectionView,
