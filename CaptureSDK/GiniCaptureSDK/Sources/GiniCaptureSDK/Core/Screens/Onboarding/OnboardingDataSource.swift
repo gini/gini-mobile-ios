@@ -162,9 +162,9 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
 
     private var isInitialScroll = true
 
-    // MARK: - Display the page number in page controll of collection view Cell
+    // MARK: - Display the page number in page control of collection view Cell
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // this method is called twice when the screen is displyed for the first time
+        // this method is called twice when the screen is displayed for the first time
         guard !isInitialScroll else {
             isInitialScroll = false
             return
