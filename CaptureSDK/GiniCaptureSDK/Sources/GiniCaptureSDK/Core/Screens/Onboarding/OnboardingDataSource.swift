@@ -165,7 +165,7 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         return attr?.frame.origin ?? CGPoint.zero
     }
 
-    // MARK: - Display the page number in page control of collection view Cell
+    // MARK: - Display the page number in page control of collection view cell
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         // this method is called twice when the screen is displayed for the first time
         guard !isInitialScroll else {
