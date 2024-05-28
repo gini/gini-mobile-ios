@@ -106,7 +106,7 @@ extension DigitalInvoiceCoordinator: EditLineItemViewModelDelegate {
             if !viewModel.itemsChanged.isEmpty {
                 eventProperties.append(AnalyticsProperty(key: .itemsChanged,
                                                          value: viewModel.itemsChanged.map { return $0.rawValue }))
-                AnalyticsManager.track(event: .saveTapped, screenName: .editReturnAssitant, properties: eventProperties)
+                AnalyticsManager.track(event: .saveTapped, screenName: .editReturnAssistant, properties: eventProperties)
             }
         }
 
@@ -117,7 +117,7 @@ extension DigitalInvoiceCoordinator: EditLineItemViewModelDelegate {
     }
 
     func didCancel(on viewModel: EditLineItemViewModel) {
-        AnalyticsManager.track(event: .closeTapped, screenName: .editReturnAssitant)
+        AnalyticsManager.track(event: .closeTapped, screenName: .editReturnAssistant)
         navigationController.dismiss(animated: true) {
             self.digitalInvoiceViewController?.sendAnalyticsScreenShown()
         }
