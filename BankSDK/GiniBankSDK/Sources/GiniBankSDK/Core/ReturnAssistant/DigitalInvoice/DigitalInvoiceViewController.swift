@@ -231,7 +231,7 @@ final class DigitalInvoiceViewController: UIViewController {
     }
 
     @objc func payButtonTapped() {
-        AnalyticsManager.track(event: .proceedTapped, screenName: .returnAssitant)
+        AnalyticsManager.track(event: .proceedTapped, screenName: .returnAssistant)
         viewModel.didTapPay()
     }
 
@@ -256,12 +256,12 @@ final class DigitalInvoiceViewController: UIViewController {
     }
 
     @objc func helpButtonTapped(source: UIButton) {
-        AnalyticsManager.track(event: .helpTapped, screenName: .returnAssitant)
+        AnalyticsManager.track(event: .helpTapped, screenName: .returnAssistant)
         viewModel.didTapHelp()
     }
 
     @objc func closeReturnAssistantOverview() {
-        AnalyticsManager.track(event: .closeTapped, screenName: .returnAssitant)
+        AnalyticsManager.track(event: .closeTapped, screenName: .returnAssistant)
         viewModel.didTapCancel()
     }
 
@@ -270,7 +270,7 @@ final class DigitalInvoiceViewController: UIViewController {
         if let documentId = configuration.documentService?.document?.id {
             eventProperties.append(AnalyticsProperty(key: .documentId, value: documentId))
         }
-        AnalyticsManager.trackScreenShown(screenName: .returnAssitant, properties: eventProperties)
+        AnalyticsManager.trackScreenShown(screenName: .returnAssistant, properties: eventProperties)
     }
 }
 
@@ -360,13 +360,13 @@ extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
         }
 
         AnalyticsManager.track(event: .itemSwitchTapped,
-                               screenName: .returnAssitant,
+                               screenName: .returnAssistant,
                                properties: [AnalyticsProperty(key: .switchActive, value: isSelected)])
         updateValues()
     }
 
     func editTapped(cell: DigitalLineItemTableViewCell, lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
-        AnalyticsManager.track(event: .editTapped, screenName: .returnAssitant)
+        AnalyticsManager.track(event: .editTapped, screenName: .returnAssistant)
         viewModel.didTapEdit(on: lineItemViewModel)
     }
 }
