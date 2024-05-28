@@ -13,7 +13,7 @@ public class AnalyticsManager {
     public static var userProperties: [AnalyticsUserProperty: AnalyticsPropertyValue] = [:]
 
     public static func initializeAnalytics() {
-        mixpanelInstance = Mixpanel.initialize(token: mixPanelToken, 
+        mixpanelInstance = Mixpanel.initialize(token: mixPanelToken,
                                                trackAutomaticEvents: false,
                                                serverURL: "https://api-eu.mixpanel.com")
 
@@ -48,9 +48,9 @@ public class AnalyticsManager {
               properties: properties)
     }
 
-    public static func track(event: AnalyticsEvent,
-                             screenNameString: String? = nil,
-                             properties: [AnalyticsProperty] = []) {
+    static func track(event: AnalyticsEvent,
+                      screenNameString: String? = nil,
+                      properties: [AnalyticsProperty] = []) {
         var eventProperties: [String: String] = [:]
 
         if let screenName = screenNameString {
