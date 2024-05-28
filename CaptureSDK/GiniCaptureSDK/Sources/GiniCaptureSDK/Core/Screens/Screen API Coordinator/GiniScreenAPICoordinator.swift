@@ -196,15 +196,15 @@ extension GiniScreenAPICoordinator {
     @objc func back() {
         switch screenAPINavigationController.topViewController {
         case is CameraViewController:
-            handleCameraViewControllerBack()
+            navigateBackFromCameraViewController()
         case is AnalysisViewController:
-            handleAnalysisViewControllerBack()
+            navigateBackFromAnalysisViewController()
         default:
-            handleDefaultBack()
+            navigateBack()
         }
     }
 
-    private func handleCameraViewControllerBack() {
+    private func navigateBackFromCameraViewController() {
         trackingDelegate?.onCameraScreenEvent(event: Event(type: .exit))
         AnalyticsManager.track(event: .closeTapped, screenName: screenName())
         if pages.type == .qrcode {
@@ -212,19 +212,19 @@ extension GiniScreenAPICoordinator {
         }
 
         if pages.count > 0 {
-            handleDefaultBack()
+            navigateBack()
         } else {
             closeScreenApi()
         }
     }
 
-    private func handleAnalysisViewControllerBack() {
+    private func navigateBackFromAnalysisViewController() {
         trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .cancel))
         AnalyticsManager.track(event: .closeTapped, screenName: .analysis)
         screenAPINavigationController.dismiss(animated: true)
     }
 
-    private func handleDefaultBack() {
+    private func navigateBack() {
         if screenAPINavigationController.viewControllers.count > 1 {
             screenAPINavigationController.popViewController(animated: true)
         } else {
