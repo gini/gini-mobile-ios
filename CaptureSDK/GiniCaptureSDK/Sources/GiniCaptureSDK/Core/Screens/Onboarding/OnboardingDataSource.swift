@@ -36,6 +36,10 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         }
     }()
 
+    private lazy var pagesCounter: OnboardingPageSeenCounter = {
+        return OnboardingPageSeenCounter(pages: pageModels)
+    }()
+
     required init(configuration: GiniConfiguration) {
         giniConfiguration = configuration
     }
@@ -105,10 +109,6 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
 
         return pageModels
     }
-
-    private lazy var pagesCounter: OnboardingPageSeenCounter = {
-        return OnboardingPageSeenCounter(pages: pageModels)
-    }()
 
     private func trackEventForPage(_ pageModel: OnboardingPageModel) {
         guard !pagesCounter.seenAllPages else { return }
