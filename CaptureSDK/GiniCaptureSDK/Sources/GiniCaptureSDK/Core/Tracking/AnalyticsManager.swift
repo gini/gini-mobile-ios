@@ -20,8 +20,6 @@ public class AnalyticsManager {
         mixpanelInstance?.identify(distinctId: deviceID ?? "")
         trackUserProperties(userProperties)
         trackAccessibilityUserPropertiesAtInitialization()
-        // TODO: Where to check open_with
-        trackUserProperties([.entryPoint: AnalyticsMapper.entryPointAnalytics(from: GiniConfiguration.shared.entryPoint)])
     }
 
     // MARK: - Track screen shown
