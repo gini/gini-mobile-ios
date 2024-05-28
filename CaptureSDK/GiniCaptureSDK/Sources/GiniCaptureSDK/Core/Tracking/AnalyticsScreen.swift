@@ -19,7 +19,7 @@ public enum AnalyticsScreen: String {
     case onboardingMultipage = "onboarding_multiple_pages"
     case onboardingQRcode = "onboarding_qr_code"
     case onboardingCustom = "onboarding_custom_" // e.g: onboarding_custom_1, onboarding_custom_2
-    case onboardingReturnAssitant = "onboarding_return_assistant"
-    case returnAssitant = "return_assistant"
-    case editReturnAssitant = "edit_return_assistant"
+    case onboardingReturnAssistant = "onboarding_return_assistant"
+    case returnAssistant = "return_assistant"
+    case editReturnAssistant = "edit_return_assistant"
 }
