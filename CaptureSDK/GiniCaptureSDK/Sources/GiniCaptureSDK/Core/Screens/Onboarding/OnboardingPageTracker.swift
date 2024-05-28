@@ -14,6 +14,7 @@ class OnboardingPageTracker {
     }
 
     func isPageNotSeen(_ page: OnboardingPageModel) -> Bool {
+        // Creating a copy of `pages` ensures that the original array remains unchanged while performing the check.
         let initialPages = pages
         return initialPages.contains(page)
     }
