@@ -50,6 +50,8 @@ class OnboardingViewController: UIViewController {
         pageControl.addTarget(self, action: #selector(self.pageControlSelectionAction(_:)), for: .valueChanged)
         pageControl.numberOfPages = dataSource.pageModels.count
         pageControl.isAccessibilityElement = true
+        configureNavigationButtons(for: 0)
+        pageControl.currentPage = 0
     }
 
     private func setupView() {
