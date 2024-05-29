@@ -156,6 +156,7 @@ class OnboardingViewController: UIViewController {
             AnalyticsManager.track(event: .nextStepTapped, screenNameString: currentPageScreenName)
             let index = IndexPath(item: dataSource.currentPageIndex + 1, section: 0)
             pagesCollection.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
+            dataSource.isProgrammaticScroll = true
         } else {
             // Get started button tapped
             AnalyticsManager.track(event: .getStartedTapped, screenNameString: currentPageScreenName)
@@ -181,10 +182,21 @@ class OnboardingViewController: UIViewController {
 extension OnboardingViewController: OnboardingScreen {
     func didScroll(pageIndex: Int) {
         guard pageControl.currentPage != pageIndex else { return }
-        let pageModel = dataSource.pageModels[pageIndex]
-        AnalyticsManager.track(event: .pageSwiped, screenNameString: pageModel.analyticsScreen)
+
+        sendAnalyticsEventPageSwiped()
         configureNavigationButtons(for: pageIndex)
         pageControl.currentPage = pageIndex
+    }
+
+    private func sendAnalyticsEventPageSwiped() {
+        // Ignore events triggered by programmatic scrolling.
+        guard !dataSource.isProgrammaticScroll else { return }
+
+        // Registers the `pageSwiped` event for the page swiped action, tracking based on the page from which the swipe was triggered.
+        // `pageControl.currentPage` should be updated after this method is called as it is done in `didScroll(pageIndex: Int)` method
+        let previousPageIndex = pageControl.currentPage
+        let previousPageModel = dataSource.pageModels[previousPageIndex]
+        AnalyticsManager.track(event: .pageSwiped, screenNameString: previousPageModel.analyticsScreen)
     }
 
     private func configureNavigationButtons(for pageIndex: Int) {
