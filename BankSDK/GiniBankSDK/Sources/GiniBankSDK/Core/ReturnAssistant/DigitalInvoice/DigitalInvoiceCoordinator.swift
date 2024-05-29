@@ -98,16 +98,19 @@ extension DigitalInvoiceCoordinator: DigitalInvoiceViewModelDelagate {
 
 extension DigitalInvoiceCoordinator: EditLineItemViewModelDelegate {
     func didSave(lineItem: DigitalInvoice.LineItem, on viewModel: EditLineItemViewModel) {
-        guard let invoice = digitalInvoiceViewModel?.invoice else { return }
+        guard let invoice = digitalInvoiceViewModel?.invoice,
+        invoice.lineItems.indices.contains(viewModel.index) else {
+            return
+        }
 
-        var eventProperties: [AnalyticsProperty] = []
-        if invoice.lineItems.indices.contains(viewModel.index) {
-            self.digitalInvoiceViewModel?.invoice?.lineItems[viewModel.index] = lineItem
-            if !viewModel.itemsChanged.isEmpty {
-                eventProperties.append(AnalyticsProperty(key: .itemsChanged,
-                                                         value: viewModel.itemsChanged.map { return $0.rawValue }))
-                AnalyticsManager.track(event: .saveTapped, screenName: .editReturnAssistant, properties: eventProperties)
-            }
+        digitalInvoiceViewModel?.invoice?.lineItems[viewModel.index] = lineItem
+        if !viewModel.itemsChanged.isEmpty {
+            let itemRawValues = viewModel.itemsChanged.map { return $0.rawValue }
+            let eventProperties = [AnalyticsProperty(key: .itemsChanged,
+                                                     value: itemRawValues)]
+            AnalyticsManager.track(event: .saveTapped, 
+                                   screenName: .editReturnAssistant,
+                                   properties: eventProperties)
         }
 
         digitalInvoiceViewController?.updateValues()
