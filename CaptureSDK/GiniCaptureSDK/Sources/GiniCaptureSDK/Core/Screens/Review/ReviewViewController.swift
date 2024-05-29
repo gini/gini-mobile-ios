@@ -306,10 +306,17 @@ extension ReviewViewController {
             }
             navigationBarBottomAdapter?.setMainButtonClickedActionCallback { [weak self] in
                 guard let self = self else { return }
+                let eventProperties = [AnalyticsProperty(key: .numberOfPagesScanned,
+                                                         value: pages.count)]
+
+                AnalyticsManager.track(event: .processTapped,
+                                       screenName: .review,
+                                       properties: eventProperties)
                 self.delegate?.reviewDidTapProcess(self)
             }
             navigationBarBottomAdapter?.setSecondaryButtonClickedActionCallback { [weak self] in
                 guard let self = self else { return }
+                AnalyticsManager.track(event: .addPagesTapped, screenName: .review)
                 self.setCellStatus(for: self.currentPage, isActive: false)
                 self.delegate?.reviewDidTapAddImage(self)
             }
