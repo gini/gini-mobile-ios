@@ -19,8 +19,10 @@ protocol OnboardingScreen: AnyObject {
 
 class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
 
-    private let giniConfiguration: GiniConfiguration
     weak var delegate: OnboardingScreen?
+    var isProgrammaticScroll = false
+
+    private let giniConfiguration: GiniConfiguration
     private (set) var currentPageIndex = 0
     private var isInitialScroll = true
 
@@ -180,6 +182,14 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         let pageIndex = Int((adjustedContentOffsetX + pageWidth / 2) / pageWidth)
         currentPageIndex = max(0, pageIndex)
         delegate?.didScroll(pageIndex: pageIndex)
+    }
+
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        isProgrammaticScroll = false
+    }
+
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        isProgrammaticScroll = false
     }
 
     // MARK: - UICollectionViewDelegateFlowLayout
