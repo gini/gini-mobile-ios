@@ -99,12 +99,12 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         cameraViewController.delegate = self
         documentPickerCoordinator.setupDragAndDrop(in: cameraViewController.view)
         cameraButtonsViewModel.backButtonAction = { [weak cameraViewController, weak self] in
-            AnalyticsManager.track(event: .closeTapped, screenName: .camera)
             if let strongSelf = self, strongSelf.pages.count > 0 {
                 if let cameraViewController = cameraViewController {
                     self?.cameraDidTapReviewButton(cameraViewController)
                 }
             } else {
+                AnalyticsManager.track(event: .closeTapped, screenName: .camera)
                 self?.closeScreenApi()
             }
         }
