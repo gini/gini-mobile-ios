@@ -341,26 +341,27 @@ extension DigitalInvoiceViewController: DigitalLineItemTableViewCellDelegate {
 
         guard let invoice = viewModel.invoice else { return }
         let selectedLineItem = invoice.lineItems[lineItemViewModel.index]
-        var isSelected = true
+        var isLineItemSelected = true
         switch selectedLineItem.selectedState {
         case .selected:
             if let returnReasons = self.viewModel.invoice?.returnReasons, configuration.enableReturnReasons {
                 presentReturnReasonActionSheet(for: lineItemViewModel.index,
                                                source: cell.modeSwitch,
-                                               with: returnReasons, isSelected: &isSelected)
+                                               with: returnReasons,
+                                               isLineItemSelected: &isLineItemSelected)
             } else {
                 self.viewModel.invoice?.lineItems[lineItemViewModel.index].selectedState = .deselected(reason: nil)
-                isSelected = false
+                isLineItemSelected = false
             }
         case .deselected:
             self.viewModel.invoice?.lineItems[lineItemViewModel.index].selectedState = .selected
-            isSelected = true
+            isLineItemSelected = true
 
         }
 
         AnalyticsManager.track(event: .itemSwitchTapped,
                                screenName: .returnAssistant,
-                               properties: [AnalyticsProperty(key: .switchActive, value: isSelected)])
+                               properties: [AnalyticsProperty(key: .switchActive, value: isLineItemSelected)])
         updateValues()
     }
 
@@ -374,8 +375,8 @@ extension DigitalInvoiceViewController {
     private func presentReturnReasonActionSheet(for index: Int,
                                                 source: UIView,
                                                 with returnReasons: [ReturnReason],
-                                                isSelected: inout Bool) {
-        var selected = isSelected
+                                                isLineItemSelected: inout Bool) {
+        var isSelected = isLineItemSelected
         DeselectLineItemActionSheet().present(from: self,
                                               source: source,
                                               returnReasons: returnReasons) { [weak self] selectedState in
@@ -383,16 +384,16 @@ extension DigitalInvoiceViewController {
             switch selectedState {
             case .selected:
                 self.viewModel.invoice?.lineItems[index].selectedState = .selected
-                selected = true
+                isSelected = true
             case .deselected(let reason):
                 self.viewModel.invoice?.lineItems[index].selectedState = .deselected(reason: reason)
-                selected = false
+                isSelected = false
             }
             DispatchQueue.main.async {
                 self.updateValues()
             }
         }
-        isSelected = selected
+        isLineItemSelected = isSelected
     }
 }
 
