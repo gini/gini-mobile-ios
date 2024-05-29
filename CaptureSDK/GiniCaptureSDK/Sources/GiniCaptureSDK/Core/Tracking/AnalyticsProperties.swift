@@ -40,7 +40,7 @@ extension Array: AnalyticsPropertyValue where Element == String {
 }
 
 enum AnalyticsPropertyKey: String {
-    case screenName = "screen_name"
+    case screenName = "screen"
 
     case flashActive = "flash_active"
     case qrCodeValid = "qr_code_valid"
