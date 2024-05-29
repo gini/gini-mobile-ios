@@ -64,7 +64,7 @@ final class EditLineItemViewController: UIViewController {
         setupConstraints()
         setupPanGesture()
         setupTapGesture()
-        AnalyticsManager.trackScreenShown(screenName: .returnAssistant)
+        AnalyticsManager.trackScreenShown(screenName: .editReturnAssistant)
     }
 
     override func viewDidAppear(_ animated: Bool) {
