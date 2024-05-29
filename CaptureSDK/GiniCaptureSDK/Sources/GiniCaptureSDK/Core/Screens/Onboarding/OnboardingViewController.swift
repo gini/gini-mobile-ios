@@ -129,6 +129,9 @@ class OnboardingViewController: UIViewController {
     }
 
     @objc private func skipTapped() {
+        // Handle the skip button tap if there are more onboarding pages.
+        // The skip button is not present on the last onboarding page.
+        guard dataSource.currentPageIndex < dataSource.pageModels.count - 1 else { return }
         let currentPageScreenName = dataSource.pageModels[dataSource.currentPageIndex].analyticsScreen
         AnalyticsManager.track(event: .skipTapped, screenNameString: currentPageScreenName)
         close()
