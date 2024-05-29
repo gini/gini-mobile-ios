@@ -21,7 +21,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     @IBOutlet private weak var scrollViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var scrollViewBottomAnchor: NSLayoutConstraint!
 
-    weak var delegate: DigitalInvoiceOnboardingViewControllerDelegate!
+    weak var delegate: DigitalInvoiceOnboardingViewControllerDelegate?
     private lazy var scrollViewWidthAnchor = scrollView.widthAnchor.constraint(equalTo: view.widthAnchor)
 
     private var widthMultiplier: CGFloat = 0.6
