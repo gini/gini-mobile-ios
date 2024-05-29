@@ -14,7 +14,7 @@ class OnboardingPageTracker {
     }
 
     func isPageNotSeen(_ page: OnboardingPageModel) -> Bool {
-      pages.contains(page)
+        pages.contains(page)
     }
 
     func markPageAsSeen(_ page: OnboardingPageModel) {
