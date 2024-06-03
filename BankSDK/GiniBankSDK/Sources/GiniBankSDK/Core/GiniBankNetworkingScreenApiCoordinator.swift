@@ -133,8 +133,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         giniBankConfiguration = configuration
         giniBankConfiguration.documentService = documentService
         AnalyticsManager.userProperties = [.giniClientID: client.id,
-                                       .returnAssistantEnabled: configuration.returnAssistantEnabled,
-                                       .returnReasonsEnabled: configuration.enableReturnReasons]
+                                           .returnAssistantEnabled: configuration.returnAssistantEnabled,
+                                           .returnReasonsEnabled: configuration.enableReturnReasons]
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
     }
