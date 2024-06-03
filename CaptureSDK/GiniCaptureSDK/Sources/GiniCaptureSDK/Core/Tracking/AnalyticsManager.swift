@@ -90,7 +90,7 @@ public class AnalyticsManager {
     }
 
     // MARK: - Helper methods
-    private static func analyticsString(from original: Bool) -> String {
+    private static func boolToString(from original: Bool) -> String {
         return original ? "yes" : "no"
     }
 
@@ -103,7 +103,7 @@ public class AnalyticsManager {
 
     private static func convertPropertyValueToString(_ value: AnalyticsPropertyValue) -> String {
         if let value = value as? Bool {
-            return analyticsString(from: value)
+            return boolToString(from: value)
         } else if let value = value as? String {
             return value
         } else if let value = value as? Int {
