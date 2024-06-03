@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  Example Swift
 //
-//  Created by Nadya Karaban on 26.03.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit

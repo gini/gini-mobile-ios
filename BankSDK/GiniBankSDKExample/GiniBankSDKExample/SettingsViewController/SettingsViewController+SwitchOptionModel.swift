@@ -16,6 +16,7 @@ struct SwitchOptionModel {
 		case multipage
 		case flashToggle
 		case flashOnByDefault
+        case customResourceProvider
 		case bottomNavigationBar
 		case helpNavigationBarBottomAdapter
 		case cameraNavigationBarBottomAdapter
@@ -65,6 +66,8 @@ struct SwitchOptionModel {
 				return "Display flash button"
 			case .flashOnByDefault:
 				return "Flash default state"
+            case .customResourceProvider:
+                return "Use custom resource provider"
 			case .bottomNavigationBar:
 				return "Bottom navigation bar"
 			case .helpNavigationBarBottomAdapter:
@@ -144,6 +147,8 @@ struct SwitchOptionModel {
                 return "Display flash button in camera screen"
 			case .flashOnByDefault:
 				return "This will work if the `Flash button` switch is also enabled."
+            case .customResourceProvider:
+                return "Enables the customization of resources to override the default Gini resources. The change will affect all screens."
 			case .onButtonLoadingIndicator:
 				return "Set custom loading indicator on the buttons which support loading."
 			case .customLoadingIndicator:

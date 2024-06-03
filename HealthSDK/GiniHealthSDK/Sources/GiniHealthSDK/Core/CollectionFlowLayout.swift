@@ -2,7 +2,7 @@
 //  CollectionFlowLayout.swift
 //  GiniHealth
 //
-//  Created by Nadya Karaban on 09.04.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit

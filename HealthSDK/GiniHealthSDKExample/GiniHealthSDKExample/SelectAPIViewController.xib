@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SelectAPIViewController" customModule="GiniHealthSDKExample" customModuleProvider="target">
             <connections>
                 <outlet property="activityIndicator" destination="Bin-b9-IZs" id="KkP-nk-Vpi"/>
+                <outlet property="invoicesListButton" destination="a3v-xv-RH0" id="zEs-E7-UJY"/>
                 <outlet property="metaInformationButton" destination="F9C-eh-tuY" id="VoV-Cz-x16"/>
                 <outlet property="startWithGiniCaptureButton" destination="pHg-uN-R4p" id="k9P-xH-9Y5"/>
                 <outlet property="startWithTestDocumentButton" destination="cYN-YX-Qgn" id="sTW-nq-Qtt"/>
@@ -98,6 +99,26 @@
                         <action selector="launchPaymentReview:" destination="-1" eventType="touchUpInside" id="iiP-Su-JuX"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a3v-xv-RH0">
+                    <rect key="frame" x="146.66666666666666" y="761.66666666666663" width="100" height="40"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="71Q-HF-KDE"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="ePy-pl-SKY"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                    <state key="normal" title="Invoices list">
+                        <color key="titleColor" red="0.0" green="0.61960784310000006" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="launchInvoicesList:" destination="-1" eventType="touchUpInside" id="dhb-5F-ITn"/>
+                    </connections>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="Mzt-46-aWr"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -111,12 +132,14 @@
                 <constraint firstItem="b17-ET-hkd" firstAttribute="centerX" secondItem="JbT-KQ-yrt" secondAttribute="centerX" id="IgY-dp-PQC"/>
                 <constraint firstItem="0fx-iN-WeA" firstAttribute="centerX" secondItem="JbT-KQ-yrt" secondAttribute="centerX" id="LkK-YG-gdO"/>
                 <constraint firstItem="cYN-YX-Qgn" firstAttribute="centerX" secondItem="Mzt-46-aWr" secondAttribute="centerX" id="LnM-3G-Mz1"/>
+                <constraint firstItem="a3v-xv-RH0" firstAttribute="top" secondItem="cYN-YX-Qgn" secondAttribute="bottom" constant="4" id="TEn-yo-Sfm"/>
                 <constraint firstItem="0fx-iN-WeA" firstAttribute="top" secondItem="b17-ET-hkd" secondAttribute="bottom" constant="16" id="VKU-X1-wDH"/>
                 <constraint firstItem="cYN-YX-Qgn" firstAttribute="top" secondItem="pHg-uN-R4p" secondAttribute="bottom" constant="4" id="Vg2-6x-piu"/>
                 <constraint firstItem="Bin-b9-IZs" firstAttribute="centerX" secondItem="JbT-KQ-yrt" secondAttribute="centerX" id="XLP-Df-79z"/>
                 <constraint firstItem="Bin-b9-IZs" firstAttribute="centerY" secondItem="JbT-KQ-yrt" secondAttribute="centerY" id="iyM-EX-rNd"/>
                 <constraint firstItem="pHg-uN-R4p" firstAttribute="centerX" secondItem="JbT-KQ-yrt" secondAttribute="centerX" id="jQ4-x1-gwx"/>
                 <constraint firstItem="b17-ET-hkd" firstAttribute="top" secondItem="JbT-KQ-yrt" secondAttribute="top" constant="100" id="oHr-ZA-nW7"/>
+                <constraint firstItem="a3v-xv-RH0" firstAttribute="centerX" secondItem="cYN-YX-Qgn" secondAttribute="centerX" id="u26-dV-9F8"/>
                 <constraint firstAttribute="bottom" secondItem="F9C-eh-tuY" secondAttribute="bottom" id="znX-xx-RRT"/>
             </constraints>
             <variation key="default">
@@ -127,10 +150,10 @@
             </variation>
             <variation key="heightClass=compact">
                 <mask key="constraints">
-                    <include reference="22D-ZY-3M0"/>
-                    <exclude reference="8mH-gn-RzL"/>
                     <exclude reference="Gsg-Dr-yDt"/>
                     <exclude reference="oHr-ZA-nW7"/>
+                    <include reference="22D-ZY-3M0"/>
+                    <exclude reference="8mH-gn-RzL"/>
                 </mask>
             </variation>
             <variation key="heightClass=regular-widthClass=regular">
@@ -144,7 +167,7 @@
     <resources>
         <image name="healthLogo" width="182" height="65.333335876464844"/>
         <systemColor name="labelColor">
-            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

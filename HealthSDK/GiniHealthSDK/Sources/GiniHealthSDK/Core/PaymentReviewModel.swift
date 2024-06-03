@@ -2,7 +2,7 @@
 //  PaymentReviewModer.swift
 //  GiniHealth
 //
-//  Created by Nadya Karaban on 18.04.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import GiniHealthAPILibrary
@@ -67,6 +67,10 @@ public class PaymentReviewModel: NSObject {
             self.updateImagesLoadingStatus()
         }
     }
+    
+    // Pay invoice label
+    let payInvoiceLabelText: String = NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.banking.app.button.label",
+                                                                       comment: "Title label used for the pay invoice button")
 
     public init(with giniHealth: GiniHealth, document: Document, extractions: [Extraction]) {
         self.healthSDK = giniHealth
@@ -81,19 +85,6 @@ public class PaymentReviewModel: NSObject {
 
     private func createCellViewModel(previewImage: UIImage) -> PageCollectionCellViewModel {
         return PageCollectionCellViewModel(preview: previewImage)
-    }
-
-    func checkIfAnyPaymentProviderAvailable() {
-        healthSDK.checkIfAnyPaymentProviderAvailable {[weak self] result in
-            switch result {
-            case let .success(providers):
-                self?.onPaymentProvidersFetched(providers)
-            case let .failure(error):
-                if let delegate = self?.healthSDK.delegate, delegate.shouldHandleErrorInternally(error: error) {
-                    self?.onNoAppsErrorHandling(error)
-                }
-            }
-        }
     }
 
     func sendFeedback(updatedExtractions: [Extraction]) {
@@ -111,7 +102,7 @@ public class PaymentReviewModel: NSObject {
             switch result {
             case let .success(requestId):
                     self?.isLoading = false
-                    self?.openPaymentProviderApp(requestId: requestId, appScheme: paymentInfo.paymentProviderScheme)
+                    self?.openPaymentProviderApp(requestId: requestId, universalLink: paymentInfo.paymentUniversalLink)
             case let .failure(error):
                     self?.isLoading = false
                 if let delegate = self?.healthSDK.delegate, delegate.shouldHandleErrorInternally(error: error) {
@@ -121,8 +112,8 @@ public class PaymentReviewModel: NSObject {
         }
     }
 
-    func openPaymentProviderApp(requestId: String, appScheme: String) {
-        healthSDK.openPaymentProviderApp(requestID: requestId, appScheme: appScheme)
+    func openPaymentProviderApp(requestId: String, universalLink: String) {
+        healthSDK.openPaymentProviderApp(requestID: requestId, universalLink: universalLink)
     }
     
     func fetchImages() {

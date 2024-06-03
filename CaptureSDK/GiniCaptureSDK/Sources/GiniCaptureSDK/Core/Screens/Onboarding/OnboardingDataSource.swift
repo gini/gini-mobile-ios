@@ -19,21 +19,23 @@ protocol OnboardingScreen: AnyObject {
 
 class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
 
-    private let giniConfiguration: GiniConfiguration
     weak var delegate: OnboardingScreen?
-    var currentPageIndex = 0
+    var isProgrammaticScroll = false
+
+    private let giniConfiguration: GiniConfiguration
+    private (set) var currentPageIndex = 0
+    private var isInitialScroll = true
 
     lazy var pageModels: [OnboardingPageModel] = {
         if let customPages = giniConfiguration.customOnboardingPages {
-            return customPages.enumerated().map { index, page in
-                let analyticsScreen = "\(AnalyticsScreen.onboardingCustom.rawValue)\(index + 1)"
-                return OnboardingPageModel(page: page,
-                                           analyticsScreen: analyticsScreen,
-                                           isCustom: true)
-            }
+            return customOnboardingPagesDataSource(from: customPages)
         } else {
             return defaultOnboardingPagesDataSource()
         }
+    }()
+
+    private lazy var pagesTracker: OnboardingPageTracker = {
+        return OnboardingPageTracker(pages: pageModels)
     }()
 
     required init(configuration: GiniConfiguration) {
@@ -106,20 +108,25 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         return pageModels
     }
 
-    private lazy var pagesCounter: OnboardingPageSeenCounter = {
-        return OnboardingPageSeenCounter(pages: pageModels)
-    }()
+    private func customOnboardingPagesDataSource(from customPages: [OnboardingPage]) -> [OnboardingPageModel] {
+        return customPages.enumerated().map { index, page in
+            let analyticsScreen = "\(AnalyticsScreen.onboardingCustom.rawValue)\(index + 1)"
+            return OnboardingPageModel(page: page,
+                                       analyticsScreen: analyticsScreen,
+                                       isCustom: true)
+        }
+    }
 
     private func trackEventForPage(_ pageModel: OnboardingPageModel) {
-        guard !pagesCounter.seenAllPages else { return }
-        guard pagesCounter.pageNotSeen(pageModel) else { return }
+        guard !pagesTracker.seenAllPages else { return }
+        guard pagesTracker.isPageNotSeen(pageModel) else { return }
         var eventProperties = [AnalyticsProperty]()
         if pageModel.isCustom {
             eventProperties.append(.init(key: .customOnboardingTitle, value: pageModel.page.title))
         }
         AnalyticsManager.trackScreenShown(screenNameString: pageModel.analyticsScreen,
                                           properties: eventProperties)
-        pagesCounter.markPageAsSeen(pageModel)
+        pagesTracker.markPageAsSeen(pageModel)
     }
 
     func collectionView(_ collectionView: UICollectionView,
@@ -160,11 +167,9 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         return attr?.frame.origin ?? CGPoint.zero
     }
 
-    private var isInitialScroll = true
-
-    // MARK: - Display the page number in page controll of collection view Cell
+    // MARK: - Display the page number in page control of collection view cell
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // this method is called twice when the screen is displyed for the first time
+        // this method is called twice when the screen is displayed for the first time
         guard !isInitialScroll else {
             isInitialScroll = false
             return
@@ -177,6 +182,14 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         let pageIndex = Int((adjustedContentOffsetX + pageWidth / 2) / pageWidth)
         currentPageIndex = max(0, pageIndex)
         delegate?.didScroll(pageIndex: pageIndex)
+    }
+
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        isProgrammaticScroll = false
+    }
+
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        isProgrammaticScroll = false
     }
 
     // MARK: - UICollectionViewDelegateFlowLayout

@@ -50,6 +50,8 @@ class OnboardingViewController: UIViewController {
         pageControl.addTarget(self, action: #selector(self.pageControlSelectionAction(_:)), for: .valueChanged)
         pageControl.numberOfPages = dataSource.pageModels.count
         pageControl.isAccessibilityElement = true
+        configureNavigationButtons(for: 0)
+        pageControl.currentPage = 0
     }
 
     private func setupView() {
@@ -129,6 +131,9 @@ class OnboardingViewController: UIViewController {
     }
 
     @objc private func skipTapped() {
+        // Handle the skip button tap if there are more onboarding pages.
+        // The skip button is not present on the last onboarding page.
+        guard dataSource.currentPageIndex < dataSource.pageModels.count - 1 else { return }
         let currentPageScreenName = dataSource.pageModels[dataSource.currentPageIndex].analyticsScreen
         AnalyticsManager.track(event: .skipTapped, screenNameString: currentPageScreenName)
         close()
@@ -144,15 +149,16 @@ class OnboardingViewController: UIViewController {
     }
 
     @objc private func nextPage() {
+        let currentPageScreenName = dataSource.pageModels[dataSource.currentPageIndex].analyticsScreen
+
         if dataSource.currentPageIndex < dataSource.pageModels.count - 1 {
-            // Next  button tapped
-            let currentPageScreenName = dataSource.pageModels[dataSource.currentPageIndex].analyticsScreen
+            // Next button tapped
             AnalyticsManager.track(event: .nextStepTapped, screenNameString: currentPageScreenName)
             let index = IndexPath(item: dataSource.currentPageIndex + 1, section: 0)
             pagesCollection.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
+            dataSource.isProgrammaticScroll = true
         } else {
             // Get started button tapped
-            let currentPageScreenName = dataSource.pageModels[dataSource.currentPageIndex].analyticsScreen
             AnalyticsManager.track(event: .getStartedTapped, screenNameString: currentPageScreenName)
             close()
         }
@@ -176,19 +182,35 @@ class OnboardingViewController: UIViewController {
 extension OnboardingViewController: OnboardingScreen {
     func didScroll(pageIndex: Int) {
         guard pageControl.currentPage != pageIndex else { return }
-        let pageModel = dataSource.pageModels[pageIndex]
-        AnalyticsManager.track(event: .swipePages, screenNameString: pageModel.analyticsScreen)
+
+        sendAnalyticsEventPageSwiped()
+        configureNavigationButtons(for: pageIndex)
+        pageControl.currentPage = pageIndex
+    }
+
+    private func sendAnalyticsEventPageSwiped() {
+        // Ignore events triggered by programmatic scrolling.
+        guard !dataSource.isProgrammaticScroll else { return }
+
+        // Registers the `pageSwiped` event for the page swiped action, tracking based on the page from which the swipe was triggered.
+        // `pageControl.currentPage` should be updated after this method is called as it is done in `didScroll(pageIndex: Int)` method
+        let previousPageIndex = pageControl.currentPage
+        let previousPageModel = dataSource.pageModels[previousPageIndex]
+        AnalyticsManager.track(event: .pageSwiped, screenNameString: previousPageModel.analyticsScreen)
+    }
+
+    private func configureNavigationButtons(for pageIndex: Int) {
         switch pageIndex {
         case dataSource.pageModels.count - 1:
             if configuration.bottomNavigationBarEnabled,
-               let bottomNavigationBar = bottomNavigationBar {
+                let bottomNavigationBar = bottomNavigationBar {
                 navigationBarBottomAdapter?.showButtons(navigationButtons: [.getStarted],
                                                         navigationBar: bottomNavigationBar)
             } else {
                 navigationItem.rightBarButtonItem = nil
                 if nextButton != nil {
                     nextButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.onboarding.getstarted",
-                                                                         comment: "Get Started button"), 
+                                                                         comment: "Get Started button"),
                                         for: .normal)
                     nextButton.accessibilityValue = NSLocalizedStringPreferredFormat("ginicapture.onboarding.getstarted",
                                                                                      comment: "Get Started button")
@@ -196,7 +218,7 @@ extension OnboardingViewController: OnboardingScreen {
             }
         default:
             if configuration.bottomNavigationBarEnabled,
-               let bottomNavigationBar = bottomNavigationBar {
+                let bottomNavigationBar = bottomNavigationBar {
                 navigationBarBottomAdapter?.showButtons(navigationButtons: [.skip, .next],
                                                         navigationBar: bottomNavigationBar)
             } else {
@@ -208,7 +230,6 @@ extension OnboardingViewController: OnboardingScreen {
                 }
             }
         }
-        pageControl.currentPage = pageIndex
     }
 }
 
