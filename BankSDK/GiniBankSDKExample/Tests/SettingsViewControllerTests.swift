@@ -50,6 +50,7 @@ final class SettingsViewControllerTests: XCTestCase {
 		configuration.giniErrorLoggerIsOn = true
 		configuration.customGiniErrorLoggerDelegate = self
 		configuration.debugModeOn = true
+        configuration.customResourceProvider = nil
 		return configuration
 	}()
 	
@@ -181,7 +182,10 @@ final class SettingsViewControllerTests: XCTestCase {
 													 isSwitchOn: configuration.customGiniErrorLoggerDelegate != nil)))
 		contentData.append(.switchOption(data: .init(type: .debugModeOn,
 													 isSwitchOn: configuration.debugModeOn)))
-		
+
+        contentData.append(.switchOption(data: .init(type: .customResourceProvider,
+                                                     isSwitchOn: configuration.customResourceProvider != nil)))
+
 		var selectedSegmentIndex = 0
 		switch configuration.fileImportSupportedTypes {
 		case .none:
@@ -1984,6 +1988,28 @@ extension SettingsViewControllerTests {
 						   "debugModeOn should not be enabled in the gini configuration")
 		}
 	}
+
+    // MARK: - GiniBankCustomResourceProvider
+
+    func testCustomResourceProvider() {
+        guard let index = getSwitchOptionIndex(for: .customResourceProvider) else {
+            XCTFail("`customResourceProvider` option not found in sectionData")
+            return
+        }
+
+        if case .switchOption(var data) = contentData[index] {
+            guard data.type == .customResourceProvider else {
+                XCTFail("Expected type `customResourceProvider`, found a different one: \(data.type)")
+                return
+            }
+            data.isSwitchOn = true
+            let customProvider = GiniBankCustomResourceProvider()
+            configuration.customResourceProvider = customProvider
+
+            XCTAssertTrue(configuration.customResourceProvider != nil,
+                          "customResourceProvider should be enabled in the gini configuration")
+        }
+    }
 
 }
 

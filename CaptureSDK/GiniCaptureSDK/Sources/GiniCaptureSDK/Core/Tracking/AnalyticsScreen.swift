@@ -6,8 +6,7 @@
 
 import Foundation
 
-public enum AnalyticsScreen: String {
-    case none
+enum AnalyticsScreen: String {
     case camera
     case review
     case analysis
