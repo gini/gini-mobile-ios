@@ -2,7 +2,7 @@
 //  APIResource.swift
 //  GiniHealthAPI
 //
-//  Created by Enrique del Pozo Gómez on 1/18/18.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -46,9 +46,9 @@ struct APIResource<T: Decodable>: Resource {
     
     var apiVersion: Int {
         switch domain {
-        case .default: return 3
+        case .default: return 4
         case .gym: return 2
-        case .custom: return 3
+        case .custom: return 4
         }
     }
     
@@ -108,6 +108,8 @@ struct APIResource<T: Decodable>: Resource {
             return "/paymentRequests"
         case .file(urlString: let urlString):
             return urlString
+        case .pdfWithQRCode(paymentRequestId: let paymentRequestId):
+            return "/paymentRequests/\(paymentRequestId)"
         }
     }
     
@@ -127,6 +129,10 @@ struct APIResource<T: Decodable>: Resource {
         return ["Accept": ContentType.content(version: apiVersion,
                                               subtype: nil,
                                               mimeSubtype: "json").value]
+        case .pdfWithQRCode(_):
+            return ["Accept": ContentType.content(version: apiVersion,
+                                              subtype: nil,
+                                              mimeSubtype: "qr+pdf").value]
         default:
             return ["Accept": ContentType.content(version: apiVersion,
                                                   subtype: nil,

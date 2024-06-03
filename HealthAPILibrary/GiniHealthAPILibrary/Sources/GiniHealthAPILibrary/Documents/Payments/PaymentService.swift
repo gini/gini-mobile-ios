@@ -97,9 +97,23 @@ public final class PaymentService: PaymentServiceProtocol {
     func file(urlString: String, completion: @escaping CompletionResult<Data>){
         file(urlString: urlString, resourceHandler: sessionManager.download, completion: completion)
     }
+
+    /**
+     *  Returns a list of payment requests.
+     *
+     * - Parameter paymentRequestId: The the payment request's unique identifie
+     * - Parameter completion:       A completion callback, returning the pdf document with the payment details in QR Code on success
+     */
+
+    public func pdfWithQRCode(paymentRequestId: String,
+                               completion: @escaping CompletionResult<Data>){
+        pdfWithQRCode(paymentRequestId: paymentRequestId,
+                      resourceHandler: sessionManager.data,
+                      completion: completion)
+    }
 }
 
-public protocol PaymentServiceProtocol: AnyObject {
+protocol PaymentServiceProtocol: AnyObject {
 
     /**
      *  Returns a list of payment providers.
@@ -163,6 +177,15 @@ public protocol PaymentServiceProtocol: AnyObject {
                          offset: Int?,
                          completion: @escaping CompletionResult<PaymentRequests>)
 
+    /**
+     *  Returns a list of payment requests.
+     *
+     * - Parameter paymentRequestId: The the payment request's unique identifie
+     * - Parameter completion:       A completion callback, returning the pdf document with the payment details in QR Code on success
+     */
+
+    func pdfWithQRCode(paymentRequestId: String,
+                       completion: @escaping CompletionResult<Data>)
 }
 
 extension PaymentService {
@@ -292,6 +315,22 @@ extension PaymentService {
             }
             
         }
+    }
+
+    func pdfWithQRCode(paymentRequestId: String,
+                       resourceHandler: ResourceDataHandler<APIResource<Data>>,
+                       completion: @escaping CompletionResult<Data>) {
+        let resource = APIResource<Data>(method: .pdfWithQRCode(paymentRequestId: paymentRequestId),
+                                                   apiDomain: apiDomain,
+                                                   httpMethod: .get)
+        resourceHandler(resource, { result in
+            switch result {
+            case .success(let data):
+                completion(.success(data))
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        })
     }
 }
 
