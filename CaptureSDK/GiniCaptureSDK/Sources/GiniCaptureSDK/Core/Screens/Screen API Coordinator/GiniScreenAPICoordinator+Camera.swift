@@ -72,7 +72,6 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
     }
 
     func cameraDidTapReviewButton(_ viewController: CameraViewController) {
-        // TODO: do we need back to review event ?
         popBackToReview()
     }
 
@@ -104,6 +103,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
                     self?.cameraDidTapReviewButton(cameraViewController)
                 }
             } else {
+                AnalyticsManager.track(event: .closeTapped, screenName: .camera)
                 self?.closeScreenApi()
             }
         }
