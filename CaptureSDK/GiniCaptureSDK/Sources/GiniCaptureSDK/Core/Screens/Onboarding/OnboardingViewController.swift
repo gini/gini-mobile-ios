@@ -1,8 +1,7 @@
 //
 //  OnboardingViewController.swift
-//  GiniCaptureSDK
 //
-//  Created by Nadya Karaban on 07.06.22.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -16,12 +15,11 @@ class OnboardingViewController: UIViewController {
     private var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
     private var bottomNavigationBar: UIView?
 
-    lazy var skipButton = UIBarButtonItem(title: NSLocalizedStringPreferredFormat(
-        "ginicapture.onboarding.skip",
-        comment: "Skip button"),
+    lazy var skipButton = UIBarButtonItem(title: NSLocalizedStringPreferredFormat("ginicapture.onboarding.skip",
+                                                                                  comment: "Skip button"),
                                           style: .plain,
-                              target: self,
-                              action: #selector(close))
+                                          target: self,
+                                          action: #selector(skipTapped))
     init() {
         dataSource = OnboardingDataSource(configuration: configuration)
         super.init(nibName: "OnboardingViewController", bundle: giniCaptureBundle())
@@ -52,6 +50,8 @@ class OnboardingViewController: UIViewController {
         pageControl.addTarget(self, action: #selector(self.pageControlSelectionAction(_:)), for: .valueChanged)
         pageControl.numberOfPages = dataSource.pageModels.count
         pageControl.isAccessibilityElement = true
+        configureNavigationButtons(for: 0)
+        pageControl.currentPage = 0
     }
 
     private func setupView() {
@@ -117,9 +117,9 @@ class OnboardingViewController: UIViewController {
             layoutBottomNavigationBar(navigationBar)
             navigationBarBottomAdapter?.showButtons(navigationButtons: [.skip, .next], navigationBar: navigationBar)
 
-            nextButton.setTitle(NSLocalizedStringPreferredFormat(
-                "ginicapture.onboarding.next",
-                comment: "Next button"), for: .normal)
+            nextButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.onboarding.next",
+                                                                 comment: "Next button"),
+                                for: .normal)
 
             nextButton.addTarget(self, action: #selector(nextPage), for: .touchUpInside)
             navigationItem.rightBarButtonItem = skipButton
@@ -130,7 +130,16 @@ class OnboardingViewController: UIViewController {
         nextButton.removeFromSuperview()
     }
 
-    @objc private func close() {
+    @objc private func skipTapped() {
+        // Handle the skip button tap if there are more onboarding pages.
+        // The skip button is not present on the last onboarding page.
+        guard dataSource.currentPageIndex < dataSource.pageModels.count - 1 else { return }
+        let currentPageScreenName = dataSource.pageModels[dataSource.currentPageIndex].analyticsScreen
+        AnalyticsManager.track(event: .skipTapped, screenNameString: currentPageScreenName)
+        close()
+    }
+
+    private func close() {
         dismiss(animated: true)
     }
 
@@ -140,10 +149,17 @@ class OnboardingViewController: UIViewController {
     }
 
     @objc private func nextPage() {
-        if dataSource.currentPage < dataSource.pageModels.count - 1 {
-            let index = IndexPath(item: dataSource.currentPage + 1, section: 0)
+        let currentPageScreenName = dataSource.pageModels[dataSource.currentPageIndex].analyticsScreen
+
+        if dataSource.currentPageIndex < dataSource.pageModels.count - 1 {
+            // Next button tapped
+            AnalyticsManager.track(event: .nextStepTapped, screenNameString: currentPageScreenName)
+            let index = IndexPath(item: dataSource.currentPageIndex + 1, section: 0)
             pagesCollection.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
+            dataSource.isProgrammaticScroll = true
         } else {
+            // Get started button tapped
+            AnalyticsManager.track(event: .getStartedTapped, screenNameString: currentPageScreenName)
             close()
         }
     }
@@ -164,43 +180,56 @@ class OnboardingViewController: UIViewController {
 }
 
 extension OnboardingViewController: OnboardingScreen {
-    func didScroll(page: Int) {
-        switch page {
+    func didScroll(pageIndex: Int) {
+        guard pageControl.currentPage != pageIndex else { return }
+
+        sendAnalyticsEventPageSwiped()
+        configureNavigationButtons(for: pageIndex)
+        pageControl.currentPage = pageIndex
+    }
+
+    private func sendAnalyticsEventPageSwiped() {
+        // Ignore events triggered by programmatic scrolling.
+        guard !dataSource.isProgrammaticScroll else { return }
+
+        // Registers the `pageSwiped` event for the page swiped action, tracking based on the page from which the swipe was triggered.
+        // `pageControl.currentPage` should be updated after this method is called as it is done in `didScroll(pageIndex: Int)` method
+        let previousPageIndex = pageControl.currentPage
+        let previousPageModel = dataSource.pageModels[previousPageIndex]
+        AnalyticsManager.track(event: .pageSwiped, screenNameString: previousPageModel.analyticsScreen)
+    }
+
+    private func configureNavigationButtons(for pageIndex: Int) {
+        switch pageIndex {
         case dataSource.pageModels.count - 1:
             if configuration.bottomNavigationBarEnabled,
-               let bottomNavigationBar = bottomNavigationBar {
-                navigationBarBottomAdapter?.showButtons(
-                    navigationButtons: [.getStarted],
-                    navigationBar: bottomNavigationBar)
+                let bottomNavigationBar = bottomNavigationBar {
+                navigationBarBottomAdapter?.showButtons(navigationButtons: [.getStarted],
+                                                        navigationBar: bottomNavigationBar)
             } else {
                 navigationItem.rightBarButtonItem = nil
                 if nextButton != nil {
-                    nextButton.setTitle(NSLocalizedStringPreferredFormat(
-                        "ginicapture.onboarding.getstarted",
-                        comment: "Get Started button"), for: .normal)
-                    nextButton.accessibilityValue = NSLocalizedStringPreferredFormat(
-                                                    "ginicapture.onboarding.getstarted",
-                                                    comment: "Get Started button")
+                    nextButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.onboarding.getstarted",
+                                                                         comment: "Get Started button"),
+                                        for: .normal)
+                    nextButton.accessibilityValue = NSLocalizedStringPreferredFormat("ginicapture.onboarding.getstarted",
+                                                                                     comment: "Get Started button")
                 }
             }
         default:
             if configuration.bottomNavigationBarEnabled,
-               let bottomNavigationBar = bottomNavigationBar {
-                navigationBarBottomAdapter?.showButtons(
-                    navigationButtons: [.skip, .next],
-                    navigationBar: bottomNavigationBar)
+                let bottomNavigationBar = bottomNavigationBar {
+                navigationBarBottomAdapter?.showButtons(navigationButtons: [.skip, .next],
+                                                        navigationBar: bottomNavigationBar)
             } else {
                 navigationItem.rightBarButtonItem = skipButton
                 if nextButton != nil {
-                    nextButton.setTitle(
-                        NSLocalizedStringPreferredFormat(
-                            "ginicapture.onboarding.next",
-                            comment: "Next button"),
-                        for: .normal)
+                    nextButton.setTitle(NSLocalizedStringPreferredFormat("ginicapture.onboarding.next",
+                                                                         comment: "Next button"),
+                                        for: .normal)
                 }
             }
         }
-        pageControl.currentPage = page
     }
 }
 

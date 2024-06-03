@@ -35,4 +35,9 @@ enum AnalyticsEvent: String {
 
     // MARK: - Help
     case helpItemTapped = "help_item_tapped"
+
+    // MARK: - Onboarding
+    case skipTapped = "skip_tapped"
+    case nextStepTapped = "next_step_tapped"
+    case getStartedTapped = "get_started_tapped"
 }
