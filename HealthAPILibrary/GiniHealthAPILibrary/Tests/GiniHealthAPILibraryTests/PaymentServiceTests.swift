@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import PDFKit
 @testable import GiniHealthAPILibrary
 
 class PaymentServiceTests: XCTestCase {
@@ -80,6 +81,20 @@ class PaymentServiceTests: XCTestCase {
                 XCTAssertEqual(requestID,
                                SessionManagerMock.paymentRequestId,
                                "payment request ids should match")
+                expect.fulfill()
+            case .failure:
+                break
+            }
+      }
+        wait(for: [expect], timeout: 1)
+    }
+
+    func testLoadPDFForPaymentRequest() {
+        let expect = expectation(description: "returns PDF")
+        paymentService.pdfWithQRCode(paymentRequestId: SessionManagerMock.paymentRequestId){ result in
+            switch result {
+            case .success(let data):
+                XCTAssert(PDFDocument(data: data) != nil)
                 expect.fulfill()
             case .failure:
                 break
