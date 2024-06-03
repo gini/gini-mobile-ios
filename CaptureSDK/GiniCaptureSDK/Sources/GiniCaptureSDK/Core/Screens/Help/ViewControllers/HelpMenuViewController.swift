@@ -1,9 +1,7 @@
 //
 //  HelpMenuViewController.swift
-//  GiniCapture
 //
-//  Created by Enrique del Pozo Gómez on 10/18/17.
-//  Copyright © 2017 Gini GmbH. All rights reserved.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
