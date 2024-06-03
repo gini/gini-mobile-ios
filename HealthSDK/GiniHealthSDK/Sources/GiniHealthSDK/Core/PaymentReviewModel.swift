@@ -7,6 +7,7 @@
 
 import GiniHealthAPILibrary
 import UIKit
+import PDFKit
 
 protocol PaymentReviewViewModelDelegate: AnyObject {
     func presentInstallAppBottomSheet(bottomSheet: BottomSheetViewController)
@@ -53,6 +54,7 @@ public class PaymentReviewModel: NSObject {
     public var documentId: String
     private var healthSDK: GiniHealth
     private var selectedPaymentProvider: PaymentProvider?
+    private var paymentRequestId: String?
 
     private var cellViewModels: [PageCollectionCellViewModel] = [PageCollectionCellViewModel]() {
         didSet {
@@ -111,6 +113,7 @@ public class PaymentReviewModel: NSObject {
             switch result {
             case let .success(requestId):
                     self?.isLoading = false
+                    self?.paymentRequestId = requestId
                     self?.openPaymentProviderApp(requestId: requestId, universalLink: paymentInfo.paymentUniversalLink)
             case let .failure(error):
                     self?.isLoading = false
@@ -197,6 +200,22 @@ public class PaymentReviewModel: NSObject {
         shareInvoiceBottomViewModel.viewDelegate = self
         let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel)
         return shareInvoiceBottomView
+    }
+
+    func loadPDF(){
+        guard let requestId = self.paymentRequestId else {
+            return
+        }
+        healthSDK.paymentService.pdfWithQRCode(paymentRequestId: requestId){ result in
+            switch result {
+                case .success(let data):
+                    if let pdf = PDFDocument(data: data){
+                        print("Loaded")
+                    }
+                case .failure:
+                    break
+            }
+        }
     }
 }
 

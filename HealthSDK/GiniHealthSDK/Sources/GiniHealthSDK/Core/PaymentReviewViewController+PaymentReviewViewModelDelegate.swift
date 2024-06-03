@@ -25,6 +25,8 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
 
     func sharePDFActivityUI() {
         // TODO: Load PDF from backend then...
+        model?.loadPDF()
+
         self.presentedViewController?.dismiss(animated: true, completion: {
             self.sharePDF()
         })
