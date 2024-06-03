@@ -125,7 +125,8 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
             let cameraViewController = createCameraViewController()
             cameraScreen = cameraViewController
             viewControllers = [reviewViewController, cameraViewController]
-            AnalyticsManager.trackUserProperties([.entryPoint: AnalyticsEntryPoint.makeFrom(entryPoint: giniConfiguration.entryPoint).rawValue])
+            let entryPoint = AnalyticsEntryPoint.makeFrom(entryPoint: giniConfiguration.entryPoint).rawValue
+            AnalyticsManager.trackUserProperties([.entryPoint: entryPoint])
         }
 
         self.screenAPINavigationController.setViewControllers(viewControllers, animated: animated)
