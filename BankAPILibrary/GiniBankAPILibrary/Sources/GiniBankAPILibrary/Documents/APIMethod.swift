@@ -32,4 +32,6 @@ enum APIMethod: ResourceMethod {
     case resolvePaymentRequest(id: String)
     case payment(id: String)
     case logErrorEvent
+    // TODO: [PP-352] FAKE endpoint, replace when backend will be finished
+    case fetchConfiguration
 }
