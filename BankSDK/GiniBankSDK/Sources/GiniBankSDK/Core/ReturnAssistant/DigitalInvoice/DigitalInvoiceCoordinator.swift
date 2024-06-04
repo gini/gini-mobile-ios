@@ -20,10 +20,8 @@ final class DigitalInvoiceCoordinator: Coordinator {
     private var digitalInvoiceViewController: DigitalInvoiceViewController?
     private var digitalInvoiceViewModel: DigitalInvoiceViewModel?
 
-    // TODO: do we still need this?!
     // TODO: This is to cope with the screen coordinator being inadequate at this point to support the return assistant step and needing a refactor.
-    // Remove ASAP
-    private var analysisDelegate: AnalysisDelegate
+    private weak var analysisDelegate: AnalysisDelegate?
 
     weak var delegate: DigitalInvoiceCoordinatorDelegate?
     var rootViewController: UIViewController {
@@ -83,7 +81,10 @@ extension DigitalInvoiceCoordinator: DigitalInvoiceViewModelDelagate {
     }
 
     func didTapPay(on viewModel: DigitalInvoiceViewModel) {
-        delegate?.didFinishAnalysis(self, invoice: viewModel.invoice, analysisDelegate: analysisDelegate)
+        if let analysisDelegate = analysisDelegate {
+            delegate?.didFinishAnalysis(self, invoice: viewModel.invoice, analysisDelegate: analysisDelegate)
+        }
+
     }
 
     func didTapEdit(on viewModel: DigitalInvoiceViewModel, lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
