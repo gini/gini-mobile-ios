@@ -5,20 +5,20 @@ The Gini Health SDK for iOS provides all the UI and functionality needed to use 
 
 The Gini Health API provides an information extraction service for analyzing health invoices. Specifically, it extracts information such as the document sender or the payment relevant information (amount to pay, IBAN, etc.). In addition it also provides a secure channel for sharing payment related information between clients. 
 
-**Note** For supporting each payment provider you need to specify `LSApplicationQueriesSchemes` in your `Info.plist` file. App schemes for specification will be provided by Gini.
-
-
-## Upload the document
-
-Document upload can be done in two ways:
-
-using `GiniHealthAPILibrary`
-using `GiniCapture`
+> ⚠️  **Important:**
+For supporting each payment provider you need to specify `LSApplicationQueriesSchemes` in your `Info.plist` file. App schemes for specification will be provided by Gini.
 
 
 ## GiniHealthAPI initialization
 
+> ⚠️  **Important:**
 You should have received Gini Health API client credentials from us. Please get in touch with us in case you don't have them.
+
+You can easy initialize `GiniHealthAPI` with the client credentials:
+
+```swift
+let apiLib = GiniHealthAPI.Builder(client: client).build()
+```
 
 If you want to use a transparent proxy with your own authentication you can specify your own domain and add `AlternativeTokenSource` protocol implementation:
 
@@ -29,11 +29,11 @@ If you want to use a transparent proxy with your own authentication you can spec
 ```
 The token your provide will be added as a bearer token to all api.custom.net requests.
 
-## Certificate pinning
+## Certificate pinning (optional)
 
 If you want to use _Certificate pinning_, provide metadata for the upload process, you can pass both your public key pinning configuration (see [TrustKit repo](https://github.com/datatheorem/TrustKit) for more information)
 ```swift
-    let giniApiLib = GiniHealthAPI
+    let apiLib = GiniHealthAPI
         .Builder(client: Client(id: "your-id",
                                 secret: "your-secret",
                                 domain: "your-domain"),
@@ -41,17 +41,17 @@ If you want to use _Certificate pinning_, provide metadata for the upload proces
                  pinningConfig: yourPublicPinningConfig)
         .build()
 ```
-> ⚠️  **Important**
-> - The document metadata for the upload process is intended to be used for reporting.
 
 ## GiniHealth initialization
 
-Now that the `GiniHealthAPI` has been initialized, you can initialize `GiniHealth`
+Now that the `GiniHealthAPI` has been initialized, you can initialize `GiniHealth`:
 
 ```swift
  let healthSDK = GiniHealth(with: giniApiLib)
 ```
-and upload your document if you plan to do it with `GiniHealth`. First you need get document service and create partial document.
+## Document upload
+ 
+For the document upload if you plan to do it with `GiniHealth`. First you need get document service and create partial document.
 
 ```swift
 let documentService: DefaultDocumentService = healthSDK.documentService()
@@ -66,7 +66,7 @@ After receiving the partial document in completion you can get actual composite 
 
 ```swift
 let partialDocs = [PartialDocumentInfo(document: createdDocument.links.document)]
- self.healthSDK.documentService
+self.healthSDK.documentService
             .createDocument(fileName: "ginipay-composite",
                             docType: nil,
                             type: .composite(CompositeDocumentInfo(partialDocuments: partialDocs)),
@@ -74,37 +74,163 @@ let partialDocs = [PartialDocumentInfo(document: createdDocument.links.document)
 
 ```
 
-##  Check preconditions
+## Check which documents/invoices are payable
 
-There are three methods in GiniHealth:
-
-* `healthSDK.isAnyBankingAppInstalled(appSchemes: [String])` without a networking call, returns true when at least the one of the listed among `LSApplicationQueriesSchemes` in your `Info.plist` is installed on the device and can support Gini Pay functionality,
-* `healthSDK.checkIfAnyPaymentProviderAvailable()` with a networking call, returns a list of availible payment provider or informs that there are no supported banking apps installed,
-* `healthSDK.checkIfDocumentIsPayable(docId: String)` returns true if Iban was extracted.
-
-## Fetching data for payment review screen
-
-If the preconditions checks are succeeded you can fetch the document and extractions for Payment Review screen:
+GiniHealth provides a method for checking if the document is payable or not.
 
 ```swift
-healthSDK.fetchDataForReview(documentId: documentId,
-                              completion: @escaping (Result<DataForReview, GiniHealthError>) -> Void)
+healthSDK.checkIfDocumentIsPayable(docId: String,
+                                   completion: @escaping (Result<Bool, GiniHealthError>) -> Void)
 ```
-The method above returns the completion block with the struct `DataForReview`, which includes document and extractions.
 
-## Payment review screen initialization
+The method returns success and `true` value if Iban was extracted.
+
+> - We recommend using a `DispatchGroup` for these requests, waiting till all of them are ready, and then, reloading the list.
 
 ```swift
-let vc = PaymentReviewViewController.instantiate(with giniHealth: healthSDK,
-                                                 data: dataForReview)
+for giniDocument in dataDocuments {
+   dispatchGroup.enter()
+   self.paymentComponentsController.checkIfDocumentIsPayable(docId: createdDocument.id, completion: { [weak self] result in
+       switch result {
+       // ...
+       }
+       self?.dispatchGroup.leave()
+   })
+}
+dispatchGroup.notify(queue: .main) {
+    // Reload List
+}
 ```
-The screen can be presented modally, used in a container view or pushed to a navigation view controller. Make sure to add your own navigational elements around the provided views.
 
-To also use the `GiniHealthConfiguration`:
+## Integrate the Payment component
+
+We provide a custom payment component view to help users pay the invoice/document.
+Please follow the steps below for the payment component integration.
+
+### 1. Create an instance of the `PaymentComponentsController`.
+
+```swift
+let paymentComponentsController = PaymentComponentsController(giniHealth: health)
+```
+
+### 2. Load the payment providers
+
+You will load the list of the payment providers by calling the `loadPaymentProviders` function from the `PaymentComponentsController` and conform to the `PaymentComponentsControllerProtocol`.
+
+```swift
+paymentComponentsController.delegate = self // where self is your viewController
+paymentComponentsController.loadPaymentProviders()
+```
+
+* `PaymentComponentsControllerProtocol` provides information when the `PaymentComponentsController` is loading.
+You can show/hide an `UIActivityIndicator` based on that.
+
+* `PaymentComponentsControllerProtocol` provides completion handlers when `PaymentComponentsController` fetched successfully payment providers or when it failed with an error.
+
+>  **Note:**
+It should be sufficient to call paymentComponentsController.loadPaymentProviderApps() only once when your app starts.
+
+> - We effectively handle situations where there are no payment providers available.
+> - Based on the payment provider's colors, the `UIView` will automatically change its color.
+
+### 3. Show the Payment Component view
+
+In this step you will show a payment component view and conform to the `PaymentComponentViewProtocol`.
+
+Depending on the value of `isPayable`, incorporate the corresponding payment component view into your cells using this function:
+
+```swift
+public func paymentView(documentId: String) -> UIView
+```
+
+> - We suggest placing this `UIView` within a vertical `UIStackView`. Additionally, in the `prepareForReuse()` function of each cell, remove the payment component view if it exists.
+> - Furthermore, employing automatic dimension height in the `UITableView` containing the cells is recommended.
+
+* `PaymentComponentViewProtocol` is the view protocol and provides events handlers when the user tapped on various areas on the payment component view (more information icon, bank/payment provider picker, the pay invoice button and etc.).
+
+> - Make sure you properly link `PaymentComponentsControllerProtocol` and `PaymentComponentViewProtocol` delegates to get notified.
+
+## Show PaymentInfoViewController
+
+The `PaymentInfoViewController` displays information and an FAQ section about the payment feature.
+It requires a `PaymentComponentsController` instance (see `Integrate the Payment component` step 1).
+
+> **Note:** 
+> - The `PaymentInfoViewController` can be presented modally, used in a container view or pushed to a navigation view controller. Make sure to add your own navigation around the provided views.
+
+> ⚠️  **Important:**
+> - The `PaymentInfoViewController` presentation should happen in `func didTapOnMoreInformation(documentId: String?)` inside
+`PaymentComponentViewProtocol` implementation.(`Integrate the Payment component` step 3).
+
+```swift
+func didTapOnMoreInformation(documentId: String?) {
+    let paymentInfoViewController = paymentComponentsController.paymentInfoViewController()
+    self.yourInvoicesListViewController.navigationController?.pushViewController(paymentInfoViewController,
+                                                                                 animated: true)
+}
+ ```
+
+## Show BankSelectionBottomSheet
+
+The `BankSelectionBottomSheet` displays a list of available banks for the user to choose from.
+If a banking app is not installed it will also display its AppStore link.
+The `BankSelectionBottomSheet` presentation requires a `PaymentComponentsController` instance from the `Integrate the Payment component` step 1.
+
+> **Note:** 
+> - We strongly recommend to present `BankSelectionBottomSheet` modally with a `.overFullScreen` presentation style.
+
+> ⚠️  **Important:**
+> - The `BankSelectionBottomSheet` presentation should happen in `func didTapOnBankPicker(documentId: String?)` inside
+`PaymentComponentViewProtocol` implementation (see `Integrate the Payment component` step 3).
+
+```swift
+func didTapOnBankPicker(documentId: String?) {
+    let bankSelectionBottomSheet = paymentComponentsController.bankSelectionBottomSheet()
+    bankSelectionBottomSheet.modalPresentationStyle = .overFullScreen
+    self.yourInvoicesListViewController.present(bankSelectionBottomSheet,
+                                                animated: true)
+    }
+ ```
+
+## Show PaymentReviewViewController
+
+The `PaymentReviewViewController` displays an invoice's pages and extractions. It also lets users pay the invoice with the bank they selected in the `BankSelectionBottomSheet`.
+
+The `PaymentReviewViewController` presentation requires a `PaymentComponentsController` instance from the `Integrate the Payment component` step 1 and `documentId`.
+
+> **Note:** 
+> - The `PaymentReviewViewController` can be presented modally, used in a container view or pushed to a navigation view controller. Make sure to add your own navigation around the provided views.
+
+> ⚠️  **Important:**
+> - The `PaymentReviewViewController` presentation should happen in `func didTapOnBankPicker(documentId: String?)` inside
+`PaymentComponentViewProtocol` implementation (see `Integrate the Payment component` step 3).
+
+```swift
+    func didTapOnPayInvoice(documentId: String?) {
+        guard let documentId else { return }
+        paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, trackingDelegate: self) { [weak self] viewController, error in
+            if let error {
+                self?.showErrorsIfAny()
+            } else if let viewController {
+                viewController.modalTransitionStyle = .coverVertical
+                viewController.modalPresentationStyle = .overCurrentContext
+                self?.yourInvoicesListViewController.present(viewController, animated: true)
+            }
+        }
+    }
+```
+
+> **Note:** 
+> - PaymentReviewViewController contains the following configuration options:
+> - paymentReviewStatusBarStyle: Sets the status bar style on the payment review screen. Only if `View controller-based status bar appearance` = `YES` in `Info.plist`.
+> - showPaymentReviewCloseButton: If set to true, a floating close button will be shown in the top right corner of the screen.
+Default value is false.
+
+For enabling `showPaymentReviewCloseButton`:
 
 ```swift
 let giniConfiguration = GiniHealthConfiguration()
-config.loadingIndicatorColor = .black
+config.showPaymentReviewCloseButton =  true
 .
 .
 .

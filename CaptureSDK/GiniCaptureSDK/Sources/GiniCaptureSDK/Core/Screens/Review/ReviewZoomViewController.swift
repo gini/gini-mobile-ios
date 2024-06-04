@@ -16,6 +16,7 @@ final class ReviewZoomViewController: UIViewController {
         closeButton.setImage(UIImageNamedPreferred(named: "close_icon"), for: .normal)
         closeButton.imageView?.contentMode = .scaleAspectFit
         closeButton.addTarget(self, action: #selector(didTapCloseButton), for: .touchUpInside)
+        closeButton.isExclusiveTouch = true
         return closeButton
     }()
     private var page: GiniCapturePage
