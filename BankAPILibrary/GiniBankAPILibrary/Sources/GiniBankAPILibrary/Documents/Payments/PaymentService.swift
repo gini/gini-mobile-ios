@@ -140,7 +140,7 @@ extension PaymentService {
 
     func paymentRequest(id: String, resourceHandler: ResourceDataHandler<APIResource<PaymentRequest>>,
                         completion: @escaping CompletionResult<PaymentRequest>) {
-        let resource = APIResource<PaymentRequest>(method: .paymentRequest(id: id), apiDomain: .default, httpMethod: .get)
+        let resource = APIResource<PaymentRequest>(method: .paymentRequest(id: id), apiDomain: apiDomain, httpMethod: .get)
 
         resourceHandler(resource, { result in
             switch result {
@@ -155,7 +155,7 @@ extension PaymentService {
     func paymentRequests(limit: Int?,
                          offset: Int?, resourceHandler: ResourceDataHandler<APIResource<PaymentRequests>>,
                          completion: @escaping CompletionResult<PaymentRequests>) {
-        let resource = APIResource<PaymentRequests>(method: .paymentRequests(limit: limit, offset: offset), apiDomain: .default, httpMethod: .get)
+        let resource = APIResource<PaymentRequests>(method: .paymentRequests(limit: limit, offset: offset), apiDomain: apiDomain, httpMethod: .get)
 
         resourceHandler(resource, { result in
             switch result {
@@ -175,7 +175,7 @@ extension PaymentService {
             assertionFailure("The ResolvingPaymentRequestBody cannot be encoded")
             return
         }
-        let resource = APIResource<ResolvedPaymentRequest>(method: .resolvePaymentRequest(id: id), apiDomain: .default, httpMethod: .post, body: json)
+        let resource = APIResource<ResolvedPaymentRequest>(method: .resolvePaymentRequest(id: id), apiDomain: apiDomain, httpMethod: .post, body: json)
 
         resourceHandler(resource, { result in
             switch result {
@@ -190,7 +190,7 @@ extension PaymentService {
     func payment(id: String,
                  resourceHandler: ResourceDataHandler<APIResource<Payment>>,
                  completion: @escaping CompletionResult<Payment>) {
-        let resource = APIResource<Payment>(method: .payment(id: id), apiDomain: .default, httpMethod: .get)
+        let resource = APIResource<Payment>(method: .payment(id: id), apiDomain: apiDomain, httpMethod: .get)
 
         resourceHandler(resource, { result in
             switch result {

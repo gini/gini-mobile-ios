@@ -1,0 +1,57 @@
+{
+  "images" : [
+    {
+      "filename" : "img_button_app_store_english.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Download_on_the_App_Store_Badge_US-UK_RGB_wht_092917 1.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "filename" : "img_button_app_store_german.pdf",
+      "idiom" : "universal",
+      "locale" : "de"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Download_on_the_App_Store_Badge_DE_RGB_wht_092917 1.pdf",
+      "idiom" : "universal",
+      "locale" : "de"
+    },
+    {
+      "filename" : "img_button_app_store_english 1.pdf",
+      "idiom" : "universal",
+      "locale" : "en"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Download_on_the_App_Store_Badge_US-UK_RGB_wht_092917.pdf",
+      "idiom" : "universal",
+      "locale" : "en"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "localizable" : true
+  }
+}

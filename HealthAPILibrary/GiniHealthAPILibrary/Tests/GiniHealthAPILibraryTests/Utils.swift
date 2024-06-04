@@ -61,7 +61,7 @@ func loadProviders() -> PaymentProviders {
     let providersResponse = try! JSONDecoder().decode([PaymentProviderResponse].self, from: jsonData!)
     for providerResponse in providersResponse {
        let imageData = UIImage(named: "Gini-Test-Payment-Provider", in: Bundle.module, compatibleWith: nil)?.pngData()
-        let provider = PaymentProvider(id: providerResponse.id, name: providerResponse.name, appSchemeIOS: providerResponse.appSchemeIOS, minAppVersion: providerResponse.minAppVersion, colors: providerResponse.colors, iconData: imageData ?? Data())
+        let provider = PaymentProvider(id: providerResponse.id, name: providerResponse.name, appSchemeIOS: providerResponse.appSchemeIOS, minAppVersion: providerResponse.minAppVersion, colors: providerResponse.colors, iconData: imageData ?? Data(), appStoreUrlIOS: providerResponse.appStoreUrlIOS, universalLinkIOS: providerResponse.universalLinkIOS)
             providers.append(provider)
         }
     return providers

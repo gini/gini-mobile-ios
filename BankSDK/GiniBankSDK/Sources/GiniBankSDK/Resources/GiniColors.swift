@@ -1,75 +1,157 @@
 //
 //  GiniColors.swift
-//  
 //
-//  Created by David Vizaknai on 24.08.2022.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
 
+public enum GiniBankColors: String, CaseIterable {
+    case accent01 = "Accent01"
+    case accent02 = "Accent02"
+    case accent03 = "Accent03"
+    case accent04 = "Accent04"
+    case accent05 = "Accent05"
+    case dark01 = "Dark01"
+    case dark02 = "Dark02"
+    case dark03 = "Dark03"
+    case dark04 = "Dark04"
+    case dark05 = "Dark05"
+    case dark06 = "Dark06"
+    case dark07 = "Dark07"
+    case error01 = "Error01"
+    case error02 = "Error02"
+    case error03 = "Error03"
+    case error04 = "Error04"
+    case error05 = "Error05"
+    case light01 = "Light01"
+    case light02 = "Light02"
+    case light03 = "Light03"
+    case light04 = "Light04"
+    case light05 = "Light05"
+    case light06 = "Light06"
+    case success01 = "Success01"
+    case success02 = "Success02"
+    case success03 = "Success03"
+    case success04 = "Success04"
+    case success05 = "Success05"
+    case warning01 = "Warning01"
+    case warning02 = "Warning02"
+    case warning03 = "Warning03"
+    case warning04 = "Warning04"
+    case warning05 = "Warning05"
+
+    // Convert enum case to UIColor
+    var toUIColor: UIColor {
+        return prefferedColorByProvider(named: rawValue)
+    }
+
+    // This property provides a convenient way to access the UIColor corresponding to the raw value of the GiniBankColors enum.
+    public var preferredUIColor: UIColor {
+        return prefferedColor(named: rawValue)
+    }
+}
+
 extension UIColor {
-    struct GiniBank {
-        static let accent1 = prefferedColor(named: "Accent01")
-        static let accent2 = prefferedColor(named: "Accent02")
-        static let accent3 = prefferedColor(named: "Accent03")
-        static let accent4 = prefferedColor(named: "Accent04")
-        static let accent5 = prefferedColor(named: "Accent05")
-
-        static let dark1 = prefferedColor(named: "Dark01")
-        static let dark2 = prefferedColor(named: "Dark02")
-        static let dark3 = prefferedColor(named: "Dark03")
-        static let dark4 = prefferedColor(named: "Dark04")
-        static let dark5 = prefferedColor(named: "Dark05")
-        static let dark6 = prefferedColor(named: "Dark06")
-        static let dark7 = prefferedColor(named: "Dark07")
-
-        static let error1 = prefferedColor(named: "Error01")
-        static let error2 = prefferedColor(named: "Error02")
-        static let error3 = prefferedColor(named: "Error03")
-        static let error4 = prefferedColor(named: "Error04")
-        static let error5 = prefferedColor(named: "Error05")
-
-        static let light1 = prefferedColor(named: "Light01")
-        static let light2 = prefferedColor(named: "Light02")
-        static let light3 = prefferedColor(named: "Light03")
-        static let light4 = prefferedColor(named: "Light04")
-        static let light5 = prefferedColor(named: "Light05")
-        static let light6 = prefferedColor(named: "Light06")
-
-        static let success1 = prefferedColor(named: "Success01")
-        static let success2 = prefferedColor(named: "Success02")
-        static let success3 = prefferedColor(named: "Success03")
-        static let success4 = prefferedColor(named: "Success04")
-        static let success5 = prefferedColor(named: "Success05")
-
-        static let warning1 = prefferedColor(named: "Warning01")
-        static let warning2 = prefferedColor(named: "Warning02")
-        static let warning3 = prefferedColor(named: "Warning03")
-        static let warning4 = prefferedColor(named: "Warning04")
-        static let warning5 = prefferedColor(named: "Warning05")
-
-        // GiniColors Old
-        static let labelWhite = prefferedColor(named: "labelWhite")
-        static let systemWhite = prefferedColor(named: "systemWhite")
-        static let label = prefferedColor(named: "label")
-        static let grayLabel = prefferedColor(named: "grayLabel")
-        static let helpBackground = prefferedColor(named: "helpBackground")
-        static let separator = prefferedColor(named: "separator")
-        static let subheadline = prefferedColor(named: "subheadline")
-        static let systemBlue = prefferedColor(named: "systemBlue")
-        static let systemGray = prefferedColor(named: "systemGray")
-        static let systemGray02 = prefferedColor(named: "systemGray02")
-        static let systemGray03 = prefferedColor(named: "systemGray03")
-        static let systemGray04 = prefferedColor(named: "systemGray04")
-        static let systemGray05 = prefferedColor(named: "systemGray05")
-        static let systemGray06 = prefferedColor(named: "systemGray06")
-        static let systemGreen = prefferedColor(named: "systemGreen")
-        static let systemIndigo = prefferedColor(named: "systemIndigo")
-        static let systemOrange = prefferedColor(named: "systemOrange")
-        static let systemPink = prefferedColor(named: "systemPink")
-        static let systemPurple = prefferedColor(named: "systemPurple")
-        static let systemRed = prefferedColor(named: "systemRed")
-        static let systemTeal = prefferedColor(named: "systemTeal")
-        static let systemYellow = prefferedColor(named: "systemYellow")
+    public struct GiniBank {
+        public static var accent1: UIColor {
+            return GiniBankColors.accent01.toUIColor
+        }
+        public static var accent2: UIColor {
+            return GiniBankColors.accent02.toUIColor
+        }
+        public static var accent3: UIColor {
+            return GiniBankColors.accent03.toUIColor
+        }
+        public static var accent4: UIColor {
+            return GiniBankColors.accent04.toUIColor
+        }
+        public static var accent5: UIColor {
+            return GiniBankColors.accent05.toUIColor
+        }
+        public static var dark1: UIColor {
+            return GiniBankColors.dark01.toUIColor
+        }
+        public static var dark2: UIColor {
+            return GiniBankColors.dark02.toUIColor
+        }
+        public static var dark3: UIColor {
+            return GiniBankColors.dark03.toUIColor
+        }
+        public static var dark4: UIColor {
+            return GiniBankColors.dark04.toUIColor
+        }
+        public static var dark5: UIColor {
+            return GiniBankColors.dark05.toUIColor
+        }
+        public static var dark6: UIColor {
+            return GiniBankColors.dark06.toUIColor
+        }
+        public static var dark7: UIColor {
+            return GiniBankColors.dark07.toUIColor
+        }
+        public static var error1: UIColor {
+            return GiniBankColors.error01.toUIColor
+        }
+        public static var error2: UIColor {
+            return GiniBankColors.error02.toUIColor
+        }
+        public static var error3: UIColor {
+            return GiniBankColors.error03.toUIColor
+        }
+        public static var error4: UIColor {
+            return GiniBankColors.error04.toUIColor
+        }
+        public static var error5: UIColor {
+            return GiniBankColors.error05.toUIColor
+        }
+        public static var light1: UIColor {
+            return GiniBankColors.light01.toUIColor
+        }
+        public static var light2: UIColor {
+            return GiniBankColors.light02.toUIColor
+        }
+        public static var light3: UIColor {
+            return GiniBankColors.light03.toUIColor
+        }
+        public static var light4: UIColor {
+            return GiniBankColors.light04.toUIColor
+        }
+        public static var light5: UIColor {
+            return GiniBankColors.light05.toUIColor
+        }
+        public static var light6: UIColor {
+            return GiniBankColors.light06.toUIColor
+        }
+        public static var success1: UIColor {
+            return GiniBankColors.success01.toUIColor
+        }
+        public static var success2: UIColor {
+            return GiniBankColors.success02.toUIColor
+        }
+        public static var success3: UIColor {
+            return GiniBankColors.success03.toUIColor
+        }
+        public static var success4: UIColor {
+            return GiniBankColors.success04.toUIColor
+        }
+        public static var success5: UIColor {
+            return GiniBankColors.success05.toUIColor
+        }
+        public static var warning1: UIColor {
+            return GiniBankColors.warning01.toUIColor
+        }
+        public static var warning2: UIColor {
+            return GiniBankColors.warning02.toUIColor
+        }
+        public static var warning3: UIColor {
+            return GiniBankColors.warning03.toUIColor
+        }
+        public static var warning4: UIColor {
+            return GiniBankColors.warning04.toUIColor
+        }
+        public static var warning5: UIColor {
+            return GiniBankColors.warning05.toUIColor
+        }
     }
 }

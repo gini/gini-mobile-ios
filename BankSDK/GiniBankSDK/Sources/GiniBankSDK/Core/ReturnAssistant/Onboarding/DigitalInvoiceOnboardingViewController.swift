@@ -21,7 +21,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     @IBOutlet private weak var scrollViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var scrollViewBottomAnchor: NSLayoutConstraint!
 
-    weak var delegate: DigitalInvoiceOnboardingViewControllerDelegate!
+    weak var delegate: DigitalInvoiceOnboardingViewControllerDelegate?
     private lazy var scrollViewWidthAnchor = scrollView.widthAnchor.constraint(equalTo: view.widthAnchor)
 
     private var widthMultiplier: CGFloat = 0.6
@@ -57,7 +57,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        AnalyticsManager.trackScreenShown(screenName: .onboardingDigitalInvoice)
+        AnalyticsManager.trackScreenShown(screenName: .onboardingReturnAssistant)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -77,9 +77,9 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
         // can be dismissed by dragging the screen from top to bottom.
 
         if doneButtonTapped {
-            AnalyticsManager.track(event: .getStartedTapped, screenName: .onboardingDigitalInvoice)
+            AnalyticsManager.track(event: .getStartedTapped, screenName: .onboardingReturnAssistant)
         } else {
-            AnalyticsManager.track(event: .dismissed, screenName: .onboardingDigitalInvoice)
+            AnalyticsManager.track(event: .dismissed, screenName: .onboardingReturnAssistant)
         }
     }
 
@@ -118,7 +118,7 @@ final class DigitalInvoiceOnboardingViewController: UIViewController {
 
     private func setupSecondLabel(with configuration: GiniBankConfiguration) {
         secondLabel.text = secondLabelText
-        secondLabel.font = configuration.textStyleFonts[.title2Bold]
+        secondLabel.font = configuration.textStyleFonts[.headline]
         secondLabel.textColor = GiniColor(light: .GiniBank.dark6, dark: .GiniBank.dark7).uiColor()
         secondLabel.adjustsFontForContentSizeCategory = true
     }
