@@ -196,35 +196,35 @@ extension GiniScreenAPICoordinator {
     @objc func back() {
         switch screenAPINavigationController.topViewController {
         case is CameraViewController:
-            handleCameraViewControllerBack()
+            navigateBackFromCameraViewController()
         case is AnalysisViewController:
-            handleAnalysisViewControllerBack()
+            navigateBackFromAnalysisViewController()
         default:
-            handleDefaultBack()
+            navigateBack()
         }
     }
 
-    private func handleCameraViewControllerBack() {
+    private func navigateBackFromCameraViewController() {
         trackingDelegate?.onCameraScreenEvent(event: Event(type: .exit))
-        AnalyticsManager.track(event: .closeTapped, screenName: getScreenName())
+        AnalyticsManager.track(event: .closeTapped, screenName: screenName())
         if pages.type == .qrcode {
             screenAPINavigationController.dismiss(animated: true)
         }
 
         if pages.count > 0 {
-            handleDefaultBack()
+            navigateBack()
         } else {
             closeScreenApi()
         }
     }
 
-    private func handleAnalysisViewControllerBack() {
+    private func navigateBackFromAnalysisViewController() {
         trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .cancel))
         AnalyticsManager.track(event: .closeTapped, screenName: .analysis)
         screenAPINavigationController.dismiss(animated: true)
     }
 
-    private func handleDefaultBack() {
+    private func navigateBack() {
         if screenAPINavigationController.viewControllers.count > 1 {
             screenAPINavigationController.popViewController(animated: true)
         } else {
@@ -233,7 +233,7 @@ extension GiniScreenAPICoordinator {
     }
 
     // Determine the screen name based on the top view controller
-    private func getScreenName() -> AnalyticsScreen {
+    private func screenName() -> AnalyticsScreen {
         if let topViewController = screenAPINavigationController.topViewController as? CameraViewController,
            !topViewController.cameraPreviewViewController.isAuthorized {
             return .cameraAccess
@@ -247,7 +247,12 @@ extension GiniScreenAPICoordinator {
     }
 
     @objc func showHelpMenuScreen() {
-        AnalyticsManager.track(event: .helpTapped, screenName: getScreenName())
+        let topViewController = screenAPINavigationController.topViewController
+        guard topViewController is CameraViewController else {
+            return
+        }
+
+        AnalyticsManager.track(event: .helpTapped, screenName: screenName())
 
         let helpMenuViewController = HelpMenuViewController(giniConfiguration: giniConfiguration)
 
@@ -262,14 +267,12 @@ extension GiniScreenAPICoordinator {
 
         // In case of 1 menu item it's better to show the item immediately without any selection
 
-        if helpMenuViewController.dataSource.items.count == 1 {
-            screenAPINavigationController
-                .pushViewController(helpItemViewController(for: helpMenuViewController.dataSource.items[0]),
-                                    animated: true)
-        } else {
-            screenAPINavigationController
-                .pushViewController(helpMenuViewController, animated: true)
-        }
+        let menuItems = helpMenuViewController.dataSource.items
+        let helpViewControllerForOneItem = helpItemViewController(for: helpMenuViewController.dataSource.items[0])
+        let helpViewControllerToPush = menuItems.count == 1 ? helpViewControllerForOneItem : helpMenuViewController
+
+        screenAPINavigationController.pushViewController(helpViewControllerToPush, animated: true)
+
     }
 
     @objc func backToCameraTapped() {
