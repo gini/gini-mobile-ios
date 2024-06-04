@@ -29,10 +29,11 @@ struct OnboardingPageModel: OnboardingPageAnalytics {
 }
 
 extension OnboardingPageModel: Equatable {
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        // TODO: is this correct?
+    static func == (lhs: OnboardingPageModel, rhs: OnboardingPageModel) -> Bool {
         return lhs.page.title == rhs.page.title &&
         lhs.page.imageName == rhs.page.imageName &&
-        lhs.page.description == rhs.page.description
+        lhs.page.description == rhs.page.description &&
+        lhs.analyticsScreen == rhs.analyticsScreen &&
+        lhs.isCustom == rhs.isCustom
     }
 }

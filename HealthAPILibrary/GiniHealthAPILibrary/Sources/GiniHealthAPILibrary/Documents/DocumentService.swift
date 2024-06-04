@@ -319,7 +319,7 @@ extension DocumentService {
     func file(urlString: String,
                           resourceHandler: ResourceDataHandler<APIResource<Data>>,
                           completion: @escaping CompletionResult<Data>) {
-        var resource = APIResource<Data>(method: .file(urlString: urlString), apiDomain: .default, httpMethod: .get)
+        var resource = APIResource<Data>(method: .file(urlString: urlString), apiDomain: apiDomain, httpMethod: .get)
         resource.fullUrlString = urlString
         resourceHandler(resource) { result in
             switch result {

@@ -2,10 +2,9 @@
 //  UIViewController+Utils.swift
 //  Example Swift
 //
-//  Created by Nadya Karaban on 16.04.21.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
-import Foundation
 import UIKit
 extension UIViewController {
     func showError(_ title: String? = nil, message: String) {
