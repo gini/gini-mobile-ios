@@ -43,10 +43,10 @@ extension GiniScreenAPICoordinator {
                     // if there is a photo captured with camera
                     viewModel = createRetakeAndEnterManuallyButtonsViewModel()
                 } else {
-                    viewModel = defaultButtonsConfiguration()
+                    viewModel = createDefaultButtonsViewModel()
                 }
             default:
-                viewModel = defaultButtonsConfiguration()
+                viewModel = createDefaultButtonsViewModel()
             }
             viewController = NoResultScreenViewController(giniConfiguration: giniConfiguration,
                                                           type: type,
@@ -54,7 +54,7 @@ extension GiniScreenAPICoordinator {
             return viewController
         }
 
-    private func defaultButtonsConfiguration() -> BottomButtonsViewModel {
+    private func createDefaultButtonsViewModel() -> BottomButtonsViewModel {
         BottomButtonsViewModel(
             manuallyPressed: { [weak self] in
                 if let delegate = self?.visionDelegate {
@@ -99,48 +99,19 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
         case .image:
             if self.pages.contains(where: { $0.document.isImported == false }) {
                 // if there is a photo captured with camera
-                viewModel = BottomButtonsViewModel(
-                    retakeBlock: { [weak self] in
-                        self?.pages = []
-                        self?.trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .retry))
-                        self?.backToCamera()
-                    },
-                    manuallyPressed: { [weak self] in
-                        if let delegate = self?.visionDelegate {
-                            delegate.didPressEnterManually()
-                        } else {
-                            self?.screenAPINavigationController.dismiss(animated: animated)
-                        }
-                    }, cancelPressed: { [weak self] in
-                        self?.closeScreenApi()
-                })
+                viewModel = createRetakeAndEnterManuallyButtonsViewModel()
             } else {
-                viewModel = BottomButtonsViewModel(
-                    manuallyPressed: { [weak self] in
-                        if let delegate = self?.visionDelegate {
-                            delegate.didPressEnterManually()
-                        } else {
-                            self?.screenAPINavigationController.dismiss(animated: animated)
-                        }
-                    }, cancelPressed: { [weak self] in
-                    self?.closeScreenApi()
-                })
+                viewModel = createDefaultButtonsViewModel()
             }
         default:
-            viewModel = BottomButtonsViewModel(
-                manuallyPressed: { [weak self] in
-                    self?.screenAPINavigationController.dismiss(animated: true)
-                }, cancelPressed: { [weak self] in
-                self?.closeScreenApi()
-            })
+                viewModel = createDefaultButtonsViewModel()
         }
 
         self.trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .error))
-        let viewController = ErrorScreenViewController(
-            giniConfiguration: giniConfiguration,
-            type: errorType,
-            documentType: pages.type ?? .pdf,
-            viewModel: viewModel)
+        let viewController = ErrorScreenViewController(giniConfiguration: giniConfiguration,
+                                                       type: errorType,
+                                                       documentType: pages.type ?? .pdf,
+                                                       viewModel: viewModel)
 
         screenAPINavigationController.pushViewController(viewController, animated: animated)
     }
