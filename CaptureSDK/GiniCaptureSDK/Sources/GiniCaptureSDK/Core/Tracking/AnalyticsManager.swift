@@ -7,9 +7,9 @@
 import UIKit
 import Mixpanel
 
-class AnalyticsManager {
+public class AnalyticsManager {
     private static let mixPanelToken = "6262hhdfhdb929321222" // this id is fake we need to replace it
-    static var mixpanelInstance: MixpanelInstance?
+    private static var mixpanelInstance: MixpanelInstance?
 
     static func initializeAnalytics() {
         mixpanelInstance = Mixpanel.initialize(token: mixPanelToken, trackAutomaticEvents: false)
@@ -20,8 +20,8 @@ class AnalyticsManager {
     }
 
     // MARK: - Track screen shown
-    static func trackScreenShown(screenName: AnalyticsScreen,
-                                 properties: [AnalyticsProperty] = []) {
+    public static func trackScreenShown(screenName: AnalyticsScreen,
+                                        properties: [AnalyticsProperty] = []) {
         track(event: AnalyticsEvent.screenShown,
               screenName: screenName,
               properties: properties)
@@ -35,10 +35,10 @@ class AnalyticsManager {
     }
 
     // MARK: - Track event on screen
-    static func track(event: AnalyticsEvent,
-                      screenName: AnalyticsScreen? = nil,
-                      properties: [AnalyticsProperty] = []) {
-        track(event: event, 
+    public static func track(event: AnalyticsEvent,
+                             screenName: AnalyticsScreen? = nil,
+                             properties: [AnalyticsProperty] = []) {
+        track(event: event,
               screenNameString: screenName?.rawValue,
               properties: properties)
     }

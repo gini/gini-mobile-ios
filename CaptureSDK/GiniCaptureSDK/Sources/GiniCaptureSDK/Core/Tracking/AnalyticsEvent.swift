@@ -6,7 +6,7 @@
 
 import Foundation
 
-enum AnalyticsEvent: String {
+public enum AnalyticsEvent: String {
     case screenShown = "screen_shown"
     case closeTapped = "close_tapped"
 
@@ -40,4 +40,11 @@ enum AnalyticsEvent: String {
     case skipTapped = "skip_tapped"
     case nextStepTapped = "next_step_tapped"
     case getStartedTapped = "get_started_tapped"
+
+    // MARK: - Return assistant
+    case dismissed
+    case saveTapped = "save_tapped"
+    case editTapped = "edit_tapped"
+    case itemSwitchTapped = "item_switch_tapped"
+    case proceedTapped = "proceed_tapped"
 }
