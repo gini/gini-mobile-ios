@@ -77,13 +77,13 @@ public class AnalyticsManager {
 
     private static func trackAccessibilityUserPropertiesAtInitialization() {
         let accessibilityProperties: [AnalyticsUserProperty: AnalyticsPropertyValue] = [
-            .isVoiceOverRunning: UIAccessibility.isVoiceOverRunning,
-            .isGuidedAccessEnabled: UIAccessibility.isGuidedAccessEnabled,
-            .isBoldTextEnabled: UIAccessibility.isBoldTextEnabled,
-            .isGrayscaleEnabled: UIAccessibility.isGrayscaleEnabled,
-            .isSpeakSelectionEnabled: UIAccessibility.isSpeakSelectionEnabled,
-            .isSpeakScreenEnabled: UIAccessibility.isSpeakScreenEnabled,
-            .isAssistiveTouchRunning: UIAccessibility.isAssistiveTouchRunning
+            .voiceOverEnabled: UIAccessibility.isVoiceOverRunning,
+            .guidedAccessEnabled: UIAccessibility.isGuidedAccessEnabled,
+            .boldTextEnabled: UIAccessibility.isBoldTextEnabled,
+            .grayscaleEnabled: UIAccessibility.isGrayscaleEnabled,
+            .speakSelectionEnabled: UIAccessibility.isSpeakSelectionEnabled,
+            .speakScreenEnabled: UIAccessibility.isSpeakScreenEnabled,
+            .assistiveTouchEnabled: UIAccessibility.isAssistiveTouchRunning
         ]
 
         trackUserProperties(accessibilityProperties)
