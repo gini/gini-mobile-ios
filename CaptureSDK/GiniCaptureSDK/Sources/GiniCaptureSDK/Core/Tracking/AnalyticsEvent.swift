@@ -19,14 +19,14 @@ public enum AnalyticsEvent: String {
     case helpTapped = "help_tapped"
     case multiplePagesCapturedTapped = "multiple_pages_captured_tapped"
     case errorDialogShown = "error_dialog_shown"
-    case ibanDetected = "iban_detected"
     case qr_code_scanned = "qr_code_scanned"
 
     // MARK: - Review
     case processTapped = "process_tapped"
     case deletePagesTapped = "delete_pages_tapped"
     case addPagesTapped = "add_pages_tapped"
-    case swipePages = "swipe_pages"
+    case pageSwiped = "page_swiped"
+    case fullScreenPageTapped = "full_screen_page_tapped"
     case previewZoomed = "preview_zoomed"
 
     // MARK: - No Results and Error
@@ -42,9 +42,10 @@ public enum AnalyticsEvent: String {
     case nextStepTapped = "next_step_tapped"
     case getStartedTapped = "get_started_tapped"
 
-    // MARK: - Digital invoice
+    // MARK: - Return assistant
     case dismissed
     case saveTapped = "save_tapped"
     case editTapped = "edit_tapped"
     case itemSwitchTapped = "item_switch_tapped"
+    case proceedTapped = "proceed_tapped"
 }

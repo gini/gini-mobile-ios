@@ -2,25 +2,50 @@
   File.strings
   Pods
 
-  Created by Nadya Karaban on 08.04.21.
-  
+ //  Copyright © 2024 Gini GmbH. All rights reserved.
+
 */
 "ginihealth.reviewscreen.recipient.placeholder" = "Empfänger";
 "ginihealth.reviewscreen.iban.placeholder" = "IBAN";
-"ginihealth.reviewscreen.amount.placeholder" = "0,00 €";
+"ginihealth.reviewscreen.amount.placeholder" = "Betrag";
 "ginihealth.reviewscreen.usage.placeholder" = "Verwendungszweck";
-"ginihealth.reviewscreen.infobar.message" = "Bitte prüfe die vorausgefüllten Daten";
-"ginihealth.reviewscreen.next.button.title" = "Weiter";
-"ginihealth.errors.no.banking.app.installed" = "Leider unterstützt deine Banking App diese Funktion noch nicht. Probier doch mal die ING App.";
+"ginihealth.reviewscreen.infobar.message" = "Bitte prüfen Sie die vorausgefüllten Daten.";
+"ginihealth.reviewscreen.banking.app.button.label" = "Zur Banking App";
 "ginihealth.errors.default" = "Oh da ist was schief gelaufen. Probiere es noch einmal.";
 "ginihealth.errors.failed.payment.request.creation" = "Oh da ist was schief gelaufen. Probiere es noch einmal.";
 "ginihealth.errors.failed.recipient.non.empty.check" = "Empfänger ist notwendig.";
 "ginihealth.errors.failed.iban.non.empty.check" = "IBAN ist notwendig.";
-"ginihealth.errors.failed.iban.validation.check" = "IBAN ist ungültig";
-"ginihealth.errors.failed.amount.non.empty.check" = "Summe kann nicht 0 sein";
+"ginihealth.errors.failed.iban.validation.check" = "IBAN ist ungültig.";
+"ginihealth.errors.failed.amount.non.empty.check" = "Ungültig.";
 "ginihealth.errors.failed.purpose.non.empty.check" = "Verwendungszweck ist notwendig.";
-"ginihealth.errors.failed.default.textfield.validation.check" = "Das Feld ist ungültig";
+"ginihealth.errors.failed.default.textfield.validation.check" = "Das Feld ist ungültig.";
 
 "ginihealth.alert.ok.title" = "OK";
 
-"ginihealth.bankprovidersscreen.title" = "Banking-App auswählen";
+"ginihealth.paymentcomponent.moreInformation.label" = "Bezahldaten an Banking-App übergeben und dort direkt bezahlen. Mehr Informationen.";
+"ginihealth.paymentcomponent.moreInformation.underlined.part" = "Mehr Informationen.";
+"ginihealth.paymentcomponent.selectYourBank.label" = "Wählen Sie Ihre Bank aus";
+"ginihealth.paymentcomponent.payInvoice.label" = "Rechnung bezahlen";
+"ginihealth.paymentcomponent.poweredByGini.label" = "Powered by";
+"ginihealth.paymentcomponent.selectBank.label" = "Bank auswählen";
+"ginihealth.paymentcomponent.paymentproviderslist.description" = "Sie können die Rechnung nur bezahlen, wenn Sie ein Konto bei einer der unten aufgeführten Banken haben.";
+"ginihealth.paymentcomponent.paymentinfo.title.label" = "Mehr Informationen";
+"ginihealth.paymentcomponent.paymentinfo.payBills.title.label" = "Rechnungen ganz einfach mit der Banking-App bezahlen.";
+"ginihealth.paymentcomponent.paymentinfo.payBills.description.label" = "Arztrechnungen und andere eingereichte Belege können jetzt ganz einfach bezahlt werden.\nDie Bezahldaten wie IBAN, Betrag, Empfänger und Verwendungszweck werden nahtlos in die Banking-App übergeben und dort nur noch bestätigt.\nSie können die Rechnung auch parken und innerhalb von 3 Monaten nach Upload begleichen.\nDie für die Zahlung notwendigen Daten werden verschlüsselt und sicher an Ihre Banking-App übertragen. Es gelten die Datenschutzbestimmungen Ihrer Bank.\nUnterstützt von den größten Bankinstituten. Integration durch Gini[LINK].";
+"ginihealth.paymentcomponent.paymentinfo.payBills.description.clickable.text" = "Gini[LINK]";
+"ginihealth.paymentcomponent.paymentinfo.questions.title.label" = "Häufig gestellte Fragen";
+"ginihealth.paymentcomponent.paymentinfo.questions.question.1" = "Kann ich Rechnungen einreichen und später bezahlen?";
+"ginihealth.paymentcomponent.paymentinfo.questions.question.2" = "Ist der Service kostenlos?";
+"ginihealth.paymentcomponent.paymentinfo.questions.question.3" = "Sind meine Daten sicher?";
+"ginihealth.paymentcomponent.paymentinfo.questions.question.4" = "Wer oder Was ist Gini?";
+"ginihealth.paymentcomponent.paymentinfo.questions.question.5" = "Welches Format muss die eingereichte Rechnung haben?";
+"ginihealth.paymentcomponent.paymentinfo.questions.question.6" = "Wie erkenne ich, welche Banken unterstützt werden?";
+"ginihealth.paymentcomponent.paymentinfo.questions.answer.1" = "Ja, das ist möglich. So können insbesondere größere Beträge erst nach der erfolgten Erstattung bezahlt werden.";
+"ginihealth.paymentcomponent.paymentinfo.questions.answer.2" = "Ja, die Übertragung der Bezahldaten in die gewählte Banking-App ist kostenlos. Für die eigentliche Überweisung können je nach Kontenmodell Gebühren anfallen – wenden Sie sich bitte für weitere Details an Ihre Bank.";
+"ginihealth.paymentcomponent.paymentinfo.questions.answer.3" = "Ja! Die Übertragung der Daten an die Banking-App erfolgt verschlüsselt über einen Server von Gini. Gini nimmt die Zahlungsdaten entgegen und leitet sie in die Banking-App weiter. Dort besteht stets die Möglichkeit, die Zahlungsdaten zu überprüfen, bevor die Überweisung ausgeführt wird. Gini hat hierfür sowohl mit der Versicherung als auch mit den Banken Verträge geschlossen, und wir lassen uns regelmäßig von beiden auditieren.";
+"ginihealth.paymentcomponent.paymentinfo.questions.answer.4" = "Gini macht das Bezahlen automagisch einfach. Das Münchner Unternehmen, das hinter der Fotoüberweisung steht, arbeitet mit den führenden deutschen Banken und Versicherungen zusammen, um die direkte Zahlung mit der Hausbank zu ermöglichen.\nGini ist für maximale Datensicherheit ISO 27001 zertifiziert und betreibt eigene Rechner in einem ISO 27001 zertifizierten Rechenzentrum in Deutschland. Weitere Informationen finden Sie in der Datenschutzerklärung[LINK] sowie auf der Website von Gini[LINK].";
+"ginihealth.paymentcomponent.paymentinfo.questions.answer.5" = "Ob Foto einer Rechnung, Screenshot, oder digitales PDF – jedes Format ist geeignet. Bitte achten Sie lediglich darauf, dass alle Bezahlinformationen, wie IBAN, Empfänger, Verwendungszweck und Betrag sichtbar und nicht abgeschnitten sind.";
+"ginihealth.paymentcomponent.paymentinfo.questions.answer.6" = "Im Bank-Auswahlmenü werden die Banken angezeigt, die die Gini-Bezahlfunktion unterstützen. Voraussetzung für die Nutzung ist, dass Sie die mobile Banking-App ihrer Bank auf demselben Smartphone oder Tablet installiert haben, auf dem Sie die Versicherungs-App nutzen. Sollten Sie keine der Banking-Apps installiert haben, können Sie diese aus dem Apple App- oder Google Playstore herunterladen. Eine anschließende Aktivierung der Banking-App kann nötig sein.";
+"ginihealth.paymentcomponent.paymentinfo.questions.answer.clickable.text" = "Datenschutzerklärung[LINK]";
+"ginihealth.paymentcomponent.paymentinfo.gini.link" = "https://gini.net/";
+"ginihealth.paymentcomponent.paymentinfo.gini.privacypolicy.link" = "";
