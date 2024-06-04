@@ -57,13 +57,9 @@ extension GiniScreenAPICoordinator {
     private func createDefaultButtonsViewModel() -> BottomButtonsViewModel {
         BottomButtonsViewModel(
             manuallyPressed: { [weak self] in
-                if let delegate = self?.visionDelegate {
-                    delegate.didPressEnterManually()
-                } else {
-                    self?.screenAPINavigationController.dismiss(animated: true)
-                }
+                self?.finishWithEnterManually()
             }, cancelPressed: { [weak self] in
-            self?.closeScreenApi()
+                self?.finishWithCancellation()
         })
     }
 
@@ -75,13 +71,9 @@ extension GiniScreenAPICoordinator {
                 self?.backToCamera()
             },
             manuallyPressed: { [weak self] in
-                if let delegate = self?.visionDelegate {
-                    delegate.didPressEnterManually()
-                } else {
-                    self?.screenAPINavigationController.dismiss(animated: true)
-                }
+                self?.finishWithEnterManually()
             }, cancelPressed: { [weak self] in
-                self?.closeScreenApi()
+                self?.finishWithCancellation()
         })
     }
 }
