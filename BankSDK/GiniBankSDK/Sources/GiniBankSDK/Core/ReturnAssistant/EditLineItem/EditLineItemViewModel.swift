@@ -15,7 +15,7 @@ protocol EditLineItemViewModelDelegate: AnyObject {
 final class EditLineItemViewModel {
     weak var delegate: EditLineItemViewModelDelegate?
     private var lineItem: DigitalInvoice.LineItem
-    var itemsChanged: [LineItemAnalytics] = []
+    private (set) var itemsChanged: [LineItemAnalytics] = []
 
     var name: String? {
         return lineItem.name

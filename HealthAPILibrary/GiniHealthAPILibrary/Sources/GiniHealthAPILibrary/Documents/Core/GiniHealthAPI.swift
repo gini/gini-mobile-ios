@@ -10,8 +10,8 @@ import Foundation
 /// The Gini Health API Library
 public final class GiniHealthAPI {
     
-    private let docService: DocumentService!
-    private let payService: PaymentService?
+    private var docService: DocumentService!
+    private var payService: PaymentService?
     static var logLevel: LogLevel = .none
     public var sessionDelegate: URLSessionDelegate? = nil
 

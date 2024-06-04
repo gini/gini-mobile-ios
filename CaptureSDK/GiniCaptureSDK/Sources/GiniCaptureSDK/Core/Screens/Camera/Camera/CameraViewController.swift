@@ -515,7 +515,6 @@ final class CameraViewController: UIViewController {
 
     private func sendAnalyticsEventIBANDetection () {
         guard ibanOverlayFirstAppearance else { return }
-        AnalyticsManager.track(event: .ibanDetected, screenName: .camera)
         ibanOverlayFirstAppearance = false
     }
 
