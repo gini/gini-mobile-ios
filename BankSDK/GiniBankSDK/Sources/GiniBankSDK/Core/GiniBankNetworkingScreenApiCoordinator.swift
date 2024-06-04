@@ -132,9 +132,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         GiniBank.setConfiguration(configuration)
         giniBankConfiguration = configuration
         giniBankConfiguration.documentService = documentService
-        AnalyticsManager.userProperties = [.giniClientID: client.id,
-                                           .returnAssistantEnabled: configuration.returnAssistantEnabled,
-                                           .returnReasonsEnabled: configuration.enableReturnReasons]
+        self.setupInitialUserProperties(configuration: configuration, client: client)
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
     }
@@ -154,9 +152,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         giniBankConfiguration = configuration
         giniBankConfiguration.documentService = documentService
         GiniBank.setConfiguration(configuration)
-        // TODO: No clientID user property for custom networking init
-        AnalyticsManager.userProperties = [.returnAssistantEnabled: configuration.returnAssistantEnabled,
-                                           .returnReasonsEnabled: configuration.enableReturnReasons]
+        self.setupInitialUserProperties(configuration: configuration)
         visionDelegate = self
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
@@ -326,6 +322,15 @@ extension GiniBankNetworkingScreenApiCoordinator {
                 networkDelegate.displayError(errorType: ErrorType(error: error), animated: true)
             }
         })
+    }
+
+    private func setupInitialUserProperties(configuration: GiniBankConfiguration, client: Client? = nil) {
+        AnalyticsManager.userProperties = [.returnAssistantEnabled: configuration.returnAssistantEnabled,
+                                           .returnReasonsEnabled: configuration.enableReturnReasons]
+        // TODO: No clientID user property for custom networking init
+        if let client {
+            AnalyticsManager.userProperties[.giniClientID] = client.id
+        }
     }
 }
 
