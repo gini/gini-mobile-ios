@@ -124,6 +124,9 @@ class OnboardingDataSource: NSObject, BaseCollectionViewDataSource {
         if pageModel.isCustom {
             eventProperties.append(.init(key: .customOnboardingTitle, value: pageModel.page.title))
         }
+        let hasCustomItems = giniConfiguration.customOnboardingPages?.isNotEmpty ?? false
+        eventProperties.append(AnalyticsProperty(key: .hasCustomItems,
+                                                 value: hasCustomItems))
         AnalyticsManager.trackScreenShown(screenNameString: pageModel.analyticsScreen,
                                           properties: eventProperties)
         pagesTracker.markPageAsSeen(pageModel)
