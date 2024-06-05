@@ -131,8 +131,8 @@ struct APIResource<T: Decodable>: Resource {
                                               mimeSubtype: "json").value]
         case .pdfWithQRCode(_):
             return ["Accept": ContentType.content(version: apiVersion,
-                                              subtype: nil,
-                                              mimeSubtype: "qr+pdf").value]
+                                                  subtype: nil,
+                                                  mimeSubtype: "qr+pdf").value]
         default:
             return ["Accept": ContentType.content(version: apiVersion,
                                                   subtype: nil,
