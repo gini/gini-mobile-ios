@@ -16,12 +16,8 @@ class OnboardingViewController: UIViewController {
     private var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
     private var bottomNavigationBar: UIView?
 
-    lazy var skipButton = UIBarButtonItem(title: NSLocalizedStringPreferredFormat(
-        "ginicapture.onboarding.skip",
-        comment: "Skip button"),
-                                          style: .plain,
-                              target: self,
-                              action: #selector(close))
+    lazy var skipButton = GiniBarButton(ofType: .skip)
+
     init() {
         dataSource = OnboardingDataSource(configuration: configuration)
         super.init(nibName: "OnboardingViewController", bundle: giniCaptureBundle())
@@ -87,7 +83,9 @@ class OnboardingViewController: UIViewController {
                                                                          comment: "Next button")
         nextButton.configure(with: GiniConfiguration.shared.primaryButtonConfiguration)
         nextButton.addTarget(self, action: #selector(nextPage), for: .touchUpInside)
-        navigationItem.rightBarButtonItem = skipButton
+
+        skipButton.addAction(self, #selector(close))
+        navigationItem.rightBarButtonItem = skipButton.barButton
     }
 
     private func hideTopNavigation() {
@@ -122,7 +120,9 @@ class OnboardingViewController: UIViewController {
                 comment: "Next button"), for: .normal)
 
             nextButton.addTarget(self, action: #selector(nextPage), for: .touchUpInside)
-            navigationItem.rightBarButtonItem = skipButton
+
+            skipButton.addAction(self, #selector(close))
+            navigationItem.rightBarButtonItem = skipButton.barButton
         }
     }
 
@@ -190,7 +190,8 @@ extension OnboardingViewController: OnboardingScreen {
                     navigationButtons: [.skip, .next],
                     navigationBar: bottomNavigationBar)
             } else {
-                navigationItem.rightBarButtonItem = skipButton
+                skipButton.addAction(self, #selector(close))
+                navigationItem.rightBarButtonItem = skipButton.barButton
                 if nextButton != nil {
                     nextButton.setTitle(
                         NSLocalizedStringPreferredFormat(
