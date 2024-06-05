@@ -106,7 +106,7 @@ class OnboardingViewController: UIViewController {
             self?.nextPage()
         }
         navigationBarBottomAdapter?.setSkipButtonClickedActionCallback { [weak self] in
-            self?.close()
+            self?.skipTapped()
         }
         navigationBarBottomAdapter?.setGetStartedButtonClickedActionCallback { [weak self] in
             self?.getStartedButtonAction()
