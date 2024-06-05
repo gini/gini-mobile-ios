@@ -109,7 +109,7 @@ class OnboardingViewController: UIViewController {
             self?.close()
         }
         navigationBarBottomAdapter?.setGetStartedButtonClickedActionCallback { [weak self] in
-            self?.close()
+            self?.getStartedButtonAction()
         }
         if let navigationBar = navigationBarBottomAdapter?.injectedView() {
             bottomNavigationBar = navigationBar
@@ -149,19 +149,24 @@ class OnboardingViewController: UIViewController {
     }
 
     @objc private func nextPage() {
-        let currentPageScreenName = dataSource.pageModels[dataSource.currentPageIndex].analyticsScreen
 
         if dataSource.currentPageIndex < dataSource.pageModels.count - 1 {
             // Next button tapped
+            let currentPageScreenName = dataSource.pageModels[dataSource.currentPageIndex].analyticsScreen
             AnalyticsManager.track(event: .nextStepTapped, screenNameString: currentPageScreenName)
             let index = IndexPath(item: dataSource.currentPageIndex + 1, section: 0)
             pagesCollection.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
             dataSource.isProgrammaticScroll = true
         } else {
-            // Get started button tapped
-            AnalyticsManager.track(event: .getStartedTapped, screenNameString: currentPageScreenName)
-            close()
+           getStartedButtonAction()
         }
+    }
+
+    private func getStartedButtonAction() {
+        let currentPageScreenName = dataSource.pageModels[dataSource.currentPageIndex].analyticsScreen
+        // Get started button tapped
+        AnalyticsManager.track(event: .getStartedTapped, screenNameString: currentPageScreenName)
+        close()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
