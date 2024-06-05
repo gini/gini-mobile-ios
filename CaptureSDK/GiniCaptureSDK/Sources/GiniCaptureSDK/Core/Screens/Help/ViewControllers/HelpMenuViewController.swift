@@ -68,7 +68,7 @@ final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewCo
                                                  value: giniConfiguration.customMenuItems.isNotEmpty)]
 
         eventProperties.append(AnalyticsProperty(key: .helpItems,
-                                                     value: dataSource.helpItemsAnalyticsValues))
+                                                 value: dataSource.helpItemsAnalyticsValues))
         AnalyticsManager.trackScreenShown(screenName: .help,
                                           properties: eventProperties)
     }
