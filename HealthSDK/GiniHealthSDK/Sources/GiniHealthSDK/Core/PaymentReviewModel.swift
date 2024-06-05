@@ -7,13 +7,12 @@
 
 import GiniHealthAPILibrary
 import UIKit
-import PDFKit
 
 protocol PaymentReviewViewModelDelegate: AnyObject {
     func presentInstallAppBottomSheet(bottomSheet: BottomSheetViewController)
     func presentShareInvoiceBottomSheet(bottomSheet: BottomSheetViewController)
     func createPaymentRequestAndOpenBankApp()
-    func sharePDFActivityUI()
+    func obtainPDFFromPaymentRequest()
 }
 
 /**
@@ -54,7 +53,6 @@ public class PaymentReviewModel: NSObject {
     public var documentId: String
     private var healthSDK: GiniHealth
     private var selectedPaymentProvider: PaymentProvider?
-    private var paymentRequestId: String?
 
     private var cellViewModels: [PageCollectionCellViewModel] = [PageCollectionCellViewModel]() {
         didSet {
@@ -107,16 +105,14 @@ public class PaymentReviewModel: NSObject {
         }
     }
     
-    func createPaymentRequest(paymentInfo: PaymentInfo) {
+    func createPaymentRequest(paymentInfo: PaymentInfo, completion: ((_ paymentRequestID: String) -> ())? = nil) {
         isLoading = true
         healthSDK.createPaymentRequest(paymentInfo: paymentInfo) {[weak self] result in
+            self?.isLoading = false
             switch result {
             case let .success(requestId):
-                    self?.isLoading = false
-                    self?.paymentRequestId = requestId
-                    self?.openPaymentProviderApp(requestId: requestId, universalLink: paymentInfo.paymentUniversalLink)
+                completion?(requestId)
             case let .failure(error):
-                    self?.isLoading = false
                 if let delegate = self?.healthSDK.delegate, delegate.shouldHandleErrorInternally(error: error) {
                     self?.onCreatePaymentRequestErrorHandling()
                 }
@@ -202,16 +198,13 @@ public class PaymentReviewModel: NSObject {
         return shareInvoiceBottomView
     }
 
-    func loadPDF(){
-        guard let requestId = self.paymentRequestId else {
-            return
-        }
-        healthSDK.paymentService.pdfWithQRCode(paymentRequestId: requestId){ result in
+    func loadPDF(paymentRequestID: String, completion: @escaping (Data) -> ()) {
+        isLoading = true
+        healthSDK.paymentService.pdfWithQRCode(paymentRequestId: paymentRequestID) { [weak self] result in
+            self?.isLoading = false
             switch result {
                 case .success(let data):
-                    if let pdf = PDFDocument(data: data){
-                        print("Loaded")
-                    }
+                    completion(data)
                 case .failure:
                     break
             }
@@ -227,7 +220,7 @@ extension PaymentReviewModel: InstallAppBottomViewProtocol {
 
 extension PaymentReviewModel: ShareInvoiceBottomViewProtocol {
     func didTapOnContinueToShareInvoice() {
-        viewModelDelegate?.sharePDFActivityUI()
+        viewModelDelegate?.obtainPDFFromPaymentRequest()
     }
 }
 

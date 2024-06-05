@@ -10,8 +10,9 @@ import XCTest
 @testable import GiniHealthAPILibrary
 
 final class PaymentComponentsControllerTests: XCTestCase {
-    var giniHealthAPI: GiniHealthAPI!
-    var mockPaymentComponentsController: PaymentComponentsProtocol!
+    private var giniHealthAPI: GiniHealthAPI!
+    private var mockPaymentComponentsController: PaymentComponentsProtocol!
+    private var giniHealthConfiguration = GiniHealthConfiguration.shared
 
     override func setUp() {
         super.setUp()
@@ -77,7 +78,7 @@ final class PaymentComponentsControllerTests: XCTestCase {
     func testPaymentView_ReturnsView() {
         // Given
         let documentId = "123456"
-        let expectedViewModel = PaymentComponentViewModel(paymentProvider: nil)
+        let expectedViewModel = PaymentComponentViewModel(paymentProvider: nil, giniHealthConfiguration: giniHealthConfiguration)
         let expectedView = PaymentComponentView()
         expectedView.viewModel = expectedViewModel
 

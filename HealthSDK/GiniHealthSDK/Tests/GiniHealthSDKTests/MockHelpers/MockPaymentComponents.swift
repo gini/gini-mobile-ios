@@ -17,6 +17,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
     private var giniHealth: GiniHealth
     private var paymentProviders: PaymentProviders = []
     private var installedPaymentProviders: PaymentProviders = []
+    private var giniHealthConfiguration = GiniHealthConfiguration.shared
     
     init(giniHealthSDK: GiniHealth) {
         self.giniHealth = giniHealthSDK
@@ -46,7 +47,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
     }
     
     func paymentView(documentId: String) -> UIView {
-        let viewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider)
+        let viewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider, giniHealthConfiguration: giniHealthConfiguration)
         viewModel.documentId = documentId
         let view = PaymentComponentView()
         view.viewModel = viewModel

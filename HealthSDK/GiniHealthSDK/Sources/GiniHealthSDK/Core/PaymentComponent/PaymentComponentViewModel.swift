@@ -52,7 +52,7 @@ extension PaymentComponentViewProtocol {
 }
 
 final class PaymentComponentViewModel {
-    let giniHealthConfiguration = GiniHealthConfiguration.shared
+    let giniHealthConfiguration: GiniHealthConfiguration
 
     let backgroundColor: UIColor = UIColor.from(giniColor: GiniColor(lightModeColor: .clear, 
                                                                      darkModeColor: .clear))
@@ -120,7 +120,8 @@ final class PaymentComponentViewModel {
         return !(bankName?.isEmpty ?? true)
     }
     
-    init(paymentProvider: PaymentProvider?) {
+    init(paymentProvider: PaymentProvider?, giniHealthConfiguration: GiniHealthConfiguration) {
+        self.giniHealthConfiguration = giniHealthConfiguration
         let defaultRegularFont: UIFont = UIFont.systemFont(ofSize: 13, weight: .regular)
         let defaultBoldFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
         let defaultMediumFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .medium)
