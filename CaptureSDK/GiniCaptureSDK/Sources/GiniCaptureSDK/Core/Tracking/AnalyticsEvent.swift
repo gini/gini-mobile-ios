@@ -21,6 +21,11 @@ public enum AnalyticsEvent: String {
     case errorDialogShown = "error_dialog_shown"
     case qr_code_scanned = "qr_code_scanned"
 
+    // MARK: Camera permission
+    case cameraPermissionShown = "camera_permission_shown"
+    case cameraPermissionTapped = "camera_permission_tapped"
+    case giveAccessTapped = "give_access_tapped"
+
     // MARK: - Review
     case processTapped = "process_tapped"
     case deletePagesTapped = "delete_pages_tapped"

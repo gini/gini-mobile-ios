@@ -22,4 +22,6 @@ public enum AnalyticsScreen: String {
     case onboardingReturnAssistant = "onboarding_return_assistant"
     case returnAssistant = "return_assistant"
     case editReturnAssistant = "edit_return_assistant"
+    case cameraPermissionView = "camera_permission_view"
+    case cameraAccess = "camera_access"
 }

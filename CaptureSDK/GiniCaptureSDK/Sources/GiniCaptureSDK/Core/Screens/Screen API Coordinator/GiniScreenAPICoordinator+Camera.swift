@@ -62,7 +62,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
     func cameraDidAppear(_ viewController: CameraViewController) {
         //TODO: check where to place this best since openWith is starting differently
         AnalyticsManager.initializeAnalytics()
-        if shouldShowOnBoarding() {
+        if shouldShowOnboarding() {
             showOnboardingScreen(cameraViewController: viewController, completion: {
                 viewController.setupCamera()
             })
@@ -140,7 +140,7 @@ extension GiniScreenAPICoordinator: CameraViewControllerDelegate {
         visionDelegate?.didCapture(document: document, networkDelegate: self)
     }
 
-    private func shouldShowOnBoarding() -> Bool {
+    private func shouldShowOnboarding() -> Bool {
         if giniConfiguration.onboardingShowAtFirstLaunch &&
             !UserDefaults.standard.bool(forKey: "ginicapture.defaults.onboardingShowed") {
             UserDefaults.standard.set(true, forKey: "ginicapture.defaults.onboardingShowed")
