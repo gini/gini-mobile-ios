@@ -321,8 +321,8 @@ extension PaymentService {
                        resourceHandler: ResourceDataHandler<APIResource<Data>>,
                        completion: @escaping CompletionResult<Data>) {
         let resource = APIResource<Data>(method: .pdfWithQRCode(paymentRequestId: paymentRequestId),
-                                                   apiDomain: apiDomain,
-                                                   httpMethod: .get)
+                                         apiDomain: apiDomain,
+                                         httpMethod: .get)
         resourceHandler(resource, { result in
             switch result {
             case .success(let data):
