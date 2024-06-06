@@ -312,7 +312,7 @@ extension ShareInvoiceBottomView {
         static let appsViewSpacing: CGFloat = -20
         static let appsViewHeight: CGFloat = 112.0
         static let topAnchorAppsViewConstraint = 20.0
-        static let trailingAppsViewConstraint = 50.0
+        static let trailingAppsViewConstraint = 40.0
         static let topAnchorTipViewConstraint = 5.0
         static let topAnchorPoweredByGiniConstraint = 5.0
         static let tipIconSize = 24.0
