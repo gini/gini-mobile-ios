@@ -608,11 +608,7 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
         /**
          Moves the root view up by the distance of keyboard height  taking in account safeAreaInsets.bottom
          */
-        if #available(iOS 11.0, *) {
-            mainView.bounds.origin.y = keyboardSize.height - view.safeAreaInsets.bottom
-        } else {
-            mainView.bounds.origin.y = keyboardSize.height
-        }
+        mainView.bounds.origin.y = keyboardSize.height - view.safeAreaInsets.bottom
         
         keyboardWillShowCalled = true
     }
