@@ -21,7 +21,7 @@ public class AnalyticsManager {
         // Identify the user with the deviceID
         let deviceID = UIDevice.current.identifierForVendor?.uuidString
         mixpanelInstance?.identify(distinctId: deviceID ?? "")
-        registerSuperPropertiesOnce(superProperties)
+        registerSuperProperties(superProperties)
         trackUserProperties(userProperties)
         trackAccessibilityUserPropertiesAtInitialization()
     }
@@ -83,7 +83,7 @@ public class AnalyticsManager {
         }
     }
 
-    public static func registerSuperPropertiesOnce(_ properties: [AnalyticsSuperProperty: AnalyticsPropertyValue]) {
+    public static func registerSuperProperties(_ properties: [AnalyticsSuperProperty: AnalyticsPropertyValue]) {
         if mixpanelInstance != nil {
             var superProperties: [String: String] = [:]
 
@@ -91,7 +91,7 @@ public class AnalyticsManager {
                 superProperties[property.rawValue] = convertPropertyValueToString(value)
             }
 
-            mixpanelInstance?.registerSuperPropertiesOnce(superProperties)
+            mixpanelInstance?.registerSuperProperties(superProperties)
         } else {
             for (property, value) in properties {
                 superProperties[property] = value
