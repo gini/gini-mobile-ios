@@ -152,7 +152,7 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
 
     private func showAlertOnDidEnterManually(){
         let alert = UIAlertController(title: "GiniCaptureResultsDelegate was called",
-                                      message: "",
+                                      message: nil,
                                       preferredStyle: .alert)
 
         let ok = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
