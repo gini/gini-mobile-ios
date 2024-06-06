@@ -157,7 +157,7 @@ class OnboardingViewController: UIViewController {
             pagesCollection.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
             dataSource.isProgrammaticScroll = true
         } else {
-           getStartedButtonAction()
+            getStartedButtonAction()
         }
     }
 
