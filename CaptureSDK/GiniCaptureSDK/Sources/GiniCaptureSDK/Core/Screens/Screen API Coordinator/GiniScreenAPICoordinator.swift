@@ -110,7 +110,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
 
                 pages.forEach { visionDelegate?.didCapture(document: $0.document, networkDelegate: self) }
                 viewControllers = initialViewControllers(with: pages)
-                AnalyticsManager.registerSuperPropertiesOnce([.entryPoint: EntryPointAnalytics.openWith.rawValue])
+                AnalyticsManager.registerSuperProperties([.entryPoint: EntryPointAnalytics.openWith.rawValue])
             } else {
                 errorMessage = "You are trying to import both PDF and images at the same time. " +
                     "For now it is only possible to import either images or one PDF"
@@ -126,7 +126,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
             cameraScreen = cameraViewController
             viewControllers = [reviewViewController, cameraViewController]
             let entryPoint = EntryPointAnalytics.makeFrom(entryPoint: giniConfiguration.entryPoint).rawValue
-            AnalyticsManager.registerSuperPropertiesOnce([.entryPoint: entryPoint])
+            AnalyticsManager.registerSuperProperties([.entryPoint: entryPoint])
         }
 
         self.screenAPINavigationController.setViewControllers(viewControllers, animated: animated)
