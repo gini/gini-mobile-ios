@@ -129,8 +129,6 @@ extension GiniBankAPI {
                 } else {
                     return SessionManager(userDomain: userApi, sessionDelegate: self.sessionDelegate)
                 }
-            case let .gym(tokenSource):
-                return SessionManager(alternativeTokenSource: tokenSource, sessionDelegate: self.sessionDelegate)
             }
         }
         
