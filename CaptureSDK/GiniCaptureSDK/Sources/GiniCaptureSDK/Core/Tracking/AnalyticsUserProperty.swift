@@ -7,8 +7,6 @@
 import Foundation
 
 public enum AnalyticsUserProperty: String {
-    case entryPoint = "entry_point"
-    case giniClientID = "gini_client_id"
     case voiceOverEnabled = "voice_over_enabled"
     case guidedAccessEnabled = "guided_access_enabled"
     case boldTextEnabled = "bold_text_enabled"
