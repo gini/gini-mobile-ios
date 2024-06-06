@@ -10,8 +10,6 @@ import Foundation
 public enum APIDomain {
     /// The default one, which points to https://health-api.gini.net
     case `default`
-    /// The GYM API, which points to https://gym.gini.net/
-    case gym(tokenSource: AlternativeTokenSource)
     /// A custom domain with optional custom token source
     case custom(domain: String, tokenSource: AlternativeTokenSource?)
     
@@ -19,7 +17,6 @@ public enum APIDomain {
         
         switch self {
         case .default: return "health-api.gini.net"
-        case .gym: return "gym.gini.net"
         case .custom(let domain, _): return domain
         }
     }
@@ -47,7 +44,6 @@ struct APIResource<T: Decodable>: Resource {
     var apiVersion: Int {
         switch domain {
         case .default: return 4
-        case .gym: return 2
         case .custom: return 4
         }
     }

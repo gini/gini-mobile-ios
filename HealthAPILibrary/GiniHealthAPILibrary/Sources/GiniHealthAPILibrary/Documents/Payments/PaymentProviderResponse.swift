@@ -20,7 +20,7 @@ public struct MinAppVersions: Codable {
 }
 
 /**
- Struct for MinAppVersions in payment provider response
+ Struct for payment provider colors in payment provider response
  */
 public struct ProviderColors: Codable {
     public var background: String
@@ -31,6 +31,9 @@ public struct ProviderColors: Codable {
     }
 }
 
+/**
+ Enum for platforms supported by payment providers. We now support iOS and Android
+ */
 public enum PlatformSupported: String, Codable {
     case ios
     case android

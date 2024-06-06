@@ -17,7 +17,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
     private var giniHealth: GiniHealth
     private var paymentProviders: PaymentProviders = []
     private var installedPaymentProviders: PaymentProviders = []
-    private var giniHealthConfiguration = GiniHealthConfiguration.shared
+    private let giniHealthConfiguration = GiniHealthConfiguration.shared
     
     init(giniHealthSDK: GiniHealth) {
         self.giniHealth = giniHealthSDK

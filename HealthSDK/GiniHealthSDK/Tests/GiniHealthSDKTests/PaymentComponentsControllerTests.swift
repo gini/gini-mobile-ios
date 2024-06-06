@@ -12,7 +12,7 @@ import XCTest
 final class PaymentComponentsControllerTests: XCTestCase {
     private var giniHealthAPI: GiniHealthAPI!
     private var mockPaymentComponentsController: PaymentComponentsProtocol!
-    private var giniHealthConfiguration = GiniHealthConfiguration.shared
+    private let giniHealthConfiguration = GiniHealthConfiguration.shared
 
     override func setUp() {
         super.setUp()
