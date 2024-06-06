@@ -133,8 +133,9 @@ class OnboardingViewController: UIViewController {
     @objc private func skipTapped() {
         // Handle the skip button tap if there are more onboarding pages.
         // The skip button is not present on the last onboarding page.
-        guard dataSource.currentPageIndex < dataSource.pageModels.count - 1 else { return }
-        track(event: .skipTapped, for: dataSource.currentPageIndex)
+        let currentPageIndex = dataSource.currentPageIndex
+        guard currentPageIndex < dataSource.pageModels.count - 1 else { return }
+        track(event: .skipTapped, for: currentPageIndex)
         close()
     }
 
@@ -148,11 +149,11 @@ class OnboardingViewController: UIViewController {
     }
 
     @objc private func nextPage() {
-
-        if dataSource.currentPageIndex < dataSource.pageModels.count - 1 {
+        let currentPageIndex = dataSource.currentPageIndex
+        if currentPageIndex < dataSource.pageModels.count - 1 {
             // Next button tapped
-            track(event: .nextStepTapped, for: dataSource.currentPageIndex)
-            let index = IndexPath(item: dataSource.currentPageIndex + 1, section: 0)
+            track(event: .nextStepTapped, for: currentPageIndex)
+            let index = IndexPath(item: currentPageIndex + 1, section: 0)
             pagesCollection.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
             dataSource.isProgrammaticScroll = true
         } else {
