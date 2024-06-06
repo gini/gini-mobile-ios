@@ -551,21 +551,20 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
             lastValidatedIBAN = iban
         }
         
-        guard selectedPaymentProvider.gpcSupported else {
+        if selectedPaymentProvider.gpcSupportedPlatforms.contains(.ios) {
+            guard selectedPaymentProvider.appSchemeIOS.canOpenURLString() else {
+                model?.openInstallAppBottomSheet()
+                return
+            }
+
+            checkForErrors()
+        } else if selectedPaymentProvider.openWithSupportedPlatforms.contains(.ios) {
             if model?.shouldShowOnboardingScreenFor(paymentProvider: selectedPaymentProvider) ?? false {
                 model?.openOnboardingShareInvoiceBottomSheet()
             } else {
-                sharePDF()
+                obtainPDFFromPaymentRequest()
             }
-            return
         }
-        
-        guard selectedPaymentProvider.appSchemeIOS.canOpenURLString() else {
-            model?.openInstallAppBottomSheet()
-            return
-        }
-
-        checkForErrors()
     }
     
     func checkForErrors() {
@@ -577,37 +576,48 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
     
     private func createPaymentRequest() {
         if !amountTextFieldView.textField.isReallyEmpty {
-            let amountText = amountToPay.extractionString
-            let paymentInfo = PaymentInfo(recipient: recipientTextFieldView.text ?? "",
-                                          iban: ibanTextFieldView.text ?? "",
-                                          bic: "", amount: amountText,
-                                          purpose: usageTextFieldView.text ?? "",
-                                          paymentUniversalLink: selectedPaymentProvider.universalLinkIOS,
-                                          paymentProviderId: selectedPaymentProvider.id)
-            model?.createPaymentRequest(paymentInfo: paymentInfo)
-            let paymentRecipientExtraction = Extraction(box: nil,
-                                                        candidates: "",
-                                                        entity: "text",
-                                                        value: recipientTextFieldView.text ?? "",
-                                                        name: "payment_recipient")
-            let ibanExtraction = Extraction(box: nil,
-                                            candidates: "",
-                                            entity: "iban",
-                                            value: paymentInfo.iban,
-                                            name: "iban")
-            let referenceExtraction = Extraction(box: nil,
-                                                 candidates: "",
-                                                 entity: "text",
-                                                 value: paymentInfo.purpose,
-                                                 name: "payment_purpose")
-            let amoutToPayExtraction = Extraction(box: nil,
-                                                  candidates: "",
-                                                  entity: "amount",
-                                                  value: paymentInfo.amount,
-                                                  name: "amount_to_pay")
-            let updatedExtractions = [paymentRecipientExtraction, ibanExtraction, referenceExtraction, amoutToPayExtraction]
-            model?.sendFeedback(updatedExtractions: updatedExtractions)
+            let paymentInfo = obtainPaymentInfo()
+            model?.createPaymentRequest(paymentInfo: paymentInfo, completion: { [weak self] requestId in
+                self?.model?.openPaymentProviderApp(requestId: requestId, universalLink: paymentInfo.paymentUniversalLink)
+            })
+            sendFeedback(paymentInfo: paymentInfo)
         }
+    }
+    
+    func obtainPaymentInfo() -> PaymentInfo {
+        let amountText = amountToPay.extractionString
+        let paymentInfo = PaymentInfo(recipient: recipientTextFieldView.text ?? "",
+                                      iban: ibanTextFieldView.text ?? "",
+                                      bic: "", amount: amountText,
+                                      purpose: usageTextFieldView.text ?? "",
+                                      paymentUniversalLink: selectedPaymentProvider.universalLinkIOS,
+                                      paymentProviderId: selectedPaymentProvider.id)
+        return paymentInfo
+    }
+    
+    private func sendFeedback(paymentInfo: PaymentInfo) {
+        let paymentRecipientExtraction = Extraction(box: nil,
+                                                    candidates: "",
+                                                    entity: "text",
+                                                    value: recipientTextFieldView.text ?? "",
+                                                    name: "payment_recipient")
+        let ibanExtraction = Extraction(box: nil,
+                                        candidates: "",
+                                        entity: "iban",
+                                        value: paymentInfo.iban,
+                                        name: "iban")
+        let referenceExtraction = Extraction(box: nil,
+                                             candidates: "",
+                                             entity: "text",
+                                             value: paymentInfo.purpose,
+                                             name: "payment_purpose")
+        let amoutToPayExtraction = Extraction(box: nil,
+                                              candidates: "",
+                                              entity: "amount",
+                                              value: paymentInfo.amount,
+                                              name: "amount_to_pay")
+        let updatedExtractions = [paymentRecipientExtraction, ibanExtraction, referenceExtraction, amoutToPayExtraction]
+        model?.sendFeedback(updatedExtractions: updatedExtractions)
     }
     
     @IBAction func closeButtonClicked(_ sender: UIButton) {
@@ -724,5 +734,6 @@ extension PaymentReviewViewController {
         static let loadingIndicatorScale = 1.0
         @available(iOS 13.0, *)
         static let loadingIndicatorStyle = UIActivityIndicatorView.Style.large
+        static let pdfExtension = ".pdf"
     }
 }

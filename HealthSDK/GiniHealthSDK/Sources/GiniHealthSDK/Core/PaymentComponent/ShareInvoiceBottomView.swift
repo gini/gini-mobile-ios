@@ -225,7 +225,7 @@ class ShareInvoiceBottomView: BottomSheetViewController {
     private func setupAppsView() {
         NSLayoutConstraint.activate([
             appsView.heightAnchor.constraint(equalToConstant: Constants.appsViewHeight),
-            appsStackView.leadingAnchor.constraint(equalTo: appsView.leadingAnchor, constant: Constants.viewPaddingConstraint),
+            appsStackView.leadingAnchor.constraint(equalTo: appsView.leadingAnchor),
             appsStackView.topAnchor.constraint(equalTo: appsView.topAnchor, constant: Constants.topAnchorAppsViewConstraint),
             appsStackView.bottomAnchor.constraint(equalTo: appsView.bottomAnchor, constant: -Constants.viewPaddingConstraint),
             appsStackView.trailingAnchor.constraint(equalTo: appsView.trailingAnchor, constant: Constants.trailingAppsViewConstraint)
@@ -293,7 +293,7 @@ class ShareInvoiceBottomView: BottomSheetViewController {
         var viewsToReturn: [ShareInvoiceSingleAppView] = []
         viewModel.appsMocked.forEach { singleApp in
             let view = ShareInvoiceSingleAppView()
-            view.configure(image: singleApp.image, title: singleApp.title)
+            view.configure(image: singleApp.image, title: singleApp.title, isMoreButton: singleApp.isMoreButton)
             viewsToReturn.append(view)
         }
         return viewsToReturn
@@ -309,10 +309,10 @@ extension ShareInvoiceBottomView {
         static let bankIconCornerRadius = 6.0
         static let bankIconBorderWidth = 1.0
         static let continueButtonViewHeight = 56.0
-        static let appsViewSpacing: CGFloat = 4.0
+        static let appsViewSpacing: CGFloat = -20
         static let appsViewHeight: CGFloat = 112.0
         static let topAnchorAppsViewConstraint = 20.0
-        static let trailingAppsViewConstraint = 50.0
+        static let trailingAppsViewConstraint = 40.0
         static let topAnchorTipViewConstraint = 5.0
         static let topAnchorPoweredByGiniConstraint = 5.0
         static let tipIconSize = 24.0

@@ -56,6 +56,7 @@
 "ginihealth.paymentcomponent.shareInvoiceBottomSheet.title" = "Rechnungsdaten bereit zum Teilen mit der [BANK]";
 "ginihealth.paymentcomponent.shareInvoiceBottomSheet.description" = "Im nächsten Schritt wählen Sie die [BANK]-App auf der Seite aus, um Ihre Zahlung in der [BANK]-App abzuschließen.";
 "ginihealth.paymentcomponent.shareInvoiceBottomSheet.app" = "App";
-"ginihealth.paymentcomponent.shareInvoiceBottomSheet.tip.description" = "Tipp: Scrollen Sie, bis Sie die DKB-App finden. Wenn Sie die DKB-App noch nicht installiert haben, laden Sie sie im Store herunter.";
+"ginihealth.paymentcomponent.shareInvoiceBottomSheet.more" = "Mehr";
+"ginihealth.paymentcomponent.shareInvoiceBottomSheet.tip.description" = "Tipp: Wenn Sie die App nicht sehen, scrollen Sie oder tippen Sie auf \"Mehr\", bis Sie die [BANK]-App finden. Wenn Sie die [BANK]-App noch nicht installiert haben, laden Sie sie im Store herunter.";
 "ginihealth.paymentcomponent.shareInvoiceBottomSheet.tip.underlined.part" = "laden Sie sie im Store herunter";
 "ginihealth.paymentcomponent.shareInvoiceBottomSheet.continue.button.text" = "Weiter";
