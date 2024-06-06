@@ -165,6 +165,7 @@ class OnboardingViewController: UIViewController {
         track(event: .getStartedTapped, for: dataSource.currentPageIndex)
         close()
     }
+
     private func track(event: AnalyticsEvent, for pageIndex: Int) {
         let pageModel = dataSource.pageModels[pageIndex]
         let currentPageScreenName = pageModel.analyticsScreen
