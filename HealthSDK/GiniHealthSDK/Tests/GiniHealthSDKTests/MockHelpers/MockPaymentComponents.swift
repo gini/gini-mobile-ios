@@ -17,6 +17,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
     private var giniHealth: GiniHealth
     private var paymentProviders: PaymentProviders = []
     private var installedPaymentProviders: PaymentProviders = []
+    private let giniHealthConfiguration = GiniHealthConfiguration.shared
     
     init(giniHealthSDK: GiniHealth) {
         self.giniHealth = giniHealthSDK
@@ -28,7 +29,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
             return
         }
         if let iconData = Data(url: URL(string: paymentProviderResponse.iconLocation)) {
-            selectedPaymentProvider = PaymentProvider(id: paymentProviderResponse.id, name: paymentProviderResponse.name, appSchemeIOS: paymentProviderResponse.appSchemeIOS, minAppVersion: paymentProviderResponse.minAppVersion, colors: paymentProviderResponse.colors, iconData: iconData, appStoreUrlIOS: paymentProviderResponse.appStoreUrlIOS, universalLinkIOS: paymentProviderResponse.universalLinkIOS, index: paymentProviderResponse.index)
+            selectedPaymentProvider = PaymentProvider(id: paymentProviderResponse.id, name: paymentProviderResponse.name, appSchemeIOS: paymentProviderResponse.appSchemeIOS, minAppVersion: paymentProviderResponse.minAppVersion, colors: paymentProviderResponse.colors, iconData: iconData, appStoreUrlIOS: paymentProviderResponse.appStoreUrlIOS, universalLinkIOS: paymentProviderResponse.universalLinkIOS, index: paymentProviderResponse.index, gpcSupportedPlatforms: paymentProviderResponse.gpcSupportedPlatforms, openWithSupportedPlatforms: paymentProviderResponse.openWithSupportedPlatforms)
         }
     }
     
@@ -46,7 +47,7 @@ class MockPaymentComponents: PaymentComponentsProtocol {
     }
     
     func paymentView(documentId: String) -> UIView {
-        let viewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider)
+        let viewModel = PaymentComponentViewModel(paymentProvider: selectedPaymentProvider, giniHealthConfiguration: giniHealthConfiguration)
         viewModel.documentId = documentId
         let view = PaymentComponentView()
         view.viewModel = viewModel

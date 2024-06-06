@@ -106,6 +106,9 @@ final class SessionManagerMock: SessionManagerProtocol {
             case .feedback(_):
                 extractionFeedbackBody = resource.request.httpBody ?? nil
                 completion(.success("Feedback was sent" as! T.ResponseType))
+            case .pdfWithQRCode(_):
+                let pdfData = loadFile(withName: "pdfWithQR", ofType: "pdf")
+                    completion(.success(pdfData as! T.ResponseType))
             default:
                 let error = GiniError.unknown(response: nil, data: nil)
                 completion(.failure(error))

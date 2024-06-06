@@ -12,7 +12,7 @@ protocol PaymentReviewViewModelDelegate: AnyObject {
     func presentInstallAppBottomSheet(bottomSheet: BottomSheetViewController)
     func presentShareInvoiceBottomSheet(bottomSheet: BottomSheetViewController)
     func createPaymentRequestAndOpenBankApp()
-    func sharePDFActivityUI()
+    func obtainPDFFromPaymentRequest()
 }
 
 /**
@@ -105,15 +105,14 @@ public class PaymentReviewModel: NSObject {
         }
     }
     
-    func createPaymentRequest(paymentInfo: PaymentInfo) {
+    func createPaymentRequest(paymentInfo: PaymentInfo, completion: ((_ paymentRequestID: String) -> ())? = nil) {
         isLoading = true
         healthSDK.createPaymentRequest(paymentInfo: paymentInfo) {[weak self] result in
+            self?.isLoading = false
             switch result {
             case let .success(requestId):
-                    self?.isLoading = false
-                    self?.openPaymentProviderApp(requestId: requestId, universalLink: paymentInfo.paymentUniversalLink)
+                completion?(requestId)
             case let .failure(error):
-                    self?.isLoading = false
                 if let delegate = self?.healthSDK.delegate, delegate.shouldHandleErrorInternally(error: error) {
                     self?.onCreatePaymentRequestErrorHandling()
                 }
@@ -198,6 +197,19 @@ public class PaymentReviewModel: NSObject {
         let shareInvoiceBottomView = ShareInvoiceBottomView(viewModel: shareInvoiceBottomViewModel)
         return shareInvoiceBottomView
     }
+
+    func loadPDF(paymentRequestID: String, completion: @escaping (Data) -> ()) {
+        isLoading = true
+        healthSDK.paymentService.pdfWithQRCode(paymentRequestId: paymentRequestID) { [weak self] result in
+            self?.isLoading = false
+            switch result {
+                case .success(let data):
+                    completion(data)
+                case .failure:
+                    break
+            }
+        }
+    }
 }
 
 extension PaymentReviewModel: InstallAppBottomViewProtocol {
@@ -208,7 +220,7 @@ extension PaymentReviewModel: InstallAppBottomViewProtocol {
 
 extension PaymentReviewModel: ShareInvoiceBottomViewProtocol {
     func didTapOnContinueToShareInvoice() {
-        viewModelDelegate?.sharePDFActivityUI()
+        viewModelDelegate?.obtainPDFFromPaymentRequest()
     }
 }
 

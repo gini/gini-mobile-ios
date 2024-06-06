@@ -56,6 +56,7 @@
 "ginihealth.paymentcomponent.shareInvoiceBottomSheet.title" = "Invoice data ready to share";
 "ginihealth.paymentcomponent.shareInvoiceBottomSheet.description" = "In the next step, select the [BANK] app to open and complete your payment in the banking app.";
 "ginihealth.paymentcomponent.shareInvoiceBottomSheet.app" = "App";
-"ginihealth.paymentcomponent.shareInvoiceBottomSheet.tip.description" = "Tip: if you dont see the app scroll until you find the [BANK] app. If you haven't installed the [BANK] app yet, download it from the store.";
+"ginihealth.paymentcomponent.shareInvoiceBottomSheet.more" = "More";
+"ginihealth.paymentcomponent.shareInvoiceBottomSheet.tip.description" = "Tip: If you don't see the app, scroll or tap \"More\" until you find the [BANK] app. If you haven't installed the [BANK] app yet, download it from the store.";
 "ginihealth.paymentcomponent.shareInvoiceBottomSheet.tip.underlined.part" = "download it from the store";
 "ginihealth.paymentcomponent.shareInvoiceBottomSheet.continue.button.text" = "Forward";
