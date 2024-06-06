@@ -99,7 +99,7 @@ import GiniBankAPILibrary
                                         giniConfiguration: GiniConfiguration,
                                         for api: APIDomain) -> DocumentServiceProtocol {
         switch api {
-        case .default, .custom:
+        case .default, .gym, .custom:
             return DocumentService(lib: lib, metadata: documentMetadata)
         }
     }
