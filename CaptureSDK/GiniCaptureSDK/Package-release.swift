@@ -17,7 +17,8 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(name: "GiniBankAPILibrary", url: "https://github.com/gini/bank-api-library-ios.git", .exact("3.1.3")),
-        .package(name: "Mixpanel", url: "https://github.com/mixpanel/mixpanel-swift.git", .exact("4.2.0"))
+        .package(name: "Mixpanel", url: "https://github.com/mixpanel/mixpanel-swift.git", .exact("4.2.0")),
+        .package(name: "Amplitude", url: "https://github.com/amplitude/Amplitude-iOS", .exact("8.18.1"))
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -26,7 +27,9 @@ let package = Package(
         .target(
             name: "GiniCaptureSDK",
             dependencies: ["GiniBankAPILibrary",
-                           "Mixpanel"]),
+                           "Mixpanel",
+                           "Amplitude"
+                          ]),
         .testTarget(
             name: "GiniCaptureSDKTests",
             dependencies: ["GiniCaptureSDK"],
