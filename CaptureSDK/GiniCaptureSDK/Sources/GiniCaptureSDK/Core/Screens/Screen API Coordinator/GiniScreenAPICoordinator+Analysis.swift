@@ -2,7 +2,7 @@
 //  GiniScreenAPICoordinator+Analysis.swift
 //  GiniCapture
 //
-//  Created by Enrique del Pozo Gómez on 4/4/18.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -33,39 +33,34 @@ extension GiniScreenAPICoordinator {
     func createImageAnalysisNoResultsScreen(
             type: NoResultScreenViewController.NoResultType
         ) -> NoResultScreenViewController {
-        let viewModel: BottomButtonsViewModel
-        let viewController: NoResultScreenViewController
-        switch type {
-        case .qrCode:
-            viewModel = createRetakeAndEnterManuallyButtonsViewModel()
-        case .image:
-            if pages.contains(where: { $0.document.isImported == false }) {
-                // if there is a photo captured with camera
+            let viewModel: BottomButtonsViewModel
+            let viewController: NoResultScreenViewController
+            switch type {
+            case .qrCode:
                 viewModel = createRetakeAndEnterManuallyButtonsViewModel()
-            } else {
-                viewModel = BottomButtonsViewModel(
-                    manuallyPressed: { [weak self] in
-                        if let delegate = self?.visionDelegate {
-                            delegate.didPressEnterManually()
-                        } else {
-                            self?.screenAPINavigationController.dismiss(animated: true)
-                        }
-                    }, cancelPressed: { [weak self] in
-                        self?.closeScreenApi()
-                })
+            case .image:
+                if pages.contains(where: { $0.document.isImported == false }) {
+                    // if there is a photo captured with camera
+                    viewModel = createRetakeAndEnterManuallyButtonsViewModel()
+                } else {
+                    viewModel = createDefaultButtonsViewModel()
+                }
+            default:
+                viewModel = createDefaultButtonsViewModel()
             }
-        default:
-            viewModel = BottomButtonsViewModel(
-                manuallyPressed: { [weak self] in
-                    self?.screenAPINavigationController.dismiss(animated: true)
-                }, cancelPressed: { [weak self] in
-                self?.closeScreenApi()
-            })
+            viewController = NoResultScreenViewController(giniConfiguration: giniConfiguration,
+                                                          type: type,
+                                                          viewModel: viewModel)
+            return viewController
         }
-        viewController = NoResultScreenViewController(giniConfiguration: giniConfiguration,
-                                                      type: type,
-                                                      viewModel: viewModel)
-        return viewController
+
+    private func createDefaultButtonsViewModel() -> BottomButtonsViewModel {
+        BottomButtonsViewModel(
+            manuallyPressed: { [weak self] in
+                self?.finishWithEnterManually()
+            }, cancelPressed: { [weak self] in
+                self?.finishWithCancellation()
+        })
     }
 
     private func createRetakeAndEnterManuallyButtonsViewModel() -> BottomButtonsViewModel {
@@ -76,13 +71,9 @@ extension GiniScreenAPICoordinator {
                 self?.backToCamera()
             },
             manuallyPressed: { [weak self] in
-                if let delegate = self?.visionDelegate {
-                    delegate.didPressEnterManually()
-                } else {
-                    self?.screenAPINavigationController.dismiss(animated: true)
-                }
+                self?.finishWithEnterManually()
             }, cancelPressed: { [weak self] in
-                self?.closeScreenApi()
+                self?.finishWithCancellation()
         })
     }
 }
@@ -100,48 +91,19 @@ extension GiniScreenAPICoordinator: AnalysisDelegate {
         case .image:
             if self.pages.contains(where: { $0.document.isImported == false }) {
                 // if there is a photo captured with camera
-                viewModel = BottomButtonsViewModel(
-                    retakeBlock: { [weak self] in
-                        self?.pages = []
-                        self?.trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .retry))
-                        self?.backToCamera()
-                    },
-                    manuallyPressed: { [weak self] in
-                        if let delegate = self?.visionDelegate {
-                            delegate.didPressEnterManually()
-                        } else {
-                            self?.screenAPINavigationController.dismiss(animated: animated)
-                        }
-                    }, cancelPressed: { [weak self] in
-                        self?.closeScreenApi()
-                })
+                viewModel = createRetakeAndEnterManuallyButtonsViewModel()
             } else {
-                viewModel = BottomButtonsViewModel(
-                    manuallyPressed: { [weak self] in
-                        if let delegate = self?.visionDelegate {
-                            delegate.didPressEnterManually()
-                        } else {
-                            self?.screenAPINavigationController.dismiss(animated: animated)
-                        }
-                    }, cancelPressed: { [weak self] in
-                    self?.closeScreenApi()
-                })
+                viewModel = createDefaultButtonsViewModel()
             }
         default:
-            viewModel = BottomButtonsViewModel(
-                manuallyPressed: { [weak self] in
-                    self?.screenAPINavigationController.dismiss(animated: true)
-                }, cancelPressed: { [weak self] in
-                self?.closeScreenApi()
-            })
+                viewModel = createDefaultButtonsViewModel()
         }
 
         self.trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .error))
-        let viewController = ErrorScreenViewController(
-            giniConfiguration: giniConfiguration,
-            type: errorType,
-            documentType: pages.type ?? .pdf,
-            viewModel: viewModel)
+        let viewController = ErrorScreenViewController(giniConfiguration: giniConfiguration,
+                                                       type: errorType,
+                                                       documentType: pages.type ?? .pdf,
+                                                       viewModel: viewModel)
 
         screenAPINavigationController.pushViewController(viewController, animated: animated)
     }
