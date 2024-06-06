@@ -9,6 +9,7 @@ import Foundation
 public enum AnalyticsEvent: String {
     case screenShown = "screen_shown"
     case closeTapped = "close_tapped"
+    case sdkOpened = "sdk_opened"
 
     // MARK: - Camera
     case captureTapped = "capture_tapped"

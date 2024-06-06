@@ -18,6 +18,7 @@ public class AnalyticsManager {
         let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? ""
         initializeMixpanel(with: deviceID)
         initializeAmplitude(with: deviceID)
+        AnalyticsManager.track(event: .sdkOpened, screenName: nil)
     }
 
     private static func initializeMixpanel(with deviceID: String) {
