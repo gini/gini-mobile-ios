@@ -22,7 +22,7 @@ public class AnalyticsManager {
 
     private static func initializeMixpanel(with deviceID: String) {
         mixpanelInstance = Mixpanel.initialize(token: AnalyticsManager.mixPanelToken,
-                                                                trackAutomaticEvents: false)
+                                               trackAutomaticEvents: false)
         mixpanelInstance?.identify(distinctId: deviceID)
     }
 
