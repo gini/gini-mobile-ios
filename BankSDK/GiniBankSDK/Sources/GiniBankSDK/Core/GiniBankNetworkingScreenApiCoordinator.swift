@@ -329,7 +329,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
                                               .returnReasonsEnabled: configuration.enableReturnReasons])
         // TODO: No clientID user property for custom networking init
         if let client {
-            AnalyticsManager.registerSuperPropertiesOnce([.giniClientID: client.id])
+            AnalyticsManager.registerSuperProperties([.giniClientID: client.id])
         }
     }
 }
