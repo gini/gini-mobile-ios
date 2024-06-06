@@ -10,7 +10,8 @@ import Mixpanel
 public class AnalyticsManager {
     private static let mixPanelToken = "6262hhdfhdb929321222" // this id is fake we need to replace it
     private static var mixpanelInstance: MixpanelInstance?
-    public static var userProperties: [AnalyticsUserProperty: AnalyticsPropertyValue] = [:]
+    private static var userProperties: [AnalyticsUserProperty: AnalyticsPropertyValue] = [:]
+    private static var superProperties: [AnalyticsSuperProperty: AnalyticsPropertyValue] = [:]
 
     public static func initializeAnalytics() {
         mixpanelInstance = Mixpanel.initialize(token: mixPanelToken,
@@ -20,6 +21,7 @@ public class AnalyticsManager {
         // Identify the user with the deviceID
         let deviceID = UIDevice.current.identifierForVendor?.uuidString
         mixpanelInstance?.identify(distinctId: deviceID ?? "")
+        registerSuperPropertiesOnce(superProperties)
         trackUserProperties(userProperties)
         trackAccessibilityUserPropertiesAtInitialization()
     }
@@ -66,13 +68,35 @@ public class AnalyticsManager {
     }
 
     public static func trackUserProperties(_ properties: [AnalyticsUserProperty: AnalyticsPropertyValue]) {
-        var propertiesToTrack: [String: String] = [:]
+        if mixpanelInstance != nil {
+            var propertiesToTrack: [String: String] = [:]
 
-        for (property, value) in properties {
-            propertiesToTrack[property.rawValue] = convertPropertyValueToString(value)
+            for (property, value) in properties {
+                propertiesToTrack[property.rawValue] = convertPropertyValueToString(value)
+            }
+
+            mixpanelInstance?.people.set(properties: propertiesToTrack)
+        } else {
+            for (property, value) in properties {
+                userProperties[property] = value
+            }
         }
+    }
 
-        mixpanelInstance?.people.set(properties: propertiesToTrack)
+    public static func registerSuperPropertiesOnce(_ properties: [AnalyticsSuperProperty: AnalyticsPropertyValue]) {
+        if mixpanelInstance != nil {
+            var superProperties: [String: String] = [:]
+
+            for (property, value) in properties {
+                superProperties[property.rawValue] = convertPropertyValueToString(value)
+            }
+
+            mixpanelInstance?.registerSuperPropertiesOnce(superProperties)
+        } else {
+            for (property, value) in properties {
+                superProperties[property] = value
+            }
+        }
     }
 
     private static func trackAccessibilityUserPropertiesAtInitialization() {
