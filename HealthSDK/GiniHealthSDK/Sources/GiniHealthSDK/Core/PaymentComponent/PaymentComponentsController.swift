@@ -39,7 +39,7 @@ public final class PaymentComponentsController: PaymentComponentsProtocol {
     public weak var bottomViewDelegate: PaymentProvidersBottomViewProtocol?
 
     private var giniHealth: GiniHealth
-    private var giniHealthConfiguration = GiniHealthConfiguration.shared
+    private let giniHealthConfiguration = GiniHealthConfiguration.shared
     private var paymentProviders: PaymentProviders = []
     
     /// storing the current selected payment provider

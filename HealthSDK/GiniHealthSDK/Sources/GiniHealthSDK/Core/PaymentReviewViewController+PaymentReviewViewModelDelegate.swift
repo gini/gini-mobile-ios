@@ -24,33 +24,31 @@ extension PaymentReviewViewController: PaymentReviewViewModelDelegate {
     }
 
     func obtainPDFFromPaymentRequest() {
-        // TODO: Load PDF from backend then...
         model?.createPaymentRequest(paymentInfo: obtainPaymentInfo(), completion: { [weak self] paymentRequestID in
-            self?.model?.loadPDF(paymentRequestID: paymentRequestID, completion: { [weak self] pdfData in
-                self?.writePDFDataToFile(data: pdfData, fileName: paymentRequestID, completion: { pdfPath, completed in
-                    if let pdfPath, completed {
-                        self?.sharePDF(pdfURL: pdfPath)
-                    }
-                })
-            })
+            self?.loadPDFData(paymentRequestID: paymentRequestID)
         })
     }
     
-    func writePDFDataToFile(data: Data, fileName: String, completion: (_ pdfFileURL: URL? , _ status: Bool) -> ()) {
+    private func loadPDFData(paymentRequestID: String) {
+        self.model?.loadPDF(paymentRequestID: paymentRequestID, completion: { [weak self] pdfData in
+            self?.writePDFDataToFile(data: pdfData, fileName: paymentRequestID)
+        })
+    }
+    
+    private func writePDFDataToFile(data: Data, fileName: String) {
         do {
             let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
             guard let docDirectoryPath = paths.first else { return }
             let pdfFileName = fileName + Constants.pdfExtension
             let pdfPath = docDirectoryPath.appendingPathComponent(pdfFileName)
             try data.write(to: pdfPath)
-            completion(pdfPath, true)
+            self.sharePDF(pdfURL: pdfPath)
         } catch {
             print("Error while write pdf file to location: \(error.localizedDescription)")
-            completion(nil, false)
         }
     }
 
-    func sharePDF(pdfURL: URL) {
+    private func sharePDF(pdfURL: URL) {
         // Create UIActivityViewController with the PDF file
         let activityViewController = UIActivityViewController(activityItems: [pdfURL], applicationActivities: nil)
 
