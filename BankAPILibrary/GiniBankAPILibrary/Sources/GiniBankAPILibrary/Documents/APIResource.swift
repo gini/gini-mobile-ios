@@ -123,8 +123,7 @@ struct APIResource<T: Decodable>: Resource {
         case .logErrorEvent:
             return "/events/error"
         case .fetchConfiguration:
-            // TODO: [PP-352] FAKE endpoint, replace when backend will be finished
-            return "/configuration-test"
+            return "/configuration"
         }
     }
     
