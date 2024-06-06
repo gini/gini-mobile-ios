@@ -182,7 +182,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                                         configuration: GiniBankConfiguration,
                                         for api: APIDomain) -> DocumentServiceProtocol {
         switch api {
-        case .default, .gym, .custom:
+        case .default, .custom:
             return DocumentService(lib: lib, metadata: documentMetadata)
         }
     }
