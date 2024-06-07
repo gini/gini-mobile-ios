@@ -88,7 +88,7 @@ public class AnalyticsManager {
     }
 
     public static func registerSuperProperties(_ properties: [AnalyticsSuperProperty: AnalyticsPropertyValue]) {
-        handleProperties(properties, 
+        handleProperties(properties,
                          propertyStore: &superProperties,
                          mixpanelInstanceMethod: { mixpanelInstance, propertiesToTrack in
             mixpanelInstance.registerSuperProperties(propertiesToTrack)
@@ -134,10 +134,12 @@ public class AnalyticsManager {
             return ""
         }
     }
-    
-    private static func handleProperties<T: RawRepresentable>(_ properties: [T: AnalyticsPropertyValue],
-                                                              propertyStore: inout [T: AnalyticsPropertyValue],
-                                                              mixpanelInstanceMethod: (MixpanelInstance, [String: String]) -> Void) where T.RawValue == String {
+
+    private static func handleProperties<T: RawRepresentable>(
+        _ properties: [T: AnalyticsPropertyValue],
+        propertyStore: inout [T: AnalyticsPropertyValue],
+        mixpanelInstanceMethod: (MixpanelInstance, [String: String]) -> Void
+    ) where T.RawValue == String {
         if let mixpanelInstance = mixpanelInstance {
             var propertiesToTrack: [String: String] = [:]
             for (property, value) in properties {
