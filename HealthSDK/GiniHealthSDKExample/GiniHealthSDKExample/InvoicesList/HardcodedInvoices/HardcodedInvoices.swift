@@ -7,12 +7,14 @@
 
 import Foundation
 import GiniHealthAPILibrary
+import GiniHealthSDK
 
 protocol HardcodedInvoicesControllerProtocol: AnyObject {
     func obtainInvoicePhotosHardcoded(completion: @escaping (([Data]) -> Void))
     func storeInvoicesWithExtractions(invoices: [DocumentWithExtractions])
     func getInvoicesWithExtractions() -> [DocumentWithExtractions]
     func appendInvoiceWithExtractions(invoice: DocumentWithExtractions)
+    func updateDocumentExtractions(documentID: String, paymentInfo: PaymentInfo?)
 }
 
 final class HardcodedInvoicesController: HardcodedInvoicesControllerProtocol {
@@ -65,6 +67,15 @@ final class HardcodedInvoicesController: HardcodedInvoicesControllerProtocol {
         var storedInvoices = getInvoicesWithExtractions()
         storedInvoices.append(invoice)
         storeInvoicesWithExtractions(invoices: storedInvoices)
+    }
+    
+    func updateDocumentExtractions(documentID: String, paymentInfo: PaymentInfo?) {
+        var invoices = getInvoicesWithExtractions()
+        if let index = invoices.firstIndex(where: { $0.documentID == documentID }) {
+            invoices[index].recipient = paymentInfo?.recipient
+            invoices[index].amountToPay = paymentInfo?.amount
+        }
+        storeInvoicesWithExtractions(invoices: invoices)
     }
 }
 

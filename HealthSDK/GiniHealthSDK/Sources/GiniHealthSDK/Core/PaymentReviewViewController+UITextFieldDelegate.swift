@@ -49,6 +49,7 @@ extension PaymentReviewViewController: UITextFieldDelegate {
 
     public func textFieldDidEndEditing(_ textField: UITextField) {
         // add currency format when edit is finished
+        model?.haveFieldsChanged = true
         if TextFieldType(rawValue: textField.tag) == .amountFieldTag {
             updateAmoutToPayWithCurrencyFormat()
         }

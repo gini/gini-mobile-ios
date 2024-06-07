@@ -184,6 +184,9 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
         guard let documentId else { return }
         Log("Tapped on Pay Invoice on :\(documentId)", event: .success)
         paymentComponentsController.loadPaymentReviewScreenFor(documentID: documentId, trackingDelegate: self) { [weak self] viewController, error in
+            if let paymentReviewViewController = viewController as? PaymentReviewViewController {
+                paymentReviewViewController.changesDelegate = self
+            }
             if let error {
                 self?.errors.append(error.localizedDescription)
                 self?.showErrorsIfAny()
@@ -192,6 +195,16 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
                 viewController.modalPresentationStyle = .overCurrentContext
                 self?.coordinator.invoicesListViewController.present(viewController, animated: true)
             }
+        }
+    }
+}
+
+extension InvoicesListViewModel: PaymentReviewScreenDelegate {
+    func didInvoiceDetailsChanged(on documentID: String, with paymentInfo: PaymentInfo?) {
+        hardcodedInvoicesController.updateDocumentExtractions(documentID: documentID, paymentInfo: paymentInfo)
+        invoices = hardcodedInvoicesController.getInvoicesWithExtractions()
+        DispatchQueue.main.async {
+            self.coordinator.invoicesListViewController.reloadTableView()
         }
     }
 }
