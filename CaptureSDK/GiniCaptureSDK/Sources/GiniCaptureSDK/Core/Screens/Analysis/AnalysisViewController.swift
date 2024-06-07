@@ -143,7 +143,10 @@ import UIKit
         super.viewDidAppear(animated)
         didShowAnalysis?()
 
-        AnalyticsManager.trackScreenShown(screenName: .analysis)
+        let eventProperties = [AnalyticsProperty(key: .documentType,
+                                                 value: AnalyticsMapper.documentTypeAnalytics(from: document.type))]
+        AnalyticsManager.trackScreenShown(screenName: .analysis,
+                                          properties: eventProperties)
     }
 
     // MARK: Toggle animation
