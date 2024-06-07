@@ -211,8 +211,9 @@ extension GiniScreenAPICoordinator {
     private func navigateBackFromCameraViewController() {
         trackingDelegate?.onCameraScreenEvent(event: Event(type: .exit))
         AnalyticsManager.track(event: .closeTapped, screenName: screenName())
-        if pages.type == .qrcode {
+        guard pages.type != .qrcode else {
             screenAPINavigationController.dismiss(animated: true)
+            return
         }
 
         if pages.count > 0 {
