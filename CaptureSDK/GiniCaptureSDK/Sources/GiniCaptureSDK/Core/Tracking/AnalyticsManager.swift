@@ -68,35 +68,19 @@ public class AnalyticsManager {
     }
 
     public static func trackUserProperties(_ properties: [AnalyticsUserProperty: AnalyticsPropertyValue]) {
-        if mixpanelInstance != nil {
-            var propertiesToTrack: [String: String] = [:]
-
-            for (property, value) in properties {
-                propertiesToTrack[property.rawValue] = convertPropertyValueToString(value)
-            }
-
-            mixpanelInstance?.people.set(properties: propertiesToTrack)
-        } else {
-            for (property, value) in properties {
-                userProperties[property] = value
-            }
-        }
+        handleProperties(properties,
+                         propertyStore: &userProperties,
+                         mixpanelInstanceMethod: { mixpanelInstance, propertiesToTrack in
+            mixpanelInstance.people.set(properties: propertiesToTrack)
+        })
     }
 
     public static func registerSuperProperties(_ properties: [AnalyticsSuperProperty: AnalyticsPropertyValue]) {
-        if mixpanelInstance != nil {
-            var superProperties: [String: String] = [:]
-
-            for (property, value) in properties {
-                superProperties[property.rawValue] = convertPropertyValueToString(value)
-            }
-
-            mixpanelInstance?.registerSuperProperties(superProperties)
-        } else {
-            for (property, value) in properties {
-                superProperties[property] = value
-            }
-        }
+        handleProperties(properties, 
+                         propertyStore: &superProperties,
+                         mixpanelInstanceMethod: { mixpanelInstance, propertiesToTrack in
+            mixpanelInstance.registerSuperProperties(propertiesToTrack)
+        })
     }
 
     private static func trackAccessibilityUserPropertiesAtInitialization() {
@@ -136,6 +120,22 @@ public class AnalyticsManager {
             return arrayToString(from: value)
         } else {
             return ""
+        }
+    }
+    
+    private static func handleProperties<T: RawRepresentable>(_ properties: [T: AnalyticsPropertyValue],
+                                                              propertyStore: inout [T: AnalyticsPropertyValue],
+                                                              mixpanelInstanceMethod: (MixpanelInstance, [String: String]) -> Void) where T.RawValue == String {
+        if let mixpanelInstance = mixpanelInstance {
+            var propertiesToTrack: [String: String] = [:]
+            for (property, value) in properties {
+                propertiesToTrack[property.rawValue] = convertPropertyValueToString(value)
+            }
+            mixpanelInstanceMethod(mixpanelInstance, propertiesToTrack)
+        } else {
+            for (property, value) in properties {
+                propertyStore[property] = value
+            }
         }
     }
 }
