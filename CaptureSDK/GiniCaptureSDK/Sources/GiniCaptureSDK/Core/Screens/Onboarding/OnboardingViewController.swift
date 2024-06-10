@@ -106,10 +106,10 @@ class OnboardingViewController: UIViewController {
             self?.nextPage()
         }
         navigationBarBottomAdapter?.setSkipButtonClickedActionCallback { [weak self] in
-            self?.close()
+            self?.skipTapped()
         }
         navigationBarBottomAdapter?.setGetStartedButtonClickedActionCallback { [weak self] in
-            self?.close()
+            self?.getStartedButtonAction()
         }
         if let navigationBar = navigationBarBottomAdapter?.injectedView() {
             bottomNavigationBar = navigationBar
@@ -133,9 +133,9 @@ class OnboardingViewController: UIViewController {
     @objc private func skipTapped() {
         // Handle the skip button tap if there are more onboarding pages.
         // The skip button is not present on the last onboarding page.
-        guard dataSource.currentPageIndex < dataSource.pageModels.count - 1 else { return }
-        let currentPageScreenName = dataSource.pageModels[dataSource.currentPageIndex].analyticsScreen
-        AnalyticsManager.track(event: .skipTapped, screenNameString: currentPageScreenName)
+        let currentPageIndex = dataSource.currentPageIndex
+        guard currentPageIndex < dataSource.pageModels.count - 1 else { return }
+        track(event: .skipTapped, for: currentPageIndex)
         close()
     }
 
@@ -149,19 +149,33 @@ class OnboardingViewController: UIViewController {
     }
 
     @objc private func nextPage() {
-        let currentPageScreenName = dataSource.pageModels[dataSource.currentPageIndex].analyticsScreen
-
-        if dataSource.currentPageIndex < dataSource.pageModels.count - 1 {
+        let currentPageIndex = dataSource.currentPageIndex
+        if currentPageIndex < dataSource.pageModels.count - 1 {
             // Next button tapped
-            AnalyticsManager.track(event: .nextStepTapped, screenNameString: currentPageScreenName)
-            let index = IndexPath(item: dataSource.currentPageIndex + 1, section: 0)
+            track(event: .nextStepTapped, for: currentPageIndex)
+            let index = IndexPath(item: currentPageIndex + 1, section: 0)
             pagesCollection.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
             dataSource.isProgrammaticScroll = true
         } else {
-            // Get started button tapped
-            AnalyticsManager.track(event: .getStartedTapped, screenNameString: currentPageScreenName)
-            close()
+            getStartedButtonAction()
         }
+    }
+
+    private func getStartedButtonAction() {
+        track(event: .getStartedTapped, for: dataSource.currentPageIndex)
+        close()
+    }
+
+    private func track(event: AnalyticsEvent, for pageIndex: Int) {
+        let pageModel = dataSource.pageModels[pageIndex]
+        let currentPageScreenName = pageModel.analyticsScreen
+        var eventProperties = [AnalyticsProperty]()
+        if pageModel.isCustom {
+            eventProperties.append(.init(key: .customOnboardingTitle, value: pageModel.page.title))
+        }
+        AnalyticsManager.track(event: event,
+                               screenNameString: currentPageScreenName,
+                               properties: eventProperties)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -194,9 +208,7 @@ extension OnboardingViewController: OnboardingScreen {
 
         // Registers the `pageSwiped` event for the page swiped action, tracking based on the page from which the swipe was triggered.
         // `pageControl.currentPage` should be updated after this method is called as it is done in `didScroll(pageIndex: Int)` method
-        let previousPageIndex = pageControl.currentPage
-        let previousPageModel = dataSource.pageModels[previousPageIndex]
-        AnalyticsManager.track(event: .pageSwiped, screenNameString: previousPageModel.analyticsScreen)
+        track(event: .pageSwiped, for: pageControl.currentPage)
     }
 
     private func configureNavigationButtons(for pageIndex: Int) {
