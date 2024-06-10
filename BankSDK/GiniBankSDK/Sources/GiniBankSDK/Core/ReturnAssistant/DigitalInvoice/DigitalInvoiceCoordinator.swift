@@ -84,7 +84,6 @@ extension DigitalInvoiceCoordinator: DigitalInvoiceViewModelDelagate {
         if let analysisDelegate = analysisDelegate {
             delegate?.didFinishAnalysis(self, invoice: viewModel.invoice, analysisDelegate: analysisDelegate)
         }
-
     }
 
     func didTapEdit(on viewModel: DigitalInvoiceViewModel, lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
@@ -109,7 +108,7 @@ extension DigitalInvoiceCoordinator: EditLineItemViewModelDelegate {
             let itemRawValues = viewModel.itemsChanged.map { return $0.rawValue }
             let eventProperties = [AnalyticsProperty(key: .itemsChanged,
                                                      value: itemRawValues)]
-            AnalyticsManager.track(event: .saveTapped, 
+            AnalyticsManager.track(event: .saveTapped,
                                    screenName: .editReturnAssistant,
                                    properties: eventProperties)
         }
