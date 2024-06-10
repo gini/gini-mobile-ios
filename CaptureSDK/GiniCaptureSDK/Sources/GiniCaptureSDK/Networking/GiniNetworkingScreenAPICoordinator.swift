@@ -2,7 +2,7 @@
 //  GiniNetworkingScreenAPICoordinator.swift
 //  GiniCapture
 //
-//  Created by Alpár Szotyori on 25.06.19.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
