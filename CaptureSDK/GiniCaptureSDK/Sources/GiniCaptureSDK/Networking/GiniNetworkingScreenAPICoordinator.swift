@@ -31,47 +31,45 @@ import GiniBankAPILibrary
     func giniCaptureDidEnterManually()
 }
 
- public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
+public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
     public weak var resultsDelegate: GiniCaptureResultsDelegate?
     public let documentService: DocumentServiceProtocol
-
+    
     public init(client: Client,
-         resultsDelegate: GiniCaptureResultsDelegate,
-         giniConfiguration: GiniConfiguration,
-         documentMetadata: Document.Metadata?,
-         api: APIDomain,
-         trackingDelegate: GiniCaptureTrackingDelegate?,
-         lib : GiniBankAPI) {
-
-        self.documentService = GiniNetworkingScreenAPICoordinator.documentService(with: lib,
-                                                                                  documentMetadata: documentMetadata,
-                                                                                  giniConfiguration: giniConfiguration,
-                                                                                  for: api)
+                resultsDelegate: GiniCaptureResultsDelegate,
+                giniConfiguration: GiniConfiguration,
+                documentMetadata: Document.Metadata?,
+                api: APIDomain,
+                trackingDelegate: GiniCaptureTrackingDelegate?,
+                lib : GiniBankAPI) {
+        
+        self.documentService = DocumentService(lib: lib, metadata: documentMetadata)
         super.init(withDelegate: nil,
                    giniConfiguration: giniConfiguration)
-
+        
         self.giniConfiguration.documentService = documentService
         self.visionDelegate = self
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
     }
-     
-     public init(resultsDelegate: GiniCaptureResultsDelegate,
-          giniConfiguration: GiniConfiguration,
-          documentMetadata: Document.Metadata?,
-          trackingDelegate: GiniCaptureTrackingDelegate?,
-          captureNetworkService: GiniCaptureNetworkService) {
-
-         self.documentService = DocumentService(giniCaptureNetworkService: captureNetworkService, metadata: documentMetadata)
-         
-         super.init(withDelegate: nil,
-                    giniConfiguration: giniConfiguration)
-
-         self.giniConfiguration.documentService = documentService
-         self.visionDelegate = self
-         self.resultsDelegate = resultsDelegate
-         self.trackingDelegate = trackingDelegate
-     }
+    
+    public init(resultsDelegate: GiniCaptureResultsDelegate,
+                giniConfiguration: GiniConfiguration,
+                documentMetadata: Document.Metadata?,
+                trackingDelegate: GiniCaptureTrackingDelegate?,
+                captureNetworkService: GiniCaptureNetworkService,
+                configurationService: ConfigurationServiceProtocol) {
+        
+        self.documentService = DocumentService(giniCaptureNetworkService: captureNetworkService, metadata: documentMetadata)
+        
+        super.init(withDelegate: nil,
+                   giniConfiguration: giniConfiguration)
+        
+        self.giniConfiguration.documentService = documentService
+        self.visionDelegate = self
+        self.resultsDelegate = resultsDelegate
+        self.trackingDelegate = trackingDelegate
+    }
     
     convenience init(client: Client,
                      resultsDelegate: GiniCaptureResultsDelegate,
@@ -92,16 +90,6 @@ import GiniBankAPILibrary
                   api: api,
                   trackingDelegate: trackingDelegate,
                   lib: lib)
-    }
-    
-    private static func documentService(with lib: GiniBankAPI,
-                                        documentMetadata: Document.Metadata?,
-                                        giniConfiguration: GiniConfiguration,
-                                        for api: APIDomain) -> DocumentServiceProtocol {
-        switch api {
-        case .default, .custom:
-            return DocumentService(lib: lib, metadata: documentMetadata)
-        }
     }
     
     public func deliver(result: ExtractionResult, and document: Document? = nil, to analysisDelegate: AnalysisDelegate) {
