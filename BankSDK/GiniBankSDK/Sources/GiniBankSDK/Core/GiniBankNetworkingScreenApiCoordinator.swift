@@ -146,7 +146,8 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 configuration: GiniBankConfiguration,
                 documentMetadata: Document.Metadata?,
                 trackingDelegate: GiniCaptureTrackingDelegate?,
-                captureNetworkService: GiniCaptureNetworkService) {
+                captureNetworkService: GiniCaptureNetworkService,
+                configurationService: ConfigurationServiceProtocol?) {
 
         documentService = DocumentService(giniCaptureNetworkService: captureNetworkService,
                                           metadata: documentMetadata)
