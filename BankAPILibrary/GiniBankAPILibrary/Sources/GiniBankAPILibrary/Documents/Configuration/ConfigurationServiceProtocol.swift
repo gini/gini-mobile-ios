@@ -9,13 +9,13 @@ import Foundation
 
 public protocol ConfigurationServiceProtocol: AnyObject {
     var apiDomain: APIDomain { get set }
-    func fetchConfiguration(completion: @escaping CompletionResult<Configuration>)
+    func fetchConfigurations(completion: @escaping CompletionResult<Configuration>)
 }
 
 extension ConfigurationServiceProtocol {
-    func fetchConfiguration(resourceHandler: ResourceDataHandler<APIResource<Configuration>>,
+    func fetchConfigurations(resourceHandler: ResourceDataHandler<APIResource<Configuration>>,
                             completion: @escaping CompletionResult<Configuration>) {
-        let resource = APIResource<Configuration>(method: .fetchConfiguration, apiDomain: apiDomain, httpMethod: .get)
+        let resource = APIResource<Configuration>(method: .configurations, apiDomain: apiDomain, httpMethod: .get)
         
         resourceHandler(resource, { result in
             switch result {

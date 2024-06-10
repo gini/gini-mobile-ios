@@ -8,8 +8,8 @@
 import Foundation
 
 public final class ConfigurationService: ConfigurationServiceProtocol {
-    public func fetchConfiguration(completion: @escaping CompletionResult<Configuration>) {
-        self.fetchConfiguration(resourceHandler: sessionManager.data, completion: completion)
+    public func fetchConfigurations(completion: @escaping CompletionResult<Configuration>) {
+        self.fetchConfigurations(resourceHandler: sessionManager.data, completion: completion)
     }
 
     let sessionManager: SessionManagerProtocol
