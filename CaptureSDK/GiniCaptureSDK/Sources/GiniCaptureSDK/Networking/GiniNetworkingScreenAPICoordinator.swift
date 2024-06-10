@@ -58,7 +58,7 @@ public class GiniNetworkingScreenAPICoordinator: GiniScreenAPICoordinator {
                 documentMetadata: Document.Metadata?,
                 trackingDelegate: GiniCaptureTrackingDelegate?,
                 captureNetworkService: GiniCaptureNetworkService,
-                configurationService: ConfigurationServiceProtocol) {
+                configurationService: ConfigurationServiceProtocol?) {
         
         self.documentService = DocumentService(giniCaptureNetworkService: captureNetworkService, metadata: documentMetadata)
         
