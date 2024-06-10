@@ -121,10 +121,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 api: APIDomain,
                 trackingDelegate: GiniCaptureTrackingDelegate?,
                 lib: GiniBankAPI) {
-        documentService = GiniBankNetworkingScreenApiCoordinator.documentService(with: lib,
-                                                               documentMetadata: documentMetadata,
-                                                               configuration: configuration,
-                                                               for: api)
+        documentService = DocumentService(lib: lib, metadata: documentMetadata)
         let captureConfiguration = configuration.captureConfiguration()
         super.init(withDelegate: nil, giniConfiguration: captureConfiguration)
 
@@ -176,16 +173,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                   api: api,
                   trackingDelegate: trackingDelegate,
                   lib: lib)
-    }
-
-    private static func documentService(with lib: GiniBankAPI,
-                                        documentMetadata: Document.Metadata?,
-                                        configuration: GiniBankConfiguration,
-                                        for api: APIDomain) -> DocumentServiceProtocol {
-        switch api {
-        case .default, .custom:
-            return DocumentService(lib: lib, metadata: documentMetadata)
-        }
     }
 
     private func deliver(result: ExtractionResult, analysisDelegate: AnalysisDelegate) {
