@@ -69,12 +69,14 @@ extension GiniBank {
                                      resultsDelegate: GiniCaptureResultsDelegate,
                                      documentMetadata: Document.Metadata? = nil,
                                      trackingDelegate: GiniCaptureTrackingDelegate? = nil,
-                                     networkingService: GiniCaptureNetworkService) -> UIViewController {
+                                     networkingService: GiniCaptureNetworkService,
+                                     configurationService: ConfigurationServiceProtocol? = nil) -> UIViewController {
         let screenCoordinator = GiniBankNetworkingScreenApiCoordinator(resultsDelegate: resultsDelegate,
                                                                        configuration: configuration,
                                                                        documentMetadata: documentMetadata,
                                                                        trackingDelegate: trackingDelegate,
-                                                                       captureNetworkService: networkingService)
+                                                                       captureNetworkService: networkingService,
+                                                                       configurationService: configurationService)
         return screenCoordinator.start(withDocuments: importedDocuments)
     }
 
