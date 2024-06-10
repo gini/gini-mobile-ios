@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+//  DigitalInvoiceCoordinator.swift
 //
-//  Created by David Vizaknai on 24.02.2023.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import GiniCaptureSDK
@@ -22,8 +21,7 @@ final class DigitalInvoiceCoordinator: Coordinator {
     private var digitalInvoiceViewModel: DigitalInvoiceViewModel?
 
     // TODO: This is to cope with the screen coordinator being inadequate at this point to support the return assistant step and needing a refactor.
-    // Remove ASAP
-    private var analysisDelegate: AnalysisDelegate
+    private weak var analysisDelegate: AnalysisDelegate?
 
     weak var delegate: DigitalInvoiceCoordinatorDelegate?
     var rootViewController: UIViewController {
@@ -59,9 +57,11 @@ final class DigitalInvoiceCoordinator: Coordinator {
         let digitalInvoiceOnboardingViewController =
         storyboard.instantiateViewController(withIdentifier: onboardingViewControllerName)
         as! DigitalInvoiceOnboardingViewController
-
+        digitalInvoiceOnboardingViewController.delegate = digitalInvoiceViewController
         navigationController.present(digitalInvoiceOnboardingViewController, animated: true)
     }
+
+    // swiftlint:enable force_cast
 }
 
 extension DigitalInvoiceCoordinator: DigitalInvoiceViewModelDelagate {
@@ -81,7 +81,10 @@ extension DigitalInvoiceCoordinator: DigitalInvoiceViewModelDelagate {
     }
 
     func didTapPay(on viewModel: DigitalInvoiceViewModel) {
-        delegate?.didFinishAnalysis(self, invoice: viewModel.invoice, analysisDelegate: analysisDelegate)
+        if let analysisDelegate = analysisDelegate {
+            delegate?.didFinishAnalysis(self, invoice: viewModel.invoice, analysisDelegate: analysisDelegate)
+        }
+
     }
 
     func didTapEdit(on viewModel: DigitalInvoiceViewModel, lineItemViewModel: DigitalLineItemTableViewCellViewModel) {
@@ -96,18 +99,31 @@ extension DigitalInvoiceCoordinator: DigitalInvoiceViewModelDelagate {
 
 extension DigitalInvoiceCoordinator: EditLineItemViewModelDelegate {
     func didSave(lineItem: DigitalInvoice.LineItem, on viewModel: EditLineItemViewModel) {
-        guard let invoice = digitalInvoiceViewModel?.invoice else { return }
+        guard let invoice = digitalInvoiceViewModel?.invoice,
+        invoice.lineItems.indices.contains(viewModel.index) else {
+            return
+        }
 
-        if invoice.lineItems.indices.contains(viewModel.index) {
-            self.digitalInvoiceViewModel?.invoice?.lineItems[viewModel.index] = lineItem
+        digitalInvoiceViewModel?.invoice?.lineItems[viewModel.index] = lineItem
+        if !viewModel.itemsChanged.isEmpty {
+            let itemRawValues = viewModel.itemsChanged.map { return $0.rawValue }
+            let eventProperties = [AnalyticsProperty(key: .itemsChanged,
+                                                     value: itemRawValues)]
+            AnalyticsManager.track(event: .saveTapped, 
+                                   screenName: .editReturnAssistant,
+                                   properties: eventProperties)
         }
 
         digitalInvoiceViewController?.updateValues()
-
-        navigationController.dismiss(animated: true)
+        navigationController.dismiss(animated: true) { [weak self] in
+            self?.digitalInvoiceViewController?.sendAnalyticsScreenShown()
+        }
     }
 
     func didCancel(on viewModel: EditLineItemViewModel) {
-        navigationController.dismiss(animated: true)
+        AnalyticsManager.track(event: .closeTapped, screenName: .editReturnAssistant)
+        navigationController.dismiss(animated: true) { [weak self] in
+            self?.digitalInvoiceViewController?.sendAnalyticsScreenShown()
+        }
     }
 }
