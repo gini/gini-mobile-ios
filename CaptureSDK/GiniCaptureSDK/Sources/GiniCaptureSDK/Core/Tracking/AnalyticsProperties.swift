@@ -66,4 +66,5 @@ public enum AnalyticsPropertyKey: String {
     case itemsChanged = "items_changed"
     case switchActive = "switch_active"
     case permissionStatus = "permission_status"
+    case status
 }

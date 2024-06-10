@@ -10,6 +10,7 @@ public enum AnalyticsEvent: String {
     case screenShown = "screen_shown"
     case closeTapped = "close_tapped"
     case sdkOpened = "sdk_opened"
+    case sdkClosed = "sdk_closed"
 
     // MARK: - Camera
     case captureTapped = "capture_tapped"
