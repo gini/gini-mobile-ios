@@ -68,7 +68,7 @@ extension GiniCapture {
                                      networkingService: GiniCaptureNetworkService,
                                      configurationService: ConfigurationServiceProtocol? = nil) -> UIViewController {
         GiniCapture.setConfiguration(configuration)
-        let screenCoordinator = GiniNetworkingScreenAPICoordinator(resultsDelegate: resultsDelegate, giniConfiguration: configuration, documentMetadata: documentMetadata, trackingDelegate: trackingDelegate, captureNetworkService: networkingService, configurationService: configurationService)
+        let screenCoordinator = GiniNetworkingScreenAPICoordinator(resultsDelegate: resultsDelegate, giniConfiguration: configuration, documentMetadata: documentMetadata, trackingDelegate: trackingDelegate, captureNetworkService: networkingService)
         
         configuration.giniErrorLogger = GiniErrorLogger(documentService: screenCoordinator.documentService)
         return screenCoordinator.start(withDocuments: importedDocuments)
