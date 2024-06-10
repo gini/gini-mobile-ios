@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol ConfigurationServiceProtocol: AnyObject {
-    var apiDomain: APIDomain { get set }
+    var apiDomain: APIDomain { get }
     func fetchConfigurations(completion: @escaping CompletionResult<Configuration>)
 }
 
