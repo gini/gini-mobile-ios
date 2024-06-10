@@ -132,6 +132,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         GiniBank.setConfiguration(configuration)
         giniBankConfiguration = configuration
         giniBankConfiguration.documentService = documentService
+        self.trackAnalyticsProperties(configuration: configuration, client: client)
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
     }
@@ -151,7 +152,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         giniBankConfiguration = configuration
         giniBankConfiguration.documentService = documentService
         GiniBank.setConfiguration(configuration)
-
+        self.trackAnalyticsProperties(configuration: configuration)
         visionDelegate = self
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
@@ -327,6 +328,15 @@ extension GiniBankNetworkingScreenApiCoordinator {
                 networkDelegate.displayError(errorType: ErrorType(error: error), animated: true)
             }
         })
+    }
+
+    private func trackAnalyticsProperties(configuration: GiniBankConfiguration, client: Client? = nil) {
+        AnalyticsManager.trackUserProperties([.returnAssistantEnabled: configuration.returnAssistantEnabled,
+                                              .returnReasonsEnabled: configuration.enableReturnReasons])
+        // TODO: No clientID user property for custom networking init
+        if let client {
+            AnalyticsManager.registerSuperProperties([.giniClientID: client.id])
+        }
     }
 }
 
