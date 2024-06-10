@@ -132,6 +132,14 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         self.trackAnalyticsProperties(configuration: configuration, client: client)
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
+        lib.configurationService()?.fetchConfigurations { result in
+            switch result {
+            case .success(let c):
+                print(c)
+            case .failure(let e):
+                print(e)
+            }
+        }
     }
 
     public init(resultsDelegate: GiniCaptureResultsDelegate,
