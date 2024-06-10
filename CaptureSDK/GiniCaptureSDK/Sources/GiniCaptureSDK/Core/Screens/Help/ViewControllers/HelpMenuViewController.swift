@@ -1,9 +1,7 @@
 //
 //  HelpMenuViewController.swift
-//  GiniCapture
 //
-//  Created by Enrique del Pozo Gómez on 10/18/17.
-//  Copyright © 2017 Gini GmbH. All rights reserved.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import UIKit
@@ -70,7 +68,7 @@ final class HelpMenuViewController: UIViewController, HelpBottomBarEnabledViewCo
                                                  value: giniConfiguration.customMenuItems.isNotEmpty)]
 
         eventProperties.append(AnalyticsProperty(key: .helpItems,
-                                                     value: dataSource.helpItemsAnalyticsValues))
+                                                 value: dataSource.helpItemsAnalyticsValues))
         AnalyticsManager.trackScreenShown(screenName: .help,
                                           properties: eventProperties)
     }

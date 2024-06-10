@@ -1,9 +1,7 @@
 //
 //  GiniScreenAPICoordinator.swift
-//  GiniCapture
 //
-//  Created by Enrique del Pozo Gómez on 12/19/17.
-//  Copyright © 2017 Gini GmbH. All rights reserved.
+//  Copyright © 2024 Gini GmbH. All rights reserved.
 //
 
 import Foundation
@@ -89,6 +87,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
 
     public func start(withDocuments documents: [GiniCaptureDocument]?,
                       animated: Bool = false) -> UIViewController {
+        AnalyticsManager.initializeAnalytics()
         var viewControllers: [UIViewController] = []
 
         if let documents = documents, !documents.isEmpty {
@@ -111,6 +110,7 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
 
                 pages.forEach { visionDelegate?.didCapture(document: $0.document, networkDelegate: self) }
                 viewControllers = initialViewControllers(with: pages)
+                AnalyticsManager.registerSuperProperties([.entryPoint: EntryPointAnalytics.openWith.rawValue])
             } else {
                 errorMessage = "You are trying to import both PDF and images at the same time. " +
                     "For now it is only possible to import either images or one PDF"
@@ -125,6 +125,8 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
             let cameraViewController = createCameraViewController()
             cameraScreen = cameraViewController
             viewControllers = [reviewViewController, cameraViewController]
+            let entryPoint = EntryPointAnalytics.makeFrom(entryPoint: giniConfiguration.entryPoint).rawValue
+            AnalyticsManager.registerSuperProperties([.entryPoint: entryPoint])
         }
 
         self.screenAPINavigationController.setViewControllers(viewControllers, animated: animated)
@@ -198,35 +200,50 @@ extension GiniScreenAPICoordinator {
     @objc func back() {
         switch screenAPINavigationController.topViewController {
         case is CameraViewController:
-            trackingDelegate?.onCameraScreenEvent(event: Event(type: .exit))
-            // TODO: rethink this when you add Camera access screen events!
-            // is also accessed from that screen
-            // do we need a different name for the screen in that case?
-            AnalyticsManager.track(event: .closeTapped, screenName: .camera)
-
-            if pages.type == .qrcode {
-                screenAPINavigationController.dismiss(animated: true)
-            }
-
-            if pages.count > 0 {
-                if screenAPINavigationController.viewControllers.count > 1 {
-                    screenAPINavigationController.popViewController(animated: true)
-                } else {
-                    screenAPINavigationController.dismiss(animated: true)
-                }
-            } else {
-                closeScreenApi()
-            }
+            navigateBackFromCameraViewController()
         case is AnalysisViewController:
-            trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .cancel))
-            AnalyticsManager.track(event: .closeTapped, screenName: .analysis)
-            screenAPINavigationController.dismiss(animated: true)
+            navigateBackFromAnalysisViewController()
         default:
-            if screenAPINavigationController.viewControllers.count > 1 {
-                screenAPINavigationController.popViewController(animated: true)
-            } else {
-                screenAPINavigationController.dismiss(animated: true)
-            }
+            navigateBack()
+        }
+    }
+
+    private func navigateBackFromCameraViewController() {
+        trackingDelegate?.onCameraScreenEvent(event: Event(type: .exit))
+        AnalyticsManager.track(event: .closeTapped, screenName: screenName())
+        guard pages.type != .qrcode else {
+            screenAPINavigationController.dismiss(animated: true)
+            return
+        }
+
+        if pages.count > 0 {
+            navigateBack()
+        } else {
+            closeScreenApi()
+        }
+    }
+
+    private func navigateBackFromAnalysisViewController() {
+        trackingDelegate?.onAnalysisScreenEvent(event: Event(type: .cancel))
+        AnalyticsManager.track(event: .closeTapped, screenName: .analysis)
+        screenAPINavigationController.dismiss(animated: true)
+    }
+
+    private func navigateBack() {
+        if screenAPINavigationController.viewControllers.count > 1 {
+            screenAPINavigationController.popViewController(animated: true)
+        } else {
+            screenAPINavigationController.dismiss(animated: true)
+        }
+    }
+
+    // Determine the screen name based on the top view controller
+    private func screenName() -> AnalyticsScreen {
+        if let topViewController = screenAPINavigationController.topViewController as? CameraViewController,
+           !topViewController.cameraPreviewViewController.isAuthorized {
+            return .cameraAccess
+        } else {
+            return .camera
         }
     }
 
@@ -240,14 +257,10 @@ extension GiniScreenAPICoordinator {
             return
         }
 
-        // TODO: rethink this when you add Camera access screen events!
-        // is also accessed from that screen
-        // do we need a different name for the screen in that case?
-        AnalyticsManager.track(event: .helpTapped, screenName: .camera)
-        
-        let helpMenuViewController = HelpMenuViewController(
-            giniConfiguration: giniConfiguration
-        )
+        AnalyticsManager.track(event: .helpTapped, screenName: screenName())
+
+        let helpMenuViewController = HelpMenuViewController(giniConfiguration: giniConfiguration)
+
         helpMenuViewController.delegate = self
         trackingDelegate?.onCameraScreenEvent(event: Event(type: .help))
 

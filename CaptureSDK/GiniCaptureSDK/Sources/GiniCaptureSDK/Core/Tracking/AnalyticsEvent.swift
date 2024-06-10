@@ -6,7 +6,7 @@
 
 import Foundation
 
-enum AnalyticsEvent: String {
+public enum AnalyticsEvent: String {
     case screenShown = "screen_shown"
     case closeTapped = "close_tapped"
 
@@ -21,12 +21,18 @@ enum AnalyticsEvent: String {
     case errorDialogShown = "error_dialog_shown"
     case qr_code_scanned = "qr_code_scanned"
 
+    // MARK: Camera permission
+    case cameraPermissionShown = "camera_permission_shown"
+    case cameraPermissionTapped = "camera_permission_tapped"
+    case giveAccessTapped = "give_access_tapped"
+
     // MARK: - Review
     case processTapped = "process_tapped"
     case deletePagesTapped = "delete_pages_tapped"
     case addPagesTapped = "add_pages_tapped"
     case pageSwiped = "page_swiped"
     case fullScreenPageTapped = "full_screen_page_tapped"
+    case previewZoomed = "preview_zoomed"
 
     // MARK: - No Results and Error
     case enterManuallyTapped = "enter_manually_tapped"
@@ -35,4 +41,16 @@ enum AnalyticsEvent: String {
 
     // MARK: - Help
     case helpItemTapped = "help_item_tapped"
+
+    // MARK: - Onboarding
+    case skipTapped = "skip_tapped"
+    case nextStepTapped = "next_step_tapped"
+    case getStartedTapped = "get_started_tapped"
+
+    // MARK: - Return assistant
+    case dismissed
+    case saveTapped = "save_tapped"
+    case editTapped = "edit_tapped"
+    case itemSwitchTapped = "item_switch_tapped"
+    case proceedTapped = "proceed_tapped"
 }
