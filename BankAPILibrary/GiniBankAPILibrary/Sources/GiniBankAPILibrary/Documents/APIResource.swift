@@ -119,8 +119,8 @@ struct APIResource<T: Decodable>: Resource {
             return "/paymentRequests/\(id)/payment"
         case .logErrorEvent:
             return "/events/error"
-        case .fetchConfiguration:
-            return "/configuration"
+        case .configurations:
+            return "/configurations"
         }
     }
     
