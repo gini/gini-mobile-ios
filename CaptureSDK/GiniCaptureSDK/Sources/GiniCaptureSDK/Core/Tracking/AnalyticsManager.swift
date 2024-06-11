@@ -15,7 +15,11 @@ public class AnalyticsManager {
     private static var userProperties: [AnalyticsUserProperty: AnalyticsPropertyValue] = [:]
     private static var superProperties: [AnalyticsSuperProperty: AnalyticsPropertyValue] = [:]
 
-    public static func initializeAnalytics() {
+    public static func initializeAnalytics(with configuration: AnalyticsConfiguration) {
+        guard configuration.userJourneyAnalyticsEnabled else {
+            return
+        }
+        // TODO: setup mixPanelToken and amplitudeKey after prod/stage credentials setup
         // Identify the user with the deviceID
         let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? ""
         initializeAmplitude(with: deviceID)
