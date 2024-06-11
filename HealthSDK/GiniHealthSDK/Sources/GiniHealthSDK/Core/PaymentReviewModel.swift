@@ -14,11 +14,6 @@ protocol PaymentReviewViewModelDelegate: AnyObject {
     func createPaymentRequestAndOpenBankApp()
     func obtainPDFFromPaymentRequest()
 }
-
-public protocol PaymentReviewScreenDelegate: AnyObject {
-    func didInvoiceDetailsChanged(on documentID: String, with paymentInfo: PaymentInfo?)
-}
-
 /**
  View model class for review screen
   */

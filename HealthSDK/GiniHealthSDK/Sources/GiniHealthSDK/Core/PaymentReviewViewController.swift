@@ -88,8 +88,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
 
     let giniHealthConfiguration = GiniHealthConfiguration.shared
     
-    public weak var changesDelegate: PaymentReviewScreenDelegate?
-    
     override public func viewDidLoad() {
         super.viewDidLoad()
         subscribeOnNotifications()
@@ -169,10 +167,6 @@ public final class PaymentReviewViewController: UIViewController, UIGestureRecog
                 self?.showError(message: NSLocalizedStringPreferredFormat("ginihealth.errors.failed.payment.request.creation",
                                                                       comment: "error for creating payment request"))
             }
-        }
-        
-        model?.onOpenBankingApp = { [weak self] () in
-            self?.changesDelegate?.didInvoiceDetailsChanged(on: self?.model?.documentId ?? "", with: self?.obtainPaymentInfo())
         }
         
         model?.fetchImages()

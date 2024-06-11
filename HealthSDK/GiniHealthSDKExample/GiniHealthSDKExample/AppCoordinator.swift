@@ -68,7 +68,6 @@ final class AppCoordinator: Coordinator {
         self.showSelectAPIScreen()
         paymentComponentsController.delegate = self
         paymentComponentsController.loadPaymentProviders()
-        try! apiLib.removeStoredCredentials()
     }
     
     func processExternalDocument(withUrl url: URL, sourceApplication: String?) {
