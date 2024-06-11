@@ -108,6 +108,8 @@ struct APIResource<T: Decodable>: Resource {
             return "/paymentRequests"
         case .file(urlString: let urlString):
             return urlString
+        case .payment(let id):
+            return "/paymentRequests/\(id)/payment"
         }
     }
     

@@ -31,4 +31,5 @@ enum APIMethod: ResourceMethod {
     case paymentRequest(id: String)
     case paymentRequests(limit: Int?, offset: Int?)
     case file(urlString: String)
+    case payment(id: String)
 }
