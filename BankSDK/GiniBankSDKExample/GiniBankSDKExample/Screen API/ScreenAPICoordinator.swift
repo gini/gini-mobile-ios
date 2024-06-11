@@ -83,11 +83,12 @@ final class ScreenAPICoordinator: NSObject, Coordinator, UINavigationControllerD
                                                  trackingDelegate: trackingDelegate)
 // MARK: - Screen API with custom networking
 //        let viewController = GiniBank.viewController(importedDocuments: visionDocuments,
-//                                                        configuration: configuration,
-//                                                        resultsDelegate: self,
-//                                                        documentMetadata: documentMetadata,
-//                                                        trackingDelegate: trackingDelegate,
-//                                                        networkingService: self)
+//                                                     configuration: configuration,
+//                                                     resultsDelegate: self,
+//                                                     documentMetadata: documentMetadata,
+//                                                     trackingDelegate: trackingDelegate,
+//                                                     networkingService: self,
+//                                                     configurationService: nil)
 // MARK: - Screen API - UI Only
 //        let viewController = GiniBank.viewController(withDelegate: self, withConfiguration: configuration)
 
