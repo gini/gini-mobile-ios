@@ -20,3 +20,19 @@ public final class ConfigurationService: ConfigurationServiceProtocol {
         self.apiDomain = apiDomain
     }
 }
+
+extension ConfigurationService {
+    func fetchConfigurations(resourceHandler: ResourceDataHandler<APIResource<Configuration>>,
+                            completion: @escaping CompletionResult<Configuration>) {
+        let resource = APIResource<Configuration>(method: .configurations, apiDomain: apiDomain, httpMethod: .get)
+        
+        resourceHandler(resource, { result in
+            switch result {
+            case let .success(configuration):
+                completion(.success(configuration))
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        })
+    }
+}
