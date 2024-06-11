@@ -87,7 +87,6 @@ open class GiniScreenAPICoordinator: NSObject, Coordinator {
 
     public func start(withDocuments documents: [GiniCaptureDocument]?,
                       animated: Bool = false) -> UIViewController {
-        AnalyticsManager.initializeAnalytics()
         var viewControllers: [UIViewController] = []
 
         if let documents = documents, !documents.isEmpty {
