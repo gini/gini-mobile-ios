@@ -219,17 +219,17 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 self.initializeAnalytics(with: configuration)
             case .failure(let error):
                 // TODO: Handle error
-                break
+                print(error)
             }
         })
         return self.start(withDocuments: documents, animated: animated)
     }
-    
+
     private func initializeAnalytics(with configuration: Configuration) {
-        let analyticsConfiguration: AnalyticsConfiguration = .init(clientID: configuration.clientID,
-                                                                   userJourneyAnalyticsEnabled: configuration.userJourneyAnalyticsEnabled,
-                                                                   mixpanelToken: configuration.mixpanelToken,
-                                                                   amplitudeApiKey: configuration.amplitudeApiKey)
+        let analyticsConfiguration = AnalyticsConfiguration(clientID: configuration.clientID,
+                                                            userJourneyAnalyticsEnabled: configuration.userJourneyAnalyticsEnabled,
+                                                            mixpanelToken: configuration.mixpanelToken,
+                                                            amplitudeApiKey: configuration.amplitudeApiKey)
         AnalyticsManager.initializeAnalytics(with: analyticsConfiguration)
     }
 }
