@@ -112,6 +112,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
     weak var resultsDelegate: GiniCaptureResultsDelegate?
     let documentService: DocumentServiceProtocol
+    var configurationService: ConfigurationServiceProtocol?
     var giniBankConfiguration = GiniBankConfiguration.shared
 
     public init(client: Client,
@@ -122,6 +123,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
                 trackingDelegate: GiniCaptureTrackingDelegate?,
                 lib: GiniBankAPI) {
         documentService = DocumentService(lib: lib, metadata: documentMetadata)
+        configurationService = lib.configurationService()
         let captureConfiguration = configuration.captureConfiguration()
         super.init(withDelegate: nil, giniConfiguration: captureConfiguration)
 
@@ -132,14 +134,6 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         self.trackAnalyticsProperties(configuration: configuration, client: client)
         self.resultsDelegate = resultsDelegate
         self.trackingDelegate = trackingDelegate
-        lib.configurationService()?.fetchConfigurations { result in
-            switch result {
-            case .success(let c):
-                print(c)
-            case .failure(let e):
-                print(e)
-            }
-        }
     }
 
     public init(resultsDelegate: GiniCaptureResultsDelegate,
@@ -151,6 +145,7 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
         documentService = DocumentService(giniCaptureNetworkService: captureNetworkService,
                                           metadata: documentMetadata)
+        self.configurationService = configurationService
         let captureConfiguration = configuration.captureConfiguration()
 
         super.init(withDelegate: nil,
@@ -215,6 +210,27 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
 
     public func didPressEnterManually() {
         self.resultsDelegate?.giniCaptureDidEnterManually()
+    }
+
+    public func startSDK(withDocuments documents: [GiniCaptureDocument]?, animated: Bool = false) -> UIViewController {
+        configurationService?.fetchConfigurations(completion: { result in
+            switch result {
+            case .success(let configuration):
+                self.initializeAnalytics(with: configuration)
+            case .failure(let error):
+                // TODO: Handle error
+                break
+            }
+        })
+        return self.start(withDocuments: documents, animated: animated)
+    }
+    
+    private func initializeAnalytics(with configuration: Configuration) {
+        let analyticsConfiguration: AnalyticsConfiguration = .init(clientID: configuration.clientID,
+                                                                   userJourneyAnalyticsEnabled: configuration.userJourneyAnalyticsEnabled,
+                                                                   mixpanelToken: configuration.mixpanelToken,
+                                                                   amplitudeApiKey: configuration.amplitudeApiKey)
+        AnalyticsManager.initializeAnalytics(with: analyticsConfiguration)
     }
 }
 

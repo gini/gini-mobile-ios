@@ -43,7 +43,7 @@ extension GiniBank {
                                                                        api: api,
                                                                        userApi: userApi,
                                                                        trackingDelegate: trackingDelegate)
-        return screenCoordinator.start(withDocuments: importedDocuments)
+        return screenCoordinator.startSDK(withDocuments: importedDocuments)
     }
 
     // MARK: - Screen API with Custom Networking - Initializers for 'UIViewController'
@@ -77,7 +77,7 @@ extension GiniBank {
                                                                        trackingDelegate: trackingDelegate,
                                                                        captureNetworkService: networkingService,
                                                                        configurationService: configurationService)
-        return screenCoordinator.start(withDocuments: importedDocuments)
+        return screenCoordinator.startSDK(withDocuments: importedDocuments)
     }
 
     public class func removeStoredCredentials(for client: Client) throws {
