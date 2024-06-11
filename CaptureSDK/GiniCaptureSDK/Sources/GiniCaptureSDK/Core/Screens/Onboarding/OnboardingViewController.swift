@@ -16,7 +16,7 @@ class OnboardingViewController: UIViewController {
     private var navigationBarBottomAdapter: OnboardingNavigationBarBottomAdapter?
     private var bottomNavigationBar: UIView?
 
-    lazy var skipButton = GiniBarButton(ofType: .skip)
+    private lazy var skipButton = GiniBarButton(ofType: .skip)
 
     init() {
         dataSource = OnboardingDataSource(configuration: configuration)
