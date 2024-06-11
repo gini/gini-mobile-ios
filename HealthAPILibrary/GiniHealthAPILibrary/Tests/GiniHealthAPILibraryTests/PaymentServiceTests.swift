@@ -87,4 +87,21 @@ class PaymentServiceTests: XCTestCase {
       }
         wait(for: [expect], timeout: 1)
     }
+
+    func testPayment() {
+        let expect = expectation(description: "returns an array of payment requests")
+        paymentService.payment(id: "118edf41-102a-4b40-8753-df2f0634cb86"){ result in
+            switch result {
+            case .success(let payment):
+                let requestID = String(payment.links?.paymentRequest?.split(separator: "/").last ?? "")
+                XCTAssertEqual(requestID,
+                               SessionManagerMock.paymentID,
+                               "payment request ids should match")
+                expect.fulfill()
+            case .failure:
+                break
+            }
+      }
+        wait(for: [expect], timeout: 1)
+    }
 }
