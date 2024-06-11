@@ -31,7 +31,7 @@ The token your provide will be added as a bearer token to all api.custom.net req
 
 > ⚠️  **Important:**
 
-When you implement `AlternativeTokenSource` protocol make sure that you cakk the completion in one specific thread
+When you implement `AlternativeTokenSource` protocol make sure that you call the completion in one specific thread
 
 ```swift
 private class MyAlternativeTokenSource: AlternativeTokenSource {
