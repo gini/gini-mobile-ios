@@ -14,6 +14,7 @@ protocol PaymentReviewViewModelDelegate: AnyObject {
     func createPaymentRequestAndOpenBankApp()
     func obtainPDFFromPaymentRequest()
 }
+
 /**
  View model class for review screen
   */
@@ -32,7 +33,6 @@ public class PaymentReviewModel: NSObject {
     var onNoAppsErrorHandling: (_ error: GiniHealthError) -> Void = { _ in }
     
     var onCreatePaymentRequestErrorHandling: () -> Void = {}
-    var onOpenBankingApp: () -> Void = {}
     
     var onBankSelection: (_ provider: PaymentProvider) -> Void = { _ in }
     
@@ -75,8 +75,6 @@ public class PaymentReviewModel: NSObject {
             self.updateImagesLoadingStatus()
         }
     }
-    
-    var haveFieldsChanged: Bool = false
     
     // Pay invoice label
     let payInvoiceLabelText: String = NSLocalizedStringPreferredFormat("ginihealth.reviewscreen.banking.app.button.label",
@@ -135,9 +133,6 @@ public class PaymentReviewModel: NSObject {
     }
 
     func openPaymentProviderApp(requestId: String, universalLink: String) {
-        if haveFieldsChanged {
-            onOpenBankingApp()
-        }
         healthSDK.openPaymentProviderApp(requestID: requestId, universalLink: universalLink)
     }
     

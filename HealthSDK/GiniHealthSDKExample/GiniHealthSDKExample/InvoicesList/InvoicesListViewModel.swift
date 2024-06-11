@@ -225,7 +225,6 @@ extension InvoicesListViewModel: PaymentComponentViewProtocol {
             } else if let viewController {
                 viewController.modalTransitionStyle = .coverVertical
                 viewController.modalPresentationStyle = .overCurrentContext
-                self?.shouldRefetchExtractions = true
                 self?.coordinator.invoicesListViewController.present(viewController, animated: true)
             }
         }
@@ -269,6 +268,7 @@ extension InvoicesListViewModel: GiniHealthTrackingDelegate {
     func onPaymentReviewScreenEvent(event: TrackingEvent<PaymentReviewScreenEventType>) {
         switch event.type {
         case .onToTheBankButtonClicked:
+            self.shouldRefetchExtractions = true
             Log("To the banking app button was tapped,\(String(describing: event.info))", event: .success)
         case .onCloseButtonClicked:
             refetchExtractions()
