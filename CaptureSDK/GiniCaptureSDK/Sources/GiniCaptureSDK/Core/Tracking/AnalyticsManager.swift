@@ -9,35 +9,32 @@ import Mixpanel
 import Amplitude
 
 public class AnalyticsManager {
-    private static let mixPanelToken = "6262hhdfhdb929321222" // this id is fake we need to replace it
     private static var mixpanelInstance: MixpanelInstance?
-    private static let amplitudeKey = ""
     private static var userProperties: [AnalyticsUserProperty: AnalyticsPropertyValue] = [:]
     private static var superProperties: [AnalyticsSuperProperty: AnalyticsPropertyValue] = [:]
 
     public static func initializeAnalytics(with configuration: AnalyticsConfiguration) {
-        guard configuration.userJourneyAnalyticsEnabled else {
-            return
-        }
+        guard configuration.userJourneyAnalyticsEnabled else { return }
         // Identify the user with the deviceID
         let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? ""
-        // TODO: remove default tokens after tests
-        initializeAmplitude(with: deviceID, apiKey: configuration.amplitudeApiKey ?? amplitudeKey)
-        initializeMixpanel(with: deviceID, token: configuration.mixpanelToken ?? mixPanelToken)
+        initializeAmplitude(with: deviceID, apiKey: configuration.amplitudeApiKey)
+        initializeMixpanel(with: deviceID, token: configuration.mixpanelToken)
         superProperties[.giniClientID] = configuration.clientID
         registerSuperProperties(superProperties)
         trackUserProperties(userProperties)
         trackAccessibilityUserPropertiesAtInitialization()
     }
 
-    private static func initializeMixpanel(with deviceID: String, token: String) {
+    private static func initializeMixpanel(with deviceID: String, token: String?) {
+        guard let token else { return }
         mixpanelInstance = Mixpanel.initialize(token: token,
                                                trackAutomaticEvents: false,
                                                serverURL: "https://api-eu.mixpanel.com")
         mixpanelInstance?.identify(distinctId: deviceID)
     }
 
-    private static func initializeAmplitude(with deviceID: String, apiKey: String) {
+    private static func initializeAmplitude(with deviceID: String, apiKey: String?) {
+        guard let apiKey else { return }
         Amplitude.instance().initializeApiKey(apiKey)
         Amplitude.instance().setDeviceId(deviceID)
     }
