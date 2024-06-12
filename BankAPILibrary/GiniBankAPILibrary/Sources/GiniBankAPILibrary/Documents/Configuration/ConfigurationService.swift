@@ -7,6 +7,9 @@
 
 import Foundation
 
+/**
+ A service class to fetch configuration settings
+ */
 public final class ConfigurationService: ConfigurationServiceProtocol {
     public func fetchConfigurations(completion: @escaping CompletionResult<Configuration>) {
         self.fetchConfigurations(resourceHandler: sessionManager.data, completion: completion)
@@ -23,7 +26,7 @@ public final class ConfigurationService: ConfigurationServiceProtocol {
 
 extension ConfigurationService {
     func fetchConfigurations(resourceHandler: ResourceDataHandler<APIResource<Configuration>>,
-                            completion: @escaping CompletionResult<Configuration>) {
+                             completion: @escaping CompletionResult<Configuration>) {
         let resource = APIResource<Configuration>(method: .configurations, apiDomain: apiDomain, httpMethod: .get)
         
         resourceHandler(resource, { result in
