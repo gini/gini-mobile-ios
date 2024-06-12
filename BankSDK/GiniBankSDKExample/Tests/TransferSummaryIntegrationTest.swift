@@ -53,8 +53,9 @@ class TransferSummaryIntegrationTest: XCTestCase {
             // 2. Verify we received the correct extractions for this test
             XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "iban" })?.value,
                            result.extractions["iban"]?.value)
-            XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "paymentRecipient" })?.value,
-                           result.extractions["paymentRecipient"]?.value)
+
+            verifyPaymentRecipient(result.extractions["paymentRecipient"])
+
             XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "bic" })?.value,
                            result.extractions["bic"]?.value)
             XCTAssertEqual(fixtureExtractionsContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
@@ -86,8 +87,10 @@ class TransferSummaryIntegrationTest: XCTestCase {
 
                                 XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "iban" })?.value,
                                                extractionsAfterFeedback.first(where: { $0.name == "iban" })?.value)
-                                XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "paymentRecipient" })?.value,
-                                               extractionsAfterFeedback.first(where: { $0.name == "paymentRecipient" })?.value)
+
+                                let paymentRecipientExtraction = extractionsAfterFeedback.first(where: { $0.name == "paymentRecipient" })
+                                self.verifyPaymentRecipient(paymentRecipientExtraction)
+
                                 XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "bic" })?.value,
                                                extractionsAfterFeedback.first(where: { $0.name == "bic" })?.value)
                                 XCTAssertEqual(fixtureExtractionsAfterFeedbackContainer.extractions.first(where: { $0.name == "amountToPay" })?.value,
@@ -122,6 +125,22 @@ class TransferSummaryIntegrationTest: XCTestCase {
         }
 
         func giniCaptureDidCancelAnalysis() {
+        }
+
+        /*
+         Verifies that the `paymentRecipient` extraction is present and has a non-nil value in the given `ExtractionsContainer`.
+
+         This method asserts that:
+         - The `paymentRecipient` extraction exists.
+         - The `paymentRecipient` extraction has a non-nil value.
+
+         If either of these conditions is not met, the test will fail.
+
+         - Parameter paymentRecipientExtraction: The extraction to be verified.
+         */
+        private func verifyPaymentRecipient(_ paymentRecipientExtraction: Extraction?) {
+            XCTAssertNotNil(paymentRecipientExtraction, "The paymentRecipient extraction should be present in the extractions.")
+            XCTAssertNotNil(paymentRecipientExtraction?.value, "The value of paymentRecipient extraction should not be nil.")
         }
     }
 
