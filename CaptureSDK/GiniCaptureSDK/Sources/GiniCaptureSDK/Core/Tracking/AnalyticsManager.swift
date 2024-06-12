@@ -19,25 +19,26 @@ public class AnalyticsManager {
         guard configuration.userJourneyAnalyticsEnabled else {
             return
         }
-        // TODO: setup mixPanelToken and amplitudeKey after prod/stage credentials setup
         // Identify the user with the deviceID
         let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? ""
-        initializeAmplitude(with: deviceID)
-        initializeMixpanel(with: deviceID)
+        // TODO: remove default tokens after tests
+        initializeAmplitude(with: deviceID, apiKey: configuration.amplitudeApiKey ?? amplitudeKey)
+        initializeMixpanel(with: deviceID, token: configuration.mixpanelToken ?? mixPanelToken)
+        registerSuperProperties([.giniClientID: configuration.clientID])
         registerSuperProperties(superProperties)
         trackUserProperties(userProperties)
         trackAccessibilityUserPropertiesAtInitialization()
     }
 
-    private static func initializeMixpanel(with deviceID: String) {
-        mixpanelInstance = Mixpanel.initialize(token: mixPanelToken,
+    private static func initializeMixpanel(with deviceID: String, token: String) {
+        mixpanelInstance = Mixpanel.initialize(token: token,
                                                trackAutomaticEvents: false,
                                                serverURL: "https://api-eu.mixpanel.com")
         mixpanelInstance?.identify(distinctId: deviceID)
     }
 
-    private static func initializeAmplitude(with deviceID: String) {
-        Amplitude.instance().initializeApiKey(amplitudeKey)
+    private static func initializeAmplitude(with deviceID: String, apiKey: String) {
+        Amplitude.instance().initializeApiKey(apiKey)
         Amplitude.instance().setDeviceId(deviceID)
     }
 
