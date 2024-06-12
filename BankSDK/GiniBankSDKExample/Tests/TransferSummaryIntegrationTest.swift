@@ -128,7 +128,7 @@ class TransferSummaryIntegrationTest: XCTestCase {
         }
 
         /*
-         Verifies that the `paymentRecipient` extraction is present and has a non-nil value in the given `ExtractionsContainer`.
+         Verifies that the `paymentRecipient` extraction is present and has a non-nil value.
 
          This method asserts that:
          - The `paymentRecipient` extraction exists.
