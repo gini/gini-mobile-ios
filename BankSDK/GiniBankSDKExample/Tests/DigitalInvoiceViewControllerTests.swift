@@ -49,7 +49,7 @@ class DigitalInvoiceIntegrationTests: XCTestCase {
             // 2. Verify we received the correct extractions for this test
             XCTAssertEqual(fixtureExtractionsContainer?.extractions.first(where: { $0.name == "iban" })?.value,
                            result.extractions["iban"]?.value)
-            
+
             verifyPaymentRecipient(result.extractions["paymentRecipient"])
 
             XCTAssertEqual(fixtureExtractionsContainer?.extractions.first(where: { $0.name == "bic" })?.value,
@@ -102,7 +102,7 @@ class DigitalInvoiceIntegrationTests: XCTestCase {
         }
 
         /*
-         Verifies that the `paymentRecipient` extraction is present and has a non-nil value in the given `ExtractionsContainer`.
+         Verifies that the `paymentRecipient` extraction is present and has a non-nil value.
 
          This method asserts that:
          - The `paymentRecipient` extraction exists.
