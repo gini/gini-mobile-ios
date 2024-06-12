@@ -24,7 +24,7 @@ public class AnalyticsManager {
         // TODO: remove default tokens after tests
         initializeAmplitude(with: deviceID, apiKey: configuration.amplitudeApiKey ?? amplitudeKey)
         initializeMixpanel(with: deviceID, token: configuration.mixpanelToken ?? mixPanelToken)
-        registerSuperProperties([.giniClientID: configuration.clientID])
+        superProperties[.giniClientID] = configuration.clientID
         registerSuperProperties(superProperties)
         trackUserProperties(userProperties)
         trackAccessibilityUserPropertiesAtInitialization()
