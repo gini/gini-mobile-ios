@@ -106,6 +106,9 @@ final class SessionManagerMock: SessionManagerProtocol {
             case .feedback(_):
                 extractionFeedbackBody = resource.request.httpBody ?? nil
                 completion(.success("Feedback was sent" as! T.ResponseType))
+            case .payment(_):
+                let payment: Payment = loadPayment()
+                completion(.success(payment as! T.ResponseType))
             default:
                 let error = GiniError.unknown(response: nil, data: nil)
                 completion(.failure(error))
