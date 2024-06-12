@@ -124,6 +124,7 @@ final class AppCoordinator: Coordinator {
         
         screenAPICoordinator.delegate = self
         
+        health.delegate = self
         screenAPICoordinator.giniHealth = health
         
         screenAPICoordinator.start(healthAPI: apiLib)
