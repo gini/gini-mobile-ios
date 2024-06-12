@@ -88,7 +88,7 @@ extension GiniScreenAPICoordinator {
 
 extension GiniScreenAPICoordinator: AnalysisDelegate {
 
-    public func displayError(errorType: ErrorType,animated: Bool) {
+    public func displayError(errorType: ErrorType, animated: Bool) {
         let viewModel: BottomButtonsViewModel
         switch pages.type {
         case .image:
