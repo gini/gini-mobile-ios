@@ -257,6 +257,7 @@ extension GiniBankNetworkingScreenApiCoordinator {
                                             images: images,
                                             document: documentService.document,
                                             candidates: result.candidates)
+                sendAnalyticsEventSDKClose()
                 self.resultsDelegate?.giniCaptureAnalysisDidFinishWith(result: result)
 
                 self.giniBankConfiguration.lineItems = result.lineItems
@@ -265,6 +266,11 @@ extension GiniBankNetworkingScreenApiCoordinator {
                 self.documentService.resetToInitialState()
             }
         }
+    }
+
+    private func sendAnalyticsEventSDKClose() {
+        AnalyticsManager.track(event: .sdkClosed,
+                               properties: [AnalyticsProperty(key: .status, value: "successful")])
     }
 
     public func showDigitalInvoiceScreen(digitalInvoice: DigitalInvoice, analysisDelegate: AnalysisDelegate) {
