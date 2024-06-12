@@ -14,7 +14,8 @@ public class AnalyticsManager {
     private static var superProperties: [AnalyticsSuperProperty: AnalyticsPropertyValue] = [:]
 
     public static func initializeAnalytics(with configuration: AnalyticsConfiguration) {
-        guard configuration.userJourneyAnalyticsEnabled else { return }
+        guard configuration.userJourneyAnalyticsEnabled,
+              GiniTrackingPermissionManager.shared.trackingAuthorized() else { return }
         // Identify the user with the deviceID
         let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? ""
         initializeAmplitude(with: deviceID, apiKey: configuration.amplitudeApiKey)
