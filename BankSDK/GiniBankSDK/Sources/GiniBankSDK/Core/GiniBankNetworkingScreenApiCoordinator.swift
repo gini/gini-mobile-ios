@@ -212,6 +212,12 @@ open class GiniBankNetworkingScreenApiCoordinator: GiniScreenAPICoordinator, Gin
         self.resultsDelegate?.giniCaptureDidEnterManually()
     }
 
+    /**
+     This method first attempts to fetch configuration settings using the `configurationService`.
+     If the configurations are successfully fetched, it initializes the analytics with the fetched configuration
+     on the main thread. Regardless of the result of fetching configurations, it then proceeds to start the
+     SDK with the provided documents.
+     */
     public func startSDK(withDocuments documents: [GiniCaptureDocument]?, animated: Bool = false) -> UIViewController {
         configurationService?.fetchConfigurations(completion: { result in
             switch result {
