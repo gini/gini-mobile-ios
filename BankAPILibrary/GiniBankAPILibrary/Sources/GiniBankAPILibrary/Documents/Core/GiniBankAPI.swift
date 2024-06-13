@@ -15,7 +15,9 @@ public final class GiniBankAPI {
     private let configService: ConfigurationServiceProtocol?
     static var logLevel: LogLevel = .none
 
-    init<T: DocumentService>(documentService: T, paymentService: PaymentService?, configurationService: ConfigurationServiceProtocol?) {
+    init<T: DocumentService>(documentService: T,
+                             paymentService: PaymentService?,
+                             configurationService: ConfigurationServiceProtocol?) {
         self.docService = documentService
         self.payService = paymentService
         self.configService = configurationService
