@@ -718,8 +718,6 @@ extension PaymentReviewViewController {
     }
 }
 
-
-
 extension PaymentReviewViewController {
     enum Constants {
         static let buttonViewHeight: CGFloat = 56
