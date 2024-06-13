@@ -25,8 +25,8 @@ public class AnalyticsManager {
         registerSuperProperties(superProperties)
         trackUserProperties(userProperties)
         trackAccessibilityUserPropertiesAtInitialization()
-        processEventsQueue()
         AnalyticsManager.track(event: .sdkOpened, screenName: nil)
+        processEventsQueue()
     }
 
     private static func initializeMixpanel(with deviceID: String, token: String?) {
