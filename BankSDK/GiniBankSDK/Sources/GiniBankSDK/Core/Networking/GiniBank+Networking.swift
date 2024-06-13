@@ -43,7 +43,6 @@ extension GiniBank {
                                                                        api: api,
                                                                        userApi: userApi,
                                                                        trackingDelegate: trackingDelegate)
-        AnalyticsManager.firstSDKOpen = true
         return screenCoordinator.startSDK(withDocuments: importedDocuments)
     }
 
@@ -78,7 +77,6 @@ extension GiniBank {
                                                                        trackingDelegate: trackingDelegate,
                                                                        captureNetworkService: networkingService,
                                                                        configurationService: configurationService)
-        AnalyticsManager.firstSDKOpen = true
         return screenCoordinator.startSDK(withDocuments: importedDocuments)
     }
 
