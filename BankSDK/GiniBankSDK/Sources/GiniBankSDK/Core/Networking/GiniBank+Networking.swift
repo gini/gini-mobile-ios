@@ -43,6 +43,7 @@ extension GiniBank {
                                                                        api: api,
                                                                        userApi: userApi,
                                                                        trackingDelegate: trackingDelegate)
+        AnalyticsManager.firstSDKOpen = true
         return screenCoordinator.startSDK(withDocuments: importedDocuments)
     }
 
@@ -77,7 +78,8 @@ extension GiniBank {
                                                                        trackingDelegate: trackingDelegate,
                                                                        captureNetworkService: networkingService,
                                                                        configurationService: configurationService)
-        return screenCoordinator.startSDK(withDocuments: importedDocuments)
+        AnalyticsManager.firstSDKOpen = true
+        return screenCoordinator.start(withDocuments: importedDocuments)
     }
 
     public class func removeStoredCredentials(for client: Client) throws {

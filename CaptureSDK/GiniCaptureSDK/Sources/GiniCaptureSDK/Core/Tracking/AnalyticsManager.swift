@@ -12,6 +12,7 @@ public class AnalyticsManager {
     private static var mixpanelInstance: MixpanelInstance?
     private static var userProperties: [AnalyticsUserProperty: AnalyticsPropertyValue] = [:]
     private static var superProperties: [AnalyticsSuperProperty: AnalyticsPropertyValue] = [:]
+    public static var firstSDKOpen: Bool = false
 
     public static func initializeAnalytics(with configuration: AnalyticsConfiguration) {
         guard configuration.userJourneyAnalyticsEnabled,
@@ -24,7 +25,10 @@ public class AnalyticsManager {
         registerSuperProperties(superProperties)
         trackUserProperties(userProperties)
         trackAccessibilityUserPropertiesAtInitialization()
-        AnalyticsManager.track(event: .sdkOpened, screenName: nil)
+        if firstSDKOpen {
+            firstSDKOpen = false
+            AnalyticsManager.track(event: .sdkOpened, screenName: nil)
+        }
     }
 
     private static func initializeMixpanel(with deviceID: String, token: String?) {
